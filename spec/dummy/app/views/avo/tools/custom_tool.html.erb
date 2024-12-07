@@ -1,29 +1,57 @@
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new(name: "Custom tool", description: "Custom tool description", display_breadcrumbs: true) do |c| %>
-    <% c.with_tools do %>
-      <div class="text-sm italic">This is the panels tools section.</div>
-    <% end %>
+  <%
+    fields = [:id, :name, :age]
+    fields = {
+      id: {
+        type: :id,
+        required: true
+      },
+      name: {},
+      age: {
+        type: :number,
+      }
+    }
+    items = [
+      {
+        id: 123,
+        name: "User",
+        age: 14,
+        email: "test@test.com",
+      },
+      {
+        id: 124,
+        name: "User 2",
+        age: 15,
+        email: "test2@test.com",
+      },
+      {
+        id: 125,
+        name: "User 3",
+        age: 16,
+        email: "test3@test.com",
+        _options: {
+          id_param: :id,
+          show_path: "/users/123"
+        }
+      }
+      # .name
+      # [:name]
+    ]
 
-    <% c.with_body do %>
-      <div class="py-6 min-h-24">
-        <div class="px-6 space-y-4">
-          <h3>What a nice new tool 👋</h3>
+    options = {
+      id_param: :id,
+      path: "/users/123"
+    }
 
-          Go to <%= link_to "new comment", avo.new_resources_comment_path %>, <%= link_to 'the first user', avo.resources_user_path(1) %>, or <%= link_to 'hey on main app', main_app.hey_path %>.
+    model_key = "users"
+    cache_hash = [model_key, Digest::MD5.hexdigest(model_key)] # ai
+    options = {}
 
-          <p>
-            You can edit this file here <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/views/avo/tools/custom_tool.html.erb</code>.
-          </p>
 
-          <p>
-            For this tool we created the <code class='p-1 rounded bg-gray-500 text-white text-sm'>custom_tool</code> method in the <code class='p-1 rounded bg-gray-500 text-white text-sm'>Avo::ToolsController</code>. You may delete it or move it to your own controller.
-          </p>
+    #Avo::Resources::Base.for_dumb(name: "Users", fields:, options:)
+  %>
 
-          <p>
-            A new <code class='p-1 rounded bg-gray-500 text-white text-sm'>Custom tool</code> item should have been added to the sidebar. Edit it in <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/views/avo/sidebar/items/_custom_tool.html.erb</code>
-          </p>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
+  <%#= render Avo::RecordTableComponent.new(name: "Users", items:, fields:, options:, data: {}) %>
+
+  <%#= render Avo::RecordTableComponent.new(items:, fields:, options:, data: {}) %>
 </div>
