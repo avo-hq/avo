@@ -30,7 +30,6 @@ env:
 
 jobs:
   system_specs:
-    if: ${{ !(matrix.rails == '8.0' && matrix.ruby == '3.1.4') }}
     strategy:
       matrix:
         ruby:
