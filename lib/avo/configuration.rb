@@ -10,6 +10,7 @@ module Avo
     attr_writer :turbo
     attr_writer :pagination
     attr_writer :explicit_authorization
+    attr_writer :exclude_from_status
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -121,6 +122,7 @@ module Avo
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
       @associations_lookup_list_limit = 1000
+      @exclude_from_status = []
     end
 
     # Authorization is enabled when:
@@ -249,6 +251,10 @@ module Avo
 
     def turbo
       Avo::ExecutionContext.new(target: @turbo).handle
+    end
+
+    def exclude_from_status
+      Avo::ExecutionContext.new(target: @exclude_from_status).handle
     end
 
     def default_turbo
