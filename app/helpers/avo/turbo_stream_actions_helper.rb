@@ -13,7 +13,7 @@ module Avo
     def avo_close_modal
       turbo_stream_action_tag :replace,
         target: Avo::MODAL_FRAME_ID,
-        template: @view_context.turbo_frame_tag(Avo::MODAL_FRAME_ID, data: {turbo_temporary: 1})
+        template: @view_context.turbo_frame_tag(Avo::MODAL_FRAME_ID)
     end
   end
 end
