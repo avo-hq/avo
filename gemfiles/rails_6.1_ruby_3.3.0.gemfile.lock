@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/avo-hq/acts-as-taggable-on.git
-  revision: 33f0eac41ba392b3cae69faf3dee69a698a7871a
-  specs:
-    acts-as-taggable-on (10.0.0)
-      activerecord (>= 6.1, < 8)
-
 PATH
   remote: ../pluggy
   specs:
@@ -13,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.15.1)
+    avo (3.15.2)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -96,6 +89,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    acts-as-taggable-on (10.0.0)
+      activerecord (>= 6.1, < 8)
     acts_as_list (1.2.2)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -618,7 +613,7 @@ DEPENDENCIES
   active_link_to
   active_median
   activestorage
-  acts-as-taggable-on!
+  acts-as-taggable-on
   acts_as_list
   actual_db_schema
   addressable
