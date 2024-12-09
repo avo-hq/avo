@@ -7,6 +7,7 @@ class Avo::PanelHeaderComponent < Avo::BaseComponent
   renders_one :tools
 
   prop :name
+  prop :external_link
   prop :description
   prop :display_breadcrumbs, default: false
   prop :profile_photo
