@@ -38,7 +38,7 @@ export default class extends Controller {
       CodeMirror.fromTextArea(this.elementTarget, options).on('change', (cm) => {
         // Add this innerText change and dispatch an event to allow stimulus to pick up the input event.
         vm.elementTarget.innerText = cm.getValue()
-        vm.elementTarget.dispatchEvent(new Event('input'))
+        vm.elementTarget.dispatchEvent(new Event('input', { bubbles: true }))
       })
     }, 1)
   }
