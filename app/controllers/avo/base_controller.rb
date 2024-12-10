@@ -307,31 +307,7 @@ module Avo
     def set_index_params
       @index_params = {}
 
-      # When association table
-      if [@parent_resource, @related_resource].all?(&:present?)
-        pagination_key = "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
-
-        # avo-resources-project.has_many.avo-resources-user.page
-        page_key = "#{pagination_key}.page"
-
-        session[page_key] = params[:page] || session[page_key]
-        page_from_session = session[page_key]
-
-        # avo-resources-project.has_many.avo-resources-user.per_page
-        per_page_key = "#{pagination_key}.per_page"
-
-        session[per_page_key] = params[:per_page] || session[per_page_key]
-        per_page_from_session = session[per_page_key]
-
-        @index_params[:per_page] = per_page_from_session || Avo.configuration.via_per_page
-      else # When index table
-        @index_params[:per_page] = params[:per_page] || cookies[:per_page] || Avo.configuration.per_page
-
-        cookies[:per_page] = params[:per_page] if params[:per_page].present?
-      end
-
-      # Pagination
-      @index_params[:page] = params[:page] || page_from_session || 1
+      set_pagination_params
 
       # Sorting
       if params[:sort_by].present?
@@ -664,6 +640,31 @@ module Avo
         turbo_stream.turbo_frame_reload(params[:turbo_frame]),
         turbo_stream.avo_flash_alerts
       ]
+    end
+
+    def set_pagination_params
+      # Pagination
+      # When association table
+      if [@parent_resource, @related_resource].all?(&:present?)
+        pagination_key = "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
+
+        # avo-resources-project.has_many.avo-resources-user.page
+        page_key = "#{pagination_key}.page"
+
+        session[page_key] = params[:page] || session[page_key] || 1
+        @index_params[:page] = session[page_key]
+
+        # avo-resources-project.has_many.avo-resources-user.per_page
+        per_page_key = "#{pagination_key}.per_page"
+
+        session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
+        @index_params[:per_page] = session[per_page_key]
+      else # When index table
+        @index_params[:page] = params[:page] || page_from_session || 1
+        @index_params[:per_page] = params[:per_page] || cookies[:per_page] || Avo.configuration.per_page
+
+        cookies[:per_page] = params[:per_page] if params[:per_page].present?
+      end
     end
   end
 end
