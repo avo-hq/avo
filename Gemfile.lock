@@ -669,7 +669,7 @@ DEPENDENCIES
   active_link_to
   active_median
   activestorage (>= 8.0.0)
-  acts-as-taggable-on
+  acts-as-taggable-on (~> 12.0)
   acts_as_list
   actual_db_schema
   addressable
