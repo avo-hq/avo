@@ -644,9 +644,11 @@ module Avo
 
     def set_pagination_params
       @index_params[:page] = params[:page] || 1
-      @index_params[:per_page] = params[:per_page] || cookies[:per_page] || Avo.configuration.per_page
 
+      # If the request includes the 'per_page' parameter, save its value to the cookies
       cookies[:per_page] = params[:per_page] if params[:per_page].present?
+
+      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
   end
 end
