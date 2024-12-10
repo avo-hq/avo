@@ -1,11 +1,15 @@
-<div class="flex flex-row justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-200" data-controller="clipboard" data-clipboard-success-content-value=<%= success_value %>>
+<div class="flex flex-row justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-200" data-controller="clipboard">
   <div class="hidden" data-clipboard-target="source"><%= @value %></div>
   <div class="text-xs xl:text-sm">
-    <button type="button" data-action="clipboard#copy" data-clipboard-target="button">
+    <button type="button" data-action="clipboard#copy" data-clipboard-target="icon">
       <a href="javascript:void(0)">
         <%= helpers.svg 'heroicons/outline/clipboard', class: "h-4 inline" %>
-        <%= text_value %>
       </a>
     </button>
+    <div class="hidden" data-clipboard-target="iconCopied">
+      <a href="javascript:void(0)">
+        <%= helpers.svg 'heroicons/outline/clipboard-document-check', class: "h-4 inline" %>
+      </a>
+    </div>
   </div>
 </div>

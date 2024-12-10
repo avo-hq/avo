@@ -1,8 +1,5 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <div class="space-y-2 group">
+  <div class="space-y-2">
     <div class="whitespace-pre-line"><%= @field.value %></div>
-    <% if copyable? %>
-      <%= render Avo::ClipboardComponent.new value: @field.value, view: "show" %>
-    <% end %>
   </div>
 <% end %>
