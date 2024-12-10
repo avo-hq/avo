@@ -20,7 +20,8 @@
       },
       disabled: disabled?,
       placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input)
+      style: @field.get_html(:style, view: view, element: :input),
+      **@field.edit_input_additional_attributes
     %>
     <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,
@@ -32,7 +33,8 @@
       },
       disabled: disabled?,
       placeholder: @field.placeholder,
-      style: @field.get_html(:style, view: view, element: :input)
+      style: @field.get_html(:style, view: view, element: :input),
+      **@field.edit_input_additional_attributes
     %>
   <% end %>
 <% end %>

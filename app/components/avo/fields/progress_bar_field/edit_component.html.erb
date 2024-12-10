@@ -18,7 +18,8 @@
       placeholder: @field.placeholder,
       step: @field.step,
       autofocus: @autofocus,
-      style: @field.get_html(:style, view: view, element: :input)
+      style: @field.get_html(:style, view: view, element: :input),
+      **@field.edit_input_additional_attributes
     %>
   <% end %>
 <% end %>
