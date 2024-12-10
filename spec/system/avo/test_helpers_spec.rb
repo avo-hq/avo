@@ -139,7 +139,7 @@ RSpec.describe "TestHelpers", type: :system do
           name_value_without_type = show_field_value(id: "name")
 
           expect(name_value).to eq name_value_without_type
-          expect(name_value).to eql "#{project.name}"
+          expect(name_value).to eql project.name
         end
       end
     end
