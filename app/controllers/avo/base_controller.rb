@@ -314,7 +314,7 @@ module Avo
         # avo-resources-project.has_many.avo-resources-user.page
         page_key = "#{pagination_key}.page"
 
-        session[page_key] = params[:page] || session[key]
+        session[page_key] = params[:page] || session[page_key]
         page_from_session = session[page_key]
 
         # avo-resources-project.has_many.avo-resources-user.per_page
