@@ -90,7 +90,7 @@ GEM
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
     acts-as-taggable-on (10.0.0)
-      activerecord (>= 6.1, < 8)
+      activerecord (>= 6.1, < 7.2)
     acts_as_list (1.2.2)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -363,7 +363,7 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    minitest (5.25.1)
+    minitest (5.25.4)
     monetize (1.13.0)
       money (~> 6.12)
     money (6.19.0)
@@ -630,7 +630,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.37)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.1)
 
 PLATFORMS
   arm64-darwin-23
