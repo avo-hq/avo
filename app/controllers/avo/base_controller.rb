@@ -307,29 +307,30 @@ module Avo
     def set_index_params
       @index_params = {}
 
-      # projects.has_many.users
-      if @related_resource.present?
-        key = "#{@record.to_global_id}.has_many.#{@resource.class.to_s.parameterize}"
-        session[key] = params[:page] || session[key]
-        page_from_session = session[key]
-      end
+      if @parent_resource.present? && @related_resource.present?
+        pagination_key = "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
 
-      # Pagination
-      @index_params[:page] = params[:page] || page_from_session || 1
-      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
+        # avo-resources-project.has_many.avo-resources-user.page
+        page_key = "#{pagination_key}.page"
 
-      if @parent_record.present?
-        per_page_key = "#{@record.to_global_id}.has_many.#{@resource.class.to_s.parameterize}.per_page"
+        session[page_key] = params[:page] || session[key]
+        page_from_session = session[page_key]
+
+        # avo-resources-project.has_many.avo-resources-user.per_page
+        per_page_key = "#{pagination_key}.per_page"
+
         session[per_page_key] = params[:per_page] || session[per_page_key]
         per_page_from_session = session[per_page_key]
 
         @index_params[:per_page] = per_page_from_session || Avo.configuration.via_per_page
+      else
+        @index_params[:per_page] = params[:per_page] || cookies[:per_page] || Avo.configuration.per_page
+
+        cookies[:per_page] = params[:per_page] if params[:per_page].present?
       end
 
-      if params[:per_page].present?
-        @index_params[:per_page] = params[:per_page]
-        cookies[:per_page] = params[:per_page]
-      end
+      # Pagination
+      @index_params[:page] = params[:page] || page_from_session || 1
 
       # Sorting
       if params[:sort_by].present?
