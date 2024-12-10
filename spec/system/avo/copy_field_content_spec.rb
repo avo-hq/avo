@@ -3,17 +3,16 @@ require "rails_helper"
 RSpec.describe "CopyFieldContent", type: :system do
   let!(:project) { create :project }
 
-  # Metoda do sprawdzania kopiowania do schowka
   def test_copy_to_clipboard(path)
     visit path
-    wait_for_loaded
+    element = find('div[data-controller="clipboard"]')
+    element.hover
+    find('button[data-action="clipboard#copy"]').click
 
-    expect(page).to have_css("button[data-action='clipboard#copy']")
+    expect(page).to have_css('svg[class*="clipboard-document-check"]')
 
-    button = find("button[data-action='clipboard#copy']")
-    button.click
-
-    expect(page).to have_css("div[data-clipboard-target='iconCopied']:not(.hidden)", wait: 3)
+    sleep 2
+    expect(page).to have_no_css('svg[class*="clipboard-document-check"]')
   end
 
   describe "index view" do
@@ -21,9 +20,11 @@ RSpec.describe "CopyFieldContent", type: :system do
 
     it "shows copy to clipboard icon" do
       visit path
-      wait_for_loaded
 
-      expect(page).to have_css("svg[class*='clipboard']")
+      element = find('div[data-controller="clipboard"]')
+      element.hover
+
+      expect(page).to have_css('svg[class*="clipboard"]')
     end
 
     it "copies to clipboard after clicking button" do
@@ -36,9 +37,11 @@ RSpec.describe "CopyFieldContent", type: :system do
 
     it "shows copy to clipboard icon" do
       visit path
-      wait_for_loaded
 
-      expect(page).to have_css("svg[class*='clipboard']")
+      element = find('div[data-controller="clipboard"]')
+      element.hover
+
+      expect(page).to have_css('svg[class*="clipboard"]')
     end
 
     it "copies to clipboard after clicking button" do
