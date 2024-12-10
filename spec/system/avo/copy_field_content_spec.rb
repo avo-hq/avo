@@ -5,18 +5,18 @@ RSpec.describe "CopyFieldContent", type: :system do
 
   def test_copy_to_clipboard(path)
     visit path
-    container = find('div[data-controller="clipboard"]', visible: :all)
-    expect(container).to be_present
-    container.hover
-    container.find('button[data-action="clipboard#copy"]', visible: :all).click
+    element = all('div[data-controller="clipboard"]', visible: :all).first
+    expect(element).to be_present
+    element.hover
+    element.find('button[data-action="clipboard#copy"]', visible: :all).click
 
-    expect(container).to have_css('svg[class*="clipboard-document-check"]', visible: :all, wait: 2)
+    expect(element).to have_css('svg[class*="clipboard-document-check"]', visible: :all, wait: 2)
   end
 
   def test_button_visability(path)
     visit path
 
-    element = find('div[data-controller="clipboard"]', visible: :all)
+    element = all('div[data-controller="clipboard"]', visible: :all).first
     expect(element).to be_present
   end
 
