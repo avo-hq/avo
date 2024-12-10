@@ -307,7 +307,8 @@ module Avo
     def set_index_params
       @index_params = {}
 
-      if @parent_resource.present? && @related_resource.present?
+      # When association table
+      if [@parent_resource, @related_resource].all?(&:present?)
         pagination_key = "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
 
         # avo-resources-project.has_many.avo-resources-user.page
@@ -323,7 +324,7 @@ module Avo
         per_page_from_session = session[per_page_key]
 
         @index_params[:per_page] = per_page_from_session || Avo.configuration.via_per_page
-      else
+      else # When index table
         @index_params[:per_page] = params[:per_page] || cookies[:per_page] || Avo.configuration.per_page
 
         cookies[:per_page] = params[:per_page] if params[:per_page].present?
