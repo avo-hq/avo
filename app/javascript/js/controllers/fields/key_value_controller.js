@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import * as DOMPurify from 'dompurify'
+import DOMPurify from 'dompurify'
 import { Controller } from '@hotwired/stimulus'
 import { castBoolean } from '../../helpers/cast_boolean'
 import Sortable from 'sortablejs'
