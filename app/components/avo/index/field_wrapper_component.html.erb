@@ -18,7 +18,7 @@
         <%= content %>
       <% end %>
       <% if @field.copyable %>
-        <%= render Avo::ClipboardComponent.new(value: content) %>
+        <%= render Avo::ClipboardComponent.new(value: @field.value) %>
       <% end %>
     </div>
   <% end %>
