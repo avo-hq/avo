@@ -3,7 +3,7 @@ import * as Mousetrap from 'mousetrap'
 import { Controller } from '@hotwired/stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { autocomplete } from '@algolia/autocomplete-js'
-import { sanitize } from 'dompurify'
+import DOMPurify from 'dompurify'
 import URI from 'urijs'
 import debouncePromise from '../helpers/debounce_promise'
 
@@ -168,7 +168,7 @@ export default class extends Controller {
             )
           }
 
-          const label = sanitize(item._label)
+          const label = DOMPurify.sanitize(item._label)
 
           const labelChildren = [
             createElement(
@@ -181,7 +181,7 @@ export default class extends Controller {
           ]
 
           if (item._description) {
-            const description = sanitize(item._description)
+            const description = DOMPurify.sanitize(item._description)
 
             labelChildren.push(
               createElement(
