@@ -102,6 +102,10 @@ Avo.configure do |config|
   #     type: :countless
   #   }
   # end
+
+  config.column_names_mapping = {
+    custom_css: { field: "code" },
+  }
 end
 
 if defined?(Avo::DynamicFilters)
