@@ -254,7 +254,7 @@ module Avo
       turbo_streams = super
 
       # We want to close the modal if the user wants to add just one record
-      turbo_streams << turbo_stream.close_modal if params[:button] != "attach_another"
+      turbo_streams << turbo_stream.avo_close_modal if params[:button] != "attach_another"
 
       turbo_streams
     end
@@ -289,6 +289,22 @@ module Avo
       end.tap do |options|
         options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
       end
+    end
+
+    def set_pagination_params
+      pagination_key = "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
+
+      # avo-resources-project.has_many.avo-resources-user.page
+      page_key = "#{pagination_key}.page"
+
+      session[page_key] = params[:page] || session[page_key] || 1
+      @index_params[:page] = session[page_key]
+
+      # avo-resources-project.has_many.avo-resources-user.per_page
+      per_page_key = "#{pagination_key}.per_page"
+
+      session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
+      @index_params[:per_page] = session[per_page_key]
     end
   end
 end

@@ -37,18 +37,4 @@ class Avo::PanelComponent < Avo::BaseComponent
   def data_attributes
     @data.merge({"panel-index": @index})
   end
-
-  def display_breadcrumbs?
-    @display_breadcrumbs == true && Avo.configuration.display_breadcrumbs == true
-  end
-
-  def description
-    return @description if @description.present?
-
-    ""
-  end
-
-  def render_header?
-    @name.present? || description.present? || tools.present? || display_breadcrumbs?
-  end
 end
