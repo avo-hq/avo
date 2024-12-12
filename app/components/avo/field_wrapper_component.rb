@@ -20,12 +20,10 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     value&.to_sym
   end
   prop :args, kind: :**, default: {}.freeze
-  prop :classes do |value|
-    @args&.dig(:class) || ""
-  end
 
   def after_initialize
     @action = @field.action
+    @classes = @args.dig(:class) || ""
   end
 
   def classes(extra_classes = "")
