@@ -12,6 +12,7 @@
     value: @field.record.present? ? @field.record[@field.id] : @field.value,
     placeholder: @field.include_blank.present? ? nil : @field.placeholder,
     autocomplete: @field.autocomplete,
-    autofocus: @autofocus
+    autofocus: @autofocus,
+    **@field.edit_input_additional_attributes
   %>
 <% end %>
