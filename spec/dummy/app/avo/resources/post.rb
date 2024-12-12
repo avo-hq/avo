@@ -28,6 +28,10 @@ class Avo::Resources::Post < Avo::BaseResource
     end
   }
   self.view_types = [:grid, :table]
+  # Show a link to the post outside Avo
+  self.external_link = -> {
+    main_app.post_path(record)
+  }
 
   def fields
     field :id, as: :id
