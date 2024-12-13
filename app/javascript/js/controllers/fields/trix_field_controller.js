@@ -3,7 +3,6 @@ import 'trix'
 import URI from 'urijs'
 
 import { Controller } from '@hotwired/stimulus'
-import { castBoolean } from '../../helpers/cast_boolean'
 
 export default class extends Controller {
   static targets = ['editor', 'controller']
