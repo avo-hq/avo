@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "CmdReturnToSubmits", type: :system do
   let(:admin) { create :user, roles: {admin: true} }
