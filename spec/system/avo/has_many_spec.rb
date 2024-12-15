@@ -11,7 +11,7 @@ RSpec.feature "HasManyField", type: :system do
         let!(:comment) { create :comment, commentable: post, user: user }
 
         it "displays the other fields" do
-          visit "/admin/resources/posts/#{post.id}/comments?turbo_frame=has_many_field_show_comments"
+          visit "/admin/resources/posts/#{post.id}/associations/comments?turbo_frame=has_many_field_show_comments"
 
           row = find("[data-resource-name='comments'][data-resource-id='#{comment.id}']")
 
@@ -27,7 +27,7 @@ RSpec.feature "HasManyField", type: :system do
         let!(:review) { create :review, reviewable: team, user: user }
 
         it "displays the other fields" do
-          visit "/admin/resources/teams/#{team.id}/reviews?turbo_frame=has_many_field_show_reviews"
+          visit "/admin/resources/teams/#{team.id}/associations/reviews?turbo_frame=has_many_field_show_reviews"
 
           row = find("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
 

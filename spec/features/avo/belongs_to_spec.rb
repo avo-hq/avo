@@ -146,7 +146,7 @@ RSpec.feature "belongs_to", type: :feature do
     let!(:comment) { create :comment, body: "a comment", user: user }
 
     it "hides the User column" do
-      visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
+      visit "/admin/resources/users/#{user.id}/associations/comments?turbo_frame=has_many_field_show_comments"
 
       expect(find("thead")).to have_text "Id"
       expect(find("thead")).to have_text "Tiny name"
@@ -165,7 +165,7 @@ RSpec.feature "belongs_to", type: :feature do
     let!(:comment) { create :comment, body: "a comment", user: user, commentable: project }
 
     it "hides the Commentable column" do
-      visit "/admin/resources/projects/#{project.id}/comments?turbo_frame=has_many_field_show_comments"
+      visit "/admin/resources/projects/#{project.id}/associations/comments?turbo_frame=has_many_field_show_comments"
 
       expect(find("thead")).to have_text "Id"
       expect(find("thead")).to have_text "Tiny name"
@@ -185,7 +185,7 @@ RSpec.feature "belongs_to", type: :feature do
     let!(:review) { create :review, body: "a review", user: user, reviewable: team }
 
     it "hides the Reviewable column" do
-      visit "/admin/resources/teams/#{team.id}/reviews?turbo_frame=has_many_field_show_reviews"
+      visit "/admin/resources/teams/#{team.id}/associations/reviews?turbo_frame=has_many_field_show_reviews"
 
       expect(find("thead")).to have_text "Id"
       expect(find("thead")).to have_text "Excerpt"

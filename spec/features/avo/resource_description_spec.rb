@@ -70,7 +70,7 @@ RSpec.describe "resource panel description", type: :feature do
     let!(:team) { create :team }
 
     it "does not display the description" do
-      visit "/admin/resources/teams/#{team.id}/team_members?turbo_frame=has_many_field_show_team_members"
+      visit "/admin/resources/teams/#{team.id}/associations/team_members?turbo_frame=has_many_field_show_team_members"
 
       expect(page).to have_text "No related record found"
       expect(page).not_to have_text "Users of the app. view: index"

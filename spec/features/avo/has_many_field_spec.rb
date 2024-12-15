@@ -10,7 +10,7 @@ RSpec.feature "HasManyField", type: :feature do
 
   context "show" do
     # Test the frame directly
-    let(:url) { "/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=table" }
+    let(:url) { "/admin/resources/users/#{user.slug}/associations/posts?turbo_frame=has_many_field_posts&view_type=table" }
 
     describe "without a related post" do
       it { is_expected.to have_text "No related record found" }
@@ -48,13 +48,13 @@ RSpec.feature "HasManyField", type: :feature do
         visit url
 
         # grid view button
-        expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=grid']"
+        expect(page).to have_selector "[data-control='view-type-toggle-grid'][href='/admin/resources/users/#{user.slug}/associations/posts?turbo_frame=has_many_field_posts&view_type=grid']"
 
         # create new button
         expect(page).to have_link("Create new post", href: "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser")
 
         # attach button
-        expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.slug}\/posts\/new/)
+        expect(page).to have_link("Attach post", href: /\/admin\/resources\/users\/#{user.slug}\/associations\/posts\/new/)
 
         ## Table Rows
         # show link
@@ -69,7 +69,7 @@ RSpec.feature "HasManyField", type: :feature do
         expect(page).to have_selector("[data-component='resources-index'] a[data-control='edit'][data-resource-id='#{post.to_param}'][href='#{edit_path}']")
 
         # detach form
-        form = "form[action='/admin/resources/users/#{user.slug}/posts/#{post.to_param}']"
+        form = "form[action='/admin/resources/users/#{user.slug}/associations/posts/#{post.to_param}']"
         expect(page).to have_selector("[data-component='resources-index'] #{form}")
         expect(page).to have_selector(:css, "#{form} input[type='hidden'][name='_method'][value='delete']", visible: false)
         # expect(page).to have_selector(:css, "#{form} input#referrer_detach_#{post.slug}[value='/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts']", visible: false)
@@ -91,7 +91,7 @@ RSpec.feature "HasManyField", type: :feature do
 
     subject do
       expect(TestBuddy).to receive(:hi).with("parent_resource:true,resource:true").at_least :once
-      visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
+      visit "/admin/resources/users/#{user.id}/associations/comments?turbo_frame=has_many_field_show_comments"
       page
     end
 
@@ -142,7 +142,7 @@ RSpec.feature "HasManyField", type: :feature do
       team.team_members << user
       expect(team.team_members.count).to eq 1
 
-      visit "/admin/resources/teams/#{team.id}/team_members?view=show&turbo_frame=has_many_field_show_team_members"
+      visit "/admin/resources/teams/#{team.id}/associations/team_members?view=show&turbo_frame=has_many_field_show_team_members"
 
       expect { find("tr[data-resource-id='#{user.to_param}'] [data-control='detach']").click }.to raise_error("Callback Called")
     end
@@ -151,7 +151,7 @@ RSpec.feature "HasManyField", type: :feature do
       user.teams << team
       expect(user.teams.count).to eq 1
 
-      visit "/admin/resources/users/#{user.to_param}/teams?view=show&turbo_frame=has_and_belongs_to_many_field_show_teams"
+      visit "/admin/resources/users/#{user.to_param}/associations/teams?view=show&turbo_frame=has_and_belongs_to_many_field_show_teams"
 
       expect { find("tr[data-resource-id='#{team.id}'] [data-control='detach']").click }.to raise_error("Callback Called")
     end

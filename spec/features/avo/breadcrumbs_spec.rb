@@ -50,7 +50,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
 
     context "when HTML request" do
       it "displays breadcrumbs" do
-        url = "/admin/resources/users/#{user.slug}/teams?view=show"
+        url = "/admin/resources/users/#{user.slug}/associations/teams?view=show"
         visit url
 
         expect(page).to have_selector ".breadcrumbs"
@@ -64,7 +64,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       end
 
       it "displays breadcrumbs" do
-        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        url = "/admin/resources/teams/#{team.id}/associations/team_members?view=show"
         visit url
 
         expect(page).to have_selector ".breadcrumbs"
@@ -78,7 +78,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       end
 
       it "displays a back button" do
-        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        url = "/admin/resources/teams/#{team.id}/associations/team_members?view=show"
         visit url
 
         expect(page).to have_selector "div[data-target='panel-tools'] a[href='/admin/resources/teams/#{team.id}']", text: "Go back"
@@ -87,7 +87,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
 
     context "when Turbo request" do
       before(:example) do
-        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        url = "/admin/resources/teams/#{team.id}/associations/team_members?view=show"
         page.driver.browser.header("Turbo-Frame", true)
         visit url
       end

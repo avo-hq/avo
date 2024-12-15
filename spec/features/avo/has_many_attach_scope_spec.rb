@@ -6,7 +6,7 @@ RSpec.feature "HasManyAttachScopes", type: :feature do
   let!(:post_2) { create :post}
 
   it "filters out the current selection" do
-    visit "/admin/resources/users/#{user.id}/posts/new"
+    visit "/admin/resources/users/#{user.id}/associations/posts/new"
 
     expect(page).to have_select "fields[related_id]", options: ["Choose an option", post_2.name]
   end

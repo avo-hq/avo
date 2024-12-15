@@ -24,7 +24,7 @@ RSpec.feature "CreateHasOne", type: :feature do
     expect(page).to have_text "Post was successfully created."
     expect(page).to have_current_path("/admin/resources/users/#{user.slug}")
 
-    visit "/admin/resources/users/#{user.id}/post/#{user.post.slug}?turbo_frame=has_one_field_show_post"
+    visit "/admin/resources/users/#{user.id}/associations/post/#{user.post.slug}?turbo_frame=has_one_field_show_post"
 
     expect(page).to have_text "Detach main post"
     expect(page).to have_text "Main post name"

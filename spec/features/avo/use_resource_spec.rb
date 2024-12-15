@@ -65,7 +65,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :feature do
 end
 
 def visit_page
-  visit "admin/resources/posts/#{post.id}/comments?turbo_frame=has_many_field_show_photo_comments"
+  visit "admin/resources/posts/#{post.id}/associations/comments?turbo_frame=has_many_field_show_photo_comments"
 
-  expect(current_path).to eql "/admin/resources/posts/#{post.id}/comments"
+  expect(current_path).to eql "/admin/resources/posts/#{post.id}/associations/comments"
 end
