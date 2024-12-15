@@ -19,7 +19,7 @@ module Avo
 
       def frame_url
         Avo::Services::URIService.parse(field_resource.record_path)
-          .append_paths(id, value.to_param)
+          .append_paths("associations", id, value.to_param)
           .append_query(query_params)
           .to_s
       end

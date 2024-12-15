@@ -42,7 +42,7 @@ module Avo
 
       def frame_url(add_turbo_frame: true)
         Avo::Services::URIService.parse(field_resource.record_path)
-          .append_path(id.to_s)
+          .append_paths("associations", id.to_s)
           .append_query(query_params(add_turbo_frame:))
           .to_s
       end

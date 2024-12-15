@@ -35,11 +35,11 @@ Avo::Engine.routes.draw do
     draw(:dynamic_routes)
 
     # Associations
-    get "/:resource_name/:id/:related_name/new", to: "associations#new", as: "associations_new"
-    get "/:resource_name/:id/:related_name/", to: "associations#index", as: "associations_index"
-    get "/:resource_name/:id/:related_name/:related_id", to: "associations#show", as: "associations_show"
-    post "/:resource_name/:id/:related_name", to: "associations#create", as: "associations_create"
-    delete "/:resource_name/:id/:related_name/:related_id", to: "associations#destroy", as: "associations_destroy"
+    get "/:resource_name/:id/associations/:related_name/new", to: "associations#new", as: "associations_new"
+    get "/:resource_name/:id/associations/:related_name/", to: "associations#index", as: "associations_index"
+    get "/:resource_name/:id/associations/:related_name/:related_id", to: "associations#show", as: "associations_show"
+    post "/:resource_name/:id/associations/:related_name", to: "associations#create", as: "associations_create"
+    delete "/:resource_name/:id/associations/:related_name/:related_id", to: "associations#destroy", as: "associations_destroy"
   end
 
   scope "/avo_private", as: "avo_private" do
