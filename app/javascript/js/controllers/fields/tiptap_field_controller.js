@@ -70,6 +70,8 @@ export default class extends Controller {
 
   onUpdate = () => {
     this.inputTarget.value = this.editor.getHTML()
+
+    this.inputTarget.dispatchEvent(new Event('input', { bubbles: true }))
   }
 
   onSelectionUpdate = () => {

@@ -5,7 +5,7 @@ import URI from 'urijs'
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['editor', 'controller']
+  static targets = ['editor', 'controller', 'textarea']
 
   static values = {
     resourceName: String,
@@ -35,6 +35,10 @@ export default class extends Controller {
   }
 
   connect() {
+    this.editorTarget.addEventListener('trix-change', () => {
+      this.textareaTarget.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+
     if (this.attachmentsDisabledValue) {
       // Remove the attachments button
       window.addEventListener('trix-initialize', (event) => {
