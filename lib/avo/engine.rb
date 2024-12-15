@@ -42,7 +42,8 @@ module Avo
     # Ensure we reboot the app when something changes
     config.to_prepare do
       # Boot Avo
-      ::Avo.boot
+      # TODO: I think we can remove this
+      # ::Avo.boot
     end
 
     initializer "avo.autoload" do |app|
@@ -59,6 +60,13 @@ module Avo
           app.config.watchable_dirs[directory_path] = [:rb]
         end
       end
+
+      # Add the mount_avo method to Rails
+      ActionDispatch::Routing::Mapper.include(Module.new {
+        def mount_avo
+          instance_exec(&Avo.mount_engines)
+        end
+      })
     end
 
     initializer "avo.reloader" do |app|
