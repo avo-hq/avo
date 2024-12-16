@@ -185,7 +185,6 @@ RSpec.describe "Tabs", type: :system do
     Avo.configuration.cache_associations_pagination = true
 
     visit avo.resources_user_path user
-    visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
     expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
