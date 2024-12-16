@@ -120,7 +120,7 @@ class Avo::Resources::User < Avo::BaseResource
       required: true,
       only_on: [:index]
 
-      field :some_token
+    field :some_token
 
     field :is_writer, as: :text,
       sortable: -> {
