@@ -75,7 +75,6 @@
     "postcss-nested-ancestors": "^3.0.0",
     "postcss-preset-env": "^8.5.1",
     "regenerator-runtime": "^0.13.11",
-    "stimulus-clipboard": "^4.0.1",
     "sortablejs": "^1.15.6",
     "stimulus-rails-nested-form": "^4.1.0",
     "stimulus-textarea-autogrow": "^4.1.0",

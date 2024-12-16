@@ -5086,11 +5086,6 @@ spark-md5@^3.0.0:
   resolved "https://registry.yarnpkg.com/spark-md5/-/spark-md5-3.0.1.tgz#83a0e255734f2ab4e5c466e5a2cfc9ba2aa2124d"
   integrity sha512-0tF3AGSD1ppQeuffsLDIOWlKUd3lS92tFxcsrh5Pe3ZphhnoK+oXIBTzOAThZCiuINZLvpiLH/1VS1/ANEJVig==
 
-stimulus-clipboard@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/stimulus-clipboard/-/stimulus-clipboard-4.0.1.tgz#acc9212b479fedc633ecdec8f191a28c1d826a6b"
-  integrity sha512-dem+ihC3Q8+gbyGINdd+dK+9d5vUTnOwoH+n3KcDJvbxrFcq9lV8mWjyhEaDquGxYy3MmqSdz9FHQbG88TBqGg==
-
 stimulus-rails-nested-form@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/stimulus-rails-nested-form/-/stimulus-rails-nested-form-4.1.0.tgz#bfce185cff908170a4eb9973875b72517c3bc83a"
