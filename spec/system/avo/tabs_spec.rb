@@ -181,6 +181,10 @@ RSpec.describe "Tabs", type: :system do
   end
 
   it "keeps the pagination on tab when back is used" do
+    default_cache_associations_pagination_value = Avo.configuration.cache_associations_pagination
+    Avo.configuration.cache_associations_pagination = true
+
+    visit avo.resources_user_path user
     visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
@@ -199,6 +203,8 @@ RSpec.describe "Tabs", type: :system do
 
     expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
     expect(page).to have_text "Displaying items 9-9 of 9 in total"
+
+    Avo.configuration.cache_associations_pagination = default_cache_associations_pagination_value
   end
 
   it "keeps the per_page on association when back is used" do
@@ -223,6 +229,7 @@ RSpec.describe "Tabs", type: :system do
 
     expect(page).to have_text "Displaying 9 items"
     expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+
     Avo.configuration.cache_associations_pagination = default_cache_associations_pagination_value
   end
 end
