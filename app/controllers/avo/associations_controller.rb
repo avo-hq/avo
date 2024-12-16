@@ -291,9 +291,16 @@ module Avo
       end
     end
 
-    def set_pagination_params
-      pagination_key = "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
+    def pagination_key
+      @pagination_key ||= "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
+    end
 
+    def set_pagination_params
+      set_page_param
+      set_per_page_param
+    end
+
+    def set_page_param
       # avo-resources-project.has_many.avo-resources-user.page
       page_key = "#{pagination_key}.page"
 
@@ -302,7 +309,9 @@ module Avo
       else
         params[:page] || 1
       end
+    end
 
+    def set_per_page_param
       # avo-resources-project.has_many.avo-resources-user.per_page
       per_page_key = "#{pagination_key}.per_page"
 
