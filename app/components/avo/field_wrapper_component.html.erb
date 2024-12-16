@@ -17,14 +17,14 @@
     <% end %>
     <% if on_edit? && @field.is_required? %> <span class="text-red-600 ml-1">*</span> <% end %>
   <% end %>
-  <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit px-6",
+  <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit px-6 overflow-x-auto",
     @field.get_html(:classes, view: @view, element: :content),
       {
         "pb-4": stacked?,
         "py-2": !compact?,
         "py-1": compact?,
       }), data: {slot: "value"} do %>
-    <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
+    <div class="self-center w-full overflow-x-auto <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full<% end %>">
       <% if on_show? %>
         <% if render_dash? %>
           —

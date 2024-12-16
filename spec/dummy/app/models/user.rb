@@ -104,4 +104,6 @@ class User < ApplicationRecord
       delete: true,
     }
   end
+
+  def some_token = @some_token ||= SecureRandom.hex(64)
 end
