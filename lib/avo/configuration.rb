@@ -10,6 +10,7 @@ module Avo
     attr_writer :turbo
     attr_writer :pagination
     attr_writer :explicit_authorization
+    attr_writer :exclude_from_status
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -26,6 +27,7 @@ module Avo
     attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
     attr_accessor :cache_resource_filters
+    attr_accessor :cache_associations_pagination
     attr_accessor :context
     attr_accessor :display_breadcrumbs
     attr_accessor :hide_layout_when_printing
@@ -86,6 +88,7 @@ module Avo
       @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
       @cache_resource_filters = false
+      @cache_associations_pagination = false
       @context = proc {}
       @initial_breadcrumbs = proc {
         add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
@@ -121,6 +124,7 @@ module Avo
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
       @associations_lookup_list_limit = 1000
+      @exclude_from_status = []
     end
 
     # Authorization is enabled when:
@@ -249,6 +253,10 @@ module Avo
 
     def turbo
       Avo::ExecutionContext.new(target: @turbo).handle
+    end
+
+    def exclude_from_status
+      Avo::ExecutionContext.new(target: @exclude_from_status).handle
     end
 
     def default_turbo

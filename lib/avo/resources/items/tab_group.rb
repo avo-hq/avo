@@ -6,15 +6,15 @@ class Avo::Resources::Items::TabGroup
   include Avo::Concerns::IsVisible
   include Avo::Concerns::VisibleInDifferentViews
 
-  attr_accessor :index
-  attr_accessor :style
-  attr_accessor :name
+  attr_accessor :index, :style, :name, :title, :description
 
-  def initialize(index: 0, view: nil, style: nil, id: nil, name: nil, **args)
+  def initialize(index: 0, view: nil, style: nil, title: nil, description: nil, id: nil, name: nil, **args)
     @index = index
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
     @style = style
+    @title = title
+    @description = description
     @id = id
     @name = name
     @args = args
@@ -67,8 +67,15 @@ class Avo::Resources::Items::TabGroup
       @items_holder.tabs tab
     end
 
-    def initialize(name:, id:, parent:, style: nil, **args)
-      @group = Avo::Resources::Items::TabGroup.new(name: name, id: id, style: style, **args)
+    def initialize(name:, id:, parent:, title: nil, description: nil, style: nil, **args)
+      @group = Avo::Resources::Items::TabGroup.new(
+        name: name,
+        id: id,
+        style: style,
+        title: title,
+        description: description,
+        **args
+      )
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent, from: self)
     end
 

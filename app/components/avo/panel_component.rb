@@ -24,8 +24,9 @@ class Avo::PanelComponent < Avo::BaseComponent
   prop :profile_photo
   prop :cover_photo
   prop :args, kind: :**, default: {}.freeze
-  prop :name do |value|
-    value || @args&.dig(:title)
+
+  def after_initialize
+    @name = @args.dig(:name) || @args.dig(:title)
   end
 
   def classes
@@ -36,19 +37,5 @@ class Avo::PanelComponent < Avo::BaseComponent
 
   def data_attributes
     @data.merge({"panel-index": @index})
-  end
-
-  def display_breadcrumbs?
-    @display_breadcrumbs == true && Avo.configuration.display_breadcrumbs == true
-  end
-
-  def description
-    return @description if @description.present?
-
-    ""
-  end
-
-  def render_header?
-    @name.present? || description.present? || tools.present? || display_breadcrumbs?
   end
 end

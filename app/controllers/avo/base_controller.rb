@@ -307,29 +307,7 @@ module Avo
     def set_index_params
       @index_params = {}
 
-      # projects.has_many.users
-      if @related_resource.present?
-        key = "#{@record.to_global_id}.has_many.#{@resource.class.to_s.parameterize}"
-        session[key] = params[:page] || session[key]
-        page_from_session = session[key]
-      end
-
-      # Pagination
-      @index_params[:page] = params[:page] || page_from_session || 1
-      @index_params[:per_page] = Avo.configuration.per_page
-
-      if cookies[:per_page].present?
-        @index_params[:per_page] = cookies[:per_page]
-      end
-
-      if @parent_record.present?
-        @index_params[:per_page] = Avo.configuration.via_per_page
-      end
-
-      if params[:per_page].present?
-        @index_params[:per_page] = params[:per_page]
-        cookies[:per_page] = params[:per_page]
-      end
+      set_pagination_params
 
       # Sorting
       if params[:sort_by].present?
@@ -556,7 +534,7 @@ module Avo
       flash[:error] = destroy_fail_message
 
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.flash_alerts }
+        format.turbo_stream { render turbo_stream: turbo_stream.avo_flash_alerts }
       end
     end
 
@@ -660,8 +638,17 @@ module Avo
     def reload_frame_turbo_streams
       [
         turbo_stream.turbo_frame_reload(params[:turbo_frame]),
-        turbo_stream.flash_alerts
+        turbo_stream.avo_flash_alerts
       ]
+    end
+
+    def set_pagination_params
+      @index_params[:page] = params[:page] || 1
+
+      # If the request includes the 'per_page' parameter, save its value to the cookies
+      cookies[:per_page] = params[:per_page] if params[:per_page].present?
+
+      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
   end
 end

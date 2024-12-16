@@ -3,7 +3,11 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = ['content', 'moreContentButton', 'lessContentButton']
 
+  static values = { alwaysShow: Boolean }
+
   connect() {
+    if (this.alwaysShowValue) return // Ignore checking when alwaysShow is true
+
     this.checkContentHeight()
   }
 

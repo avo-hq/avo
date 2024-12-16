@@ -15,7 +15,11 @@
     method: form_method,
     local: true,
     html: {
-      novalidate: true
+      novalidate: true,
+      data: {
+        controller: "form",
+        action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
+      }
     },
     multipart: true do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
