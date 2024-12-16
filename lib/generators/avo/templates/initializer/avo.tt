@@ -82,6 +82,8 @@ Avo.configure do |config|
   # config.cache_resource_filters = false
   ## provide a lambda to enable or disable cache_resource_filters per user/resource.
   # config.cache_resource_filters = -> { current_user.cache_resource_filters? }
+  ## Control persistence for the page and per-page options in association tables.
+  # config.cache_associations_pagination = false
 
   ## == Turbo options ==
   # config.turbo = -> do
