@@ -172,7 +172,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_165947) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "USD", null: false
+    t.string "price_currency", default: "'USD'::character varying", null: false
   end
 
   create_table "projects", force: :cascade do |t|
