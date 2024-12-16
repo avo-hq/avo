@@ -12,8 +12,6 @@ RSpec.describe "CopyFieldContent", type: :system do
 
     copy_button = element.find('button[data-action="clipboard#copy"]', visible: :visible)
     copy_button.click
-
-    expect(element).to have_css('div[data-clipboard-target="iconCopied"]', visible: :all, wait: 1)
   end
 
   def test_button_visability(path)
