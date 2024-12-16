@@ -78,12 +78,12 @@ Avo.configure do |config|
   #   ActiveSupport::Cache.lookup_store(:solid_cache_store)
   # }
   # config.cache_resources_on_index_view = true
-  # Flag that enables / disables persistence for page and per_page options on associations tables.
-  # config.cache_associations_pagination = false
   ## permanent enable or disable cache_resource_filters, default value is false
   # config.cache_resource_filters = false
   ## provide a lambda to enable or disable cache_resource_filters per user/resource.
   # config.cache_resource_filters = -> { current_user.cache_resource_filters? }
+  ## Control persistence for the page and per-page options in association tables.
+  # config.cache_associations_pagination = false
 
   ## == Turbo options ==
   # config.turbo = -> do
