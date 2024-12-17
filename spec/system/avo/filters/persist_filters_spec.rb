@@ -50,12 +50,6 @@ RSpec.describe "Persist Filters", type: :system do
     end
 
     context "cache resource filter disabled" do
-      around(:each) do |it|
-        Avo.configuration.persistence = {driver: :session}
-        it.run
-        Avo.configuration.persistence = {driver: nil}
-      end
-
       it "doesn't persist filters by name" do
         visit url
         expect(page).to have_text("Displaying 2 item")
