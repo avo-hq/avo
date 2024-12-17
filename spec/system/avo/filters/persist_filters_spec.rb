@@ -18,12 +18,9 @@ RSpec.describe "Persist Filters", type: :system do
 
     context "cache resource filter enabled" do
       around(:each) do |it|
-        saved_value = Avo.configuration.cache_resource_filters
-        Avo.configuration.cache_resource_filters = lambda {
-          true
-        }
+        Avo.configuration.persistence = {driver: :session}
         it.run
-        Avo.configuration.cache_resource_filters = saved_value
+        Avo.configuration.persistence = {driver: nil}
       end
 
       it "persist filters by name" do
@@ -54,10 +51,9 @@ RSpec.describe "Persist Filters", type: :system do
 
     context "cache resource filter disabled" do
       around(:each) do |it|
-        saved_value = Avo.configuration.cache_resource_filters
-        Avo.configuration.cache_resource_filters = false
+        Avo.configuration.persistence = {driver: :session}
         it.run
-        Avo.configuration.cache_resource_filters = saved_value
+        Avo.configuration.persistence = {driver: nil}
       end
 
       it "doesn't persist filters by name" do
