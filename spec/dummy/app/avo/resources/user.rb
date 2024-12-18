@@ -1,4 +1,5 @@
 class Avo::Resources::User < Avo::BaseResource
+  self.translation_key = 'avo.resource_translations.user'
   self.title = -> {
     record.name
   }

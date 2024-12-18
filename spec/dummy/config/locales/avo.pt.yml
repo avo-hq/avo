@@ -3,3 +3,7 @@ pt:
   avo:
     resource_translations:
       product: "Produto"
+      user:
+        zero: 'usuarios'
+        one: 'usuario'
+        other: 'usuarios'
