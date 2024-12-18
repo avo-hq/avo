@@ -304,7 +304,7 @@ module Avo
       # avo-resources-project.has_many.avo-resources-user.page
       page_key = "#{pagination_key}.page"
 
-      @index_params[:page] = if Avo.configuration.cache_associations_pagination
+      @index_params[:page] = if Avo.configuration.session_persistence_enabled?
         session[page_key] = params[:page] || session[page_key] || 1
       else
         params[:page] || 1
@@ -315,7 +315,7 @@ module Avo
       # avo-resources-project.has_many.avo-resources-user.per_page
       per_page_key = "#{pagination_key}.per_page"
 
-      @index_params[:per_page] = if Avo.configuration.cache_associations_pagination
+      @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
         session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
       else
         params[:per_page] || Avo.configuration.via_per_page
