@@ -10,9 +10,9 @@
     data-selected-resources="[]"
   >
     <% if @pagy.pages > 1 %>
-      <div class="absolute z-30 w-11/12 ml-10 pt-px hidden" data-item-select-all-target="selectAllOverlay">
+      <div class="absolute z-30 w-full pl-10 pt-px hidden pointer-events-none" data-item-select-all-target="selectAllOverlay">
         <div class="bg-white flex items-center h-9 mt-0.5">
-          <div class="mt-1.5" data-item-select-all-target="unselectedMessage">
+          <div class="mt-1.5 pointer-events-auto" data-item-select-all-target="unselectedMessage">
             <%= selected_page_label %>
             <%= a_link request.url,
               size: :xs,
@@ -23,7 +23,7 @@
               <%= t "avo.select_all_matching" %>
             <% end %>
           </div>
-          <div class="mt-1.5" data-item-select-all-target="selectedMessage" class="hidden">
+          <div class="mt-1.5 pointer-events-auto" data-item-select-all-target="selectedMessage" class="hidden">
             <%= selected_all_label %>
             <%= a_link request.url,
               size: :xs,
