@@ -78,10 +78,6 @@ Avo.configure do |config|
   #   ActiveSupport::Cache.lookup_store(:solid_cache_store)
   # }
   # config.cache_resources_on_index_view = true
-  ## permanent enable or disable cache_resource_filters, default value is false
-  # config.cache_resource_filters = false
-  ## provide a lambda to enable or disable cache_resource_filters per user/resource.
-  # config.cache_resource_filters = -> { current_user.cache_resource_filters? }
 
   ## == Turbo options ==
   # config.turbo = -> do

@@ -181,6 +181,8 @@ RSpec.describe "Tabs", type: :system do
   end
 
   it "keeps the pagination on tab when back is used" do
+    Avo.configuration.persistence = {driver: :session}
+
     visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
@@ -199,9 +201,13 @@ RSpec.describe "Tabs", type: :system do
 
     expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
     expect(page).to have_text "Displaying items 9-9 of 9 in total"
+
+    Avo.configuration.persistence = {driver: nil}
   end
 
   it "keeps the per_page on association when back is used" do
+    Avo.configuration.persistence = {driver: :session}
+
     visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
@@ -221,5 +227,7 @@ RSpec.describe "Tabs", type: :system do
 
     expect(page).to have_text "Displaying 9 items"
     expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+
+    Avo.configuration.persistence = {driver: nil}
   end
 end
