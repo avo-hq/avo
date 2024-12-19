@@ -99,6 +99,10 @@ module Avo
       # Flash the messages collected from the action
       flash_messages
 
+      # Always execute turbo_stream.avo_close_modal on all responses, including redirects
+      # Exclude response types intended to keep the modal open
+      # This ensures the modal frame refreshes, preventing it from retaining the SRC of the previous action
+      # and avoids re-triggering that SRC during back navigation
       respond_to do |format|
         format.turbo_stream do
           turbo_response = case @response[:type]
