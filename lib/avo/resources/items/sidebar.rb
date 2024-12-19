@@ -1,6 +1,7 @@
 class Avo::Resources::Items::Sidebar
   prepend Avo::Concerns::IsResourceItem
 
+  include Avo::Concerns::HasFieldDiscovery
   include Avo::Concerns::HasItems
   include Avo::Concerns::HasItemType
   include Avo::Concerns::IsVisible
@@ -26,6 +27,7 @@ class Avo::Resources::Items::Sidebar
 
   class Builder
     include Avo::Concerns::BorrowItemsHolder
+    include Avo::Concerns::HasFieldDiscovery
 
     delegate :field, to: :items_holder
     delegate :tool, to: :items_holder
