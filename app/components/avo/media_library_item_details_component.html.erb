@@ -1,0 +1,110 @@
+<div class="relative flex flex-col w-full max @container/details">
+  <%= link_to helpers.svg('heroicons/outline/x-mark', class: "size-6"), "#",
+    class: "absolute z-10 inset-auto right-0 top-0 mt-2 mr-2 block bg-white p-1 rounded-lg text-slate-600 hover:text-slate-900",
+    title: t('avo.close'),
+    data: {
+      action: "click->avo-media-library-item-details#close",
+      tippy: :tooltip,
+    } %>
+
+  <div class="flex flex-1 flex-row w-full">
+    <div class="flex flex-col justify-center w-1/2 @3xl/details:w-2/3 p-4 gap-2">
+      <% if @attachment.representable? %>
+        <%= image_tag helpers.main_app.url_for(@attachment.blob), class: "max-w-full rounded-lg max-h-xl", loading: :lazy %>
+      <% end %>
+      <div class="flex justify-center w-full text-sm gap-4">
+        <%= link_to "Download", helpers.main_app.url_for(@attachment.blob), download: true %>
+        <%= link_to "Copy URL to clipboard", helpers.main_app.url_for(@attachment.blob), data: {controller: "copy-to-clipboard", text: helpers.main_app.url_for(@attachment.blob), action: "click->copy-to-clipboard#copy"} %>
+        <%= link_to "Delete", helpers.avo.media_library_item_path(@attachment), class: "text-red-500", data: {turbo_confirm: "Are you sure you want to destroy this attachment?", turbo_method: :delete} %>
+      </div>
+    </div>
+    <div class="flex flex-col w-1/2 @3xl/details:w-1/3 border-l">
+      <%= form_with model: @attachment, url: helpers.avo.media_library_item_path(@attachment), method: :patch do |f| %>
+        <%= field_container do %>
+          <%= avo_edit_field :filename, as: :text, short: true, stacked: true, form: f, required: true %>
+          <%= f.fields_for :metadata do |meta_form| %>
+            <%= avo_edit_field :title,
+              as: :text,
+              value: @attachment.metadata[:title],
+              short: true,
+              stacked: true,
+              form: meta_form,
+              required: true
+            %>
+            <%= avo_edit_field :alt,
+              as: :text,
+              value: @attachment.metadata[:alt],
+              short: true,
+              stacked: true,
+              form: meta_form
+            %>
+            <%= avo_edit_field :description,
+              as: :textarea,
+              value: @attachment.metadata[:description],
+              short: true,
+              stacked: true,
+              form: meta_form
+            %>
+          <% end %>
+        <% end %>
+
+        <div class="w-full flex justify-end pr-6">
+          <%= a_button type: :submit,
+            icon: "avo/save",
+            size: :sm,
+            style: :outline,
+            data: {
+            } do %>
+            Update
+          <% end %>
+        </div>
+      <% end %>
+      <div class="p-6">
+        <dl>
+          <dt>Filename:</dt>
+          <dd><%= @attachment.filename %></dd>
+        </dl>
+        <dl>
+          <dt>Key:</dt>
+          <dd><%= @attachment.key %></dd>
+        </dl>
+        <dl>
+          <dt>Content type:</dt>
+          <dd><%= @attachment.content_type %></dd>
+        </dl>
+        <dl>
+          <dt>Size:</dt>
+            <dd><%= helpers.number_to_human_size(@attachment.byte_size) %></dd>
+        </dl>
+        <dl>
+          <dt>Service name:</dt>
+          <dd><%= @attachment.service_name %></dd>
+        </dl>
+        <dl>
+          <dt>Created at:</dt>
+          <dd><%= @attachment.created_at %></dd>
+        </dl>
+        <dl>
+          <% if @attachment.record.present? %>
+            <dt>Attached to:</dt>
+            <dd><%= link_to parent_title(@attachment.record), parent_path(@attachment.record) %></dd>
+          <% end %>
+        </dl>
+        <dl>
+          <dt>Type:</dt>
+          <dd><%= @attachment.name %></dd>
+        </dl>
+        <dl>
+          <dt>Metadata:</dt>
+          <dd class="block">
+            <% @attachment.metadata.each do |key, value| %>
+              <div class="block">
+                <code><%= key %>: <%= value %></code>
+              </div>
+            <% end %>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>

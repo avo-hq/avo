@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="flex">
-    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= pagy_major_version %>">
+    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= helpers.pagy_major_version %>">
       <% if @resource.pagination_type.default? %>
         <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
       <% end %>

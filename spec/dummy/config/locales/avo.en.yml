@@ -1,6 +1,8 @@
 ---
 en:
   avo:
+    media_library:
+      title: Media Library
     resource_translations:
       product:
         save: "Save the product!"
@@ -25,6 +27,7 @@ en:
     clear_value: Clear value
     click_to_reveal_filters: Click to reveal filters
     close_modal: Close modal
+    close: Close
     confirm: Confirm
     create_new_item: Create new %{item}
     dashboard: Dashboard

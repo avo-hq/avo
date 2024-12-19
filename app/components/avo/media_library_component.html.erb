@@ -1,0 +1,21 @@
+<%= render Avo::PanelComponent.new title: t("avo.media_library.title"), data: { controller: 'media-library' } do |c| %>
+  <%= c.with_body do %>
+    <div class="grid grow-0 min-h-24 gap-x-4 @container/index" style="grid-template-areas: 'stack';">
+      <div class="grid grid-cols-1 @sm/index:grid-cols-2 @lg/index:grid-cols-3 @3xl/index:grid-cols-4 @5xl/index:grid-cols-6 gap-4 min-h-0 min-w-0 auto-rows-max p-4" style="grid-area: stack;">
+        <%= render Avo::MediaLibraryItemComponent.with_collection(@attachments) %>
+      </div>
+      <%# TODO: fix the extra margin  %>
+      <%= helpers.turbo_frame_tag 'media_library_item_details', class: 'relative empty:hidden bg-white inset-0 w-full h-full block empty:-ml-4 max-h-full', style: 'grid-area: stack;', xsrc: helpers.avo.media_library_item_path(@attachments.first) %>
+    </div>
+  <% end %>
+  <% c.with_bare_content do %>
+    <div class="flex-1 flex w-full mt-4">
+      <div class="flex-2 w-full sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= helpers.pagy_major_version %> ">
+        <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
+        <% if @pagy.pages > 1 %>
+          <%== helpers.pagy_nav(@pagy) %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

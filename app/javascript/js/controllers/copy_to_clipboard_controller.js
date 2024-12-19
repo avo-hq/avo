@@ -1,7 +1,10 @@
 import { Controller } from '@hotwired/stimulus'
 
+// Connects to data-controller="copy-to-clipboard"
+// <div data-controller="copy-to-clipboard" text="Hello, world!" data-action="click->copy-to-clipboard#copy"></div>
 export default class extends Controller {
-  copy() {
+  copy(event) {
+    event.preventDefault()
     const str = this.context.element.dataset.text
     /* ——— Derived from: https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
           improved to add iOS device compatibility——— */
@@ -33,5 +36,15 @@ export default class extends Controller {
 
     el.contentEditable = storeContentEditable
     el.readOnly = storeReadOnly
+
+    const target = this.element
+    const originalHTML = target.innerHTML
+    target.innerHTML = 'Copied 👌'
+    target.classList.add('transition', 'opacity-80', 'bg-green-100')
+
+    setTimeout(() => {
+      target.innerHTML = originalHTML
+      target.classList.remove('opacity-80', 'bg-green-100')
+    }, 1500)
   }
 }

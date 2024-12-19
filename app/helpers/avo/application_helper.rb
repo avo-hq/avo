@@ -145,6 +145,15 @@ module Avo
       defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
     end
 
+    def pagy_major_version
+      return nil unless defined?(Pagy::VERSION)
+      version = Pagy::VERSION&.split(".")&.first&.to_i
+
+      return "8-or-more" if version >= 8
+
+      version
+    end
+
     private
 
     # Taken from the original library

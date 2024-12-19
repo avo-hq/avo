@@ -8,10 +8,10 @@
     <% if form.present? %>
       <% c.with_body do %>
         <div class="divide-y">
-        <div class="flex">
-          <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
-          <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
-        </div>
+          <div class="flex">
+            <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
+            <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
+          </div>
           <%= avo_edit_field :properties, as: :text, form: form, name: "Property 2", help: "Prop 2", required: true, component_options: {multiple: true} %>
 
           <%= form.fields_for :information do |information_form| %>

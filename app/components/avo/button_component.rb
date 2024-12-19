@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# A button/link can have the following settings:
+# style: primary/outline/text
+# size: :xs :sm, :md, :lg
 class Avo::ButtonComponent < Avo::BaseComponent
   prop :path, kind: :positional
   prop :size, default: :md

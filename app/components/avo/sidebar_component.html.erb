@@ -12,6 +12,8 @@
       <div class="space-y-6 mb-4">
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>
 
+        <%= render Avo::Sidebar::LinkComponent.new label: 'Media Library', path: helpers.avo.media_library_path, active: :exclusive %>
+
         <% if Avo.plugin_manager.installed?(:avo_menu) && Avo.has_main_menu? %>
           <% Avo.main_menu.items.each do |item| %>
             <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
