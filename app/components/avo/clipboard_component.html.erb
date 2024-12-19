@@ -1,0 +1,14 @@
+<%= content_tag :div,
+  class: "opacity-0 group-hover:opacity-100 transition-opacity duration-200",
+  data: {
+    controller: "clipboard",
+    clipboard_success_duration_value: @duration_value,
+    clipboard_success_content_value: @content_value
+  } do %>
+  <div class="hidden" data-clipboard-target="source"><%= @value %></div>
+  <div class="text-xs xl:text-sm">
+    <button type="button" data-action="clipboard#copy" data-clipboard-target="button">
+      <%= helpers.svg "heroicons/outline/clipboard", class: "h-4 inline" %>
+    </button>
+  </div>
+<% end %>
