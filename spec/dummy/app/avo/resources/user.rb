@@ -72,6 +72,7 @@ class Avo::Resources::User < Avo::BaseResource
     action Avo::Actions::Sub::DummyAction
     action Avo::Actions::DownloadFile, icon: "heroicons/outline/arrow-left"
     divider
+    action Avo::Actions::Test::NoConfirmationPostsRedirect
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
     action Avo::Actions::Test::DoNothing
