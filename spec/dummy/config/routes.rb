@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   get "hey", to: "home#index"
 
+  resources :posts
+
   authenticate :user, ->(user) { user.is_admin? } do
     scope :admin do
       get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
