@@ -12,7 +12,15 @@
           <% if name_slot? %>
             <%= name_slot %>
           <% else %>
-            <%= render Avo::PanelNameComponent.new name: @name %>
+            <%= render Avo::PanelNameComponent.new name: @name do |panel_name_component| %>
+              <% panel_name_component.with_body do %>
+                <% if @external_link.present? %>
+                  <%= link_to @external_link, class: "text-gray-600 hover:text-gray-900 mt-1", title: helpers.t("avo.visit_record_on_external_path"), data: {tippy: :tooltip}, target: :_blank do %>
+                    <%= svg "heroicons/outline/arrow-top-right-on-square", class: "ml-2 text-2xl h-4" %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
           <% end %>
           <% if @description.present? %>
             <div class="text-sm tracking-normal font-medium text-gray-600 text-center sm:text-left" data-target="description">

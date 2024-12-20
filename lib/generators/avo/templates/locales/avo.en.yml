@@ -112,6 +112,7 @@ en:
     undo: undo
     view: View
     view_item: view %{item}
+    visit_record_on_external_path: Visit record on external path
     was_successfully_created: was successfully created
     was_successfully_updated: was successfully updated
     x_items_more:

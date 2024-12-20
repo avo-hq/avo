@@ -114,6 +114,7 @@ nn:
     undo: angre
     view: Vis
     view_item: vis %{item}
+    visit_record_on_external_path: Besøk posten via ein ekstern lenke
     was_successfully_created: vart oppretta
     was_successfully_updated: vart oppdatert
     x_items_more:

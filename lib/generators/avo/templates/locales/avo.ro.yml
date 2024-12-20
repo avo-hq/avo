@@ -116,6 +116,7 @@ ro:
     undo: Anulează
     view: vezi
     view_item: vezi %{item}
+    visit_record_on_external_path: Vizitați înregistrarea printr-un link extern
     was_successfully_created: a fost creat
     was_successfully_updated: a fost actualizat
     x_items_more:

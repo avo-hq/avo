@@ -80,6 +80,7 @@ module Avo
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
       class_attribute :controls_placement, default: nil
+      class_attribute :external_link, default: nil
 
       # EXTRACT:
       class_attribute :ordering
@@ -642,6 +643,12 @@ module Avo
 
       def resolve_component(original_component)
         custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
+      end
+
+      def get_external_link
+        return unless record.persisted?
+
+        Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
 
       private

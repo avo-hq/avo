@@ -114,6 +114,7 @@ fr:
     undo: annuler
     view: Vue
     view_item: voir %{item}
+    visit_record_on_external_path: Consulter l'enregistrement via un lien externe
     was_successfully_created: a été créé avec succès
     was_successfully_updated: a été mis à jour avec succès
     x_items_more:

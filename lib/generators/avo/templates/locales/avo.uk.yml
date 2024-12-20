@@ -114,6 +114,7 @@ uk:
     undo: Скасувати
     view: Перегляд
     view_item: Перегляд %{item}
+    visit_record_on_external_path: Перейти до запису через зовнішнє посилання
     was_successfully_created: успішно створено
     was_successfully_updated: успішно оновлено
     x_items_more:
