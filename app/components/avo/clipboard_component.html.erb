@@ -7,8 +7,15 @@
   } do %>
   <div class="hidden" data-clipboard-target="source"><%= @value %></div>
   <div class="text-xs xl:text-sm">
-    <button type="button" data-action="clipboard#copy" data-clipboard-target="button">
+    <%= content_tag :button,
+      type: "button",
+      data: {
+        action: "clipboard#copy",
+        clipboard_target: "button",
+        tippy: "tooltip",
+        tippy_content: I18n.t("avo.copy")
+      } do %>
       <%= helpers.svg "heroicons/outline/clipboard", class: "h-4 inline" %>
-    </button>
+    <% end %>
   </div>
 <% end %>

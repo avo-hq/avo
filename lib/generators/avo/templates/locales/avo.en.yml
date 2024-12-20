@@ -24,6 +24,7 @@ en:
     click_to_reveal_filters: Click to reveal filters
     close_modal: Close modal
     confirm: Confirm
+    copy: Copy
     create_new_item: Create new %{item}
     dashboard: Dashboard
     dashboards: Dashboards

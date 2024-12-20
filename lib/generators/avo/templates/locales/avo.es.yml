@@ -26,6 +26,7 @@ es:
     click_to_reveal_filters: Pulsa para mostrar los filtros
     close_modal: Cerrar modal
     confirm: Confirmar
+    copy: Copiar
     create_new_item: Crear nuevo/a %{item}
     dashboard: Panel
     dashboards: Paneles

@@ -24,6 +24,7 @@ it:
     click_to_reveal_filters: Clicca per mostrare i filtri
     close_modal: Chiudi modale
     confirm: Conferma
+    copy: Copia
     create_new_item: Crea nuovo %{item}
     dashboard: Cruscotto
     dashboards: Cruscotti

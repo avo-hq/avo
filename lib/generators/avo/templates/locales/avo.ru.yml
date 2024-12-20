@@ -24,6 +24,7 @@ ru:
     click_to_reveal_filters: Нажмите, чтобы открыть фильтры
     close_modal: Закрыть модальное окно
     confirm: Подтвердить
+    copy: Копировать
     create_new_item: Создать новый %{item}
     dashboard: Панель управления
     dashboards: Панели управления
