@@ -646,6 +646,8 @@ module Avo
       end
 
       def get_external_link
+        return unless record.persisted?
+
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
 
