@@ -26,6 +26,7 @@ ja:
     click_to_reveal_filters: フィルターを表示するにはクリック
     close_modal: モーダルを閉じる
     confirm: 確認
+    copy: コピー
     create_new_item: 新しい%{item}を作成
     dashboard: ダッシュボード
     dashboards: ダッシュボード

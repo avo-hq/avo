@@ -30,6 +30,7 @@ ar:
     click_to_reveal_filters: انقر لإظهار المرشحات
     close_modal: أغلق النافذة
     confirm: تأكيد
+    copy: نسخ
     create_new_item: إنشاء %{item} جديد
     dashboard: لوحة القيادة
     dashboards: لوحات القيادة

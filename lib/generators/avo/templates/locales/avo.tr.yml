@@ -26,6 +26,7 @@ tr:
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
     close_modal: Modali kapat
     confirm: Onayla
+    copy: Kopya
     create_new_item: Yeni bir %{item} oluşturun
     dashboard: Yönetim Paneli
     dashboards: Yönetim Panelleri

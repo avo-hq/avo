@@ -267,6 +267,7 @@ GEM
       rubocop (>= 1)
       smart_properties
     erubi (1.13.0)
+    event_stream_parser (1.0.0)
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.4)
@@ -274,12 +275,19 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
+    faraday (2.12.2)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-multipart (1.1.0)
+      multipart-post (~> 2.0)
+    faraday-net_http (3.4.0)
+      net-http (>= 0.5.0)
     ferrum (0.15)
       addressable (~> 2.5)
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
-    ffi (1.17.0)
     ffi (1.17.0-x86_64-linux-gnu)
     flay (2.13.3)
       erubi (~> 1.10)
@@ -379,7 +387,6 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.8)
     minitest (5.25.4)
     monetize (1.13.0)
       money (~> 6.12)
@@ -391,6 +398,9 @@ GEM
       money (~> 6.13)
       railties (>= 3.0)
     msgpack (1.7.5)
+    multipart-post (2.4.1)
+    net-http (0.6.0)
+      uri
     net-imap (0.5.2)
       date
       net-protocol
@@ -401,9 +411,6 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.17.2)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.17.2-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
@@ -537,6 +544,10 @@ GEM
       rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-shopify (2.15.1)
       rubocop (~> 1.51)
+    ruby-openai (7.3.1)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby-statistics (3.0.2)
     ruby-vips (2.2.2)
@@ -662,7 +673,6 @@ GEM
     zeitwerk (2.7.1)
 
 PLATFORMS
-  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -730,6 +740,7 @@ DEPENDENCIES
   rspec-retry (~> 0.6.2)
   rubocop
   rubocop-shopify
+  ruby-openai
   ruby-statistics (< 4)
   rubycritic
   simplecov

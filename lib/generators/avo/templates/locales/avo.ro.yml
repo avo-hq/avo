@@ -27,6 +27,7 @@ ro:
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
     close_modal: Închide modalul
     confirm: Confirm
+    copy: Copiază
     create_new_item: Creează %{item}
     dashboard: Panou de control
     dashboards: Panouri de control

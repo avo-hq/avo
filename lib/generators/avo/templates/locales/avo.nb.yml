@@ -26,6 +26,7 @@ nb:
     click_to_reveal_filters: Vis filter
     close_modal: Lukk modal
     confirm: Bekreft
+    copy: Kopier
     create_new_item: Lag ny %{item}
     dashboard: Dashboard
     dashboards: Dashboards
