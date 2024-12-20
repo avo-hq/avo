@@ -111,6 +111,7 @@ de:
     undo: Rückgängig machen
     view: Anzeigen
     view_item: "%{item} anzeigen"
+    visit_record_on_external_path: Datensatz über externen Link besuchen
     was_successfully_created: wurde erfolgreich erstellt
     was_successfully_updated: wurde erfolgreich aktualisiert
     x_items_more:

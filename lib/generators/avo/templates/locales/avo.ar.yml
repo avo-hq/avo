@@ -121,6 +121,7 @@ ar:
     undo: تراجع
     view: عرض
     view_item: عرض %{item}
+    visit_record_on_external_path: زيارة السجل على الرابط الخارجي
     was_successfully_created: تم إنشاؤه بنجاح
     was_successfully_updated: تم تحديثه بنجاح
     x_items_more:

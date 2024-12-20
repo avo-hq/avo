@@ -113,6 +113,7 @@ tr:
     undo: geri al
     view: Görünüm
     view_item: "%{item} öğresini görüntüle"
+    visit_record_on_external_path: Harici bağlantı yoluyla kaydı ziyaret et
     was_successfully_created: başarıyla oluşturuldu
     was_successfully_updated: başarıyla güncellendi
     x_items_more:

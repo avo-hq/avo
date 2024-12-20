@@ -113,6 +113,7 @@ pl:
     undo: Cofnij
     view: Widok
     view_item: Wyświetl %{item}
+    visit_record_on_external_path: Odwiedź rekord za pomocą zewnętrznego linku
     was_successfully_created: został pomyślnie utworzony
     was_successfully_updated: został pomyślnie zaktualizowany
     x_items_more:

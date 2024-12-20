@@ -111,6 +111,7 @@ it:
     undo: Annulla
     view: Visualizza
     view_item: Visualizza %{item}
+    visit_record_on_external_path: Visita il record tramite link esterno
     was_successfully_created: è stato creato con successo
     was_successfully_updated: è stato aggiornato con successo
     x_items_more:

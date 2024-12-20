@@ -113,6 +113,7 @@ ru:
     undo: Отменить
     view: Просмотр
     view_item: Просмотр %{item}
+    visit_record_on_external_path: Перейти к записи через внешнюю ссылку
     was_successfully_created: успешно создана
     was_successfully_updated: успешно обновлена
     x_items_more:

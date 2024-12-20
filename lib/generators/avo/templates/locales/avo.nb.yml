@@ -113,6 +113,7 @@ nb:
     undo: angre
     view: Vis
     view_item: vis %{item}
+    visit_record_on_external_path: Besøk posten via en ekstern lenke
     was_successfully_created: ble opprettet
     was_successfully_updated: ble oppdatert
     x_items_more:

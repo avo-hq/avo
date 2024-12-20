@@ -111,6 +111,7 @@ zh:
     undo: 撤销
     view: 查看
     view_item: 查看 %{item}
+    visit_record_on_external_path: 通过外部链接访问记录
     was_successfully_created: 创建成功
     was_successfully_updated: 更新成功
     x_items_more:

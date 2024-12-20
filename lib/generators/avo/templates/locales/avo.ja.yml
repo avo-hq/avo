@@ -113,6 +113,7 @@ ja:
     undo: 元に戻す
     view: ビュー
     view_item: "%{item}を表示"
+    visit_record_on_external_path: 外部リンクで記録を確認する
     was_successfully_created: は正常に作成されました
     was_successfully_updated: は正常に更新されました
     x_items_more:

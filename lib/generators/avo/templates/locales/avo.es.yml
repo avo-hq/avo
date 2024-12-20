@@ -113,6 +113,7 @@ es:
     undo: deshacer
     view: Vista
     view_item: ver %{item}
+    visit_record_on_external_path: Visitar registro en enlace externo
     was_successfully_created: se ha creado con éxito
     was_successfully_updated: se ha actualizado con éxito
     x_items_more:
