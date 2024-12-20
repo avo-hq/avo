@@ -72,6 +72,7 @@ class Avo::Resources::User < Avo::BaseResource
     action Avo::Actions::Sub::DummyAction
     action Avo::Actions::DownloadFile, icon: "heroicons/outline/arrow-left"
     divider
+    action Avo::Actions::Test::NoConfirmationPostsRedirect
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
     action Avo::Actions::Test::DoNothing
@@ -120,6 +121,8 @@ class Avo::Resources::User < Avo::BaseResource
       required: true,
       only_on: [:index]
 
+    field :some_token, only_on: :show
+
     field :is_writer, as: :text,
       sortable: -> {
         # Order by something else completely, just to make a test case that clearly and reliably does what we want.
@@ -154,6 +157,7 @@ class Avo::Resources::User < Avo::BaseResource
 
   def main_panel_sidebar
     sidebar do
+      field :some_token, only_on: :show
       test_field("Inside main_panel_sidebar")
       with_options only_on: :show do
         field :email, as: :gravatar, link_to_record: true, as_avatar: :circle
