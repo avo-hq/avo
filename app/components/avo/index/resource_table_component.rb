@@ -67,7 +67,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     table_row_components = []
 
     # Loop through each resource in @resources
-    @resources.each do |resource|
+    @resources.each_with_index do |resource, index|
       # Get fields for the current resource and concat them to the @header_fields
       row_fields = resource.get_fields(reflection: @reflection, only_root: true)
       header_fields.concat row_fields
@@ -79,7 +79,8 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
         reflection: @reflection,
         parent_record: @parent_record,
         parent_resource: @parent_resource,
-        actions: @actions
+        actions: @actions,
+        index:
       )
     end
 
