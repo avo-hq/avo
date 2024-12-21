@@ -49,7 +49,6 @@ module Avo
     attr_accessor :resources
     attr_accessor :prefix_path
     attr_accessor :resource_parent_controller
-    attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
     attr_accessor :click_row_to_view_record
     attr_accessor :alert_dismiss_time
@@ -111,7 +110,6 @@ module Avo
       @field_wrapper_layout = :inline
       @resources = nil
       @resource_parent_controller = "Avo::ResourcesController"
-      @mount_avo_engines = true
       @cache_store = computed_cache_store
       @logger = default_logger
       @turbo = default_turbo
