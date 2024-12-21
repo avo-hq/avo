@@ -60,7 +60,7 @@ class Avo::Resources::Project < Avo::BaseResource
       relative: true,
       timezone: "EET",
       format: "MMMM dd, y HH:mm:ss z"
-    field :description, as: :markdown, height: "350px"
+    field :description, as: :markdown, height: "350px", image_upload: true
     field :files,
       as: :files,
       translation_key: "avo.field_translations.files",
