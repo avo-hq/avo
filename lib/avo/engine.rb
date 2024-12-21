@@ -67,6 +67,7 @@ module Avo
           mount Avo::Engine, at:, **
 
           Avo.plugin_manager.engines.each do |engine|
+            puts ["engine->", engine].inspect
             mount engine[:klass], **engine[:options]
           end
         end
