@@ -130,16 +130,6 @@ module Avo
       true
     end
 
-    # Mount all Avo engines
-    def mount_engines
-      -> {
-        mount Avo::DynamicFilters::Engine, at: "/avo-dynamic_filters" if defined?(Avo::DynamicFilters::Engine)
-        mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
-        mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
-        mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
-      }
-    end
-
     def extra_gems
       [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
     end

@@ -21,6 +21,11 @@ module Avo
     isolate_namespace Avo
 
     config.after_initialize do
+      # This callback is triggered 2 times
+      # This flag check will avoid to re-execute the logic
+      next if @already_initialized
+      @already_initialized = true
+
       # Reset before reloads in development
       ::Avo.asset_manager.reset
 
@@ -39,12 +44,6 @@ module Avo
       end
     end
 
-    # Ensure we reboot the app when something changes
-    config.to_prepare do
-      # Boot Avo
-      ::Avo.boot
-    end
-
     initializer "avo.autoload" do |app|
       # This undoes Rails' previous nested directories behavior in the `app` dir.
       # More on this: https://github.com/fxn/zeitwerk/issues/250
@@ -59,6 +58,17 @@ module Avo
           app.config.watchable_dirs[directory_path] = [:rb]
         end
       end
+
+      # Add the mount_avo method to Rails
+      ActionDispatch::Routing::Mapper.include(Module.new {
+        def mount_avo(at: Avo.configuration.root_path, **options)
+          mount Avo::Engine, at:, **options
+
+          Avo.plugin_manager.engines.each do |engine|
+            mount engine[:klass], **engine[:options]
+          end
+        end
+      })
     end
 
     initializer "avo.reloader" do |app|
