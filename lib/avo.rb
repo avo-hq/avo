@@ -130,24 +130,6 @@ module Avo
       true
     end
 
-    # Mount all Avo engines
-    # TODO: We can remove the content of this method to keep back compatibility
-    # Add deprecation warning
-    def mount_engines
-      -> {
-        mount Avo::Engine, at: Avo.configuration.root_path
-
-        Avo.plugin_manager.engines.dup.each do |engine|
-          mount engine[:klass], **engine[:options]
-        end
-        mount Avo::DynamicFilters::Engine, at: "/avo-dynamic_filters" if defined?(Avo::DynamicFilters::Engine)
-        mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
-        mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
-        mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
-        # mount Avo::Collaborate::Engine, at: "/collaborate" if defined?(Avo::Collaborate::Engine)
-      }
-    end
-
     def extra_gems
       [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
     end

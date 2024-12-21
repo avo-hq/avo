@@ -63,8 +63,12 @@ module Avo
 
       # Add the mount_avo method to Rails
       ActionDispatch::Routing::Mapper.include(Module.new {
-        def mount_avo
-          instance_exec(&Avo.mount_engines)
+        def mount_avo(at: Avo.configuration.root_path, **options)
+          mount Avo::Engine, at:, **options
+
+          Avo.plugin_manager.engines.each do |engine|
+            mount engine[:klass], **engine[:options]
+          end
         end
       })
     end
