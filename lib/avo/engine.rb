@@ -44,13 +44,6 @@ module Avo
       end
     end
 
-    # Ensure we reboot the app when something changes
-    config.to_prepare do
-      # Boot Avo
-      # TODO: I think we can remove this
-      # ::Avo.boot
-    end
-
     initializer "avo.autoload" do |app|
       # This undoes Rails' previous nested directories behavior in the `app` dir.
       # More on this: https://github.com/fxn/zeitwerk/issues/250
