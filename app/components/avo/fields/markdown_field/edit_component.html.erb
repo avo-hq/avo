@@ -7,6 +7,7 @@
         view: view,
         'easy-mde-target': 'element',
         'component-options': @field.options.to_json,
+        upload_url: @field.options[:upload_url]
       },
       disabled: disabled?,
       placeholder: @field.placeholder,
