@@ -21,6 +21,11 @@ module Avo
     isolate_namespace Avo
 
     config.after_initialize do
+      # This callback is triggered 2 times
+      # This flag check will avoid to re-execute the logic
+      next if @already_initialized
+      @already_initialized = true
+
       # Reset before reloads in development
       ::Avo.asset_manager.reset
 
