@@ -1,18 +1,14 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%= content_tag :div,
-    class: "relative block overflow-x-auto max-w-4xl",
-    data: {
-      controller: "trix-field",
-      trix_field_target: "controller",
-      **data_values,
-    } do %>
+    class: class_names("relative block overflow-x-auto max-w-4xl", unique_id),
+    data: do %>
     <%= content_tag 'trix-editor',
       class: 'trix-content',
       data: {
         "trix-field-target": "editor",
         **@field.get_html(:data, view: view, element: :input)
       },
-      input: trix_id,
+      input: unique_id,
       placeholder: @field.placeholder do %>
       <%= sanitize @field.value.to_s %>
     <% end %>
@@ -21,7 +17,7 @@
       class: classes("w-full hidden"),
       data: @field.get_html(:data, view: view, element: :input),
       disabled: disabled?,
-      id: trix_id,
+      id: unique_id,
       placeholder: @field.placeholder,
       style: @field.get_html(:style, view: view, element: :input)
     %>

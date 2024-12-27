@@ -9,20 +9,27 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
     @resource_name = args[:resource_name] || @resource&.singular_route_key
 
     super(**args)
+
+    @unique_random_id = SecureRandom.hex(4)
   end
 
-  def trix_id
+  def unique_id
     if @resource_name.present?
-      "trix_#{@resource_name}_#{@field.id}"
+      "trix_#{@resource_name}_#{@field.id}_#{@unique_random_id}"
     elsif form.present?
-      "trix_#{form.index}_#{@field.id}"
+      "trix_#{form.index}_#{@field.id}_#{@unique_random_id}"
     end
   end
 
-  def data_values
-    {
+  def unique_selector = ".#{unique_id}"
+
+  # The controller element should have a unique_selector attribute.
+  # It's used to identify the specific editor for the media library to delegate the attach event to.
+  def data
+    values = {
       resource_name: @resource_name,
       resource_id: @resource_id,
+      unique_selector:, # mandatory
       attachments_disabled: @field.attachments_disabled,
       attachment_key: @field.attachment_key,
       hide_attachment_filename: @field.hide_attachment_filename,
@@ -33,5 +40,12 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
       attachment_disable_warning: t("avo.this_field_has_attachments_disabled"),
       attachment_key_warning: t("avo.you_havent_set_attachment_key")
     }.transform_keys { |key| "trix_field_#{key}_value" }
+
+    {
+      controller: "trix-field",
+      trix_field_target: "controller",
+      action: "insert-attachment->trix-field#insertAttachment",
+      **values,
+    }
   end
 end

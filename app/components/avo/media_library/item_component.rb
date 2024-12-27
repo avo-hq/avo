@@ -7,6 +7,7 @@ module Avo
 
       prop :attachment, reader: :public
       prop :display_filename, default: true
+      prop :attaching, default: false
     end
   end
 end

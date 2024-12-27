@@ -31,7 +31,7 @@ class Avo::Resources::Post < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :name, required: true, sortable: true
+    field :name, required: true, sortable: true, as: :trix
     field :created_at, as: :date_time
     field :body,
       as: :trix,

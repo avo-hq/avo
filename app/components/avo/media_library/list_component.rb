@@ -4,11 +4,18 @@ module Avo
   module MediaLibrary
     class ListComponent < Avo::BaseComponent
       include Pagy::Backend
-      def initialize
-        @pagy, @attachments = pagy(ActiveStorage::Attachment.includes(:blob).all, limit: 12)
+
+      def initialize(parent:, attaching: false)
+        @parent = parent
+        @attaching = attaching
+        @pagy, @attachments = pagy(query, limit: 12)
       end
 
       def controller = Avo::Current.view_context.controller
+
+      def query
+        ActiveStorage::Attachment.includes(:blob)
+      end
     end
   end
 end

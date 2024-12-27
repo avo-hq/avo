@@ -10,6 +10,11 @@ module Avo
         @attachment = ActiveStorage::Attachment.find(params[:id])
       end
 
+      def create
+        resource = Avo.resource_manager.get_resource_by_name(params[:resource_name])
+        @parent = resource.find_record(params[:record_id])
+      end
+
       def destroy
         @attachment = ActiveStorage::Attachment.find(params[:id])
         @attachment.destroy!

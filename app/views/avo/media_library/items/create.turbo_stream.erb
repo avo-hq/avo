@@ -1,0 +1,17 @@
+<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
+  <%= render Avo::ModalComponent.new do |c| %>
+    <% c.with_heading do %>
+      Gallery
+    <% end %>
+    <%= render Avo::MediaLibrary::ListComponent.new parent: @parent, attaching: true %>
+
+    <% c.with_controls do %>
+      <%= a_button type: :button,
+        data: { action: 'click->modal#close' },
+        size: :sm,
+        color: :gray do %>
+        <%= t('avo.close') %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
