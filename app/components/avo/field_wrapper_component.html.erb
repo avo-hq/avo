@@ -24,7 +24,7 @@
         "py-2": !compact?,
         "py-1": compact?,
       }), data: {slot: "value"} do %>
-    <div class="self-center w-full break-all <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
+    <div class="self-center w-full break-words <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
       <% if on_show? %>
         <div class="flex flex-row items-center group gap-x-1">
           <% if render_dash? %>
