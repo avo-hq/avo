@@ -1,0 +1,40 @@
+<%= form_with model: @attachment, url: avo.media_library_item_path(@attachment), method: :patch do |f| %>
+  <%= field_container do %>
+    <%= avo_edit_field :filename, as: :text, short: true, stacked: true, form: f, required: true %>
+    <%= f.fields_for :metadata do |meta_form| %>
+      <%= avo_edit_field :title,
+        as: :text,
+        value: @attachment.metadata[:title],
+        short: true,
+        stacked: true,
+        form: meta_form,
+        required: true
+      %>
+      <%= avo_edit_field :alt,
+        as: :text,
+        value: @attachment.metadata[:alt],
+        short: true,
+        stacked: true,
+        form: meta_form
+      %>
+      <%= avo_edit_field :description,
+        as: :textarea,
+        value: @attachment.metadata[:description],
+        short: true,
+        stacked: true,
+        form: meta_form
+      %>
+    <% end %>
+  <% end %>
+
+  <div class="w-full flex justify-end pr-6">
+    <%= a_button type: :submit,
+      icon: "avo/save",
+      size: :sm,
+      style: :outline,
+      data: {
+      } do %>
+      Update
+    <% end %>
+  </div>
+<% end %>

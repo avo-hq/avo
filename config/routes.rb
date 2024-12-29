@@ -9,6 +9,7 @@ Avo::Engine.routes.draw do
     instance_exec(&Avo.mount_engines)
   end
 
+  resources :media, only: [:index, :show]
   get :media_library, to: "media_library/items#index"
   post :media_library, to: "media_library/items#create"
   namespace :media_library do

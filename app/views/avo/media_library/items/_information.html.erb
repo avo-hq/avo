@@ -1,0 +1,60 @@
+<%
+# TODO: extract these somewhere else
+
+def parent_title(parent)
+  # TODO: find the resource and get the title attribute from there
+  parent.to_param
+end
+
+def parent_path(parent)
+  # TODO: find the resource and get the path from there
+  parent.to_param
+end
+%>
+
+<div class="p-6">
+  <dl>
+    <dt>Filename:</dt>
+    <dd><%= @attachment.filename %></dd>
+  </dl>
+  <dl>
+    <dt>Key:</dt>
+    <dd><%= @attachment.key %></dd>
+  </dl>
+  <dl>
+    <dt>Content type:</dt>
+    <dd><%= @attachment.content_type %></dd>
+  </dl>
+  <dl>
+    <dt>Size:</dt>
+      <dd><%= number_to_human_size(@attachment.byte_size) %></dd>
+  </dl>
+  <dl>
+    <dt>Service name:</dt>
+    <dd><%= @attachment.service_name %></dd>
+  </dl>
+  <dl>
+    <dt>Created at:</dt>
+    <dd><%= @attachment.created_at %></dd>
+  </dl>
+  <dl>
+    <% if @attachment.record.present? %>
+      <dt>Attached to:</dt>
+      <dd><%= link_to parent_title(@attachment.record), parent_path(@attachment.record) %></dd>
+    <% end %>
+  </dl>
+  <dl>
+    <dt>Type:</dt>
+    <dd><%= @attachment.name %></dd>
+  </dl>
+  <dl>
+    <dt>Metadata:</dt>
+    <dd class="block">
+      <% @attachment.metadata.each do |key, value| %>
+        <div class="block">
+          <code><%= key %>: <%= value %></code>
+        </div>
+      <% end %>
+    </dd>
+  </dl>
+</div>

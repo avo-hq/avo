@@ -1,16 +1,21 @@
-<%= link_to helpers.avo.media_library_item_path(attachment),
+<%= link_to helpers.avo.medium_path(attachment),
   id: dom_id(attachment),
-  class: "relative group min-h-full max-w-full flex-1 flex flex-col justify-between gap-2 border border-slate-200 p-1.5 rounded-xl hover:border-slate-400",
+  class: "relative group min-h-full max-w-full flex-1 flex flex-col justify-between gap-2 border border-slate-200 p-1.5 rounded-xl hover:border-blue-500 hover:outline data-[selected=true]:border-blue-500 data-[selected=true]:outline outline-2 outline-blue-500",
   data: {
-    turbo_frame: Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID,
+    turbo_frame: false ? Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID : nil,
     turbo_prefetch: !@attaching, # don't try to prefetch the item details frame if we are not visiting that page.
     attachment_id: attachment.id,
     media_library_attachment_param: attachment.as_json,
     media_library_blob_param: attachment.blob.as_json,
     media_library_path_param: helpers.main_app.url_for(attachment),
     media_library_attaching_param: @attaching,
-    action: 'click->media-library#selectItem'
+    media_library_multiple_param: @multiple,
+    media_library_selected_item: params[:controller_selector],
+    action: 'click->media-library#selectItem',
   } do %>
+  <% if @attaching %>
+    <div class="absolute bg-blue-500 group-hover:opacity-100 group-data-[selected=true]:opacity-100 opacity-0 inset-auto left-0 top-0 text-white rounded-tl-xl rounded-br-xl -ml-px -mt-px p-2"><div class="border border-white"><%= helpers.svg "heroicons/outline/check", class: 'group-data-[selected=true]:opacity-100 opacity-0 size-4' %></div></div>
+  <% end %>
   <div class="flex flex-col h-full aspect-video overflow-hidden rounded-lg justify-center items-center">
     <% if attachment.representable? %>
       <%= image_tag helpers.main_app.url_for(attachment.blob), class: "max-w-full self-start #{@extra_classes}", loading: :lazy, width: attachment.blob.metadata["width"], height: attachment.blob.metadata["height"] %>
@@ -26,7 +31,7 @@
   </div>
   <div class="flex space-x-2 mb-1">
     <% if @display_filename %>
-      <span class="text-gray-500 group-hover:text-gray-700 mt-1 text-sm truncate" title="<%= attachment.filename %>"><%= attachment.filename %></span>
+      <span class="text-gray-500 group-hover:text-blue-700 mt-1 text-sm truncate" title="<%= attachment.filename %>"><%= attachment.filename %></span>
     <% end %>
     <%#= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: attachment, resource: @resource) %>
   </div>

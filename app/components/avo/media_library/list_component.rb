@@ -3,6 +3,7 @@
 module Avo
   module MediaLibrary
     class ListComponent < Avo::BaseComponent
+      include Avo::ApplicationHelper
       include Pagy::Backend
 
       def initialize(parent:, attaching: false)

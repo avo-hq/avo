@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable no-alert */
 import 'trix'
@@ -50,18 +51,30 @@ export default class extends Controller {
   }
 
   // Invoked by the other controllers (media-library)
-  insertAttachment(event) {
-    const { params } = event
-    const { path, blob } = params
+  insertAttachments(attachments, event) {
+    if (!attachments) {
+      console.warning('[Avo->] No attachments present.')
 
-    const payload = {
-      url: path,
-      filename: blob.filename,
-      contentType: blob.content_type,
-      previewable: true,
+      return
     }
 
-    const model = new window.Trix.models.Attachment(payload)
+    attachments.forEach((attachment) => {
+      const { path, blob } = attachment
+
+      const payload = {
+        url: path,
+        filename: blob.filename,
+        contentType: blob.content_type,
+        previewable: true,
+      }
+
+      this.#injectAttachment(payload, event)
+    })
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  #injectAttachment(attachment, event) {
+    const model = new window.Trix.models.Attachment(attachment)
     this.editorTarget.editorController.editor.insertAttachment(model)
   }
 

@@ -1,5 +1,5 @@
 <div class="relative flex flex-col w-full max @container/details">
-  <%= link_to helpers.svg('heroicons/outline/x-mark', class: "size-6"), "#",
+  <%= link_to helpers.svg('heroicons/outline/x-mark', class: "size-6"), helpers.avo.media_path,
     class: "absolute z-10 inset-auto right-0 top-0 mt-2 mr-2 block bg-white p-1 rounded-lg text-slate-600 hover:text-slate-900",
     title: t('avo.close'),
     data: {
@@ -19,92 +19,8 @@
       </div>
     </div>
     <div class="flex flex-col w-1/2 @3xl/details:w-1/3 border-l">
-      <%= form_with model: @attachment, url: helpers.avo.media_library_item_path(@attachment), method: :patch do |f| %>
-        <%= field_container do %>
-          <%= avo_edit_field :filename, as: :text, short: true, stacked: true, form: f, required: true %>
-          <%= f.fields_for :metadata do |meta_form| %>
-            <%= avo_edit_field :title,
-              as: :text,
-              value: @attachment.metadata[:title],
-              short: true,
-              stacked: true,
-              form: meta_form,
-              required: true
-            %>
-            <%= avo_edit_field :alt,
-              as: :text,
-              value: @attachment.metadata[:alt],
-              short: true,
-              stacked: true,
-              form: meta_form
-            %>
-            <%= avo_edit_field :description,
-              as: :textarea,
-              value: @attachment.metadata[:description],
-              short: true,
-              stacked: true,
-              form: meta_form
-            %>
-          <% end %>
-        <% end %>
-
-        <div class="w-full flex justify-end pr-6">
-          <%= a_button type: :submit,
-            icon: "avo/save",
-            size: :sm,
-            style: :outline,
-            data: {
-            } do %>
-            Update
-          <% end %>
-        </div>
-      <% end %>
-      <div class="p-6">
-        <dl>
-          <dt>Filename:</dt>
-          <dd><%= @attachment.filename %></dd>
-        </dl>
-        <dl>
-          <dt>Key:</dt>
-          <dd><%= @attachment.key %></dd>
-        </dl>
-        <dl>
-          <dt>Content type:</dt>
-          <dd><%= @attachment.content_type %></dd>
-        </dl>
-        <dl>
-          <dt>Size:</dt>
-            <dd><%= helpers.number_to_human_size(@attachment.byte_size) %></dd>
-        </dl>
-        <dl>
-          <dt>Service name:</dt>
-          <dd><%= @attachment.service_name %></dd>
-        </dl>
-        <dl>
-          <dt>Created at:</dt>
-          <dd><%= @attachment.created_at %></dd>
-        </dl>
-        <dl>
-          <% if @attachment.record.present? %>
-            <dt>Attached to:</dt>
-            <dd><%= link_to parent_title(@attachment.record), parent_path(@attachment.record) %></dd>
-          <% end %>
-        </dl>
-        <dl>
-          <dt>Type:</dt>
-          <dd><%= @attachment.name %></dd>
-        </dl>
-        <dl>
-          <dt>Metadata:</dt>
-          <dd class="block">
-            <% @attachment.metadata.each do |key, value| %>
-              <div class="block">
-                <code><%= key %>: <%= value %></code>
-              </div>
-            <% end %>
-          </dd>
-        </dl>
-      </div>
+      <%= render partial: "avo/media_library/items/information", locals: {attachment: @attachment} %>
+      <%= render partial: "avo/media_library/items/form", locals: {attachment: @attachment} %>
     </div>
   </div>
 </div>
