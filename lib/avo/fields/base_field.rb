@@ -48,6 +48,7 @@ module Avo
       attr_reader :computable # if allowed to be computable
       attr_reader :computed # if block is present
       attr_reader :computed_value # the value after computation
+      attr_reader :copyable # if allowed to be copyable
 
       # Hydrated payload
       attr_accessor :record
@@ -87,6 +88,7 @@ module Avo
         @components = args[:components] || {}
         @for_attribute = args[:for_attribute]
         @meta = args[:meta]
+        @copyable = args[:copyable] || false
 
         @args = args
 

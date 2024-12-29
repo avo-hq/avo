@@ -28,6 +28,7 @@ class Avo::PanelComponent < Avo::BaseComponent
   def after_initialize
     @name = @args.dig(:name) || @args.dig(:title)
   end
+  prop :external_link
 
   def classes
     class_names(@classes, "has-cover-photo": @cover_photo.present?, "has-profile-photo": @profile_photo.present?)

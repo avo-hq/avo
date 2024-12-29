@@ -24,6 +24,7 @@ pl:
     click_to_reveal_filters: Kliknij, aby pokazać filtry
     close_modal: Zamknij okno modalne
     confirm: Potwierdź
+    copy: Kopiuj
     create_new_item: Utwórz nowy %{item}
     dashboard: Pulpit nawigacyjny
     dashboards: Pulpity nawigacyjne
@@ -113,6 +114,7 @@ pl:
     undo: Cofnij
     view: Widok
     view_item: Wyświetl %{item}
+    visit_record_on_external_path: Odwiedź rekord za pomocą zewnętrznego linku
     was_successfully_created: został pomyślnie utworzony
     was_successfully_updated: został pomyślnie zaktualizowany
     x_items_more:

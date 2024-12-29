@@ -114,6 +114,7 @@ gem "amazing_print"
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
+  gem "ruby-openai"
   gem "erb-formatter", require: false
   # https://thoughtbot.com/blog/a-standard-way-to-lint-your-views
   gem "erb_lint", require: false

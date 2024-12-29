@@ -24,6 +24,7 @@ uk:
     click_to_reveal_filters: Натисніть, щоб показати фільтри
     close_modal: Закрити вікно
     confirm: Підтвердити
+    copy: Копіювати
     create_new_item: Створити новий %{item}
     dashboard: Панель керування
     dashboards: Панелі керування
@@ -113,6 +114,7 @@ uk:
     undo: Скасувати
     view: Перегляд
     view_item: Перегляд %{item}
+    visit_record_on_external_path: Перейти до запису через зовнішнє посилання
     was_successfully_created: успішно створено
     was_successfully_updated: успішно оновлено
     x_items_more:

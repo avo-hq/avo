@@ -12,7 +12,7 @@ class Avo::Resources::Comment < Avo::BaseResource
 
   def fields
     field :id, as: :id
-    field :body, as: :rhino
+    field :body, as: :textarea, copyable: true
     field :tiny_name, as: :text, only_on: :index
     field :posted_at,
       as: :date_time,

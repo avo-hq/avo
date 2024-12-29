@@ -84,6 +84,7 @@ end
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
+  gem "ruby-openai"
   gem "erb-formatter", require: false
   gem "erb_lint", require: false
   gem "solargraph", require: false
