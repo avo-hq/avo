@@ -9,6 +9,13 @@ Avo::Engine.routes.draw do
     instance_exec(&Avo.mount_engines)
   end
 
+  resources :media, only: [:index, :show]
+  get :media_library, to: "media_library/items#index"
+  post :media_library, to: "media_library/items#create"
+  namespace :media_library do
+    resources :items
+  end
+
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   scope "avo_api", as: "avo_api" do

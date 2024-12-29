@@ -34,7 +34,7 @@ module Avo
       params = URI.decode_www_form(uri.query || "").to_h
 
       params.delete("action_id")
-      params[:turbo_frame] = ACTIONS_BACKGROUND_FRAME
+      params[:turbo_frame] = ACTIONS_BACKGROUND_FRAME_ID
 
       # Reconstruct the query string
       new_query_string = URI.encode_www_form(params)
