@@ -255,6 +255,7 @@ module Avo
       delegate :to_param, to: :class
       delegate :find_record, to: :class
       delegate :model_key, to: :class
+      delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
