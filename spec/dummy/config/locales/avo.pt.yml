@@ -3,3 +3,9 @@ pt:
   avo:
     resource_translations:
       product: "Produto"
+  test:
+    translation_key:
+      course:
+        zero: cursos
+        one: curso
+        other: cursos
