@@ -54,7 +54,6 @@ module Avo
       class_attribute :single_includes, default: []
       class_attribute :single_attachments, default: []
       class_attribute :authorization_policy
-      class_attribute :translation_key
       class_attribute :default_view_type, default: :table
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
@@ -175,10 +174,6 @@ module Avo
           route_key.singularize
         end
 
-        def translation_key
-          @translation_key || "avo.resource_translations.#{class_name.underscore}"
-        end
-
         def name
           name_from_translation_key(count: 1, default: class_name.underscore.humanize)
         end
@@ -245,6 +240,8 @@ module Avo
           Avo::ExecutionContext.new(target: search[key], resource: self, record: record).handle
         end
       end
+
+      class_attribute :translation_key, default: "avo.resource_translations.#{class_name.underscore}"
 
       delegate :context, to: ::Avo::Current
       delegate :name, to: :class
