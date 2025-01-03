@@ -35,7 +35,7 @@ module Avo
         return args[:attachments_disabled] unless args[:attachments_disabled].nil?
 
         # Disable attachments if attachment_key is not present
-        args[:attachment_key].blank?
+        # args[:attachment_key].blank?
       end
     end
   end
