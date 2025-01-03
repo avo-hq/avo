@@ -3,7 +3,7 @@ module Avo
     class SelectField < BaseField
       include Avo::Fields::FieldExtensions::HasIncludeBlank
 
-      attr_reader :display_value
+      attr_reader :display_value, :multiple
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -19,6 +19,7 @@ module Avo
         end
 
         @enum = args[:enum]
+        @multiple = args[:multiple]
         @display_value = args[:display_value] || false
       end
 
@@ -53,6 +54,15 @@ module Avo
         # When code arrive here it means options are Hash
         # If display_value is true we only need to return the value stored in DB
         display_value ? value : options.invert[value]
+      end
+
+      def to_permitted_param
+        case id
+          when :sizes
+            {"#{id}": []}
+          else
+            id
+          end
       end
 
       private
