@@ -48,5 +48,6 @@ class Avo::Resources::Product < Avo::BaseResource
     field :description, as: :tiptap, placeholder: "Enter text", always_show: false
     field :image, as: :file, is_image: true
     field :category, as: :select, enum: ::Product.categories
+    field :sizes, as: :select, multiple: true, options: {"Large": :large, "Medium": :medium, "Small": :small}
   end
 end
