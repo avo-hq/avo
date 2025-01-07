@@ -45,31 +45,31 @@ class Avo::Resources::Post < Avo::BaseResource
       hide_attachment_url: true,
       hide_attachment_filename: true,
       hide_attachment_filesize: true
-    field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*", stacked: true
-    field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, as_avatar: :rounded, format_using: -> { value.present? ? value&.url : nil }
-    field :audio, as: :file, is_audio: true, accept: "audio/*"
+    # field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*", stacked: true
+    # field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, as_avatar: :rounded, format_using: -> { value.present? ? value&.url : nil }
+    # field :audio, as: :file, is_audio: true, accept: "audio/*"
 
-    field :is_featured, as: :boolean, visible: -> do
-      Avo::Current.context[:user].is_admin?
-    end
-    field :is_published, as: :boolean do
-      record.published_at.present?
-    end
-    field :user, as: :belongs_to, placeholder: "—"
-    field :status, as: :select, enum: ::Post.statuses, display_value: false
-    field :slug, as: :text
-    field :tags, as: :tags,
-      acts_as_taggable_on: :tags,
-      close_on_select: false,
-      placeholder: "add some tags",
-      suggestions: -> { Post.tags_suggestions },
-      enforce_suggestions: true,
-      # suggestions_max_items: 2,
-      help: "The only allowed values here are `one`, `two`, and `three`"
+    # field :is_featured, as: :boolean, visible: -> do
+    #   Avo::Current.context[:user].is_admin?
+    # end
+    # field :is_published, as: :boolean do
+    #   record.published_at.present?
+    # end
+    # field :user, as: :belongs_to, placeholder: "—"
+    # field :status, as: :select, enum: ::Post.statuses, display_value: false
+    # field :slug, as: :text
+    # field :tags, as: :tags,
+    #   acts_as_taggable_on: :tags,
+    #   close_on_select: false,
+    #   placeholder: "add some tags",
+    #   suggestions: -> { Post.tags_suggestions },
+    #   enforce_suggestions: true,
+    #   # suggestions_max_items: 2,
+    #   help: "The only allowed values here are `one`, `two`, and `three`"
 
-    field :cover_photo_attachment, as: :has_one
+    # field :cover_photo_attachment, as: :has_one
 
-    field :comments, as: :has_many, use_resource: Avo::Resources::PhotoComment
+    # field :comments, as: :has_many, use_resource: Avo::Resources::PhotoComment
   end
 
   self.grid_view = {

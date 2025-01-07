@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-alert */
 import 'trix'
-import { post } from '@rails/request.js'
+import { get, post } from '@rails/request.js'
 import URI from 'urijs'
 
 import { Controller } from '@hotwired/stimulus'
@@ -100,6 +100,7 @@ export default class extends Controller {
 
     // Add the gallerybutton to the toolbar
     const buttonHTML = `<button type="button" data-trix-action="gallery" class="trix-button trix-button--icon">${galleryButtonSVG}</button>`
+    // console.log('event.target->', event.target)
     event.target.toolbarElement
       .querySelector('.trix-button-group--file-tools')
       .insertAdjacentHTML('beforeend', buttonHTML)

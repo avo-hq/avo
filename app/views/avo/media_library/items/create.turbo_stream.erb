@@ -1,9 +1,6 @@
-<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
+<%= turbo_stream.update Avo::MODAL_FRAME_ID do %>
   <%= render Avo::ModalComponent.new do |c| %>
-    <% c.with_heading do %>
-      Gallery
-    <% end %>
-    <%= render Avo::MediaLibrary::ListComponent.new parent: @parent, attaching: true %>
+    <%= render Avo::MediaLibrary::ListComponent.new parent: @parent, attaching: true, turbo_frame: Avo::MODAL_FRAME_ID %>
 
     <% c.with_controls do %>
       <%= a_button type: :button,
