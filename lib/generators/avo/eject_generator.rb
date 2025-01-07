@@ -120,7 +120,7 @@ module Generators
           # Get the component path for both, the rb and erb files
           rb, erb = if (component_constant = component_to_eject.safe_constantize)
             # If component is a constant, find the source location
-            source_location = Module.const_source_location(component_constant.to_s).first
+            source_location = component_constant.identifier
 
             [source_location, source_location.gsub(".rb", ".html.erb")]
           else
