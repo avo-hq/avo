@@ -21,4 +21,13 @@ RSpec.feature "i18n", type: :feature do
       expect(page).to have_button("Save the product!")
     end
   end
+
+  describe "resource translation_key" do
+    it "apply translation_key" do
+      visit avo.resources_courses_path(force_locale: :pt)
+
+      expect(page).to have_text("Cursos")
+      expect(page).to have_text("Criar novo curso")
+    end
+  end
 end
