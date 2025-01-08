@@ -24,7 +24,6 @@ module.exports = {
   content: [
     ...contentPaths('./tmp/avo/packages/*'),
     ...contentPaths('./../avo-kanban/*'),
-    ...contentPaths('./../avo-collaborate'),
     ...contentPaths(avoPath),
   ],
   theme: {
