@@ -45,7 +45,7 @@ module Avo
       puts "\n\nMethod '#{__method__}' raised 'Timeout::Error' after #{time}s"
     end
 
-    def wait_for_path_to_be(path: , time: Capybara.default_max_wait_time)
+    def wait_for_path_to_be(path:, time: Capybara.default_max_wait_time)
       Timeout.timeout(time) do
         break if current_path == path
       end
