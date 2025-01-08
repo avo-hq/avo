@@ -24,6 +24,7 @@ en:
     click_to_reveal_filters: Click to reveal filters
     close_modal: Close modal
     confirm: Confirm
+    copy: Copy
     create_new_item: Create new %{item}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -62,6 +63,7 @@ en:
     loading: Loading
     more: More
     more_content: More content
+    more_records_available: There are more records available.
     new: new
     next_page: Next page
     no_cancel: No, cancel
@@ -110,6 +112,7 @@ en:
     undo: undo
     view: View
     view_item: view %{item}
+    visit_record_on_external_path: Visit record on external path
     was_successfully_created: was successfully created
     was_successfully_updated: was successfully updated
     x_items_more:

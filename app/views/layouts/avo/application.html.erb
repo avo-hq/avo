@@ -13,7 +13,7 @@
     <%= render partial: "avo/partials/branding" %>
     <%= render partial: "avo/partials/pre_head" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
-    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", defer: true, as: "style" %>
     <% if Avo::PACKED %>
       <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
     <% else %>
@@ -29,7 +29,7 @@
   <body class="bg-application os-mac">
     <div class="relative flex flex-1 w-full min-h-full" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
       <div class="flex-1 flex flex-col max-w-full">
-        <%= render partial: "avo/partials/navbar" %>
+        <%= render partial: "avo/partials/navbar", locals: { resource: @resource } %>
         <div data-sidebar-target="mainArea" class="content-area flex-1 flex pt-16 relative <%= "sidebar-open" if @sidebar_open %>">
           <div class="hidden lg:flex">
             <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %>
@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    <%= turbo_frame_tag Avo::MODAL_FRAME_ID, data: {turbo_temporary: 1} %>
+    <%= turbo_frame_tag Avo::MODAL_FRAME_ID %>
     <%= render partial: "avo/partials/alerts" %>
     <%= render partial: "avo/partials/scripts" %>
     <%= render partial: "avo/partials/confirm_dialog" %>

@@ -68,6 +68,9 @@ Avo.configure do |config|
   ## == Number of search results to display ==
   # config.search_results_count = 8
 
+  ## == Associations lookup list limit ==
+  # config.associations_lookup_list_limit = 1000
+
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.
   ## We compute the cache store by default, this is NOT the default, just an example.
@@ -75,10 +78,6 @@ Avo.configure do |config|
   #   ActiveSupport::Cache.lookup_store(:solid_cache_store)
   # }
   # config.cache_resources_on_index_view = true
-  ## permanent enable or disable cache_resource_filters, default value is false
-  # config.cache_resource_filters = false
-  ## provide a lambda to enable or disable cache_resource_filters per user/resource.
-  # config.cache_resource_filters = -> { current_user.cache_resource_filters? }
 
   ## == Turbo options ==
   # config.turbo = -> do
@@ -117,6 +116,7 @@ Avo.configure do |config|
   # config.field_wrapper_layout = true
   # config.resource_parent_controller = "Avo::ResourcesController"
   # config.first_sorting_option = :desc # :desc or :asc
+  # config.exclude_from_status = []
 
   ## == Branding ==
   # config.branding = {

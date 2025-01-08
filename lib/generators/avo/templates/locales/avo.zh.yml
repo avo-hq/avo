@@ -24,6 +24,7 @@ zh:
     click_to_reveal_filters: 点击以显示筛选器
     close_modal: 关闭模态框
     confirm: 确认
+    copy: 复制
     create_new_item: 创建新的 %{item}
     dashboard: 仪表盘
     dashboards: 仪表盘
@@ -62,6 +63,7 @@ zh:
     loading: 加载中...
     more: 更多
     more_content: 更多内容
+    more_records_available: 还有更多记录可供参考。
     new: 新建
     next_page: 下一页
     no_cancel: 不，取消
@@ -110,6 +112,7 @@ zh:
     undo: 撤销
     view: 查看
     view_item: 查看 %{item}
+    visit_record_on_external_path: 通过外部链接访问记录
     was_successfully_created: 创建成功
     was_successfully_updated: 更新成功
     x_items_more:

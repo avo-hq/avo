@@ -26,6 +26,7 @@ nb:
     click_to_reveal_filters: Vis filter
     close_modal: Lukk modal
     confirm: Bekreft
+    copy: Kopier
     create_new_item: Lag ny %{item}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -64,6 +65,7 @@ nb:
     loading: Laster
     more: Mer
     more_content: Mer innhold
+    more_records_available: Det er flere poster tilgjengelig.
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt
@@ -112,6 +114,7 @@ nb:
     undo: angre
     view: Vis
     view_item: vis %{item}
+    visit_record_on_external_path: Besøk posten via en ekstern lenke
     was_successfully_created: ble opprettet
     was_successfully_updated: ble oppdatert
     x_items_more:

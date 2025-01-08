@@ -52,7 +52,7 @@
             </div>
           </div>
           <% if has_dynamic_filters? %>
-            <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id %>
+            <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
           <% end %>
         </div>
       </div>

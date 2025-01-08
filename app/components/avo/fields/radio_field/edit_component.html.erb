@@ -1,0 +1,10 @@
+<%= field_wrapper **field_wrapper_args do %>
+  <div class="flex flex-col gap-2">
+    <% @field.options.each do |key, value| %>
+      <div>
+        <%= form.radio_button @field.id, key %>
+        <%= form.label @field.id, value: value %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

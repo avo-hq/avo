@@ -141,6 +141,10 @@ module Avo
       Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
     end
 
+    def possibly_rails_authentication?
+      defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
+    end
+
     private
 
     # Taken from the original library

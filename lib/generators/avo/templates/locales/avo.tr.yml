@@ -26,6 +26,7 @@ tr:
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
     close_modal: Modali kapat
     confirm: Onayla
+    copy: Kopya
     create_new_item: Yeni bir %{item} oluşturun
     dashboard: Yönetim Paneli
     dashboards: Yönetim Panelleri
@@ -64,6 +65,7 @@ tr:
     loading: Yükleniyor
     more: Daha fazla
     more_content: Daha fazla içerik
+    more_records_available: Daha fazla kayıt mevcut.
     new: yeni
     next_page: Sonraki sayfa
     no_cancel: Hayır, iptal et
@@ -112,6 +114,7 @@ tr:
     undo: geri al
     view: Görünüm
     view_item: "%{item} öğresini görüntüle"
+    visit_record_on_external_path: Harici bağlantı yoluyla kaydı ziyaret et
     was_successfully_created: başarıyla oluşturuldu
     was_successfully_updated: başarıyla güncellendi
     x_items_more:

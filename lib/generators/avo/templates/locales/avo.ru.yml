@@ -24,6 +24,7 @@ ru:
     click_to_reveal_filters: Нажмите, чтобы открыть фильтры
     close_modal: Закрыть модальное окно
     confirm: Подтвердить
+    copy: Копировать
     create_new_item: Создать новый %{item}
     dashboard: Панель управления
     dashboards: Панели управления
@@ -64,6 +65,7 @@ ru:
     loading: Загрузка...
     more: Ещё
     more_content: Больше контента
+    more_records_available: Доступно больше записей.
     new: новый
     next_page: Следующая страница
     no_cancel: Нет, отмена
@@ -112,6 +114,7 @@ ru:
     undo: Отменить
     view: Просмотр
     view_item: Просмотр %{item}
+    visit_record_on_external_path: Перейти к записи через внешнюю ссылку
     was_successfully_created: успешно создана
     was_successfully_updated: успешно обновлена
     x_items_more:

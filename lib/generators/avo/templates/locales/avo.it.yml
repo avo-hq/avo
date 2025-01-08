@@ -24,6 +24,7 @@ it:
     click_to_reveal_filters: Clicca per mostrare i filtri
     close_modal: Chiudi modale
     confirm: Conferma
+    copy: Copia
     create_new_item: Crea nuovo %{item}
     dashboard: Cruscotto
     dashboards: Cruscotti
@@ -62,6 +63,7 @@ it:
     loading: Caricamento in corso
     more: Altro
     more_content: Più contenuti
+    more_records_available: Sono disponibili più record.
     new: nuovo
     next_page: Pagina successiva
     no_cancel: No, annulla
@@ -110,6 +112,7 @@ it:
     undo: Annulla
     view: Visualizza
     view_item: Visualizza %{item}
+    visit_record_on_external_path: Visita il record tramite link esterno
     was_successfully_created: è stato creato con successo
     was_successfully_updated: è stato aggiornato con successo
     x_items_more:

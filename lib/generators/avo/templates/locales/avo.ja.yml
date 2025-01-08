@@ -26,6 +26,7 @@ ja:
     click_to_reveal_filters: フィルターを表示するにはクリック
     close_modal: モーダルを閉じる
     confirm: 確認
+    copy: コピー
     create_new_item: 新しい%{item}を作成
     dashboard: ダッシュボード
     dashboards: ダッシュボード
@@ -64,6 +65,7 @@ ja:
     loading: 読み込み中
     more: もっと
     more_content: さらなるコンテンツ
+    more_records_available: さらに多くのレコードが利用可能です。
     new: 新規
     next_page: 次のページ
     no_cancel: いいえ、キャンセル
@@ -112,6 +114,7 @@ ja:
     undo: 元に戻す
     view: ビュー
     view_item: "%{item}を表示"
+    visit_record_on_external_path: 外部リンクで記録を確認する
     was_successfully_created: は正常に作成されました
     was_successfully_updated: は正常に更新されました
     x_items_more:

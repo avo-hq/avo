@@ -27,6 +27,7 @@ ro:
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
     close_modal: Închide modalul
     confirm: Confirm
+    copy: Copiază
     create_new_item: Creează %{item}
     dashboard: Panou de control
     dashboards: Panouri de control
@@ -66,6 +67,7 @@ ro:
     loading: Se incarcă
     more: Mai multe
     more_content: Mai mult conținut
+    more_records_available: Sunt mai multe înregistrări disponibile.
     new: nou
     next_page: Pagina următoare
     no_cancel: Nu, anulează
@@ -114,6 +116,7 @@ ro:
     undo: Anulează
     view: vezi
     view_item: vezi %{item}
+    visit_record_on_external_path: Vizitați înregistrarea printr-un link extern
     was_successfully_created: a fost creat
     was_successfully_updated: a fost actualizat
     x_items_more:
