@@ -232,9 +232,6 @@ RSpec.feature "Select", type: :feature do
   describe "when options are multiple select" do
     context "new" do
       it "allow selection of multiple values" do
-        Avo::Resources::Product.with_temporary_items do
-          field :sizes, as: :select, multiple: true, options: { 'Large': :large, 'Medium': :medium, 'Small': :small}
-        end
         visit avo.new_resources_product_path
         expect(page).to have_select "product[sizes][]", multiple: true, options: ['Large', 'Medium', 'Small']
         select "Large", from: "product[sizes][]"
