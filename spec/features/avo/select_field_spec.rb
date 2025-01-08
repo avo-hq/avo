@@ -246,9 +246,6 @@ RSpec.feature "Select", type: :feature do
     context "edit" do
       let (:product) {create :product, sizes: [:large]}
       it "allow changing of selected values" do
-        Avo::Resources::Product.with_temporary_items do
-          field :sizes, as: :select, multiple: true, options: { 'Large': :large, 'Medium': :medium, 'Small': :small}
-        end
         visit avo.edit_resources_product_path(product)
         expect(page).to have_select "product[sizes][]", selected: ["Large"], multiple: true, options: ['Large', 'Medium', 'Small']
         select "Medium", from: "product[sizes][]"
