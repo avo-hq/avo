@@ -216,7 +216,6 @@ RSpec.describe "Actions", type: :system do
       wait_for_path_to_be(path: avo.resources_posts_path)
 
       page.go_back
-      wait_for_loaded
 
       wait_for_path_to_be(path: avo.resources_users_path)
     end
