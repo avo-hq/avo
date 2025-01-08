@@ -30,12 +30,6 @@ module Avo
       def attachments_disabled
         # Return the value of attachments_disabled if explicitly provided
         return @attachments_disabled unless @attachments_disabled.nil?
-
-        # By default enable attachments on action text
-        return false if is_action_text?
-
-        # Disable attachments if attachment_key is not present
-        @attachment_key.blank?
       end
     end
   end

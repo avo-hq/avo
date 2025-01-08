@@ -23,7 +23,9 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
     {
       resource_name: @resource_name,
       resource_id: @resource_id,
-      attachments_disabled: @field.attachments_disabled,
+      attachment_upload_url: build_attachment_path,
+      # enabled if its an action_text and not explicitely disabled
+      attachments_disabled: ( @field.attachments_disabled and not @field.is_action_text?),
       attachment_key: @field.attachment_key,
       hide_attachment_filename: @field.hide_attachment_filename,
       hide_attachment_filesize: @field.hide_attachment_filesize,
@@ -34,4 +36,13 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
       attachment_key_warning: t("avo.you_havent_set_attachment_key")
     }.transform_keys { |key| "trix_field_#{key}_value" }
   end
+
+  def build_attachment_path
+    if @field.is_action_text?
+      rails_direct_uploads_url
+    else
+      "#{Avo.configuration.root_path}/avo_api/resources/#{@resource_name}/#{@resource_id}/attachments"
+    end
+  end
+
 end
