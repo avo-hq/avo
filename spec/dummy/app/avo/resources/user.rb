@@ -46,7 +46,6 @@ class Avo::Resources::User < Avo::BaseResource
   }
 
   def fields
-    # table
     test_field("Heading")
 
     main_panel do
@@ -109,15 +108,6 @@ class Avo::Resources::User < Avo::BaseResource
     end
     field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
     field :active, as: :boolean, name: "Is active", only_on: :index
-    field :email, as: :text, dependent: {
-      on: [:active, :id],
-      on_change: -> {
-        # changed_attribute
-        # form_data
-        self.value = "something"
-        self.required = form_data[:active]
-      }
-    }
     field :cv, as: :file, name: "CV"
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
     field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
