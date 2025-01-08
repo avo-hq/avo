@@ -27,7 +27,7 @@ export default class extends Controller {
     // Parse the root path
     const rootPath = new URI(window.Avo.configuration.root_path)
     // Build the trix field path
-    url.path(this.attachmentUploadUrlValue)
+    url.path(`${rootPath.path()}/avo_api/resources/${this.resourceNameValue}/${this.resourceIdValue}/attachments`)
     // Add the params back
     url.query(rootPath.query())
 
