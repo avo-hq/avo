@@ -2,7 +2,6 @@ module Avo
   module Fields
     class TrixField < BaseField
       attr_reader :always_show
-      attr_reader :attachments_disabled
       attr_reader :attachment_key
       attr_reader :hide_attachment_filename
       attr_reader :hide_attachment_filesize
