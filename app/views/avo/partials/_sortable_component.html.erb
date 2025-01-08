@@ -10,6 +10,10 @@
       end
   end
 %>
-<span data-tippy="tooltip" title="<%= field.name %>">
-  <%= svg icon, class: 'inline-block fill-current text-gray-500 relative leading-none min-w-[1rem] min-h-full ml-1 h-4' %>
-<span>
+<%= svg icon,
+  class: 'inline-block fill-current text-gray-500 relative leading-none min-w-[1rem] min-h-full ml-1 h-4',
+  data: {
+    tippy: :tooltip,
+    tippy_content: sort_tippy_content
+  }
+%>

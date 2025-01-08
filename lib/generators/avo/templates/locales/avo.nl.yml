@@ -103,6 +103,9 @@ nl:
     select_item: Item selecteren
     show_content: Inhoud tonen
     sign_out: Afmelden
+    sort_asc: Oplopend sorteren
+    sort_desc: Aflopend sorteren
+    sort_reset: Sortering resetten
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave
     this_field_has_attachments_disabled: Bijlagen zijn uitgeschakeld voor dit veld.
