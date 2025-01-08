@@ -21,6 +21,67 @@ export default class extends Controller {
     this.#addEventListeners()
   }
 
+  disconnect() {
+    this.#removeEventListeners()
+  }
+
+  // Toggle multiple items
+  toggleMultiple(event) {
+    // this check is to prevent the method from running twice when the script clicks the checkboxes
+    if (this.autoClicking) {
+      return
+    }
+
+    // If there's no last checked index and the shift key isn't pressed, set the starting index
+    // if (!this.hasLastCheckedIndex && !event.shiftKey) {
+    if (!this.hasLastCheckedIndex) {
+      this.#setStartingIndex(event)
+
+      return
+    }
+
+    // // If there's no last checked index and the shift key isn't pressed, set the starting index
+    // if (!this.hasLastCheckedIndex && event.shiftKey) {
+    //   return
+    // }
+
+    // Ignore action if shift key is not pressed
+    if (!event.shiftKey) {
+      this.#resetLastCheckedIndex()
+
+      return
+    }
+
+    const currentIndex = parseInt(event.target.dataset.index)
+    const theRange = difference(range(this.lastCheckedIndex, currentIndex), [this.lastCheckedIndex, currentIndex])
+
+    // Set the autoClicking flag to true to prevent the method from running twice
+    this.autoClicking = true
+
+    // Get the state of the target checkbox
+    const state = event.target.checked
+
+    // Loop through the range of rows and toggle the checkboxes
+    theRange.forEach((index) => {
+      const checkbox = document.querySelector(`input[type="checkbox"][data-index="${index}"]`)
+
+      // Toggle the checkbox if it's not in the same state as the target checkbox
+      if (checkbox.checked !== state) {
+        checkbox.click()
+      }
+    })
+
+    this.#setEndingIndex(event)
+
+    // Reset the autoClicking flag
+    this.autoClicking = false
+
+    // Reset the last checked index
+    this.#resetLastCheckedIndex()
+
+    this.#resetEventListeners()
+  }
+
   #resetEventListeners() {
     this.#removeEventListeners()
     this.#addEventListeners()
@@ -38,12 +99,7 @@ export default class extends Controller {
     document.addEventListener('keyup', this.#keyupHandler)
   }
 
-  disconnect() {
-    this.#removeEventListeners()
-  }
-
   #removeEventListeners() {
-    console.log('removeEventListeners')
     // Remove event listeners
     Array.from(this.itemSelectorCells).forEach((itemSelectorCell) => {
       itemSelectorCell.removeEventListener('mouseenter', this.#selectorMouseenterHandler.bind(this))
@@ -92,68 +148,6 @@ export default class extends Controller {
     if (!event.shiftKey) {
       document.body.classList.remove('shift-pressed')
     }
-  }
-
-  // Toggle multiple items
-  toggleMultiple(event) {
-    console.log('toggleMultiple', this.autoClicking, this.lastCheckedIndex, event.shiftKey, !this.lastCheckedIndex && !event.shiftKey)
-    // this check is to prevent the method from running twice when the script clicks the checkboxes
-    if (this.autoClicking) {
-      return
-    }
-
-    // If there's no last checked index and the shift key isn't pressed, set the starting index
-    // if (!this.hasLastCheckedIndex && !event.shiftKey) {
-    if (!this.hasLastCheckedIndex) {
-      this.#setStartingIndex(event)
-
-      return
-    }
-
-    // // If there's no last checked index and the shift key isn't pressed, set the starting index
-    // if (!this.hasLastCheckedIndex && event.shiftKey) {
-    //   return
-    // }
-
-    // Ignore action if shift key is not pressed
-    if (!event.shiftKey) {
-      this.#resetLastCheckedIndex()
-
-      return
-    }
-    console.log('starting')
-
-    const currentIndex = parseInt(event.target.dataset.index)
-    const theRange = difference(range(this.lastCheckedIndex, currentIndex), [this.lastCheckedIndex, currentIndex])
-
-    // Set the autoClicking flag to true to prevent the method from running twice
-    this.autoClicking = true
-
-    // Get the state of the target checkbox
-    const state = event.target.checked
-
-    // Loop through the range of rows and toggle the checkboxes
-    theRange.forEach((index) => {
-      const checkbox = document.querySelector(`input[type="checkbox"][data-index="${index}"]`)
-
-      // Toggle the checkbox if it's not in the same state as the target checkbox
-      if (checkbox.checked !== state) {
-        checkbox.click()
-      }
-    })
-
-    this.#setEndingIndex(event)
-
-    // Reset the autoClicking flag
-    this.autoClicking = false
-    // console.log('autoClicking', this.autoClicking)
-
-    // Reset the last checked index
-    this.#resetLastCheckedIndex()
-
-    this.#resetEventListeners()
-
-    console.log('reached the end', this.lastCheckedIndex)
   }
 
   #resetLastCheckedIndex() {
