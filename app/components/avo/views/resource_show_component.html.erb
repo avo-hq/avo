@@ -23,9 +23,6 @@
       )%>
     <% end %>
   <% end %>
-  <div class="mt-4">
-    <%#= render Avo::Collaborate::TimelineComponent.new(resource: @resource) %>
-  </div>
   <% if should_display_invalid_fields_errors? %>
     <turbo-stream action="append" target="alerts">
       <template>
