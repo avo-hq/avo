@@ -57,12 +57,9 @@ module Avo
       end
 
       def to_permitted_param
-        case id
-          when :sizes
-            {"#{id}": []}
-          else
-            id
-          end
+        return id unless @multiple
+
+        {"#{id}": []}
       end
 
       private
