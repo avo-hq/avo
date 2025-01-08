@@ -105,6 +105,9 @@ pt:
     select_item: Selecionar item
     show_content: Mostrar conteúdo
     sign_out: Terminar sessão
+    sort_asc: Ordenar em ordem crescente
+    sort_desc: Ordenar em ordem decrescente
+    sort_reset: Redefinir ordenação
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
     this_field_has_attachments_disabled: Este campo tem anexos desativados.
