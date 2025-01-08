@@ -33,17 +33,11 @@ export default class extends Controller {
     }
 
     // If there's no last checked index and the shift key isn't pressed, set the starting index
-    // if (!this.hasLastCheckedIndex && !event.shiftKey) {
     if (!this.hasLastCheckedIndex) {
       this.#setStartingIndex(event)
 
       return
     }
-
-    // // If there's no last checked index and the shift key isn't pressed, set the starting index
-    // if (!this.hasLastCheckedIndex && event.shiftKey) {
-    //   return
-    // }
 
     // Ignore action if shift key is not pressed
     if (!event.shiftKey) {
