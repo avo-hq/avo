@@ -95,10 +95,10 @@ dialog#turbo-confirm {
 
 .shift-pressed {
   & .highlighted-row {
-    @apply !bg-slate-200;
+    @apply !bg-neutral-200;
   }
 }
 
 .selected-row {
-  @apply !bg-slate-100;
+  @apply !bg-neutral-100;
 }
