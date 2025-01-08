@@ -73,6 +73,7 @@ class Avo::Resources::User < Avo::BaseResource
     action Avo::Actions::Sub::DummyAction
     action Avo::Actions::DownloadFile, icon: "heroicons/outline/arrow-left"
     divider
+    action Avo::Actions::Test::NoConfirmationPostsRedirect
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
     action Avo::Actions::Test::DoNothing
@@ -106,11 +107,7 @@ class Avo::Resources::User < Avo::BaseResource
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe", filterable: true
     end
-
-
-
-
-
+    field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
     field :active, as: :boolean, name: "Is active", only_on: :index
     field :email, as: :text, dependent: {
       on: [:active, :id],
@@ -121,12 +118,6 @@ class Avo::Resources::User < Avo::BaseResource
         self.required = form_data[:active]
       }
     }
-
-
-
-
-
-
     field :cv, as: :file, name: "CV"
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
     field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
@@ -139,6 +130,8 @@ class Avo::Resources::User < Avo::BaseResource
       placeholder: "Feb 24th 1955",
       required: true,
       only_on: [:index]
+
+    field :some_token, only_on: :show
 
     field :is_writer, as: :text,
       sortable: -> {
@@ -174,6 +167,7 @@ class Avo::Resources::User < Avo::BaseResource
 
   def main_panel_sidebar
     sidebar do
+      field :some_token, only_on: :show
       test_field("Inside main_panel_sidebar")
       with_options only_on: :show do
         field :email, as: :gravatar, link_to_record: true, as_avatar: :circle

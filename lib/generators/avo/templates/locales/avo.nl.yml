@@ -24,6 +24,7 @@ nl:
     click_to_reveal_filters: Klik om filters te tonen
     close_modal: Modaal sluiten
     confirm: Bevestigen
+    copy: Kopie
     create_new_item: Nieuw %{item} aanmaken
     dashboard: Dashboard
     dashboards: Dashboards
@@ -111,6 +112,7 @@ nl:
     undo: Ongedaan maken
     view: Bekijken
     view_item: "%{item} bekijken"
+    visit_record_on_external_path: Bezoek record via een externe link
     was_successfully_created: is succesvol aangemaakt
     was_successfully_updated: is succesvol bijgewerkt
     x_items_more:

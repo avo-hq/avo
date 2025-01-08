@@ -24,9 +24,11 @@ class Avo::PanelComponent < Avo::BaseComponent
   prop :profile_photo
   prop :cover_photo
   prop :args, kind: :**, default: {}.freeze
-  prop :name do |value|
-    value || @args&.dig(:title)
+
+  def after_initialize
+    @name = @args.dig(:name) || @args.dig(:title)
   end
+  prop :external_link
 
   def classes
     class_names(@classes, "has-cover-photo": @cover_photo.present?, "has-profile-photo": @profile_photo.present?)

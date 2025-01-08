@@ -26,6 +26,7 @@ pt:
     click_to_reveal_filters: Clique para mostrar os filtros
     close_modal: Fechar modal
     confirm: Confirmar
+    copy: Copiar
     create_new_item: Criar novo %{item}
     dashboard: Painel
     dashboards: Painéis
@@ -113,6 +114,7 @@ pt:
     undo: desfazer
     view: Ver
     view_item: ver %{item}
+    visit_record_on_external_path: Visitar registro através de link externo
     was_successfully_created: foi criado com sucesso
     was_successfully_updated: foi atualizado com sucesso
     x_items_more:
