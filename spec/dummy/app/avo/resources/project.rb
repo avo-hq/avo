@@ -12,7 +12,6 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
-
   def fields
     field :id, as: :id, link_to_record: true
     field :status,
