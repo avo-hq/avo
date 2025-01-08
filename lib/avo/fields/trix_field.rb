@@ -15,7 +15,7 @@ module Avo
 
         @always_show = args[:always_show] || false
         @attachment_key = args[:attachment_key]
-        @attachments_disabled = disable_attachments?(args)
+        @attachments_disabled = args[:attachments_disabled]
         @hide_attachment_filename = args[:hide_attachment_filename] || false
         @hide_attachment_filesize = args[:hide_attachment_filesize] || false
         @hide_attachment_url = args[:hide_attachment_url] || false
@@ -28,14 +28,15 @@ module Avo
         record.send(id).is_a?(ActionText::RichText)
       end
 
-      private
-
-      def disable_attachments?(args)
+      def attachments_disabled
         # Return the value of attachments_disabled if explicitly provided
-        return args[:attachments_disabled] unless args[:attachments_disabled].nil?
+        return @attachments_disabled unless @attachments_disabled.nil?
+
+        # By default enable attachments on action text
+        return false if is_action_text?
 
         # Disable attachments if attachment_key is not present
-        # args[:attachment_key].blank?
+        @attachment_key.blank?
       end
     end
   end
