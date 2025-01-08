@@ -103,6 +103,9 @@ zh:
     select_item: 选择项目
     show_content: 显示内容
     sign_out: 登出
+    sort_asc: 升序排序
+    sort_desc: 降序排序
+    sort_reset: 重置排序
     switch_to_view: 切换到 %{view_type} 视图
     table_view: 表格视图
     this_field_has_attachments_disabled: 此字段已禁用附件。

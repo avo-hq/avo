@@ -103,6 +103,9 @@ it:
     select_item: Seleziona elemento
     show_content: Mostra contenuto
     sign_out: Esci
+    sort_asc: Ordina in ordine crescente
+    sort_desc: Ordina in ordine decrescente
+    sort_reset: Reimposta ordinamento
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella
     this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.

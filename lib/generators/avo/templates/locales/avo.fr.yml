@@ -105,6 +105,9 @@ fr:
     select_item: Sélectionnez un élément
     show_content: Afficher le contenu
     sign_out: Se déconnecter
+    sort_asc: Trier par ordre croissant
+    sort_desc: Trier par ordre décroissant
+    sort_reset: Réinitialiser le tri
     switch_to_view: Passez à la vue %{view_type}
     table_view: Vue table
     this_field_has_attachments_disabled: Ce champ a les pièces jointes désactivées.
