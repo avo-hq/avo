@@ -34,7 +34,7 @@ module Avo
         @field_value ||= if acts_as_taggable_on.present?
           acts_as_taggable_on_values.map { |value| {value:} }.as_json
         else
-          value || []
+          Array(value) || []
         end
       end
 
