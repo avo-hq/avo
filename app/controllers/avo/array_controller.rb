@@ -6,8 +6,6 @@ module Avo
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: @resource.fetch_records)
     end
 
-
-
     # Sub-method called only by #pagy_countless: here for easy customization of variables by overriding
     def pagy_countless_get_vars(collection, vars)
       vars[:page] ||= params[vars[:page_param] || :page]
@@ -19,36 +17,23 @@ module Avo
     # Sub-method called only by #pagy_countless: here for easy customization of record-extraction by overriding
     # You may need to override this method for collections without offset|limit
     def pagy_countless_get_items(collection, pagy)
-      # abort collection.inspect
-      # abort pagy.inspect
       if pagy.vars[:per_page].present?
-        collection.page(pagy.page).limit(pagy.vars[:per_page]).all.to_a # get the actual collection
       else
-        # abort 1.inspect
         eager_loaded = collection.page(pagy.page).limit(pagy.items + 1).all.to_a # eager load items + 1
         pagy.finalize(eager_loaded.size)
-        collection.page(pagy.page).limit(pagy.vars[:per_page]).all.to_a # get the actual collection
       end
+
+      collection.page(pagy.page).limit(pagy.vars[:per_page]).all.to_a # get the actual collection
     end
 
     def paginate_query
-      if false
-        pagy_countless(
-          @query,
-          items: @index_params[:per_page],
-          link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
-          size: [],
-          params: extra_pagy_params
-        )
-      else
-        pagy_countless(
-          @query,
-          items: @index_params[:per_page],
-          link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
-          size: [],
-          params: extra_pagy_params
-        )
-      end
+      pagy_countless(
+        @query,
+        items: @index_params[:per_page],
+        link_extra: "data-turbo-frame=\"#{params[:turbo_frame]}\"",
+        size: [],
+        params: extra_pagy_params
+      )
     end
 
     def perform_save_action!
