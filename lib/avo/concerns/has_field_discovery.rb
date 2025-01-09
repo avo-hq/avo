@@ -47,7 +47,6 @@ module Avo
       class_methods do
         def column_names_mapping
           @column_names_mapping ||= DEFAULT_COLUMN_NAMES_MAPPING.dup
-                                    .except(*COLUMN_NAMES_TO_IGNORE)
                                     .merge(Avo.configuration.column_names_mapping || {})
         end
 
@@ -94,7 +93,7 @@ module Avo
 
       # Fetches the model class, falling back to the items_holder parent record in certain instances (e.g. in the context of the sidebar)
       def safe_model_class
-        respond_to?(:model_class) ? model_class : @items_holder.parent.record.class
+        respond_to?(:model_class) ? model_class : @items_holder.parent.model_class
       rescue ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
         nil
       end
@@ -114,7 +113,7 @@ module Avo
       end
 
       def build_field_options(field_config, column)
-        { as: field_config[:field].to_sym, required: !column.null }.merge(field_config.except(:field))
+        { as: field_config.delete(:field).to_sym }.merge(field_config)
       end
 
       def discover_by_type(associations, as_type)
