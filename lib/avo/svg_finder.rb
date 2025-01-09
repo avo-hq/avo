@@ -9,13 +9,17 @@ class Avo::SvgFinder
 
   # Use the default static finder logic. If that doesn't find anything, search according to our pattern:
   def pathname
-    found_asset = default_strategy
+    Avo::CACHED_SVGS[@filename] ||= begin
+      found_asset = default_strategy
 
-    # Use the found asset
-    return found_asset if found_asset.present?
-
-    paths.find do |path|
-      File.exist? path
+      # Use the found asset
+      if found_asset.present?
+        found_asset
+      else
+        paths.find do |path|
+          File.exist? path
+        end
+      end
     end
   end
 

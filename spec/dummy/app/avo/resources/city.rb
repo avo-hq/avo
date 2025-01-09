@@ -74,7 +74,7 @@ class Avo::Resources::City < Avo::BaseResource
   # This is because we want to be able to edit them using the tool.
   # When submitting the form, we need this fields declared on the resource in order to know how to process them and fill the record.
   def tool_fields
-    field :name, as: :text, hide_on: [:index, :forms]
+    field :name, as: :text, hide_on: [:index, :forms], copyable: true
     with_options hide_on: :forms do
       field :name, as: :text, filterable: true, name: "name (click to edit)", only_on: :index do
         path, data = Avo::Actions::City::Update.link_arguments(

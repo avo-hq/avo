@@ -21,12 +21,12 @@ gem 'cssbundling-rails'
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-# gem "rails", "~> 7.1.0"
-gem "rails", github: "rails/rails", branch: "main"
+gem "rails", ">= 8.0.0"
+# gem "rails", github: "rails/rails", branch: "main"
 
 # Avo file filed requires this gem
 # gem "activestorage"
-gem "activestorage", github: "rails/rails", branch: "main"
+gem "activestorage", ">= 8.0.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -114,6 +114,7 @@ gem "amazing_print"
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
+  gem "ruby-openai"
   gem "erb-formatter", require: false
   # https://thoughtbot.com/blog/a-standard-way-to-lint-your-views
   gem "erb_lint", require: false
@@ -151,8 +152,7 @@ gem "active_median"
 
 gem 'acts_as_list'
 
-# gem 'acts-as-taggable-on', '~> 10.0'
-gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
+gem "acts-as-taggable-on", "~> 12.0"
 
 gem "bundler-integrity", "~> 1.0"
 

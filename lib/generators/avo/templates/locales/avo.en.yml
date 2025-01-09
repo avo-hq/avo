@@ -24,6 +24,7 @@ en:
     click_to_reveal_filters: Click to reveal filters
     close_modal: Close modal
     confirm: Confirm
+    copy: Copy
     create_new_item: Create new %{item}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -102,6 +103,9 @@ en:
     select_item: Select item
     show_content: Show content
     sign_out: Sign out
+    sort_asc: Sort ascending
+    sort_desc: Sort descending
+    sort_reset: Reset sorting
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
     this_field_has_attachments_disabled: This field has attachments disabled.
@@ -111,6 +115,7 @@ en:
     undo: undo
     view: View
     view_item: view %{item}
+    visit_record_on_external_path: Visit record on external path
     was_successfully_created: was successfully created
     was_successfully_updated: was successfully updated
     x_items_more:

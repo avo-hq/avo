@@ -206,6 +206,19 @@ RSpec.describe "Actions", type: :system do
 
       expect(page).to have_text "hey en"
     end
+
+    it "redirects to posts and don't redirect when navigating back" do
+      visit avo.resources_users_path
+
+      click_on "Actions"
+      click_on "Redirect to Posts"
+
+      wait_for_path_to_be(path: avo.resources_posts_path)
+
+      page.go_back
+
+      wait_for_path_to_be(path: avo.resources_users_path)
+    end
   end
 
 
@@ -328,6 +341,20 @@ RSpec.describe "Actions", type: :system do
 
       expect(page).not_to have_text "Sure, I love 🥑"
       expect(page).to have_text "I love 🥑"
+    end
+  end
+
+  describe "callable labels" do
+    it "pick label from arguments on run and cancel" do
+      encoded_arguments = Avo::BaseAction.encode_arguments({
+        cancel_button_label: "Cancel dummy action",
+        confirm_button_label: "Confirm dummy action"
+      })
+
+      visit "#{avo.resources_users_path}/actions?action_id=Avo::Actions::Sub::DummyAction&arguments=#{encoded_arguments}"
+
+      expect(page).to have_text "Cancel dummy action"
+      expect(page).to have_text "Confirm dummy action"
     end
   end
 
