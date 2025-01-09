@@ -105,6 +105,9 @@ ru:
     select_item: Выбрать элемент
     show_content: Показать содержимое
     sign_out: Выйти
+    sort_asc: Сортировать по возрастанию
+    sort_desc: Сортировать по убыванию
+    sort_reset: Сбросить сортировку
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица
     this_field_has_attachments_disabled: Для этого поля прикрепления отключены.

@@ -70,7 +70,10 @@
             class: class_names("flex-1 flex justify-between", text_classes),
             'data-turbo-frame': params[:turbo_frame] do %>
             <%= field.table_header_label %>
-            <%= render partial: 'avo/partials/sortable_component', locals: {field: field} %>
+            <%= render partial: 'avo/partials/sortable_component', locals: {
+              field: field,
+              sort_tippy_content: I18n.t("avo.sort_#{sort_direction || "reset"}")
+            } %>
           <% end %>
         <% else %>
           <%= content_tag :div, class: text_classes, data: {sortable: false} do %>

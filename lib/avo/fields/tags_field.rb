@@ -30,11 +30,16 @@ module Avo
         end
       end
 
+      def select_mode?
+        @mode&.to_sym == :select
+      end
+
       def field_value
         @field_value ||= if acts_as_taggable_on.present?
           acts_as_taggable_on_values.map { |value| {value:} }.as_json
         else
-          value || []
+          # Wrap the value on Array to ensure select mode compatibility
+          Array(value) || []
         end
       end
 
@@ -53,7 +58,7 @@ module Avo
       def fill_field(record, key, value, params)
         return fill_acts_as_taggable(record, key, value, params) if acts_as_taggable_on.present?
 
-        value = if value.is_a?(String)
+        value = if value.is_a?(String) && !select_mode?
           value.split(delimiters[0])
         else
           value

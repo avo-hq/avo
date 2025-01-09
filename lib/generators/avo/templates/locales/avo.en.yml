@@ -103,6 +103,9 @@ en:
     select_item: Select item
     show_content: Show content
     sign_out: Sign out
+    sort_asc: Sort ascending
+    sort_desc: Sort descending
+    sort_reset: Reset sorting
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
     this_field_has_attachments_disabled: This field has attachments disabled.
