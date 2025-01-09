@@ -234,6 +234,42 @@ RSpec.describe "Tags", type: :system do
       Avo::Resources::Course.restore_items_from_backup
     end
   end
+
+  describe "mode: :select" do
+    let!(:projects) { create_list :project, 2 }
+
+    it "on index" do
+      Avo::Resources::Project.with_temporary_items do
+        field :stage, as: :tags, mode: :select
+      end
+
+      visit avo.resources_projects_path
+
+      projects.each do |project|
+        expect(page).to have_text(project.stage)
+      end
+    end
+
+    it "on show" do
+      visit avo.resources_project_path(projects.first)
+
+      expect(page).to have_text(projects.first.stage)
+    end
+
+    it "on edit / update" do
+      visit avo.edit_resources_project_path(projects.first)
+
+      expect(page).to have_text(projects.first.stage)
+
+      click_on "Save"
+
+      wait_for_path_to_be(path: avo.resources_project_path(projects.first))
+
+      expect(page).to have_text(projects.first.stage)
+
+      Avo::Resources::Project.restore_items_from_backup
+    end
+  end
 end
 
 def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)

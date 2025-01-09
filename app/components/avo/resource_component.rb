@@ -127,7 +127,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def keep_referrer_params
-    {page: referrer_params["page"]}.compact
+    referrer_params
   end
 
   def render_back_button(control)
@@ -296,7 +296,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",
         turbo_prefetch: false,
-        "actions-picker-target": action.action.standalone ? "standaloneAction" : "resourceAction",
+        # When action has record present behave as standalone and keep always active.
+        "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
         disabled: action.action.disabled?
       } do
       action.label

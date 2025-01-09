@@ -143,6 +143,26 @@ module Avo
       ).handle
     end
 
+    def cancel_button_label
+      Avo::ExecutionContext.new(
+        target: self.class.cancel_button_label,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments
+      ).handle
+    end
+
+    def confirm_button_label
+      Avo::ExecutionContext.new(
+        target: self.class.confirm_button_label,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments
+      ).handle
+    end
+
     def handle_action(**args)
       processed_fields = if args[:fields].present?
         # Fetching the field definitions and not the actual fields (get_fields) because they will break if the user uses a `visible` block and adds a condition using the `params` variable. The params are different in the show method and the handle method.

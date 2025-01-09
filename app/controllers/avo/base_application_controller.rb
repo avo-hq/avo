@@ -330,6 +330,9 @@ module Avo
     end
 
     def authenticate_developer_or_admin!
+      # We don't care about this in development
+      return if Rails.env.development?
+
       raise_404 unless Avo::Current.user_is_developer? || Avo::Current.user_is_admin?
     end
 

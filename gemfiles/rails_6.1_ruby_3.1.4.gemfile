@@ -30,7 +30,7 @@ gem "groupdate"
 gem "hightop"
 gem "active_median"
 gem "acts_as_list"
-gem "acts-as-taggable-on", git: "https://github.com/avo-hq/acts-as-taggable-on.git"
+gem "acts-as-taggable-on"
 gem "bundler-integrity", "~> 1.0"
 gem "countries"
 gem "chartkick"
@@ -84,6 +84,7 @@ end
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
+  gem "ruby-openai"
   gem "erb-formatter", require: false
   gem "erb_lint", require: false
   gem "solargraph", require: false
