@@ -40,12 +40,20 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_edit_button?
+    # Disable edit for ArrayResources
+    # We may enable it and provide a DSL where a edit link is mandatory to enable array resources edit.
+    return false if Avo::Resources::ArrayResource.descendants.include?(@resource.class)
+
     return authorize_association_for(:edit) if @reflection.present?
 
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
 
   def can_see_the_destroy_button?
+    # Disable destroy for ArrayResources
+    # We may enable it and provide a DSL where a destroy link is mandatory to enable array resources destroy.
+    return false if Avo::Resources::ArrayResource.descendants.include?(@resource.class)
+
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
 

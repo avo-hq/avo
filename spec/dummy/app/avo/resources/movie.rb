@@ -7,12 +7,7 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
   #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   # }
 
-  # TODO: make this automatic for array resources
-  self.pagination = {
-    type: :array
-  }
-
-  def itemss
+  def records
     [
       {
         id: 1,
@@ -22,7 +17,8 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
       {
         id: 2,
         name: 'The Godfather',
-        release_date: '1972-03-24'
+        release_date: '1972-03-24',
+        fun_fact: 'The iconic cat in the opening scene was a stray found by director Francis Ford Coppola on the studio lot.'
       },
       {
         id: 3,
@@ -47,7 +43,8 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
       {
         id: 7,
         name: 'The Matrix',
-        release_date: '1999-03-31'
+        release_date: '1999-03-31',
+        fun_fact: 'The actors trained in martial arts for months before shooting to perform many of their own stunts.'
       },
       {
         id: 8,
@@ -152,7 +149,8 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
       {
         id: 28,
         name: 'La La Land',
-        release_date: '2016-12-09'
+        release_date: '2016-12-09',
+        fun_fact: 'Ryan Gosling learned to play the piano for his role, mastering several songs within three months.'
       },
       {
         id: 29,
@@ -162,7 +160,8 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
       {
         id: 30,
         name: 'Parasite',
-        release_date: '2019-10-11'
+        release_date: '2019-10-11',
+        fun_fact: 'It became the first non-English language film to win the Academy Award for Best Picture.'
       },
       {
         id: 31,
@@ -182,7 +181,8 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
       {
         id: 34,
         name: 'Black Panther',
-        release_date: '2018-02-16'
+        release_date: '2018-02-16',
+        fun_fact: 'The Wakandan language is based on the real South African language, Xhosa.'
       },
       {
         id: 35,
@@ -264,24 +264,23 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
         name: 'Good Will Hunting',
         release_date: '1997-12-05'
       }
-    ].map do |item|
-      CustomObject.new(item)
-    end
+    ]
   end
 
   def fields
-    field :id, as: :id
-    field :name, as: :text
-    field :release_date, as: :date
-  end
-end
+    main_panel do
+      field :id, as: :id
+      field :name, as: :text
+      field :release_date, as: :date
+      field :fun_fact, visible: -> { resource.record.fun_fact.present? } do
+        record.fun_fact.truncate_words(10)
+      end
 
-class CustomObject
-  include ActiveModel::Model
-
-  attr_accessor :id, :name, :release_date
-
-  def to_param
-    id
+      sidebar do
+        field :fun_fact do
+          record.fun_fact || "There is no register of a fun fact for #{record.name}"
+        end
+      end
+    end
   end
 end

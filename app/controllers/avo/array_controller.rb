@@ -3,7 +3,7 @@ module Avo
 
     def apply_pagination
       # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
-      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: @resource.itemss)
+      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: @resource.fetch_records)
     end
 
 

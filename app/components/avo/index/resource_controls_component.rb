@@ -16,6 +16,10 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_edit?
+    # Disable edit for ArrayResources
+    # We may enable it and provide a DSL where a edit link is mandatory to enable array resources edit.
+    return false if Avo::Resources::ArrayResource.descendants.include?(@resource.class)
+
     return authorize_association_for(:edit) if @reflection.present?
 
     @resource.authorization.authorize_action(:edit, raise_exception: false)
