@@ -54,7 +54,7 @@ module Avo
       def fill_field(record, key, value, params)
         return fill_acts_as_taggable(record, key, value, params) if acts_as_taggable_on.present?
 
-        value = if value.is_a?(String)
+        value = if value.is_a?(String) && mode != :select
           value.split(delimiters[0])
         else
           value
