@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "RecordSelectors", type: :system do
-  let!(:projects) { create_list :project, 5}
+  let!(:projects) { create_list :project, 5 }
 
   it "hold shift and select" do
     visit avo.resources_projects_path
@@ -21,7 +21,7 @@ RSpec.feature "RecordSelectors", type: :system do
     all_checkboxes.last.click(:shift)
 
     # Validate that all checkboxes are selected
-    expect(all_checkboxes.select(&:checked?).count).to be == projects.count
+    expect(all_checkboxes.count(&:checked?)).to be == projects.count
 
     # Click second checkbox
     all_checkboxes[1].click
@@ -30,7 +30,7 @@ RSpec.feature "RecordSelectors", type: :system do
     all_checkboxes.last.click(:shift)
 
     # Validate that only first checkbox is selected
-    expect(all_checkboxes.select(&:checked?).count).to be == 1
+    expect(all_checkboxes.count(&:checked?)).to be == 1
     expect(all_checkboxes.first.checked?).to be true
 
     all_checkboxes.first.click
