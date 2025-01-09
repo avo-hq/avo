@@ -20,27 +20,29 @@ module Avo
       end
 
       def find_record(id, query: nil, params: nil)
-        records.find { |i| i.id.to_s == id.to_s }
+        fetch_records.find { |i| i.id.to_s == id.to_s }
       end
 
       def fetch_records
-        # Dynamically create a class with accessors for all unique keys from the records
-        keys = records.flat_map(&:keys).uniq
+        @fetched_records ||= begin
+          # Dynamically create a class with accessors for all unique keys from the records
+          keys = records.flat_map(&:keys).uniq
 
-        custom_class = Class.new do
-          include ActiveModel::Model
+          custom_class = Class.new do
+            include ActiveModel::Model
 
-          # Dynamically define accessors
-          attr_accessor(*keys)
+            # Dynamically define accessors
+            attr_accessor(*keys)
 
-          define_method(:to_param) do
-            id
+            define_method(:to_param) do
+              id
+            end
           end
-        end
 
-        # Map the records to instances of the dynamically created class
-        records.map do |item|
-          custom_class.new(item)
+          # Map the records to instances of the dynamically created class
+          records.map do |item|
+            custom_class.new(item)
+          end
         end
       end
     end
