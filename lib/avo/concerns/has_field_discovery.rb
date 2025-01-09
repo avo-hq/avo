@@ -98,6 +98,16 @@ module Avo
         nil
       end
 
+      def model_enums
+        @model_enums ||= if safe_model_class.respond_to?(:defined_enums)
+          safe_model_class.defined_enums.transform_values do |enum_values|
+            { field: "select", enum: "::#{safe_model_class.name}.#{enum_values.keys.first.pluralize}" }
+          end
+        else
+          {}
+        end.with_indifferent_access
+      end
+
       # Determines if a column is included in the discovery scope.
       # A column is in scope if it's included in `only` and not in `except`.
       def column_in_scope?(column_name)
@@ -105,11 +115,9 @@ module Avo
       end
 
       def determine_field_config(attribute, column)
-        if safe_model_class.respond_to?(:defined_enums) && safe_model_class.defined_enums[attribute.to_s]
-          return { field: "select", enum: "::#{safe_model_class.name}.#{attribute.to_s.pluralize}" }
-        end
-
-        self.class.column_names_mapping[attribute] || self.class.column_types_mapping[column.type]
+        model_enums[attribute.to_s] ||
+          self.class.column_names_mapping[attribute] ||
+          self.class.column_types_mapping[column.type]
       end
 
       def build_field_options(field_config, column)
