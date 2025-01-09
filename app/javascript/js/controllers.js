@@ -29,6 +29,7 @@ import PanelRefreshController from './controllers/fields/panel_refresh_controlle
 import PerPageController from './controllers/per_page_controller'
 import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
+import RecordSelectorController from './controllers/record_selector_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
@@ -72,6 +73,7 @@ application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('per-page', PerPageController)
 application.register('preview', PreviewController)
+application.register('record-selector', RecordSelectorController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
 application.register('resource-show', ResourceShowController)

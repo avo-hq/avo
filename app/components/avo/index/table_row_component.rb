@@ -13,6 +13,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
   prop :actions
   prop :fields
   prop :header_fields
+  prop :index
 
   def resource_controls_component
     Avo::Index::ResourceControlsComponent.new(
