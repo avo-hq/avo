@@ -75,8 +75,8 @@ module Avo
           process_column(column_name, column)
         end
 
-        discover_by_type(tags, :tags) { |name| name.split('_').pop.join('_').pluralize }
-        discover_by_type(rich_texts, :trix) { |name| name.to_s.delete_prefix('rich_text_') }
+        discover_tags
+        discover_rich_texts
       end
 
       # Discovers and configures associations as fields
@@ -186,6 +186,24 @@ module Avo
           next unless column_in_scope?(association_name)
 
           field association_name, as: as_type, **@field_options.merge(name: yield(association_name))
+        end
+      end
+
+      def discover_rich_texts
+        rich_texts.each do |association_name, reflection|
+          next unless column_in_scope?(association_name)
+
+          field_name = association_name&.to_s&.delete_prefix('rich_text_').to_sym || association_name
+          field field_name, as: :trix, **@field_options
+        end
+      end
+
+      def discover_tags
+        tags.each do |association_name, reflection|
+          next unless column_in_scope?(association_name)
+
+          field_name = association_name&.to_s&.delete_suffix('_taggings').pluralize.to_sym || association_name
+          field field_name, as: :tags, **@field_options.merge(acts_as_taggable_on: field_name)
         end
       end
 
