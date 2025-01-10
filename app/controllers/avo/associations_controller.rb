@@ -25,7 +25,7 @@ module Avo
       @parent_record = @parent_resource.find_record(params[:id], params: params)
       @parent_resource.hydrate(record: @parent_record)
       association_name = BaseResource.valid_association_name(@parent_record, association_from_params)
-      @query = if @field.array
+      @query = if @field.try(:array)
         @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block).handle || @parent_record.try(@field.id))
       else
         @related_authorization.apply_policy @parent_record.send(association_name)
