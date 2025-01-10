@@ -109,7 +109,7 @@ module Avo
       end
 
       def rich_text_column?(column_name)
-        rich_texts.key?("rich_text_#{column_name}")
+        rich_texts.key?(:"rich_text_#{column_name}")
       end
 
       def process_column(column_name, column)
@@ -125,12 +125,16 @@ module Avo
       end
 
       def create_attachment_field(association_name, reflection)
+        field_name = association_name&.to_s&.delete_suffix("_attachment")&.to_sym || association_name
         field_type = determine_attachment_field_type(reflection)
-        field(association_name, as: field_type, **@field_options)
+        field(field_name, as: field_type, **@field_options)
       end
 
       def determine_attachment_field_type(reflection)
-        (reflection.options[:as] == :has_one_attached) ? :file : :files
+        (
+          reflection.is_a?(ActiveRecord::Reflection::HasOneReflection) ||
+          reflection.is_a?(ActiveStorage::Reflection::HasOneAttachedReflection)
+        ) ? :file : :files
       end
 
       def create_association_field(association_name, reflection)
@@ -202,7 +206,11 @@ module Avo
         tags.each_key do |association_name|
           next unless column_in_scope?(association_name)
 
-          field tag_field_name(association_name), as: :tags, **@field_options.merge(acts_as_taggable_on: field_name)
+          field(
+            tag_field_name(association_name), as: :tags,
+            acts_as_taggable_on: tag_field_name(association_name),
+            **@field_options
+          )
         end
       end
 
