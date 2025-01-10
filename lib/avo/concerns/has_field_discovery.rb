@@ -190,21 +190,24 @@ module Avo
       end
 
       def discover_rich_texts
-        rich_texts.each do |association_name, reflection|
+        rich_texts.each_key do |association_name|
           next unless column_in_scope?(association_name)
 
-          field_name = association_name&.to_s&.delete_prefix('rich_text_').to_sym || association_name
+          field_name = association_name&.to_s&.delete_prefix('rich_text_')&.to_sym || association_name
           field field_name, as: :trix, **@field_options
         end
       end
 
       def discover_tags
-        tags.each do |association_name, reflection|
+        tags.each_key do |association_name|
           next unless column_in_scope?(association_name)
 
-          field_name = association_name&.to_s&.delete_suffix('_taggings').pluralize.to_sym || association_name
-          field field_name, as: :tags, **@field_options.merge(acts_as_taggable_on: field_name)
+          field tag_field_name(association_name), as: :tags, **@field_options.merge(acts_as_taggable_on: field_name)
         end
+      end
+
+      def tag_field_name(association_name)
+        association_name&.to_s&.delete_suffix('_taggings')&.pluralize&.to_sym || association_name
       end
 
       def discover_attachments
