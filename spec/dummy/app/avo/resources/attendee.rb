@@ -6,5 +6,3 @@ class Avo::Resources::Attendee < Avo::Resources::ArrayResource
     field :organization
   end
 end
-
-
