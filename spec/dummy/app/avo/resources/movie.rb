@@ -1,5 +1,3 @@
-require "ostruct"
-
 class Avo::Resources::Movie < Avo::Resources::ArrayResource
   # self.includes = []
   # self.attachments = []
