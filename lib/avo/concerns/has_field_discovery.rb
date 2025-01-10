@@ -52,12 +52,12 @@ module Avo
       class_methods do
         def column_names_mapping
           @column_names_mapping ||= DEFAULT_COLUMN_NAMES_MAPPING.dup
-                                      .merge(Avo.configuration.column_names_mapping || {})
+            .merge(Avo.configuration.column_names_mapping || {})
         end
 
         def column_types_mapping
           @column_types_mapping ||= DEFAULT_COLUMN_TYPES_MAPPING.dup
-                                      .merge(Avo.configuration.column_types_mapping || {})
+            .merge(Avo.configuration.column_types_mapping || {})
         end
       end
 
