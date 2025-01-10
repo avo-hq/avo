@@ -25,7 +25,11 @@ module Avo
       @parent_record = @parent_resource.find_record(params[:id], params: params)
       @parent_resource.hydrate(record: @parent_record)
       association_name = BaseResource.valid_association_name(@parent_record, association_from_params)
-      @query = @related_authorization.apply_policy @parent_record.send(association_name)
+      @query = if @field.array
+        @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block).handle || @parent_record.try(@field.id))
+      else
+        @related_authorization.apply_policy @parent_record.send(association_name)
+      end
       @association_field = find_association_field(resource: @parent_resource, association: params[:related_name])
 
       if @association_field.present? && @association_field.scope.present?
@@ -125,7 +129,7 @@ module Avo
     end
 
     def set_attachment_class
-      @attachment_class = @reflection.klass
+      @attachment_class = @reflection.klass if !@field.try(:array)
     end
 
     def set_attachment_resource

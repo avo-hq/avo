@@ -17,6 +17,11 @@ module Generators
         type: :string,
         required: false
 
+      class_option "array",
+        desc: "Indicates if the resource should be an array.",
+        type: :boolean,
+        default: false
+
       def create
         return if override_controller?
 
@@ -25,6 +30,14 @@ module Generators
       end
 
       no_tasks do
+        def parent_resource
+          if options["array"]
+            "Avo::Resources::ArrayResource"
+          else
+            "Avo::BaseResource"
+          end
+        end
+
         def can_connect_to_the_database?
           result = false
           begin

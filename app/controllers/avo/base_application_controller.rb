@@ -90,6 +90,8 @@ module Avo
 
       return field.use_resource if field&.use_resource.present?
 
+      return Avo.resource_manager.get_resource_by_name field.id.to_s if field.try(:array)
+
       reflection = @record.class.reflect_on_association(field&.for_attribute || params[:related_name])
 
       reflected_model = reflection.klass

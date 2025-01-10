@@ -1,8 +1,11 @@
 module Avo
   module Fields
     class HasManyField < HasBaseField
+      attr_reader :array
+
       def initialize(id, **args, &block)
         args[:updatable] = false
+        @array = args[:array]
 
         only_on Avo.configuration.resource_default_view
 
