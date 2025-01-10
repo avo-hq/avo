@@ -4,8 +4,38 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   let!(:user) { create :user, first_name: "John", last_name: "Doe", birthday: "1990-01-01", email: "john.doe@example.com" }
   let!(:post) { create :post, user: user, name: "Sample Post" }
 
+  before do
+    Avo::Resources::User.with_temporary_items do
+      main_panel do
+        discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
+        discover_associations only: %i[cv_attachment]
+
+        sidebar do
+          with_options only_on: :show do
+            discover_columns only: %i[email], as: :gravatar, link_to_record: true, as_avatar: :circle
+            field :heading, as: :heading, label: ""
+            discover_columns only: %i[active], name: "Is active"
+          end
+
+          discover_columns only: %i[birthday]
+
+          field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
+          field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
+
+          with_options only_on: :forms do
+            field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+            discover_columns only: %i[custom_css]
+          end
+        end
+      end
+
+      discover_associations only: %i[posts]
+      discover_associations except: %i[posts post cv_attachment]
+    end
+  end
+
   describe "Show Page" do
-    let(:url) { "/admin/resources/field_discovery_users/#{user.slug}" }
+    let(:url) { "/admin/resources/users/#{user.slug}" }
 
     before { visit url }
 
@@ -37,7 +67,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       # Verify `posts` association
       expect(page).to have_text "Posts"
       expect(page).to have_text "Sample Post"
-      expect(page).to have_link "Sample Post", href: "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AFieldDiscoveryUser"
+      expect(page).to have_link "Sample Post", href: "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
 
       # Verify `cv_attachment` association is present
       expect(page).to have_text "CV"
@@ -73,7 +103,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   end
 
   describe "Index Page" do
-    let(:url) { "/admin/resources/field_discovery_users" }
+    let(:url) { "/admin/resources/users" }
 
     before { visit url }
 
@@ -89,7 +119,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   end
 
   describe "Form Page" do
-    let(:url) { "/admin/resources/field_discovery_users/#{user.id}/edit" }
+    let(:url) { "/admin/resources/users/#{user.id}/edit" }
 
     before { visit url }
 
@@ -130,7 +160,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   end
 
   describe "Has One Attachment" do
-    let(:url) { "/admin/resources/field_discovery_users/#{user.id}/edit" }
+    let(:url) { "/admin/resources/users/#{user.id}/edit" }
 
     before { visit url }
 
@@ -218,7 +248,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   end
 
   describe "Ignored Fields" do
-    before { visit "/admin/resources/field_discovery_users/#{user.slug}" }
+    before { visit "/admin/resources/users/#{user.slug}" }
 
     it "does not display sensitive fields" do
       wait_for_loaded
