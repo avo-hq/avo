@@ -52,12 +52,12 @@ module Avo
       class_methods do
         def column_names_mapping
           @column_names_mapping ||= DEFAULT_COLUMN_NAMES_MAPPING.dup
-                                                                .merge(Avo.configuration.column_names_mapping || {})
+                                      .merge(Avo.configuration.column_names_mapping || {})
         end
 
         def column_types_mapping
           @column_types_mapping ||= DEFAULT_COLUMN_TYPES_MAPPING.dup
-                                                                .merge(Avo.configuration.column_types_mapping || {})
+                                      .merge(Avo.configuration.column_types_mapping || {})
         end
       end
 
@@ -158,14 +158,14 @@ module Avo
 
       def model_enums
         @model_enums ||= if safe_model_class.respond_to?(:defined_enums)
-                           safe_model_class.defined_enums.transform_values do |options|
-                             {
-                               field: :select,
-                               options:
-                             }
-                           end
-                         else
-                           {}
+          safe_model_class.defined_enums.transform_values do |options|
+            {
+              field: :select,
+              options:
+            }
+          end
+        else
+          {}
         end.with_indifferent_access
       end
 
