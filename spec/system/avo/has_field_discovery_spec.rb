@@ -62,7 +62,6 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
         expect(page).to have_text("IS ACTIVE", count: 1)
         expect(page).to have_text("BIRTHDAY", count: 1)
 
-
         # Single file uploads
         expect(page).to have_text("CV", count: 1)
         expect(page).not_to have_text("CV ATTACHMENT")
@@ -160,7 +159,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       # Verify only one Trix editor instance is present
-      expect(page).to have_css('trix-editor', count: 1)
+      expect(page).to have_css("trix-editor", count: 1)
     end
   end
 
@@ -179,7 +178,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       # Verify only one Trix editor instance is present
-      expect(page).to have_text('TAGS', count: 1)
+      expect(page).to have_text("TAGS", count: 1)
       expect(page).to have_css('[data-target="tag-component"]')
     end
   end
@@ -191,7 +190,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       within('[data-field-id="status"]') do
-        expect(page).to have_css('select')
+        expect(page).to have_css("select")
         expect(page).to have_select(options: ["draft", "published", "archived"])
         expect(page).to have_select(selected: "draft")
       end
