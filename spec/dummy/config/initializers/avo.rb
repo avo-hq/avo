@@ -104,7 +104,7 @@ Avo.configure do |config|
   # end
 
   config.column_names_mapping = {
-    custom_css: { field: "code" },
+    custom_css: {field: "code"}
   }
 end
 
