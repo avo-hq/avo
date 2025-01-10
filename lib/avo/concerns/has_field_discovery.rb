@@ -14,35 +14,35 @@ module Avo
       extend ActiveSupport::Concern
 
       DEFAULT_COLUMN_NAMES_MAPPING = {
-        id: { field: 'id' },
-        description: { field: 'textarea' },
-        gravatar: { field: 'gravatar' },
-        email: { field: 'text' },
-        password: { field: 'password' },
-        password_confirmation: { field: 'password' },
-        created_at: { field: 'date_time' },
-        updated_at: { field: 'date_time' },
-        stage: { field: 'select' },
-        budget: { field: 'currency' },
-        money: { field: 'currency' },
-        country: { field: 'country' }
+        id: {field: "id"},
+        description: {field: "textarea"},
+        gravatar: {field: "gravatar"},
+        email: {field: "text"},
+        password: {field: "password"},
+        password_confirmation: {field: "password"},
+        created_at: {field: "date_time"},
+        updated_at: {field: "date_time"},
+        stage: {field: "select"},
+        budget: {field: "currency"},
+        money: {field: "currency"},
+        country: {field: "country"}
       }.freeze
 
       DEFAULT_COLUMN_TYPES_MAPPING = {
-        primary_key: { field: 'id' },
-        string: { field: 'text' },
-        text: { field: 'textarea' },
-        integer: { field: 'number' },
-        float: { field: 'number' },
-        decimal: { field: 'number' },
-        datetime: { field: 'date_time' },
-        timestamp: { field: 'date_time' },
-        time: { field: 'date_time' },
-        date: { field: 'date' },
-        binary: { field: 'number' },
-        boolean: { field: 'boolean' },
-        references: { field: 'belongs_to' },
-        json: { field: 'code' }
+        primary_key: {field: "id"},
+        string: {field: "text"},
+        text: {field: "textarea"},
+        integer: {field: "number"},
+        float: {field: "number"},
+        decimal: {field: "number"},
+        datetime: {field: "date_time"},
+        timestamp: {field: "date_time"},
+        time: {field: "date_time"},
+        date: {field: "date"},
+        binary: {field: "number"},
+        boolean: {field: "boolean"},
+        references: {field: "belongs_to"},
+        json: {field: "code"}
       }.freeze
 
       COLUMN_NAMES_TO_IGNORE = %i[
@@ -120,7 +120,7 @@ module Avo
       end
 
       def create_field(column_name, field_config)
-        field_options = { as: field_config.dup.delete(:field).to_sym }.merge(field_config)
+        field_options = {as: field_config.dup.delete(:field).to_sym}.merge(field_config)
         field(column_name, **field_options.symbolize_keys, **@field_options.symbolize_keys)
       end
 
@@ -130,7 +130,7 @@ module Avo
       end
 
       def determine_attachment_field_type(reflection)
-        reflection.options[:as] == :has_one_attached ? :file : :files
+        (reflection.options[:as] == :has_one_attached) ? :file : :files
       end
 
       def create_association_field(association_name, reflection)
@@ -166,7 +166,7 @@ module Avo
                            end
                          else
                            {}
-                         end.with_indifferent_access
+        end.with_indifferent_access
       end
 
       # Determines if a column is included in the discovery scope.
@@ -193,7 +193,7 @@ module Avo
         rich_texts.each_key do |association_name|
           next unless column_in_scope?(association_name)
 
-          field_name = association_name&.to_s&.delete_prefix('rich_text_')&.to_sym || association_name
+          field_name = association_name&.to_s&.delete_prefix("rich_text_")&.to_sym || association_name
           field field_name, as: :trix, **@field_options
         end
       end
@@ -207,7 +207,7 @@ module Avo
       end
 
       def tag_field_name(association_name)
-        association_name&.to_s&.delete_suffix('_taggings')&.pluralize&.to_sym || association_name
+        association_name&.to_s&.delete_suffix("_taggings")&.pluralize&.to_sym || association_name
       end
 
       def discover_attachments
@@ -227,7 +227,7 @@ module Avo
       end
 
       def polymorphic_options(reflection)
-        { polymorphic_as: reflection.name, types: detect_polymorphic_types(reflection) }
+        {polymorphic_as: reflection.name, types: detect_polymorphic_types(reflection)}
       end
 
       def detect_polymorphic_types(reflection)
@@ -241,11 +241,11 @@ module Avo
       end
 
       def attachment_associations
-        @attachment_associations ||= reflections.select { |_, r| r.options[:class_name] == 'ActiveStorage::Attachment' }
+        @attachment_associations ||= reflections.select { |_, r| r.options[:class_name] == "ActiveStorage::Attachment" }
       end
 
       def rich_texts
-        @rich_texts ||= reflections.select { |_, r| r.options[:class_name] == 'ActionText::RichText' }
+        @rich_texts ||= reflections.select { |_, r| r.options[:class_name] == "ActionText::RichText" }
       end
 
       def tags
@@ -259,7 +259,7 @@ module Avo
       end
 
       def ignore_reflection?(name)
-        %w[blob blobs tags].include?(name.split('_').pop) || name.to_sym == :taggings
+        %w[blob blobs tags].include?(name.split("_").pop) || name.to_sym == :taggings
       end
     end
   end
