@@ -220,8 +220,6 @@ export default class extends Controller {
       this.updateFieldAttribute(this.hiddenIdTarget, 'value', item._id)
       this.updateFieldAttribute(this.buttonTarget, 'value', this.removeHTMLTags(item._label))
 
-      document.querySelector('.aa-DetachedOverlay').remove()
-
       if (this.hasClearButtonTarget) {
         this.clearButtonTarget.classList.remove('hidden')
       }

@@ -99,6 +99,10 @@ module Avo
       # Flash the messages collected from the action
       flash_messages
 
+      # Always execute turbo_stream.avo_close_modal on all responses, including redirects
+      # Exclude response types intended to keep the modal open
+      # This ensures the modal frame refreshes, preventing it from retaining the SRC of the previous action
+      # and avoids re-triggering that SRC during back navigation
       respond_to do |format|
         format.turbo_stream do
           turbo_response = case @response[:type]
@@ -117,11 +121,14 @@ module Avo
 
             turbo_stream.turbo_frame_set_src(Avo::MODAL_FRAME_ID, src)
           when :redirect
-            turbo_stream.redirect_to(
-              Avo::ExecutionContext.new(target: @response[:path]).handle,
-              turbo_frame: @response[:redirect_args][:turbo_frame],
-              **@response[:redirect_args].except(:turbo_frame)
-            )
+            [
+              turbo_stream.avo_close_modal,
+              turbo_stream.redirect_to(
+                Avo::ExecutionContext.new(target: @response[:path]).handle,
+                turbo_frame: @response[:redirect_args][:turbo_frame],
+                **@response[:redirect_args].except(:turbo_frame)
+              )
+            ]
           when :close_modal
             # Close the modal and flash the messages
             [
@@ -132,7 +139,10 @@ module Avo
             # Reload the page
             back_path = request.referer || params[:referrer].presence || resources_path(resource: @resource)
 
-            turbo_stream.redirect_to(back_path)
+            [
+              turbo_stream.avo_close_modal,
+              turbo_stream.redirect_to(back_path)
+            ]
           end
 
           responses = if @action.appended_turbo_streams.present?

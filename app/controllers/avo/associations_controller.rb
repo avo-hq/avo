@@ -291,20 +291,35 @@ module Avo
       end
     end
 
-    def set_pagination_params
-      pagination_key = "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
+    def pagination_key
+      @pagination_key ||= "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
+    end
 
+    def set_pagination_params
+      set_page_param
+      set_per_page_param
+    end
+
+    def set_page_param
       # avo-resources-project.has_many.avo-resources-user.page
       page_key = "#{pagination_key}.page"
 
-      session[page_key] = params[:page] || session[page_key] || 1
-      @index_params[:page] = session[page_key]
+      @index_params[:page] = if Avo.configuration.session_persistence_enabled?
+        session[page_key] = params[:page] || session[page_key] || 1
+      else
+        params[:page] || 1
+      end
+    end
 
+    def set_per_page_param
       # avo-resources-project.has_many.avo-resources-user.per_page
       per_page_key = "#{pagination_key}.per_page"
 
-      session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
-      @index_params[:per_page] = session[per_page_key]
+      @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
+        session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
+      else
+        params[:per_page] || Avo.configuration.via_per_page
+      end
     end
   end
 end

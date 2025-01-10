@@ -26,6 +26,7 @@ nn:
     click_to_reveal_filters: Vis filter
     close_modal: Lukk modal
     confirm: Stadfest
+    copy: Kopier
     create_new_item: Lag ny %{item}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -104,6 +105,9 @@ nn:
     select_item: Vel
     show_content: Vis innhald
     sign_out: Logg ut
+    sort_asc: Sorter stigande
+    sort_desc: Sorter synkende
+    sort_reset: Nullstill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
@@ -113,6 +117,7 @@ nn:
     undo: angre
     view: Vis
     view_item: vis %{item}
+    visit_record_on_external_path: Besøk posten via ein ekstern lenke
     was_successfully_created: vart oppretta
     was_successfully_updated: vart oppdatert
     x_items_more:

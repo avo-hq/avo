@@ -55,7 +55,7 @@ module Avo
       class_attribute :single_includes, default: []
       class_attribute :single_attachments, default: []
       class_attribute :authorization_policy
-      class_attribute :translation_key
+      class_attribute :custom_translation_key
       class_attribute :default_view_type, default: :table
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
@@ -81,6 +81,7 @@ module Avo
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
       class_attribute :controls_placement, default: nil
+      class_attribute :external_link, default: nil
 
       # EXTRACT:
       class_attribute :ordering
@@ -176,8 +177,9 @@ module Avo
         end
 
         def translation_key
-          @translation_key || "avo.resource_translations.#{class_name.underscore}"
+          custom_translation_key || "avo.resource_translations.#{class_name.underscore}"
         end
+        alias_method :translation_key=, :custom_translation_key=
 
         def name
           name_from_translation_key(count: 1, default: class_name.underscore.humanize)
@@ -254,6 +256,7 @@ module Avo
       delegate :to_param, to: :class
       delegate :find_record, to: :class
       delegate :model_key, to: :class
+      delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
@@ -643,6 +646,12 @@ module Avo
 
       def resolve_component(original_component)
         custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
+      end
+
+      def get_external_link
+        return unless record.persisted?
+
+        Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
 
       private

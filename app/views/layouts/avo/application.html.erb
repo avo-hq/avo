@@ -13,7 +13,7 @@
     <%= render partial: "avo/partials/branding" %>
     <%= render partial: "avo/partials/pre_head" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
-    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", defer: true, as: "style" %>
     <% if Avo::PACKED %>
       <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
     <% else %>
