@@ -35,6 +35,8 @@ RSpec.feature "ArrayResource", type: :system do
     it "using the record method" do
       visit avo.resources_course_path(course)
 
+      scroll_to find('turbo-frame[id="has_many_field_show_attendees"]')
+
       # Wait for "Loading attendees" to disappear
       Timeout.timeout(10) do
         loop do
