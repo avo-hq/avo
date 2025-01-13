@@ -321,7 +321,6 @@ RSpec.describe "Actions", type: :system do
         last_three_checkboxes = checkboxes.last(3)
         last_three_checkboxes.each { |checkbox| checkbox.set(true) }
 
-
         click_on "Actions"
         click_on "Export CSV"
       end
