@@ -105,6 +105,9 @@ nn:
     select_item: Vel
     show_content: Vis innhald
     sign_out: Logg ut
+    sort_asc: Sorter stigande
+    sort_desc: Sorter synkende
+    sort_reset: Nullstill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
