@@ -228,6 +228,7 @@ RSpec.describe "Time field", type: :system do
         close_picker
 
         save
+        wait_for_loaded
 
         expect(find_field_value_element("starting_at").text).to eq "09:30"
       end
