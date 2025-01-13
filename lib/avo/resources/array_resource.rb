@@ -24,11 +24,11 @@ module Avo
       def records = []
 
       def find_record(id, query: nil, params: nil)
-        query = fetch_records
+        fetched_records = fetch_records
 
-        return super if is_active_record_relation?(query)
+        return super(id, query: fetched_records, params:) if is_active_record_relation?(fetched_records)
 
-        query.find { |i| i.id.to_s == id.to_s }
+        fetched_records.find { |i| i.id.to_s == id.to_s }
       end
 
       def fetch_records(array_of_records = records)
@@ -81,7 +81,6 @@ module Avo
       def is_array_of_active_records?(array_of_records = records)
         @is_array_of_active_records ||= array_of_records.all? { |element| element.is_a?(ActiveRecord::Base) }
       end
-
 
       def is_active_record_relation?(array_of_records = records)
         @is_active_record_relation ||= array_of_records.is_a?(ActiveRecord::Relation)
