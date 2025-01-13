@@ -66,7 +66,7 @@
       <%= content_tag :div,
         class: "relative flex items-center justify-between w-full" do %>
         <% # Disable sort for array resources %>
-        <% if field.sortable && !Avo::Resources::ArrayResource.descendants.include?(@resource.class) %>
+        <% if field.sortable && !@resource.try(:is_array_resource?) %>
           <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction),
             class: class_names("flex-1 flex justify-between", text_classes),
             'data-turbo-frame': params[:turbo_frame] do %>

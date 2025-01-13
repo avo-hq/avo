@@ -41,7 +41,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?
     # Disable creation for ArrayResources
-    return false if Avo::Resources::ArrayResource.descendants.include?(@resource.class)
+    return false if @resource.try(:is_array_resource?)
 
     return authorize_association_for(:create) if @reflection.present?
 

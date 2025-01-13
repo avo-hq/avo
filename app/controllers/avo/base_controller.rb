@@ -606,7 +606,7 @@ module Avo
     end
 
     def apply_sorting
-      return if Avo::Resources::ArrayResource.descendants.include?(@resource.class)
+      return if @resource.try(:is_array_resource?)
       return if @index_params[:sort_by].nil?
 
       sort_by = @index_params[:sort_by].to_sym
