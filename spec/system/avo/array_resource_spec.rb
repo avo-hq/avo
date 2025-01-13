@@ -35,9 +35,10 @@ RSpec.feature "ArrayResource", type: :system do
     it "using the record method" do
       visit avo.resources_course_path(course)
 
-      wait_for_loaded
+      Capybara.using_wait_time(Capybara.default_max_wait_time) do
+        expect(page).to have_text("First 6 users")
+      end
 
-      expect(page).to have_text("First 6 users")
       expect(find("table thead").text).to eq "Select all\n\t\nID\n\t\nNAME"
 
       User.first(6).each do |user|
