@@ -72,7 +72,8 @@ module Avo
       end
 
       def array_of_active_records?(array_of_records = records)
-        @array_of_active_records ||= array_of_records.is_a?(ActiveRecord::Relation) || array_of_records.all? { |element| element.is_a?(ActiveRecord::Base)}
+        @array_of_active_records ||= array_of_records.is_a?(ActiveRecord::Relation) ||
+          array_of_records.all? { |element| element.is_a?(ActiveRecord::Base) }
       end
     end
   end
