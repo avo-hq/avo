@@ -30,6 +30,8 @@ module Avo
       end
 
       def fetch_records(array_of_records = records)
+        raise "Unable to fetch any #{name}" if array_of_records.nil?
+
         # When the array of records is declared in a field's block, we need to get that block from the parent resource
         # If there is no block try to pick those from the parent_record
         # Fallback to resource's def records method
@@ -45,7 +47,7 @@ module Avo
         end
 
         @fetched_records ||= if array_of_active_records?(array_of_records)
-          @@model_class = array_of_records.model
+          @@model_class = array_of_records.try(:model) || array_of_records.first.class
           array_of_records
         else
           # Dynamically create a class with accessors for all unique keys from the records
@@ -70,7 +72,7 @@ module Avo
       end
 
       def array_of_active_records?(array_of_records = records)
-        @array_of_active_records ||= array_of_records.is_a?(ActiveRecord::Relation)
+        @array_of_active_records ||= array_of_records.is_a?(ActiveRecord::Relation) || array_of_records.all? { |element| element.is_a?(ActiveRecord::Base)}
       end
     end
   end

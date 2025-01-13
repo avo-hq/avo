@@ -72,4 +72,8 @@ class Course < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["links"]
   end
+
+  def attendees
+    User.all.first(6)
+  end
 end
