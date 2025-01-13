@@ -9,9 +9,9 @@ module Avo
       # set_record will fail if it's tried to be used from the Index page.
       request.params[:id].present?
     end
-    before_action :set_action, only: [:show, :handle]
+    before_action :set_action, :set_query, only: [:show, :handle]
     before_action :verify_authorization, only: [:show, :handle]
-    before_action :set_query, :set_fields, only: :handle
+    before_action :set_fields, only: [:handle]
 
     layout :choose_layout
 
