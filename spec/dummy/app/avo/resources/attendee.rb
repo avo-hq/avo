@@ -11,7 +11,7 @@ class Avo::Resources::Attendee < Avo::Resources::ArrayResource
 
   def fields
     field :id, as: :id
-    field :name, copyable: true
+    field :name
 
     with_options visible: -> { !resource.record.is_a?(User) } do
       field :role
