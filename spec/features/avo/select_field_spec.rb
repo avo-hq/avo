@@ -250,7 +250,7 @@ RSpec.feature "Select", type: :feature do
         save
         expect(Product.last.sizes).to match_array(["medium", "small", "large"])
       end
-      it "allows deselecting of previously selected values" do
+      it "allow deselecting of previously selected values" do
         visit avo.edit_resources_product_path(product)
         expect(page).to have_select "product_sizes", selected: ["Large"], multiple: true, options: ['Large', 'Medium', 'Small']
         page.unselect "Large", from: "Sizes"
