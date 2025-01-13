@@ -34,6 +34,10 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     end
   end
 
+  after do
+    Avo::Resources::User.restore_items_from_backup
+  end
+
   describe "Show Page" do
     let(:url) { "/admin/resources/users/#{user.slug}" }
 
@@ -178,6 +182,10 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     let(:event) { create :event }
     let(:url) { "/admin/resources/events/#{event.id}/edit" }
 
+    after do
+      Avo::Resources::Event.restore_items_from_backup
+    end
+
     before do
       Avo::Resources::Event.with_temporary_items do
         discover_columns
@@ -196,6 +204,10 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   describe "Tags" do
     let(:post) { create :post }
     let(:url) { "/admin/resources/posts/#{post.id}" }
+
+    after do
+      Avo::Resources::Post.restore_items_from_backup
+    end
 
     before do
       Avo::Resources::Post.with_temporary_items do
@@ -222,7 +234,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       within('[data-field-id="status"]') do
         expect(page).to have_css("select")
         expect(page).to have_select(options: ["draft", "published", "archived"])
-        expect(page).to have_select(selected: "draft")
+        expect(page).to have_select(selected: post.status)
       end
     end
   end
@@ -230,6 +242,11 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   describe "Polymorphic Associations" do
     let(:post) { create :post }
     let(:comment) { create :comment, commentable: post }
+
+    after do
+      Avo::Resources::Comment.restore_items_from_backup
+    end
+
     before do
       Avo::Resources::Comment.with_temporary_items do
         discover_associations
