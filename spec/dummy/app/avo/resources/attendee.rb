@@ -1,9 +1,9 @@
 class Avo::Resources::Attendee < Avo::Resources::ArrayResource
   self.description = -> {
-    return if params["resource_name"] == "events"
+    return "Attendees from field block" if params["resource_name"] == "events"
     return "First 6 users" if params["resource_name"] == "courses"
 
-    "All the users rendered as array resource"
+    "#{@record&.name || "All the users"} rendered as array resource"
   }
 
   # Test array resource, this method should be called only on attendees index
@@ -11,7 +11,7 @@ class Avo::Resources::Attendee < Avo::Resources::ArrayResource
 
   def fields
     field :id, as: :id
-    field :name
+    field :name, copyable: true
 
     with_options visible: -> { !resource.record.is_a?(User) } do
       field :role

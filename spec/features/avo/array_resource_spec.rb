@@ -36,10 +36,4 @@ RSpec.feature "ArrayResource", type: :feature do
       expect(name).to eq User.first.name
     end
   end
-
-  describe "from has_many association to show" do
-    it "using the field block" do
-
-    end
-  end
 end

@@ -24,9 +24,11 @@ module Avo
       def records = []
 
       def find_record(id, query: nil, params: nil)
-        return super if array_of_active_records?
+        query = fetch_records
 
-        fetch_records.find { |i| i.id.to_s == id.to_s }
+        return super if is_active_record_relation?(query)
+
+        query.find { |i| i.id.to_s == id.to_s }
       end
 
       def fetch_records(array_of_records = records)
@@ -35,7 +37,7 @@ module Avo
         # When the array of records is declared in a field's block, we need to get that block from the parent resource
         # If there is no block try to pick those from the parent_record
         # Fallback to resource's def records method
-        if array_of_records.empty? && params[:via_resource_class].present?
+        if params[:via_resource_class].present?
           via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
           via_record = via_resource.find_record params[:via_record_id], params: params
           via_resource = via_resource.new record: via_record, view: :show
@@ -43,11 +45,16 @@ module Avo
 
           association_field = find_association_field(resource: via_resource, association: route_key)
 
-          array_of_records = Avo::ExecutionContext.new(target: association_field.block).handle || via_record.try(route_key)
+          records_from_field_or_record = Avo::ExecutionContext.new(target: association_field.block).handle || via_record.try(route_key)
+
+          array_of_records = records_from_field_or_record || array_of_records
         end
 
-        @fetched_records ||= if array_of_active_records?(array_of_records)
-          @@model_class = array_of_records.try(:model) || array_of_records.first.class
+        @fetched_records ||= if is_array_of_active_records?(array_of_records)
+          @@model_class = array_of_records.first.class
+          @@model_class.where(id: array_of_records.map(&:id))
+        elsif is_active_record_relation?(array_of_records)
+          @@model_class = array_of_records.try(:model)
           array_of_records
         else
           # Dynamically create a class with accessors for all unique keys from the records
@@ -71,9 +78,13 @@ module Avo
         end
       end
 
-      def array_of_active_records?(array_of_records = records)
-        @array_of_active_records ||= array_of_records.is_a?(ActiveRecord::Relation) ||
-          array_of_records.all? { |element| element.is_a?(ActiveRecord::Base) }
+      def is_array_of_active_records?(array_of_records = records)
+        @is_array_of_active_records ||= array_of_records.all? { |element| element.is_a?(ActiveRecord::Base) }
+      end
+
+
+      def is_active_record_relation?(array_of_records = records)
+        @is_active_record_relation ||= array_of_records.is_a?(ActiveRecord::Relation)
       end
     end
   end
