@@ -58,7 +58,6 @@ module Avo
 
       def to_permitted_param
         return id unless @multiple
-
         {"#{id}": []}
       end
 

@@ -1,11 +1,10 @@
 <%= field_wrapper **field_wrapper_args do %>
   <%= @form.select @field.id, options_for_select(@field.options_for_select, selected: @field.value), {
       include_blank: @field.include_blank,
-      multiple: @field.multiple,
-      aria: {
-        placeholder: @field.placeholder
-      },
-      include_hidden: false
+      multiple: @field.multiple
+    },
+    aria: {
+      placeholder: @field.placeholder
     },
     class: classes("w-full"),
     data: @field.get_html(:data, view: view, element: :input),
