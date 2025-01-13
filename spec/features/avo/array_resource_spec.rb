@@ -25,7 +25,7 @@ RSpec.feature "ArrayResource", type: :feature do
     end
 
     it "render the attendees index using the def records resource method and navigate to show" do
-      visit path = avo.resources_attendees_path
+      visit avo.resources_attendees_path
 
       expect(find("table thead").text).to eq "Select all\nId\nName"
       expect(page).to have_text User.first.name
@@ -38,6 +38,8 @@ RSpec.feature "ArrayResource", type: :feature do
   end
 
   describe "from has_many association to show" do
+    it "using the field block" do
 
+    end
   end
 end
