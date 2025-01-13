@@ -61,6 +61,7 @@ RSpec.describe "timezone", type: :system do
           close_picker
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "March 25, 2024 09:24:17 CET"
         end
