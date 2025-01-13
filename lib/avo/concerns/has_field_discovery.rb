@@ -13,7 +13,7 @@ module Avo
     module HasFieldDiscovery
       extend ActiveSupport::Concern
 
-      DEFAULT_COLUMN_NAMES_MAPPING ||= {
+      DEFAULT_COLUMN_NAMES_MAPPING = {
         id: {field: "id"},
         description: {field: "textarea"},
         gravatar: {field: "gravatar"},
@@ -28,7 +28,7 @@ module Avo
         country: {field: "country"}
       }.freeze
 
-      DEFAULT_COLUMN_TYPES_MAPPING ||= {
+      DEFAULT_COLUMN_TYPES_MAPPING = {
         primary_key: {field: "id"},
         string: {field: "text"},
         text: {field: "textarea"},
@@ -45,7 +45,7 @@ module Avo
         json: {field: "code"}
       }.freeze
 
-      COLUMN_NAMES_TO_IGNORE ||= %i[
+      COLUMN_NAMES_TO_IGNORE = %i[
         encrypted_password reset_password_token reset_password_sent_at remember_created_at password_digest
       ].freeze
 
