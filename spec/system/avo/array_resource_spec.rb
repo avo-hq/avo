@@ -9,6 +9,8 @@ RSpec.feature "ArrayResource", type: :system do
     it "using the field block" do
       visit avo.resources_event_path(event)
 
+      wait_for_loaded
+
       expect(find("table thead").text).to eq "Select all\n\t\nID\n\t\nNAME\n\t\nROLE\n\t\nORGANIZATION"
 
       expect(page).to have_text("Attendees from field")
@@ -32,6 +34,8 @@ RSpec.feature "ArrayResource", type: :system do
 
     it "using the record method" do
       visit avo.resources_course_path(course)
+
+      wait_for_loaded
 
       expect(page).to have_text("First 6 users")
       expect(find("table thead").text).to eq "Select all\n\t\nID\n\t\nNAME"
