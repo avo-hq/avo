@@ -35,7 +35,14 @@ RSpec.feature "ArrayResource", type: :system do
     it "using the record method" do
       visit avo.resources_course_path(course)
 
-      expect(page).to have_no_text("Loading attendees", wait: 10)
+      # Wait for "Loading attendees" to disappear
+      Timeout.timeout(10) do
+        loop do
+          break unless page.has_text?("Loading attendees")
+
+          sleep 0.5 # Small delay to avoid excessive retries
+        end
+      end
 
       expect(page).to have_text("First 6 users")
 
