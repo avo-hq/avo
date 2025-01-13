@@ -36,6 +36,7 @@ RSpec.feature "ArrayResource", type: :system do
       visit avo.resources_course_path(course)
 
       expect(page).to have_no_text("Loading attendees", wait: 10)
+
       expect(page).to have_text("First 6 users")
 
       expect(find("table thead").text).to eq "Select all\n\t\nID\n\t\nNAME"
