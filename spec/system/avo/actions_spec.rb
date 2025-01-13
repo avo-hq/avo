@@ -307,6 +307,27 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe 'query' do
+    let!(:projects) { create_list(:project, 4) }
+
+    context 'when selecting three records and executing an action' do
+      it 'sends the correct query count to TestBuddy' do
+        allow(TestBuddy).to receive(:hi).and_call_original
+        expect(TestBuddy).to receive(:hi).with("Query count: 3")
+
+        visit "/admin/resources/projects"
+
+        checkboxes = all("input[type='checkbox'][name='Select item']")
+        last_three_checkboxes = checkboxes.last(3)
+        last_three_checkboxes.each { |checkbox| checkbox.set(true) }
+
+
+        click_on "Actions"
+        click_on "Export CSV"
+      end
+    end
+  end
+
   describe "fields" do
     context "boolean group fields" do
       it "pass through fields params" do

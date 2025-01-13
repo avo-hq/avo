@@ -70,6 +70,8 @@ module Avo
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
 
       @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+
+      TestBuddy.hi("Query count: #{@query.size}")
     end
 
     def set_fields
