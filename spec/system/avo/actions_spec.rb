@@ -307,11 +307,11 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
-  describe 'query' do
+  describe "query" do
     let!(:projects) { create_list(:project, 4) }
 
-    context 'when selecting three records and executing an action' do
-      it 'sends the correct query count to TestBuddy' do
+    context "when selecting three records and executing an action" do
+      it "sends the correct query count to TestBuddy" do
         allow(TestBuddy).to receive(:hi).and_call_original
         expect(TestBuddy).to receive(:hi).with("Query count: 3")
 
