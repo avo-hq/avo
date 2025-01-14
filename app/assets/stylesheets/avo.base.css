@@ -23,6 +23,7 @@
 @import './css/fields/status.css';
 @import './css/fields/code.css';
 @import './css/fields/progress.css';
+@import './css/fields/markdown.css';
 @import './css/fields/trix.css';
 @import './css/fields/tags.css';
 @import './css/fields/tiptap.css';
