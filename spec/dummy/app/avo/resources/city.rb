@@ -91,7 +91,7 @@ class Avo::Resources::City < Avo::BaseResource
       field :is_capital, as: :boolean, filterable: true
       field :features, as: :key_value
       field :image_url, as: :external_image
-      field :tiny_description, as: :markdown
+      field :tiny_description, as: :easy_mde
       field :status, as: :badge, enum: ::City.statuses
     end
   end
