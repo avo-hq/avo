@@ -443,6 +443,7 @@ GEM
       ffi (~> 1.0)
     rbs (2.8.4)
     rdoc (6.3.4.1)
+    redcarpet (3.6.0)
     redis (5.3.0)
       redis-client (>= 0.22.0)
     redis-client (0.23.0)
@@ -688,6 +689,7 @@ DEPENDENCIES
   rails (~> 6.1)
   rails-controller-testing
   ransack (>= 4.2.0)
+  redcarpet
   redis (~> 5.0)
   ripper-tags
   rspec-rails (~> 6.0, >= 6.0.3)
