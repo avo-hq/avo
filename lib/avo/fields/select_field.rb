@@ -57,8 +57,15 @@ module Avo
       end
 
       def to_permitted_param
-        return id unless @multiple
-        {"#{id}": []}
+        @multiple ? {"#{id}": []} : id
+      end
+
+      def fill_field(record, key, value, params)
+        if @multiple
+          value = value.reject(&:blank?)
+        end
+
+        super
       end
 
       private

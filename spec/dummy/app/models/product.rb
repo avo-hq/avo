@@ -12,8 +12,6 @@
 #  updated_at  :datetime         not null
 #
 class Product < ApplicationRecord
-  before_validation :sanitize_sizes
-  
   monetize :price_cents
   if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
     enum :category, [
@@ -33,10 +31,4 @@ class Product < ApplicationRecord
 
   has_one_attached :image
   has_many_attached :images
-
-  private
-
-  def sanitize_sizes
-    self.sizes = sizes.reject(&:blank?)
-  end
 end
