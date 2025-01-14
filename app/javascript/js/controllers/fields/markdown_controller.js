@@ -3,6 +3,7 @@ import '@github/markdown-toolbar-element'
 import { Controller } from '@hotwired/stimulus'
 import { DirectUpload } from '@rails/activestorage'
 import { post } from '@rails/request.js'
+import { subscribe } from '@github/paste-markdown'
 
 // upload code from Jeremy Smith's blog post
 // https://hybrd.co/posts/github-issue-style-file-uploader-using-stimulus-and-active-storage
@@ -17,6 +18,10 @@ export default class extends Controller {
   }
 
   static targets = ['fieldElement', 'previewElement', 'writeTabButton', 'previewTabButton']
+
+  connect() {
+    subscribe(this.fieldElementTarget, { defaultPlainTextPaste: { urlLinks: true } })
+  }
 
   switchToWrite(event) {
     event.preventDefault()

@@ -1355,6 +1355,11 @@
   resolved "https://registry.yarnpkg.com/@github/markdown-toolbar-element/-/markdown-toolbar-element-2.2.3.tgz#a062b0f79ab458b0adae01b6bb6c51c846526049"
   integrity sha512-AlquKGee+IWiAMYVB0xyHFZRMnu4n3X4HTvJHu79GiVJ1ojTukCWyxMlF5NMsecoLcBKsuBhx3QPv2vkE/zQ0A==
 
+"@github/paste-markdown@^1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@github/paste-markdown/-/paste-markdown-1.5.3.tgz#75b404fbbae173e7c7f0ab1d7a920623b7eadc0c"
+  integrity sha512-PzZ1b3PaqBzYqbT4fwKEhiORf38h2OcGp2+JdXNNM7inZ7egaSmfmhyNkQILpqWfS0AYtRS3CDq6z03eZ8yOMQ==
+
 "@hotwired/stimulus@>=3.0.0":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.0.1.tgz#141f15645acaa3b133b7c247cad58ae252ffae85"
