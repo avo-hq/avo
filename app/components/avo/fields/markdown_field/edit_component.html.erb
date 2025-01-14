@@ -10,12 +10,12 @@
       markdown_field_resource_class_value: @resource.class.name,
       markdown_field_field_id_value: @field.id,
     } do %>
-    <div class="w-full flex-1 grow flex justify-bewteen bg-slate-50 rounded px-2 py-1">
+    <div class="w-full flex-1 grow flex justify-bewteen bg-zinc-50 rounded px-2 py-1">
       <div class="flex-1 flex items-center">
         <button class="<%= BUTTON_CLASSES %>" data-action="click->markdown-field#switchToPreview" data-markdown-field-target="previewTabButton">
           Preview
         </button>
-        <button class="<%= BUTTON_CLASSES %> hidden bg-slate-200" data-action="click->markdown-field#switchToWrite" data-markdown-field-target="writeTabButton">
+        <button class="<%= BUTTON_CLASSES %> hidden bg-zinc-200" data-action="click->markdown-field#switchToWrite" data-markdown-field-target="writeTabButton">
           Write
         </button>
       </div>
