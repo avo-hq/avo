@@ -1,0 +1,5 @@
+<%= turbo_stream.update params[:element_id] do %>
+  <div class="trix-content py-2 px-3">
+    <%= sanitize(@result) %>
+  </div>
+<% end %>

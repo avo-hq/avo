@@ -1,17 +1,61 @@
 <%= field_wrapper **field_wrapper_args, full_width: true do %>
-  <div data-controller="easy-mde">
-    <%= @form.text_area @field.id,
-      value: @field.value,
-      class: classes("w-full js-has-easy-mde-editor"),
-      data: {
-        view: view,
-        'easy-mde-target': 'element',
-        'component-options': @field.options.to_json,
-      },
-      disabled: disabled?,
-      placeholder: @field.placeholder,
-      autofocus: @autofocus,
-      style: @field.get_html(:style, view: view, element: :input)
-    %>
+  <%= content_tag :div,
+    class: "flex flex-col w-full border rounded",
+    data: {
+      controller: "markdown-field",
+      markdown_field_target: "toolbar",
+      markdown_field_preview_url_value: helpers.avo.markdown_previews_path,
+      markdown_field_active_tab_class: "bg-white",
+      markdown_field_attach_url_value: rails_direct_uploads_url,
+      markdown_field_resource_class_value: @resource.class.name,
+      markdown_field_field_id_value: @field.id,
+    } do %>
+    <div class="w-full flex-1 grow flex justify-bewteen bg-slate-50 rounded px-2 py-1">
+      <div class="flex-1 flex items-center">
+        <button class="<%= BUTTON_CLASSES %>" data-action="click->markdown-field#switchToPreview" data-markdown-field-target="previewTabButton">
+          Preview
+        </button>
+        <button class="<%= BUTTON_CLASSES %> hidden bg-slate-200" data-action="click->markdown-field#switchToWrite" data-markdown-field-target="writeTabButton">
+          Write
+        </button>
+      </div>
+
+      <markdown-toolbar for="<%= @field.id %>" class="flex space-x-1">
+        <md-bold class="<%= BUTTON_CLASSES %>"><%= helpers.svg "heroicons/outline/bold", class: "inline size-4" %></md-bold>
+        <md-header class="<%= BUTTON_CLASSES %>"><%= helpers.svg "avo/heading", class: "inline size-4" %></md-header>
+        <md-italic class="<%= BUTTON_CLASSES %>"><%= helpers.svg "heroicons/outline/italic", class: "inline size-4" %></md-italic>
+        <md-quote class="<%= BUTTON_CLASSES %>"><%= helpers.svg "avo/quote", class: "inline size-4" %></md-quote>
+        <md-code class="<%= BUTTON_CLASSES %>"><%= helpers.svg "heroicons/outline/code", class: "inline size-4" %></md-code>
+        <md-link class="<%= BUTTON_CLASSES %>"><%= helpers.svg "heroicons/outline/link", class: "inline size-4" %></md-link>
+        <md-image class="<%= BUTTON_CLASSES %>"><%= helpers.svg "heroicons/outline/photo", class: "inline size-4" %></md-image>
+        <md-unordered-list class="<%= BUTTON_CLASSES %>"><%= helpers.svg "heroicons/outline/list-bullet", class: "inline size-4" %></md-unordered-list>
+        <md-ordered-list class="<%= BUTTON_CLASSES %>"><%= helpers.svg "heroicons/outline/numbered-list", class: "inline size-4" %></md-ordered-list>
+        <md-task-list class="<%= BUTTON_CLASSES %>"><%= helpers.svg "avo/list-todo", class: "inline size-4" %></md-task-list>
+      </markdown-toolbar>
+    </div>
+
+    <div class="border-t">
+      <%= @form.text_area @field.id,
+        id: @field.id,
+        value: @field.value,
+        class: ("flex flex-1 rounded border-none w-full py-2 px-3"),
+        rows: 20,
+        data: {
+          markdown_field_target: "fieldElement",
+          action: "drop->markdown-field#dropUpload paste->markdown-field#pasteUpload"
+        },
+        disabled: disabled?,
+        placeholder: @field.placeholder,
+        autofocus: @autofocus,
+        style: @field.get_html(:style, view: view, element: :input)
+      %>
+      <%= content_tag :div, class: "hidden markdown-preview", id: "markdown-preview-#{@field.id}", data: { markdown_field_target: "previewElement" } do %>
+        <div class="button-spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
+      <% end %>
+    </div>
   </div>
+  <% end %>
 <% end %>
