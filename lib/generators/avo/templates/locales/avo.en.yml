@@ -85,6 +85,7 @@ en:
       to_top: Move record to top
     per_page: Per page
     prev_page: Previous page
+    preview: preview
     records_selected_from_all_pages_html: All records selected from all pages
     remove_selection: Remove selection
     reset: reset
@@ -118,6 +119,7 @@ en:
     visit_record_on_external_path: Visit record on external path
     was_successfully_created: was successfully created
     was_successfully_updated: was successfully updated
+    write: write
     x_items_more:
       one: one more item
       other: "%{count} more items"
@@ -129,3 +131,13 @@ en:
     you_cant_upload_new_resource: You can't upload files into the Trix editor until you save the resource.
     you_havent_set_attachment_key: You haven't set an `attachment_key` to this Trix field.
     you_missed_something_check_form: You might have missed something. Please check the form.
+    bold: bold
+    heading: heading
+    italic: italic
+    quote: quote
+    code: code
+    link: link
+    image: image
+    unordered_list: unordered list
+    ordered_list: ordered list
+    task_list: task list
