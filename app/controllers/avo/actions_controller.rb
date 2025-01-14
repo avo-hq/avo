@@ -93,9 +93,13 @@ module Avo
         user: _current_user,
         # force the action view to in order to render new-related fields (hidden field)
         view: Avo::ViewInquirer.new(:new),
+<<<<<<< HEAD
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
         query: @query,
         index_query: decrypted_index_query
+=======
+        arguments: BaseAction.decode_arguments(action_arguments) || {}
+>>>>>>> e21688a2 (First draft for brakeman dashboard fix)
       )
 
       # Fetch action's fields
@@ -197,6 +201,22 @@ module Avo
 
     def verify_authorization
       raise Avo::NotAuthorizedError.new unless @action.authorized?
+    end
+
+    def resource_id
+      params.permit(:id)[:id]
+    end
+
+    def resource_ids
+      params.permit(:resource_ids)[:resource_ids]
+    end
+
+    def arguments_id
+      params.permit(:arguments)[:arguments]
+    end
+
+    def action_arguments
+      params[:arguments] || params.dig(:fields, :arguments)
     end
   end
 end

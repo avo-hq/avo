@@ -291,6 +291,7 @@ module Avo
             render turbo_stream: reload_frame_turbo_streams
           end
         else
+           #the method below should be refactored to remove the params.permit! and specify which exact keys should be passed to it
           format.html { redirect_to params[:referrer] || resource_view_response_path }
         end
       end
