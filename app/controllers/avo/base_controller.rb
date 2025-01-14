@@ -28,9 +28,7 @@ module Avo
       set_index_params
       set_filters
       set_actions
-
-      # If we don't get a query object predefined from a child controller like associations, just spin one up
-      set_query unless defined? @query
+      set_query
 
       # Eager load the associations
       if @resource.includes.present?
@@ -650,8 +648,9 @@ module Avo
       @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
 
+    # If we don't get a query object predefined from a child controller like associations, just spin one up
     def set_query
-      @query = @resource.class.query_scope
+      @query ||= @resource.class.query_scope
     end
   end
 end
