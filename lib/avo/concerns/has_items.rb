@@ -326,8 +326,11 @@ module Avo
       def hydrate_item(item)
         return unless item.respond_to? :hydrate
 
-        res = (self.class.ancestors.include?(Avo::BaseResource) || self.class.ancestors.include?(Avo::Resources::ArrayResource)) ? self : resource
-        item.hydrate(view: view, resource: res)
+        item.hydrate(
+          view: view,
+          # Use self when this is executed from a resource context, call resource otherwise.
+          resource: self.class.ancestors.include?(Avo::Resources::Base) ? self : resource
+        )
       end
     end
   end

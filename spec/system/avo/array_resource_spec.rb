@@ -37,14 +37,7 @@ RSpec.feature "ArrayResource", type: :system do
 
       scroll_to find('turbo-frame[id="has_many_field_show_attendees"]')
 
-      # Wait for "Loading attendees" to disappear
-      Timeout.timeout(10) do
-        loop do
-          break unless page.has_text?("Loading attendees")
-
-          sleep 0.5 # Small delay to avoid excessive retries
-        end
-      end
+      wait_for_turbo_frame_id("has_many_field_show_attendees")
 
       expect(page).to have_text("First 6 users")
 
