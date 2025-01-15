@@ -86,7 +86,7 @@ module Avo
         @is_active_record_relation ||= array_of_records.is_a?(ActiveRecord::Relation)
       end
 
-      def is_array_resource? = true
+      def resource_type_array? = true
     end
   end
 end

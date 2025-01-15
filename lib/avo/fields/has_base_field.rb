@@ -122,6 +122,18 @@ module Avo
         }.compact
       end
 
+      def resource_class(params)
+        return use_resource if use_resource.present?
+
+        return Avo.resource_manager.get_resource_by_name @id.to_s if @array
+
+        reflection = @record.class.reflect_on_association(@for_attribute || params[:related_name])
+
+        reflected_model = reflection.klass
+
+        Avo.resource_manager.get_resource_by_model_class reflected_model
+      end
+
       private
 
       def frame_id

@@ -41,7 +41,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def can_see_the_edit_button?
     # Disable edit for ArrayResources
-    return false if @resource.try(:is_array_resource?)
+    return false if @resource.resource_type_array?
 
     return authorize_association_for(:edit) if @reflection.present?
 
@@ -50,7 +50,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def can_see_the_destroy_button?
     # Disable destroy for ArrayResources
-    return false if @resource.try(:is_array_resource?)
+    return false if @resource.resource_type_array?
 
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end

@@ -653,6 +653,8 @@ module Avo
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
 
+      def resource_type_array? = false
+
       private
 
       def flatten_keys(array)
