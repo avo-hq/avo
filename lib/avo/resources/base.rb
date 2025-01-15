@@ -665,6 +665,8 @@ module Avo
         end
       end
 
+      def sorting_supported? = true
+
       private
 
       def flatten_keys(array)

@@ -89,6 +89,8 @@ module Avo
       def resource_type_array? = true
 
       def sort_by_param = nil
+
+      def sorting_supported? = false
     end
   end
 end
