@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class HasOneField < HasBaseField
+    class HasOneField < FrameBaseField
       attr_accessor :relation_method
 
       def initialize(id, **args, &block)

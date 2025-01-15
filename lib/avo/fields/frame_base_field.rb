@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class HasBaseField < BaseField
+    class FrameBaseField < BaseField
       include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
       include Avo::Fields::Concerns::ReloadIcon
