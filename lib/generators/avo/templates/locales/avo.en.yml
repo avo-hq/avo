@@ -16,6 +16,7 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
+    bold: bold
     cancel: Cancel
     choose_a_country: Choose a country
     choose_an_option: Choose an option
@@ -23,6 +24,7 @@ en:
     clear_value: Clear value
     click_to_reveal_filters: Click to reveal filters
     close_modal: Close modal
+    code: code
     confirm: Confirm
     copy: Copy
     create_new_item: Create new %{item}
@@ -50,8 +52,11 @@ en:
     filters: Filters
     go_back: Go back
     grid_view: Grid view
+    heading: heading
     hide_content: Hide content
     home: Home
+    image: image
+    italic: italic
     key_value_field:
       add_row: Add row
       delete_row: Delete row
@@ -59,6 +64,7 @@ en:
       reorder_row: Reorder row
       value: Value
     less_content: Less content
+    link: link
     list_is_empty: List is empty
     loading: Loading
     more: More
@@ -83,9 +89,11 @@ en:
       reorder_record: Reorder record
       to_bottom: Move record to bottom
       to_top: Move record to top
+    ordered_list: ordered list
     per_page: Per page
     prev_page: Previous page
     preview: preview
+    quote: quote
     records_selected_from_all_pages_html: All records selected from all pages
     remove_selection: Remove selection
     reset: reset
@@ -109,11 +117,13 @@ en:
     sort_reset: Reset sorting
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
+    task_list: task list
     this_field_has_attachments_disabled: This field has attachments disabled.
     tools: Tools
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo
+    unordered_list: unordered list
     view: View
     view_item: view %{item}
     visit_record_on_external_path: Visit record on external path
@@ -131,13 +141,3 @@ en:
     you_cant_upload_new_resource: You can't upload files into the Trix editor until you save the resource.
     you_havent_set_attachment_key: You haven't set an `attachment_key` to this Trix field.
     you_missed_something_check_form: You might have missed something. Please check the form.
-    bold: bold
-    heading: heading
-    italic: italic
-    quote: quote
-    code: code
-    link: link
-    image: image
-    unordered_list: unordered list
-    ordered_list: ordered list
-    task_list: task list

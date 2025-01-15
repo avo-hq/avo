@@ -18,6 +18,7 @@ nb:
     attachment_class_detached: "%{attachment_class} fjernet."
     attachment_destroyed: Vedlett slettet
     attachment_failed: Kunne ikke legge ved %{attachment_class}
+    bold: bold
     cancel: Avbryt
     choose_a_country: Velg et land
     choose_an_option: Velg et alternativ
@@ -25,6 +26,7 @@ nb:
     clear_value: Nullstill verdi
     click_to_reveal_filters: Vis filter
     close_modal: Lukk modal
+    code: code
     confirm: Bekreft
     copy: Kopier
     create_new_item: Lag ny %{item}
@@ -52,8 +54,11 @@ nb:
     filters: Filter
     go_back: Gå tilbake
     grid_view: Grid visning
+    heading: heading
     hide_content: Skjul innhold
     home: Hjem
+    image: image
+    italic: italic
     key_value_field:
       add_row: Legg til rad
       delete_row: Slett rad
@@ -61,6 +66,7 @@ nb:
       reorder_row: Omorganiser rad
       value: Verdi
     less_content: Mindre innhold
+    link: link
     list_is_empty: Listen er tom
     loading: Laster
     more: Mer
@@ -85,8 +91,11 @@ nb:
       reorder_record: Sorter elementer
       to_bottom: Flytt elementet til bunnen
       to_top: Flytt elementet til toppen
+    ordered_list: ordered list
     per_page: Per side
     prev_page: Forrige side
+    preview: forhåndsvisning
+    quote: quote
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
     remove_selection: Fjern valg
     reset: nullstille
@@ -110,16 +119,19 @@ nb:
     sort_reset: Tilbakestill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabell visning
+    task_list: task list
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
     tools: Redskapene
     type_to_search: Søk.
     unauthorized: Ikke autorisert
     undo: angre
+    unordered_list: unordered list
     view: Vis
     view_item: vis %{item}
     visit_record_on_external_path: Besøk posten via en ekstern lenke
     was_successfully_created: ble opprettet
     was_successfully_updated: ble oppdatert
+    write: skriv
     x_items_more:
       one: ett element til
       other: "%{count} flere elementer"

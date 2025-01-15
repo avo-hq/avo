@@ -18,6 +18,7 @@ pt-BR:
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
+    bold: bold
     cancel: Cancelar
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção
@@ -25,6 +26,7 @@ pt-BR:
     clear_value: Limpar valor
     click_to_reveal_filters: Clique para revelar os filtros
     close_modal: Fechar modal
+    code: code
     confirm: Confirmar
     copy: Copiar
     create_new_item: Criar novo %{item}
@@ -52,8 +54,11 @@ pt-BR:
     filters: Filtros
     go_back: Voltar
     grid_view: Visualização em grade
+    heading: heading
     hide_content: Esconder conteúdo
     home: Início
+    image: image
+    italic: italic
     key_value_field:
       add_row: Adicionar linha
       delete_row: Remover linha
@@ -61,6 +66,7 @@ pt-BR:
       reorder_row: Reordenar linha
       value: Valor
     less_content: Menos conteúdo
+    link: link
     list_is_empty: Lista vazia
     loading: Carregando
     more: Mais
@@ -85,8 +91,11 @@ pt-BR:
       reorder_record: Reordenar registro
       to_bottom: Mover registro para baixo
       to_top: Mover registro para cima
+    ordered_list: ordered list
     per_page: Por página
     prev_page: Página anterior
+    preview: visualização
+    quote: quote
     records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
     remove_selection: Remover seleção
     reset: resetar
@@ -110,16 +119,19 @@ pt-BR:
     sort_reset: Redefinir ordenação
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
+    task_list: task list
     this_field_has_attachments_disabled: Este campo tem anexos desativados.
     tools: Ferramentas
     type_to_search: Digite para buscar.
     unauthorized: Não autorizado
     undo: desfazer
+    unordered_list: unordered list
     view: Visualizar
     view_item: visualizar %{item}
     visit_record_on_external_path: Visitar registro através de link externo
     was_successfully_created: foi criado com sucesso
     was_successfully_updated: foi atualizado com sucesso
+    write: escrever
     x_items_more:
       one: mais um item
       other: "%{count} mais items"

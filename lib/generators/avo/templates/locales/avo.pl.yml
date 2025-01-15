@@ -16,6 +16,7 @@ pl:
     attachment_class_detached: "%{attachment_class} odłączony."
     attachment_destroyed: Załącznik usunięty
     attachment_failed: Nie udało się dołączyć %{attachment_class}
+    bold: bold
     cancel: Anuluj
     choose_a_country: Wybierz kraj
     choose_an_option: Wybierz opcję
@@ -23,6 +24,7 @@ pl:
     clear_value: Wyczyść wartość
     click_to_reveal_filters: Kliknij, aby pokazać filtry
     close_modal: Zamknij okno modalne
+    code: code
     confirm: Potwierdź
     copy: Kopiuj
     create_new_item: Utwórz nowy %{item}
@@ -52,8 +54,11 @@ pl:
     filters: Filtry
     go_back: Wróć
     grid_view: Widok siatki
+    heading: heading
     hide_content: Ukryj zawartość
     home: Strona główna
+    image: image
+    italic: italic
     key_value_field:
       add_row: Dodaj wiersz
       delete_row: Usuń wiersz
@@ -61,6 +66,7 @@ pl:
       reorder_row: Zmień kolejność wiersza
       value: Wartość
     less_content: Pokaż mniej
+    link: link
     list_is_empty: Lista jest pusta
     loading: Ładowanie
     more: Więcej
@@ -85,8 +91,11 @@ pl:
       reorder_record: Zmień kolejność rekordów
       to_bottom: Przenieś rekord na dół
       to_top: Przenieś rekord na górę
+    ordered_list: ordered list
     per_page: Na stronie
     prev_page: Poprzednia strona
+    preview: podgląd
+    quote: quote
     records_selected_from_all_pages_html: Wybrane rekordy z wszystkich stron
     remove_selection: Usuń zaznaczenie
     reset: Resetuj
@@ -110,16 +119,19 @@ pl:
     sort_reset: Resetuj sortowanie
     switch_to_view: Przełącz na widok %{view_type}
     table_view: Widok tabelaryczny
+    task_list: task list
     this_field_has_attachments_disabled: Załączniki są wyłączone dla tego pola.
     tools: Narzędzia
     type_to_search: Wpisz, aby wyszukać.
     unauthorized: Brak autoryzacji
     undo: Cofnij
+    unordered_list: unordered list
     view: Widok
     view_item: Wyświetl %{item}
     visit_record_on_external_path: Odwiedź rekord za pomocą zewnętrznego linku
     was_successfully_created: został pomyślnie utworzony
     was_successfully_updated: został pomyślnie zaktualizowany
+    write: napisz
     x_items_more:
       one: jeszcze jeden element
       other: "%{count} innych elementów"

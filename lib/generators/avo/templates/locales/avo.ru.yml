@@ -16,6 +16,7 @@ ru:
     attachment_class_detached: "%{attachment_class} отсоединено."
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
+    bold: bold
     cancel: Отмена
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
@@ -23,6 +24,7 @@ ru:
     clear_value: Очистить значение
     click_to_reveal_filters: Нажмите, чтобы открыть фильтры
     close_modal: Закрыть модальное окно
+    code: code
     confirm: Подтвердить
     copy: Копировать
     create_new_item: Создать новый %{item}
@@ -52,8 +54,11 @@ ru:
     filters: Фильтры
     go_back: Назад
     grid_view: Сетка
+    heading: heading
     hide_content: Скрыть содержимое
     home: Главная
+    image: image
+    italic: italic
     key_value_field:
       add_row: Добавить строку
       delete_row: Удалить строку
@@ -61,6 +66,7 @@ ru:
       reorder_row: Перенести строку
       value: Значение
     less_content: Меньше контента
+    link: link
     list_is_empty: Список пуст
     loading: Загрузка...
     more: Ещё
@@ -85,8 +91,11 @@ ru:
       reorder_record: Переупорядочить запись
       to_bottom: Переместить запись в конец
       to_top: Переместить запись в начало
+    ordered_list: ordered list
     per_page: На странице
     prev_page: Предыдущая страница
+    preview: предпросмотр
+    quote: quote
     records_selected_from_all_pages_html: Все записи выбраны со всех страниц
     remove_selection: Убрать выбор
     reset: сбросить
@@ -110,16 +119,19 @@ ru:
     sort_reset: Сбросить сортировку
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица
+    task_list: task list
     this_field_has_attachments_disabled: Для этого поля прикрепления отключены.
     tools: Инструменты
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить
+    unordered_list: unordered list
     view: Просмотр
     view_item: Просмотр %{item}
     visit_record_on_external_path: Перейти к записи через внешнюю ссылку
     was_successfully_created: успешно создана
     was_successfully_updated: успешно обновлена
+    write: написать
     x_items_more:
       one: ещё один элемент
       other: "%{count} других элементов"

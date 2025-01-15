@@ -16,6 +16,7 @@ de:
     attachment_class_detached: "%{attachment_class} abgehängt."
     attachment_destroyed: Anhang gelöscht
     attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
+    bold: bold
     cancel: Abbrechen
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen
@@ -23,6 +24,7 @@ de:
     clear_value: Wert löschen
     click_to_reveal_filters: Klicken, um Filter anzuzeigen
     close_modal: Modal schließen
+    code: code
     confirm: Bestätigen
     copy: Kopieren
     create_new_item: Neues %{item} erstellen
@@ -50,8 +52,11 @@ de:
     filters: Filter
     go_back: Zurück
     grid_view: Rasteransicht
+    heading: heading
     hide_content: Inhalt ausblenden
     home: Startseite
+    image: image
+    italic: italic
     key_value_field:
       add_row: Zeile hinzufügen
       delete_row: Zeile löschen
@@ -59,6 +64,7 @@ de:
       reorder_row: Zeile neu anordnen
       value: Wert
     less_content: Weniger Inhalt
+    link: link
     list_is_empty: Liste ist leer
     loading: Lade...
     more: Mehr
@@ -83,8 +89,11 @@ de:
       reorder_record: Eintrag neu anordnen
       to_bottom: Eintrag ans Ende verschieben
       to_top: Eintrag an den Anfang verschieben
+    ordered_list: ordered list
     per_page: Pro Seite
     prev_page: Vorherige Seite
+    preview: Vorschau
+    quote: quote
     records_selected_from_all_pages_html: Alle Einträge von allen Seiten ausgewählt
     remove_selection: Auswahl aufheben
     reset: zurücksetzen
@@ -108,16 +117,19 @@ de:
     sort_reset: Sortierung zurücksetzen
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht
+    task_list: task list
     this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.
     tools: Werkzeuge
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
+    unordered_list: unordered list
     view: Anzeigen
     view_item: "%{item} anzeigen"
     visit_record_on_external_path: Datensatz über externen Link besuchen
     was_successfully_created: wurde erfolgreich erstellt
     was_successfully_updated: wurde erfolgreich aktualisiert
+    write: schreiben
     x_items_more:
       one: noch ein Eintrag
       other: "%{count} weitere Einträge"

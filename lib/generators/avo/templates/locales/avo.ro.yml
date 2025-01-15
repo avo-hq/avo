@@ -19,6 +19,7 @@ ro:
     attachment_class_detached: "%{attachment_class} separat."
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
+    bold: bold
     cancel: Anulează
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune
@@ -26,6 +27,7 @@ ro:
     clear_value: Șterge valoarea
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
     close_modal: Închide modalul
+    code: code
     confirm: Confirm
     copy: Copiază
     create_new_item: Creează %{item}
@@ -54,8 +56,11 @@ ro:
     filters: Filtre
     go_back: Înapoi
     grid_view: Vezi sub formă de grid
+    heading: heading
     hide_content: Ascunde conținutul
     home: Acasă
+    image: image
+    italic: italic
     key_value_field:
       add_row: Adaugă rând
       delete_row: Șterge rând
@@ -63,6 +68,7 @@ ro:
       reorder_row: Reordonează rând
       value: Valoare
     less_content: Mai puțin conținut
+    link: link
     list_is_empty: Lista este goală
     loading: Se incarcă
     more: Mai multe
@@ -87,8 +93,11 @@ ro:
       reorder_record: Reordonați înregistrarea
       to_bottom: Mutați înregistrarea jos de tot
       to_top: Mutați înregistrarea sus de tot
+    ordered_list: ordered list
     per_page: Pe pagină
     prev_page: Pagina anterioara
+    preview: previzualizare
+    quote: quote
     records_selected_from_all_pages_html: Toate selectate din toate paginile
     remove_selection: Șterge selecția
     reset: resetare
@@ -112,16 +121,19 @@ ro:
     sort_reset: Resetare sortare
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
+    task_list: task list
     this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
     tools: Instrumente
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează
+    unordered_list: unordered list
     view: vezi
     view_item: vezi %{item}
     visit_record_on_external_path: Vizitați înregistrarea printr-un link extern
     was_successfully_created: a fost creat
     was_successfully_updated: a fost actualizat
+    write: scrie
     x_items_more:
       one: încă un articol
       other: "%{count} mai multe articole"
