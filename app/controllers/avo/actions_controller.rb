@@ -9,14 +9,10 @@ module Avo
       # set_record will fail if it's tried to be used from the Index page.
       request.params[:id].present?
     end
-    before_action :set_query, only: [:show, :handle], if: ->(request) do
-      # set query will fail in show if user will not select some row
-      # params[:fields] are set during selecting row or in show view
-      request.params[:fields].present?
-    end
+    before_action :set_query, only: [:show, :handle] , if: :fields_present?
     before_action :set_action, only: [:show, :handle]
     before_action :verify_authorization, only: [:show, :handle]
-    before_action :set_fields, only: [:handle]
+    before_action :set_fields, only: :handle
 
     layout :choose_layout
 
@@ -26,6 +22,8 @@ module Avo
 
       @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
       @fields = @action.get_fields
+
+      @action.query(@query) if fields_present?
 
       build_background_url
     end
@@ -70,8 +68,6 @@ module Avo
       resource_ids = action_params[:fields][:avo_resource_ids].split(",")
 
       @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
-
-      TestBuddy.hi("Query count: #{@query.size}")
     end
 
     def set_fields
@@ -191,6 +187,10 @@ module Avo
 
     def verify_authorization
       raise Avo::NotAuthorizedError.new unless @action.authorized?
+    end
+
+    def fields_present?
+      params[:fields].present?
     end
   end
 end

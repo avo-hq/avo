@@ -25,6 +25,7 @@ module Avo
     attr_reader :icon
     attr_reader :appended_turbo_streams
     attr_reader :records_to_reload
+    attr_reader :query
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -131,6 +132,10 @@ module Avo
 
     # Blank method
     def fields
+    end
+
+    def query(query)
+      @query = query
     end
 
     def get_message

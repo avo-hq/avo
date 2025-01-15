@@ -44,9 +44,7 @@ export default class extends Controller {
       this.resetUnselected()
     }
 
-    const resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
-    const allSelectedValue = ''
-    this.updateLinks(resourceIds, allSelectedValue)
+    this.updateLinks(this.element.dataset)
   }
 
   selectAll(event) {
@@ -56,12 +54,16 @@ export default class extends Controller {
     this.unselectedMessageTarget.classList.toggle('hidden')
     this.selectedMessageTarget.classList.toggle('hidden')
 
-    const resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
-    const allSelectedValue = this.element.dataset.itemSelectAllSelectedAllQueryValue
-    this.updateLinks(resourceIds, allSelectedValue)
+    this.updateLinks(this.element.dataset)
   }
 
-  updateLinks(resourceIds, allSelected) {
+  updateLinks(dataset) {
+    const resourceIds = JSON.parse(dataset.selectedResources).join(',')
+    let allSelected = ''
+
+    if (dataset.itemSelectAllSelectedAllValue === true) {
+      allSelected = dataset.itemSelectAllSelectedAllQueryValue
+    }
     document.querySelectorAll('[data-target="actions-list"] > a').forEach((link) => {
       try {
         const url = new URL(link.href)
