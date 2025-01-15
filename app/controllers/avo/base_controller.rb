@@ -42,7 +42,7 @@ module Avo
         end
       end
 
-      apply_sorting
+      apply_sorting if @index_params[:sort_by]
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
@@ -306,18 +306,7 @@ module Avo
       set_pagination_params
 
       # Sorting
-      if params[:sort_by].present?
-        @index_params[:sort_by] = params[:sort_by]
-      elsif @resource.model_class.present?
-        available_columns = @resource.model_class.column_names
-        default_sort_column = @resource.default_sort_column
-
-        if available_columns&.include?(default_sort_column.to_s)
-          @index_params[:sort_by] = default_sort_column
-        elsif available_columns&.include?("created_at")
-          @index_params[:sort_by] = :created_at
-        end
-      end
+      @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
 
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
 
@@ -604,9 +593,6 @@ module Avo
     end
 
     def apply_sorting
-      return if @resource.resource_type_array?
-      return if @index_params[:sort_by].nil?
-
       sort_by = @index_params[:sort_by].to_sym
       if sort_by != :created_at
         @query = @query.unscope(:order)
