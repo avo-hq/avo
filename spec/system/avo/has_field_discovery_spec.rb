@@ -80,29 +80,31 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     it "renders each field exactly once" do
       wait_for_loaded
 
-      within("[data-panel-id='main']") do
-        # Basic fields
-        ## Main Panel
-        expect(page).to have_text("FIRST NAME", count: 1)
-        expect(page).to have_text("LAST NAME", count: 1)
-        expect(page).to have_text("ROLES", count: 1)
-        expect(page).to have_text("TEAM ID", count: 1)
-        expect(page).to have_text("CREATED AT", count: 1)
-        expect(page).to have_text("UPDATED AT", count: 1)
-        expect(page).to have_text("SLUG", count: 1)
+      within(".main-content-area") do
+        within("[data-panel-id='main']") do
+          # Basic fields
+          ## Main Panel
+          expect(page).to have_text("FIRST NAME", count: 1)
+          expect(page).to have_text("LAST NAME", count: 1)
+          expect(page).to have_text("ROLES", count: 1)
+          expect(page).to have_text("TEAM ID", count: 1)
+          expect(page).to have_text("CREATED AT", count: 1)
+          expect(page).to have_text("UPDATED AT", count: 1)
+          expect(page).to have_text("SLUG", count: 1)
 
-        # Sidebar
-        expect(page).to have_text("AVATAR", count: 1)
-        expect(page).to have_text("IS ACTIVE", count: 1)
-        expect(page).to have_text("BIRTHDAY", count: 1)
+          # Sidebar
+          expect(page).to have_text("AVATAR", count: 1)
+          expect(page).to have_text("IS ACTIVE", count: 1)
+          expect(page).to have_text("BIRTHDAY", count: 1)
 
-        # Single file uploads
-        expect(page).to have_text("CV", count: 1)
-        expect(page).not_to have_text("CV ATTACHMENT")
+          # Single file uploads
+          expect(page).to have_text("CV", count: 1)
+          expect(page).not_to have_text("CV ATTACHMENT")
+        end
+
+        # Associations
+        expect(page).to have_text("Posts", count: 1)
       end
-
-      # Associations
-      expect(page).to have_text("Posts", count: 1)
     end
   end
 
@@ -226,7 +228,19 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
   end
 
   describe "Enum Fields" do
-    before { visit "/admin/resources/posts/#{post.id}/edit" }
+    let(:post) { create :post }
+    let(:url) { "/admin/resources/posts/#{post.id}/edit" }
+
+    after do
+      Avo::Resources::Post.restore_items_from_backup
+    end
+
+    before do
+      Avo::Resources::Post.with_temporary_items do
+        discover_columns
+      end
+      visit url
+    end
 
     it "displays enum fields as select boxes" do
       wait_for_loaded

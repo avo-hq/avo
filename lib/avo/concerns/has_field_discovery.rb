@@ -162,10 +162,10 @@ module Avo
 
       def model_enums
         @model_enums ||= if safe_model_class.respond_to?(:defined_enums)
-          safe_model_class.defined_enums.transform_values do |options|
+          safe_model_class.defined_enums.transform_values do |enum|
             {
               field: :select,
-              options:
+              enum:
             }
           end
         else
