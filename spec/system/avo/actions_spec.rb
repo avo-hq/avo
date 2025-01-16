@@ -310,6 +310,17 @@ RSpec.describe "Actions", type: :system do
     it "access query action show" do
       visit avo.resources_users_path(per_page: 3)
 
+      open_panel_action(action_name: "Test query access")
+
+      expect(page).to have_text("message 0 selected")
+      expect(page).to have_field("fields_selected", with: "0 selected def fields")
+      expect(page).to have_text("cancel_button_label 0 selected")
+      expect(page).to have_text("confirm_button_label 0 selected")
+
+      run_action
+
+      expect(page).to have_text("succeed 0 selected")
+
       check_select_all
       open_panel_action(action_name: "Test query access")
 
