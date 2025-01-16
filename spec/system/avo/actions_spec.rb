@@ -305,22 +305,38 @@ RSpec.describe "Actions", type: :system do
   end
 
   describe "query" do
-    let!(:projects) { create_list(:project, 4) }
+    let!(:users) { create_list :user, 6 }
 
-    context "when selecting three records and executing an action" do
-      it "sends the correct query count to TestBuddy" do
-        allow(TestBuddy).to receive(:hi).and_call_original
-        expect(TestBuddy).to receive(:hi).with("Query count: 3")
+    it "access query action show" do
+      visit avo.resources_users_path(per_page: 3)
 
-        visit "/admin/resources/projects"
+      check_select_all
+      open_panel_action(action_name: "Test query access")
 
-        checkboxes = all("input[type='checkbox'][name='Select item']")
-        last_three_checkboxes = checkboxes.last(3)
-        last_three_checkboxes.each { |checkbox| checkbox.set(true) }
+      expect(page).to have_text("message 3 selected")
+      expect(page).to have_field("fields_selected", with: "3 selected def fields")
+      expect(page).to have_text("cancel_button_label 3 selected")
+      expect(page).to have_text("confirm_button_label 3 selected")
 
-        click_on "Actions"
-        click_on "Export CSV"
-      end
+      run_action
+
+      expect(page).to have_text("succeed 3 selected")
+
+      check_select_all
+      click_on "Select all matching"
+
+      open_panel_action(action_name: "Test query access")
+
+      user_count = User.count
+
+      expect(page).to have_text("message #{user_count} selected")
+      expect(page).to have_field("fields_selected", with: "#{user_count} selected def fields")
+      expect(page).to have_text("cancel_button_label #{user_count} selected")
+      expect(page).to have_text("confirm_button_label #{user_count} selected")
+
+      run_action
+
+      expect(page).to have_text("succeed #{user_count} selected")
     end
   end
 

@@ -55,9 +55,4 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
   def get_some_attributes
     ["id", "created_at"]
   end
-
-  def query(query)
-    @query = query
-    TestBuddy.hi("Query count: #{@query.count}") if query.present?
-  end
 end
