@@ -104,7 +104,7 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil)
       @record = record
       @resource = resource
       @user = user
@@ -115,6 +115,7 @@ module Avo
         resource: resource,
         record: record
       ).handle.with_indifferent_access
+      @query = query
 
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
@@ -134,17 +135,14 @@ module Avo
     def fields
     end
 
-    def query(query)
-      @query = query
-    end
-
     def get_message
       Avo::ExecutionContext.new(
         target: self.class.message,
         resource: @resource,
         record: @record,
         view: @view,
-        arguments: @arguments
+        arguments: @arguments,
+        query: @query
       ).handle
     end
 
@@ -154,7 +152,8 @@ module Avo
         resource: @resource,
         record: @record,
         view: @view,
-        arguments: @arguments
+        arguments: @arguments,
+        query: @query
       ).handle
     end
 
@@ -164,7 +163,8 @@ module Avo
         resource: @resource,
         record: @record,
         view: @view,
-        arguments: @arguments
+        arguments: @arguments,
+        query: @query
       ).handle
     end
 

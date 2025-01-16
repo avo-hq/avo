@@ -9,9 +9,7 @@ module Avo
       # set_record will fail if it's tried to be used from the Index page.
       request.params[:id].present?
     end
-    before_action :set_query, only: [:show, :handle], if: :fields_present?
-    before_action :set_action, only: [:show, :handle]
-    before_action :verify_authorization, only: [:show, :handle]
+    before_action :set_query, :set_action, :verify_authorization, only: [:show, :handle]
     before_action :set_fields, only: :handle
 
     layout :choose_layout
@@ -22,8 +20,6 @@ module Avo
 
       @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
       @fields = @action.get_fields
-
-      @action.query(@query) if fields_present?
 
       build_background_url
     end
@@ -65,7 +61,7 @@ module Avo
     private
 
     def set_query
-      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
+      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
 
       @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
@@ -85,7 +81,8 @@ module Avo
         user: _current_user,
         # force the action view to in order to render new-related fields (hidden field)
         view: Avo::ViewInquirer.new(:new),
-        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
+        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
+        query: @query
       )
 
       # Fetch action's fields
@@ -174,7 +171,7 @@ module Avo
     end
 
     def decrypted_query
-      return if (encrypted_query = action_params[:fields][:avo_selected_query]).blank?
+      return if (encrypted_query = action_params[:fields]&.dig(:avo_selected_query)).blank?
 
       Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
     end
@@ -187,10 +184,6 @@ module Avo
 
     def verify_authorization
       raise Avo::NotAuthorizedError.new unless @action.authorized?
-    end
-
-    def fields_present?
-      params[:fields].present?
     end
   end
 end
