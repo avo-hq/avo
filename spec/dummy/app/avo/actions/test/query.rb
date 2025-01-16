@@ -1,5 +1,7 @@
 class Avo::Actions::Test::Query < Avo::BaseAction
-  self.name = "Test query access"
+  self.name = -> {
+    "Test query access #{query&.count}"
+  }
   self.message = -> {
     "message #{query.count} selected"
   }

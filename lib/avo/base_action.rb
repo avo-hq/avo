@@ -97,7 +97,8 @@ module Avo
           resource: @resource,
           record: @record,
           view: @view,
-          arguments: @arguments
+          arguments: @arguments,
+          query: @query
         ).handle
       end
 
