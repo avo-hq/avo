@@ -213,14 +213,11 @@ RSpec.describe "Actions", type: :system do
       click_on "Actions"
       click_on "Redirect to Posts"
 
-      wait_for_loaded
-
-      expect(current_path).to eq avo.resources_posts_path
+      wait_for_path_to_be(path: avo.resources_posts_path)
 
       page.go_back
-      wait_for_loaded
 
-      expect(current_path).to eq avo.resources_users_path
+      wait_for_path_to_be(path: avo.resources_users_path)
     end
   end
 

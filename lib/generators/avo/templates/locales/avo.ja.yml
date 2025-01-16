@@ -26,6 +26,7 @@ ja:
     click_to_reveal_filters: フィルターを表示するにはクリック
     close_modal: モーダルを閉じる
     confirm: 確認
+    copy: コピー
     create_new_item: 新しい%{item}を作成
     dashboard: ダッシュボード
     dashboards: ダッシュボード
@@ -104,6 +105,9 @@ ja:
     select_item: アイテムを選択
     show_content: 内容を表示
     sign_out: サインアウト
+    sort_asc: 昇順で並べ替え
+    sort_desc: 降順で並べ替え
+    sort_reset: ソートをリセット
     switch_to_view: "%{view_type}ビューに切り替える"
     table_view: テーブルビュー
     this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。
@@ -113,6 +117,7 @@ ja:
     undo: 元に戻す
     view: ビュー
     view_item: "%{item}を表示"
+    visit_record_on_external_path: 外部リンクで記録を確認する
     was_successfully_created: は正常に作成されました
     was_successfully_updated: は正常に更新されました
     x_items_more:

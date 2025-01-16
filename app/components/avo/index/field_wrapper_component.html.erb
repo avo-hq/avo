@@ -9,13 +9,18 @@
   <% if render_dash? %>
     —
   <% else %>
-    <% if @center_content %>
-      <div class="flex items-center justify-center">
+    <div class="flex flex-row items-center gap-x-1 group">
+      <% if @center_content %>
+        <div class="flex items-center justify-center">
+          <%= content %>
+        </div>
+      <% else %>
         <%= content %>
-      </div>
-    <% else %>
-      <%= content %>
-    <% end %>
+      <% end %>
+      <% if @field.copyable %>
+        <%= render Avo::ClipboardComponent.new(value: @field.value) %>
+      <% end %>
+    </div>
   <% end %>
   <% if params[:avo_debug].present? %>
     <!-- Raw value: -->
