@@ -75,7 +75,7 @@ class Course < ApplicationRecord
 
   # Testing purposes on Avo::Resources::Course
   # Tests that the field is populated from here
-  # field :attendees, as: :has_many, array: true
+  # field :attendees, as: :array
   def attendees
     User.all.first(6)
   end

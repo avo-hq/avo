@@ -28,7 +28,7 @@ module Avo
 
       # When array field the records are fetched from the field block, from the parent record or from the resource def records
       # When other field type, like has_many the @query is directly fetched from the parent record
-      base_query = if @field.try(:array)
+      base_query = if @field.type == "array"
         @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block).handle || @parent_record.try(@field.id))
       else
         @parent_record.send(association_name)

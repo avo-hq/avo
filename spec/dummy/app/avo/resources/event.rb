@@ -40,7 +40,7 @@ class Avo::Resources::Event < Avo::BaseResource
       field :location, as: :belongs_to
     end
 
-    field :attendees, as: :has_many, array: true do
+    field :attendees, as: :array do
       [
         {id: 1, name: "John Doe", role: "Software Developer", organization: "TechCorp"},
         {id: 2, name: "Jane Smith", role: "Data Scientist", organization: "DataPros"},
