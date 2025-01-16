@@ -1,0 +1,3 @@
+<%= content_tag :div, class: "prose prose-zinc Xmarkdown-content" do %>
+  <%= sanitize(@body, tags: %w(table th tr td span) + ActionView::Helpers::SanitizeHelper.sanitizer_vendor.safe_list_sanitizer.allowed_tags.to_a) %>
+<% end %>

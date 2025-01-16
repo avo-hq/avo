@@ -11,7 +11,8 @@ module Avo
       end
 
       def self.parser
-        ::Redcarpet::Markdown.new(::Redcarpet::Render::HTML,
+        renderer = ::Redcarpet::Render::HTML.new(hard_wrap: true)
+        ::Redcarpet::Markdown.new(renderer,
           tables: true,
           lax_spacing: true,
           fenced_code_blocks: true,

@@ -1,5 +1,5 @@
 <%= turbo_stream.update params[:element_id] do %>
-  <div class="markdown-content py-2 px-3">
-    <%= sanitize(@result) %>
+  <div class="px-3 py-2">
+    <%= render Avo::Fields::MarkdownField::RenderedContentComponent.new(body: @result) %>
   </div>
 <% end %>
