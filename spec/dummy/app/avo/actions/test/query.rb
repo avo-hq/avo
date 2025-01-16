@@ -12,7 +12,7 @@ class Avo::Actions::Test::Query < Avo::BaseAction
   self.standalone = true
 
   def fields
-    field :selected,default: "#{query.count} selected def fields"
+    field :selected, default: "#{query.count} selected def fields"
   end
 
   def handle(**args)
