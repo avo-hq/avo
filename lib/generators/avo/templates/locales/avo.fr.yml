@@ -18,6 +18,7 @@ fr:
     attachment_class_detached: "%{attachment_class} détaché."
     attachment_destroyed: Pièce jointe détruite
     attachment_failed: Échec de l'ajout de %{attachment_class}
+    bold: bold
     cancel: Annuler
     choose_a_country: Sélectionnez un pays
     choose_an_option: Sélectionnez une option
@@ -25,6 +26,7 @@ fr:
     clear_value: Effacer la valeur
     click_to_reveal_filters: Cliquez pour révéler les filtres
     close_modal: Fermer la fenêtre modale
+    code: code
     confirm: Confirmer
     copy: Copier
     create_new_item: Créer un nouveau %{item}
@@ -52,8 +54,11 @@ fr:
     filters: Filtres
     go_back: Retourner en arrière
     grid_view: Vue grille
+    heading: heading
     hide_content: Cacher le contenu
     home: Accueil
+    image: image
+    italic: italic
     key_value_field:
       add_row: Ajouter une ligne
       delete_row: Supprimer une ligne
@@ -61,6 +66,7 @@ fr:
       reorder_row: Réorganiser la ligne
       value: Valeur
     less_content: Moins de contenu
+    link: link
     list_is_empty: La liste est vide
     loading: Chargement
     more: Plus
@@ -85,8 +91,11 @@ fr:
       reorder_record: Réorganiser
       to_bottom: Déplacer tout en bas
       to_top: Déplacer tout en haut
+    ordered_list: ordered list
     per_page: Par page
     prev_page: Page précédente
+    preview: aperçu
+    quote: quote
     records_selected_from_all_pages_html: tous les éléments sélectionnés de toutes les pages
     remove_selection: Supprimer la sélection
     reset: réinitialiser
@@ -110,16 +119,19 @@ fr:
     sort_reset: Réinitialiser le tri
     switch_to_view: Passez à la vue %{view_type}
     table_view: Vue table
+    task_list: task list
     this_field_has_attachments_disabled: Ce champ a les pièces jointes désactivées.
     tools: Outils
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
     undo: annuler
+    unordered_list: unordered list
     view: Vue
     view_item: voir %{item}
     visit_record_on_external_path: Consulter l'enregistrement via un lien externe
     was_successfully_created: a été créé avec succès
     was_successfully_updated: a été mis à jour avec succès
+    write: écrire
     x_items_more:
       one: un élément de plus
       other: "%{count} éléments en plus"

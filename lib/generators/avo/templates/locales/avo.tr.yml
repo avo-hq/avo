@@ -18,6 +18,7 @@ tr:
     attachment_class_detached: "%{attachment_class} ilişkisi kesildi."
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
+    bold: bold
     cancel: İptal et
     choose_a_country: Bir ülke seç
     choose_an_option: Bir seçenek seç
@@ -25,6 +26,7 @@ tr:
     clear_value: Değeri temizle
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
     close_modal: Modali kapat
+    code: code
     confirm: Onayla
     copy: Kopya
     create_new_item: Yeni bir %{item} oluşturun
@@ -52,8 +54,11 @@ tr:
     filters: Filtreler
     go_back: Geri dön
     grid_view: Grid görünümü
+    heading: heading
     hide_content: İçeriği gizle
     home: Anasayfa
+    image: image
+    italic: italic
     key_value_field:
       add_row: Satır ekle
       delete_row: Satır sil
@@ -61,6 +66,7 @@ tr:
       reorder_row: Satırı yeniden sırala
       value: Değer
     less_content: Daha az içerik
+    link: link
     list_is_empty: Boş liste
     loading: Yükleniyor
     more: Daha fazla
@@ -85,8 +91,11 @@ tr:
       reorder_record: Kaydı yeniden sırala
       to_bottom: Kaydı en alta taşı
       to_top: Kaydı en üste taşı
+    ordered_list: ordered list
     per_page: Sayfa başına
     prev_page: Önceki sayfa
+    preview: önizleme
+    quote: quote
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
     remove_selection: Seçimi sil
     reset: sıfırlama
@@ -110,16 +119,19 @@ tr:
     sort_reset: Sıralamayı sıfırla
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
+    task_list: task list
     this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.
     tools: Araçlar
     type_to_search: Aramak için yazın.
     unauthorized: Yetkisiz
     undo: geri al
+    unordered_list: unordered list
     view: Görünüm
     view_item: "%{item} öğresini görüntüle"
     visit_record_on_external_path: Harici bağlantı yoluyla kaydı ziyaret et
     was_successfully_created: başarıyla oluşturuldu
     was_successfully_updated: başarıyla güncellendi
+    write: yaz
     x_items_more:
       one: bir öğe daha
       other: "%{count} öğe daha"

@@ -16,6 +16,7 @@ uk:
     attachment_class_detached: "%{attachment_class} відкріплено."
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
+    bold: bold
     cancel: Скасувати
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію
@@ -23,6 +24,7 @@ uk:
     clear_value: Очистити значення
     click_to_reveal_filters: Натисніть, щоб показати фільтри
     close_modal: Закрити вікно
+    code: code
     confirm: Підтвердити
     copy: Копіювати
     create_new_item: Створити новий %{item}
@@ -52,8 +54,11 @@ uk:
     filters: Фільтри
     go_back: Назад
     grid_view: Плитка
+    heading: heading
     hide_content: Приховати вміст
     home: Головна
+    image: image
+    italic: italic
     key_value_field:
       add_row: Додати рядок
       delete_row: Видалити рядок
@@ -61,6 +66,7 @@ uk:
       reorder_row: Змінити порядок рядка
       value: Значення
     less_content: Менше вмісту
+    link: link
     list_is_empty: Список порожній
     loading: Завантаження
     more: Ще
@@ -85,8 +91,11 @@ uk:
       reorder_record: Перепорядкувати запис
       to_bottom: Перемістити запис вниз
       to_top: Перемістити запис вгору
+    ordered_list: ordered list
     per_page: На сторінці
     prev_page: Попередня сторінка
+    preview: перегляд
+    quote: quote
     records_selected_from_all_pages_html: Вибрані всі записи з усіх сторінок
     remove_selection: Видалити вибір
     reset: Скинути
@@ -110,16 +119,19 @@ uk:
     sort_reset: Atstatyti rūšiavimą
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
+    task_list: task list
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.
     tools: Інструменти
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
     undo: Скасувати
+    unordered_list: unordered list
     view: Перегляд
     view_item: Перегляд %{item}
     visit_record_on_external_path: Перейти до запису через зовнішнє посилання
     was_successfully_created: успішно створено
     was_successfully_updated: успішно оновлено
+    write: написати
     x_items_more:
       one: ще один елемент
       other: "%{count} інших елементів"

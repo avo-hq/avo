@@ -22,6 +22,7 @@ ar:
     attachment_class_detached: "%{attachment_class} تم فصل"
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
+    bold: bold
     cancel: إلغاء
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا
@@ -29,6 +30,7 @@ ar:
     clear_value: مسح القيمة
     click_to_reveal_filters: انقر لإظهار المرشحات
     close_modal: أغلق النافذة
+    code: code
     confirm: تأكيد
     copy: نسخ
     create_new_item: إنشاء %{item} جديد
@@ -60,8 +62,11 @@ ar:
     filters: مرشحات
     go_back: العودة للخلف
     grid_view: عرض الشبكة
+    heading: heading
     hide_content: إخفاء المحتوى
     home: الصفحة الرئيسية
+    image: image
+    italic: italic
     key_value_field:
       add_row: إضافة صف
       delete_row: حذف صف
@@ -69,6 +74,7 @@ ar:
       reorder_row: إعادة ترتيب الصف
       value: القيمة
     less_content: محتوى أقل
+    link: link
     list_is_empty: القائمة فارغة
     loading: جاري التحميل
     more: المزيد
@@ -93,8 +99,11 @@ ar:
       reorder_record: إعادة ترتيب السجل
       to_bottom: حرك السجل للأسفل بشكل كامل
       to_top: حرك السجل للأعلى بشكل كامل
+    ordered_list: ordered list
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
+    preview: معاينة
+    quote: quote
     records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات
     remove_selection: إزالة التحديد
     reset: اعاده تعيين
@@ -118,16 +127,19 @@ ar:
     sort_reset: إعادة تهيئة الترتيب
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
+    task_list: task list
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
     tools: الأدوات
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
+    unordered_list: unordered list
     view: عرض
     view_item: عرض %{item}
     visit_record_on_external_path: زيارة السجل على الرابط الخارجي
     was_successfully_created: تم إنشاؤه بنجاح
     was_successfully_updated: تم تحديثه بنجاح
+    write: كتابة
     x_items_more:
       one: عنصر واحد إضافي
       other: "%{count} عناصر إضافية"

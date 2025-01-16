@@ -18,6 +18,7 @@ ja:
     attachment_class_detached: "%{attachment_class}をデタッチしました。"
     attachment_destroyed: アタッチは削除されました
     attachment_failed: "%{attachment_class}の添付に失敗しました"
+    bold: bold
     cancel: キャンセル
     choose_a_country: 国を選択
     choose_an_option: オプションを選択
@@ -25,6 +26,7 @@ ja:
     clear_value: 値をクリア
     click_to_reveal_filters: フィルターを表示するにはクリック
     close_modal: モーダルを閉じる
+    code: code
     confirm: 確認
     copy: コピー
     create_new_item: 新しい%{item}を作成
@@ -52,8 +54,11 @@ ja:
     filters: フィルター
     go_back: 戻る
     grid_view: グリッドビュー
+    heading: heading
     hide_content: 内容を非表示
     home: ホーム
+    image: image
+    italic: italic
     key_value_field:
       add_row: 行を追加
       delete_row: 行を削除
@@ -61,6 +66,7 @@ ja:
       reorder_row: 行の並べ替え
       value: 値
     less_content: コンテンツが少ない
+    link: link
     list_is_empty: リストは空です
     loading: 読み込み中
     more: もっと
@@ -85,8 +91,11 @@ ja:
       reorder_record: レコードを並べ替える
       to_bottom: レコードを一番下に移動
       to_top: レコードを一番上に移動
+    ordered_list: ordered list
     per_page: ページあたり
     prev_page: 前のページ
+    preview: プレビュー
+    quote: quote
     records_selected_from_all_pages_html: 全ページから選択された全レコード
     remove_selection: 選択を解除
     reset: リセット
@@ -110,16 +119,19 @@ ja:
     sort_reset: ソートをリセット
     switch_to_view: "%{view_type}ビューに切り替える"
     table_view: テーブルビュー
+    task_list: task list
     this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。
     tools: ツール
     type_to_search: 検索する内容を入力してください。
     unauthorized: 許可されていません
     undo: 元に戻す
+    unordered_list: unordered list
     view: ビュー
     view_item: "%{item}を表示"
     visit_record_on_external_path: 外部リンクで記録を確認する
     was_successfully_created: は正常に作成されました
     was_successfully_updated: は正常に更新されました
+    write: 書く
     x_items_more:
       one: もう一つのアイテム
       other: "%{count}個のその他のアイテム"

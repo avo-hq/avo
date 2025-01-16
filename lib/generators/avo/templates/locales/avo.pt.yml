@@ -18,6 +18,7 @@ pt:
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
+    bold: bold
     cancel: Cancelar
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção
@@ -25,6 +26,7 @@ pt:
     clear_value: Apagar valor
     click_to_reveal_filters: Clique para mostrar os filtros
     close_modal: Fechar modal
+    code: code
     confirm: Confirmar
     copy: Copiar
     create_new_item: Criar novo %{item}
@@ -52,8 +54,11 @@ pt:
     filters: Filtros
     go_back: Voltar
     grid_view: Visualização em grelha
+    heading: heading
     hide_content: Esconder conteúdo
     home: Início
+    image: image
+    italic: italic
     key_value_field:
       add_row: Adicionar linha
       delete_row: Apagar linha
@@ -61,6 +66,7 @@ pt:
       reorder_row: Reordenar linha
       value: Valor
     less_content: Menos conteúdo
+    link: link
     list_is_empty: Lista vazia
     loading: A carregar
     more: Mais
@@ -85,8 +91,11 @@ pt:
       reorder_record: Reordenar recurso
       to_bottom: Mover recurso para o fundo
       to_top: Mover recurso para o topo
+    ordered_list: ordered list
     per_page: Por página
     prev_page: Página anterior
+    preview: visualização
+    quote: quote
     records_selected_from_all_pages_html: Todos os itens de todas as páginas selecionados
     remove_selection: Remover seleção
     reset: restaurar
@@ -110,16 +119,19 @@ pt:
     sort_reset: Redefinir ordenação
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
+    task_list: task list
     this_field_has_attachments_disabled: Este campo tem anexos desativados.
     tools: Ferramentas
     type_to_search: Escreva para pesquisar.
     unauthorized: Não autorizado
     undo: desfazer
+    unordered_list: unordered list
     view: Ver
     view_item: ver %{item}
     visit_record_on_external_path: Visitar registro através de link externo
     was_successfully_created: foi criado com sucesso
     was_successfully_updated: foi atualizado com sucesso
+    write: escrever
     x_items_more:
       one: mais um item
       other: "%{count} mais items"

@@ -16,6 +16,7 @@ nl:
     attachment_class_detached: "%{attachment_class} losgekoppeld."
     attachment_destroyed: Bijlage verwijderd
     attachment_failed: Kon %{attachment_class} niet bijvoegen
+    bold: bold
     cancel: Annuleren
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
@@ -23,6 +24,7 @@ nl:
     clear_value: Waarde wissen
     click_to_reveal_filters: Klik om filters te tonen
     close_modal: Modaal sluiten
+    code: code
     confirm: Bevestigen
     copy: Kopie
     create_new_item: Nieuw %{item} aanmaken
@@ -50,8 +52,11 @@ nl:
     filters: Filters
     go_back: Terug
     grid_view: Rasterweergave
+    heading: heading
     hide_content: Inhoud verbergen
     home: Startpagina
+    image: image
+    italic: italic
     key_value_field:
       add_row: Rij toevoegen
       delete_row: Rij verwijderen
@@ -59,6 +64,7 @@ nl:
       reorder_row: Rij herschikken
       value: Waarde
     less_content: Minder inhoud
+    link: link
     list_is_empty: Lijst is leeg
     loading: Laden...
     more: Meer
@@ -83,8 +89,11 @@ nl:
       reorder_record: Record opnieuw ordenen
       to_bottom: Verplaats record naar onderen
       to_top: Verplaats record naar boven
+    ordered_list: ordered list
     per_page: Per pagina
     prev_page: Vorige pagina
+    preview: voorbeeld
+    quote: quote
     records_selected_from_all_pages_html: Alle geselecteerde records van alle pagina's
     remove_selection: Selectie verwijderen
     reset: resetten
@@ -108,16 +117,19 @@ nl:
     sort_reset: Sortering resetten
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave
+    task_list: task list
     this_field_has_attachments_disabled: Bijlagen zijn uitgeschakeld voor dit veld.
     tools: Gereedschappen
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
+    unordered_list: unordered list
     view: Bekijken
     view_item: "%{item} bekijken"
     visit_record_on_external_path: Bezoek record via een externe link
     was_successfully_created: is succesvol aangemaakt
     was_successfully_updated: is succesvol bijgewerkt
+    write: schrijf
     x_items_more:
       one: nog één item
       other: "%{count} andere items"
