@@ -69,6 +69,8 @@ export default class extends Controller {
       this.selectAllOverlay(allSelected)
       this.resetUnselected()
     }
+
+    this.updateLinks('resourceIds')
   }
 
   selectAll(event) {
@@ -77,6 +79,43 @@ export default class extends Controller {
     this.selectedAllValue = !this.selectedAllValue
     this.unselectedMessageTarget.classList.toggle('hidden')
     this.selectedMessageTarget.classList.toggle('hidden')
+
+    if (this.selectedAllValue) {
+      this.updateLinks('selectedQuery')
+    } else {
+      this.updateLinks('resourceIds')
+    }
+  }
+
+  updateLinks(param) {
+    let resourceIds = ''
+    let selectedQuery = ''
+
+    if (param === 'resourceIds') {
+      resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
+    } else if (param === 'selectedQuery') {
+      selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
+    }
+
+    document.querySelectorAll('[data-target="actions-list"] > a').forEach((link) => {
+      try {
+        const url = new URL(link.href)
+
+        Array.from(url.searchParams.keys())
+          .filter((key) => key.startsWith('fields['))
+          .forEach((key) => url.searchParams.delete(key))
+
+        if (param === 'resourceIds') {
+          url.searchParams.set('fields[avo_resource_ids]', resourceIds)
+        } else if (param === 'selectedQuery') {
+          url.searchParams.set('fields[avo_selected_query]', selectedQuery)
+        }
+
+        link.href = url.toString()
+      } catch (error) {
+        console.error('Error updating link:', link, error)
+      }
+    })
   }
 
   resetUnselected() {
