@@ -12,6 +12,7 @@ module Avo
         @use_resource = args[:use_resource]
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
+        @description = args[:description]
       end
 
       def field_resource
