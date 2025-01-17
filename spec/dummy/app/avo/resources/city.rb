@@ -37,13 +37,13 @@ class Avo::Resources::City < Avo::BaseResource
   def base_fields
     field :id, as: :id
     field :coordinates,
-          as: :location,
-          stored_as: [:latitude, :longitude],
-          mapkick_options: {
-            style: "mapbox://styles/mapbox/satellite-v9",
-            controls: true,
-            markers: {color: "#000"}
-          }
+      as: :location,
+      stored_as: [:latitude, :longitude],
+      mapkick_options: {
+        style: "mapbox://styles/mapbox/satellite-v9",
+        controls: true,
+        markers: {color: "#FFC0CB"}
+      }
     field :city_center_area,
       as: :area,
       geometry: :polygon,
