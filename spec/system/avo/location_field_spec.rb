@@ -58,11 +58,17 @@ RSpec.describe "LocationField", type: :system do
     let!(:city) { create :city, latitude: 48.8584, longitude: 2.2945 }
 
     context "show" do
-      it "renders a map" do
+      before do
         Avo::Fields::LocationField::ShowComponent.any_instance.stub(:js_map).and_return("map_content_here")
         visit "/admin/resources/cities/#{city.id}"
+      end
 
+      it "renders a map" do
         expect(page).to have_text("map_content_here")
+      end
+
+      it "applies mapkick options correctly" do
+        expect(page).to have_css("div#location-map [data-marker-color='#000']")
       end
     end
 

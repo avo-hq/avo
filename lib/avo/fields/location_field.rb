@@ -3,6 +3,7 @@
 module Avo
   module Fields
     class LocationField < BaseField
+      attr_reader :mapkick_options
       attr_reader :stored_as, :zoom
 
       def initialize(id, **args, &block)
@@ -10,6 +11,7 @@ module Avo
         super(id, **args, &block)
 
         @stored_as = args[:stored_as].present? ? args[:stored_as] : nil # You can pass it an array of db columns [:latitude, :longitude]
+        @mapkick_options = args[:mapkick_options].presence || {}
         @zoom = args[:zoom].present? ? args[:zoom].to_i : 15
       end
 
