@@ -1,7 +1,7 @@
 module Avo
   module Fields
     class HasOneField < FrameBaseField
-      attr_accessor :relation_method
+      attr_reader :attach_fields
 
       def initialize(id, **args, &block)
         hide_on :forms
@@ -9,8 +9,7 @@ module Avo
         super(id, **args, &block)
 
         @placeholder ||= I18n.t "avo.choose_an_option"
-
-        @relation_method = name.to_s.parameterize.underscore
+        @attach_fields = args[:attach_fields]
       end
 
       def label
