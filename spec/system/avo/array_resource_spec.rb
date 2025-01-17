@@ -35,9 +35,9 @@ RSpec.feature "ArrayResource", type: :system do
     it "using the record method" do
       visit avo.resources_course_path(course)
 
-      scroll_to find('turbo-frame[id="has_many_field_show_attendees"]')
+      scroll_to find('turbo-frame[id="array_field_show_attendees"]')
 
-      wait_for_turbo_frame_id("has_many_field_show_attendees")
+      wait_for_turbo_frame_id("array_field_show_attendees")
 
       expect(page).to have_text("First 6 users")
 
