@@ -9,6 +9,12 @@
       gem "activestorage", "~> #{rails_version}"
       gem "activestorage"
       gem "acts-as-taggable-on"
+
+      if rails_version == "6.1"
+        # Fix `<module:LoggerThreadSafeLevel>': uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger (NameError)
+        # https://stackoverflow.com/questions/79360526/uninitialized-constant-activesupportloggerthreadsafelevellogger-nameerror
+        gem "concurrent-ruby", "1.3.4"
+      end
     end
   end
 end
