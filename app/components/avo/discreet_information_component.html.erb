@@ -1,0 +1,5 @@
+<% items.each do |item| %>
+  <%= content_tag :div, class: "text-gray-600 hover:text-gray-900 mt-1", title: item.tooltip, data: {tippy: :tooltip} do %>
+    <%= helpers.svg item.icon, class: "ml-2 text-2xl h-4" %>
+  <% end %>
+<% end %>

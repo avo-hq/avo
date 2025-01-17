@@ -31,4 +31,8 @@ class Product < ApplicationRecord
 
   has_one_attached :image
   has_many_attached :images
+
+  def status
+    (id % 2).zero? ? :new : :updated
+  end
 end

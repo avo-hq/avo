@@ -33,6 +33,8 @@ class Avo::Resources::Post < Avo::BaseResource
     main_app.post_path(record)
   }
 
+  self.discreet_information = :timestamps
+
   def fields
     field :id, as: :id
     field :name, required: true, sortable: true

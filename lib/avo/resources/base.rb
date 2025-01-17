@@ -16,6 +16,7 @@ module Avo
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
       include Avo::Concerns::ControlsPlacement
+      include Avo::Concerns::HasDiscreetInformation
 
       # Avo::Current methods
       delegate :context, to: Avo::Current
