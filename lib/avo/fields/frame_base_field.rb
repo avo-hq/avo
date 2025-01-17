@@ -6,12 +6,9 @@ module Avo
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
 
-      attr_accessor :display
-
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
-        @display = args[:display].present? ? args[:display] : :show
         @use_resource = args[:use_resource]
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
@@ -22,7 +19,7 @@ module Avo
       end
 
       def turbo_frame
-        "#{self.class.name.demodulize.to_s.underscore}_#{display}_#{frame_id}"
+        "#{self.class.name.demodulize.to_s.underscore}_show_#{frame_id}"
       end
 
       def frame_url(add_turbo_frame: true)
