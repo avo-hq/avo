@@ -1,35 +1,18 @@
 module Avo
   module Fields
     class FrameBaseField < BaseField
-      include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
       include Avo::Fields::Concerns::ReloadIcon
       include Avo::Fields::Concerns::LinkableTitle
+      include Avo::Concerns::HasDescription
 
-      attr_accessor :display
-      attr_accessor :scope
-      attr_accessor :attach_scope
-      attr_accessor :description
-      attr_accessor :discreet_pagination
-      attr_accessor :hide_search_input
-      attr_reader :link_to_child_resource
-      attr_reader :attach_fields
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
-        @scope = args[:scope].present? ? args[:scope] : nil
-        @attach_scope = args[:attach_scope].present? ? args[:attach_scope] : nil
-        @display = args[:display].present? ? args[:display] : :show
-        @searchable = args[:searchable] == true
-        @hide_search_input = args[:hide_search_input] || false
-        @description = args[:description]
-        @use_resource = args[:use_resource] || nil
-        @discreet_pagination = args[:discreet_pagination] || false
-        # Defaults to nil so that if not set falls back to `link_to_child_resource` defined in the resource
-        @link_to_child_resource = args[:link_to_child_resource]
-        @reloadable = args[:reloadable].present? ? args[:reloadable] : false
-        @linkable = args[:linkable].present? ? args[:linkable] : false
-        @attach_fields = args[:attach_fields]
+
+        @use_resource = args[:use_resource]
+        @reloadable = args[:reloadable]
+        @linkable = args[:linkable]
       end
 
       def field_resource
