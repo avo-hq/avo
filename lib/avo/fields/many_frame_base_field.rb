@@ -7,7 +7,6 @@ module Avo
         :hide_search_input,
         :discreet_pagination
 
-
       def initialize(id, **args, &block)
         args[:updatable] = false
 
