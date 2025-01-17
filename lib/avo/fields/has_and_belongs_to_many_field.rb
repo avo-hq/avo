@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class HasAndBelongsToManyField < ManyFrameBaseField
+    class HasAndBelongsToManyField < HasManyBaseField
       def view_component_name
         "HasManyField"
       end
