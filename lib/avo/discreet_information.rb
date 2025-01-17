@@ -23,7 +23,7 @@ class Avo::DiscreetInformation
     updated_at = record.updated_at.strftime(time_format)
 
     DiscreetInformationItem.new(
-      tooltip: I18n.t('avo.discreet_information_timestamps_html', created_at:, updated_at:),
+      tooltip: I18n.t("avo.discreet_information_timestamps_html", created_at:, updated_at:),
       icon: "heroicons/outline/clock"
     )
   end
@@ -36,7 +36,7 @@ class Avo::DiscreetInformation
       icon: Avo::ExecutionContext.new(target: item[:icon], record: record, resource: self, view: view).handle,
       url: Avo::ExecutionContext.new(target: item[:url], record: record, resource: self, view: view).handle,
       url_target: Avo::ExecutionContext.new(target: item[:url_target], record: record, resource: self, view: view).handle,
-      label: Avo::ExecutionContext.new(target: item[:label], record: record, resource: self, view: view).handle,
+      label: Avo::ExecutionContext.new(target: item[:label], record: record, resource: self, view: view).handle
     )
   end
 
