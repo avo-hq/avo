@@ -165,7 +165,7 @@ GEM
       logger (~> 1.5)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
-    concurrent-ruby (1.3.5)
+    concurrent-ruby (1.3.4)
     connection_pool (2.5.0)
     countries (7.1.0)
       unaccent (~> 0.3)
@@ -648,6 +648,7 @@ DEPENDENCIES
   bundler-integrity (~> 1.0)
   capybara
   chartkick
+  concurrent-ruby (= 1.3.4)
   countries
   cssbundling-rails
   csv
