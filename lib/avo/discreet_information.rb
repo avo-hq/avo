@@ -1,5 +1,6 @@
 class Avo::DiscreetInformation
   extend PropInitializer::Properties
+  include ActionView::Helpers::TagHelper
 
   prop :resource, reader: :public
 
@@ -18,12 +19,22 @@ class Avo::DiscreetInformation
   private
 
   def timestamp_item(item)
+    return if record.created_at.blank? && record.updated_at.blank?
+
     time_format = "%Y-%m-%d %H:%M:%S"
     created_at = record.created_at.strftime(time_format)
     updated_at = record.updated_at.strftime(time_format)
 
+    created_at_tag = if record.created_at.present?
+      I18n.t("avo.created_at_timestamp", created_at:)
+    end
+
+    updated_at_tag = if record.updated_at.present?
+      I18n.t("avo.updated_at_timestamp", updated_at:)
+    end
+
     DiscreetInformationItem.new(
-      tooltip: I18n.t("avo.discreet_information_timestamps_html", created_at:, updated_at:),
+      tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
       icon: "heroicons/outline/clock"
     )
   end

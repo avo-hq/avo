@@ -35,7 +35,8 @@ en:
     delete_item: Delete %{item}
     detach_item: detach %{item}
     details: details
-    discreet_information_timestamps_html: "<div style=\"text-align: right;\">Created at %{created_at} <br/>Updated at %{updated_at}</div>"
+    created_at_timestamp: "Created at %{created_at}"
+    updated_at_timestamp: "Updated at %{updated_at}"
     download: Download
     download_file: Download file
     download_item: Download %{item}
