@@ -6,10 +6,12 @@ module Avo
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
 
+      attr_accessor :display
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
+        @display = args[:display].present? ? args[:display] : :show
         @use_resource = args[:use_resource]
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
