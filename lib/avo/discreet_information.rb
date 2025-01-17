@@ -6,7 +6,7 @@ class Avo::DiscreetInformation
   delegate :record, :view, to: :resource
 
   def items
-    @items ||= Array.wrap(resource.class.discreet_information.dup).map do |item|
+    Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
         timestamp_item(item)
       else
@@ -29,21 +29,15 @@ class Avo::DiscreetInformation
   end
 
   def parse_payload(item)
-    if item.is_a?(Hash)
-      tooltip = item.delete(:tooltip)
-      icon = item.delete(:icon)
-      url = item.delete(:url)
-      url_target = item.delete(:url_target)
-      label = item.delete(:label)
+    return unless item.is_a?(Hash)
 
-      DiscreetInformationItem.new(
-        tooltip: Avo::ExecutionContext.new(target: tooltip, record: record, resource: self, view: view).handle,
-        icon: Avo::ExecutionContext.new(target: icon, record: record, resource: self, view: view).handle,
-        url: Avo::ExecutionContext.new(target: url, record: record, resource: self, view: view).handle,
-        url_target: Avo::ExecutionContext.new(target: url_target, record: record, resource: self, view: view).handle,
-        label: Avo::ExecutionContext.new(target: label, record: record, resource: self, view: view).handle,
-      )
-    end
+    DiscreetInformationItem.new(
+      tooltip: Avo::ExecutionContext.new(target: item[:tooltip], record: record, resource: self, view: view).handle,
+      icon: Avo::ExecutionContext.new(target: item[:icon], record: record, resource: self, view: view).handle,
+      url: Avo::ExecutionContext.new(target: item[:url], record: record, resource: self, view: view).handle,
+      url_target: Avo::ExecutionContext.new(target: item[:url_target], record: record, resource: self, view: view).handle,
+      label: Avo::ExecutionContext.new(target: item[:label], record: record, resource: self, view: view).handle,
+    )
   end
 
   DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :label, keyword_init: true) unless defined?(DiscreetInformationItem)
