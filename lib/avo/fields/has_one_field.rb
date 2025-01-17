@@ -36,6 +36,8 @@ module Avo
 
         record
       end
+
+      def is_searchable? = false
     end
   end
 end
