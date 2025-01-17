@@ -17,6 +17,7 @@ class Avo::Resources::Event < Avo::BaseResource
   self.profile_photo = {
     source: :profile_photo
   }
+  self.discreet_information = :timestamps
 
   def fields
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true

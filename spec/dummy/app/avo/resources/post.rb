@@ -33,7 +33,18 @@ class Avo::Resources::Post < Avo::BaseResource
     main_app.post_path(record)
   }
 
-  self.discreet_information = :timestamps
+  self.discreet_information = [
+    :timestamps,
+    {
+      tooltip: -> { sanitize("Product is <strong>#{record.published_at ? "published" : "draft"}</strong>", tags: %w[strong]) },
+      icon: -> { "heroicons/outline/#{record.published_at ? "eye" : "eye-slashed"}" }
+    },
+    {
+      label: -> { record.published_at ? "✅" : "🙄" },
+      url: -> { "https://avohq.io" },
+      url_target: :_blank
+    }
+  ]
 
   def fields
     field :id, as: :id

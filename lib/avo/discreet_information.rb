@@ -31,16 +31,20 @@ class Avo::DiscreetInformation
   def parse_payload(item)
     if item.is_a?(Hash)
       tooltip = item.delete(:tooltip)
-      icon = item.delete(:icon) || "heroicons/outline/clock"
+      icon = item.delete(:icon)
       url = item.delete(:url)
+      url_target = item.delete(:url_target)
+      label = item.delete(:label)
 
       DiscreetInformationItem.new(
         tooltip: Avo::ExecutionContext.new(target: tooltip, record: record, resource: self, view: view).handle,
         icon: Avo::ExecutionContext.new(target: icon, record: record, resource: self, view: view).handle,
-        url: Avo::ExecutionContext.new(target: url, record: record, resource: self, view: view).handle
+        url: Avo::ExecutionContext.new(target: url, record: record, resource: self, view: view).handle,
+        url_target: Avo::ExecutionContext.new(target: url_target, record: record, resource: self, view: view).handle,
+        label: Avo::ExecutionContext.new(target: label, record: record, resource: self, view: view).handle,
       )
     end
   end
 
-  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, keyword_init: true) unless defined?(DiscreetInformationItem)
+  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :label, keyword_init: true) unless defined?(DiscreetInformationItem)
 end
