@@ -41,8 +41,17 @@ class Avo::Resources::Post < Avo::BaseResource
     },
     {
       label: -> { record.published_at ? "✅" : "🙄" },
-      url: -> { "https://avohq.io" },
-      url_target: :_blank
+      tooltip: -> { "Post is #{record.published_at ? "published" : "draft"}. Click to toggle." },
+      url: -> {
+        Avo::Actions::TogglePublished.path(
+          resource: resource,
+          arguments: {
+            records: Array.wrap(record.id),
+            no_confirmation: true
+          }
+        )
+      },
+      data: Avo::BaseAction::DATA_ATTRIBUTES,
     }
   ]
 

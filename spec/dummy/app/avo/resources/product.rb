@@ -35,10 +35,6 @@ class Avo::Resources::Product < Avo::BaseResource
     },
     :timestamps
   ]
-  # self.discreet_information = {
-  #   tooltip: -> { sanitize("Product is <strong>#{record.status}</strong>", tags: %w[strong]) },
-  #   icon: "heroicons/outline/bold"
-  # }
   self.profile_photo = {
     source: -> { record.image.attached? ? main_app.url_for(record.image.variant(resize_to_fill: [300, 300])) : nil }
   }

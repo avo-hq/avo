@@ -22,4 +22,6 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
       {}
     end
   end
+
+  def data(item) = item.data || {}
 end

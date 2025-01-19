@@ -42,14 +42,21 @@ class Avo::DiscreetInformation
   def parse_payload(item)
     return unless item.is_a?(Hash)
 
+    args = {
+      record:,
+      resource:,
+      view:
+    }
+
     DiscreetInformationItem.new(
-      tooltip: Avo::ExecutionContext.new(target: item[:tooltip], record: record, resource: self, view: view).handle,
-      icon: Avo::ExecutionContext.new(target: item[:icon], record: record, resource: self, view: view).handle,
-      url: Avo::ExecutionContext.new(target: item[:url], record: record, resource: self, view: view).handle,
-      url_target: Avo::ExecutionContext.new(target: item[:url_target], record: record, resource: self, view: view).handle,
-      label: Avo::ExecutionContext.new(target: item[:label], record: record, resource: self, view: view).handle
+      tooltip: Avo::ExecutionContext.new(target: item[:tooltip], **args).handle,
+      icon: Avo::ExecutionContext.new(target: item[:icon], **args).handle,
+      url: Avo::ExecutionContext.new(target: item[:url], **args).handle,
+      url_target: Avo::ExecutionContext.new(target: item[:url_target], **args).handle,
+      data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
+      label: Avo::ExecutionContext.new(target: item[:label], **args).handle
     )
   end
 
-  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :label, keyword_init: true) unless defined?(DiscreetInformationItem)
+  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, keyword_init: true) unless defined?(DiscreetInformationItem)
 end

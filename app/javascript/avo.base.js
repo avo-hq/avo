@@ -25,7 +25,7 @@ Mousetrap.bind('r r r', () => {
   // Cpture scroll position
   scrollTop = document.scrollingElement.scrollTop
 
-  Turbo.visit(window.location.href, { action: 'replace' })
+  window.StreamActions.turbo_reload()
 })
 
 function isMac() {
