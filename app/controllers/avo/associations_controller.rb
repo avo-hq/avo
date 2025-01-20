@@ -32,7 +32,9 @@ module Avo
         @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block).handle || @parent_record.try(@field.id))
       else
         @related_authorization.apply_policy(
-          @parent_record.send BaseResource.valid_association_name(@parent_record, association_from_params)
+          @parent_record.send(
+            BaseResource.valid_association_name(@parent_record, association_from_params)
+          )
         )
       end
 
