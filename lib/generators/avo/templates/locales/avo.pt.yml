@@ -26,6 +26,7 @@ pt:
     click_to_reveal_filters: Clique para mostrar os filtros
     close_modal: Fechar modal
     confirm: Confirmar
+    copy: Copiar
     create_new_item: Criar novo %{item}
     dashboard: Painel
     dashboards: Painéis
@@ -104,6 +105,9 @@ pt:
     select_item: Selecionar item
     show_content: Mostrar conteúdo
     sign_out: Terminar sessão
+    sort_asc: Ordenar em ordem crescente
+    sort_desc: Ordenar em ordem decrescente
+    sort_reset: Redefinir ordenação
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
     this_field_has_attachments_disabled: Este campo tem anexos desativados.
@@ -113,6 +117,7 @@ pt:
     undo: desfazer
     view: Ver
     view_item: ver %{item}
+    visit_record_on_external_path: Visitar registro através de link externo
     was_successfully_created: foi criado com sucesso
     was_successfully_updated: foi atualizado com sucesso
     x_items_more:

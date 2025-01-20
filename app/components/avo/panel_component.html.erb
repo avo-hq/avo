@@ -4,7 +4,8 @@
     name: @name,
     description: @description,
     display_breadcrumbs: @display_breadcrumbs,
-    profile_photo: @profile_photo
+    profile_photo: @profile_photo,
+    external_link: @external_link
   ) do |header| %>
     <% if name_slot.present? %>
       <% header.with_name_slot do %>

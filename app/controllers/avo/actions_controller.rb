@@ -9,9 +9,8 @@ module Avo
       # set_record will fail if it's tried to be used from the Index page.
       request.params[:id].present?
     end
-    before_action :set_action, only: [:show, :handle]
-    before_action :verify_authorization, only: [:show, :handle]
-    before_action :set_query, :set_fields, only: :handle
+    before_action :set_query, :set_action, :verify_authorization, only: [:show, :handle]
+    before_action :set_fields, only: :handle
 
     layout :choose_layout
 
@@ -62,7 +61,7 @@ module Avo
     private
 
     def set_query
-      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
+      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
 
       @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
@@ -72,7 +71,7 @@ module Avo
     end
 
     def action_params
-      @action_params ||= params.permit(:id, :authenticity_token, :resource_name, :action_id, :button, fields: {})
+      @action_params ||= params.permit(:id, :authenticity_token, :resource_name, :action_id, :button, :arguments, fields: {})
     end
 
     def set_action
@@ -82,7 +81,8 @@ module Avo
         user: _current_user,
         # force the action view to in order to render new-related fields (hidden field)
         view: Avo::ViewInquirer.new(:new),
-        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
+        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
+        query: @query
       )
 
       # Fetch action's fields
@@ -99,6 +99,10 @@ module Avo
       # Flash the messages collected from the action
       flash_messages
 
+      # Always execute turbo_stream.avo_close_modal on all responses, including redirects
+      # Exclude response types intended to keep the modal open
+      # This ensures the modal frame refreshes, preventing it from retaining the SRC of the previous action
+      # and avoids re-triggering that SRC during back navigation
       respond_to do |format|
         format.turbo_stream do
           turbo_response = case @response[:type]
@@ -117,11 +121,14 @@ module Avo
 
             turbo_stream.turbo_frame_set_src(Avo::MODAL_FRAME_ID, src)
           when :redirect
-            turbo_stream.redirect_to(
-              Avo::ExecutionContext.new(target: @response[:path]).handle,
-              turbo_frame: @response[:redirect_args][:turbo_frame],
-              **@response[:redirect_args].except(:turbo_frame)
-            )
+            [
+              turbo_stream.avo_close_modal,
+              turbo_stream.redirect_to(
+                Avo::ExecutionContext.new(target: @response[:path]).handle,
+                turbo_frame: @response[:redirect_args][:turbo_frame],
+                **@response[:redirect_args].except(:turbo_frame)
+              )
+            ]
           when :close_modal
             # Close the modal and flash the messages
             [
@@ -132,7 +139,10 @@ module Avo
             # Reload the page
             back_path = request.referer || params[:referrer].presence || resources_path(resource: @resource)
 
-            turbo_stream.redirect_to(back_path)
+            [
+              turbo_stream.avo_close_modal,
+              turbo_stream.redirect_to(back_path)
+            ]
           end
 
           responses = if @action.appended_turbo_streams.present?
@@ -161,7 +171,7 @@ module Avo
     end
 
     def decrypted_query
-      return if (encrypted_query = action_params[:fields][:avo_selected_query]).blank?
+      return if (encrypted_query = action_params[:fields]&.dig(:avo_selected_query)).blank?
 
       Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
     end

@@ -138,6 +138,7 @@ module Avo
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
         mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
         mount Avo::Permissions::Engine, at: "/permissions" if defined?(Avo::Permissions::Engine)
+        mount Avo::Collaborate::Engine, at: "/collaborate" if defined?(Avo::Collaborate::Engine)
       }
     end
 

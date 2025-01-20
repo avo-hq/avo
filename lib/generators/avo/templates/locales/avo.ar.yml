@@ -30,6 +30,7 @@ ar:
     click_to_reveal_filters: انقر لإظهار المرشحات
     close_modal: أغلق النافذة
     confirm: تأكيد
+    copy: نسخ
     create_new_item: إنشاء %{item} جديد
     dashboard: لوحة القيادة
     dashboards: لوحات القيادة
@@ -112,6 +113,9 @@ ar:
     select_item: تحديد العنصر
     show_content: عرض المحتوى
     sign_out: تسجيل الخروج
+    sort_asc: ترتيب تصاعدي
+    sort_desc: ترتيب تنازلي
+    sort_reset: إعادة تهيئة الترتيب
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
@@ -121,6 +125,7 @@ ar:
     undo: تراجع
     view: عرض
     view_item: عرض %{item}
+    visit_record_on_external_path: زيارة السجل على الرابط الخارجي
     was_successfully_created: تم إنشاؤه بنجاح
     was_successfully_updated: تم تحديثه بنجاح
     x_items_more:

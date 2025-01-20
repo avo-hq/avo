@@ -24,6 +24,7 @@ it:
     click_to_reveal_filters: Clicca per mostrare i filtri
     close_modal: Chiudi modale
     confirm: Conferma
+    copy: Copia
     create_new_item: Crea nuovo %{item}
     dashboard: Cruscotto
     dashboards: Cruscotti
@@ -102,6 +103,9 @@ it:
     select_item: Seleziona elemento
     show_content: Mostra contenuto
     sign_out: Esci
+    sort_asc: Ordina in ordine crescente
+    sort_desc: Ordina in ordine decrescente
+    sort_reset: Reimposta ordinamento
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella
     this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.
@@ -111,6 +115,7 @@ it:
     undo: Annulla
     view: Visualizza
     view_item: Visualizza %{item}
+    visit_record_on_external_path: Visita il record tramite link esterno
     was_successfully_created: è stato creato con successo
     was_successfully_updated: è stato aggiornato con successo
     x_items_more:
