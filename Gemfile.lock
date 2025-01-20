@@ -6,15 +6,6 @@ GIT
       activerecord (>= 6.1, < 8)
 
 GIT
-  remote: https://github.com/avo-hq/avo-meta.git
-  revision: eebe10c85a961a938493282a4330343abd70441c
-  branch: main
-  specs:
-    avo-meta (0.1.0)
-      avo (~> 3)
-      store_model (~> 4.1)
-
-GIT
   remote: https://github.com/rails/rails.git
   revision: b88d9af34fbc1c84ce2769ba02584eab2c28ac6e
   branch: main
@@ -629,8 +620,6 @@ GEM
     standard-performance (1.4.0)
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.21.0)
-    store_model (4.1.0)
-      activerecord (>= 7.0)
     stringio (3.1.2)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
@@ -697,7 +686,6 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
-  avo-meta!
   avo-money_field
   avo-record_link_field
   aws-sdk-s3
@@ -762,7 +750,6 @@ DEPENDENCIES
   spring-commands-rspec
   sprockets-rails
   standard
-  store_model
   test-prof
   tzinfo-data
   web-console (>= 3.3.0)

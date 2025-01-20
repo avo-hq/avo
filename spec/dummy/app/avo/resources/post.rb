@@ -63,8 +63,6 @@ class Avo::Resources::Post < Avo::BaseResource
       # suggestions_max_items: 2,
       help: "The only allowed values here are `one`, `two`, and `three`"
 
-    meta_panel
-
     field :cover_photo_attachment, as: :has_one
 
     field :comments, as: :has_many, use_resource: Avo::Resources::PhotoComment

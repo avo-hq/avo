@@ -148,13 +148,4 @@ FactoryBot.define do
     name { Faker::Company.name }
     size { ["small", "medium", "large"].sample }
   end
-
-  factory :meta_schema, class: "Avo::Meta::Schema" do
-    resource_name { "User" }
-    schema_entries {
-      [
-          Avo::Meta::SchemaEntry.new(name: "shoe_size", as: "number", default: "9")
-      ]
-    }
-  end
 end

@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema[8.0].define(version: 2024_11_14_165947) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
+  enable_extension "plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -50,14 +50,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_165947) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "avo_meta_schemas", force: :cascade do |t|
-    t.string "resource_name"
-    t.json "schema_entries"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["resource_name"], name: "index_avo_meta_schemas_on_resource_name", unique: true
   end
 
   create_table "cities", force: :cascade do |t|
@@ -180,7 +172,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_14_165947) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "USD", null: false
+    t.string "price_currency", default: "'USD'::character varying", null: false
   end
 
   create_table "projects", force: :cascade do |t|
