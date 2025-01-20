@@ -5,7 +5,7 @@
       data-association="<%= @field.id %>"
       data-association-class="<%= @field&.target_resource&.model_class || nil %>"
     >
-    <%= field_wrapper **field_wrapper_args, label_for: @field.polymorphic_form_field_label, help: @field.polymorphic_help || '' do %>
+    <%= field_wrapper(**field_wrapper_args, label_for: @field.polymorphic_form_field_label, help: @field.polymorphic_help || '') do %>
       <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [Avo.resource_manager.get_resource_by_model_class(type.to_s).name, type.to_s] },
       {
         value: @field.value,
@@ -32,7 +32,7 @@
     <% @field.types.each do |type| %>
       <template data-belongs-to-field-target="type" data-type="<%= type %>">
         <div data-polymorphic-type="<%= type %>">
-          <%= field_wrapper **field_wrapper_args.merge!(data: reload_data), label: Avo.resource_manager.get_resource_by_model_class(type.to_s).name do %>
+          <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data), label: Avo.resource_manager.get_resource_by_model_class(type.to_s).name) do %>
             <% if @field.is_searchable? %>
               <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: @form,
                 disabled: disabled,
@@ -88,7 +88,7 @@
     <% end %>
   </div>
 <% else %>
-  <%= field_wrapper **field_wrapper_args.merge!(data: reload_data) do %>
+  <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data)) do %>
     <% if @field.is_searchable? %>
       <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: @form,
         field: @field,
