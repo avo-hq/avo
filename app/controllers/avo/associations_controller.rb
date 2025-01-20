@@ -28,13 +28,12 @@ module Avo
 
       # When array field the records are fetched from the field block, from the parent record or from the resource def records
       # When other field type, like has_many the @query is directly fetched from the parent record
-      base_query = if @field.type == "array"
+      # Don't apply policy on array type since it can return an array of hashes where `.all` and other methods used on policy will fail.
+      @query  = if @field.type == "array"
         @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block).handle || @parent_record.try(@field.id))
       else
-        @parent_record.send(association_name)
+        @related_authorization.apply_policy @parent_record.send(association_name)
       end
-
-      @query = @related_authorization.apply_policy base_query
 
       @association_field = find_association_field(resource: @parent_resource, association: params[:related_name])
 

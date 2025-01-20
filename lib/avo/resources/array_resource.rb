@@ -31,7 +31,8 @@ module Avo
         fetched_records.find { |i| i.id.to_s == id.to_s }
       end
 
-      def fetch_records(array_of_records = records)
+      def fetch_records(array_of_records = nil)
+        array_of_records ||= records
         raise "Unable to fetch any #{name}" if array_of_records.nil?
 
         # When the array of records is declared in a field's block, we need to get that block from the parent resource
