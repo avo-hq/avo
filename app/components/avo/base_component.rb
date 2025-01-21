@@ -6,6 +6,9 @@ class Avo::BaseComponent < ViewComponent::Base
   include Avo::Concerns::FindAssociationField
 
   delegate :e, to: :helpers
+  delegate :d, to: :helpers
+  delegate :main_app, to: :helpers
+  delegate :avo, to: :helpers
 
   def has_with_trial(ability)
     Avo.license.has_with_trial(ability)
