@@ -19,8 +19,7 @@ module Avo
           spell_checker: @spell_checker,
           always_show: @always_show,
           image_upload: @image_upload,
-          upload_url: get_upload_url,
-
+          upload_url: direct_uploads_url,
           height: @height
         }
       end
