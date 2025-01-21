@@ -146,17 +146,19 @@ module Avo
     end
 
     def container_classes
-      contain_is_full_width = false
+      container_classes = "2xl:container 2xl:mx-auto"
 
-      if Avo.configuration.full_width_container
-        contain_is_full_width = true
+      contain_is_full_width = if @container_full_width.present?
+        @container_full_width
+      elsif Avo.configuration.full_width_container
+        true
       elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
-        contain_is_full_width = true
+        true
+      else
+        false
       end
 
-      @container_full_width ||= contain_is_full_width
-
-      @container_classes = @container_full_width ? "" : "2xl:container 2xl:mx-auto"
+      contain_is_full_width ? "" : container_classes
     end
 
     # encode params
