@@ -39,7 +39,7 @@ module Avo
           acts_as_taggable_on_values.map { |value| {value:} }.as_json
         else
           # Wrap the value on Array to ensure select mode compatibility
-          Array(value) || []
+          Array.wrap(value) || []
         end
       end
 
