@@ -150,7 +150,7 @@ module Avo
         @container_full_width
       elsif Avo.configuration.full_width_container
         true
-      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && controller.class.superclass.to_s == "Avo::ResourcesController"
         true
       else
         false
