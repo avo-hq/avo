@@ -3,7 +3,7 @@
     <% @field.options.each do |key, value| %>
       <div>
         <%= form.radio_button @field.id, key %>
-        <%= form.label @field.id, value: value %>
+        <%= form.label @field.id, value, value: value %>
       </div>
     <% end %>
   </div>
