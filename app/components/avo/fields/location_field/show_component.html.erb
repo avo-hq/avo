@@ -1,7 +1,3 @@
 <%= field_wrapper **field_wrapper_args do %>
-  <% if field.value_present? %>
-    <%= js_map [{latitude: field.value[0], longitude: field.value[1]}], id: "location-map", zoom: field.zoom, controls: true, **field.mapkick_options %>
-  <% else %>
-    —
-  <% end %>
+    <%= field.render_map(params) %>
 <% end %>
