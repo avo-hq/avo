@@ -105,6 +105,9 @@ ja:
     select_item: アイテムを選択
     show_content: 内容を表示
     sign_out: サインアウト
+    sort_asc: 昇順で並べ替え
+    sort_desc: 降順で並べ替え
+    sort_reset: ソートをリセット
     switch_to_view: "%{view_type}ビューに切り替える"
     table_view: テーブルビュー
     this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。

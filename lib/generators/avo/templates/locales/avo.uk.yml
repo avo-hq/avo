@@ -105,6 +105,9 @@ uk:
     select_item: Вибрати елемент
     show_content: Показати вміст
     sign_out: Вийти
+    sort_asc: Rūšiuoti didėjančia tvarka
+    sort_desc: Rūšiuoti mažėjančia tvarka
+    sort_reset: Atstatyti rūšiavimą
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.

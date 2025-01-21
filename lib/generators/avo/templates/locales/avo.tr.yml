@@ -105,6 +105,9 @@ tr:
     select_item: Öğe seç
     show_content: İçeriği göster
     sign_out: Çıkış yap
+    sort_asc: Artan sırala
+    sort_desc: Azalan sırala
+    sort_reset: Sıralamayı sıfırla
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
     this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.

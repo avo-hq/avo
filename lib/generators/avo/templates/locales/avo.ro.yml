@@ -107,6 +107,9 @@ ro:
     select_item: Selectează record
     show_content: Arată conținutul
     sign_out: Delogare
+    sort_asc: Sortare crescătoare
+    sort_desc: Sortare descrescătoare
+    sort_reset: Resetare sortare
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
     this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
