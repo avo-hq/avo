@@ -159,6 +159,18 @@ module Avo
       @container_classes = @container_full_width ? "" : "2xl:container 2xl:mx-auto"
     end
 
+    # encode params
+    def e(value)
+      URI::UID.build(value).payload
+    end
+
+    # decode params
+    def d(value)
+      URI::UID.from_payload(value).decode
+    rescue
+      value
+    end
+
     private
 
     # Taken from the original library
