@@ -18,8 +18,7 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('Hello from the connection')
-    
+  
     const options = {
       element: this.elementTarget,
       spellChecker: this.componentOptions.spell_checker,
