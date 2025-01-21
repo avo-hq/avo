@@ -145,6 +145,20 @@ module Avo
       defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
     end
 
+    def container_classes
+      contain_is_full_width = false
+
+      if Avo.configuration.full_width_container
+        contain_is_full_width = true
+      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
+        contain_is_full_width = true
+      end
+
+      @container_full_width ||= contain_is_full_width
+
+      @container_classes = @container_full_width ? "" : "2xl:container 2xl:mx-auto"
+    end
+
     private
 
     # Taken from the original library

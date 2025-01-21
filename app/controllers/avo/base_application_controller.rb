@@ -21,7 +21,6 @@ module Avo
     before_action :set_resource_name
     before_action :_authenticate!
     before_action :set_authorization
-    before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
@@ -255,16 +254,8 @@ module Avo
       end
     end
 
-    def set_container_classes
-      contain = true
-
-      if Avo.configuration.full_width_container
-        contain = false
-      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
-        contain = false
-      end
-
-      @container_classes = contain ? "2xl:container 2xl:mx-auto" : ""
+    def mark_container_as_full_width
+      @container_full_width = true
     end
 
     def add_initial_breadcrumbs

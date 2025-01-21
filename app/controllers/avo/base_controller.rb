@@ -506,6 +506,8 @@ module Avo
     end
 
     def after_update_path
+      # The `return_to` param takes precedence over anything else.
+      return params[:return_to] if params[:return_to].present?
       return params[:referrer] if params[:referrer].present?
 
       redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
@@ -554,12 +556,15 @@ module Avo
     def redirect_path_from_resource_option(action = :after_update_path)
       return nil if @resource.class.send(action).blank?
 
+      extra_args = {}
+      extra_args[:return_to] = params[:return_to] if params[:return_to].present?
+
       if @resource.class.send(action) == :index
-        resources_path(resource: @resource)
+        resources_path(resource: @resource, **extra_args)
       elsif @resource.class.send(action) == :edit || Avo.configuration.resource_default_view.edit?
-        edit_resource_path(resource: @resource, record: @resource.record)
+        edit_resource_path(resource: @resource, record: @resource.record, **extra_args)
       else
-        resource_path(record: @record, resource: @resource)
+        resource_path(record: @record, resource: @resource, **extra_args)
       end
     end
 
