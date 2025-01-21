@@ -14,7 +14,15 @@ module Avo
       def render_map(params)
         return "—" if !value_present?
 
-        default_mapkick_options = if(render_static_map = params[:action] == "preview" || @args[:static])
+        render_static_map = params[:action] == "preview" || @args[:static]
+
+        Avo::Current.view_context.send render_static_map ? :static_map : :js_map,
+          [{latitude: value[0], longitude: value[1]}],
+           **default_mapkick_options(render_static_map)
+      end
+
+      def default_mapkick_options(render_static_map)
+        default_options = if render_static_map
           {
             width: 300,
             height: 300
@@ -27,9 +35,7 @@ module Avo
           }
         end
 
-        Avo::Current.view_context.send render_static_map ? :static_map : :js_map,
-          [{latitude: value[0], longitude: value[1]}],
-           **default_mapkick_options.merge(@args[:mapkick_options] || {})
+        default_options.merge(@args[:mapkick_options] || {})
       end
 
       def value_as_array?
