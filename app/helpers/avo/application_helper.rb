@@ -145,7 +145,7 @@ module Avo
       defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
     end
 
-    def container_is_full_width
+    def container_is_full_width?
       if @container_full_width.present?
         @container_full_width
       elsif Avo.configuration.full_width_container
