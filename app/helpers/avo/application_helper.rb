@@ -145,10 +145,8 @@ module Avo
       defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
     end
 
-    def container_classes
-      container_classes = "2xl:container 2xl:mx-auto"
-
-      contain_is_full_width = if @container_full_width.present?
+    def container_is_full_width
+      if @container_full_width.present?
         @container_full_width
       elsif Avo.configuration.full_width_container
         true
@@ -157,8 +155,10 @@ module Avo
       else
         false
       end
+    end
 
-      contain_is_full_width ? "" : container_classes
+    def container_classes
+      container_is_full_width? ? "" : "2xl:container 2xl:mx-auto"
     end
 
     # encode params
