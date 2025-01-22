@@ -35,13 +35,14 @@ class Avo::Resources::City < Avo::BaseResource
   }
 
   def base_fields
+    field :preview, as: :preview
     field :id, as: :id
     field :coordinates,
       as: :location,
+      show_on: :preview,
       stored_as: [:latitude, :longitude],
       mapkick_options: {
         style: "mapbox://styles/mapbox/satellite-v9",
-        controls: true,
         markers: {color: "#FFC0CB"}
       }
     field :city_center_area,
