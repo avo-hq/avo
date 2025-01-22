@@ -380,6 +380,7 @@ GEM
       net-pop
       net-smtp
     mapkick-rb (0.1.5)
+    mapkick-static (0.1.1)
     marcel (1.0.4)
     matrix (0.4.2)
     memory_profiler (1.1.0)
@@ -731,6 +732,7 @@ DEPENDENCIES
   launchy
   listen (>= 3.5.1)
   mapkick-rb (~> 0.1.4)
+  mapkick-static
   meta-tags
   money-rails (~> 1.12)
   net-smtp
