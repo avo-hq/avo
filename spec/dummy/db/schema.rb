@@ -179,7 +179,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_192051) do
   create_table "projects", force: :cascade do |t|
     t.string "name"
     t.string "status"
-    t.string "stage", default: [], array: true
+    t.string "stage"
     t.string "budget"
     t.string "country"
     t.integer "users_required"
