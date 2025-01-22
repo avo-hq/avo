@@ -248,19 +248,28 @@ RSpec.describe "Tags", type: :system do
       projects.each do |project|
         expect(page).to have_text(project.stage)
       end
+
+      Avo::Resources::Project.restore_items_from_backup
     end
 
     it "on show" do
+      Avo::Resources::Project.with_temporary_items do
+        field :stage, as: :tags, mode: :select
+      end
+
       visit avo.resources_project_path(projects.first)
 
       expect(page).to have_text(projects.first.stage)
+
+      Avo::Resources::Project.restore_items_from_backup
     end
 
     it "on edit / update" do
-      visit avo.edit_resources_project_path(projects.first)
+      Avo::Resources::Project.with_temporary_items do
+        field :stage, as: :tags, mode: :select
+      end
 
-      # Waiting for the tags JS to properly load
-      find("tag[title=\"#{projects.first.stage}\"]", text: projects.first.stage, wait: 10)
+      visit avo.edit_resources_project_path(projects.first)
 
       expect(page).to have_text(projects.first.stage)
 
