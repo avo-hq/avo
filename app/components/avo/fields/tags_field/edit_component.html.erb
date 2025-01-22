@@ -1,4 +1,4 @@
-<%= field_wrapper **field_wrapper_args, data: {
+<%= field_wrapper(**field_wrapper_args, data: {
       controller: "tags-field",
       tags_field_mode_value: @field.mode,
       tags_field_whitelist_items_value: @field.whitelist_items,
@@ -8,7 +8,7 @@
       tags_field_close_on_select_value: @field.close_on_select,
       tags_field_delimiters_value: @field.delimiters,
       tags_field_fetch_values_from_value: @field.fetch_values_from,
-    } do %>
+    }) do %>
     <%# We use a dummy field so the back action from Turbo does not brake the field %>
     <%# dummy field %>
     <%= text_field_tag "#{@field.id}-dummy", '',
