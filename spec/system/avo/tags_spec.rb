@@ -244,11 +244,11 @@ RSpec.describe "Tags", type: :system do
         field :dummy_field, as: :tags,
           mode: :select,
           close_on_select: true,
-          format_using: -> {[{value: 'a_c2', label: 'activity_category2'}]},
+          format_using: -> { [{value: "a_c2", label: "activity_category2"}] },
           suggestions: [
-            { value: 'a_c1', label: 'activity_category1' },
-            { value: 'a_c2', label: 'activity_category2' },
-            { value: 'a_c3', label: 'activity_category3' }
+            {value: "a_c1", label: "activity_category1"},
+            {value: "a_c2", label: "activity_category2"},
+            {value: "a_c3", label: "activity_category3"}
           ]
       end
 
@@ -270,11 +270,11 @@ RSpec.describe "Tags", type: :system do
         field :dummy_field, as: :tags,
           mode: :select,
           close_on_select: true,
-          format_using: -> {[{value: 'a_c2', label: 'activity_category2'}]},
+          format_using: -> { [{value: "a_c2", label: "activity_category2"}] },
           suggestions: [
-            { value: 'a_c1', label: 'activity_category1' },
-            { value: 'a_c2', label: 'activity_category2' },
-            { value: 'a_c3', label: 'activity_category3' }
+            {value: "a_c1", label: "activity_category1"},
+            {value: "a_c2", label: "activity_category2"},
+            {value: "a_c3", label: "activity_category3"}
           ]
       end
 
@@ -296,11 +296,11 @@ RSpec.describe "Tags", type: :system do
         field :dummy_field, as: :tags,
           mode: :select,
           close_on_select: true,
-          format_using: -> {[{value: 'a_c2', label: 'activity_category2'}]},
+          format_using: -> { [{value: "a_c2", label: "activity_category2"}] },
           suggestions: [
-            { value: 'a_c1', label: 'activity_category1' },
-            { value: 'a_c2', label: 'activity_category2' },
-            { value: 'a_c3', label: 'activity_category3' }
+            {value: "a_c1", label: "activity_category1"},
+            {value: "a_c2", label: "activity_category2"},
+            {value: "a_c3", label: "activity_category3"}
           ]
       end
 
