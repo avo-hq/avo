@@ -1,6 +1,6 @@
 module Avo
   module Fields
-    class MarkdownField < BaseField
+    class EasyMdeField < BaseField
       attr_reader :options
 
       def initialize(id, **args, &block)
