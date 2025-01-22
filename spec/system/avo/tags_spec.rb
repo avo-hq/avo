@@ -261,6 +261,9 @@ RSpec.describe "Tags", type: :system do
 
       expect(page).to have_text(projects.first.stage)
 
+      # Waiting for the tags JS to properly load
+      find("tag[title=\"#{projects.first.stage}\"]", text: projects.first.stage, wait: 10)
+
       click_on "Save"
 
       wait_for_path_to_be(path: avo.resources_project_path(projects.first))
