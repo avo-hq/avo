@@ -78,7 +78,7 @@ module Avo
       def whitelist_items
         return suggestions.to_json if enforce_suggestions
 
-        (suggestions + field_value).to_json
+        (suggestions + field_value).uniq.to_json
       end
 
       def suggestions
