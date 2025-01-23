@@ -37,6 +37,6 @@ class Avo::PanelComponent < Avo::BaseComponent
   private
 
   def data_attributes
-    @data.merge({"panel-index": @index})
+    @data.merge({component: self.class.to_s.underscore, "panel-index": @index})
   end
 end
