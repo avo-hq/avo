@@ -408,6 +408,30 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "select items on grid view" do
+    let!(:post) { create :post }
+
+    it "enables and disables the actions" do
+      visit avo.resources_posts_path
+
+      # Find disabled action
+      click_on "Actions"
+      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
+
+      # Hover grid element, select post, and verify that action is not disabled anymore
+      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.id}\"]").hover
+      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
+      click_on "Actions"
+      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "false"
+
+      # Hover grid element, "unselect" post, and verify that action is disabled again
+      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.id}\"]").hover
+      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
+      click_on "Actions"
+      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
