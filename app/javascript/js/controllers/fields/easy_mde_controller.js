@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import EasyMDE from 'easymde'
+import { DirectUpload } from '@rails/activestorage'
 
 export default class extends Controller {
   static targets = ['element']
@@ -17,6 +18,7 @@ export default class extends Controller {
   }
 
   connect() {
+  
     const options = {
       element: this.elementTarget,
       spellChecker: this.componentOptions.spell_checker,
@@ -28,9 +30,76 @@ export default class extends Controller {
       options.status = false
     }
 
+
+    if (this.componentOptions.image_upload) {
+      this.#configureImageUploads(options)
+    }
+
     const easyMde = new EasyMDE(options)
     if (this.view === 'show') {
       easyMde.codemirror.options.readOnly = true
     }
+  }
+
+  #configureImageUploads(options) {
+    options.uploadImage = true
+    options.imageUploadEndpoint = this.elementTarget.dataset.uploadUrl
+    options.imageUploadFunction = this.#handleImageUpload.bind(this)
+    options.imageAccept = 'image/*'
+    options.previewImagesInEditor = true
+    options.toolbar = this.toolbarItems
+    return options
+  }
+
+  #handleImageUpload(file, onSuccess, onError) {
+    const upload = new DirectUpload(file, this.elementTarget.dataset.uploadUrl)
+    upload.create((error, blob) => {
+      if (error) return onError(error)
+      const imageUrl = this.#encodedImageUrl(blob)
+      onSuccess(imageUrl)
+    })
+  }
+
+  #encodedImageUrl(blob) {
+    return `/rails/active_storage/blobs/redirect/${
+      blob.signed_id
+    }/${encodeURIComponent(blob.filename)}`
+  }
+
+  get toolbarItems() {
+    const baseItems = [
+      'bold',
+      'italic',
+      'heading',
+      '|',
+      'quote',
+      'unordered-list',
+      'ordered-list',
+      '|',
+      'link',
+      'image',
+    ]
+
+    const uploadImageItem = this.componentOptions.image_upload
+      ? [
+          {
+            name: 'upload-image',
+            action: EasyMDE.drawUploadedImage,
+            className: 'fa fa-file-picture-o',
+            title: 'Upload & insert image',
+          },
+        ]
+      : []
+
+    return [
+      ...baseItems,
+      ...uploadImageItem,
+      '|',
+      'preview',
+      'side-by-side',
+      'fullscreen',
+      '|',
+      'guide',
+    ]
   }
 }
