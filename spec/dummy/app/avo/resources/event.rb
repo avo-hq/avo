@@ -40,6 +40,7 @@ class Avo::Resources::Event < Avo::BaseResource
       field :location, as: :belongs_to
     end
 
+    # this field demonstrated how one can use the array field to display an arbitrary array of objects as a "has_many field"
     field :attendees, as: :array do
       [
         {id: 1, name: "John Doe", role: "Software Developer", organization: "TechCorp"},
