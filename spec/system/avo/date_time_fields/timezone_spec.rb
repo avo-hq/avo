@@ -43,6 +43,7 @@ RSpec.describe "timezone", type: :system do
           expect(text_input.value).to eq "2024-03-25 09:23:00"
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "March 25, 2024 09:23:00 CET"
         end
