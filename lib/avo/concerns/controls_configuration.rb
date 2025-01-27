@@ -29,7 +29,7 @@ module Avo
       end
 
       def row_controls_configurations
-        ROW_CONTROLS_CONFIG_DEFAULTS.merge(self.row_controls_config)
+        ROW_CONTROLS_CONFIG_DEFAULTS.merge(row_controls_config)
       end
 
       def row_controls_classes
