@@ -21,6 +21,9 @@ window.Stimulus = application
       "@hotwired/stimulus": "FakeStimulus"
     }
   }
+
+  Example rollup config
+  https://github.com/avo-hq/marksmith/blob/main/rollup.config.mjs
 */
 window.FakeStimulus = {
   Controller,
