@@ -10,7 +10,7 @@ Avo::Engine.routes.draw do
   end
 
   resources :media, only: [:index, :show]
-  get :media_library, to: "media_library/items#index"
+  get :media_library, to: "media_library/items#index", path: "media-library"
   post :media_library, to: "media_library/items#create"
   namespace :media_library do
     resources :items

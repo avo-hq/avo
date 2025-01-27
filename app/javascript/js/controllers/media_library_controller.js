@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Controller } from '@hotwired/stimulus'
-
+import { closeModal } from '../helpers'
 // Connects to data-controller="media-library"
 export default class extends Controller {
   static outlets = ['field']
@@ -45,17 +45,21 @@ export default class extends Controller {
   selectItem(event) {
     const { params } = event
     const { attaching, multiple } = params
+    const item = event.target.closest('[data-component="avo/media_library/list_item_component"]')
+    const attachments = [this.#extractMetadataFromItem(item)]
     // When attaching, we want to prevent showing the details screen and instead just check the attachment
     if (attaching) {
       event.preventDefault()
+      this.insertAttachments(attachments, event)
+      closeModal()
+
       // TODO: allow multiple attachments
-      if (multiple) {
-        const element = document.querySelector(`[data-attachment-id="${params.attachment.id}"]`)
-        element.dataset.selected = !(element.dataset.selected === 'true')
-        // this.insertAttachments(event)
+      // if (multiple) {
+      //   const element = document.querySelector(`[data-attachment-id="${params.attachment.id}"]`)
+      //   element.dataset.selected = !(element.dataset.selected === 'true')
       // } else {
       //   this.insertAttachments(attachments, event)
-      }
+      // }
     }
   }
 
@@ -72,5 +76,13 @@ export default class extends Controller {
 
   closeItemDetails() {
     document.querySelector(`turbo-frame#${this.itemDetailsFrameIdValue}`).innerHTML = ''
+  }
+
+  #extractMetadataFromItem(item) {
+    const attachment = JSON.parse(item.dataset.mediaLibraryAttachmentParam)
+    const blob = JSON.parse(item.dataset.mediaLibraryBlobParam)
+    const path = item.dataset.mediaLibraryPathParam
+
+    return { attachment, blob, path }
   }
 }

@@ -98,12 +98,13 @@ export default class extends Controller {
       }
     }
 
-    // Add the gallerybutton to the toolbar
+    // Add the gallery button to the toolbar
     const buttonHTML = `<button type="button" data-trix-action="gallery" class="trix-button trix-button--icon">${galleryButtonSVG}</button>`
-    // console.log('event.target->', event.target)
-    event.target.toolbarElement
-      .querySelector('.trix-button-group--file-tools')
-      .insertAdjacentHTML('beforeend', buttonHTML)
+    if (event.target.toolbarElement && event.target.toolbarElement.querySelector('.trix-button-group--file-tools')) {
+      event.target.toolbarElement
+        .querySelector('.trix-button-group--file-tools')
+        .insertAdjacentHTML('beforeend', buttonHTML)
+    }
 
     // vm is the controller instance
     const vm = this

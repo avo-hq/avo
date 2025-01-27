@@ -9,6 +9,8 @@ class Avo::BaseComponent < ViewComponent::Base
     Avo.license.has_with_trial(ability)
   end
 
+  def component_name = self.class.name.to_s.underscore
+
   private
 
   # Use the @parent_resource to fetch the field using the @reflection name.
