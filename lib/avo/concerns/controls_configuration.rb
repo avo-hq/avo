@@ -49,6 +49,7 @@ module Avo
 
         classes
       end
+
       private
 
       def resource_controls_render_on_both_sides?
