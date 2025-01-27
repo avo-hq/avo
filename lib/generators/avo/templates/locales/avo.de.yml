@@ -103,6 +103,9 @@ de:
     select_item: Eintrag auswählen
     show_content: Inhalt anzeigen
     sign_out: Abmelden
+    sort_asc: Aufsteigend sortieren
+    sort_desc: Absteigend sortieren
+    sort_reset: Sortierung zurücksetzen
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht
     this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.

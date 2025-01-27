@@ -35,8 +35,16 @@ class Avo::Resources::City < Avo::BaseResource
   }
 
   def base_fields
+    field :preview, as: :preview
     field :id, as: :id
-    field :coordinates, as: :location, stored_as: [:latitude, :longitude]
+    field :coordinates,
+      as: :location,
+      show_on: :preview,
+      stored_as: [:latitude, :longitude],
+      mapkick_options: {
+        style: "mapbox://styles/mapbox/satellite-v9",
+        markers: {color: "#FFC0CB"}
+      }
     field :city_center_area,
       as: :area,
       geometry: :polygon,
@@ -91,7 +99,7 @@ class Avo::Resources::City < Avo::BaseResource
       field :is_capital, as: :boolean, filterable: true
       field :features, as: :key_value
       field :image_url, as: :external_image
-      field :tiny_description, as: :markdown
+      field :tiny_description, as: :easy_mde
       field :status, as: :badge, enum: ::City.statuses
     end
   end

@@ -113,6 +113,9 @@ ar:
     select_item: تحديد العنصر
     show_content: عرض المحتوى
     sign_out: تسجيل الخروج
+    sort_asc: ترتيب تصاعدي
+    sort_desc: ترتيب تنازلي
+    sort_reset: إعادة تهيئة الترتيب
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.

@@ -27,7 +27,7 @@
     <turbo-stream action="append" target="alerts">
       <template>
         <% @resource.invalid_fields.each do |error| %>
-          <%= render Avo::AlertComponent.new :error, error[:message] %>
+          <%= render Avo::AlertComponent.new error[:alert_type], error[:message] %>
         <% end %>
       </template>
     </turbo-stream>
