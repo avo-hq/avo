@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::SidebarComponent < Avo::BaseComponent
-  prop :sidebar_open, _Boolean, default: false
-  prop :for_mobile, _Boolean, default: false
+  prop :sidebar_open, default: false
+  prop :for_mobile, default: false
 
   def dashboards
     return [] unless Avo.plugin_manager.installed?(:avo_dashboards)

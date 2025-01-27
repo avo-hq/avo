@@ -51,7 +51,7 @@ RSpec.describe "textarea", type: :feature do
         expect(page).to have_text new_description
       end
 
-      it "cleares the description" do
+      it "clears the description" do
         visit url
 
         expect(page).to have_field type: "textarea", id: "team_description", placeholder: "Description", text: description

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class Avo::EmptyStateComponent < Avo::BaseComponent
-  prop :message, _Nilable(String)
-  prop :view_type, Symbol, default: :table do |value|
+  prop :message
+  prop :view_type, default: :table do |value|
     value&.to_sym
   end
-  prop :add_background, _Boolean, default: false
-  prop :by_association, _Boolean, default: false
+  prop :add_background, default: false
+  prop :by_association, default: false
 
   def text
     @message || locale_message

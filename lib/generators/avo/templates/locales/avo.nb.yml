@@ -26,6 +26,7 @@ nb:
     click_to_reveal_filters: Vis filter
     close_modal: Lukk modal
     confirm: Bekreft
+    copy: Kopier
     create_new_item: Lag ny %{item}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -57,10 +58,14 @@ nb:
       add_row: Legg til rad
       delete_row: Slett rad
       key: Nøkkel
+      reorder_row: Omorganiser rad
       value: Verdi
+    less_content: Mindre innhold
     list_is_empty: Listen er tom
     loading: Laster
     more: Mer
+    more_content: Mer innhold
+    more_records_available: Det er flere poster tilgjengelig.
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt
@@ -100,14 +105,19 @@ nb:
     select_item: Velg
     show_content: Vis innhold
     sign_out: Logg ut
+    sort_asc: Sorter stigende
+    sort_desc: Sorter synkende
+    sort_reset: Tilbakestill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabell visning
+    this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
     tools: Redskapene
     type_to_search: Søk.
     unauthorized: Ikke autorisert
     undo: angre
     view: Vis
     view_item: vis %{item}
+    visit_record_on_external_path: Besøk posten via en ekstern lenke
     was_successfully_created: ble opprettet
     was_successfully_updated: ble oppdatert
     x_items_more:
@@ -118,4 +128,6 @@ nb:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, jeg er sikker
+    you_cant_upload_new_resource: Du kan ikke laste opp filer til Trix editoren før du lagrer ressursen.
+    you_havent_set_attachment_key: Du har ikke satt en `attachment_key` til dette Trix-feltet.
     you_missed_something_check_form: Her mangler du noe. Vennligst sjekk skjemaet.

@@ -5,6 +5,8 @@ categories:
     labels:
       - 'Feature'
       - 'Feat'
+  - title: '✨ Enhancements'
+    labels:
       - 'Enhancement'
   - title: '🐛 Bug Fixes'
     labels:

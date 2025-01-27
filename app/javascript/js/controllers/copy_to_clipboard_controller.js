@@ -13,7 +13,7 @@ export default class extends Controller {
     el.value = str // Set its value to the string that you want copied
     el.contentEditable = true
     el.readOnly = false
-    el.setAttribute('readonly', false) // Make it readonly false for iOS compatability
+    el.setAttribute('readonly', false) // Make it readonly false for iOS compatibility
     el.setAttribute('contenteditable', true) // Make it editable for iOS
     el.style.position = 'absolute'
     el.style.left = '-9999px' // Move outside the screen to make it invisible

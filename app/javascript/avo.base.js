@@ -39,6 +39,20 @@ function isMac() {
     document.body.classList.remove('os-mac')
   }
 }
+
+// Add the shift-pressed class to the body when the shift key is pressed
+document.addEventListener('keydown', (event) => {
+  if (event.shiftKey) {
+    document.body.classList.add('shift-pressed')
+  }
+})
+// Remove the shift-pressed class from the body when the shift key is released
+document.addEventListener('keyup', (event) => {
+  if (!event.shiftKey) {
+    document.body.classList.remove('shift-pressed')
+  }
+})
+
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'light',
@@ -46,6 +60,11 @@ function initTippy() {
       const title = reference.getAttribute('title')
       reference.removeAttribute('title')
       reference.removeAttribute('data-tippy')
+
+      // Identify elements that have tippy tooltip with the has-data-tippy attribute
+      // Store the title on the attribute
+      // Used to revert data-tippy and title attributes before cache
+      reference.setAttribute('has-data-tippy', title)
 
       return title
     },
@@ -63,6 +82,13 @@ function initTippy() {
 window.initTippy = initTippy
 
 ActiveStorage.start()
+
+document.addEventListener('turbo:before-stream-render', () => {
+  // We're using the timeout feature so we can fake the `turbo:after-stream-render` event
+  setTimeout(() => {
+    initTippy()
+  }, 1)
+})
 
 document.addEventListener('turbo:load', () => {
   initTippy()
@@ -94,7 +120,7 @@ document.addEventListener('turbo:frame-load', () => {
 document.addEventListener('turbo:before-fetch-response', async (e) => {
   if (e.detail.fetchResponse.response.status === 500) {
     const { id, src } = e.target
-    // Don't try to redirect to failed to load if this is alread a redirection to failed to load and crashed somewhere.
+    // Don't try to redirect to failed to load if this is already a redirection to failed to load and crashed somewhere.
     // You'll end up with a request loop.
     if (!e.detail.fetchResponse?.response?.url?.includes('/failed_to_load')) {
       e.target.src = `${window.Avo.configuration.root_path}/failed_to_load?turbo_frame=${id}&src=${src}`
@@ -109,6 +135,13 @@ document.addEventListener('turbo:submit-start', () => document.body.classList.ad
 document.addEventListener('turbo:submit-end', () => document.body.classList.remove('turbo-loading'))
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('[data-turbo-remove-before-cache]').forEach((element) => element.remove())
+
+  // Revert data-tippy and title attributes stored on the has-data-tippy attribute
+  document.querySelectorAll('[has-data-tippy]').forEach((element) => {
+    element.setAttribute('data-tippy', 'tooltip')
+    element.setAttribute('title', element.getAttribute('has-data-tippy'))
+    element.removeAttribute('has-data-tippy')
+  })
 })
 
 window.Avo = window.Avo || { configuration: {} }

@@ -3,8 +3,8 @@
 class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
   include Turbo::FramesHelper
 
-  prop :field, Avo::Fields::BaseField
-  prop :resource, Avo::BaseResource
+  prop :field
+  prop :resource
 
   def classes
     base_classes = "py-4 rounded-2xl max-w-full"

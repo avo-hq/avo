@@ -69,7 +69,7 @@ export default class extends Controller {
     let handler
 
     document.addEventListener('turbo:visit', handler = () => {
-      // Remeber sidebar scroll position before changing pages.
+      // Remember sidebar scroll position before changing pages.
       this.sidebarScrollPosition = document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTop
       // remove event handler after disconnection
       document.removeEventListener('turbo:visit', handler)
@@ -99,7 +99,7 @@ export default class extends Controller {
       // we force a reflow here because we remove then
       // immediately add the sidebar-open class
       // which doesn't give the browser enough time to apply the
-      // transistion.
+      // transition.
       this.mainAreaTarget.offsetHeight;
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')

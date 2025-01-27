@@ -8,14 +8,14 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     @header_fields, @table_row_components = cache_table_rows
   end
 
-  prop :resources, _Nilable(_Array(Avo::BaseResource))
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(_Any)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :pagy, _Nilable(Pagy)
-  prop :query, _Nilable(ActiveRecord::Relation)
-  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :resources
+  prop :resource
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :pagy
+  prop :query
+  prop :actions
 
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern
@@ -67,7 +67,7 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
     table_row_components = []
 
     # Loop through each resource in @resources
-    @resources.each do |resource|
+    @resources.each_with_index do |resource, index|
       # Get fields for the current resource and concat them to the @header_fields
       row_fields = resource.get_fields(reflection: @reflection, only_root: true)
       header_fields.concat row_fields
@@ -79,7 +79,8 @@ class Avo::Index::ResourceTableComponent < Avo::BaseComponent
         reflection: @reflection,
         parent_record: @parent_record,
         parent_resource: @parent_resource,
-        actions: @actions
+        actions: @actions,
+        index:
       )
     end
 

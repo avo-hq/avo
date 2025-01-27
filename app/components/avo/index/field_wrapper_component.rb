@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
-  prop :field, _Nilable(Avo::Fields::BaseField)
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :dash_if_blank, _Boolean, default: true
-  prop :center_content, _Boolean, default: false
-  prop :flush, _Boolean, default: false
-  prop :args, Hash, :**, default: {}.freeze
-  prop :classes, _Nilable(String) do |value|
-    @args&.dig(:class) || ""
-  end
+  prop :field
+  prop :resource
+  prop :dash_if_blank, default: true
+  prop :center_content, default: false
+  prop :flush, default: false
+  prop :args, kind: :**, default: {}.freeze
 
   def after_initialize
     @view = Avo::ViewInquirer.new("index")
+    @classes = @args.dig(:class) || ""
   end
 
   def classes

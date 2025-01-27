@@ -23,6 +23,7 @@ class Avo::Resources::Fish < Avo::BaseResource
     field :id, as: :id
     field :id, as: :number, only_on: :forms, readonly: -> { !view.new? }
     field :name, as: :text, required: -> { view.new? }, help: "help text"
+    field :size, as: :radio, options: {small: "Small", medium: "Medium", large: "Large"}
     field :secondary_field_for_name,
       as: :text,
       for_attribute: :name,

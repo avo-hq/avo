@@ -11,6 +11,9 @@ module Avo
     attr_writer :logger
     attr_writer :turbo
     attr_writer :pagination
+    attr_writer :explicit_authorization
+    attr_writer :exclude_from_status
+    attr_writer :persistence
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -26,7 +29,6 @@ module Avo
     attr_accessor :full_width_container
     attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
-    attr_accessor :cache_resource_filters
     attr_accessor :context
     attr_accessor :display_breadcrumbs
     attr_accessor :hide_layout_when_printing
@@ -37,7 +39,7 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
-    attr_accessor :disabled_features
+    attr_writer :disabled_features
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
@@ -56,6 +58,8 @@ module Avo
     attr_accessor :is_admin_method
     attr_accessor :is_developer_method
     attr_accessor :search_results_count
+    attr_accessor :first_sorting_option
+    attr_accessor :associations_lookup_list_limit
 
     def initialize
       @root_path = "/avo"
@@ -70,6 +74,7 @@ module Avo
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
+      @explicit_authorization = false
       @authorization_methods = {
         index: "index?",
         show: "show?",
@@ -83,7 +88,9 @@ module Avo
       @full_width_container = false
       @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
-      @cache_resource_filters = false
+      @persistence = {
+        driver: nil
+      }
       @context = proc {}
       @initial_breadcrumbs = proc {
         add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
@@ -117,6 +124,15 @@ module Avo
       @is_admin_method = :is_admin?
       @is_developer_method = :is_developer?
       @search_results_count = 8
+      @first_sorting_option = :desc # :desc or :asc
+      @associations_lookup_list_limit = 1000
+      @exclude_from_status = []
+    end
+
+    # Authorization is enabled when:
+    # (avo-pro gem is installed) AND (authorization_client is NOT nil)
+    def authorization_enabled?
+      @authorization_enabled ||= Avo.plugin_manager.installed?(:avo_pro) && !authorization_client.nil?
     end
 
     def current_user_method(&block)
@@ -153,8 +169,12 @@ module Avo
       @root_path
     end
 
+    def disabled_features
+      Avo::ExecutionContext.new(target: @disabled_features).handle
+    end
+
     def feature_enabled?(feature)
-      !@disabled_features.map(&:to_sym).include?(feature.to_sym)
+      !disabled_features.map(&:to_sym).include?(feature.to_sym)
     end
 
     def branding
@@ -237,6 +257,10 @@ module Avo
       Avo::ExecutionContext.new(target: @turbo).handle
     end
 
+    def exclude_from_status
+      Avo::ExecutionContext.new(target: @exclude_from_status).handle
+    end
+
     def default_turbo
       -> do
         {
@@ -251,6 +275,18 @@ module Avo
 
     def default_locale
       @locale || I18n.default_locale
+    end
+
+    def explicit_authorization
+      Avo::ExecutionContext.new(target: @explicit_authorization).handle
+    end
+
+    def persistence
+      Avo::ExecutionContext.new(target: @persistence).handle
+    end
+
+    def session_persistence_enabled?
+      persistence[:driver] == :session
     end
   end
 

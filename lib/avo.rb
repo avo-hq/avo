@@ -1,5 +1,4 @@
 require "zeitwerk"
-require "ostruct"
 require "net/http"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
@@ -20,6 +19,7 @@ module Avo
   COOKIES_KEY = "avo"
   MODAL_FRAME_ID = :modal_frame
   ACTIONS_BACKGROUND_FRAME = :actions_background
+  CACHED_SVGS = {}
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -137,6 +137,7 @@ module Avo
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
         mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
+        mount Avo::Collaborate::Engine, at: "/collaborate" if defined?(Avo::Collaborate::Engine)
       }
     end
 

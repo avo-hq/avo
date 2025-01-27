@@ -4,9 +4,9 @@
       <div class="text-md font-semibold uppercase text-gray-800">Previewing <%= @resource.record_title %></div>
     <% end %>
 
-    <% if @resource.get_preview_fields.present? %>
+    <% if @preview_fields.present? %>
       <div class="mt-0 divide-y border-t">
-        <% @resource.get_preview_fields.each_with_index do |field, index| %>
+        <% @preview_fields.each_with_index do |field, index| %>
           <%= render field
             .hydrate(
               resource: @resource,

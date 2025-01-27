@@ -205,7 +205,6 @@ end
 require "support/helpers"
 require "support/factory_bot"
 require "support/database_cleaner"
-require "support/wait_for_loaded"
 require "support/js_error_detector"
 require "support/devise"
 require "support/shared_contexts"

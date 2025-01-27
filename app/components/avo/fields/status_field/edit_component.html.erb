@@ -1,4 +1,4 @@
-<%= field_wrapper **field_wrapper_args do %>
+<%= field_wrapper(**field_wrapper_args) do %>
   <%= @form.text_field @field.id,
     class: classes("w-full"),
     data: @field.get_html(:data, view: view, element: :input),

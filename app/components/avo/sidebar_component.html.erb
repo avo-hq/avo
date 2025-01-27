@@ -1,7 +1,12 @@
-<div
-  class="avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r lg:border-none bg-none h-[calc(100vh-4rem)] bg-application lg:bg-transparent <%= 'print:hidden' if Avo.configuration.hide_layout_when_printing %> <%= 'hidden' unless @sidebar_open %>"
-  data-sidebar-target="<%= stimulus_target %>"
->
+<%= content_tag :div,
+  class: class_names(
+    "avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r lg:border-none bg-none xh-dvh h-[calc(100dvh-4rem)] bg-application lg:bg-transparent",
+    "print:hidden": Avo.configuration.hide_layout_when_printing,
+    "hidden": !@sidebar_open,
+  ),
+  data: {
+    sidebar_target: stimulus_target
+  } do %>
   <div class="flex flex-col w-full h-full">
     <div class="flex-1 flex flex-col justify-between overflow-auto h-full pt-3 mac-styled-scrollbar">
       <div class="space-y-6 mb-4">
@@ -61,4 +66,4 @@
     <% end %>
     <%= render Avo::SidebarProfileComponent.new user: helpers._current_user %>
   </div>
-</div>
+<% end %>

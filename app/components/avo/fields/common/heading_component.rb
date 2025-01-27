@@ -3,7 +3,7 @@
 class Avo::Fields::Common::HeadingComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
-  prop :field, Avo::Fields::BaseField
+  prop :field
 
   def after_initialize
     @view = @field.resource.view

@@ -1,23 +1,20 @@
 # frozen_string_literal: true
 
 class Avo::ButtonComponent < Avo::BaseComponent
-  SIZE = _Union(:xs, :sm, :md, :lg, :xl)
-  STYLE = _Union(:primary, :outline, :text, :icon)
-
-  prop :path, _Nilable(String), :positional
-  prop :size, Symbol, default: :md
-  prop :style, Symbol, default: :outline
-  prop :color, Symbol, default: :gray
-  prop :icon, _Nilable(Symbol) do |value|
+  prop :path, kind: :positional
+  prop :size, default: :md
+  prop :style, default: :outline
+  prop :color, default: :gray
+  prop :icon do |value|
     value&.to_sym
   end
-  prop :icon_class, String, default: ""
-  prop :is_link, _Boolean, default: false
-  prop :rounded, _Boolean, default: true
-  prop :compact, _Boolean, default: false
-  prop :aria, Hash, default: {}.freeze
-  prop :args, Hash, :**, default: {}.freeze
-  prop :class, _Nilable(String)
+  prop :icon_class, default: ""
+  prop :is_link, default: false
+  prop :rounded, default: true
+  prop :compact, default: false
+  prop :aria, default: {}.freeze
+  prop :args, kind: :**, default: {}.freeze
+  prop :class
 
   def args
     if @args[:loading]
@@ -32,7 +29,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 justify-center #{@class}"
+    classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
 
     # For non-icon-styled buttons we should not add borders.
     classes += " border active:outline active:outline-1" unless is_icon?
@@ -60,11 +57,9 @@ class Avo::ButtonComponent < Avo::BaseComponent
 
   def full_content
     result = ""
-    icon_classes = @icon_class
     # space out the icon from the text if text is present
-    icon_classes += " mr-1" if content.present? && is_not_icon?
     # add the icon height
-    icon_classes += icon_size_classes
+    icon_classes = class_names(@icon_class, "pointer-events-none", icon_size_classes, "mr-1": content.present? && is_not_icon?)
 
     # Add the icon
     result += helpers.svg(@icon, class: icon_classes) if @icon.present?

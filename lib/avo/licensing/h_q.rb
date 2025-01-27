@@ -7,6 +7,7 @@ module Avo
       ENDPOINT = "https://v3.avohq.io/api/v3/licenses/check".freeze unless const_defined?(:ENDPOINT)
       REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
       CACHE_TIME = 6.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
+      RESPONSE_STRUCT = Struct.new(:code, :body) unless const_defined?(:RESPONSE_STRUCT)
 
       class << self
         def cache_key
@@ -67,10 +68,16 @@ module Avo
           app_name: app_name
         }
 
-        # metadata = Avo::Services::DebugService.avo_metadata
-        # if metadata[:resources_count] != 0
-        #   result[:avo_metadata] = "metadata"
-        # end
+        begin
+          metadata = Avo::Services::DebugService.avo_metadata
+        rescue => error
+          metadata = {
+            error_message: error.message,
+            error: "Failed to generate the Avo metadata"
+          }
+        end
+
+        result[:avo_metadata] = metadata
 
         result
       end
@@ -100,6 +107,8 @@ module Avo
           cache_and_return_error "Request timeout.", exception.message
         rescue SocketError => exception
           cache_and_return_error "Connection error.", exception.message
+        rescue => exception
+          cache_and_return_error "HQ call error.", exception.message
         end
       end
 
@@ -108,9 +117,11 @@ module Avo
 
         case hq_response.code.to_i
         when 500
-          cache_and_return_error "Avo HQ Internal server error.", hq_response.body if hq_response.code == 500
+          cache_and_return_error "Avo HQ Internal server error.", hq_response.body
         when 200
           cache_response response: JSON.parse(hq_response.body)
+        else
+          cache_and_return_error "Invalid response.", "code: #{hq_response.code}, body: #{hq_response.body}"
         end
       end
 
@@ -147,7 +158,7 @@ module Avo
         Avo.logger.debug "Performing request to avohq.io API to check license availability." if Rails.env.development?
 
         if Rails.env.test?
-          OpenStruct.new({code: 200, body: "{\"id\":\"pro\",\"valid\":true}"})
+          RESPONSE_STRUCT.new(200, "{\"id\":\"pro\",\"valid\":true}")
         else
           Avo::Licensing::Request.post ENDPOINT, body: payload.to_json, timeout: REQUEST_TIMEOUT
         end

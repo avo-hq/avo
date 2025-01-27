@@ -18,12 +18,12 @@ module Avo
         when :new, :edit
           controllers << "resource-edit"
         when :index
-          controllers << "resource-index"
+          controllers << "resource-index record-selector"
         end
 
         controllers << self.class.stimulus_controllers
 
-        controllers.join " "
+        controllers.reject(&:blank?).join " "
       end
 
       def stimulus_data_attributes

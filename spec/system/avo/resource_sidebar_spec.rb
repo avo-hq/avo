@@ -22,7 +22,7 @@ RSpec.feature "ResourceSidebars", type: :system do
     expect(page).to have_css ".resource-sidebar-component"
   end
 
-  it "allow fields to be eddited on sidebar" do
+  it "allow fields to be edited on sidebar" do
     admin.update!(custom_css: "")
     visit avo.edit_resources_user_path(admin)
 

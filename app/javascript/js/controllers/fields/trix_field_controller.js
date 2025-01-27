@@ -3,7 +3,6 @@ import 'trix'
 import URI from 'urijs'
 
 import { Controller } from '@hotwired/stimulus'
-import { castBoolean } from '../../helpers/cast_boolean'
 
 export default class extends Controller {
   static targets = ['editor', 'controller']
@@ -17,6 +16,9 @@ export default class extends Controller {
     hideAttachmentFilesize: Boolean,
     hideAttachmentUrl: Boolean,
     isActionText: Boolean,
+    uploadWarning: String,
+    attachmentDisableWarning: String,
+    attachmentKeyWarning: String,
   }
 
   get uploadUrl() {
@@ -35,7 +37,11 @@ export default class extends Controller {
   connect() {
     if (this.attachmentsDisabledValue) {
       // Remove the attachments button
-      this.controllerTarget.querySelector('.trix-button-group--file-tools').remove()
+      window.addEventListener('trix-initialize', (event) => {
+        if (event.target === this.editorTarget) {
+          this.controllerTarget.querySelector('.trix-button-group--file-tools').remove()
+        }
+      })
     }
 
     window.addEventListener('trix-file-accept', (event) => {
@@ -43,7 +49,7 @@ export default class extends Controller {
         // Prevent file uploads for fields that have attachments disabled.
         if (this.attachmentsDisabledValue) {
           event.preventDefault()
-          alert('This field has attachments disabled.')
+          alert(this.attachmentDisableWarningValue)
 
           return
         }
@@ -51,7 +57,7 @@ export default class extends Controller {
         // Prevent file uploads for resources that haven't been saved yet.
         if (!this.resourceIdValue) {
           event.preventDefault()
-          alert("You can't upload files into the Trix editor until you save the resource.")
+          alert(this.uploadWarningValue)
 
           return
         }
@@ -60,7 +66,7 @@ export default class extends Controller {
         // When is rich text, attachment key is not needed.
         if (!this.isActionTextValue && !this.attachmentKeyValue) {
           event.preventDefault()
-          alert("You haven't set an `attachment_key` to this Trix field.")
+          alert(this.attachmentKeyWarningValue)
         }
       }
     })

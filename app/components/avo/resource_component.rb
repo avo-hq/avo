@@ -119,7 +119,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def keep_referrer_params
-    {page: referrer_params["page"]}.compact
+    referrer_params
   end
 
   def render_back_button(control)
@@ -157,7 +157,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_delete_button(control)
     # If the resource is a related resource, we use the can_delete? policy method because it uses
     # authorize_association_for(:destroy).
-    # Otherwise we use the can_see_the_destroy_button? policy method becuse it do no check for assiciation
+    # Otherwise we use the can_see_the_destroy_button? policy method because it do no check for association
     # only for authorize_action .
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
@@ -282,10 +282,15 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: action.title,
       size: action.size,
       data: {
+        controller: "actions-picker",
         turbo_frame: Avo::MODAL_FRAME_ID,
         action_name: action.action.action_name,
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",
+        turbo_prefetch: false,
+        # When action has record present behave as standalone and keep always active.
+        "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
+        disabled: action.action.disabled?
       } do
       action.label
     end

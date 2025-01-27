@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Attach and atach another", type: :system do
+RSpec.describe "Attach and attach another", type: :system do
   let!(:project) { create(:project) }
   let!(:comments) { create_list(:comment, 2) }
 

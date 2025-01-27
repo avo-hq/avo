@@ -71,7 +71,9 @@ class Avo::Resources::User < Avo::BaseResource
     divider label: "Other actions"
     action Avo::Actions::Sub::DummyAction
     action Avo::Actions::DownloadFile, icon: "heroicons/outline/arrow-left"
+    action Avo::Actions::Test::Query
     divider
+    action Avo::Actions::Test::NoConfirmationPostsRedirect
     action Avo::Actions::Test::NoConfirmationRedirect
     action Avo::Actions::Test::CloseModal
     action Avo::Actions::Test::DoNothing
@@ -105,7 +107,7 @@ class Avo::Resources::User < Avo::BaseResource
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe", filterable: true
     end
-    field :email, as: :text, name: "User Email", required: true, protocol: :mailto
+    field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
     field :active, as: :boolean, name: "Is active", only_on: :index
     field :cv, as: :file, name: "CV"
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
@@ -120,6 +122,8 @@ class Avo::Resources::User < Avo::BaseResource
       required: true,
       only_on: [:index]
 
+    field :some_token, only_on: :show
+
     field :is_writer, as: :text,
       sortable: -> {
         # Order by something else completely, just to make a test case that clearly and reliably does what we want.
@@ -130,7 +134,7 @@ class Avo::Resources::User < Avo::BaseResource
       end
 
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-    field :password_confirmation, as: :password, name: "Password confirmation", required: false
+    field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
 
     with_options hide_on: :forms do
       field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
@@ -154,6 +158,7 @@ class Avo::Resources::User < Avo::BaseResource
 
   def main_panel_sidebar
     sidebar do
+      field :some_token, only_on: :show
       test_field("Inside main_panel_sidebar")
       with_options only_on: :show do
         field :email, as: :gravatar, link_to_record: true, as_avatar: :circle
@@ -172,7 +177,7 @@ class Avo::Resources::User < Avo::BaseResource
         only_on: [:show]
       field :is_writer, as: :text,
         hide_on: :edit do
-          raise "This should not execut on Index" if view.index?
+          raise "This should not execute on Index" if view.index?
 
           record.posts.to_a.size > 0 ? "yes" : "no"
         end
@@ -227,7 +232,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def first_tabs_group
-    tabs do
+    tabs title: "First tabs group", description: "First tabs group description" do
       birthday_tab
       test_tab
       test_field("Inside tabs")
@@ -241,7 +246,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def second_tabs_group
-    tabs id: :second_tabs_group do
+    tabs title: "Second tabs group", description: "Second tabs group description", id: :second_tabs_group do
       field :post,
         as: :has_one,
         name: "Main post",

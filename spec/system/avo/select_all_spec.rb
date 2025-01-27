@@ -10,7 +10,7 @@ RSpec.describe "SelectAll", type: :system do
   let!(:salmon) { create_list :fish, spec_salmon_number, name: "Spec Salmon" }
   let!(:url) { "/admin/resources/fish?per_page=#{per_page}" }
 
-  describe "without applyed filters" do
+  describe "without applied filters" do
     context "select first page" do
       it "releases the fish from the selected page" do
         visit url
@@ -76,9 +76,9 @@ RSpec.describe "SelectAll", type: :system do
     end
   end
 
-  describe "with applyed filters" do
+  describe "with applied filters" do
     context "select all" do
-      it "releases all fish from applyed filter" do
+      it "releases all fish from applied filter" do
         visit url
 
         open_filters_menu

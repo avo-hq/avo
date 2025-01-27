@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class Avo::PaginatorComponent < Avo::BaseComponent
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :parent_record, _Nilable(_Any)
-  prop :pagy, _Nilable(Pagy)
-  prop :turbo_frame, _Nilable(_Union(String, Symbol)) do |frame|
+  prop :resource
+  prop :parent_record
+  prop :pagy
+  prop :turbo_frame do |frame|
     frame.present? ? CGI.escapeHTML(frame) : :_top
   end
-  prop :index_params, _Nilable(Hash)
-  prop :discreet_pagination, _Nilable(_Boolean)
+  prop :index_params
+  prop :discreet_pagination
 
   def change_items_per_page_url(option)
     if @parent_record.present?

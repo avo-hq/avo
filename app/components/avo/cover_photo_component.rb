@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::CoverPhotoComponent < Avo::BaseComponent
-  prop :cover_photo, _Nilable(Avo::CoverPhoto)
-  prop :size, _Nilable(Symbol) do |value|
+  prop :cover_photo
+  prop :size do |value|
     @cover_photo&.size
   end
 

@@ -4,11 +4,11 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
   include Avo::Fields::Concerns::HasHTMLAttributes
 
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_record, _Nilable(_Any)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :actions, _Nilable(_Array(Avo::BaseAction))
+  prop :resource
+  prop :reflection
+  prop :parent_record
+  prop :parent_resource
+  prop :actions
 
   def after_initialize
     @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle
@@ -64,5 +64,21 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
     content_tag :div, class: "text-sm break-words text-gray-500 #{html(:body, :classes)}", style: html(:body, :style) do
       @card[:body]
     end
+  end
+
+  def render_badge
+    return if @card[:badge_label].blank?
+
+    content_tag :div,
+      class: class_names("absolute block inset-auto top-0 right-0 mt-2 mr-2 text-sm font-semibold bg-#{badge_color}-50 border border-#{badge_color}-300 text-#{badge_color}-700 rounded shadow-lg px-2 py-px z-10", html(:badge, :classes)),
+      title: @card[:badge_title],
+      style: html(:badge, :style),
+      data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do
+      @card[:badge_label]
+    end
+  end
+
+  def badge_color
+    @card[:badge_color] || "gray"
   end
 end
