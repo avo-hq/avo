@@ -196,6 +196,7 @@ RSpec.describe "Date field", type: :system do
 
           close_picker
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 UTC"
         end
@@ -255,6 +256,7 @@ RSpec.describe "Date field", type: :system do
 
           close_picker
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 UTC"
         end
