@@ -15,7 +15,7 @@ module Avo
       include Avo::Concerns::HasHelpers
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
-      include Avo::Concerns::ControlsPlacement
+      include Avo::Concerns::ControlsConfiguration
 
       # Avo::Current methods
       delegate :context, to: Avo::Current
@@ -79,7 +79,6 @@ module Avo
       class_attribute :components, default: {}
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
-      class_attribute :controls_placement, default: nil
       class_attribute :external_link, default: nil
 
       # EXTRACT:

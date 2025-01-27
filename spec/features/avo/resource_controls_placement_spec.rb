@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "ResourceControlsPlacement", type: :feature do
+RSpec.feature "ResourceControlsConfiguration", type: :feature do
   let!(:comment) { create :comment }
 
   around do |example|
@@ -21,7 +21,7 @@ RSpec.feature "ResourceControlsPlacement", type: :feature do
     end
 
     it "shows to the left when configured from resource configuration" do
-      with_temporary_class_option(Avo::Resources::Comment, :controls_placement, :left) do
+      with_temporary_class_option(Avo::Resources::Comment, :row_controls_config, { placement: :left }) do
         visit "/admin/resources/comments"
 
         within find("table") do
@@ -44,7 +44,7 @@ RSpec.feature "ResourceControlsPlacement", type: :feature do
     end
 
     it "shows to the right when configured from resource configuration" do
-      with_temporary_class_option(Avo::Resources::Comment, :controls_placement, :right) do
+      with_temporary_class_option(Avo::Resources::Comment, :row_controls_config, { placement: :right }) do
         visit "/admin/resources/comments"
 
         within find("table") do
@@ -68,7 +68,7 @@ RSpec.feature "ResourceControlsPlacement", type: :feature do
     end
 
     it "shows on both sides when configured from resource configuration" do
-      with_temporary_class_option(Avo::Resources::Comment, :controls_placement, :both) do
+      with_temporary_class_option(Avo::Resources::Comment, :row_controls_config, { placement: :both }) do
         visit "/admin/resources/comments"
 
         within find("table") do

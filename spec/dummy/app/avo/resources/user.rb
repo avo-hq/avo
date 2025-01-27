@@ -45,6 +45,11 @@ class Avo::Resources::User < Avo::BaseResource
     end
   }
 
+  self.row_controls_config = {
+    float: true,
+    show_on_hover: true
+  }
+
   def fields
     test_field("Heading")
 

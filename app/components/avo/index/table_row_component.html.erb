@@ -23,7 +23,7 @@
     </td>
   <% end %>
   <% if @resource.resource_controls_render_on_the_left? %>
-    <td class="text-right whitespace-nowrap w-px" data-control="resource-controls">
+    <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>
@@ -45,7 +45,7 @@
     <% end %>
   <% end %>
   <% if @resource.resource_controls_render_on_the_right? %>
-    <td class="sticky group-hover:bg-gray-50 bg-white inset-auto right-0 text-right whitespace-nowrap px-3" data-control="resource-controls">
+    <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>
