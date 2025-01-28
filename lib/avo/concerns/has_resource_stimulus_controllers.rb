@@ -23,7 +23,7 @@ module Avo
 
         controllers << self.class.stimulus_controllers
 
-        controllers.join " "
+        controllers.reject(&:blank?).join " "
       end
 
       def stimulus_data_attributes
