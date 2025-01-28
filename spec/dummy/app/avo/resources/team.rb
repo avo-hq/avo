@@ -13,6 +13,10 @@ class Avo::Resources::Team < Avo::BaseResource
     end
   }
 
+  self.row_controls_config = {
+    show_on_hover: true
+  }
+
   def fields
     main_panel do
       field :preview, as: :preview

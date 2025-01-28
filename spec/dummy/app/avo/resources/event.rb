@@ -18,6 +18,12 @@ class Avo::Resources::Event < Avo::BaseResource
     source: :profile_photo
   }
 
+  self.row_controls_config = {
+    float: true,
+    show_on_hover: true,
+    placement: :both
+  }
+
   def fields
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :first_user,

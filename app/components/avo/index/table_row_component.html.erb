@@ -2,7 +2,7 @@
 
 <%= content_tag :tr,
   id: "#{self.class.to_s.underscore}_#{@resource.record.to_param}",
-  class: class_names("bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
+  class: class_names("group bg-white hover:bg-gray-50 z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
   data: {
     index: @index,
     component_name: self.class.to_s.underscore,
@@ -22,8 +22,8 @@
       </div>
     </td>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_left? %>
-    <td class="text-right whitespace-nowrap w-px" data-control="resource-controls">
+  <% if @resource.render_row_controls_on_the_left? %>
+    <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>
@@ -44,8 +44,8 @@
       <td class="px-3">—</td>
     <% end %>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_right? %>
-    <td class="text-right whitespace-nowrap px-3" data-control="resource-controls">
+  <% if @resource.render_row_controls_on_the_right? %>
+    <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>
