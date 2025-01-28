@@ -63,6 +63,7 @@ RSpec.describe "Date field", type: :system do
           close_picker
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 Europe/Bucharest"
         end
@@ -75,6 +76,7 @@ RSpec.describe "Date field", type: :system do
           click_button("reset")
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "—"
         end
@@ -117,6 +119,7 @@ RSpec.describe "Date field", type: :system do
           expect(text_input.value).to eq "1999-12-31 22:00:00"
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "December 31, 1999 22:00:00 America/Los_Angeles"
         end
@@ -137,6 +140,7 @@ RSpec.describe "Date field", type: :system do
           close_picker
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "January 02, 2000 17:17:17 America/Los_Angeles"
         end
@@ -238,6 +242,7 @@ RSpec.describe "Date field", type: :system do
           expect(text_input.value).to eq "2000-01-01 06:00:00"
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "January 01, 2000 06:00:00 UTC"
         end
