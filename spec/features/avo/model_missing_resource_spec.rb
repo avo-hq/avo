@@ -4,7 +4,7 @@ RSpec.feature "MissingResourceError", type: :feature do
   subject { visit url }
 
   context "when has_one field" do
-    let(:url) { "/admin/resources/stores/#{store.id}/location/#{location.id}?turbo_frame=has_one_field_show_location" }
+    let(:url) { "/admin/resources/stores/#{store.id}/location/#{location.id}?view=show&turbo_frame=has_one_field_show_location&show_location_field=1" }
     let!(:store) { create :store }
     let!(:location) { create :location, store: store }
 
@@ -28,7 +28,7 @@ RSpec.feature "MissingResourceError", type: :feature do
 
   context "when has_many field" do
     let!(:team) { create :team }
-    let(:url) { "/admin/resources/teams/#{team.id}/locations?turbo_frame=has_many_field_show_locations" }
+    let(:url) { "/admin/resources/teams/#{team.id}/locations?turbo_frame=has_many_field_show_locations&show_location_field=1" }
 
     it "shows informative error with suggested solution for missing resource" do
       expect {
@@ -39,7 +39,7 @@ RSpec.feature "MissingResourceError", type: :feature do
 
   context "when has_and_belongs_to_many field" do
     let!(:course) { create :course }
-    let(:url) { "/admin/resources/courses/#{course.id}/locations?turbo_frame=has_and_belongs_to_many_field_show_locations" }
+    let(:url) { "/admin/resources/courses/#{course.id}/locations?turbo_frame=has_and_belongs_to_many_field_show_locations&show_location_field=1" }
 
     it "shows informative error with suggested solution for missing resource" do
       expect {

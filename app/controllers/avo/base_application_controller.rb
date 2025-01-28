@@ -84,19 +84,6 @@ module Avo
       Avo.resource_manager.get_resource_by_controller_name @resource_name
     end
 
-    def related_resource
-      # Find the field from the parent resource
-      field = find_association_field(resource: @resource, association: params[:related_name])
-
-      return field.use_resource if field&.use_resource.present?
-
-      reflection = @record.class.reflect_on_association(field&.for_attribute || params[:related_name])
-
-      reflected_model = reflection.klass
-
-      Avo.resource_manager.get_resource_by_model_class reflected_model
-    end
-
     def set_resource_name
       @resource_name = resource_name
     end
@@ -118,6 +105,11 @@ module Avo
     end
 
     def set_related_resource
+      # Find the field from the parent resource
+      related_resource = find_association_field(resource: @resource, association: params[:related_name])
+        .hydrate(record: @record)
+        .resource_class(params)
+
       raise Avo::MissingResourceError.new(related_resource_name) if related_resource.nil?
 
       action_view = action_name.to_sym
