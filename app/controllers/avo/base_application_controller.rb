@@ -14,6 +14,7 @@ module Avo
     include Avo::Concerns::FindAssociationField
 
     protect_from_forgery with: :exception
+    before_action :decode_params
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
     before_action :init_app
@@ -21,7 +22,6 @@ module Avo
     before_action :set_resource_name
     before_action :_authenticate!
     before_action :set_authorization
-    before_action :set_container_classes
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
@@ -30,7 +30,7 @@ module Avo
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
 
-    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path, :preview_resource_path
+    helper_method :_current_user, :resources_path, :resource_path, :new_resource_path, :edit_resource_path, :resource_attach_path, :resource_detach_path, :related_resources_path, :turbo_frame_request?, :resource_view_path, :preview_resource_path, :e
     add_flash_types :info, :warning, :success, :error
 
     def exception_logger(exception)
@@ -247,16 +247,8 @@ module Avo
       end
     end
 
-    def set_container_classes
-      contain = true
-
-      if Avo.configuration.full_width_container
-        contain = false
-      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && self.class.superclass.to_s == "Avo::ResourcesController"
-        contain = false
-      end
-
-      @container_classes = contain ? "2xl:container 2xl:mx-auto" : ""
+    def mark_container_as_full_width
+      @container_full_width = true
     end
 
     def add_initial_breadcrumbs
@@ -330,6 +322,13 @@ module Avo
 
     def raise_404
       raise ActionController::RoutingError.new "No route matches"
+    end
+
+    def decode_params
+      if params[:return_to].present?
+        params[:raw_return_to] = params[:return_to]
+        params[:return_to] = d(params[:return_to])
+      end
     end
   end
 end

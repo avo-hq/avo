@@ -174,6 +174,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def back_path
+    # The `return_to` param takes precedence over anything else.
+    return params[:return_to] if params[:return_to].present?
+
     # Show Go Back link only when association page is opened
     # as a standalone page
     if @reflection.present? && !helpers.turbo_frame_request?
