@@ -1,9 +1,5 @@
 module Avo
   class Configuration
-    include ResourceConfiguration
-
-    # TODO: add a configuration switch that adds the necesarry classes
-
     attr_writer :app_name
     attr_writer :branding
     attr_writer :root_path
@@ -60,6 +56,7 @@ module Avo
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
     attr_accessor :associations_lookup_list_limit
+    attr_accessor :resource_row_controls_config
 
     def initialize
       @root_path = "/avo"
@@ -127,6 +124,11 @@ module Avo
       @first_sorting_option = :desc # :desc or :asc
       @associations_lookup_list_limit = 1000
       @exclude_from_status = []
+      @resource_row_controls_config = {
+        placement: :right,
+        float: false,
+        show_on_hover: false
+      }.freeze
     end
 
     # Authorization is enabled when:

@@ -22,7 +22,7 @@
       </div>
     </td>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_left? %>
+  <% if @resource.render_row_controls_on_the_left? %>
     <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
@@ -44,7 +44,7 @@
       <td class="text-center">—</td>
     <% end %>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_right? %>
+  <% if @resource.render_row_controls_on_the_right? %>
     <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
