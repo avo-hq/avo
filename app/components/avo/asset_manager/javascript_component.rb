@@ -4,4 +4,5 @@ class Avo::AssetManager::JavascriptComponent < Avo::BaseComponent
   prop :asset_manager
 
   delegate :javascripts, to: :@asset_manager
+  delegate :stimulus_controllers, to: :@asset_manager
 end
