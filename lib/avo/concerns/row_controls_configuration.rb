@@ -37,7 +37,7 @@ module Avo
         end
 
         if row_controls_configurations[:float]
-          classes += " sticky group-hover:bg-gray-50 bg-white inset-auto right-0"
+          classes += " floating-row-controls sticky group-hover:bg-gray-50 bg-white inset-auto right-0"
         end
 
         classes
