@@ -12,6 +12,8 @@ module Generators
         end
 
         def parent_controller
+          return "Avo::ArrayController" if options["array"]
+
           options["parent-controller"] || ::Avo.configuration.resource_parent_controller
         end
       end

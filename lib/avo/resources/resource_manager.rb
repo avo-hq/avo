@@ -40,7 +40,12 @@ module Avo
             load_resources_namespace
           end
 
-          BaseResource.descendants
+          # All descendants from Avo::Resources::Base except the internal ones
+          Base.descendants - internal_resources
+        end
+
+        def internal_resources
+          [Avo::BaseResource, Avo::Resources::ArrayResource]
         end
 
         def load_resources_namespace

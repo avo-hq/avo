@@ -653,6 +653,20 @@ module Avo
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
 
+      def resource_type_array? = false
+
+      def sort_by_param
+        available_columns = model_class.column_names
+
+        if available_columns.include?(default_sort_column.to_s)
+          default_sort_column
+        elsif available_columns.include?("created_at")
+          :created_at
+        end
+      end
+
+      def sorting_supported? = true
+
       private
 
       def flatten_keys(array)
