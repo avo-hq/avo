@@ -13,50 +13,18 @@ module Avo
     module HasFieldDiscovery
       extend ActiveSupport::Concern
 
-      DEFAULT_COLUMN_NAMES_MAPPING = {
-        id: {field: "id"},
-        description: {field: "textarea"},
-        gravatar: {field: "gravatar"},
-        email: {field: "text"},
-        password: {field: "password"},
-        password_confirmation: {field: "password"},
-        created_at: {field: "date_time"},
-        updated_at: {field: "date_time"},
-        stage: {field: "select"},
-        budget: {field: "currency"},
-        money: {field: "currency"},
-        country: {field: "country"}
-      }.freeze
-
-      DEFAULT_COLUMN_TYPES_MAPPING = {
-        primary_key: {field: "id"},
-        string: {field: "text"},
-        text: {field: "textarea"},
-        integer: {field: "number"},
-        float: {field: "number"},
-        decimal: {field: "number"},
-        datetime: {field: "date_time"},
-        timestamp: {field: "date_time"},
-        time: {field: "date_time"},
-        date: {field: "date"},
-        binary: {field: "number"},
-        boolean: {field: "boolean"},
-        references: {field: "belongs_to"},
-        json: {field: "code"}
-      }.freeze
-
       COLUMN_NAMES_TO_IGNORE = %i[
         encrypted_password reset_password_token reset_password_sent_at remember_created_at password_digest
       ].freeze
 
       class_methods do
         def column_names_mapping
-          @column_names_mapping ||= DEFAULT_COLUMN_NAMES_MAPPING.dup
+          @column_names_mapping ||= Avo::Mappings::NAMES_MAPPING.dup
             .merge(Avo.configuration.column_names_mapping || {})
         end
 
         def column_types_mapping
-          @column_types_mapping ||= DEFAULT_COLUMN_TYPES_MAPPING.dup
+          @column_types_mapping ||= Avo::Mappings::FIELDS_MAPPING.dup
             .merge(Avo.configuration.column_types_mapping || {})
         end
       end
