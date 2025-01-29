@@ -26,8 +26,8 @@ module Avo
       add_breadcrumb @resource.plural_name.humanize
 
       # Apply the search query if configured on the resource
-      apply_search_query if params[:q].present? && @resource.search.present?
       set_index_params
+      apply_search
       set_filters
       set_actions
       set_query
@@ -306,6 +306,9 @@ module Avo
       @index_params = {}
 
       set_pagination_params
+
+      # Search
+      @index_params[:q] = params[:q] if params[:q].present?
 
       # Sorting
       @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
@@ -646,11 +649,18 @@ module Avo
       @query ||= @resource.class.query_scope
     end
 
-    def apply_search_query
+    def apply_search
+      return if @resource.class.search_query.nil?
+      return if @index_params[:q].nil?
+
       search_query = @resource.search[:query]
       return unless search_query.present?
 
-      @query = instance_exec(@query, &search_query)
+      @query = Avo::ExecutionContext.new(
+        target: @resource.class.search_query,
+        params: params,
+        query: @query
+      ).handle
     end
   end
 end
