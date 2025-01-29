@@ -109,6 +109,12 @@ if defined?(Avo::DynamicFilters)
   end
 end
 
+if defined?(Avo::MediaLibrary)
+  Avo::MediaLibrary.configure do |config|
+    config.visible = -> { Avo::Current.user.is_developer? }
+  end
+end
+
 Rails.configuration.to_prepare do
   Avo::Fields::BaseField.include ActionView::Helpers::UrlHelper
   Avo::Fields::BaseField.include ActionView::Context

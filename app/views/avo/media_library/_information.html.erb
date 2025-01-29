@@ -1,14 +1,17 @@
 <%
 # TODO: extract these somewhere else
 
-def parent_title(parent)
-  # TODO: find the resource and get the title attribute from there
-  parent.to_param
+def resource_for(record)
+  klass = Avo.resource_manager.get_resource_by_model_class(record.class)
+  klass.new(record: record)
 end
 
-def parent_path(parent)
-  # TODO: find the resource and get the path from there
-  parent.to_param
+def record_title(record)
+  resource_for(record).record_title
+end
+
+def record_path(record)
+  resource_for(record).record_path
 end
 %>
 
@@ -42,7 +45,7 @@ end
       <dt>Attached to:</dt>
       <dd>
         <% @blob.attachments.each do |attachment| %>
-          <%= link_to parent_title(attachment.record), parent_path(attachment.record) %>
+          <%= link_to record_title(attachment.record), record_path(attachment.record) %>
         <% end %>
       </dd>
     <% end %>
