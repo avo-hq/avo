@@ -22,6 +22,7 @@ import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
+import MediaLibraryAttachController from './controllers/media_library_attach_controller'
 import MediaLibraryController from './controllers/media_library_controller'
 import MenuController from './controllers/menu_controller'
 import ModalController from './controllers/modal_controller'
@@ -70,6 +71,7 @@ application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
 application.register('loading-button', LoadingButtonController)
 application.register('media-library', MediaLibraryController)
+application.register('media-library-attach', MediaLibraryAttachController)
 application.register('menu', MenuController)
 application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)

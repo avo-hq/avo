@@ -1,10 +1,10 @@
-<%= form_with model: @attachment, url: avo.media_library_path(@attachment), method: :patch, class: "pb-6" do |f| %>
+<%= form_with model: @blob, url: avo.media_library_path(@blob), method: :patch, class: "pb-6" do |f| %>
   <%= field_container do %>
     <%= avo_edit_field :filename, as: :text, short: true, stacked: true, form: f, required: true %>
     <%= f.fields_for :metadata do |meta_form| %>
       <%= avo_edit_field :title,
         as: :text,
-        value: @attachment.metadata[:title],
+        value: @blob.metadata[:title],
         short: true,
         stacked: true,
         form: meta_form,
@@ -12,14 +12,14 @@
       %>
       <%= avo_edit_field :alt,
         as: :text,
-        value: @attachment.metadata[:alt],
+        value: @blob.metadata[:alt],
         short: true,
         stacked: true,
         form: meta_form
       %>
       <%= avo_edit_field :description,
         as: :textarea,
-        value: @attachment.metadata[:description],
+        value: @blob.metadata[:description],
         short: true,
         stacked: true,
         form: meta_form

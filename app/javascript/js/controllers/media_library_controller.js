@@ -22,25 +22,25 @@ export default class extends Controller {
     return this.application.getControllerForElementAndIdentifier(document.querySelector('[data-controller="modal"]'), 'modal')
   }
 
-  selectItems(event) {
-    // Search the DOM for the media library list component
-    const mediaLibraryList = document.querySelector('[data-controller="media-library"]')
+  // selectItems(event) {
+  //   // Search the DOM for the media library list component
+  //   const mediaLibraryList = document.querySelector('[data-controller="media-library"]')
 
-    // Get the elements that have the data-selected attribute set to true
-    const selectedItems = mediaLibraryList.querySelectorAll('[data-selected="true"]')
+  //   // Get the elements that have the data-selected attribute set to true
+  //   const selectedItems = mediaLibraryList.querySelectorAll('[data-selected="true"]')
 
-    // get the attachment and blob information from the selected items
-    const attachments = Array.from(selectedItems).map((item) => {
-      const attachment = JSON.parse(item.dataset.mediaLibraryAttachmentParam)
-      const blob = JSON.parse(item.dataset.mediaLibraryBlobParam)
-      const path = item.dataset.mediaLibraryPathParam
+  //   // get the attachment and blob information from the selected items
+  //   const attachments = Array.from(selectedItems).map((item) => {
+  //     const attachment = JSON.parse(item.dataset.mediaLibraryAttachmentParam)
+  //     const blob = JSON.parse(item.dataset.mediaLibraryBlobParam)
+  //     const path = item.dataset.mediaLibraryPathParam
 
-      return { attachment, blob, path }
-    })
+  //     return { attachment, blob, path }
+  //   })
 
-    this.insertAttachments(attachments, event)
-    this.modalController.closeModal()
-  }
+  //   this.insertAttachments(attachments, event)
+  //   this.modalController.closeModal()
+  // }
 
   selectItem(event) {
     const { params } = event
@@ -79,10 +79,9 @@ export default class extends Controller {
   }
 
   #extractMetadataFromItem(item) {
-    const attachment = JSON.parse(item.dataset.mediaLibraryAttachmentParam)
     const blob = JSON.parse(item.dataset.mediaLibraryBlobParam)
     const path = item.dataset.mediaLibraryPathParam
 
-    return { attachment, blob, path }
+    return { blob, path }
   }
 }

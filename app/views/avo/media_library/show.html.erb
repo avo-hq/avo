@@ -1,5 +1,5 @@
 <%= render Avo::PanelComponent.new title: t("avo.media_library.title") do |c| %>
   <%= c.with_body do %>
-    <%= render Avo::MediaLibrary::ItemDetailsComponent.new(attachment: @attachment) %>
+    <%= render Avo::MediaLibrary::ItemDetailsComponent.new(blob: @blob) %>
   <% end %>
 <% end %>

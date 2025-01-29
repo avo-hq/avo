@@ -1,0 +1,9 @@
+<%= render Avo::PanelComponent.new title: t("avo.media_library.title"),
+data: {
+  controller: 'media-library-new',
+  media_library_new_direct_uploads_url_value: main_app.rails_direct_uploads_url,
+} do |c| %>
+  <%= c.with_body do %>
+    <form action="/" class="dropzone py-24" data-media-library-new-target="form"></form>
+  <% end %>
+<% end %>

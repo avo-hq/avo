@@ -7,7 +7,7 @@ module Avo
     end
 
     def show
-      @attachment = ActiveStorage::Attachment.find(params[:id])
+      @blob = ActiveStorage::Blob.find(params[:id])
     end
 
     def create

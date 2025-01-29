@@ -3,9 +3,9 @@
 module Avo
   module MediaLibrary
     class ListItemComponent < Avo::BaseComponent
-      with_collection_parameter :attachment
+      with_collection_parameter :blob
 
-      prop :attachment, reader: :public
+      prop :blob, reader: :public
       prop :display_filename, default: true
       prop :attaching, default: false
       prop :multiple, default: false
@@ -13,10 +13,9 @@ module Avo
       def data
         {
           component: component_name,
-          attachment_id: attachment.id,
-          media_library_attachment_param: attachment.as_json,
-          media_library_blob_param: attachment.blob.as_json,
-          media_library_path_param: helpers.main_app.url_for(attachment),
+          blob_id: blob.id,
+          media_library_blob_param: blob.as_json,
+          media_library_path_param: helpers.main_app.url_for(blob),
           media_library_attaching_param: @attaching,
           media_library_multiple_param: @multiple,
           media_library_selected_item: params[:controller_selector],

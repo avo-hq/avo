@@ -6,7 +6,7 @@ module Avo
       include Turbo::FramesHelper
       include Avo::ApplicationHelper
 
-      prop :attachment
+      prop :blob
 
       # def parent_title(parent)
       #   # TODO: find the resource and get the title attribute from there

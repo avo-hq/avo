@@ -6,29 +6,24 @@ module Avo
       include Avo::ApplicationHelper
       include Pagy::Backend
 
-      # prop :turbo_frame do |frame|
-      #   frame ||= params[:turbo_frame]
-      #   puts ["frame->", frame].inspect
-      #   frame.present? ? CGI.escapeHTML(frame) : :_top
-      # end
-
       def initialize(parent:, attaching: false, turbo_frame: nil)
         @parent = parent
         @attaching = attaching
-        # @turbo_frame = turbo_frame
-        @pagy, @attachments = pagy(query, limit: 12)
-
-        puts ["0 turbo_frame->", turbo_frame, params[:turbo_frame]].inspect
+        @pagy, @blobs = pagy(query, limit:)
         turbo_frame ||= params[:turbo_frame]
-        puts ["turbo_frame->", turbo_frame].inspect
         @turbo_frame = turbo_frame.present? ? CGI.escapeHTML(turbo_frame.to_s) : :_top
       end
 
       def controller = Avo::Current.view_context.controller
 
       def query
-        ActiveStorage::Attachment.includes(:blob)
+        ActiveStorage::Blob.includes(:attachments)
+          # ignore blobs who are just a variant to avoid "n+1" blob creation
+          .where.not(id: ActiveStorage::Attachment.where(record_type: "ActiveStorage::VariantRecord").pluck(:blob_id))
+          .order(created_at: :desc)
       end
+
+      def limit = @attaching ? 12 : 24
     end
   end
 end
