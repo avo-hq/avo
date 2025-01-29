@@ -1,20 +1,3 @@
-<%
-# TODO: extract these somewhere else
-
-def resource_for(record)
-  klass = Avo.resource_manager.get_resource_by_model_class(record.class)
-  klass.new(record: record)
-end
-
-def record_title(record)
-  resource_for(record).record_title
-end
-
-def record_path(record)
-  resource_for(record).record_path
-end
-%>
-
 <div class="p-6">
   <dl>
     <dt>Filename:</dt>
