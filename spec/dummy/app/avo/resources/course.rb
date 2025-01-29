@@ -11,6 +11,8 @@ class Avo::Resources::Course < Avo::BaseResource
     fields_bag
     field :links, as: :has_many, searchable: true, placeholder: "Click to choose a link",
       discreet_pagination: true
+
+    field :attendees, as: :array
   end
 
   def index_fields

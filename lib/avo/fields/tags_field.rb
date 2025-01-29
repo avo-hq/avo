@@ -39,7 +39,7 @@ module Avo
           acts_as_taggable_on_values.map { |value| {value:} }.as_json
         else
           # Wrap the value on Array to ensure select mode compatibility
-          Array(value) || []
+          Array.wrap(value) || []
         end
       end
 
@@ -78,7 +78,7 @@ module Avo
       def whitelist_items
         return suggestions.to_json if enforce_suggestions
 
-        (suggestions + field_value).to_json
+        (suggestions + field_value).uniq.to_json
       end
 
       def suggestions

@@ -3,7 +3,7 @@ module Avo
     module FindAssociationField
       # The supported association types are defined in the ASSOCIATIONS constant.
       unless defined?(ASSOCIATIONS)
-        ASSOCIATIONS = ["belongs_to", "has_one", "has_many", "has_and_belongs_to_many"]
+        ASSOCIATIONS = ["belongs_to", "has_one", "has_many", "has_and_belongs_to_many", "array"]
       end
 
       # This method is used to find an association field for a given resource.
