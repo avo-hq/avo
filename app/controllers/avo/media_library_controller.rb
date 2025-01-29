@@ -1,6 +1,7 @@
 module Avo
   class MediaLibraryController < ApplicationController
     include Pagy::Backend
+    before_action :authorize_access!
 
     def index
       @attaching = false
@@ -39,6 +40,10 @@ module Avo
 
     def attachment_params
       params.require(:attachment).permit(:filename, metadata: [:title, :alt, :description])
+    end
+
+    def authorize_access!
+      raise_404 unless Avo::MediaLibrary.configuration.visible?
     end
   end
 end
