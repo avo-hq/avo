@@ -1,4 +1,4 @@
-<%= form_with model: @attachment, url: avo.media_library_item_path(@attachment), method: :patch do |f| %>
+<%= form_with model: @attachment, url: avo.media_library_path(@attachment), method: :patch, class: "pb-6" do |f| %>
   <%= field_container do %>
     <%= avo_edit_field :filename, as: :text, short: true, stacked: true, form: f, required: true %>
     <%= f.fields_for :metadata do |meta_form| %>

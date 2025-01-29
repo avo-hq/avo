@@ -9,12 +9,8 @@ Avo::Engine.routes.draw do
     instance_exec(&Avo.mount_engines)
   end
 
-  resources :media, only: [:index, :show]
-  get :media_library, to: "media_library/items#index", path: "media-library"
-  post :media_library, to: "media_library/items#create"
-  namespace :media_library do
-    resources :items
-  end
+  resources :media_library, only: [:index, :show], path: "media-library"
+  get "attach-media", to: "media_library#attach"
 
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
