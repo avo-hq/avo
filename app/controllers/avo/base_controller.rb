@@ -26,6 +26,8 @@ module Avo
       end
       add_breadcrumb @resource.plural_name.humanize
 
+      # Apply the search query if configured on the resource
+      apply_search_query if params[:q].present? && @resource.search.present?
       set_index_params
       set_filters
       set_actions
@@ -643,6 +645,13 @@ module Avo
     # If we don't get a query object predefined from a child controller like associations, just spin one up
     def set_query
       @query ||= @resource.class.query_scope
+    end
+
+    def apply_search_query
+      search_query = @resource.search[:query]
+      return unless search_query.present?
+
+      @query = instance_exec(@query, &search_query)
     end
   end
 end
