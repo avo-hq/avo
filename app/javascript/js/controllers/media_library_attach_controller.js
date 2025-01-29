@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { Controller } from '@hotwired/stimulus'
 import { DirectUpload } from '@rails/activestorage'
-// import Dropzone from 'dropzone'
 
 // Connects to data-controller="media-library-new"
 export default class extends Controller {
@@ -73,6 +72,8 @@ export default class extends Controller {
     }, false)
   }
 
+  // Check out this guide when adding progress tracking
+  // https://guides.rubyonrails.org/active_storage_overview.html#track-the-progress-of-the-file-upload
   // uploadRequestDidProgress(event) {
   //   console.log('uploadRequestDidProgress', event)
   // }

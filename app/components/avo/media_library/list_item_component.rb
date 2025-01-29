@@ -19,7 +19,7 @@ module Avo
           media_library_attaching_param: @attaching,
           media_library_multiple_param: @multiple,
           media_library_selected_item: params[:controller_selector],
-          action: 'click->media-library#selectItem',
+          action: 'click->media-library#selectItem'
         }.tap do |result|
           if @attaching
             result[:turbo_frame] = Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID

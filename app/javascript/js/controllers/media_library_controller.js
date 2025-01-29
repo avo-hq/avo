@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { Controller } from '@hotwired/stimulus'
 import { closeModal } from '../helpers'
+
 // Connects to data-controller="media-library"
 export default class extends Controller {
   static outlets = ['field']

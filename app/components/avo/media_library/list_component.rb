@@ -6,8 +6,7 @@ module Avo
       include Avo::ApplicationHelper
       include Pagy::Backend
 
-      def initialize(parent:, attaching: false, turbo_frame: nil)
-        @parent = parent
+      def initialize(attaching: false, turbo_frame: nil)
         @attaching = attaching
         @pagy, @blobs = pagy(query, limit:)
         turbo_frame ||= params[:turbo_frame]
