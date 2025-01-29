@@ -24,6 +24,7 @@
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.13",
     "@rails/activestorage": "^6.1.710",
+    "@rails/request.js": "^0.0.11",
     "@stimulus-components/clipboard": "^5.0.0",
     "@stimulus-components/password-visibility": "^3.0.0",
     "@tailwindcss/container-queries": "^0.1.1",
