@@ -111,7 +111,8 @@ end
 
 if defined?(Avo::MediaLibrary)
   Avo::MediaLibrary.configure do |config|
-    config.visible = -> { !Avo::Current.user.is_developer? }
+    config.visible = -> { Avo::Current.user.is_developer? }
+    config.enabled = true
   end
 end
 

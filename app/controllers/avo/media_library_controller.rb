@@ -17,17 +17,15 @@ module Avo
     end
 
     def destroy
-      @attachment = ActiveStorage::Attachment.find(params[:id])
-      @attachment.destroy!
+      @blob = ActiveStorage::Blob.find(params[:id])
+      @blob.destroy!
 
-      redirect_to avo.media_library_path
+      redirect_to avo.media_library_index_path
     end
 
     def update
-      @attachment = ActiveStorage::Attachment.find(params[:id])
-      @attachment.update!(attachment_params)
-
-      redirect_to avo.media_library_path
+      @blob = ActiveStorage::Blob.find(params[:id])
+      @blob.update!(blob_params)
     end
 
     def attach
@@ -38,8 +36,8 @@ module Avo
 
     private
 
-    def attachment_params
-      params.require(:attachment).permit(:filename, metadata: [:title, :alt, :description])
+    def blob_params
+      params.require(:blob).permit(:filename, metadata: [:title, :alt, :description])
     end
 
     def authorize_access!

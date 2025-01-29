@@ -2,7 +2,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-alert */
 import 'trix'
-import { get, post } from '@rails/request.js'
 import URI from 'urijs'
 
 import { Controller } from '@hotwired/stimulus'
@@ -108,11 +107,12 @@ export default class extends Controller {
 
     const mediaLibraryPath = new URI(`${this.rootPath.path()}/attach-media`)
     mediaLibraryPath.addSearch(params)
+    const mediaLibraryVisible = window.Avo.configuration.media_library.visible && window.Avo.configuration.media_library.enabled
 
     // Add the gallery button to the toolbar
     // const buttonHTML = `<button type="button" data-trix-action="gallery" class="trix-button trix-button--icon">${galleryButtonSVG}</button>`
     const buttonHTML = `<a href="${mediaLibraryPath}" data-turbo-frame="${window.Avo.configuration.modal_frame_id}" class="trix-button trix-button--icon">${galleryButtonSVG}</a>`
-    if (event.target.toolbarElement && event.target.toolbarElement.querySelector('.trix-button-group--file-tools')) {
+    if (mediaLibraryVisible && event.target.toolbarElement && event.target.toolbarElement.querySelector('.trix-button-group--file-tools')) {
       event.target.toolbarElement
         .querySelector('.trix-button-group--file-tools')
         .insertAdjacentHTML('beforeend', buttonHTML)

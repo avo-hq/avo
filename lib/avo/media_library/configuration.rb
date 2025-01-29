@@ -4,6 +4,7 @@ module Avo
       include ActiveSupport::Configurable
 
       config_accessor(:visible) { true }
+      config_accessor(:enabled) { false }
 
       def visible?
         Avo::ExecutionContext.new(target: config[:visible]).handle
