@@ -17,9 +17,12 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
-  MODAL_FRAME_ID = :modal_frame
-  ACTIONS_BACKGROUND_FRAME = :actions_background
   CACHED_SVGS = {}
+
+  # Frame IDs
+  MODAL_FRAME_ID = :modal_frame
+  MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID = :media_library_item_details
+  ACTIONS_BACKGROUND_FRAME_ID = :actions_background
 
   class LicenseVerificationTemperedError < StandardError; end
 

@@ -28,11 +28,7 @@ module Avo
       set_index_params
       set_filters
       set_actions
-
-      # If we don't get a query object predefined from a child controller like associations, just spin one up
-      unless defined? @query
-        @query = @resource.class.query_scope
-      end
+      set_query
 
       # Eager load the associations
       if @resource.includes.present?
@@ -46,7 +42,7 @@ module Avo
         end
       end
 
-      apply_sorting
+      apply_sorting if @index_params[:sort_by]
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
@@ -310,18 +306,7 @@ module Avo
       set_pagination_params
 
       # Sorting
-      if params[:sort_by].present?
-        @index_params[:sort_by] = params[:sort_by]
-      elsif @resource.model_class.present?
-        available_columns = @resource.model_class.column_names
-        default_sort_column = @resource.default_sort_column
-
-        if available_columns.include?(default_sort_column.to_s)
-          @index_params[:sort_by] = default_sort_column
-        elsif available_columns.include?("created_at")
-          @index_params[:sort_by] = :created_at
-        end
-      end
+      @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
 
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
 
@@ -506,6 +491,8 @@ module Avo
     end
 
     def after_update_path
+      # The `return_to` param takes precedence over anything else.
+      return params[:return_to] if params[:return_to].present?
       return params[:referrer] if params[:referrer].present?
 
       redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
@@ -554,12 +541,15 @@ module Avo
     def redirect_path_from_resource_option(action = :after_update_path)
       return nil if @resource.class.send(action).blank?
 
+      extra_args = {}
+      extra_args[:return_to] = params[:return_to] if params[:return_to].present?
+
       if @resource.class.send(action) == :index
-        resources_path(resource: @resource)
+        resources_path(resource: @resource, **extra_args)
       elsif @resource.class.send(action) == :edit || Avo.configuration.resource_default_view.edit?
-        edit_resource_path(resource: @resource, record: @resource.record)
+        edit_resource_path(resource: @resource, record: @resource.record, **extra_args)
       else
-        resource_path(record: @record, resource: @resource)
+        resource_path(record: @record, resource: @resource, **extra_args)
       end
     end
 
@@ -608,8 +598,6 @@ module Avo
     end
 
     def apply_sorting
-      return if @index_params[:sort_by].nil?
-
       sort_by = @index_params[:sort_by].to_sym
       if sort_by != :created_at
         @query = @query.unscope(:order)
@@ -649,6 +637,11 @@ module Avo
       cookies[:per_page] = params[:per_page] if params[:per_page].present?
 
       @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
+    end
+
+    # If we don't get a query object predefined from a child controller like associations, just spin one up
+    def set_query
+      @query ||= @resource.class.query_scope
     end
   end
 end

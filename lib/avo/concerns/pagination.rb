@@ -12,6 +12,7 @@ module Avo
           PAGINATION_METHOD = {
             default: :pagy,
             countless: :pagy_countless,
+            array: :pagy_array,
           }
         end
 

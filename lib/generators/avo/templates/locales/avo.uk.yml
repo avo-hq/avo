@@ -22,6 +22,7 @@ uk:
     choose_item: Виберіть %{item}
     clear_value: Очистити значення
     click_to_reveal_filters: Натисніть, щоб показати фільтри
+    close: Закрити
     close_modal: Закрити вікно
     confirm: Підтвердити
     copy: Копіювати
@@ -63,6 +64,8 @@ uk:
     less_content: Менше вмісту
     list_is_empty: Список порожній
     loading: Завантаження
+    media_library:
+      title: Медіатека
     more: Ще
     more_content: Більше вмісту
     more_records_available: Є більше доступних записів.

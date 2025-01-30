@@ -57,5 +57,18 @@ module Avo
 
       resource_path(record: resource.record, resource: parent_or_child_resource, **args)
     end
+
+    def resource_for_record(record)
+      klass = Avo.resource_manager.get_resource_by_model_class(record.class)
+      klass.new(record: record)
+    end
+
+    def record_title(record)
+      resource_for_record(record).record_title
+    end
+
+    def record_path(record)
+      resource_for_record(record).record_path
+    end
   end
 end

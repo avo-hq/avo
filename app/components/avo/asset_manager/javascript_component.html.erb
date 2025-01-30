@@ -1,3 +1,11 @@
 <% javascripts.each do |path| %>
   <%= javascript_include_tag path, "data-turbo-track": "reload", defer: true %>
 <% end %>
+
+<%# Collect all the custom StimulusJS controllers from plugins. %>
+<%= javascript_tag nonce: true do %>
+  Avo.configuration.stimulus_controllers = <%== Avo.asset_manager.stimulus_controllers.to_a.to_json %>
+<% end %>
+
+<%# This is the last script to run so it can register custom StimulusJS controllers from plugins. %>
+<%= javascript_include_tag 'late-registration', "data-turbo-track": "reload", defer: true %>

@@ -21,4 +21,8 @@ class Event < ApplicationRecord
   def first_user
     User.first
   end
+
+  def attendees
+    raise "Test array resource, this method should not be called"
+  end
 end
