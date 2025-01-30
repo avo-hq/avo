@@ -38,9 +38,9 @@ module Avo
         attributes
       end
 
-      def add_stimulus_attributes_for(entity, attributes)
+      def add_stimulus_attributes_for(entity, attributes, target_name = nil)
         entity.get_stimulus_controllers.split(" ").each do |controller|
-          attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+          attributes["#{controller}-target"] = target_name || "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
         end
       end
     end
