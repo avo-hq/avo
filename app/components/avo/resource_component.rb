@@ -1,6 +1,7 @@
 class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
   include Avo::Concerns::RequestMethods
+  include Avo::Concerns::HasResourceStimulusControllers
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
@@ -190,14 +191,18 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_save_button(control)
     return unless can_see_the_save_button?
 
+    data_attributes = {
+      turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+    }
+
+    add_stimulus_attributes_for(@resource, data_attributes, "saveButton")
+
     a_button color: :primary,
       style: :primary,
       loading: true,
       type: :submit,
       icon: "avo/save",
-      data: {
-        turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
-      } do
+      data: data_attributes do
       control.label
     end
   end
