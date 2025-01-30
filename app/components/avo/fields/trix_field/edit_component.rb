@@ -9,10 +9,8 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
     @resource_name = args[:resource_name] || @resource&.singular_route_key
 
     super(**args)
-  end
 
-  def input_id
-    if @resource_name.present?
+    @input_id = if @resource_name.present?
       "#{@field.type}_#{@resource_name}_#{@field.id}"
     elsif form.present?
       "#{@field.type}_#{form.index}_#{@field.id}"
@@ -25,7 +23,7 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
     values = {
       resource_name: @resource_name,
       resource_id: @resource_id,
-      unique_selector: input_id, # mandatory
+      unique_selector: ".#{@input_id}", # mandatory
       attachments_disabled: @field.attachments_disabled,
       attachment_key: @field.attachment_key,
       hide_attachment_filename: @field.hide_attachment_filename,
