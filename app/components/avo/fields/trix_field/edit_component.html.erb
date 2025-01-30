@@ -10,6 +10,8 @@
       class: 'trix-content',
       data: {
         "trix-field-target": "editor",
+        "direct-upload-url": helpers.main_app.rails_direct_uploads_url,
+        "blob-url-template": helpers.main_app.rails_service_blob_url(":signed_id", ":filename"),
         **@field.get_html(:data, view: view, element: :input)
       },
       input: trix_id,
