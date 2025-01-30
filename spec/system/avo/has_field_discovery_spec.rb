@@ -70,7 +70,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
       # Verify `posts` association
       expect(page).to have_text "Posts"
-      expect(page).to have_text "Sample Post"
+      expect(page).to have_text "Sample Post", wait: 5
       expect(page).to have_link "Sample Post", href: "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
 
       # Verify `cv_attachment` association is present
