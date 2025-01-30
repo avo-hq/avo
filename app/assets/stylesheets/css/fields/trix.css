@@ -35,3 +35,10 @@ trix-toolbar {
     @apply ml-0;
   }
 }
+
+/* Hack to remove border from trix when rendered from ActionText */
+.trix-content {
+  & .trix-content {
+    border: none;
+  }
+}

@@ -16,19 +16,26 @@
   <% end %>
   <% c.with_body do %>
     <% if !@attaching %>
-      <%= content_tag :div, class: "p-4" do %>
+      <%= content_tag :div, class: "p-4",
+        data: {
+          controller: 'media-library-attach',
+          media_library_attach_direct_uploads_url_value: helpers.main_app.rails_direct_uploads_url,
+        } do %>
         <%= content_tag :div,
           class: 'dropzone relative py-6 text-center border-dashed border-2 border-gray-300 rounded-lg justify-center items-center flex flex-col text-gray-400 hover:border-primary-500 cursor-pointer',
           data: {
-            controller: 'media-library-attach',
             media_library_attach_target: 'dropzone',
-            media_library_attach_direct_uploads_url_value: helpers.main_app.rails_direct_uploads_url,
             action: 'click->media-library-attach#triggerFileBrowser',
           } do %>
           <%= helpers.svg 'heroicons/outline/cloud-arrow-up', class: 'size-6 text-gray-400' %>
           Upload a file
           <small>Click to browse or drag and drop</small>
         <% end %>
+
+        <%= content_tag :div, "", class: "m-2 flex flex-wrap gap-2", data: {
+          media_library_attach_target: 'uploadingContainer',
+          turbo_permanent: true,
+        } %>
       <% end %>
     <% end %>
     <div class="grid grow-0 min-h-24 gap-x-4 @container/index" style="grid-template-areas: 'stack';">
