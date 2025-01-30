@@ -103,7 +103,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
         end
 
         # Associations
-        expect(page).to have_text("Posts", count: 1)
+        expect(page).to have_selector("#has_many_field_show_posts", count: 1)
       end
     end
   end
