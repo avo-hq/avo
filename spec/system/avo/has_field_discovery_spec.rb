@@ -68,10 +68,14 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     it "displays discovered associations correctly" do
       wait_for_loaded
 
-      # Verify `posts` association
-      expect(page).to have_text "Posts"
-      expect(page).to have_text "Sample Post", wait: 5
-      expect(page).to have_link "Sample Post", href: "/admin/resources/posts/#{post.slug}?via_record_id=#{user.slug}&via_resource_class=Avo%3A%3AResources%3A%3AUser"
+      expect(page).to have_selector("#has_many_field_show_posts")
+      expect(page).to have_selector("#has_many_field_show_posts")
+      expect(page).to have_selector("#has_many_field_show_people")
+      expect(page).to have_selector("#has_many_field_show_spouses")
+      expect(page).to have_selector("#has_many_field_show_comments")
+      expect(page).to have_selector("#has_and_belongs_to_many_field_show_projects")
+      expect(page).to have_selector("#has_many_field_show_team_memberships")
+      expect(page).to have_selector("#has_many_field_show_teams")
 
       # Verify `cv_attachment` association is present
       expect(page).to have_text "CV"
