@@ -37,8 +37,17 @@ class UploadObject extends EventTarget {
     const div = document.createElement('div')
     div.classList.add('flex', 'justify-between', 'gap-2', 'text-sm')
     div.dataset.checksum = file.checksum
-    div.innerHTML = `<div>${file.name}</div><div class="progress">0%</div>`
+    div.innerHTML = `<div>${this.#escapeHtml(file.name)}</div><div class="progress">0%</div>`
     this.listItem = this.controller.uploadingContainerTarget.appendChild(div)
+  }
+
+  #escapeHtml(unsafe) {
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   directUploadWillStoreFileWithXHR(request) {
