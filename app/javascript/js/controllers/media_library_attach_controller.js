@@ -2,13 +2,13 @@
 // eslint-disable-next-line max-classes-per-file
 import { Controller } from '@hotwired/stimulus'
 import { DirectUpload } from '@rails/activestorage'
+import { escape } from 'lodash'
 
 class UploadObject extends EventTarget {
   constructor(file, controller) {
     super()
 
     this.file = file
-    this.checksum = file.checksum
     this.controller = controller
     this.finished = false
   }
@@ -36,18 +36,8 @@ class UploadObject extends EventTarget {
   #addUploadingItem(file) {
     const div = document.createElement('div')
     div.classList.add('flex', 'justify-between', 'gap-2', 'text-sm')
-    div.dataset.checksum = file.checksum
-    div.innerHTML = `<div>${this.#escapeHtml(file.name)}</div><div class="progress">0%</div>`
+    div.innerHTML = `<div>${escape(file.name)}</div><div class="progress">0%</div>`
     this.listItem = this.controller.uploadingContainerTarget.appendChild(div)
-  }
-
-  #escapeHtml(unsafe) {
-    return unsafe
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
   }
 
   directUploadWillStoreFileWithXHR(request) {
