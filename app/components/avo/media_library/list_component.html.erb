@@ -16,7 +16,7 @@
   <% end %>
   <% c.with_body do %>
     <% if !@attaching %>
-      <%= content_tag :div, class: "p-4",
+      <%= content_tag :div, class: "p-4 pb-0",
         data: {
           controller: 'media-library-attach',
           media_library_attach_direct_uploads_url_value: helpers.main_app.rails_direct_uploads_url,
@@ -32,7 +32,7 @@
           <small>Click to browse or drag and drop</small>
         <% end %>
 
-        <%= content_tag :div, "", class: "m-2 flex flex-wrap gap-2", data: {
+        <%= content_tag :div, "", class: "m-2 flex flex-wrap gap-2 empty:m-0", data: {
           media_library_attach_target: 'uploadingContainer',
           turbo_permanent: true,
         } %>
