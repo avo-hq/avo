@@ -22,6 +22,7 @@ nl:
     choose_item: Kies %{item}
     clear_value: Waarde wissen
     click_to_reveal_filters: Klik om filters te tonen
+    close: Sluiten
     close_modal: Modaal sluiten
     confirm: Bevestigen
     copy: Kopie
@@ -61,6 +62,8 @@ nl:
     less_content: Minder inhoud
     list_is_empty: Lijst is leeg
     loading: Laden...
+    media_library:
+      title: Mediabibliotheek
     more: Meer
     more_content: Meer inhoud
     more_records_available: Er zijn meer records beschikbaar.
