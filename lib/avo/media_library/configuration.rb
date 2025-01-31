@@ -7,8 +7,16 @@ module Avo
       config_accessor(:enabled) { false }
 
       def visible?
+        return false if disabled?
+
         Avo::ExecutionContext.new(target: config[:visible]).handle
       end
+
+      def enabled?
+        Avo::ExecutionContext.new(target: config[:enabled]).handle
+      end
+
+      def disabled? = !enabled?
     end
 
     def self.configuration

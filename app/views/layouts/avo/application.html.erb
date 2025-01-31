@@ -14,14 +14,14 @@
     <%= render partial: "avo/partials/pre_head" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
     <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", defer: true, as: "style" %>
-    <% if Avo::PACKED %>
-      <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
-    <% else %>
-      <%= javascript_include_tag "avo.base", "data-turbo-track": "reload", defer: true %>
-      <% if Rails.env.development? && defined?(Hotwire::Livereload) %>
-        <%= javascript_include_tag "hotwire-livereload", defer: true %>
-      <% end %>
+
+    <% path = Avo::PACKED ? "/avo-assets/avo.base" : "avo.base" %>
+    <%= javascript_include_tag path, "data-turbo-track": "reload", defer: true %>
+
+    <% if !Avo::PACKED && defined?(Hotwire::Livereload) %>
+      <%= javascript_include_tag "hotwire-livereload", defer: true %>
     <% end %>
+
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
     <%= content_for :head %>

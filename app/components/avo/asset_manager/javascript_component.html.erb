@@ -8,8 +8,5 @@
 <% end %>
 
 <%# This is the last script to run so it can register custom StimulusJS controllers from plugins. %>
-<% if Avo::PACKED %>
-  <%= javascript_include_tag '/avo-assets/late-registration', "data-turbo-track": "reload", defer: true %>
-<% else %>
-  <%= javascript_include_tag 'late-registration', "data-turbo-track": "reload", defer: true %>
-<% end %>
+<% path = Avo::PACKED ? '/avo-assets/late-registration' : 'late-registration' %>
+<%= javascript_include_tag path, "data-turbo-track": "reload", defer: true %>
