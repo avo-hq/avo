@@ -247,6 +247,10 @@ class Avo::Resources::User < Avo::BaseResource
           field :created_at, as: :date_time
         end
       end
+
+      tab "Lazy loaded", lazy_load: true do
+        user_information_panel
+      end
     end
   end
 

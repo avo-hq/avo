@@ -18,6 +18,32 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     tabs_have_content? && visible_tabs.present?
   end
 
+  def frame_args(tab)
+    args = {
+      target: :_top,
+      class: "block"
+    }
+
+    if is_not_loaded?(tab)
+      args.merge!(
+        loading: :lazy,
+        src: helpers.resource_path(
+          resource: @resource,
+          record: @resource.record,
+          keep_query_params: true,
+          active_tab_name: tab.name,
+          tab_turbo_frame: tab.turbo_frame_id(parent: @group)
+        )
+      )
+    end
+
+    args
+  end
+
+  def is_not_loaded?(tab)
+    params[:tab_turbo_frame] != tab.turbo_frame_id(parent: @group)
+  end
+
   def tabs_have_content?
     visible_tabs.present?
   end
