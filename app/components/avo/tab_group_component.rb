@@ -25,15 +25,13 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     }
 
     if is_not_loaded?(tab)
-      args.merge!(
-        loading: :lazy,
-        src: helpers.resource_path(
-          resource: @resource,
-          record: @resource.record,
-          keep_query_params: true,
-          active_tab_name: tab.name,
-          tab_turbo_frame: tab.turbo_frame_id(parent: @group)
-        )
+      args[:loading] = :lazy
+      args[:src] = helpers.resource_path(
+        resource: @resource,
+        record: @resource.record,
+        keep_query_params: true,
+        active_tab_name: tab.name,
+        tab_turbo_frame: tab.turbo_frame_id(parent: @group)
       )
     end
 
