@@ -10,7 +10,13 @@ module Avo
     class_attribute :cancel_button_label
     class_attribute :no_confirmation, default: false
     class_attribute :standalone, default: false
-    class_attribute :visible
+    class_attribute :visible, default: -> {
+      # Hide on the :new view by default
+      return false if view.new?
+
+      # Show on all other views
+      return true
+    }
     class_attribute :may_download_file
     class_attribute :turbo
     class_attribute :authorize, default: true
@@ -207,17 +213,6 @@ module Avo
     end
 
     def visible_in_view(parent_resource: nil)
-      return false unless authorized?
-
-      if visible.blank?
-        # Hide on the :new view by default
-        return false if view.new?
-
-        # Show on all other views
-        return true
-      end
-
-      # Run the visible block if available
       Avo::ExecutionContext.new(
         target: visible,
         params: params,
@@ -225,7 +220,7 @@ module Avo
         resource: @resource,
         view: @view,
         arguments: arguments
-      ).handle
+      ).handle && authorized?
     end
 
     def succeed(text)
