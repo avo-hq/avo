@@ -15,7 +15,7 @@ module Avo
       return false if view.new?
 
       # Show on all other views
-      return true
+      true
     }
     class_attribute :may_download_file
     class_attribute :turbo
