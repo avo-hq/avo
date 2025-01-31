@@ -134,5 +134,5 @@ desc "Installs yarn dependencies for Avo"
 task "avo:yarn_install" do
   # tailwind.preset.js needs this dependencies in order to be required
   puts "[Avo->] Adding yarn dependencies"
-  `yarn add tailwindcss @tailwindcss/forms @tailwindcss/typography --cwd #{Avo::Engine.root}`
+  `yarn add tailwindcss @tailwindcss/forms @tailwindcss/typography @tailwindcss/container-queries --cwd #{Avo::Engine.root}`
 end
