@@ -1,10 +1,11 @@
 <%
-  classes = "inline-block"
-  classes += " text-red-600" if @status == 'failed'
-  classes += " text-green-600" if @status == 'success'
-  classes += " text-gray-600" if @status == 'neutral'
+  classes = class_names(
+    "text-red-600": @status == 'failed',
+    "text-green-600": @status == 'success',
+    "text-gray-600": @status == 'neutral'
+  )
 %>
-<div class="flex flex-shrink-0 <%= classes %> items-center">
+<div class="flex shrink-0 <%= classes %> items-center">
   <% if @status == 'success' %>
     <%= helpers.svg 'heroicons/solid/check-circle', class: 'h-4' %>
   <% elsif @status == 'failed' %>

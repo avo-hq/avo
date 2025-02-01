@@ -5,7 +5,7 @@
     <% end %>
 
     <% if @preview_fields.present? %>
-      <div class="mt-0 divide-y border-t">
+      <div class="mt-0 divide-y divide-gray-200 border-t border-gray-200">
         <% @preview_fields.each_with_index do |field, index| %>
           <%= render field
             .hydrate(

@@ -1,6 +1,6 @@
 <div data-controller="toggle" data-component-name="<%= self.class.to_s.underscore %>">
   <div class="relative w-full flex justify-between">
-    <%= a_button class: 'focus:outline-none',
+    <%= a_button class: 'focus:outline-hidden',
       color: :primary,
       size: :sm,
       icon: "avo/filter",
@@ -14,7 +14,7 @@
       <% end %>
     <% end %>
     <div
-      class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] == '1' %>"
+      class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded-sm divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] == '1' %>"
       data-toggle-target="panel"
       data-transition-enter="transition ease-out duration-100"
       data-transition-enter-start="transform opacity-0 -translate-y-1"
@@ -26,7 +26,7 @@
       <% @filters.each do |filter| %>
         <%= render partial: filter.class.template, locals: {filter: filter} %>
       <% end %>
-      <div class="p-4 border-gray-300 border-t">
+      <div class="p-4 border-gray-200 border-t">
         <% if @applied_filters.present? %>
           <%= a_link reset_path, data: {turbo_frame: params[:turbo_frame]}, color: :gray, size: :sm, class: 'w-full justify-center' do %>
             <%= t('avo.reset_filters') %>

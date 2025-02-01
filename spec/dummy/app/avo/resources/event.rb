@@ -21,7 +21,7 @@ class Avo::Resources::Event < Avo::BaseResource
   self.row_controls_config = {
     float: true,
     show_on_hover: true,
-    placement: :both
+    placement: :right
   }
 
   def fields
