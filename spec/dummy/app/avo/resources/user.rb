@@ -248,32 +248,33 @@ class Avo::Resources::User < Avo::BaseResource
         end
       end
 
-      tab "Address", lazy_load: true do
-        panel do
-          field :address, as: :heading
-          row do
-            field :street_address, stacked: true do
-              "1234 Elm Street"
-            end
-            field :city, stacked: true do
-              "Los Angeles"
-            end
-          end
+      # Uncomment to test lazy load
+      # tab "Address", lazy_load: true do
+      #   panel do
+      #     field :address, as: :heading
+      #     row do
+      #       field :street_address, stacked: true do
+      #         "1234 Elm Street"
+      #       end
+      #       field :city, stacked: true do
+      #         "Los Angeles"
+      #       end
+      #     end
 
-          field :state do
-            "California"
-          end
+      #     field :state do
+      #       "California"
+      #     end
 
-          sidebar do
-            field :phone_number do
-              "+1 (555) 123-4567"
-            end
-            field :zip_code do
-              "90001"
-            end
-          end
-        end
-      end
+      #     sidebar do
+      #       field :phone_number do
+      #         "+1 (555) 123-4567"
+      #       end
+      #       field :zip_code do
+      #         "90001"
+      #       end
+      #     end
+      #   end
+      # end
     end
   end
 
