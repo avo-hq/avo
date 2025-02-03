@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_07_24_090242) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_14_165947) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -123,6 +123,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_07_24_090242) do
     t.datetime "updated_at", null: false
     t.string "type"
     t.bigint "user_id"
+    t.string "size"
     t.index ["user_id"], name: "index_fish_on_user_id"
   end
 

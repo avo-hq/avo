@@ -17,8 +17,12 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
+  CACHED_SVGS = {}
+
+  # Frame IDs
   MODAL_FRAME_ID = :modal_frame
-  ACTIONS_BACKGROUND_FRAME = :actions_background
+  MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID = :media_library_item_details
+  ACTIONS_BACKGROUND_FRAME_ID = :actions_background
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -136,6 +140,7 @@ module Avo
         mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
         mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
         mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
+        mount Avo::Collaborate::Engine, at: "/collaborate" if defined?(Avo::Collaborate::Engine)
       }
     end
 

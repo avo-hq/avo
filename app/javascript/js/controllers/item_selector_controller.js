@@ -44,10 +44,20 @@ export default class extends Controller {
 
     ids.push(this.resourceId)
 
+    // Mark the row as selected if on table view
+    if (this.element.closest('tr')) {
+      this.element.closest('tr').classList.add('selected-row')
+    }
+
     this.currentIds = ids
   }
 
   removeFromSelected() {
+    // Un-mark the row as selected if on table view
+    if (this.element.closest('tr')) {
+      this.element.closest('tr').classList.remove('selected-row')
+    }
+
     this.currentIds = this.currentIds.filter(
       (item) => item.toString() !== this.resourceId,
     )

@@ -51,4 +51,9 @@ class Project < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["budget", "country", "created_at", "description", "id", "meta", "name", "progress", "stage", "started_at", "status", "updated_at", "users_required"]
   end
+
+  # Used to test tags on select mode with {value:,label:}
+  def dummy_field=(value)
+    TestBuddy.hi("dummy_field value is '#{value}'")
+  end
 end

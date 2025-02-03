@@ -1,8 +1,10 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
 
 <%= content_tag :tr,
-  class: class_names("bg-white hover:bg-gray-50 hover:shadow-row z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
+  id: "#{self.class.to_s.underscore}_#{@resource.record.to_param}",
+  class: class_names("group bg-white hover:bg-gray-50 z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
   data: {
+    index: @index,
     component_name: self.class.to_s.underscore,
     resource_name: @resource.class.to_s,
     record_id: @resource.record.id,
@@ -14,14 +16,14 @@
     **(try(:drag_reorder_item_data_attributes) || {}),
   } do %>
   <% if @resource.record_selector %>
-    <td class="w-10">
+    <td class="item-selector-cell w-10">
       <div class="flex justify-center h-full">
-        <%= render Avo::RowSelectorComponent.new floating: false %>
+        <%= render Avo::RowSelectorComponent.new floating: false, index: @index %>
       </div>
     </td>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_left? %>
-    <td class="text-right whitespace-nowrap w-px" data-control="resource-controls">
+  <% if @resource.render_row_controls_on_the_left? %>
+    <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>
@@ -39,11 +41,11 @@
         parent_resource: @parent_resource
       ) %>
     <% else %>
-      <td class="text-center">—</td>
+      <td class="px-3">—</td>
     <% end %>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_right? %>
-    <td class="text-right whitespace-nowrap px-3" data-control="resource-controls">
+  <% if @resource.render_row_controls_on_the_right? %>
+    <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>

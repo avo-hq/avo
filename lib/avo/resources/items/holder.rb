@@ -24,24 +24,40 @@ class Avo::Resources::Items::Holder
     if field_parser.invalid?
       as = args.fetch(:as, nil)
 
+      alert_type = :error
+      message = "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded bg-red-600'>field :#{field_name}, as: :#{as}</code>"
+
+      if as == :markdown
+        alert_type = :warning
+        message = "In Avo 3.16.2 we renamed the <code>:markdown</code> field to <code>:easy_mde</code>. <br/><br/>You may continue to use that one or the new and improved one with Active Storage support. <br/><br/> Read more about it in the <a href=\"https://docs.avohq.io/3.0/fields/markdown.html\" target=\"_blank\">docs</a>."
+      end
+
       # End execution ehre and add the field to the invalid_fileds payload so we know to wanr the developer about that.
       # @todo: Make sure this warning is still active
       return add_invalid_field({
         name: field_name,
-        as: as,
-        # resource: resource_class.name,
-        message: "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded bg-red-600'>field :#{field_name}, as: :#{as}</code>"
+        as:,
+        alert_type:,
+        message:
       })
     end
 
     add_item field_parser.instance
   end
 
-  def tabs(tab = nil, id: nil, name: nil, **kwargs, &block)
+  def tabs(tab = nil, id: nil, name: nil, title: nil, description: nil, **args, &block)
     if tab.present?
       add_item tab
     else
-      add_item Avo::Resources::Items::TabGroup::Builder.parse_block(parent: @parent, id: id, name: name, **kwargs, &block)
+      add_item Avo::Resources::Items::TabGroup::Builder.parse_block(
+        parent: @parent,
+        id: id,
+        name: name,
+        title: title,
+        description: description,
+        **args,
+        &block
+      )
     end
   end
 
@@ -80,7 +96,7 @@ class Avo::Resources::Items::Holder
 
   private
 
-  def add_invalid_field(payload)
+  def add_invalid_field(payload, alert_type: :error)
     invalid_fields << payload
   end
 

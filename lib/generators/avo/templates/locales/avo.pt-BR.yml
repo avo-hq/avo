@@ -24,8 +24,10 @@ pt-BR:
     choose_item: Escolher %{item}
     clear_value: Limpar valor
     click_to_reveal_filters: Clique para revelar os filtros
+    close: Fechar
     close_modal: Fechar modal
     confirm: Confirmar
+    copy: Copiar
     create_new_item: Criar novo %{item}
     dashboard: Painel
     dashboards: Painéis
@@ -59,9 +61,14 @@ pt-BR:
       key: Chave
       reorder_row: Reordenar linha
       value: Valor
+    less_content: Menos conteúdo
     list_is_empty: Lista vazia
     loading: Carregando
+    media_library:
+      title: Biblioteca de Mídia
     more: Mais
+    more_content: Mais conteúdo
+    more_records_available: Existem mais registros disponíveis.
     new: novo
     next_page: Próxima página
     no_cancel: Não, cancelar
@@ -101,6 +108,9 @@ pt-BR:
     select_item: Selecionar item
     show_content: Mostrar conteúdo
     sign_out: sair
+    sort_asc: Ordenar em ordem crescente
+    sort_desc: Ordenar em ordem decrescente
+    sort_reset: Redefinir ordenação
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
     this_field_has_attachments_disabled: Este campo tem anexos desativados.
@@ -110,6 +120,7 @@ pt-BR:
     undo: desfazer
     view: Visualizar
     view_item: visualizar %{item}
+    visit_record_on_external_path: Visitar registro através de link externo
     was_successfully_created: foi criado com sucesso
     was_successfully_updated: foi atualizado com sucesso
     x_items_more:

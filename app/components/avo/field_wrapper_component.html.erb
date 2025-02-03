@@ -26,11 +26,16 @@
       }), data: {slot: "value"} do %>
     <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
       <% if on_show? %>
-        <% if render_dash? %>
-          —
-        <% else %>
-          <%= content %>
-        <% end %>
+        <div class="flex flex-row items-center group gap-x-1">
+          <% if render_dash? %>
+            —
+          <% else %>
+            <%= content %>
+          <% end %>
+          <% if @field.copyable %>
+            <%= render Avo::ClipboardComponent.new(value: @field.value) %>
+          <% end %>
+        </div>
       <% elsif on_edit? %>
         <%= content %>
         <% if record.present? and record.errors.include? @field.id %>

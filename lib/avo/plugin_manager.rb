@@ -13,6 +13,12 @@ module Avo
     end
 
     def register_field(method_name, klass)
+      # Avo.boot method is executed multiple times.
+      # During the first run, it correctly loads descendants of Avo::Fields::Base.
+      # Plugins are then loaded, introducing additional descendants to Avo::Fields::Base.
+      # On subsequent runs, Avo::Fields::Base descendants now include these plugin fields.
+      # This field_name_attribute assign forces the field name to retain the registered name instead of being computed dynamically from the field class.
+      klass.field_name_attribute = method_name
       Avo.field_manager.load_field method_name, klass
     end
 

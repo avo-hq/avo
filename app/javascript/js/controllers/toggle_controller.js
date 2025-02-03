@@ -22,7 +22,7 @@ export default class extends Controller {
     if (this.hasPanelTarget) {
       const isInExemptionContainer = this.hasExemptionContainersValue && this.exemptionContainerTargets.some((container) => container.contains(e.target))
 
-      if (!isInExemptionContainer) {
+      if (!isInExemptionContainer && !this.panelTarget.classList.contains('hidden')) {
         leave(this.panelTarget)
       }
     }

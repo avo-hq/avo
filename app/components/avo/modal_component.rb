@@ -7,6 +7,7 @@ class Avo::ModalComponent < Avo::BaseComponent
   prop :width, default: :md
   prop :body_class
   prop :overflow, default: :auto
+  prop :close_modal_on_backdrop_click, default: true, reader: :public
 
   def width_classes
     case @width.to_sym

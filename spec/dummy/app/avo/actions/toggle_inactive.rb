@@ -34,5 +34,7 @@ class Avo::Actions::ToggleInactive < Avo::BaseAction
     end
 
     silent
+
+    reload_records(query)
   end
 end

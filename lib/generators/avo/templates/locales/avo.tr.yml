@@ -24,8 +24,10 @@ tr:
     choose_item: "%{item} seçin"
     clear_value: Değeri temizle
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
+    close: Kapat
     close_modal: Modali kapat
     confirm: Onayla
+    copy: Kopya
     create_new_item: Yeni bir %{item} oluşturun
     dashboard: Yönetim Paneli
     dashboards: Yönetim Panelleri
@@ -59,9 +61,14 @@ tr:
       key: Anahtar
       reorder_row: Satırı yeniden sırala
       value: Değer
+    less_content: Daha az içerik
     list_is_empty: Boş liste
     loading: Yükleniyor
+    media_library:
+      title: Ortam Kütüphanesi
     more: Daha fazla
+    more_content: Daha fazla içerik
+    more_records_available: Daha fazla kayıt mevcut.
     new: yeni
     next_page: Sonraki sayfa
     no_cancel: Hayır, iptal et
@@ -101,6 +108,9 @@ tr:
     select_item: Öğe seç
     show_content: İçeriği göster
     sign_out: Çıkış yap
+    sort_asc: Artan sırala
+    sort_desc: Azalan sırala
+    sort_reset: Sıralamayı sıfırla
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
     this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.
@@ -110,6 +120,7 @@ tr:
     undo: geri al
     view: Görünüm
     view_item: "%{item} öğresini görüntüle"
+    visit_record_on_external_path: Harici bağlantı yoluyla kaydı ziyaret et
     was_successfully_created: başarıyla oluşturuldu
     was_successfully_updated: başarıyla güncellendi
     x_items_more:

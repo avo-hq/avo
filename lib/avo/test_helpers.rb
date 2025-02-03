@@ -288,8 +288,8 @@ module Avo
     #   expect(tags(field: :tags)).to eq []
     def tags(field:)
       # Find all elements with class 'tagify__tag'
-      # Map the elements to their 'label' attribute values and return the array of labels
-      page.all(".tagify__tag").map { |element| element[:label] }
+      # Map the elements to text and return the array of texts
+      page.all(".tagify__tag").map(&:text)
     end
 
     # Example usage:

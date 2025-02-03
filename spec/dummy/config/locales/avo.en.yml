@@ -1,6 +1,8 @@
 ---
 en:
   avo:
+    media_library:
+      title: Media Library
     resource_translations:
       product:
         save: "Save the product!"
@@ -25,6 +27,7 @@ en:
     clear_value: Clear value
     click_to_reveal_filters: Click to reveal filters
     close_modal: Close modal
+    close: Close
     confirm: Confirm
     create_new_item: Create new %{item}
     dashboard: Dashboard
@@ -99,6 +102,8 @@ en:
     select_all_matching: Select all matching
     select_item: Select item
     show_content: Show content
+    more_content: More content
+    less_content: Less content
     sign_out: Sign out
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
@@ -108,6 +113,7 @@ en:
     undo: undo
     view: View
     view_item: view %{item}
+    visit_record_on_external_path: Visit record on external path
     was_successfully_created: was successfully created
     was_successfully_updated: was successfully updated
     x_items_more:
@@ -119,6 +125,7 @@ en:
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
     yes_confirm: Yes, I'm sure
     you_missed_something_check_form: You might have missed something. Please check the form.
+    more_records_available: There are more records available.
     filter_translations:
       user_names_filter:
         name: User names filter

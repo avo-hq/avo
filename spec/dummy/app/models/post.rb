@@ -37,7 +37,7 @@ class Post < ApplicationRecord
   has_many :comments, as: :commentable
   has_many :reviews, as: :reviewable
 
-  acts_as_taggable_on :tags
+  acts_as_ordered_taggable_on :tags
 
   before_save :update_slug
 

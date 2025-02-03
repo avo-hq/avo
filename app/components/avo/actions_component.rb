@@ -68,7 +68,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   def render_item(action)
     case action
     when Avo::Divider
-      render_divider(action)
+      render Avo::DividerComponent.new(action.label)
     when Avo::BaseAction
       render_action_link(action)
     when defined?(Avo::Advanced::Resources::Controls::Action) && Avo::Advanced::Resources::Controls::Action
@@ -83,11 +83,6 @@ class Avo::ActionsComponent < Avo::BaseComponent
   end
 
   private
-
-  def render_divider(action)
-    label = action.label.is_a?(Hash) ? action.label[:label] : nil
-    render Avo::DividerComponent.new(label)
-  end
 
   def render_action_link(action, icon: nil)
     link_to action.link_arguments(resource: @resource, arguments: action.arguments).first,
