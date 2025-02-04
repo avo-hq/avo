@@ -104,7 +104,6 @@ class Avo::Resources::Person < Avo::BaseResource
           end
         end
       end
-
     end
   end
 end
