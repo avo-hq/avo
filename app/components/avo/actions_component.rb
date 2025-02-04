@@ -102,7 +102,8 @@ class Avo::ActionsComponent < Avo::BaseComponent
       disabled: action.disabled?,
       turbo_prefetch: false,
       enabled_classes: "text-black",
-      disabled_classes: "text-gray-500"
+      disabled_classes: "text-gray-500",
+      resource_name: action.resource.model_key
     }
   end
 
