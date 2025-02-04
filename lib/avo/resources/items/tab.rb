@@ -10,6 +10,7 @@ class Avo::Resources::Items::Tab
   delegate :items, :add_item, to: :items_holder
 
   attr_accessor :description
+  attr_reader :lazy_load
 
   def initialize(name: nil, description: nil, view: nil, **args)
     @name = name
@@ -18,6 +19,7 @@ class Avo::Resources::Items::Tab
     @view = Avo::ViewInquirer.new view
     @args = args
     @visible = args[:visible]
+    @lazy_load = args[:lazy_load]
 
     post_initialize if respond_to?(:post_initialize)
   end
