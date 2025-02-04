@@ -51,9 +51,11 @@
               </div>
             </div>
           <% end %>
-        <% end %>
 
-        <%= render Avo::Sidebar::LinkComponent.new label: 'Media Library', path: helpers.avo.media_library_index_path, active: :exclusive if Avo::MediaLibrary.configuration.visible? %>
+          <% if Avo::MediaLibrary.configuration.visible? %>
+            <%= render Avo::Sidebar::LinkComponent.new label: 'Media Library', path: helpers.avo.media_library_index_path, active: :exclusive %>
+          <% end %>
+        <% end %>
 
         <%= render partial: "/avo/partials/sidebar_extra" %>
       </div>
