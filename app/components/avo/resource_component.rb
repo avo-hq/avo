@@ -301,7 +301,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
         turbo_prefetch: false,
         # When action has record present behave as standalone and keep always active.
         "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
-        disabled: action.action.disabled?
+        disabled: action.action.disabled?,
+        resource_name: action.action.resource.model_key
       } do
       action.label
     end
