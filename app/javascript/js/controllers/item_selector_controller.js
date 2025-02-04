@@ -75,19 +75,27 @@ export default class extends Controller {
 
   enableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.add(link.dataset.enabledClasses)
-      link.classList.remove(link.dataset.disabledClasses)
-      link.setAttribute('data-href', link.getAttribute('href'))
-      link.dataset.disabled = false
+      // Enable only if is on the same resource context
+      // Avoiding to enable unrelated actions when selecting items on a has many table
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.add(link.dataset.enabledClasses)
+        link.classList.remove(link.dataset.disabledClasses)
+        link.setAttribute('data-href', link.getAttribute('href'))
+        link.dataset.disabled = false
+      }
     })
   }
 
   disableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.remove(link.dataset.enabledClasses)
-      link.classList.add(link.dataset.disabledClasses)
-      link.setAttribute('href', link.getAttribute('data-href'))
-      link.dataset.disabled = true
+      // Disable only if is on the same resource context
+      // Avoiding to disable unrelated actions when selecting items on a has many table
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.remove(link.dataset.enabledClasses)
+        link.classList.add(link.dataset.disabledClasses)
+        link.setAttribute('href', link.getAttribute('data-href'))
+        link.dataset.disabled = true
+      }
     })
   }
 }
