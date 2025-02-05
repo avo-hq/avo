@@ -229,32 +229,48 @@ RSpec.feature "Select", type: :feature do
       end
     end
   end
+
   describe "when options are multiple select" do
     context "new" do
       it "allow selection of multiple values" do
         visit avo.new_resources_product_path
+
         expect(page).to have_select "product_sizes", multiple: true, options: ["Large", "Medium", "Small"]
+
         select "Large", from: "product_sizes"
         select "Medium", from: "product_sizes"
+
         save
+
         expect(Product.last.sizes).to match_array(["large", "medium"])
       end
     end
+
     context "edit" do
       let(:product) { create :product, sizes: [:large] }
+
       it "allow changing of selected values" do
         visit avo.edit_resources_product_path(product)
+
         expect(page).to have_select "product_sizes", selected: ["Large"], multiple: true, options: ["Large", "Medium", "Small"]
+
         select "Medium", from: "product_sizes"
         select "Small", from: "product_sizes"
+
         save
+
         expect(Product.last.sizes).to match_array(["medium", "small", "large"])
       end
+
       it "allow deselecting of previously selected values" do
         visit avo.edit_resources_product_path(product)
+
         expect(page).to have_select "product_sizes", selected: ["Large"], multiple: true, options: ["Large", "Medium", "Small"]
+
         page.unselect "Large", from: "Sizes"
+
         save
+
         expect(Product.last.sizes).to match_array([])
       end
     end
