@@ -18,7 +18,7 @@ module Avo
       def query
         ActiveStorage::Blob.includes(:attachments)
           # ignore blobs who are just a variant to avoid "n+1" blob creation
-          .where.not(id: ActiveStorage::Attachment.where(record_type: "ActiveStorage::VariantRecord").pluck(:blob_id))
+          .where.not(id: ActiveStorage::Attachment.where(record_type: "ActiveStorage::VariantRecord").select(:blob_id))
           .order(created_at: :desc)
       end
 

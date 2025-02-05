@@ -1,0 +1,5 @@
+<div class="space-y-12">
+  <% @tab.visible_items.each do |item| %>
+    <%= render Avo::Items::SwitcherComponent.new item: item, **@kwargs %>
+  <% end %>
+</div>

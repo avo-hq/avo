@@ -67,7 +67,7 @@ export default class extends Controller {
   insertAttachments(attachments, event) {
     // show an error if the controller is not found
     if (!this.otherController) {
-      console.error('[Avo->] The Media Library failed to find any field outlets to inject the asset.')
+      console.error(`[Avo->] The Media Library failed to find any field outlets to inject the asset. Tried selector: ${this.controllerSelectorValue} and name: ${this.controllerNameValue}`)
 
       return
     }
@@ -82,7 +82,8 @@ export default class extends Controller {
   #extractMetadataFromItem(item) {
     const blob = JSON.parse(item.dataset.mediaLibraryBlobParam)
     const path = item.dataset.mediaLibraryPathParam
+    const url = item.dataset.mediaLibraryUrlParam
 
-    return { blob, path }
+    return { blob, path, url }
   }
 }

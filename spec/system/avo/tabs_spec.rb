@@ -230,4 +230,53 @@ RSpec.describe "Tabs", type: :system do
 
     Avo.configuration.persistence = {driver: nil}
   end
+
+  let!(:person) { create :person }
+
+  it "lazy_load" do
+    visit avo.resources_person_path(person)
+
+    scroll_to first_tab_group
+
+    # Find visible information from first default tab
+    field_wrapper = find('div[data-field-id="company"]')
+    label = field_wrapper.find('div[data-slot="label"]')
+    value = field_wrapper.find('div[data-slot="value"]')
+    expect(label.text.strip).to eq("COMPANY")
+    expect(value.text.strip).to eq("TechCorp Inc.")
+
+    # Expect text from preferences and employment tabs (not lazy loaded) to be visible
+    within(:css, '.block.hidden[data-tabs-target="tabPanel"][data-tab-id="Preferences"]', visible: :all) do
+      # Find the field wrapper for "Notification preference"
+      field_wrapper = find('div[data-field-id="notification_preference"]', visible: :all)
+
+      # Locate the label and value within the wrapper
+      label = field_wrapper.find('div[data-slot="label"]', visible: :all)
+      value = field_wrapper.find('div[data-slot="value"]', visible: :all)
+
+      expect(label.text(:all).strip).to eq("Notification preference")
+      expect(value.text(:all).strip).to eq("Email & SMS")
+    end
+
+    # Expect not to find field from lazy loaded tab
+    within(:css, '.block.hidden[data-tabs-target="tabPanel"][data-tab-id="Address"]', visible: :all) do
+      expect(page).not_to have_selector('div[data-field-id="phone_number"]', visible: :all)
+    end
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Address"]').click
+    wait_for_loaded
+
+    # Find the phone number from lazy loaded tab after clicking on it
+    within(:css, '.block[data-tabs-target="tabPanel"][data-tab-id="Address"]', visible: :all) do
+      # Find the field wrapper for "Phone number"
+      field_wrapper = find('div[data-field-id="phone_number"]', visible: :all)
+
+      # Locate the label and value within the wrapper
+      label = field_wrapper.find('div[data-slot="label"]', visible: :all)
+      value = field_wrapper.find('div[data-slot="value"]', visible: :all)
+
+      expect(label.text(:all).strip).to eq("Phone number")
+      expect(value.text(:all).strip).to eq("+1 (555) 123-4567")
+    end
+  end
 end

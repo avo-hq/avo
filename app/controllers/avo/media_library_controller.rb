@@ -36,7 +36,7 @@ module Avo
     end
 
     def authorize_access!
-      raise_404 unless Avo::MediaLibrary.configuration.visible?
+      raise_404 if Avo::MediaLibrary.configuration.disabled?
     end
   end
 end
