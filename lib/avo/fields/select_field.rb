@@ -43,11 +43,7 @@ module Avo
       def label
         # If options are array don't need any pre-process
         if options.is_a?(Array)
-          if @multiple
-            return value.join(", ")
-          else
-            return value
-          end
+          return @multiple ? value.join(", ") : value
         end
 
         # If options are enum and display_value is true we return the Value of that key-value pair, else return key of that key-value pair
@@ -59,13 +55,7 @@ module Avo
 
         # When code arrive here it means options are Hash
         # If display_value is true we only need to return the value stored in DB
-        if display_value
-          if @multiple
-            return value.join(", ")
-          else
-            return value
-          end
-        end
+        return value if display_value
 
         if @multiple
           options.select { |_, v| value.include?(v.to_s) }.keys.join(", ")
