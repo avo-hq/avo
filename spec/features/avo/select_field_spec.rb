@@ -242,6 +242,7 @@ RSpec.feature "Select", type: :feature do
 
         save
 
+        expect(find_field_element(:sizes)).to have_text("Large, Medium")
         expect(Product.last.sizes).to match_array(["large", "medium"])
       end
     end
@@ -259,6 +260,7 @@ RSpec.feature "Select", type: :feature do
 
         save
 
+        expect(find_field_element(:sizes)).to have_text("Large, Medium, Small")
         expect(Product.last.sizes).to match_array(["medium", "small", "large"])
       end
 
@@ -271,6 +273,7 @@ RSpec.feature "Select", type: :feature do
 
         save
 
+        expect(find_field_element(:sizes)).to have_text("—")
         expect(Product.last.sizes).to match_array([])
       end
     end

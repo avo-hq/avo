@@ -41,6 +41,8 @@ module Avo
       end
 
       def label
+        return "—" if value.nil? || (@multiple && value.empty?)
+
         # If options are array don't need any pre-process
         if options.is_a?(Array)
           return @multiple ? value.join(", ") : value
