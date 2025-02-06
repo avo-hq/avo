@@ -188,9 +188,10 @@ module Generators
         end
 
         def group_possible_polymorphic_fields
-          model_db_columns.keys
-                          .group_by { |col| col.gsub(/_type|_id$/, "") }
-                          .select { |_field, group| group.size == 2 }
+          model_db_columns
+            .keys
+            .group_by { |col| col.gsub(/_type|_id$/, "") }
+            .select { |_field, group| group.size == 2 }
         end
 
         def fetch_associated_classes(field)
