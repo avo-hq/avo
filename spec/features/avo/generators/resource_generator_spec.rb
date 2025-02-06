@@ -55,7 +55,7 @@ RSpec.feature "resource generator", type: :feature do
       ]
 
       keeping_original_files(files) do
-        Rails::Generators.invoke("avo:resource", ["comment", "-q"], {destination_root: Rails.root})
+        Rails::Generators.invoke("avo:resource", ["comment", "-s"], {destination_root: Rails.root})
 
         expect(File.exist?(files[0])).to be true
 
