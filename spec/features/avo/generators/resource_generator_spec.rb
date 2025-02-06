@@ -46,6 +46,28 @@ RSpec.feature "resource generator", type: :feature do
       end
     end
   end
+
+  context "when generating resources for Comment model" do
+    it "generates fields for polymorphic associations" do
+      files = [
+        Rails.root.join("app", "avo", "resources", "comment.rb").to_s,
+        Rails.root.join("app", "controllers", "avo", "comments_controller.rb").to_s
+      ]
+
+      keeping_original_files(files) do
+        Rails::Generators.invoke("avo:resource", ["comment", "-q"], {destination_root: Rails.root})
+
+        expect(File.exist?(files[0])).to be true
+
+        generated_content = File.read(files[0])
+
+        expect(generated_content).to include("# This is a potential polymorphic association, but the associated classes could not be determined. Please configure manually.")
+        expect(generated_content).to include("field :commentable, as: :polymorphic")
+
+        check_files_and_clean_up files
+      end
+    end
+  end
 end
 
 def keeping_original_files(files)

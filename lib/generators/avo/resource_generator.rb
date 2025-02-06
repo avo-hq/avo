@@ -177,9 +177,26 @@ module Generators
           end
         end
 
-        def fields_from_model_tags
-          tags.each do |name, _|
-            fields[(remove_last_word_from name).pluralize] = {field: "tags"}
+        def detect_polymorphic_associations
+          polymorphic_fields = model_db_columns.keys.group_by { |col| col.gsub(/_type|_id$/, '') }
+                                               .select { |_field, group| group.size == 2 }
+
+          polymorphic_fields.each_key do |field|
+            # Check if the model has a reflection for the polymorphic association
+            if model.reflections.key?(field)
+              reflection = model.reflections[field]
+              associated_classes = reflection.polymorphic? ? reflection.class_name : nil
+            else
+              associated_classes = nil
+            end
+
+            fields[field] = {
+              field: "polymorphic",
+              options: {
+                types: associated_classes ? [associated_classes] : [],
+                comment: associated_classes ? nil : "This is a potential polymorphic association, but the associated classes could not be determined. Please configure manually."
+              }
+            }
           end
         end
 
@@ -256,6 +273,7 @@ module Generators
           fields_from_model_associations
           fields_from_model_rich_texts
           fields_from_model_tags
+          detect_polymorphic_associations
 
           generated_fields_template
         end
@@ -272,7 +290,14 @@ module Generators
             options = ""
             field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
 
-            fields_string += "\n    #{field_string field_name, field_options[:field], options}"
+            if field_options[:field] == "polymorphic"
+              types = field_options[:options][:types] || []
+              comment = field_options[:options][:comment]
+              fields_string += "\n    # #{comment}" if comment
+              fields_string += "\n    # field :#{field_name}, as: :polymorphic, types: #{types.inspect}#{options}"
+            else
+              fields_string += "\n    #{field_string field_name, field_options[:field], options}"
+            end
           end
 
           fields_string
