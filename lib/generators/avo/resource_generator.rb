@@ -178,26 +178,34 @@ module Generators
         end
 
         def detect_polymorphic_associations
-          polymorphic_fields = model_db_columns.keys.group_by { |col| col.gsub(/_type|_id$/, '') }
-                                               .select { |_field, group| group.size == 2 }
+          grouped_columns = group_possible_polymorphic_fields
 
-          polymorphic_fields.each_key do |field|
-            # Check if the model has a reflection for the polymorphic association
-            if model.reflections.key?(field)
-              reflection = model.reflections[field]
-              associated_classes = reflection.polymorphic? ? reflection.class_name : nil
-            else
-              associated_classes = nil
-            end
+          grouped_columns.each_key do |field|
+            associated_classes = fetch_associated_classes(field)
 
-            fields[field] = {
-              field: "polymorphic",
-              options: {
-                types: associated_classes ? [associated_classes] : [],
-                comment: associated_classes ? nil : "This is a potential polymorphic association, but the associated classes could not be determined. Please configure manually."
-              }
-            }
+            fields[field] = build_polymorphic_field(field, associated_classes)
           end
+        end
+
+        def group_possible_polymorphic_fields
+          model_db_columns.keys
+                          .group_by { |col| col.gsub(/_type|_id$/, "") }
+                          .select { |_field, group| group.size == 2 }
+        end
+
+        def fetch_associated_classes(field)
+          reflection = model.reflections[field] if model.reflections.key?(field)
+          reflection&.polymorphic? ? reflection.class_name : nil
+        end
+
+        def build_polymorphic_field(field, associated_classes)
+          {
+            field: "polymorphic",
+            options: {
+              types: associated_classes ? [associated_classes] : [],
+              comment: associated_classes ? nil : "This is a potential polymorphic association, but the associated classes could not be determined. Please configure manually."
+            }
+          }
         end
 
         def fields_from_model_associations
