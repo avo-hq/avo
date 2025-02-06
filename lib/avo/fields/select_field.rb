@@ -57,9 +57,9 @@ module Avo
 
         # When code arrive here it means options are Hash
         # If display_value is true we only need to return the value stored in DB
-        return value if display_value
-
-        if @multiple
+        if display_value
+          value
+        elsif @multiple
           options.select { |_, v| value.include?(v.to_s) }.keys.join(", ")
         else
           options.invert[value]
