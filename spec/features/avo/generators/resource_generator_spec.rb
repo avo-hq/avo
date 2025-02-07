@@ -49,6 +49,7 @@ RSpec.feature "resource generator", type: :feature do
 
   context "when generating resources with polymorphic associations" do
     it "generates commented polymorphic fields" do
+      # Create new model and table
       ActiveRecord::Schema.define do
         create_table :test_comments, force: true do |t|
           t.string :commentable_type
@@ -73,10 +74,12 @@ RSpec.feature "resource generator", type: :feature do
       Rails::Generators.invoke("avo:resource", ["test_comment", "--quiet", "--skip"], {destination_root: Rails.root})
 
       generated_content = File.read(files[0])
-      expect(generated_content).to include("field :commentable, as: :belongs_to, polymorphic_as: :commentable")
+      expect(generated_content).to include("# field :commentable, as: :belongs_to, polymorphic_as: :commentable")
 
+      # Delete test table and cleanup
       Object.send(:remove_const, :TestComment)
       ActiveRecord::Base.connection.drop_table(:test_comments)
+
       check_files_and_clean_up files
     end
   end
