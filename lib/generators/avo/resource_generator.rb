@@ -188,13 +188,13 @@ module Generators
         end
 
         def fields_from_model_associations
-          Rails.application.eager_load! if Rails.application
+          Rails.application.eager_load!
 
           associations.each do |name, association|
             fields[name] =
               if association.polymorphic?
                 possible_types = ActiveRecord::Base.descendants.select do |model|
-                  model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name}
+                  model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
                 end.map(&:name)
 
                 types = possible_types.empty? ? "[] # Program couldn't compute types" : possible_types.map(&:to_sym)
