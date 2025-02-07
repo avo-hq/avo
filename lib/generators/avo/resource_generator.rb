@@ -171,6 +171,10 @@ module Generators
           "field :#{name}, as: :#{type}#{options}"
         end
 
+        def polymorphic_field_string(name, options)
+          "field :#{name}, as: :belongs_to, polymorphic_as: :#{name}#{options}"
+        end
+
         def fields_from_model_rich_texts
           rich_texts.each do |name, _|
             fields[name.delete_prefix("rich_text_")] = {field: "trix"}
@@ -184,10 +188,18 @@ module Generators
         end
 
         def fields_from_model_associations
+          Rails.application.eager_load! if Rails.application
+
           associations.each do |name, association|
             fields[name] =
               if association.polymorphic?
-                {field: "polymorphic", options: {types: []}}
+                possible_types = ActiveRecord::Base.descendants.select do |model|
+                  model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name}
+                end.map(&:name)
+
+                types = possible_types.empty? ? "[] # Program couldn't compute types" : possible_types.map(&:to_sym)
+
+                {field: "polymorphic", options: {types: types}}
               elsif association.is_a?(ActiveRecord::Reflection::ThroughReflection)
                 field_from_through_association(association)
               else
@@ -215,19 +227,6 @@ module Generators
         def fields_from_model_attachements
           attachments.each do |name, attachment|
             fields[remove_last_word_from name] = ::Avo::Mappings::ATTACHMENTS_MAPPING[attachment.class]
-          end
-        end
-
-        def detect_polymorphic_associations
-          polymorphic_associations = model_db_columns.keys
-            .select { |column| column.end_with?("_type") }
-            .map { |type_column| type_column.remove("_type") }
-            .select { |association| model_db_columns.key?("#{association}_id") }
-
-          polymorphic_associations.each do |association|
-            fields[association] = {
-              field: "polymorphic", options: {types: "[] # Add class names here, e.g., [User, Post]"}
-            }
           end
         end
 
@@ -266,7 +265,6 @@ module Generators
             return
           end
 
-          detect_polymorphic_associations
           fields_from_model_db_columns
           fields_from_model_enums
           fields_from_model_attachements
@@ -291,7 +289,7 @@ module Generators
 
             fields_string +=
               if field_options[:field] == "polymorphic"
-                "\n    # field :#{field_name}, as: :belongs_to, polymorphic_as: :#{field_name}#{options} # Define types manually"
+                "\n    #{polymorphic_field_string field_name, options}"
               else
                 "\n    #{field_string field_name, field_options[:field], options}"
               end
