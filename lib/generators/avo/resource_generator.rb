@@ -219,10 +219,11 @@ module Generators
         end
 
         def detect_polymorphic_associations
-          polymorphic_associations = model_db_columns.keys
-                                                     .select { |column| column.end_with?("_type") }
-                                                     .map { |type_column| type_column.remove("_type") }
-                                                     .select { |association| model_db_columns.key?("#{association}_id") }
+          polymorphic_associations = model_db_columns
+            .keys
+            .select { |column| column.end_with?("_type") }
+            .map { |type_column| type_column.remove("_type") }
+            .select { |association| model_db_columns.key?("#{association}_id") }
 
           polymorphic_associations.each do |association|
             fields[association] = {
@@ -296,7 +297,6 @@ module Generators
 
             # Comment polymorphic fields if types are missing
             if field_options[:field] == "polymorphic"
-              fields_string += "\n    # Polymorphic association detected for :#{field_name}"
               fields_string += "\n    # field :#{field_name}, as: :belongs_to#{options} # Define types manually"
             else
               fields_string += "\n    #{field_string field_name, field_options[:field], options}"

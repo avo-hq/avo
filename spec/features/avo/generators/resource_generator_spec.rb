@@ -58,7 +58,6 @@ RSpec.feature "resource generator", type: :feature do
 
       generated_content = File.read(files[0])
 
-      expect(generated_content).to include("# Polymorphic association detected for :commentable")
       expect(generated_content).to include("# field :commentable, as: :belongs_to, types: []")
 
       check_files_and_clean_up files
