@@ -226,7 +226,7 @@ module Generators
 
           polymorphic_associations.each do |association|
             fields[association] = {
-              field: "polymorphic", options: { types: "[] # Add class names here, e.g., [User, Post]" }
+              field: "polymorphic", options: {types: "[] # Add class names here, e.g., [User, Post]"}
             }
           end
         end

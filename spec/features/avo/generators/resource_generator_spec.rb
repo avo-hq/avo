@@ -49,17 +49,34 @@ RSpec.feature "resource generator", type: :feature do
 
   context "when generating resources with polymorphic associations" do
     it "generates commented polymorphic fields" do
+      ActiveRecord::Schema.define do
+        create_table :test_comments, force: true do |t|
+          t.string :commentable_type
+          t.integer :commentable_id
+          t.text :body
+          t.timestamps
+        end
+      end
+
+      test_model = Class.new(ActiveRecord::Base) do
+        self.table_name = :test_comments
+        belongs_to :commentable, polymorphic: true
+      end
+
+      Object.const_set(:TestComment, test_model)
+
       files = [
-        Rails.root.join("app", "avo", "resources", "comment.rb").to_s,
-        Rails.root.join("app", "controllers", "avo", "comments_controller.rb").to_s
+        Rails.root.join("app", "avo", "resources", "test_comment.rb").to_s,
+        Rails.root.join("app", "controllers", "avo", "test_comments_controller.rb").to_s
       ]
 
-      Rails::Generators.invoke("avo:resource", ["comment", "--quiet", "--skip"], {destination_root: Rails.root})
+      Rails::Generators.invoke("avo:resource", ["test_comment", "--quiet", "--skip"], {destination_root: Rails.root})
 
       generated_content = File.read(files[0])
-
       expect(generated_content).to include("field :commentable, as: :belongs_to, polymorphic_as: :commentable")
 
+      Object.send(:remove_const, :TestComment)
+      ActiveRecord::Base.connection.drop_table(:test_comments)
       check_files_and_clean_up files
     end
   end
