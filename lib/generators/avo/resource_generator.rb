@@ -219,11 +219,19 @@ module Generators
         end
 
         def detect_polymorphic_associations
-          model_db_columns
-            .keys
-            .select { |column| column.end_with?("_type") }
-            .map { |type_column| type_column.remove("_type") }
-            .select { |association| model_db_columns.key?("#{association}_id") }
+          polymorphic_associations = model_db_columns.keys
+                                                     .select { |column| column.end_with?("_type") }
+                                                     .map { |type_column| type_column.remove("_type") }
+                                                     .select { |association| model_db_columns.key?("#{association}_id") }
+
+          polymorphic_associations.each do |association|
+            fields[association] = {
+              field: "polymorphic",
+              options: {
+                types: "[] # Add class names here, e.g., [User, Post]"
+              }
+            }
+          end
         end
 
         # "hello_world_hehe".split('_') => ['hello', 'world', 'hehe']
@@ -279,17 +287,17 @@ module Generators
 
           fields.each do |field_name, field_options|
             # if field_options are not available (likely a missing resource for an association), skip the field
-            fields_string += "\n    # Could not generate a field for #{field_name}" and next unless field_options
+            next unless field_options
 
             options = ""
             if field_options[:options].present?
               field_options[:options].each { |k, v| options += ", #{k}: #{v}" }
             end
 
-            # Add a comment for polymorphic fields
+            # Comment polymorphic fields if types are missing
             if field_options[:field] == "polymorphic"
               fields_string += "\n    # Polymorphic association detected for :#{field_name}"
-              fields_string += "\n    # field :#{field_name}, as: :belongs_to, types: []"
+              fields_string += "\n    # field :#{field_name}, as: :belongs_to#{options} # Define types manually"
             else
               fields_string += "\n    #{field_string field_name, field_options[:field], options}"
             end
