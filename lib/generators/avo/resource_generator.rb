@@ -13,14 +13,14 @@ module Generators
       namespace "avo:resource"
 
       class_option "model-class",
-                   desc: "The name of the model.",
-                   type: :string,
-                   required: false
+        desc: "The name of the model.",
+        type: :string,
+        required: false
 
       class_option "array",
-                   desc: "Indicates if the resource should be an array.",
-                   type: :boolean,
-                   default: false
+        desc: "Indicates if the resource should be an array.",
+        type: :boolean,
+        default: false
 
       def create
         return if override_controller?
@@ -153,7 +153,7 @@ module Generators
         end
 
         def tags
-          @tags ||= reflections.select { |_, reflection| reflection.options[:as] == :taggable }
+          @tags ||= reflections.select {|_, reflection| reflection.options[:as] == :taggable}
         end
 
         def associations
@@ -190,7 +190,7 @@ module Generators
           associations.each do |name, association|
             fields[name] =
               if association.polymorphic?
-                { field: "polymorphic", options: { types: [] } }
+                {field: "polymorphic", options: {types: []}}
               elsif association.is_a?(ActiveRecord::Reflection::ThroughReflection)
                 field_from_through_association(association)
               else
@@ -224,9 +224,9 @@ module Generators
         def detect_polymorphic_associations
           model_db_columns
             .keys
-            .select { |column| column.end_with?("_type") }
-            .map { |type_column| type_column.remove("_type") }
-            .select { |association| model_db_columns.key?("#{association}_id") }
+            .select {|column| column.end_with?("_type")}
+            .map {|type_column| type_column.remove("_type")}
+            .select {|association| model_db_columns.key?("#{association}_id")}
         end
 
         # "hello_world_hehe".split('_') => ['hello', 'world', 'hehe']
@@ -284,7 +284,7 @@ module Generators
 
             options = ""
             if field_options[:options].present?
-              field_options[:options].each { |k, v| options += ", #{k}: #{v}" }
+              field_options[:options].each {|k, v| options += ", #{k}: #{v}"}
             end
 
             # Add a comment for polymorphic fields

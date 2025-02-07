@@ -54,7 +54,7 @@ RSpec.feature "resource generator", type: :feature do
         Rails.root.join("app", "controllers", "avo", "comments_controller.rb").to_s
       ]
 
-      Rails::Generators.invoke("avo:resource", ["comment", "--quiet", "--skip"], { destination_root: Rails.root })
+      Rails::Generators.invoke("avo:resource", ["comment", "--quiet", "--skip"], {destination_root: Rails.root})
 
       generated_content = File.read(files[0])
 
