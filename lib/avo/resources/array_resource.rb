@@ -19,6 +19,7 @@ module Avo
               include ActiveModel::Model
 
               def self.primary_key = nil
+
               def self.all = "Avo::Resources::#{name}".constantize.new.fetch_records
             end
           )
