@@ -25,6 +25,7 @@ ro:
     choose_item: Alege %{item}
     clear_value: Șterge valoarea
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
+    close: Închide
     close_modal: Închide modalul
     confirm: Confirm
     copy: Copiază
@@ -65,6 +66,8 @@ ro:
     less_content: Mai puțin conținut
     list_is_empty: Lista este goală
     loading: Se incarcă
+    media_library:
+      title: Bibliotecă media
     more: Mai multe
     more_content: Mai mult conținut
     more_records_available: Sunt mai multe înregistrări disponibile.

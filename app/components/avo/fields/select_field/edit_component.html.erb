@@ -2,6 +2,7 @@
   <%= @form.select @field.id, options_for_select(@field.options_for_select, selected: @field.value), {
       include_blank: @field.include_blank
     },
+    multiple: @field.multiple,
     aria: {
       placeholder: @field.placeholder
     },

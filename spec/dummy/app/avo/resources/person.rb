@@ -24,5 +24,86 @@ class Avo::Resources::Person < Avo::BaseResource
       as: :has_many,
       hide_search_input: true,
       description: "Default behaviour with link_to_child_resource disabled"
+
+    tabs do
+      tab "Employment" do
+        panel do
+          field :job_title, as: :heading do
+            "Software Engineer"
+          end
+
+          row do
+            field :company, stacked: true do
+              "TechCorp Inc."
+            end
+            field :department, stacked: true do
+              "Research & Development"
+            end
+          end
+
+          field :years_of_experience do
+            "7 Years"
+          end
+
+          sidebar do
+            field :employee_id do
+              "EMP123456"
+            end
+            field :supervisor do
+              "Jane Smith"
+            end
+          end
+        end
+      end
+
+      tab "Address", lazy_load: true do
+        panel do
+          field :address, as: :heading
+          row do
+            field :street_address, stacked: true do
+              "1234 Elm Street"
+            end
+            field :city, stacked: true do
+              "Los Angeles"
+            end
+          end
+
+          field :state do
+            "California"
+          end
+
+          sidebar do
+            field :phone_number do
+              "+1 (555) 123-4567"
+            end
+            field :zip_code do
+              "90001"
+            end
+          end
+        end
+      end
+
+      tab "Preferences" do
+        panel do
+          field :preferred_language do
+            "English"
+          end
+
+          field :theme_mode do
+            "Dark Mode"
+          end
+
+          field :notification_preference do
+            "Email & SMS"
+          end
+
+          sidebar do
+            field :timezone do
+              "Pacific Time (PST)"
+            end
+          end
+        end
+      end
+    end
   end
 end

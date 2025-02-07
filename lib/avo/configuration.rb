@@ -57,6 +57,8 @@ module Avo
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
     attr_accessor :associations_lookup_list_limit
+    attr_accessor :column_names_mapping
+    attr_accessor :column_types_mapping
 
     def initialize
       @root_path = "/avo"
@@ -124,6 +126,8 @@ module Avo
       @first_sorting_option = :desc # :desc or :asc
       @associations_lookup_list_limit = 1000
       @exclude_from_status = []
+      @column_names_mapping = {}
+      @column_types_mapping = {}
       @resource_row_controls_config = {}
     end
 

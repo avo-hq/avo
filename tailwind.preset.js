@@ -32,6 +32,7 @@ module.exports = {
         'cover-sm': '9/2',
         'cover-md': '9/3',
         'cover-lg': '9/4',
+        'media-library-item': '4/3',
       },
       colors: {
         blue,
@@ -132,7 +133,7 @@ module.exports = {
     },
   },
   variants: {
-    margin: ['responsive', 'hover', 'focus', 'group-hover', 'checked', 'kanban-dragging'],
+    margin: ['responsive', 'hover', 'focus', 'group-hover', 'checked', 'empty', 'kanban-dragging'],
     display: ['responsive', 'hover', 'focus', 'group-hover', 'checked', 'kanban-dragging'],
     padding: ['responsive', 'group-hover', 'kanban-dragging'],
     borderColor: ['responsive', 'hover', 'focus', 'disabled'],
@@ -145,6 +146,7 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
+    require('@tailwindcss/container-queries'),
     plugin(({ addUtilities, addVariant }) => {
       const newUtilities = {
         '.backface-hidden': {

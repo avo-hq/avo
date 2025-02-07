@@ -93,6 +93,18 @@ dialog#turbo-confirm {
   @apply bg-transparent;
 }
 
+dl {
+  @apply text-sm;
+
+  dt {
+    @apply font-bold inline-block mt-1;
+  }
+
+  dd {
+    @apply inline-block ml-0;
+  }
+}
+
 /* TODO: make content like tailwindcss */
 .floating-row-controls {
   &:before {

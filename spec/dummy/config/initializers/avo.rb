@@ -100,12 +100,23 @@ Avo.configure do |config|
   #     type: :countless
   #   }
   # end
+
+  config.column_names_mapping = {
+    custom_css: {field: "code"}
+  }
 end
 
 if defined?(Avo::DynamicFilters)
   Avo::DynamicFilters.configure do |config|
     config.button_label = "Advanced filters"
     config.always_expanded = true
+  end
+end
+
+if defined?(Avo::MediaLibrary)
+  Avo::MediaLibrary.configure do |config|
+    config.visible = -> { Avo::Current.user.is_developer? }
+    config.enabled = true
   end
 end
 
