@@ -270,13 +270,13 @@ module Generators
             return
           end
 
+          detect_polymorphic_associations
           fields_from_model_db_columns
           fields_from_model_enums
           fields_from_model_attachements
           fields_from_model_associations
           fields_from_model_rich_texts
           fields_from_model_tags
-          detect_polymorphic_associations
 
           generated_fields_template
         end
