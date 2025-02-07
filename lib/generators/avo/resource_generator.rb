@@ -13,17 +13,20 @@ module Generators
       namespace "avo:resource"
 
       class_option "model-class",
-        desc: "The name of the model.",
-        type: :string,
-        required: false
+                   desc: "The name of the model.",
+                   type: :string,
+                   required: false
 
       class_option "array",
-        desc: "Indicates if the resource should be an array.",
-        type: :boolean,
-        default: false
+                   desc: "Indicates if the resource should be an array.",
+                   type: :boolean,
+                   default: false
 
       def create
         return if override_controller?
+
+        # Detect polymorphic associations
+        detect_polymorphic_associations
 
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
         invoke "avo:controller", [resource_name], options
@@ -177,45 +180,22 @@ module Generators
           end
         end
 
-        def detect_polymorphic_associations
-          grouped_columns = group_possible_polymorphic_fields
-
-          grouped_columns.each_key do |field|
-            associated_classes = fetch_associated_classes(field)
-
-            fields[field] = build_polymorphic_field(field, associated_classes)
+        def fields_from_model_tags
+          tags.each do |name, _|
+            fields[(remove_last_word_from name).pluralize] = {field: "tags"}
           end
-        end
-
-        def group_possible_polymorphic_fields
-          model_db_columns
-            .keys
-            .group_by { |col| col.gsub(/_type|_id$/, "") }
-            .select { |_field, group| group.size == 2 }
-        end
-
-        def fetch_associated_classes(field)
-          reflection = model.reflections[field] if model.reflections.key?(field)
-          reflection&.polymorphic? ? reflection.class_name : nil
-        end
-
-        def build_polymorphic_field(field, associated_classes)
-          {
-            field: "polymorphic",
-            options: {
-              types: associated_classes ? [associated_classes] : [],
-              comment: associated_classes ? nil : "This is a potential polymorphic association, but the associated classes could not be determined. Please configure manually."
-            }
-          }
         end
 
         def fields_from_model_associations
           associations.each do |name, association|
-            fields[name] = if association.is_a? ActiveRecord::Reflection::ThroughReflection
-              field_from_through_association(association)
-            else
-              ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.class]
-            end
+            fields[name] =
+              if association.polymorphic?
+                { field: "polymorphic", options: { types: [] } }
+              elsif association.is_a?(ActiveRecord::Reflection::ThroughReflection)
+                field_from_through_association(association)
+              else
+                ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.class]
+              end
           end
         end
 
@@ -239,6 +219,14 @@ module Generators
           attachments.each do |name, attachment|
             fields[remove_last_word_from name] = ::Avo::Mappings::ATTACHMENTS_MAPPING[attachment.class]
           end
+        end
+
+        def detect_polymorphic_associations
+          model_db_columns
+            .keys
+            .select { |column| column.end_with?("_type") }
+            .map { |type_column| type_column.remove("_type") }
+            .select { |association| model_db_columns.key?("#{association}_id") }
         end
 
         # "hello_world_hehe".split('_') => ['hello', 'world', 'hehe']
@@ -282,7 +270,6 @@ module Generators
           fields_from_model_associations
           fields_from_model_rich_texts
           fields_from_model_tags
-          detect_polymorphic_associations
 
           generated_fields_template
         end
@@ -293,17 +280,18 @@ module Generators
           fields_string = ""
 
           fields.each do |field_name, field_options|
-            # if field_options are not available (likely a missing resource for an association), skip the field
             fields_string += "\n    # Could not generate a field for #{field_name}" and next unless field_options
 
             options = ""
-            field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
+            if field_options[:options].present?
+              field_options[:options].each { |k, v| options += ", #{k}: #{v}" }
+            end
 
+            # Add a comment for polymorphic fields
             if field_options[:field] == "polymorphic"
-              types = field_options[:options][:types] || []
-              comment = field_options[:options][:comment]
-              fields_string += "\n    # #{comment}" if comment
-              fields_string += "\n    # field :#{field_name}, as: :polymorphic, types: #{types.inspect}#{options}"
+              fields_string += "\n    # Polymorphic association detected for :#{field_name}"
+              fields_string += "\n    # Uncomment and configure the possible types:"
+              fields_string += "\n    # field :#{field_name}, as: :polymorphic, types: [User, Admin]"
             else
               fields_string += "\n    #{field_string field_name, field_options[:field], options}"
             end
