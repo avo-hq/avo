@@ -153,7 +153,7 @@ module Generators
         end
 
         def tags
-          @tags ||= reflections.select {|_, reflection| reflection.options[:as] == :taggable}
+          @tags ||= reflections.select { |_, reflection| reflection.options[:as] == :taggable }
         end
 
         def associations
@@ -224,9 +224,9 @@ module Generators
         def detect_polymorphic_associations
           model_db_columns
             .keys
-            .select {|column| column.end_with?("_type")}
-            .map {|type_column| type_column.remove("_type")}
-            .select {|association| model_db_columns.key?("#{association}_id")}
+            .select { |column| column.end_with?("_type") }
+            .map { |type_column| type_column.remove("_type") }
+            .select { |association| model_db_columns.key?("#{association}_id") }
         end
 
         # "hello_world_hehe".split('_') => ['hello', 'world', 'hehe']
@@ -284,7 +284,7 @@ module Generators
 
             options = ""
             if field_options[:options].present?
-              field_options[:options].each {|k, v| options += ", #{k}: #{v}"}
+              field_options[:options].each { |k, v| options += ", #{k}: #{v}" }
             end
 
             # Add a comment for polymorphic fields
