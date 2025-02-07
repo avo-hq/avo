@@ -219,18 +219,14 @@ module Generators
         end
 
         def detect_polymorphic_associations
-          polymorphic_associations = model_db_columns
-            .keys
+          polymorphic_associations = model_db_columns.keys
             .select { |column| column.end_with?("_type") }
             .map { |type_column| type_column.remove("_type") }
             .select { |association| model_db_columns.key?("#{association}_id") }
 
           polymorphic_associations.each do |association|
             fields[association] = {
-              field: "polymorphic",
-              options: {
-                types: "[] # Add class names here, e.g., [User, Post]"
-              }
+              field: "polymorphic", options: { types: "[] # Add class names here, e.g., [User, Post]" }
             }
           end
         end
@@ -288,14 +284,11 @@ module Generators
 
           fields.each do |field_name, field_options|
             # if field_options are not available (likely a missing resource for an association), skip the field
-            next unless field_options
+            fields_string += "\n    # Could not generate a field for #{field_name}" and next unless field_options
 
             options = ""
-            if field_options[:options].present?
-              field_options[:options].each { |k, v| options += ", #{k}: #{v}" }
-            end
+            field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
 
-            # Comment polymorphic fields if types are missing
             fields_string +=
               if field_options[:field] == "polymorphic"
                 "\n    # field :#{field_name}, as: :belongs_to, polymorphic_as: :#{field_name}#{options} # Define types manually"
