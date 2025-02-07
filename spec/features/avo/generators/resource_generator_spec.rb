@@ -58,7 +58,7 @@ RSpec.feature "resource generator", type: :feature do
 
       generated_content = File.read(files[0])
 
-      expect(generated_content).to include("# field :commentable, as: :belongs_to, types: []")
+      expect(generated_content).to include("field :commentable, as: :belongs_to, polymorphic_as: :commentable")
 
       check_files_and_clean_up files
     end

@@ -296,9 +296,10 @@ module Generators
             end
 
             # Comment polymorphic fields if types are missing
-            fields_string += 
+            fields_string +=
               if field_options[:field] == "polymorphic"
-                "\n    # field :#{field_name}, as: :belongs_to#{options} # Define types manually"
+                debugger
+                "\n    # field :#{field_name}, as: :belongs_to, polymorphic_as: :#{field_name}#{options} # Define types manually"
               else
                 "\n    #{field_string field_name, field_options[:field], options}"
               end
