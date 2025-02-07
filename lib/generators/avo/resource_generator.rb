@@ -25,9 +25,6 @@ module Generators
       def create
         return if override_controller?
 
-        # Detect polymorphic associations
-        detect_polymorphic_associations
-
         template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
         invoke "avo:controller", [resource_name], options
       end
@@ -270,6 +267,7 @@ module Generators
           fields_from_model_associations
           fields_from_model_rich_texts
           fields_from_model_tags
+          detect_polymorphic_associations
 
           generated_fields_template
         end
@@ -280,6 +278,7 @@ module Generators
           fields_string = ""
 
           fields.each do |field_name, field_options|
+            # if field_options are not available (likely a missing resource for an association), skip the field
             fields_string += "\n    # Could not generate a field for #{field_name}" and next unless field_options
 
             options = ""
@@ -290,8 +289,7 @@ module Generators
             # Add a comment for polymorphic fields
             if field_options[:field] == "polymorphic"
               fields_string += "\n    # Polymorphic association detected for :#{field_name}"
-              fields_string += "\n    # Uncomment and configure the possible types:"
-              fields_string += "\n    # field :#{field_name}, as: :polymorphic, types: [User, Admin]"
+              fields_string += "\n    # field :#{field_name}, as: :belongs_to, types: []"
             else
               fields_string += "\n    #{field_string field_name, field_options[:field], options}"
             end
