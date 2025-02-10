@@ -50,14 +50,14 @@ RSpec.feature "resource generator", type: :feature do
   context "when generating resources with polymorphic associations" do
     it "generates commented polymorphic fields" do
       files = [
-        Rails.root.join("app", "avo", "resources", "comment.rb").to_s,
-        Rails.root.join("app", "controllers", "avo", "comment_controller.rb").to_s
+        Rails.root.join("app", "avo", "resources", "review.rb").to_s,
+        Rails.root.join("app", "controllers", "avo", "review_controller.rb").to_s
       ]
 
       keeping_original_files(files) do
-        Rails::Generators.invoke("avo:resource", ["comment", "-q", "-s"], {destination_root: Rails.root})
+        Rails::Generators.invoke("avo:resource", ["review", "-q", "-s"], {destination_root: Rails.root})
 
-        expect(File.read(files[0])).to include("field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [:Project, :Post]")
+        expect(File.read(files[0])).to include("field :reviewable, as: :belongs_to")
 
         check_files_and_clean_up files
       end
