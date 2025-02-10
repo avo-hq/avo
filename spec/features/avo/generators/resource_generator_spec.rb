@@ -51,7 +51,7 @@ RSpec.feature "resource generator", type: :feature do
     it "generates commented polymorphic fields" do
       files = [
         Rails.root.join("app", "avo", "resources", "review.rb").to_s,
-        Rails.root.join("app", "controllers", "avo", "review_controller.rb").to_s
+        Rails.root.join("app", "controllers", "avo", "reviews_controller.rb").to_s
       ]
 
       keeping_original_files(files) do
