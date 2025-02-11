@@ -212,7 +212,7 @@ module Generators
 
         def polymorphic_association_types(association)
           ActiveRecord::Base.descendants.filter_map do |model|
-            model.name.to_sym if model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
+            model.name if model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
           end
         end
 

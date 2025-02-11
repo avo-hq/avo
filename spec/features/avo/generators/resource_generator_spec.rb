@@ -59,10 +59,10 @@ RSpec.feature "resource generator", type: :feature do
 
         # Types load in different order every time
         expect(File.read(files[0])).to include("field :reviewable, as: :belongs_to, polymorphic_as: :reviewable, types:")
-        expect(File.read(files[0])).to include(":Team")
-        expect(File.read(files[0])).to include(":Project")
-        expect(File.read(files[0])).to include(":Post")
-        expect(File.read(files[0])).to include(":Fish")
+        expect(File.read(files[0])).to include("Team")
+        expect(File.read(files[0])).to include("Project")
+        expect(File.read(files[0])).to include("Post")
+        expect(File.read(files[0])).to include("Fish")
 
         check_files_and_clean_up files
       end
