@@ -171,10 +171,6 @@ module Generators
           "field :#{name}, as: :#{type}#{options}"
         end
 
-        def polymorphic_field_string(name, options)
-          "field :#{name}, as: :belongs_to, polymorphic_as: :#{name}#{options}"
-        end
-
         def fields_from_model_rich_texts
           rich_texts.each do |name, _|
             fields[name.delete_prefix("rich_text_")] = {field: "trix"}
@@ -191,8 +187,7 @@ module Generators
           associations.each do |name, association|
             fields[name] =
               if association.polymorphic?
-                types = find_polymorphic_association_types(association)
-                {field: "polymorphic", options: {types: types}}
+                field_with_polymorphic_association(association)
               elsif association.is_a?(ActiveRecord::Reflection::ThroughReflection)
                 field_from_through_association(association)
               else
@@ -201,14 +196,22 @@ module Generators
           end
         end
 
-        def find_polymorphic_association_types(association)
+        def field_with_polymorphic_association(association)
           Rails.application.eager_load!
 
           possible_types = ActiveRecord::Base.descendants.select do |model|
             model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
           end.map(&:name)
 
-          possible_types.empty? ? "[] # Program couldn't compute types" : possible_types.map(&:to_sym)
+          types = possible_types.empty? ? "[] # Program couldn't compute types" : possible_types.map(&:to_sym)
+
+          {
+            field: "belongs_to",
+            options: {
+              polymorphic_as: association.name,
+              types: types
+            }
+          }
         end
 
         def field_from_through_association(association)
@@ -290,12 +293,7 @@ module Generators
             options = ""
             field_options[:options].each { |k, v| options += ", #{k}: #{v}" } if field_options[:options].present?
 
-            fields_string +=
-              if field_options[:field] == "polymorphic"
-                "\n    #{polymorphic_field_string field_name, options}"
-              else
-                "\n    #{field_string field_name, field_options[:field], options}"
-              end
+            fields_string += "\n    #{field_string field_name, field_options[:field], options}"
           end
 
           fields_string
