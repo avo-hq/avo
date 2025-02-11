@@ -57,7 +57,7 @@ RSpec.feature "resource generator", type: :feature do
       keeping_original_files(files) do
         Rails::Generators.invoke("avo:resource", ["review", "-q", "-s"], {destination_root: Rails.root})
 
-        expect(File.read(files[0])).to include("field :reviewable, as: :belongs_to")
+        expect(File.read(files[0])).to include("field :reviewable, as: :belongs_to, polymorphic_as: :reviewable, types: [:Team, :Project, :Post, :Fish]")
 
         check_files_and_clean_up files
       end
