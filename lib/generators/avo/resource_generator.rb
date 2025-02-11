@@ -197,19 +197,17 @@ module Generators
         end
 
         def field_with_polymorphic_association(association)
-          Rails.application.eager_load!
+          Rails.application.eager_load! unless Rails.application.config.eager_load
 
-          possible_types = ActiveRecord::Base.descendants.select do |model|
-            model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
-          end.map(&:name)
-
-          types = possible_types.empty? ? "[] # Program couldn't compute types" : possible_types.map(&:to_sym)
+          types = ActiveRecord::Base.descendants.filter_map do |model|
+            model.name.to_sym if model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
+          end
 
           {
             field: "belongs_to",
             options: {
               polymorphic_as: association.name,
-              types: types
+              types: types.presence || "[] # Program couldn't compute types"
             }
           }
         end
