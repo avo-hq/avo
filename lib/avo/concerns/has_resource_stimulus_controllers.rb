@@ -18,12 +18,12 @@ module Avo
         when :new, :edit
           controllers << "resource-edit"
         when :index
-          controllers << "resource-index"
+          controllers << "resource-index record-selector"
         end
 
         controllers << self.class.stimulus_controllers
 
-        controllers.join " "
+        controllers.reject(&:blank?).join " "
       end
 
       def stimulus_data_attributes
@@ -38,9 +38,9 @@ module Avo
         attributes
       end
 
-      def add_stimulus_attributes_for(entity, attributes)
+      def add_stimulus_attributes_for(entity, attributes, target_name = nil)
         entity.get_stimulus_controllers.split(" ").each do |controller|
-          attributes["#{controller}-target"] = "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
+          attributes["#{controller}-target"] = target_name || "#{@field.id.to_s.underscore}_#{@field.type.to_s.underscore}_wrapper".camelize(:lower)
         end
       end
     end

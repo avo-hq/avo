@@ -1,7 +1,8 @@
 module Avo
   module Fields
-    class HasOneField < HasBaseField
-      attr_accessor :relation_method
+    class HasOneField < FrameBaseField
+      attr_reader :attach_fields,
+        :attach_scope
 
       def initialize(id, **args, &block)
         hide_on :forms
@@ -9,8 +10,8 @@ module Avo
         super(id, **args, &block)
 
         @placeholder ||= I18n.t "avo.choose_an_option"
-
-        @relation_method = name.to_s.parameterize.underscore
+        @attach_fields = args[:attach_fields]
+        @attach_scope = args[:attach_scope]
       end
 
       def label
@@ -37,6 +38,8 @@ module Avo
 
         record
       end
+
+      def is_searchable? = false
     end
   end
 end

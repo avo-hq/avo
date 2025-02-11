@@ -1,7 +1,5 @@
 module Avo
   class Configuration
-    include ResourceConfiguration
-
     attr_writer :app_name
     attr_writer :branding
     attr_writer :root_path
@@ -12,6 +10,7 @@ module Avo
     attr_writer :explicit_authorization
     attr_writer :exclude_from_status
     attr_writer :persistence
+    attr_writer :resource_row_controls_config
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -57,6 +56,8 @@ module Avo
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
     attr_accessor :associations_lookup_list_limit
+    attr_accessor :column_names_mapping
+    attr_accessor :column_types_mapping
 
     def initialize
       @root_path = "/avo"
@@ -123,6 +124,21 @@ module Avo
       @first_sorting_option = :desc # :desc or :asc
       @associations_lookup_list_limit = 1000
       @exclude_from_status = []
+      @column_names_mapping = {}
+      @column_types_mapping = {}
+      @resource_row_controls_config = {}
+    end
+
+    unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
+      RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS = {
+        placement: :right,
+        float: false,
+        show_on_hover: false
+      }.freeze
+    end
+
+    def resource_row_controls_config
+      RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS.merge @resource_row_controls_config
     end
 
     # Authorization is enabled when:

@@ -24,6 +24,7 @@ pt:
     choose_item: Escolher %{item}
     clear_value: Apagar valor
     click_to_reveal_filters: Clique para mostrar os filtros
+    close: Fechar
     close_modal: Fechar modal
     confirm: Confirmar
     copy: Copiar
@@ -63,6 +64,8 @@ pt:
     less_content: Menos conteúdo
     list_is_empty: Lista vazia
     loading: A carregar
+    media_library:
+      title: Biblioteca de Mídia
     more: Mais
     more_content: Mais conteúdo
     more_records_available: Existem mais registos disponíveis.
@@ -105,6 +108,9 @@ pt:
     select_item: Selecionar item
     show_content: Mostrar conteúdo
     sign_out: Terminar sessão
+    sort_asc: Ordenar em ordem crescente
+    sort_desc: Ordenar em ordem decrescente
+    sort_reset: Redefinir ordenação
     switch_to_view: Alterar para visão %{view_type}
     table_view: Visualização em tabela
     this_field_has_attachments_disabled: Este campo tem anexos desativados.

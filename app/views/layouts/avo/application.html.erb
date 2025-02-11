@@ -13,20 +13,20 @@
     <%= render partial: "avo/partials/branding" %>
     <%= render partial: "avo/partials/pre_head" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
-    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", defer: true, as: "style" %>
-    <% if Avo::PACKED %>
-      <%= javascript_include_tag "/avo-assets/avo.base", "data-turbo-track": "reload", defer: true %>
-    <% else %>
-      <%= javascript_include_tag "avo.base", "data-turbo-track": "reload", defer: true %>
-      <% if Rails.env.development? && defined?(Hotwire::Livereload) %>
-        <%= javascript_include_tag "hotwire-livereload", defer: true %>
-      <% end %>
+    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", as: "style" %>
+
+    <% path = Avo::PACKED ? "/avo-assets/avo.base" : "avo.base" %>
+    <%= javascript_include_tag path, "data-turbo-track": "reload", defer: true %>
+
+    <% if !Avo::PACKED && defined?(Hotwire::Livereload) %>
+      <%= javascript_include_tag "hotwire-livereload", defer: true %>
     <% end %>
+
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
     <%= content_for :head %>
   </head>
-  <body class="bg-application os-mac">
+  <body class="bg-application os-mac floating-controls">
     <div class="relative flex flex-1 w-full min-h-full" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
       <div class="flex-1 flex flex-col max-w-full">
         <%= render partial: "avo/partials/navbar", locals: { resource: @resource } %>
@@ -38,7 +38,7 @@
             <%= render Avo::SidebarComponent.new sidebar_open: false, for_mobile: true %>
           </div>
           <div class="main-content-area flex-1 flex flex-col min-h-full max-w-full">
-            <div class="content p-4 lg:p-6 flex-1 flex flex-col justify-between items-stretch <%= @container_classes %>">
+            <div class="content p-4 lg:p-6 flex-1 flex flex-col justify-between items-stretch <%= container_classes %>">
               <%= render partial: "avo/partials/custom_tools_alert" %>
               <div class="flex flex-1 flex-col justify-between items-stretch space-y-8">
                 <%= yield.force_encoding("UTF-8") %>

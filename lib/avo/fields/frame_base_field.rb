@@ -1,35 +1,18 @@
 module Avo
   module Fields
-    class HasBaseField < BaseField
-      include Avo::Fields::Concerns::IsSearchable
+    class FrameBaseField < BaseField
       include Avo::Fields::Concerns::UseResource
       include Avo::Fields::Concerns::ReloadIcon
       include Avo::Fields::Concerns::LinkableTitle
-
-      attr_accessor :display
-      attr_accessor :scope
-      attr_accessor :attach_scope
-      attr_accessor :description
-      attr_accessor :discreet_pagination
-      attr_accessor :hide_search_input
-      attr_reader :link_to_child_resource
-      attr_reader :attach_fields
+      include Avo::Concerns::HasDescription
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
-        @scope = args[:scope].present? ? args[:scope] : nil
-        @attach_scope = args[:attach_scope].present? ? args[:attach_scope] : nil
-        @display = args[:display].present? ? args[:display] : :show
-        @searchable = args[:searchable] == true
-        @hide_search_input = args[:hide_search_input] || false
+
+        @use_resource = args[:use_resource]
+        @reloadable = args[:reloadable]
+        @linkable = args[:linkable]
         @description = args[:description]
-        @use_resource = args[:use_resource] || nil
-        @discreet_pagination = args[:discreet_pagination] || false
-        # Defaults to nil so that if not set falls back to `link_to_child_resource` defined in the resource
-        @link_to_child_resource = args[:link_to_child_resource]
-        @reloadable = args[:reloadable].present? ? args[:reloadable] : false
-        @linkable = args[:linkable].present? ? args[:linkable] : false
-        @attach_fields = args[:attach_fields]
       end
 
       def field_resource
@@ -37,7 +20,7 @@ module Avo
       end
 
       def turbo_frame
-        "#{self.class.name.demodulize.to_s.underscore}_#{display}_#{frame_id}"
+        "#{self.class.name.demodulize.to_s.underscore}_show_#{frame_id}"
       end
 
       def frame_url(add_turbo_frame: true)
@@ -120,6 +103,18 @@ module Avo
           for_attribute: @for_attribute,
           turbo_frame: add_turbo_frame ? turbo_frame : nil
         }.compact
+      end
+
+      def resource_class(params)
+        return use_resource if use_resource.present?
+
+        return Avo.resource_manager.get_resource_by_name @id.to_s if @array
+
+        reflection = @record.class.reflect_on_association(@for_attribute || params[:related_name])
+
+        reflected_model = reflection.klass
+
+        Avo.resource_manager.get_resource_by_model_class reflected_model
       end
 
       private

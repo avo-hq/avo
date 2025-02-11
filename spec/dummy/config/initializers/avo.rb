@@ -38,7 +38,6 @@ Avo.configure do |config|
   config.id_links_to_resource = true
   config.full_width_container = false
   config.buttons_on_form_footers = false
-  # config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
   config.resource_default_view = :show
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
@@ -99,12 +98,23 @@ Avo.configure do |config|
   #     type: :countless
   #   }
   # end
+
+  config.column_names_mapping = {
+    custom_css: {field: "code"}
+  }
 end
 
 if defined?(Avo::DynamicFilters)
   Avo::DynamicFilters.configure do |config|
     config.button_label = "Advanced filters"
     config.always_expanded = true
+  end
+end
+
+if defined?(Avo::MediaLibrary)
+  Avo::MediaLibrary.configure do |config|
+    config.visible = -> { Avo::Current.user.is_developer? }
+    config.enabled = true
   end
 end
 

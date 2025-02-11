@@ -24,6 +24,7 @@ tr:
     choose_item: "%{item} seçin"
     clear_value: Değeri temizle
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
+    close: Kapat
     close_modal: Modali kapat
     confirm: Onayla
     copy: Kopya
@@ -63,6 +64,8 @@ tr:
     less_content: Daha az içerik
     list_is_empty: Boş liste
     loading: Yükleniyor
+    media_library:
+      title: Ortam Kütüphanesi
     more: Daha fazla
     more_content: Daha fazla içerik
     more_records_available: Daha fazla kayıt mevcut.
@@ -105,6 +108,9 @@ tr:
     select_item: Öğe seç
     show_content: İçeriği göster
     sign_out: Çıkış yap
+    sort_asc: Artan sırala
+    sort_desc: Azalan sırala
+    sort_reset: Sıralamayı sıfırla
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
     this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.

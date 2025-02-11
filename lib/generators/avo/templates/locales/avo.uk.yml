@@ -22,6 +22,7 @@ uk:
     choose_item: Виберіть %{item}
     clear_value: Очистити значення
     click_to_reveal_filters: Натисніть, щоб показати фільтри
+    close: Закрити
     close_modal: Закрити вікно
     confirm: Підтвердити
     copy: Копіювати
@@ -63,6 +64,8 @@ uk:
     less_content: Менше вмісту
     list_is_empty: Список порожній
     loading: Завантаження
+    media_library:
+      title: Медіатека
     more: Ще
     more_content: Більше вмісту
     more_records_available: Є більше доступних записів.
@@ -105,6 +108,9 @@ uk:
     select_item: Вибрати елемент
     show_content: Показати вміст
     sign_out: Вийти
+    sort_asc: Rūšiuoti didėjančia tvarka
+    sort_desc: Rūšiuoti mažėjančia tvarka
+    sort_reset: Atstatyti rūšiavimą
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.

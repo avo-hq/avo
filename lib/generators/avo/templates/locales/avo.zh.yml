@@ -22,6 +22,7 @@ zh:
     choose_item: 选择 %{item}
     clear_value: 清除值
     click_to_reveal_filters: 点击以显示筛选器
+    close: 关闭
     close_modal: 关闭模态框
     confirm: 确认
     copy: 复制
@@ -61,6 +62,8 @@ zh:
     less_content: 内容较少
     list_is_empty: 列表为空
     loading: 加载中...
+    media_library:
+      title: 媒体库
     more: 更多
     more_content: 更多内容
     more_records_available: 还有更多记录可供参考。
@@ -103,6 +106,9 @@ zh:
     select_item: 选择项目
     show_content: 显示内容
     sign_out: 登出
+    sort_asc: 升序排序
+    sort_desc: 降序排序
+    sort_reset: 重置排序
     switch_to_view: 切换到 %{view_type} 视图
     table_view: 表格视图
     this_field_has_attachments_disabled: 此字段已禁用附件。

@@ -38,6 +38,7 @@ gem "sprockets-rails"
 gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
+gem "mapkick-static"
 gem "pluggy", path: "../pluggy"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
@@ -84,6 +85,7 @@ end
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
+  gem "ruby-openai"
   gem "erb-formatter", require: false
   gem "erb_lint", require: false
   gem "solargraph", require: false

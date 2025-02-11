@@ -4,6 +4,9 @@ Avo::Engine.routes.draw do
   get "resources", to: redirect(Avo.configuration.root_path)
   get "dashboards", to: redirect(Avo.configuration.root_path)
 
+  resources :media_library, only: [:index, :show, :update, :destroy], path: "media-library"
+  get "attach-media", to: "media_library#attach"
+
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   scope "avo_api", as: "avo_api" do

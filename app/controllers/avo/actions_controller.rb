@@ -9,9 +9,8 @@ module Avo
       # set_record will fail if it's tried to be used from the Index page.
       request.params[:id].present?
     end
-    before_action :set_action, only: [:show, :handle]
-    before_action :verify_authorization, only: [:show, :handle]
-    before_action :set_query, :set_fields, only: :handle
+    before_action :set_query, :set_action, :verify_authorization, only: [:show, :handle]
+    before_action :set_fields, only: :handle
 
     layout :choose_layout
 
@@ -34,7 +33,7 @@ module Avo
       params = URI.decode_www_form(uri.query || "").to_h
 
       params.delete("action_id")
-      params[:turbo_frame] = ACTIONS_BACKGROUND_FRAME
+      params[:turbo_frame] = ACTIONS_BACKGROUND_FRAME_ID
 
       # Reconstruct the query string
       new_query_string = URI.encode_www_form(params)
@@ -62,7 +61,7 @@ module Avo
     private
 
     def set_query
-      resource_ids = action_params[:fields][:avo_resource_ids].split(",")
+      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
 
       @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
@@ -72,7 +71,7 @@ module Avo
     end
 
     def action_params
-      @action_params ||= params.permit(:id, :authenticity_token, :resource_name, :action_id, :button, fields: {})
+      @action_params ||= params.permit(:id, :authenticity_token, :resource_name, :action_id, :button, :arguments, fields: {})
     end
 
     def set_action
@@ -82,7 +81,8 @@ module Avo
         user: _current_user,
         # force the action view to in order to render new-related fields (hidden field)
         view: Avo::ViewInquirer.new(:new),
-        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {}
+        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
+        query: @query
       )
 
       # Fetch action's fields
@@ -171,7 +171,7 @@ module Avo
     end
 
     def decrypted_query
-      return if (encrypted_query = action_params[:fields][:avo_selected_query]).blank?
+      return if (encrypted_query = action_params[:fields]&.dig(:avo_selected_query)).blank?
 
       Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
     end

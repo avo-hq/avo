@@ -22,6 +22,7 @@ de:
     choose_item: "%{item} auswählen"
     clear_value: Wert löschen
     click_to_reveal_filters: Klicken, um Filter anzuzeigen
+    close: Schließen
     close_modal: Modal schließen
     confirm: Bestätigen
     copy: Kopieren
@@ -61,6 +62,8 @@ de:
     less_content: Weniger Inhalt
     list_is_empty: Liste ist leer
     loading: Lade...
+    media_library:
+      title: Medienbibliothek
     more: Mehr
     more_content: Mehr Inhalt
     more_records_available: Es sind weitere Datensätze verfügbar.
@@ -103,6 +106,9 @@ de:
     select_item: Eintrag auswählen
     show_content: Inhalt anzeigen
     sign_out: Abmelden
+    sort_asc: Aufsteigend sortieren
+    sort_desc: Absteigend sortieren
+    sort_reset: Sortierung zurücksetzen
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht
     this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.

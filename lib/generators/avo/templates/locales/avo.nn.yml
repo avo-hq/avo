@@ -24,6 +24,7 @@ nn:
     choose_item: Vel %{item}
     clear_value: Nullstill verdi
     click_to_reveal_filters: Vis filter
+    close: Lukk
     close_modal: Lukk modal
     confirm: Stadfest
     copy: Kopier
@@ -63,6 +64,8 @@ nn:
     less_content: Mindre innhold
     list_is_empty: Lista er tom
     loading: Lastar
+    media_library:
+      title: Media bibliotek
     more: Meir
     more_content: Mer innhold
     more_records_available: Det finst fleire opptak tilgjengelege.
@@ -105,6 +108,9 @@ nn:
     select_item: Vel
     show_content: Vis innhald
     sign_out: Logg ut
+    sort_asc: Sorter stigande
+    sort_desc: Sorter synkende
+    sort_reset: Nullstill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.

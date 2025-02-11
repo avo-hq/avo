@@ -22,6 +22,7 @@ ru:
     choose_item: Выбрать %{item}
     clear_value: Очистить значение
     click_to_reveal_filters: Нажмите, чтобы открыть фильтры
+    close: Закрыть
     close_modal: Закрыть модальное окно
     confirm: Подтвердить
     copy: Копировать
@@ -63,6 +64,8 @@ ru:
     less_content: Меньше контента
     list_is_empty: Список пуст
     loading: Загрузка...
+    media_library:
+      title: Медиатека
     more: Ещё
     more_content: Больше контента
     more_records_available: Доступно больше записей.
@@ -105,6 +108,9 @@ ru:
     select_item: Выбрать элемент
     show_content: Показать содержимое
     sign_out: Выйти
+    sort_asc: Сортировать по возрастанию
+    sort_desc: Сортировать по убыванию
+    sort_reset: Сбросить сортировку
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица
     this_field_has_attachments_disabled: Для этого поля прикрепления отключены.

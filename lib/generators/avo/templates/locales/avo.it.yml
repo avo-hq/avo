@@ -22,6 +22,7 @@ it:
     choose_item: Scegli %{item}
     clear_value: Cancella valore
     click_to_reveal_filters: Clicca per mostrare i filtri
+    close: Chiudi
     close_modal: Chiudi modale
     confirm: Conferma
     copy: Copia
@@ -61,6 +62,8 @@ it:
     less_content: Meno contenuti
     list_is_empty: La lista è vuota
     loading: Caricamento in corso
+    media_library:
+      title: Libreria multimediale
     more: Altro
     more_content: Più contenuti
     more_records_available: Sono disponibili più record.
@@ -103,6 +106,9 @@ it:
     select_item: Seleziona elemento
     show_content: Mostra contenuto
     sign_out: Esci
+    sort_asc: Ordina in ordine crescente
+    sort_desc: Ordina in ordine decrescente
+    sort_reset: Reimposta ordinamento
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella
     this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.
