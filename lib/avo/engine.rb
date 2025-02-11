@@ -65,7 +65,7 @@ module Avo
           mount Avo::Engine, at:, **options
 
           Avo.plugin_manager.engines.each do |engine|
-            mount engine[:klass], **engine[:options]
+            mount engine[:klass], at: "#{at}/#{engine[:options].delete(:at)}", **engine[:options]
           end
         end
       })
