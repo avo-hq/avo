@@ -172,12 +172,12 @@ module Avo
 
     # encode params
     def e(value)
-      URI::UID.build(value).payload
+      Marshal.dump(value)
     end
 
     # decode params
     def d(value)
-      URI::UID.from_payload(value).decode
+      Marshal.load(value)
     rescue
       value
     end

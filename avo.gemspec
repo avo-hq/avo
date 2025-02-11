@@ -48,5 +48,4 @@ Gem::Specification.new do |spec|
   spec.add_dependency "docile"
   spec.add_dependency "inline_svg"
   spec.add_dependency "prop_initializer", ">= 0.2.0"
-  spec.add_dependency "universalid"
 end
