@@ -133,6 +133,12 @@ module Avo
       true
     end
 
+    def mount_engines
+      -> {
+        raise "`mount_engines` method is now obsolete, please check LINK_HERE for more details."
+      }
+    end
+
     def extra_gems
       [:pro, :advanced, :menu, :dynamic_filters, :dashboards, :enterprise, :audits]
     end

@@ -21,11 +21,6 @@ module Avo
     isolate_namespace Avo
 
     config.after_initialize do
-      # This callback is triggered 2 times
-      # This flag check will avoid to re-execute the logic
-      next if @already_initialized
-      @already_initialized = true
-
       # Reset before reloads in development
       ::Avo.asset_manager.reset
 
@@ -41,6 +36,14 @@ module Avo
         rescue => exception
           Avo.logger.info "Failed to clear Avo HQ response: #{exception.message}"
         end
+      end
+    end
+
+    if Rails.env.development?
+      # Ensure we reboot the app when something changes
+      config.to_prepare do
+        # Boot Avo
+        ::Avo.boot
       end
     end
 
@@ -64,8 +67,10 @@ module Avo
         def mount_avo(at: Avo.configuration.root_path, **options)
           mount Avo::Engine, at:, **options
 
-          Avo.plugin_manager.engines.each do |engine|
-            mount engine[:klass], at: "#{at}/#{engine[:options].delete(:at)}", **engine[:options]
+          scope at do
+            Avo.plugin_manager.engines.each do |engine|
+              mount engine[:klass], **engine[:options]
+            end
           end
         end
       })

@@ -300,6 +300,10 @@ module Avo
     def session_persistence_enabled?
       persistence[:driver] == :session
     end
+
+    def mount_avo_engines=(...)
+      raise "`mount_avo_engines` option is now obsolete, please check LINK_HERE for more details."
+    end
   end
 
   def self.configuration
