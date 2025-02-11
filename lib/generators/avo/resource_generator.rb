@@ -204,7 +204,7 @@ module Generators
           {
             field: "belongs_to",
             options: {
-              polymorphic_as: :"#{association.name}",
+              polymorphic_as: ":#{association.name}",
               types: types.presence || "[] # Types weren't computed correctly. Please configure them."
             }
           }
