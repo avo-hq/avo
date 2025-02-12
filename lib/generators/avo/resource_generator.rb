@@ -212,7 +212,7 @@ module Generators
 
         def polymorphic_association_types(association)
           ActiveRecord::Base.descendants.filter_map do |model|
-            model if model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
+            Inspector.new(model.name) if model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
           end
         end
 
@@ -314,6 +314,16 @@ module Generators
         def field(name, type)
           ::Avo::Mappings::NAMES_MAPPING[name.to_sym] || ::Avo::Mappings::FIELDS_MAPPING[type&.to_sym] || {field: "text"}
         end
+      end
+    end
+
+    class Inspector
+      attr_accessor :name
+      def initialize(name)
+        @name = name
+      end
+      def inspect
+        name
       end
     end
   end
