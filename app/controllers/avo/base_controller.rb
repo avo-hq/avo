@@ -241,12 +241,16 @@ module Avo
       begin
         succeeded = block.call
       rescue ActiveRecord::RecordInvalid => error
+        log_error error
+
         # Do nothing as the record errors are already being displayed
         # On associations controller add errors from join record to record
         if controller_name == "associations"
           @record.errors.add(:base, error.message)
         end
       rescue => exception
+        log_error exception
+
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
@@ -256,6 +260,13 @@ module Avo
 
       # This method only needs to return true or false to indicate if the action was successful
       @record.errors.any? ? false : succeeded
+    end
+
+    def log_error(error)
+      return if Rails.env.production?
+
+      Rails.logger.error error
+      Rails.logger.error error.backtrace.join("\n")
     end
 
     def model_params
