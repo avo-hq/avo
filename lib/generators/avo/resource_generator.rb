@@ -317,6 +317,10 @@ module Generators
       end
     end
 
+    # This class modifies the inspect function to correctly handle polymorphic associations.
+    # It is used in the polymorphic_association_types function.
+    # Without modification: Model(id: integer, name: string)
+    # After modification: Model
     class Inspector
       attr_accessor :name
       def initialize(name)
