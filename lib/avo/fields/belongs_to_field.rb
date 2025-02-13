@@ -206,14 +206,14 @@ module Avo
 
           record.send(:"#{polymorphic_as}_type=", valid_model_class)
 
-          # If the type is blank, reset the id too.
           id_from_param = params["#{polymorphic_as}_id"]
 
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            primary_key = reflection.options[:primary_key] || target_resource(record: record, polymorphic_model_class: value.safe_constantize).model_class.primary_key
-            record_id = target_resource(record: record, polymorphic_model_class: value.safe_constantize).model_class.where(primary_key => id_from_param).pick(primary_key)
+            resource = target_resource(record:, polymorphic_model_class: value.safe_constantize)
+            primary_key = reflection.options[:primary_key] || resource.model_class.try(:primary_key) || :id
+            record_id = resource.model_class.where(primary_key => id_from_param).pick(primary_key)
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
@@ -221,12 +221,15 @@ module Avo
           if value.blank?
             record_id = nil
           else
-            primary_key = reflection.options[:primary_key] || target_resource(record: record).model_class.primary_key
-            record_id = target_resource(record: record).model_class.where(primary_key => value).pick(primary_key)
+            resource = target_resource(record:)
+            primary_key = reflection.options[:primary_key] || resource.model_class.try(:primary_key) || :id
+            record_id = resource.model_class.where(primary_key => value).pick(primary_key)
           end
 
           record.send(:"#{key}=", record_id)
         end
+
+        record
       end
 
       def valid_polymorphic_class(possible_class)
