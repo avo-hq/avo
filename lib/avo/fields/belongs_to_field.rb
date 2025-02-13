@@ -115,6 +115,13 @@ module Avo
         values_for_type
       end
 
+      def primary_key
+        @primary_key ||= reflection.association_primary_key
+        # Quick fix for "Polymorphic associations do not support computing the class."
+      rescue
+        nil
+      end
+
       def values_for_type(model = nil)
         resource = target_resource
         resource = Avo.resource_manager.get_resource_by_model_class model if model.present?
@@ -126,7 +133,7 @@ module Avo
         end
 
         query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
-          [resource.new(record: record).record_title, record.to_param]
+          [resource.new(record: record).record_title, primary_key.present? ? record.send(primary_key) : record.to_param]
         end.tap do |options|
           options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
         end
@@ -206,25 +213,20 @@ module Avo
 
           record.send(:"#{polymorphic_as}_type=", valid_model_class)
 
+          # If the type is blank, reset the id too.
           id_from_param = params["#{polymorphic_as}_id"]
 
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            resource = target_resource(record:, polymorphic_model_class: value.safe_constantize)
-            primary_key = reflection.options[:primary_key] || resource.model_class.try(:primary_key) || :id
-            record_id = resource.model_class.where(primary_key => id_from_param).pick(primary_key)
+            record = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param)
+            record_id = primary_key.present? ? primary_key : record.id
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          if value.blank?
-            record_id = nil
-          else
-            resource = target_resource(record:)
-            primary_key = reflection.options[:primary_key] || resource.model_class.try(:primary_key) || :id
-            record_id = resource.model_class.where(primary_key => value).pick(primary_key)
-          end
+          record = value.blank? ? value : target_resource(record:).find_record(value)
+          record_id = primary_key.present? ? primary_key : record.id
 
           record.send(:"#{key}=", record_id)
         end
