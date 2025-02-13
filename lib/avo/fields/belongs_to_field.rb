@@ -212,17 +212,21 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+            primary_key = reflection.options[:primary_key] || target_resource(record: record, polymorphic_model_class: value.safe_constantize).model_class.primary_key
+            record_id = target_resource(record: record, polymorphic_model_class: value.safe_constantize).model_class.where(primary_key => id_from_param).pick(primary_key)
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).id
+          if value.blank?
+            record_id = nil
+          else
+            primary_key = reflection.options[:primary_key] || target_resource(record: record).model_class.primary_key
+            record_id = target_resource(record: record).model_class.where(primary_key => value).pick(primary_key)
+          end
 
           record.send(:"#{key}=", record_id)
         end
-
-        record
       end
 
       def valid_polymorphic_class(possible_class)
