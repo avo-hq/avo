@@ -3,6 +3,9 @@
 class Avo::Fields::PreviewField::IndexComponent < Avo::Fields::IndexComponent
   include Avo::Concerns::ChecksShowAuthorization
 
+  # Used by Avo::Concerns::ChecksShowAuthorization
+  attr_reader :resource
+
   def render_preview
     # Do not render the link if the user is not authorized to view the resource,
     # as the link exposes the result of `record.to_param`.
