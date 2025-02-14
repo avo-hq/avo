@@ -170,14 +170,14 @@ module Avo
       container_is_full_width? ? "" : "2xl:container 2xl:mx-auto"
     end
 
-    # encode params
+    # encode & encrypt params
     def e(value)
-      URI::UID.build(value).payload
+      Avo::Services::EncryptionService.encrypt(message: value, purpose: :return_to, serializer: Marshal)
     end
 
-    # decode params
+    # decrypt & decode params
     def d(value)
-      URI::UID.from_payload(value).decode
+      Avo::Services::EncryptionService.decrypt(message: value, purpose: :return_to, serializer: Marshal)
     rescue
       value
     end
