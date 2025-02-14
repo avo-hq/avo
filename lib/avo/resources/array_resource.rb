@@ -13,11 +13,18 @@ module Avo
 
       class << self
         def model_class
-          @@model_class ||= ActiveSupport::OrderedOptions.new.tap do |obj|
-            obj.model_name = ActiveSupport::OrderedOptions.new.tap do |thing|
-              thing.plural = route_key
+          @@model_class ||= Object.const_set(
+            name,
+            Class.new do
+              include ActiveModel::Model
+
+              class << self
+                def primary_key = nil
+
+                def all = "Avo::Resources::#{name}".constantize.new.fetch_records
+              end
             end
-          end
+          )
         end
       end
 
@@ -61,16 +68,21 @@ module Avo
           # Dynamically create a class with accessors for all unique keys from the records
           keys = array_of_records.flat_map(&:keys).uniq
 
-          custom_class = Class.new do
-            include ActiveModel::Model
+          Object.const_set(
+            name,
+            Class.new do
+              include ActiveModel::Model
 
-            # Dynamically define accessors
-            attr_accessor(*keys)
+              # Dynamically define accessors
+              attr_accessor(*keys)
 
-            define_method(:to_param) do
-              id
+              define_method(:to_param) do
+                id
+              end
             end
-          end
+          )
+
+          custom_class = name.constantize
 
           # Map the records to instances of the dynamically created class
           array_of_records.map do |item|

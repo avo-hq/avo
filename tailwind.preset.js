@@ -3,29 +3,9 @@ const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
-const avoPath = require('child_process').execSync('bundle show avo', { encoding: 'utf-8' }).trim()
 const { primary, blue, gray } = require('./tailwind.custom')
 
-function contentPaths(basePath) {
-  return [
-    `${basePath}/safelist.txt`,
-    `${basePath}/lib/avo/**/*.rb`,
-    `${basePath}/app/helpers/**/*.rb`,
-    `${basePath}/app/views/**/*.{html.erb,rb}`,
-    `${basePath}/app/javascript/**/*.js`,
-    `${basePath}/app/components/**/*.{html.erb,rb}`,
-    `${basePath}/app/controllers/**/*.rb`,
-    `${basePath}/lib/**/*.rb`,
-    `${basePath}/public/**/*.{js,css}`,
-  ]
-}
-
 module.exports = {
-  content: [
-    ...contentPaths('./tmp/avo/packages/*'),
-    ...contentPaths('./../avo-kanban/*'),
-    ...contentPaths(avoPath),
-  ],
   theme: {
     extend: {
       aspectRatio: {
