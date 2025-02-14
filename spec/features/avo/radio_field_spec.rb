@@ -75,7 +75,12 @@ RSpec.describe "RadioField", type: :feature do
 
       expect(page).to have_text("Small Option")
       expect(page).to have_text("Medium Option")
+      expect(page).to have_checked_field("fields_size_medium")
       expect(page).to have_text("Large Option")
+
+      find("label[for='fields_size_large']").click
+      expect(page).not_to have_checked_field("fields_size_medium")
+      expect(page).to have_checked_field("fields_size_large")
     end
   end
 end
