@@ -31,7 +31,7 @@ class Avo::Resources::Product < Avo::BaseResource
   self.discreet_information = [
     {
       tooltip: -> { sanitize("Product is <strong>#{record.status}</strong>", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/#{record.status == :new ? "arrow-trending-up" : "arrow-trending-down"}" }
+      icon: -> { "heroicons/outline/#{(record.status == :new) ? "arrow-trending-up" : "arrow-trending-down"}" }
     },
     :timestamps
   ]
