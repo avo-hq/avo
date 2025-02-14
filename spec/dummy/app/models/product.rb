@@ -33,6 +33,8 @@ class Product < ApplicationRecord
   has_many_attached :images
 
   def status
-    (id % 2).zero? ? :new : :updated
+    return :new if id.nil?
+    return :new if id.even?
+    return :updated if id.odd?
   end
 end
