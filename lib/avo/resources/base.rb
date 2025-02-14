@@ -16,7 +16,6 @@ module Avo
       include Avo::Concerns::HasHelpers
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
-      include Avo::Concerns::ControlsPlacement
       include Avo::Concerns::HasDiscreetInformation
       include Avo::Concerns::RowControlsConfiguration
 
