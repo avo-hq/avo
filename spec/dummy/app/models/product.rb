@@ -35,6 +35,6 @@ class Product < ApplicationRecord
   def status
     return :new if id.nil?
     return :new if id.even?
-    return :updated if id.odd?
+    :updated
   end
 end
