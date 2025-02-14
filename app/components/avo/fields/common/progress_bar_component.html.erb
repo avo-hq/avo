@@ -4,5 +4,5 @@
       <%= @value %><%= @value_suffix if @value_suffix.present? %>
     </div>
   <% end %>
-  <%= tag :progress, min: 0, max: @max, value: @value, class: "block min-w-[6rem] #{"w-full" if show?} #{"w-auto" if index?}" %>
+  <%= tag :progress, min: 0, max: @max, value: @value, class: class_names("block min-w-[6rem]", "w-full": show?, "w-auto": index?) %>
 </div>
