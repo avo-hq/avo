@@ -4,6 +4,7 @@ module Avo
       extend ActiveSupport::DescendantsTracker
 
       include ActionView::Helpers::UrlHelper
+      include Avo::Concerns::HasFieldDiscovery
       include Avo::Concerns::HasItems
       include Avo::Concerns::CanReplaceItems
       include Avo::Concerns::HasControls
@@ -17,6 +18,7 @@ module Avo
       include Avo::Concerns::Pagination
       include Avo::Concerns::ControlsPlacement
       include Avo::Concerns::HasDiscreetInformation
+      include Avo::Concerns::RowControlsConfiguration
 
       # Avo::Current methods
       delegate :context, to: Avo::Current
@@ -80,7 +82,6 @@ module Avo
       class_attribute :components, default: {}
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
-      class_attribute :controls_placement, default: nil
       class_attribute :external_link, default: nil
 
       # EXTRACT:
@@ -653,6 +654,20 @@ module Avo
 
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
+
+      def resource_type_array? = false
+
+      def sort_by_param
+        available_columns = model_class.column_names
+
+        if available_columns.include?(default_sort_column.to_s)
+          default_sort_column
+        elsif available_columns.include?("created_at")
+          :created_at
+        end
+      end
+
+      def sorting_supported? = true
 
       private
 

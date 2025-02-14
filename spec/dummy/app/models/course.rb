@@ -72,4 +72,11 @@ class Course < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["links"]
   end
+
+  # Testing purposes on Avo::Resources::Course
+  # Tests that the field is populated from here
+  # field :attendees, as: :array
+  def attendees
+    User.all.first(6)
+  end
 end

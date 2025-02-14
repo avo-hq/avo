@@ -24,6 +24,7 @@ ja:
     choose_item: "%{item}を選択"
     clear_value: 値をクリア
     click_to_reveal_filters: フィルターを表示するにはクリック
+    close: 閉じる
     close_modal: モーダルを閉じる
     confirm: 確認
     copy: コピー
@@ -63,6 +64,8 @@ ja:
     less_content: コンテンツが少ない
     list_is_empty: リストは空です
     loading: 読み込み中
+    media_library:
+      title: メディアライブラリ
     more: もっと
     more_content: さらなるコンテンツ
     more_records_available: さらに多くのレコードが利用可能です。

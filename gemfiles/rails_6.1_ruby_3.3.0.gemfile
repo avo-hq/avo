@@ -38,6 +38,7 @@ gem "sprockets-rails"
 gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "mapkick-rb", "~> 0.1.4"
+gem "mapkick-static"
 gem "pluggy", path: "../pluggy"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
@@ -46,6 +47,7 @@ gem "avo-record_link_field"
 gem "pagy", "> 8"
 gem "csv"
 gem "psych", "< 4"
+gem "concurrent-ruby", "1.3.4"
 
 group :development do
   gem "standard", require: false

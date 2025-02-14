@@ -22,6 +22,7 @@ pl:
     choose_item: Wybierz %{item}
     clear_value: Wyczyść wartość
     click_to_reveal_filters: Kliknij, aby pokazać filtry
+    close: Zamknij
     close_modal: Zamknij okno modalne
     confirm: Potwierdź
     copy: Kopiuj
@@ -63,6 +64,8 @@ pl:
     less_content: Pokaż mniej
     list_is_empty: Lista jest pusta
     loading: Ładowanie
+    media_library:
+      title: Biblioteka mediów
     more: Więcej
     more_content: Pokaż wiecej
     more_records_available: Dostępnych jest więcej rekordów.

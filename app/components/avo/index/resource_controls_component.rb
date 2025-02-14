@@ -16,6 +16,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def can_edit?
+    # Disable edit for ArrayResources
+    return false if @resource.resource_type_array?
+
     return authorize_association_for(:edit) if @reflection.present?
 
     @resource.authorization.authorize_action(:edit, raise_exception: false)

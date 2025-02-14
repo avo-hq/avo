@@ -20,7 +20,7 @@
       <% end %>
     </th>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_left? %>
+  <% if @resource.render_row_controls_on_the_left? %>
     <th class="max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
@@ -28,9 +28,10 @@
   <% fields.each_with_index do |field, index|  %>
     <%
       first_option = Avo.configuration.first_sorting_option.to_s
-      second_option = first_option == "desc" ? "asc" : "desc"
 
       if params[:sort_by] == field.id.to_s
+        second_option = first_option == "desc" ? "asc" : "desc"
+
         if params[:sort_direction] == second_option
           sort_by = nil
         else
@@ -65,7 +66,7 @@
       } do %>
       <%= content_tag :div,
         class: "relative flex items-center justify-between w-full" do %>
-        <% if field.sortable %>
+        <% if field.sortable && @resource.sorting_supported? %>
           <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction),
             class: class_names("flex-1 flex justify-between", text_classes),
             'data-turbo-frame': params[:turbo_frame] do %>
@@ -105,7 +106,7 @@
       <% end %>
     <% end %>
   <% end %>
-  <% if @resource.resource_controls_render_on_the_right? %>
+  <% if @resource.render_row_controls_on_the_right? %>
     <th class="w-px max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>

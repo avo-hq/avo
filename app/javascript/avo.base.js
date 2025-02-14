@@ -22,7 +22,7 @@ window.Turbolinks = Turbo
 
 let scrollTop = null
 Mousetrap.bind('r r r', () => {
-  // Cpture scroll position
+  // Capture scroll position
   scrollTop = document.scrollingElement.scrollTop
 
   window.StreamActions.turbo_reload()

@@ -3,7 +3,7 @@ module Avo
     class SelectField < BaseField
       include Avo::Fields::FieldExtensions::HasIncludeBlank
 
-      attr_reader :display_value
+      attr_reader :display_value, :multiple
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
@@ -19,6 +19,7 @@ module Avo
         end
 
         @enum = args[:enum]
+        @multiple = args[:multiple]
         @display_value = args[:display_value] || false
       end
 
@@ -40,8 +41,12 @@ module Avo
       end
 
       def label
+        return "—" if value.nil? || (@multiple && value.empty?)
+
         # If options are array don't need any pre-process
-        return value if options.is_a?(Array)
+        if options.is_a?(Array)
+          return @multiple ? value.join(", ") : value
+        end
 
         # If options are enum and display_value is true we return the Value of that key-value pair, else return key of that key-value pair
         # WARNING: value here is the DB stored value and not the value of a key-value pair.
@@ -52,7 +57,25 @@ module Avo
 
         # When code arrive here it means options are Hash
         # If display_value is true we only need to return the value stored in DB
-        display_value ? value : options.invert[value]
+        if display_value
+          value
+        elsif @multiple
+          options.select { |_, v| value.include?(v.to_s) }.keys.join(", ")
+        else
+          options.invert[value]
+        end
+      end
+
+      def to_permitted_param
+        @multiple ? {"#{id}": []} : id
+      end
+
+      def fill_field(record, key, value, params)
+        if @multiple
+          value = value.reject(&:blank?)
+        end
+
+        super
       end
 
       private

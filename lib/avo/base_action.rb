@@ -12,7 +12,13 @@ module Avo
     class_attribute :cancel_button_label
     class_attribute :no_confirmation, default: false
     class_attribute :standalone, default: false
-    class_attribute :visible
+    class_attribute :visible, default: -> {
+      # Hide on the :new view by default
+      return false if view.new?
+
+      # Show on all other views
+      true
+    }
     class_attribute :may_download_file
     class_attribute :turbo
     class_attribute :authorize, default: true
@@ -27,6 +33,7 @@ module Avo
     attr_reader :icon
     attr_reader :appended_turbo_streams
     attr_reader :records_to_reload
+    attr_reader :query
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -100,14 +107,15 @@ module Avo
           resource: @resource,
           record: @record,
           view: @view,
-          arguments: @arguments
+          arguments: @arguments,
+          query: @query
         ).handle
       end
 
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil)
       @record = record
       @resource = resource
       @user = user
@@ -118,6 +126,7 @@ module Avo
         resource: resource,
         record: record
       ).handle.with_indifferent_access
+      @query = query
 
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
@@ -143,7 +152,8 @@ module Avo
         resource: @resource,
         record: @record,
         view: @view,
-        arguments: @arguments
+        arguments: @arguments,
+        query: @query
       ).handle
     end
 
@@ -153,7 +163,8 @@ module Avo
         resource: @resource,
         record: @record,
         view: @view,
-        arguments: @arguments
+        arguments: @arguments,
+        query: @query
       ).handle
     end
 
@@ -163,7 +174,8 @@ module Avo
         resource: @resource,
         record: @record,
         view: @view,
-        arguments: @arguments
+        arguments: @arguments,
+        query: @query
       ).handle
     end
 
@@ -205,17 +217,6 @@ module Avo
     end
 
     def visible_in_view(parent_resource: nil)
-      return false unless authorized?
-
-      if visible.blank?
-        # Hide on the :new view by default
-        return false if view.new?
-
-        # Show on all other views
-        return true
-      end
-
-      # Run the visible block if available
       Avo::ExecutionContext.new(
         target: visible,
         params: params,
@@ -223,7 +224,7 @@ module Avo
         resource: @resource,
         view: @view,
         arguments: arguments
-      ).handle
+      ).handle && authorized?
     end
 
     def succeed(text)
