@@ -6,12 +6,13 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.17.6)
+    avo (3.17.7)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
+      avo-heroicons (>= 0.1.1)
       docile
       inline_svg
       meta-tags
@@ -111,6 +112,7 @@ GEM
       rake
       thor (>= 0.14.0)
     ast (2.4.2)
+    avo-heroicons (0.1.1)
     avo-money_field (0.0.5)
       money-rails (~> 1.12)
     avo-record_link_field (0.0.2)
