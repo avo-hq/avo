@@ -61,7 +61,6 @@
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "file-saver": "^2.0.5",
     "flatpickr": "^4.6.13",
-    "heroicons": "^2.2.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
