@@ -14,8 +14,7 @@
     "prod:build": "yarn prod:build:js && yarn prod:build:css",
     "prod:build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=public/avo-assets",
     "prod:build:css": "tailwindcss -i ./app/assets/stylesheets/avo.base.css -o ./public/avo-assets/avo.base.css --postcss",
-    "export": "yarn export:heroicons && yarn export:tailwind-safelist",
-    "export:heroicons": "node scripts/export-heroicons.js",
+    "export": "yarn export:tailwind-safelist",
     "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js"
   },
   "dependencies": {
@@ -62,7 +61,6 @@
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "file-saver": "^2.0.5",
     "flatpickr": "^4.6.13",
-    "heroicons": "^2.2.0",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
