@@ -61,6 +61,7 @@ module Avo
       parent_record,
       record,
       keep_query_params: false,
+      parent_resource: nil,
       **args
     )
       return if record.nil?
@@ -75,7 +76,9 @@ module Avo
       rescue
       end
 
-      avo.resources_associations_index_path(parent_record.model_name.route_key, record.to_param, **existing_params, **args)
+      route_key = parent_resource&.route_key || parent_record.model_name.route_key
+
+      avo.resources_associations_index_path(route_key, record.to_param, **existing_params, **args)
     end
 
     def resource_view_path(**args)
