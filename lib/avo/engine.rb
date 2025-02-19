@@ -41,12 +41,10 @@ module Avo
       end
     end
 
-    if Rails.env.development?
-      # Ensure we reboot the app when something changes
-      config.to_prepare do
-        # Boot Avo
-        ::Avo.boot
-      end
+    # Ensure we reboot the app when something changes
+    config.to_prepare do
+      # Boot Avo
+      ::Avo.boot
     end
 
     initializer "avo.autoload" do |app|
