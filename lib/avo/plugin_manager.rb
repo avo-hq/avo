@@ -10,6 +10,11 @@ module Avo
       @engines = []
     end
 
+    def reset
+      @plugins = []
+      @engines = []
+    end
+
     def register(name, priority: 10)
       @plugins << Plugin.new(name:, priority: priority)
     end

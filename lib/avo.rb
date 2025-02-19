@@ -67,6 +67,7 @@ module Avo
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
+      Avo.plugin_manager.reset
       ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
