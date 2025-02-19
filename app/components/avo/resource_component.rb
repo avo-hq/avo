@@ -114,7 +114,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_cards_component
-    if Avo.plugin_manager.installed?(:avo_dashboards)
+    if Avo.plugin_manager.installed?("avo-dashboards")
       render Avo::CardsComponent.new cards: @resource.detect_cards.visible_cards, classes: "pb-4 sm:grid-cols-3"
     end
   end
