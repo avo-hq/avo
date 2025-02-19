@@ -95,7 +95,7 @@ module Avo
     end
 
     def main_menu
-      return unless Avo.plugin_manager.installed?(:avo_menu)
+      return unless Avo.plugin_manager.installed?("avo-menu")
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_main_menu?
@@ -104,7 +104,7 @@ module Avo
     end
 
     def profile_menu
-      return unless Avo.plugin_manager.installed?(:avo_menu)
+      return unless Avo.plugin_manager.installed?("avo-menu")
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_profile_menu?
