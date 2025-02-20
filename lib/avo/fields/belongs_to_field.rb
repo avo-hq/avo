@@ -133,7 +133,7 @@ module Avo
         end
 
         query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
-          [resource.new(record: record).record_title, primary_key.present? ? record.send(primary_key) : record.to_param]
+          [resource.new(record: record).record_title, record.to_param]
         end.tap do |options|
           options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
         end
