@@ -84,6 +84,8 @@ RSpec.feature "belongs_to", type: :feature do
           it "assigns the correct uuid to the polymorphic association" do
             expect(comment.commentable_id).to eq(uuid_project.id)
           end
+
+          # ToDo spec with relation belongs_to with primary_key
         end
       end
     end

@@ -133,6 +133,7 @@ module Avo
         end
 
         query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+          # to_param uses slug so checking primary_key is unnecessary
           [resource.new(record: record).record_title, record.to_param]
         end.tap do |options|
           options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
