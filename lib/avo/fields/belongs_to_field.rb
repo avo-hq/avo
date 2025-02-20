@@ -221,7 +221,7 @@ module Avo
             record.send(:"#{polymorphic_as}_id=", nil)
           else
             found_record = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param)
-            
+
             record_id = found_record&.send(primary_key.presence || :id)
 
             record.send(:"#{polymorphic_as}_id=", record_id)
