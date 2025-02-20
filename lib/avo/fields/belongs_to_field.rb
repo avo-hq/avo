@@ -221,23 +221,15 @@ module Avo
             record.send(:"#{polymorphic_as}_id=", nil)
           else
             found_record = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param)
+            
+            record_id = found_record&.send(primary_key.presence || :id)
 
-            if found_record.present?
-              record_id = primary_key.present? ? found_record.send(primary_key) : found_record.id
-              record.send(:"#{polymorphic_as}_id=", record_id)
-            else
-              record.send(:"#{polymorphic_as}_id=", nil)
-            end
+            record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
           found_record = value.present? ? target_resource(record:).find_record(value) : nil
 
-          if found_record.present?
-            record_id = primary_key.present? ? found_record.send(primary_key) : found_record.id
-            record.send(:"#{key}=", record_id)
-          else
-            record.send(:"#{key}=", nil)
-          end
+          record.send(:"#{key}=", found_record&.send(primary_key.presence || :id))
         end
 
         record
