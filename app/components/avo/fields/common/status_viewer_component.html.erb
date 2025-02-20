@@ -1,11 +1,4 @@
-<%
-  classes = class_names(
-    "text-red-600": @status == 'failed',
-    "text-green-600": @status == 'success',
-    "text-gray-600": @status == 'neutral'
-  )
-%>
-<div class="flex shrink-0 <%= classes %> items-center">
+<div class=" <%= class_names("flex shrink-0 items-center", "text-red-600": @status == 'failed', "text-green-600": @status == 'success', "text-gray-600": @status == 'neutral') %>">
   <% if @status == 'success' %>
     <%= helpers.svg 'heroicons/solid/check-circle', class: 'h-4' %>
   <% elsif @status == 'failed' %>
