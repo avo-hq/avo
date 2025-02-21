@@ -8,7 +8,7 @@ class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
   def fields
     main_panel do
       discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
-      discover_associations only: %i[cv_attachment]
+      discover_associations only: %i[cv_attachment], openable: true
 
       sidebar do
         with_options only_on: :show do
