@@ -63,6 +63,7 @@ module Avo
       end
 
       # Add the mount_avo method to Rails
+      # rubocop:disable Style/KeywordArguments
       ActionDispatch::Routing::Mapper.include(Module.new {
         def mount_avo(at: Avo.configuration.root_path, **options)
           mount Avo::Engine, at:, **options
@@ -74,6 +75,7 @@ module Avo
           end
         end
       })
+      # rubocop:enable Style/KeywordArguments
     end
 
     initializer "avo.reloader" do |app|
