@@ -12,7 +12,7 @@
     "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/avo.base.css -o ./app/assets/builds/avo.base.css --postcss",
     "prod:build": "yarn prod:build:js && yarn prod:build:css",
-    "prod:build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=public/avo-assets",
+    "prod:build:js": "esbuild app/javascript/*.js --bundle --minify --outdir=public/avo-assets",
     "prod:build:css": "tailwindcss -i ./app/assets/stylesheets/avo.base.css -o ./public/avo-assets/avo.base.css --postcss",
     "export": "yarn export:tailwind-safelist",
     "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js"
