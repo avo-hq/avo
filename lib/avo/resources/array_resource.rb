@@ -14,14 +14,14 @@ module Avo
       class << self
         def model_class
           @@model_class ||= Object.const_set(
-            name,
+            class_name,
             Class.new do
               include ActiveModel::Model
 
               class << self
                 def primary_key = nil
 
-                def all = "Avo::Resources::#{name}".constantize.new.fetch_records
+                def all = "Avo::Resources::#{class_name}".constantize.new.fetch_records
               end
             end
           )
@@ -40,7 +40,7 @@ module Avo
 
       def fetch_records(array_of_records = nil)
         array_of_records ||= records
-        raise "Unable to fetch any #{name}" if array_of_records.nil?
+        raise "Unable to fetch any #{class_name}" if array_of_records.nil?
 
         # When the array of records is declared in a field's block, we need to get that block from the parent resource
         # If there is no block try to pick those from the parent_record
@@ -69,7 +69,7 @@ module Avo
           keys = array_of_records.flat_map(&:keys).uniq
 
           Object.const_set(
-            name,
+            class_name,
             Class.new do
               include ActiveModel::Model
 
@@ -82,7 +82,7 @@ module Avo
             end
           )
 
-          custom_class = name.constantize
+          custom_class = class_name.constantize
 
           # Map the records to instances of the dynamically created class
           array_of_records.map do |item|
