@@ -13,7 +13,7 @@ module Avo
 
       class << self
         def model_class
-          @@model_class ||= Object.const_set(
+          @@model_class ||= Avo.const_set(
             class_name,
             Class.new do
               include ActiveModel::Model
@@ -68,7 +68,7 @@ module Avo
           # Dynamically create a class with accessors for all unique keys from the records
           keys = array_of_records.flat_map(&:keys).uniq
 
-          Object.const_set(
+          Avo.const_set(
             class_name,
             Class.new do
               include ActiveModel::Model
@@ -82,7 +82,7 @@ module Avo
             end
           )
 
-          custom_class = class_name.constantize
+          custom_class = "Avo::#{class_name}".constantize
 
           # Map the records to instances of the dynamically created class
           array_of_records.map do |item|
