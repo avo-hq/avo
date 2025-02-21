@@ -2,11 +2,11 @@ require "rails_helper"
 
 RSpec.describe "OpenFieldAttachment", type: :system do
   let!(:user) { User.first }
-  let!(:cv_file) { Rails.root.join('app', 'assets', 'pdfs', 'cv_sample.pdf') }
+  let!(:cv_file) { Rails.root.join("app", "assets", "pdfs", "cv_sample.pdf") }
   let(:path) { "/admin/resources/field_discovery_users/#{user.slug}" }
 
   before do
-    user.cv.attach(io: File.open(cv_file), filename: 'cv_sample.pdf', content_type: 'application/pdf')
+    user.cv.attach(io: File.open(cv_file), filename: "cv_sample.pdf", content_type: "application/pdf")
   end
 
   def test_open_field_attachment(path)
