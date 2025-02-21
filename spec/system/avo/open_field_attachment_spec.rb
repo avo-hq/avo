@@ -11,7 +11,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
     expect(element).to be_present
     element.click
 
-    expect(page.driver.browser.current_url).not_to include('download')
+    expect(page.driver.browser.current_url).not_to include("download")
     expect(page.driver.browser.window_handles.length).to eq 2
   end
 
