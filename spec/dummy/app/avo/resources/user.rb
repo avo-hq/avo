@@ -258,6 +258,7 @@ class Avo::Resources::User < Avo::BaseResource
         translation_key: "avo.field_translations.people"
       field :posts,
         as: :has_many,
+        description: -> { "You have #{query.count} posts."},
         show_on: :edit,
         attach_scope: -> { query.where.not(user_id: parent.id).or(query.where(user_id: nil)) }
       field :comments,

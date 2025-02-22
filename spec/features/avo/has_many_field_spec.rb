@@ -14,6 +14,7 @@ RSpec.feature "HasManyField", type: :feature do
 
     describe "without a related post" do
       it { is_expected.to have_text "No related record found" }
+      it { is_expected.to have_text "You have 0 posts" }
 
       it "creates a post" do
         visit url
@@ -35,6 +36,8 @@ RSpec.feature "HasManyField", type: :feature do
 
     describe "with a related post" do
       let!(:post) { create :post, user: user }
+
+      it { is_expected.to have_text "You have 1 posts" }
 
       it "navigates to a view post page" do
         visit url
