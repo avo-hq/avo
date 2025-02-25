@@ -14,7 +14,6 @@ RSpec.feature "HasManyField", type: :feature do
 
     describe "without a related post" do
       it { is_expected.to have_text "No related record found" }
-      it { is_expected.to have_text "You have 0 posts" }
 
       it "creates a post" do
         visit url
@@ -36,8 +35,6 @@ RSpec.feature "HasManyField", type: :feature do
 
     describe "with a related post" do
       let!(:post) { create :post, user: user }
-
-      it { is_expected.to have_text "You have 1 posts" }
 
       it "navigates to a view post page" do
         visit url
@@ -158,5 +155,19 @@ RSpec.feature "HasManyField", type: :feature do
 
       expect { find("tr[data-resource-id='#{team.id}'] [data-control='detach']").click }.to raise_error("Callback Called")
     end
+  end
+
+  describe "dynamic description" do
+    let(:url) { "/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=table" }
+    let!(:post_1) { create :post, user: user }
+    let!(:post_2) { create :post, user: user }
+
+    it { is_expected.to have_text "This user has 2 posts" }
+  end
+
+  describe "dynamic name" do
+    let(:url) { "/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=table" }
+
+    it { is_expected.to have_text "Posts" }
   end
 end
