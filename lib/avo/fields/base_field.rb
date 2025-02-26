@@ -117,13 +117,8 @@ module Avo
       # We'll fallback to humanizing the id
       def name
         if custom_name?
-          return Avo::ExecutionContext.new(
-            target: @name,
-            **name_attributes
-          ).handle
-        end
-
-        if translation_key
+          return Avo::ExecutionContext.new(target: @name).handle
+        elsif translation_key
           translated_name default: default_name
         else
           default_name
@@ -321,11 +316,6 @@ module Avo
         resource = Avo.resource_manager.get_resource_by_model_class(model_class)
 
         resource || (raise Avo::MissingResourceError.new(model_class, id))
-      end
-
-      # Override this method to add custom attributes to the name execution context.
-      def name_attributes
-        {}
       end
     end
   end
