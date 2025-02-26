@@ -9,6 +9,10 @@ Avo::Engine.routes.draw do
     instance_exec(&Avo.mount_engines)
   end
 
+  get "/bulk_update/edit", to: "bulk_update#edit", as: "edit_bulk_update"
+  patch "/bulk_update", to: "bulk_update#update", as: "bulk_update"
+  put "/bulk_update", to: "bulk_update#update"
+
   resources :media_library, only: [:index, :show, :update, :destroy], path: "media-library"
   get "attach-media", to: "media_library#attach"
 

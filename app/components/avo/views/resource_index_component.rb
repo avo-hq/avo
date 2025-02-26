@@ -3,6 +3,7 @@
 class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
+  include Avo::Concerns::ChecksShowAuthorization
 
   prop :resource
   prop :resources
@@ -31,6 +32,20 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def view_type
     @index_params[:view_type]
+  end
+
+  def bulk_edit_path
+    # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
+    args = {via_view: "index"}
+
+    if @parent_record.present?
+      args = {
+        via_resource_class: parent_resource.class.to_s,
+        via_record_id: @parent_record.to_param
+      }
+    end
+
+    helpers.edit_bulk_update_path(resource: @resource, **args)
   end
 
   def available_view_types
@@ -155,6 +170,17 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         avo_filters_dynamic_filters_component_id_value: dynamic_filters_component_id
       } do
       Avo::DynamicFilters.configuration.button_label
+    end
+  end
+
+  def render_bulk_update_button
+    a_link helpers.edit_bulk_update_path(resource: @resource),
+           style: :text,
+           color: :blue,
+           icon: "avo/edit",
+           form_class: "flex flex-col sm:flex-row sm:inline-flex",
+           data: {} do
+      "Bulk update"
     end
   end
 
