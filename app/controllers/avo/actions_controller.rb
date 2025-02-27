@@ -79,7 +79,7 @@ module Avo
     end
 
     def set_fields
-      @fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
+      @fields = action_params[:fields].except(:avo_resource_ids, :avo_index_query)
     end
 
     def action_params
