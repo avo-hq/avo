@@ -61,9 +61,13 @@ module Avo
     private
 
     def set_query
-      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+      @query = if selected_all?
+        decrypted_index_query
+      else
+        resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
 
-      @query = selected_all? ? decrypted_index_query : (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+        resource_ids.any? ? @resource.find_record(resource_ids, params: params) : []
+      end
     end
 
     def set_fields
