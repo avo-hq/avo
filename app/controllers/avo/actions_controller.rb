@@ -61,12 +61,18 @@ module Avo
     private
 
     def set_query
-      @query = if selected_all?
+      @query = if action_params[:fields]&.dig(:avo_selected_all) == "true"
         decrypted_index_query
       else
-        resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+        find_records_from_resource_ids
+      end
+    end
 
-        resource_ids.any? ? @resource.find_record(resource_ids, params: params) : []
+    def find_records_from_resource_ids
+      if (ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []).any?
+        @resource.find_record(ids, params: params)
+      else
+        []
       end
     end
 
@@ -179,10 +185,6 @@ module Avo
       @decrypted_index_query ||= if (encrypted_query = action_params[:fields]&.dig(:avo_index_query)).present?
         Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
       end
-    end
-
-    def selected_all?
-      action_params[:fields]&.dig(:avo_selected_all) == "true"
     end
 
     def flash_messages
