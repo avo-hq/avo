@@ -61,6 +61,8 @@ module Avo
     private
 
     def set_query
+      # If the user selected all records, use the decrypted index query
+      # Otherwise, find the records from the resource ids
       @query = if action_params[:fields]&.dig(:avo_selected_all) == "true"
         decrypted_index_query
       else
