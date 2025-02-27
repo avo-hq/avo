@@ -16,8 +16,10 @@ export default class extends Controller {
     // Select all checkbox
     this.selectedAllTarget.value = this.selectionOptions.itemSelectAllSelectedAllValue
 
-    // Encrypted and encoded index query
-    this.indexQueryTarget.value = this.selectionOptions.itemSelectAllSelectedAllQueryValue
+    // Encrypted and encoded index query when it is present (index view)
+    if (this.selectionOptions.itemSelectAllSelectedAllQueryValue) {
+      this.indexQueryTarget.value = this.selectionOptions.itemSelectAllSelectedAllQueryValue
+    }
 
     if (this.noConfirmationValue) {
       this.formTarget.requestSubmit()
