@@ -93,7 +93,7 @@ module Avo
     end
 
     def set_resource
-      raise ActionController::RoutingError.new "No route matches" if resource.nil?
+      raise Avo::ResourceNotFoundError.new(resource_name) if resource.nil?
 
       @resource = resource.new(view: params[:view].presence || action_name.to_s, user: _current_user, params: params)
 
