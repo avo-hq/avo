@@ -57,8 +57,8 @@ module Avo
 
   class ResourceNotFoundError < StandardError
     def initialize(resource_name)
-      super "Resource for '#{resource_name}' not found.\n" \
-        "You can generate a resource for it by running 'rails generate avo:resource #{resource_name}'."
+      super("Resource for '#{resource_name}' not found.\n" \
+        "You can generate a resource for it by running 'rails generate avo:resource #{resource_name}'.")
     end
   end
 
