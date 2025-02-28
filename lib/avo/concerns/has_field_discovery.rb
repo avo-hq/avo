@@ -13,9 +13,11 @@ module Avo
     module HasFieldDiscovery
       extend ActiveSupport::Concern
 
-      COLUMN_NAMES_TO_IGNORE = %i[
-        encrypted_password reset_password_token reset_password_sent_at remember_created_at password_digest
-      ].freeze
+      if !defined?(COLUMN_NAMES_TO_IGNORE)
+        COLUMN_NAMES_TO_IGNORE = %i[
+          encrypted_password reset_password_token reset_password_sent_at remember_created_at password_digest
+        ].freeze
+      end
 
       class_methods do
         def column_names_mapping

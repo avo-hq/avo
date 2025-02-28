@@ -116,9 +116,9 @@ module Avo
       # Secondly we'll try to find a translation key
       # We'll fallback to humanizing the id
       def name
-        return @name if custom_name?
-
-        if translation_key
+        if custom_name?
+          Avo::ExecutionContext.new(target: @name).handle
+        elsif translation_key
           translated_name default: default_name
         else
           default_name

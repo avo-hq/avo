@@ -185,11 +185,34 @@ module Generators
 
         def fields_from_model_associations
           associations.each do |name, association|
-            fields[name] = if association.is_a? ActiveRecord::Reflection::ThroughReflection
-              field_from_through_association(association)
-            else
-              ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.class]
-            end
+            fields[name] =
+              if association.polymorphic?
+                field_with_polymorphic_association(association)
+              elsif association.is_a?(ActiveRecord::Reflection::ThroughReflection)
+                field_from_through_association(association)
+              else
+                ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.class]
+              end
+          end
+        end
+
+        def field_with_polymorphic_association(association)
+          Rails.application.eager_load! unless Rails.application.config.eager_load
+
+          types = polymorphic_association_types(association)
+
+          {
+            field: "belongs_to",
+            options: {
+              polymorphic_as: ":#{association.name}",
+              types: types.presence || "[] # Types weren't computed correctly. Please configure them."
+            }
+          }
+        end
+
+        def polymorphic_association_types(association)
+          ActiveRecord::Base.descendants.filter_map do |model|
+            Inspector.new(model.name) if model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
           end
         end
 
@@ -205,7 +228,7 @@ module Generators
             # If the through_reflection is not a HasManyReflection, add it to the fields hash using the class of the through_reflection
             # ex (team.rb): has_one :admin, through: :admin_membership, source: :user
             # we use the class of the through_reflection (HasOneReflection -> has_one :admin) to generate the field
-            associations_mapping[association.through_reflection.class]
+            ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.through_reflection.class]
           end
         end
 
@@ -291,6 +314,21 @@ module Generators
         def field(name, type)
           ::Avo::Mappings::NAMES_MAPPING[name.to_sym] || ::Avo::Mappings::FIELDS_MAPPING[type&.to_sym] || {field: "text"}
         end
+      end
+    end
+
+    # This class modifies the inspect function to correctly handle polymorphic associations.
+    # It is used in the polymorphic_association_types function.
+    # Without modification: Model(id: integer, name: string)
+    # After modification: Model
+    class Inspector
+      attr_accessor :name
+      def initialize(name)
+        @name = name
+      end
+
+      def inspect
+        name
       end
     end
   end
