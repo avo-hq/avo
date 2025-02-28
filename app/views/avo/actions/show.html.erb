@@ -5,7 +5,7 @@
 <%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
-    data-action-no-confirmation-value="<%= @action.no_confirmation %>"
+    data-action-no-confirmation-value="<%= @action.no_confirmation? %>"
     data-action-resource-name-value="<%= @resource.model_key %>"
     data-resource-id="<%= params[:id] %>"
     class="hidden text-slate-800"

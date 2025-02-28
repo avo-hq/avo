@@ -33,6 +33,28 @@ class Avo::Resources::Post < Avo::BaseResource
     main_app.post_path(record)
   }
 
+  self.discreet_information = [
+    :timestamps,
+    {
+      tooltip: -> { sanitize("Product is <strong>#{record.published_at ? "published" : "draft"}</strong>", tags: %w[strong]) },
+      icon: -> { "heroicons/outline/#{record.published_at ? "eye" : "eye-slash"}" }
+    },
+    {
+      label: -> { record.published_at ? "✅" : "🙄" },
+      tooltip: -> { "Post is #{record.published_at ? "published" : "draft"}. Click to toggle." },
+      url: -> {
+        Avo::Actions::TogglePublished.path(
+          resource: resource,
+          arguments: {
+            records: Array.wrap(record.id),
+            no_confirmation: true
+          }
+        )
+      },
+      data: Avo::BaseAction::DATA_ATTRIBUTES
+    }
+  ]
+
   def fields
     field :id, as: :id
     field :name, required: true, sortable: true
