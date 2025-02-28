@@ -15,6 +15,10 @@ module Avo
         target: Avo::MODAL_FRAME_ID,
         template: @view_context.turbo_frame_tag(Avo::MODAL_FRAME_ID)
     end
+
+    def avo_turbo_reload
+      turbo_stream_action_tag :turbo_reload
+    end
   end
 end
 

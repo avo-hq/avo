@@ -26,5 +26,3 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
     field :id, as: :id<%= generate_fields %>
   end<% end %>
 end
-
-

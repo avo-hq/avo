@@ -13,7 +13,7 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
   end
 
   def fields
-    field :size, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}
+    field :size, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
     TestBuddy.hi("Dummy action fields")
     field :keep_modal_open, as: :boolean
     field :persistent_text, as: :text

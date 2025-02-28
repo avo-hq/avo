@@ -35,7 +35,8 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
         data: {panel_id: "main"},
         cover_photo: @resource.cover_photo,
         profile_photo: @resource.profile_photo,
-        external_link: @resource.get_external_link
+        external_link: @resource.get_external_link,
+        discreet_information: @resource.discreet_information
       }
     else
       {name: @item.name, description: @item.description, index: @index}
