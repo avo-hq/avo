@@ -51,7 +51,7 @@ class Avo::Resources::Post < Avo::BaseResource
           }
         )
       },
-      data: Avo::BaseAction::DATA_ATTRIBUTES,
+      data: Avo::BaseAction::DATA_ATTRIBUTES
     }
   ]
 
