@@ -4,6 +4,8 @@ module Avo
     include Avo::Concerns::HasActionStimulusControllers
     include Avo::Concerns::Hydration
 
+    DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
+
     class_attribute :name, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
@@ -59,8 +61,8 @@ module Avo
         to_s
       end
 
-      def link_arguments(resource:, arguments: {}, **args)
-        path = Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
+      def path(resource:, arguments: {}, **args)
+        Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
           .append_paths("actions")
           .append_query(
             **{
@@ -70,8 +72,10 @@ module Avo
             }.compact
           )
           .to_s
+      end
 
-        [path, {turbo_frame: Avo::MODAL_FRAME_ID}]
+      def link_arguments(resource:, arguments: {}, **args)
+        [path(resource:, arguments:, **args), DATA_ATTRIBUTES]
       end
 
       # Encrypt the arguments so we can pass sensible data as a query param.
@@ -364,6 +368,16 @@ module Avo
 
     def disabled?
       !enabled?
+    end
+
+    def no_confirmation?
+      Avo::ExecutionContext.new(
+        target: no_confirmation,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments:
+      ).handle
     end
 
     private

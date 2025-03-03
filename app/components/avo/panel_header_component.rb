@@ -10,6 +10,7 @@ class Avo::PanelHeaderComponent < Avo::BaseComponent
   prop :external_link
   prop :description
   prop :display_breadcrumbs, default: false
+  prop :discreet_information
   prop :profile_photo
 
   private

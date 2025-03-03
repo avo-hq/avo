@@ -156,4 +156,18 @@ RSpec.feature "HasManyField", type: :feature do
       expect { find("tr[data-resource-id='#{team.id}'] [data-control='detach']").click }.to raise_error("Callback Called")
     end
   end
+
+  describe "dynamic description" do
+    let(:url) { "/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=table" }
+    let!(:post_1) { create :post, user: user }
+    let!(:post_2) { create :post, user: user }
+
+    it { is_expected.to have_text "This user has 2 posts" }
+  end
+
+  describe "dynamic name" do
+    let(:url) { "/admin/resources/users/#{user.slug}/posts?turbo_frame=has_many_field_posts&view_type=table" }
+
+    it { is_expected.to have_text "Posts" }
+  end
 end

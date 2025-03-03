@@ -25,7 +25,7 @@ Mousetrap.bind('r r r', () => {
   // Capture scroll position
   scrollTop = document.scrollingElement.scrollTop
 
-  Turbo.visit(window.location.href, { action: 'replace' })
+  window.StreamActions.turbo_reload()
 })
 
 function isMac() {
@@ -56,6 +56,7 @@ document.addEventListener('keyup', (event) => {
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'light',
+    allowHTML: true,
     content(reference) {
       const title = reference.getAttribute('title')
       reference.removeAttribute('title')

@@ -8,6 +8,11 @@ StreamActions.close_filters_dropdown = function () {
   document.querySelector('.filters-dropdown-selector').classList.add('hidden')
 }
 
+// Uses Turbo to refresh the page
+StreamActions.turbo_reload = function () {
+  window.Turbo.visit(window.location.href, { action: 'replace' })
+}
+
 StreamActions.open_filter = function () {
   const id = this.getAttribute('unique-id')
   setTimeout(() => {

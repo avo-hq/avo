@@ -17,6 +17,7 @@ class Avo::Resources::Event < Avo::BaseResource
   self.profile_photo = {
     source: :profile_photo
   }
+  self.discreet_information = :timestamps
 
   self.row_controls_config = {
     float: true,

@@ -1,24 +1,37 @@
 <%= turbo_frame_tag params[:turbo_frame] do %>
-  <%= content_tag :div, class: "-mx-2" do %>
-    <%= content_tag :div, class: "px-6 py-4" do %>
-      <div class="text-md font-semibold uppercase text-gray-800">Previewing <%= @resource.record_title %></div>
-    <% end %>
+  <% if @authorized %>
+    <%= content_tag :div, class: "-mx-2" do %>
+      <%= content_tag :div, class: "px-6 py-4" do %>
+        <div class="text-md font-semibold uppercase text-gray-800">Previewing <%= @resource.record_title %></div>
+      <% end %>
 
-    <% if @preview_fields.present? %>
-      <div class="mt-0 divide-y divide-gray-200 border-t border-gray-200">
-        <% @preview_fields.each_with_index do |field, index| %>
-          <%= render field
-            .hydrate(
-              resource: @resource,
-              record: @resource.record,
-              user: @resource.user,
-              view: Avo::ViewInquirer.new(:show)
-            )
-            .component_for_view(:show)
-            .new(field: field, resource: @resource, index: index, compact: true, short: true)
-          %>
-        <% end %>
-      </div>
+      <% if @preview_fields.present? %>
+        <div class="mt-0 divide-y divide-gray-200 border-t border-gray-200">
+          <% @preview_fields.each_with_index do |field, index| %>
+            <%= render field
+              .hydrate(
+                resource: @resource,
+                record: @resource.record,
+                user: @resource.user,
+                view: Avo::ViewInquirer.new(:show)
+              )
+              .component_for_view(:show)
+              .new(field: field, resource: @resource, index: index, compact: true, short: true)
+            %>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
+  <% else %>
+    <div class="shadow-lg rounded px-4 py-3 rounded relative border text-white pointer-events-auto bg-blue-400 border-blue-600 m-2">
+      <div class="flex px-2">
+        <div class="shrink-0">
+          <%= svg "heroicons/solid/exclamation-circle", class: "h-6" %>
+        </div>
+        <div class="ml-3 flex-1 pt-0.5">
+          <p class="text-sm leading-5 font-semibold"><%= t "avo.not_authorized" %></p>
+        </div>
+      </div>
+    </div>
   <% end %>
 <% end %>
