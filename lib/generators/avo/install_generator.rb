@@ -26,7 +26,7 @@ module Generators
         end
 
         def app_id
-          options[:"app-id"] || SecureRandom.hex(6).first(12)
+          options[:"app-id"]
         end
 
         if defined?(Account) && Account.is_a?(ActiveRecord::Base)
