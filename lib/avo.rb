@@ -136,7 +136,9 @@ module Avo
 
     def mount_engines
       -> {
-        raise "`mount_engines` method is now obsolete, please check LINK_HERE for more details."
+        raise "'mount_engines' method is now obsolete. \n" \
+          "Please refer to the upgrade guide for details on the new mounting point: \n" \
+          "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
       }
     end
 
