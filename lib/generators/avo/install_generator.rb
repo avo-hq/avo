@@ -10,7 +10,7 @@ module Generators
       class_option :path, type: :string, default: "avo"
 
       def create_initializer_file
-        route "mount Avo::Engine, at: Avo.configuration.root_path"
+        route "mount_avo"
 
         template "initializer/avo.tt", "config/initializers/avo.rb"
 
