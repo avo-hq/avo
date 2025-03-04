@@ -8,6 +8,7 @@ module Generators
       namespace "avo:install"
       desc "Creates an Avo initializer adds the route to the routes file."
       class_option :path, type: :string, default: "avo"
+      class_option :"app-id", type: :string
 
       def create_initializer_file
         route "mount_avo"
@@ -22,6 +23,10 @@ module Generators
           if defined?(User).present?
             Rails::Generators.invoke("avo:resource", ["user", "-q"], {destination_root: Rails.root})
           end
+        end
+
+        def app_id
+          options[:"app-id"]
         end
 
         if defined?(Account) && Account.is_a?(ActiveRecord::Base)
