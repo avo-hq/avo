@@ -32,7 +32,7 @@ class Avo::Resources::Person < Avo::BaseResource
             "Software Engineer"
           end
 
-          row do
+          cluster do
             field :company, stacked: true do
               "TechCorp Inc."
             end

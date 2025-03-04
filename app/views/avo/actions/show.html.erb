@@ -5,7 +5,7 @@
 <%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
-    data-action-no-confirmation-value="<%= @action.no_confirmation %>"
+    data-action-no-confirmation-value="<%= @action.no_confirmation? %>"
     data-action-resource-name-value="<%= @resource.model_key %>"
     data-resource-id="<%= params[:id] %>"
     class="hidden text-slate-800"
@@ -30,7 +30,8 @@
         <%= @action.get_message %>
       </div>
       <%= form.hidden_field :avo_resource_ids, value: params[:id] || params[:resource_ids], 'data-action-target': 'resourceIds' %>
-      <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
+      <%= form.hidden_field :avo_selected_all, 'data-action-target': 'selectedAll' %>
+      <%= form.hidden_field :avo_index_query, 'data-action-target': 'indexQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
       <% if @fields.present? %>
         <div class="mt-4 -mx-6">

@@ -31,4 +31,10 @@ class Product < ApplicationRecord
 
   has_one_attached :image
   has_many_attached :images
+
+  def status
+    return :new if id.nil?
+    return :new if id.even?
+    :updated
+  end
 end

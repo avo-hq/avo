@@ -11,6 +11,10 @@ module Avo
         default_options = {info: :info, success: :success, danger: :danger, warning: :warning, neutral: :neutral}
         @options = args[:options].present? ? default_options.merge(args[:options]) : default_options
       end
+
+      def options_for_filter
+        @options.values.flatten.uniq
+      end
     end
   end
 end

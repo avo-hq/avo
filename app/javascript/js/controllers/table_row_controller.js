@@ -1,8 +1,17 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
+  connect() {
+    this.isSelecting = false
+    this.#bindSelectionEvents()
+  }
+
   visitRecord(event) {
     if (event.type !== 'click') {
+      return
+    }
+
+    if (this.#isTextSelected()) {
       return
     }
 
@@ -31,6 +40,31 @@ export default class extends Controller {
     } else {
       this.#visitInSameTab(url)
     }
+  }
+
+  #bindSelectionEvents() {
+    this.element.addEventListener('mousedown', this.#handleMouseDown.bind(this))
+    this.element.addEventListener('mousemove', this.#handleMouseMove.bind(this))
+  }
+
+  #handleMouseDown() {
+    this.isSelecting = false
+  }
+
+  #handleMouseMove(event) {
+    if (event.buttons === 1) { // Left mouse button is being held
+      this.isSelecting = true
+    }
+  }
+
+  #isTextSelected() {
+    if (this.isSelecting || window.getSelection().toString().length > 0) {
+      this.isSelecting = false
+
+      return true
+    }
+
+    return false
   }
 
   #visitInSameTab(url) {

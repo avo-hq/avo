@@ -8,7 +8,7 @@ class Avo::RowSelectorComponent < Avo::BaseComponent
   def data_action
     data = "input->item-selector#toggle input->item-select-all#selectRow"
 
-    if Avo.plugin_manager.installed?(:avo_pro)
+    if Avo.plugin_manager.installed?("avo-pro")
       data += " click->record-selector#toggleMultiple"
     end
 

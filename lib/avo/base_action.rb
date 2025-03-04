@@ -4,6 +4,8 @@ module Avo
     include Avo::Concerns::HasActionStimulusControllers
     include Avo::Concerns::Hydration
 
+    DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
+
     class_attribute :name, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
@@ -59,8 +61,8 @@ module Avo
         to_s
       end
 
-      def link_arguments(resource:, arguments: {}, **args)
-        path = Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
+      def path(resource:, arguments: {}, **args)
+        Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
           .append_paths("actions")
           .append_query(
             **{
@@ -70,8 +72,10 @@ module Avo
             }.compact
           )
           .to_s
+      end
 
-        [path, {turbo_frame: Avo::MODAL_FRAME_ID}]
+      def link_arguments(resource:, arguments: {}, **args)
+        [path(resource:, arguments:, **args), DATA_ATTRIBUTES]
       end
 
       # Encrypt the arguments so we can pass sensible data as a query param.
@@ -111,7 +115,7 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil, index_query: nil)
       @record = record
       @resource = resource
       @user = user
@@ -123,7 +127,7 @@ module Avo
         record: record
       ).handle.with_indifferent_access
       @query = query
-
+      @index_query = index_query
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
@@ -364,6 +368,16 @@ module Avo
 
     def disabled?
       !enabled?
+    end
+
+    def no_confirmation?
+      Avo::ExecutionContext.new(
+        target: no_confirmation,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments:
+      ).handle
     end
 
     private

@@ -3,6 +3,7 @@ class Avo::Actions::TogglePublished < Avo::BaseAction
   self.message = "Are you sure, sure?"
   self.confirm_button_label = "Toggle"
   self.cancel_button_label = "Don't toggle yet"
+  self.no_confirmation = -> { arguments[:no_confirmation] || false }
 
   def fields
     field :notify_user, as: :boolean, default: true

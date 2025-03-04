@@ -55,6 +55,15 @@ module Avo
     end
   end
 
+  class ResourceNotFoundError < StandardError
+    def initialize(resource_name)
+      super(
+        "Resource for '#{resource_name}' not found.\n" \
+        "You can generate a resource for it by running 'rails generate avo:resource #{resource_name}'."
+      )
+    end
+  end
+
   class << self
     attr_reader :logger
     attr_reader :cache_store
@@ -67,6 +76,7 @@ module Avo
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
+      Avo.plugin_manager.reset
       ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
@@ -94,7 +104,7 @@ module Avo
     end
 
     def main_menu
-      return unless Avo.plugin_manager.installed?(:avo_menu)
+      return unless Avo.plugin_manager.installed?("avo-menu")
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_main_menu?
@@ -103,7 +113,7 @@ module Avo
     end
 
     def profile_menu
-      return unless Avo.plugin_manager.installed?(:avo_menu)
+      return unless Avo.plugin_manager.installed?("avo-menu")
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_profile_menu?
@@ -133,14 +143,11 @@ module Avo
       true
     end
 
-    # Mount all Avo engines
     def mount_engines
       -> {
-        mount Avo::DynamicFilters::Engine, at: "/avo-dynamic_filters" if defined?(Avo::DynamicFilters::Engine)
-        mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
-        mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
-        mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
-        mount Avo::Collaborate::Engine, at: "/collaborate" if defined?(Avo::Collaborate::Engine)
+        raise "'mount_engines' method is now obsolete. \n" \
+          "Please refer to the upgrade guide for details on the new mounting point: \n" \
+          "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
       }
     end
 

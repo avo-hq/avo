@@ -110,8 +110,10 @@ export default class extends Controller {
 
         if (param === 'resourceIds') {
           url.searchParams.set('fields[avo_resource_ids]', resourceIds)
+          url.searchParams.set('fields[avo_selected_all]', 'false')
         } else if (param === 'selectedQuery') {
-          url.searchParams.set('fields[avo_selected_query]', selectedQuery)
+          url.searchParams.set('fields[avo_index_query]', selectedQuery)
+          url.searchParams.set('fields[avo_selected_all]', 'true')
         }
 
         link.href = url.toString()

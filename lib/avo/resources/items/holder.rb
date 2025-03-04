@@ -65,9 +65,12 @@ class Avo::Resources::Items::Holder
     add_item Avo::Resources::Items::Tab::Builder.parse_block(name: name, parent: @parent, **args, &block)
   end
 
-  def row(**args, &block)
+  def cluster(**args, &block)
     add_item Avo::Resources::Items::Row::Builder.parse_block(parent: @parent, **args, &block)
   end
+
+  # def row
+  alias_method :row, :cluster
 
   def tool(klass, **args)
     add_item klass.new(**args, view: self.parent.view, parent: self.parent)

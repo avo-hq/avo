@@ -228,7 +228,7 @@ module Generators
             # If the through_reflection is not a HasManyReflection, add it to the fields hash using the class of the through_reflection
             # ex (team.rb): has_one :admin, through: :admin_membership, source: :user
             # we use the class of the through_reflection (HasOneReflection -> has_one :admin) to generate the field
-            associations_mapping[association.through_reflection.class]
+            ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.through_reflection.class]
           end
         end
 
