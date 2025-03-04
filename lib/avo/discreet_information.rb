@@ -64,6 +64,7 @@ class Avo::DiscreetInformation
       url_target: Avo::ExecutionContext.new(target: item[:url_target], **args).handle,
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
       label: Avo::ExecutionContext.new(target: item[:label], **args).handle,
+      as_badge: Avo::ExecutionContext.new(target: item[:as_badge], **args).handle
     )
   end
 
