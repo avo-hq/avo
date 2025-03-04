@@ -11,7 +11,7 @@ class Avo::DiscreetInformation
       if item == :timestamps
         timestamp_item(item)
       elsif item == :id
-        id(item)
+        id_item(item)
       else
         parse_payload(item)
       end
@@ -20,7 +20,7 @@ class Avo::DiscreetInformation
 
   private
 
-  def id(item)
+  def id_item(item)
     DiscreetInformationItem.new(
       label: "ID: #{record.id}",
       as_badge: true
