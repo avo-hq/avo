@@ -115,7 +115,7 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil, index_query: nil)
       @record = record
       @resource = resource
       @user = user
@@ -127,7 +127,7 @@ module Avo
         record: record
       ).handle.with_indifferent_access
       @query = query
-
+      @index_query = index_query
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
