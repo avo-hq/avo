@@ -61,13 +61,25 @@ module Avo
     private
 
     def set_query
-      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+      # If the user selected all records, use the decrypted index query
+      # Otherwise, find the records from the resource ids
+      @query = if action_params[:fields]&.dig(:avo_selected_all) == "true"
+        decrypted_index_query
+      else
+        find_records_from_resource_ids
+      end
+    end
 
-      @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+    def find_records_from_resource_ids
+      if (ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []).any?
+        @resource.find_record(ids, params: params)
+      else
+        []
+      end
     end
 
     def set_fields
-      @fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
+      @fields = action_params[:fields].except(:avo_resource_ids, :avo_index_query)
     end
 
     def action_params
@@ -82,7 +94,8 @@ module Avo
         # force the action view to in order to render new-related fields (hidden field)
         view: Avo::ViewInquirer.new(:new),
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
-        query: @query
+        query: @query,
+        index_query: decrypted_index_query
       )
 
       # Fetch action's fields
@@ -170,10 +183,10 @@ module Avo
       end
     end
 
-    def decrypted_query
-      return if (encrypted_query = action_params[:fields]&.dig(:avo_selected_query)).blank?
-
-      Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
+    def decrypted_index_query
+      @decrypted_index_query ||= if (encrypted_query = action_params[:fields]&.dig(:avo_index_query)).present?
+        Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
+      end
     end
 
     def flash_messages
