@@ -115,6 +115,13 @@ module Avo
         values_for_type
       end
 
+      def primary_key
+        @primary_key ||= reflection.association_primary_key
+        # Quick fix for "Polymorphic associations do not support computing the class."
+      rescue
+        nil
+      end
+
       def values_for_type(model = nil)
         resource = target_resource
         resource = Avo.resource_manager.get_resource_by_model_class model if model.present?
@@ -126,6 +133,7 @@ module Avo
         end
 
         query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+          # to_param uses slug so checking primary_key is unnecessary
           [resource.new(record: record).record_title, record.to_param]
         end.tap do |options|
           options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
@@ -212,14 +220,16 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+            found_record = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param)
+
+            record_id = found_record&.send(primary_key.presence || :id)
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).id
+          found_record = value.present? ? target_resource(record:).find_record(value) : nil
 
-          record.send(:"#{key}=", record_id)
+          record.send(:"#{key}=", found_record&.send(primary_key.presence || :id))
         end
 
         record
