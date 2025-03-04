@@ -1,6 +1,6 @@
 <%= content_tag :div,
   class: class_names(
-    "avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r lg:border-none bg-none xh-dvh h-[calc(100dvh-4rem)] bg-application lg:bg-transparent",
+    "avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r border-gray-200 lg:border-none bg-none xh-dvh h-[calc(100dvh-4rem)] bg-application lg:bg-transparent",
     "print:hidden": Avo.configuration.hide_layout_when_printing,
     "hidden": !@sidebar_open,
   ),
@@ -61,8 +61,8 @@
       </div>
     </div>
     <% if Rails.env.development? %>
-      <div class="p-4 border-t group">
-        <%= link_to helpers.avo.avo_private_status_path, class: "block px-4 py-2 border rounded flex justify-between items-center w-full text-black text-sm" do %>
+      <div class="p-4 border-t border-gray-200 group">
+        <%= link_to helpers.avo.avo_private_status_path, class: "block px-4 py-2 border border-gray-200 rounded-sm flex justify-between items-center w-full text-black text-sm" do %>
           <span>Avo Status</span> <span><div class="rounded-full w-4 h-4 <%= Avo.app_status ? "bg-green-400" : "bg-orange-400" %>"></div></span>
         <% end %>
         <div class="absolute text-xs text-gray-700 group-hover:block hidden text-center w-full -ml-4">👆Visible only in development👆</div>

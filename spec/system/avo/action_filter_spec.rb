@@ -7,7 +7,7 @@ RSpec.feature "Actions", type: :system do
     open_panel_action(action_name: "Dummy action")
     run_action
 
-    base_classes = ".max-w-lg.w-full.shadow-lg.rounded.px-4.py-3.rounded.relative.border.text-white.pointer-events-auto"
+    base_classes = ".max-w-lg.w-full.shadow-lg.px-4.py-3.rounded-sm.relative.border.text-white.pointer-events-auto"
 
     error_classes = "#{base_classes}.bg-red-400.border-red-600"
     success_classes = "#{base_classes}.bg-green-500.border-green-600"

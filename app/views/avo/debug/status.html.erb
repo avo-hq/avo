@@ -19,7 +19,7 @@
     <% end %>
     <% c.with_bare_content do %>
       <div class="grid gap-4 grid-cols-2">
-        <div class="relative flex flex-col bg-white rounded shadow-panel p-4 space-y-4 h-full">
+        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
           <div class="flex justify-between w-full">
             <div class="font-semibold">License info</div>
             <div class="flex justify-self-end">
@@ -52,26 +52,31 @@
                 </dl>
               <% end %>
               <div class="mt-4">
-                <dl>
+                <dl class="flex flex-col">
                   <% information_items.each do |item| %>
-                    <dt class="font-semibold text-sm"><%= item.humanize %></dt>
-                    <dd><%= license.response[item] %></dd>
+                    <div>
+                      <dt class="font-semibold text-sm"><%= item.humanize %></dt>
+                      <dd><%= license.response[item] %></dd>
+                    </div>
                   <% end %>
-                  <dt class="font-semibold text-sm">Last fetched at</dt>
-                  <dd><%= license.response['fetched_at'] %> <br>
-                    <% if license.response['fetched_at'].present? %>
-                      (<%= time_ago_in_words license.response['fetched_at'] %> ago)</dd>
-                  <% end %>
-                  <dt class="font-semibold text-sm">Cache store</dt>
-                  <dd>
-                    <%= Avo.cache_store.class %>
-                  </dd>
+                    <dt class="font-semibold text-sm">Last fetched at</dt>
+                    <dd><%= license.response['fetched_at'] %> <br>
+                      <% if license.response['fetched_at'].present? %>
+                        (<%= time_ago_in_words license.response['fetched_at'] %> ago)
+                      <% end %>
+                    </dd>
+                  <div>
+                    <dt class="font-semibold text-sm">Cache store</dt>
+                    <dd>
+                      <%= Avo.cache_store.class %>
+                    </dd>
+                  </div>
                 </dl>
               </div>
             </div>
           </div>
         </div>
-        <div class="relative flex flex-col bg-white rounded shadow-panel p-4 space-y-4 h-full">
+        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
           <div class="flex justify-between w-full">
             <div class="font-semibold">Plugins</div>
           </div>

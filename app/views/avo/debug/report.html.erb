@@ -12,7 +12,7 @@
           <div class="sm:col-span-6 mt-4">
             <label for="about" class="block text-sm font-medium text-gray-700">Details</label>
             <div class="mt-1">
-              <%= f.text_area :body, rows: 3, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:bg-gray-100", disabled: !Avo::Current.license.pro? %>
+              <%= f.text_area :body, rows: 3, class: "block w-full rounded-md border-gray-300 shadow-xs focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm disabled:bg-gray-100", disabled: !Avo::Current.license.pro? %>
             </div>
           </div>
           <%= f.hidden_field :license_key, value: Avo::Services::DebugService.debug_report(request)[:license_response]["license_key"] %>

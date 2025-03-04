@@ -25,7 +25,7 @@ class Avo::Resources::Items::Holder
       as = args.fetch(:as, nil)
 
       alert_type = :error
-      message = "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded bg-red-600'>field :#{field_name}, as: :#{as}</code>"
+      message = "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded-sm bg-red-600'>field :#{field_name}, as: :#{as}</code>"
 
       if as == :markdown
         alert_type = :warning
