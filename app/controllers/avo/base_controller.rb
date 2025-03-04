@@ -26,9 +26,7 @@ module Avo
       end
       add_breadcrumb @resource.plural_name.humanize
 
-      # Apply the search query if configured on the resource
       set_index_params
-      apply_search
       set_filters
       set_actions
       set_query
@@ -37,6 +35,9 @@ module Avo
       if @resource.includes.present?
         @query = @query.includes(*@resource.includes)
       end
+
+      # Apply the search query if configured on the resource
+      apply_search
 
       # Eager load attachments
       if @resource.attachments.present?
