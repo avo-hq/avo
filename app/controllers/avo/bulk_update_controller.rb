@@ -1,28 +1,96 @@
 module Avo
-  class BulkUpdateController < ApplicationController
-    before_action :set_resource_name
-    before_action :set_resource
-    before_action :set_query, :set_fields, :verify_authorization, only: [:edit, :update]
+  class BulkUpdateController < ResourcesController
+    before_action :set_query, only: [:edit, :handle]
+    before_action :set_fields, only: [:edit, :handle]
 
     def edit
       @prefilled_fields = prefill_fields(@query, @fields)
-      render layout: false
+      @record = @resource.model_class.new(@prefilled_fields.transform_values { |v| v.nil? ? nil : v })
+
+      @resource.record = @record
+      render Avo::Views::ResourceEditComponent.new(
+        resource: @resource,
+        query: @query,
+        prefilled_fields: @prefilled_fields
+      )
     end
 
-    def update
-      @resources.each_with_index do |resource, index|
-        record = @query[index]
-        @fields.each do |field_name, new_value|
-          resource.fill_field(record, field_name, new_value) if new_value.present?
-        end
-        record.save!
+    def handle
+      if params_to_apply.blank?
+        flash[:warning] = t("avo.no_changes_made")
+        redirect_to after_bulk_update_path
       end
 
-      flash[:notice] = I18n.t("avo.bulk_update.success", count: @query.size)
-      redirect_to resources_path(resource: @resources.first)
+      updated_count, failed_records = update_records
+
+      if failed_records.empty?
+        flash[:notice] = t("avo.bulk_update_success", count: updated_count)
+      else
+        error_messages = failed_records.flat_map { |fr| fr[:errors] }.uniq
+        flash[:error] = t("avo.bulk_update_failure", count: failed_records.count, errors: error_messages.join(", "))
+      end
+
+      redirect_to after_bulk_update_path
     end
 
     private
+
+    def params_to_apply
+      prefilled_params = params[:prefilled] || {}
+
+      resource_key = @resource_name.downcase.to_sym
+      current_params = params[resource_key] || {}
+
+      progress_fields = @resource.get_field_definitions
+                                 .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
+                                 .map(&:id)
+                                 .map(&:to_sym)
+
+
+      params_to_apply = current_params.reject do |key, value|
+        key_sym = key.to_sym
+        prefilled_value = prefilled_params[key_sym]
+
+        next true if progress_fields.include?(key_sym) && prefilled_value == "" && value.to_s == "50"
+
+        prefilled_value.to_s == value.to_s
+      end
+
+      params_to_apply
+    end
+
+    def update_records
+      updated_count = 0
+      failed_records = []
+
+      @query.each do |record|
+        begin
+          params_to_apply.each do |key, value|
+            begin
+              record.public_send("#{key}=", value)
+            rescue => e
+              puts "Błąd przypisywania pola #{key}: #{e.message}"
+            end
+          end
+
+          @resource.fill_record(record, params)
+
+          if record.save
+            updated_count += 1
+          else
+            failed_records << { record: record, errors: record.errors.full_messages }
+          end
+        rescue => e
+          failed_records << { record: record, errors: [e.message] }
+        end
+      end
+
+      return updated_count, failed_records
+    end
+
+    def after_bulk_update_path
+      resources_path(resource: @resource)
+    end
 
     def prefill_fields(records, fields)
       prefilled = {}
@@ -33,38 +101,34 @@ module Avo
       prefilled
     end
 
-    def set_resources
-      raise ActionController::RoutingError.new "No route matches" if @query.nil? || @query.empty?
-
-      @resources = @query.map do |record|
-        resource.new(view: params[:view].presence || action_name.to_s, user: _current_user, params: params, record: record)
-      end
-
-      set_authorization
-    end
-
     def set_query
-      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
-
-      @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+      if params[:query].present?
+        @query = @resource.find_record(params[:query], params: params)
+      else
+        resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+        @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+      end
     end
 
     def set_fields
-      @fields = action_params[:fields].except(:avo_resource_ids, :avo_selected_query)
+      if @query.blank?
+        flash[:error] = "Bulk update cannot be performed without records."
+        redirect_to after_bulk_update_path
+      else
+        @fields = @query.first.attributes.keys.index_with { nil }
+      end
     end
 
     def action_params
-      @action_params ||= params.permit(:authenticity_token, :resource_name, :button, :arguments, fields: {})
+      @action_params ||= params.permit(:authenticity_token, fields: {})
     end
 
     def decrypted_query
-      return if (encrypted_query = action_params[:fields]&.dig(:avo_selected_query)).blank?
+      encrypted_query = action_params[:fields]&.dig(:avo_selected_query) || params[:query]
+
+      return if encrypted_query.blank?
 
       Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
-    end
-
-    def verify_authorization
-      raise Avo::NotAuthorizedError.new unless @action.authorized?
     end
   end
 end

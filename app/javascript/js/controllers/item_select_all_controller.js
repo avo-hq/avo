@@ -71,6 +71,7 @@ export default class extends Controller {
     }
 
     this.updateLinks('resourceIds')
+    this.updateBulkEditLink('resourceIds')
   }
 
   selectAll(event) {
@@ -82,8 +83,10 @@ export default class extends Controller {
 
     if (this.selectedAllValue) {
       this.updateLinks('selectedQuery')
+      this.updateBulkEditLink('selectedQuery')
     } else {
       this.updateLinks('resourceIds')
+      this.updateBulkEditLink('resourceIds')
     }
   }
 
@@ -98,6 +101,37 @@ export default class extends Controller {
     }
 
     document.querySelectorAll('[data-target="actions-list"] > a').forEach((link) => {
+      try {
+        const url = new URL(link.href)
+
+        Array.from(url.searchParams.keys())
+          .filter((key) => key.startsWith('fields['))
+          .forEach((key) => url.searchParams.delete(key))
+
+        if (param === 'resourceIds') {
+          url.searchParams.set('fields[avo_resource_ids]', resourceIds)
+        } else if (param === 'selectedQuery') {
+          url.searchParams.set('fields[avo_selected_query]', selectedQuery)
+        }
+
+        link.href = url.toString()
+      } catch (error) {
+        console.error('Error updating link:', link, error)
+      }
+    })
+  }
+
+  updateBulkEditLink(param) {
+    let resourceIds = ''
+    let selectedQuery = ''
+
+    if (param === 'resourceIds') {
+      resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
+    } else if (param === 'selectedQuery') {
+      selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
+    }
+
+    document.querySelectorAll('a[href*="/admin/bulk_update/edit"]').forEach((link) => {
       try {
         const url = new URL(link.href)
 

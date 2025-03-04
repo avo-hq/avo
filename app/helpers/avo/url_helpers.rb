@@ -44,8 +44,12 @@ module Avo
       avo.send :"edit_resources_#{resource.singular_route_key}_path", record || resource_id, **args
     end
 
-    def edit_bulk_update_path(resource:, **args)
-      avo.send :"edit_bulk_update_path", resource, **args
+    def edit_bulk_update_path(resource_name:, id:, **args)
+      avo.send :"edit_bulk_update_path", resource_name, id, **args
+    end
+
+    def handle_bulk_update_path(resource_name:, query:, **args)
+      avo.send :"handle_bulk_update_path", resource_name, query, **args
     end
 
     def resource_attach_path(resource, record_id, related_name, related_id = nil)
