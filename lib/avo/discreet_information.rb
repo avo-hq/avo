@@ -10,6 +10,8 @@ class Avo::DiscreetInformation
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
         timestamp_item(item)
+      elsif item == :id
+        id(item)
       else
         parse_payload(item)
       end
@@ -17,6 +19,13 @@ class Avo::DiscreetInformation
   end
 
   private
+
+  def id(item)
+    DiscreetInformationItem.new(
+      label: "ID: #{record.id}",
+      as_badge: true
+    )
+  end
 
   def timestamp_item(item)
     return if record.created_at.blank? && record.updated_at.blank?
@@ -35,7 +44,7 @@ class Avo::DiscreetInformation
 
     DiscreetInformationItem.new(
       tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
-      icon: "heroicons/outline/clock"
+      icon: "heroicons/outline/clock",
     )
   end
 
@@ -54,9 +63,9 @@ class Avo::DiscreetInformation
       url: Avo::ExecutionContext.new(target: item[:url], **args).handle,
       url_target: Avo::ExecutionContext.new(target: item[:url_target], **args).handle,
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
-      label: Avo::ExecutionContext.new(target: item[:label], **args).handle
+      label: Avo::ExecutionContext.new(target: item[:label], **args).handle,
     )
   end
 
-  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, keyword_init: true) unless defined?(DiscreetInformationItem)
+  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, :as_badge, keyword_init: true) unless defined?(DiscreetInformationItem)
 end
