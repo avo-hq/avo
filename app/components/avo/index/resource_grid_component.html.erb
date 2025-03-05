@@ -16,7 +16,7 @@
     <% end %>
   </turbo-frame>
 <% else %>
-  <div class="bg-white rounded shadow-panel"
+  <div class="bg-white rounded-sm shadow-panel"
     data-component-name="<%= self.class.to_s.underscore %>">
     <%= helpers.empty_state by_association: params[:related_name].present?, view_type: :grid %>
   </div>

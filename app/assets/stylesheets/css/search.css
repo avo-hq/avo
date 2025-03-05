@@ -22,7 +22,7 @@
   }
 
   .aa-DetachedSearchButton {
-    @apply rounded border-gray-300 h-[34px];
+    @apply rounded-sm border-gray-300 h-[34px];
   }
 }
 
@@ -37,11 +37,11 @@
 
 .aa-Form {
   &:focus-within {
-    @apply ring-0 !important;
+    @apply ring-0;
   }
 
   input {
-    @apply focus:ring-0 !important;
+    @apply focus:ring-0;
   }
   &:focus-within {
     .aa-InputWrapperPrefix{
@@ -71,7 +71,7 @@ button.aa-DetachedCancelButton {
       @apply space-y-2;
 
       .aa-Item {
-        @apply bg-white rounded px-3 py-4 shadow font-medium;
+        @apply bg-white rounded-sm px-3 py-4 shadow font-medium;
 
         .aa-ItemDescription {
           @apply text-gray-500 text-sm font-normal mt-1;
