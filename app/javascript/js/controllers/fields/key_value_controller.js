@@ -145,7 +145,7 @@ export default class extends Controller {
     const inputValue = id === 'key' ? key : value
 
     return `<input
-  class="${this.options.inputClasses} focus:bg-gray-100 !rounded-none border-gray-600 border-r border-l-0 border-b-0 border-t-0 focus:border-gray-300 w-1/2 focus:outline-none outline-none key-value-input-${id}"
+  class="${this.options.inputClasses} focus:bg-gray-100 !rounded-none border-gray-600 border-r border-l-0 border-b-0 border-t-0 focus:border-gray-300 w-1/2 focus:outline-hidden outline-hidden key-value-input-${id}"
   data-action="input->key-value#${id}FieldUpdated"
   placeholder="${this.options[`${id}_label`]}"
   data-index="${index}"

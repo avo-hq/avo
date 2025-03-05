@@ -34,12 +34,12 @@ class Avo::ButtonComponent < Avo::BaseComponent
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
+    classes = "button-component inline-flex grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
 
     # For non-icon-styled buttons we should not add borders.
-    classes += " border active:outline active:outline-1" unless is_icon?
+    classes += " border border-gray-200 active:outline active:outline-1" unless is_icon?
 
-    classes += " rounded" if @rounded.present?
+    classes += " rounded-sm" if @rounded.present?
     classes += style_classes
     classes += horizontal_padding_classes
     classes += vertical_padding_classes

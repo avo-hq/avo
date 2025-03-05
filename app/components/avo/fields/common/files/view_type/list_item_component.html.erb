@@ -5,14 +5,14 @@
         <div class="rounded-full bg-slate-100 border border-gray-500 p-1.5 flex items-center justify-center">
           <%= helpers.svg icon_for_file, class: "h-5 text-gray-600" %>
         </div>
-        <p class="items-center h-full p-2 flex-shrink-0">
+        <p class="items-center h-full p-2 shrink-0">
           <%= file.filename %>
         </p>
       </div>
-      <div class="text-gray-700 flex-shrink-0 text-sm">
+      <div class="text-gray-700 shrink-0 text-sm">
         <%= helpers.number_to_human_size(file.byte_size) %>
       </div>
-      <div class="flex space-x-2 justify-end col-span-1 flex-shrink-0">
+      <div class="flex space-x-2 justify-end col-span-1 shrink-0">
         <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: file, resource: @resource) %>
       </div>
     </div>

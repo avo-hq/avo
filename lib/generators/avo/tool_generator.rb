@@ -41,7 +41,7 @@ module Generators
         #   will generate the avo.lolo_path helper
         # THe fact that it will always generate the definded? and Avo::Engine.routes.draw wraps is unfortunate. We'd love a PR to fix that.
         route_contents = <<~ROUTE
-          
+
           if defined? ::Avo
             Avo::Engine.routes.draw do
               # This route is not protected, secure it with authentication if needed.
@@ -69,7 +69,7 @@ module Generators
         end
 
         def in_code(text)
-          "<code class='p-1 rounded bg-gray-500 text-white text-sm'>#{text}</code>"
+          "<code class='p-1 rounded-sm bg-gray-500 text-white text-sm'>#{text}</code>"
         end
       end
     end

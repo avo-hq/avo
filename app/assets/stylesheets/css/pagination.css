@@ -22,7 +22,7 @@
   .pagy-nav-js .page a,
   .pagy-combo-nav-js .page a,
   .pagy-combo-nav-js .pagy-combo-input a {
-    @apply rounded px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
+    @apply rounded-sm px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
 
     &:hover{
       @apply bg-gray-150;
@@ -73,7 +73,7 @@
     }
 
     & a:not(.gap) {
-      @apply block rounded px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
+      @apply block rounded-sm px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
 
       &:hover{
         @apply bg-gray-150;

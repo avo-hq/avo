@@ -152,7 +152,7 @@ export default class extends Controller {
                 classes = 'rounded-full'
                 break
               case 'rounded':
-                classes = 'rounded'
+                classes = 'rounded-sm'
                 break
               case 'square':
                 classes = 'rounded-none'
@@ -163,7 +163,7 @@ export default class extends Controller {
               createElement('img', {
                 src: item._avatar,
                 alt: item._label,
-                class: `flex-shrink-0 w-8 h-8 my-[2px] inline mr-2 ${classes}`,
+                class: `shrink-0 w-8 h-8 my-[2px] inline mr-2 ${classes}`,
               }),
             )
           }

@@ -26,21 +26,22 @@ module Avo
       end
 
       def row_controls_classes
-        classes = "text-right whitespace-nowrap px-3"
+        float_classes = "bg-white
+          group-hover:bg-gray-50
+          sticky inset-auto right-0
 
-        if render_row_controls_on_the_left?
-          classes += " w-px"
-        end
+          before:content-[''] before:absolute before:z-10 before:inset-auto before:left-0 before:top-0 before:mt-0 before:-translate-x-full before:w-3 before:h-full
+          before:bg-gradient-to-r
+          before:from-transparent before:to-white
+          group-hover:before:from-transparent group-hover:before:to-gray-50
+        "
 
-        if row_controls_configurations[:show_on_hover]
-          classes += " opacity-0 group-hover:opacity-100"
-        end
-
-        if row_controls_configurations[:float]
-          classes += " floating-row-controls sticky group-hover:bg-gray-50 bg-white inset-auto right-0"
-        end
-
-        classes
+        class_names(
+          "text-right whitespace-nowrap px-3",
+          "w-px": render_row_controls_on_the_left?,
+          "opacity-0 group-hover:opacity-100": row_controls_configurations[:show_on_hover],
+          "#{float_classes}": row_controls_configurations[:float]
+        )
       end
     end
   end
