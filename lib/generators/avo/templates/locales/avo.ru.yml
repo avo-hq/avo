@@ -27,6 +27,7 @@ ru:
     confirm: Подтвердить
     copy: Копировать
     create_new_item: Создать новый %{item}
+    created_at_timestamp: Создано в %{created_at}
     dashboard: Панель управления
     dashboards: Панели управления
     default_scope: Все
@@ -118,6 +119,7 @@ ru:
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить
+    updated_at_timestamp: Обновлено в %{updated_at}
     view: Просмотр
     view_item: Просмотр %{item}
     visit_record_on_external_path: Перейти к записи через внешнюю ссылку
