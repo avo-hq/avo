@@ -54,7 +54,8 @@ User.create(
     admin: true,
     manager: false,
     writer: false
-  }
+  },
+  uuid: SecureRandom.uuid
 )
 
 famous_users = [

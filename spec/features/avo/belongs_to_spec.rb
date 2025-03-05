@@ -84,7 +84,7 @@ RSpec.feature "belongs_to", type: :feature do
     end
 
     context "custom primary key (UUID) handling" do
-      let!(:uuid_user) { create :user, id: SecureRandom.uuid }
+      let!(:uuid_user) { create :user }
       let!(:post) { create :post, user: uuid_user }
 
       it "displays the user link using the UUID and stores the correct foreign key" do
@@ -94,7 +94,7 @@ RSpec.feature "belongs_to", type: :feature do
 
         post.reload
 
-        expect(post.user_id).to eq(uuid_user.id)
+        expect(post.user_id).to eq(uuid_user.uuid)
       end
     end
 

@@ -1,4 +1,5 @@
 shared_context "has_admin_user" do
+  debugger
   let(:admin) { create :user, roles: {admin: true} }
 
   before :each do

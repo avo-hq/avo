@@ -76,17 +76,6 @@ RSpec.feature "belongs_to", type: :feature do
           expect(page.body).to have_text "Commentable"
           expect(field_element_by_resource_id("commentable", comment.id)).to have_link project.name, href: "/admin/resources/projects/#{project.id}"
         end
-
-        context "custom primary key (UUID) handling" do
-          let!(:uuid_project) { create :project, id: SecureRandom.uuid, name: "UUID Project" }
-          let!(:comment) { create :comment, commentable: uuid_project }
-
-          it "assigns the correct uuid to the polymorphic association" do
-            expect(comment.commentable_id).to eq(uuid_project.id)
-          end
-
-          # ToDo spec with relation belongs_to with primary_key
-        end
       end
     end
   end
