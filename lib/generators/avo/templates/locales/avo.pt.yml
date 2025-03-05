@@ -29,7 +29,7 @@ pt:
     confirm: Confirmar
     copy: Copiar
     create_new_item: Criar novo %{item}
-    created_at_timestamp: Criado em %{%{created_at}}
+    created_at_timestamp: Criado em %{created_at}
     dashboard: Painel
     dashboards: Painéis
     default_scope: Todos
@@ -119,7 +119,7 @@ pt:
     type_to_search: Escreva para pesquisar.
     unauthorized: Não autorizado
     undo: desfazer
-    updated_at_timestamp: Atualizado em %{%{updated_at}}
+    updated_at_timestamp: Atualizado em %{updated_at}
     view: Ver
     view_item: ver %{item}
     visit_record_on_external_path: Visitar registro através de link externo
