@@ -35,6 +35,9 @@ module Avo
         @query = @query.includes(*@resource.includes)
       end
 
+      # Apply the search query if configured on the resource
+      apply_search
+
       # Eager load attachments
       if @resource.attachments.present?
         @resource.attachments.each do |attachment|
@@ -319,6 +322,9 @@ module Avo
       @index_params = {}
 
       set_pagination_params
+
+      # Search
+      @index_params[:q] = params[:q] if params[:q].present?
 
       # Sorting
       @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
@@ -657,6 +663,20 @@ module Avo
     # If we don't get a query object predefined from a child controller like associations, just spin one up
     def set_query
       @query ||= @resource.class.query_scope
+    end
+
+    def apply_search
+      return if @resource.class.search_query.nil?
+      return if @index_params[:q].nil?
+
+      search_query = @resource.search[:query]
+      return unless search_query.present?
+
+      @query = Avo::ExecutionContext.new(
+        target: @resource.class.search_query,
+        params: params,
+        query: @query
+      ).handle
     end
   end
 end
