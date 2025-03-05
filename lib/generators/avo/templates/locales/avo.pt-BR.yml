@@ -29,7 +29,7 @@ pt-BR:
     confirm: Confirmar
     copy: Copiar
     create_new_item: Criar novo %{item}
-    created_at_timestamp: Criado em %{createdAt}
+    created_at_timestamp: Criado em %{created_at}
     dashboard: Painel
     dashboards: Painéis
     default_scope: Todos

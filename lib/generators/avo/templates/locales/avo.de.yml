@@ -27,7 +27,7 @@ de:
     confirm: Bestätigen
     copy: Kopieren
     create_new_item: Neues %{item} erstellen
-    created_at_timestamp: Erstellt am %{createdAt}
+    created_at_timestamp: Erstellt am %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
     default_scope: Alle
