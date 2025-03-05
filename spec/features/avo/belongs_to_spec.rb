@@ -83,6 +83,21 @@ RSpec.feature "belongs_to", type: :feature do
       end
     end
 
+    context "custom primary key (UUID) handling" do
+      let!(:uuid_user) { create :user }
+      let!(:post) { create :post, user: uuid_user }
+
+      it "displays the user link using the UUID and stores the correct foreign key" do
+        visit "/admin/resources/posts/#{post.slug}"
+
+        expect(page).to have_link uuid_user.name, href: "/admin/resources/users/#{uuid_user.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
+
+        post.reload
+
+        expect(post.user_id).to eq(uuid_user.uuid)
+      end
+    end
+
     describe "with user attached" do
       let!(:post) { create :post, user: admin }
       let!(:second_user) { create :user }
