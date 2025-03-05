@@ -91,39 +91,21 @@ export default class extends Controller {
   }
 
   updateLinks(param) {
-    let resourceIds = ''
-    let selectedQuery = ''
-
-    if (param === 'resourceIds') {
-      resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
-    } else if (param === 'selectedQuery') {
-      selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
-    }
-
-    document.querySelectorAll('[data-target="actions-list"] > a').forEach((link) => {
-      try {
-        const url = new URL(link.href)
-
-        Array.from(url.searchParams.keys())
-          .filter((key) => key.startsWith('fields['))
-          .forEach((key) => url.searchParams.delete(key))
-
-        if (param === 'resourceIds') {
-          url.searchParams.set('fields[avo_resource_ids]', resourceIds)
-          url.searchParams.set('fields[avo_selected_all]', 'false')
-        } else if (param === 'selectedQuery') {
-          url.searchParams.set('fields[avo_index_query]', selectedQuery)
-          url.searchParams.set('fields[avo_selected_all]', 'true')
-        }
-
-        link.href = url.toString()
-      } catch (error) {
-        console.error('Error updating link:', link, error)
-      }
+    this.updateActionLinks(param, '[data-target="actions-list"] > a', {
+      resourceIdsKey: 'fields[avo_resource_ids]',
+      selectedQueryKey: 'fields[avo_index_query]',
+      selectedAllKey: 'fields[avo_selected_all]',
     })
   }
 
   updateBulkEditLink(param) {
+    this.updateActionLinks(param, 'a[href*="/admin/bulk_update/edit"]', {
+      resourceIdsKey: 'fields[avo_resource_ids]',
+      selectedQueryKey: 'fields[avo_selected_query]',
+    })
+  }
+
+  updateActionLinks(param, selector, keys) {
     let resourceIds = ''
     let selectedQuery = ''
 
@@ -133,7 +115,7 @@ export default class extends Controller {
       selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
     }
 
-    document.querySelectorAll('a[href*="/admin/bulk_update/edit"]').forEach((link) => {
+    document.querySelectorAll(selector).forEach((link) => {
       try {
         const url = new URL(link.href)
 
@@ -142,9 +124,15 @@ export default class extends Controller {
           .forEach((key) => url.searchParams.delete(key))
 
         if (param === 'resourceIds') {
-          url.searchParams.set('fields[avo_resource_ids]', resourceIds)
+          url.searchParams.set(keys.resourceIdsKey, resourceIds)
+          if (keys.selectedAllKey) {
+            url.searchParams.set(keys.selectedAllKey, 'false')
+          }
         } else if (param === 'selectedQuery') {
-          url.searchParams.set('fields[avo_selected_query]', selectedQuery)
+          url.searchParams.set(keys.selectedQueryKey, selectedQuery)
+          if (keys.selectedAllKey) {
+            url.searchParams.set(keys.selectedAllKey, 'true')
+          }
         }
 
         link.href = url.toString()
