@@ -119,7 +119,7 @@ fr:
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
     undo: annuler
-    updated_at_timestamp: Mis à jour le %{updatedAt}
+    updated_at_timestamp: Mis à jour le %{updated_at}
     view: Vue
     view_item: voir %{item}
     visit_record_on_external_path: Consulter l'enregistrement via un lien externe

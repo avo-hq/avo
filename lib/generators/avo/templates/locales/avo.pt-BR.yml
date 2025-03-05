@@ -119,7 +119,7 @@ pt-BR:
     type_to_search: Digite para buscar.
     unauthorized: Não autorizado
     undo: desfazer
-    updated_at_timestamp: Atualizado em %{updatedAt}
+    updated_at_timestamp: Atualizado em %{updated_at}
     view: Visualizar
     view_item: visualizar %{item}
     visit_record_on_external_path: Visitar registro através de link externo
