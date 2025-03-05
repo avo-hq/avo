@@ -27,6 +27,7 @@ pl:
     confirm: Potwierdź
     copy: Kopiuj
     create_new_item: Utwórz nowy %{item}
+    created_at_timestamp: Utworzono o %{created_at}
     dashboard: Pulpit nawigacyjny
     dashboards: Pulpity nawigacyjne
     default_scope: Wszystkie
@@ -118,6 +119,7 @@ pl:
     type_to_search: Wpisz, aby wyszukać.
     unauthorized: Brak autoryzacji
     undo: Cofnij
+    updated_at_timestamp: Zaktualizowano o %{updated_at}
     view: Widok
     view_item: Wyświetl %{item}
     visit_record_on_external_path: Odwiedź rekord za pomocą zewnętrznego linku

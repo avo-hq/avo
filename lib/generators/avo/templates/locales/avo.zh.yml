@@ -27,6 +27,7 @@ zh:
     confirm: 确认
     copy: 复制
     create_new_item: 创建新的 %{item}
+    created_at_timestamp: 创建于%{created_at}
     dashboard: 仪表盘
     dashboards: 仪表盘
     default_scope: 所有
@@ -116,6 +117,7 @@ zh:
     type_to_search: 输入以搜索。
     unauthorized: 未经授权
     undo: 撤销
+    updated_at_timestamp: 更新于%{updated_at}
     view: 查看
     view_item: 查看 %{item}
     visit_record_on_external_path: 通过外部链接访问记录
