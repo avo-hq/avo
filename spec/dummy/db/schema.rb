@@ -172,7 +172,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_05_170132) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "USD", null: false
+    t.string "price_currency", default: "'USD'::character varying", null: false
     t.string "sizes", default: [], array: true
   end
 
