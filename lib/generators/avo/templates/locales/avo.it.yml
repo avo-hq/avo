@@ -27,6 +27,7 @@ it:
     confirm: Conferma
     copy: Copia
     create_new_item: Crea nuovo %{item}
+    created_at_timestamp: Creato il %{created_at}
     dashboard: Cruscotto
     dashboards: Cruscotti
     default_scope: Tutti
@@ -116,6 +117,7 @@ it:
     type_to_search: Digita per cercare.
     unauthorized: Non autorizzato
     undo: Annulla
+    updated_at_timestamp: Aggiornato il %{updated_at}
     view: Visualizza
     view_item: Visualizza %{item}
     visit_record_on_external_path: Visita il record tramite link esterno

@@ -27,6 +27,7 @@ de:
     confirm: Bestätigen
     copy: Kopieren
     create_new_item: Neues %{item} erstellen
+    created_at_timestamp: Erstellt am %{createdAt}
     dashboard: Dashboard
     dashboards: Dashboards
     default_scope: Alle
@@ -116,6 +117,7 @@ de:
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
+    updated_at_timestamp: Aktualisiert am %{updatedAt}
     view: Anzeigen
     view_item: "%{item} anzeigen"
     visit_record_on_external_path: Datensatz über externen Link besuchen

@@ -224,3 +224,32 @@ To keep track of the schema structure for the models, run `annotate --models --e
 ## Using VSCode?
 
 We compiled [an extension pack](https://marketplace.visualstudio.com/items?itemName=adrianthedev.vsruby) with a few extensions that should help you with Ruby development. We use them with Avo.
+
+## Adding I18n Keys
+
+When incorporating I18n keys, such as `avo.preview`, it's important to ensure that all locale files include the key with appropriate translations.
+
+### Step 1: Add and Normalize
+First, add the key to the `avo.en.yml` file. Then, run the following command to normalize the locale files alphabetically:
+```bash
+i18n-tasks normalize
+```
+
+### Step 2: Adding Missing Keys with or without Translation
+
+When adding missing keys, you have two options: proceed without translation or automatically translate them using OpenAI.
+
+#### Option 1: Add Missing Keys Without Translation
+Run the following command to add the missing keys to all locale files:
+```bash
+i18n-tasks add-missing
+```
+This will populate the missing keys but retain the original label without translations applied.
+
+#### Option 2: Add and Automatically Translate Missing Keys
+If you prefer to automatically translate the missing keys, skip the previous step and execute this command with your OpenAI API token:
+```bash
+OPENAI_API_KEY=TOKEN bundle exec i18n-tasks translate-missing --backend=openai
+```
+
+Replace `TOKEN` with your actual OpenAI API key. This step will both add the missing keys and translate them automatically.
