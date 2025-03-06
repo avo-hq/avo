@@ -148,4 +148,5 @@ module.exports = {
       addVariant('shift-pressed', '.shift-pressed & ')
     }),
   ],
+  blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'],
 }
