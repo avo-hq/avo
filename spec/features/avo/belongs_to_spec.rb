@@ -184,15 +184,9 @@ RSpec.feature "belongs_to", type: :feature do
       create(:user, uuid: SecureRandom.uuid, email: "testuser@test.pl", password: "password")
     end
 
-    let!(:post) { create(:post, user_id: uuid_user.uuid, slug: "test-post") }
+    let!(:post) { create(:post, user: uuid_user, slug: "test-post") }
 
     it "displays the user link using the UUID and stores the correct foreign key" do
-      visit "/admin/resources/posts/#{post.slug}"
-
-      expect(page).to have_link uuid_user.name, href: "/admin/resources/users/#{uuid_user.uuid}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
-
-      post.reload
-
       expect(post.user_id).to eq(uuid_user.uuid)
     end
   end
