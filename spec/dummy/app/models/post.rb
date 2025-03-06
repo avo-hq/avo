@@ -33,7 +33,7 @@ class Post < ApplicationRecord
   has_one_attached :audio
   has_many_attached :attachments
 
-  belongs_to :user, primary_key: :uuid, optional: true
+  belongs_to :user, optional: true
   has_many :comments, as: :commentable
   has_many :reviews, as: :reviewable
 
