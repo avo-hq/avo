@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
+  include Avo::Fields::Concerns::FileAuthorization
+
   prop :field
   prop :resource
   prop :file
