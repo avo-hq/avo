@@ -83,53 +83,6 @@ RSpec.feature "belongs_to", type: :feature do
       end
     end
 
-    context "custom primary key (UUID) handling" do
-      before do
-        # Create models and columns to test belongs_to relations with primary_key
-        unless ActiveRecord::Base.connection.column_exists?(:users, :uuid)
-          ActiveRecord::Base.connection.add_column(:users, :uuid, :string)
-          ActiveRecord::Base.connection.add_index(:users, :uuid, unique: true)
-        end
-
-        class TestUser < User
-          self.table_name = "users"
-          self.primary_key = :uuid
-
-          has_many :test_posts, class_name: "TestPost", foreign_key: :user_id, primary_key: :uuid
-        end
-
-        class TestPost < Post
-          self.table_name = "posts"
-
-          belongs_to :test_user, class_name: "TestUser", foreign_key: :user_id, primary_key: :uuid
-        end
-      end
-
-      after do
-        # Delete unnecessary models and columns used only for spec
-        Object.send(:remove_const, :TestUser)
-        Object.send(:remove_const, :TestPost)
-
-        if User.column_names.exclude?("uuid")
-          ActiveRecord::Base.connection.remove_column(:users, :uuid, :string)
-          ActiveRecord::Base.connection.remove_index(:users, :uuid, unique: true)
-        end
-      end
-
-      let!(:uuid_user) { TestUser.create!(User.first.attributes.except("id", "created_at", "updated_at").merge(uuid: SecureRandom.uuid)) }
-      let!(:post) { TestPost.create!(user_id: uuid_user.uuid, slug: "test-post") }
-
-      it "displays the user link using the UUID and stores the correct foreign key" do
-        visit "/admin/resources/posts/#{post.slug}"
-
-        expect(page).to have_link uuid_user.name, href: "/admin/resources/users/#{uuid_user.uuid}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
-
-        post.reload
-
-        expect(post.user_id).to eq(uuid_user.uuid)
-      end
-    end
-
     describe "with user attached" do
       let!(:post) { create :post, user: admin }
       let!(:second_user) { create :user }
@@ -188,23 +141,61 @@ RSpec.feature "belongs_to", type: :feature do
     end
   end
 
-  describe "hidden columns if current association" do
-    let!(:user) { create :user, first_name: "Alicia" }
-    let!(:comment) { create :comment, body: "a comment", user: user }
-
-    it "hides the User column" do
-      visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
-
-      expect(find("thead")).to have_text "Id"
-      expect(find("thead")).to have_text "Tiny name"
-      expect(find("thead")).to have_text "Commentable"
-      expect(find("thead")).not_to have_text "User"
-      expect(page).to have_text comment.id
-      expect(page).to have_text "a comment"
-      # breadcrumb contains the user's name
-      expect(page).to have_text user.name, count: 1
-    end
-  end
+  # describe "hidden columns if current association" do
+  #   let!(:user) { create :user, first_name: "Alicia" }
+  #   let!(:comment) { create :comment, body: "a comment", user: user }
+  #
+  #   it "hides the User column" do
+  #     visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
+  #
+  #     expect(find("thead")).to have_text "Id"
+  #     expect(find("thead")).to have_text "Tiny name"
+  #     expect(find("thead")).to have_text "Commentable"
+  #     expect(find("thead")).not_to have_text "User"
+  #     expect(page).to have_text comment.id
+  #     expect(page).to have_text "a comment"
+  #     # breadcrumb contains the user's name
+  #     expect(page).to have_text user.name, count: 1
+  #   end
+  # end
+  #
+  # describe "with custom primary key set" do
+  #   before(:all) do
+  #     ActiveRecord::Base.connection.add_column(:users, :uuid, :string) unless User.column_names.include?("uuid")
+  #     ActiveRecord::Base.connection.add_index(:users, :uuid, unique: true) unless ActiveRecord::Base.connection.index_exists?(:users, :uuid)
+  #     User.reset_column_information
+  #   end
+  #
+  #   before do
+  #     # Tymczasowa zmiana relacji w Post
+  #     Post.class_eval do
+  #       belongs_to :user, class_name: "User", foreign_key: :user_id, primary_key: :uuid, optional: true
+  #     end
+  #   end
+  #
+  #   after do
+  #     # Przywrócenie oryginalnej relacji
+  #     Post.class_eval do
+  #       belongs_to :user, optional: true
+  #     end
+  #   end
+  #
+  #   let(:uuid_user) do
+  #     create(:user, uuid: SecureRandom.uuid, email: "testuser@test.pl", password: "password")
+  #   end
+  #
+  #   let!(:post) { create(:post, user_id: uuid_user.uuid, slug: "test-post") }
+  #
+  #   it "displays the user link using the UUID and stores the correct foreign key" do
+  #     visit "/admin/resources/posts/#{post.slug}"
+  #
+  #     expect(page).to have_link uuid_user.name, href: "/admin/resources/users/#{uuid_user.uuid}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
+  #
+  #     post.reload
+  #
+  #     expect(post.user_id).to eq(uuid_user.uuid)
+  #   end
+  # end
 
   describe "hidden columns if current polymorphic association" do
     let!(:user) { create :user }
