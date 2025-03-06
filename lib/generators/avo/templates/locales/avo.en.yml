@@ -27,6 +27,7 @@ en:
     confirm: Confirm
     copy: Copy
     create_new_item: Create new %{item}
+    created_at_timestamp: Created at %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
     default_scope: All
@@ -116,6 +117,7 @@ en:
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo
+    updated_at_timestamp: Updated at %{updated_at}
     view: View
     view_item: view %{item}
     visit_record_on_external_path: Visit record on external path

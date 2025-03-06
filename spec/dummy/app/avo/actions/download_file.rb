@@ -13,11 +13,11 @@ class Avo::Actions::DownloadFile < Avo::BaseAction
 
     # Testing both ways
     if fields["read_from_file"]
-      file = File.open(Avo::Engine.root.join("spec", "dummy", "dummy-file.txt"))
+      file = File.open(Rails.root.join("db", "seed_files", "dummy-file.txt"))
 
       download file.read, "dummy-file.txt"
     elsif fields["read_from_pdf_file"]
-      file = File.open(Avo::Engine.root.join("spec", "dummy", "dummy-file.pdf"))
+      file = File.open(Rails.root.join("db", "seed_files", "dummy-file.pdf"))
 
       download file.read, "dummy-file.pdf"
     else

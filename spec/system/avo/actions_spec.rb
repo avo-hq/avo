@@ -134,8 +134,10 @@ RSpec.describe "Actions", type: :system do
 
         wait_for_download
 
+        # sleep 15
+
         expect(downloaded?).to be true
-        expect(download_content).to eq File.read(Rails.root.join(file_name))
+        expect(download_content).to eq File.read(Rails.root.join("db", "seed_files", file_name))
         expect(download.split("/").last).to eq file_name
       end
     end

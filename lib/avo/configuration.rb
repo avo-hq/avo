@@ -48,7 +48,6 @@ module Avo
     attr_accessor :resources
     attr_accessor :prefix_path
     attr_accessor :resource_parent_controller
-    attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
     attr_accessor :click_row_to_view_record
     attr_accessor :alert_dismiss_time
@@ -112,7 +111,6 @@ module Avo
       @field_wrapper_layout = :inline
       @resources = nil
       @resource_parent_controller = "Avo::ResourcesController"
-      @mount_avo_engines = true
       @cache_store = computed_cache_store
       @logger = default_logger
       @turbo = default_turbo
@@ -146,7 +144,7 @@ module Avo
     # Authorization is enabled when:
     # (avo-pro gem is installed) AND (authorization_client is NOT nil)
     def authorization_enabled?
-      @authorization_enabled ||= Avo.plugin_manager.installed?(:avo_pro) && !authorization_client.nil?
+      @authorization_enabled ||= Avo.plugin_manager.installed?("avo-pro") && !authorization_client.nil?
     end
 
     def current_user_method(&block)
@@ -301,6 +299,12 @@ module Avo
 
     def session_persistence_enabled?
       persistence[:driver] == :session
+    end
+
+    def mount_avo_engines=(...)
+      raise "'mount_avo_engines' option is now obsolete. \n" \
+        "Please refer to the upgrade guide for details on the new mounting point: \n" \
+        "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
     end
   end
 

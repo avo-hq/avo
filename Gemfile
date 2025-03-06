@@ -169,9 +169,6 @@ gem "sprockets-rails"
 # Use Active Storage variant
 gem "image_processing", "~> 1.12"
 
-# source "https://rubygems.pkg.github.com/avo-hq" do
-#   gem "avo-dynamic_filters"
-# end
 gem "prefixed_ids"
 
 gem "mapkick-rb", "~> 0.1.4"

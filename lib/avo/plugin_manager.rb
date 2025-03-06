@@ -1,11 +1,18 @@
 module Avo
   class PluginManager
     attr_reader :plugins
+    attr_accessor :engines
 
     alias_method :all, :plugins
 
     def initialize
       @plugins = []
+      @engines = []
+    end
+
+    def reset
+      @plugins = []
+      @engines = []
     end
 
     def register(name, priority: 10)
@@ -49,6 +56,10 @@ module Avo
       plugins.any? do |plugin|
         plugin.name.to_s == name.to_s
       end
+    end
+
+    def mount_engine(klass, **options)
+      @engines << {klass:, options:}
     end
   end
 
