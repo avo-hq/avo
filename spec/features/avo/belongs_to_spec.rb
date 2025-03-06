@@ -84,13 +84,45 @@ RSpec.feature "belongs_to", type: :feature do
     end
 
     context "custom primary key (UUID) handling" do
-      let!(:uuid_user) { create :user }
-      let!(:post) { create :post, user: uuid_user }
+      before do
+        # Create models and columns to test belongs_to relations with primary_key
+        unless ActiveRecord::Base.connection.column_exists?(:users, :uuid)
+          ActiveRecord::Base.connection.add_column(:users, :uuid, :string)
+          ActiveRecord::Base.connection.add_index(:users, :uuid, unique: true)
+        end
+
+        class TestUser < User
+          self.table_name = "users"
+          self.primary_key = :uuid
+
+          has_many :test_posts, class_name: "TestPost", foreign_key: :user_id, primary_key: :uuid
+        end
+
+        class TestPost < Post
+          self.table_name = "posts"
+
+          belongs_to :test_user, class_name: "TestUser", foreign_key: :user_id, primary_key: :uuid
+        end
+      end
+
+      after do
+        # Delete unnecessary models and columns used only for spec
+        Object.send(:remove_const, :TestUser)
+        Object.send(:remove_const, :TestPost)
+
+        if User.column_names.exclude?("uuid")
+          ActiveRecord::Base.connection.remove_column(:users, :uuid, :string)
+          ActiveRecord::Base.connection.remove_index(:users, :uuid, unique: true)
+        end
+      end
+
+      let!(:uuid_user) { TestUser.create!(User.first.attributes.except("id", "created_at", "updated_at").merge(uuid: SecureRandom.uuid)) }
+      let!(:post) { TestPost.create!(user_id: uuid_user.uuid, slug: "test-post") }
 
       it "displays the user link using the UUID and stores the correct foreign key" do
         visit "/admin/resources/posts/#{post.slug}"
 
-        expect(page).to have_link uuid_user.name, href: "/admin/resources/users/#{uuid_user.slug}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
+        expect(page).to have_link uuid_user.name, href: "/admin/resources/users/#{uuid_user.uuid}?via_record_id=#{post.slug}&via_resource_class=Avo%3A%3AResources%3A%3APost"
 
         post.reload
 
