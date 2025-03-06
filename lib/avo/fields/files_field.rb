@@ -5,7 +5,6 @@ module Avo
       attr_accessor :is_image
       attr_accessor :direct_upload
       attr_accessor :accept
-      attr_accessor :openable
       attr_reader :display_filename
       attr_reader :view_type
       attr_reader :hide_view_type_switcher
@@ -20,7 +19,6 @@ module Avo
         @display_filename = args[:display_filename].nil? ? true : args[:display_filename]
         @view_type = args[:view_type] || :grid
         @hide_view_type_switcher = args[:hide_view_type_switcher]
-        @openable = args[:openable].present? ? args[:openable] : false
       end
 
       def view_component_name
