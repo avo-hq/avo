@@ -108,7 +108,7 @@ GEM
     acts_as_list (1.2.4)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
-    actual_db_schema (0.8.2)
+    actual_db_schema (0.8.3)
       activerecord
       activesupport
       ast
@@ -130,8 +130,8 @@ GEM
       money-rails (~> 1.12)
     avo-record_link_field (0.0.2)
     aws-eventstream (1.3.1)
-    aws-partitions (1.1056.0)
-    aws-sdk-core (3.219.0)
+    aws-partitions (1.1061.0)
+    aws-sdk-core (3.220.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -191,7 +191,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    cssbundling-rails (1.4.2)
+    cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
     csv (3.3.2)
     cuprite (0.15.1)
@@ -508,7 +508,7 @@ GEM
     rdoc (6.3.4.1)
     redis (5.4.0)
       redis-client (>= 0.22.0)
-    redis-client (0.23.2)
+    redis-client (0.24.0)
       connection_pool
     reek (6.4.0)
       dry-schema (~> 1.13.0)
@@ -560,8 +560,8 @@ GEM
     rubocop-performance (1.23.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
-    rubocop-shopify (2.15.1)
-      rubocop (~> 1.51)
+    rubocop-shopify (2.16.0)
+      rubocop (~> 1.62)
     ruby-openai (7.4.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
@@ -599,7 +599,7 @@ GEM
     simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     smart_properties (1.17.0)
-    solargraph (0.51.2)
+    solargraph (0.52.0)
       backport (~> 1.2)
       benchmark
       bundler (~> 2.0)
@@ -617,6 +617,7 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
+      yard-solargraph (~> 0.1)
     solargraph-rails (1.1.0)
       activesupport
       solargraph
@@ -652,9 +653,9 @@ GEM
     tilt (2.6.0)
     timeout (0.4.3)
     tty-which (0.5.0)
-    turbo-rails (2.0.11)
-      actionpack (>= 6.0.0)
-      railties (>= 6.0.0)
+    turbo-rails (2.0.13)
+      actionpack (>= 7.1.0)
+      railties (>= 7.1.0)
     turbo_power (0.7.0)
       turbo-rails (>= 1.3.0)
     tzinfo (2.0.6)
@@ -692,6 +693,8 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.37)
+    yard-solargraph (0.1.0)
+      yard (~> 0.9)
     zeitwerk (2.7.2)
 
 PLATFORMS
