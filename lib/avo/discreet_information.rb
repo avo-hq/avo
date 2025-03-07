@@ -9,9 +9,13 @@ class Avo::DiscreetInformation
   def items
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
-        timestamp_item(item)
+        timestamp_item(item, false)
+      elsif item == :timestamps_badge
+        timestamp_item(item, true)
       elsif item == :id
-        id_item(item)
+        id_item(item, false)
+      elsif item == :id_badge
+        id_item(item, true)
       else
         parse_payload(item)
       end
@@ -20,14 +24,14 @@ class Avo::DiscreetInformation
 
   private
 
-  def id_item(item)
+  def id_item(item, as_badge)
     DiscreetInformationItem.new(
       label: "ID: #{record.id}",
-      as_badge: true
+      as_badge: as_badge
     )
   end
 
-  def timestamp_item(item)
+  def timestamp_item(item, as_badge)
     return if record.created_at.blank? && record.updated_at.blank?
 
     time_format = "%Y-%m-%d %H:%M:%S"
@@ -44,7 +48,8 @@ class Avo::DiscreetInformation
 
     DiscreetInformationItem.new(
       tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
-      icon: "heroicons/outline/clock"
+      icon: "heroicons/outline/clock",
+      as_badge: as_badge
     )
   end
 
