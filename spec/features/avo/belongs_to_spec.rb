@@ -168,6 +168,10 @@ RSpec.feature "belongs_to", type: :feature do
 
     before do
       # Set temporary relation
+      User.class_eval do
+        self.primary_key = "uuid"
+        has_many :posts, foreign_key: :user_id, primary_key: :uuid
+      end
       Post.class_eval do
         belongs_to :user, class_name: "User", foreign_key: :user_id, primary_key: :uuid, optional: true
       end
@@ -175,6 +179,10 @@ RSpec.feature "belongs_to", type: :feature do
 
     after do
       # Undo temporary relation
+      User.class_eval do
+        self.primary_key = "id"
+        has_many :posts, inverse_of: :user
+      end
       Post.class_eval do
         belongs_to :user, optional: true
       end
