@@ -159,6 +159,46 @@ RSpec.feature "belongs_to", type: :feature do
     end
   end
 
+  describe "with custom primary key set" do
+    before(:all) do
+      ActiveRecord::Base.connection.add_column(:users, :uuid, :string) unless User.column_names.include?("uuid")
+      ActiveRecord::Base.connection.add_index(:users, :uuid, unique: true) unless ActiveRecord::Base.connection.index_exists?(:users, :uuid)
+      User.reset_column_information
+    end
+
+    before do
+      # Set temporary relation
+      User.class_eval do
+        self.primary_key = "uuid"
+        has_many :posts, foreign_key: :user_id, primary_key: :uuid
+      end
+      Post.class_eval do
+        belongs_to :user, class_name: "User", foreign_key: :user_id, primary_key: :uuid, optional: true
+      end
+    end
+
+    after do
+      # Undo temporary relation
+      User.class_eval do
+        self.primary_key = "id"
+        has_many :posts, inverse_of: :user
+      end
+      Post.class_eval do
+        belongs_to :user, optional: true
+      end
+    end
+
+    let(:uuid_user) do
+      create(:user, uuid: SecureRandom.uuid, email: "testuser@test.pl", password: "password")
+    end
+
+    let!(:post) { create(:post, user: uuid_user, slug: "test-post") }
+
+    it "displays the user link using the UUID and stores the correct foreign key" do
+      expect(post.user_id).to eq(uuid_user.uuid)
+    end
+  end
+
   describe "hidden columns if current polymorphic association" do
     let!(:user) { create :user }
     let!(:project) { create :project, name: "Haha project" }
