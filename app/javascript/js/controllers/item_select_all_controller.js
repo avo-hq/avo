@@ -71,6 +71,7 @@ export default class extends Controller {
     }
 
     this.updateLinks('resourceIds')
+    this.updateBulkEditLink('resourceIds')
   }
 
   selectAll(event) {
@@ -82,12 +83,29 @@ export default class extends Controller {
 
     if (this.selectedAllValue) {
       this.updateLinks('selectedQuery')
+      this.updateBulkEditLink('selectedQuery')
     } else {
       this.updateLinks('resourceIds')
+      this.updateBulkEditLink('resourceIds')
     }
   }
 
   updateLinks(param) {
+    this.updateActionLinks(param, '[data-target="actions-list"] > a', {
+      resourceIdsKey: 'fields[avo_resource_ids]',
+      selectedQueryKey: 'fields[avo_index_query]',
+      selectedAllKey: 'fields[avo_selected_all]',
+    })
+  }
+
+  updateBulkEditLink(param) {
+    this.updateActionLinks(param, 'a[href*="/admin/bulk_update/edit"]', {
+      resourceIdsKey: 'fields[avo_resource_ids]',
+      selectedQueryKey: 'fields[avo_selected_query]',
+    })
+  }
+
+  updateActionLinks(param, selector, keys) {
     let resourceIds = ''
     let selectedQuery = ''
 
@@ -97,7 +115,7 @@ export default class extends Controller {
       selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
     }
 
-    document.querySelectorAll('[data-target="actions-list"] > a').forEach((link) => {
+    document.querySelectorAll(selector).forEach((link) => {
       try {
         const url = new URL(link.href)
 
@@ -106,11 +124,15 @@ export default class extends Controller {
           .forEach((key) => url.searchParams.delete(key))
 
         if (param === 'resourceIds') {
-          url.searchParams.set('fields[avo_resource_ids]', resourceIds)
-          url.searchParams.set('fields[avo_selected_all]', 'false')
+          url.searchParams.set(keys.resourceIdsKey, resourceIds)
+          if (keys.selectedAllKey) {
+            url.searchParams.set(keys.selectedAllKey, 'false')
+          }
         } else if (param === 'selectedQuery') {
-          url.searchParams.set('fields[avo_index_query]', selectedQuery)
-          url.searchParams.set('fields[avo_selected_all]', 'true')
+          url.searchParams.set(keys.selectedQueryKey, selectedQuery)
+          if (keys.selectedAllKey) {
+            url.searchParams.set(keys.selectedAllKey, 'true')
+          }
         }
 
         link.href = url.toString()
