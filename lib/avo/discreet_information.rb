@@ -9,7 +9,13 @@ class Avo::DiscreetInformation
   def items
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
-        timestamp_item(item)
+        timestamp_item(item, false)
+      elsif item == :timestamps_badge
+        timestamp_item(item, true)
+      elsif item == :id
+        id_item(item, false)
+      elsif item == :id_badge
+        id_item(item, true)
       else
         parse_payload(item)
       end
@@ -18,7 +24,14 @@ class Avo::DiscreetInformation
 
   private
 
-  def timestamp_item(item)
+  def id_item(item, as_badge)
+    DiscreetInformationItem.new(
+      label: "ID: #{record.id}",
+      as_badge: as_badge
+    )
+  end
+
+  def timestamp_item(item, as_badge)
     return if record.created_at.blank? && record.updated_at.blank?
 
     time_format = "%Y-%m-%d %H:%M:%S"
@@ -35,7 +48,8 @@ class Avo::DiscreetInformation
 
     DiscreetInformationItem.new(
       tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
-      icon: "heroicons/outline/clock"
+      icon: "heroicons/outline/clock",
+      as_badge: as_badge
     )
   end
 
@@ -54,9 +68,10 @@ class Avo::DiscreetInformation
       url: Avo::ExecutionContext.new(target: item[:url], **args).handle,
       url_target: Avo::ExecutionContext.new(target: item[:url_target], **args).handle,
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
-      label: Avo::ExecutionContext.new(target: item[:label], **args).handle
+      label: Avo::ExecutionContext.new(target: item[:label], **args).handle,
+      as_badge: Avo::ExecutionContext.new(target: item[:as_badge], **args).handle
     )
   end
 
-  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, keyword_init: true) unless defined?(DiscreetInformationItem)
+  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, :as_badge, keyword_init: true) unless defined?(DiscreetInformationItem)
 end
