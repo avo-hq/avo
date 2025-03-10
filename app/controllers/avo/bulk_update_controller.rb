@@ -87,12 +87,11 @@ module Avo
     end
 
     def prefill_fields(records, fields)
-      prefilled = {}
-      fields.each_key do |field_name|
+      fields.each_key.with_object({}) do |field_name, prefilled|
         values = records.map { |record| record.public_send(field_name) }
-        prefilled[field_name] = values.uniq.size == 1 ? values.first : nil
+        values.uniq!
+        prefilled[field_name] = (values.size == 1 ? values.first : nil)
       end
-      prefilled
     end
 
     def set_query
