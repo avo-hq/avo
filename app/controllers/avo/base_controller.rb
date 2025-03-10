@@ -653,16 +653,10 @@ module Avo
 
       @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
-<<<<<<< HEAD
 
     # If we don't get a query object predefined from a child controller like associations, just spin one up
     def set_query
       @query ||= @resource.class.query_scope
-=======
-    
-    def turboframe_id
-      params.permit(:turbo_frame)[:turbo_frame]
->>>>>>> e21688a2 (First draft for brakeman dashboard fix)
     end
   end
 end

@@ -66,13 +66,8 @@
       } do %>
       <%= content_tag :div,
         class: "relative flex items-center justify-between w-full" do %>
-<<<<<<< HEAD
         <% if field.sortable && @resource.sorting_supported? %>
           <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction),
-=======
-        <% if field.sortable %>
-          <%= link_to params.permit(:view, :view_type, :turbo_frame, :resource_name, :id, :related_name, :sort_by, :sort_direction).merge(sort_by: sort_by, sort_direction: sort_direction),
->>>>>>> e21688a2 (First draft for brakeman dashboard fix)
             class: class_names("flex-1 flex justify-between", text_classes),
             'data-turbo-frame': params[:turbo_frame] do %>
             <%= field.table_header_label %>
