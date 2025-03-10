@@ -42,10 +42,10 @@ module Avo
       current_params = params[resource_key] || {}
 
       progress_fields = @resource
-                          .get_field_definitions
-                          .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
-                          .map(&:id)
-                          .map(&:to_sym)
+        .get_field_definitions
+        .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
+        .map(&:id)
+        .map(&:to_sym)
 
       current_params.reject do |key, value|
         key_sym = key.to_sym
@@ -73,10 +73,10 @@ module Avo
         if record.save
           updated_count += 1
         else
-          failed_records << { record: record, errors: record.errors.full_messages }
+          failed_records << {record: record, errors: record.errors.full_messages}
         end
       rescue => e
-        failed_records << { record: record, errors: [e.message] }
+        failed_records << {record: record, errors: [e.message]}
       end
 
       [updated_count, failed_records]
