@@ -9,6 +9,14 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   prop :view, default: Avo::ViewInquirer.new(:edit).freeze
   prop :display_breadcrumbs, default: true, reader: :public
 
+  attr_reader :query
+
+  def initialize(resource:, query: nil, prefilled_fields: nil, **args)
+    @query = query
+    @prefilled_fields = prefilled_fields
+    super(resource: resource, **args)
+  end
+
   def after_initialize
     @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
   end
@@ -18,6 +26,8 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
+    return helpers.resources_path(resource: @resource) if params[:controller] == "avo/bulk_update"
+
     # The `return_to` param takes precedence over anything else.
     return params[:return_to] if params[:return_to].present?
 
@@ -76,13 +86,19 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def form_method
-    return :put if is_edit?
+    return :put if is_edit? && params[:controller] != "avo/bulk_update"
 
     :post
   end
 
+  def model
+    @resource.record
+  end
+
   def form_url
-    if is_edit?
+    if params[:controller] == "avo/bulk_update"
+      helpers.handle_bulk_update_path(resource_name: @resource.name, query: @query)
+    elsif is_edit?
       helpers.resource_path(
         record: @resource.record,
         resource: @resource
