@@ -144,6 +144,11 @@ FactoryBot.define do
     body { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
   end
 
+  factory :volunteer do
+    name { Faker::Name.name }
+    role { Faker::Job.title }
+  end
+
   factory :store do
     name { Faker::Company.name }
     size { ["small", "medium", "large"].sample }

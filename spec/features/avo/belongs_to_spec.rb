@@ -160,42 +160,12 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   describe "with custom primary key set" do
-    before(:all) do
-      ActiveRecord::Base.connection.add_column(:users, :uuid, :string) unless User.column_names.include?("uuid")
-      ActiveRecord::Base.connection.add_index(:users, :uuid, unique: true) unless ActiveRecord::Base.connection.index_exists?(:users, :uuid)
-      User.reset_column_information
-    end
+    let(:event) { create(:event, name: "Sample Event") }
 
-    before do
-      # Set temporary relation
-      User.class_eval do
-        self.primary_key = "uuid"
-        has_many :posts, foreign_key: :user_id, primary_key: :uuid
-      end
-      Post.class_eval do
-        belongs_to :user, class_name: "User", foreign_key: :user_id, primary_key: :uuid, optional: true
-      end
-    end
+    let!(:volunteer) { create(:volunteer, event: event) }
 
-    after do
-      # Undo temporary relation
-      User.class_eval do
-        self.primary_key = "id"
-        has_many :posts, inverse_of: :user
-      end
-      Post.class_eval do
-        belongs_to :user, optional: true
-      end
-    end
-
-    let(:uuid_user) do
-      create(:user, uuid: SecureRandom.uuid, email: "testuser@test.pl", password: "password")
-    end
-
-    let!(:post) { create(:post, user: uuid_user, slug: "test-post") }
-
-    it "displays the user link using the UUID and stores the correct foreign key" do
-      expect(post.user_id).to eq(uuid_user.uuid)
+    it "displays the event link using the UUID and stores the correct foreign key" do
+      expect(volunteer.event_uuid).to eq(event.uuid)
     end
   end
 

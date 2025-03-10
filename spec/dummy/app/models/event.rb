@@ -15,6 +15,7 @@ class Event < ApplicationRecord
 
   belongs_to :location, optional: true
 
+  has_many :volunteers, foreign_key: 'event_uuid'
   has_one_attached :profile_photo
   has_one_attached :cover_photo
 
