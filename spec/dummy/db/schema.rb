@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_10_173912) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_10_175357) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -114,7 +114,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_10_173912) do
     t.datetime "updated_at", null: false
     t.text "body"
     t.bigint "location_id"
+    t.uuid "uuid"
     t.index ["location_id"], name: "index_events_on_location_id"
+    t.index ["uuid"], name: "index_events_on_uuid", unique: true
   end
 
   create_table "fish", force: :cascade do |t|
@@ -172,7 +174,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_10_173912) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "USD", null: false
+    t.string "price_currency", default: "'USD'::character varying", null: false
+    t.string "sizes", default: [], array: true
   end
 
   create_table "projects", force: :cascade do |t|
@@ -294,6 +297,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_10_173912) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
     t.index ["team_id"], name: "index_users_on_team_id"
+  end
+
+  create_table "volunteers", force: :cascade do |t|
+    t.string "name"
+    t.string "role"
+    t.uuid "event_uuid", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_uuid"], name: "index_volunteers_on_event_uuid"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

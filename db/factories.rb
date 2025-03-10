@@ -138,6 +138,7 @@ FactoryBot.define do
   end
 
   factory :event do
+    uuid { SecureRandom.uuid }
     location { create :location }
     name { Faker::Lorem.sentence }
     event_time { DateTime.now }
