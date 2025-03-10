@@ -106,11 +106,12 @@ module Avo
 
     def set_related_resource
       # Find the field from the parent resource
+      @field = find_association_field(resource: @resource, association: params[:related_name])
       related_resource = find_association_field(resource: @resource, association: params[:related_name])
         .hydrate(record: @record)
         .resource_class(params)
 
-      raise Avo::MissingResourceError.new(related_resource_name) if related_resource.nil?
+      raise Avo::MissingResourceError.new(related_resource_name, @field.id, @field) if related_resource.nil?
 
       action_view = action_name.to_sym
 
