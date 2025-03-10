@@ -3,9 +3,9 @@ require_dependency "avo/base_controller"
 module Avo
   class ChartsController < BaseController
     def distribution_chart
-      @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
+      @values_summary = summary_query.group(field_id.to_sym).reorder("count_all desc").count
 
-      @field_id = params[:field_id]
+      @field_id = field_id
 
       render "avo/partials/distribution_chart", layout: "avo/blank"
     end
@@ -50,6 +50,10 @@ module Avo
       end
 
       association_query
+    end
+
+    def field_id
+      params[:field_id]
     end
   end
 end
