@@ -26,7 +26,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return helpers.resources_path(resource: @resource) if params[:controller] == 'avo/bulk_update'
+    return helpers.resources_path(resource: @resource) if params[:controller] == "avo/bulk_update"
 
     # The `return_to` param takes precedence over anything else.
     return params[:return_to] if params[:return_to].present?
@@ -86,7 +86,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def form_method
-    return :put if is_edit? && params[:controller] != 'avo/bulk_update'
+    return :put if is_edit? && params[:controller] != "avo/bulk_update"
 
     :post
   end
@@ -96,7 +96,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def form_url
-    if params[:controller] == 'avo/bulk_update'
+    if params[:controller] == "avo/bulk_update"
       helpers.handle_bulk_update_path(resource_name: @resource.name, query: @query)
     elsif is_edit?
       helpers.resource_path(

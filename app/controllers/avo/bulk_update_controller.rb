@@ -42,13 +42,12 @@ module Avo
       current_params = params[resource_key] || {}
 
       progress_fields = @resource
-        .get_field_definitions
-        .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
-        .map(&:id)
-        .map(&:to_sym)
+                          .get_field_definitions
+                          .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
+                          .map(&:id)
+                          .map(&:to_sym)
 
-
-      params_to_apply = current_params.reject do |key, value|
+      current_params.reject do |key, value|
         key_sym = key.to_sym
         prefilled_value = prefilled_params[key_sym]
 
@@ -56,8 +55,6 @@ module Avo
 
         prefilled_value.to_s == value.to_s
       end
-
-      params_to_apply
     end
 
     def update_records
@@ -65,28 +62,24 @@ module Avo
       failed_records = []
 
       @query.each do |record|
-        begin
-          params_to_apply.each do |key, value|
-            begin
-              record.public_send("#{key}=", value)
-            rescue => e
-              puts "Błąd przypisywania pola #{key}: #{e.message}"
-            end
-          end
-
-          @resource.fill_record(record, params)
-
-          if record.save
-            updated_count += 1
-          else
-            failed_records << { record: record, errors: record.errors.full_messages }
-          end
+        params_to_apply.each do |key, value|
+          record.public_send(:"#{key}=", value)
         rescue => e
-          failed_records << { record: record, errors: [e.message] }
+          puts "Błąd przypisywania pola #{key}: #{e.message}"
         end
+
+        @resource.fill_record(record, params)
+
+        if record.save
+          updated_count += 1
+        else
+          failed_records << { record: record, errors: record.errors.full_messages }
+        end
+      rescue => e
+        failed_records << { record: record, errors: [e.message] }
       end
 
-      return updated_count, failed_records
+      [updated_count, failed_records]
     end
 
     def after_bulk_update_path

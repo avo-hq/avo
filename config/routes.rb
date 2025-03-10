@@ -4,11 +4,6 @@ Avo::Engine.routes.draw do
   get "resources", to: redirect(Avo.configuration.root_path)
   get "dashboards", to: redirect(Avo.configuration.root_path)
 
-  # Mount Avo engines routes by default but leave it configurable in case the user wants to nest these under a scope.
-  if Avo.configuration.mount_avo_engines
-    instance_exec(&Avo.mount_engines)
-  end
-
   get "/bulk_update/edit", to: "bulk_update#edit", as: "edit_bulk_update"
   post "/bulk_update/handle", to: "bulk_update#handle", as: "handle_bulk_update"
 
