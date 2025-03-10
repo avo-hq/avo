@@ -106,7 +106,7 @@ module Avo
       Avo.configuration.root_path
     end
 
-    #the method below should be refactored to remove the params.permit! and specify which exact keys should be passed to it
+    # the method below should be refactored to remove the params.permit! and specify which exact keys should be passed to it
     def mount_path
       Avo::Engine.routes.find_script_name(params.permit!.to_h.symbolize_keys)
     end

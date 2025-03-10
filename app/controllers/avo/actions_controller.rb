@@ -93,13 +93,7 @@ module Avo
         user: _current_user,
         # force the action view to in order to render new-related fields (hidden field)
         view: Avo::ViewInquirer.new(:new),
-<<<<<<< HEAD
-        arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
-        query: @query,
-        index_query: decrypted_index_query
-=======
         arguments: BaseAction.decode_arguments(action_arguments) || {}
->>>>>>> e21688a2 (First draft for brakeman dashboard fix)
       )
 
       # Fetch action's fields
