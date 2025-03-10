@@ -16,6 +16,8 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
+    bulk_update_success: "%{count} records were successfully updated."
+    bulk_update_failure: "Failed to update %{count} records. Errors: %{errors}"
     cancel: Cancel
     choose_a_country: Choose a country
     choose_an_option: Choose an option
@@ -70,6 +72,7 @@ en:
     new: new
     next_page: Next page
     no_cancel: No, cancel
+    no_changes_made: No changes were made.
     no_cards_present: No cards present
     no_item_found: No record found
     no_options_available: No options available

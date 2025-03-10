@@ -90,7 +90,7 @@ module Avo
       prefilled = {}
       fields.each_key do |field_name|
         values = records.map { |record| record.public_send(field_name) }
-        prefilled[field_name] = (values.uniq.size == 1 ? values.first : nil)
+        prefilled[field_name] = values.uniq.size == 1 ? values.first : nil
       end
       prefilled
     end
