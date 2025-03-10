@@ -106,13 +106,17 @@ export default class extends Controller {
   }
 
   updateActionLinks(param, selector, keys) {
-    let resourceIds = ''
-    let selectedQuery = ''
-
-    if (param === 'resourceIds') {
-      resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
-    } else if (param === 'selectedQuery') {
-      selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
+    const params = {
+      resourceIds: {
+        value: JSON.parse(this.element.dataset.selectedResources).join(','),
+        selectedAll: 'false',
+        key: keys.resourceIdsKey,
+      },
+      selectedQuery: {
+        value: this.element.dataset.itemSelectAllSelectedAllQueryValue,
+        selectedAll: 'true',
+        key: keys.selectedQueryKey,
+      },
     }
 
     document.querySelectorAll(selector).forEach((link) => {
@@ -123,21 +127,16 @@ export default class extends Controller {
           .filter((key) => key.startsWith('fields['))
           .forEach((key) => url.searchParams.delete(key))
 
-        if (param === 'resourceIds') {
-          url.searchParams.set(keys.resourceIdsKey, resourceIds)
-          if (keys.selectedAllKey) {
-            url.searchParams.set(keys.selectedAllKey, 'false')
-          }
-        } else if (param === 'selectedQuery') {
-          url.searchParams.set(keys.selectedQueryKey, selectedQuery)
-          if (keys.selectedAllKey) {
-            url.searchParams.set(keys.selectedAllKey, 'true')
-          }
+        const current = params[param]
+        url.searchParams.set(current.key, current.value)
+
+        if (keys.selectedAllKey) {
+          url.searchParams.set(keys.selectedAllKey, current.selectedAll)
         }
 
         link.href = url.toString()
       } catch (error) {
-        console.error('Error updating link:', link, error)
+        console.error(`Error updating link (${param}):`, link, error)
       }
     })
   }
