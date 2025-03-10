@@ -29,16 +29,9 @@
       <div class="flex-1 flex">
         <%= @action.get_message %>
       </div>
-<<<<<<< HEAD
-      <%= form.hidden_field :avo_resource_ids, value: params[:id] || params[:resource_ids], 'data-action-target': 'resourceIds' %>
-      <%= form.hidden_field :avo_selected_all, 'data-action-target': 'selectedAll' %>
-      <%= form.hidden_field :avo_index_query, 'data-action-target': 'indexQuery' %>
-      <%= form.hidden_field :arguments, value: params[:arguments] %>
-=======
       <%= form.hidden_field :avo_resource_ids, value: @resource_id || @resource_ids, 'data-action-target': 'resourceIds' %>
       <%= form.hidden_field :avo_selected_query, 'data-action-target': 'selectedAllQuery' %>
       <%= form.hidden_field :arguments, value: @arguments_id %>
->>>>>>> e21688a2 (First draft for brakeman dashboard fix)
       <% if @fields.present? %>
         <div class="mt-4 -mx-6">
           <% @fields.each_with_index do |field, index| %>
