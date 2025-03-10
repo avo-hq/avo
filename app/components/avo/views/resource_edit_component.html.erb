@@ -39,6 +39,8 @@
         ) %>
       <% end %>
 
+      <%= render Avo::Advanced::Nested::BaseComponent.new(view: @view, resource: @resource, form:) if Avo.plugin_manager.installed?("avo-advanced") %>
+
       <% if Avo.configuration.buttons_on_form_footers %>
         <%= render Avo::PanelComponent.new do |c| %>
           <% c.with_footer_tools do %>
