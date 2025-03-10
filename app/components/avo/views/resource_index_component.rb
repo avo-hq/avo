@@ -171,10 +171,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def render_bulk_update_button
     a_link helpers.edit_bulk_update_path(resource_name: @resource.name, id: 4),
-           style: :primary,
-           color: :primary,
-           icon: "avo/edit",
-           form_class: "flex flex-col sm:flex-row sm:inline-flex" do
+      style: :primary,
+      color: :primary,
+      icon: "avo/edit",
+      form_class: "flex flex-col sm:flex-row sm:inline-flex" do
       "Bulk update"
     end
   end

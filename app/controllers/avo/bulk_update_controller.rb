@@ -41,10 +41,11 @@ module Avo
       resource_key = @resource_name.downcase.to_sym
       current_params = params[resource_key] || {}
 
-      progress_fields = @resource.get_field_definitions
-                                 .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
-                                 .map(&:id)
-                                 .map(&:to_sym)
+      progress_fields = @resource
+        .get_field_definitions
+        .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
+        .map(&:id)
+        .map(&:to_sym)
 
 
       params_to_apply = current_params.reject do |key, value|
