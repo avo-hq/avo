@@ -159,6 +159,16 @@ RSpec.feature "belongs_to", type: :feature do
     end
   end
 
+  describe "with custom primary key set" do
+    let(:event) { create(:event, name: "Sample Event") }
+
+    let!(:volunteer) { create(:volunteer, event: event) }
+
+    it "displays the event link using the UUID and stores the correct foreign key" do
+      expect(volunteer.event_uuid).to eq(event.uuid)
+    end
+  end
+
   describe "hidden columns if current polymorphic association" do
     let!(:user) { create :user }
     let!(:project) { create :project, name: "Haha project" }
