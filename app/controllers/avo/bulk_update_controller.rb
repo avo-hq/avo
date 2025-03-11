@@ -57,9 +57,9 @@ module Avo
 
     def progress_bar_fields
       @resource.get_field_definitions
-               .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
-               .map(&:id)
-               .map(&:to_sym)
+        .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
+        .map(&:id)
+        .map(&:to_sym)
     end
 
     def progress_field_with_default?(progress_fields, key_sym, prefilled_value, value)
@@ -72,13 +72,7 @@ module Avo
 
       @query.each do |record|
         update_record(record, params_to_apply)
-        if record.save
-          updated_count += 1
-        else
-          add_failed_record(failed_records, record)
-        end
-      rescue => e
-        add_failed_record(failed_records, record, e.message)
+        record.save ? updated_count += 1 : add_failed_record(failed_records, record)
       end
 
       [updated_count, failed_records]
@@ -87,20 +81,14 @@ module Avo
     def update_record(record, params_to_apply)
       params_to_apply.each do |key, value|
         record.public_send(:"#{key}=", value)
-      rescue => e
-        log_field_assignment_error(key, e.message)
       end
 
       @resource.fill_record(record, params)
     end
 
-    def log_field_assignment_error(key, error_message)
-      puts "Błąd przypisywania pola #{key}: #{error_message}"
-    end
-
     def add_failed_record(failed_records, record, error_message = nil)
       errors = error_message ? [error_message] : record.errors.full_messages
-      failed_records << { record: record, errors: errors }
+      failed_records << {record: record, errors: errors}
     end
 
     def after_bulk_update_path
@@ -117,10 +105,10 @@ module Avo
 
     def set_query
       @query = if params[:query].present?
-                 @resource.find_record(params[:query], params: params)
-               else
-                 find_records_by_resource_ids
-               end
+        @resource.find_record(params[:query], params: params)
+      else
+        find_records_by_resource_ids
+      end
     end
 
     def find_records_by_resource_ids

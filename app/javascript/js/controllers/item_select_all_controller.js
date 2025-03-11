@@ -106,18 +106,7 @@ export default class extends Controller {
   }
 
   updateActionLinks(param, selector, keys) {
-    const params = {
-      resourceIds: {
-        value: JSON.parse(this.element.dataset.selectedResources).join(','),
-        selectedAll: 'false',
-        key: keys.resourceIdsKey,
-      },
-      selectedQuery: {
-        value: this.element.dataset.itemSelectAllSelectedAllQueryValue,
-        selectedAll: 'true',
-        key: keys.selectedQueryKey,
-      },
-    }
+    const params = this.setLinkParams(keys)
 
     document.querySelectorAll(selector).forEach((link) => {
       try {
@@ -139,6 +128,21 @@ export default class extends Controller {
         console.error(`Error updating link (${param}):`, link, error)
       }
     })
+  }
+
+  setLinkParams(keys) {
+    return {
+      resourceIds: {
+        value: JSON.parse(this.element.dataset.selectedResources).join(','),
+        selectedAll: 'false',
+        key: keys.resourceIdsKey,
+      },
+      selectedQuery: {
+        value: this.element.dataset.itemSelectAllSelectedAllQueryValue,
+        selectedAll: 'true',
+        key: keys.selectedQueryKey,
+      },
+    }
   }
 
   resetUnselected() {
