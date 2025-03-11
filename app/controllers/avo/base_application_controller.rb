@@ -105,9 +105,10 @@ module Avo
     end
 
     def set_related_resource
+      # Find the field from the parent resource
       association_field = find_association_field(resource: @resource, association: params[:related_name])
 
-      # Find the field from the parent resource
+      # Find the resource from the related field
       related_resource = association_field.hydrate(record: @record).resource_class(params)
 
       raise Avo::MissingResourceError.new(related_resource_name, association_field) if related_resource.nil?
