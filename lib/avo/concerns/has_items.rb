@@ -124,8 +124,17 @@ module Avo
       end
 
       def get_field_definitions(only_root: false)
-        only_fields(only_root: only_root).map do |field|
-          field.hydrate(resource: self, user: user, view: view)
+        only_fields(only_root:).map do |field|
+          # When nested field hydrate the field with the nested resource
+          resource = if field.nested_creation && view.in?(["new", "create"])
+            Avo.resource_manager.get_resource_by_model_class(model_class.reflections[field.id.to_s].klass)
+              .new(view:, params:)
+              .detect_fields
+          else
+            self
+          end
+
+          field.hydrate(resource:, user:, view:)
         end
       end
 
