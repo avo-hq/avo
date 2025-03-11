@@ -38,28 +38,21 @@ module Avo
 
   # Exception raised when a resource is missing
   class MissingResourceError < StandardError
-    def initialize(model_class, field_name = nil, field = nil)
-      super(missing_resource_message(model_class, field_name, field))
+    def initialize(model_class, field)
+      super(missing_resource_message(model_class, field))
     end
 
     private
 
-    def missing_resource_message(model_class, field_name, field)
+    def missing_resource_message(model_class, field)
       model_name = model_class.to_s.underscore
-      field_name ||= model_name
-      if field.type == "array"
-        "Failed to find a resource while rendering the :#{field_name} field.\n" \
-        "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize} --array'.\n" \
-        "\n" \
-        "Alternatively add the 'use_resource' option to the :#{field_name} field to specify a custom resource to be used.\n" \
-        "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/array-resources.html."
-      else
-        "Failed to find a resource while rendering the :#{field_name} field.\n" \
-        "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize}'.\n" \
-        "\n" \
-        "Alternatively add the 'use_resource' option to the :#{field_name} field to specify a custom resource to be used.\n" \
-        "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/resources.html."
-      end
+      field_name = field.id
+
+      "Failed to find a resource while rendering the :#{field_name} field.\n" \
+      "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize}#{" --array" if field.type == "array"}'.\n" \
+      "\n" \
+      "Alternatively add the 'use_resource' option to the :#{field_name} field to specify a custom resource to be used.\n" \
+      "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/#{"array-" if field.type == "array"}resources.html."
     end
   end
 
