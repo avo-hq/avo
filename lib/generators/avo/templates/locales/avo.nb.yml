@@ -18,6 +18,9 @@ nb:
     attachment_class_detached: "%{attachment_class} fjernet."
     attachment_destroyed: Vedlett slettet
     attachment_failed: Kunne ikke legge ved %{attachment_class}
+    bulk_update_success: "%{count} poster ble oppdatert med hell."
+    bulk_update_failure: "Kunne ikke oppdatere %{count} poster. Feil: %{errors}"
+    bulk_update_no_records: Masseoppdatering kan ikke utføres uten poster.
     cancel: Avbryt
     choose_a_country: Velg et land
     choose_an_option: Velg et alternativ
@@ -73,6 +76,7 @@ nb:
     next_page: Neste side
     no_cancel: Nei, avbryt
     no_cards_present: Ingen kort til stede
+    no_changes_made: Det ble ikke gjort noen endringer.
     no_item_found: Ingen funnet
     no_options_available: Ingen tilgjengelige alternativer
     no_related_item_found: Ingen relaterte funnet

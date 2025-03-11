@@ -18,6 +18,9 @@ es:
     attachment_class_detached: "%{attachment_class} adjuntado/a."
     attachment_destroyed: Adjunto eliminado
     attachment_failed: No se pudo adjuntar %{attachment_class}
+    bulk_update_success: "%{count} registros se actualizaron correctamente."
+    bulk_update_failure: "No se pudieron actualizar %{count} registros. Errores: %{errors}"
+    bulk_update_no_records: No se puede realizar una actualización masiva sin registros.
     cancel: Cancelar
     choose_a_country: Elige un país
     choose_an_option: Elige una opción
@@ -73,6 +76,7 @@ es:
     next_page: Página siguiente
     no_cancel: No, cancelar
     no_cards_present: No hay tarjetas
+    no_changes_made: No se realizaron cambios.
     no_item_found: No se ha encontrado ningún elemento
     no_options_available: No hay opciones disponibles
     no_related_item_found: No se ha encontrado ningún elemento relacionado

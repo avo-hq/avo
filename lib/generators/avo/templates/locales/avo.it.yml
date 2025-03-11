@@ -16,6 +16,9 @@ it:
     attachment_class_detached: "%{attachment_class} staccato."
     attachment_destroyed: Allegato distrutto
     attachment_failed: Impossibile allegare %{attachment_class}
+    bulk_update_success: "%{count} record sono stati aggiornati con successo."
+    bulk_update_failure: "Impossibile aggiornare %{count} record. Errori: %{errors}"
+    bulk_update_no_records: L'aggiornamento di massa non può essere eseguito senza record.
     cancel: Annulla
     choose_a_country: Scegli un paese
     choose_an_option: Scegli un'opzione
@@ -71,6 +74,7 @@ it:
     next_page: Pagina successiva
     no_cancel: No, annulla
     no_cards_present: Nessuna carta presente
+    no_changes_made: Non sono state apportate modifiche.
     no_item_found: Nessun record trovato
     no_options_available: Nessuna opzione disponibile
     no_related_item_found: Nessun record correlato trovato

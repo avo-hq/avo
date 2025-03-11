@@ -22,6 +22,9 @@ ar:
     attachment_class_detached: "%{attachment_class} تم فصل"
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
+    bulk_update_success: "تم تحديث %{count} سجل بنجاح."
+    bulk_update_failure: "فشل في تحديث %{count} سجل. الأخطاء: %{errors}"
+    bulk_update_no_records: لا يمكن تنفيذ التحديث الجماعي بدون سجلات.
     cancel: إلغاء
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا
@@ -81,6 +84,7 @@ ar:
     next_page: الصفحة التالية
     no_cancel: لا، إلغاء
     no_cards_present: لا توجد بطاقات
+    no_changes_made: لم يتم إجراء أي تغييرات.
     no_item_found: لا يوجد سجلات
     no_options_available: لا توجد خيارات متاحة
     no_related_item_found: لم يتم العثور على سجلات متعلقة
