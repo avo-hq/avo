@@ -16,9 +16,9 @@ ru:
     attachment_class_detached: "%{attachment_class} отсоединено."
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
-    bulk_update_success: "%{count} записей успешно обновлено."
-    bulk_update_failure: "Не удалось обновить %{count} записей. Ошибки: %{errors}"
+    bulk_update_failure: 'Не удалось обновить %{count} записей. Ошибки: %{errors}'
     bulk_update_no_records: Массовое обновление не может быть выполнено без записей.
+    bulk_update_success: "%{count} записей успешно обновлено."
     cancel: Отмена
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию

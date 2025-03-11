@@ -18,9 +18,9 @@ nn:
     attachment_class_detached: "%{attachment_class} fjerna."
     attachment_destroyed: Vedlegg sletta
     attachment_failed: Klarte ikkje å legge ved %{attachment_class}
-    bulk_update_success: "%{count} postane blei oppdatert med suksess."
-    bulk_update_failure: "Kunne ikkje oppdatere %{count} postane. Feil: %{errors}"
+    bulk_update_failure: 'Kunne ikkje oppdatere %{count} postane. Feil: %{errors}'
     bulk_update_no_records: Masseoppdatering kan ikkje gjennomførast utan postar.
+    bulk_update_success: "%{count} postane blei oppdatert med suksess."
     cancel: Avbryt
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ

@@ -16,9 +16,9 @@ nl:
     attachment_class_detached: "%{attachment_class} losgekoppeld."
     attachment_destroyed: Bijlage verwijderd
     attachment_failed: Kon %{attachment_class} niet bijvoegen
-    bulk_update_success: "%{count} records zijn succesvol bijgewerkt."
-    bulk_update_failure: "Kon %{count} records niet bijwerken. Fouten: %{errors}"
+    bulk_update_failure: 'Kon %{count} records niet bijwerken. Fouten: %{errors}'
     bulk_update_no_records: Bulkupdate kan niet worden uitgevoerd zonder records.
+    bulk_update_success: "%{count} records zijn succesvol bijgewerkt."
     cancel: Annuleren
     choose_a_country: Kies een land
     choose_an_option: Kies een optie

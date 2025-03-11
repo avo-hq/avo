@@ -16,9 +16,9 @@ uk:
     attachment_class_detached: "%{attachment_class} відкріплено."
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
-    bulk_update_success: "%{count} записів було успішно оновлено."
-    bulk_update_failure: "Не вдалося оновити %{count} записів. Помилки: %{errors}"
+    bulk_update_failure: 'Не вдалося оновити %{count} записів. Помилки: %{errors}'
     bulk_update_no_records: Масове оновлення не можна виконати без записів.
+    bulk_update_success: "%{count} записів було успішно оновлено."
     cancel: Скасувати
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію

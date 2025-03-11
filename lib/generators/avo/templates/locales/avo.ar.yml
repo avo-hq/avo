@@ -22,9 +22,9 @@ ar:
     attachment_class_detached: "%{attachment_class} تم فصل"
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
-    bulk_update_success: "تم تحديث %{count} سجل بنجاح."
-    bulk_update_failure: "فشل في تحديث %{count} سجل. الأخطاء: %{errors}"
+    bulk_update_failure: 'فشل في تحديث %{count} سجل. الأخطاء: %{errors}'
     bulk_update_no_records: لا يمكن تنفيذ التحديث الجماعي بدون سجلات.
+    bulk_update_success: تم تحديث %{count} سجل بنجاح.
     cancel: إلغاء
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا

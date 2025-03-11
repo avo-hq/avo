@@ -16,9 +16,9 @@ de:
     attachment_class_detached: "%{attachment_class} abgehängt."
     attachment_destroyed: Anhang gelöscht
     attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
-    bulk_update_success: "%{count} Datensätze wurden erfolgreich aktualisiert."
-    bulk_update_failure: "Fehler beim Aktualisieren von %{count} Datensätzen. Fehler: %{errors}"
+    bulk_update_failure: 'Fehler beim Aktualisieren von %{count} Datensätzen. Fehler: %{errors}'
     bulk_update_no_records: Massenaktualisierung kann nicht ohne Datensätze durchgeführt werden.
+    bulk_update_success: "%{count} Datensätze wurden erfolgreich aktualisiert."
     cancel: Abbrechen
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen

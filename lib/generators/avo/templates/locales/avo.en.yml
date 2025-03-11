@@ -16,9 +16,9 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
-    bulk_update_success: "%{count} records were successfully updated."
-    bulk_update_failure: "Failed to update %{count} records. Errors: %{errors}"
+    bulk_update_failure: 'Failed to update %{count} records. Errors: %{errors}'
     bulk_update_no_records: Bulk update cannot be performed without records.
+    bulk_update_success: "%{count} records were successfully updated."
     cancel: Cancel
     choose_a_country: Choose a country
     choose_an_option: Choose an option

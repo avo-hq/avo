@@ -16,9 +16,9 @@ zh:
     attachment_class_detached: "%{attachment_class} 已分离。"
     attachment_destroyed: 附件已删除
     attachment_failed: 无法附加 %{attachment_class}
-    bulk_update_success: "%{count} 条记录已成功更新。"
-    bulk_update_failure: "更新 %{count} 条记录失败。错误：%{errors}"
+    bulk_update_failure: 更新 %{count} 条记录失败。错误：%{errors}
     bulk_update_no_records: 没有记录，无法执行批量更新。
+    bulk_update_success: "%{count} 条记录已成功更新。"
     cancel: 取消
     choose_a_country: 选择一个国家
     choose_an_option: 选择一个选项

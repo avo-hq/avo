@@ -18,9 +18,9 @@ pt:
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
-    bulk_update_success: "%{count} registros foram atualizados com sucesso."
-    bulk_update_failure: "Falha ao atualizar %{count} registros. Erros: %{errors}"
+    bulk_update_failure: 'Falha ao atualizar %{count} registros. Erros: %{errors}'
     bulk_update_no_records: Não é possível realizar a atualização em massa sem registros.
+    bulk_update_success: "%{count} registros foram atualizados com sucesso."
     cancel: Cancelar
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção

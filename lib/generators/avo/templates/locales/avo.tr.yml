@@ -18,9 +18,9 @@ tr:
     attachment_class_detached: "%{attachment_class} ilişkisi kesildi."
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
-    bulk_update_success: "%{count} kayıt başarıyla güncellendi."
     bulk_update_failure: "%{count} kayıt güncellenemedi. Hatalar: %{errors}"
     bulk_update_no_records: Kayıt olmadan toplu güncelleme yapılamaz.
+    bulk_update_success: "%{count} kayıt başarıyla güncellendi."
     cancel: İptal et
     choose_a_country: Bir ülke seç
     choose_an_option: Bir seçenek seç
