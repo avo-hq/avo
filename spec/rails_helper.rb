@@ -113,7 +113,7 @@ RSpec.configure do |config|
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
   config.before(:each) do
-    Rails.application.reload_routes_unless_loaded
+    Rails.application.try(:reload_routes_unless_loaded)
   end
 
   config.before(:each, type: :system) {
