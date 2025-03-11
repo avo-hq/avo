@@ -19,6 +19,7 @@ module Avo
       if params_to_apply.blank?
         flash[:warning] = t("avo.no_changes_made")
         redirect_to after_bulk_update_path
+        return
       end
 
       updated_count, failed_records = update_records
@@ -37,24 +38,32 @@ module Avo
 
     def params_to_apply
       prefilled_params = params[:prefilled] || {}
-
-      resource_key = @resource_name.downcase.to_sym
-      current_params = params[resource_key] || {}
-
-      progress_fields = @resource
-        .get_field_definitions
-        .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
-        .map(&:id)
-        .map(&:to_sym)
+      current_params = current_resource_params
+      progress_fields = progress_bar_fields
 
       current_params.reject do |key, value|
         key_sym = key.to_sym
         prefilled_value = prefilled_params[key_sym]
 
-        next true if progress_fields.include?(key_sym) && prefilled_value == "" && value.to_s == "50"
-
-        prefilled_value.to_s == value.to_s
+        progress_field_with_default?(progress_fields, key_sym, prefilled_value, value) ||
+          prefilled_value.to_s == value.to_s
       end
+    end
+
+    def current_resource_params
+      resource_key = @resource_name.downcase.to_sym
+      params[resource_key] || {}
+    end
+
+    def progress_bar_fields
+      @resource.get_field_definitions
+               .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
+               .map(&:id)
+               .map(&:to_sym)
+    end
+
+    def progress_field_with_default?(progress_fields, key_sym, prefilled_value, value)
+      progress_fields.include?(key_sym) && prefilled_value == "" && value.to_s == "50"
     end
 
     def update_records
@@ -62,24 +71,36 @@ module Avo
       failed_records = []
 
       @query.each do |record|
-        params_to_apply.each do |key, value|
-          record.public_send(:"#{key}=", value)
-        rescue => e
-          puts "Błąd przypisywania pola #{key}: #{e.message}"
-        end
-
-        @resource.fill_record(record, params)
-
+        update_record(record, params_to_apply)
         if record.save
           updated_count += 1
         else
-          failed_records << {record: record, errors: record.errors.full_messages}
+          add_failed_record(failed_records, record)
         end
       rescue => e
-        failed_records << {record: record, errors: [e.message]}
+        add_failed_record(failed_records, record, e.message)
       end
 
       [updated_count, failed_records]
+    end
+
+    def update_record(record, params_to_apply)
+      params_to_apply.each do |key, value|
+        record.public_send(:"#{key}=", value)
+      rescue => e
+        log_field_assignment_error(key, e.message)
+      end
+
+      @resource.fill_record(record, params)
+    end
+
+    def log_field_assignment_error(key, error_message)
+      puts "Błąd przypisywania pola #{key}: #{error_message}"
+    end
+
+    def add_failed_record(failed_records, record, error_message = nil)
+      errors = error_message ? [error_message] : record.errors.full_messages
+      failed_records << { record: record, errors: errors }
     end
 
     def after_bulk_update_path
@@ -95,17 +116,21 @@ module Avo
     end
 
     def set_query
-      if params[:query].present?
-        @query = @resource.find_record(params[:query], params: params)
-      else
-        resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
-        @query = decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
-      end
+      @query = if params[:query].present?
+                 @resource.find_record(params[:query], params: params)
+               else
+                 find_records_by_resource_ids
+               end
+    end
+
+    def find_records_by_resource_ids
+      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+      decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
 
     def set_fields
       if @query.blank?
-        flash[:error] = "Bulk update cannot be performed without records."
+        flash[:error] = I18n.t("avo.bulk_update_no_records")
         redirect_to after_bulk_update_path
       else
         @fields = @query.first.attributes.keys.index_with { nil }
