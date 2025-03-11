@@ -99,7 +99,11 @@ module Avo
       fields.each_key.with_object({}) do |field_name, prefilled|
         values = records.map { |record| record.public_send(field_name) }
         values.uniq!
-        prefilled[field_name] = (values.size == 1 ? values.first : nil)
+        prefilled[field_name] = if values.size == 1
+          values.first
+        else
+          nil
+        end
       end
     end
 

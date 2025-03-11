@@ -26,7 +26,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    path = if params[:controller] == "avo/bulk_update"
+    if params[:controller] == "avo/bulk_update"
       helpers.resources_path(resource: @resource)
     elsif params[:return_to].present?
       # The `return_to` param takes precedence over anything else.
@@ -42,8 +42,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     else
       resources_path
     end
-
-    path
   end
 
   def resources_path
