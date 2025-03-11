@@ -14,7 +14,7 @@ module TestHelpers
       include_context "has_admin_user"
 
       before do
-        login_as admin
+        sign_in admin
       end
     end
   end
