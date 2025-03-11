@@ -67,4 +67,6 @@ Rails.application.configure do
       ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.create_unlogged_tables = true
     end
   end
+
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end
