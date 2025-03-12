@@ -17,17 +17,17 @@ export default class extends NestedForm {
 
   add(event) {
     super.add(event)
-
-    if (this.limitValue > 0 && this.nestedRecordTargets.length >= this.limitValue) {
-      this.addButtonTarget.classList.add('hidden')
-    }
+    this.toggleAddButton()
   }
 
   remove(event) {
     super.remove(event)
+    this.toggleAddButton()
+  }
 
-    if (this.limitValue > 0 && this.nestedRecordTargets.length < this.limitValue) {
-      this.addButtonTarget.classList.remove('hidden')
+  toggleAddButton() {
+    if (this.limitValue > 0) {
+      this.addButtonTarget.classList.toggle('hidden', this.nestedRecordTargets.length >= this.limitValue)
     }
   }
 }
