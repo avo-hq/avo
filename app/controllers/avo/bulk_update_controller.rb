@@ -103,7 +103,7 @@ module Avo
     end
 
     def find_records_by_resource_ids
-      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+      resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
       decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
 
