@@ -416,56 +416,44 @@ module Avo
     end
 
     def set_edit_title_and_breadcrumbs
-      if params[:controller] != "avo/bulk_update"
-        set_resource_and_title
-      end
+      set_resource_and_page_title
 
-      add_breadcrumbs_based_on_resource
-
-      add_bulk_edit_breadcrumb if params[:controller] == "avo/bulk_update"
-    end
-
-    private
-
-    def set_resource_and_title
-      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
-      @page_title = @resource.default_panel_name.to_s
-    end
-
-    def add_breadcrumbs_based_on_resource
+      last_crumb_args = {}
+      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_record_id].present?
-        add_parent_resource_breadcrumbs
+        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
+        via_record = via_resource.find_record params[:via_record_id], params: params
+        via_resource = via_resource.new record: via_record
+
+        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
+        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+
+        last_crumb_args = {
+          via_resource_class: params[:via_resource_class],
+          via_record_id: params[:via_record_id]
+        }
+        add_breadcrumb @resource.plural_name.humanize
       else
-        add_default_resource_breadcrumb
+        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+      end
+
+      help_add_breadcrumb(last_crumb_args)
+    end
+
+    def set_resource_and_page_title
+      if params[:controller] != "avo/bulk_update"
+        @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
+        @page_title = @resource.default_panel_name.to_s
       end
     end
 
-    def add_parent_resource_breadcrumbs
-      via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-      via_record = via_resource.find_record params[:via_record_id], params: params
-      via_resource = via_resource.new record: via_record
-
-      add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
-      add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
-
-      add_last_crumb(via_resource)
-    end
-
-    def add_default_resource_breadcrumb
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-      add_breadcrumb @resource.record_title, resource_path(record: @resource.record, resource: @resource)
-    end
-
-    def add_last_crumb(via_resource)
-      last_crumb_args = {
-        via_resource_class: params[:via_resource_class],
-        via_record_id: params[:via_record_id]
-      }
-      add_breadcrumb @resource.plural_name.humanize
-    end
-
-    def add_bulk_edit_breadcrumb
-      add_breadcrumb t("avo.bulk_edit")
+    def help_add_breadcrumb(last_crumb_args)
+      if params[:controller] != "avo/bulk_update"
+        add_breadcrumb @resource.record_title, resource_path(record: @resource.record, resource: @resource, **last_crumb_args) if params[:controller] != "avo/bulk_update"
+        add_breadcrumb t("avo.edit").humanize
+      else
+        add_breadcrumb t("avo.bulk_edit")
+      end
     end
 
     def create_success_action
