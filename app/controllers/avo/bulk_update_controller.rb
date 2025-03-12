@@ -83,7 +83,7 @@ module Avo
     end
 
     def progress_field_with_default?(progress_fields, key_sym, prefilled_value, value)
-      progress_fields.include?(key_sym) && prefilled_value == nil && value.to_s == "50"
+      progress_fields.include?(key_sym) && prefilled_value.nil? && value.to_s == "50"
     end
 
     def prefill_fields(records, fields)
@@ -98,9 +98,13 @@ module Avo
       @query = if params[:query].present?
         @resource.find_record(params[:query], params: params)
       else
-        resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
-        decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+        find_records_by_resource_ids
       end
+    end
+
+    def find_records_by_resource_ids
+      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+      decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
 
     def set_fields
