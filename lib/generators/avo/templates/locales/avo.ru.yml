@@ -70,6 +70,8 @@ ru:
     more: Ещё
     more_content: Больше контента
     more_records_available: Доступно больше записей.
+    nested:
+      add: Добавить
     new: новый
     next_page: Следующая страница
     no_cancel: Нет, отмена

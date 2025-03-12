@@ -68,6 +68,8 @@ nl:
     more: Meer
     more_content: Meer inhoud
     more_records_available: Er zijn meer records beschikbaar.
+    nested:
+      add: Toevoegen
     new: nieuw
     next_page: Volgende pagina
     no_cancel: Nee, annuleren
