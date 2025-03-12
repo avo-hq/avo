@@ -264,15 +264,19 @@ RSpec.describe "Tabs", type: :system do
     end
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Address"]').click
+    wait_for_loaded
 
-    # Find the field wrapper for "Phone number"
-    field_wrapper = find('div[data-field-id="phone_number"]', visible: :all, wait: 15)
+    # Find the phone number from lazy loaded tab after clicking on it
+    within(:css, '.block[data-tabs-target="tabPanel"][data-tab-id="Address"]', visible: :all) do
+      # Find the field wrapper for "Phone number"
+      field_wrapper = find('div[data-field-id="phone_number"]', visible: :all)
 
-    # Locate the label and value within the wrapper
-    label = field_wrapper.find('div[data-slot="label"]', visible: :all)
-    value = field_wrapper.find('div[data-slot="value"]', visible: :all)
+      # Locate the label and value within the wrapper
+      label = field_wrapper.find('div[data-slot="label"]', visible: :all)
+      value = field_wrapper.find('div[data-slot="value"]', visible: :all)
 
-    expect(label.text(:all).strip).to eq("Phone number")
-    expect(value.text(:all).strip).to eq("+1 (555) 123-4567")
+      expect(label.text(:all).strip).to eq("Phone number")
+      expect(value.text(:all).strip).to eq("+1 (555) 123-4567")
+    end
   end
 end
