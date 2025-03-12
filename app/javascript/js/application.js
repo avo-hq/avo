@@ -4,7 +4,6 @@ import Clipboard from '@stimulus-components/clipboard'
 import PasswordVisibility from '@stimulus-components/password-visibility'
 import TextareaAutogrow from 'stimulus-textarea-autogrow'
 import TurboPower from 'turbo_power'
-import NestedForm from 'stimulus-rails-nested-form'
 
 TurboPower.initialize(window.Turbo.StreamActions)
 
@@ -36,6 +35,5 @@ application.register('popover', Popover)
 application.register('clipboard', Clipboard)
 application.register('password-visibility', PasswordVisibility)
 application.register('textarea-autogrow', TextareaAutogrow)
-application.register('nested-form', NestedForm)
 
 export { application }
