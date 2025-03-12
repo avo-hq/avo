@@ -18,9 +18,11 @@ pt-BR:
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
-    bulk_update_failure: 'Falha ao atualizar %{count} registros. Erros: %{errors}'
+    bulk_edit: Edição em massa
+    bulk_update: Atualização em massa
+    bulk_update_failure: Falha ao atualizar os registros.
     bulk_update_no_records: A atualização em massa não pode ser realizada sem registros.
-    bulk_update_success: "%{count} registros foram atualizados com sucesso."
+    bulk_update_success: Ação em massa executada com sucesso.
     cancel: Cancelar
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção
@@ -76,7 +78,6 @@ pt-BR:
     next_page: Próxima página
     no_cancel: Não, cancelar
     no_cards_present: Nenhum cartão presente
-    no_changes_made: Nenhuma alteração foi feita.
     no_item_found: Nenhum registro encontrado
     no_options_available: Nenhuma opção disponível
     no_related_item_found: Nenhum registro relacionado encontrado

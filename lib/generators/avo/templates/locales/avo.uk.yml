@@ -16,9 +16,11 @@ uk:
     attachment_class_detached: "%{attachment_class} відкріплено."
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
-    bulk_update_failure: 'Не вдалося оновити %{count} записів. Помилки: %{errors}'
-    bulk_update_no_records: Масове оновлення не можна виконати без записів.
-    bulk_update_success: "%{count} записів було успішно оновлено."
+    bulk_edit: Масове редагування
+    bulk_update: Масове оновлення
+    bulk_update_failure: Не вдалося оновити записи.
+    bulk_update_no_records: Неможливо виконати масове оновлення без записів.
+    bulk_update_success: Масова дія успішно виконана.
     cancel: Скасувати
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію
@@ -76,7 +78,6 @@ uk:
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
     no_cards_present: Немає карток
-    no_changes_made: Змін не було внесено.
     no_item_found: Запис не знайдено
     no_options_available: Немає доступних опцій
     no_related_item_found: Пов'язані записи не знайдені

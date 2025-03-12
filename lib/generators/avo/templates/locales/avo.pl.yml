@@ -16,9 +16,11 @@ pl:
     attachment_class_detached: "%{attachment_class} odłączony."
     attachment_destroyed: Załącznik usunięty
     attachment_failed: Nie udało się dołączyć %{attachment_class}
-    bulk_update_failure: 'Nie udało się zaktualizować %{count} rekordów. Błędy: %{errors}'
+    bulk_edit: Edycja zbiorcza
+    bulk_update: Aktualizacja zbiorcza
+    bulk_update_failure: Nie udało się zaktualizować rekordów.
     bulk_update_no_records: Aktualizacja zbiorcza nie może zostać wykonana bez rekordów.
-    bulk_update_success: "%{count} rekordów zostało pomyślnie zaktualizowanych."
+    bulk_update_success: Akcja zbiorcza zakończona sukcesem.
     cancel: Anuluj
     choose_a_country: Wybierz kraj
     choose_an_option: Wybierz opcję
@@ -76,7 +78,6 @@ pl:
     next_page: Następna strona
     no_cancel: Nie, anuluj
     no_cards_present: Brak kart
-    no_changes_made: Nie wprowadzono żadnych zmian.
     no_item_found: Nie znaleziono rekordu
     no_options_available: Brak dostępnych opcji
     no_related_item_found: Nie znaleziono powiązanego rekordu

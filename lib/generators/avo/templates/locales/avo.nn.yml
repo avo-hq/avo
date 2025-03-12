@@ -18,9 +18,11 @@ nn:
     attachment_class_detached: "%{attachment_class} fjerna."
     attachment_destroyed: Vedlegg sletta
     attachment_failed: Klarte ikkje å legge ved %{attachment_class}
-    bulk_update_failure: 'Kunne ikkje oppdatere %{count} postane. Feil: %{errors}'
-    bulk_update_no_records: Masseoppdatering kan ikkje gjennomførast utan postar.
-    bulk_update_success: "%{count} postane blei oppdatert med suksess."
+    bulk_edit: Masseredigering
+    bulk_update: Masseoppdatering
+    bulk_update_failure: Feil ved oppdatering av poster.
+    bulk_update_no_records: Bulk update kan ikke utføres uten poster.
+    bulk_update_success: Massehandling utført med suksess.
     cancel: Avbryt
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ
@@ -76,7 +78,6 @@ nn:
     next_page: Neste side
     no_cancel: Nei, avbryt
     no_cards_present: Ingen kort til stades
-    no_changes_made: Det vart ikkje gjort nokon endringar.
     no_item_found: Fann ingen
     no_options_available: Ingen tilgjengelege alternativ
     no_related_item_found: Fann ingen relaterte

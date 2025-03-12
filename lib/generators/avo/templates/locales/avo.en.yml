@@ -16,9 +16,11 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
-    bulk_update_failure: 'Failed to update %{count} records. Errors: %{errors}'
+    bulk_edit: Bulk edit
+    bulk_update: Bulk update
+    bulk_update_failure: Failed to update records.
     bulk_update_no_records: Bulk update cannot be performed without records.
-    bulk_update_success: "%{count} records were successfully updated."
+    bulk_update_success: Bulk action run successfully.
     cancel: Cancel
     choose_a_country: Choose a country
     choose_an_option: Choose an option
@@ -74,7 +76,6 @@ en:
     next_page: Next page
     no_cancel: No, cancel
     no_cards_present: No cards present
-    no_changes_made: No changes were made.
     no_item_found: No record found
     no_options_available: No options available
     no_related_item_found: No related record found

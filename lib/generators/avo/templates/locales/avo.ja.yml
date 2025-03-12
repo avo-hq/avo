@@ -18,9 +18,11 @@ ja:
     attachment_class_detached: "%{attachment_class}をデタッチしました。"
     attachment_destroyed: アタッチは削除されました
     attachment_failed: "%{attachment_class}の添付に失敗しました"
-    bulk_update_failure: "%{count} 件のレコードの更新に失敗しました。エラー: %{errors}"
-    bulk_update_no_records: レコードなしでは一括更新を実行できません。
-    bulk_update_success: "%{count} 件のレコードが正常に更新されました。"
+    bulk_edit: 一括編集
+    bulk_update: 一括更新
+    bulk_update_failure: レコードの更新に失敗しました。
+    bulk_update_no_records: レコードがない場合、バルク更新を実行できません。
+    bulk_update_success: 一括処理が正常に実行されました。
     cancel: キャンセル
     choose_a_country: 国を選択
     choose_an_option: オプションを選択
@@ -76,7 +78,6 @@ ja:
     next_page: 次のページ
     no_cancel: いいえ、キャンセル
     no_cards_present: カードがありません
-    no_changes_made: 変更はありませんでした。
     no_item_found: レコードが見つかりませんでした
     no_options_available: 利用可能なオプションがありません
     no_related_item_found: 関連するレコードが見つかりませんでした

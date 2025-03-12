@@ -16,25 +16,45 @@ module Avo
     end
 
     def handle
-      if params_to_apply.blank?
-        flash[:warning] = t("avo.no_changes_made")
-        redirect_to after_bulk_update_path
-        return
-      end
+      saved = save_records
 
-      updated_count, failed_records = update_records
-
-      if failed_records.empty?
-        flash[:notice] = t("avo.bulk_update_success", count: updated_count)
+      if saved
+        flash[:notice] = t("avo.bulk_update_success")
       else
-        error_messages = failed_records.flat_map { |fr| fr[:errors] }.uniq
-        flash[:error] = t("avo.bulk_update_failure", count: failed_records.count, errors: error_messages.join(", "))
+        flash[:error] = t("avo.bulk_update_failure")
       end
 
       redirect_to after_bulk_update_path
     end
 
     private
+
+    def update_records
+      params = params_to_apply
+
+      @query.each do |record|
+        @resource.fill_record(record, params)
+      end
+    end
+
+    def save_records
+      update_records
+
+      all_saved = true
+
+      ActiveRecord::Base.transaction do
+        @query.each do |record|
+          @record = record
+          save_record
+        end
+      rescue ActiveRecord::RecordInvalid => e
+        all_saved = false
+        puts "Failed to save #{record.id}: #{e.message}"
+        raise ActiveRecord::Rollback
+      end
+
+      all_saved
+    end
 
     def params_to_apply
       prefilled_params = params[:prefilled] || {}
@@ -43,10 +63,10 @@ module Avo
 
       current_params.reject do |key, value|
         key_sym = key.to_sym
+
         prefilled_value = prefilled_params[key_sym]
 
-        progress_field_with_default?(progress_fields, key_sym, prefilled_value, value) ||
-          prefilled_value.to_s == value.to_s
+        progress_field_with_default?(progress_fields, key_sym, prefilled_value, value) || prefilled_value.to_s == value.to_s
       end
     end
 
@@ -63,36 +83,7 @@ module Avo
     end
 
     def progress_field_with_default?(progress_fields, key_sym, prefilled_value, value)
-      progress_fields.include?(key_sym) && prefilled_value == "" && value.to_s == "50"
-    end
-
-    def update_records
-      updated_count = 0
-      failed_records = []
-
-      @query.each do |record|
-        update_record(record, params_to_apply)
-        record.save ? updated_count += 1 : add_failed_record(failed_records, record)
-      end
-
-      [updated_count, failed_records]
-    end
-
-    def update_record(record, params_to_apply)
-      params_to_apply.each do |key, value|
-        record.public_send(:"#{key}=", value)
-      end
-
-      @resource.fill_record(record, params)
-    end
-
-    def add_failed_record(failed_records, record, error_message = nil)
-      errors = error_message ? [error_message] : record.errors.full_messages
-      failed_records << {record: record, errors: errors}
-    end
-
-    def after_bulk_update_path
-      resources_path(resource: @resource)
+      progress_fields.include?(key_sym) && prefilled_value == nil && value.to_s == "50"
     end
 
     def prefill_fields(records, fields)
@@ -107,13 +98,9 @@ module Avo
       @query = if params[:query].present?
         @resource.find_record(params[:query], params: params)
       else
-        find_records_by_resource_ids
+        resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+        decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
       end
-    end
-
-    def find_records_by_resource_ids
-      resource_ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
-      decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
 
     def set_fields
@@ -125,16 +112,16 @@ module Avo
       end
     end
 
-    def action_params
-      @action_params ||= params.permit(:authenticity_token, fields: {})
-    end
-
     def decrypted_query
-      encrypted_query = action_params[:fields]&.dig(:avo_selected_query) || params[:query]
+      encrypted_query = params[:fields]&.dig(:avo_selected_query) || params[:query]
 
       return if encrypted_query.blank?
 
       Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
+    end
+
+    def after_bulk_update_path
+      resources_path(resource: @resource)
     end
   end
 end

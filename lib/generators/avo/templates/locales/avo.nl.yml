@@ -16,9 +16,11 @@ nl:
     attachment_class_detached: "%{attachment_class} losgekoppeld."
     attachment_destroyed: Bijlage verwijderd
     attachment_failed: Kon %{attachment_class} niet bijvoegen
-    bulk_update_failure: 'Kon %{count} records niet bijwerken. Fouten: %{errors}'
-    bulk_update_no_records: Bulkupdate kan niet worden uitgevoerd zonder records.
-    bulk_update_success: "%{count} records zijn succesvol bijgewerkt."
+    bulk_edit: Massabewerking
+    bulk_update: Massaupdate
+    bulk_update_failure: Fout bij het bijwerken van records.
+    bulk_update_no_records: Bulk update kan niet worden uitgevoerd zonder records.
+    bulk_update_success: Massactie succesvol uitgevoerd.
     cancel: Annuleren
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
@@ -74,7 +76,6 @@ nl:
     next_page: Volgende pagina
     no_cancel: Nee, annuleren
     no_cards_present: Geen kaarten aanwezig
-    no_changes_made: Er zijn geen wijzigingen aangebracht.
     no_item_found: Geen item gevonden
     no_options_available: Geen opties beschikbaar
     no_related_item_found: Geen gerelateerd item gevonden

@@ -7,7 +7,7 @@ module Avo
     before_action :set_resource_name
     before_action :set_resource
     before_action :set_applied_filters, only: :index
-    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
+    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview], if: -> { controller_name != "bulk_update" }
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
@@ -416,8 +416,10 @@ module Avo
     end
 
     def set_edit_title_and_breadcrumbs
-      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
-      @page_title = @resource.default_panel_name.to_s
+      if params[:controller] != "avo/bulk_update"
+        @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
+        @page_title = @resource.default_panel_name.to_s
+      end
 
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
@@ -438,8 +440,12 @@ module Avo
         add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.record_title, resource_path(record: @resource.record, resource: @resource, **last_crumb_args)
-      add_breadcrumb t("avo.edit").humanize
+      if params[:controller] != "avo/bulk_update"
+        add_breadcrumb @resource.record_title, resource_path(record: @resource.record, resource: @resource, **last_crumb_args) if params[:controller] != "avo/bulk_update"
+        add_breadcrumb t("avo.edit").humanize
+      else
+        add_breadcrumb t("avo.bulk_edit")
+      end
     end
 
     def create_success_action
