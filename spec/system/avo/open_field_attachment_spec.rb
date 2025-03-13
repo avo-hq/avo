@@ -29,8 +29,11 @@ RSpec.describe "OpenFieldAttachment", type: :system do
   def test_open_PDF_attachment(path)
     visit path
 
-    link = find('a[rel="noopener noreferrer"][target="_blank"]', visible: :all)
+    link = find('a.relative[target="_blank"][rel="noopener noreferrer"]', visible: :all)
+
     expect(link).to be_present
+    expect(link[:target]).to eq('_blank')
+    expect(link[:rel]).to eq('noopener noreferrer')
     link.click
 
     expect(page.driver.browser.current_url).not_to include("download")
@@ -45,6 +48,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
     expect(link).to be_present
     expect(link[:target]).to eq("")
     expect(link[:rel]).to eq("")
+
     expect(page.driver.browser.current_url).not_to include("download")
     expect(page.driver.browser.window_handles.length).to eq 1
   end
