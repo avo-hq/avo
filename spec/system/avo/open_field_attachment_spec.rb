@@ -29,11 +29,11 @@ RSpec.describe "OpenFieldAttachment", type: :system do
   def test_open_PDF_attachment(path)
     visit path
 
-    link = find('a.relative[target="_blank"][rel="noopener noreferrer"]', visible: :all)
+    link = find('a[rel="noopener noreferrer"][target="_blank"]', visible: :all)
 
     expect(link).to be_present
-    expect(link[:target]).to eq('_blank')
-    expect(link[:rel]).to eq('noopener noreferrer')
+    expect(link[:target]).to eq("_blank")
+    expect(link[:rel]).to eq("noopener noreferrer")
     link.click
 
     expect(page.driver.browser.current_url).not_to include("download")
@@ -43,11 +43,13 @@ RSpec.describe "OpenFieldAttachment", type: :system do
   def test_open_CSV_attachment(path)
     visit path
 
-    link = first("a.relative", visible: :all)
+    div = find('span[title="' + csv_file.basename.to_s + '"]').find(:xpath, './ancestor::div[@class="flex flex-col h-full"]')
 
-    expect(link).to be_present
-    expect(link[:target]).to eq("")
+    link = div.find("a")
     expect(link[:rel]).to eq("")
+    expect(link[:target]).to eq("")
+
+    div.find('svg[data-slot="icon"]').find(:xpath, "./ancestor::a").click
 
     expect(page.driver.browser.current_url).not_to include("download")
     expect(page.driver.browser.window_handles.length).to eq 1
