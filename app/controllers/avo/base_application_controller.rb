@@ -106,12 +106,12 @@ module Avo
 
     def set_related_resource
       # Find the field from the parent resource
-      related_resource = find_association_field(resource: @resource, association: params[:related_name])
-        .hydrate(record: @record)
-        .resource_class(params)
+      association_field = find_association_field(resource: @resource, association: params[:related_name])
 
-      raise Avo::MissingResourceError.new(related_resource_name) if related_resource.nil?
+      # Find the resource from the related field
+      related_resource = association_field.hydrate(record: @record).resource_class(params)
 
+      raise Avo::MissingResourceError.new(related_resource_name, association_field) if related_resource.nil?
       action_view = action_name.to_sym
 
       # Get view from params unless actions is index or show or forms...
