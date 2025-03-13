@@ -119,11 +119,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def description
     # If this is a has many association, the user can pass a description to be shown just for this association.
-    if @reflection.present?
-      return field.description if field.present? && field.description
-
-      return
-    end
+    return field&.description(query: @query) if @reflection.present?
 
     @resource.description
   end

@@ -19,6 +19,9 @@
                     <%= svg "heroicons/outline/arrow-top-right-on-square", class: "ml-2 text-2xl h-4" %>
                   <% end %>
                 <% end %>
+                <% if @discreet_information.present? %>
+                  <%= render Avo::DiscreetInformationComponent.new(payload: @discreet_information) %>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>

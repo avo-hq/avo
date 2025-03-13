@@ -208,9 +208,13 @@ module Avo
     end
 
     def preview
-      @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
+      @authorized = @authorization.set_record(@record || @resource.model_class).authorize_action :preview, raise_exception: false
 
-      @preview_fields = @resource.get_preview_fields
+      if @authorized
+        @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
+
+        @preview_fields = @resource.get_preview_fields
+      end
 
       render layout: params[:turbo_frame].blank?
     end

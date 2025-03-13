@@ -94,14 +94,14 @@ dialog#turbo-confirm {
 }
 
 dl {
-  @apply text-sm;
+  @apply text-sm grid gap-x-2 grid-cols-[max-content_1fr];
 
   dt {
-    @apply font-bold inline-block mt-1;
+    @apply font-bold;
   }
 
   dd {
-    @apply inline-block ml-0;
+    @apply ml-0 col-start-2;
   }
 }
 

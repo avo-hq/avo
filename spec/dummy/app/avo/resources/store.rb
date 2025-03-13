@@ -12,6 +12,10 @@ class Avo::Resources::Store < Avo::BaseResource
       field :location, as: :has_one
     end
 
+    if params[:show_items_field] == "1"
+      field :items, as: :array
+    end
+
     # Intentionally use the same ID as the :has_many field to test whether the correct association field
     # is retrieved during rendering of the association.
     field :patrons, as: :tags do
