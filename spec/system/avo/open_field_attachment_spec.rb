@@ -40,7 +40,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
   def test_open_CSV_attachment(path)
     visit path
 
-    link = first('a.relative', visible: :all)
+    link = first("a.relative", visible: :all)
 
     expect(link).to be_present
     expect(link[:target]).to eq("")
