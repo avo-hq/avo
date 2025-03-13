@@ -9,13 +9,13 @@ class Avo::DiscreetInformation
   def items
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
-        timestamp_item(item, false)
+        timestamp_item(item, as: :text)
       elsif item == :timestamps_badge
-        timestamp_item(item, true)
+        timestamp_item(item, as: :badge)
       elsif item == :id
-        id_item(item, false)
+        id_item(item, as: :text)
       elsif item == :id_badge
-        id_item(item, true)
+        id_item(item, as: :badge)
       else
         parse_payload(item)
       end
@@ -24,14 +24,14 @@ class Avo::DiscreetInformation
 
   private
 
-  def id_item(item, as_badge)
+  def id_item(item, as: :text)
     DiscreetInformationItem.new(
       label: "ID: #{record.id}",
-      as_badge: as_badge
+      as:
     )
   end
 
-  def timestamp_item(item, as_badge)
+  def timestamp_item(item, as: :text)
     return if record.created_at.blank? && record.updated_at.blank?
 
     time_format = "%Y-%m-%d %H:%M:%S"
@@ -49,7 +49,7 @@ class Avo::DiscreetInformation
     DiscreetInformationItem.new(
       tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
       icon: "heroicons/outline/clock",
-      as_badge: as_badge
+      as:
     )
   end
 
@@ -69,9 +69,9 @@ class Avo::DiscreetInformation
       url_target: Avo::ExecutionContext.new(target: item[:url_target], **args).handle,
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
       label: Avo::ExecutionContext.new(target: item[:label], **args).handle,
-      as_badge: Avo::ExecutionContext.new(target: item[:as_badge], **args).handle
+      as: Avo::ExecutionContext.new(target: item[:as], **args).handle
     )
   end
 
-  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, :as_badge, keyword_init: true) unless defined?(DiscreetInformationItem)
+  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, :as, keyword_init: true) unless defined?(DiscreetInformationItem)
 end
