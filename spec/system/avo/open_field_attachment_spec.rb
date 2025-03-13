@@ -45,7 +45,6 @@ RSpec.describe "OpenFieldAttachment", type: :system do
     expect(link).to be_present
     expect(link[:target]).to eq("")
     expect(link[:rel]).to eq("")
-
     expect(page.driver.browser.current_url).not_to include("download")
     expect(page.driver.browser.window_handles.length).to eq 1
   end
