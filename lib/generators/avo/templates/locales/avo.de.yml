@@ -69,7 +69,7 @@ de:
     more_content: Mehr Inhalt
     more_records_available: Es sind weitere Datensätze verfügbar.
     nested:
-      add: Hinzufügen
+      add_new_item: Neues %{item} hinzufügen
     new: neu
     next_page: Nächste Seite
     no_cancel: Nein, abbrechen

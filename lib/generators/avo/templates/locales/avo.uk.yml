@@ -71,7 +71,7 @@ uk:
     more_content: Більше вмісту
     more_records_available: Є більше доступних записів.
     nested:
-      add: Додати
+      add_new_item: Add new %{item}
     new: новий
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
