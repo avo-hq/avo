@@ -43,6 +43,7 @@ module Avo
       attr_reader :stacked
       attr_reader :for_presentation_only
       attr_reader :for_attribute
+      attr_reader :nested_on_form
 
       # Private options
       attr_reader :computable # if allowed to be computable
@@ -89,6 +90,7 @@ module Avo
         @for_attribute = args[:for_attribute]
         @meta = args[:meta]
         @copyable = args[:copyable] || false
+        @nested_on_form = args[:nested_on_form]
 
         @args = args
 
