@@ -68,6 +68,10 @@ module Avo
         false
       end
 
+      # Adds the view override component
+      # has_one, has_many, has_and_belongs_to_many fields don't have edit views
+      # has_one have nested component on all views
+      # has_many and has_and_belongs_to_many have nested component on new and create views
       def component_for_view(view = Avo::ViewInquirer.new("index"))
         view = Avo::ViewInquirer.new(view)
 
