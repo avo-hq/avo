@@ -68,10 +68,10 @@ module Avo
         false
       end
 
-      # Adds the view override component
-      # has_one, has_many, has_and_belongs_to_many fields don't have edit views
       def component_for_view(view = Avo::ViewInquirer.new("index"))
-        view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
+        return Avo::Fields::Common::NestedFieldComponent if render_as_nested?
+
+        return super(Avo::ViewInquirer.new("show")) if view.form?
 
         super(view)
       end
@@ -126,6 +126,8 @@ module Avo
       def default_view
         Avo.configuration.skip_show_view ? :edit : :show
       end
+
+      def render_as_nested? = false
     end
   end
 end

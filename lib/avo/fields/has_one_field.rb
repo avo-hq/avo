@@ -5,7 +5,7 @@ module Avo
         :attach_scope
 
       def initialize(id, **args, &block)
-        hide_on :forms
+        hide_on :forms unless args[:nested_on_form]
 
         super(id, **args, &block)
 
@@ -40,6 +40,10 @@ module Avo
       end
 
       def is_searchable? = false
+
+      def render_as_nested?
+        @nested_on_form && view.in?(%w[edit update new create])
+      end
     end
   end
 end
