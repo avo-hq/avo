@@ -69,6 +69,8 @@ module Avo
       end
 
       def component_for_view(view = Avo::ViewInquirer.new("index"))
+        view = Avo::ViewInquirer.new(view)
+
         return Avo::Fields::Common::NestedFieldComponent if render_as_nested?
 
         return super(Avo::ViewInquirer.new("show")) if view.form?
