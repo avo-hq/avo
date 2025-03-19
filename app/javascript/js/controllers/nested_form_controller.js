@@ -13,6 +13,7 @@ export default class extends NestedForm {
     // to specify a custom limit for nested records during creation.
     // Default is 0 which is considered unlimited
     limit: Number,
+    confirmMessage: String,
   }
 
   add(event) {
@@ -21,8 +22,10 @@ export default class extends NestedForm {
   }
 
   remove(event) {
-    super.remove(event)
-    this.toggleAddButton()
+    if (confirm(this.confirmMessageValue)) {
+      super.remove(event)
+      this.toggleAddButton()
+    }
   }
 
   toggleAddButton() {
