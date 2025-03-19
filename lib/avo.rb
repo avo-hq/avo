@@ -74,7 +74,6 @@ module Avo
 
     # Runs when the app boots up
     def boot
-      Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
