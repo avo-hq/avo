@@ -126,7 +126,7 @@ module Avo
       def get_field_definitions(only_root: false)
         only_fields(only_root:).map do |field|
           # When nested field hydrate the field with the nested resource
-          resource = if field.nested_on_form && view.form?
+          resource = if field.try(:nested_on_form) && view.form?
             Avo.resource_manager.get_resource_by_model_class(model_class.reflections[field.id.to_s].klass)
               .new(view:, params:)
               .detect_fields
@@ -283,7 +283,7 @@ module Avo
               item.is_a?(Avo::Fields::LocationField)
 
             # Skip nested fields
-            next true if item.nested_on_form
+            next true if item.try(:nested_on_form)
 
             item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end

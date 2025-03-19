@@ -6,6 +6,9 @@ module Avo
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
 
+      attr_reader :nested_on_form
+      attr_reader :nested_limit
+
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
@@ -13,6 +16,8 @@ module Avo
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
         @description = args[:description]
+        @nested_on_form = args[:nested_on_form]
+        @nested_limit = args[:nested_limit]
       end
 
       def field_resource
