@@ -87,7 +87,7 @@ module Avo
       end
 
       def nested_on?(view)
-        return false if view.display || @nested_on.nil?
+        return false if view.display? || @nested_on.nil?
 
         view = if view.create?
           "new"
