@@ -1,8 +1,8 @@
 Avo::Engine.routes.draw do
   root "home#index"
 
-  get "resources", to: redirect(Avo.configuration.root_path)
-  get "dashboards", to: redirect(Avo.configuration.root_path)
+  get "resources", to: redirect(Avo.configuration.root_path), as: :avo_resources_redirect
+  get "dashboards", to: redirect(Avo.configuration.root_path), as: :avo_dashboards_redirect
 
   resources :media_library, only: [:index, :show, :update, :destroy], path: "media-library"
   get "attach-media", to: "media_library#attach"
