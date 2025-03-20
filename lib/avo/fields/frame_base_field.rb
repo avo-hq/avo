@@ -6,7 +6,6 @@ module Avo
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
 
-      attr_reader :nested_on_form
       attr_reader :nested_limit
 
       def initialize(id, **args, &block)
@@ -16,7 +15,7 @@ module Avo
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
         @description = args[:description]
-        @nested_on_form = args[:nested_on_form]
+        @nested_on = Array.wrap(args[:nested_on])
         @nested_limit = args[:nested_limit]
       end
 
@@ -80,11 +79,25 @@ module Avo
       def component_for_view(view = Avo::ViewInquirer.new("index"))
         view = Avo::ViewInquirer.new(view)
 
-        return Avo::Fields::Common::NestedFieldComponent if render_as_nested?
+        return Avo::Fields::Common::NestedFieldComponent if nested_on?(view)
 
-        return super(Avo::ViewInquirer.new("show")) if view.form?
+        return super(Avo::ViewInquirer.new("show")) if view.edit?
 
         super(view)
+      end
+
+      def nested_on?(view)
+        return false if view.display || @nested_on.nil?
+
+        view = if view.create?
+          "new"
+        elsif view.update?
+          "edit"
+        else
+          view
+        end
+
+        @nested_on.map(&:to_s).include?(view)
       end
 
       def authorized?
@@ -137,8 +150,6 @@ module Avo
       def default_view
         Avo.configuration.skip_show_view ? :edit : :show
       end
-
-      def render_as_nested? = false
     end
   end
 end
