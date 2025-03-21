@@ -4,6 +4,9 @@ Avo::Engine.routes.draw do
   get "resources", to: redirect(Avo.configuration.root_path), as: :avo_resources_redirect
   get "dashboards", to: redirect(Avo.configuration.root_path), as: :avo_dashboards_redirect
 
+  get "/bulk_update/edit", to: "bulk_update#edit", as: "edit_bulk_update"
+  post "/bulk_update/handle", to: "bulk_update#handle", as: "handle_bulk_update"
+
   resources :media_library, only: [:index, :show, :update, :destroy], path: "media-library"
   get "attach-media", to: "media_library#attach"
 
