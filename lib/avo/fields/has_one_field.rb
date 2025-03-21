@@ -5,7 +5,17 @@ module Avo
         :attach_scope
 
       def initialize(id, **args, &block)
-        hide_on :forms
+        if args[:nested_on]
+          nested_on = Array.wrap(args[:nested_on])
+
+          if !nested_on.include?(:new)
+            hide_on :new
+          elsif !nested_on.include?(:edit)
+            hide_on :edit
+          end
+        else
+          hide_on :forms
+        end
 
         super(id, **args, &block)
 

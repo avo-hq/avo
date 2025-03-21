@@ -10,7 +10,15 @@ module Avo
       def initialize(id, **args, &block)
         args[:updatable] = false
 
-        only_on Avo.configuration.resource_default_view
+        if args[:nested_on]
+          if Avo.configuration.resource_default_view.edit?
+            only_on Array.wrap(args[:nested_on]) + [:edit]
+          else
+            only_on Array.wrap(args[:nested_on]) + [:show]
+          end
+        else
+          only_on Avo.configuration.resource_default_view
+        end
 
         super(id, **args, &block)
 
