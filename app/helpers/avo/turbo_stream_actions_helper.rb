@@ -22,4 +22,3 @@ module Avo
   end
 end
 
-Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)

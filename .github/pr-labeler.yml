@@ -1,4 +1,5 @@
 Feature: ["feature/*", "feat/*", "*feature/*", "*feat/*"]
+Enhancement: ["enhancement/*", "*enhancement/*"]
 Fix: ["fix/*", "*fix/*", "*bugfix/*"]
 Chore: ["chore/*", "*chore/*"]
 Test: ["test/*", "*test/*"]

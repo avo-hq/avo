@@ -4,7 +4,9 @@ module Avo
     include Avo::Concerns::HasActionStimulusControllers
     include Avo::Concerns::Hydration
 
-    DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
+    unless defined?(DATA_ATTRIBUTES)
+      DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
+    end
 
     class_attribute :name, default: nil
     class_attribute :message
