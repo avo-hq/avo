@@ -117,7 +117,7 @@ RSpec.feature "HasManyField", type: :system do
       expect(page).to have_css('div[data-field-id="patrons"] div[data-target="tag-component"]', text: user.name)
 
       # Find user name on has many field
-      within("tr[data-record-id='#{user.id}']") do
+      within("tr[data-record-id='#{user.to_param}']") do
         expect(page).to have_text(user.first_name)
         expect(page).to have_text(user.last_name)
       end

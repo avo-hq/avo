@@ -135,7 +135,7 @@ module Avo
     end
 
     def set_record
-      id = if @resource.model_class.primary_key.is_a?(Array) && params.respond_to?(:extract_value)
+      id = if @resource.model_class.try(:primary_key).is_a?(Array) && params.respond_to?(:extract_value)
         params.extract_value(:id)
       else
         params[:id]
