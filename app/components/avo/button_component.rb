@@ -34,12 +34,12 @@ class Avo::ButtonComponent < Avo::BaseComponent
   end
 
   def button_classes
-    classes = "button-component inline-flex grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
+    classes = "button-component inline-flex grow-0 items-center font-normal leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
 
     # For non-icon-styled buttons we should not add borders.
     classes += " border border-gray-200 active:outline active:outline-1" unless is_icon?
 
-    classes += " rounded-sm" if @rounded.present?
+    classes += " rounded-md" if @rounded.present?
     classes += style_classes
     classes += horizontal_padding_classes
     classes += vertical_padding_classes
@@ -111,9 +111,9 @@ class Avo::ButtonComponent < Avo::BaseComponent
     when :xs
       " py-0"
     when :sm
-      " py-1"
+      " py-0.5"
     when :md
-      " py-1.5"
+      " py-1"
     when :lg
       " py-2"
     when :xl
@@ -133,9 +133,9 @@ class Avo::ButtonComponent < Avo::BaseComponent
     when :sm
       " px-3"
     when :md
-      " px-3"
+      " px-2"
     when :lg
-      " px-5"
+      " px-3"
     when :xl
       " px-6"
     else
@@ -173,13 +173,13 @@ class Avo::ButtonComponent < Avo::BaseComponent
 
     case @size
     when :xs
-      icon_classes += " h-4 my-1"
+      icon_classes += " h-3"
     when :sm
-      icon_classes += " h-4 my-1"
+      icon_classes += " h-3"
     when :md
-      icon_classes += " h-4 my-1"
+      icon_classes += " h-3"
     when :lg
-      icon_classes += " h-5 my-0.5"
+      icon_classes += " h-4"
     when :xl
       icon_classes += " h-6"
     end
