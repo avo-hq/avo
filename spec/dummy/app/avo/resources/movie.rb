@@ -280,5 +280,7 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
         end
       end
     end
+
+    field :attendees, as: :array
   end
 end
