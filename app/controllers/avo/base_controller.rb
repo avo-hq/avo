@@ -3,6 +3,7 @@ require_dependency "avo/application_controller"
 module Avo
   class BaseController < ApplicationController
     include Avo::Concerns::FiltersSessionHandler
+    include Avo::Concerns::SafeCall
 
     before_action :set_resource_name
     before_action :set_resource
@@ -285,7 +286,12 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat(extra_params).uniq
+      @resource.get_field_definitions
+        .select(&:updatable)
+        .map(&:to_permitted_param)
+        .concat(extra_params)
+        .push(@resource.safe_call(:nested_params))
+        .uniq
     end
 
     def extra_params
@@ -575,10 +581,6 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
-    end
-
-    def safe_call(method)
-      send(method) if respond_to?(method, true)
     end
 
     def pagy_query

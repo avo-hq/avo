@@ -70,6 +70,8 @@ pl:
     more: Więcej
     more_content: Pokaż wiecej
     more_records_available: Dostępnych jest więcej rekordów.
+    nested:
+      add_new_item: Dodaj nowy %{item}
     new: nowy
     next_page: Następna strona
     no_cancel: Nie, anuluj
