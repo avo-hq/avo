@@ -131,14 +131,23 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def render_back_button(control)
     return if back_path.blank? || is_a_related_resource?
-
     tippy = control.title ? :tooltip : nil
-    a_link back_path,
+    
+    # Determine if we're in a modal context
+    in_modal = params[:via_belongs_to_resource_class].present?
+    
+    common_options = {
       style: :text,
       title: control.title,
-      data: {tippy: tippy},
-      icon: "heroicons/outline/arrow-left" do
-      control.label
+      icon: "heroicons/outline/arrow-left",
+      data: { tippy: tippy }
+    }
+  
+    if in_modal
+      common_options[:data][:action] = "click->modal#close"
+      a_button(**common_options) { control.label }
+    else
+      a_link(back_path, **common_options) { control.label }
     end
   end
 
