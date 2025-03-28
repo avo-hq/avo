@@ -63,7 +63,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def destroy_path
-    args = { record: @resource.record, resource: @resource }
+    args = {record: @resource.record, resource: @resource}
 
     args[:referrer] = if params[:via_resource_class].present?
       back_path
@@ -147,7 +147,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       title: control.title,
       icon: "heroicons/outline/arrow-left",
-      data: { tippy: tippy }
+      data: {tippy: tippy}
     }
   end
 
@@ -232,7 +232,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :primary,
       style: :primary,
       title: control.title,
-      data: { tippy: control.title ? :tooltip : nil },
+      data: {tippy: control.title ? :tooltip : nil},
       icon: "avo/edit" do
       control.label
     end
