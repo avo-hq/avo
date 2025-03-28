@@ -63,7 +63,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def destroy_path
-    args = {record: @resource.record, resource: @resource}
+    args = { record: @resource.record, resource: @resource }
 
     args[:referrer] = if params[:via_resource_class].present?
       back_path
@@ -131,16 +131,16 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def render_back_button(control)
     return if back_path.blank? || is_a_related_resource?
-  
+
     common_options = build_common_options(control)
-  
+
     if params[:via_belongs_to_resource_class].present?
       render_modal_back_button(common_options, control)
     else
       render_regular_back_button(common_options, control)
     end
   end
-  
+
   def build_common_options(control)
     tippy = control.title ? :tooltip : nil
     {
@@ -150,12 +150,12 @@ class Avo::ResourceComponent < Avo::BaseComponent
       data: { tippy: tippy }
     }
   end
-  
+
   def render_modal_back_button(common_options, control)
     common_options[:data][:action] = "click->modal#close"
     a_button(**common_options) { control.label }
   end
-  
+
   def render_regular_back_button(common_options, control)
     a_link(back_path, **common_options) { control.label }
   end
@@ -232,7 +232,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :primary,
       style: :primary,
       title: control.title,
-      data: {tippy: control.title ? :tooltip : nil},
+      data: { tippy: control.title ? :tooltip : nil },
       icon: "avo/edit" do
       control.label
     end
