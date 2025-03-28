@@ -14,9 +14,14 @@ class Avo::Resources::Event < Avo::BaseResource
       end
     }
   }
+
   self.profile_photo = {
-    source: :profile_photo
+    source: :profile_photo,
+    background_color: "#ffffff",
+    object_fit: :contain,
+    padding: 4
   }
+
   self.discreet_information = :timestamps
 
   self.row_controls_config = {
