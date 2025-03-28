@@ -131,24 +131,33 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def render_back_button(control)
     return if back_path.blank? || is_a_related_resource?
+  
+    common_options = build_common_options(control)
+  
+    if params[:via_belongs_to_resource_class].present?
+      render_modal_back_button(common_options, control)
+    else
+      render_regular_back_button(common_options, control)
+    end
+  end
+  
+  def build_common_options(control)
     tippy = control.title ? :tooltip : nil
-    
-    # Determine if we're in a modal context
-    in_modal = params[:via_belongs_to_resource_class].present?
-    
-    common_options = {
+    {
       style: :text,
       title: control.title,
       icon: "heroicons/outline/arrow-left",
       data: { tippy: tippy }
     }
+  end
   
-    if in_modal
-      common_options[:data][:action] = "click->modal#close"
-      a_button(**common_options) { control.label }
-    else
-      a_link(back_path, **common_options) { control.label }
-    end
+  def render_modal_back_button(common_options, control)
+    common_options[:data][:action] = "click->modal#close"
+    a_button(**common_options) { control.label }
+  end
+  
+  def render_regular_back_button(common_options, control)
+    a_link(back_path, **common_options) { control.label }
   end
 
   def render_actions_list(actions_list)
