@@ -233,7 +233,7 @@ module Generators
         end
 
         def confirm_ejection_on(path, is_directory: false)
-          say("By ejecting the '#{path}'#{" directory" if is_directory} \033[1myou'll take on the responsibility for maintain it.", :yellow)
+          say("By ejecting the '#{path}'#{" directory" if is_directory} \033[1myou'll take on the responsibility for maintaining it.", :yellow)
           yes?("Are you sure you want to eject the '#{path}'#{" directory" if is_directory}? [y/N]", :yellow)
         end
 
