@@ -126,7 +126,9 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record.class.reflect_on_association(association_from_params)
+      @reflection = @record.class.try(:reflect_on_association, association_from_params)
+
+      return if @reflection.blank? && @field.type == "array"
 
       # Ensure inverse_of is present on STI
       if !@record.class.descends_from_active_record? && @reflection.inverse_of.blank? && Rails.env.development?
