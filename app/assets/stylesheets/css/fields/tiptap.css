@@ -1,7 +1,7 @@
 /* EDIT STYLES */
 
 .tiptap {
-  @apply m-0 p-4 outline-none min-h-44;
+  @apply m-0 p-4 outline-hidden min-h-44;
 
   >*+* {
     @apply mt-4;
@@ -22,7 +22,7 @@
 }
 
 .tiptap__field {
-  @apply w-full mb-4 border border-gray-200 rounded;
+  @apply w-full mb-4 border border-gray-200 rounded-sm;
 }
 
 .tiptap__editor {
@@ -54,7 +54,7 @@
 }
 
 .tiptap__button {
-  @apply p-1 text-gray-500 rounded cursor-pointer;
+  @apply p-1 text-gray-500 rounded-sm cursor-pointer;
 
   &:hover:enabled {
     @apply bg-gray-100;
@@ -94,7 +94,7 @@
 }
 
 .tiptap__link-field {
-  @apply text-sm mr-2 py-1 border border-gray-200 rounded;
+  @apply text-sm mr-2 py-1 border border-gray-200 rounded-sm;
 }
 
 /* SHOW STYLES */

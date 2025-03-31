@@ -39,7 +39,7 @@
     <% end %>
     <table class="w-full px-4 bg-white">
       <%= render partial: 'avo/partials/table_header', locals: {fields: @header_fields} %>
-      <%= content_tag :tbody, class: "divide-y",
+      <%= content_tag :tbody, class: "divide-y divide-gray-200",
         data: {
           **(try(:drag_reorder_data_attributes) || {}),
         } do %>

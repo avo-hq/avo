@@ -14,7 +14,7 @@
   } do %>
     <%= @form.text_field @field.id,
       value: @field.edit_formatted_value,
-      class: classes("w-full #{"hidden" unless params[:avo_show_hidden_inputs]}"),
+      class: classes("w-full #{"!hidden" unless params[:avo_show_hidden_inputs]}"),
       data: {
         date_field_target: :input,
         placeholder: @field.placeholder,

@@ -28,7 +28,7 @@ module Avo
     end
 
     def button_classes(extra_classes = nil, color: nil, variant: nil, size: :md, active: false)
-      classes = "inline-flex flex-grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
+      classes = "inline-flex grow-0 items-center text-sm font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 rounded-sm transform transition duration-100 active:translate-x-px active:translate-y-px cursor-pointer disabled:cursor-not-allowed #{extra_classes}"
 
       if color.present?
         if variant.present? && (variant.to_sym == :outlined)
@@ -71,7 +71,7 @@ module Avo
     end
 
     def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 placeholder:text-gray-300"
+      classes = "appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded-sm py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 placeholder:text-gray-300"
 
       classes += if has_error
         " border-red-600"
@@ -85,11 +85,11 @@ module Avo
     end
 
     def white_panel_classes
-      "bg-white rounded shadow-md"
+      "bg-white rounded-sm shadow-md"
     end
 
     def card_classes
-      "bg-white rounded shadow-panel"
+      "bg-white rounded-sm shadow-panel"
     end
 
     def get_model_class(model)

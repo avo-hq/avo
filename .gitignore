@@ -54,6 +54,9 @@ js_bundle_metadata.json
 /public/avo-assets/avo.base.js
 /public/avo-assets/avo.js.map
 /public/avo-assets/avo.base.js.map
+/public/avo-assets/avo.base.tw4.css
+/public/avo-assets/late-registration.js
+/public/avo-assets/late-registration.js.map
 /public/packs-test
 /node_modules
 node_modules
