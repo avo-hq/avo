@@ -7,7 +7,7 @@ module Avo
         :attach_scope
 
       def initialize(id, **args, &block)
-        initialize_nested **args
+        initialize_nested(**args)
 
         if @nested[:on]
           nested_on = Array.wrap(@nested[:on])

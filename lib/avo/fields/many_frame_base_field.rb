@@ -11,7 +11,7 @@ module Avo
       def initialize(id, **args, &block)
         args[:updatable] = false
 
-        initialize_nested **args
+        initialize_nested(**args)
 
         if @nested[:on]
           if Avo.configuration.resource_default_view.edit?
