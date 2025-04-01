@@ -18,6 +18,7 @@ module Avo
       include Avo::Concerns::Pagination
       include Avo::Concerns::HasDiscreetInformation
       include Avo::Concerns::RowControlsConfiguration
+      include Avo::Concerns::SafeCall
 
       # Avo::Current methods
       delegate :context, to: Avo::Current
@@ -451,8 +452,9 @@ module Avo
       end
 
       # Map the received params to their actual fields
-      def fields_by_database_id
-        get_field_definitions
+      # 'resource' argument is used on avo-advanced, don't remove
+      def fields_by_database_id(resource: self)
+        resource.get_field_definitions
           .reject do |field|
             field.computed
           end
@@ -479,14 +481,14 @@ module Avo
         # Write the user configured extra params to the record
         if extra_params.present?
           # Pick only the extra params
-          # params at this point are already permited, only need the keys to access them
+          # params at this point are already permitted, only need the keys to access them
           extra_attributes = permitted_params.slice(*flatten_keys(extra_params))
 
           # Let Rails fill in the rest of the params
           record.assign_attributes extra_attributes
         end
 
-        record
+        safe_call(:fill_nested_records, record:, permitted_params:) || record
       end
 
       def authorization(user: nil)
