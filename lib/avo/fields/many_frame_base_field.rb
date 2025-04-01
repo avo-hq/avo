@@ -2,6 +2,7 @@ module Avo
   module Fields
     class ManyFrameBaseField < FrameBaseField
       include Avo::Fields::Concerns::IsSearchable
+      include Avo::Fields::Concerns::Nested
 
       attr_reader :scope,
         :hide_search_input,
@@ -10,11 +11,13 @@ module Avo
       def initialize(id, **args, &block)
         args[:updatable] = false
 
-        if args[:nested_on]
+        initialize_nested **args
+
+        if @nested[:on]
           if Avo.configuration.resource_default_view.edit?
-            only_on Array.wrap(args[:nested_on]) + [:edit]
+            only_on Array.wrap(@nested[:on]) + [:edit]
           else
-            only_on Array.wrap(args[:nested_on]) + [:show]
+            only_on Array.wrap(@nested[:on]) + [:show]
           end
         else
           only_on Avo.configuration.resource_default_view

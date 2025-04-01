@@ -342,7 +342,7 @@ module Avo
         # Use self when this is executed from a resource context, call resource otherwise.
         the_resource = self.class.ancestors.include?(Avo::Resources::Base) ? self : resource
 
-        if view.form? && item.try(:nested_on_form)
+        if view.form? && item.try(:nested_on?, view)
           nested_resource = Avo.resource_manager
             .get_resource_by_model_class(the_resource.model_class.reflections[item.id.to_s].klass)
             .new(view:)

@@ -1,12 +1,16 @@
 module Avo
   module Fields
     class HasOneField < FrameBaseField
+      include Avo::Fields::Concerns::Nested
+
       attr_reader :attach_fields,
         :attach_scope
 
       def initialize(id, **args, &block)
-        if args[:nested_on]
-          nested_on = Array.wrap(args[:nested_on])
+        initialize_nested **args
+
+        if @nested[:on]
+          nested_on = Array.wrap(@nested[:on])
 
           if !nested_on.include?(:new)
             hide_on :new

@@ -6,8 +6,6 @@ module Avo
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
 
-      attr_reader :nested_limit
-
       def initialize(id, **args, &block)
         super(id, **args, &block)
 
@@ -15,8 +13,6 @@ module Avo
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
         @description = args[:description]
-        @nested_on = Array.wrap(args[:nested_on])
-        @nested_limit = args[:nested_limit]
       end
 
       def field_resource
@@ -74,30 +70,10 @@ module Avo
 
       # Adds the view override component
       # has_one, has_many, has_and_belongs_to_many fields don't have edit views
-      # has_one have nested component on all views
-      # has_many and has_and_belongs_to_many have nested component on new and create views
       def component_for_view(view = Avo::ViewInquirer.new("index"))
-        view = Avo::ViewInquirer.new(view)
-
-        return Avo::Fields::Common::NestedFieldComponent if nested_on?(view)
-
-        return super(Avo::ViewInquirer.new("show")) if view.edit?
+        view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
 
         super(view)
-      end
-
-      def nested_on?(view)
-        return false if view.display? || @nested_on.nil?
-
-        view = if view.create?
-          "new"
-        elsif view.update?
-          "edit"
-        else
-          view
-        end
-
-        @nested_on.map(&:to_s).include?(view)
       end
 
       def authorized?
