@@ -72,6 +72,7 @@ module Avo
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using] || nil
         @update_using = args[:update_using] || nil
+        @decorate = args[:decorate] || nil
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete] || nil
         @help = args[:help] || nil
@@ -173,6 +174,18 @@ module Avo
         if format_using.present?
           final_value = Avo::ExecutionContext.new(
             target: format_using,
+            value: final_value,
+            record: record,
+            resource: resource,
+            view: view,
+            field: self,
+            include: self.class.included_modules
+          ).handle
+        end
+
+        if @decorate.present? && view.display?
+          final_value = Avo::ExecutionContext.new(
+            target: @decorate,
             value: final_value,
             record: record,
             resource: resource,
