@@ -38,8 +38,8 @@
         </div>
       <% elsif on_edit? %>
         <%= content %>
-        <% if record.present? and record.errors.include? @field.id %>
-          <div class="text-red-600 mt-2 text-sm"><%= record.errors.full_messages_for(@field.id).to_sentence %></div>
+        <% if @field.record_errors.include?(@field.id) %>
+          <div class="text-red-600 mt-2 text-sm"><%= @field.record_errors.full_messages_for(@field.id).to_sentence %></div>
         <% end %>
         <% if help.present? %>
           <div class="text-gray-600 mt-2 text-sm"><%= sanitize help %></div>
