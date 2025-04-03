@@ -6,7 +6,7 @@
 # color: :gray, :red, :green, :blue, or any other tailwind color
 # icon: "heroicons/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
-  include Avo::ApplicationHelper
+  # include Avo::ApplicationHelper
 
   prop :path, kind: :positional
   prop :size, default: :md
@@ -69,7 +69,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
     icon_classes = class_names(@icon_class, "pointer-events-none", icon_size_classes, "mr-1": content.present? && is_not_icon_style?)
 
     # Add the icon
-    result += svg(@icon, class: icon_classes) if @icon.present?
+    result += helpers.svg(@icon, class: icon_classes) if @icon.present?
 
     if is_not_icon_style? && content.present?
       result += content
