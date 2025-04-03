@@ -19,6 +19,9 @@ module Avo
       include Avo::Concerns::HasDiscreetInformation
       include Avo::Concerns::RowControlsConfiguration
       include Avo::Concerns::SafeCall
+      include Avo::Concerns::AbstractResource
+
+      abstract_resource!
 
       # Avo::Current methods
       delegate :context, to: Avo::Current
@@ -83,6 +86,8 @@ module Avo
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
       class_attribute :external_link, default: nil
+
+      class_attribute :abstract, default: false
 
       # EXTRACT:
       class_attribute :ordering
