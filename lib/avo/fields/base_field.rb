@@ -70,19 +70,19 @@ module Avo
         @summarizable = args[:summarizable] || false
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
-        @format_using = args[:format_using] || nil
-        @update_using = args[:update_using] || nil
-        @decorate = args[:decorate] || nil
+        @format_using = args[:format_using]
+        @update_using = args[:update_using]
+        @decorate = args[:decorate]
         @placeholder = args[:placeholder]
-        @autocomplete = args[:autocomplete] || nil
-        @help = args[:help] || nil
-        @default = args[:default] || nil
+        @autocomplete = args[:autocomplete]
+        @help = args[:help]
+        @default = args[:default]
         @visible = args[:visible]
         @as_avatar = args[:as_avatar] || false
-        @html = args[:html] || nil
-        @view = Avo::ViewInquirer.new(args[:view]) || nil
-        @value = args[:value] || nil
-        @stacked = args[:stacked] || nil
+        @html = args[:html]
+        @view = Avo::ViewInquirer.new(args[:view])
+        @value = args[:value]
+        @stacked = args[:stacked]
         @for_presentation_only = args[:for_presentation_only] || false
         @resource = args[:resource]
         @action = args[:action]
@@ -166,46 +166,31 @@ module Avo
         end
 
         # Run computable callback block if present
-        if computable && block.present?
-          final_value = execute_block
+        if computable && @block.present?
+          final_value = execute_context(@block)
         end
 
         # Run the value through resolver if present
-        if format_using.present?
-          final_value = Avo::ExecutionContext.new(
-            target: format_using,
-            value: final_value,
-            record: record,
-            resource: resource,
-            view: view,
-            field: self,
-            include: self.class.included_modules
-          ).handle
+        if @format_using.present?
+          final_value = execute_context(@format_using, value: final_value)
         end
 
         if @decorate.present? && view.display?
-          final_value = Avo::ExecutionContext.new(
-            target: @decorate,
-            value: final_value,
-            record: record,
-            resource: resource,
-            view: view,
-            field: self,
-            include: self.class.included_modules
-          ).handle
+          final_value = execute_context(@decorate, value: final_value)
         end
 
         final_value
       end
 
-      def execute_block
+      def execute_context(target, **extra_args)
         Avo::ExecutionContext.new(
-          target: block,
-          record: record,
-          resource: resource,
-          view: view,
+          target:,
+          record: @record,
+          resource: @resource,
+          view: @view,
           field: self,
-          include: self.class.included_modules
+          include: self.class.included_modules,
+          **extra_args
         ).handle
       end
 
