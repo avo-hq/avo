@@ -66,7 +66,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
     result = ""
     # space out the icon from the text if text is present
     # add the icon height
-    icon_classes = class_names(@icon_class, "pointer-events-none", icon_size_classes, "mr-1": content.present? && is_not_icon?)
+    icon_classes = class_names(@icon_class, "pointer-events-none", icon_size_classes, "mr-1": content.present? && is_not_icon_style?)
 
     # Add the icon
     result += svg(@icon, class: icon_classes) if @icon.present?
