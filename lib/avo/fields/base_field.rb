@@ -155,13 +155,13 @@ module Avo
       def value(property = nil)
         return @value if @value.present?
 
-        property ||= @for_attribute || id
+        property ||= @for_attribute || @id
 
         # Get record value
-        final_value = record.send(property) if is_model?(record) && record.respond_to?(property)
+        final_value = @record.send(property) if is_model?(@record) && @record.respond_to?(property)
 
         # On new views and actions modals we need to prefill the fields with the default value if value is nil
-        if final_value.nil? && should_fill_with_default_value? && default.present?
+        if final_value.nil? && should_fill_with_default_value? && @default.present?
           final_value = computed_default_value
         end
 
@@ -175,7 +175,7 @@ module Avo
           final_value = execute_context(@format_using, value: final_value)
         end
 
-        if @decorate.present? && view.display?
+        if @decorate.present? && @view.display?
           final_value = execute_context(@decorate, value: final_value)
         end
 
