@@ -46,7 +46,6 @@ gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
 gem "web-console", ">= 3.3.0"
-gem "listen", ">= 3.5.1"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -88,6 +87,12 @@ group :development do
   # Keep version look on <4 until this PR gets merged and released
   # https://github.com/zombocom/derailed_benchmarks/pull/239
   gem "ruby-statistics", "< 4"
+
+  gem "lookbook", ">= 2.3.8"
+
+  # Required by lookbook for livereload
+  gem "listen"
+  gem "actioncable"
 end
 
 group :test do
