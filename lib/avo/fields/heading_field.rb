@@ -24,7 +24,7 @@ module Avo
       end
 
       def value
-        block.present? ? execute_block : @label
+        @block.present? ? execute_context(@block) : @label
       end
     end
   end
