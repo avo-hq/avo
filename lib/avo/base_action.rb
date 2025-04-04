@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Avo
   class BaseAction
     include Avo::Concerns::HasItems
@@ -10,13 +12,13 @@ module Avo
 
     VIEW_ITEM_NAME_BY_TYPE = {
       table: "avo/index/table_row_component",
-      grid: "avo/index/grid_item_component",
-    }
+      grid: "avo/index/grid_item_component"
+    }.freeze
 
     COMPONENT_ROW_TYPES = {
-      table: Avo::Index::TableRowComponent,
-      grid: Avo::Index::GridItemComponent,
-    }
+      table: "Avo::Index::TableRowComponent".constantize,
+      grid: "Avo::Index::GridItemComponent".constantize
+    }.freeze
 
     class_attribute :name, default: nil
     class_attribute :message
@@ -321,7 +323,7 @@ module Avo
           resource.detect_fields
           row_fields = resource.get_fields(only_root: true)
           header_fields.concat row_fields
-          row_components << instantiate_component(
+          row_components << resource.instantiate_component(
             component_class,
             resource: resource,
             header_fields: row_fields.map(&:table_header_label),
@@ -330,34 +332,17 @@ module Avo
 
         end
 
-        header_fields.uniq!(&:table_header_label)
-
-        header_fields_ids = header_fields.map(&:table_header_label)
         row_view = VIEW_ITEM_NAME_BY_TYPE[view_type.to_sym]
+        header_fields.uniq!(&:table_header_label)
+        header_fields_ids = header_fields.map(&:table_header_label)
 
         row_components.map.with_index do |component, index|
-          component.header_fields = header_fields_ids
-          turbo_stream.replace(
-            "#{row_view}_#{@action.records_to_reload[index].to_param}",
-            component
-          )
+          component.header_fields = header_fields_ids if component.respond_to?(:header_fields)
+          turbo_stream.replace("#{row_view}_#{@action.records_to_reload[index].to_param}", component)
         end
       }
     end
 
-    def instantiate_component(component_class, **args)
-      klass = resource.resolve_component(component_class)
-
-      if klass.is_a?(Avo::Index::TableRowComponent)
-        return klass.new( resource: args[:resource], header_fields: args[:header_fields], fields: args[:fields])
-      end
-
-      if klass.is_a?(Avo::Index::GridItemComponent)
-        return klass.new(resource: resource)
-      end
-      
-      raise "Unknown component class #{klass}"
-    end
     # def reload_records
     alias_method :reload_records, :reload_record
 
