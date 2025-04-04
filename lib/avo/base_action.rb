@@ -313,7 +313,7 @@ module Avo
       append_to_response -> {
         row_components = []
         header_fields = []
-        row_class = COMPONENT_ROW_TYPES[view_type.to_sym]
+        component_class = COMPONENT_ROW_TYPES[view_type.to_sym]
 
         @action.records_to_reload.each do |record|
           resource = @resource.dup
@@ -321,11 +321,13 @@ module Avo
           resource.detect_fields
           row_fields = resource.get_fields(only_root: true)
           header_fields.concat row_fields
-          row_components << resource.resolve_component(row_class).new(
+          row_components << instantiate_component(
+            component_class,
             resource: resource,
             header_fields: row_fields.map(&:table_header_label),
             fields: row_fields
           )
+
         end
 
         header_fields.uniq!(&:table_header_label)
@@ -343,6 +345,19 @@ module Avo
       }
     end
 
+    def instantiate_component(component_class, **args)
+      klass = resource.resolve_component(component_class)
+
+      if klass.is_a?(Avo::Index::TableRowComponent)
+        return klass.new( resource: args[:resource], header_fields: args[:header_fields], fields: args[:fields])
+      end
+
+      if klass.is_a?(Avo::Index::GridItemComponent)
+        return klass.new(resource: resource)
+      end
+      
+      raise "Unknown component class #{klass}"
+    end
     # def reload_records
     alias_method :reload_records, :reload_record
 
