@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Avo
   class BaseAction
     include Avo::Concerns::HasItems
@@ -16,9 +14,9 @@ module Avo
     }.freeze
 
     COMPONENT_ROW_TYPES = {
-      table: "Avo::Index::TableRowComponent".constantize,
-      grid: "Avo::Index::GridItemComponent".constantize
-    }.freeze
+      table: "Avo::Index::TableRowComponent",
+      grid: "Avo::Index::GridItemComponent"
+  }.freeze
 
     class_attribute :name, default: nil
     class_attribute :message
@@ -315,7 +313,7 @@ module Avo
       append_to_response -> {
         row_components = []
         header_fields = []
-        component_class = COMPONENT_ROW_TYPES[view_type.to_sym]
+        component_class = COMPONENT_ROW_TYPES[view_type.to_sym].safe_constantize
 
         @action.records_to_reload.each do |record|
           resource = @resource.dup
@@ -329,7 +327,6 @@ module Avo
             header_fields: row_fields.map(&:table_header_label),
             fields: row_fields
           )
-
         end
 
         row_view = VIEW_ITEM_NAME_BY_TYPE[view_type.to_sym]

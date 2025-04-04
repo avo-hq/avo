@@ -64,6 +64,6 @@ class Avo::Resources::Product < Avo::BaseResource
   end
 
   def actions
-    action Avo::Actions::UpdateProduct, arguments: { view_type: params[:view_type] }
+    action Avo::Actions::UpdateProduct, arguments: {view_type: params[:view_type]}
   end
 end
