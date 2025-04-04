@@ -16,7 +16,7 @@ module Avo
     COMPONENT_ROW_TYPES = {
       table: "Avo::Index::TableRowComponent",
       grid: "Avo::Index::GridItemComponent"
-  }.freeze
+    }.freeze
 
     class_attribute :name, default: nil
     class_attribute :message
