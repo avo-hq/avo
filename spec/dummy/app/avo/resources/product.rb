@@ -59,5 +59,11 @@ class Avo::Resources::Product < Avo::BaseResource
     field :image, as: :file, is_image: true
     field :category, as: :select, enum: ::Product.categories
     field :sizes, as: :select, multiple: true, options: {Large: :large, Medium: :medium, Small: :small}
+
+    field :updated_at, as: :date_time
+  end
+
+  def actions
+    action Avo::Actions::UpdateProduct, arguments: { view_type: params[:view_type] }
   end
 end
