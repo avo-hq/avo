@@ -8,12 +8,7 @@ module Avo
       DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
     end
 
-    VIEW_ITEM_NAME_BY_TYPE = {
-      table: "avo/index/table_row_component",
-      grid: "avo/index/grid_item_component"
-    }.freeze
-
-    COMPONENT_ROW_TYPES = {
+    ROW_COMPONENTS_BY_VIEW = {
       table: "Avo::Index::TableRowComponent",
       grid: "Avo::Index::GridItemComponent"
     }.freeze
@@ -313,7 +308,8 @@ module Avo
       append_to_response -> {
         row_components = []
         header_fields = []
-        component_class = COMPONENT_ROW_TYPES[view_type.to_sym].safe_constantize
+        component_class = ROW_COMPONENTS_BY_VIEW[view_type.to_sym].safe_constantize
+        component_view = component_class.to_s.underscore
 
         @action.records_to_reload.each do |record|
           resource = @resource.dup
@@ -329,13 +325,12 @@ module Avo
           )
         end
 
-        row_view = VIEW_ITEM_NAME_BY_TYPE[view_type.to_sym]
         header_fields.uniq!(&:table_header_label)
         header_fields_ids = header_fields.map(&:table_header_label)
 
         row_components.map.with_index do |component, index|
           component.header_fields = header_fields_ids if component.respond_to?(:header_fields)
-          turbo_stream.replace("#{row_view}_#{@action.records_to_reload[index].to_param}", component)
+          turbo_stream.replace("#{component_view}_#{@action.records_to_reload[index].to_param}", component)
         end
       }
     end
