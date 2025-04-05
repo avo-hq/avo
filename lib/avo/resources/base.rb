@@ -655,6 +655,15 @@ module Avo
         custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
       end
 
+      def instantiate_component(component_class, **args)
+        klass = resolve_component(component_class)
+
+        return klass.new(**args) if klass == Avo::Index::TableRowComponent
+        return klass.new(resource: self) if klass == Avo::Index::GridItemComponent
+
+        raise "Unknown component class #{klass}"
+      end
+
       def get_external_link
         return unless record.persisted?
 
