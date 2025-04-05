@@ -309,7 +309,7 @@ module Avo
         row_components = []
         header_fields = []
         component_class = ROW_COMPONENTS_BY_VIEW[view_type.to_sym].safe_constantize
-        component_view = component_class.to_s.underscore
+        component_view = component_class.virtual_path
 
         @action.records_to_reload.each do |record|
           resource = @resource.dup
