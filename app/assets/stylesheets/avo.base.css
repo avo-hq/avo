@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Figure out a way to add those dynamically */
+/* TODO: Figure out a way to add those dynamically */
 @source "../../../tmp/avo/packages/avo-advanced";
 @source "../../../tmp/avo/packages/avo-dashboards";
 @source "../../../tmp/avo/packages/avo-dynamic_filters";
@@ -8,7 +8,54 @@
 @source "../../../tmp/avo/packages/avo-menu";
 @source "../../../tmp/avo/packages/avo-pro";
 
-@config "../../../tailwind.config.js";
+/* @config "../../../tailwind.config.js"; */
+
+
+/* We couldn't find a way to implement blocklist in the CSS config */
+/* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
+
+@theme {
+  --spacing-3/4: 75%;
+
+  --color-application: rgb(var(--avo-color-application-background));
+
+  --color-primary-100: rgb(var(--avo-color-primary-100));
+  --color-primary-150: rgb(var(--avo-color-primary-150));
+  --color-primary-200: rgb(var(--avo-color-primary-200));
+  --color-primary-300: rgb(var(--avo-color-primary-300));
+  --color-primary-400: rgb(var(--avo-color-primary-400));
+  --color-primary-500: rgb(var(--avo-color-primary-500));
+  --color-primary-600: rgb(var(--avo-color-primary-600));
+  --color-primary-700: rgb(var(--avo-color-primary-700));
+  --color-primary-800: rgb(var(--avo-color-primary-800));
+  --color-primary-850: rgb(var(--avo-color-primary-850));
+  --color-primary-900: rgb(var(--avo-color-primary-900));
+
+  --aspect-cover-sm: 9 / 2;
+  --aspect-cover-md: 9 / 3;
+  --aspect-cover-lg: 9 / 4;
+  --aspect-media-library-item: 4 / 3;
+
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --shadow-panel: '0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04)';
+  --shadow-modal: ' 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)';
+
+  --breakpoint-xs: 30rem;
+}
+
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@plugin '@tailwindcss/container-queries';
+
+@custom-variant has-cover-photo (&:where(.has-cover-photo *));
+@custom-variant has-sidebar (&:where(.has-sidebar *));
+@custom-variant has-record-selector (&:where(.has-record-selector *));
+@custom-variant index-grid-view (&:where(.index-grid-view *));
+@custom-variant kanban-dragging (&:where(.kanban-dragging *));
+@custom-variant floating-controls (&:where(.floating-controls *));
+@custom-variant shift-pressed (&:where(.shift-pressed *));
 
 @layer components {
   @import './../../../node_modules/easymde/dist/easymde.min.css';
