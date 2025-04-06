@@ -10,6 +10,7 @@ module Avo
 
     ROW_COMPONENTS_BY_VIEW = {
       table: "Avo::Index::TableRowComponent",
+      map: "Avo::Index::TableRowComponent",
       grid: "Avo::Index::GridItemComponent"
     }.freeze
 
