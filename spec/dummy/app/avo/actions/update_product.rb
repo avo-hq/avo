@@ -9,6 +9,6 @@ class Avo::Actions::UpdateProduct < Avo::BaseAction
       record.update!(updated_at: Time.current)
     end
 
-    reload_records(records, view_type: view_type)
+    reload_records(records, view_type)
   end
 end

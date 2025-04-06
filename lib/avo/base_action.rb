@@ -298,7 +298,7 @@ module Avo
       self
     end
 
-    def reload_record(records, view_type: :table)
+    def reload_record(records, view_type)
       # Force close modal to avoid default redirect to
       # Redirect is 100% not wanted when using reload_record
       close_modal
@@ -309,7 +309,7 @@ module Avo
         row_components = []
         header_fields = []
         component_class = ROW_COMPONENTS_BY_VIEW[view_type.to_sym].safe_constantize
-        component_view = component_class.virtual_path
+        component_view = component_class.name.underscore
 
         @action.records_to_reload.each do |record|
           resource = @resource.dup
