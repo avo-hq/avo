@@ -290,7 +290,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return if !can_see_the_actions_button?
     return if !action.action.visible_in_view(parent_resource: @parent_resource)
 
-    raise "s"
     a_link action.path,
       color: action.color,
       style: action.style,
