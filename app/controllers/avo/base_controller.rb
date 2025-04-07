@@ -348,20 +348,31 @@ module Avo
       @index_params = {}
 
       set_pagination_params
+      set_search_params
+      set_sorting_params
+      set_view_type_params
 
-      # Search
+      validate_view_type
+    end
+
+    def set_search_params
       @index_params[:q] = params[:q] if params[:q].present?
+    end
 
-      # Sorting
+    def set_sorting_params
       @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
-
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
+    end
 
-      # View types
+    def set_view_type_params
       available_view_types = @resource.available_view_types
       @index_params[:available_view_types] = available_view_types
 
-      @index_params[:view_type] = if params[:view_type].present?
+      @index_params[:view_type] = determine_view_type(available_view_types)
+    end
+
+    def determine_view_type(available_view_types)
+      if params[:view_type].present?
         params[:view_type]
       elsif available_view_types.size == 1
         available_view_types.first
@@ -372,8 +383,10 @@ module Avo
           view: @view
         ).handle
       end
+    end
 
-      if available_view_types.exclude? @index_params[:view_type].to_sym
+    def validate_view_type
+      if @index_params[:available_view_types].exclude? @index_params[:view_type].to_sym
         raise "View type '#{@index_params[:view_type]}' is unavailable for #{@resource.class}."
       end
     end
