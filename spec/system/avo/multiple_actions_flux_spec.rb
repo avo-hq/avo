@@ -33,7 +33,7 @@ RSpec.describe "Multiple Actions Flux", type: :system do
         expect(page).to have_text "Spec City"
         expect(page).to have_text "123.456"
 
-        fill_in "fields_population", with: "654.321"
+        fill_in "fields_population", with: "654321"
 
         run_action
 
