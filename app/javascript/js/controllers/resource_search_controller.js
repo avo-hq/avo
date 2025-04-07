@@ -1,5 +1,5 @@
-import { Controller } from "@hotwired/stimulus"
-import { get } from "@rails/request.js"
+import { Controller } from '@hotwired/stimulus'
+import { get } from '@rails/request.js'
 
 export default class extends Controller {
   static targets = ['input']
@@ -15,7 +15,10 @@ export default class extends Controller {
 
     try {
       await get(currentUrl.pathname + currentUrl.search, {
-        responseKind: 'turbo-stream'
+        responseKind: 'turbo-stream',
+        headers: {
+          Accept: 'text/vnd.turbo-stream.html',
+        },
       })
     } catch (error) {
       console.error('Error performing search:', error)
