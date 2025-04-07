@@ -37,7 +37,7 @@ module Avo
       end
 
       # Apply the search query if configured on the resource
-      apply_search
+      safe_call :apply_search
 
       # Eager load attachments
       if @resource.attachments.present?
@@ -67,6 +67,26 @@ module Avo
       end
 
       set_component_for __method__
+
+      respond_to do |format|
+        format.html
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            "#{@resource.model_key}_list",
+            partial: "avo/index/resource_table_component",
+            locals: {
+              resources: @resources,
+              resource: @resource,
+              reflection: @reflection,
+              parent_record: @parent_record,
+              parent_resource: @parent_resource,
+              pagy: @pagy,
+              query: @query,
+              actions: @actions
+            }
+          )
+        end
+      end
     end
 
     def show

@@ -45,7 +45,8 @@
                        data-resource-search-target="input"
                        data-action="input->resource-search#search"
                        placeholder="Type to search..."
-                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                       value="<%= @index_params[:q] %>">
               <% else %>
                 <%# Offset for the space-y-2 property when the search is missing %>
                 <div class="-mb-2"></div>
