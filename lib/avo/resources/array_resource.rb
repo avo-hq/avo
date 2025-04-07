@@ -1,6 +1,8 @@
 module Avo
   module Resources
     class ArrayResource < Base
+      abstract_resource!
+
       extend ActiveSupport::DescendantsTracker
 
       include Avo::Concerns::FindAssociationField

@@ -11,6 +11,26 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
       }
     ]
   end
+  <% elsif options["http"] %>
+  # self.endpoint = "https://api.openalex.org/"
+  # self.endpoint_key = "authors"
+  # self.parse_collection = -> {
+  #   raise Avo::HttpError.new response["message"] if response["error"].present?
+  #
+  #   response["results"]
+  # }
+  # self.parse_record = -> { response }
+  # self.parse_count = -> { response["meta"]["count"] }
+
+  ## This is required only when the ID includes characters (e.g., ".") that could be improperly routed.
+  # self.find_record_method = -> { query.find Base64.decode64(id) }
+  ## Encodes the ID for use in URL helpers. The `model_class_eval` block is executed when the model is defined in memory,
+  ## allowing us to override `to_param` and obfuscate the raw ID via Base64 encoding.
+  # self.model_class_eval = -> {
+  #   define_method :to_param do
+  #     Base64.encode64(id)
+  #   end
+  # }
   <% else %>
   # self.includes = []
   # self.attachments = []<%= model_class_from_args %>
@@ -21,6 +41,10 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
   def fields
     field :id, as: :id
     field :title
+  end<% elsif options["http"] %>
+  def fields
+    field :id, as: :id
+    # field :display_name
   end<% else %>
   def fields
     field :id, as: :id<%= generate_fields %>

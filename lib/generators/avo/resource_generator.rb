@@ -22,6 +22,11 @@ module Generators
         type: :boolean,
         default: false
 
+      class_option "http",
+        desc: "Indicates if the resource should be HTTP.",
+        type: :boolean,
+        default: false
+
       def create
         return if override_controller?
 
@@ -33,6 +38,8 @@ module Generators
         def parent_resource
           if options["array"]
             "Avo::Resources::ArrayResource"
+          elsif options["http"]
+            "Avo::Core::Resources::Http"
           else
             "Avo::BaseResource"
           end

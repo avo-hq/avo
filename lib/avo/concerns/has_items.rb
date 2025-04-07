@@ -116,7 +116,7 @@ module Avo
           end
 
           if item.is_row?
-            fields << extract_fields(tab)
+            fields << extract_fields(item)
           end
         end
 
@@ -124,8 +124,17 @@ module Avo
       end
 
       def get_field_definitions(only_root: false)
-        only_fields(only_root: only_root).map do |field|
-          field.hydrate(resource: self, user: user, view: view)
+        only_fields(only_root:).map do |field|
+          # When nested field hydrate the field with the nested resource
+          resource = if field.try(:nested_on?, view)
+            Avo.resource_manager.get_resource_by_model_class(model_class.reflections[field.id.to_s].klass)
+              .new(view:, params:)
+              .detect_fields
+          else
+            self
+          end
+
+          field.hydrate(resource:, user:, view:)
         end
       end
 
@@ -273,6 +282,9 @@ module Avo
               item.is_heading? ||
               item.is_a?(Avo::Fields::LocationField)
 
+            # Skip nested fields
+            next true if item.try(:nested_on?, view)
+
             item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end
           .select do |item|
@@ -327,11 +339,17 @@ module Avo
       def hydrate_item(item)
         return unless item.respond_to? :hydrate
 
-        item.hydrate(
-          view: view,
-          # Use self when this is executed from a resource context, call resource otherwise.
-          resource: self.class.ancestors.include?(Avo::Resources::Base) ? self : resource
-        )
+        # Use self when this is executed from a resource context, call resource otherwise.
+        the_resource = self.class.ancestors.include?(Avo::Resources::Base) ? self : resource
+
+        if view.form? && item.try(:nested_on?, view)
+          nested_resource = Avo.resource_manager
+            .get_resource_by_model_class(the_resource.model_class.reflections[item.id.to_s].klass)
+            .new(view:)
+            .detect_fields
+        end
+
+        item.hydrate(view:, resource: nested_resource || the_resource)
       end
     end
   end
