@@ -348,18 +348,21 @@ module Avo
       @index_params = {}
 
       set_pagination_params
-
-      # Search
-      @index_params[:q] = params[:q] if params[:q].present?
-
-      # Sorting
-      @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
-
-      @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
+      set_search_params
+      set_sorting_params
 
       if @resource.available_view_types.exclude? @resource.view_type.to_sym
         raise "View type '#{@resource.view_type}' is unavailable for #{@resource.class}."
       end
+    end
+
+    def set_search_params
+      @index_params[:q] = params[:q] if params[:q].present?
+    end
+
+    def set_sorting_params
+      @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
+      @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
     end
 
     def set_filters
