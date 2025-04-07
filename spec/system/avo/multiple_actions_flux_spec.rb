@@ -9,7 +9,7 @@ RSpec.describe "Multiple Actions Flux", type: :system do
         visit "/admin/resources/cities"
 
         expect(page).to have_text "Spec City"
-        expect(page).to have_text "123456"
+        expect(page).to have_text "123.456"
 
         find(:css, 'input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', match: :first).set(true)
 
@@ -31,16 +31,16 @@ RSpec.describe "Multiple Actions Flux", type: :system do
 
         expect(page).to have_text "IS CAPITAL"
         expect(page).to have_text "Spec City"
-        expect(page).to have_text "123456"
+        expect(page).to have_text "123.456"
 
-        fill_in "fields_population", with: "654321"
+        fill_in "fields_population", with: "654.321"
 
         run_action
 
         expect(page).to have_text "City updated!"
         expect(page).to have_text "Spec City"
-        expect(page).not_to have_text "123456"
-        expect(page).to have_text "654321"
+        expect(page).not_to have_text "123.456"
+        expect(page).to have_text "654.321"
       end
     end
   end
