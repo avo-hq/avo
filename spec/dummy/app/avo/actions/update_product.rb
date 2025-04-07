@@ -3,7 +3,6 @@ class Avo::Actions::UpdateProduct < Avo::BaseAction
 
   def handle(**args)
     records, resource = args.values_at(:records, :resource)
-    view_type = arguments[:view_type] || resource.default_view_type
 
     records.each do |record|
       record.update!(updated_at: Time.current)
