@@ -12,6 +12,16 @@ module Avo
         hide_on :index
 
         super(id, **args, &block)
+        
+        if @pretty_generated
+          format_using = -> {
+              JSON.pretty_generate(JSON.parse(value.to_json))
+          }
+
+          update_using = -> {
+            JSON.parse(value)
+          }
+        end
 
         @language = args[:language].present? ? args[:language].to_s : "javascript"
         @theme = args[:theme].present? ? args[:theme].to_s : "default"
