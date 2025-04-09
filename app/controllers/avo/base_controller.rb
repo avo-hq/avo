@@ -683,7 +683,7 @@ module Avo
 
       @query = Avo::ExecutionContext.new(
         target: @resource.class.search_query,
-        params: params,
+        params: params.merge(q: @index_params[:q]),
         query: @query
       ).handle
     end
