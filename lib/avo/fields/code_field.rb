@@ -15,7 +15,7 @@ module Avo
           args[:format_using] ||= lambda do
             JSON.pretty_generate(JSON.parse(value.to_json))
           end
-  
+
           args[:update_using] ||= lambda do
             JSON.parse(value)
           end
