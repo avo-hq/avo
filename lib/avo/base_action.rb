@@ -8,6 +8,12 @@ module Avo
       DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
     end
 
+    ROW_COMPONENTS_BY_VIEW = {
+      table: "Avo::Index::TableRowComponent",
+      map: "Avo::Index::TableRowComponent",
+      grid: "Avo::Index::GridItemComponent"
+    }.freeze
+
     class_attribute :name, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
@@ -294,6 +300,7 @@ module Avo
     end
 
     def reload_record(records)
+      return if params[:view_type].blank?
       # Force close modal to avoid default redirect to
       # Redirect is 100% not wanted when using reload_record
       close_modal
@@ -301,8 +308,10 @@ module Avo
       @records_to_reload = Array(records)
 
       append_to_response -> {
-        table_row_components = []
+        row_components = []
         header_fields = []
+        component_class = ROW_COMPONENTS_BY_VIEW[params[:view_type].to_sym].safe_constantize
+        component_view = component_class.name.underscore
 
         @action.records_to_reload.each do |record|
           resource = @resource.dup
@@ -310,7 +319,8 @@ module Avo
           resource.detect_fields
           row_fields = resource.get_fields(only_root: true)
           header_fields.concat row_fields
-          table_row_components << resource.resolve_component(Avo::Index::TableRowComponent).new(
+          row_components << resource.instantiate_component(
+            component_class,
             resource: resource,
             header_fields: row_fields.map(&:table_header_label),
             fields: row_fields
@@ -318,15 +328,11 @@ module Avo
         end
 
         header_fields.uniq!(&:table_header_label)
-
         header_fields_ids = header_fields.map(&:table_header_label)
 
-        table_row_components.map.with_index do |table_row_component, index|
-          table_row_component.header_fields = header_fields_ids
-          turbo_stream.replace(
-            "avo/index/table_row_component_#{@action.records_to_reload[index].to_param}",
-            table_row_component
-          )
+        row_components.map.with_index do |component, index|
+          component.header_fields = header_fields_ids if component.respond_to?(:header_fields)
+          turbo_stream.replace("#{component_view}_#{@action.records_to_reload[index].to_param}", component)
         end
       }
     end

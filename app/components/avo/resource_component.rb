@@ -161,7 +161,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
       size: actions_list.size,
       icon: actions_list.icon,
       title: actions_list.title,
-      as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
+      as_row_control: instance_of?(Avo::Index::ResourceControlsComponent),
+      view_type: try(:view_type)
     )
   end
 
