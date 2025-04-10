@@ -90,6 +90,7 @@ module Avo
         @for_attribute = args[:for_attribute]
         @meta = args[:meta]
         @copyable = args[:copyable] || false
+        @pretty_generated = args[:pretty_generated] || false
 
         @args = args
 
