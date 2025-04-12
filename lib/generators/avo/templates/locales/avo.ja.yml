@@ -70,6 +70,8 @@ ja:
     more: もっと
     more_content: さらなるコンテンツ
     more_records_available: さらに多くのレコードが利用可能です。
+    nested:
+      add_new_item: 新しい%{item}を追加
     new: 新規
     next_page: 次のページ
     no_cancel: いいえ、キャンセル
