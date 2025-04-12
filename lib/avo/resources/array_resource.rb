@@ -55,7 +55,7 @@ module Avo
 
           association_field = find_association_field(resource: via_resource, association: route_key)
 
-          records_from_field_or_record = Avo::ExecutionContext.new(target: association_field.block).handle || via_record.try(route_key)
+          records_from_field_or_record = Avo::ExecutionContext.new(target: association_field.block, record: via_record).handle || via_record.try(route_key)
 
           array_of_records = records_from_field_or_record || array_of_records
         end
