@@ -36,22 +36,7 @@ RSpec.feature "resource generator", type: :feature do
         Rails.root.join("app", "models", "blog_article.rb").to_s
       ]
 
-      Rails::Generators.invoke(
-        "model",
-        [
-          "BlogArticle",
-          "user:belongs_to",
-          "title:string",
-          "--skip-migration",
-          "--skip-controller",
-          "--skip-helper",
-          "--skip-assets",
-          "--skip-routes"
-        ],
-        {
-          destination_root: Rails.root
-        }
-      )
+      Rails::Generators.invoke("model", ["BlogArticle", "user:belongs_to", "title:string", "--skip-migration", "--skip-controller", "--skip-helper", "--skip-assets", "--skip-routes"], {destination_root: Rails.root})
 
       expect(File.read(files[0])).to include("field :user, as: :belongs_to")
 
