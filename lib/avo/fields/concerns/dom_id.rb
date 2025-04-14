@@ -5,7 +5,7 @@ module Avo
         extend ActiveSupport::Concern
 
         class_methods do
-          def param_key = self.to_s.underscore
+          def param_key = to_s.underscore
         end
 
         def to_key = [@id]
