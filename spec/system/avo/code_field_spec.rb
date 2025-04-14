@@ -78,31 +78,23 @@ RSpec.describe "CodeField", type: :system do
   end
 
   describe "with pretty_generated option for a JSON code field" do
-    before do
-      Avo::Resources::City.with_temporary_items do
-        field :metadata, as: :code, pretty_generated: true
-      end
-    end
 
-    after do
-      Avo::Resources::City.restore_items_from_backup
-    end
 
     let(:metadata) do
       {
-        "name": "New York",
-        "country": "United States",
-        "population": 8419600,
-        "coordinates": {
-          "latitude": 40.7128,
-          "longitude": -74.006
+        name: "New York",
+        country: "United States",
+        population: 8419600,
+        coordinates: {
+          latitude: 40.7128,
+          longitude: -74.006
         },
-        "timezone": "America/New_York",
-        "climate": {
-          "type": "humid subtropical",
-          "average_temperature_celsius": 13.1
+        timezone: "America/New_York",
+        climate: {
+          type: "humid subtropical",
+          average_temperature_celsius: 13.1
         },
-        "points_of_interest": [
+        points_of_interest: [
           "Statue of Liberty",
           "Central Park",
           "Empire State Building"
