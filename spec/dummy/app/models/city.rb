@@ -23,7 +23,7 @@ class City < ApplicationRecord
     include Hashid::Rails
   end
 
-  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
+  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.1.0")
     enum :status, {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}
   else
     enum status: {Open: "open", Closed: "closed", Quarantine: "On Quarantine"}

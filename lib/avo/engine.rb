@@ -70,7 +70,7 @@ module Avo
 
           scope at do
             Avo.plugin_manager.engines.each do |engine|
-              mount engine[:klass], **engine[:options]
+              mount engine[:klass], **engine[:options].dup
             end
           end
         end

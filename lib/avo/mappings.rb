@@ -69,6 +69,9 @@ module Avo
         references: {
           field: "belongs_to"
         },
+        belongs_to: {
+          field: "belongs_to"
+        },
         json: {
           field: "code"
         }

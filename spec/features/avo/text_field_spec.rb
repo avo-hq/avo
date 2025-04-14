@@ -60,4 +60,19 @@ RSpec.describe "TextField", type: :feature do
       end
     end
   end
+
+  describe "decorate" do
+    let!(:city) { create :city, population: 18000 }
+
+    it "only on display" do
+      visit avo.edit_resources_city_path(city)
+      expect(find_by_id("city_population").value).to eq("18000")
+
+      visit avo.resources_city_path(city)
+      expect(show_field_value(id: :population)).to eq "18.000"
+
+      visit avo.resources_cities_path
+      expect(index_field_value(id: :population, record_id: city.to_param)).to eq "18.000"
+    end
+  end
 end
