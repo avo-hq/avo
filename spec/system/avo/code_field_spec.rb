@@ -78,17 +78,17 @@ RSpec.describe "CodeField", type: :system do
   end
 
   describe "with pretty_generated option for a JSON code field" do
-    before do 
+    before do
       Avo::Resources::City.with_temporary_items do
         field :metadata, as: :code, pretty_generated: true
       end
     end
 
-    after do 
+    after do
       Avo::Resources::City.restore_items_from_backup
     end
 
-    let (:metadata) do 
+    let(:metadata) do
       '{
         "name": "New York",
         "country": "United States",
@@ -119,7 +119,6 @@ RSpec.describe "CodeField", type: :system do
       save
       expect(find_field_value_element("metadata")).to have_text(JSON.pretty_generate(metadata))
     end
-
   end
 
   def fill_in_editor_field(text)
