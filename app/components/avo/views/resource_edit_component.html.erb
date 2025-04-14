@@ -9,19 +9,7 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
-  <%= form_with model: @resource.record,
-    scope: @resource.form_scope,
-    url: form_url,
-    method: form_method,
-    local: true,
-    html: {
-      novalidate: true,
-      data: {
-        controller: "form",
-        action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
-      }
-    },
-    multipart: true do |form| %>
+  <%= build_form do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
     <%= content_tag :div, class: "space-y-12" do %>
       <% @resource.get_items.each_with_index do |item, index| %>

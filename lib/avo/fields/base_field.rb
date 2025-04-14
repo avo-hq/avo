@@ -16,6 +16,7 @@ module Avo
       include Avo::Fields::Concerns::IsDisabled
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::UseViewComponents
+      include Avo::Fields::Concerns::DomId
 
       include ActionView::Helpers::UrlHelper
 
@@ -90,6 +91,7 @@ module Avo
         @for_attribute = args[:for_attribute]
         @meta = args[:meta]
         @copyable = args[:copyable] || false
+        @react_on = Array.wrap(args[:react_on]).map(&:to_s)
 
         @args = args
 
