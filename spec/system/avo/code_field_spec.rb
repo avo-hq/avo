@@ -77,6 +77,51 @@ RSpec.describe "CodeField", type: :system do
     end
   end
 
+  describe "with pretty_generated option for a JSON code field" do
+    before do 
+      Avo::Resources::City.with_temporary_items do
+        field :metadata, as: :code, pretty_generated: true
+      end
+    end
+
+    after do 
+      Avo::Resources::City.restore_items_from_backup
+    end
+
+    let (:metadata) do 
+      '{
+        "name": "New York",
+        "country": "United States",
+        "population": 8419600,
+        "coordinates": {
+          "latitude": 40.7128,
+          "longitude": -74.006
+        },
+        "timezone": "America/New_York",
+        "climate": {
+          "type": "humid subtropical",
+          "average_temperature_celsius": 13.1
+        },
+        "points_of_interest": [
+          "Statue of Liberty",
+          "Central Park",
+          "Empire State Building"
+        ]
+      }'
+    end
+    it "correctly formats JSON code on create and displays it in a pretty way on the show page" do
+      visit "/admin/resources/cities/new"
+      wait_for_loaded
+
+      within find_field_element("metadata") do
+        fill_in_editor_field(metadata.to_json)
+      end
+      save
+      expect(find_field_value_element("metadata")).to have_text(JSON.pretty_generate(metadata))
+    end
+
+  end
+
   def fill_in_editor_field(text)
     within ".CodeMirror" do
       current_scope.click

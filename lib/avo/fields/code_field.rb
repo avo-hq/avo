@@ -12,13 +12,8 @@ module Avo
         hide_on :index
 
         if args[:pretty_generated]
-          args[:format_using] ||= lambda do
-            JSON.pretty_generate(JSON.parse(value.to_json))
-          end
-
-          args[:update_using] ||= lambda do
-            JSON.parse(value)
-          end
+          args[:format_using] ||= -> {JSON.pretty_generate(JSON.parse(value.to_json))}
+          args[:update_using] ||= -> {JSON.parse(value)}
         end
 
         super(id, **args, &block)
