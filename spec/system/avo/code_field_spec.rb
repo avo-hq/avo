@@ -78,7 +78,6 @@ RSpec.describe "CodeField", type: :system do
   end
 
   describe "with pretty_generated option for a JSON code field" do
-
     let(:metadata) do
       {
         name: "New York",
