@@ -9,6 +9,7 @@ module Avo
         end
 
         def to_key = [@id]
+
         def model_name = self.class
       end
     end
