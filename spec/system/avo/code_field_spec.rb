@@ -89,7 +89,7 @@ RSpec.describe "CodeField", type: :system do
     end
 
     let(:metadata) do
-      '{
+      {
         "name": "New York",
         "country": "United States",
         "population": 8419600,
@@ -107,17 +107,26 @@ RSpec.describe "CodeField", type: :system do
           "Central Park",
           "Empire State Building"
         ]
-      }'
+      }
     end
-    it "correctly formats JSON code on create and displays it in a pretty way on the show page" do
+
+    it "correctly formats JSON code on create / edit and displays it in a pretty way on the show page" do
       visit "/admin/resources/cities/new"
       wait_for_loaded
 
       within find_field_element("metadata") do
-        fill_in_editor_field(metadata.to_json)
+        fill_in_editor_field(JSON.pretty_generate(metadata))
       end
+
       save
-      expect(find_field_value_element("metadata")).to have_text(JSON.pretty_generate(metadata))
+
+      json_text = page.evaluate_script('document.querySelector(".CodeMirror").CodeMirror.getValue()')
+      expect(JSON.parse(json_text, symbolize_names: true)).to eq(metadata)
+
+      click_on "Edit"
+
+      json_text = page.evaluate_script('document.querySelector(".CodeMirror").CodeMirror.getValue()')
+      expect(JSON.parse(json_text, symbolize_names: true)).to eq(metadata)
     end
   end
 

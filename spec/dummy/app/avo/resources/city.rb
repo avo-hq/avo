@@ -61,19 +61,7 @@ class Avo::Resources::City < Avo::BaseResource
       as: :trix,
       attachment_key: :description_file,
       visible: -> { resource.params[:show_native_fields].blank? }
-    field :metadata,
-      as: :code,
-      format_using: -> {
-        if view.edit?
-          JSON.generate(value)
-        else
-          value
-        end
-      },
-      update_using: -> do
-        ActiveSupport::JSON.decode(value)
-      rescue JSON::ParserError
-      end
+    field :metadata, as: :code, pretty_generated: true
 
     field :created_at, as: :date_time, filterable: true
   end

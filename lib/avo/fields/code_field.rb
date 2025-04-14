@@ -12,7 +12,7 @@ module Avo
         hide_on :index
 
         if args[:pretty_generated]
-          args[:format_using] ||= -> { JSON.pretty_generate(JSON.parse(value.to_json)) }
+          args[:format_using] ||= -> { value.blank? ? value : JSON.pretty_generate(value) }
           args[:update_using] ||= -> { JSON.parse(value) }
         end
 
