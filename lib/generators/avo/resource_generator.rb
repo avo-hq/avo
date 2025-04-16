@@ -17,6 +17,16 @@ module Generators
         type: :string,
         required: false
 
+      class_option "array",
+        desc: "Indicates if the resource should be an array.",
+        type: :boolean,
+        default: false
+
+      class_option "http",
+        desc: "Indicates if the resource should be HTTP.",
+        type: :boolean,
+        default: false
+
       def create
         return if override_controller?
 
@@ -25,6 +35,16 @@ module Generators
       end
 
       no_tasks do
+        def parent_resource
+          if options["array"]
+            "Avo::Resources::ArrayResource"
+          elsif options["http"]
+            "Avo::Core::Resources::Http"
+          else
+            "Avo::BaseResource"
+          end
+        end
+
         def can_connect_to_the_database?
           result = false
           begin
@@ -47,7 +67,7 @@ module Generators
         end
 
         def error_message(extra)
-          "Avo will not attemmpt to create resources for you.\n#{extra}\nThen run 'rails generate avo:all_resources' to generate all your resources."
+          "Avo will not attempt to create resources for you.\n#{extra}\nThen run 'rails generate avo:all_resources' to generate all your resources."
         end
 
         def resource_class
@@ -172,11 +192,34 @@ module Generators
 
         def fields_from_model_associations
           associations.each do |name, association|
-            fields[name] = if association.is_a? ActiveRecord::Reflection::ThroughReflection
-              field_from_through_association(association)
-            else
-              associations_mapping[association.class]
-            end
+            fields[name] =
+              if association.polymorphic?
+                field_with_polymorphic_association(association)
+              elsif association.is_a?(ActiveRecord::Reflection::ThroughReflection)
+                field_from_through_association(association)
+              else
+                ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.class]
+              end
+          end
+        end
+
+        def field_with_polymorphic_association(association)
+          Rails.application.eager_load! unless Rails.application.config.eager_load
+
+          types = polymorphic_association_types(association)
+
+          {
+            field: "belongs_to",
+            options: {
+              polymorphic_as: ":#{association.name}",
+              types: types.presence || "[] # Types weren't computed correctly. Please configure them."
+            }
+          }
+        end
+
+        def polymorphic_association_types(association)
+          ActiveRecord::Base.descendants.filter_map do |model|
+            Inspector.new(model.name) if model.reflect_on_all_associations(:has_many).any? { |assoc| assoc.options[:as] == association.name }
           end
         end
 
@@ -192,13 +235,13 @@ module Generators
             # If the through_reflection is not a HasManyReflection, add it to the fields hash using the class of the through_reflection
             # ex (team.rb): has_one :admin, through: :admin_membership, source: :user
             # we use the class of the through_reflection (HasOneReflection -> has_one :admin) to generate the field
-            associations_mapping[association.through_reflection.class]
+            ::Avo::Mappings::ASSOCIATIONS_MAPPING[association.through_reflection.class]
           end
         end
 
         def fields_from_model_attachements
           attachments.each do |name, attachment|
-            fields[remove_last_word_from name] = attachments_mapping[attachment.class]
+            fields[remove_last_word_from name] = ::Avo::Mappings::ATTACHMENTS_MAPPING[attachment.class]
           end
         end
 
@@ -228,115 +271,6 @@ module Generators
           end
         end
 
-        def associations_mapping
-          {
-            ActiveRecord::Reflection::BelongsToReflection => {
-              field: "belongs_to"
-            },
-            ActiveRecord::Reflection::HasOneReflection => {
-              field: "has_one"
-            },
-            ActiveRecord::Reflection::HasManyReflection => {
-              field: "has_many"
-            },
-            ActiveRecord::Reflection::HasAndBelongsToManyReflection => {
-              field: "has_and_belongs_to_many"
-            }
-          }
-        end
-
-        def attachments_mapping
-          {
-            ActiveRecord::Reflection::HasOneReflection => {
-              field: "file"
-            },
-            ActiveRecord::Reflection::HasManyReflection => {
-              field: "files"
-            }
-          }
-        end
-
-        def names_mapping
-          {
-            id: {
-              field: "id"
-            },
-            description: {
-              field: "textarea"
-            },
-            gravatar: {
-              field: "gravatar"
-            },
-            email: {
-              field: "text"
-            },
-            password: {
-              field: "password"
-            },
-            password_confirmation: {
-              field: "password"
-            },
-            stage: {
-              field: "select"
-            },
-            budget: {
-              field: "currency"
-            },
-            money: {
-              field: "currency"
-            },
-            country: {
-              field: "country"
-            }
-          }
-        end
-
-        def fields_mapping
-          {
-            primary_key: {
-              field: "id"
-            },
-            string: {
-              field: "text"
-            },
-            text: {
-              field: "textarea"
-            },
-            integer: {
-              field: "number"
-            },
-            float: {
-              field: "number"
-            },
-            decimal: {
-              field: "number"
-            },
-            datetime: {
-              field: "date_time"
-            },
-            timestamp: {
-              field: "date_time"
-            },
-            time: {
-              field: "date_time"
-            },
-            date: {
-              field: "date"
-            },
-            binary: {
-              field: "number"
-            },
-            boolean: {
-              field: "boolean"
-            },
-            references: {
-              field: "belongs_to"
-            },
-            json: {
-              field: "code"
-            }
-          }
-        end
         def generate_fields
           return generate_fields_from_args if invoked_by_model_generator?
           return unless can_connect_to_the_database?
@@ -385,8 +319,23 @@ module Generators
         end
 
         def field(name, type)
-          names_mapping[name.to_sym] || fields_mapping[type&.to_sym] || {field: "text"}
+          ::Avo::Mappings::NAMES_MAPPING[name.to_sym] || ::Avo::Mappings::FIELDS_MAPPING[type&.to_sym] || {field: "text"}
         end
+      end
+    end
+
+    # This class modifies the inspect function to correctly handle polymorphic associations.
+    # It is used in the polymorphic_association_types function.
+    # Without modification: Model(id: integer, name: string)
+    # After modification: Model
+    class Inspector
+      attr_accessor :name
+      def initialize(name)
+        @name = name
+      end
+
+      def inspect
+        name
       end
     end
   end

@@ -12,6 +12,7 @@
     style: html(:cover, :style) do %>
     <%= render Avo::RowSelectorComponent.new(floating: true, size: :lg) if @resource.record_selector%>
     <%= render_cover %>
+    <%= render_badge %>
   <% end %>
   <div class="grid grid-cols-1 place-content-between p-4 h-full">
     <div class="mb-4 h-full flex flex-col space-between">

@@ -1,13 +1,11 @@
 Avo::Engine.routes.draw do
   root "home#index"
 
-  get "resources", to: redirect(Avo.configuration.root_path)
-  get "dashboards", to: redirect(Avo.configuration.root_path)
+  get "resources", to: redirect(Avo.configuration.root_path), as: :avo_resources_redirect
+  get "dashboards", to: redirect(Avo.configuration.root_path), as: :avo_dashboards_redirect
 
-  # Mount Avo engines routes by default but leave it configurable in case the user wants to nest these under a scope.
-  if Avo.configuration.mount_avo_engines
-    instance_exec(&Avo.mount_engines)
-  end
+  resources :media_library, only: [:index, :show, :update, :destroy], path: "media-library"
+  get "attach-media", to: "media_library#attach"
 
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
@@ -32,7 +30,7 @@ Avo::Engine.routes.draw do
 
     # Generate resource routes as below:
     # resources :posts
-    Avo::DynamicRouter.routes
+    draw(:dynamic_routes)
 
     # Associations
     get "/:resource_name/:id/:related_name/new", to: "associations#new", as: "associations_new"

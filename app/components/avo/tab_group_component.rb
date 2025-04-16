@@ -3,12 +3,12 @@
 class Avo::TabGroupComponent < Avo::BaseComponent
   delegate :group_param, to: :@group
 
-  prop :resource, Avo::BaseResource, reader: :public
-  prop :group, Avo::Resources::Items::TabGroup, reader: :public
-  prop :index, Integer, reader: :public
-  prop :form, _Nilable(ActionView::Helpers::FormBuilder), reader: :public
-  prop :params, ActionController::Parameters, reader: :public
-  prop :view, Avo::ViewInquirer, reader: :public
+  prop :resource, reader: :public
+  prop :group, reader: :public
+  prop :index, reader: :public
+  prop :form, reader: :public
+  prop :params, reader: :public
+  prop :view, reader: :public
 
   def after_initialize
     group.index = index
@@ -16,6 +16,30 @@ class Avo::TabGroupComponent < Avo::BaseComponent
 
   def render?
     tabs_have_content? && visible_tabs.present?
+  end
+
+  def frame_args(tab)
+    args = {
+      target: :_top,
+      class: "block"
+    }
+
+    if is_not_loaded?(tab)
+      args[:loading] = :lazy
+      args[:src] = helpers.resource_path(
+        resource: @resource,
+        record: @resource.record,
+        keep_query_params: true,
+        active_tab_name: tab.name,
+        tab_turbo_frame: tab.turbo_frame_id(parent: @group)
+      )
+    end
+
+    args
+  end
+
+  def is_not_loaded?(tab)
+    params[:tab_turbo_frame] != tab.turbo_frame_id(parent: @group)
   end
 
   def tabs_have_content?

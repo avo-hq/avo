@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.0.0"
   spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
-  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js"]
+  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js"]
   spec.files.reject! { |file_name| %w[application.js application.js.map app/assets/builds/avo.custom.js avo.custom.js.map].any? { |rejected_file| file_name.include? rejected_file } }
 
   spec.add_dependency "activerecord", ">= 6.1"
@@ -45,7 +45,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "turbo_power", ">= 0.6.0"
   spec.add_dependency "addressable"
   spec.add_dependency "meta-tags"
-  spec.add_dependency "literal", "~> 0.2"
   spec.add_dependency "docile"
   spec.add_dependency "inline_svg"
+  spec.add_dependency "prop_initializer", ">= 0.2.0"
+  spec.add_dependency "avo-heroicons", ">= 0.1.1"
 end

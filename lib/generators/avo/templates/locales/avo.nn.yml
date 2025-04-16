@@ -24,9 +24,12 @@ nn:
     choose_item: Vel %{item}
     clear_value: Nullstill verdi
     click_to_reveal_filters: Vis filter
+    close: Lukk
     close_modal: Lukk modal
     confirm: Stadfest
+    copy: Kopier
     create_new_item: Lag ny %{item}
+    created_at_timestamp: Oppretta den %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
     default_scope: Alle
@@ -57,10 +60,18 @@ nn:
       add_row: Legg til rad
       delete_row: Slett rad
       key: Nøkkel
+      reorder_row: Omorganiser rad
       value: Verdi
+    less_content: Mindre innhold
     list_is_empty: Lista er tom
     loading: Lastar
+    media_library:
+      title: Media bibliotek
     more: Meir
+    more_content: Mer innhold
+    more_records_available: Det finst fleire opptak tilgjengelege.
+    nested:
+      add_new_item: Legg til ny %{item}
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt
@@ -100,14 +111,20 @@ nn:
     select_item: Vel
     show_content: Vis innhald
     sign_out: Logg ut
+    sort_asc: Sorter stigande
+    sort_desc: Sorter synkende
+    sort_reset: Nullstill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning
+    this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
     tools: Reiskapane
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
     undo: angre
+    updated_at_timestamp: Oppdatert den %{updated_at}
     view: Vis
     view_item: vis %{item}
+    visit_record_on_external_path: Besøk posten via ein ekstern lenke
     was_successfully_created: vart oppretta
     was_successfully_updated: vart oppdatert
     x_items_more:
@@ -118,4 +135,6 @@ nn:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> valde postar frå alle sider
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, eg er sikker
+    you_cant_upload_new_resource: Du kan ikkje laste opp filer til Trix-editoren før du lagrar ressursen.
+    you_havent_set_attachment_key: Du har ikkje sett ein `attachment_key` til dette Trix-feltet.
     you_missed_something_check_form: Her manglar du noko. Ver venleg og sjekk skjemaet.

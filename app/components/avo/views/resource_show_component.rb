@@ -5,12 +5,12 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   attr_reader :display_breadcrumbs
 
-  prop :resource, _Nilable(Avo::BaseResource)
-  prop :reflection, _Nilable(ActiveRecord::Reflection::AbstractReflection)
-  prop :parent_resource, _Nilable(Avo::BaseResource)
-  prop :parent_record, _Nilable(_Any)
-  prop :resource_panel, _Nilable(_Array(Avo::BaseAction)), reader: :public
-  prop :actions, _Array(Avo::BaseAction), default: [].freeze, reader: :public
+  prop :resource
+  prop :reflection
+  prop :parent_resource
+  prop :parent_record
+  prop :resource_panel, reader: :public
+  prop :actions, default: [].freeze, reader: :public
 
   def after_initialize
     @view = Avo::ViewInquirer.new("show")
@@ -28,6 +28,9 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def back_path
+    # The `return_to` param takes precedence over anything else.
+    return params[:return_to] if params[:return_to].present?
+
     if via_resource?
       helpers.resource_path(resource: association_resource, resource_id: params[:via_record_id])
     else
@@ -49,6 +52,9 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     else
       {}
     end
+
+    # Pass the return_to param to the edit path so the chain of navigation is kept.
+    args[:return_to] = params[:return_to] if params[:return_to].present?
 
     helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
   end

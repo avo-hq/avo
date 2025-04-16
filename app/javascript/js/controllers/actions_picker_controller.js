@@ -12,7 +12,7 @@ export default class extends Controller {
   }
 
   get actionsShowTurboFrame() {
-    return document.querySelector('turbo-frame#actions_show')
+    return document.querySelector(`turbo-frame#${window.Avo.configuration.modal_frame_id}`)
   }
 
   enableTarget() {

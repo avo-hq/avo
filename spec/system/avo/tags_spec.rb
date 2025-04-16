@@ -234,6 +234,94 @@ RSpec.describe "Tags", type: :system do
       Avo::Resources::Course.restore_items_from_backup
     end
   end
+
+  describe "mode: :select" do
+    let!(:projects) { create_list :project, 2 }
+
+    it "on index" do
+      Avo::Resources::Project.with_temporary_items do
+        field :stage, as: :tags, mode: :select
+        field :dummy_field, as: :tags,
+          mode: :select,
+          close_on_select: true,
+          format_using: -> { [{value: "a_c2", label: "activity_category2"}] },
+          suggestions: [
+            {value: "a_c1", label: "activity_category1"},
+            {value: "a_c2", label: "activity_category2"},
+            {value: "a_c3", label: "activity_category3"}
+          ]
+      end
+
+      visit avo.resources_projects_path
+
+      expect(page).to have_text("activity_category2")
+      expect(page).not_to have_text("a_c2")
+
+      projects.each do |project|
+        expect(page).to have_text(project.stage)
+      end
+
+      Avo::Resources::Project.restore_items_from_backup
+    end
+
+    it "on show" do
+      Avo::Resources::Project.with_temporary_items do
+        field :stage, as: :tags, mode: :select
+        field :dummy_field, as: :tags,
+          mode: :select,
+          close_on_select: true,
+          format_using: -> { [{value: "a_c2", label: "activity_category2"}] },
+          suggestions: [
+            {value: "a_c1", label: "activity_category1"},
+            {value: "a_c2", label: "activity_category2"},
+            {value: "a_c3", label: "activity_category3"}
+          ]
+      end
+
+      visit avo.resources_project_path(projects.first)
+
+      expect(page).to have_text("activity_category2")
+      expect(page).not_to have_text("a_c2")
+
+      expect(page).to have_text(projects.first.stage)
+
+      Avo::Resources::Project.restore_items_from_backup
+    end
+
+    it "on edit / update" do
+      expect(TestBuddy).to receive(:hi).with("dummy_field value is 'a_c2'").at_least :once
+
+      Avo::Resources::Project.with_temporary_items do
+        field :stage, as: :tags, mode: :select
+        field :dummy_field, as: :tags,
+          mode: :select,
+          close_on_select: true,
+          format_using: -> { [{value: "a_c2", label: "activity_category2"}] },
+          suggestions: [
+            {value: "a_c1", label: "activity_category1"},
+            {value: "a_c2", label: "activity_category2"},
+            {value: "a_c3", label: "activity_category3"}
+          ]
+      end
+
+      visit avo.edit_resources_project_path(projects.first)
+
+      sleep 1
+
+      expect(page).not_to have_text("a_c2")
+      expect(page).to have_text("activity_category2")
+
+      expect(page).to have_text(projects.first.stage)
+
+      click_on "Save"
+
+      wait_for_path_to_be(path: avo.resources_project_path(projects.first))
+
+      expect(page).to have_text(projects.first.stage)
+
+      Avo::Resources::Project.restore_items_from_backup
+    end
+  end
 end
 
 def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)

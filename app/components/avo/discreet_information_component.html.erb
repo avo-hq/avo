@@ -1,0 +1,7 @@
+<div class="flex gap-2 ml-2 mt-1 items-center">
+  <% items.each do |item| %>
+    <%= content_tag element_tag(item), **element_attributes(item), class: element_classes(item), title: item.tooltip, data: {tippy: :tooltip, **data(item)} do %>
+      <%= item.label if item.label.present? %> <%= helpers.svg item.icon, class: icon_classes(item) %>
+    <% end %>
+  <% end %>
+</div>

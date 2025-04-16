@@ -3,6 +3,7 @@ require_dependency "avo/application_controller"
 module Avo
   class BaseController < ApplicationController
     include Avo::Concerns::FiltersSessionHandler
+    include Avo::Concerns::SafeCall
 
     before_action :set_resource_name
     before_action :set_resource
@@ -28,11 +29,7 @@ module Avo
       set_index_params
       set_filters
       set_actions
-
-      # If we don't get a query object predefined from a child controller like associations, just spin one up
-      unless defined? @query
-        @query = @resource.class.query_scope
-      end
+      set_query
 
       # Eager load the associations
       if @resource.includes.present?
@@ -46,7 +43,7 @@ module Avo
         end
       end
 
-      apply_sorting
+      apply_sorting if @index_params[:sort_by]
 
       # Apply filters to the current query
       filters_to_be_applied.each do |filter_class, filter_value|
@@ -109,7 +106,7 @@ module Avo
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append("attach_modal", partial: "avo/base/new_via_belongs_to")
+        return render turbo_stream: turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to")
       end
 
       set_actions
@@ -144,9 +141,9 @@ module Avo
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
           related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
-          related_record = related_resource.find_record params[:via_record_id], params: params
+          @related_record = related_resource.find_record params[:via_record_id], params: params
 
-          @record.send(:"#{@reflection.foreign_key}=", related_record.id)
+          @record.send(:"#{@reflection.foreign_key}=", @related_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
@@ -212,7 +209,13 @@ module Avo
     end
 
     def preview
-      @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
+      @authorized = @authorization.set_record(@record || @resource.model_class).authorize_action :preview, raise_exception: false
+
+      if @authorized
+        @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
+
+        @preview_fields = @resource.get_preview_fields
+      end
 
       render layout: params[:turbo_frame].blank?
     end
@@ -243,12 +246,16 @@ module Avo
       begin
         succeeded = block.call
       rescue ActiveRecord::RecordInvalid => error
+        log_error error
+
         # Do nothing as the record errors are already being displayed
         # On associations controller add errors from join record to record
         if controller_name == "associations"
           @record.errors.add(:base, error.message)
         end
       rescue => exception
+        log_error exception
+
         # In case there's an error somewhere else than the record
         # Example: When you save a license that should create a user for it and creating that user throws and error.
         # Example: When you Try to delete a record and has a foreign key constraint.
@@ -258,6 +265,13 @@ module Avo
 
       # This method only needs to return true or false to indicate if the action was successful
       @record.errors.any? ? false : succeeded
+    end
+
+    def log_error(error)
+      return if Rails.env.production?
+
+      Rails.logger.error error
+      Rails.logger.error error.backtrace.join("\n")
     end
 
     def model_params
@@ -272,7 +286,12 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions.select(&:updatable).map(&:to_permitted_param).concat(extra_params).uniq
+      @resource.get_field_definitions
+        .select(&:updatable)
+        .map(&:to_permitted_param)
+        .concat(extra_params)
+        .push(@resource.safe_call(:nested_params))
+        .uniq
     end
 
     def extra_params
@@ -305,36 +324,10 @@ module Avo
     def set_index_params
       @index_params = {}
 
-      # Pagination
-      @index_params[:page] = params[:page] || 1
-      @index_params[:per_page] = Avo.configuration.per_page
-
-      if cookies[:per_page].present?
-        @index_params[:per_page] = cookies[:per_page]
-      end
-
-      if @parent_record.present?
-        @index_params[:per_page] = Avo.configuration.via_per_page
-      end
-
-      if params[:per_page].present?
-        @index_params[:per_page] = params[:per_page]
-        cookies[:per_page] = params[:per_page]
-      end
+      set_pagination_params
 
       # Sorting
-      if params[:sort_by].present?
-        @index_params[:sort_by] = params[:sort_by]
-      elsif @resource.model_class.present?
-        available_columns = @resource.model_class.column_names
-        default_sort_column = @resource.default_sort_column
-
-        if available_columns.include?(default_sort_column.to_s)
-          @index_params[:sort_by] = default_sort_column
-        elsif available_columns.include?("created_at")
-          @index_params[:sort_by] = :created_at
-        end
-      end
+      @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
 
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
 
@@ -519,6 +512,8 @@ module Avo
     end
 
     def after_update_path
+      # The `return_to` param takes precedence over anything else.
+      return params[:return_to] if params[:return_to].present?
       return params[:referrer] if params[:referrer].present?
 
       redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
@@ -530,8 +525,16 @@ module Avo
     end
 
     def destroy_success_action
+      flash[:notice] = destroy_success_message
+
       respond_to do |format|
-        format.html { redirect_to after_destroy_path, notice: destroy_success_message }
+        if params[:turbo_frame]
+          format.turbo_stream do
+            render turbo_stream: reload_frame_turbo_streams
+          end
+        else
+          format.html { redirect_to after_destroy_path }
+        end
       end
     end
 
@@ -539,7 +542,7 @@ module Avo
       flash[:error] = destroy_fail_message
 
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.flash_alerts }
+        format.turbo_stream { render turbo_stream: turbo_stream.avo_flash_alerts }
       end
     end
 
@@ -559,12 +562,15 @@ module Avo
     def redirect_path_from_resource_option(action = :after_update_path)
       return nil if @resource.class.send(action).blank?
 
+      extra_args = {}
+      extra_args[:return_to] = params[:return_to] if params[:return_to].present?
+
       if @resource.class.send(action) == :index
-        resources_path(resource: @resource)
+        resources_path(resource: @resource, **extra_args)
       elsif @resource.class.send(action) == :edit || Avo.configuration.resource_default_view.edit?
-        edit_resource_path(resource: @resource, record: @resource.record)
+        edit_resource_path(resource: @resource, record: @resource.record, **extra_args)
       else
-        resource_path(record: @record, resource: @resource)
+        resource_path(record: @record, resource: @resource, **extra_args)
       end
     end
 
@@ -575,10 +581,6 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
-    end
-
-    def safe_call(method)
-      send(method) if respond_to?(method, true)
     end
 
     def pagy_query
@@ -608,12 +610,11 @@ module Avo
     end
 
     def apply_pagination
-      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query)
+      # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
+      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
     end
 
     def apply_sorting
-      return if @index_params[:sort_by].nil?
-
       sort_by = @index_params[:sort_by].to_sym
       if sort_by != :created_at
         @query = @query.unscope(:order)
@@ -637,6 +638,27 @@ module Avo
     # Sanitize sort_direction param
     def sanitized_sort_direction
       @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
+    end
+
+    def reload_frame_turbo_streams
+      [
+        turbo_stream.turbo_frame_reload(params[:turbo_frame]),
+        turbo_stream.avo_flash_alerts
+      ]
+    end
+
+    def set_pagination_params
+      @index_params[:page] = params[:page] || 1
+
+      # If the request includes the 'per_page' parameter, save its value to the cookies
+      cookies[:per_page] = params[:per_page] if params[:per_page].present?
+
+      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
+    end
+
+    # If we don't get a query object predefined from a child controller like associations, just spin one up
+    def set_query
+      @query ||= @resource.class.query_scope
     end
   end
 end

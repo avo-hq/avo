@@ -20,6 +20,8 @@ RSpec.feature "AvoWarning", type: :feature do
     expect(page).to have_text "Avo::Resources::Bad does not have a valid model assigned. It failed to find the Bad model."
     expect(page).to have_text "Please create that model or assign one using self.model_class = YOUR_MODEL"
     expect(page).to have_link href: "https://docs.avohq.io/3.0/resources.html#self_model_class"
+
+    delete_files [Rails.root.join("app", "avo", "resources", "bad.rb").to_s]
   end
 
   it "displays menu editor warning" do

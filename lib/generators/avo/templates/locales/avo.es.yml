@@ -24,9 +24,12 @@ es:
     choose_item: Elige %{item}
     clear_value: Borrar el valor
     click_to_reveal_filters: Pulsa para mostrar los filtros
+    close: Cerrar
     close_modal: Cerrar modal
     confirm: Confirmar
+    copy: Copiar
     create_new_item: Crear nuevo/a %{item}
+    created_at_timestamp: Creado en %{created_at}
     dashboard: Panel
     dashboards: Paneles
     default_scope: Todos
@@ -57,10 +60,18 @@ es:
       add_row: Añadir fila
       delete_row: Eliminar fila
       key: Clave
+      reorder_row: Reordenar fila
       value: Valor
+    less_content: Menos contenido
     list_is_empty: La lista está vacía
     loading: Cargando
+    media_library:
+      title: Biblioteca de medios
     more: Más
+    more_content: Más contenido
+    more_records_available: Hay más registros disponibles.
+    nested:
+      add_new_item: Agregar nuevo %{item}
     new: nuevo/a
     next_page: Página siguiente
     no_cancel: No, cancelar
@@ -100,14 +111,20 @@ es:
     select_item: Selecionar elemento
     show_content: Mostrar contenido
     sign_out: Salir
+    sort_asc: Ordenar de forma ascendente
+    sort_desc: Ordenar de forma descendente
+    sort_reset: Restablecer ordenación
     switch_to_view: Cambiar a la vista %{view_type}
     table_view: Vista en tabla
+    this_field_has_attachments_disabled: Este campo tiene los adjuntos deshabilitados.
     tools: Herramientas
     type_to_search: Escribe para buscar.
     unauthorized: No autorizado
     undo: deshacer
+    updated_at_timestamp: Actualizado en %{updated_at}
     view: Vista
     view_item: ver %{item}
+    visit_record_on_external_path: Visitar registro en enlace externo
     was_successfully_created: se ha creado con éxito
     was_successfully_updated: se ha actualizado con éxito
     x_items_more:
@@ -118,4 +135,6 @@ es:
     x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros seleccionados en todas las páginas
     x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página
     yes_confirm: Sí, estoy seguro
+    you_cant_upload_new_resource: No puedes subir archivos al editor Trix hasta que guardes el recurso.
+    you_havent_set_attachment_key: No has establecido una `attachment_key` para este campo Trix.
     you_missed_something_check_form: Es posible que hayas pasado algo por alto. Comprueba el formulario.

@@ -5,22 +5,25 @@ Rails.application.routes.draw do
 
   get "hey", to: "home#index"
 
+  resources :posts
+
   authenticate :user, ->(user) { user.is_admin? } do
     scope :admin do
       get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
     end
 
-    mount Avo::Engine, at: Avo.configuration.root_path
+    mount_avo
+
     # Uncomment to test constraints /123/en/admin
     # scope ":course", constraints: {course: /\w+(-\w+)*/} do
     #   scope ":locale", constraints: {locale: /\w[-\w]*/} do
-    #     mount Avo::Engine, at: Avo.configuration.root_path
+    #     mount_avo
     #   end
     # end
 
     # TODO: support locale based routes
     scope "(:locale)" do
-      # mount Avo::Engine, at: Avo.configuration.root_path
+      # mount_avo
     end
   end
 end

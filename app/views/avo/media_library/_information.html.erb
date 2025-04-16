@@ -1,0 +1,34 @@
+<div class="p-6">
+  <dl>
+    <dt>Filename:</dt>
+    <dd><%= @blob.filename %></dd>
+    <dt>Key:</dt>
+    <dd><%= @blob.key %></dd>
+    <dt>Content type:</dt>
+    <dd><%= @blob.content_type %></dd>
+    <dt>Size:</dt>
+    <dd><%= number_to_human_size(@blob.byte_size) %></dd>
+    <dt>Service name:</dt>
+    <dd><%= @blob.service_name %></dd>
+    <dt>Created at:</dt>
+    <dd><%= @blob.created_at %></dd>
+    <% if @blob.attachments.present? %>
+      <dt>Attached to:</dt>
+      <dd>
+        <% @blob.attachments.each do |attachment| %>
+          <%= link_to record_title(attachment.record), record_path(attachment.record) %>
+        <% end %>
+      </dd>
+    <% end %>
+    <dt>Type:</dt>
+    <dd><%= @blob.filename %></dd>
+    <dt>Metadata:</dt>
+    <dd class="block">
+      <% @blob.metadata.each do |key, value| %>
+        <div class="block">
+          <code><%= key %>: <%= value %></code>
+        </div>
+      <% end %>
+    </dd>
+  </dl>
+</div>

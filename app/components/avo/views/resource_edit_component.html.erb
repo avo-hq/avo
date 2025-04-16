@@ -15,7 +15,11 @@
     method: form_method,
     local: true,
     html: {
-      novalidate: true
+      novalidate: true,
+      data: {
+        controller: "form",
+        action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
+      }
     },
     data: { controller: "form-exit-prompt", form_exit_prompt_target: "form" },
     multipart: true do |form| %>

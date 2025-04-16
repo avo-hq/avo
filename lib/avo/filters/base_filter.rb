@@ -46,7 +46,7 @@ module Avo
       end
 
       def id
-        self.class.name.underscore.tr("/", "_")
+        name.underscore.tr("/", "_")
       end
 
       # Get the applied value this filter.
@@ -87,6 +87,14 @@ module Avo
           resource: resource,
           arguments: arguments
         ).handle
+      end
+
+      def name
+        Avo::ExecutionContext.new(target: self.class.name, arguments: @arguments).handle
+      end
+
+      def button_label
+        Avo::ExecutionContext.new(target: self.class.button_label, arguments: @arguments).handle
       end
     end
   end

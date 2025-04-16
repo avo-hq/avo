@@ -2,9 +2,7 @@ Avo.configure do |config|
   ## == Base configs ==
   config.root_path = "/admin"
   config.app_name = -> { "Avocadelicious #{params[:app_name_suffix]}" }
-  config.home_path = -> { "/admin/resources/projects" }
   config.home_path = -> { avo.resources_projects_path }
-  # config.mount_avo_engines = false
   # config.default_url_options = [:tenant_id]
   # Use this to test root_path_without_url helper
   # Also enable in config.ru & application.rb
@@ -14,6 +12,7 @@ Avo.configure do |config|
 
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]
+  config.exclude_from_status = ["license_key"]
 
   ## == App context ==
   config.current_user_method = :current_user
@@ -32,17 +31,21 @@ Avo.configure do |config|
   config.locale = :en
   # config.raise_error_on_missing_policy = true
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
+  # Shouldn't impact on community only if custom authorization service was configured.
+  config.explicit_authorization = true
 
   ## == Customization ==
   config.id_links_to_resource = true
   config.full_width_container = false
   config.buttons_on_form_footers = false
-  # config.resource_controls_placement = ENV["AVO_RESOURCE_CONTROLS_PLACEMENT"]&.to_sym || :right
   config.resource_default_view = :show
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
-  config.cache_resource_filters = false
   config.click_row_to_view_record = true
+
+  config.turbo = {
+    instant_click: true
+  }
 
   ## == Branding ==
   config.branding = {
@@ -76,6 +79,7 @@ Avo.configure do |config|
 
   config.alert_dismiss_time = 5000
   config.search_results_count = 8
+  config.associations_lookup_list_limit = 1000
 
   ## == Menus ==
   if Rails.env.test?
@@ -94,12 +98,23 @@ Avo.configure do |config|
   #     type: :countless
   #   }
   # end
+
+  config.column_names_mapping = {
+    custom_css: {field: "code"}
+  }
 end
 
 if defined?(Avo::DynamicFilters)
   Avo::DynamicFilters.configure do |config|
     config.button_label = "Advanced filters"
     config.always_expanded = true
+  end
+end
+
+if defined?(Avo::MediaLibrary)
+  Avo::MediaLibrary.configure do |config|
+    config.visible = -> { Avo::Current.user.is_developer? }
+    config.enabled = true
   end
 end
 
@@ -110,6 +125,6 @@ Rails.configuration.to_prepare do
   Avo::ApplicationController.helper Rails.application.helpers
 end
 
-Avo.on_load(:boot) do
+ActiveSupport.on_load(:avo_boot) do
   Avo.plugin_manager.register_field :color_pickerrr, Avo::Fields::ColorPickerField
 end

@@ -21,12 +21,12 @@ gem 'cssbundling-rails'
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-# gem "rails", "~> 7.1.0"
-gem "rails", github: "rails/rails", branch: "main"
+gem "rails", ">= 8.0.0"
+# gem "rails", github: "rails/rails", branch: "main"
 
 # Avo file filed requires this gem
 # gem "activestorage"
-gem "activestorage", github: "rails/rails", branch: "main"
+gem "activestorage", ">= 8.0.0"
 
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -47,8 +47,7 @@ gem "dotenv-rails"
 # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
 gem "web-console", ">= 3.3.0"
 gem "listen", ">= 3.5.1"
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem "spring"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
@@ -58,7 +57,7 @@ gem "devise"
 #
 
 group :development do
-  gem "standard"
+  gem "standard", require: false
 
   # Release helper
   gem "bump", require: false
@@ -77,12 +76,18 @@ group :development do
 
   gem "hotwire-livereload", "~> 1.3.0"
 
-  gem "rubocop"
-  gem "ripper-tags"
+  gem "rubocop", require: false
+  gem "ripper-tags", require: false
   gem "rubocop-shopify", require: false
   gem "rubycritic", require: false
 
   gem "actual_db_schema"
+
+  gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
+
+  # Keep version look on <4 until this PR gets merged and released
+  # https://github.com/zombocom/derailed_benchmarks/pull/239
+  gem "ruby-statistics", "< 4"
 end
 
 group :test do
@@ -96,6 +101,7 @@ group :test do
   gem "simplecov-cobertura"
   gem "simplecov-lcov"
   gem "webmock"
+  gem "spring"
   gem "spring-commands-rspec"
   gem "launchy", require: false
 
@@ -108,15 +114,16 @@ gem "amazing_print"
 group :development, :test do
   gem "faker", require: false
   gem "i18n-tasks", "~> 1.0.12"
-  gem "erb-formatter"
+  gem "ruby-openai"
+  gem "erb-formatter", require: false
   # https://thoughtbot.com/blog/a-standard-way-to-lint-your-views
-  gem "erb_lint"
-  gem "solargraph"
-  gem "solargraph-rails"
+  gem "erb_lint", require: false
+  gem "solargraph", require: false
+  gem "solargraph-rails", require: false
 
   gem "factory_bot_rails"
 
-  gem "appraisal"
+  gem "appraisal", require: false
 end
 
 gem "zeitwerk"
@@ -145,15 +152,14 @@ gem "active_median"
 
 gem 'acts_as_list'
 
-# gem 'acts-as-taggable-on', '~> 10.0'
-gem "acts-as-taggable-on", github: "avo-hq/acts-as-taggable-on"
+gem "acts-as-taggable-on", "~> 12.0"
 
 gem "bundler-integrity", "~> 1.0"
 
 # Avo country field requires this gem
 gem "countries"
 
-# Avo dashbaords requires this gem
+# Avo dashboards requires this gem
 gem "chartkick"
 
 # Required by Avo
@@ -163,13 +169,10 @@ gem "sprockets-rails"
 # Use Active Storage variant
 gem "image_processing", "~> 1.12"
 
-# source "https://rubygems.pkg.github.com/avo-hq" do
-#   gem "avo-dynamic_filters"
-# end
 gem "prefixed_ids"
 
 gem "mapkick-rb", "~> 0.1.4"
-
+gem "mapkick-static"
 gem "pluggy", path: "./pluggy"
 
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"

@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
 class Avo::BaseComponent < ViewComponent::Base
-  extend Literal::Properties
+  extend PropInitializer::Properties
   include Turbo::FramesHelper
   include Avo::Concerns::FindAssociationField
+
+  delegate :e, to: :helpers
+  delegate :d, to: :helpers
+  delegate :main_app, to: :helpers
+  delegate :avo, to: :helpers
 
   def has_with_trial(ability)
     Avo.license.has_with_trial(ability)
   end
+
+  def component_name = self.class.name.to_s.underscore
 
   private
 

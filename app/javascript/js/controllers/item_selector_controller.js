@@ -1,16 +1,14 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['panel'];
+  static targets = ['panel']
 
-  checkbox = {};
+  checkbox = {}
 
-  enabledClasses = ['text-black']
-
-  disabledClasses = ['text-gray-500']
-
-  get actionsPanelPresent() {
-    return this.actionsButtonElement !== null
+  get actionLinks() {
+    return document.querySelectorAll(
+      'a[data-actions-picker-target="resourceAction"]',
+    )
   }
 
   get currentIds() {
@@ -21,16 +19,10 @@ export default class extends Controller {
     }
   }
 
-  get actionLinks() {
-    return document.querySelectorAll(
-      '.js-actions-dropdown a[data-actions-picker-target="resourceAction"]',
-    )
-  }
-
   set currentIds(value) {
     this.stateHolderElement.dataset.selectedResources = JSON.stringify(value)
 
-    if (this.actionsPanelPresent) {
+    if (this.actionLinks.length > 0) {
       if (value.length > 0) {
         this.enableResourceActions()
       } else {
@@ -42,9 +34,6 @@ export default class extends Controller {
   connect() {
     this.resourceName = this.element.dataset.resourceName
     this.resourceId = this.element.dataset.resourceId
-    this.actionsButtonElement = document.querySelector(
-      `[data-actions-dropdown-button="${this.resourceName}"]`,
-    )
     this.stateHolderElement = document.querySelector(
       `[data-selected-resources-name="${this.resourceName}"]`,
     )
@@ -55,10 +44,20 @@ export default class extends Controller {
 
     ids.push(this.resourceId)
 
+    // Mark the row as selected if on table view
+    if (this.element.closest('tr')) {
+      this.element.closest('tr').classList.add('selected-row')
+    }
+
     this.currentIds = ids
   }
 
   removeFromSelected() {
+    // Un-mark the row as selected if on table view
+    if (this.element.closest('tr')) {
+      this.element.closest('tr').classList.remove('selected-row')
+    }
+
     this.currentIds = this.currentIds.filter(
       (item) => item.toString() !== this.resourceId,
     )
@@ -76,19 +75,27 @@ export default class extends Controller {
 
   enableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.add(...this.enabledClasses)
-      link.classList.remove(...this.disabledClasses)
-      link.setAttribute('data-href', link.getAttribute('href'))
-      link.dataset.disabled = false
+      // Enable only if is on the same resource context
+      // Avoiding to enable unrelated actions when selecting items on a has many table
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.add(link.dataset.enabledClasses)
+        link.classList.remove(link.dataset.disabledClasses)
+        link.setAttribute('data-href', link.getAttribute('href'))
+        link.dataset.disabled = false
+      }
     })
   }
 
   disableResourceActions() {
     this.actionLinks.forEach((link) => {
-      link.classList.remove(...this.enabledClasses)
-      link.classList.add(...this.disabledClasses)
-      link.setAttribute('href', link.getAttribute('data-href'))
-      link.dataset.disabled = true
+      // Disable only if is on the same resource context
+      // Avoiding to disable unrelated actions when selecting items on a has many table
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.remove(link.dataset.enabledClasses)
+        link.classList.add(link.dataset.disabledClasses)
+        link.setAttribute('href', link.getAttribute('data-href'))
+        link.dataset.disabled = true
+      }
     })
   }
 }

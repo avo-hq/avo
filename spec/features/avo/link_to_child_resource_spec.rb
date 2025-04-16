@@ -14,13 +14,13 @@ RSpec.describe "LinkToChildResource", type: :feature do
   describe "link_to_child_resource " do
     context "Resource linking to child resources" do
       let!(:sibling) { create :sibling, name: "sibling" }
-      it "dispaly records linked to the child resource sibling " do
+      it "display records linked to the child resource sibling " do
         Avo::Resources::Person.link_to_child_resource = true
         visit "/admin/resources/people"
         expect(page).to have_link(href: "/admin/resources/siblings/#{sibling.id}")
       end
 
-      it "dispaly records linked to the child resource sibling " do
+      it "display records linked to the child resource sibling " do
         Avo::Resources::Person.link_to_child_resource = false
         visit "/admin/resources/people"
         expect(page).to have_link(href: "/admin/resources/people/#{sibling.id}")

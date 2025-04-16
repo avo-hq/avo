@@ -40,7 +40,9 @@ module Avo
             load_resources_namespace
           end
 
-          BaseResource.descendants
+          # All descendants from Avo::Resources::Base except the internal abstract ones
+
+          Base.descendants.reject { _1.is_abstract? }
         end
 
         def load_resources_namespace
@@ -98,6 +100,15 @@ module Avo
       # get_resource_by_name('user') => instance of Avo::Resources::User
       def get_resource_by_name(name)
         get_resource name.singularize.camelize
+      end
+
+      # Returns the Avo resource by singular snake_cased name
+      #
+      # get_resource_by_name('z posts') => instance of Avo::Resources::ZPost
+      def get_resource_by_plural_name(name)
+        resources.find do |resource|
+          resource.plural_name == name
+        end
       end
 
       # Returns the Avo resource by singular snake_cased name

@@ -40,13 +40,14 @@ module Generators
         #   bin/rails generate avo:tool lolo
         #   will generate the avo.lolo_path helper
         # THe fact that it will always generate the definded? and Avo::Engine.routes.draw wraps is unfortunate. We'd love a PR to fix that.
-        route_contents = <<-ROUTE
-
-if defined? ::Avo
-  Avo::Engine.routes.draw do
-    get "#{file_name}", to: "tools##{file_name}", as: :#{file_name}
-  end
-end
+        route_contents = <<~ROUTE
+          
+          if defined? ::Avo
+            Avo::Engine.routes.draw do
+              # This route is not protected, secure it with authentication if needed.
+              get "#{file_name}", to: "tools##{file_name}", as: :#{file_name}
+            end
+          end
         ROUTE
         append_to_file "config/routes.rb", route_contents
 

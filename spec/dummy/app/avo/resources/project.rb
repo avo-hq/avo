@@ -12,6 +12,18 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
+  self.discreet_information = [
+    :timestamps,
+    :id_badge,
+    {
+      tooltip: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "heroicons/outline/arrow-top-right-on-square" },
+      url: -> { main_app.root_url },
+      url_target: :_blank,
+      # as: :badge
+    }
+  ]
+
   def fields
     field :id, as: :id, link_to_record: true
     field :status,
@@ -22,7 +34,7 @@ class Avo::Resources::Project < Avo::BaseResource
       nullable: true,
       filterable: true,
       summarizable: true
-    field :name, as: :text, required: true, sortable: true, default: "New project default name"
+    field :name, as: :text, required: true, sortable: true, default: "New project default name", copyable: true
     field :progress,
       as: :progress_bar,
       value_suffix: "%",
@@ -51,7 +63,7 @@ class Avo::Resources::Project < Avo::BaseResource
       sortable: true,
       summarizable: true
     field :country,
-      as: :country,
+      as: :country, copyable: true,
       include_blank: "No country",
       filterable: true,
       summarizable: true
@@ -60,10 +72,11 @@ class Avo::Resources::Project < Avo::BaseResource
       relative: true,
       timezone: "EET",
       format: "MMMM dd, y HH:mm:ss z"
-    field :description, as: :markdown, height: "350px"
+    field :description, as: :easy_mde, height: "350px"
     field :files,
       as: :files,
       translation_key: "avo.field_translations.files",
+      direct_upload: true,
       view_type: :list, stacked: false,
       hide_view_type_switcher: false
     field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_editing_values: true, disable_adding_rows: false, disable_deleting_rows: false, html: -> do

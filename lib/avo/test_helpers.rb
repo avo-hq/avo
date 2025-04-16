@@ -1,5 +1,7 @@
 module Avo
   module TestHelpers
+    include WaitForLoaded
+
     # Finds the wrapper element on the index view for the given field id and type, and associated with the given record id
     # Example usage:
     #   index_field_wrapper(id: "name", type: "text", record_id: 2)
@@ -286,8 +288,8 @@ module Avo
     #   expect(tags(field: :tags)).to eq []
     def tags(field:)
       # Find all elements with class 'tagify__tag'
-      # Map the elements to their 'label' attribute values and return the array of labels
-      page.all(".tagify__tag").map { |element| element[:label] }
+      # Map the elements to text and return the array of texts
+      page.all(".tagify__tag").map(&:text)
     end
 
     # Example usage:
@@ -313,7 +315,11 @@ module Avo
     end
 
     def type(...)
-      page.driver.browser.keyboard.type(...)
+      if page.driver.browser.respond_to?(:keyboard)
+        page.driver.browser.keyboard.type(...)
+      else
+        page.send_keys(...)
+      end
     end
 
     def accept_custom_alert(&block)

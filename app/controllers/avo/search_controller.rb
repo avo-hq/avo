@@ -9,14 +9,22 @@ module Avo
     before_action :set_resource, only: :show
 
     def show
-      render json: search_resources([resource])
+      render json: search_resources([resource], request:)
     rescue => error
       render_error _label: error.message
     end
 
+    def process_results(results, request:)
+      results
+    end
+
     private
 
-    def search_resources(resources)
+    def search_resources(resources, request: nil)
+      process_results search_results(resources, request:), request:
+    end
+
+    def search_results(resources, request: nil)
       resources
         .map do |resource|
           # Apply authorization
@@ -46,7 +54,9 @@ module Avo
         return nil unless render_error?
 
         search_query_undefined = error_payload(
-          _label: "Please configure the search for #{resource}",
+          header: "⚠️ Warning ⚠️",
+          help: "",
+          _label: "Search is disabled for #{resource}.\n To enable it please use this guide...",
           _url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
         )
 
@@ -199,10 +209,15 @@ module Avo
       }, status: 500
     end
 
-    def error_payload(_label:, _url: "")
+    def error_payload(
+      _label:,
+      _url: "",
+      header: "🚨 An error occurred during search 🚨",
+      help: "Please review and resolve the issue before deployment 🚨"
+    )
       {
-        header: "🚨 An error occurred during search 🚨",
-        help: "Please review and resolve the issue before deployment 🚨",
+        header:,
+        help:,
         results: {
           _label:,
           _url:,

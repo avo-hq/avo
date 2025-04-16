@@ -14,7 +14,7 @@
 #  slug         :string
 #
 class Post < ApplicationRecord
-  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
+  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.1.0")
     enum :status, [:draft, :published, :archived]
   else
     enum status: [:draft, :published, :archived]
@@ -37,7 +37,7 @@ class Post < ApplicationRecord
   has_many :comments, as: :commentable
   has_many :reviews, as: :reviewable
 
-  acts_as_taggable_on :tags
+  acts_as_ordered_taggable_on :tags
 
   before_save :update_slug
 

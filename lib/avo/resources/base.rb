@@ -4,6 +4,7 @@ module Avo
       extend ActiveSupport::DescendantsTracker
 
       include ActionView::Helpers::UrlHelper
+      include Avo::Concerns::HasFieldDiscovery
       include Avo::Concerns::HasItems
       include Avo::Concerns::CanReplaceItems
       include Avo::Concerns::HasControls
@@ -15,6 +16,12 @@ module Avo
       include Avo::Concerns::HasHelpers
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
+      include Avo::Concerns::HasDiscreetInformation
+      include Avo::Concerns::RowControlsConfiguration
+      include Avo::Concerns::SafeCall
+      include Avo::Concerns::AbstractResource
+
+      abstract_resource!
 
       # Avo::Current methods
       delegate :context, to: Avo::Current
@@ -53,7 +60,7 @@ module Avo
       class_attribute :single_includes, default: []
       class_attribute :single_attachments, default: []
       class_attribute :authorization_policy
-      class_attribute :translation_key
+      class_attribute :custom_translation_key
       class_attribute :default_view_type, default: :table
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
@@ -78,6 +85,9 @@ module Avo
       class_attribute :components, default: {}
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
+      class_attribute :external_link, default: nil
+
+      class_attribute :abstract, default: false
 
       # EXTRACT:
       class_attribute :ordering
@@ -173,11 +183,12 @@ module Avo
         end
 
         def translation_key
-          @translation_key || "avo.resource_translations.#{class_name.underscore}"
+          custom_translation_key || "avo.resource_translations.#{class_name.underscore}"
         end
+        alias_method :translation_key=, :custom_translation_key=
 
         def name
-          @name ||= name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+          name_from_translation_key(count: 1, default: class_name.underscore.humanize)
         end
         alias_method :singular_name, :name
 
@@ -201,8 +212,6 @@ module Avo
         end
 
         def underscore_name
-          return @name if @name.present?
-
           name.demodulize.underscore
         end
 
@@ -253,6 +262,7 @@ module Avo
       delegate :to_param, to: :class
       delegate :find_record, to: :class
       delegate :model_key, to: :class
+      delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
@@ -298,9 +308,17 @@ module Avo
       end
 
       def fetch_fields
+        if view.preview?
+          [:fields, :index_fields, :show_fields, :display_fields].each do |fields_method|
+            send(fields_method) if respond_to?(fields_method)
+          end
+
+          return
+        end
+
         possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
 
-        # Safe navigation operator is used because the view can be "destroy" or "preview"
+        # Safe navigation operator is used because the view can be "destroy"
         possible_methods_for_view&.each do |method_for_view|
           return send(method_for_view) if respond_to?(method_for_view)
         end
@@ -312,8 +330,8 @@ module Avo
         cards
       end
 
-      def divider(label = nil)
-        entity_loader(:action).use({class: Divider, label: label}.compact)
+      def divider(**kwargs)
+        entity_loader(:action).use({class: Divider, **kwargs}.compact)
       end
 
       # def fields / def cards
@@ -439,8 +457,9 @@ module Avo
       end
 
       # Map the received params to their actual fields
-      def fields_by_database_id
-        get_field_definitions
+      # 'resource' argument is used on avo-advanced, don't remove
+      def fields_by_database_id(resource: self)
+        resource.get_field_definitions
           .reject do |field|
             field.computed
           end
@@ -467,14 +486,14 @@ module Avo
         # Write the user configured extra params to the record
         if extra_params.present?
           # Pick only the extra params
-          # params at this point are already permited, only need the keys to access them
+          # params at this point are already permitted, only need the keys to access them
           extra_attributes = permitted_params.slice(*flatten_keys(extra_params))
 
           # Let Rails fill in the rest of the params
           record.assign_attributes extra_attributes
         end
 
-        record
+        safe_call(:fill_nested_records, record:, permitted_params:) || record
       end
 
       def authorization(user: nil)
@@ -635,6 +654,26 @@ module Avo
       def resolve_component(original_component)
         custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
       end
+
+      def get_external_link
+        return unless record.persisted?
+
+        Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
+      end
+
+      def resource_type_array? = false
+
+      def sort_by_param
+        available_columns = model_class.column_names
+
+        if available_columns.include?(default_sort_column.to_s)
+          default_sort_column
+        elsif available_columns.include?("created_at")
+          :created_at
+        end
+      end
+
+      def sorting_supported? = true
 
       private
 

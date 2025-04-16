@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_07_24_090242) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_03_192051) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -123,6 +123,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_07_24_090242) do
     t.datetime "updated_at", null: false
     t.string "type"
     t.bigint "user_id"
+    t.string "size"
     t.index ["user_id"], name: "index_fish_on_user_id"
   end
 
@@ -172,6 +173,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_07_24_090242) do
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
     t.string "price_currency", default: "'USD'::character varying", null: false
+    t.string "sizes", default: [], array: true
   end
 
   create_table "projects", force: :cascade do |t|

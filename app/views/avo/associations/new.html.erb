@@ -1,20 +1,9 @@
-<%= turbo_frame_tag 'attach_modal' do %>
-  <%
-    url = Avo::Services::URIService.parse(avo.root_url.to_s)
-      .append_paths('resources', params[:resource_name], params[:id], params[:related_name])
-      .append_query(
-        {
-          view: @resource&.view&.to_s,
-          for_attribute: @field&.try(:for_attribute)
-        }.compact
-      )
-      .to_s
-  %>
+<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
   <%= form_with scope: 'fields',
-    url: url,
+    url: @url,
     local: true,
     data: {
-      'turbo-frame': '_top'
+      turbo_frame: :_top
     } do |form| %>
     <%= render Avo::ModalComponent.new do |c| %>
       <% c.with_heading do %>
@@ -47,13 +36,19 @@
                 as: :select,
                 form: form,
                 name: @field.name.singularize,
-                options: options_for_select(@options,
-                nil),
+                options: options_for_select(@options, selected: nil, disabled: t("avo.more_records_available")),
                 include_blank: t('avo.choose_an_option'),
                 stacked: true,
                 classes: 'w-full'
               %>
             <% end %>
+            <%#
+              It is important to render this hidden field to allow selective rendering of the turbo frame.
+              (e.g. in the case of "Attach and Attach Another")
+
+              Without this, the entire page will be reloaded when the form is submitted.
+            %>
+            <%= hidden_field_tag :turbo_frame, params[:turbo_frame] %>
             <% @attach_fields&.each_with_index do |field, index| %>
               <%= render(Avo::Items::SwitcherComponent.new(
                 resource: @related_resource,
@@ -73,6 +68,9 @@
       <% c.with_controls do %>
         <%= a_button 'data-action': 'click->modal#close', type: :button, size: :sm, style: :outline, color: :gray do %>
           <%= t('avo.cancel') %>
+        <% end %>
+        <%= a_button type: :submit, value: :attach_another, style: :outline, color: :green, size: :sm do %>
+          <%= t('avo.attach_and_attach_another') %>
         <% end %>
         <%= a_button type: :submit, style: :primary, color: :green, size: :sm do %>
           <%= t('avo.attach') %>

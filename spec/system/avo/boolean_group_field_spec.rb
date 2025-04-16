@@ -27,7 +27,7 @@ RSpec.describe "BooleanGroupField", type: :system do
           sleep 0.1
 
           assert_popup_texts %w[ROLES Administrator Manager Writer]
-          assert_svg_classes %w[text-red-500 text-red-500 text-red-500]
+          assert_svg_classes %w[text-red-600 text-red-600 text-red-600]
         end
       end
 
@@ -54,7 +54,7 @@ RSpec.describe "BooleanGroupField", type: :system do
           sleep 0.1
 
           assert_popup_texts %w[ROLES Administrator Manager Writer]
-          assert_svg_classes %w[text-green-600 text-red-500 text-red-500]
+          assert_svg_classes %w[text-green-600 text-red-600 text-red-600]
         end
 
         it "doesn't affect unspecified options" do
@@ -101,7 +101,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         sleep 0.1
 
         assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
-        assert_svg_classes %w[text-green-600 text-green-600 text-red-500 text-green-600]
+        assert_svg_classes %w[text-green-600 text-green-600 text-red-600 text-green-600]
       end
     end
 
@@ -128,7 +128,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         sleep 0.1
 
         assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
-        assert_svg_classes %w[text-green-600 text-green-600 text-red-500 text-green-600]
+        assert_svg_classes %w[text-green-600 text-green-600 text-red-600 text-green-600]
       end
     end
   end

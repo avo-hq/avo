@@ -84,4 +84,22 @@ RSpec.describe "DefaultSortColumnAndDirection", type: :feature do
       include_examples "sorts by", :country, :desc
     end
   end
+
+  context "first_sorting_option" do
+    let!(:project) { create :project }
+
+    it "desc is the default sort_direction" do
+      visit avo.resources_projects_path
+
+      expect(page).to have_link href: avo.resources_projects_path(sort_by: :name, sort_direction: :desc)
+    end
+
+    it "asc is the default sort_direction if configured" do
+      with_temporary_class_option(Avo.configuration, :first_sorting_option, :asc) do
+        visit avo.resources_projects_path
+
+        expect(page).to have_link href: avo.resources_projects_path(sort_by: :name, sort_direction: :asc)
+      end
+    end
+  end
 end

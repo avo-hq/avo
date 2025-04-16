@@ -15,17 +15,20 @@ class Avo::PanelComponent < Avo::BaseComponent
   renders_one :footer_tools
   renders_one :footer
 
-  prop :description, _Nilable(String)
-  prop :body_classes, _Nilable(String)
-  prop :data, Hash, default: {}.freeze
-  prop :display_breadcrumbs, _Boolean, default: false
-  prop :index, _Nilable(Integer)
-  prop :classes, _Nilable(String)
-  prop :profile_photo, _Nilable(Avo::ProfilePhoto)
-  prop :cover_photo, _Nilable(Avo::CoverPhoto)
-  prop :args, Hash, :**, default: {}.freeze
-  prop :name, _Nilable(_Union(_String, _Integer)) do |value|
-    value || @args&.dig(:title)
+  prop :description
+  prop :body_classes
+  prop :data, default: {}.freeze
+  prop :display_breadcrumbs, default: false
+  prop :discreet_information
+  prop :index
+  prop :classes
+  prop :profile_photo
+  prop :cover_photo
+  prop :args, kind: :**, default: {}.freeze
+  prop :external_link
+
+  def after_initialize
+    @name = @args.dig(:name) || @args.dig(:title)
   end
 
   def classes
@@ -35,20 +38,6 @@ class Avo::PanelComponent < Avo::BaseComponent
   private
 
   def data_attributes
-    @data.merge({"panel-index": @index})
-  end
-
-  def display_breadcrumbs?
-    @display_breadcrumbs == true && Avo.configuration.display_breadcrumbs == true
-  end
-
-  def description
-    return @description if @description.present?
-
-    ""
-  end
-
-  def render_header?
-    @name.present? || description.present? || tools.present? || display_breadcrumbs?
+    @data.merge(component: @data[:component] || self.class.to_s.underscore, "panel-index": @index)
   end
 end

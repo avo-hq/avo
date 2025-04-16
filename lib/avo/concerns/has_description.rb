@@ -8,8 +8,12 @@ module Avo
         attr_accessor :description
       end
 
-      def description
-        Avo::ExecutionContext.new(target: @description || self.class.description, **description_attributes).handle
+      def description(additional_attributes = {})
+        Avo::ExecutionContext.new(
+          target: @description || self.class.description,
+          **description_attributes,
+          **additional_attributes
+        ).handle
       end
 
       private

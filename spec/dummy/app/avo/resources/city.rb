@@ -35,8 +35,16 @@ class Avo::Resources::City < Avo::BaseResource
   }
 
   def base_fields
+    field :preview, as: :preview
     field :id, as: :id
-    field :coordinates, as: :location, stored_as: [:latitude, :longitude]
+    field :coordinates,
+      as: :location,
+      show_on: :preview,
+      stored_as: [:latitude, :longitude],
+      mapkick_options: {
+        style: "mapbox://styles/mapbox/satellite-v9",
+        markers: {color: "#FFC0CB"}
+      }
     field :city_center_area,
       as: :area,
       geometry: :polygon,
@@ -74,7 +82,7 @@ class Avo::Resources::City < Avo::BaseResource
   # This is because we want to be able to edit them using the tool.
   # When submitting the form, we need this fields declared on the resource in order to know how to process them and fill the record.
   def tool_fields
-    field :name, as: :text, hide_on: [:index, :forms]
+    field :name, as: :text, hide_on: [:index, :forms], copyable: true
     with_options hide_on: :forms do
       field :name, as: :text, filterable: true, name: "name (click to edit)", only_on: :index do
         path, data = Avo::Actions::City::Update.link_arguments(
@@ -87,11 +95,11 @@ class Avo::Resources::City < Avo::BaseResource
 
         link_to resource.record.name, path, data: data
       end
-      field :population, as: :number, filterable: true
+      field :population, as: :number, filterable: true, decorate: -> { number_with_delimiter(value, delimiter: ".") }
       field :is_capital, as: :boolean, filterable: true
       field :features, as: :key_value
       field :image_url, as: :external_image
-      field :tiny_description, as: :markdown
+      field :tiny_description, as: :easy_mde
       field :status, as: :badge, enum: ::City.statuses
     end
   end

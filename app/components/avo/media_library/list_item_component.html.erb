@@ -1,0 +1,26 @@
+<%= link_to helpers.avo.media_library_path(blob),
+  id: dom_id(blob),
+  class: "relative group min-h-full max-w-full flex-1 flex flex-col justify-between gap-2 border border-slate-200 p-1.5 rounded-xl hover:border-blue-500 hover:outline data-[selected=true]:border-blue-500 data-[selected=true]:outline outline-2 outline-blue-500",
+  data: do %>
+  <% if false && @attaching %>
+    <div class="absolute bg-blue-500 group-hover:opacity-100 group-data-[selected=true]:opacity-100 opacity-0 inset-auto left-0 top-0 text-white rounded-tl-xl rounded-br-xl -ml-px -mt-px p-2"><div class="border border-white"><%= helpers.svg "heroicons/outline/check", class: 'group-data-[selected=true]:opacity-100 opacity-0 size-4' %></div></div>
+  <% end %>
+  <div class="flex flex-col h-full aspect-video overflow-hidden rounded-lg justify-center items-center">
+    <% if blob.image? %>
+      <%= image_tag helpers.main_app.url_for(blob.variant(resize_to_limit: [600, 600])), class: "max-w-full self-start #{@extra_classes}", loading: :lazy, width: blob.metadata["width"], height: blob.metadata["height"] %>
+    <% elsif blob.audio? %>
+      <%= audio_tag(helpers.main_app.url_for(blob), controls: true, preload: false, class: 'w-full') %>
+    <% elsif blob.video? %>
+      <%= video_tag(helpers.main_app.url_for(blob), controls: true, preload: false, class: 'w-full') %>
+    <% else %>
+      <div class="relative h-full flex flex-col justify-center items-center w-full bg-slate-100">
+        <%= helpers.svg "heroicons/outline/document-text", class: 'h-10 text-gray-600 mb-2' %>
+      </div>
+    <% end %>
+  </div>
+  <div class="flex space-x-2 mb-1">
+    <% if @display_filename %>
+      <span class="text-gray-500 group-hover:text-blue-700 mt-1 text-sm truncate" title="<%= blob.filename %>"><%= blob.filename %></span>
+    <% end %>
+  </div>
+<% end %>

@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.feature Avo::SearchController, type: :controller do
   let!(:course_without_links) { create :course }
 
-  it "returns nothing when parent dont have childs" do
+  it "returns nothing when parent dont have children" do
     get :show, params: {
       resource_name: "course_links",
       via_association: "has_many",
@@ -20,7 +20,7 @@ RSpec.feature Avo::SearchController, type: :controller do
   let!(:three_links) { create_list :course_link, 3 }
   let!(:course_with_three_links) { create :course, links: three_links }
 
-  it "returns the exact three records when parent have three childs" do
+  it "returns the exact three records when parent have three children" do
     get :show, params: {
       resource_name: "course_links",
       via_association: "has_many",
@@ -39,7 +39,7 @@ RSpec.feature Avo::SearchController, type: :controller do
   let!(:five_links) { create_list :course_link, 5 }
   let!(:course_with_five_links) { create :course, links: five_links }
 
-  it "returns the exact five records when parent have five childs" do
+  it "returns the exact five records when parent have five children" do
     get :show, params: {
       resource_name: "course_links",
       via_association: "has_many",

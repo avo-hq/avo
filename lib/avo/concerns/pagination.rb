@@ -12,6 +12,7 @@ module Avo
           PAGINATION_METHOD = {
             default: :pagy,
             countless: :pagy_countless,
+            array: :pagy_array,
           }
         end
 
@@ -27,7 +28,7 @@ module Avo
         @pagination_type ||= ActiveSupport::StringInquirer.new(pagination_hash[:type].to_s)
       end
 
-      def apply_pagination(index_params:, query:)
+      def apply_pagination(index_params:, query:, **args)
         extra_pagy_params = {}
 
         # Reset open filters when a user navigates to a new page
@@ -37,8 +38,22 @@ module Avo
 
         data_turbo_frame = "data-turbo-frame=\"#{CGI.escapeHTML(params[:turbo_frame]) if params[:turbo_frame]}\""
 
+        # Perform pagination and fallback to first page on Pagy::OverflowError
+        begin
+          perform_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
+        rescue Pagy::OverflowError
+          index_params[:page] = 1
+          perform_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
+        end
+      end
+
+      private
+
+      def perform_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
         send PAGINATION_METHOD[pagination_type.to_sym],
           query,
+          **args,
+          page: index_params[:page],
           items: index_params[:per_page], # Add per page in pagy < 9
           limit: index_params[:per_page], # Add per page in pagy >= 9
           link_extra: data_turbo_frame, # Add extra arguments in pagy 7.
@@ -46,8 +61,6 @@ module Avo
           params: extra_pagy_params,
           size: pagination_hash[:size]
       end
-
-      private
 
       def pagination_hash
         @pagination ||= PAGINATION_DEFAULTS.merge(Avo.configuration.pagination).merge Avo::ExecutionContext.new(

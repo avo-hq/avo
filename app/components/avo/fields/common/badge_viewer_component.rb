@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
-  prop :value, _Union(_String, _Symbol)
-  prop :options, Hash
+  prop :value
+  prop :options
 
   def after_initialize
     @backgrounds = {
@@ -24,7 +24,7 @@ class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
       end
     end
 
-    classes = "whitespace-nowrap rounded-md uppercase px-2 py-1 text-xs font-bold block text-center truncate "
+    classes = "whitespace-nowrap rounded-md uppercase px-2 py-1 text-xs font-bold block text-center truncate w-full "
 
     classes += "#{@backgrounds[background]} text-white" if @backgrounds[background].present?
 

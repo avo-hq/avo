@@ -11,7 +11,7 @@
       description: description,
       cover_photo: resource.cover_photo,
       data: {component: "resources-index"},
-      display_breadcrumbs: @reflection.blank? || (@reflection.present? && !helpers.turbo_frame_request?)
+      display_breadcrumbs: (@reflection.blank? && @parent_resource.blank?) || (@reflection.present? && !helpers.turbo_frame_request?)
     ) do |c| %>
     <% c.with_name_slot do %>
       <%= render Avo::PanelNameComponent.new name: title, url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
@@ -52,7 +52,7 @@
             </div>
           </div>
           <% if has_dynamic_filters? %>
-            <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id %>
+            <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
           <% end %>
         </div>
       </div>
@@ -79,7 +79,7 @@
       <% if view_type.to_sym == :table || view_type.to_sym == :map %>
         <% if @records.present? %>
           <div class="mt-4 w-full">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
+            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
           </div>
         <% end %>
       <% end %>
@@ -88,7 +88,7 @@
           <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: @actions) %>
         </div>
         <div class="mt-6">
-          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, discreet_pagination: field&.discreet_pagination %>
+          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
         </div>
       <% end %>
     <% end %>

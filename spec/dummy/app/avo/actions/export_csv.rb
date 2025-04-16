@@ -4,6 +4,7 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
   self.name = "Export CSV"
   self.no_confirmation = false
   self.standalone = true
+  self.close_modal_on_backdrop_click = false
 
   def fields
     # Add more fields here for custom user-selected columns
@@ -17,7 +18,10 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
     # uncomment if you want to download all the records if none was selected
     # records = resource.model_class.all if records.blank?
 
-    return error "No record selected" if records.blank?
+    if records.blank?
+      inform "@index_query.count: #{@index_query.count}"
+      return error "No record selected"
+    end
 
     # uncomment to get all the models' attributes.
     # attributes = get_attributes_from_record records.first

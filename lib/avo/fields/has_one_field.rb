@@ -1,16 +1,31 @@
 module Avo
   module Fields
-    class HasOneField < HasBaseField
-      attr_accessor :relation_method
+    class HasOneField < FrameBaseField
+      include Avo::Fields::Concerns::Nested
+
+      attr_reader :attach_fields,
+        :attach_scope
 
       def initialize(id, **args, &block)
-        hide_on :forms
+        initialize_nested(**args)
+
+        if @nested[:on]
+          nested_on = Array.wrap(@nested[:on])
+
+          if !nested_on.include?(:new)
+            hide_on :new
+          elsif !nested_on.include?(:edit)
+            hide_on :edit
+          end
+        else
+          hide_on :forms
+        end
 
         super(id, **args, &block)
 
         @placeholder ||= I18n.t "avo.choose_an_option"
-
-        @relation_method = name.to_s.parameterize.underscore
+        @attach_fields = args[:attach_fields]
+        @attach_scope = args[:attach_scope]
       end
 
       def label
@@ -37,6 +52,8 @@ module Avo
 
         record
       end
+
+      def is_searchable? = false
     end
   end
 end
