@@ -6,7 +6,7 @@ class Avo::Resources::Team < Avo::BaseResource
   self.grid_view = {
     card: -> do
       {
-        cover_url: record.url.present? ? "//logo.clearbit.com/#{URI.parse(record.url).host}?size=180" : nil,
+        cover_url: record.url.present? ? "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw" : nil,
         title: record.name,
         body: record.url
       }
@@ -37,7 +37,7 @@ class Avo::Resources::Team < Avo::BaseResource
       end
       field :logo, as: :external_image, hide_on: :show, as_avatar: :rounded do
         if record&.url
-          "//logo.clearbit.com/#{URI.parse(record.url).host}?size=180"
+          "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
         end
       rescue
         "nope"
@@ -66,7 +66,7 @@ class Avo::Resources::Team < Avo::BaseResource
         field :created_at, as: :date_time, hide_on: :forms
         field :logo, as: :external_image, as_avatar: :rounded do
           if record&.url
-            "//logo.clearbit.com/#{URI.parse(record.url).host}?size=180"
+            "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
           end
         end
       end

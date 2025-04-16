@@ -26,7 +26,7 @@ class Avo::AlertComponent < Avo::BaseComponent
       " bg-green-500 border-green-600"
     elsif is_warning?
       " bg-orange-400 border-orange-600"
-    elsif is_info?
+    else
       " bg-blue-400 border-blue-600"
     end
 
