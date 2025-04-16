@@ -22,6 +22,7 @@ export default class extends Controller {
       this.preventTurboNavigation.bind(this),
     )
     window.addEventListener('beforeunload', this.preventFullPageNavigation.bind(this))
+    window.addEventListener('popstate', this.handlePopStateNavigation.bind(this))
 
     this.formTarget.addEventListener('turbo:submit-start', this.handleFormSubmitStart.bind(this))
     this.formTarget.addEventListener('turbo:submit-end', this.handleFormSubmitEnd.bind(this))
@@ -36,6 +37,7 @@ export default class extends Controller {
       'beforeunload',
       this.preventFullPageNavigation.bind(this),
     )
+    window.removeEventListener('popstate', this.handlePopStateNavigation.bind(this))
   }
 
   getFormState() {
@@ -125,6 +127,15 @@ export default class extends Controller {
       // for legacy browsers support
       // see: https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event
       event.returnValue = 'Are you sure you want to navigate away from the page? You will lose all your changes.'
+    }
+  }
+
+  handlePopStateNavigation(event) {
+    this.evaluateFormState()
+
+    if (this.isDirty) {
+      event.preventDefault()
+      this.handleDirtyFormNavigation(event)
     }
   }
 }
