@@ -78,6 +78,8 @@ ar:
     more: المزيد
     more_content: المزيد من المحتوى
     more_records_available: هناك المزيد من السجلات المتاحة.
+    nested:
+      add_new_item: إضافة %{item} جديدة
     new: جديد
     next_page: الصفحة التالية
     no_cancel: لا، إلغاء

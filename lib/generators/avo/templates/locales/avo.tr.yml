@@ -70,6 +70,8 @@ tr:
     more: Daha fazla
     more_content: Daha fazla içerik
     more_records_available: Daha fazla kayıt mevcut.
+    nested:
+      add_new_item: Yeni %{item} ekle
     new: yeni
     next_page: Sonraki sayfa
     no_cancel: Hayır, iptal et

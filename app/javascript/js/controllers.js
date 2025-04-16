@@ -27,6 +27,7 @@ import MediaLibraryController from './controllers/media_library_controller'
 import MenuController from './controllers/menu_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
+import NestedFormController from './controllers/nested_form_controller'
 import PanelRefreshController from './controllers/fields/panel_refresh_controller'
 import PerPageController from './controllers/per_page_controller'
 import PreviewController from './controllers/preview_controller'
@@ -64,17 +65,18 @@ application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
 application.register('filter', FilterController)
 application.register('form', FormController)
-application.register('panel-refresh', PanelRefreshController)
 application.register('hidden-input', HiddenInputController)
 application.register('input-autofocus', InputAutofocusController)
 application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
 application.register('loading-button', LoadingButtonController)
-application.register('media-library', MediaLibraryController)
 application.register('media-library-attach', MediaLibraryAttachController)
+application.register('media-library', MediaLibraryController)
 application.register('menu', MenuController)
 application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
+application.register('nested-form', NestedFormController)
+application.register('panel-refresh', PanelRefreshController)
 application.register('per-page', PerPageController)
 application.register('preview', PreviewController)
 application.register('record-selector', RecordSelectorController)
@@ -82,13 +84,13 @@ application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
 application.register('resource-show', ResourceShowController)
 application.register('search', SearchController)
-application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
+application.register('select', SelectController)
 application.register('self-destroy', SelfDestroyController)
 application.register('sidebar', SidebarController)
 application.register('sign-out', SignOutController)
-application.register('tabs', TabsController)
 application.register('table-row', TableRowController)
+application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
@@ -103,7 +105,7 @@ application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
 application.register('tags-field', TagsFieldController)
-application.register('trix-field', TrixFieldController)
 application.register('tiptap-field', TiptapFieldController)
+application.register('trix-field', TrixFieldController)
 
 // Custom controllers
