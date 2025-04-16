@@ -71,20 +71,32 @@ module Avo
       respond_to do |format|
         format.html
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "#{@resource.model_key}_list",
-            partial: "avo/index/resource_table_component",
-            locals: {
-              resources: @resources,
-              resource: @resource,
-              reflection: @reflection,
-              parent_record: @parent_record,
-              parent_resource: @parent_resource,
-              pagy: @pagy,
-              query: @query,
-              actions: @actions
-            }
-          )
+          render turbo_stream: [
+            turbo_stream.replace(
+              "#{@resource.model_key}_list",
+              partial: "avo/index/resource_table_component",
+              locals: {
+                resources: @resources,
+                resource: @resource,
+                reflection: @reflection,
+                parent_record: @parent_record,
+                parent_resource: @parent_resource,
+                pagy: @pagy,
+                query: @query,
+                actions: @actions
+              }
+            ),
+            turbo_stream.replace("#{@resource.model_key}_pagination") do
+              Avo::Current.view_context.render Avo::PaginatorComponent.new(
+                pagy: @pagy,
+                turbo_frame: @turbo_frame,
+                index_params: @index_params,
+                resource: @resource,
+                parent_record: @parent_record,
+                parent_resource: @parent_resource
+              )
+            end
+          ]
         end
       end
     end

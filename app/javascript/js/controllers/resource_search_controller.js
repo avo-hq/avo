@@ -38,6 +38,9 @@ export default class extends Controller {
     // Construct the new URL with all parameters
     const newUrl = `${currentUrl.pathname}?${searchParams.toString()}`
 
+    // Replace current URL without affecting browser history
+    window.history.replaceState({}, '', newUrl)
+
     try {
       await get(newUrl, {
         responseKind: 'turbo-stream',
@@ -62,5 +65,4 @@ export default class extends Controller {
       timeout = setTimeout(later, wait)
     }
   }
-
 }
