@@ -28,6 +28,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   end
   prop :resource
   prop :view
+  prop :view_type
   prop :host_component
 
   delegate_missing_to :@host_component
@@ -85,7 +86,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   private
 
   def render_action_link(action, icon: nil)
-    link_to action.link_arguments(resource: @resource, arguments: action.arguments).first,
+    link_to action.link_arguments(resource: @resource, arguments: action.arguments, view_type: @view_type).first,
       data: action_data_attributes(action),
       title: action.action_name,
       class: action_css_class(action) do
