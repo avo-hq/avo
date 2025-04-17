@@ -160,17 +160,16 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   describe "with custom primary key set" do
-    let(:event) { create(:event, name: "Sample Event") }
+    let!(:event) { create(:event, name: "Sample Event") }
 
-    let!(:volunteer) { create(:volunteer, event_uuid: event.uuid) }
+    it "find event by uuid" do
+      visit avo.new_resources_volunteer_path
 
-    it "displays the event link using the UUID and stores the correct foreign key" do
-      visit "/admin/resources/volunteers/#{volunteer.id}"
+      select event.name, from: "volunteer[event_id]"
 
-      expect(page).to have_link event.name, href: "/admin/resources/events/#{event.id}?via_record_id=#{volunteer.id}&via_resource_class=Avo%3A%3AResources%3A%3AVolunteer"
+      click_on "Save"
 
-      expect(volunteer.event_uuid).to eq(event.uuid)
-      expect(volunteer.event).to eq(event)
+      expect(Volunteer.last).to have_attributes(event_id: event.uuid)
     end
   end
 
