@@ -174,7 +174,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_10_175357) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "'USD'::character varying", null: false
+    t.string "price_currency", default: "USD", null: false
     t.string "sizes", default: [], array: true
   end
 
@@ -302,10 +302,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_10_175357) do
   create_table "volunteers", force: :cascade do |t|
     t.string "name"
     t.string "role"
-    t.uuid "event_uuid", null: false
+    t.uuid "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_uuid"], name: "index_volunteers_on_event_uuid"
+    t.index ["event_id"], name: "index_volunteers_on_event_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

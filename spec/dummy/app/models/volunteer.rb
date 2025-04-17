@@ -1,3 +1,3 @@
 class Volunteer < ApplicationRecord
-  belongs_to :event, foreign_key: "event_uuid", primary_key: "uuid"
+  belongs_to :event, primary_key: "uuid"
 end

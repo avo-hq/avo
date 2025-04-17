@@ -18,6 +18,8 @@ class Event < ApplicationRecord
   has_one_attached :profile_photo
   has_one_attached :cover_photo
 
+  before_create -> { self.uuid = SecureRandom.uuid }
+
   def first_user
     User.first
   end
