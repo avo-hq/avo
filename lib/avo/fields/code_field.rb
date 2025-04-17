@@ -11,6 +11,11 @@ module Avo
       def initialize(id, **args, &block)
         hide_on :index
 
+        if args[:pretty_generated]
+          args[:format_using] ||= -> { value.blank? ? value : JSON.pretty_generate(value) }
+          args[:update_using] ||= -> { JSON.parse(value) }
+        end
+
         super(id, **args, &block)
 
         @language = args[:language].present? ? args[:language].to_s : "javascript"
