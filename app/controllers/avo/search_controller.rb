@@ -66,7 +66,7 @@ module Avo
       query = Avo::ExecutionContext.new(
         target: resource.search_query,
         params: params,
-        query: resource.query_scope
+        query: resource.query_scope.where(id: Team.joins(:memberships).group("teams.id").count.keys)
       ).handle
 
       results_count, results = parse_results(query, resource)
