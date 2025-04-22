@@ -95,7 +95,6 @@ module Avo
         @meta = args[:meta]
         @copyable = args[:copyable] || false
 
-
         @args = args
 
         @computable = true
