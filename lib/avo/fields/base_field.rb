@@ -51,10 +51,14 @@ module Avo
       attr_reader :copyable # if allowed to be copyable
 
       # Hydrated payload
-      attr_accessor :record
+      attr_writer :record
       attr_accessor :action
       attr_accessor :user
       attr_accessor :panel_name
+
+      def record
+        @record || @resource.try(:record)
+      end
 
       class_attribute :field_name_attribute
 
@@ -90,6 +94,7 @@ module Avo
         @for_attribute = args[:for_attribute]
         @meta = args[:meta]
         @copyable = args[:copyable] || false
+
 
         @args = args
 
