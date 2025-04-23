@@ -5,6 +5,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   prop :as_row_control, default: false
   prop :icon
+  prop :icon_class
   prop :size, default: :md
   prop :title
   prop :color do |value|
