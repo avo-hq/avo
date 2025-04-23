@@ -168,7 +168,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   end
 
   def icon_size_classes
-    icon_classes = " h-6"
+    icon_classes = ""
     return icon_classes if is_icon?
 
     case @size
