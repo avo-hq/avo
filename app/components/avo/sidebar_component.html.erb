@@ -1,6 +1,6 @@
 <%= content_tag :div,
   class: class_names(
-    "avo-sidebar fixed z-[60] t-0 application-sidebar w-64 flex-1 border-r border-gray-200 lg:border-none bg-none xh-dvh h-[calc(100dvh-4rem)] bg-application lg:bg-transparent",
+    "avo-sidebar fixed z-[60] t-0 application-sidebar w-(--sidebar-width) flex-1 border-r border-gray-200 lg:border-none bg-none xh-dvh h-[calc(100dvh-4rem)] bg-application lg:bg-transparent",
     "print:hidden": Avo.configuration.hide_layout_when_printing,
     "hidden": !@sidebar_open,
   ),

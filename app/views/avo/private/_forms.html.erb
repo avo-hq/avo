@@ -1,0 +1,40 @@
+<%
+  record = User.first
+  # resource_class = Avo::resource_manager.get_resource_by_model_class(record.class.name)
+  view = Avo::ViewInquirer.new("edit")
+  Avo::Resources::User.with_temporary_items do
+
+    field :email, as: :gravatar, link_to_record: true, as_avatar: :circle, only_on: :index
+    # with_options as: :text, only_on: :index do
+    field :first_name, placeholder: "John"
+    field :last_name, as: :textarea, placeholder: "Doe", filterable: true
+    # end
+    field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
+    field :active, as: :boolean, name: "Is active", only_on: :index
+    field :cv, as: :file, name: "CV"
+  end
+  resource = Avo::Resources::User.new(record:, view:, user: User.first, params:)
+  # resource.fields = [:name, :email, :password, :password_confirmation]
+  resource.detect_fields
+
+  field_definitions = resource.get_field_definitions
+  fields = field_definitions.map do |field|
+    field.dup.hydrate(resource: resource, record: resource.record, user: resource.user, view: view)
+  end
+  # second_field = fields.second
+  # third_field = fields.third
+
+  entities = [:button, :link]
+  sizes = [:xl, :lg, :md, :sm, :xs].reverse
+  styles = [:primary, :outline, :text]
+  colors = [:primary, :blue, :gray, :red, :orange, :green]
+  states = [:regular, :hover, :disabled, :active]
+  rounded = [true]
+%>
+<%= form_with model: record, url: "/admin/users/#{record.id}", method: :patch do |f| %>
+  <% content_tag :div, class: "divide-y divide-gray-200 overflow-auto" do %>
+    <% fields.each_with_index do |field, index| %>
+      <%= render field.component_for_view(view).new(field:, resource:, form: f, view:, index:) %>
+    <% end %>
+  <% end %>
+<% end %>

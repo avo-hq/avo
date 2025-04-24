@@ -1,0 +1,100 @@
+<div class="relative inset-auto right-0 group w-64 h-full z-150 bg-navbar shadow p-2 flex flex-col transition-transform data-[theme-visible-value=false]:translate-x-full" data-controller="theme" data-theme-target="panel" data-theme-visible-value="true">
+  <div class="editor-navbar mb-4">
+    <button class="
+      absolute px-1 border rounded-sm border-white transition-transform
+      bg-navbar
+      uppercase cursor-pointer
+      group-data-[theme-visible-value=false]:-translate-x-[calc(100%+1.5rem)]
+      group-data-[theme-visible-value=false]:-rotate-90 origin-right
+    "
+      data-action="click->theme#togglePanel" data-theme-target="outsideButton"
+    >
+      <span class=" text-xs text-white
+        group-data-[theme-visible-value=false]:visible
+        group-data-[theme-visible-value=true]:hidden
+      ">edit theme</span>
+      <span class=" text-xs text-white
+        group-data-[theme-visible-value=false]:hidden
+        group-data-[theme-visible-value=true]:visible
+      ">close</span>
+    </button>
+  </div>
+  <div class="flex flex-col gap-y-4 mt-4">
+
+    <div class="flex flex-col">
+      <div class="flex flex-row justify-between w-full">
+        <% ["--color-base-100", "--color-base-200", "--color-base-300", "--color-text"].each do |property| %>
+          <%= render partial: "avo/theme/color_property", locals: {
+            property: property,
+            value: Avo.configuration.theme.get_variable(property),
+            initial_value: Avo.configuration.theme.get_initial_value(property),
+          } %>
+        <% end %>
+      </div>
+      <div class="text-sm text-neutral-300">base</div>
+    </div>
+
+    <div class="flex flex-col">
+      <div class="flex flex-row justify-between w-full">
+        <% ["--color-input-text", "--color-input-bg", "--color-input-focused-text", "--color-input-focused-ring"].each do |property| %>
+          <%= render partial: "avo/theme/color_property", locals: {
+            property: property,
+            value: Avo.configuration.theme.get_variable(property),
+            initial_value: Avo.configuration.theme.get_initial_value(property),
+          } %>
+        <% end %>
+      </div>
+      <div class="text-sm text-neutral-300">inputs</div>
+    </div>
+    <%
+      properties = [
+        {
+          name: "--color-primary-content",
+          property_type: :color
+        },
+        {
+          name: "--color-primary-color",
+          property_type: :color
+        },
+        {
+          name: "--color-input-bg",
+          property_type: :color
+        },
+        {
+          name: "--color-placeholder",
+          property_type: :color
+        },
+        {
+          name: "--color-neutral-content",
+          property_type: :color
+        },
+        {
+          name: "--color-input-text",
+          property_type: :color
+        },
+        {
+          name: "--color-focused-input-text",
+          property_type: :color
+        },
+        {
+          name: "--color-input-focused-ring",
+          property_type: :color
+        },
+        {
+          name: "--color-input-focused-text",
+          property_type: :color
+        }
+      ]
+    %>
+    <% properties.each do |property| %>
+      <%= render partial: "avo/theme/#{property[:property_type]}_property", locals: { property: property[:name], value: Avo.configuration.theme.get_variable(property[:name]), initial_value: Avo.configuration.theme.get_initial_value(property[:name]), } %>
+    <% end %>
+    <%#= render partial: "avo/theme/text_property", locals: { property: :color_primary_content, value: Avo.configuration.theme.get_variable(:color_primary_content) } %>
+    <%#= render partial: "avo/theme/text_property", locals: { property: :color_primary_text, value: Avo.configuration.theme.get_variable(:color_primary_text) } %>
+    <%#= render partial: "avo/theme/text_property", locals: { property: :color_input_bg, value: Avo.configuration.theme.get_variable(:color_input_bg) } %>
+    <%#= render partial: "avo/theme/text_property", locals: { property: :color_placeholder, value: Avo.configuration.theme.get_variable(:color_placeholder) } %>
+    <%#= render partial: "avo/theme/color_property", locals: { property: :color_primary_content } %>
+    <%= render partial: "avo/theme/select_property", locals: { options: Avo::Configuration::Theme::BORDER_RADIUS.map { |key, value| [key, value] }, property: :radius_boxes } %>
+    <%= render partial: "avo/theme/select_property", locals: { options: Avo::Configuration::Theme::BORDER_RADIUS.map { |key, value| [key, value] }, property: :radius_fields } %>
+  </div>
+</div>

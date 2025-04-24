@@ -1,0 +1,5 @@
+<%= content_tag(:style, nonce: content_security_policy_nonce, id: "avo-theme-variables") do %>
+  :root {
+<%= Avo.configuration.theme %>
+  }
+<% end %>

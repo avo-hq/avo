@@ -1,0 +1,12 @@
+<%= tag.div class: "w-full" do %>
+  <div class="flex items-center gap-x-2">
+    <%= label nil, property, class: "text-white" %>
+    <div class="size-4 border border-white bg-<%= property.to_s.gsub("_", "-").gsub("color-", "") %>"></div>
+  </div>
+  <%= text_field_tag property, value, class: "w-full",
+    data: {
+      action: "input->theme#debouncedTextPropertyChange",
+      theme_property_param: property,
+    }
+  %>
+<% end %>

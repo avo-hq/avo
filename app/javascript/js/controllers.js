@@ -47,6 +47,7 @@ import TableRowController from './controllers/table_row_controller'
 import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
+import ThemeController from './controllers/theme_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
@@ -107,5 +108,8 @@ application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
 application.register('tags-field', TagsFieldController)
 application.register('tiptap-field', TiptapFieldController)
 application.register('trix-field', TrixFieldController)
+
+// Theme controllers
+application.register('theme', ThemeController)
 
 // Custom controllers

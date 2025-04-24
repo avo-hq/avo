@@ -2,11 +2,11 @@
   entities = [:button, :link]
   sizes = [:xl, :lg, :md, :sm, :xs].reverse
   styles = [:primary, :outline, :text]
-  colors = [:primary, :blue, :gray, :red, :orange, :green]
+  colors = [:base, :primary, :secondary, :accent, :neutral, :blue, :gray, :red, :orange, :green]
   states = [:regular, :hover, :disabled, :active]
   rounded = [true]
 %>
-<div class="px-6 space-y-4">
+<div class="py-6 px-6 space-y-4">
   <% entities.each do |entity| %>
     <h3><%= entity.to_s.humanize.capitalize.pluralize %></h3>
     <div class="flex flex-col space-y-4">
@@ -16,7 +16,7 @@
           <% styles.each do |style| %>
             <% colors.each do |color| %>
               <% next if style == :primary && color != :primary %>
-              <div class="flex space-x-1">
+              <div class="flex space-x-1 flex-wrap">
                 <% states.each do |state| %>
                   <% rounded.each do |rounded| %>
                     <%

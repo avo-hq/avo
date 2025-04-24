@@ -8,15 +8,88 @@
 @source "../../../tmp/avo/packages/avo-menu";
 @source "../../../tmp/avo/packages/avo-pro";
 
-/* @config "../../../tailwind.config.js"; */
-
+@source inline("bg-input-focused-ring");
+@source inline("bg-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose,slate,gray,zinc,neutral,stone}-{50,{100..900..100},950}");
 
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
 
 @theme {
-  --spacing-3/4: 75%;
+  /* Variables added here should also be added to the theme.rb file */
+  /* Theme variables */
+  /*
+    none - 0
+    radius-sm - 4
+    radius-lg - 8
+    radius-2xl - 16
+    radius-4xl - 32
+   */
+  --radius-boxes: var(--radius-sm);
+  --radius-fields: var(--radius-sm);
+  --radius-selectors: var(--radius-sm);
 
+  --depth-effect: 0;
+  --noise-effect: 0;
+
+  --field-base-size: 3px; /* 3px-5px */
+  --selectors-base-size: 3px; /* 3px-5px */
+
+  --border-width: 1px; /* 0.5px-2px */
+
+  /* Colors */
+  --color-base-100: var(--color-neutral-100);
+  --color-base-200: var(--color-neutral-300);
+  --color-base-300: var(--color-neutral-500);
+  --color-text: var(--color-neutral-700);
+
+  --color-placeholder: var(--color-avo-placeholder, var(--color-pink-500));
+
+
+  --color-primary-content: var(--color-neutral-800);
+  --color-primary-text: var(--color-neutral-700);
+
+  --color-input-text: var(--color-neutral-600);
+  --color-input-bg: var(--color-neutral-50);
+  --color-input-focused-text: var(--color-neutral-700);
+  --color-input-focused-ring: var(--color-primary-content);
+
+  --color-secondary-content: #f0f0f0;
+  --color-secondary-text: #f0f0f0;
+
+  --color-accent-content: #f0f0f0;
+  --color-accent-text: #f0f0f0;
+
+  --color-neutral-content: #f0f0f0;
+  --color-neutral-text: #f0f0f0;
+
+  --color-info-content: #f0f0f0;
+  --color-info-text: #f0f0f0;
+
+  --color-success-content: #f0f0f0;
+  --color-success-text: #f0f0f0;
+
+  --color-warning-content: #f0f0f0;
+  --color-warning-text: #f0f0f0;
+
+  --color-error-content: #f0f0f0;
+  --color-error-text: #f0f0f0;
+
+
+  --color-lol: 0;
+
+  /* --color-white-text: #f0f0f0; */
+
+
+  /* Avo config variables */
+
+  --spacing-3/4: 75%;
+  --sidebar-width: calc(var(--spacing) * 60);
+
+
+
+  /* --color-white-text */
+
+  --color-navbar: var(--color-neutral-700);
   --color-application: rgb(var(--avo-color-application-background));
 
   --color-primary-100: rgb(var(--avo-color-primary-100));
@@ -84,6 +157,10 @@
   @import './css/fields/trix.css';
   @import './css/fields/tags.css';
   @import './css/fields/tiptap.css';
+
+  .avo-input-label {
+    @apply text-neutral-500;
+  }
 
   html,
   body {

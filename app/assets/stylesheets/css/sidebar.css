@@ -6,14 +6,14 @@
 .content-area {
   /* remove the left padding. */
   .main-content-area {
-    @apply lg:pl-0;
+    @apply ml-1;
     transition: padding 0.1s ease;
   }
 
   &.sidebar-open {
     /* Add padding to the main area to allow for the sidebar to expand. */
     .main-content-area {
-      @apply lg:pl-64;
+      @apply lg:pl-(--sidebar-width);
       transition: padding 0.1s ease;
     }
   }

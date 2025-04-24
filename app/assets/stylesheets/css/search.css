@@ -22,7 +22,7 @@
   }
 
   .aa-DetachedSearchButton {
-    @apply rounded-sm border-gray-300 h-[34px];
+    @apply rounded-(--fields-border-radius) border-gray-300 h-[34px];
   }
 }
 

@@ -1,0 +1,11 @@
+<%= tag.div class: "w-full" do %>
+  <%= label nil, property, class: "text-white" %>
+  <%= select_tag property,
+    options_for_select(options,  Avo.configuration.theme.get_variable(property)),
+    class: "w-full",
+    data: {
+      action: "input->theme#selectProperty",
+      theme_property_param: property,
+    }
+  %>
+<% end %>

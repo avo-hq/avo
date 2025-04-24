@@ -193,6 +193,10 @@ module Avo
       Avo::Configuration::Branding.new(**@branding || {})
     end
 
+    def theme
+      @theme ||= Avo::Configuration::Theme.new
+    end
+
     def app_name
       Avo::ExecutionContext.new(target: @app_name).handle
     end

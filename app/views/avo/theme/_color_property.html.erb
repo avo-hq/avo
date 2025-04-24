@@ -1,0 +1,59 @@
+<%= tag.div class: "relative w-full flex items-center gap-x-2", data: {controller: "theme"} do %>
+  <%= tag.button nil,
+    class: "block w-12 h-8 cursor-pointer border border-white rounded",
+    title: "#{property}: #{value}",
+    style: "background-color: #{value};",
+    data: {
+      action: "click->theme#toggleColorsPanel",
+      theme_property_param: property,
+      tippy: :tooltip,
+      theme_target: "sample",
+    }
+  %>
+  <%#= label nil, property, class: "text-white" %>
+  <div class="absolute flex flex-col z-10 left-auto right-0 top-0 bg-neutral-800 p-2 mt-6 rounded-md gap-y-2 hover:opacity-100 opacity-50 transition-opacity" hidden="true" data-theme-target="panel">
+    <div class="flex w-full flex-1 justify-between">
+      <%= tag.button class: "flex text-sm items-center gap-x-1 text-white cursor-pointer", data: {
+          action: "click->theme#resetVariable",
+          theme_property_param: property,
+          theme_initial_value_param: initial_value,
+        } do %>
+        <%= svg "heroicons/outline/trash", class: "h-4" %> Reset value
+      <% end %>
+      <%= tag.button class: "flex text-sm items-center gap-x-1 text-white cursor-pointer", data: {
+        action: "click->theme#toggleColorsPanel"
+      } do %>
+        <%= svg "heroicons/outline/x-circle", class: "justify-self-end h-6 text-white cursor-pointer" %>
+      <% end %>
+      </div>
+    <div class="flex flex-row gap-x-1">
+      <% colors = [:slate, :gray, :zinc, :neutral, :stone, :red, :orange, :amber, :yellow, :lime, :green, :emerald, :teal, :cyan, :sky, :blue, :indigo, :violet, :purple, :fuchsia, :pink, :rose] %>
+      <% weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] %>
+      <div class="flex flex-col gap-1 text-xs text-white gap-y-1">
+        <% weights.each do |weight| %>
+          <div class="flex items-center justify-center size-6 text-xs font-bold">
+            <%= weight %>
+          </div>
+        <% end %>
+      </div>
+      <% colors.each do |color| %>
+      <div class="flex flex-col gap-1 text-xs text-white">
+        <%#
+        <div class="w-7 h-4"><%= color ></div>
+        %>
+        <% weights.each do |weight| %>
+          <%= tag.button class: class_names("relative flex size-6 rounded bg-#{color}-#{weight} text-xs font-bold text-center items-center justify-center cursor-pointer", "text-white": weight > 600),
+            data: {
+              action: "click->theme#selectColor",
+              theme_property_param: property,
+              theme_value_param: "var(--color-#{color}-#{weight})",
+              # theme_color_param: color,
+              # theme_weight_param: weight,
+            }
+          %>
+        <% end %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
