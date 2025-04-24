@@ -3,6 +3,12 @@
 module Avo
   module Fields
     class LocationField < BaseField
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       def initialize(id, **args, &block)
         hide_on :index
         super(id, **args, &block)

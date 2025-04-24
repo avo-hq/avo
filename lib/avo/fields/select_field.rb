@@ -1,6 +1,12 @@
 module Avo
   module Fields
     class SelectField < BaseField
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       include Avo::Fields::FieldExtensions::HasIncludeBlank
 
       attr_reader :display_value, :multiple

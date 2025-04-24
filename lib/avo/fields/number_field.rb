@@ -1,17 +1,16 @@
 module Avo
   module Fields
     class NumberField < TextField
-      attr_reader :min
-      attr_reader :max
-      attr_reader :step
 
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
+      class_attribute :supported_options, default: {}
 
-        @min = args[:min].present? ? args[:min].to_f : nil
-        @max = args[:max].present? ? args[:max].to_f : nil
-        @step = args[:step].present? ? args[:step].to_f : nil
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
       end
+
+      supports :min
+      supports :max
+      supports :step
     end
   end
 end

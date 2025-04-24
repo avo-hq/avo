@@ -7,6 +7,30 @@
     <% c.with_body do %>
       <div class="py-6 min-h-24">
         <div class="px-6 space-y-4">
+          <% Avo::Fields::BaseField.descendants.each do |field| %>
+            <%= "field: #{field}" %>
+            <%= "Supported options: #{field.try(:supported_options)}" %>
+            <br>
+            <br>
+          <% end %>
+---
+          <% Avo::Fields::BaseField.descendants.each do |field| %>
+            <p><strong>Field:</strong> <%= field %></p>
+            <% options = field.try(:supported_options) %>
+            <% if options.present? %>
+              <p><strong>Supported options:</strong></p>
+              <ul>
+                <% options.each do |key, value| %>
+                  <li><strong><%= key %>:</strong> <%= value.inspect %></li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p><em>No supported options.</em></p>
+            <% end %>
+            <hr>
+          <% end %>
+
+
           <h3>What a nice new tool 👋</h3>
 
           Go to <%= link_to "new comment", avo.new_resources_comment_path %>, <%= link_to 'the first user', avo.resources_user_path(1) %>, or <%= link_to 'hey on main app', main_app.hey_path %>.
@@ -27,3 +51,4 @@
     <% end %>
   <% end %>
 </div>
+

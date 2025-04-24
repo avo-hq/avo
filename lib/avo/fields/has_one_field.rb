@@ -1,6 +1,17 @@
 module Avo
   module Fields
     class HasOneField < FrameBaseField
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
+      Avo::Fields::FRAME_BASE_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
+
       include Avo::Fields::Concerns::Nested
 
       attr_reader :attach_fields,

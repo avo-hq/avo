@@ -1,14 +1,15 @@
 module Avo
   module Fields
     class TextareaField < TextField
-      attr_reader :rows
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
 
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
+      supports :rows
 
+      def post_initialize
         hide_on :index
-
-        @rows = args[:rows].present? ? args[:rows].to_i : 5
       end
     end
   end

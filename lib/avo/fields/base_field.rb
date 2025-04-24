@@ -27,24 +27,9 @@ module Avo
       delegate :avo, to: :view_context
       delegate :t, to: ::I18n
 
+      # Private options
       attr_reader :id
       attr_reader :block
-      attr_reader :required
-      attr_reader :readonly
-      attr_reader :sortable
-      attr_reader :summarizable
-      attr_reader :nullable
-      attr_reader :null_values
-      attr_reader :format_using
-      attr_reader :autocomplete
-      attr_reader :help
-      attr_reader :default
-      attr_reader :as_avatar
-      attr_reader :stacked
-      attr_reader :for_presentation_only
-      attr_reader :for_attribute
-
-      # Private options
       attr_reader :computable # if allowed to be computable
       attr_reader :computed # if block is present
       attr_reader :computed_value # the value after computation
@@ -58,44 +43,61 @@ module Avo
 
       class_attribute :field_name_attribute
 
+      class << self
+        # TODOS:
+        # - Verify each field and certify that it only have the option that it uses
+        #   - To simplify the process lets first put this PR on a state where it uses the new system but keeps the options as before (ensure tests passes)
+        # - For each option complete: description / default value / possible values
+        # - Make sure the default options hash only have options used on all the fields
+        # - Find a way to handle complex options like nested
+        # - Find a way to DRY group of options that are used across multiple fields but not all of them
+        # - Create a option documentation template
+        # - Adjust the field options file.md generator to follow that template
+        # - Automate the generation process
+        # - Connect it with the docs
+        # - Possible nice to haves:
+        #   - Warning on unsupported options, example: field :name, as: :text, attach_scope:...
+        #   - Warning on unsupported type / value, example: field :name, as: :text, required: 2
+        #   - Allow to override default / possible values etc...
+        #   - execution_context getter + docs from option definition: supports :name, execution_context: {record: "record", field: "self", resource: "@resource"}
+
+        def supports(option, args = {})
+          self.supported_options[option] = args
+
+          # if Avo::Fields::OPTIONS[option][:execution_context]...
+            # define_method option.to_s do
+            #   Avo::ExecutionContext.new(
+            #     target: :"@#{option}"
+            #   )
+            # end
+          # else
+          unless respond_to?(option.to_s)
+            define_method option.to_s do
+              instance_variable_get(:"@#{option}")
+            end
+          end
+          #end
+        end
+      end
+
       def initialize(id, **args, &block)
         @id = id
-        @name = args[:name]
-        @translation_key = args[:translation_key]
         @block = block
-        @required = args.dig(:required) # Value if :required present on args, nil otherwise
-        @readonly = args[:readonly] || false
-        @disabled = args[:disabled] || false
-        @sortable = args[:sortable] || false
-        @summarizable = args[:summarizable] || false
-        @nullable = args[:nullable] || false
-        @null_values = args[:null_values] || [nil, ""]
-        @format_using = args[:format_using]
-        @update_using = args[:update_using]
-        @decorate = args[:decorate]
-        @placeholder = args[:placeholder]
-        @autocomplete = args[:autocomplete]
-        @help = args[:help]
-        @default = args[:default]
-        @visible = args[:visible]
-        @as_avatar = args[:as_avatar] || false
-        @html = args[:html]
         @view = Avo::ViewInquirer.new(args[:view])
-        @value = args[:value]
-        @stacked = args[:stacked]
-        @for_presentation_only = args[:for_presentation_only] || false
         @resource = args[:resource]
         @action = args[:action]
-        @components = args[:components] || {}
-        @for_attribute = args[:for_attribute]
-        @meta = args[:meta]
-        @copyable = args[:copyable] || false
-
-        @args = args
-
         @computable = true
         @computed = block.present?
         @computed_value = nil
+        @value = args[:value]
+        @args = args
+
+        self.supported_options.each do |option, option_hash|
+          instance_variable_set(
+            :"@#{option}",
+            args.has_key?(option) ? args[option] : option_hash[:default]
+          )
+        end
 
         post_initialize if respond_to?(:post_initialize)
       end

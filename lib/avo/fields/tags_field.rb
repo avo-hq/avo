@@ -1,34 +1,21 @@
 module Avo
   module Fields
     class TagsField < Avo::Fields::BaseField
-      attr_reader :acts_as_taggable_on
-      attr_reader :close_on_select
-      attr_reader :delimiters
-      attr_reader :enforce_suggestions
-      attr_reader :mode
-      attr_reader :suggestions_max_items
 
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
-
-        add_boolean_prop args, :close_on_select
-        add_boolean_prop args, :enforce_suggestions
-        add_string_prop args, :acts_as_taggable_on
-        add_array_prop args, :disallowed
-        add_array_prop args, :delimiters, [","]
-        add_array_prop args, :suggestions
-        add_string_prop args, :suggestions_max_items
-        add_string_prop args, :mode, nil
-        add_string_prop args, :fetch_values_from
-
-        @format_using ||= args[:fetch_labels]
-
-        unless Rails.env.production?
-          if args[:fetch_labels].present?
-            puts "[Avo DEPRECATION WARNING]: The `fetch_labels` field configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `format_using` instead."
-          end
-        end
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
       end
+
+      supports :close_on_select
+      supports :enforce_suggestions
+      supports :acts_as_taggable_on
+      supports :disallowed
+      supports :delimiters, default: [","]
+      supports :suggestions
+      supports :suggestions_max_items
+      supports :mode, default: nil
+      supports :fetch_values_from
 
       def select_mode?
         @mode&.to_sym == :select

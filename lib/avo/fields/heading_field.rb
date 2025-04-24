@@ -3,6 +3,11 @@ require "securerandom"
 module Avo
   module Fields
     class HeadingField < BaseField
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       attr_reader :as_html
 
       def initialize(id, **args, &block)
@@ -10,9 +15,6 @@ module Avo
         @label = args[:label] || id.to_s.humanize
 
         super(id, **args, &block)
-
-        # this field is not used to update anything
-        @for_presentation_only = true
 
         hide_on :index
 

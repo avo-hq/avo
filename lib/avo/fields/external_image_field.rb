@@ -6,6 +6,12 @@ module Avo
       attr_reader :radius
       attr_reader :link_to_record
 
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       def initialize(id, **args, &block)
         super(id, **args, &block)
 

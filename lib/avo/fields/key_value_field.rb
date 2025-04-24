@@ -3,6 +3,12 @@ require "json"
 module Avo
   module Fields
     class KeyValueField < BaseField
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       attr_reader :disable_editing_keys
       attr_reader :disable_adding_rows
       attr_reader :key_label, :value_label, :action_text

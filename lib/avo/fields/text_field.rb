@@ -1,17 +1,15 @@
 module Avo
   module Fields
     class TextField < BaseField
-      attr_reader :link_to_record
-      attr_reader :as_html
-      attr_reader :protocol
+      class_attribute :supported_options, default: {}
 
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
-
-        add_boolean_prop args, :link_to_record
-        add_boolean_prop args, :as_html
-        add_string_prop args, :protocol
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
       end
+
+      supports :link_to_record, default: false
+      supports :as_html, default: false
+      supports :protocol, default: false
     end
   end
 end
