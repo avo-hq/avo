@@ -45,7 +45,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
     div = find('span[title="' + csv_file.basename.to_s + '"]').find(:xpath, './ancestor::div[@class="flex flex-col h-full"]')
 
-    expect(div).not_to have_selector('a')
+    expect(div).not_to have_selector("a")
 
     svg = div.find('svg[data-slot="icon"]')
     svg.click
