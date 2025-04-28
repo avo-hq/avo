@@ -77,6 +77,49 @@ RSpec.describe "CodeField", type: :system do
     end
   end
 
+  describe "with pretty_generated option for a JSON code field" do
+    let(:metadata) do
+      {
+        name: "New York",
+        country: "United States",
+        population: 8419600,
+        coordinates: {
+          latitude: 40.7128,
+          longitude: -74.006
+        },
+        timezone: "America/New_York",
+        climate: {
+          type: "humid subtropical",
+          average_temperature_celsius: 13.1
+        },
+        points_of_interest: [
+          "Statue of Liberty",
+          "Central Park",
+          "Empire State Building"
+        ]
+      }
+    end
+
+    it "correctly formats JSON code on create / edit and displays it in a pretty way on the show page" do
+      visit "/admin/resources/cities/new"
+      wait_for_loaded
+
+      within find_field_element("metadata") do
+        fill_in_editor_field(JSON.pretty_generate(metadata))
+      end
+
+      save
+
+      json_text = page.evaluate_script('document.querySelector(".CodeMirror").CodeMirror.getValue()')
+      expect(JSON.parse(json_text, symbolize_names: true)).to eq(metadata)
+
+      click_on "Edit"
+
+      json_text = page.evaluate_script('document.querySelector(".CodeMirror").CodeMirror.getValue()')
+      expect(JSON.parse(json_text, symbolize_names: true)).to eq(metadata)
+    end
+  end
+
   def fill_in_editor_field(text)
     within ".CodeMirror" do
       current_scope.click
