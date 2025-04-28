@@ -678,8 +678,8 @@ module Avo
       def sorting_supported? = true
 
       def view_type
-        @view_type ||= if params[:view_type].present?
-          params[:view_type]
+        @view_type ||= if @params[:view_type].present?
+          @params[:view_type]
         elsif available_view_types.size == 1
           available_view_types.first
         else
