@@ -134,7 +134,7 @@ module Avo
             self
           end
 
-          field.hydrate(resource:, user:, view:)
+          field.hydrate(resource:, user:, view:, record: resource.record)
         end
       end
 
