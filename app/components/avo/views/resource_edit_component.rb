@@ -30,8 +30,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
       helpers.resources_path(resource: @resource)
     elsif returning_to_explicit_path?
       params[:return_to]
-    elsif via_belongs_to?
-      nil
     elsif via_resource?
       resource_view_path
     elsif via_index?
