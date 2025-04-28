@@ -29,14 +29,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     end
   end
 
-  def view_type
-    @index_params[:view_type]
-  end
-
-  def available_view_types
-    @index_params[:available_view_types]
-  end
-
   # The Create button is dependent on the new? policy method.
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?
@@ -219,7 +211,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def has_many_view_types?
-    available_view_types.count > 1
+    @resource.available_view_types.count > 1
   end
 
   # Generate a unique component id for the current component.
