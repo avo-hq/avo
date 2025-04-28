@@ -129,7 +129,7 @@ module Avo
       # Apply policy scope if authorization is present
       query = resource.authorization&.apply_policy query
 
-      if field.scope.present?
+      if field&.scope&.present?
         query = Avo::ExecutionContext.new(target: field.scope, query:, parent:, resource:, parent_resource:).handle
       end
 
