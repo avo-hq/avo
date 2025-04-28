@@ -26,14 +26,23 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return helpers.resources_path(resource: @resource) if from_bulk_update?
-    return params[:return_to] if returning_to_explicit_path?
-    return nil if via_belongs_to?
-    return resource_view_path if via_resource?
-    return resources_path if via_index?
-    return resource_show_path if returning_to_editable_show?
+    path = if from_bulk_update?
+      helpers.resources_path(resource: @resource)
+    elsif returning_to_explicit_path?
+      params[:return_to]
+    elsif via_belongs_to?
+      nil
+    elsif via_resource?
+      resource_view_path
+    elsif via_index?
+      resources_path
+    elsif returning_to_editable_show?
+      helpers.resource_path(record: @resource.record, resource: @resource, **keep_referrer_params)
+    else
+      resources_path
+    end
 
-    resources_path
+    path
   end
 
   def resources_path
