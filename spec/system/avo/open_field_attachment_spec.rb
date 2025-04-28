@@ -29,7 +29,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
   def test_open_PDF_attachment(path)
     visit path
 
-    link = find('a[rel="noopener noreferrer"][target="_blank"]', visible: :all)
+    link = find('a[rel="noopener noreferrer"][target="_blank"]', visible: :all, wait: 5)
 
     expect(link).to be_present
     expect(link[:target]).to eq("_blank")
