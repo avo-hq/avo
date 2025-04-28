@@ -28,7 +28,7 @@ module Avo
       def current_user
         Avo::Current.user
       end
-      def params = @params || Avo::Current.params
+      delegate :params, to: Avo::Current
       delegate :request, to: Avo::Current
       delegate :view_context, to: Avo::Current
 
@@ -657,19 +657,6 @@ module Avo
         custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
       end
 
-      def instantiate_component(component_class, **args)
-        klass = resolve_component(component_class)
-
-        case klass.to_s
-        when "Avo::Index::TableRowComponent"
-          klass.new(**args)
-        when "Avo::Index::GridItemComponent"
-          klass.new(resource: self)
-        else
-          raise "Unknown component class #{klass}"
-        end
-      end
-
       def get_external_link
         return unless record.persisted?
 
@@ -691,8 +678,8 @@ module Avo
       def sorting_supported? = true
 
       def view_type
-        @view_type ||= if params[:view_type].present?
-          params[:view_type]
+        @view_type ||= if @params[:view_type].present?
+          @params[:view_type]
         elsif available_view_types.size == 1
           available_view_types.first
         else

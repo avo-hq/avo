@@ -8,14 +8,6 @@ module Avo
       DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
     end
 
-    unless defined?(ROW_COMPONENTS_BY_VIEW)
-      ROW_COMPONENTS_BY_VIEW = {
-        table: "Avo::Index::TableRowComponent",
-        map: "Avo::Index::TableRowComponent",
-        grid: "Avo::Index::GridItemComponent"
-      }.freeze
-    end
-
     class_attribute :name, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
@@ -309,34 +301,12 @@ module Avo
 
       @records_to_reload = Array(records)
 
-      append_to_response -> {
-        row_components = []
-        header_fields = []
-        component_class = ROW_COMPONENTS_BY_VIEW[@resource.view_type.to_sym].safe_constantize
-        component_view = component_class.name.underscore
-
-        @action.records_to_reload.each do |record|
-          resource = @resource.dup
-          resource.hydrate(record:, view: :index)
-          resource.detect_fields
-          row_fields = resource.get_fields(only_root: true)
-          header_fields.concat row_fields
-          row_components << resource.instantiate_component(
-            component_class,
-            resource: resource,
-            header_fields: row_fields.map(&:table_header_label),
-            fields: row_fields
-          )
-        end
-
-        header_fields.uniq!(&:table_header_label)
-        header_fields_ids = header_fields.map(&:table_header_label)
-
-        row_components.map.with_index do |component, index|
-          component.header_fields = header_fields_ids if component.respond_to?(:header_fields)
-          turbo_stream.replace("#{component_view}_#{@action.records_to_reload[index].to_param}", component)
-        end
-      }
+      case @resource.view_type.to_sym
+      when :table, :map
+        reload_row_items
+      when :grid
+        reload_grid_items
+      end
     end
 
     # def reload_records
@@ -396,6 +366,52 @@ module Avo
       response[:messages] << {
         type: type,
         body: body&.truncate(320)
+      }
+    end
+
+    def reload_row_items
+      append_to_response -> {
+        table_row_components = []
+        header_fields = []
+        component_to_replace = @resource.resolve_component(Avo::Index::TableRowComponent)
+
+        @action.records_to_reload.each do |record|
+          resource = @resource.dup
+          resource.hydrate(record:, view: :index)
+          resource.detect_fields
+          row_fields = resource.get_fields(only_root: true)
+          header_fields.concat row_fields
+          table_row_components << component_to_replace.new(
+            resource: resource,
+            header_fields: row_fields.map(&:table_header_label),
+            fields: row_fields
+          )
+        end
+
+        header_fields.uniq!(&:table_header_label)
+
+        header_fields_ids = header_fields.map(&:table_header_label)
+
+        table_row_components.map.with_index do |table_row_component, index|
+          table_row_component.header_fields = header_fields_ids
+          turbo_stream.replace(
+            "#{component_to_replace.name.underscore}_#{@action.records_to_reload[index].to_param}",
+            table_row_component
+          )
+        end
+      }
+    end
+
+    def reload_grid_items
+      append_to_response -> {
+        component_to_replace = @resource.resolve_component(Avo::Index::GridItemComponent)
+
+        @action.records_to_reload.map do |record|
+          turbo_stream.replace(
+            "#{component_to_replace.name.underscore}_#{record.to_param}",
+            component_to_replace.new(resource: @resource.dup.hydrate(record:, view: :index))
+          )
+        end
       }
     end
   end
