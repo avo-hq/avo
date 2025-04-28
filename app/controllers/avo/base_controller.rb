@@ -347,8 +347,8 @@ module Avo
         ).handle
       end
 
-      if available_view_types.exclude? @index_params[:view_type].to_sym
-        raise "View type '#{@index_params[:view_type]}' is unavailable for #{@resource.class}."
+      if @resource.available_view_types.exclude? @resource.view_type.to_sym
+        raise "View type '#{@resource.view_type}' is unavailable for #{@resource.class}."
       end
     end
 

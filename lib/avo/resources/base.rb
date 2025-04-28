@@ -432,22 +432,24 @@ module Avo
       end
 
       def available_view_types
-        if self.class.view_types.present?
-          return Array(
-            Avo::ExecutionContext.new(
-              target: self.class.view_types,
-              resource: self,
-              record: record
-            ).handle
-          )
+        @available_view_types ||= begin
+          if self.class.view_types.present?
+            return Array(
+              Avo::ExecutionContext.new(
+                target: self.class.view_types,
+                resource: self,
+                record: record
+              ).handle
+            )
+          end
+
+          view_types = [:table]
+
+          view_types << :grid if self.class.grid_view.present?
+          view_types << :map if map_view.present?
+
+          view_types
         end
-
-        view_types = [:table]
-
-        view_types << :grid if self.class.grid_view.present?
-        view_types << :map if map_view.present?
-
-        view_types
       end
 
       def attachment_fields
@@ -674,6 +676,20 @@ module Avo
       end
 
       def sorting_supported? = true
+
+      def view_type
+        @view_type ||= if params[:view_type].present?
+          params[:view_type]
+        elsif available_view_types.size == 1
+          available_view_types.first
+        else
+          Avo::ExecutionContext.new(
+            target: default_view_type || Avo.configuration.default_view_type,
+            resource: self,
+            view: @view
+          ).handle
+        end
+      end
 
       private
 
