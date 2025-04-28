@@ -32,6 +32,7 @@ nl:
     confirm: Bevestigen
     copy: Kopie
     create_new_item: Nieuw %{item} aanmaken
+    created_at_timestamp: Aangemaakt op %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
     default_scope: Alle
@@ -121,6 +122,7 @@ nl:
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
+    updated_at_timestamp: Bijgewerkt op %{updated_at}
     view: Bekijken
     view_item: "%{item} bekijken"
     visit_record_on_external_path: Bezoek record via een externe link

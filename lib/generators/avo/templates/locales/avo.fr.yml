@@ -34,6 +34,7 @@ fr:
     confirm: Confirmer
     copy: Copier
     create_new_item: Créer un nouveau %{item}
+    created_at_timestamp: Créé le %{created_at}
     dashboard: Tableau de bord
     dashboards: Tableaux de bord
     default_scope: Tout
@@ -123,6 +124,7 @@ fr:
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
     undo: annuler
+    updated_at_timestamp: Mis à jour le %{updated_at}
     view: Vue
     view_item: voir %{item}
     visit_record_on_external_path: Consulter l'enregistrement via un lien externe

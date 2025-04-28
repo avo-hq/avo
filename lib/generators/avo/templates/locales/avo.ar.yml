@@ -38,6 +38,7 @@ ar:
     confirm: تأكيد
     copy: نسخ
     create_new_item: إنشاء %{item} جديد
+    created_at_timestamp: تم الإنشاء في %{created_at}
     dashboard: لوحة القيادة
     dashboards: لوحات القيادة
     default_scope: الجميع
@@ -131,6 +132,7 @@ ar:
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
+    updated_at_timestamp: تم التحديث في %{updated_at}
     view: عرض
     view_item: عرض %{item}
     visit_record_on_external_path: زيارة السجل على الرابط الخارجي

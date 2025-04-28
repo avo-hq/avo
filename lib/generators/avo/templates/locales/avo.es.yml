@@ -34,6 +34,7 @@ es:
     confirm: Confirmar
     copy: Copiar
     create_new_item: Crear nuevo/a %{item}
+    created_at_timestamp: Creado en %{created_at}
     dashboard: Panel
     dashboards: Paneles
     default_scope: Todos
@@ -123,6 +124,7 @@ es:
     type_to_search: Escribe para buscar.
     unauthorized: No autorizado
     undo: deshacer
+    updated_at_timestamp: Actualizado en %{updated_at}
     view: Vista
     view_item: ver %{item}
     visit_record_on_external_path: Visitar registro en enlace externo

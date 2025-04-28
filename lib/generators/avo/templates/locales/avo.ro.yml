@@ -35,6 +35,7 @@ ro:
     confirm: Confirm
     copy: Copiază
     create_new_item: Creează %{item}
+    created_at_timestamp: Creat la %{created_at}
     dashboard: Panou de control
     dashboards: Panouri de control
     default_scope: Tot
@@ -125,6 +126,7 @@ ro:
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează
+    updated_at_timestamp: Actualizat la %{updated_at}
     view: vezi
     view_item: vezi %{item}
     visit_record_on_external_path: Vizitați înregistrarea printr-un link extern
