@@ -331,22 +331,6 @@ module Avo
 
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
 
-      # View types
-      available_view_types = @resource.available_view_types
-      @index_params[:available_view_types] = available_view_types
-
-      @index_params[:view_type] = if params[:view_type].present?
-        params[:view_type]
-      elsif available_view_types.size == 1
-        available_view_types.first
-      else
-        Avo::ExecutionContext.new(
-          target: @resource.default_view_type || Avo.configuration.default_view_type,
-          resource: @resource,
-          view: @view
-        ).handle
-      end
-
       if @resource.available_view_types.exclude? @resource.view_type.to_sym
         raise "View type '#{@resource.view_type}' is unavailable for #{@resource.class}."
       end
