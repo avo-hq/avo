@@ -29,7 +29,7 @@ module Avo
       # When other field type, like has_many the @query is directly fetched from the parent record
       # Don't apply policy on array type since it can return an array of hashes where `.all` and other methods used on policy will fail.
       @query = if @field.type == "array"
-        @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block).handle || @parent_record.try(@field.id))
+        @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block, record: @parent_record).handle || @parent_record.try(@field.id))
       else
         @related_authorization.apply_policy(
           @parent_record.send(
@@ -126,7 +126,9 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record.class.reflect_on_association(association_from_params)
+      @reflection = @record.class.try(:reflect_on_association, association_from_params)
+
+      return if @reflection.blank? && @field.type == "array"
 
       # Ensure inverse_of is present on STI
       if !@record.class.descends_from_active_record? && @reflection.inverse_of.blank? && Rails.env.development?

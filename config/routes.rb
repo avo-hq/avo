@@ -1,8 +1,8 @@
 Avo::Engine.routes.draw do
   root "home#index"
 
-  get "resources", to: redirect(Avo.configuration.root_path)
-  get "dashboards", to: redirect(Avo.configuration.root_path)
+  get "resources", to: redirect(Avo.configuration.root_path), as: :avo_resources_redirect
+  get "dashboards", to: redirect(Avo.configuration.root_path), as: :avo_dashboards_redirect
 
   get "/bulk_update/edit", to: "bulk_update#edit", as: "edit_bulk_update"
   post "/bulk_update/handle", to: "bulk_update#handle", as: "handle_bulk_update"

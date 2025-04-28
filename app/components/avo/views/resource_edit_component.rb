@@ -79,10 +79,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     params[:via_view] == "index"
   end
 
-  def via_belongs_to?
-    params[:via_belongs_to_resource_class].present?
-  end
-
   def is_edit?
     @view.in?(%w[edit update])
   end

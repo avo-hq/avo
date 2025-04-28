@@ -2,8 +2,6 @@ require "rails_helper"
 
 RSpec.describe "action icon and divider", type: :feature do
   describe "icon and divider" do
-    let(:user) { create(:user) }
-
     it "Viewing actions with icon and divider" do
       visit "admin/resources/users"
 

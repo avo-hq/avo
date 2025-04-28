@@ -75,6 +75,8 @@ nb:
     more: Mer
     more_content: Mer innhold
     more_records_available: Det er flere poster tilgjengelig.
+    nested:
+      add_new_item: Legg til ny %{item}
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt

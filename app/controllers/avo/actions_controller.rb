@@ -184,9 +184,13 @@ module Avo
     end
 
     def decrypted_index_query
-      @decrypted_index_query ||= if (encrypted_query = action_params[:fields]&.dig(:avo_index_query)).present?
+      @decrypted_index_query ||= if encrypted_query.present? && encrypted_query != "select_all_disabled"
         Avo::Services::EncryptionService.decrypt(message: encrypted_query, purpose: :select_all, serializer: Marshal)
       end
+    end
+
+    def encrypted_query
+      @encrypted_query ||= action_params[:fields]&.dig(:avo_index_query)
     end
 
     def flash_messages

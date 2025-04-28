@@ -1,6 +1,8 @@
 module Avo
   module Resources
     class ArrayResource < Base
+      abstract_resource!
+
       extend ActiveSupport::DescendantsTracker
 
       include Avo::Concerns::FindAssociationField
@@ -53,17 +55,22 @@ module Avo
 
           association_field = find_association_field(resource: via_resource, association: route_key)
 
-          records_from_field_or_record = Avo::ExecutionContext.new(target: association_field.block).handle || via_record.try(route_key)
+          records_from_field_or_record = Avo::ExecutionContext.new(target: association_field.block, record: via_record).handle || via_record.try(route_key)
 
           array_of_records = records_from_field_or_record || array_of_records
         end
 
-        @fetched_records ||= if is_array_of_active_records?(array_of_records)
+        @fetched_records ||= if array_of_records.empty?
+          array_of_records
+        elsif is_array_of_active_records?(array_of_records)
           @@model_class = array_of_records.first.class
           @@model_class.where(id: array_of_records.map(&:id))
         elsif is_active_record_relation?(array_of_records)
           @@model_class = array_of_records.try(:model)
           array_of_records
+        elsif is_array_of_store_model?(array_of_records)
+          @@model_class = array_of_records.first.class
+          return(array_of_records)
         else
           # Dynamically create a class with accessors for all unique keys from the records
           keys = array_of_records.flat_map(&:keys).uniq
@@ -97,6 +104,10 @@ module Avo
 
       def is_active_record_relation?(array_of_records = records)
         @is_active_record_relation ||= array_of_records.is_a?(ActiveRecord::Relation)
+      end
+
+      def is_array_of_store_model?(array_of_records = records)
+        @is_array_of_store_model ||= defined?(StoreModel::Model) && array_of_records.all? { |element| element.is_a?(StoreModel::Model) }
       end
 
       def resource_type_array? = true

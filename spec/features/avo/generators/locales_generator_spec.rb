@@ -25,7 +25,7 @@ RSpec.feature "locales generator", type: :feature do
       files << Rails.root.join("config", "locales", "pagy", "#{locale}.yml").to_s
     end
 
-    Rails::Generators.invoke("avo:locales", ["-q"], {destination_root: Rails.root})
+    Rails::Generators.invoke("avo:locales", ["-q", "--skip"], {destination_root: Rails.root})
 
     check_files_and_clean_up files
 

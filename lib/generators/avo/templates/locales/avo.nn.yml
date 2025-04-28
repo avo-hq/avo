@@ -75,6 +75,8 @@ nn:
     more: Meir
     more_content: Mer innhold
     more_records_available: Det finst fleire opptak tilgjengelege.
+    nested:
+      add_new_item: Legg til ny %{item}
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt

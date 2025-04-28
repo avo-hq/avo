@@ -97,7 +97,7 @@ dl {
   @apply text-sm grid gap-x-2 grid-cols-[max-content_1fr];
 
   dt {
-    @apply font-bold mt-1;
+    @apply font-bold;
   }
 
   dd {

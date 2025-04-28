@@ -12,6 +12,18 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
+  self.discreet_information = [
+    :timestamps,
+    :id_badge,
+    {
+      tooltip: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "heroicons/outline/arrow-top-right-on-square" },
+      url: -> { main_app.root_url },
+      url_target: :_blank,
+      # as: :badge
+    }
+  ]
+
   def fields
     field :id, as: :id, link_to_record: true
     field :status,

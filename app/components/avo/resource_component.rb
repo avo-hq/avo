@@ -132,11 +132,15 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_back_button(control)
     return if back_path.blank? || is_a_related_resource?
 
-    tippy = control.title ? :tooltip : nil
-    a_link back_path,
+    via_belongs_to = params[:via_belongs_to_resource_class].present?
+
+    a_link via_belongs_to ? "javascript:void(0);" : back_path,
       style: :text,
       title: control.title,
-      data: {tippy: tippy},
+      data: {
+        tippy: control.title ? :tooltip : nil,
+        action: via_belongs_to ? "click->modal#close" : nil
+      }.compact,
       icon: "heroicons/outline/arrow-left" do
       control.label
     end
@@ -156,6 +160,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       label: actions_list.label,
       size: actions_list.size,
       icon: actions_list.icon,
+      icon_class: actions_list.icon_class,
       title: actions_list.title,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
