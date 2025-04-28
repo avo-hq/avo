@@ -11,7 +11,7 @@
     class="hidden text-slate-800"
   >
     <%= form_with scope: 'fields',
-      url: @action.link_arguments(resource: @resource, view_type: params[:view_type]).first,
+      url: @action.link_arguments(resource: @resource).first,
       local: true,
       html: {
         novalidate: true,

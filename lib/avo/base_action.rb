@@ -8,11 +8,13 @@ module Avo
       DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
     end
 
-    ROW_COMPONENTS_BY_VIEW = {
-      table: "Avo::Index::TableRowComponent",
-      map: "Avo::Index::TableRowComponent",
-      grid: "Avo::Index::GridItemComponent"
-    }.freeze
+    unless defined?(ROW_COMPONENTS_BY_VIEW)
+      ROW_COMPONENTS_BY_VIEW = {
+        table: "Avo::Index::TableRowComponent",
+        map: "Avo::Index::TableRowComponent",
+        grid: "Avo::Index::GridItemComponent"
+      }.freeze
+    end
 
     class_attribute :name, default: nil
     class_attribute :message
@@ -76,6 +78,7 @@ module Avo
             **{
               action_id: to_param,
               arguments: encode_arguments(arguments),
+              view_type: resource.view_type,
               **args
             }.compact
           )
@@ -300,7 +303,6 @@ module Avo
     end
 
     def reload_record(records)
-      return if params[:view_type].blank?
       # Force close modal to avoid default redirect to
       # Redirect is 100% not wanted when using reload_record
       close_modal
@@ -310,7 +312,7 @@ module Avo
       append_to_response -> {
         row_components = []
         header_fields = []
-        component_class = ROW_COMPONENTS_BY_VIEW[params[:view_type].to_sym].safe_constantize
+        component_class = ROW_COMPONENTS_BY_VIEW[@resource.view_type.to_sym].safe_constantize
         component_view = component_class.name.underscore
 
         @action.records_to_reload.each do |record|
