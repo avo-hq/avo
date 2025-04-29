@@ -7,7 +7,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
   context "with PDF attachment" do
     it "opens attachment in new window without download" do
       user.cv.attach(
-        io: File.open(Rails.root.join("db", "seed_files", "dummy-file.pdf")),
+        io: Rails.root.join("db", "seed_files", "dummy-file.pdf").open,
         filename: "dummy-file.pdf",
         content_type: "application/pdf"
       )
@@ -36,11 +36,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
     it "can not open or download attachment in new window" do
       csv_file_path = Rails.root.join("db", "seed_files", "sample.csv")
 
-      user.cv.attach(
-        io: File.open(csv_file_path),
-        filename: "sample.csv",
-        content_type: "application/csv"
-      )
+      user.cv.attach(io: csv_file_path.open, filename: "sample.csv", content_type: "application/csv")
 
       visit avo.resources_field_discovery_user_path(user)
 
