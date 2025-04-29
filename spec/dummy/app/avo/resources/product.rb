@@ -7,7 +7,7 @@ class Avo::Resources::Product < Avo::BaseResource
       {
         cover_url: record.image.attached? ? main_app.url_for(record.image.variant(resize_to_fill: [300, 300])) : nil,
         title: record.title,
-        body: simple_format(record.description) + " \n #{record.updated_at.to_datetime.strftime("%d %b %Y %H:%M:%S")}",
+        body: simple_format(record.description),
         badge_label: (record.status == :new) ? "New" : "Updated",
         badge_color: (record.status == :new) ? "green" : "orange",
         badge_title: (record.status == :new) ? "New product here" : "Updated product here"
@@ -61,9 +61,5 @@ class Avo::Resources::Product < Avo::BaseResource
     field :sizes, as: :select, multiple: true, options: {Large: :large, Medium: :medium, Small: :small}
 
     field :updated_at, as: :date_time
-  end
-
-  def actions
-    action Avo::Actions::UpdateProduct
   end
 end
