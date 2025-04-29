@@ -16,11 +16,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
 
-      puts ["user.cv.representable?->", user.cv.representable?].inspect
-      puts ["file_path->", file_path].inspect
-      all('a').each do |link|
-        puts "Text: #{link.text} | Href: #{link[:href]}"
-      end
+      allow(user.cv).to receive(:representable?).and_return(true)
 
       within("##{dom_id(user.cv)}") do
         link = find(:css, "a[href*='#{file_path}']:not([download])")
@@ -47,6 +43,8 @@ RSpec.describe "OpenFieldAttachment", type: :system do
       visit avo.resources_field_discovery_user_path(user)
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
+
+      allow(user.cv).to receive(:representable?).and_return(true)
 
       within("##{dom_id(user.cv)}") do
         expect(page).not_to have_selector(:css, "a[href*='#{file_path}']:not([download])")
