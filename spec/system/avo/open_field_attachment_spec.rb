@@ -16,8 +16,13 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
 
-      allow(user.cv).to receive(:representable?).and_return(true)
-      puts ["user.cv.representable?->", user.cv.representable?].inspect
+      allow_any_instance_of(ActiveStorage::Blob).to receive(:representable?).and_wrap_original do |original_method, *args|
+        if original_method.receiver.filename.to_s == "dummy-file.pdf"
+          true
+        else
+          original_method.call(*args)
+        end
+      end
 
       within("##{dom_id(user.cv)}") do
         link = find(:css, "a[href*='#{file_path}']:not([download])")
@@ -45,8 +50,13 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
 
-      allow(user.cv).to receive(:representable?).and_return(true)
-      puts ["user.cv.representable?->", user.cv.representable?].inspect
+      allow_any_instance_of(ActiveStorage::Blob).to receive(:representable?).and_wrap_original do |original_method, *args|
+        if original_method.receiver.filename.to_s == "sample.csv"
+          true
+        else
+          original_method.call(*args)
+        end
+      end
 
       within("##{dom_id(user.cv)}") do
         expect(page).not_to have_selector(:css, "a[href*='#{file_path}']:not([download])")
