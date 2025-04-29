@@ -26,16 +26,13 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return  helpers.resources_path(resource: @resource) if from_bulk_update?
+    return back_path_from_bulk_update if from_bulk_update?
+
     # The `return_to` param takes precedence over anything else.
     return params[:return_to] if params[:return_to].present?
-
-    return resource_view_path if via_resource?
-    return resources_path if via_index?
-
-    if is_edit? && Avo.configuration.resource_default_view.show? # via resource show or edit page
-      return helpers.resource_path(record: @resource.record, resource: @resource, **keep_referrer_params)
-    end
+    return back_path_from_via_resource if via_resource?
+    return back_path_from_via_index if via_index?
+    return back_path_from_edit if is_edit? && Avo.configuration.resource_default_view.show?
 
     resources_path
   end
@@ -75,16 +72,20 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     params[:controller] == "avo/bulk_update"
   end
 
-  def returning_to_explicit_path?
-    params[:return_to].present?
+  def back_path_from_bulk_update
+    helpers.resources_path(resource: @resource)
   end
 
-  def resource_show_path
+  def back_path_from_via_resource
+    resource_view_path
+  end
+
+  def back_path_from_via_index
+    resources_path
+  end
+
+  def back_path_from_edit
     helpers.resource_path(record: @resource.record, resource: @resource, **keep_referrer_params)
-  end
-
-  def returning_to_editable_show?
-    is_edit? && Avo.configuration.resource_default_view.show?
   end
 
   def via_index?
