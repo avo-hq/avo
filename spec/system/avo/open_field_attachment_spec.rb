@@ -6,6 +6,8 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
   context "with PDF attachment" do
     it "opens attachment in new window without download" do
+      force_representable_for("dummy-file.pdf")
+
       user.cv.attach(
         io: Rails.root.join("db", "seed_files", "dummy-file.pdf").open,
         filename: "dummy-file.pdf",
@@ -15,14 +17,6 @@ RSpec.describe "OpenFieldAttachment", type: :system do
       visit avo.resources_field_discovery_user_path(user)
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
-
-      allow_any_instance_of(ActiveStorage::Blob).to receive(:representable?).and_wrap_original do |original_method, *args|
-        if original_method.receiver.filename.to_s == "dummy-file.pdf"
-          true
-        else
-          original_method.call(*args)
-        end
-      end
 
       within("##{dom_id(user.cv)}") do
         link = find(:css, "a[href*='#{file_path}']:not([download])")
@@ -42,6 +36,8 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
   context "with CSV attachment" do
     it "can not open or download attachment in new window" do
+      force_representable_for("sample.csv")
+
       csv_file_path = Rails.root.join("db", "seed_files", "sample.csv")
 
       user.cv.attach(io: csv_file_path.open, filename: "sample.csv", content_type: "application/csv")
@@ -50,17 +46,20 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
 
-      allow_any_instance_of(ActiveStorage::Blob).to receive(:representable?).and_wrap_original do |original_method, *args|
-        if original_method.receiver.filename.to_s == "sample.csv"
-          true
-        else
-          original_method.call(*args)
-        end
-      end
-
       within("##{dom_id(user.cv)}") do
         expect(page).not_to have_selector(:css, "a[href*='#{file_path}']:not([download])")
         expect(page).to have_selector(:css, "a[href*='#{file_path}'][download]")
+      end
+    end
+  end
+
+  def force_representable_for(filename)
+    allow_any_instance_of(ActiveStorage::Blob).to receive(:representable?).and_wrap_original do |original_method, *args|
+      blob = original_method.receiver
+      if blob.filename.to_s == filename
+        true
+      else
+        original_method.call(*args)
       end
     end
   end
