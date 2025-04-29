@@ -244,7 +244,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def has_many_view_types?
-    available_view_types.count > 1
+    @resource.available_view_types.count > 1
   end
 
   # Generate a unique component id for the current component.
