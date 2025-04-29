@@ -1,7 +1,7 @@
 require "rails_helper"
-include ActionView::RecordIdentifier
 
 RSpec.describe "OpenFieldAttachment", type: :system do
+  include ActionView::RecordIdentifier
   let!(:user) { create :user }
 
   context "with PDF attachment" do
@@ -15,6 +15,11 @@ RSpec.describe "OpenFieldAttachment", type: :system do
       visit avo.resources_field_discovery_user_path(user)
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
+
+      puts ["file_path->", file_path].inspect
+      all('a').each do |link|
+        puts "Text: #{link.text} | Href: #{link[:href]}"
+      end
 
       within("##{dom_id(user.cv)}") do
         link = find(:css, "a[href*='#{file_path}']:not([download])")
