@@ -16,6 +16,7 @@ RSpec.describe "OpenFieldAttachment", type: :system do
 
       file_path = Rails.application.routes.url_helpers.rails_blob_path(user.cv, only_path: true)
 
+      puts ["user.cv.representable?->", user.cv.representable?].inspect
       puts ["file_path->", file_path].inspect
       all('a').each do |link|
         puts "Text: #{link.text} | Href: #{link[:href]}"
