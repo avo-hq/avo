@@ -8,14 +8,8 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   prop :actions, default: [].freeze
   prop :view, default: Avo::ViewInquirer.new(:edit).freeze
   prop :display_breadcrumbs, default: true, reader: :public
-
-  attr_reader :query
-
-  def initialize(resource:, query: nil, prefilled_fields: nil, **args)
-    @query = query
-    @prefilled_fields = prefilled_fields
-    super(resource: resource, **args)
-  end
+  prop :query
+  prop :prefilled_fields
 
   def after_initialize
     @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
@@ -26,13 +20,17 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return back_path_from_bulk_update if from_bulk_update?
+    return helpers.resources_path(resource: @resource) if from_bulk_update?
 
     # The `return_to` param takes precedence over anything else.
     return params[:return_to] if params[:return_to].present?
-    return back_path_from_via_resource if via_resource?
-    return back_path_from_via_index if via_index?
-    return back_path_from_edit if is_edit? && Avo.configuration.resource_default_view.show?
+
+    return resource_view_path if via_resource?
+    return resources_path if via_index?
+
+    if is_edit? && Avo.configuration.resource_default_view.show? # via resource show or edit page
+      return helpers.resource_path(record: @resource.record, resource: @resource, **keep_referrer_params)
+    end
 
     resources_path
   end
@@ -72,22 +70,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     params[:controller] == "avo/bulk_update"
   end
 
-  def back_path_from_bulk_update
-    helpers.resources_path(resource: @resource)
-  end
-
-  def back_path_from_via_resource
-    resource_view_path
-  end
-
-  def back_path_from_via_index
-    resources_path
-  end
-
-  def back_path_from_edit
-    helpers.resource_path(record: @resource.record, resource: @resource, **keep_referrer_params)
-  end
-
   def via_index?
     params[:via_view] == "index"
   end
@@ -100,10 +82,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     return :put if is_edit? && params[:controller] != "avo/bulk_update"
 
     :post
-  end
-
-  def model
-    @resource.record
   end
 
   def form_url

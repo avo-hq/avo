@@ -48,10 +48,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     helpers.edit_bulk_update_path(resource: @resource, **args)
   end
 
-  def available_view_types
-    @index_params[:available_view_types]
-  end
-
   # The Create button is dependent on the new? policy method.
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?

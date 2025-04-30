@@ -9,7 +9,7 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
-  <%= form_with model: model,
+  <%= form_with model: @resource.record,
     scope: @resource.form_scope,
     url: form_url,
     method: form_method,
