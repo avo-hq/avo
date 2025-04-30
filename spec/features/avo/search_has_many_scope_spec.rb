@@ -57,4 +57,26 @@ RSpec.feature Avo::SearchController, type: :controller do
       expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].to_param
     end
   end
+
+  it "returns the exact 3 records when parent have five children but field have a scope for 3 specific ids" do
+    Avo::Resources::Course.with_temporary_items do
+      field :links, as: :has_many, scope: -> { query.where(id: params[:three_links_ids]) }
+    end
+
+    get :show, params: {
+      resource_name: "course_links",
+      via_association: "has_many",
+      via_association_id: "links",
+      via_reflection_class: "Course",
+      via_reflection_id: course_with_five_links.to_param,
+      via_reflection_view: "show",
+      three_links_ids: five_links.first(3).map(&:id)
+    }
+
+    expect(json["course links"]["results"].count).to eq 3
+
+    3.times do |index|
+      expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].to_param
+    end
+  end
 end
