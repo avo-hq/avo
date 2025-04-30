@@ -14,7 +14,7 @@ module Avo
         end
 
         def initialize_nested(**args)
-          if args[:nested].nil?
+          if args[:nested].blank?
             @nested = {}
             return
           end

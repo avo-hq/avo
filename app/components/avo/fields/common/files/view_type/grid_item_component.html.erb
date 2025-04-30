@@ -7,11 +7,11 @@
     <% elsif is_video? %>
       <%= video_tag(helpers.main_app.url_for(file), controls: true, preload: false, class: 'w-full') %>
     <% else %>
-      <div class="relative flex flex-col justify-evenly items-center px-2 rounded-lg border bg-white border-gray-500 min-h-24">
+      <%= content_tag file.representable? ? :a : :div, **document_arguments do %>
         <div class="flex flex-col justify-center items-center w-full">
           <%= helpers.svg "heroicons/outline/document-text", class: 'h-10 text-gray-600 mb-2' %>
         </div>
-      </div>
+      <% end %>
     <% end %>
     <% if @field.display_filename %>
       <span class="text-gray-500 mt-1 text-sm truncate" title="<%= file.filename %>"><%= file.filename %></span>

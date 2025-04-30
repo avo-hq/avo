@@ -40,12 +40,9 @@ module Avo
             load_resources_namespace
           end
 
-          # All descendants from Avo::Resources::Base except the internal ones
-          Base.descendants - internal_resources
-        end
+          # All descendants from Avo::Resources::Base except the internal abstract ones
 
-        def internal_resources
-          [Avo::BaseResource, Avo::Resources::ArrayResource]
+          Base.descendants.reject { _1.is_abstract? }
         end
 
         def load_resources_namespace

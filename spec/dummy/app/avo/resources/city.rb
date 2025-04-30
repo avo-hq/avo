@@ -61,19 +61,7 @@ class Avo::Resources::City < Avo::BaseResource
       as: :trix,
       attachment_key: :description_file,
       visible: -> { resource.params[:show_native_fields].blank? }
-    field :metadata,
-      as: :code,
-      format_using: -> {
-        if view.edit?
-          JSON.generate(value)
-        else
-          value
-        end
-      },
-      update_using: -> do
-        ActiveSupport::JSON.decode(value)
-      rescue JSON::ParserError
-      end
+    field :metadata, as: :code, pretty_generated: true
 
     field :created_at, as: :date_time, filterable: true
   end
@@ -95,7 +83,7 @@ class Avo::Resources::City < Avo::BaseResource
 
         link_to resource.record.name, path, data: data
       end
-      field :population, as: :number, filterable: true
+      field :population, as: :number, filterable: true, decorate: -> { number_with_delimiter(value, delimiter: ".") }
       field :is_capital, as: :boolean, filterable: true
       field :features, as: :key_value
       field :image_url, as: :external_image
