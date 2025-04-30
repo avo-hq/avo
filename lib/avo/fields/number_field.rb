@@ -18,7 +18,7 @@ module Avo
 
       def value(property = nil)
         raw_value = super
-        if @format_display_using && view == :show || view == :index
+        if @format_display_using && (view == :show || view == :index)
           return raw_value if @formatting
           @formatting = true
             formatted_value = instance_exec(&@format_display_using)
