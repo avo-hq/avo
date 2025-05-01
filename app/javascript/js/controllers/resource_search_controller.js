@@ -8,10 +8,6 @@ export default class extends Controller {
     debounce: { type: Number, default: 300 },
   }
 
-  connect() {
-    console.log('Resource search controller connected')
-  }
-
   search() {
     this.debouncedSearch()
   }

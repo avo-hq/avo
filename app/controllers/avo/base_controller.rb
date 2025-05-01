@@ -37,7 +37,7 @@ module Avo
       end
 
       # Apply the search query if configured on the resource
-      safe_call :apply_search
+      apply_search
 
       # Eager load attachments
       if @resource.attachments.present?
@@ -689,9 +689,6 @@ module Avo
     def apply_search
       return if @resource.class.search_query.nil?
       return if @index_params[:q].nil?
-
-      search_query = @resource.search[:query]
-      return unless search_query.present?
 
       @query = Avo::ExecutionContext.new(
         target: @resource.class.search_query,
