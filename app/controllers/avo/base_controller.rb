@@ -127,7 +127,6 @@ module Avo
         add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
       end
 
-
       add_breadcrumb @resource.record_title
       add_breadcrumb I18n.t("avo.details").upcase_first
 
@@ -359,8 +358,8 @@ module Avo
     def set_index_params
       @index_params = {}
 
-      set_pagination_params
       set_search_params
+      set_pagination_params
       set_sorting_params
 
       if @resource.available_view_types.exclude? @resource.view_type.to_sym
