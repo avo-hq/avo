@@ -283,4 +283,8 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
 
     field :attendees, as: :array
   end
+
+  def actions
+    action Avo::Actions::Test::Query
+  end
 end
