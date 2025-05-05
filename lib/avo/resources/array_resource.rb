@@ -39,9 +39,9 @@ module Avo
 
         # Id is Array when find record is called from actions controller
         if id.is_a?(Array)
-          return fetched_records.select { |record| id.map(&:to_s).include?(record.id.to_s) }
+          fetched_records.select { |record| id.map(&:to_s).include?(record.id.to_s) }
         else
-          return fetched_records.find { |record| record.id.to_s == id.to_s }
+          fetched_records.find { |record| record.id.to_s == id.to_s }
         end
       end
 
