@@ -79,7 +79,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def form_method
-    return :put if is_edit? && params[:controller] != "avo/bulk_update"
+    return :put if is_edit?
 
     :post
   end
