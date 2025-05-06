@@ -12,7 +12,7 @@ module Avo
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
-    before_action :fill_record, only: [:create, :update]
+    before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
     # Don't run base authorizations for associations
     before_action :authorize_base_action, except: :preview, if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
@@ -331,24 +331,8 @@ module Avo
 
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
 
-      # View types
-      available_view_types = @resource.available_view_types
-      @index_params[:available_view_types] = available_view_types
-
-      @index_params[:view_type] = if params[:view_type].present?
-        params[:view_type]
-      elsif available_view_types.size == 1
-        available_view_types.first
-      else
-        Avo::ExecutionContext.new(
-          target: @resource.default_view_type || Avo.configuration.default_view_type,
-          resource: @resource,
-          view: @view
-        ).handle
-      end
-
-      if available_view_types.exclude? @index_params[:view_type].to_sym
-        raise "View type '#{@index_params[:view_type]}' is unavailable for #{@resource.class}."
+      if @resource.available_view_types.exclude? @resource.view_type.to_sym
+        raise "View type '#{@resource.view_type}' is unavailable for #{@resource.class}."
       end
     end
 

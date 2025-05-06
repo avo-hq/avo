@@ -138,10 +138,16 @@ FactoryBot.define do
   end
 
   factory :event do
+    uuid { SecureRandom.uuid }
     location { create :location }
     name { Faker::Lorem.sentence }
     event_time { DateTime.now }
     body { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
+  end
+
+  factory :volunteer do
+    name { Faker::Name.name }
+    role { Faker::Job.title }
   end
 
   factory :store do

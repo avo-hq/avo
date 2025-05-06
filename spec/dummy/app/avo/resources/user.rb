@@ -116,7 +116,11 @@ class Avo::Resources::User < Avo::BaseResource
     field :active, as: :boolean, name: "Is active", only_on: :index
     field :cv, as: :file, name: "CV"
     field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
-    field :roles, as: :boolean_group, options: {admin: "Administrator", manager: "Manager", writer: "Writer"}
+    field :roles, as: :boolean_group, options: -> do
+      # test condition
+      raise if record.nil?
+      {admin: "Administrator", manager: "Manager", writer: "Writer"}
+    end
     field :permissions, as: :boolean_group, options: {create: "Create", read: "Read", update: "Update", delete: "Delete"}
     field :birthday,
       as: :date,

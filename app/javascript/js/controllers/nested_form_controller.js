@@ -30,7 +30,7 @@ export default class extends NestedForm {
 
   toggleAddButton() {
     if (this.limitValue > 0) {
-      this.addButtonTarget.classList.toggle('hidden', this.nestedRecordTargets.length >= this.limitValue)
+      this.addButtonTarget.classList.toggle('!hidden', this.nestedRecordTargets.length >= this.limitValue)
     }
   }
 }

@@ -8,8 +8,9 @@ module Avo
 
       supports :rows
 
-      def post_initialize
+      def initialize(...)
         hide_on :index
+        super(...)
       end
     end
   end
