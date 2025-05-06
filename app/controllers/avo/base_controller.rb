@@ -74,7 +74,7 @@ module Avo
           render turbo_stream: [
             turbo_stream.replace(
               "#{@resource.model_key}_list",
-              partial: "avo/index/resource_table_component",
+              partial: "avo/index/resource_#{@resource.view_type.to_sym == :grid ? :grid : :table}_component",
               locals: {
                 resources: @resources,
                 resource: @resource,
