@@ -36,6 +36,9 @@ module Avo
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
+      attr_reader :format_display_using
+      attr_reader :format_index_using
+      attr_reader :format_show_using
       attr_reader :autocomplete
       attr_reader :help
       attr_reader :default
@@ -71,6 +74,9 @@ module Avo
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using]
+        @format_display_using = args[:format_display_using]
+        @format_index_using = args[:format_index_using]
+        @format_show_using = args[:format_show_using]
         @update_using = args[:update_using]
         @decorate = args[:decorate]
         @placeholder = args[:placeholder]
@@ -175,6 +181,18 @@ module Avo
           final_value = execute_context(@format_using, value: final_value)
         end
 
+        if @format_display_using.present? && @view.display?
+          final_value = execute_context(@format_display_using, value: final_value)
+        end
+
+        if @format_index_using.present? && @view.index?
+          final_value = execute_context(@format_index_using, value: final_value)
+        end
+
+        if @format_show_using.present? && @view.show?
+          final_value = execute_context(@format_show_using, value: final_value)
+        end
+        
         if @decorate.present? && @view.display?
           final_value = execute_context(@decorate, value: final_value)
         end
