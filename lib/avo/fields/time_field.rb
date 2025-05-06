@@ -1,15 +1,14 @@
 module Avo
   module Fields
     class TimeField < DateTimeField
-      attr_reader :format
-      attr_reader :picker_format
 
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
-
-        add_string_prop args, :picker_format, "H:i:S"
-        add_string_prop args, :format, "TT"
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
       end
+
+      supports :format, default: "TT"
+      supports :picker_format, default: "H:i:S"
 
       def formatted_value
         return nil if value.nil?

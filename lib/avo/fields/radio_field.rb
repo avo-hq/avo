@@ -1,11 +1,13 @@
 module Avo
   module Fields
     class RadioField < BaseField
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
 
-        @options = args[:options] || {}
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
       end
+
+      supports :options, default: {}
 
       def options
         Avo::ExecutionContext.new(

@@ -3,17 +3,20 @@
 module Avo
   module Fields
     class AreaField < BaseField
-      attr_reader :mapkick_options
-      attr_reader :datapoint_options
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
+      supports :geometry, default: :polygon, possible_values: [:polygon, :multi_polygon]
+      supports :mapkick_options, default: {}
+      supports :datapoint_options, default: {}
+      supports :demo, extra_info: "here"
 
       def initialize(id, **args, &block)
         hide_on :index
 
         super(id, **args, &block)
-
-        @geometry = args[:geometry].presence || :polygon # Accepts: `:polygon` or `:multi_polygon`
-        @mapkick_options = args[:mapkick_options].presence || {}
-        @datapoint_options = args[:datapoint_options].presence || {}
       end
 
       def map_data

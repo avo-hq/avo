@@ -1,7 +1,13 @@
 module Avo
   module Fields
     class PasswordField < TextField
-      attr_reader :revealable
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
+      supports :revealable, default: false
 
       def initialize(id, **args, &block)
         show_on :forms
@@ -9,8 +15,6 @@ module Avo
         super(id, **args, &block)
 
         hide_on :index, :show
-
-        @revealable = args[:revealable].present? ? args[:revealable] : false
       end
     end
   end

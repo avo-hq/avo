@@ -1,6 +1,12 @@
 module Avo
   module Fields
     class BooleanField < BaseField
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       attr_reader :true_value
       attr_reader :false_value
 

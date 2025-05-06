@@ -8,6 +8,12 @@ module Avo
       attr_reader :indent_with_tabs
       attr_reader :line_wrapping
 
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       def initialize(id, **args, &block)
         hide_on :index
 

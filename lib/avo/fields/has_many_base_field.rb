@@ -1,6 +1,12 @@
 module Avo
   module Fields
     class HasManyBaseField < ManyFrameBaseField
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       attr_reader :attach_scope,
         :link_to_child_resource,
         :attach_fields

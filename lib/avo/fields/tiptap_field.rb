@@ -1,14 +1,16 @@
 module Avo
   module Fields
     class TiptapField < BaseField
-      attr_reader :always_show
+      class_attribute :supported_options, default: {}
 
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
 
+      supports :always_show, default: false
+
+      def post_initialize
         hide_on :index
-
-        @always_show = args[:always_show] || false
       end
     end
   end

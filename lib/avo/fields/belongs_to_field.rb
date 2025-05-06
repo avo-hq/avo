@@ -57,6 +57,12 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+
+      class_attribute :supported_options, default: {}
+      Avo::Fields::COMMON_OPTIONS.each do |common_option, hash|
+        supports common_option, hash
+      end
+
       include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
 

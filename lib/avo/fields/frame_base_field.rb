@@ -6,15 +6,6 @@ module Avo
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
 
-      def initialize(id, **args, &block)
-        super(id, **args, &block)
-
-        @use_resource = args[:use_resource]
-        @reloadable = args[:reloadable]
-        @linkable = args[:linkable]
-        @description = args[:description]
-      end
-
       def field_resource
         resource || get_resource_by_model_class(@record.class)
       end
