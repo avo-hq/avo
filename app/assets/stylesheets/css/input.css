@@ -1,0 +1,16 @@
+.input {
+  --input-color: var(--color-input-text);
+
+  border-color: var(--input-color);
+
+  @apply appearance-none inline-flex disabled:cursor-not-allowed disabled:opacity-50 py-2 px-3 leading-tight bg-input-bg rounded-fields border focus-visible:ring-input-focused-ring focus-visible:text-input-focused-text text-input-text placeholder:text-placeholder;
+
+}
+
+.input-warning {
+  &,
+  &:focus,
+  &:focus-within {
+    --input-color: var(--color-warning-text);
+  }
+}

@@ -50,6 +50,7 @@
 
   --color-input-text: var(--color-neutral-600);
   --color-input-bg: var(--color-neutral-50);
+  --color-input-border: var(--color-neutral-700);
   --color-input-focused-text: var(--color-neutral-700);
   --color-input-focused-ring: var(--color-primary-content);
 
@@ -69,7 +70,7 @@
   --color-success-text: #f0f0f0;
 
   --color-warning-content: #f0f0f0;
-  --color-warning-text: #f0f0f0;
+  --color-warning-text: var(--color-orange-600);
 
   --color-error-content: #f0f0f0;
   --color-error-text: #f0f0f0;
@@ -137,6 +138,8 @@
   @import './../../../node_modules/flatpickr/dist/flatpickr.css';
   @import './../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css';
   @import './../../../node_modules/@yaireo/tagify/dist/tagify.css';
+
+  @import './css/input.css';
 
   @import './css/fonts.css';
   @import './css/buttons.css';

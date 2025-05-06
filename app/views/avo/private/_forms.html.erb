@@ -7,7 +7,7 @@
     field :email, as: :gravatar, link_to_record: true, as_avatar: :circle, only_on: :index
     # with_options as: :text, only_on: :index do
     field :first_name, placeholder: "John"
-    field :last_name, as: :textarea, placeholder: "Doe", filterable: true
+    field :last_name, as: :textarea, placeholder: "Doe", filterable: true, disabled: true
     # end
     field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
     field :active, as: :boolean, name: "Is active", only_on: :index
