@@ -192,7 +192,7 @@ module Avo
         if @format_show_using.present? && @view.show?
           final_value = execute_context(@format_show_using, value: final_value)
         end
-        
+
         if @decorate.present? && @view.display?
           final_value = execute_context(@decorate, value: final_value)
         end
