@@ -50,5 +50,26 @@ RSpec.feature "ArrayResource", type: :system do
       all('a[data-control="show"]').last.click
       expect(page).to have_text("#{User.first(6).last.name} rendered as array resource")
     end
+
+    it "can access query on actions" do
+      visit avo.resources_movies_path
+
+      check_select_all
+      click_on "Select all matching"
+
+      movies_count = 50
+
+      open_panel_action(action_name: "Test query access ")
+
+      expect(page).to have_text("message #{movies_count} selected")
+      expect(page).to have_field("fields_selected", with: "#{movies_count} selected def fields")
+      expect(page).to have_text("cancel_button_label #{movies_count} selected")
+      expect(page).to have_text("confirm_button_label #{movies_count} selected")
+      expect(page).to have_text("Test query access #{movies_count}")
+
+      run_action
+
+      expect(page).to have_text("succeed #{movies_count} selected")
+    end
   end
 end
