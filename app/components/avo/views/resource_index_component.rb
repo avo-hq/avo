@@ -30,10 +30,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     end
   end
 
-  def view_type
-    @index_params[:view_type]
-  end
-
   def bulk_edit_path
     # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
     args = {via_view: "index"}
