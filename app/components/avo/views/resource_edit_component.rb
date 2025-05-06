@@ -20,8 +20,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return helpers.resources_path(resource: @resource) if from_bulk_update?
-
     # The `return_to` param takes precedence over anything else.
     return params[:return_to] if params[:return_to].present?
 
@@ -65,10 +63,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   private
-
-  def from_bulk_update?
-    params[:controller] == "avo/bulk_update"
-  end
 
   def via_index?
     params[:via_view] == "index"

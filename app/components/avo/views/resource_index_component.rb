@@ -41,7 +41,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       }
     end
 
-    helpers.edit_bulk_update_path(resource: @resource, **args)
+    helpers.edit_bulk_update_path(resource_name: @resource.name, **args)
   end
 
   # The Create button is dependent on the new? policy method.
@@ -162,7 +162,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def render_bulk_update_button
-    a_link helpers.edit_bulk_update_path(resource_name: @resource.name),
+    a_link bulk_edit_path,
       style: :primary,
       color: :primary,
       icon: "avo/edit",
