@@ -36,7 +36,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     if @parent_record.present?
       args = {
-        via_resource_class: parent_resource.class.to_s,
+        via_resource_class: @parent_resource.class.to_s,
         via_record_id: @parent_record.to_param
       }
     end
