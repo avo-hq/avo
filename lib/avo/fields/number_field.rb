@@ -1,9 +1,11 @@
 module Avo
   module Fields
     class NumberField < TextField
+      include ActionView::Helpers::NumberHelper
       attr_reader :min
       attr_reader :max
       attr_reader :step
+      attr_reader :format_display_using
 
       def initialize(id, **args, &block)
         super(id, **args, &block)
