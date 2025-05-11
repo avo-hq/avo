@@ -129,6 +129,10 @@ module Avo
       # Apply policy scope if authorization is present
       query = resource.authorization&.apply_policy query
 
+      if field&.scope&.present?
+        query = Avo::ExecutionContext.new(target: field.scope, query:, parent:, resource:, parent_resource:).handle
+      end
+
       Avo::ExecutionContext.new(target: @resource.class.search_query, params: params, query: query).handle
     end
 
@@ -184,7 +188,7 @@ module Avo
     def fetch_field
       return if params[:via_association_id].nil?
 
-      reflection_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_reflection_class]).new(
+      reflection_resource = parent_resource.new(
         view: Avo::ViewInquirer.new(params[:via_reflection_view]),
         record: parent,
         params: params,
@@ -197,8 +201,11 @@ module Avo
     def fetch_parent
       return unless params[:via_reflection_id].present?
 
-      parent_resource = Avo.resource_manager.get_resource_by_model_class params[:via_reflection_class]
       parent_resource.find_record params[:via_reflection_id], params: params
+    end
+
+    def parent_resource
+      @parent_resource ||= Avo.resource_manager.get_resource_by_model_class(params[:via_reflection_class])
     end
 
     def render_error(...)
