@@ -24,12 +24,6 @@
     multipart: true do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
 
-    <% if @prefilled_fields.present? %>
-      <% @prefilled_fields.each do |field, value| %>
-        <%= hidden_field_tag "prefilled[#{field}]", value %>
-      <% end %>
-    <% end %>
-
     <%= content_tag :div, class: "space-y-12" do %>
       <% @resource.get_items.each_with_index do |item, index| %>
         <%= render Avo::Items::SwitcherComponent.new(
