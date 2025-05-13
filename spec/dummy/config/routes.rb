@@ -33,6 +33,7 @@ if defined? ::Avo
     scope :resources do
       get "courses/cities", to: "courses#cities"
       get "users/get_users", to: "users#get_users"
+      get "projects/async_test", to: "projects#async_test"
     end
 
     put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account

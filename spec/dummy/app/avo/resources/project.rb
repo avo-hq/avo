@@ -26,6 +26,11 @@ class Avo::Resources::Project < Avo::BaseResource
 
   def fields
     field :id, as: :id, link_to_record: true
+    field :async_test do
+      turbo_frame_tag "async_test", src: "/admin/resources/projects/async_test", loading: :lazy, target: :_top, class: "block" do
+        render Avo::LoadingComponent.new(title: @field.name)
+      end
+    end
     field :status,
       as: :status,
       failed_when: ["closed", :rejected, :failed, "user_reject"],
