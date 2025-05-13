@@ -77,7 +77,6 @@ class Avo::Resources::Post < Avo::BaseResource
     field :is_published, as: :boolean do
       record.published_at.present?
     end
-    field :post_user, for_attribute: :user, as: :belongs_to, placeholder: "—"
     field :user, as: :belongs_to, placeholder: "—"
     field :status, as: :select, enum: ::Post.statuses, display_value: false
     field :slug, as: :text
