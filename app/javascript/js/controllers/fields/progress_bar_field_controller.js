@@ -1,9 +1,10 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['label']
+  static targets = ['label', 'fakeInput', 'realInput']
 
-  update(e) {
-    this.labelTarget.textContent = e.target.value
+  update() {
+    this.realInputTarget.value = this.fakeInputTarget.value
+    this.labelTarget.textContent = this.realInputTarget.value
   }
 }
