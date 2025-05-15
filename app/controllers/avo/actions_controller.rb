@@ -10,7 +10,7 @@ module Avo
     # - If we're on a show page (with an :id param), defer to superclass logic
     # - If on an index page with exactly one query result, assign it directly
     def set_record
-      if request.params[:id].present?
+      if params[:id].present?
         super
       elsif @query.size == 1
         @record = @query.first
