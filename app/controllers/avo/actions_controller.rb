@@ -2,15 +2,20 @@ require_dependency "avo/application_controller"
 
 module Avo
   class ActionsController < ApplicationController
-    before_action :set_resource_name
-    before_action :set_resource
-    before_action :set_record, only: [:show, :handle], if: ->(request) do
-      # Try to se the record only if the user is on the record page.
-      # set_record will fail if it's tried to be used from the Index page.
-      request.params[:id].present?
-    end
-    before_action :set_query, :set_action, :verify_authorization, only: [:show, :handle]
+    before_action :set_resource_name, :set_resource
+    before_action :set_query, :set_record, :set_action, :verify_authorization, only: [:show, :handle]
     before_action :set_fields, only: :handle
+
+    # Sets @record based on context:
+    # - If we're on a show page (with an :id param), defer to superclass logic
+    # - If on an index page with exactly one query result, assign it directly
+    def set_record
+      if request.params[:id].present?
+        super
+      elsif @query.size == 1
+        @record = @query.first
+      end
+    end
 
     layout :choose_layout
 
