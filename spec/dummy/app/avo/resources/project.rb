@@ -35,7 +35,6 @@ class Avo::Resources::Project < Avo::BaseResource
       filterable: true,
       summarizable: true
     field :name, as: :text, required: true, sortable: true, default: "New project default name", copyable: true
-    field :visible_progress, as: :number, visible: false
     field :progress,
       as: :progress_bar,
       value_suffix: "%",

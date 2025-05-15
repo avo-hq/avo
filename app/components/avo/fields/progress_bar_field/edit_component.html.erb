@@ -12,7 +12,7 @@
         progress_bar_field_target: "valueInput"
       }
     %>
-    <%= @form.range_field "visible_#{@field.id}",
+    <%= tag.input type: "range",
       value: @field.value,
       class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
       data: {
@@ -20,13 +20,14 @@
         progress_bar_field_target: "visibleInput",
         **@field.get_html(:data, view: view, element: :input)
       },
-      disabled: true,
+      disabled: disabled?,
       max: @field.max,
       min: 0,
       placeholder: @field.placeholder,
       step: @field.step,
       autofocus: @autofocus,
-      style: @field.get_html(:style, view: view, element: :input)
+      style: @field.get_html(:style, view: view, element: :input),
+      name: nil
     %>
   <% end %>
 <% end %>
