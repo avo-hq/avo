@@ -5,6 +5,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
 
   prop :as_row_control, default: false
   prop :icon
+  prop :icon_class
   prop :size, default: :md
   prop :title
   prop :color do |value|
@@ -102,7 +103,8 @@ class Avo::ActionsComponent < Avo::BaseComponent
       disabled: action.disabled?,
       turbo_prefetch: false,
       enabled_classes: "text-black",
-      disabled_classes: "text-gray-500"
+      disabled_classes: "text-gray-500",
+      resource_name: action.resource.model_key
     }
   end
 

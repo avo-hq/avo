@@ -24,8 +24,20 @@ module Avo
       @resource = @related_resource
       @parent_record = @parent_resource.find_record(params[:id], params: params)
       @parent_resource.hydrate(record: @parent_record)
-      association_name = BaseResource.valid_association_name(@parent_record, association_from_params)
-      @query = @related_authorization.apply_policy @parent_record.send(association_name)
+
+      # When array field the records are fetched from the field block, from the parent record or from the resource def records
+      # When other field type, like has_many the @query is directly fetched from the parent record
+      # Don't apply policy on array type since it can return an array of hashes where `.all` and other methods used on policy will fail.
+      @query = if @field.type == "array"
+        @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block, record: @parent_record).handle || @parent_record.try(@field.id))
+      else
+        @related_authorization.apply_policy(
+          @parent_record.send(
+            BaseResource.valid_association_name(@parent_record, association_from_params)
+          )
+        )
+      end
+
       @association_field = find_association_field(resource: @parent_resource, association: params[:related_name])
 
       if @association_field.present? && @association_field.scope.present?
@@ -114,7 +126,9 @@ module Avo
     private
 
     def set_reflection
-      @reflection = @record.class.reflect_on_association(association_from_params)
+      @reflection = @record.class.try(:reflect_on_association, association_from_params)
+
+      return if @reflection.blank? && @field.type == "array"
 
       # Ensure inverse_of is present on STI
       if !@record.class.descends_from_active_record? && @reflection.inverse_of.blank? && Rails.env.development?
@@ -125,7 +139,8 @@ module Avo
     end
 
     def set_attachment_class
-      @attachment_class = @reflection.klass
+      # @reflection is nil whe using an Array field.
+      @attachment_class = @reflection&.klass
     end
 
     def set_attachment_resource
@@ -254,7 +269,7 @@ module Avo
       turbo_streams = super
 
       # We want to close the modal if the user wants to add just one record
-      turbo_streams << turbo_stream.close_modal if params[:button] != "attach_another"
+      turbo_streams << turbo_stream.avo_close_modal if params[:button] != "attach_another"
 
       turbo_streams
     end
@@ -288,6 +303,37 @@ module Avo
         [@attachment_resource.new(record: record).record_title, record.to_param]
       end.tap do |options|
         options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
+      end
+    end
+
+    def pagination_key
+      @pagination_key ||= "#{@parent_resource.class.to_s.parameterize}.has_many.#{@related_resource.class.to_s.parameterize}"
+    end
+
+    def set_pagination_params
+      set_page_param
+      set_per_page_param
+    end
+
+    def set_page_param
+      # avo-resources-project.has_many.avo-resources-user.page
+      page_key = "#{pagination_key}.page"
+
+      @index_params[:page] = if Avo.configuration.session_persistence_enabled?
+        session[page_key] = params[:page] || session[page_key] || 1
+      else
+        params[:page] || 1
+      end
+    end
+
+    def set_per_page_param
+      # avo-resources-project.has_many.avo-resources-user.per_page
+      per_page_key = "#{pagination_key}.per_page"
+
+      @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
+        session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
+      else
+        params[:per_page] || Avo.configuration.via_per_page
       end
     end
   end

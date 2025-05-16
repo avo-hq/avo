@@ -17,8 +17,12 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
+  CACHED_SVGS = {}
+
+  # Frame IDs
   MODAL_FRAME_ID = :modal_frame
-  ACTIONS_BACKGROUND_FRAME = :actions_background
+  MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID = :media_library_item_details
+  ACTIONS_BACKGROUND_FRAME_ID = :actions_background
 
   class LicenseVerificationTemperedError < StandardError; end
 
@@ -32,22 +36,32 @@ module Avo
 
   class DeprecatedAPIError < StandardError; end
 
+  # Exception raised when a resource is missing
   class MissingResourceError < StandardError
-    def initialize(model_class, field_name = nil)
-      super(missing_resource_message(model_class, field_name))
+    def initialize(model_class, field)
+      super(missing_resource_message(model_class, field))
     end
 
     private
 
-    def missing_resource_message(model_class, field_name)
+    def missing_resource_message(model_class, field)
       model_name = model_class.to_s.underscore
-      field_name ||= model_name
+      field_name = field.id
 
       "Failed to find a resource while rendering the :#{field_name} field.\n" \
-      "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize}'.\n" \
+      "You may generate a resource for it by running 'rails generate avo:resource #{model_name.singularize}#{" --array" if field.type == "array"}'.\n" \
       "\n" \
       "Alternatively add the 'use_resource' option to the :#{field_name} field to specify a custom resource to be used.\n" \
-      "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/resources.html."
+      "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/#{"array-" if field.type == "array"}resources.html."
+    end
+  end
+
+  class ResourceNotFoundError < StandardError
+    def initialize(resource_name)
+      super(
+        "Resource for '#{resource_name}' not found.\n" \
+        "You can generate a resource for it by running 'rails generate avo:resource #{resource_name}'."
+      )
     end
   end
 
@@ -60,9 +74,11 @@ module Avo
 
     # Runs when the app boots up
     def boot
+      Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
+      Avo.plugin_manager.reset
       ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
@@ -90,7 +106,7 @@ module Avo
     end
 
     def main_menu
-      return unless Avo.plugin_manager.installed?(:avo_menu)
+      return unless Avo.plugin_manager.installed?("avo-menu")
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_main_menu?
@@ -99,7 +115,7 @@ module Avo
     end
 
     def profile_menu
-      return unless Avo.plugin_manager.installed?(:avo_menu)
+      return unless Avo.plugin_manager.installed?("avo-menu")
 
       # Return empty menu if the app doesn't have the profile menu configured
       return Avo::Menu::Builder.new.build unless has_profile_menu?
@@ -129,13 +145,11 @@ module Avo
       true
     end
 
-    # Mount all Avo engines
     def mount_engines
       -> {
-        mount Avo::DynamicFilters::Engine, at: "/avo-dynamic_filters" if defined?(Avo::DynamicFilters::Engine)
-        mount Avo::Dashboards::Engine, at: "/dashboards" if defined?(Avo::Dashboards::Engine)
-        mount Avo::Pro::Engine, at: "/avo-pro" if defined?(Avo::Pro::Engine)
-        mount Avo::Kanban::Engine, at: "/boards" if defined?(Avo::Kanban::Engine)
+        raise "'mount_engines' method is now obsolete. \n" \
+          "Please refer to the upgrade guide for details on the new mounting point: \n" \
+          "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
       }
     end
 

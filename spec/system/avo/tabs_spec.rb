@@ -32,6 +32,12 @@ RSpec.describe "Tabs", type: :system do
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Attach post"
         expect(find('turbo-frame[id="has_many_field_show_posts"]')).to have_link "Create new post", href: "/admin/resources/posts/new?via_record_id=#{user.slug}&via_relation=user&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
 
+        expect(page).to have_text "First tabs group"
+        expect(page).to have_text "First tabs group description"
+
+        expect(page).to have_text "Second tabs group"
+        expect(page).to have_text "Second tabs group description"
+
         click_on "Attach post"
 
         expect(page).to have_text "Choose post"
@@ -175,6 +181,8 @@ RSpec.describe "Tabs", type: :system do
   end
 
   it "keeps the pagination on tab when back is used" do
+    Avo.configuration.persistence = {driver: :session}
+
     visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
@@ -193,5 +201,82 @@ RSpec.describe "Tabs", type: :system do
 
     expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
     expect(page).to have_text "Displaying items 9-9 of 9 in total"
+
+    Avo.configuration.persistence = {driver: nil}
+  end
+
+  it "keeps the per_page on association when back is used" do
+    Avo.configuration.persistence = {driver: :session}
+
+    visit avo.resources_user_path user
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+    within("#has_and_belongs_to_many_field_show_projects") do
+      expect(page).to have_text "Displaying items 1-8 of 9 in total"
+      find("select#per_page.appearance-none").select("24")
+    end
+
+    expect(page).to have_text "Displaying 9 items"
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+
+    find_all('a[aria-label="View project"]')[0].click
+    wait_for_loaded
+
+    page.go_back
+    wait_for_loaded
+
+    expect(page).to have_text "Displaying 9 items"
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+
+    Avo.configuration.persistence = {driver: nil}
+  end
+
+  let!(:person) { create :person }
+
+  it "lazy_load" do
+    visit avo.resources_person_path(person)
+
+    scroll_to first_tab_group
+
+    # Find visible information from first default tab
+    field_wrapper = find('div[data-field-id="company"]')
+    label = field_wrapper.find('div[data-slot="label"]')
+    value = field_wrapper.find('div[data-slot="value"]')
+    expect(label.text.strip).to eq("COMPANY")
+    expect(value.text.strip).to eq("TechCorp Inc.")
+
+    # Expect text from preferences and employment tabs (not lazy loaded) to be visible
+    within(:css, '.block.hidden[data-tabs-target="tabPanel"][data-tab-id="Preferences"]', visible: :all) do
+      # Find the field wrapper for "Notification preference"
+      field_wrapper = find('div[data-field-id="notification_preference"]', visible: :all)
+
+      # Locate the label and value within the wrapper
+      label = field_wrapper.find('div[data-slot="label"]', visible: :all)
+      value = field_wrapper.find('div[data-slot="value"]', visible: :all)
+
+      expect(label.text(:all).strip).to eq("Notification preference")
+      expect(value.text(:all).strip).to eq("Email & SMS")
+    end
+
+    # Expect not to find field from lazy loaded tab
+    within(:css, '.block.hidden[data-tabs-target="tabPanel"][data-tab-id="Address"]', visible: :all) do
+      expect(page).not_to have_selector('div[data-field-id="phone_number"]', visible: :all)
+    end
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Address"]').click
+    wait_for_loaded
+
+    # Find the phone number from lazy loaded tab after clicking on it
+    within(:css, '.block[data-tabs-target="tabPanel"][data-tab-id="Address"]', visible: :all) do
+      # Find the field wrapper for "Phone number"
+      field_wrapper = find('div[data-field-id="phone_number"]', visible: :all)
+
+      # Locate the label and value within the wrapper
+      label = field_wrapper.find('div[data-slot="label"]', visible: :all)
+      value = field_wrapper.find('div[data-slot="value"]', visible: :all)
+
+      expect(label.text(:all).strip).to eq("Phone number")
+      expect(value.text(:all).strip).to eq("+1 (555) 123-4567")
+    end
   end
 end

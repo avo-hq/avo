@@ -40,7 +40,9 @@ module Avo
             load_resources_namespace
           end
 
-          BaseResource.descendants
+          # All descendants from Avo::Resources::Base except the internal abstract ones
+
+          Base.descendants.reject { _1.is_abstract? }
         end
 
         def load_resources_namespace

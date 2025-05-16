@@ -37,7 +37,7 @@ FactoryBot.define do
 
   factory :project do
     name { Faker::App.name }
-    status { ['closed', :rejected, :failed, 'loading', :running, :waiting].sample }
+    status { ["closed", :rejected, :failed, "loading", :running, :waiting].sample }
     stage { ["Discovery", "Idea", "Done", "On hold", "Cancelled", "Drafting"].sample }
     budget { Faker::Number.decimal(l_digits: 4) }
     country { Faker::Address.country_code }
@@ -56,7 +56,7 @@ FactoryBot.define do
       end
 
       ["dummy-file.txt", "dummy-audio.mp3"].each do |filename|
-        file = Avo::Engine.root.join("spec", "dummy", filename)
+        file = Rails.root.join("db", "seed_files", filename)
         project.files.attach(io: file.open, filename: filename)
       end
     end
@@ -138,10 +138,16 @@ FactoryBot.define do
   end
 
   factory :event do
+    uuid { SecureRandom.uuid }
     location { create :location }
     name { Faker::Lorem.sentence }
     event_time { DateTime.now }
     body { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
+  end
+
+  factory :volunteer do
+    name { Faker::Name.name }
+    role { Faker::Job.title }
   end
 
   factory :store do

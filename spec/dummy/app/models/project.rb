@@ -17,7 +17,7 @@
 #  progress       :integer
 #
 class Project < ApplicationRecord
-  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.3.0")
+  if Gem::Version.new(Rails.version) >= Gem::Version.new("7.1.0")
     enum :stage, {
       Discovery: "discovery",
       Idea: "idea",
@@ -50,5 +50,10 @@ class Project < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ["budget", "country", "created_at", "description", "id", "meta", "name", "progress", "stage", "started_at", "status", "updated_at", "users_required"]
+  end
+
+  # Used to test tags on select mode with {value:,label:}
+  def dummy_field=(value)
+    TestBuddy.hi("dummy_field value is '#{value}'")
   end
 end

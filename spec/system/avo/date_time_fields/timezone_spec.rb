@@ -43,6 +43,7 @@ RSpec.describe "timezone", type: :system do
           expect(text_input.value).to eq "2024-03-25 09:23:00"
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "March 25, 2024 09:23:00 CET"
         end
@@ -61,6 +62,7 @@ RSpec.describe "timezone", type: :system do
           close_picker
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "March 25, 2024 09:24:17 CET"
         end
@@ -101,6 +103,7 @@ RSpec.describe "timezone", type: :system do
           expect(text_input.value).to eq "2024-03-25 08:23:00"
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "March 25, 2024 08:23:00 UTC"
         end
@@ -119,6 +122,7 @@ RSpec.describe "timezone", type: :system do
           close_picker
 
           save
+          wait_for_loaded
 
           expect(show_field_value(id: :started_at)).to eq "March 25, 2024 08:24:17 UTC"
         end

@@ -15,19 +15,24 @@ import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
+import FormController from './controllers/form_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
+import MediaLibraryAttachController from './controllers/media_library_attach_controller'
+import MediaLibraryController from './controllers/media_library_controller'
 import MenuController from './controllers/menu_controller'
 import ModalController from './controllers/modal_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
+import NestedFormController from './controllers/nested_form_controller'
 import PanelRefreshController from './controllers/fields/panel_refresh_controller'
 import PerPageController from './controllers/per_page_controller'
 import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
+import RecordSelectorController from './controllers/record_selector_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
@@ -59,28 +64,33 @@ application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
 application.register('filter', FilterController)
-application.register('panel-refresh', PanelRefreshController)
+application.register('form', FormController)
 application.register('hidden-input', HiddenInputController)
 application.register('input-autofocus', InputAutofocusController)
 application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
 application.register('loading-button', LoadingButtonController)
+application.register('media-library-attach', MediaLibraryAttachController)
+application.register('media-library', MediaLibraryController)
 application.register('menu', MenuController)
 application.register('modal', ModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
+application.register('nested-form', NestedFormController)
+application.register('panel-refresh', PanelRefreshController)
 application.register('per-page', PerPageController)
 application.register('preview', PreviewController)
+application.register('record-selector', RecordSelectorController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
 application.register('resource-show', ResourceShowController)
 application.register('search', SearchController)
-application.register('select', SelectController)
 application.register('select-filter', SelectFilterController)
+application.register('select', SelectController)
 application.register('self-destroy', SelfDestroyController)
 application.register('sidebar', SidebarController)
 application.register('sign-out', SignOutController)
-application.register('tabs', TabsController)
 application.register('table-row', TableRowController)
+application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
@@ -95,7 +105,7 @@ application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
 application.register('tags-field', TagsFieldController)
-application.register('trix-field', TrixFieldController)
 application.register('tiptap-field', TiptapFieldController)
+application.register('trix-field', TrixFieldController)
 
 // Custom controllers

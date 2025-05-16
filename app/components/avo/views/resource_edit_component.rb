@@ -18,7 +18,9 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def back_path
-    return if via_belongs_to?
+    # The `return_to` param takes precedence over anything else.
+    return params[:return_to] if params[:return_to].present?
+
     return resource_view_path if via_resource?
     return resources_path if via_index?
 
@@ -62,10 +64,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def via_index?
     params[:via_view] == "index"
-  end
-
-  def via_belongs_to?
-    params[:via_belongs_to_resource_class].present?
   end
 
   def is_edit?

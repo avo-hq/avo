@@ -12,6 +12,7 @@ class Avo::ProfileItemComponent < Avo::BaseComponent
   end
   prop :title, reader: :public
   prop :method, reader: :public
+  prop :disabled, reader: :public
   prop :params, default: {}.freeze, reader: :public
   prop :classes, default: "", reader: :public
 

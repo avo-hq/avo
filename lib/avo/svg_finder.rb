@@ -9,13 +9,17 @@ class Avo::SvgFinder
 
   # Use the default static finder logic. If that doesn't find anything, search according to our pattern:
   def pathname
-    found_asset = default_strategy
+    Avo::CACHED_SVGS[@filename] ||= begin
+      found_asset = default_strategy
 
-    # Use the found asset
-    return found_asset if found_asset.present?
-
-    paths.find do |path|
-      File.exist? path
+      # Use the found asset
+      if found_asset.present?
+        found_asset
+      else
+        paths.find do |path|
+          File.exist? path
+        end
+      end
     end
   end
 
@@ -23,9 +27,10 @@ class Avo::SvgFinder
     [
       Rails.root.join("app", "assets", "svgs", @filename),
       Rails.root.join(@filename),
+      Avo::Heroicons.root.join("assets", "svgs", @filename),
+      Avo::Heroicons.root.join("assets", "svgs", "heroicons", "outline", @filename),
       Avo::Engine.root.join("app", "assets", "svgs", @filename),
       Avo::Engine.root.join("app", "assets", "svgs", "avo", @filename),
-      Avo::Engine.root.join("app", "assets", "svgs", "heroicons", "outline", @filename),
       Avo::Engine.root.join(@filename).to_s,
       # Add all paths from Rails including engines
       *Rails.application.config.assets&.paths&.map { |path| File.join(path, @filename) }

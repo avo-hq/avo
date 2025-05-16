@@ -4,13 +4,23 @@ module Avo
     include Avo::Concerns::HasActionStimulusControllers
     include Avo::Concerns::Hydration
 
+    unless defined?(DATA_ATTRIBUTES)
+      DATA_ATTRIBUTES = {turbo_frame: Avo::MODAL_FRAME_ID}
+    end
+
     class_attribute :name, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
     class_attribute :cancel_button_label
     class_attribute :no_confirmation, default: false
     class_attribute :standalone, default: false
-    class_attribute :visible
+    class_attribute :visible, default: -> {
+      # Hide on the :new view by default
+      return false if view.new?
+
+      # Show on all other views
+      true
+    }
     class_attribute :may_download_file
     class_attribute :turbo
     class_attribute :authorize, default: true
@@ -25,6 +35,7 @@ module Avo
     attr_reader :icon
     attr_reader :appended_turbo_streams
     attr_reader :records_to_reload
+    attr_reader :query
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -52,8 +63,8 @@ module Avo
         to_s
       end
 
-      def link_arguments(resource:, arguments: {}, **args)
-        path = Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
+      def path(resource:, arguments: {}, **args)
+        Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
           .append_paths("actions")
           .append_query(
             **{
@@ -63,8 +74,10 @@ module Avo
             }.compact
           )
           .to_s
+      end
 
-        [path, {turbo_frame: Avo::MODAL_FRAME_ID}]
+      def link_arguments(resource:, arguments: {}, **args)
+        [path(resource:, arguments:, **args), DATA_ATTRIBUTES]
       end
 
       # Encrypt the arguments so we can pass sensible data as a query param.
@@ -96,14 +109,15 @@ module Avo
           resource: @resource,
           record: @record,
           view: @view,
-          arguments: @arguments
+          arguments: @arguments,
+          query: @query
         ).handle
       end
 
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil, index_query: nil)
       @record = record
       @resource = resource
       @user = user
@@ -114,7 +128,8 @@ module Avo
         resource: resource,
         record: record
       ).handle.with_indifferent_access
-
+      @query = query
+      @index_query = index_query
       self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
       self.class.confirm_button_label ||= I18n.t("avo.run")
       self.class.cancel_button_label ||= I18n.t("avo.cancel")
@@ -139,7 +154,30 @@ module Avo
         resource: @resource,
         record: @record,
         view: @view,
-        arguments: @arguments
+        arguments: @arguments,
+        query: @query
+      ).handle
+    end
+
+    def cancel_button_label
+      Avo::ExecutionContext.new(
+        target: self.class.cancel_button_label,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments,
+        query: @query
+      ).handle
+    end
+
+    def confirm_button_label
+      Avo::ExecutionContext.new(
+        target: self.class.confirm_button_label,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments,
+        query: @query
       ).handle
     end
 
@@ -181,17 +219,6 @@ module Avo
     end
 
     def visible_in_view(parent_resource: nil)
-      return false unless authorized?
-
-      if visible.blank?
-        # Hide on the :new view by default
-        return false if view.new?
-
-        # Show on all other views
-        return true
-      end
-
-      # Run the visible block if available
       Avo::ExecutionContext.new(
         target: visible,
         params: params,
@@ -199,7 +226,7 @@ module Avo
         resource: @resource,
         view: @view,
         arguments: arguments
-      ).handle
+      ).handle && authorized?
     end
 
     def succeed(text)
@@ -343,6 +370,16 @@ module Avo
 
     def disabled?
       !enabled?
+    end
+
+    def no_confirmation?
+      Avo::ExecutionContext.new(
+        target: no_confirmation,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments:
+      ).handle
     end
 
     private

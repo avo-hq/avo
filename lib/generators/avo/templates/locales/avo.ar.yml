@@ -28,9 +28,12 @@ ar:
     choose_item: اختر %{item}
     clear_value: مسح القيمة
     click_to_reveal_filters: انقر لإظهار المرشحات
+    close: إغلاق
     close_modal: أغلق النافذة
     confirm: تأكيد
+    copy: نسخ
     create_new_item: إنشاء %{item} جديد
+    created_at_timestamp: تم الإنشاء في %{created_at}
     dashboard: لوحة القيادة
     dashboards: لوحات القيادة
     default_scope: الجميع
@@ -70,9 +73,13 @@ ar:
     less_content: محتوى أقل
     list_is_empty: القائمة فارغة
     loading: جاري التحميل
+    media_library:
+      title: مكتبة الوسائط
     more: المزيد
     more_content: المزيد من المحتوى
     more_records_available: هناك المزيد من السجلات المتاحة.
+    nested:
+      add_new_item: إضافة %{item} جديدة
     new: جديد
     next_page: الصفحة التالية
     no_cancel: لا، إلغاء
@@ -112,6 +119,9 @@ ar:
     select_item: تحديد العنصر
     show_content: عرض المحتوى
     sign_out: تسجيل الخروج
+    sort_asc: ترتيب تصاعدي
+    sort_desc: ترتيب تنازلي
+    sort_reset: إعادة تهيئة الترتيب
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
@@ -119,8 +129,10 @@ ar:
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
+    updated_at_timestamp: تم التحديث في %{updated_at}
     view: عرض
     view_item: عرض %{item}
+    visit_record_on_external_path: زيارة السجل على الرابط الخارجي
     was_successfully_created: تم إنشاؤه بنجاح
     was_successfully_updated: تم تحديثه بنجاح
     x_items_more:

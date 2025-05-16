@@ -4,6 +4,7 @@ module Avo
       extend ActiveSupport::DescendantsTracker
 
       include ActionView::Helpers::UrlHelper
+      include Avo::Concerns::HasFieldDiscovery
       include Avo::Concerns::HasItems
       include Avo::Concerns::CanReplaceItems
       include Avo::Concerns::HasControls
@@ -15,7 +16,12 @@ module Avo
       include Avo::Concerns::HasHelpers
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
-      include Avo::Concerns::ControlsPlacement
+      include Avo::Concerns::HasDiscreetInformation
+      include Avo::Concerns::RowControlsConfiguration
+      include Avo::Concerns::SafeCall
+      include Avo::Concerns::AbstractResource
+
+      abstract_resource!
 
       # Avo::Current methods
       delegate :context, to: Avo::Current
@@ -54,7 +60,7 @@ module Avo
       class_attribute :single_includes, default: []
       class_attribute :single_attachments, default: []
       class_attribute :authorization_policy
-      class_attribute :translation_key
+      class_attribute :custom_translation_key
       class_attribute :default_view_type, default: :table
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
@@ -79,7 +85,9 @@ module Avo
       class_attribute :components, default: {}
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
-      class_attribute :controls_placement, default: nil
+      class_attribute :external_link, default: nil
+
+      class_attribute :abstract, default: false
 
       # EXTRACT:
       class_attribute :ordering
@@ -175,8 +183,9 @@ module Avo
         end
 
         def translation_key
-          @translation_key || "avo.resource_translations.#{class_name.underscore}"
+          custom_translation_key || "avo.resource_translations.#{class_name.underscore}"
         end
+        alias_method :translation_key=, :custom_translation_key=
 
         def name
           name_from_translation_key(count: 1, default: class_name.underscore.humanize)
@@ -253,6 +262,7 @@ module Avo
       delegate :to_param, to: :class
       delegate :find_record, to: :class
       delegate :model_key, to: :class
+      delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
@@ -422,22 +432,24 @@ module Avo
       end
 
       def available_view_types
-        if self.class.view_types.present?
-          return Array(
-            Avo::ExecutionContext.new(
-              target: self.class.view_types,
-              resource: self,
-              record: record
-            ).handle
-          )
+        @available_view_types ||= begin
+          if self.class.view_types.present?
+            return Array(
+              Avo::ExecutionContext.new(
+                target: self.class.view_types,
+                resource: self,
+                record: record
+              ).handle
+            )
+          end
+
+          view_types = [:table]
+
+          view_types << :grid if self.class.grid_view.present?
+          view_types << :map if map_view.present?
+
+          view_types
         end
-
-        view_types = [:table]
-
-        view_types << :grid if self.class.grid_view.present?
-        view_types << :map if map_view.present?
-
-        view_types
       end
 
       def attachment_fields
@@ -447,8 +459,9 @@ module Avo
       end
 
       # Map the received params to their actual fields
-      def fields_by_database_id
-        get_field_definitions
+      # 'resource' argument is used on avo-advanced, don't remove
+      def fields_by_database_id(resource: self)
+        resource.get_field_definitions
           .reject do |field|
             field.computed
           end
@@ -475,14 +488,14 @@ module Avo
         # Write the user configured extra params to the record
         if extra_params.present?
           # Pick only the extra params
-          # params at this point are already permited, only need the keys to access them
+          # params at this point are already permitted, only need the keys to access them
           extra_attributes = permitted_params.slice(*flatten_keys(extra_params))
 
           # Let Rails fill in the rest of the params
           record.assign_attributes extra_attributes
         end
 
-        record
+        safe_call(:fill_nested_records, record:, permitted_params:) || record
       end
 
       def authorization(user: nil)
@@ -642,6 +655,40 @@ module Avo
 
       def resolve_component(original_component)
         custom_components.dig(original_component.to_s)&.to_s&.safe_constantize || original_component
+      end
+
+      def get_external_link
+        return unless record.persisted?
+
+        Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
+      end
+
+      def resource_type_array? = false
+
+      def sort_by_param
+        available_columns = model_class.column_names
+
+        if available_columns.include?(default_sort_column.to_s)
+          default_sort_column
+        elsif available_columns.include?("created_at")
+          :created_at
+        end
+      end
+
+      def sorting_supported? = true
+
+      def view_type
+        @view_type ||= if @params[:view_type].present?
+          @params[:view_type]
+        elsif available_view_types.size == 1
+          available_view_types.first
+        else
+          Avo::ExecutionContext.new(
+            target: default_view_type || Avo.configuration.default_view_type,
+            resource: self,
+            view: @view
+          ).handle
+        end
       end
 
       private

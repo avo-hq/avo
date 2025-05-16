@@ -3,6 +3,7 @@
 class Avo::PaginatorComponent < Avo::BaseComponent
   prop :resource
   prop :parent_record
+  prop :parent_resource
   prop :pagy
   prop :turbo_frame do |frame|
     frame.present? ? CGI.escapeHTML(frame) : :_top
@@ -12,7 +13,14 @@ class Avo::PaginatorComponent < Avo::BaseComponent
 
   def change_items_per_page_url(option)
     if @parent_record.present?
-      helpers.related_resources_path(@parent_record, @parent_record, per_page: option, keep_query_params: true, page: 1)
+      helpers.related_resources_path(
+        @parent_record,
+        @parent_record,
+        parent_resource: @parent_resource,
+        per_page: option,
+        keep_query_params: true,
+        page: 1
+      )
     else
       helpers.resources_path(resource: @resource, per_page: option, keep_query_params: true, page: 1)
     end
@@ -38,14 +46,5 @@ class Avo::PaginatorComponent < Avo::BaseComponent
 
       options.sort.uniq
     end
-  end
-
-  def pagy_major_version
-    return nil unless defined?(Pagy::VERSION)
-    version = Pagy::VERSION&.split(".")&.first&.to_i
-
-    return "8-or-more" if version >= 8
-
-    version
   end
 end

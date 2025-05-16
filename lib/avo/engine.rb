@@ -11,6 +11,8 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
     require "active_storage/engine"
   when "actiontext"
     require "action_text/engine"
+  when "avo-heroicons"
+    require "avo/heroicons"
   else
     require d.name
   end
@@ -59,6 +61,21 @@ module Avo
           app.config.watchable_dirs[directory_path] = [:rb]
         end
       end
+
+      # Add the mount_avo method to Rails
+      # rubocop:disable Style/ArgumentsForwarding
+      ActionDispatch::Routing::Mapper.include(Module.new {
+        def mount_avo(at: Avo.configuration.root_path, **options)
+          mount Avo::Engine, at:, **options
+
+          scope at do
+            Avo.plugin_manager.engines.each do |engine|
+              mount engine[:klass], **engine[:options].dup
+            end
+          end
+        end
+      })
+      # rubocop:enable Style/ArgumentsForwarding
     end
 
     initializer "avo.reloader" do |app|

@@ -1,7 +1,5 @@
 module Avo
   class Configuration
-    include ResourceConfiguration
-
     attr_writer :app_name
     attr_writer :branding
     attr_writer :root_path
@@ -10,6 +8,9 @@ module Avo
     attr_writer :turbo
     attr_writer :pagination
     attr_writer :explicit_authorization
+    attr_writer :exclude_from_status
+    attr_writer :persistence
+    attr_writer :resource_row_controls_config
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -25,7 +26,6 @@ module Avo
     attr_accessor :full_width_container
     attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
-    attr_accessor :cache_resource_filters
     attr_accessor :context
     attr_accessor :display_breadcrumbs
     attr_accessor :hide_layout_when_printing
@@ -48,7 +48,6 @@ module Avo
     attr_accessor :resources
     attr_accessor :prefix_path
     attr_accessor :resource_parent_controller
-    attr_accessor :mount_avo_engines
     attr_accessor :default_url_options
     attr_accessor :click_row_to_view_record
     attr_accessor :alert_dismiss_time
@@ -57,6 +56,8 @@ module Avo
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
     attr_accessor :associations_lookup_list_limit
+    attr_accessor :column_names_mapping
+    attr_accessor :column_types_mapping
 
     def initialize
       @root_path = "/avo"
@@ -85,7 +86,9 @@ module Avo
       @full_width_container = false
       @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
-      @cache_resource_filters = false
+      @persistence = {
+        driver: nil
+      }
       @context = proc {}
       @initial_breadcrumbs = proc {
         add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
@@ -108,7 +111,6 @@ module Avo
       @field_wrapper_layout = :inline
       @resources = nil
       @resource_parent_controller = "Avo::ResourcesController"
-      @mount_avo_engines = true
       @cache_store = computed_cache_store
       @logger = default_logger
       @turbo = default_turbo
@@ -121,12 +123,28 @@ module Avo
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
       @associations_lookup_list_limit = 1000
+      @exclude_from_status = []
+      @column_names_mapping = {}
+      @column_types_mapping = {}
+      @resource_row_controls_config = {}
+    end
+
+    unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
+      RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS = {
+        placement: :right,
+        float: false,
+        show_on_hover: false
+      }.freeze
+    end
+
+    def resource_row_controls_config
+      RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS.merge @resource_row_controls_config
     end
 
     # Authorization is enabled when:
     # (avo-pro gem is installed) AND (authorization_client is NOT nil)
     def authorization_enabled?
-      @authorization_enabled ||= Avo.plugin_manager.installed?(:avo_pro) && !authorization_client.nil?
+      @authorization_enabled ||= Avo.plugin_manager.installed?("avo-pro") && !authorization_client.nil?
     end
 
     def current_user_method(&block)
@@ -251,6 +269,10 @@ module Avo
       Avo::ExecutionContext.new(target: @turbo).handle
     end
 
+    def exclude_from_status
+      Avo::ExecutionContext.new(target: @exclude_from_status).handle
+    end
+
     def default_turbo
       -> do
         {
@@ -269,6 +291,20 @@ module Avo
 
     def explicit_authorization
       Avo::ExecutionContext.new(target: @explicit_authorization).handle
+    end
+
+    def persistence
+      Avo::ExecutionContext.new(target: @persistence).handle
+    end
+
+    def session_persistence_enabled?
+      persistence[:driver] == :session
+    end
+
+    def mount_avo_engines=(...)
+      raise "'mount_avo_engines' option is now obsolete. \n" \
+        "Please refer to the upgrade guide for details on the new mounting point: \n" \
+        "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
     end
   end
 

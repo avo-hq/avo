@@ -1,6 +1,8 @@
 ---
 en:
   avo:
+    media_library:
+      title: Media Library
     resource_translations:
       product:
         save: "Save the product!"
@@ -25,6 +27,7 @@ en:
     clear_value: Clear value
     click_to_reveal_filters: Click to reveal filters
     close_modal: Close modal
+    close: Close
     confirm: Confirm
     create_new_item: Create new %{item}
     dashboard: Dashboard
@@ -35,6 +38,8 @@ en:
     delete_item: Delete %{item}
     detach_item: detach %{item}
     details: details
+    created_at_timestamp: "Created at %{created_at}"
+    updated_at_timestamp: "Updated at %{updated_at}"
     download: Download
     download_file: Download file
     download_item: Download %{item}
@@ -110,6 +115,7 @@ en:
     undo: undo
     view: View
     view_item: view %{item}
+    visit_record_on_external_path: Visit record on external path
     was_successfully_created: was successfully created
     was_successfully_updated: was successfully updated
     x_items_more:

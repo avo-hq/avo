@@ -22,9 +22,12 @@ de:
     choose_item: "%{item} auswählen"
     clear_value: Wert löschen
     click_to_reveal_filters: Klicken, um Filter anzuzeigen
+    close: Schließen
     close_modal: Modal schließen
     confirm: Bestätigen
+    copy: Kopieren
     create_new_item: Neues %{item} erstellen
+    created_at_timestamp: Erstellt am %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
     default_scope: Alle
@@ -60,9 +63,13 @@ de:
     less_content: Weniger Inhalt
     list_is_empty: Liste ist leer
     loading: Lade...
+    media_library:
+      title: Medienbibliothek
     more: Mehr
     more_content: Mehr Inhalt
     more_records_available: Es sind weitere Datensätze verfügbar.
+    nested:
+      add_new_item: Neues %{item} hinzufügen
     new: neu
     next_page: Nächste Seite
     no_cancel: Nein, abbrechen
@@ -102,6 +109,9 @@ de:
     select_item: Eintrag auswählen
     show_content: Inhalt anzeigen
     sign_out: Abmelden
+    sort_asc: Aufsteigend sortieren
+    sort_desc: Absteigend sortieren
+    sort_reset: Sortierung zurücksetzen
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht
     this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.
@@ -109,8 +119,10 @@ de:
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
+    updated_at_timestamp: Aktualisiert am %{updated_at}
     view: Anzeigen
     view_item: "%{item} anzeigen"
+    visit_record_on_external_path: Datensatz über externen Link besuchen
     was_successfully_created: wurde erfolgreich erstellt
     was_successfully_updated: wurde erfolgreich aktualisiert
     x_items_more:

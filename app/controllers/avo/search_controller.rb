@@ -54,7 +54,9 @@ module Avo
         return nil unless render_error?
 
         search_query_undefined = error_payload(
-          _label: "Please configure the search for #{resource}",
+          header: "⚠️ Warning ⚠️",
+          help: "",
+          _label: "Search is disabled for #{resource}.\n To enable it please use this guide...",
           _url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
         )
 
@@ -127,6 +129,10 @@ module Avo
       # Apply policy scope if authorization is present
       query = resource.authorization&.apply_policy query
 
+      if field&.scope&.present?
+        query = Avo::ExecutionContext.new(target: field.scope, query:, parent:, resource:, parent_resource:).handle
+      end
+
       Avo::ExecutionContext.new(target: @resource.class.search_query, params: params, query: query).handle
     end
 
@@ -182,7 +188,7 @@ module Avo
     def fetch_field
       return if params[:via_association_id].nil?
 
-      reflection_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_reflection_class]).new(
+      reflection_resource = parent_resource.new(
         view: Avo::ViewInquirer.new(params[:via_reflection_view]),
         record: parent,
         params: params,
@@ -195,8 +201,11 @@ module Avo
     def fetch_parent
       return unless params[:via_reflection_id].present?
 
-      parent_resource = Avo.resource_manager.get_resource_by_model_class params[:via_reflection_class]
       parent_resource.find_record params[:via_reflection_id], params: params
+    end
+
+    def parent_resource
+      @parent_resource ||= Avo.resource_manager.get_resource_by_model_class(params[:via_reflection_class])
     end
 
     def render_error(...)
@@ -207,10 +216,15 @@ module Avo
       }, status: 500
     end
 
-    def error_payload(_label:, _url: "")
+    def error_payload(
+      _label:,
+      _url: "",
+      header: "🚨 An error occurred during search 🚨",
+      help: "Please review and resolve the issue before deployment 🚨"
+    )
       {
-        header: "🚨 An error occurred during search 🚨",
-        help: "Please review and resolve the issue before deployment 🚨",
+        header:,
+        help:,
         results: {
           _label:,
           _url:,

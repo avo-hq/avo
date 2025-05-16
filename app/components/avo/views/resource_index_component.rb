@@ -29,17 +29,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     end
   end
 
-  def view_type
-    @index_params[:view_type]
-  end
-
-  def available_view_types
-    @index_params[:available_view_types]
-  end
-
   # The Create button is dependent on the new? policy method.
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?
+    # Disable creation for ArrayResources
+    return false if @resource.resource_type_array?
+
     return authorize_association_for(:create) if @reflection.present?
 
     @resource.authorization.authorize_action(:new, raise_exception: false) && !has_reflection_and_is_read_only
@@ -116,11 +111,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def description
     # If this is a has many association, the user can pass a description to be shown just for this association.
-    if @reflection.present?
-      return field.description if field.present? && field.description
-
-      return
-    end
+    return field&.description(query: @query) if @reflection.present?
 
     @resource.description
   end
@@ -171,6 +162,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def back_path
+    # The `return_to` param takes precedence over anything else.
+    return params[:return_to] if params[:return_to].present?
+
     # Show Go Back link only when association page is opened
     # as a standalone page
     if @reflection.present? && !helpers.turbo_frame_request?
@@ -217,7 +211,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def has_many_view_types?
-    available_view_types.count > 1
+    @resource.available_view_types.count > 1
   end
 
   # Generate a unique component id for the current component.

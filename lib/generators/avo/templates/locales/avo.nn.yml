@@ -24,9 +24,12 @@ nn:
     choose_item: Vel %{item}
     clear_value: Nullstill verdi
     click_to_reveal_filters: Vis filter
+    close: Lukk
     close_modal: Lukk modal
     confirm: Stadfest
+    copy: Kopier
     create_new_item: Lag ny %{item}
+    created_at_timestamp: Oppretta den %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
     default_scope: Alle
@@ -62,9 +65,13 @@ nn:
     less_content: Mindre innhold
     list_is_empty: Lista er tom
     loading: Lastar
+    media_library:
+      title: Media bibliotek
     more: Meir
     more_content: Mer innhold
     more_records_available: Det finst fleire opptak tilgjengelege.
+    nested:
+      add_new_item: Legg til ny %{item}
     new: ny
     next_page: Neste side
     no_cancel: Nei, avbryt
@@ -104,6 +111,9 @@ nn:
     select_item: Vel
     show_content: Vis innhald
     sign_out: Logg ut
+    sort_asc: Sorter stigande
+    sort_desc: Sorter synkende
+    sort_reset: Nullstill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
@@ -111,8 +121,10 @@ nn:
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
     undo: angre
+    updated_at_timestamp: Oppdatert den %{updated_at}
     view: Vis
     view_item: vis %{item}
+    visit_record_on_external_path: Besøk posten via ein ekstern lenke
     was_successfully_created: vart oppretta
     was_successfully_updated: vart oppdatert
     x_items_more:

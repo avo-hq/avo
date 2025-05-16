@@ -22,9 +22,12 @@ ru:
     choose_item: Выбрать %{item}
     clear_value: Очистить значение
     click_to_reveal_filters: Нажмите, чтобы открыть фильтры
+    close: Закрыть
     close_modal: Закрыть модальное окно
     confirm: Подтвердить
+    copy: Копировать
     create_new_item: Создать новый %{item}
+    created_at_timestamp: Создано в %{created_at}
     dashboard: Панель управления
     dashboards: Панели управления
     default_scope: Все
@@ -62,9 +65,13 @@ ru:
     less_content: Меньше контента
     list_is_empty: Список пуст
     loading: Загрузка...
+    media_library:
+      title: Медиатека
     more: Ещё
     more_content: Больше контента
     more_records_available: Доступно больше записей.
+    nested:
+      add_new_item: Добавить новый %{item}
     new: новый
     next_page: Следующая страница
     no_cancel: Нет, отмена
@@ -104,6 +111,9 @@ ru:
     select_item: Выбрать элемент
     show_content: Показать содержимое
     sign_out: Выйти
+    sort_asc: Сортировать по возрастанию
+    sort_desc: Сортировать по убыванию
+    sort_reset: Сбросить сортировку
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица
     this_field_has_attachments_disabled: Для этого поля прикрепления отключены.
@@ -111,8 +121,10 @@ ru:
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить
+    updated_at_timestamp: Обновлено в %{updated_at}
     view: Просмотр
     view_item: Просмотр %{item}
+    visit_record_on_external_path: Перейти к записи через внешнюю ссылку
     was_successfully_created: успешно создана
     was_successfully_updated: успешно обновлена
     x_items_more:

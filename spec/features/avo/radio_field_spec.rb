@@ -62,4 +62,25 @@ RSpec.describe "RadioField", type: :feature do
       end
     end
   end
+
+  describe "on actions" do
+    it "display options" do
+      visit avo.resources_users_path
+
+      expect(page).not_to have_text("Small Option")
+      expect(page).not_to have_text("Medium Option")
+      expect(page).not_to have_text("Large Option")
+
+      open_panel_action(action_name: "Dummy action")
+
+      expect(page).to have_text("Small Option")
+      expect(page).to have_text("Medium Option")
+      expect(page).to have_checked_field("fields_size_medium")
+      expect(page).to have_text("Large Option")
+
+      find("label[for='fields_size_large']").click
+      expect(page).not_to have_checked_field("fields_size_medium")
+      expect(page).to have_checked_field("fields_size_large")
+    end
+  end
 end

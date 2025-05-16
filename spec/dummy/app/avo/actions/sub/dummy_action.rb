@@ -1,5 +1,7 @@
 class Avo::Actions::Sub::DummyAction < Avo::BaseAction
   self.name = -> { "Dummy action#{arguments[:test_action_name]}" }
+  self.cancel_button_label = -> { arguments[:cancel_button_label] || I18n.t("avo.cancel") }
+  self.confirm_button_label = -> { arguments[:confirm_button_label] || I18n.t("avo.run") }
   self.standalone = true
   # self.turbo = false
   self.visible = -> do
@@ -11,6 +13,7 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
   end
 
   def fields
+    field :size, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
     TestBuddy.hi("Dummy action fields")
     field :keep_modal_open, as: :boolean
     field :persistent_text, as: :text

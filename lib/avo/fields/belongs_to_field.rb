@@ -63,7 +63,6 @@ module Avo
       attr_accessor :target
 
       attr_reader :polymorphic_as
-      attr_reader :relation_method
       attr_reader :types # for Polymorphic associations
       attr_reader :allow_via_detaching
       attr_reader :attach_scope
@@ -96,7 +95,7 @@ module Avo
           super(polymorphic_as)
         else
           # Get the value from the pre-filled association record
-          super(relation_method)
+          super(@relation_method)
         end
       end
 
@@ -218,7 +217,7 @@ module Avo
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).id
+          record_id = value.blank? ? value : target_resource(record:).find_record(value).send(reflection.association_primary_key)
 
           record.send(:"#{key}=", record_id)
         end

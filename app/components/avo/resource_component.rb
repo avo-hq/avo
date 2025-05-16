@@ -1,6 +1,7 @@
 class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
   include Avo::Concerns::RequestMethods
+  include Avo::Concerns::HasResourceStimulusControllers
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
@@ -40,12 +41,18 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_edit_button?
+    # Disable edit for ArrayResources
+    return false if @resource.resource_type_array?
+
     return authorize_association_for(:edit) if @reflection.present?
 
     @resource.authorization.authorize_action(:edit, raise_exception: false)
   end
 
   def can_see_the_destroy_button?
+    # Disable destroy for ArrayResources
+    return false if @resource.resource_type_array?
+
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
 
@@ -107,7 +114,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_cards_component
-    if Avo.plugin_manager.installed?(:avo_dashboards)
+    if Avo.plugin_manager.installed?("avo-dashboards")
       render Avo::CardsComponent.new cards: @resource.detect_cards.visible_cards, classes: "pb-4 sm:grid-cols-3"
     end
   end
@@ -119,17 +126,21 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def keep_referrer_params
-    {page: referrer_params["page"]}.compact
+    referrer_params
   end
 
   def render_back_button(control)
     return if back_path.blank? || is_a_related_resource?
 
-    tippy = control.title ? :tooltip : nil
-    a_link back_path,
+    via_belongs_to = params[:via_belongs_to_resource_class].present?
+
+    a_link via_belongs_to ? "javascript:void(0);" : back_path,
       style: :text,
       title: control.title,
-      data: {tippy: tippy},
+      data: {
+        tippy: control.title ? :tooltip : nil,
+        action: via_belongs_to ? "click->modal#close" : nil
+      }.compact,
       icon: "heroicons/outline/arrow-left" do
       control.label
     end
@@ -149,6 +160,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       label: actions_list.label,
       size: actions_list.size,
       icon: actions_list.icon,
+      icon_class: actions_list.icon_class,
       title: actions_list.title,
       as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
     )
@@ -184,14 +196,18 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_save_button(control)
     return unless can_see_the_save_button?
 
+    data_attributes = {
+      turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+    }
+
+    add_stimulus_attributes_for(@resource, data_attributes, "saveButton")
+
     a_button color: :primary,
       style: :primary,
       loading: true,
       type: :submit,
       icon: "avo/save",
-      data: {
-        turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
-      } do
+      data: data_attributes do
       control.label
     end
   end
@@ -288,8 +304,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
         tippy: action.title ? :tooltip : nil,
         action: "click->actions-picker#visitAction",
         turbo_prefetch: false,
-        "actions-picker-target": action.action.standalone ? "standaloneAction" : "resourceAction",
-        disabled: action.action.disabled?
+        # When action has record present behave as standalone and keep always active.
+        "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
+        disabled: action.action.disabled?,
+        resource_name: action.action.resource.model_key
       } do
       action.label
     end

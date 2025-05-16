@@ -22,9 +22,12 @@ uk:
     choose_item: Виберіть %{item}
     clear_value: Очистити значення
     click_to_reveal_filters: Натисніть, щоб показати фільтри
+    close: Закрити
     close_modal: Закрити вікно
     confirm: Підтвердити
+    copy: Копіювати
     create_new_item: Створити новий %{item}
+    created_at_timestamp: Sukurta %{created_at}
     dashboard: Панель керування
     dashboards: Панелі керування
     default_scope: Всі
@@ -62,9 +65,13 @@ uk:
     less_content: Менше вмісту
     list_is_empty: Список порожній
     loading: Завантаження
+    media_library:
+      title: Медіатека
     more: Ще
     more_content: Більше вмісту
     more_records_available: Є більше доступних записів.
+    nested:
+      add_new_item: Add new %{item}
     new: новий
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
@@ -104,6 +111,9 @@ uk:
     select_item: Вибрати елемент
     show_content: Показати вміст
     sign_out: Вийти
+    sort_asc: Rūšiuoti didėjančia tvarka
+    sort_desc: Rūšiuoti mažėjančia tvarka
+    sort_reset: Atstatyti rūšiavimą
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.
@@ -111,8 +121,10 @@ uk:
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
     undo: Скасувати
+    updated_at_timestamp: Atnaujinta %{updated_at}
     view: Перегляд
     view_item: Перегляд %{item}
+    visit_record_on_external_path: Перейти до запису через зовнішнє посилання
     was_successfully_created: успішно створено
     was_successfully_updated: успішно оновлено
     x_items_more:

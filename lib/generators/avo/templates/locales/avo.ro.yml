@@ -25,9 +25,12 @@ ro:
     choose_item: Alege %{item}
     clear_value: Șterge valoarea
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
+    close: Închide
     close_modal: Închide modalul
     confirm: Confirm
+    copy: Copiază
     create_new_item: Creează %{item}
+    created_at_timestamp: Creat la %{created_at}
     dashboard: Panou de control
     dashboards: Panouri de control
     default_scope: Tot
@@ -64,9 +67,13 @@ ro:
     less_content: Mai puțin conținut
     list_is_empty: Lista este goală
     loading: Se incarcă
+    media_library:
+      title: Bibliotecă media
     more: Mai multe
     more_content: Mai mult conținut
     more_records_available: Sunt mai multe înregistrări disponibile.
+    nested:
+      add_new_item: Adaugă noul %{item}
     new: nou
     next_page: Pagina următoare
     no_cancel: Nu, anulează
@@ -106,6 +113,9 @@ ro:
     select_item: Selectează record
     show_content: Arată conținutul
     sign_out: Delogare
+    sort_asc: Sortare crescătoare
+    sort_desc: Sortare descrescătoare
+    sort_reset: Resetare sortare
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
     this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
@@ -113,8 +123,10 @@ ro:
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează
+    updated_at_timestamp: Actualizat la %{updated_at}
     view: vezi
     view_item: vezi %{item}
+    visit_record_on_external_path: Vizitați înregistrarea printr-un link extern
     was_successfully_created: a fost creat
     was_successfully_updated: a fost actualizat
     x_items_more:
