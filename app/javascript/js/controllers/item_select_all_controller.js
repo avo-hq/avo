@@ -88,15 +88,6 @@ export default class extends Controller {
   }
 
   updateLinks(param) {
-    let resourceIds = ''
-    let selectedQuery = ''
-
-    if (param === 'resourceIds') {
-      resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
-    } else if (param === 'selectedQuery') {
-      selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
-    }
-
     const actionButtons = document.querySelectorAll(`a[data-actions-picker-target][data-resource-name="${this.resourceName}"]`)
     actionButtons.forEach((link) => {
       try {
@@ -107,9 +98,11 @@ export default class extends Controller {
           .forEach((key) => url.searchParams.delete(key))
 
         if (param === 'resourceIds') {
+          const resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
           url.searchParams.set('fields[avo_resource_ids]', resourceIds)
           url.searchParams.set('fields[avo_selected_all]', 'false')
         } else if (param === 'selectedQuery') {
+          const selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
           url.searchParams.set('fields[avo_index_query]', selectedQuery)
           url.searchParams.set('fields[avo_selected_all]', 'true')
         }
