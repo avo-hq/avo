@@ -68,9 +68,13 @@ module Avo
       @query = if params[:query].present?
         @resource.find_record(params[:query], params: params)
       else
-        resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
-        decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
+        find_records_by_resource_ids
       end
+    end
+
+    def find_records_by_resource_ids
+      resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+      decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
 
     def set_fields
