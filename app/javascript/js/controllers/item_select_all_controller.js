@@ -97,7 +97,8 @@ export default class extends Controller {
       selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
     }
 
-    document.querySelectorAll('[data-target="actions-list"] > a').forEach((link) => {
+    const actionButtons = document.querySelectorAll(`a[data-actions-picker-target][data-resource-name="${this.resourceName}"]`)
+    actionButtons.forEach((link) => {
       try {
         const url = new URL(link.href)
 
