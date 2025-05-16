@@ -3,7 +3,6 @@
 class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
-  include Avo::Concerns::ChecksShowAuthorization
 
   prop :resource
   prop :resources

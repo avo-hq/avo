@@ -9,7 +9,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   prop :view, default: Avo::ViewInquirer.new(:edit).freeze
   prop :display_breadcrumbs, default: true, reader: :public
   prop :query
-  prop :prefilled_fields
 
   def after_initialize
     @display_breadcrumbs = @reflection.blank? && display_breadcrumbs

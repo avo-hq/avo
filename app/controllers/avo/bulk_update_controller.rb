@@ -11,7 +11,6 @@ module Avo
       render Avo::Views::ResourceEditComponent.new(
         resource: @resource,
         query: @query,
-        prefilled_fields: @prefilled_fields
       )
     end
 
@@ -30,10 +29,11 @@ module Avo
     private
 
     def update_records
-      params = params_to_apply
+      params = current_resource_params
+      params_to_apply = params.compact_blank
 
       @query.each do |record|
-        @resource.fill_record(record, params)
+        @resource.fill_record(record, params_to_apply)
       end
     end
 
@@ -56,34 +56,9 @@ module Avo
       all_saved
     end
 
-    def params_to_apply
-      prefilled_params = params[:prefilled] || {}
-      current_params = current_resource_params
-      progress_fields = progress_bar_fields
-
-      current_params.reject do |key, value|
-        key_sym = key.to_sym
-
-        prefilled_value = prefilled_params[key_sym]
-
-        progress_field_with_default?(progress_fields, key_sym, prefilled_value, value) || prefilled_value.to_s == value.to_s
-      end
-    end
-
     def current_resource_params
       resource_key = @resource_name.downcase.to_sym
       params[resource_key] || {}
-    end
-
-    def progress_bar_fields
-      @resource.get_field_definitions
-        .select { |field| field.is_a?(Avo::Fields::ProgressBarField) }
-        .map(&:id)
-        .map(&:to_sym)
-    end
-
-    def progress_field_with_default?(progress_fields, key_sym, prefilled_value, value)
-      progress_fields.include?(key_sym) && prefilled_value.nil? && value.to_s == "50"
     end
 
     def prefill_fields(records, fields)
