@@ -29,8 +29,7 @@ module Avo
     private
 
     def update_records
-      params = params[@resource_name.downcase.to_sym] || {}
-      params_to_apply = params.compact_blank
+      params_to_apply = params[@resource_name.downcase.to_sym].compact_blank || {}
 
       @query.each do |record|
         @resource.fill_record(record, params_to_apply)
