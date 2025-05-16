@@ -10,7 +10,7 @@ module Avo
       @resource.record = @record
       render Avo::Views::ResourceEditComponent.new(
         resource: @resource,
-        query: @query,
+        query: @query
       )
     end
 
@@ -29,7 +29,7 @@ module Avo
     private
 
     def update_records
-      params = current_resource_params
+      params = params[@resource_name.downcase.to_sym] || {}
       params_to_apply = params.compact_blank
 
       @query.each do |record|
@@ -56,11 +56,6 @@ module Avo
       all_saved
     end
 
-    def current_resource_params
-      resource_key = @resource_name.downcase.to_sym
-      params[resource_key] || {}
-    end
-
     def prefill_fields(records, fields)
       fields.each_key.with_object({}) do |field_name, prefilled|
         values = records.map { |record| record.public_send(field_name) }
@@ -73,13 +68,9 @@ module Avo
       @query = if params[:query].present?
         @resource.find_record(params[:query], params: params)
       else
-        find_records_by_resource_ids
+        resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+        decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
       end
-    end
-
-    def find_records_by_resource_ids
-      resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
-      decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
     end
 
     def set_fields

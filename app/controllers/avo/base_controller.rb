@@ -406,7 +406,10 @@ module Avo
     end
 
     def set_edit_title_and_breadcrumbs
-      set_resource_and_page_title
+      if params[:controller] != "avo/bulk_update"
+        @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
+        @page_title = @resource.default_panel_name.to_s
+      end
 
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
@@ -428,13 +431,6 @@ module Avo
       end
 
       help_add_breadcrumb(last_crumb_args)
-    end
-
-    def set_resource_and_page_title
-      if params[:controller] != "avo/bulk_update"
-        @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
-        @page_title = @resource.default_panel_name.to_s
-      end
     end
 
     def help_add_breadcrumb(last_crumb_args)
