@@ -64,7 +64,7 @@ module Avo
       end
 
       def path(resource:, arguments: {}, **args)
-        Avo::Services::URIService.parse(resource.record&.persisted? ? resource.record_path : resource.records_path)
+        Avo::Services::URIService.parse(resource.record&.to_param.present? ? resource.record_path : resource.records_path)
           .append_paths("actions")
           .append_query(
             **{
@@ -365,7 +365,7 @@ module Avo
     end
 
     def enabled?
-      self.class.standalone || @record&.persisted?
+      self.class.standalone || @record&.to_param.present?
     end
 
     def disabled?

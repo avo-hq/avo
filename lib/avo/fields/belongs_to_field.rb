@@ -78,7 +78,7 @@ module Avo
         @searchable = args[:searchable] == true
         @polymorphic_as = args[:polymorphic_as]
         @types = args[:types]
-        @relation_method = id.to_s.parameterize.underscore
+        @relation_method = attribute_id.to_s.parameterize.underscore
         @allow_via_detaching = args[:allow_via_detaching] == true
         @attach_scope = args[:attach_scope]
         @polymorphic_help = args[:polymorphic_help]
@@ -176,7 +176,7 @@ module Avo
 
       # Get the model reflection instance
       def reflection
-        reflection_for_key(id)
+        reflection_for_key(attribute_id)
       rescue
         nil
       end
@@ -237,7 +237,7 @@ module Avo
 
         foreign_key
       rescue
-        id
+        attribute_id
       end
 
       def target_resource(record: @record, polymorphic_model_class: value&.class)
@@ -250,7 +250,7 @@ module Avo
             return nil
           end
         else
-          reflection_key = polymorphic_as || id
+          reflection_key = polymorphic_as || attribute_id
 
           reflection_object = record.class.reflect_on_association(reflection_key)
 

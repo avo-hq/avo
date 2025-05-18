@@ -5,11 +5,19 @@
         <span data-progress-bar-field-target="label"><%= @field.value %></span><%= @field.value_suffix if @field.value_suffix.present? %>
       </div>
     <% end %>
-    <%= @form.range_field @field.id,
+    <%= @form.text_field @field.id,
+      value: @field.value,
+      class: classes("w-full #{"hidden" unless params[:avo_show_hidden_inputs]}"),
+      data: {
+        progress_bar_field_target: "valueInput"
+      }
+    %>
+    <%= tag.input type: "range",
       value: @field.value,
       class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
       data: {
         action: "input->progress-bar-field#update",
+        progress_bar_field_target: "visibleInput",
         **@field.get_html(:data, view: view, element: :input)
       },
       disabled: disabled?,
@@ -18,7 +26,8 @@
       placeholder: @field.placeholder,
       step: @field.step,
       autofocus: @autofocus,
-      style: @field.get_html(:style, view: view, element: :input)
+      style: @field.get_html(:style, view: view, element: :input),
+      name: nil
     %>
   <% end %>
 <% end %>
