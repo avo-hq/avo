@@ -65,12 +65,16 @@ module Avo
       # Add the mount_avo method to Rails
       # rubocop:disable Style/ArgumentsForwarding
       ActionDispatch::Routing::Mapper.include(Module.new {
-        def mount_avo(at: Avo.configuration.root_path, **options)
+        def mount_avo(at: Avo.configuration.root_path, **options, &block)
           mount Avo::Engine, at:, **options
 
           scope at do
             Avo.plugin_manager.engines.each do |engine|
               mount engine[:klass], **engine[:options].dup
+            end
+
+            if block_given?
+              Avo::Engine.routes.draw(&block)
             end
           end
         end
