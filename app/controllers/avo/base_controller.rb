@@ -358,17 +358,12 @@ module Avo
     def set_index_params
       @index_params = {}
 
-      set_search_params
       set_pagination_params
       set_sorting_params
 
       if @resource.available_view_types.exclude? @resource.view_type.to_sym
         raise "View type '#{@resource.view_type}' is unavailable for #{@resource.class}."
       end
-    end
-
-    def set_search_params
-      @index_params[:q] = params[:q] if params[:q].present?
     end
 
     def set_sorting_params
@@ -687,11 +682,11 @@ module Avo
 
     def apply_search
       return if @resource.class.search_query.nil?
-      return if @index_params[:q].nil?
+      return if params[:q].nil?
 
       @query = Avo::ExecutionContext.new(
         target: @resource.class.search_query,
-        params: params.merge(q: @index_params[:q]),
+        params: params.merge(q: params[:q]),
         query: @query
       ).handle
     end
