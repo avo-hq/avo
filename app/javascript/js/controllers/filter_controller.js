@@ -12,7 +12,13 @@ export default class extends Controller {
 
   // eslint-disable-next-line class-methods-use-this
   uriParams() {
-    return URI(window.location.toString()).query(true)
+    const turboFrame = this.urlRedirectTarget.dataset.turboFrame
+
+    return URI(
+      !turboFrame
+        ? window.location.toString()
+        : this.element.closest(`turbo-frame#${turboFrame}`)?.src,
+    ).query(true)
   }
 
   viaResourceName() {
