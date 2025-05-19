@@ -34,6 +34,15 @@ module Avo
         @mode&.to_sym == :select
       end
 
+      # Reset the field_value to nil when hydrating
+      # This keeps the performance of the memoized field_value when used in different components
+      # And avoid the wrong memoized value to be used when field is hydrated with new data
+      def hydrate(...)
+        @field_value = nil
+
+        super
+      end
+
       def field_value
         @field_value ||= if acts_as_taggable_on.present?
           acts_as_taggable_on_values.map { |value| {value:} }.as_json
