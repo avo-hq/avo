@@ -94,7 +94,7 @@
                 field_id: field.id,
                 via_record_id: @parent_record&.to_param,
                 via_resource_class: @parent_resource&.class&.to_s,
-                association_name: @field&.for_attribute || @field&.id
+                association_name: @field&.attribute_id
               }.compact
             ) %>"
             class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded-sm overflow-hidden hidden border border-gray-50"

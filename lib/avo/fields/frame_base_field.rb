@@ -94,7 +94,7 @@ module Avo
       end
 
       def association_name
-        @association_name ||= (@for_attribute || id).to_s
+        @association_name ||= attribute_id.to_s
       end
 
       def query_params(add_turbo_frame: true)

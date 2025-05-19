@@ -434,6 +434,24 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "record assignment" do
+    let!(:fish) { create :fish, name: "the index test" }
+
+    it "record is assigned when 1 selected from index view" do
+      visit avo.resources_fish_index_path
+
+      find("tr[data-resource-name=fish][data-record-id='#{fish.id}'] input[type=checkbox]").click
+
+      open_panel_action(action_name: "Release fish")
+      expect(page).to have_text "Are you sure you want to release the #{fish.name}?"
+      select admin.name, from: "fields_user_id"
+
+      run_action
+
+      expect(page).not_to have_text "1 fish released with message '' by #{admin.name}."
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 
