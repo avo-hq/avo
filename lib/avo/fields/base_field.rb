@@ -190,7 +190,7 @@ module Avo
         if @format_display_using.present? && @view.display?
           final_value = execute_context(@format_display_using, value: final_value)
           unless Rails.env.production?
-            if args[:decorate].present?
+            if @decorate.present?
               puts "[Avo DEPRECATION WARNING]: The `decorate` option is nolonger supported and will be removed in future versions. Consider using `format_display_using` instead."
             end
           end
@@ -232,6 +232,11 @@ module Avo
 
         if @decorate.present? && @view.display?
           final_value = execute_context(@decorate, value: final_value)
+          unless Rails.env.production?
+            if @decorate.present?
+              puts "[Avo DEPRECATION WARNING]: The `decorate` option is nolonger supported and will be removed in future versions. Consider using `format_display_using` instead."
+            end
+          end
         end
 
         final_value
