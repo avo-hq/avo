@@ -83,30 +83,22 @@ export default class extends Controller {
 
     if (this.selectedAllValue) {
       this.updateLinks('selectedQuery')
-      this.updateBulkEditLink('selectedQuery')
     } else {
       this.updateLinks('resourceIds')
-      this.updateBulkEditLink('resourceIds')
     }
   }
 
   updateLinks(param) {
-    this.updateActionLinks(param, '[data-target="actions-list"] > a', {
-      resourceIdsKey: 'fields[avo_resource_ids]',
-      selectedQueryKey: 'fields[avo_index_query]',
-      selectedAllKey: 'fields[avo_selected_all]',
-    })
+    this.updateActionLinks(param, '[data-target="actions-list"] > a')
   }
 
   updateBulkEditLink(param) {
-    this.updateActionLinks(param, 'a[href*="/admin/bulk_update/edit"]', {
-      resourceIdsKey: 'fields[avo_resource_ids]',
-      selectedQueryKey: 'fields[avo_selected_query]',
-    })
+    this.updateActionLinks(param, 'a[href*="/admin/bulk_update/edit"]')
   }
 
-  updateActionLinks(param, selector, keys) {
-    const params = this.setLinkParams(keys)
+  updateActionLinks(param, selector) {
+    const selectedResources = JSON.parse(this.element.dataset.selectedResources).join(',')
+    const selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
 
     document.querySelectorAll(selector).forEach((link) => {
       try {
@@ -116,33 +108,24 @@ export default class extends Controller {
           .filter((key) => key.startsWith('fields['))
           .forEach((key) => url.searchParams.delete(key))
 
-        const current = params[param]
-        url.searchParams.set(current.key, current.value)
+        const isBulkUpdate = url.pathname.includes('/admin/bulk_update/edit')
+        const resourceIdsKey = 'fields[avo_resource_ids]'
+        const selectedQueryKey = isBulkUpdate ? 'fields[avo_selected_query]' : 'fields[avo_index_query]'
+        const selectedAllKey = 'fields[avo_selected_all]'
 
-        if (keys.selectedAllKey) {
-          url.searchParams.set(keys.selectedAllKey, current.selectedAll)
+        if (param === 'resourceIds') {
+          url.searchParams.set(resourceIdsKey, selectedResources)
+          url.searchParams.set(selectedAllKey, 'false')
+        } else if (param === 'selectedQuery') {
+          url.searchParams.set(selectedQueryKey, selectedQuery)
+          url.searchParams.set(selectedAllKey, 'true')
         }
 
         link.href = url.toString()
       } catch (error) {
-        console.error(`Error updating link (${param}):`, link, error)
+        console.error('Error updating link:', link, error)
       }
     })
-  }
-
-  setLinkParams(keys) {
-    return {
-      resourceIds: {
-        value: JSON.parse(this.element.dataset.selectedResources).join(','),
-        selectedAll: 'false',
-        key: keys.resourceIdsKey,
-      },
-      selectedQuery: {
-        value: this.element.dataset.itemSelectAllSelectedAllQueryValue,
-        selectedAll: 'true',
-        key: keys.selectedQueryKey,
-      },
-    }
   }
 
   resetUnselected() {
