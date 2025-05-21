@@ -51,7 +51,7 @@ RSpec.describe "Actions", type: :system do
         visit "/admin/resources/projects"
         check_and_select_projects
         find("a", text: "Bulk update").click
-        
+
         find("button", text: "Save").click
 
         expect(page).to have_text "Bulk action run successfully."
