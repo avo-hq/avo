@@ -110,11 +110,6 @@ module Avo
         @computed_value = nil
 
         post_initialize if respond_to?(:post_initialize)
-        unless Rails.env.production?
-          if args[:decorate].present?
-            puts "[Avo DEPRECATION WARNING]: The `decorate` option is nolonger supported and will be removed in future versions. Consider using `format_display_using` instead."
-          end
-        end
       end
 
       def translation_key
@@ -194,6 +189,11 @@ module Avo
 
         if @format_display_using.present? && @view.display?
           final_value = execute_context(@format_display_using, value: final_value)
+          unless Rails.env.production?
+            if args[:decorate].present?
+              puts "[Avo DEPRECATION WARNING]: The `decorate` option is nolonger supported and will be removed in future versions. Consider using `format_display_using` instead."
+            end
+          end
         end
 
         if @format_index_using.present? && @view.index?
@@ -203,7 +203,6 @@ module Avo
         elsif @format_using.present?
           final_value = execute_context(@format_using, value: final_value)
         end
-
 
         if @format_show_using.present? && @view.show?
           final_value = execute_context(@format_show_using, value: final_value)
