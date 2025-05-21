@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseComponent
+  include Avo::Fields::Concerns::FileAuthorization
+
   prop :field
   prop :resource
   prop :file
@@ -44,5 +46,28 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
 
     ActiveStorage::Blob.destroy(file.blob_id) if file.blob_id.present?
     false
+  end
+
+  def document_arguments
+    args = {
+      class: class_names(
+        "relative flex flex-col justify-evenly items-center px-2 rounded-lg border bg-white border-gray-500 min-h-24",
+        {
+          "hover:bg-gray-100 transition": file.representable?
+        }
+      )
+    }
+
+    if file.representable? && can_download_file?
+      args.merge!(
+        {
+          href: helpers.main_app.url_for(file),
+          target: "_blank",
+          rel: "noopener noreferrer"
+        }
+      )
+    end
+
+    args
   end
 end

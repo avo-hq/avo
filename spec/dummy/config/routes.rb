@@ -12,7 +12,14 @@ Rails.application.routes.draw do
       get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
     end
 
-    mount_avo
+    mount_avo do
+      scope :resources do
+        get "courses/cities", to: "courses#cities"
+        get "users/get_users", to: "users#get_users"
+      end
+
+      put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
+    end
 
     # Uncomment to test constraints /123/en/admin
     # scope ":course", constraints: {course: /\w+(-\w+)*/} do
@@ -25,16 +32,5 @@ Rails.application.routes.draw do
     scope "(:locale)" do
       # mount_avo
     end
-  end
-end
-
-if defined? ::Avo
-  Avo::Engine.routes.draw do
-    scope :resources do
-      get "courses/cities", to: "courses#cities"
-      get "users/get_users", to: "users#get_users"
-    end
-
-    put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
   end
 end

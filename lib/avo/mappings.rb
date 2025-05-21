@@ -74,6 +74,9 @@ module Avo
         },
         json: {
           field: "code"
+        },
+        jsonb: {
+          field: "code"
         }
       }.freeze
     end
