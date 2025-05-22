@@ -1,17 +1,11 @@
 module Avo
   class BulkUpdateController < ResourcesController
     before_action :set_query, only: [:edit, :handle]
-    before_action :set_fields, only: [:edit, :handle]
 
     def edit
-      @prefilled_fields = prefill_fields(@query, @fields)
-      @record = @resource.model_class.new(@prefilled_fields.transform_values { |v| v.nil? ? nil : v })
+      @resource.hydrate(record: @resource.model_class.new(bulk_values))
 
-      @resource.record = @record
-      render Avo::Views::ResourceEditComponent.new(
-        resource: @resource,
-        query: @query
-      )
+      set_component_for :bulk_edit, fallback_view: :edit
     end
 
     def handle
@@ -55,12 +49,14 @@ module Avo
       all_saved
     end
 
-    def prefill_fields(records, fields)
-      fields.each_key.with_object({}) do |field_name, prefilled|
-        values = records.map { |record| record.public_send(field_name) }
-        values.uniq!
-        prefilled[field_name] = values.first if values.size == 1
-      end
+    # This method returns a hash of the attributes of the model and their values
+    # If all the records have the same value for an attribute, the value is assigned to the attribute, otherwise nil is assigned
+    def bulk_values
+      @resource.model_class.attribute_names.map do |attribute_key|
+        values = @query.map { _1.public_send(attribute_key) }.uniq
+
+        [attribute_key, values.size == 1 ? values.first : nil]
+      end.to_h
     end
 
     def set_query
@@ -74,15 +70,6 @@ module Avo
     def find_records_by_resource_ids
       resource_ids = params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
       decrypted_query || (resource_ids.any? ? @resource.find_record(resource_ids, params: params) : [])
-    end
-
-    def set_fields
-      if @query.blank?
-        flash[:error] = I18n.t("avo.bulk_update_no_records")
-        redirect_to after_bulk_update_path
-      else
-        @fields = @query.first.attributes.keys.index_with { nil }
-      end
     end
 
     def decrypted_query
