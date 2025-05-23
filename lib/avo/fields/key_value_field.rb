@@ -69,7 +69,7 @@ module Avo
           new_value = {}
         end
 
-        record.send(:"#{key}_will_change!")
+        record.send(:"#{key}_will_change!") if record.respond_to?(:"#{key}_will_change!")
         record.send(:"#{key}=", new_value)
 
         record
