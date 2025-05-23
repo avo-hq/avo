@@ -28,7 +28,7 @@
         <%= @form.hidden_field @field.type_input_foreign_key %>
       <% end %>
     <% end %>
-    <div data-belongs-to-field-target="container" class="hidden></div>
+    <div data-belongs-to-field-target="container" class="hidden"></div>
     <% @field.types.each do |type| %>
       <template data-belongs-to-field-target="type" data-type="<%= type %>">
         <div data-polymorphic-type="<%= type %>">
