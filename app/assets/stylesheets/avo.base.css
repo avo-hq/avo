@@ -111,6 +111,10 @@ dl {
     content: "";
     @apply absolute z-10 inset-auto left-0 top-0 mt-0 -translate-x-full w-3 h-full bg-gradient-to-l from-white to-transparent group-hover:from-gray-50;
   }
+
+  &:has([data-toggle-target="panel"]:not(.hidden)) {
+    @apply z-30 opacity-100
+  }
 }
 
 .shift-pressed {
