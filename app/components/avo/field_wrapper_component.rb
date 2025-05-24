@@ -27,7 +27,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   end
 
   def classes(extra_classes = "")
-    class_names("field-wrapper relative flex flex-col grow pb-2 md:pb-0 leading-tight h-full",
+    class_names("field-wrapper relative flex flex-col grow pb-2 md:pb-0 leading-tight size-auto",
       @classes,
       extra_classes,
       @field.get_html(:classes, view: @view, element: :wrapper),
