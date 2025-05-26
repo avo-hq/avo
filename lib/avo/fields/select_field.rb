@@ -18,9 +18,20 @@ module Avo
           args[:options]
         end
 
+        @grouped_options = args[:grouped_options]
         @enum = args[:enum]
         @multiple = args[:multiple]
         @display_value = args[:display_value] || false
+      end
+
+      def grouped_options
+        Avo::ExecutionContext.new(
+          target: @grouped_options,
+          record: record,
+          resource: resource,
+          view: view,
+          field: self
+        ).handle
       end
 
       def options_for_select
