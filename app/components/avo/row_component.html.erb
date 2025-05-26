@@ -1,3 +1,12 @@
-<%= content_tag :div, class: "relative grid auto-cols-fr grid-flow-col min-h-14", data: {component: self.class.to_s} do %>
+<%= content_tag :div,
+  class: helpers.class_names(
+    "relative grid auto-cols-fr grid-flow-col min-h-14",
+    {
+      "divide-x divide-gray-200": @divider,
+    }
+  ),
+  data: {
+    component: self.class.to_s
+  } do %>
   <%= body %>
 <% end %>
