@@ -59,7 +59,7 @@ class Avo::Resources::Person < Avo::BaseResource
       tab "Address", lazy_load: true do
         panel do
           field :address, as: :heading
-          row do
+          row divider: true do
             field :street_address, stacked: true do
               "1234 Elm Street"
             end

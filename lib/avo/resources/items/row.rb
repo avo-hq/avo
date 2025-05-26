@@ -7,14 +7,15 @@ class Avo::Resources::Items::Row
 
   class_attribute :item_type, default: :row
 
-  attr_reader :view
+  attr_reader :view, :divider
   attr_accessor :items_holder
 
   delegate :items, :add_item, to: :items_holder
 
-  def initialize(view: nil)
+  def initialize(view: nil, divider: false)
     @view = Avo::ViewInquirer.new view
     @items_holder = Avo::Resources::Items::Holder.new
+    @divider = divider
   end
 
   def has_items?
