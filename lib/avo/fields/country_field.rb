@@ -34,6 +34,13 @@ module Avo
       def options_for_filter
         select_options
       end
+
+      def value
+        value = super
+        value.is_a?(ISO3166::Country) ?
+          value.alpha2 :
+          value
+      end
     end
   end
 end
