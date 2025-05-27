@@ -66,6 +66,10 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     @resource.render_show_controls
   end
 
+  def view_for(field)
+    @view
+  end
+
   private
 
   # In development and test environments we should show the invalid field errors
