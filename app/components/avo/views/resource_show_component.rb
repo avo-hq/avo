@@ -39,7 +39,27 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def edit_path
-    helpers.edit_resource_path(record: @resource.record, resource: @resource, return_to: request.url)
+    args = if via_resource?
+      {
+        via_resource_class: params[:via_resource_class],
+        via_record_id: params[:via_record_id]
+      }
+    elsif @parent_resource.present?
+      {
+        via_resource_class: @parent_resource.class,
+        via_record_id: @parent_record.to_param
+      }
+    else
+      {}
+    end
+
+    # Return to the current url if it doesn't include turbo_frame
+    # When coming from a turbo frame, we don't want to return to that exact frame
+    # for example when editing a has_one field we want to return to the parent frame
+    # not the frame of the has_one field.
+    args[:return_to] = request.url unless request.url.include?("turbo_frame=")
+
+    helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
   end
 
   def controls
