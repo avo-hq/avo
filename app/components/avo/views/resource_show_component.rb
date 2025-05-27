@@ -39,24 +39,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   end
 
   def edit_path
-    args = if via_resource?
-      {
-        via_resource_class: params[:via_resource_class],
-        via_record_id: params[:via_record_id]
-      }
-    elsif @parent_resource.present?
-      {
-        via_resource_class: @parent_resource.class,
-        via_record_id: @parent_record.to_param
-      }
-    else
-      {}
-    end
-
-    # Pass the return_to param to the edit path so the chain of navigation is kept.
-    args[:return_to] = params[:return_to] if params[:return_to].present?
-
-    helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
+    helpers.edit_resource_path(record: @resource.record, resource: @resource, return_to: request.url)
   end
 
   def controls
