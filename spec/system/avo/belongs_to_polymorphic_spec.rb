@@ -161,12 +161,19 @@ RSpec.feature "belongs_to", type: :system do
 
           save
 
-          expect(current_path).to eq "/admin/resources/projects/#{project.id}"
+          expect(current_path).to eq "/admin/resources/comments/#{comment.id}"
+
+          expect(page).to have_text "Comment was successfully updated."
 
           comment.reload
 
           expect(comment.commentable_type).to eq "Project"
           expect(comment.commentable.id).to eq project.id
+
+          click_on "Go back"
+          wait_for_loaded
+
+          expect(current_path).to eq "/admin/resources/projects/#{project.id}"
         end
       end
     end
