@@ -29,6 +29,20 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     end
   end
 
+  def bulk_edit_path
+    # Add the `view` param to let Avo know where to redirect back when the user clicks the `Cancel` button.
+    args = {via_view: "index"}
+
+    if @parent_record.present?
+      args = {
+        via_resource_class: @parent_resource.class.to_s,
+        via_record_id: @parent_record.to_param
+      }
+    end
+
+    helpers.edit_bulk_update_path(resource_name: @resource.name, **args)
+  end
+
   # The Create button is dependent on the new? policy method.
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?
@@ -143,6 +157,16 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
         avo_filters_dynamic_filters_component_id_value: dynamic_filters_component_id
       } do
       Avo::DynamicFilters.configuration.button_label
+    end
+  end
+
+  def render_bulk_update_button
+    a_link bulk_edit_path,
+      style: :primary,
+      color: :primary,
+      icon: "avo/edit",
+      form_class: "flex flex-col sm:flex-row sm:inline-flex" do
+      I18n.t("avo.bulk_update")
     end
   end
 
