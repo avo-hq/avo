@@ -36,6 +36,11 @@ module Avo
           group-hover:before:from-transparent group-hover:before:to-gray-50
         "
 
+        # TODO: add this to the css classes above
+        # &:has([data-toggle-target="panel"]:not(.hidden)) {
+        #   @apply z-30 opacity-100
+        # }
+
         class_names(
           "text-right whitespace-nowrap px-3",
           "w-px": render_row_controls_on_the_left?,
