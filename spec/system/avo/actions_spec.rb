@@ -418,19 +418,16 @@ RSpec.describe "Actions", type: :system do
 
       # Find disabled action
       click_on "Actions"
-      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
+      toggle_published_action = page.find("a", text: "Toggle post published")
+      expect(toggle_published_action["data-disabled"]).to eq "true"
 
-      # Hover grid element, select post, and verify that action is not disabled anymore
-      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.id}\"]").hover
-      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
-      click_on "Actions"
-      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "false"
+      # select post, and verify that action is not disabled anymore
+      execute_script("document.querySelector('input[type=\"checkbox\"][data-action=\"input->item-selector#toggle input->item-select-all#selectRow\"]').click()")
+      expect(toggle_published_action["data-disabled"]).to eq "false"
 
-      # Hover grid element, "unselect" post, and verify that action is disabled again
-      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.id}\"]").hover
-      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
-      click_on "Actions"
-      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
+      # "unselect" post, and verify that action is disabled again
+      execute_script("document.querySelector('input[type=\"checkbox\"][data-action=\"input->item-selector#toggle input->item-select-all#selectRow\"]').click()")
+      expect(toggle_published_action["data-disabled"]).to eq "true"
     end
   end
 

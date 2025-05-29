@@ -21,7 +21,7 @@ gem 'cssbundling-rails'
 # Dependencies for dummy_app
 #
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem "rails", ">= 8.0.0"
+gem "rails", ">= 8.0.2"
 # gem "rails", github: "rails/rails", branch: "main"
 
 # Avo file filed requires this gem
