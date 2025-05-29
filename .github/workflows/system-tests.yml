@@ -122,4 +122,6 @@ jobs:
       if: always() && steps.run_tests.outcome == 'failure'
       with:
         name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
-        path: ./spec/dummy/tmp/screenshots
+        path: |
+          ./spec/dummy/tmp/screenshots
+          ./spec/examples.txt
