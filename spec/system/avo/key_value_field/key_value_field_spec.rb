@@ -26,7 +26,7 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_css ".flex"
         expect(meta_element).to have_css ".w-full"
         expect(meta_element).to have_css ".bg-gray-700"
-        expect(meta_element).to have_css ".shadow"
+        expect(meta_element).to have_css ".shadow-sm"
         expect(meta_element).to have_css ".overflow-hidden"
         expect(meta_element).to have_css ".rounded-sm"
         expect(meta_element).to have_selector '[data-button="add-row"]'
@@ -161,7 +161,7 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_css ".flex"
         expect(meta_element).to have_css ".w-full"
         expect(meta_element).to have_css ".bg-gray-700"
-        expect(meta_element).to have_css ".shadow"
+        expect(meta_element).to have_css ".shadow-sm"
         expect(meta_element).to have_css ".overflow-hidden"
         expect(meta_element).to have_css ".rounded-sm"
 
