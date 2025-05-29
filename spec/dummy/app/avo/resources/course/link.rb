@@ -1,7 +1,6 @@
-class Avo::Resources::CourseLink < Avo::BaseResource
+class Avo::Resources::Course::Link < Avo::BaseResource
   self.title = :link
   self.includes = [:course]
-  self.model_class = Course::Link
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], link_cont: params[:q], m: "or").result(distinct: false) }
   }

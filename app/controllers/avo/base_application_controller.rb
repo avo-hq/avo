@@ -54,22 +54,6 @@ module Avo
 
     private
 
-    # Get the pluralized resource name for this request
-    # Ex: projects, teams, users
-    def resource_name
-      return params[:resource_name] if params[:resource_name].present?
-
-      return controller_name if controller_name.present?
-
-      begin
-        request.path
-          .match(/\/?#{Avo.root_path.delete("/")}\/resources\/([a-z1-9\-_]*)\/?/mi)
-          .captures
-          .first
-      rescue
-      end
-    end
-
     def related_resource_name
       params[:related_name]
     end
@@ -85,7 +69,7 @@ module Avo
     end
 
     def set_resource_name
-      @resource_name = resource_name
+      @resource_name = params.dig(:resource_name)&.gsub("-", "/") || controller_path.gsub("avo/", "")
     end
 
     def set_related_resource_name
@@ -93,7 +77,7 @@ module Avo
     end
 
     def set_resource
-      raise Avo::ResourceNotFoundError.new(resource_name) if resource.nil?
+      raise Avo::ResourceNotFoundError.new(@resource_name) if resource.nil?
 
       @resource = resource.new(view: params[:view].presence || action_name.to_s, user: _current_user, params: params)
 
