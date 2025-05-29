@@ -513,10 +513,10 @@ module Avo
 
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: if params[:turbo_frame]
-            reload_frame_turbo_streams
+          if params[:turbo_frame]
+            render turbo_stream: reload_frame_turbo_streams
           else
-            turbo_stream.redirect_to(after_destroy_path)
+            render turbo_stream: turbo_stream.redirect_to(after_destroy_path)
           end
         end
         format.html { redirect_to after_destroy_path }
