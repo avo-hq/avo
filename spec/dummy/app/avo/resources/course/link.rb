@@ -9,6 +9,8 @@ class Avo::Resources::Course::Link < Avo::BaseResource
     field :id, as: :id
     field :link, as: :text, help: "Hehe. Something helpful."
     field :course, as: :belongs_to, searchable: true
+
+    field :visits, as: :has_many, use_resource: Avo::Resources::Course::Link::Visit
   end
 
   def form_fields

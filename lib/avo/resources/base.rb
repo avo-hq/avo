@@ -185,7 +185,7 @@ module Avo
 
         def singular_route_key
           if route_namespace.present?
-            "#{route_namespace}_#{route_key.singularize}"
+            "#{route_namespace.gsub("/", "_")}_#{route_key.singularize}"
           else
             route_key.singularize
           end
