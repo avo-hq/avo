@@ -59,7 +59,7 @@ module Avo
     def resource_name
       return params[:resource_name] if params[:resource_name].present?
 
-      return controller_name if controller_name.present?
+      return self.class.to_s.sub("Avo::", "").sub("Controller", "").underscore if controller_name.present?
 
       begin
         request.path

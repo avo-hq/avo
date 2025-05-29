@@ -22,6 +22,8 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def attach_path
+    # Idea: pass avo/resources/course-links/users
+    # basically the idea is to have the namespace separated with - so we know when it ends
     helpers.avo.resources_associations_new_path(
       @resource.singular_model_key,
       @resource.record_param,

@@ -1,4 +1,4 @@
-class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
+class Avo::Resources::FieldDiscovery::User < Avo::BaseResource
   self.model_class = ::User
   self.description = "This is a resource with discovered fields. It will show fields and associations as defined in the model."
   self.find_record_method = -> {

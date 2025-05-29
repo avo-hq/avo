@@ -13,6 +13,7 @@ module Avo
       end
 
       route_key = resource.route_key
+      route_key = "#{resource.route_namespace}_#{route_key}" if resource.route_namespace.present?
       # Add the `_index` suffix for the uncountable names so they get the correct path (`fish_index`)
       route_key << "_index" if resource.route_key == resource.singular_route_key
 

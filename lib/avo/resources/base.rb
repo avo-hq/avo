@@ -45,6 +45,7 @@ module Avo
       # class methods
       delegate :class_name, to: :class
       delegate :route_key, to: :class
+      delegate :route_namespace, to: :class
       delegate :singular_route_key, to: :class
 
       attr_accessor :view
@@ -171,15 +172,23 @@ module Avo
         end
 
         def class_name
-          @class_name ||= to_s.demodulize
+          @class_name ||= to_s.sub("Avo::Resources::", "")
+        end
+
+        def route_namespace
+          to_s.sub("Avo::Resources::", "").deconstantize.underscore
         end
 
         def route_key
-          class_name.underscore.pluralize
+          to_s.demodulize.underscore.pluralize
         end
 
         def singular_route_key
-          route_key.singularize
+          if route_namespace.present?
+            "#{route_namespace}_#{route_key.singularize}"
+          else
+            route_key.singularize
+          end
         end
 
         def translation_key
@@ -188,7 +197,7 @@ module Avo
         alias_method :translation_key=, :custom_translation_key=
 
         def name
-          name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+          name_from_translation_key(count: 1, default: class_name.sub("::", "_").underscore.humanize)
         end
         alias_method :singular_name, :name
 
