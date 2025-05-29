@@ -10,6 +10,7 @@ module Avo
           html: {
             novalidate: true,
             data: {
+              turbo: false,
               controller: "form avo-reactive-fields",
               action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
             }

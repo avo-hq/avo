@@ -437,7 +437,6 @@ module Avo
 
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message }
-        format.turbo_stream { render turbo_stream: turbo_stream.redirect_to(after_create_path) }
       end
     end
 
