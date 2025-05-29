@@ -57,6 +57,10 @@
 @custom-variant floating-controls (&:where(.floating-controls *));
 @custom-variant shift-pressed (&:where(.shift-pressed *));
 
+/* https://tailwindcss.com/docs/upgrade-guide#hover-styles-on-mobile */
+/* needed to fix hover on system tests we need to find a better solution */
+@custom-variant hover (&:hover);
+
 @layer components {
   @import './../../../node_modules/easymde/dist/easymde.min.css';
   @import './../../../node_modules/tippy.js/dist/tippy.css';
