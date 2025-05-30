@@ -74,8 +74,8 @@ GEM
       addressable
     active_median (0.6.0)
       activesupport (>= 7.1)
-    activejob (8.0.2)
-      activesupport (= 8.0.2)
+    activejob (8.0.1)
+      activesupport (= 8.0.1)
       globalid (>= 0.3.6)
     activemodel (8.0.2)
       activesupport (= 8.0.2)

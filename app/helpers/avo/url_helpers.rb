@@ -12,11 +12,11 @@ module Avo
         end
       end
 
-      route_key = resource.route_key
+      path_helper_key = resource.path_helper_key
       # Add the `_index` suffix for the uncountable names so they get the correct path (`fish_index`)
-      route_key << "_index" if resource.route_key == resource.singular_route_key
+      path_helper_key << "_index" if resource.path_helper_key == resource.singular_path_helper_key
 
-      avo.send :"resources_#{route_key}_path", **existing_params, **args
+      avo.send :"resources_#{resource.path_helper_key}_path", **existing_params, **args
     end
 
     def resource_path(
@@ -26,26 +26,26 @@ module Avo
       keep_query_params: false,
       **args
     )
-      avo.send :"resources_#{resource.singular_route_key}_path", record || resource_id, **args
+      avo.send :"resources_#{resource.singular_path_helper_key}_path", record || resource_id, **args
     end
 
     def preview_resource_path(
       resource:,
       **args
     )
-      avo.send :"preview_resources_#{resource.singular_route_key}_path", resource.record, **args
+      avo.send :"preview_resources_#{resource.singular_path_helper_key}_path", resource.record, **args
     end
 
     def new_resource_path(resource:, **args)
-      avo.send :"new_resources_#{resource.singular_route_key}_path", **args
+      avo.send :"new_resources_#{resource.singular_path_helper_key}_path", **args
     end
 
     def edit_resource_path(resource:, record: nil, resource_id: nil, **args)
-      avo.send :"edit_resources_#{resource.singular_route_key}_path", record || resource_id, **args
+      avo.send :"edit_resources_#{resource.singular_path_helper_key}_path", record || resource_id, **args
     end
 
     def resource_attach_path(resource, record_id, related_name, related_id = nil)
-      helpers.avo.resources_associations_new_path(resource.singular_route_key, record_id, related_name)
+      helpers.avo.resources_associations_new_path(resource.singular_path_helper_key, record_id, related_name)
     end
 
     def resource_detach_path(

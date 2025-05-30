@@ -46,6 +46,8 @@ module Avo
       delegate :class_name, to: :class
       delegate :route_key, to: :class
       delegate :singular_route_key, to: :class
+      delegate :path_helper_key, to: :class
+      delegate :singular_path_helper_key, to: :class
 
       attr_accessor :view
       attr_accessor :reflection
@@ -159,7 +161,7 @@ module Avo
           return record_class if record_class.present?
 
           # generate a model class
-          class_name.safe_constantize
+          to_s.gsub("Avo::Resources::", "").safe_constantize
         end
 
         # This is used as the model class ID
@@ -174,12 +176,24 @@ module Avo
           @class_name ||= to_s.demodulize
         end
 
+        def path_helper_key
+          @path_helper_key ||= route_key.gsub("-", "_")
+        end
+
+        def singular_path_helper_key
+          @singular_path_helper_key ||= singular_route_key.gsub("-", "_")
+        end
+
+        def controller_key
+          @controller_key ||= route_key.gsub("-", "/")
+        end
+
         def route_key
-          class_name.underscore.pluralize
+          @route_key ||= to_s.gsub("Avo::Resources::", "").underscore.gsub("/", "-").pluralize
         end
 
         def singular_route_key
-          route_key.singularize
+          @singular_route_key ||= route_key.singularize
         end
 
         def translation_key

@@ -1,9 +1,12 @@
-class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
+class Avo::Resources::FieldDiscovery::User < Avo::BaseResource
   self.model_class = ::User
   self.description = "This is a resource with discovered fields. It will show fields and associations as defined in the model."
   self.find_record_method = -> {
     query.friendly.find id
   }
+
+  def self.plural_name = "Field Discovery Users"
+  def self.singular_name = "Field Discovery User"
 
   def fields
     main_panel do

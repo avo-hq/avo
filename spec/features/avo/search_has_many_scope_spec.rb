@@ -7,7 +7,7 @@ RSpec.feature Avo::SearchController, type: :controller do
 
   it "returns nothing when parent dont have children" do
     get :show, params: {
-      resource_name: "course_links",
+      resource_name: "course/links",
       via_association: "has_many",
       via_association_id: "links",
       via_reflection_class: "Course",
@@ -23,7 +23,7 @@ RSpec.feature Avo::SearchController, type: :controller do
 
   it "returns the exact three records when parent have three children" do
     get :show, params: {
-      resource_name: "course_links",
+      resource_name: "course/links",
       via_association: "has_many",
       via_association_id: "links",
       via_reflection_class: "Course",
@@ -43,7 +43,7 @@ RSpec.feature Avo::SearchController, type: :controller do
 
   it "returns the exact five records when parent have five children" do
     get :show, params: {
-      resource_name: "course_links",
+      resource_name: "course/links",
       via_association: "has_many",
       via_association_id: "links",
       via_reflection_class: "Course",
@@ -64,7 +64,7 @@ RSpec.feature Avo::SearchController, type: :controller do
     end
 
     get :show, params: {
-      resource_name: "course_links",
+      resource_name: "course/links",
       via_association: "has_many",
       via_association_id: "links",
       via_reflection_class: "Course",
