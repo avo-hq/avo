@@ -129,6 +129,9 @@ module Avo
       add_breadcrumb t("avo.new").humanize
 
       set_component_for __method__, fallback_view: :edit
+
+      # Called from avo-advanced
+      safe_call :handle_reactive_fields
     end
 
     def create
@@ -183,6 +186,9 @@ module Avo
       set_actions
 
       set_component_for __method__
+
+      # Called from avo-advanced
+      safe_call :handle_reactive_fields
     end
 
     def update
