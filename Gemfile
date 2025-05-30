@@ -190,3 +190,5 @@ gem "avo-record_link_field"
 gem "pagy", "> 8"
 
 gem "csv"
+
+gem "knapsack_pro", "~> 8.3", :groups => [:development, :test]

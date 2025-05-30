@@ -1,4 +1,10 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+require 'knapsack_pro'
+
+# Custom Knapsack Pro config here
+
+KnapsackPro::Adapters::RSpecAdapter.bind
+
 require "spec_helper"
 require "fileutils"
 
