@@ -9,7 +9,7 @@ module Avo
     include Avo::InitializesAvo
     include Avo::CommonController
     include Avo::ApplicationHelper
-    include Avo::UrlHelpers
+    include Avo::URLHelpers
     include Avo::Concerns::Breadcrumbs
     include Avo::Concerns::FindAssociationField
 
