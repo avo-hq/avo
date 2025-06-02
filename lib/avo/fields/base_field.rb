@@ -92,6 +92,7 @@ module Avo
         @meta = args[:meta]
         @copyable = args[:copyable] || false
         @react_on = Array.wrap(args[:react_on]).map(&:to_s)
+        @record = args[:record]
 
         @args = args
 
