@@ -266,7 +266,7 @@ module Avo
           end
           .select do |item|
             # TODO: check lib/avo/core/forms/base.rb for details on how to replace this and handle it in a better way
-            next true if resource.is_a?(Avo::Resources::Base)
+            next true if try(:resource).is_a?(Avo::Resources::Base)
 
             # Check if record has the setter method
             # Next if the view is not on forms
