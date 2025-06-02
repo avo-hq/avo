@@ -195,3 +195,5 @@ gem "avo-record_link_field"
 gem "pagy", "> 8"
 
 gem "csv"
+
+gem "avo-forms", path: "./../avo-forms"

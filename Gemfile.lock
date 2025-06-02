@@ -1,4 +1,10 @@
 PATH
+  remote: ../avo-forms
+  specs:
+    avo-forms (0.1.0)
+      rails (>= 8.0.2)
+
+PATH
   remote: .
   specs:
     avo (3.20.3)
@@ -736,6 +742,7 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
+  avo-forms!
   avo-money_field
   avo-record_link_field
   aws-sdk-s3

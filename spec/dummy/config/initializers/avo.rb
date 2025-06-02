@@ -1,7 +1,7 @@
 Avo.configure do |config|
   ## == Base configs ==
   config.root_path = "/admin"
-  config.app_name = -> { "Avocadelicious #{params[:app_name_suffix]}" }
+  config.app_name = -> { request.cookies["app_name"] || "Avocadelicious #{params[:app_name_suffix]}" }
   config.home_path = -> { avo.resources_projects_path }
   # config.default_url_options = [:tenant_id]
   # Use this to test root_path_without_url helper
