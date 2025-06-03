@@ -14,11 +14,13 @@ export default class extends Controller {
 
   #hideAllTypes() {
     this.containerTarget.innerHTML = ''
+    this.containerTarget.classList.add('hidden')
   }
 
   #showType(type) {
     const target = this.typeTargets.find((typeTarget) => typeTarget.dataset.type === type)
     if (target) {
+      this.containerTarget.classList.remove('hidden')
       this.containerTarget.appendChild(target.content.cloneNode(true))
     }
   }
