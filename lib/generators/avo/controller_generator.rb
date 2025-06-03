@@ -21,11 +21,11 @@ module Generators
       private
 
       def controller_name
-        "#{plural_name}_controller"
+        "#{class_name.underscore.pluralize}_controller"
       end
 
       def controller_class
-        "Avo::#{class_name.camelize.pluralize}Controller"
+        "Avo::#{class_name.pluralize}Controller"
       end
     end
   end

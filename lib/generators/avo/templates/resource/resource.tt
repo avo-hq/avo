@@ -1,4 +1,4 @@
-class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if options["array"] %>
+class Avo::Resources::<%= class_name.to_s %> < <%= parent_resource %><% if options["array"] %>
   def records
     [
       {
