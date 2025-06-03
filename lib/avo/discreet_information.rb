@@ -70,7 +70,7 @@ class Avo::DiscreetInformation
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
       label: Avo::ExecutionContext.new(target: item[:label], **args).handle,
       as: Avo::ExecutionContext.new(target: item[:as], **args).handle,
-      visible: Avo::ExecutionContext.new(target: item[:visible], **args).handle,
+      visible: Avo::ExecutionContext.new(target: item[:visible], **args).handle
     )
   end
 
