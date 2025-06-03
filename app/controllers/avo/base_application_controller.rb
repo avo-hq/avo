@@ -55,24 +55,10 @@ module Avo
     private
 
     # Get the pluralized resource name for this request
-    # Ex: projects, teams, users
-    def resource_name
-      return params[:resource_name] if params[:resource_name].present?
+    # Ex: projects, teams, users, course/links
+    def resource_name = self.class.name.sub(/Controller$/, '').sub(/Avo::/, '').singularize
 
-      return controller_name if controller_name.present?
-
-      begin
-        request.path
-          .match(/\/?#{Avo.root_path.delete("/")}\/resources\/([a-z1-9\-_]*)\/?/mi)
-          .captures
-          .first
-      rescue
-      end
-    end
-
-    def related_resource_name
-      params[:related_name]
-    end
+    def related_resource_name = params[:related_name]
 
     # Gets the Avo resource for this request based on the request from the `resource_name` "param"
     # Ex: Avo::Resources::Project, Avo::Resources::Team, Avo::Resources::User

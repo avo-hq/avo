@@ -133,7 +133,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_detach_button(control)
     return unless can_detach?
 
-    a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
+    a_button url: helpers.resource_detach_path(parent_resource: @parent_resource, resource: @resource),
       style: :icon,
       color: :gray,
       icon: "avo/detach",

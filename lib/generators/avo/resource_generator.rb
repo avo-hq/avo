@@ -30,8 +30,8 @@ module Generators
       def create
         return if override_controller?
 
-        template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
-        invoke "avo:controller", [resource_name], options
+        template "resource/resource.tt", "app/avo/resources/#{class_name.underscore}.rb"
+        invoke "avo:controller", [class_name], options
       end
 
       no_tasks do
@@ -70,22 +70,6 @@ module Generators
           "Avo will not attempt to create resources for you.\n#{extra}\nThen run 'rails generate avo:all_resources' to generate all your resources."
         end
 
-        def resource_class
-          class_name.remove(":").to_s
-        end
-
-        def controller_class
-          "Avo::#{class_name.remove(":").pluralize}Controller"
-        end
-
-        def resource_name
-          model_resource_name.to_s
-        end
-
-        def controller_name
-          "#{model_resource_name.pluralize}_controller"
-        end
-
         def current_models
           ActiveRecord::Base.connection.tables.map do |model|
             model.capitalize.singularize.camelize
@@ -98,13 +82,17 @@ module Generators
           []
         end
 
+        def controller_name
+          "#{model_resource_name.pluralize}_controller"
+        end
+
         def class_from_args
-          @class_from_args ||= options["model-class"]&.camelize || (class_name if class_name.include?("::"))
+          @class_from_args ||= options["model-class"]&.camelize
         end
 
         def model_class_from_args
-          if class_from_args.present? || class_name.include?("::")
-            "\n  self.model_class = ::#{class_from_args || class_name}"
+          if class_from_args.present?
+            "\n  self.model_class = ::#{class_from_args}"
           end
         end
 

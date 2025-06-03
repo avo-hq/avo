@@ -22,9 +22,7 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def attach_path
-    helpers.avo.resources_associations_new_path(
-      @resource.singular_model_key,
-      @resource.record_param,
+    helpers.avo.send(:"new_related_resources_#{@resource.singular_path_key}_path",
       @field.id,
       for_attribute: @field.for_attribute
     )

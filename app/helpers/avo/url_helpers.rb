@@ -12,11 +12,11 @@ module Avo
         end
       end
 
-      route_key = resource.route_key
+      path_key = resource.path_key
       # Add the `_index` suffix for the uncountable names so they get the correct path (`fish_index`)
-      route_key << "_index" if resource.route_key == resource.singular_route_key
+      path_key << "_index" if resource.path_key == resource.singular_path_key
 
-      avo.send :"resources_#{route_key}_path", **existing_params, **args
+      avo.send :"resources_#{path_key}_path", **existing_params, **args
     end
 
     def resource_path(
@@ -26,35 +26,30 @@ module Avo
       keep_query_params: false,
       **args
     )
-      avo.send :"resources_#{resource.singular_route_key}_path", record || resource_id, **args
+      avo.send :"resources_#{resource.singular_path_key}_path", record || resource_id, **args
     end
 
     def preview_resource_path(
       resource:,
       **args
     )
-      avo.send :"preview_resources_#{resource.singular_route_key}_path", resource.record, **args
+      avo.send :"preview_resources_#{resource.singular_path_key}_path", resource.record, **args
     end
 
     def new_resource_path(resource:, **args)
-      avo.send :"new_resources_#{resource.singular_route_key}_path", **args
+      avo.send :"new_resources_#{resource.singular_path_key}_path", **args
     end
 
     def edit_resource_path(resource:, record: nil, resource_id: nil, **args)
-      avo.send :"edit_resources_#{resource.singular_route_key}_path", record || resource_id, **args
+      avo.send :"edit_resources_#{resource.singular_path_key}_path", record || resource_id, **args
     end
 
     def resource_attach_path(resource, record_id, related_name, related_id = nil)
-      helpers.avo.resources_associations_new_path(resource.singular_route_key, record_id, related_name)
+      helpers.avo.send(:"new_related_resources_#{resource.singular_path_key}_path", record_id, related_name)
     end
 
-    def resource_detach_path(
-      model_name, # teams
-      record_id, # 1
-      related_name, # admin
-      related_id = nil
-    )
-      avo.resources_associations_destroy_path(model_name, record_id, related_name, related_id)
+    def resource_detach_path(parent_resource:, resource:)
+      avo.send(:"destroy_related_resources_#{resource.singular_path_key}_path", resource.record_param, resource.singular_path_key, parent_resource.record_param, parent_resource.singular_path_key)
     end
 
     def related_resources_path(
@@ -76,9 +71,9 @@ module Avo
       rescue
       end
 
-      route_key = parent_resource&.route_key || parent_record.model_name.route_key
+      path_key = parent_resource&.singular_path_key || parent_record.model_name.route_key
 
-      avo.resources_associations_index_path(route_key, record.to_param, **existing_params, **args)
+      avo.send(:"index_related_resources_#{path_key}_path", record, **existing_params, **args)
     end
 
     def resource_view_path(**args)

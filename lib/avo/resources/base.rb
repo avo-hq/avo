@@ -44,8 +44,8 @@ module Avo
 
       # class methods
       delegate :class_name, to: :class
-      delegate :route_key, to: :class
-      delegate :singular_route_key, to: :class
+      delegate :route_key, :path_key, to: :class
+      delegate :singular_route_key, :singular_path_key, to: :class
 
       attr_accessor :view
       attr_accessor :reflection
@@ -159,7 +159,7 @@ module Avo
           return record_class if record_class.present?
 
           # generate a model class
-          class_name.safe_constantize
+          singular_route_key.classify.safe_constantize
         end
 
         # This is used as the model class ID
@@ -174,12 +174,35 @@ module Avo
           @class_name ||= to_s.demodulize
         end
 
+        # This is used to generate the route key for the resource
+        # Example:
+        # Avo::Resources::Course -> courses
+        # Avo::Resources::Link -> links
+        # Avo::Resources::Course::Link -> course/links
         def route_key
-          class_name.underscore.pluralize
+          self.to_s.gsub("Avo::Resources::", "").underscore.pluralize
         end
 
+        # This is used to generate the singular route key for the resource
+        # Example:
+        # Avo::Resources::Course -> course
+        # Avo::Resources::Link -> link
+        # Avo::Resources::Course::Link -> course/link
         def singular_route_key
           route_key.singularize
+        end
+
+        def path_key
+          route_key.tr("/", "_")
+        end
+
+        # This is used to generate the singular path key for the resource
+        # Example:
+        # Avo::Resources::Course -> course
+        # Avo::Resources::Link -> link
+        # Avo::Resources::Course::Link -> course_link
+        def singular_path_key
+          singular_route_key.tr("/", "_")
         end
 
         def translation_key

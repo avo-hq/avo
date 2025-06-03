@@ -25,7 +25,7 @@ module Avo
 
       def frame_url(add_turbo_frame: true)
         Avo::Services::URIService.parse(field_resource.record_path)
-          .append_path(id.to_s)
+          .append_path("related", id.to_s)
           .append_query(query_params(add_turbo_frame:))
           .to_s
       end
@@ -99,6 +99,7 @@ module Avo
 
       def query_params(add_turbo_frame: true)
         {
+          resource_name: field_resource.route_key,
           view:,
           for_attribute: @for_attribute,
           turbo_frame: add_turbo_frame ? turbo_frame : nil

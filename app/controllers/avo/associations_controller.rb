@@ -53,6 +53,8 @@ module Avo
       super
     end
 
+    def resource_name = params[:resource_name]
+
     def show
       @parent_resource, @parent_record = @resource, @record
 
