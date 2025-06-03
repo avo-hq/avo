@@ -97,7 +97,8 @@ export default class extends Controller {
   }
 
   updateActionLinks(param, selector) {
-    const selectedResources = JSON.parse(this.element.dataset.selectedResources).join(',')
+    const selectedResourcesArray = JSON.parse(this.element.dataset.selectedResources)
+    const selectedResources = selectedResourcesArray.join(',')
     const selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
 
     document.querySelectorAll(selector).forEach((link) => {
@@ -119,6 +120,12 @@ export default class extends Controller {
         } else if (param === 'selectedQuery') {
           url.searchParams.set(selectedQueryKey, selectedQuery)
           url.searchParams.set(selectedAllKey, 'true')
+        }
+
+        if (selectedResourcesArray.length >= 2  && isBulkUpdate) {
+          link.classList.remove('hidden')
+        } else {
+          link.classList.add('hidden')
         }
 
         link.href = url.toString()

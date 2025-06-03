@@ -151,6 +151,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
            style: :primary,
            color: :primary,
            icon: "avo/edit",
+           class: "hidden",
            form_class: "flex flex-col sm:flex-row sm:inline-flex" do
       control.label
     end
