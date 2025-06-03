@@ -35,7 +35,7 @@ module Avo
         # ]
         def fetch_resources
           # Mark the BaseResource as abstract so it doesn't get loaded by the resource manager
-          # This is made here instead of in the BaseResource class because this class can be overridden
+          # This is made here instead of in the BaseResource class because BaseResource class can be overridden
           # And we don't want to force the developer that overrides this class to add the abstract resource flag to the overridden class.
           Avo::BaseResource.abstract_resource!
 
