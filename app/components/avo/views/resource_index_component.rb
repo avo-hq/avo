@@ -160,16 +160,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     end
   end
 
-  def render_bulk_update_button
-    a_link bulk_edit_path,
-      style: :primary,
-      color: :primary,
-      icon: "avo/edit",
-      form_class: "flex flex-col sm:flex-row sm:inline-flex" do
-      I18n.t("avo.bulk_update")
-    end
-  end
-
   def scopes_list
     Avo::Advanced::Scopes::ListComponent.new(
       scopes: @scopes,

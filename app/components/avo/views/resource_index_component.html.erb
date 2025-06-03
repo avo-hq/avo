@@ -49,8 +49,6 @@
               <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
 
               <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
-
-              <%= render_bulk_update_button %>
             </div>
           </div>
           <% if has_dynamic_filters? %>

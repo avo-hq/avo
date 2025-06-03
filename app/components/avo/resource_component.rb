@@ -146,6 +146,16 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  def render_bulk_edit_button(control)
+    a_link bulk_edit_path,
+           style: :primary,
+           color: :primary,
+           icon: "avo/edit",
+           form_class: "flex flex-col sm:flex-row sm:inline-flex" do
+      control.label
+    end
+  end
+
   def render_actions_list(actions_list)
     return unless can_see_the_actions_button?
 
