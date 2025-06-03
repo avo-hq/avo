@@ -1,4 +1,4 @@
-class CreateGalaxySectorPlanetSatellites < ActiveRecord::Migration[8.0]
+class CreateGalaxySectorPlanetSatellites < ActiveRecord::Migration[6.1]
   def change
     create_table :galaxy_sector_planet_satellites do |t|
       t.string :name
