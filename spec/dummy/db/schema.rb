@@ -134,7 +134,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_162158) do
     t.bigint "galaxy_sector_planets_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["galaxy_sector_planets_id"], name: "idx_on_galaxy_sector_planets_id_9e9b9e42fa"
+    t.index ["galaxy_sector_planets_id"], name: "index_satellites_on_planets_id"
   end
 
   create_table "galaxy_sector_planets", force: :cascade do |t|
