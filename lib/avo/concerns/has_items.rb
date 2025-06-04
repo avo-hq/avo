@@ -265,9 +265,6 @@ module Avo
             end
           end
           .select do |item|
-            # TODO: check lib/avo/core/forms/base.rb for details on how to replace this and handle it in a better way
-            next true if try(:resource).is_a?(Avo::Resources::Base)
-
             # Check if record has the setter method
             # Next if the view is not on forms
             next true if !view.in?(%w[edit update new create])
@@ -287,6 +284,9 @@ module Avo
 
             # Skip nested fields
             next true if item.try(:nested_on?, view)
+
+            # When the resource is a form, we want to show all items even if there is no setter method
+            next true if defined?(Avo::Core::Resources::Forms::Base) && try(:resource).is_a?(Avo::Core::Resources::Forms::Base)
 
             item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end
