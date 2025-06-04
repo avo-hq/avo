@@ -1,17 +1,19 @@
 <%= render Avo::PanelComponent.new(**args) do |c| %>
-  <% if @is_main_panel %>
+  <% if @is_main_panel && controls.any? %>
     <% c.with_tools do %>
       <% controls.each do |control| %>
         <%= render_control control %>
       <% end %>
     <% end %>
   <% end %>
-   <% c.with_body do %>
+
+  <% c.with_body do %>
     <% content_tag :div, class: "divide-y divide-gray-200 overflow-auto" do %>
       <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
     <% end %>
   <% end %>
-   <% if sidebars.any? { |sidebar| sidebar.visible_items.any? } %>
+
+  <% if sidebars.any? { |sidebar| sidebar.visible_items.any? } %>
     <% c.with_sidebar do %>
       <div class="justify-between space-y-4">
         <% sidebars.each_with_index do |sidebar, index| %>
