@@ -22,7 +22,7 @@
     "@algolia/autocomplete-theme-classic": "^1.0.0-alpha.46",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@hotwired/stimulus": "^3.2.2",
-    "@hotwired/turbo-rails": "^8.0.13",
+    "@hotwired/turbo-rails": "^8.0.16",
     "@rails/activestorage": "^6.1.710",
     "@stimulus-components/clipboard": "^5.0.0",
     "@stimulus-components/password-visibility": "^3.0.0",
@@ -66,7 +66,7 @@
     "luxon": "^3.6.1",
     "mapkick": "^0.2.6",
     "mousetrap": "^1.6.5",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.4",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.3.4",
@@ -86,8 +86,8 @@
     "urijs": "^1.19.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.27.3",
-    "@babel/eslint-parser": "^7.27.1",
+    "@babel/core": "^7.27.4",
+    "@babel/eslint-parser": "^7.27.5",
     "@babel/preset-env": "^7.27.2",
     "@prettier/plugin-ruby": "^2.1.0",
     "esbuild-visualizer": "^0.3.1",
