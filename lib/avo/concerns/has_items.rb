@@ -285,6 +285,9 @@ module Avo
             # Skip nested fields
             next true if item.try(:nested_on?, view)
 
+            # When the resource is a form, we want to show all items even if there is no setter method
+            next true if defined?(Avo::Core::Resources::Forms::Base) && try(:resource).is_a?(Avo::Core::Resources::Forms::Base)
+
             item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end
           .select do |item|

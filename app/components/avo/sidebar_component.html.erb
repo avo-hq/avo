@@ -52,6 +52,18 @@
             </div>
           <% end %>
 
+          <% if pages.present? %>
+            <div>
+              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.pages'), icon: helpers.svg("document-chart-bar", class: 'h-4') %>
+
+              <div class="w-full space-y-1">
+                <% pages.each do |page| %>
+                  <%= render Avo::Sidebar::LinkComponent.new label: page.title, path: page.path %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
           <% if Avo::MediaLibrary.configuration.visible? %>
             <%= render Avo::Sidebar::LinkComponent.new label: 'Media Library', path: helpers.avo.media_library_index_path, active: :exclusive %>
           <% end %>
