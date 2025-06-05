@@ -1,5 +1,5 @@
 # requires all dependencies
-Gem.loaded_specs["avo"].dependencies.each do |d|
+Gem.loaded_specs["avo-4-dev"].dependencies.each do |d|
   case d.name
   when "activerecord"
     require "active_record/railtie"
