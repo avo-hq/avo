@@ -1,13 +1,15 @@
-progress {
-  @apply h-2 bg-white border border-slate-400 rounded-sm shadow-inner;
-}
-progress[value]::-webkit-progress-bar {
-  @apply bg-white border border-gray-500 rounded-sm shadow-inner;
-}
-progress[value]::-webkit-progress-value{
-  @apply bg-primary-500 rounded-sm;
+[data-component="avo/fields/common/progress_bar_component"] {
+  & progress {
+    @apply h-2 bg-white border border-slate-400 rounded-sm shadow-inner;
+  }
+  & progress[value]::-webkit-progress-bar {
+    @apply bg-white border border-gray-500 rounded-sm shadow-inner;
+  }
+  & progress[value]::-webkit-progress-value{
+    @apply bg-primary-500 rounded-sm;
 
-}
-progress[value]::-moz-progress-bar {
-  @apply bg-primary-500 rounded-sm appearance-none;
+  }
+  & progress[value]::-moz-progress-bar {
+    @apply bg-primary-500 rounded-sm appearance-none;
+  }
 }
