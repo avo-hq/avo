@@ -189,56 +189,11 @@ module Avo
           final_value = execute_context(@format_using, value: final_value)
         end
 
-        if @format_display_using.present? && @view.display?
-          final_value = execute_context(@format_display_using, value: final_value)
-          unless Rails.env.production?
-            if @decorate.present?
-              puts "[Avo DEPRECATION WARNING]: The `decorate` option is nolonger supported and will be removed in future versions. Consider using `format_display_using` instead."
-            end
-          end
-        end
-
-        if @format_index_using.present? && @view.index?
-          final_value = execute_context(@format_index_using, value: final_value)
-        elsif @format_display_using.present? && @view.display?
-          final_value = execute_context(@format_display_using, value: final_value)
-        elsif @format_using.present?
-          final_value = execute_context(@format_using, value: final_value)
-        end
-
-        if @format_show_using.present? && @view.show?
-          final_value = execute_context(@format_show_using, value: final_value)
-        elsif @format_display_using.present? && @view.display?
-          final_value = execute_context(@format_display_using, value: final_value)
-        elsif @format_using.present?
-          final_value = execute_context(@format_using, value: final_value)
-        end
-        
-        if @format_edit_using.present? && @view.edit?
-          final_value = execute_context(@format_edit_using, value: final_value)
-        elsif @format_using.present?
-          final_value = execute_context(@format_using, value: final_value)
-        end
-
-        if @format_new_using.present? && @view.new?
-          final_value = execute_context(@format_new_using, value: final_value)
-        elsif @format_using.present?
-          final_value = execute_context(@format_using, value: final_value)
-        end
-
-        if @format_form_using.present? && @view.new?
-          final_value = execute_context(@format_form_using, value: final_value)
-        elsif @format_using.present?
-          final_value = execute_context(@format_using, value: final_value)
-        end
+        # Format value based on available formatter
+        final_value = format_value(final_value)
 
         if @decorate.present? && @view.display?
           final_value = execute_context(@decorate, value: final_value)
-          unless Rails.env.production?
-            if @decorate.present?
-              puts "[Avo DEPRECATION WARNING]: The `decorate` option is nolonger supported and will be removed in future versions. Consider using `format_display_using` instead."
-            end
-          end
         end
 
         final_value
@@ -376,6 +331,32 @@ module Avo
         resource = Avo.resource_manager.get_resource_by_model_class(model_class)
 
         resource || (raise Avo::MissingResourceError.new(model_class, self))
+      end
+
+      def format_value(value)
+        final_value = value
+
+        formatters_by_view = {
+          index: [:format_index_using, :format_display_using, :format_using],
+          show: [:format_show_using, :format_display_using, :format_using],
+          edit: [:format_edit_using, :format_using],
+          new: [:format_new_using, :format_form_using, :format_using],
+        }
+
+        current_view = @view.to_sym
+        applicable_formatters = formatters_by_view[current_view]
+
+        if applicable_formatters
+          applicable_formatters.each do |formatter|
+            formatter_value = instance_variable_get("@#{formatter}")
+            if formatter_value.present?
+              final_value = execute_context(formatter_value, value: final_value)
+              return
+            end
+          end
+        end
+
+        final_value
       end
     end
   end
