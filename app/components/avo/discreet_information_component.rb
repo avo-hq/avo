@@ -4,7 +4,7 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
   prop :payload
 
   def items
-    @payload.items.compact
+    @payload.items.compact.filter { |item| render_item?(item) }
   end
 
   def element_tag(item)
@@ -40,4 +40,8 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
   end
 
   def data(item) = item.data || {}
+
+  def render_item?(item)
+    item.visible.nil? || item.visible
+  end
 end
