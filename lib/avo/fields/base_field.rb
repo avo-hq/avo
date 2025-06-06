@@ -346,14 +346,11 @@ module Avo
         current_view = @view.to_sym
         applicable_formatters = formatters_by_view[current_view]
 
-        if applicable_formatters
-          applicable_formatters.each do |formatter|
-            formatter_value = instance_variable_get("@#{formatter}")
+        applicable_formatters&.each do |formatter|
+            formatter_value = instance_variable_get(:"@#{formatter}")
             if formatter_value.present?
-              final_value = execute_context(formatter_value, value: final_value)
-              return
+              return execute_context(formatter_value, value: final_value)
             end
-          end
         end
 
         final_value
