@@ -347,10 +347,10 @@ module Avo
         applicable_formatters = formatters_by_view[current_view]
 
         applicable_formatters&.each do |formatter|
-            formatter_value = instance_variable_get(:"@#{formatter}")
-            if formatter_value.present?
-              return execute_context(formatter_value, value: final_value)
-            end
+          formatter_value = instance_variable_get(:"@#{formatter}")
+          if formatter_value.present?
+            return execute_context(formatter_value, value: final_value)
+          end
         end
 
         final_value
