@@ -396,6 +396,19 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "feedback notifications with keep_open flag" do
+    it "shows persistent flash message when keep_open is true" do
+      visit avo.resources_fish_index_path
+
+      open_panel_action(action_name: "Dummy action")
+
+      run_action
+
+      alert = find('div[data-controller="alert"]', text: "I love 🥑")
+      expect(alert['data-alert-dismiss-after-value']).to be_nil
+    end
+  end
+
   describe "callable labels" do
     it "pick label from arguments on run and cancel" do
       encoded_arguments = Avo::BaseAction.encode_arguments({

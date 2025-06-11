@@ -50,11 +50,11 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
     end
 
     if arguments[:special_message]
-      succeed "I love 🥑"
+      succeed "I love 🥑", keep_open: true
     elsif (fun_switch = args[:fields][:fun_switch].reject! { |option| option == "" }).any?
-      succeed "#{fun_switch.map(&:humanize).join(", ")}, I love 🥑"
+      succeed "#{fun_switch.map(&:humanize).join(", ")}, I love 🥑", keep_open: true
     else
-      succeed "Success response ✌️"
+      succeed "Success response ✌️", keep_open: true
     end
     warn "Warning response ✌️"
     inform "Info response ✌️"

@@ -229,26 +229,26 @@ module Avo
       ).handle && authorized?
     end
 
-    def succeed(text)
-      add_message text, :success
+    def succeed(text, keep_open: false)
+      add_message text, :success, keep_open: keep_open
 
       self
     end
 
-    def error(text)
-      add_message text, :error
+    def error(text, keep_open: false)
+      add_message text, :error, keep_open: keep_open
 
       self
     end
 
-    def inform(text)
-      add_message text, :info
+    def inform(text, keep_open: false)
+      add_message text, :info, keep_open: keep_open
 
       self
     end
 
-    def warn(text)
-      add_message text, :warning
+    def warn(text, keep_open: false)
+      add_message text, :warning, keep_open: keep_open
 
       self
     end
@@ -384,10 +384,11 @@ module Avo
 
     private
 
-    def add_message(body, type = :info)
+    def add_message(body, type = :info, keep_open: false)
       response[:messages] << {
         type: type,
-        body: body&.truncate(320)
+        body: body&.truncate(320),
+        keep_open: keep_open
       }
     end
   end

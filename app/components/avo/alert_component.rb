@@ -5,6 +5,7 @@ class Avo::AlertComponent < Avo::BaseComponent
 
   prop :type, kind: :positional
   prop :message, kind: :positional
+  prop :keep_open, default: false
 
   def icon
     return "heroicons/solid/exclamation-circle" if is_error?
