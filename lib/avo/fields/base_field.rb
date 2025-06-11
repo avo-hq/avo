@@ -184,11 +184,6 @@ module Avo
           final_value = execute_context(@block)
         end
 
-        # Run the value through resolver if present
-        if @format_using.present?
-          final_value = execute_context(@format_using, value: final_value)
-        end
-
         # Format value based on available formatter
         final_value = format_value(final_value)
 
@@ -340,7 +335,7 @@ module Avo
           index: [:format_index_using, :format_display_using, :format_using],
           show: [:format_show_using, :format_display_using, :format_using],
           edit: [:format_edit_using, :format_using],
-          new: [:format_new_using, :format_form_using, :format_using],
+          new: [:format_new_using, :format_form_using, :format_using]
         }
 
         current_view = @view.to_sym
