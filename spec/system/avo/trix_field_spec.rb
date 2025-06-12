@@ -138,9 +138,9 @@ RSpec.describe "TrixField", type: :system do
 
         visit "/admin/resources/posts/#{post.id}/edit"
 
-        expect(page).not_to have_selector('trix-editor')
+        expect(page).not_to have_selector("trix-editor")
 
-        expect(page).to have_selector('.trix-content')
+        expect(page).to have_selector(".trix-content")
         expect(page).to have_text(body)
 
         Avo::Resources::Post.restore_items_from_backup
@@ -154,9 +154,9 @@ RSpec.describe "TrixField", type: :system do
 
         visit "/admin/resources/posts/#{post.id}/edit"
 
-        expect(page).not_to have_selector('trix-editor')
+        expect(page).not_to have_selector("trix-editor")
 
-        expect(page).to have_selector('.trix-content')
+        expect(page).to have_selector(".trix-content")
         expect(page).to have_text(body)
 
         Avo::Resources::Post.restore_items_from_backup
