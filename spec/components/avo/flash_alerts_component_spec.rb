@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Avo::FlashAlertsComponent, type: :component do
   it "renders a simple string message" do
-    flashes = { notice: "Simple message" }
+    flashes = {notice: "Simple message"}
 
     with_controller_class Avo::BaseController do
       render_inline(described_class.new(flashes: flashes))

@@ -12,9 +12,9 @@ class Avo::FlashAlertsComponent < Avo::BaseComponent
   def parse(data)
     case data
     when Hash
-      { body: data[:body], keep_open: data.fetch(:keep_open, false) }
+      {body: data[:body], keep_open: data.fetch(:keep_open, false)}
     else
-      { body: data, keep_open: false }
+      {body: data, keep_open: false}
     end
   end
 end
