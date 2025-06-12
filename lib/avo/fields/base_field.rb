@@ -82,6 +82,7 @@ module Avo
         unless Rails.env.production?
           if args[:decorate].present?
             puts "[Avo DEPRECATION WARNING]: The `decorate` field configuration option is nolonger supported and will be removed in future versions. Please discontinue its use and solely utilize `format_display_using` instead."
+          end
         end
 
         @format_index_using = args[:format_index_using]
