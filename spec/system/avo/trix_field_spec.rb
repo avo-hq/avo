@@ -125,6 +125,44 @@ RSpec.describe "TrixField", type: :system do
       end
     end
   end
+
+  describe "trix field with disabled/readonly set to true" do
+    let!(:body) { "This is test content for disabled state" }
+    let!(:post) { create :post, body: body }
+
+    context "when disabled is set to true" do
+      it "displays show page content when disabled is set to true for a trix field" do
+        Avo::Resources::Post.with_temporary_items do
+          field :body, as: :trix, disabled: true
+        end
+
+        visit "/admin/resources/posts/#{post.id}/edit"
+
+        expect(page).not_to have_selector('trix-editor')
+
+        expect(page).to have_selector('.trix-content')
+        expect(page).to have_text(body)
+
+        Avo::Resources::Post.restore_items_from_backup
+      end
+    end
+    context "when readonly is set to true" do
+      it "displays show page content when readonly is set to true for a trix field" do
+        Avo::Resources::Post.with_temporary_items do
+          field :body, as: :trix, readonly: true
+        end
+
+        visit "/admin/resources/posts/#{post.id}/edit"
+
+        expect(page).not_to have_selector('trix-editor')
+
+        expect(page).to have_selector('.trix-content')
+        expect(page).to have_text(body)
+
+        Avo::Resources::Post.restore_items_from_backup
+      end
+    end
+  end
 end
 
 def fill_in_trix_editor(id, with:)
