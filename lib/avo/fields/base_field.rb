@@ -78,6 +78,12 @@ module Avo
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using]
         @format_display_using = args[:format_display_using] || args[:decorate]
+
+        unless Rails.env.production?
+          if args[:decorate].present?
+            puts "[Avo DEPRECATION WARNING]: The `decorate` field configuration option is nolonger supported and will be removed in future versions. Please discontinue its use and solely utilize `format_display_using` instead."
+        end
+
         @format_index_using = args[:format_index_using]
         @format_show_using = args[:format_show_using]
         @format_edit_using = args[:format_edit_using]
@@ -334,7 +340,7 @@ module Avo
         formatters_by_view = {
           index: [:format_index_using, :format_display_using, :format_using],
           show: [:format_show_using, :format_display_using, :format_using],
-          edit: [:format_edit_using, :format_using],
+          edit: [:format_edit_using, :format_form_using, :format_using],
           new: [:format_new_using, :format_form_using, :format_using]
         }
 
