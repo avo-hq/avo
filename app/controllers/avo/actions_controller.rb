@@ -202,7 +202,7 @@ module Avo
       get_messages.each do |message|
         flash[message[:type]] = {
           body: message[:body],
-          keep_open: message[:keep_open]
+          timeout: message[:timeout]
         }
       end
     end

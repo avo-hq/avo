@@ -50,13 +50,13 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
     end
 
     if arguments[:special_message]
-      succeed "I love 🥑", keep_open: true
+      succeed "I love 🥑", timeout: :forever
     elsif (fun_switch = args[:fields][:fun_switch].reject! { |option| option == "" }).any?
-      succeed "#{fun_switch.map(&:humanize).join(", ")}, I love 🥑", keep_open: true
+      succeed "#{fun_switch.map(&:humanize).join(", ")}, I love 🥑", timeout: :forever
     else
-      succeed "Success response ✌️", keep_open: true
+      succeed "Success response ✌️", timeout: :forever
     end
-    warn "Warning response ✌️"
+    warn "Warning response ✌️", timeout: 10000
     inform "Info response ✌️"
     error "Error response ✌️"
 

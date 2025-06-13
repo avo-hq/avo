@@ -5,7 +5,7 @@ class Avo::AlertComponent < Avo::BaseComponent
 
   prop :type, kind: :positional
   prop :message, kind: :positional
-  prop :keep_open, default: false
+  prop :timeout
 
   def icon
     return "heroicons/solid/exclamation-circle" if is_error?
@@ -52,5 +52,14 @@ class Avo::AlertComponent < Avo::BaseComponent
 
   def is_empty?
     @message.nil?
+  end
+
+  def timeout
+    return @timeout if @timeout.is_a?(Numeric)
+    Avo.configuration.alert_dismiss_time
+  end
+
+  def keep_open?
+    @timeout&.try(:to_sym) == :forever
   end
 end

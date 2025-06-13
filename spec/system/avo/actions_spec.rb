@@ -396,8 +396,8 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
-  describe "feedback notifications with keep_open flag" do
-    it "shows persistent flash message when keep_open is true" do
+  describe "feedback notifications with timeout option" do
+    it "shows persistent flash message when timeout is :forever" do
       visit avo.resources_fish_index_path
 
       open_panel_action(action_name: "Dummy action")
@@ -406,6 +406,17 @@ RSpec.describe "Actions", type: :system do
 
       alert = find('div[data-controller="alert"]', text: "I love 🥑")
       expect(alert['data-alert-dismiss-after-value']).to be_nil
+    end
+
+    it "overrides the default timeout when timeout is set" do
+      visit avo.resources_fish_index_path
+
+      open_panel_action(action_name: "Dummy action")
+
+      run_action
+
+      alert = find('div[data-controller="alert"]', text: "Warning response ✌️")
+      expect(alert['data-alert-dismiss-after-value']).to eq "10000"
     end
   end
 
