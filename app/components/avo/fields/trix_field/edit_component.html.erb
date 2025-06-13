@@ -1,37 +1,15 @@
-<% if is_readonly? %>
-  <%= field_wrapper(**field_wrapper_args, full_width: true) do %>
-    <% button_classes = 'font-semibold inline-block pt-3 text-sm' %>
-    <%= content_tag :div,
+<%= field_wrapper(**field_wrapper_args) do %>
+  <%= content_tag :div,
+    class: class_names("relative block overflow-x-auto max-w-4xl", @input_id),
+    data: do %>
+    <%= content_tag 'trix-editor',
+      class: 'trix-content',
       data: {
-        controller: "trix-body",
-        trix_body_always_show_value: @field.always_show
-      } do %>
-      <div class="<%= class_names("trix-content border-none px-0 py-2 max-w-4xl", "hidden": !@field.always_show) %>" data-trix-body-target="content">
-        <%= sanitize @field.value.to_s %>
-      </div>
-      <% unless @field.always_show %>
-        <div class="hidden" data-trix-body-target="moreContentButton">
-          <%= link_to t('avo.more_content'), 'javascript:void(0);', class: button_classes, data: { action: 'click->trix-body#toggleContent' } %>
-        </div>
-        <div class="hidden" data-trix-body-target="lessContentButton">
-          <%= link_to t('avo.less_content'), 'javascript:void(0);', class: button_classes, data: { action: 'click->trix-body#toggleContent' } %>
-        </div>
-      <% end %>
-    <% end %>
-  <% end %>
-<% else %>
-  <%= field_wrapper(**field_wrapper_args) do %>
-    <%= content_tag :div,
-      class: class_names("relative block overflow-x-auto max-w-4xl", @input_id),
-      data: do %>
-      <%= content_tag 'trix-editor',
-        class: 'trix-content',
-        data: {
-          "trix-field-target": "editor",
-          **@field.get_html(:data, view: view, element: :input)
-        },
-        input: @input_id,
-        placeholder: @field.placeholder do %>
+        "trix-field-target": "editor",
+        **@field.get_html(:data, view: view, element: :input)
+      },
+      input: @input_id,
+      placeholder: @field.placeholder do %>
         <%= sanitize @field.value.to_s %>
       <% end %>
       <%= @form.text_area @field.id,
@@ -43,6 +21,5 @@
         placeholder: @field.placeholder,
         style: @field.get_html(:style, view: view, element: :input)
       %>
-    <% end %>
   <% end %>
 <% end %>

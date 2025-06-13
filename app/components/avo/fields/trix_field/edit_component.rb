@@ -42,8 +42,4 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
       **values,
     }
   end
-
-  def is_readonly?
-    @field.readonly == true || @field.disabled == true
-  end
 end
