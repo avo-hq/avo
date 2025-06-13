@@ -37,6 +37,14 @@ module Avo
         # Disable attachments if attachment_key is not present
         @attachment_key.blank?
       end
+
+      def component_for_view(view = Avo::ViewInquirer.new("edit"))
+        if view == :edit && (is_readonly? || is_disabled?)
+          Avo::Fields::TrixField::ShowComponent
+        else
+          super
+        end
+      end
     end
   end
 end
