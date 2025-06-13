@@ -18,7 +18,7 @@ RSpec.describe Avo::FlashAlertsComponent, type: :component do
       # Should auto-dismiss with default timeout
       alert_with_default_timeout = page.all("div[data-controller='alert']")
       alert_with_default_timeout.each do |alert|
-        expect(alert['data-alert-dismiss-after-value']).to eq Avo.configuration.alert_dismiss_time.to_s
+        expect(alert["data-alert-dismiss-after-value"]).to eq Avo.configuration.alert_dismiss_time.to_s
       end
     end
   end
@@ -38,7 +38,7 @@ RSpec.describe Avo::FlashAlertsComponent, type: :component do
 
       # Should auto-dismiss with custom timeout
       alert_with_custom_timeout = page.all("div[data-controller='alert']").find { |alert| alert.text.include?("Message with custom timeout") }
-      expect(alert_with_custom_timeout['data-alert-dismiss-after-value']).to eq "10000"
+      expect(alert_with_custom_timeout["data-alert-dismiss-after-value"]).to eq "10000"
     end
   end
 
@@ -103,7 +103,7 @@ RSpec.describe Avo::FlashAlertsComponent, type: :component do
       render_inline(described_class.new(flashes: flashes))
 
       alert_with_default_timeout = page.find("div[data-controller='alert']", text: "Invalid timeout")
-      expect(alert_with_default_timeout['data-alert-dismiss-after-value']).to eq Avo.configuration.alert_dismiss_time.to_s
+      expect(alert_with_default_timeout["data-alert-dismiss-after-value"]).to eq Avo.configuration.alert_dismiss_time.to_s
     end
   end
 end

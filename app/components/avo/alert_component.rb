@@ -60,6 +60,6 @@ class Avo::AlertComponent < Avo::BaseComponent
   end
 
   def keep_open?
-    @timeout&.try(:to_sym) == :forever
+    @timeout.try(:to_sym) == :forever
   end
 end

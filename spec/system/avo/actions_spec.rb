@@ -416,7 +416,7 @@ RSpec.describe "Actions", type: :system do
       run_action
 
       alert = find('div[data-controller="alert"]', text: "Warning response ✌️")
-      expect(alert['data-alert-dismiss-after-value']).to eq "10000"
+      expect(alert["data-alert-dismiss-after-value"]).to eq "10000"
     end
   end
 
