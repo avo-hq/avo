@@ -97,7 +97,7 @@ RSpec.describe "number", type: :feature do
     context "with format_show_using" do
       it "formats the value of a field on the show page when the format_show_using formatter is present" do
         Avo::Resources::Project.with_temporary_items do
-          field :users_required, as: :number, format_show_using: -> { number_with_delimiter value}
+          field :users_required, as: :number, format_show_using: -> { number_with_delimiter value }
         end
 
         visit "/admin/resources/projects/#{project.id}"
@@ -111,7 +111,7 @@ RSpec.describe "number", type: :feature do
     context "with format_index_using" do
       it "formats the value of a field on the index page when the format_index_using formatter is present" do
         Avo::Resources::Project.with_temporary_items do
-          field :users_required, as: :number, format_index_using: -> { number_with_delimiter value}
+          field :users_required, as: :number, format_index_using: -> { number_with_delimiter value }
         end
 
         visit "/admin/resources/projects"
@@ -125,7 +125,7 @@ RSpec.describe "number", type: :feature do
     context "with format_display_using" do
       it "formats the value of a field on both the index and show pages when the format_display_using formatter is present" do
         Avo::Resources::Project.with_temporary_items do
-          field :users_required, as: :number, format_display_using: -> { number_with_delimiter value}
+          field :users_required, as: :number, format_display_using: -> { number_with_delimiter value }
         end
 
         visit "/admin/resources/projects"
@@ -148,7 +148,7 @@ RSpec.describe "number", type: :feature do
 
         visit "/admin/resources/projects/#{project.id}/edit"
 
-        expect(page).to have_field('project_users_required', with: "10000")
+        expect(page).to have_field("project_users_required", with: "10000")
 
         Avo::Resources::Project.restore_items_from_backup
       end
@@ -162,7 +162,7 @@ RSpec.describe "number", type: :feature do
 
         visit "/admin/resources/projects/#{project.id}/edit"
 
-        expect(page).to have_field('project_users_required', with: "10000")
+        expect(page).to have_field("project_users_required", with: "10000")
 
         Avo::Resources::Project.restore_items_from_backup
       end
