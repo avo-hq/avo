@@ -141,28 +141,28 @@ RSpec.describe "number", type: :feature do
     end
 
     context "with format_edit_using" do
-      it "displays the raw value of a field on the edit page when the format_edit_using formatter is present" do
+      it "formats the value of a field on the edit page when the format_edit_using formatter is present" do
         Avo::Resources::Project.with_temporary_items do
-          field :users_required, as: :number, format_edit_using: -> { value }
+          field :users_required, as: :number, format_edit_using: -> { number_with_delimiter value }
         end
 
         visit "/admin/resources/projects/#{project.id}/edit"
 
-        expect(page).to have_field("project_users_required", with: "10000")
+        expect(page).to have_field("project_users_required", with: "10,000")
 
         Avo::Resources::Project.restore_items_from_backup
       end
     end
 
     context "with format_form_using" do
-      it "displays the raw value of a field on a form page when the format_form_using formatter is present" do
+      it "formats the value of a field on a form page when the format_form_using formatter is present" do
         Avo::Resources::Project.with_temporary_items do
-          field :users_required, as: :number, format_edit_using: -> { value }
+          field :users_required, as: :number, format_edit_using: -> { number_with_delimiter value }
         end
 
         visit "/admin/resources/projects/#{project.id}/edit"
 
-        expect(page).to have_field("project_users_required", with: "10000")
+        expect(page).to have_field("project_users_required", with: "10,000")
 
         Avo::Resources::Project.restore_items_from_backup
       end
