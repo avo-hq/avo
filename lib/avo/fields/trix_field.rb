@@ -38,8 +38,8 @@ module Avo
         @attachment_key.blank?
       end
 
-      def component_for_view(view = Avo::ViewInquirer.new("form"))
-        if view.form? && (is_readonly? || is_disabled?)
+      def component_for_view(view = Avo::ViewInquirer.new("edit"))
+        if view == :edit && (is_readonly? || is_disabled?)
           Avo::Fields::TrixField::ShowComponent
         else
           super
