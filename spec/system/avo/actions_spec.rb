@@ -405,7 +405,7 @@ RSpec.describe "Actions", type: :system do
       run_action
 
       alert = find('div[data-controller="alert"]', text: "I love 🥑")
-      expect(alert['data-alert-dismiss-after-value']).to be_nil
+      expect(alert["data-alert-dismiss-after-value"]).to be_nil
     end
 
     it "overrides the default timeout when timeout is set" do

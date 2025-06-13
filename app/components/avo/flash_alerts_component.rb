@@ -12,9 +12,9 @@ class Avo::FlashAlertsComponent < Avo::BaseComponent
   def parse(data)
     case data
     when Hash
-      { body: data[:body], timeout: data[:timeout] }
+      {body: data[:body], timeout: data[:timeout]}
     else
-      { body: data, timeout: nil }
+      {body: data, timeout: nil}
     end
   end
 end
