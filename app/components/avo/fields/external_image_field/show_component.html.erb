@@ -1,5 +1,7 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <% if @field.value.present? %>
-    <%= image_tag @field.value, style: 'max-width: 340px;' %>
+    <%= image_tag @field.value,
+        height: @field.height,
+        style: "border-radius: #{@field.radius}px; max-height: #{@field.height}#{@field.height.to_s&.ends_with?('px') ? '' : 'px'}; max-width: 340px;" %>
   <% end %>
 <% end %>
