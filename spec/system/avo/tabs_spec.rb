@@ -281,15 +281,15 @@ RSpec.describe "Tabs", type: :system do
   end
 
   describe "tabs with non-ASCII names" do
-    let!(:store) {create :store}
+    let!(:store) { create :store }
 
     it "generates a unique turbo frame id for non-ASCII strings" do
       visit avo.resources_store_path(store)
 
       # Get all tab elements
-      emoji_tab = '📖 store'
-      map_tab = 'store 🧭'
-      chinese_tab = '其他store'
+      emoji_tab = "📖 store"
+      map_tab = "store 🧭"
+      chinese_tab = "其他store"
 
       # Get digest name for each tab
       book_emoji_tab_digest_name = Digest::MD5.hexdigest(emoji_tab)
