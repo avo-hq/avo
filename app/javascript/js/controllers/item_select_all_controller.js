@@ -103,36 +103,46 @@ export default class extends Controller {
 
     document.querySelectorAll(selector).forEach((link) => {
       try {
-        const url = new URL(link.href)
-
-        Array.from(url.searchParams.keys())
-          .filter((key) => key.startsWith('fields['))
-          .forEach((key) => url.searchParams.delete(key))
-
-        const isBulkUpdate = url.pathname.includes('/admin/bulk_update/edit')
-        const resourceIdsKey = 'fields[avo_resource_ids]'
-        const selectedQueryKey = isBulkUpdate ? 'fields[avo_selected_query]' : 'fields[avo_index_query]'
-        const selectedAllKey = 'fields[avo_selected_all]'
-
-        if (param === 'resourceIds') {
-          url.searchParams.set(resourceIdsKey, selectedResources)
-          url.searchParams.set(selectedAllKey, 'false')
-        } else if (param === 'selectedQuery') {
-          url.searchParams.set(selectedQueryKey, selectedQuery)
-          url.searchParams.set(selectedAllKey, 'true')
-        }
-
-        if (selectedResourcesArray.length >= 2  && isBulkUpdate) {
-          link.classList.remove('hidden')
-        } else {
-          link.classList.add('hidden')
-        }
-
+        const url = this.buildUpdatedUrl(link, param, selectedResources, selectedQuery)
+        this.toggleLinkVisibility(link, selectedResourcesArray.length, url.pathname)
         link.href = url.toString()
       } catch (error) {
         console.error('Error updating link:', link, error)
       }
     })
+  }
+
+  buildUpdatedUrl(link, param, selectedResources, selectedQuery) {
+    const url = new URL(link.href)
+
+    // Remove old field parameters
+    Array.from(url.searchParams.keys())
+      .filter((key) => key.startsWith('fields['))
+      .forEach((key) => url.searchParams.delete(key))
+
+    const isBulkUpdate = url.pathname.includes('/admin/bulk_update/edit')
+    const resourceIdsKey = 'fields[avo_resource_ids]'
+    const selectedQueryKey = isBulkUpdate ? 'fields[avo_selected_query]' : 'fields[avo_index_query]'
+    const selectedAllKey = 'fields[avo_selected_all]'
+
+    if (param === 'resourceIds') {
+      url.searchParams.set(resourceIdsKey, selectedResources)
+      url.searchParams.set(selectedAllKey, 'false')
+    } else if (param === 'selectedQuery') {
+      url.searchParams.set(selectedQueryKey, selectedQuery)
+      url.searchParams.set(selectedAllKey, 'true')
+    }
+
+    return url
+  }
+
+  toggleLinkVisibility(link, resourceCount, pathname) {
+    const isBulkUpdate = pathname.includes('/admin/bulk_update/edit')
+    if (resourceCount >= 2 && isBulkUpdate) {
+      link.classList.remove('hidden')
+    } else {
+      link.classList.add('hidden')
+    }
   }
 
   resetUnselected() {
