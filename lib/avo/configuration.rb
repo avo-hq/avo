@@ -58,6 +58,7 @@ module Avo
     attr_accessor :associations_lookup_list_limit
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
+    attr_accessor :clear_license_response_on_deploy
 
     def initialize
       @root_path = "/avo"
@@ -127,6 +128,7 @@ module Avo
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
+      @clear_license_response_on_deploy = true
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)

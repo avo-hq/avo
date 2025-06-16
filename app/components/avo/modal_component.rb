@@ -19,7 +19,7 @@ class Avo::ModalComponent < Avo::BaseComponent
   end
 
   def height_classes
-    "max-h-full min-h-1/4 max-h-11/12"
+    "max-h-[calc(100dvh-5rem)] min-h-1/4"
   end
 
   def overflow_classes

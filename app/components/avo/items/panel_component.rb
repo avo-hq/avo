@@ -21,7 +21,6 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
     :edit_path,
     :can_see_the_destroy_button?,
     :can_see_the_save_button?,
-    :view_for,
     :display_breadcrumbs,
     to: :@parent_component
 

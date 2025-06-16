@@ -27,11 +27,14 @@ RSpec.describe "App", type: :system do
       fill_in "comment_body", with: "yes"
       save
 
-      expect(page).to have_current_path "/admin/resources/projects/#{project.id}"
+      expect(page).to have_current_path "/admin/resources/comments/#{comment.id}?via_record_id=#{project.to_param}&via_resource_class=Avo%3A%3AResources%3A%3AProject"
       expect(page).to have_text("Comment was successfully updated.").once
 
       comment.reload
       expect(comment.body).to eq "yes"
+
+      click_on "Go back"
+      expect(page).to have_current_path "/admin/resources/projects/#{project.id}"
     end
 
     it "only displays one alert on record destroy from has_many" do
