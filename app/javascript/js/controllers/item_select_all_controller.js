@@ -19,6 +19,7 @@ export default class extends Controller {
     this.resourceName = this.element.dataset.resourceName
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()
+    this.updateBulkEditLinkVisibility()
   }
 
   elementAttributeValueChanged(element) {
@@ -39,6 +40,7 @@ export default class extends Controller {
       // If some are selected, mark the checkbox as indeterminate.
       this.checkboxTarget.indeterminate = true
     }
+    this.updateBulkEditLinkVisibility()
   }
 
   disconnect() {
@@ -94,6 +96,7 @@ export default class extends Controller {
 
   updateBulkEditLink(param) {
     this.updateActionLinks(param, 'a[href*="/admin/bulk_update/edit"]')
+    this.updateBulkEditLinkVisibility()
   }
 
   updateActionLinks(param, selector) {
@@ -104,7 +107,6 @@ export default class extends Controller {
     document.querySelectorAll(selector).forEach((link) => {
       try {
         const url = this.buildUpdatedUrl(link, param, selectedResources, selectedQuery)
-        this.toggleLinkVisibility(link, selectedResourcesArray.length, url.pathname)
         link.href = url.toString()
       } catch (error) {
         console.error('Error updating link:', link, error)
@@ -136,12 +138,17 @@ export default class extends Controller {
     return url
   }
 
-  toggleLinkVisibility(link, resourceCount, pathname) {
-    const isBulkUpdate = pathname.includes('/admin/bulk_update/edit')
-    if (resourceCount >= 2 && isBulkUpdate) {
-      link.classList.remove('hidden')
+  updateBulkEditLinkVisibility() {
+    const bulkUpdateLink = document.querySelector('a[href*="/admin/bulk_update/edit"]');
+    if (!bulkUpdateLink) return; // Upewnij się, że link istnieje
+
+    const selectedResourcesArray = JSON.parse(this.element.dataset.selectedResources);
+    const resourceCount = selectedResourcesArray.length;
+
+    if (resourceCount >= 2) {
+      bulkUpdateLink.classList.remove('hidden');
     } else {
-      link.classList.add('hidden')
+      bulkUpdateLink.classList.add('hidden');
     }
   }
 
