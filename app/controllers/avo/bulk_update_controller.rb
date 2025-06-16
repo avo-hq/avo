@@ -54,8 +54,9 @@ module Avo
     def bulk_values
       @resource.model_class.attribute_names.map do |attribute_key|
         values = @query.map { _1.public_send(attribute_key) }.uniq
+        value_to_assign = values.size == 1 ? values.first : nil
 
-        [attribute_key, (values.size == 1 ? values.first : nil)]
+        [attribute_key, value_to_assign]
       end.to_h
     end
 
