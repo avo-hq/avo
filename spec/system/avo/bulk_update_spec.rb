@@ -7,8 +7,14 @@ RSpec.describe "Actions", type: :system do
 
   describe "check visibility" do
     context "index" do
-      it "finds a button on index" do
+      before do
         visit "/admin/resources/projects"
+      end
+      it "does not finds a button on index" do
+        expect(page).not_to have_link("Bulk update")
+      end
+      it "button appears after check projects" do
+        check_and_select_projects
         expect(page).to have_link("Bulk update")
       end
     end
@@ -25,16 +31,6 @@ RSpec.describe "Actions", type: :system do
 
         expect(page).to have_current_path("/admin/bulk_update/edit", ignore_query: true)
         expect(page).to have_button("Save")
-      end
-    end
-
-    context "with no selected records" do
-      it "does not redirect to edit form page" do
-        visit "/admin/resources/projects"
-        find("a", text: "Bulk update").click
-
-        expect(page).to have_current_path("/admin/resources/projects")
-        expect(page).to have_text "Bulk update cannot be performed without records."
       end
     end
   end
