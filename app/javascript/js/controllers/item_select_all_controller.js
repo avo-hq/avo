@@ -139,16 +139,16 @@ export default class extends Controller {
   }
 
   updateBulkEditLinkVisibility() {
-    const bulkUpdateLink = document.querySelector('a[href*="/admin/bulk_update/edit"]');
-    if (!bulkUpdateLink) return; // Upewnij się, że link istnieje
+    const bulkUpdateLink = document.querySelector('a[href*="/admin/bulk_update/edit"]')
+    if (!bulkUpdateLink) return
 
-    const selectedResourcesArray = JSON.parse(this.element.dataset.selectedResources);
-    const resourceCount = selectedResourcesArray.length;
+    const selectedResourcesArray = JSON.parse(this.element.dataset.selectedResources)
+    const resourceCount = selectedResourcesArray.length
 
     if (resourceCount >= 2) {
-      bulkUpdateLink.classList.remove('hidden');
+      bulkUpdateLink.classList.remove('hidden')
     } else {
-      bulkUpdateLink.classList.add('hidden');
+      bulkUpdateLink.classList.add('hidden')
     }
   }
 
