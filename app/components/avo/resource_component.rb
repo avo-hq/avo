@@ -148,11 +148,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def render_bulk_edit_button(control)
     a_link bulk_edit_path,
-           style: :primary,
-           color: :primary,
-           icon: "avo/edit",
-           class: "hidden",
-           form_class: "flex flex-col sm:flex-row sm:inline-flex" do
+      style: :primary,
+      color: :primary,
+      icon: "avo/edit",
+      class: "hidden",
+      form_class: "flex flex-col sm:flex-row sm:inline-flex" do
       control.label
     end
   end
