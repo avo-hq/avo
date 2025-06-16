@@ -279,4 +279,37 @@ RSpec.describe "Tabs", type: :system do
       expect(value.text(:all).strip).to eq("+1 (555) 123-4567")
     end
   end
+
+  describe "tabs with non-ASCII names" do
+    let!(:store) {create :store}
+
+    it "generates a unique turbo frame id for non-ASCII strings" do
+      visit avo.resources_store_path(store)
+
+      # Get all tab elements
+      emoji_tab = '📖 store'
+      map_tab = 'store 🧭'
+      chinese_tab = '其他store'
+
+      # Get digest name for each tab
+      book_emoji_tab_digest_name = Digest::MD5.hexdigest(emoji_tab)
+      map_emoji_tab_digest_name = Digest::MD5.hexdigest(map_tab)
+      chinese_tab_digest_name = Digest::MD5.hexdigest(chinese_tab)
+
+      # Generate turbo frame id for each tab
+      book_emoji_tab_turbo_frame_id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{book_emoji_tab_digest_name}".parameterize
+      map_emoji_tab_turbo_frame_id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{map_emoji_tab_digest_name}".parameterize
+      chinese_tab_turbo_frame_id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{chinese_tab_digest_name}".parameterize
+
+      # Verify uniqueness of each of the turbo frame ids
+      expect(book_emoji_tab_turbo_frame_id).not_to eq(map_emoji_tab_turbo_frame_id)
+      expect(book_emoji_tab_turbo_frame_id).not_to eq(chinese_tab_turbo_frame_id)
+      expect(map_emoji_tab_turbo_frame_id).not_to eq(chinese_tab_turbo_frame_id)
+
+      # Verify that the turbo frame ids are properly formatted (parameterized)
+      expect(book_emoji_tab_turbo_frame_id).to match(/\A[a-z0-9-]+\z/)
+      expect(map_emoji_tab_turbo_frame_id).to match(/\A[a-z0-9-]+\z/)
+      expect(chinese_tab_turbo_frame_id).to match(/\A[a-z0-9-]+\z/)
+    end
+  end
 end
