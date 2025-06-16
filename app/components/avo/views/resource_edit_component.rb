@@ -79,7 +79,12 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def form_url
     if params[:controller] == "avo/bulk_update"
-      helpers.handle_bulk_update_path(resource_name: @resource.name, query: @query)
+      helpers.handle_bulk_update_path(
+        resource_name: @resource.name,
+        fields: {
+          avo_resource_ids: params[:fields][:avo_resource_ids]
+        }
+      )
     elsif is_edit?
       helpers.resource_path(
         record: @resource.record,
