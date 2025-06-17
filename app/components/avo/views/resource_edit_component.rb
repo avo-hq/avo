@@ -55,11 +55,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     @resource.render_edit_controls
   end
 
-  # Render :show view for read only trix fields
-  def view_for(field)
-    (field.is_a?(Avo::Fields::TrixField) && field.is_disabled?) ? :show : @view
-  end
-
   private
 
   def via_index?

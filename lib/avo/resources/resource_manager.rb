@@ -34,6 +34,11 @@ module Avo
         #   "FishResource",
         # ]
         def fetch_resources
+          # Mark the BaseResource as abstract so it doesn't get loaded by the resource manager
+          # This is made here instead of in the BaseResource class because BaseResource class can be overridden
+          # And we don't want to force the developer that overrides this class to add the abstract resource flag to the overridden class.
+          Avo::BaseResource.abstract_resource!
+
           if Avo.configuration.resources.present?
             load_configured_resources
           else
@@ -41,7 +46,6 @@ module Avo
           end
 
           # All descendants from Avo::Resources::Base except the internal abstract ones
-
           Base.descendants.reject { _1.is_abstract? }
         end
 
