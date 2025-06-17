@@ -5,8 +5,7 @@ module Avo
         def initialize(**args)
           super(**args)
 
-          @label = args[:label] || I18n.t("avo.bulk_update").capitalize
-          @title = args[:title] || I18n.t("avo.bulk_update_items").humanize
+          @label = args[:label] || I18n.t("avo.bulk_edit").capitalize
           @icon = args[:icon] || "avo/edit"
           @style = args[:style] || :primary
           @color = args[:color] || :primary
