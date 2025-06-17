@@ -1,6 +1,6 @@
 <%= content_tag :div,
   class: classes,
-  style: style,  
+  style: style,
   data: data do %>
   <%= content_tag :div, class: class_names("pt-4 flex self-start items-center flex-shrink-0 w-full px-6 uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: @view, element: :label), {
     "md:pt-4": stacked?,
