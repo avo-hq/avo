@@ -83,4 +83,5 @@ Rails.application.configure do
 
   config.lookbook.ui_theme = "zinc"
   config.lookbook.preview_layout = "component_preview"
+  config.hosts << '.ngrok-free.app'
 end
