@@ -17,9 +17,7 @@ zh:
     attachment_destroyed: 附件已删除
     attachment_failed: 无法附加 %{attachment_class}
     bulk_edit: 批量编辑
-    bulk_update: 批量更新
     bulk_update_failure: 更新记录失败。
-    bulk_update_no_records: 无法在没有记录的情况下执行批量更新。
     bulk_update_success: 批量操作成功执行。
     cancel: 取消
     choose_a_country: 选择一个国家

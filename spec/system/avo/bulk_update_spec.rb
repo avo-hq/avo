@@ -11,11 +11,11 @@ RSpec.describe "Actions", type: :system do
         visit "/admin/resources/projects"
       end
       it "does not finds a button on index" do
-        expect(page).not_to have_link("Bulk update")
+        expect(page).not_to have_link("Bulk edit")
       end
       it "button appears after check projects" do
         check_and_select_projects
-        expect(page).to have_link("Bulk update")
+        expect(page).to have_link("Bulk edit")
       end
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe "Actions", type: :system do
 
         check_and_select_projects
 
-        find("a", text: "Bulk update").click
+        find("a", text: "Bulk edit").click
 
         expect(page).to have_current_path("/admin/bulk_update/edit", ignore_query: true)
         expect(page).to have_button("Save")
@@ -39,14 +39,14 @@ RSpec.describe "Actions", type: :system do
     before do
       visit "/admin/resources/projects"
       check_and_select_projects
-      find("a", text: "Bulk update").click
+      find("a", text: "Bulk edit").click
     end
 
     context "with no changes in form" do
       it "works correctly" do
         visit "/admin/resources/projects"
         check_and_select_projects
-        find("a", text: "Bulk update").click
+        find("a", text: "Bulk edit").click
 
         find("button", text: "Save").click
 

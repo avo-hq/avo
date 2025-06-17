@@ -19,9 +19,7 @@ tr:
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
     bulk_edit: Toplu düzenleme
-    bulk_update: Toplu güncelleme
     bulk_update_failure: Kayıtlar güncellenemedi.
-    bulk_update_no_records: Kayıtlar olmadan toplu güncelleme yapılamaz.
     bulk_update_success: Toplu işlem başarıyla tamamlandı.
     cancel: İptal et
     choose_a_country: Bir ülke seç

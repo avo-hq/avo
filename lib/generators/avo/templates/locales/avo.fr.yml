@@ -19,9 +19,7 @@ fr:
     attachment_destroyed: Pièce jointe détruite
     attachment_failed: Échec de l'ajout de %{attachment_class}
     bulk_edit: Modification en masse
-    bulk_update: Mise à jour en masse
     bulk_update_failure: Échec de la mise à jour des enregistrements.
-    bulk_update_no_records: La mise à jour en masse ne peut pas être effectuée sans enregistrements.
     bulk_update_success: Action en masse exécutée avec succès.
     cancel: Annuler
     choose_a_country: Sélectionnez un pays

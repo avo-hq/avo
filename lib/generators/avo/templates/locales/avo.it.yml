@@ -17,9 +17,7 @@ it:
     attachment_destroyed: Allegato distrutto
     attachment_failed: Impossibile allegare %{attachment_class}
     bulk_edit: Modifica di massa
-    bulk_update: Aggiornamento di massa
     bulk_update_failure: Aggiornamento dei record fallito.
-    bulk_update_no_records: L'aggiornamento di massa non può essere eseguito senza record.
     bulk_update_success: Azione di massa eseguita con successo.
     cancel: Annulla
     choose_a_country: Scegli un paese

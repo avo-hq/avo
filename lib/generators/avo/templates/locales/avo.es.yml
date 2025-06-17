@@ -19,9 +19,7 @@ es:
     attachment_destroyed: Adjunto eliminado
     attachment_failed: No se pudo adjuntar %{attachment_class}
     bulk_edit: Edición masiva
-    bulk_update: Actualización masiva
     bulk_update_failure: Error al actualizar los registros.
-    bulk_update_no_records: La actualización masiva no se puede realizar sin registros.
     bulk_update_success: Acción masiva ejecutada con éxito.
     cancel: Cancelar
     choose_a_country: Elige un país

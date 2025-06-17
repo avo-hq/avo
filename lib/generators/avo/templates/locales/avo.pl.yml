@@ -17,9 +17,7 @@ pl:
     attachment_destroyed: Załącznik usunięty
     attachment_failed: Nie udało się dołączyć %{attachment_class}
     bulk_edit: Edycja zbiorcza
-    bulk_update: Aktualizacja zbiorcza
     bulk_update_failure: Nie udało się zaktualizować rekordów.
-    bulk_update_no_records: Aktualizacja zbiorcza nie może zostać wykonana bez rekordów.
     bulk_update_success: Akcja zbiorcza zakończona sukcesem.
     cancel: Anuluj
     choose_a_country: Wybierz kraj

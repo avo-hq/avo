@@ -17,9 +17,7 @@ uk:
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
     bulk_edit: Масове редагування
-    bulk_update: Масове оновлення
     bulk_update_failure: Не вдалося оновити записи.
-    bulk_update_no_records: Неможливо виконати масове оновлення без записів.
     bulk_update_success: Масова дія успішно виконана.
     cancel: Скасувати
     choose_a_country: Виберіть країну

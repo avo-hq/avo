@@ -17,9 +17,7 @@ en:
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
     bulk_edit: Bulk edit
-    bulk_update: Bulk update
     bulk_update_failure: Failed to update records.
-    bulk_update_no_records: Bulk update cannot be performed without records.
     bulk_update_success: Bulk action run successfully.
     cancel: Cancel
     choose_a_country: Choose a country

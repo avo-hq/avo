@@ -23,9 +23,7 @@ ar:
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
     bulk_edit: تحرير جماعي
-    bulk_update: تحديث جماعي
     bulk_update_failure: فشل في تحديث السجلات.
-    bulk_update_no_records: لا يمكن تنفيذ التحديث الجماعي بدون سجلات.
     bulk_update_success: تم تنفيذ العملية الجماعية بنجاح.
     cancel: إلغاء
     choose_a_country: اختر دولة

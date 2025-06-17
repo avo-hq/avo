@@ -17,9 +17,7 @@ de:
     attachment_destroyed: Anhang gelöscht
     attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
     bulk_edit: Massenbearbeitung
-    bulk_update: Massenaktualisierung
     bulk_update_failure: Aktualisierung der Datensätze fehlgeschlagen.
-    bulk_update_no_records: Bulk-Aktualisierung kann ohne Datensätze nicht durchgeführt werden.
     bulk_update_success: Massenaktion erfolgreich ausgeführt.
     cancel: Abbrechen
     choose_a_country: Land auswählen

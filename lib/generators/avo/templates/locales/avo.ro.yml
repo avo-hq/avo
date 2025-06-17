@@ -20,9 +20,7 @@ ro:
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
     bulk_edit: Editare în masă
-    bulk_update: Actualizare în masă
     bulk_update_failure: Actualizarea înregistrărilor a eșuat.
-    bulk_update_no_records: Actualizarea în masă nu poate fi efectuată fără înregistrări.
     bulk_update_success: Acțiune în masă executată cu succes.
     cancel: Anulează
     choose_a_country: Alege o țară

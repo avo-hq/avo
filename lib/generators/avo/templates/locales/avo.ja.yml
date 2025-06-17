@@ -19,9 +19,7 @@ ja:
     attachment_destroyed: アタッチは削除されました
     attachment_failed: "%{attachment_class}の添付に失敗しました"
     bulk_edit: 一括編集
-    bulk_update: 一括更新
     bulk_update_failure: レコードの更新に失敗しました。
-    bulk_update_no_records: レコードがない場合、バルク更新を実行できません。
     bulk_update_success: 一括処理が正常に実行されました。
     cancel: キャンセル
     choose_a_country: 国を選択
