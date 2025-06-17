@@ -10,16 +10,16 @@
       },
       input: @input_id,
       placeholder: @field.placeholder do %>
-        <%= sanitize @field.value.to_s %>
-      <% end %>
-      <%= @form.text_area @field.id,
-        value: @field.value.try(:to_trix_html) || @field.value,
-        class: classes("w-full hidden"),
-        data: @field.get_html(:data, view: view, element: :input),
-        disabled: disabled?,
-        id: @input_id,
-        placeholder: @field.placeholder,
-        style: @field.get_html(:style, view: view, element: :input)
-      %>
+      <%= sanitize @field.value.to_s %>
+    <% end %>
+    <%= @form.text_area @field.id,
+      value: @field.value.try(:to_trix_html) || @field.value,
+      class: classes("w-full hidden"),
+      data: @field.get_html(:data, view: view, element: :input),
+      disabled: disabled?,
+      id: @input_id,
+      placeholder: @field.placeholder,
+      style: @field.get_html(:style, view: view, element: :input)
+    %>
   <% end %>
 <% end %>
