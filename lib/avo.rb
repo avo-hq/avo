@@ -6,6 +6,7 @@ require_relative "avo/engine" if defined?(Rails)
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   "html" => "HTML",
+  "url_helpers" => "URLHelpers",
   "uri_service" => "URIService",
   "has_html_attributes" => "HasHTMLAttributes"
 )
