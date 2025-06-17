@@ -39,6 +39,8 @@ module Avo
       end
 
       def component_for_view(view)
+        view = Avo::ViewInquirer.new(view)
+
         if view.edit? && (is_readonly? || is_disabled?)
           Avo::Fields::TrixField::ShowComponent
         else
