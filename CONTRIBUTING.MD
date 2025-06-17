@@ -152,7 +152,7 @@ RSpec.describe "Time field", type: :system do
     it { tests_something_with_relative_false }
   end
 
-  describe "relative: true "
+  describe "relative: true"
     before do
       Avo::Resources::Course.with_temporary_items do
         field :starting_at, as: :time, relative: true
