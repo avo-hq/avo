@@ -56,7 +56,7 @@ RSpec.describe "Actions", type: :system do
 
     context "with valid params" do
       it "works correctly" do
-        fill_in "project_name", with: "Test"
+        fill_in "Name", with: "Test"
         select "Virgin Islands, U.S.", from: "project_country"
         find("button", text: "Save").click
 
