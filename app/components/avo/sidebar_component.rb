@@ -21,7 +21,7 @@ class Avo::SidebarComponent < Avo::BaseComponent
   def pages
     return [] unless Avo.plugin_manager.installed?("avo-forms")
 
-    Avo::Core::Pages::Base.descendants.select(&:main_page?)
+    Avo::Forms::Core::Page.descendants.select(&:main_page?)
   end
 
   def stimulus_target
