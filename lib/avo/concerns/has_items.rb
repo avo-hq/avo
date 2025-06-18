@@ -286,7 +286,7 @@ module Avo
             next true if item.try(:nested_on?, view)
 
             # When the resource is a form, we want to show all items even if there is no setter method
-            next true if defined?(Avo::Core::Resources::Forms::Base) && try(:resource).is_a?(Avo::Core::Resources::Forms::Base)
+            next true if defined?(Avo::Forms::Core::Resources::FormResource) && try(:resource).is_a?(Avo::Forms::Core::Resources::FormResource)
 
             item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end
