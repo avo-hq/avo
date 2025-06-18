@@ -3,13 +3,13 @@
   class: classes,
   style: style,
   data: data do %>
-  <%= content_tag :div, class: class_names("pt-4 flex self-start items-center shrink-0 w-48 px-6 uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: @view, element: :label), {
-    "md:pt-4 md:w-full": stacked?,
+  <%= content_tag :div, class: class_names("pt-4 flex self-start items-center shrink-0 w-full px-6 uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: @view, element: :label), {
+    "md:pt-4": stacked?,
     "h-full md:pt-0": !stacked?,
     "md:h-10 ": !stacked? && short?,
     "md:h-14 ": !stacked? && !short?,
-    "md:w-48": compact?,
-    "md:w-64": !compact?,
+    "md:w-48": !stacked? && compact?,
+    "md:w-64": !stacked? && !compact?,
   }), data: {slot: "label"} do %>
     <% if @form.present? %>
       <%= @form.label label_for, label %>
