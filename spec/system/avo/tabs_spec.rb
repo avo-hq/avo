@@ -293,7 +293,7 @@ RSpec.describe "Tabs", type: :system do
               "tab_1"
             end
           end
-    
+
           tab "store 🧭", lazy_load: true do
             field :tab_2 do
               "tab_2"
