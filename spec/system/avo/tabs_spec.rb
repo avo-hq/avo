@@ -281,35 +281,62 @@ RSpec.describe "Tabs", type: :system do
   end
 
   describe "tabs with non-ASCII names" do
-    let!(:store) { create :store }
+    let!(:user) { create :user }
 
-    it "generates a unique turbo frame id for non-ASCII strings" do
-      visit avo.resources_store_path(store)
+    it "renders the correct turbo frame content for tabs with non-ascii names" do
+      # Set up temporary field for User
+      Avo::Resources::User.with_temporary_items do
+        field :name
+        tabs do
+          tab "其他store", lazy_load: true do
+            field :tab_1 do
+              "tab_1"
+            end
+          end
+    
+          tab "store 🧭", lazy_load: true do
+            field :tab_2 do
+              "tab_2"
+            end
+          end
+    
+          tab "📖 store", lazy_load: true do
+            field :tab_3 do
+              "tab_3"
+            end
+          end
+        end
+      end
 
-      # Get all tab elements
-      emoji_tab = "📖 store"
-      map_tab = "store 🧭"
-      chinese_tab = "其他store"
+      # Visit page
+      visit avo.resources_user_path(user)
 
-      # Get digest name for each tab
-      book_emoji_tab_digest_name = Digest::MD5.hexdigest(emoji_tab)
-      map_emoji_tab_digest_name = Digest::MD5.hexdigest(map_tab)
-      chinese_tab_digest_name = Digest::MD5.hexdigest(chinese_tab)
+      # Click on first tab and verify that the right turbo frame content is rendered
+      find('a[data-tabs-tab-name-param="其他store"]').click
+      wait_for_loaded
+      within(find("turbo-frame", id: /avo-resources-items-tab-#{Digest::MD5.hexdigest("其他store")}/)) do
+        expect(page).to have_text("tab_1")
+        expect(page).not_to have_text("tab_2")
+        expect(page).not_to have_text("tab_3")
+      end
 
-      # Generate turbo frame id for each tab
-      book_emoji_tab_turbo_frame_id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{book_emoji_tab_digest_name}".parameterize
-      map_emoji_tab_turbo_frame_id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{map_emoji_tab_digest_name}".parameterize
-      chinese_tab_turbo_frame_id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{chinese_tab_digest_name}".parameterize
+      # Click on second tab and verify that the right turbo frame content is rendered
+      find('a[data-tabs-tab-name-param="store 🧭"]').click
+      wait_for_loaded
+      within(find("turbo-frame", id: /avo-resources-items-tab-#{Digest::MD5.hexdigest("store 🧭")}/)) do
+        expect(page).to have_text("tab_2")
+        expect(page).not_to have_text("tab_1")
+        expect(page).not_to have_text("tab_3")
+      end
 
-      # Verify uniqueness of each of the turbo frame ids
-      expect(book_emoji_tab_turbo_frame_id).not_to eq(map_emoji_tab_turbo_frame_id)
-      expect(book_emoji_tab_turbo_frame_id).not_to eq(chinese_tab_turbo_frame_id)
-      expect(map_emoji_tab_turbo_frame_id).not_to eq(chinese_tab_turbo_frame_id)
-
-      # Verify that the turbo frame ids are properly formatted (parameterized)
-      expect(book_emoji_tab_turbo_frame_id).to match(/\A[a-z0-9-]+\z/)
-      expect(map_emoji_tab_turbo_frame_id).to match(/\A[a-z0-9-]+\z/)
-      expect(chinese_tab_turbo_frame_id).to match(/\A[a-z0-9-]+\z/)
+      # Click on third tab and verify that the right turbo frame content is rendered
+      find('a[data-tabs-tab-name-param="📖 store"]').click
+      wait_for_loaded
+      within(find("turbo-frame", id: /avo-resources-items-tab-#{Digest::MD5.hexdigest("📖 store")}/)) do
+        expect(page).to have_text("tab_3")
+        expect(page).not_to have_text("tab_1")
+        expect(page).not_to have_text("tab_2")
+      end
     end
   end
 end
