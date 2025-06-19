@@ -57,30 +57,7 @@ class Avo::Resources::Product < Avo::BaseResource
     field :price, as: :money, currencies: %w[EUR USD RON PEN]
     field :description, as: :tiptap, placeholder: "Enter text", always_show: false
     field :image, as: :file, is_image: true
-    field :category, as: :select, grouped_options: {
-      "Electronics" => {
-        "Music players" => :music_players,
-        "Phones" => :phones,
-        "Computers" => :computers,
-        "Wearables" => :wearables
-      },
-      "Clothing" => {
-        "Shirts" => :shirts,
-        "Pants" => :pants,
-        "Accessories" => :accessories
-      },
-      "Home & Garden" => {
-        "Furniture" => :furniture,
-        "Decor" => :decor,
-        "Appliances" => :appliances
-      }
-    }
-    field :sizes, as: :select, multiple: true, grouped_options: {
-      "Sizes" => {
-        "Large" => :large,
-        "Medium" => :medium,
-        "Small" => :small
-      }
-    }
+    field :category, as: :select, enum: ::Product.categories
+    field :sizes, as: :select, multiple: true, options: {Large: :large, Medium: :medium, Small: :small}
   end
 end
