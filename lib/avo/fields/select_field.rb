@@ -125,39 +125,66 @@ module Avo
 
       def find_label_in_grouped_options(grouped_opts, search_value)
         grouped_opts.each do |group_name, group_options|
-          # Handle different group_options formats
-          case group_options
-          when Hash
-            # Hash format: { "Label" => "value" }
-            group_options.each do |label, option_value|
-              if option_value.to_s == search_value.to_s
-                return display_value ? option_value.to_s : label.to_s
-              end
-            end
-          when Array
-            # Array format: [["Label", "value"], ...] or ["value1", "value2", ...]
-            group_options.each do |option|
-              if option.is_a?(Array) && option.length >= 2
-                # Nested array format: ["Label", "value"]
-                label, option_value = option
-                if option_value.to_s == search_value.to_s
-                  return display_value ? option_value.to_s : label.to_s
-                end
-              elsif option.to_s == search_value.to_s
-                # Simple array format: ["value1", "value2"]
-                return option.to_s
-              end
-            end
-          else
-            # Single value format
-            if group_options.to_s == search_value.to_s
-              return group_options.to_s
-            end
-          end
+          result = find_label_in_group(group_options, search_value)
+          return result if result
         end
 
         # If not found in any group, return nil so the caller can handle it
         nil
+      end
+
+      def find_label_in_group(group_options, search_value)
+        case group_options
+        when Hash
+          find_label_in_hash_group(group_options, search_value)
+        when Array
+          find_label_in_array_group(group_options, search_value)
+        else
+          find_label_in_single_value_group(group_options, search_value)
+        end
+      end
+
+      def find_label_in_hash_group(group_options, search_value)
+        # Hash format: { "Label" => "value" }
+        group_options.each do |label, option_value|
+          if values_match?(option_value, search_value)
+            return format_label_result(label, option_value)
+          end
+        end
+        nil
+      end
+
+      def find_label_in_array_group(group_options, search_value)
+        # Array format: [["Label", "value"], ...] or ["value1", "value2", ...]
+        group_options.each do |option|
+          if option.is_a?(Array) && option.length >= 2
+            # Nested array format: ["Label", "value"]
+            label, option_value = option
+            if values_match?(option_value, search_value)
+              return format_label_result(label, option_value)
+            end
+          elsif values_match?(option, search_value)
+            # Simple array format: ["value1", "value2"]
+            return option.to_s
+          end
+        end
+        nil
+      end
+
+      def find_label_in_single_value_group(group_options, search_value)
+        # Single value format
+        if values_match?(group_options, search_value)
+          return group_options.to_s
+        end
+        nil
+      end
+
+      def values_match?(option_value, search_value)
+        option_value.to_s == search_value.to_s
+      end
+
+      def format_label_result(label, option_value)
+        display_value ? option_value.to_s : label.to_s
       end
     end
   end

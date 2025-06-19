@@ -6,5 +6,6 @@ class Avo::Resources::Volunteer < Avo::BaseResource
     field :event, as: :belongs_to, placeholder: "—"
 
     field :department, as: :select, grouped_options: Volunteer::DEPARTMENT_OPTIONS
-    field :skills, as: :select, multiple: true, grouped_options: Volunteer::SKILLS_OPTIONS  end
+    field :skills, as: :select, multiple: true, grouped_options: Volunteer::SKILLS_OPTIONS
+  end
 end
