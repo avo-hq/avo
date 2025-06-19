@@ -279,4 +279,66 @@ RSpec.describe "Tabs", type: :system do
       expect(value.text(:all).strip).to eq("+1 (555) 123-4567")
     end
   end
+
+  describe "tabs with non-ASCII names" do
+    let!(:user) { create :user }
+
+    it "renders the correct turbo frame content for tabs with non-ascii names" do
+      # Set up temporary field for User
+      Avo::Resources::User.with_temporary_items do
+        field :name
+        tabs do
+          tab "其他store", lazy_load: true do
+            field :tab_1 do
+              "tab_1"
+            end
+          end
+
+          tab "store 🧭", lazy_load: true do
+            field :tab_2 do
+              "tab_2"
+            end
+          end
+
+          tab "📖 store", lazy_load: true do
+            field :tab_3 do
+              "tab_3"
+            end
+          end
+        end
+      end
+
+      # Visit page
+      visit avo.resources_user_path(user)
+
+      # Click on first tab and verify that the right turbo frame content is rendered
+      find('a[data-tabs-tab-name-param="其他store"]').click
+      wait_for_loaded
+      within(find("turbo-frame", id: /avo-resources-items-tab-#{Digest::MD5.hexdigest("其他store")}/)) do
+        expect(page).to have_text("tab_1")
+        expect(page).not_to have_text("tab_2")
+        expect(page).not_to have_text("tab_3")
+      end
+
+      # Click on second tab and verify that the right turbo frame content is rendered
+      find('a[data-tabs-tab-name-param="store 🧭"]').click
+      wait_for_loaded
+      within(find("turbo-frame", id: /avo-resources-items-tab-#{Digest::MD5.hexdigest("store 🧭")}/)) do
+        expect(page).to have_text("tab_2")
+        expect(page).not_to have_text("tab_1")
+        expect(page).not_to have_text("tab_3")
+      end
+
+      # Click on third tab and verify that the right turbo frame content is rendered
+      find('a[data-tabs-tab-name-param="📖 store"]').click
+      wait_for_loaded
+      within(find("turbo-frame", id: /avo-resources-items-tab-#{Digest::MD5.hexdigest("📖 store")}/)) do
+        expect(page).to have_text("tab_3")
+        expect(page).not_to have_text("tab_1")
+        expect(page).not_to have_text("tab_2")
+      end
+
+      Avo::Resources::User.restore_items_from_backup
+    end
+  end
 end
