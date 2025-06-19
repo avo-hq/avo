@@ -15,19 +15,15 @@ class Avo::Resources::Membership < Avo::BaseResource
       as: :select,
       display_value: true,
       default: -> { Time.now.hour < 12 ? "advanced" : "beginner" },
-      grouped_options: -> do
+      options: -> do
         {
-          Skills: {
-            Beginner: :beginner,
-            Intermediate: :intermediate,
-            Advanced: :advanced,
-          },
-          Meta: {
-            "Record ID (#{record.id})": record.id,
-            "Resource Name (#{resource.name})": resource.name,
-            "View (#{view})": view,
-            "Field ID (#{field.id})": field.id
-          }
+          Beginner: :beginner,
+          Intermediate: :intermediate,
+          Advanced: :advanced,
+          "#{record.id}": "record_id",
+          "#{resource.name}": "resource_name",
+          "#{view}": "view",
+          "#{field.id}": "field"
         }
       end
 
