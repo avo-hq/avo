@@ -1,0 +1,138 @@
+---
+zh-TW:
+  avo:
+    action_ran_successfully: 操作成功執行！
+    actions: 操作
+    add_filter: 新增篩選器
+    and_x_other_resources: 和 %{count} 個其他資源
+    applied: 已應用
+    are_you_sure: 您確定嗎？
+    are_you_sure_detach_item: 您確定要分離此 %{item} 嗎？
+    are_you_sure_you_want_to_run_this_option: 您確定要執行此操作嗎？
+    attach: 附加
+    attach_and_attach_another: 附加並附加另一個
+    attach_item: 附加 %{item}
+    attachment_class_attached: "%{attachment_class} 已附加。"
+    attachment_class_detached: "%{attachment_class} 已分離。"
+    attachment_destroyed: 附件已刪除
+    attachment_failed: 無法附加 %{attachment_class}
+    cancel: 取消
+    choose_a_country: 選擇一個國家
+    choose_an_option: 選擇一個選項
+    choose_item: 選擇 %{item}
+    clear_value: 清除值
+    click_to_reveal_filters: 點擊以顯示篩選器
+    close: 關閉
+    close_modal: 關閉模態框
+    confirm: 確認
+    copy: 複製
+    create_new_item: 新增 %{item}
+    created_at_timestamp: 建立於%{created_at}
+    dashboard: 儀表板
+    dashboards: 儀表板
+    default_scope: 所有
+    delete: 刪除
+    delete_file: 刪除檔案
+    delete_item: 刪除 %{item}
+    detach_item: 分離 %{item}
+    details: 詳細資料
+    download: 下載
+    download_file: 下載檔案
+    download_item: 下載 %{item}
+    edit: 編輯
+    edit_item: 編輯 %{item}
+    empty_dashboard_message: 在此儀表板新增卡片
+    failed: 失敗
+    failed_to_find_attachment: 找不到附件
+    failed_to_load: 載入失敗
+    file:
+      one: 檔案
+      other: 檔案
+    filter_by: 按...篩選
+    filters: 篩選器
+    go_back: 返回
+    grid_view: 網格視圖
+    hide_content: 隱藏內容
+    home: 首頁
+    key_value_field:
+      add_row: 新增列
+      delete_row: 刪除列
+      key: 鍵
+      reorder_row: 重新排序列
+      value: 值
+    less_content: 內容較少
+    list_is_empty: 清單為空
+    loading: 載入中...
+    media_library:
+      title: 媒體庫
+    more: 更多
+    more_content: 更多內容
+    more_records_available: 還有更多記錄可供參考。
+    nested:
+      add_new_item: 新增 %{item}
+    new: 新建
+    next_page: 下一頁
+    no_cancel: 不，取消
+    no_cards_present: 沒有卡片
+    no_item_found: 找不到記錄
+    no_options_available: 沒有可用選項
+    no_related_item_found: 找不到相關記錄
+    not_authorized: 您沒有權限執行此操作。
+    number_of_items:
+      one: 一個 %{item}
+      other: "%{count} 個 %{item}"
+      zero: 沒有 %{item}
+    oops_nothing_found: 哎呀！什麼都沒找到...
+    order:
+      higher: 將記錄上移
+      lower: 將記錄下移
+      reorder_record: 重新排序記錄
+      to_bottom: 將記錄移至底部
+      to_top: 將記錄移至頂部
+    per_page: 每頁顯示
+    prev_page: 上一頁
+    records_selected_from_all_pages_html: 所有頁面中選中的記錄
+    remove_selection: 清除選擇
+    reset: 重置
+    reset_filters: 重置篩選器
+    resource_created: 記錄已建立
+    resource_destroyed: 記錄已刪除
+    resource_updated: 記錄已更新
+    resources: 資源
+    run: 執行
+    save: 保存
+    search:
+      cancel_button: 取消
+      placeholder: 搜尋
+    select_all: 全選
+    select_all_matching: 選擇所有符合項目
+    select_item: 選擇項目
+    show_content: 顯示內容
+    sign_out: 登出
+    sort_asc: 升冪排序
+    sort_desc: 降冪排序
+    sort_reset: 重置排序
+    switch_to_view: 切換到 %{view_type} 視圖
+    table_view: 表格視圖
+    this_field_has_attachments_disabled: 此欄位已禁用附件。
+    tools: 工具
+    type_to_search: 輸入以搜尋。
+    unauthorized: 未經授權
+    undo: 復原
+    updated_at_timestamp: 更新於%{updated_at}
+    view: 檢視
+    view_item: 檢視 %{item}
+    visit_record_on_external_path: 透過外部連結存取記錄
+    was_successfully_created: 建立成功
+    was_successfully_updated: 更新成功
+    x_items_more:
+      one: 另外一個項目
+      other: "%{count} 個其他項目"
+      zero: 沒有其他項目
+    x_records_selected_from_a_total_of_x_html: 本頁面共選擇了 <span class="font-bold text-gray-700">%{selected}</span> 筆記錄，所有頁面共有 <span class="font-bold text-gray-700">%{count}</span> 筆記錄
+    x_records_selected_from_all_pages_html: 從所有頁面中選中了 <span class="font-bold text-gray-700">%{count}</span> 筆記錄
+    x_records_selected_from_page_html: 在本頁中共選擇了 <span class="font-bold text-gray-700">%{selected}</span> 筆記錄
+    yes_confirm: 是的，確認
+    you_cant_upload_new_resource: 在保存資源之前，您無法將檔案上傳到 Trix 編輯器。
+    you_havent_set_attachment_key: 您尚未為此 Trix 欄位設定 `attachment_key`。
+    you_missed_something_check_form: 您可能漏掉了一些內容，請檢查表單。
