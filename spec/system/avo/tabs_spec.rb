@@ -337,6 +337,8 @@ RSpec.describe "Tabs", type: :system do
         expect(page).not_to have_text("tab_1")
         expect(page).not_to have_text("tab_2")
       end
+
+      Avo::Resources::User.restore_items_from_backup
     end
   end
 end
