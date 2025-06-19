@@ -125,14 +125,33 @@ module Avo
 
       def find_label_in_grouped_options(grouped_opts, search_value)
         grouped_opts.each do |group_name, group_options|
-          # Skip if group_options is not a hash (malformed data)
-          next unless group_options.is_a?(Hash)
-
-          # Search within this group
-          group_options.each do |label, option_value|
-            # Convert both values to strings for comparison to handle different types
-            if option_value.to_s == search_value.to_s
-              return display_value ? option_value.to_s : label.to_s
+          # Handle different group_options formats
+          case group_options
+          when Hash
+            # Hash format: { "Label" => "value" }
+            group_options.each do |label, option_value|
+              if option_value.to_s == search_value.to_s
+                return display_value ? option_value.to_s : label.to_s
+              end
+            end
+          when Array
+            # Array format: [["Label", "value"], ...] or ["value1", "value2", ...]
+            group_options.each do |option|
+              if option.is_a?(Array) && option.length >= 2
+                # Nested array format: ["Label", "value"]
+                label, option_value = option
+                if option_value.to_s == search_value.to_s
+                  return display_value ? option_value.to_s : label.to_s
+                end
+              elsif option.to_s == search_value.to_s
+                # Simple array format: ["value1", "value2"]
+                return option.to_s
+              end
+            end
+          else
+            # Single value format
+            if group_options.to_s == search_value.to_s
+              return group_options.to_s
             end
           end
         end

@@ -4,5 +4,7 @@ class Avo::Resources::Volunteer < Avo::BaseResource
     field :name, as: :text
     field :role, as: :text
     field :event, as: :belongs_to, placeholder: "—"
-  end
+
+    field :department, as: :select, grouped_options: Volunteer::DEPARTMENT_OPTIONS
+    field :skills, as: :select, multiple: true, grouped_options: Volunteer::SKILLS_OPTIONS  end
 end
