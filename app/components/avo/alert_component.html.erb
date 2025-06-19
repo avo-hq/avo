@@ -1,5 +1,7 @@
 <div data-controller="alert"
-  data-alert-dismiss-after-value="<%= Avo.configuration.alert_dismiss_time %>"
+  <% unless keep_open? %>
+    data-alert-dismiss-after-value="<%= timeout %>"
+  <% end %>
   data-alert-remove-delay-value="0"
   class="<%= classes %>"
 >

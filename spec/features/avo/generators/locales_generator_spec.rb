@@ -15,7 +15,7 @@ RSpec.feature "locales generator", type: :feature do
       backup_files[locale] = {original: original_file, backup: backup_file}
     end
 
-    locales = %w[ar de en es fr it ja nb nl nn pl pt-BR pt ro ru tr uk zh]
+    locales = %w[ar de en es fr it ja nb nl nn pl pt-BR pt ro ru tr uk zh zh-TW]
 
     files = locales.map do |locale|
       Rails.root.join("config", "locales", "avo.#{locale}.yml").to_s
