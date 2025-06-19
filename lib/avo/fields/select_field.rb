@@ -54,6 +54,11 @@ module Avo
       def label
         return "—" if value.nil? || (@multiple && value.empty?)
 
+        # Handle grouped options first
+        if @grouped_options.present?
+          return label_from_grouped_options
+        end
+
         # If options are array don't need any pre-process
         if options.is_a?(Array)
           return @multiple ? value.join(", ") : value
@@ -99,6 +104,41 @@ module Avo
           view: view,
           field: self
         ).handle
+      end
+
+      def label_from_grouped_options
+        grouped_opts = grouped_options
+        return value.to_s unless grouped_opts.is_a?(Hash)
+
+        if @multiple
+          # Handle multiple values
+          labels = Array.wrap(value).map do |val|
+            find_label_in_grouped_options(grouped_opts, val) || val.to_s
+          end
+
+          labels.join(", ")
+        else
+          # Handle single value
+          find_label_in_grouped_options(grouped_opts, value) || value.to_s
+        end
+      end
+
+      def find_label_in_grouped_options(grouped_opts, search_value)
+        grouped_opts.each do |group_name, group_options|
+          # Skip if group_options is not a hash (malformed data)
+          next unless group_options.is_a?(Hash)
+
+          # Search within this group
+          group_options.each do |label, option_value|
+            # Convert both values to strings for comparison to handle different types
+            if option_value.to_s == search_value.to_s
+              return display_value ? option_value.to_s : label.to_s
+            end
+          end
+        end
+
+        # If not found in any group, return nil so the caller can handle it
+        nil
       end
     end
   end
