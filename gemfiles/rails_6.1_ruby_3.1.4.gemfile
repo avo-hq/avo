@@ -13,7 +13,6 @@ gem "bootsnap", ">= 1.4.2", require: false
 gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 gem "dotenv-rails"
 gem "web-console", ">= 3.3.0"
-gem "listen", ">= 3.5.1"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise"
 gem "amazing_print"
@@ -63,6 +62,9 @@ group :development do
   gem "actual_db_schema"
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
   gem "ruby-statistics", "< 4"
+  gem "lookbook", ">= 2.3.8"
+  gem "listen"
+  gem "actioncable"
 end
 
 group :test do
