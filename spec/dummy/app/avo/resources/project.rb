@@ -21,6 +21,11 @@ class Avo::Resources::Project < Avo::BaseResource
       url: -> { main_app.root_url },
       url_target: :_blank,
       # as: :badge
+    },
+    {
+      label: "Test",
+      as: :badge,
+      visible: false
     }
   ]
 
