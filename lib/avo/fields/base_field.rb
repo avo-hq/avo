@@ -39,7 +39,6 @@ module Avo
       attr_reader :autocomplete
       attr_reader :help
       attr_reader :default
-      attr_reader :as_avatar
       attr_reader :stacked
       attr_reader :for_presentation_only
       attr_reader :for_attribute
@@ -78,7 +77,6 @@ module Avo
         @help = args[:help]
         @default = args[:default]
         @visible = args[:visible]
-        @as_avatar = args[:as_avatar] || false
         @html = args[:html]
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]

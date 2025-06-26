@@ -35,7 +35,7 @@ class Avo::Resources::Team < Avo::BaseResource
           end
         end
       end
-      field :logo, as: :external_image, hide_on: :show, as_avatar: :rounded do
+      field :logo, as: :external_image, hide_on: :show do
         if record&.url
           "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
         end
@@ -64,7 +64,7 @@ class Avo::Resources::Team < Avo::BaseResource
       sidebar do
         field :url, as: :text
         field :created_at, as: :date_time, hide_on: :forms
-        field :logo, as: :external_image, as_avatar: :rounded do
+        field :logo, as: :external_image do
           if record&.url
             "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
           end
