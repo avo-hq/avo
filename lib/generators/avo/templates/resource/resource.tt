@@ -12,8 +12,7 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
     ]
   end
   <% elsif options["http"] %>
-  # self.endpoint = "https://api.openalex.org/"
-  # self.endpoint_key = "authors"
+  # self.endpoint = "https://api.openalex.org/authors"
   # self.parse_collection = -> {
   #   raise Avo::HttpError.new response["message"] if response["error"].present?
   #
@@ -21,6 +20,9 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
   # }
   # self.parse_record = -> { response }
   # self.parse_count = -> { response["meta"]["count"] }
+  # self.headers = -> {
+  #   "Authorization" => "Bearer #{ENV['TOKEN']}"
+  # }
 
   ## This is required only when the ID includes characters (e.g., ".") that could be improperly routed.
   # self.find_record_method = -> { query.find Base64.decode64(id) }
