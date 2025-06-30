@@ -122,7 +122,7 @@ module Generators
             # If component is a constant, find the source location
             source_location = component_constant.identifier
 
-            [source_location, source_location.gsub(".rb", ".html.erb")]
+            [source_location, source_location.gsub(/\.rb\z/, ".html.erb")]
           else
             ["app/components/#{component}.rb", "app/components/#{component}.html.erb"]
           end
