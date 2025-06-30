@@ -148,6 +148,9 @@ FactoryBot.define do
   factory :volunteer do
     name { Faker::Name.name }
     role { Faker::Job.title }
+    event { create :event }
+    department { ["hr", "Finance", "legal"].sample }
+    skills { Volunteer::SKILLS_OPTIONS.values.flatten.map(&:last).sample(2) }
   end
 
   factory :store do

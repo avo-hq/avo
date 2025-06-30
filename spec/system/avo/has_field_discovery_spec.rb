@@ -12,7 +12,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
         sidebar do
           with_options only_on: :show do
-            discover_columns only: %i[email], as: :gravatar, link_to_record: true, as_avatar: :circle
+            discover_columns only: %i[email], as: :gravatar, link_to_record: true
             field :heading, as: :heading, label: ""
             discover_columns only: %i[active], name: "Is active"
           end
