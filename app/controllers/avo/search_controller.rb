@@ -11,7 +11,7 @@ module Avo
     def show
       render json: search_resources([resource], request:)
     rescue => error
-      render_error _label: error.message
+      render_error error, _label: error.message
     end
 
     def process_results(results, request:)
@@ -208,7 +208,7 @@ module Avo
       @parent_resource ||= Avo.resource_manager.get_resource_by_model_class(params[:via_reflection_class])
     end
 
-    def render_error(...)
+    def render_error(error, ...)
       raise error unless render_error?
 
       render json: {
