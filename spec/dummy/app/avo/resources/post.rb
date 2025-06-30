@@ -67,8 +67,8 @@ class Avo::Resources::Post < Avo::BaseResource
       hide_attachment_url: true,
       hide_attachment_filename: true,
       hide_attachment_filesize: true
-    field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*", stacked: true
-    field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, as_avatar: :rounded, format_using: -> { value.present? ? value&.url : nil }
+    field :cover_photo, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*", stacked: true
+    field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: -> { value.present? ? value&.url : nil }
     field :audio, as: :file, is_audio: true, accept: "audio/*"
 
     field :is_featured, as: :boolean, visible: -> do

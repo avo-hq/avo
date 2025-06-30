@@ -12,8 +12,11 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
     ]
   end
   <% elsif options["http"] %>
-  # self.endpoint = "https://api.openalex.org/"
-  # self.endpoint_key = "authors"
+  # self.endpoint = "https://api.openalex.org/authors"
+  # self.headers = -> {
+  #   "Authorization" => "Bearer #{ENV['TOKEN']}"
+  # }
+
   # self.parse_collection = -> {
   #   raise Avo::HttpError.new response["message"] if response["error"].present?
   #

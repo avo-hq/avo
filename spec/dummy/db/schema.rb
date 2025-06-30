@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_10_175357) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_19_140631) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -305,6 +305,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_10_175357) do
     t.uuid "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "department"
+    t.string "skills", default: [], array: true
     t.index ["event_id"], name: "index_volunteers_on_event_id"
   end
 

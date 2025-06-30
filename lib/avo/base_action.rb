@@ -229,26 +229,26 @@ module Avo
       ).handle && authorized?
     end
 
-    def succeed(text)
-      add_message text, :success
+    def succeed(text, timeout: nil)
+      add_message text, :success, timeout: timeout
 
       self
     end
 
-    def error(text)
-      add_message text, :error
+    def error(text, timeout: nil)
+      add_message text, :error, timeout: timeout
 
       self
     end
 
-    def inform(text)
-      add_message text, :info
+    def inform(text, timeout: nil)
+      add_message text, :info, timeout: timeout
 
       self
     end
 
-    def warn(text)
-      add_message text, :warning
+    def warn(text, timeout: nil)
+      add_message text, :warning, timeout: timeout
 
       self
     end
@@ -384,10 +384,11 @@ module Avo
 
     private
 
-    def add_message(body, type = :info)
+    def add_message(body, type = :info, timeout: nil)
       response[:messages] << {
         type: type,
-        body: body&.truncate(320)
+        body: body&.truncate(320),
+        timeout: timeout
       }
     end
   end

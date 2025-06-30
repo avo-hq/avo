@@ -1,5 +1,5 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <%= @form.select @field.id, options_for_select(@field.options_for_select, selected: @field.value), {
+  <%= @form.select @field.id, options, {
       include_blank: (params[:controller] == "avo/bulk_update") || @field.include_blank
     },
     multiple: @field.multiple,
