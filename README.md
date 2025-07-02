@@ -125,6 +125,6 @@ Please read the [RELEASE.MD](./RELEASE.MD)
 
  - [`active_storage-blurhash`](https://github.com/avo-hq/active_storage-blurhash) - A plug-n-play [blurhash](https://blurha.sh/) integration for images stored in ActiveStorage
  - [`class_variants`](https://github.com/avo-hq/class_variants) - Easily configure styles and apply them as classes. Very useful when you're implementing Tailwind CSS components and call them with different states.
- - [`marksmith`](https://github.com/avo-hq/marksmith) - GitHub-style markdown editor for Ruby on Rails with ActiveStorage support.
+ - [`marksmith`](https://github.com/avo-hq/marksmith) - GitHub-style markdown editor for Ruby and Rails
  - [`prop_initializer`](https://github.com/avo-hq/prop_initializer) - A flexible tool for defining properties on Ruby classes.
  - [`stimulus-confetti`](https://github.com/avo-hq/stimulus-confetti) - The easiest way to add confetti to your StimulusJS app
