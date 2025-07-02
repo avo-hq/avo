@@ -55,10 +55,12 @@ group :development do
   gem "htmlbeautifier"
   gem "hotwire-livereload", "~> 1.3.0"
   gem "actual_db_schema"
+  gem "lookbook", ">= 2.3.8"
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
   gem "ruby-statistics", "< 4"
   gem "web-console", ">= 3.3.0"
   gem "listen", ">= 3.5.1"
+  gem "actioncable"
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
   gem "dotenv-rails"
 end

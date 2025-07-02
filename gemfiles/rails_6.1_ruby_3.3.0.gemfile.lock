@@ -373,7 +373,7 @@ GEM
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    lookbook (2.3.9)
+    lookbook (2.3.11)
       activemodel
       css_parser
       htmlbeautifier (~> 1.3)
@@ -527,6 +527,7 @@ GEM
       nokogiri
     rexml (3.4.1)
     ripper-tags (1.0.2)
+    rouge (4.5.2)
     rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -752,7 +753,7 @@ DEPENDENCIES
   iso
   jsbundling-rails
   launchy
-  listen
+  listen (>= 3.5.1)
   lookbook (>= 2.3.8)
   mapkick-rb (~> 0.1.4)
   mapkick-static
@@ -793,4 +794,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.5.22
+   2.6.2
