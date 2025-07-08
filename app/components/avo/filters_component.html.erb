@@ -1,20 +1,18 @@
 <div data-controller="toggle" data-component-name="<%= self.class.to_s.underscore %>">
   <div class="relative w-full flex justify-between">
-    <% unless @field&.hide_filter_button %>
-      <%= a_button class: 'focus:outline-none',
-        color: :primary,
-        size: :sm,
-        icon: "avo/filter",
-        title: t('avo.click_to_reveal_filters'),
-        'data-button': 'resource-filters',
-        'data-action': 'click->toggle#togglePanel',
-        'data-tippy': 'tooltip' do %>
-       <%= t 'avo.filters' %>
+    <%= a_button class: 'focus:outline-none',
+      color: :primary,
+      size: :sm,
+      icon: "avo/filter",
+      title: t('avo.click_to_reveal_filters'),
+      'data-button': 'resource-filters',
+      'data-action': 'click->toggle#togglePanel',
+      'data-tippy': 'tooltip' do %>
+      <%= t 'avo.filters' %>
         <% if @applied_filters.present? %>
           <span class="ml-1">(<%= "#{@applied_filters.count} #{t('avo.applied', count: @applied_filters.count)}" %>)</span>
         <% end %>
-       <% end %>
-    <% end %>
+      <% end %>
     <div
       class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] == '1' %>"
       data-toggle-target="panel"

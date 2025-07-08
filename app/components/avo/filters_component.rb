@@ -7,9 +7,13 @@ class Avo::FiltersComponent < Avo::BaseComponent
   prop :resource
   prop :applied_filters, default: {}.freeze
   prop :parent_record
+  prop :field
 
   def render?
-    @filters.present?
+    return false unless @filters.present?
+    return false if @field&.hide_filter_button
+
+    true
   end
 
   def reset_path
