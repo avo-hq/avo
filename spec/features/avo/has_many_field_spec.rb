@@ -172,11 +172,10 @@ RSpec.feature "HasManyField", type: :feature do
   end
 
   describe "Hides items in views" do
-    let!(:store) {create :store, size: "medium" }
+    let!(:store) { create :store, size: "medium" }
 
     context "Hides filter button" do
       it "hides the filter button when hide_filter_button is set to true" do
-
         Avo::Resources::Store.with_temporary_items do
           field :patrons, as: :has_many, through: :patronships, hide_filter_button: true
         end
