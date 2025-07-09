@@ -175,52 +175,30 @@ RSpec.feature "HasManyField", type: :feature do
   describe "Hides items in views" do
     let!(:store) { create :store, size: "medium" }
 
-    context "Visible filter button" do
+    context "Visible filter button and search input" do
       it "shows the filter button when hide_filter_button is set to true" do
         Avo::Resources::Store.with_temporary_items do
           field :patrons, as: :has_many, through: :patronships
         end
 
-        visit "/admin/resources/stores/#{store.id}"
+        visit "/admin/resources/stores/#{store.id}/patrons"
+
         expect(page).to have_css('[data-component-name="avo/filters_component"]')
-
-        Avo::Resources::Store.restore_items_from_backup
-      end
-    end
-
-    context "Hides filter button" do
-      it "hides the filter button when hide_filter_button is set to true" do
-        Avo::Resources::Store.with_temporary_items do
-          field :patrons, as: :has_many, through: :patronships, hide_filter_button: true
-        end
-
-        visit "/admin/resources/stores/#{store.id}"
-        expect(page).not_to have_css('[data-component-name="avo/filters_component"]')
-
-        Avo::Resources::Store.restore_items_from_backup
-      end
-    end
-
-    context "Visible search input" do
-      it "shows the search input when hide_search_input is set to false" do
-        Avo::Resources::Store.with_temporary_items do
-          field :patrons, as: :has_many, through: :patronships
-        end
-
-        visit "/admin/resources/stores/#{store.id}"
         expect(page).to have_css('[data-search-target="autocomplete"]')
 
         Avo::Resources::Store.restore_items_from_backup
       end
     end
 
-    context "Hides search input" do
-      it "hides the search input when hide_search_input is set to true" do
+    context "Hides filter button and search input" do
+      it "hides the filter button when hide_filter_button is set to true" do
         Avo::Resources::Store.with_temporary_items do
-          field :patrons, as: :has_many, through: :patronships, hide_search_input: true
+          field :patrons, as: :has_many, through: :patronships, hide_filter_button: true, hide_search_input: true
         end
 
-        visit "/admin/resources/stores/#{store.id}"
+        visit "/admin/resources/stores/#{store.id}/patrons"
+
+        expect(page).not_to have_css('[data-component-name="avo/filters_component"]')
         expect(page).not_to have_css('[data-search-target="autocomplete"]')
 
         Avo::Resources::Store.restore_items_from_backup
