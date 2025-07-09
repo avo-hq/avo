@@ -10,10 +10,9 @@ class Avo::FiltersComponent < Avo::BaseComponent
   prop :field
 
   def render?
-    return false unless @filters.present?
     return false if @field&.hide_filter_button
 
-    true
+    @filters.present?
   end
 
   def reset_path
