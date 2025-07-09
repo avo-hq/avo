@@ -63,9 +63,12 @@ module Avo
         return [key, search_query_undefined]
       end
 
+      q = params[:q]&.strip || ""
+
       query = Avo::ExecutionContext.new(
         target: resource.search_query,
         params: params,
+        q:,
         query: resource.query_scope
       ).handle
 

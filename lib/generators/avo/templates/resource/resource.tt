@@ -40,7 +40,7 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
   # self.includes = []
   # self.attachments = []<%= model_class_from_args %>
   # self.search = {
-  #   query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
+  #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
   <% end %><% if options["array"] %>
   def fields
