@@ -1,6 +1,7 @@
 class Avo::Resources::Course < Avo::BaseResource
   self.search = {
     query: -> {
+      TestBuddy.hi("params[:q]: '#{params[:q]}', q: '#{q}'") if Rails.env.test?
       query
         .where("name ILIKE ?", "%#{q}%")
         .or(query.where(id: q))
