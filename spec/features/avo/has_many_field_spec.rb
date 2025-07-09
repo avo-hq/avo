@@ -171,7 +171,6 @@ RSpec.feature "HasManyField", type: :feature do
     it { is_expected.to have_text "Posts" }
   end
 
-
   describe "Hides items in views" do
     let!(:store) { create :store, size: "medium" }
 
