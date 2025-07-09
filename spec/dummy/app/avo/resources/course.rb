@@ -1,6 +1,11 @@
 class Avo::Resources::Course < Avo::BaseResource
   self.search = {
-    query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }
+    query: -> {
+      TestBuddy.hi("params[:q]: '#{params[:q]}', q: '#{q}'") if Rails.env.test?
+      query
+        .where("name ILIKE ?", "%#{q}%")
+        .or(query.where(id: q))
+    }
   }
   self.keep_filters_panel_open = true
   self.stimulus_controllers = "city-in-country toggle-fields"
