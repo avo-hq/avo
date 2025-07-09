@@ -45,8 +45,7 @@
 
             <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
               <%= render_dynamic_filters_button %>
-
-              <% unless @field&.hide_filter_button %>
+              <% unless field&.hide_filter_button %>
                 <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
               <% end %>
 
