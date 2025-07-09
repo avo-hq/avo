@@ -12,6 +12,7 @@
     <%= render partial: "avo/partials/javascript" %>
     <%= render partial: "avo/partials/branding" %>
     <%= render partial: "avo/partials/pre_head" %>
+    <%= render partial: "avo/partials/lightbox" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
     <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", as: "style" %>
 
