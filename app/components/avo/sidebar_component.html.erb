@@ -58,7 +58,7 @@
 
               <div class="w-full space-y-1">
                 <% pages.each do |page| %>
-                  <%= render Avo::Sidebar::LinkComponent.new label: page.title, path: page.path %>
+                  <%= render Avo::Sidebar::LinkComponent.new label: page.get_navigation_label, path: page.path %>
                 <% end %>
               </div>
             </div>
