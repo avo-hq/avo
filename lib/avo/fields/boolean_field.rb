@@ -12,7 +12,13 @@ module Avo
       end
 
       def value
-        resolve_attribute super
+        val = super
+
+        if val.nil? && @args[:nil_as_indeterminate] == true
+          return :indeterminate
+        end
+
+        resolve_attribute val
       end
 
       def resolve_attribute(value)
