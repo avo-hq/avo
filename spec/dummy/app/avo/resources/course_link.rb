@@ -3,7 +3,11 @@ class Avo::Resources::CourseLink < Avo::BaseResource
   self.includes = [:course]
   self.model_class = Course::Link
   self.search = {
-    query: -> { query.ransack(id_eq: params[:q], link_cont: params[:q], m: "or").result(distinct: false) }
+    query: -> {
+      query
+        .where("link ILIKE ?", "%#{params[:q]}%")
+        .or(query.where(id: params[:q]))
+    }
   }
 
   def display_fields

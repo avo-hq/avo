@@ -40,7 +40,7 @@ shared_examples "view pages load" do |resource|
 
   context "search" do
     it "loads the search page" do
-      visit "/admin/avo_api/#{plural_name}/search"
+      visit "/admin/avo_api/#{plural_name}/search?q="
     end
   end
 end

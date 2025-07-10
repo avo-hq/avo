@@ -125,7 +125,6 @@ group :development do
   gem "listen", ">= 3.5.1"
   gem "actioncable"
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "dotenv-rails"
 
   # Uncomment for performance profiling
   # gem "rack-mini-profiler"
@@ -171,6 +170,7 @@ end
 group :development, :test do
   # Debugging & console
   gem "amazing_print"
+  gem "dotenv-rails"
 
   # Test data & factories
   gem "faker", require: false
