@@ -5,7 +5,7 @@
 
     appraise "rails-#{rails_version}-ruby-#{ruby_version}" do
       gem "psych", "< 4"
-      gem "rails", "#{rails_version}"
+      gem "rails", "~> #{rails_version}"
       gem "activestorage", "~> #{rails_version}"
       # gem "activestorage"
       gem "acts-as-taggable-on"
