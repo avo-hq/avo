@@ -1,1 +1,1 @@
-pin 'avo/application'
+pin "avo/application"
