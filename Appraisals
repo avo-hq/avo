@@ -7,7 +7,6 @@
       gem "psych", "< 4"
       gem "rails", "~> #{rails_version}"
       gem "activestorage", "~> #{rails_version}"
-      # gem "activestorage"
       gem "acts-as-taggable-on"
 
       if rails_version == "6.1"
