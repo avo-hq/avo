@@ -10,7 +10,7 @@
     "build": "yarn build:js && yarn build:css",
     "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
     "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
-    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/avo.base.css -o ./app/assets/builds/avo.base.css --postcss",
+    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/avo/application.css --postcss",
     "export": "yarn export:heroicons && yarn export:tailwind-safelist",
     "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js"
   },
