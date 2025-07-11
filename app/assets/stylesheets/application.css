@@ -126,3 +126,8 @@ dl {
 .selected-row {
   @apply !bg-neutral-100;
 }
+
+
+#popp {
+  position-anchor: --owner;
+}
