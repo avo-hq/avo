@@ -1,7 +1,15 @@
-<div id="<%= dom_id file %>" class="relative min-h-full max-w-full flex-1 flex flex-col justify-between space-y-2">
+<div data-controller="lightbox" id="<%= dom_id file %>" class="relative min-h-full max-w-full flex-1 flex flex-col justify-between space-y-2">
   <div class="flex flex-col h-full">
     <% if file.representable? && is_image? %>
-      <%= image_tag helpers.main_app.url_for(file), class: "rounded-lg max-w-full self-start #{@extra_classes}", loading: :lazy, width: file.metadata["width"], height: file.metadata["height"] %>
+      <%= image_tag helpers.main_app.url_for(file),
+        class: "rounded-lg max-w-full self-start #{@extra_classes}", 
+        loading: :lazy, 
+        width: file.metadata["width"], 
+        height: file.metadata["height"], 
+        data: {
+          action: "click->lightbox#open",
+          lightbox_target: "image"
+        } %>
     <% elsif is_audio? %>
       <%= audio_tag(helpers.main_app.url_for(file), controls: true, preload: false, class: 'w-full') %>
     <% elsif is_video? %>
