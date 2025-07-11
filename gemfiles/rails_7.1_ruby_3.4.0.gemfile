@@ -2,11 +2,11 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 6.1"
-gem "activestorage"
+gem "rails", "7.1"
+gem "activestorage", "~> 7.1"
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "sprockets-rails"
+gem "propshaft"
 gem "pg", ">= 0.18", "< 2.0"
 gem "puma", "~> 6.4"
 gem "bootsnap", ">= 1.4.2", require: false
@@ -42,7 +42,6 @@ gem "avo-record_link_field"
 gem "pluggy", path: "../pluggy"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "psych", "< 4"
-gem "concurrent-ruby", "1.3.4"
 
 group :development do
   gem "standard", require: false

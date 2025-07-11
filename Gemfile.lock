@@ -114,6 +114,7 @@ GEM
       ast
       csv
       parser
+      prism
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     amazing_print (1.8.1)
@@ -577,7 +578,8 @@ GEM
     rspec-support (3.13.4)
     rubocop (1.75.8)
       json (~> 2.3)
-      language_server-protocol (>= 3.17.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.1.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
@@ -815,4 +817,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.6.2
+   2.6.3
