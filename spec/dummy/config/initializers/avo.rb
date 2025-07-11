@@ -67,7 +67,7 @@ Avo.configure do |config|
     },
     # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
     logo: "avo/logo.png",
-    logomark: "avo/logomark.png",
+    logomark: "avo/logomark.png"
     # placeholder: "/avo/placeholder.svg",
   }
 
