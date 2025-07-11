@@ -21,12 +21,6 @@ module Generators
             copy_file template_path("tailwind.config.js"), path
           end
 
-          unless (path = Rails.root.join("app", "assets", "stylesheets", "avo", "tailwindcss")).exist?
-            say "Generating the tailwindcss directory."
-            directory ::Avo::Engine.root.join("app", "assets", "stylesheets", "css", "tailwindcss"), path
-          end
-
-
           unless (path = Rails.root.join("app", "assets", "stylesheets", "avo" ,"avo.tailwind.css")).exist?
             say "Add default tailwind.css"
             copy_file template_path("avo.tailwind.css"), path

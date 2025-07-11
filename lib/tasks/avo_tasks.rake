@@ -81,7 +81,7 @@ task "avo:sym_link" do
 
   gem_paths = `bundle list --paths 2>/dev/null`.split("\n")
 
-  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban"].each do |gem|
+  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
     path = gem_paths.find { |gem_path| gem_path.include?("/#{gem}-") }
 
     # If path is nil we check if package is defined outside of root (on release process it is)
@@ -135,5 +135,5 @@ task "avo:yarn_install" do
   # tailwind.preset.js needs this dependencies in order to be required
   # Ensure that versions remain updated and synchronized with those specified in package.json.
   puts "[Avo->] Adding yarn dependencies"
-  `yarn add tailwindcss@^3.4.17 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
+  `yarn add tailwindcss@^4.0.0 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
 end

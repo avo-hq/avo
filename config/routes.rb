@@ -51,5 +51,7 @@ Avo::Engine.routes.draw do
     scope "/avo_private", as: "avo_private" do
       get "/design", to: "private#design"
     end
+
+    mount Lookbook::Engine, at: "/lookbook" if defined?(Lookbook)
   end
 end

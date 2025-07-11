@@ -81,5 +81,7 @@ Rails.application.configure do
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("app/views")
   config.hotwire_livereload.listen_paths << Avo::Engine.root.join("lib")
 
+  config.lookbook.ui_theme = "zinc"
+  config.lookbook.preview_layout = "component_preview"
   config.hosts << '.ngrok-free.app'
 end

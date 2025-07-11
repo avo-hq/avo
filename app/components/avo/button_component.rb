@@ -6,6 +6,8 @@
 # color: :gray, :red, :green, :blue, or any other tailwind color
 # icon: "heroicons/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
+  # include Avo::ApplicationHelper
+
   prop :path, kind: :positional
   prop :size, default: :md
   prop :style, default: :outline
@@ -34,12 +36,12 @@ class Avo::ButtonComponent < Avo::BaseComponent
   end
 
   def button_classes
-    classes = "button-component inline-flex flex-grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
+    classes = "button-component inline-flex grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
 
     # For non-icon-styled buttons we should not add borders.
-    classes += " border active:outline active:outline-1" unless is_icon?
+    classes += " border active:outline active:outline-1" if is_not_icon_style?
 
-    classes += " rounded" if @rounded.present?
+    classes += " rounded-sm" if @rounded.present?
     classes += style_classes
     classes += horizontal_padding_classes
     classes += vertical_padding_classes
@@ -52,24 +54,24 @@ class Avo::ButtonComponent < Avo::BaseComponent
     @is_link
   end
 
-  def is_icon?
+  def is_icon_style?
     @style == :icon
   end
 
-  def is_not_icon?
-    !is_icon?
+  def is_not_icon_style?
+    !is_icon_style?
   end
 
   def full_content
     result = ""
     # space out the icon from the text if text is present
     # add the icon height
-    icon_classes = class_names(@icon_class, "pointer-events-none", icon_size_classes, "mr-1": content.present? && is_not_icon?)
+    icon_classes = class_names(@icon_class, "pointer-events-none", icon_size_classes, "mr-1": content.present? && is_not_icon_style?)
 
     # Add the icon
     result += helpers.svg(@icon, class: icon_classes) if @icon.present?
 
-    if is_not_icon? && content.present?
+    if is_not_icon_style? && content.present?
       result += content
     end
 
@@ -105,7 +107,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   private
 
   def vertical_padding_classes
-    return " py-0" if is_icon?
+    return " py-0" if is_icon_style?
 
     case @size.to_sym
     when :xs
@@ -124,7 +126,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   end
 
   def horizontal_padding_classes
-    return " px-0" if is_icon?
+    return " px-0" if is_icon_style?
     return " px-1" if @compact
 
     case @size.to_sym
@@ -169,7 +171,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
 
   def icon_size_classes
     icon_classes = ""
-    return icon_classes if is_icon?
+    return icon_classes if is_icon_style?
 
     case @size
     when :xs

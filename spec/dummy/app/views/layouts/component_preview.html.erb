@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "avo.base", "data-turbo-track": "reload", as: "style" %>
+    <%= render partial: "avo/partials/branding" %>
+  </head>
+
+  <body>
+    <div class="p-4">
+      <%= yield %>
+    </div>
+  </body>
+</html>

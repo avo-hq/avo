@@ -2,6 +2,7 @@
 
 class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
+  include Avo::Concerns::FormBuilder
 
   prop :resource
   prop :record
@@ -63,27 +64,5 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def is_edit?
     @view.in?(%w[edit update])
-  end
-
-  def form_method
-    return :put if is_edit?
-
-    :post
-  end
-
-  def form_url
-    if is_edit?
-      helpers.resource_path(
-        record: @resource.record,
-        resource: @resource
-      )
-    else
-      helpers.resources_path(
-        resource: @resource,
-        via_relation_class: params[:via_relation_class],
-        via_relation: params[:via_relation],
-        via_record_id: params[:via_record_id]
-      )
-    end
   end
 end

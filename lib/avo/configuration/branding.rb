@@ -24,9 +24,9 @@ class Avo::Configuration::Branding
   def css_colors
     rgb_colors.map do |color, value|
       if color == :background
-        "--color-application-#{color}: #{value};"
+        "--avo-color-application-background: #{value};"
       else
-        "--color-primary-#{color}: #{value};"
+        "--avo-color-primary-#{color}: #{value};"
       end
     end.join("\n")
   end

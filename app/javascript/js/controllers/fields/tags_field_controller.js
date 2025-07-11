@@ -119,10 +119,10 @@ export default class extends Controller {
   }
 
   hideFakeInput() {
-    this.fakeInputTarget.classList.add('hidden')
+    this.fakeInputTarget.classList.add('!hidden')
   }
 
   showRealInput() {
-    this.inputTarget.classList.remove('hidden')
+    this.inputTarget.classList.remove('!hidden')
   }
 }

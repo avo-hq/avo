@@ -16,11 +16,15 @@
       <%= a_link('/admin', icon: "heroicons/outline/arrow-left", style: :text, color: :orange, is_link: true) do %>
         Text
       <% end %>
+
+      <%= a_link('/admin', color: :slate, style: :primary, is_link: true) do %>
+        Create entry
+      <% end %>
     <% end %>
 
     <% c.with_body do %>
       <div class="flex flex-col justify-between py-6 min-h-24">
-        <%= render 'links_and_buttons' %>
+        <%= render partial: 'links_and_buttons' %>
       </div>
     <% end %>
   <% end %>

@@ -32,7 +32,7 @@ module Generators
         end
 
         def in_code(text)
-          "<code class='p-1 rounded bg-gray-500 text-white text-sm'>#{text}</code>"
+          "<code class='p-1 rounded-sm bg-gray-500 text-white text-sm'>#{text}</code>"
         end
       end
     end

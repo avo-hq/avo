@@ -19,7 +19,7 @@ class Avo::AlertComponent < Avo::BaseComponent
   def classes
     return "hidden" if is_empty?
 
-    result = "max-w-lg w-full shadow-lg rounded px-4 py-3 rounded relative border text-white pointer-events-auto"
+    result = "max-w-lg w-full shadow-lg px-4 py-3 rounded-sm relative border text-white pointer-events-auto"
 
     result += if is_error?
       " bg-red-400 border-red-600"

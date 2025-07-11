@@ -10,7 +10,7 @@
           name: t("avo.select_all"),
           title: t("avo.select_all"),
           autocomplete: :off,
-          class: "mx-3 rounded w-4 h-4 checked:bg-primary-400 focus:checked:!bg-primary-400",
+          class: "mx-3 rounded-sm w-4 h-4 checked:bg-primary-400 focus:checked:!bg-primary-400",
           data: {
             action: "input->item-select-all#toggle",
             item_select_all_target: "checkbox",
@@ -97,7 +97,7 @@
                 association_name: @field&.attribute_id
               }.compact
             ) %>"
-            class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden border border-gray-50"
+            class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded-sm overflow-hidden hidden border border-gray-50"
             data-toggle-target="panel"
           >
             <%= render Avo::LoadingComponent.new %>
