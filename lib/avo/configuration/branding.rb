@@ -15,10 +15,10 @@ class Avo::Configuration::Branding
       600 => "6 107 178"
     }
     @default_chart_colors = ["#0B8AE2", "#34C683", "#FFBE4F", "#FF7676", "#2AB1EE", "#34C6A8", "#EC8CFF", "#80FF91", "#FFFC38", "#1BDBE8"]
-    @default_logo = "/avo-assets/logo.png"
-    @default_logomark = "/avo-assets/logomark.png"
-    @default_placeholder = "/avo-assets/placeholder.svg"
-    @default_favicon = "/avo-assets/favicon.ico"
+    @default_logo = "avo/logo.png"
+    @default_logomark = "avo/logomark.png"
+    @default_placeholder = "avo/placeholder.svg"
+    @default_favicon = "avo/favicon.ico"
   end
 
   def css_colors

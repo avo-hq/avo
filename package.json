@@ -6,14 +6,11 @@
   "license": "Commercial",
   "private": true,
   "scripts": {
-    "js:visualize": "yarn prod:build:js -- --metafile=js_bundle_metadata.json && esbuild-visualizer --metadata=js_bundle_metadata.json --filename=js_bundle_stats.html",
+    "js:visualize": "yarn build:js -- --metafile=js_bundle_metadata.json && esbuild-visualizer --metadata=js_bundle_metadata.json --filename=js_bundle_stats.html",
     "build": "yarn build:js && yarn build:css",
-    "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --outdir=app/assets/builds",
-    "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds",
-    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/avo.base.css -o ./app/assets/builds/avo.base.css --postcss",
-    "prod:build": "yarn prod:build:js && yarn prod:build:css",
-    "prod:build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=public/avo-assets",
-    "prod:build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/avo.base.css -o ./public/avo-assets/avo.base.css --postcss",
+    "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
+    "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
+    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/avo/application.css --postcss",
     "export": "yarn export:heroicons && yarn export:tailwind-safelist",
     "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js"
   },

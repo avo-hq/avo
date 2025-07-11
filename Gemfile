@@ -18,7 +18,7 @@ gem "activestorage", ">= 8.0.0"
 # Asset pipeline
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "sprockets-rails"
+gem "propshaft"
 
 # =============================================================================
 # DATABASE & ORM
