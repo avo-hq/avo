@@ -1,6 +1,7 @@
-<div data-controller="lightbox" id="<%= dom_id file %>" class="relative min-h-full max-w-full flex-1 flex flex-col justify-between space-y-2">
+<div id="<%= dom_id file %>" class="relative min-h-full max-w-full flex-1 flex flex-col justify-between space-y-2">
   <div class="flex flex-col h-full">
     <% if file.representable? && is_image? %>
+    <div data-controller="lightbox" >
       <%= image_tag helpers.main_app.url_for(file),
         class: "rounded-lg max-w-full self-start #{@extra_classes}", 
         loading: :lazy, 
@@ -9,7 +10,10 @@
         data: {
           action: "click->lightbox#open",
           lightbox_target: "image"
-        } %>
+        } 
+      %>
+      <%= render partial: "avo/partials/lightbox" %>
+    </div>
     <% elsif is_audio? %>
       <%= audio_tag(helpers.main_app.url_for(file), controls: true, preload: false, class: 'w-full') %>
     <% elsif is_video? %>
@@ -27,5 +31,26 @@
   </div>
   <div class="flex space-x-2">
     <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: file, resource: @resource) %>
+  </div>
+</div>
+
+<div 
+  data-controller="lightbox" 
+  data-lightbox-target="modal" 
+  class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 transition-opacity"
+  data-action="click->lightbox#close"
+>
+  <div class="relative max-w-3xl w-full">
+    <img 
+      data-lightbox-target="image" 
+      class="rounded-lg shadow-lg object-contain max-h-screen" 
+      alt="Expanded view of the image"
+    />
+    <button 
+      class="absolute top-4 right-4 text-white text-2xl font-bold" 
+      data-action="click->lightbox#close"
+    >
+      &times;
+    </button>
   </div>
 </div>
