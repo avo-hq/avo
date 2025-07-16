@@ -66,6 +66,7 @@ module Avo
       query = Avo::ExecutionContext.new(
         target: resource.search_query,
         params: params,
+        q: params[:q].strip,
         query: resource.query_scope
       ).handle
 

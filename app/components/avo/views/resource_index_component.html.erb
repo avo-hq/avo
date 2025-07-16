@@ -55,8 +55,9 @@
 
             <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
               <%= render_dynamic_filters_button %>
-
-              <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
+              <% unless field&.hide_filter_button %>
+                <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
+              <% end %>
 
               <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
             </div>

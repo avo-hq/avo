@@ -12,7 +12,8 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_association_id: "links",
       via_reflection_class: "Course",
       via_reflection_id: course_without_links.id,
-      via_reflection_view: "show"
+      via_reflection_view: "show",
+      q: ""
     }
 
     expect(json["course links"]["results"].count).to eq 0
@@ -28,7 +29,8 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_association_id: "links",
       via_reflection_class: "Course",
       via_reflection_id: course_with_three_links.to_param,
-      via_reflection_view: "show"
+      via_reflection_view: "show",
+      q: ""
     }
 
     expect(json["course links"]["results"].count).to eq 3
@@ -48,7 +50,8 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_association_id: "links",
       via_reflection_class: "Course",
       via_reflection_id: course_with_five_links.to_param,
-      via_reflection_view: "show"
+      via_reflection_view: "show",
+      q: ""
     }
 
     expect(json["course links"]["results"].count).to eq 5
@@ -70,7 +73,8 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_reflection_class: "Course",
       via_reflection_id: course_with_five_links.to_param,
       via_reflection_view: "show",
-      three_links_ids: five_links.first(3).map(&:id)
+      three_links_ids: five_links.first(3).map(&:id),
+      q: ""
     }
 
     expect(json["course links"]["results"].count).to eq 3
