@@ -175,3 +175,11 @@
     @apply !bg-neutral-100;
   }
 }
+
+#popover {
+  display: none;
+}
+
+#popover:popover-open {
+  display: block;
+}

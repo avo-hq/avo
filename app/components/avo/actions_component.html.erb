@@ -13,8 +13,11 @@
     class: "focus:outline-hidden",
     icon: @icon,
     icon_class: @icon_class,
+    popovertarget: "popover",
+    popovertargetaction: "toggle",
     data: {
-      action: "click->toggle#togglePanel",
+      action: "click->actions-picker#pop",
+      actions_picker_target: "button",
       actions_dropdown_button: @resource.model_key,
       tippy: "tooltip",
       tippy_content: @title
@@ -22,9 +25,12 @@
     <%= @label %>
   <% end %>
   <div
-    class="absolute flex inset-auto xl:right-0 top-full bg-white w-full sm:w-auto sm:min-w-[300px] mt-2 z-40 shadow-modal rounded-sm overflow-hidden hidden"
-    data-toggle-target="panel"
-    data-controller="actions-overflow"
+    id="popover"
+    popover
+    data-actions-picker-target="popover"
+    class="absolute flex inset-auto bg-white w-full sm:w-auto sm:min-w-[300px] z-40 shadow-modal rounded-sm overflow-hidden"
+    data-toggle-target="Xpanel"
+    Xdata-controller="actions-overflow"
     data-actions-overflow-panel-list-value="<%= !@as_row_control %>"
     data-actions-overflow-target="content"
     data-transition-enter="transition ease-out duration-100"

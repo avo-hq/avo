@@ -1,7 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
+import { computePosition, flip, shift } from '@floating-ui/dom'
 
 export default class extends Controller {
-  static targets = ['resourceAction', 'standaloneAction']
+  static targets = ['resourceAction', 'standaloneAction', 'popover', 'button']
 
   static classes = ['enabled', 'disabled']
 
@@ -13,6 +14,23 @@ export default class extends Controller {
 
   get actionsShowTurboFrame() {
     return document.querySelector(`turbo-frame#${window.Avo.configuration.modal_frame_id}`)
+  }
+
+  pop() {
+    console.log('pop', this.popoverTarget, this.buttonTarget)
+    // this.popoverTarget.togglePopover()
+
+    // computePosition(this.buttonTarget, this.popoverTarget, {
+    //   // Try changing this to a different side.
+    //   placement: 'bottom-end',
+    //   middleware: [flip(), shift()],
+    // }).then(({ x, y }) => {
+    //   console.log(x, y)
+    //   Object.assign(this.popoverTarget.style, {
+    //     top: `${y}px`,
+    //     left: `${x}px`,
+    //   })
+    // })
   }
 
   enableTarget() {
