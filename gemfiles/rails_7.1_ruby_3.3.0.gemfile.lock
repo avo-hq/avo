@@ -811,7 +811,7 @@ DEPENDENCIES
   propshaft
   psych (< 4)
   puma (~> 6.4)
-  rails (= 7.1)
+  rails (~> 7.1)
   rails-controller-testing
   ransack (>= 4.2.0)
   redis (~> 5.0)
