@@ -36,15 +36,11 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.1.4'
           - '3.3.0'
+          - '3.4.0'
         rails:
-          - '6.1'
           - '7.1'
           - '8.0'
-        exclude:
-          - ruby: '3.1.4'
-            rails: '8.0'
     runs-on: ubuntu-latest
 
     env:
