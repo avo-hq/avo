@@ -106,7 +106,7 @@ module Avo
       end
 
       if app.config.respond_to?(:assets)
-        app.config.assets.paths << Engine.root.join("app", "assets", "stylesheets").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
       end
     end
 
