@@ -114,6 +114,7 @@ GEM
       ast
       csv
       parser
+      prism
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     amazing_print (1.8.1)
@@ -298,6 +299,7 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
+    ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     flay (2.13.3)
       erubi (~> 1.10)
@@ -439,6 +441,8 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.8-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     observer (0.1.2)
@@ -461,6 +465,11 @@ GEM
     prism (1.4.0)
     prop_initializer (0.2.0)
       zeitwerk (>= 2.6.18)
+    propshaft (1.1.0)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
+      railties (>= 7.0.0)
     psych (5.2.6)
       date
       stringio
@@ -569,7 +578,8 @@ GEM
     rspec-support (3.13.4)
     rubocop (1.75.8)
       json (~> 2.3)
-      language_server-protocol (>= 3.17.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.1.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
@@ -649,14 +659,6 @@ GEM
     spring (4.3.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
-    sprockets (4.2.2)
-      concurrent-ruby (~> 1.0)
-      logger
-      rack (>= 2.2.4, < 4)
-    sprockets-rails (3.5.2)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      sprockets (>= 3.0.0)
     standard (1.50.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -725,6 +727,7 @@ GEM
     zeitwerk (2.7.3)
 
 PLATFORMS
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -785,6 +788,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
+  propshaft
   puma (~> 6.4)
   rails (>= 8.0.0)
   rails-controller-testing
@@ -805,7 +809,6 @@ DEPENDENCIES
   solargraph-rails
   spring
   spring-commands-rspec
-  sprockets-rails
   standard
   test-prof
   tzinfo-data
@@ -814,4 +817,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.6.2
+   2.6.3
