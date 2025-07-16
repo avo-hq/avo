@@ -1,14 +1,16 @@
 # Contributing
 
-First of all, thank you for considering fixing or improving Avo. This is a community project, and all your contributions are most welcomed.
+First of all, thank you for considering to send an improvement or a fix to Avo. This is a community project, and all your contributions are most welcomed.
 
 If you came across a bug or want to suggest a feature, feel free to [say something](https://github.com/avo-hq/avo/issues/new)!
 
 If you'd like to contribute code, the steps below will help you get up and running.
 
+
 ## Legal
 
 By submitting the Contribution, You acknowledge that You have read this [Contributor License Agreement](https://avohq.io/cla) and agree to be bound by its terms.
+
 
 ## Elements naming
 
@@ -18,18 +20,20 @@ By submitting the Contribution, You acknowledge that You have read this [Contrib
 
 `Model` or `@model`: Active Record `Model` object.
 
-Since v `1.20` (Jan 2022), we started to change the `model` name with `record` where it fits. So the `model` should be the class (ex: `User`, `Comment`, etc.), and `record` will be the instantiated model class with data (ex: `user` is a record when doing `user = User.find(1)`).
+`record` is the instantiated model class with data (ex: `user` is a record when doing `user = User.find(1)`).
+
 
 ## Forking & branches
 
-Please fork Avo and create a descriptive branch for your feature or fix. We usually use the `feature/`, `chore/`, or `fix/` branch prefixes. This way, the PR gets automatically labeled.
+Please fork Avo and create a descriptive branch for your feature or fix. We usually use the `feature/`, `chore/`, `refactor/`, `enhancement/`, or `fix/` branch prefixes. This way, the PR gets automatically labeled.
+
 
 ## Contributing with Pull Requests
 
 Thank you for considering to contribute to Avo. These are our recommendations to improve readability and interoperability when contributing with a PR:
 
-- the title should have the type (`feature`, `chore`, `fix`, `refactor`) followed by the sentence case of what it does (ex: `feature: scoped search for has many associations` or `fix: broken sidebar on desktop`).
-- the PR should be marked by the appropriate tag (`feature`, `chore`, `fix`, `refactor`)
+- the title should have the type (`feature`, `chore`, `fix`, `refactor`, `enhancement`) followed by the sentence case of what it does (ex: `feature: scoped search for has many associations` or `fix: broken sidebar on desktop`).
+- the PR should be marked by the appropriate tag (`feature`, `chore`, `fix`, `refactor`, `enhancement`)
 - if there's an issue open that could be fixed by this PR you can mark it by writing `Fixes ISSUE_URL` in the description so GitHub automates some actions (ex: `Fixes https://github.com/avo-hq/avo/issues/1008`). If there are more issues that could be fixed, add more lines.
 - please follow the steps on the `Checklist` and mark them as done with an `x` inside the brackets `[x]`
 - if there's something that we can test, please send us the instructions to do that in that PR description.
@@ -38,13 +42,14 @@ Thank you for considering to contribute to Avo. These are our recommendations to
 
 Thank you!
 
+
 ## Getting your local environment set up
 
-NOTE: We're using our local Postgres instance.
-
-You may use docker with the provided `docker-compose.yml` file.
+NOTE: We're using our local Postgres instance by default.
 
 Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using local Postgres). Do not commit these changes. From here, running `bin/init` will get you up-and-running.
+
+You may use docker with the provided `docker-compose.yml` file if you want to
 
 # Local development
 
@@ -66,33 +71,29 @@ In the other project, change the `Gemfile` entry for `avo` to point to your loca
 
 ```ruby
 gem 'avo', path: '../avo'
+# or
+gemspec path: '../avo'
 ```
 
-Avo's assets will not show up by default, resulting in 404 errors on `/avo-assets/avo.base.js` and `/avo-assets/avo.base.css`. To avoid this, you need to compile the asset bundles, and symlink them into `public/avo-assets`.
+Avo's assets might not show up by default, resulting in 404 errors on `avo/application.js` and `avo/application.css`. To avoid this, you need to compile the assets using the following steps.
 
 First, make sure you have `yarn` installed and then install Avo's dependencies:
 ```bash
 yarn install
 ```
 
-Run the first build to generate the files `app/assets/builds/avo.base.js` and `app/assets/builds/avo.base.css`:
+Run the first build to generate the files `avo/application.js` and `avo/application.css`:
 
 ```bash
 yarn build
 ```
 
-Create symlinks for compiled assets into the `public` directory. You'll only need to do this once.
+### Watching for changes
+
+To watch for changes in the assets, run the following command:
 
 ```bash
-# `cd` into the root directory of this project.
-ln -sf $(pwd)/app/assets/builds/avo.base.js public/avo-assets/avo.base.js
-ln -sf $(pwd)/app/assets/builds/avo.base.css public/avo-assets/avo.base.css
-```
-
-After that, you'll need to compile the asset bundles any time you make changes to the JS or CSS code:
-
-```bash
-yarn build
+yarn build --watch
 ```
 
 # Running tests
