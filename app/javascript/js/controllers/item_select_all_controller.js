@@ -19,6 +19,7 @@ export default class extends Controller {
     this.resourceName = this.element.dataset.resourceName
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()
+    this.updateBulkEditLinkVisibility()
   }
 
   elementAttributeValueChanged(element) {
@@ -39,6 +40,7 @@ export default class extends Controller {
       // If some are selected, mark the checkbox as indeterminate.
       this.checkboxTarget.indeterminate = true
     }
+    this.updateBulkEditLinkVisibility()
   }
 
   disconnect() {
@@ -71,6 +73,7 @@ export default class extends Controller {
     }
 
     this.updateLinks('resourceIds')
+    this.updateBulkEditLink('resourceIds')
   }
 
   selectAll(event) {
@@ -88,30 +91,65 @@ export default class extends Controller {
   }
 
   updateLinks(param) {
-    const actionButtons = document.querySelectorAll(`a[data-actions-picker-target][data-resource-name="${this.resourceName}"]`)
-    actionButtons.forEach((link) => {
+    this.updateActionLinks(param, '[data-target="actions-list"] > a')
+  }
+
+  updateBulkEditLink(param) {
+    this.updateActionLinks(param, 'a[href*="/admin/bulk_update/edit"]')
+    this.updateBulkEditLinkVisibility()
+  }
+
+  updateActionLinks(param, selector) {
+    const selectedResourcesArray = JSON.parse(this.element.dataset.selectedResources)
+    const selectedResources = selectedResourcesArray.join(',')
+    const selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
+
+    document.querySelectorAll(selector).forEach((link) => {
       try {
-        const url = new URL(link.href)
-
-        Array.from(url.searchParams.keys())
-          .filter((key) => key.startsWith('fields['))
-          .forEach((key) => url.searchParams.delete(key))
-
-        if (param === 'resourceIds') {
-          const resourceIds = JSON.parse(this.element.dataset.selectedResources).join(',')
-          url.searchParams.set('fields[avo_resource_ids]', resourceIds)
-          url.searchParams.set('fields[avo_selected_all]', 'false')
-        } else if (param === 'selectedQuery') {
-          const selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
-          url.searchParams.set('fields[avo_index_query]', selectedQuery)
-          url.searchParams.set('fields[avo_selected_all]', 'true')
-        }
-
+        const url = this.buildUpdatedUrl(link, param, selectedResources, selectedQuery)
         link.href = url.toString()
       } catch (error) {
         console.error('Error updating link:', link, error)
       }
     })
+  }
+
+  buildUpdatedUrl(link, param, selectedResources, selectedQuery) {
+    const url = new URL(link.href)
+
+    // Remove old field parameters
+    Array.from(url.searchParams.keys())
+      .filter((key) => key.startsWith('fields['))
+      .forEach((key) => url.searchParams.delete(key))
+
+    const isBulkUpdate = url.pathname.includes('/admin/bulk_update/edit')
+    const resourceIdsKey = 'fields[avo_resource_ids]'
+    const selectedQueryKey = isBulkUpdate ? 'fields[avo_selected_query]' : 'fields[avo_index_query]'
+    const selectedAllKey = 'fields[avo_selected_all]'
+
+    if (param === 'resourceIds') {
+      url.searchParams.set(resourceIdsKey, selectedResources)
+      url.searchParams.set(selectedAllKey, 'false')
+    } else if (param === 'selectedQuery') {
+      url.searchParams.set(selectedQueryKey, selectedQuery)
+      url.searchParams.set(selectedAllKey, 'true')
+    }
+
+    return url
+  }
+
+  updateBulkEditLinkVisibility() {
+    const bulkUpdateLink = document.querySelector('a[href*="/admin/bulk_update/edit"]')
+    if (!bulkUpdateLink) return
+
+    const selectedResourcesArray = JSON.parse(this.element.dataset.selectedResources)
+    const resourceCount = selectedResourcesArray.length
+
+    if (resourceCount >= 2) {
+      bulkUpdateLink.classList.remove('hidden')
+    } else {
+      bulkUpdateLink.classList.add('hidden')
+    }
   }
 
   resetUnselected() {
