@@ -91,6 +91,7 @@ ja:
       reorder_record: レコードを並べ替える
       to_bottom: レコードを一番下に移動
       to_top: レコードを一番上に移動
+    pages: ページ
     per_page: ページあたり
     prev_page: 前のページ
     records_selected_from_all_pages_html: 全ページから選択された全レコード

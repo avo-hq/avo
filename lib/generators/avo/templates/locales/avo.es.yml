@@ -91,6 +91,7 @@ es:
       reorder_record: Reordenar registro
       to_bottom: Mover abajo del todo
       to_top: Mover arriba del todo
+    pages: Páginas
     per_page: Por página
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos los registros seleccionados de todas las páginas.

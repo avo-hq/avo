@@ -91,6 +91,7 @@ pt:
       reorder_record: Reordenar recurso
       to_bottom: Mover recurso para o fundo
       to_top: Mover recurso para o topo
+    pages: Páginas
     per_page: Por página
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos os itens de todas as páginas selecionados
