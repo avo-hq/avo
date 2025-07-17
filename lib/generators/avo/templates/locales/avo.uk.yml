@@ -91,6 +91,7 @@ uk:
       reorder_record: Перепорядкувати запис
       to_bottom: Перемістити запис вниз
       to_top: Перемістити запис вгору
+    pages: Pages
     per_page: На сторінці
     prev_page: Попередня сторінка
     records_selected_from_all_pages_html: Вибрані всі записи з усіх сторінок

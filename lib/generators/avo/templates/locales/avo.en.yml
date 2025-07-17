@@ -89,6 +89,7 @@ en:
       reorder_record: Reorder record
       to_bottom: Move record to bottom
       to_top: Move record to top
+    pages: Pages
     per_page: Per page
     prev_page: Previous page
     records_selected_from_all_pages_html: All records selected from all pages

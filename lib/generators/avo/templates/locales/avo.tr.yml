@@ -91,6 +91,7 @@ tr:
       reorder_record: Kaydı yeniden sırala
       to_bottom: Kaydı en alta taşı
       to_top: Kaydı en üste taşı
+    pages: Sayfalar
     per_page: Sayfa başına
     prev_page: Önceki sayfa
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar

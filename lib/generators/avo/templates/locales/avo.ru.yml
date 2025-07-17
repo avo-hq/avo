@@ -91,6 +91,7 @@ ru:
       reorder_record: Переупорядочить запись
       to_bottom: Переместить запись в конец
       to_top: Переместить запись в начало
+    pages: Страницы
     per_page: На странице
     prev_page: Предыдущая страница
     records_selected_from_all_pages_html: Все записи выбраны со всех страниц
