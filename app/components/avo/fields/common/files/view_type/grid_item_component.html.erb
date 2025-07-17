@@ -32,24 +32,3 @@
     <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: file, resource: @resource) %>
   </div>
 </div>
-
-<div 
-  data-controller="lightbox" 
-  data-lightbox-target="modal" 
-  class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 transition-opacity"
-  data-action="click->lightbox#close"
->
-  <div class="relative max-w-3xl w-full">
-    <img 
-      data-lightbox-target="image" 
-      class="rounded-lg shadow-lg object-contain max-h-screen" 
-      alt="Expanded view of the image"
-    />
-    <button 
-      class="absolute top-4 right-4 text-white text-2xl font-bold" 
-      data-action="click->lightbox#close"
-    >
-      &times;
-    </button>
-  </div>
-</div>
