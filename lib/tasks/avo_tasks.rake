@@ -95,22 +95,15 @@ task "avo:sym_link" do
     symlink_path path, "#{packages_path}/#{gem}"
   end
 
-  builds_css_path = Avo::Engine.root.join("app", "assets", "builds", "avo.base.css")
-  public_css_path = Avo::Engine.root.join("public", "avo-assets", "avo.base.css")
+  application_css_path = Avo::Engine.root.join("app/assets/builds/avo/application.css")
 
-  base_css_path = if File.exist?(builds_css_path.to_s)
-    builds_css_path
-  elsif File.exist?(public_css_path.to_s)
-    public_css_path
-  else
-    raise "[Avo->] Failed to find avo.base.css."
-  end
+  raise "[Avo->] Failed to find application.css." unless File.exist?(application_css_path.to_s)
 
-  dest_css_path = "#{base_path}/avo.base.css"
+  dest_css_path = "#{base_path}/application.css"
   remove_file_if_exists dest_css_path
 
-  puts "[Avo->] Linking avo.base.css to #{base_css_path}"
-  symlink_path base_css_path, dest_css_path
+  puts "[Avo->] Linking application.css to #{application_css_path}"
+  symlink_path application_css_path, dest_css_path
 
   base_preset_path = Avo::Engine.root.join("tailwind.preset.js")
   dest_preset_path = "#{base_path}/tailwind.preset.js"
