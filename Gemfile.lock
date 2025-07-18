@@ -114,6 +114,7 @@ GEM
       ast
       csv
       parser
+      prism
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     amazing_print (1.8.1)
@@ -130,18 +131,18 @@ GEM
       money-rails (~> 1.12)
     avo-record_link_field (0.0.2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1120.0)
-    aws-sdk-core (3.226.1)
+    aws-partitions (1.1129.0)
+    aws-sdk-core (3.226.2)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       base64
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.105.0)
+    aws-sdk-kms (1.106.0)
       aws-sdk-core (~> 3, >= 3.225.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.191.0)
+    aws-sdk-s3 (1.193.0)
       aws-sdk-core (~> 3, >= 3.225.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -186,7 +187,7 @@ GEM
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
-    countries (8.0.2)
+    countries (8.0.3)
       unaccent (~> 0.3)
     crack (1.0.0)
       bigdecimal
@@ -263,7 +264,7 @@ GEM
       dry-inflector (~> 1.0)
       dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
-    erb (5.0.1)
+    erb (5.0.2)
     erb-formatter (0.7.3)
       syntax_tree (~> 6.0)
     erb_lint (0.9.0)
@@ -280,9 +281,9 @@ GEM
     factory_bot_rails (6.5.0)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faker (3.5.1)
+    faker (3.5.2)
       i18n (>= 1.8.11, < 2)
-    faraday (2.13.1)
+    faraday (2.13.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -296,6 +297,7 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
+    ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     flay (2.13.3)
       erubi (~> 1.10)
@@ -353,7 +355,7 @@ GEM
     inline_svg (1.10.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
-    io-console (0.8.0)
+    io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
@@ -382,6 +384,18 @@ GEM
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
+    lookbook (2.3.11)
+      activemodel
+      css_parser
+      htmlbeautifier (~> 1.3)
+      htmlentities (~> 4.3.4)
+      marcel (~> 1.0)
+      railties (>= 5.0)
+      redcarpet (~> 3.5)
+      rouge (>= 3.26, < 5.0)
+      view_component (>= 2.0)
+      yard (~> 0.9)
+      zeitwerk (~> 2.5)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -396,8 +410,7 @@ GEM
       actionpack (>= 6.0.0, < 8.1)
     method_source (1.1.0)
     mini_histogram (0.3.1)
-    mini_magick (5.2.0)
-      benchmark
+    mini_magick (5.3.0)
       logger
     mini_mime (1.1.5)
     minitest (5.25.4)
@@ -424,12 +437,14 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.8-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     observer (0.1.2)
     orm_adapter (0.5.0)
-    ostruct (0.6.2)
-    pagy (9.3.4)
+    ostruct (0.6.3)
+    pagy (9.3.5)
     parallel (1.27.0)
     parser (3.3.8.0)
       ast (~> 2.4.1)
@@ -446,6 +461,11 @@ GEM
     prism (1.4.0)
     prop_initializer (0.2.0)
       zeitwerk (>= 2.6.18)
+    propshaft (1.1.0)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
+      railties (>= 7.0.0)
     psych (5.2.6)
       date
       stringio
@@ -508,12 +528,12 @@ GEM
       ffi (~> 1.0)
     rbs (3.9.4)
       logger
-    rdoc (6.14.1)
+    rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
     redis (5.4.0)
       redis-client (>= 0.22.0)
-    redis-client (0.25.0)
+    redis-client (0.25.1)
       connection_pool
     reek (6.4.0)
       dry-schema (~> 1.13.0)
@@ -531,6 +551,7 @@ GEM
       nokogiri
     rexml (3.4.1)
     ripper-tags (1.0.2)
+    rouge (4.5.2)
     rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -552,7 +573,8 @@ GEM
     rspec-support (3.13.4)
     rubocop (1.75.8)
       json (~> 2.3)
-      language_server-protocol (>= 3.17.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.1.0)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
@@ -560,7 +582,7 @@ GEM
       rubocop-ast (>= 1.44.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.45.1)
+    rubocop-ast (1.46.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     rubocop-performance (1.25.0)
@@ -599,14 +621,14 @@ GEM
       docile (~> 1.1)
       simplecov-html (~> 0.11)
       simplecov_json_formatter (~> 0.1)
-    simplecov-cobertura (2.1.0)
+    simplecov-cobertura (3.0.0)
       rexml
       simplecov (~> 0.19)
-    simplecov-html (0.13.1)
+    simplecov-html (0.13.2)
     simplecov-lcov (0.8.0)
     simplecov_json_formatter (0.1.4)
     smart_properties (1.17.0)
-    solargraph (0.55.3)
+    solargraph (0.56.0)
       backport (~> 1.2)
       benchmark (~> 0.4)
       bundler (~> 2.0)
@@ -618,26 +640,20 @@ GEM
       observer (~> 0.1)
       ostruct (~> 0.6)
       parser (~> 3.0)
+      prism (~> 1.4)
       rbs (~> 3.3)
       reverse_markdown (~> 3.0)
       rubocop (~> 1.38)
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    solargraph-rails (1.1.0)
+      yard-solargraph (~> 0.1)
+    solargraph-rails (1.2.0)
       activesupport
-      solargraph
-    spring (4.2.1)
+      solargraph (= 0.56.0)
+    spring (4.3.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
-    sprockets (4.2.2)
-      concurrent-ruby (~> 1.0)
-      logger
-      rack (>= 2.2.4, < 4)
-    sprockets-rails (3.5.2)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      sprockets (>= 3.0.0)
     standard (1.50.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -651,14 +667,14 @@ GEM
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.25.0)
     stringio (3.1.7)
-    syntax_tree (6.2.0)
+    syntax_tree (6.3.0)
       prettier_print (>= 1.2.0)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
     test-prof (1.4.4)
     thor (1.3.2)
     thread_safe (0.3.6)
-    tilt (2.6.0)
+    tilt (2.6.1)
     timeout (0.4.3)
     tty-which (0.5.0)
     turbo-rails (2.0.16)
@@ -701,9 +717,12 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.37)
+    yard-solargraph (0.1.0)
+      yard (~> 0.9)
     zeitwerk (2.7.3)
 
 PLATFORMS
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -753,6 +772,7 @@ DEPENDENCIES
   jsbundling-rails
   launchy
   listen (>= 3.5.1)
+  lookbook (>= 2.3.8)
   mapkick-rb (~> 0.1.4)
   mapkick-static
   meta-tags
@@ -762,6 +782,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
+  propshaft
   puma (~> 6.4)
   rails (>= 8.0.0)
   rails-controller-testing
@@ -782,7 +803,6 @@ DEPENDENCIES
   solargraph-rails
   spring
   spring-commands-rspec
-  sprockets-rails
   standard
   test-prof
   tzinfo-data
@@ -791,4 +811,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.6.2
+   2.6.3

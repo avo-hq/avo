@@ -99,6 +99,7 @@ ar:
       reorder_record: إعادة ترتيب السجل
       to_bottom: حرك السجل للأسفل بشكل كامل
       to_top: حرك السجل للأعلى بشكل كامل
+    pages: صفحات
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
     records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات

@@ -57,7 +57,6 @@ COPY ./pluggy /pluggy
 
 # Build assets
 RUN bundle exec rails avo:sym_link
-RUN yarn prod:build:js
-RUN yarn prod:build:css
+RUN yarn build
 
 RUN bundle exec rails build

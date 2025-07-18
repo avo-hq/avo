@@ -89,6 +89,7 @@ it:
       reorder_record: Riordina record
       to_bottom: Sposta record in fondo
       to_top: Sposta record in cima
+    pages: Pagine
     per_page: Per pagina
     prev_page: Pagina precedente
     records_selected_from_all_pages_html: Tutti i record selezionati da tutte le pagine

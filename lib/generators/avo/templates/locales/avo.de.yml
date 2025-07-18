@@ -89,6 +89,7 @@ de:
       reorder_record: Eintrag neu anordnen
       to_bottom: Eintrag ans Ende verschieben
       to_top: Eintrag an den Anfang verschieben
+    pages: Seiten
     per_page: Pro Seite
     prev_page: Vorherige Seite
     records_selected_from_all_pages_html: Alle Einträge von allen Seiten ausgewählt

@@ -7,7 +7,8 @@ RSpec.feature Avo::SearchController, type: :controller do
 
   it "active record search" do
     get :show, params: {
-      resource_name: "projects"
+      resource_name: "projects",
+      q: ""
     }
 
     expect(json["projects"]["results"].count).to eq 1
@@ -34,7 +35,8 @@ RSpec.feature Avo::SearchController, type: :controller do
     end
 
     get :show, params: {
-      resource_name: "projects"
+      resource_name: "projects",
+      q: ""
     }
 
     expect(json["projects"]["results"].count).to eq limit

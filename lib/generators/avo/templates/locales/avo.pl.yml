@@ -91,6 +91,7 @@ pl:
       reorder_record: Zmień kolejność rekordów
       to_bottom: Przenieś rekord na dół
       to_top: Przenieś rekord na górę
+    pages: Strony
     per_page: Na stronie
     prev_page: Poprzednia strona
     records_selected_from_all_pages_html: Wybrane rekordy z wszystkich stron

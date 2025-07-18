@@ -93,6 +93,7 @@ ro:
       reorder_record: Reordonați înregistrarea
       to_bottom: Mutați înregistrarea jos de tot
       to_top: Mutați înregistrarea sus de tot
+    pages: Pagini
     per_page: Pe pagină
     prev_page: Pagina anterioara
     records_selected_from_all_pages_html: Toate selectate din toate paginile

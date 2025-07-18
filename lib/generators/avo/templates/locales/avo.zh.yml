@@ -89,6 +89,7 @@ zh:
       reorder_record: 重新排序记录
       to_bottom: 将记录移至底部
       to_top: 将记录移至顶部
+    pages: 页面
     per_page: 每页显示
     prev_page: 上一页
     records_selected_from_all_pages_html: 所有页面中选中的记录

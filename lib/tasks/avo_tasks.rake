@@ -25,7 +25,7 @@ task "avo:build-assets" do
     Dir.chdir(path) do
       system "yarn"
       system "bundle exec rails avo:sym_link"
-      system "yarn prod:build"
+      system "yarn build"
     end
 
     puts "Done"

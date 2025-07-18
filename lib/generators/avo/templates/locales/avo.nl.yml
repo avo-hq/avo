@@ -89,6 +89,7 @@ nl:
       reorder_record: Record opnieuw ordenen
       to_bottom: Verplaats record naar onderen
       to_top: Verplaats record naar boven
+    pages: Pagina's
     per_page: Per pagina
     prev_page: Vorige pagina
     records_selected_from_all_pages_html: Alle geselecteerde records van alle pagina's

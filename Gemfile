@@ -18,7 +18,7 @@ gem "activestorage", ">= 8.0.0"
 # Asset pipeline
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "sprockets-rails"
+gem "propshaft"
 
 # =============================================================================
 # DATABASE & ORM
@@ -112,15 +112,19 @@ group :development do
   gem "hotwire-livereload", "~> 1.3.0"
   gem "actual_db_schema"
 
+  # Component documentation & preview
+  gem "lookbook", ">= 2.3.8"
+
   # Performance profiling
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
   gem "ruby-statistics", "< 4"  # Keep version locked until derailed_benchmarks PR gets merged
 
   # Development console & debugging
   gem "web-console", ">= 3.3.0"
+  # Required by lookbook for livereload
   gem "listen", ">= 3.5.1"
+  gem "actioncable"
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "dotenv-rails"
 
   # Uncomment for performance profiling
   # gem "rack-mini-profiler"
@@ -166,6 +170,7 @@ end
 group :development, :test do
   # Debugging & console
   gem "amazing_print"
+  gem "dotenv-rails"
 
   # Test data & factories
   gem "faker", require: false

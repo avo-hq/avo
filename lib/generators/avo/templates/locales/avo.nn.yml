@@ -91,6 +91,7 @@ nn:
       reorder_record: Sorter element
       to_bottom: Flytt elementet til botnen
       to_top: Flytt elementet til toppen
+    pages: Sider
     per_page: Per side
     prev_page: Førre side
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
