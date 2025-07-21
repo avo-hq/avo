@@ -50,6 +50,20 @@ zh:
       other: 文件
     filter_by: 按...筛选
     filters: 筛选器
+    global_search:
+      empty_state:
+        no_results_for_query: 我们找不到与 "%{query}" 匹配的任何内容
+        no_results_found: 未找到结果
+        try_adjusting_search: 尝试调整您的搜索词或检查拼写错误
+      go_to: 前往
+      keyboard_hints:
+        press: 按
+        to_close: 关闭
+        to_navigate: 进行导航，
+        to_select: 选择，
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: 显示所有结果
     go_back: 返回
     grid_view: 网格视图
     hide_content: 隐藏内容

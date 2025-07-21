@@ -52,6 +52,20 @@ fr:
       other: fichiers
     filter_by: Filtrer par
     filters: Filtres
+    global_search:
+      empty_state:
+        no_results_for_query: Nous n'avons trouvé aucun élément correspondant à "%{query}"
+        no_results_found: Aucun résultat trouvé
+        try_adjusting_search: Essayez d'ajuster vos termes de recherche ou vérifiez les fautes de frappe
+      go_to: Aller à
+      keyboard_hints:
+        press: Appuyez sur
+        to_close: pour fermer
+        to_navigate: pour naviguer,
+        to_select: pour sélectionner,
+      results:
+        count_of_total: "%{count} sur %{total}"
+      show_all_results_for: Afficher tous les résultats pour
     go_back: Retourner en arrière
     grid_view: Vue grille
     hide_content: Cacher le contenu

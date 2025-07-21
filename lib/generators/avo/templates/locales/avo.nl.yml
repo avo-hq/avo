@@ -50,6 +50,20 @@ nl:
       other: bestanden
     filter_by: Filteren op
     filters: Filters
+    global_search:
+      empty_state:
+        no_results_for_query: We konden niets vinden dat overeenkomt met "%{query}"
+        no_results_found: Geen resultaten gevonden
+        try_adjusting_search: Probeer uw zoektermen aan te passen of controleer op typfouten
+      go_to: Ga naar
+      keyboard_hints:
+        press: Druk
+        to_close: om te sluiten
+        to_navigate: om te navigeren,
+        to_select: om te selecteren,
+      results:
+        count_of_total: "%{count} van %{total}"
+      show_all_results_for: Toon alle resultaten voor
     go_back: Terug
     grid_view: Rasterweergave
     hide_content: Inhoud verbergen

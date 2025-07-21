@@ -52,6 +52,20 @@ ja:
       other: ファイル
     filter_by: フィルター条件
     filters: フィルター
+    global_search:
+      empty_state:
+        no_results_for_query: '"%{query}" に一致するものが見つかりませんでした'
+        no_results_found: 結果が見つかりませんでした
+        try_adjusting_search: 検索用語を調整するか、タイプミスを確認してください
+      go_to: 移動する
+      keyboard_hints:
+        press: 押す
+        to_close: 閉じるには
+        to_navigate: ナビゲートするには、
+        to_select: 選択するには、
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: すべての結果を表示
     go_back: 戻る
     grid_view: グリッドビュー
     hide_content: 内容を非表示
