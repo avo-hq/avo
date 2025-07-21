@@ -648,20 +648,18 @@ module Avo
 
     # If we don't get a query object predefined from a child controller like associations, just spin one up
     def set_query
-      @query ||= if params[:q].present?
-        Avo::ExecutionContext.new(
-            target: @resource.class.search_query,
-            params: @params,
-            query: @resource.class.query_scope
-          ).handle
-      else
-        @resource.class.query_scope
-      end
+      @query ||= @resource.class.query_scope
+    end
 
-      if params[:q].present? && @query.empty?
-        head :ok
-        # raise "Don't render the index view if the query is empty, this request is getting called by the show all results search page"
-      end
+    def apply_search
+      return if @resource.class.search_query.nil? || params[:q].nil?
+
+      @query = Avo::ExecutionContext.new(
+        target: @resource.class.search_query,
+        params: params,
+        q: params[:q].strip,
+        query: @query
+      ).handle
     end
   end
 end

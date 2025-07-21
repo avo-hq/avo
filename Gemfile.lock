@@ -193,6 +193,8 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    css_parser (1.21.1)
+      addressable
     cssbundling-rails (1.4.2)
       railties (>= 6.0.0)
     csv (3.3.5)
@@ -336,6 +338,7 @@ GEM
       listen (>= 3.0.0)
       railties (>= 6.0.0)
     htmlbeautifier (1.4.3)
+    htmlentities (4.3.4)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     i18n-tasks (1.0.14)
@@ -531,6 +534,7 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
+    redcarpet (3.6.1)
     redis (5.4.0)
       redis-client (>= 0.22.0)
     redis-client (0.25.1)
@@ -726,6 +730,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  actioncable
   active_link_to
   active_median
   activestorage (>= 8.0.0)
