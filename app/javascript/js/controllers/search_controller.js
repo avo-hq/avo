@@ -9,9 +9,8 @@ import debouncePromise from '../helpers/debounce_promise'
 
 /**
  * The search controller is used in three places.
- * 1. Global search (on the top navbar) and can search through multiple resources.
- * 2. Resource search (on the Index page on top of the table panel) and will search one resource
- * 3. belongs_to field. This requires a bit more cleanup because the user will not navigate away from the page.
+ * 1. Resource search (on the Index page on top of the table panel) and will search one resource
+ * 2. belongs_to field. This requires a bit more cleanup because the user will not navigate away from the page.
  * It will replace the id and label in some fields on the page and also needs a "clear" button which clears the information so the user can submit the form without a value.
  */
 export default class extends Controller {
@@ -59,10 +58,6 @@ export default class extends Controller {
     return this.dataset.viaAssociation === 'has_many'
   }
 
-  get isGlobalSearch() {
-    return this.dataset.searchResource === 'global'
-  }
-
   connect() {
     const that = this
 
@@ -73,10 +68,6 @@ export default class extends Controller {
         this.clearButtonTarget.classList.remove('hidden')
       }
     })
-
-    if (this.isGlobalSearch) {
-      Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
-    }
 
     // This line fixes a bug where the search box would be duplicated on back navigation.
     this.autocompleteTarget.innerHTML = ''
@@ -246,10 +237,6 @@ export default class extends Controller {
       'search',
     ]
 
-    if (this.isGlobalSearch) {
-      segments = ['avo_api', 'search']
-    }
-
     return segments
   }
 
@@ -257,12 +244,7 @@ export default class extends Controller {
     let params = {
       ...Object.fromEntries(new URLSearchParams(window.location.search)),
       q: query,
-      global: false,
       ...this.extraParamsValue,
-    }
-
-    if (this.isGlobalSearch) {
-      params.global = true
     }
 
     if (this.isBelongsToSearch || this.isHasManySearch) {

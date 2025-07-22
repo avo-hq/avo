@@ -650,5 +650,16 @@ module Avo
     def set_query
       @query ||= @resource.class.query_scope
     end
+
+    def apply_search
+      return if @resource.class.search_query.nil?
+
+      @query = Avo::ExecutionContext.new(
+        target: @resource.class.search_query,
+        params: params,
+        q: params[:q].strip,
+        query: @query
+      ).handle
+    end
   end
 end

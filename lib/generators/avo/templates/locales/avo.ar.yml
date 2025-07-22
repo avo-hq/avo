@@ -60,6 +60,20 @@ ar:
       zero:
     filter_by: تصفية حسب
     filters: مرشحات
+    global_search:
+      empty_state:
+        no_results_for_query: لم نتمكن من العثور على أي شيء يتطابق مع "%{query}"
+        no_results_found: لم يتم العثور على نتائج
+        try_adjusting_search: حاول تعديل مصطلحات البحث الخاصة بك أو تحقق من الأخطاء المطبعية
+      go_to: اذهب إلى
+      keyboard_hints:
+        press: اضغط
+        to_close: لإغلاق
+        to_navigate: للتنقل،
+        to_select: للاختيار،
+      results:
+        count_of_total: "%{count} من %{total}"
+      show_all_results_for: عرض جميع النتائج لـ
     go_back: العودة للخلف
     grid_view: عرض الشبكة
     hide_content: إخفاء المحتوى

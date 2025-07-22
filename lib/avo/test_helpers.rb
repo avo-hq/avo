@@ -106,8 +106,7 @@ module Avo
     end
 
     def click_global_search_input
-      page.find(:xpath, "//*[contains(@class, 'global-search')]").click
-      wait_for_search_loaded
+      page.find("[data-global-search-target='input']").click
     end
 
     # Should use the click_global_search_input or click_resource_search_input method to open the search box first.
@@ -121,6 +120,10 @@ module Avo
       # Use xpath to find outside of within context if any
       find(:xpath, "//input[@class='aa-Input']").set(input)
       wait_for_search_loaded
+    end
+
+    def write_in_global_search(input)
+      page.find("[data-global-search-target='input']").set(input)
     end
 
     # Should use the click_global_search_input or click_resource_search_input method to open the search box first and optionaly write_in_search.

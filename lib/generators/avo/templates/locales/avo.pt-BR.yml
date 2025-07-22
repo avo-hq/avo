@@ -52,6 +52,20 @@ pt-BR:
       other: ficheiros
     filter_by: Filtrar por
     filters: Filtros
+    global_search:
+      empty_state:
+        no_results_for_query: Não conseguimos encontrar nada correspondente a "%{query}"
+        no_results_found: Nenhum resultado encontrado
+        try_adjusting_search: Tente ajustar seus termos de pesquisa ou verificar se há erros de digitação
+      go_to: Ir para
+      keyboard_hints:
+        press: Pressione
+        to_close: para fechar
+        to_navigate: para navegar,
+        to_select: para selecionar,
+      results:
+        count_of_total: "%{count} de %{total}"
+      show_all_results_for: Mostrar todos os resultados para
     go_back: Voltar
     grid_view: Visualização em grade
     hide_content: Esconder conteúdo

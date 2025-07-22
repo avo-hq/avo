@@ -50,6 +50,20 @@ it:
       other: file
     filter_by: Filtra per
     filters: Filtri
+    global_search:
+      empty_state:
+        no_results_for_query: Non siamo riusciti a trovare nulla che corrisponda a "%{query}"
+        no_results_found: Nessun risultato trovato
+        try_adjusting_search: Prova a modificare i termini di ricerca o controlla eventuali errori di battitura
+      go_to: Vai a
+      keyboard_hints:
+        press: Premi
+        to_close: per chiudere
+        to_navigate: per navigare,
+        to_select: per selezionare,
+      results:
+        count_of_total: "%{count} di %{total}"
+      show_all_results_for: Mostra tutti i risultati per
     go_back: Torna indietro
     grid_view: Vista griglia
     hide_content: Nascondi contenuto
