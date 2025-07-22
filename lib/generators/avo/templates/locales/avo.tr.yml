@@ -52,6 +52,20 @@ tr:
       other: dosyalar
     filter_by: Tarafından filtre
     filters: Filtreler
+    global_search:
+      empty_state:
+        no_results_for_query: '"%{query}" ile eşleşen hiçbir şey bulamadık'
+        no_results_found: Sonuç bulunamadı
+        try_adjusting_search: Arama terimlerinizi ayarlamayı veya yazım hatalarını kontrol etmeyi deneyin
+      go_to: Git
+      keyboard_hints:
+        press: Bas
+        to_close: kapatmak için
+        to_navigate: navigasyon için,
+        to_select: seçmek için,
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: Tüm sonuçları göster
     go_back: Geri dön
     grid_view: Grid görünümü
     hide_content: İçeriği gizle
@@ -91,6 +105,7 @@ tr:
       reorder_record: Kaydı yeniden sırala
       to_bottom: Kaydı en alta taşı
       to_top: Kaydı en üste taşı
+    pages: Sayfalar
     per_page: Sayfa başına
     prev_page: Önceki sayfa
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar

@@ -50,6 +50,20 @@ en:
       other: files
     filter_by: Filter by
     filters: Filters
+    global_search:
+      empty_state:
+        no_results_for_query: We couldn't find anything matching "%{query}"
+        no_results_found: No results found
+        try_adjusting_search: Try adjusting your search terms or check for typos
+      go_to: Go to
+      keyboard_hints:
+        press: Press
+        to_close: to close
+        to_navigate: to navigate,
+        to_select: to select,
+      results:
+        count_of_total: "%{count} of %{total}"
+      show_all_results_for: Show all results for
     go_back: Go back
     grid_view: Grid view
     hide_content: Hide content
@@ -89,6 +103,7 @@ en:
       reorder_record: Reorder record
       to_bottom: Move record to bottom
       to_top: Move record to top
+    pages: Pages
     per_page: Per page
     prev_page: Previous page
     records_selected_from_all_pages_html: All records selected from all pages

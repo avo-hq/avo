@@ -52,6 +52,20 @@ uk:
       other: файлів
     filter_by: Фільтрувати за
     filters: Фільтри
+    global_search:
+      empty_state:
+        no_results_for_query: We couldn't find anything matching "%{query}"
+        no_results_found: No results found
+        try_adjusting_search: Try adjusting your search terms or checking for typos
+      go_to: Go to
+      keyboard_hints:
+        press: Press
+        to_close: to close
+        to_navigate: to navigate,
+        to_select: to select,
+      results:
+        count_of_total: "%{count} of %{total}"
+      show_all_results_for: Show all results for
     go_back: Назад
     grid_view: Плитка
     hide_content: Приховати вміст
@@ -91,6 +105,7 @@ uk:
       reorder_record: Перепорядкувати запис
       to_bottom: Перемістити запис вниз
       to_top: Перемістити запис вгору
+    pages: Pages
     per_page: На сторінці
     prev_page: Попередня сторінка
     records_selected_from_all_pages_html: Вибрані всі записи з усіх сторінок

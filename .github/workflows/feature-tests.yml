@@ -6,11 +6,13 @@ on:
       - main
       - 1.x
       - 2.x
+      - 4-dev
   push:
     branches:
       - main
       - 1.x
       - 2.x
+      - 4-dev
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -37,7 +39,6 @@ jobs:
           - '3.1.4'
           - '3.3.0'
         rails:
-          - '6.1'
           - '7.1'
           - '8.0'
         exclude:
@@ -121,4 +122,6 @@ jobs:
       if: always() && steps.run_tests.outcome == 'failure'
       with:
         name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
-        path: ./spec/dummy/tmp/screenshots
+        path: |
+          ./spec/dummy/tmp/screenshots
+          ./spec/examples.txt

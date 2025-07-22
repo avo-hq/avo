@@ -12,7 +12,7 @@ module Avo
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
-    before_action :fill_record, only: [:create, :update]
+    before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
     # Don't run base authorizations for associations
     before_action :authorize_base_action, except: :preview, if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
@@ -163,6 +163,9 @@ module Avo
       add_breadcrumb t("avo.new").humanize
 
       set_component_for __method__, fallback_view: :edit
+
+      # Called from avo-advanced
+      safe_call :handle_reactive_fields
     end
 
     def create
@@ -217,6 +220,9 @@ module Avo
       set_actions
 
       set_component_for __method__
+
+      # Called from avo-advanced
+      safe_call :handle_reactive_fields
     end
 
     def update
@@ -682,11 +688,11 @@ module Avo
 
     def apply_search
       return if @resource.class.search_query.nil?
-      return if params[:q].nil?
 
       @query = Avo::ExecutionContext.new(
         target: @resource.class.search_query,
-        params: params.merge(q: params[:q]),
+        params: params,
+        q: params[:q].strip,
         query: @query
       ).handle
     end

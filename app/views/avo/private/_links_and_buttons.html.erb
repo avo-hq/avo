@@ -4,6 +4,7 @@
   styles = [:primary, :outline, :text]
   colors = [:primary, :blue, :gray, :red, :orange, :green]
   states = [:regular, :hover, :disabled, :active]
+  rounded = [true]
 %>
 <div class="px-6 space-y-4">
   <% entities.each do |entity| %>
@@ -17,34 +18,36 @@
               <% next if style == :primary && color != :primary %>
               <div class="flex space-x-1">
                 <% states.each do |state| %>
-                  <%
-                    extra_classes = ""
-                    case state
-                    when :active
-                      extra_classes += " active"
-                    when :hover
-                      extra_classes += " hover"
-                    end
-                  %>
-                  <%
-                    a_button_or_link = "a_#{entity}"
-                    args = {icon: "heroicons/outline/arrow-left", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled}
-                  %>
-                  <% if entity == :link %>
-                    <div>
-                      <%= send a_button_or_link, '/admin/avo_private/design', **args do %>
-                        <%= entity.to_s.humanize.capitalize %> <%= state %>
-                      <% end %>
-                    </div>
-                  <% else %>
-                    <div>
-                      <%= send a_button_or_link, **args do %>
-                        <%= entity.to_s.humanize.capitalize %> <%= state %>
-                      <% end %>
-                    </div>
-                    <div>
-                      <%= a_button icon: "avo/bell", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled %>
-                    </div>
+                  <% rounded.each do |rounded| %>
+                    <%
+                      extra_classes = ""
+                      case state
+                      when :active
+                        extra_classes += " active"
+                      when :hover
+                        extra_classes += " hover"
+                      end
+                    %>
+                    <%
+                      a_button_or_link = "a_#{entity}"
+                      args = {icon: "heroicons/outline/arrow-left", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled, rounded:}
+                    %>
+                    <% if entity == :link %>
+                      <div>
+                        <%= send a_button_or_link, '/admin/avo_private/design', **args do %>
+                          <%= entity.to_s.humanize.capitalize %> <%= state %>
+                        <% end %>
+                      </div>
+                    <% else %>
+                      <div>
+                        <%= send a_button_or_link, **args do %>
+                          <%= entity.to_s.humanize.capitalize %> <%= state %>
+                        <% end %>
+                      </div>
+                      <div>
+                        <%= a_button icon: "avo/bell", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled %>
+                      </div>
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>

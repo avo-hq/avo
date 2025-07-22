@@ -54,6 +54,20 @@ ro:
       other: fişiere
     filter_by: Filtează după
     filters: Filtre
+    global_search:
+      empty_state:
+        no_results_for_query: Nu am putut găsi nimic care să se potrivească cu "%{query}"
+        no_results_found: Nu s-au găsit rezultate
+        try_adjusting_search: Încercați să ajustați termenii de căutare sau verificați dacă sunt greșeli de tipar
+      go_to: Mergi la
+      keyboard_hints:
+        press: Apasă
+        to_close: pentru a închide
+        to_navigate: pentru a naviga,
+        to_select: pentru a selecta,
+      results:
+        count_of_total: "%{count} din %{total}"
+      show_all_results_for: Arată toate rezultatele pentru
     go_back: Înapoi
     grid_view: Vezi sub formă de grid
     hide_content: Ascunde conținutul
@@ -93,6 +107,7 @@ ro:
       reorder_record: Reordonați înregistrarea
       to_bottom: Mutați înregistrarea jos de tot
       to_top: Mutați înregistrarea sus de tot
+    pages: Pagini
     per_page: Pe pagină
     prev_page: Pagina anterioara
     records_selected_from_all_pages_html: Toate selectate din toate paginile

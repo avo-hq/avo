@@ -50,6 +50,20 @@ zh-TW:
       other: 檔案
     filter_by: 按...篩選
     filters: 篩選器
+    global_search:
+      empty_state:
+        no_results_for_query: 我們找不到任何與 "%{query}" 匹配的內容
+        no_results_found: 未找到結果
+        try_adjusting_search: 嘗試調整您的搜索條件或檢查拼寫錯誤
+      go_to: 前往
+      keyboard_hints:
+        press: 按下
+        to_close: 以關閉
+        to_navigate: 以導航，
+        to_select: 以選擇，
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: 顯示所有結果
     go_back: 返回
     grid_view: 網格視圖
     hide_content: 隱藏內容
@@ -89,6 +103,7 @@ zh-TW:
       reorder_record: 重新排序記錄
       to_bottom: 將記錄移至底部
       to_top: 將記錄移至頂部
+    pages: 頁面
     per_page: 每頁顯示
     prev_page: 上一頁
     records_selected_from_all_pages_html: 所有頁面中選中的記錄

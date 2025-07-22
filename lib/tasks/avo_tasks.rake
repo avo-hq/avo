@@ -25,7 +25,7 @@ task "avo:build-assets" do
     Dir.chdir(path) do
       system "yarn"
       system "bundle exec rails avo:sym_link"
-      system "yarn prod:build"
+      system "yarn build"
     end
 
     puts "Done"
@@ -81,7 +81,7 @@ task "avo:sym_link" do
 
   gem_paths = `bundle list --paths 2>/dev/null`.split("\n")
 
-  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban"].each do |gem|
+  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
     path = gem_paths.find { |gem_path| gem_path.include?("/#{gem}-") }
 
     # If path is nil we check if package is defined outside of root (on release process it is)
@@ -95,22 +95,15 @@ task "avo:sym_link" do
     symlink_path path, "#{packages_path}/#{gem}"
   end
 
-  builds_css_path = Avo::Engine.root.join("app", "assets", "builds", "avo.base.css")
-  public_css_path = Avo::Engine.root.join("public", "avo-assets", "avo.base.css")
+  application_css_path = Avo::Engine.root.join("app/assets/builds/avo/application.css")
 
-  base_css_path = if File.exist?(builds_css_path.to_s)
-    builds_css_path
-  elsif File.exist?(public_css_path.to_s)
-    public_css_path
-  else
-    raise "[Avo->] Failed to find avo.base.css."
-  end
+  raise "[Avo->] Failed to find application.css." unless File.exist?(application_css_path.to_s)
 
-  dest_css_path = "#{base_path}/avo.base.css"
+  dest_css_path = "#{base_path}/application.css"
   remove_file_if_exists dest_css_path
 
-  puts "[Avo->] Linking avo.base.css to #{base_css_path}"
-  symlink_path base_css_path, dest_css_path
+  puts "[Avo->] Linking application.css to #{application_css_path}"
+  symlink_path application_css_path, dest_css_path
 
   base_preset_path = Avo::Engine.root.join("tailwind.preset.js")
   dest_preset_path = "#{base_path}/tailwind.preset.js"
@@ -135,5 +128,5 @@ task "avo:yarn_install" do
   # tailwind.preset.js needs this dependencies in order to be required
   # Ensure that versions remain updated and synchronized with those specified in package.json.
   puts "[Avo->] Adding yarn dependencies"
-  `yarn add tailwindcss@^3.4.17 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
+  `yarn add tailwindcss@^4.0.0 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
 end

@@ -100,11 +100,15 @@ module Avo
       app.config.debug_exception_response_format = :api
     end
 
-    config.app_middleware.use(
-      Rack::Static,
-      urls: ["/avo-assets"],
-      root: Avo::Engine.root.join("public")
-    )
+    initializer "avo.assets", before: "importmap" do |app|
+      if app.respond_to?(:importmap)
+        app.config.importmap.paths << Engine.root.join("config/importmap.rb")
+      end
+
+      if app.config.respond_to?(:assets)
+        app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+      end
+    end
 
     config.generators do |g|
       g.test_framework :rspec, view_specs: false
