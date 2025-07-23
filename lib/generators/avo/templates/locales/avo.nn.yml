@@ -61,8 +61,8 @@ nn:
       keyboard_hints:
         press: Trykk
         to_close: for å lukke
-        to_navigate: for å navigere,
-        to_select: for å velge,
+        to_navigate: for å navigere
+        to_select: for å velge
       results:
         count_of_total: "%{count} av %{total}"
       show_all_results_for: Vis alle resultater for

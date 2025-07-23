@@ -61,8 +61,8 @@ pt-BR:
       keyboard_hints:
         press: Pressione
         to_close: para fechar
-        to_navigate: para navegar,
-        to_select: para selecionar,
+        to_navigate: para navegar
+        to_select: para selecionar
       results:
         count_of_total: "%{count} de %{total}"
       show_all_results_for: Mostrar todos os resultados para
