@@ -59,8 +59,8 @@ it:
       keyboard_hints:
         press: Premi
         to_close: per chiudere
-        to_navigate: per navigare,
-        to_select: per selezionare,
+        to_navigate: per navigare
+        to_select: per selezionare
       results:
         count_of_total: "%{count} di %{total}"
       show_all_results_for: Mostra tutti i risultati per
