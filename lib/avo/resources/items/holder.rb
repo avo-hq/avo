@@ -11,7 +11,7 @@ class Avo::Resources::Items::Holder
     @parent = parent
   end
 
-  def collaborate(**args)
+  def collaboration_timeline(**args)
     add_item Avo::Resources::Items::Collaboration.new(**args)
   end
 
