@@ -119,14 +119,12 @@ module Avo
         ]
 
         paths_to_precompile = asset_paths.map do |path|
-          absolute_path = Avo::Engine.root.join(*path).to_s
-
           Dir[Engine.root.join(*path, "**", "*")].filter_map do |file|
             # Skip directories - Dir.glob can match directories with ** pattern
             next unless File.file?(file)
 
             # Get relative path from the assets directory using cross-platform path handling
-            Pathname.new(file).relative_path_from(absolute_path)
+            Pathname.new(file).relative_path_from(Engine.root.join(*path)).to_s
           end
         end
 
