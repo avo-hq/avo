@@ -118,5 +118,21 @@ module Avo
     initializer "avo.locales" do |app|
       I18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
     end
+
+    initializer "avo.assets" do |app|
+      # Configure asset precompilation for Avo assets
+      app.config.assets.precompile += [
+        *Dir[Avo::Engine.root.join("app", "assets", "**", "*.*")].filter_map do |file|
+          # Skip directories - Dir.glob can match directories with ** pattern
+          next unless File.file?(file)
+          
+          # Get relative path from the assets directory using cross-platform path handling
+          relative_path = Pathname.new(file).relative_path_from(Avo::Engine.root.join("app", "assets"))
+          
+          # Preserve directory structure within the avo namespace
+          "avo/#{relative_path}"
+        end
+      ]
+    end
   end
 end
