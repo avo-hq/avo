@@ -49,6 +49,7 @@ module Avo
       delegate :heading, to: :items_holder
       delegate :sidebar, to: :items_holder
       delegate :main_panel, to: :items_holder
+      delegate :collaborate, to: :items_holder
 
       def items_holder
         @items_holder || Avo::Resources::Items::Holder.new
