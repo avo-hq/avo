@@ -51,7 +51,7 @@ module Avo
       # This undoes Rails' previous nested directories behavior in the `app` dir.
       # More on this: https://github.com/fxn/zeitwerk/issues/250
       avo_directory = Rails.root.join("app", "avo").to_s
-      engine_avo_directory = Avo::Engine.root.join("app", "avo").to_s
+      engine_avo_directory = Engine.root.join("app", "avo").to_s
 
       [avo_directory, engine_avo_directory].each do |directory_path|
         ActiveSupport::Dependencies.autoload_paths.delete(directory_path)
@@ -92,7 +92,7 @@ module Avo
 
     initializer "avo.test_buddy" do |app|
       if Avo::IN_DEVELOPMENT
-        Rails.autoloaders.main.push_dir Avo::Engine.root.join("spec", "testing_helpers")
+        Rails.autoloaders.main.push_dir Engine.root.join("spec", "testing_helpers")
       end
     end
 
@@ -110,25 +110,15 @@ module Avo
       if app.config.respond_to?(:assets)
         # Add Avo's assets to the asset pipeline
         app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "images").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "svgs").to_s
+        # Expose the fonts directory to sprockets
+        app.config.assets.paths << Engine.root.join("app", "assets", "images", "avo").to_s
 
-        # Configure asset precompilation for Avo assets
-        asset_paths = [
-          ["app", "assets", "builds"],
-          ["app", "assets", "images"],
-          ["app", "assets", "svgs"]
-        ]
-
-        paths_to_precompile = asset_paths.map do |path|
-          Dir[Engine.root.join(*path, "**", "*")].filter_map do |file|
-            # Skip directories - Dir.glob can match directories with ** pattern
-            next unless File.file?(file)
-
-            # Get relative path from the assets directory using cross-platform path handling
-            Pathname.new(file).relative_path_from(Engine.root.join(*path)).to_s
-          end
+        if defined?(::Sprockets)
+          # Tell sprockets where your assets are located
+          app.config.assets.precompile += %w[ avo_manifest.js ]
         end
-
-        app.config.assets.precompile += [*paths_to_precompile]
       end
     end
 
@@ -142,7 +132,7 @@ module Avo
     end
 
     initializer "avo.locales" do |app|
-      I18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+      I18n.load_path += Dir[Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
     end
   end
 end
