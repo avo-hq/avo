@@ -117,7 +117,7 @@ module Avo
 
         if defined?(::Sprockets)
           # Tell sprockets where your assets are located
-          app.config.assets.precompile += %w[ avo_manifest.js ]
+          app.config.assets.precompile += %w(avo_manifest.js)
         end
       end
     end
