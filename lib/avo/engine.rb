@@ -115,7 +115,7 @@ module Avo
         asset_paths = [
           ["app", "assets", "builds"],
           ["app", "assets", "images"],
-          ["app", "assets", "svgs"],
+          ["app", "assets", "svgs"]
         ]
 
         paths_to_precompile = asset_paths.map do |path|
