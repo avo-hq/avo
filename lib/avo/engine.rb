@@ -108,6 +108,9 @@ module Avo
 
     initializer "avo.assets" do |app|
       if app.config.respond_to?(:assets)
+        # Add Avo's assets to the asset pipeline
+        app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+
         # Configure asset precompilation for Avo assets
         app.config.assets.precompile += [
           *Dir[Avo::Engine.root.join("app", "assets", "**", "*.*")].filter_map do |file|
