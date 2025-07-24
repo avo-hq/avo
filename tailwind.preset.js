@@ -23,7 +23,6 @@ function contentPaths(basePath) {
 module.exports = {
   content: [
     ...contentPaths('./tmp/avo/packages/*'),
-    ...contentPaths('./../avo-kanban/*'),
     ...contentPaths(avoPath),
   ],
   theme: {
