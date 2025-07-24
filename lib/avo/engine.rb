@@ -100,13 +100,30 @@ module Avo
       app.config.debug_exception_response_format = :api
     end
 
-    initializer "avo.assets", before: "importmap" do |app|
+    initializer "avo.assets-importmaps", before: "importmap" do |app|
       if app.respond_to?(:importmap)
         app.config.importmap.paths << Engine.root.join("config/importmap.rb")
       end
+    end
 
+    initializer "avo.assets" do |app|
       if app.config.respond_to?(:assets)
+        # Add Avo's assets to the asset pipeline
         app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+
+        # Configure asset precompilation for Avo assets
+        app.config.assets.precompile += [
+          *Dir[Avo::Engine.root.join("app", "assets", "**", "*.*")].filter_map do |file|
+            # Skip directories - Dir.glob can match directories with ** pattern
+            next unless File.file?(file)
+
+            # Get relative path from the assets directory using cross-platform path handling
+            relative_path = Pathname.new(file).relative_path_from(Avo::Engine.root.join("app", "assets"))
+
+            # Preserve directory structure within the avo namespace
+            "avo/#{relative_path}"
+          end
+        ]
       end
     end
 
