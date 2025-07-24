@@ -110,9 +110,15 @@ module Avo
         app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
 
         # Add Avo's assets to the precompile list
-        app.config.assets.precompile += Dir.glob(Engine.root.join("app", "assets", "builds", "avo", "**", "*").to_s)
-        app.config.assets.precompile += Dir.glob(Engine.root.join("app", "assets", "images", "avo", "**", "*").to_s)
-        app.config.assets.precompile += Dir.glob(Engine.root.join("app", "assets", "svgs", "**", "*").to_s)
+        avo_assets_to_precompile = [
+          Dir.glob(Engine.root.join("app", "assets", "builds", "avo", "**", "*").to_s),
+          Dir.glob(Engine.root.join("app", "assets", "images", "avo", "**", "*").to_s),
+          Dir.glob(Engine.root.join("app", "assets", "svgs", "**", "*").to_s)
+        ].flatten.map do |file|
+          filename = file.split("/").last
+          "avo/#{filename}"
+        end
+        app.config.assets.precompile += avo_assets_to_precompile
       end
     end
 
