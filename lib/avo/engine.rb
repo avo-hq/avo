@@ -112,18 +112,25 @@ module Avo
         app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
 
         # Configure asset precompilation for Avo assets
-        app.config.assets.precompile += [
-          *Dir[Avo::Engine.root.join("app", "assets", "**", "*.*")].filter_map do |file|
+        asset_paths = [
+          ["app", "assets", "builds"],
+          ["app", "assets", "images"],
+          ["app", "assets", "svgs"],
+        ]
+
+        paths_to_precompile = asset_paths.map do |path|
+          absolute_path = Avo::Engine.root.join(*path).to_s
+
+          Dir[Engine.root.join(*path, "**", "*")].filter_map do |file|
             # Skip directories - Dir.glob can match directories with ** pattern
             next unless File.file?(file)
 
             # Get relative path from the assets directory using cross-platform path handling
-            relative_path = Pathname.new(file).relative_path_from(Avo::Engine.root.join("app", "assets"))
-
-            # Preserve directory structure within the avo namespace
-            "avo/#{relative_path}"
+            Pathname.new(file).relative_path_from(absolute_path)
           end
-        ]
+        end
+
+        app.config.assets.precompile += [*paths_to_precompile]
       end
     end
 
