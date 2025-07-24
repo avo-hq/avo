@@ -106,7 +106,13 @@ module Avo
       end
 
       if app.config.respond_to?(:assets)
+        # Add Avo's assets to the asset pipeline
         app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+
+        # Add Avo's assets to the precompile list
+        app.config.assets.precompile += Dir.glob(Engine.root.join("app", "assets", "builds", "avo", "**", "*").to_s)
+        app.config.assets.precompile += Dir.glob(Engine.root.join("app", "assets", "images", "avo", "**", "*").to_s)
+        app.config.assets.precompile += Dir.glob(Engine.root.join("app", "assets", "svgs", "**", "*").to_s)
       end
     end
 
