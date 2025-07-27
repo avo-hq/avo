@@ -27,7 +27,7 @@
     <%= render partial: 'avo/partials/color_theme_override' %>
     <%= content_for :head %>
   </head>
-  <body class="bg-application os-mac floating-controls dark:bg-black">
+  <body class="bg-application os-mac floating-controls">
     <div class="relative flex flex-1 w-full min-h-dvh" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
       <div class="flex-1 flex flex-col max-w-full">
         <%= render partial: "avo/partials/navbar", locals: { resource: @resource } %>

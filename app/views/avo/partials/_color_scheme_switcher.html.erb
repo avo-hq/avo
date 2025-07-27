@@ -6,7 +6,13 @@
     <%#= f.hidden_input color_scheme: :light %>
     <%#= f.button "Light" %>
   <%# end %>
-  <%= link_to :auto, color_scheme_path(color_scheme: :auto), data: {turbo_method: :post, turbo_frame: :_top} %>
-  <%= link_to :light, color_scheme_path(color_scheme: :light), data: {turbo_method: :post, turbo_frame: :_top} %>
-  <%= link_to :dark, color_scheme_path(color_scheme: :dark), data: {turbo_method: :post, turbo_frame: :_top} %>
+  <%= link_to color_scheme_path(color_scheme: :auto), data: {turbo_method: :post, turbo_frame: :_top} do %>
+    Auto
+  <% end %>
+  <%= link_to color_scheme_path(color_scheme: :light), data: {turbo_method: :post, turbo_frame: :_top} do %>
+    Light <span class="dark:hidden inline">✅</span>
+  <% end %>
+  <%= link_to color_scheme_path(color_scheme: :dark), data: {turbo_method: :post, turbo_frame: :_top} do %>
+    Dark <span class="hidden dark:inline">✅</span>
+  <% end %>
 </div>
