@@ -333,7 +333,7 @@ module Avo
     end
 
     def set_color_scheme
-      @color_scheme = cookies[:color_scheme] || "light"
+      @color_scheme = cookies[:color_scheme] || ""
     end
   end
 end
