@@ -50,6 +50,9 @@
 @plugin '@tailwindcss/typography';
 @plugin '@tailwindcss/container-queries';
 
+/* Add dark mode variant */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @custom-variant has-cover-photo (&:where(.has-cover-photo *));
 @custom-variant has-sidebar (&:where(.has-sidebar *));
 @custom-variant has-record-selector (&:where(.has-record-selector *));
