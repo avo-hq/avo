@@ -8,8 +8,9 @@
   </div>
   <div class="flex-1 flex items-center justify-between lg:justify-start space-x-2 sm:space-x-8 lg:px-2">
     <%= render Avo::Pro::GlobalSearch::InputComponent.new(resource:) if defined?(Avo::Pro::GlobalSearch::InputComponent) %>
-    <div class="m-0">
+    <div class="flex justify-between w-full h-full items-center m-0">
       <%= render partial: "avo/partials/header" %>
+      <%= render partial: "avo/partials/color_scheme_switcher" %>
     </div>
   </div>
 <% end %>
