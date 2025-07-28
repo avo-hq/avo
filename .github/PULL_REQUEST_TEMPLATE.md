@@ -20,7 +20,7 @@ Fixes # (issue)
 
 ## Screenshots & recording
 <!-- "A picture is worth a thousand words." A video, ten thousand. -->
-<!-- Can the behavior touched in this PR be displayed as a screenshot ro a recording. Please attach it. It makes the review easier to pass. -->
+<!-- Can the behavior touched in this PR be displayed as a screenshot or a recording. Please attach it. It makes the review easier to pass. -->
 
 ## Manual review steps
 <!-- Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration. -->

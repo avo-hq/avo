@@ -51,7 +51,7 @@ module Avo
       # This undoes Rails' previous nested directories behavior in the `app` dir.
       # More on this: https://github.com/fxn/zeitwerk/issues/250
       avo_directory = Rails.root.join("app", "avo").to_s
-      engine_avo_directory = Avo::Engine.root.join("app", "avo").to_s
+      engine_avo_directory = Engine.root.join("app", "avo").to_s
 
       [avo_directory, engine_avo_directory].each do |directory_path|
         ActiveSupport::Dependencies.autoload_paths.delete(directory_path)
@@ -92,7 +92,7 @@ module Avo
 
     initializer "avo.test_buddy" do |app|
       if Avo::IN_DEVELOPMENT
-        Rails.autoloaders.main.push_dir Avo::Engine.root.join("spec", "testing_helpers")
+        Rails.autoloaders.main.push_dir Engine.root.join("spec", "testing_helpers")
       end
     end
 
@@ -100,13 +100,25 @@ module Avo
       app.config.debug_exception_response_format = :api
     end
 
-    initializer "avo.assets", before: "importmap" do |app|
+    initializer "avo.assets-importmaps", before: "importmap" do |app|
       if app.respond_to?(:importmap)
         app.config.importmap.paths << Engine.root.join("config/importmap.rb")
       end
+    end
 
+    initializer "avo.assets" do |app|
       if app.config.respond_to?(:assets)
+        # Add Avo's assets to the asset pipeline
         app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "images").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "svgs").to_s
+        # Expose the fonts directory to sprockets
+        app.config.assets.paths << Engine.root.join("app", "assets", "images", "avo").to_s
+
+        if defined?(::Sprockets)
+          # Tell sprockets where your assets are located
+          app.config.assets.precompile += %w[avo_manifest.js]
+        end
       end
     end
 
@@ -120,7 +132,7 @@ module Avo
     end
 
     initializer "avo.locales" do |app|
-      I18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+      I18n.load_path += Dir[Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
     end
   end
 end
