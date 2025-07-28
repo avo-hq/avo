@@ -8,6 +8,7 @@
   "scripts": {
     "js:visualize": "yarn build:js -- --metafile=js_bundle_metadata.json && esbuild-visualizer --metadata=js_bundle_metadata.json --filename=js_bundle_stats.html",
     "build": "yarn build:js && yarn build:css",
+    "prod:build": "yarn build",
     "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
     "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
     "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/avo/application.css --postcss",
