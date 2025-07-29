@@ -63,8 +63,8 @@ ro:
       keyboard_hints:
         press: Apasă
         to_close: pentru a închide
-        to_navigate: pentru a naviga,
-        to_select: pentru a selecta,
+        to_navigate: pentru a naviga
+        to_select: pentru a selecta
       results:
         count_of_total: "%{count} din %{total}"
       show_all_results_for: Arată toate rezultatele pentru

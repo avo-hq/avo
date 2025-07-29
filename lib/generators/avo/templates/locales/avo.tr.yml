@@ -61,8 +61,8 @@ tr:
       keyboard_hints:
         press: Bas
         to_close: kapatmak için
-        to_navigate: navigasyon için,
-        to_select: seçmek için,
+        to_navigate: navigasyon için
+        to_select: seçmek için
       results:
         count_of_total: "%{count} / %{total}"
       show_all_results_for: Tüm sonuçları göster
