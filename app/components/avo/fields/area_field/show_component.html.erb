@@ -1,6 +1,6 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <% if field.value.present? %>
-    <%= helpers.area_map field.map_data, **field.mapkick_options %>
+    <%= area_map field.map_data, **field.mapkick_options %>
   <% else %>
     —
   <% end %>
