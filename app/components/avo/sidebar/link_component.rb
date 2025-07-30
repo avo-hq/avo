@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "view_component/version"
 
 class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   prop :label
@@ -23,6 +24,11 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   # For external links active_link_to marks them all as active.
   def link_method
     is_external? ? :link_to : :active_link_to
+  end
+
+  # Backwards compatibility with ViewComponent 3.x
+  def link_caller
+    Gem::Version.new(ViewComponent::VERSION::STRING) >= Gem::Version.new("4.0.0") ? helpers : self
   end
 
   def classes
