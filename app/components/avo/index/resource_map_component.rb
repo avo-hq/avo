@@ -8,7 +8,6 @@ module Avo
       attr_reader :resources
 
       def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil)
-        super
         @resources = resources
         @resource = resource
         @reflection = reflection
