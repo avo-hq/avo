@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "view_component/version"
 
 class Avo::Sidebar::LinkComponent < Avo::BaseComponent
@@ -28,7 +29,11 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
 
   # Backwards compatibility with ViewComponent 3.x
   def link_caller
-    Gem::Version.new(ViewComponent::VERSION::STRING) >= Gem::Version.new("4.0.0") ? helpers : self
+    if Gem::Version.new(ViewComponent::VERSION::STRING) >= Gem::Version.new("4.0.0")
+      helpers
+    else
+      self
+    end
   end
 
   def classes
