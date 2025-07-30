@@ -17,6 +17,8 @@ module Avo
         @query = query
       end
 
+      delegate :js_map, to: :helpers
+
       def grid_layout_classes
         return unless render_table?
 
