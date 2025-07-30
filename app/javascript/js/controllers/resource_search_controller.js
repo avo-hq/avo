@@ -41,9 +41,7 @@ export default class extends Controller {
   }
 
   async searchInTurboFrame(turboFrame, query) {
-    const currentSrc = turboFrame.getAttribute('src')
-    const { origin } = window.location
-    const srcUrl = new URL(currentSrc, origin)
+    const srcUrl = new URL(turboFrame.getAttribute('src'))
     const requestUrl = this.buildSearchUrl(srcUrl.pathname, srcUrl.search, query)
 
     await this.performSearchRequest(requestUrl)
