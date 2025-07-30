@@ -75,7 +75,7 @@ gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "pagy", "> 8"
 gem "csv"
-# gem "view_component", "4.0.0"
+gem "view_component", "4.0.0"
 
 # =============================================================================
 # AWS & CLOUD SERVICES
