@@ -70,12 +70,10 @@ module Avo
 
       respond_to do |format|
         format.html
-        format.turbo_stream do
+          format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.replace(
-              "#{@resource.model_key}_list",
-              partial: "avo/index/resource_#{@resource.view_type.to_sym == :grid ? :grid : :table}_component",
-              locals: {
+            turbo_stream.replace("#{@resource.model_key}_body_content") do
+              Avo::Current.view_context.render Avo::ResourceBodyContentComponent.new(
                 resources: @resources,
                 resource: @resource,
                 reflection: @reflection,
@@ -83,17 +81,26 @@ module Avo
                 parent_resource: @parent_resource,
                 pagy: @pagy,
                 query: @query,
-                actions: @actions
-              }
-            ),
-            turbo_stream.replace("#{@resource.model_key}_pagination") do
-              Avo::Current.view_context.render Avo::PaginatorComponent.new(
-                pagy: @pagy,
+                actions: @actions,
                 turbo_frame: @turbo_frame,
                 index_params: @index_params,
+                field: nil
+              )
+            end,
+            turbo_stream.replace("#{@resource.model_key}_bare_content") do
+              Avo::Current.view_context.render Avo::ResourceBareContentComponent.new(
+                resources: @resources,
                 resource: @resource,
+                records: @records,
+                reflection: @reflection,
                 parent_record: @parent_record,
-                parent_resource: @parent_resource
+                parent_resource: @parent_resource,
+                pagy: @pagy,
+                query: @query,
+                actions: @actions,
+                turbo_frame: @turbo_frame,
+                index_params: @index_params,
+                field: nil
               )
             end
           ]
