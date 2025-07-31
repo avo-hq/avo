@@ -410,7 +410,6 @@ GEM
     memory_profiler (1.1.0)
     meta-tags (2.22.1)
       actionpack (>= 6.0.0, < 8.1)
-    method_source (1.1.0)
     mini_histogram (0.3.1)
     mini_magick (5.3.0)
       logger
@@ -686,10 +685,9 @@ GEM
     unicode-emoji (4.0.4)
     uri (1.0.3)
     useragent (0.16.11)
-    view_component (3.23.2)
-      activesupport (>= 5.2.0, < 8.1)
+    view_component (4.0.0)
+      activesupport (>= 7.1.0, < 8.1)
       concurrent-ruby (~> 1)
-      method_source (~> 1.0)
     virtus (2.0.0)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -803,6 +801,7 @@ DEPENDENCIES
   standard
   test-prof
   tzinfo-data
+  view_component (= 4.0.0)
   web-console (>= 3.3.0)
   webmock
   zeitwerk

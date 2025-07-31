@@ -804,6 +804,7 @@ DEPENDENCIES
   standard
   test-prof
   tzinfo-data
+  view_component (= 3.23.2)
   web-console (>= 3.3.0)
   webmock
   zeitwerk

@@ -9,6 +9,12 @@
       gem "activestorage", "~> #{rails_version}"
       gem "acts-as-taggable-on"
 
+      if rails_version == "8.0" && ruby_version == "3.3.0"
+        gem "view_component", "4.0.0"
+      else
+        gem "view_component", "3.23.2"
+      end
+
       if rails_version == "6.1"
         # Fix `<module:LoggerThreadSafeLevel>': uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger (NameError)
         # https://stackoverflow.com/questions/79360526/uninitialized-constant-activesupportloggerthreadsafelevellogger-nameerror

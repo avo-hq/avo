@@ -35,6 +35,7 @@ gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "pagy", "> 8"
 gem "csv"
+gem "view_component", "3.23.2"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
 gem "avo-money_field"
