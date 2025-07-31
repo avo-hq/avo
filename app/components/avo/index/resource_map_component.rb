@@ -8,7 +8,6 @@ module Avo
       attr_reader :resources
 
       def initialize(resources: nil, resource: nil, reflection: nil, parent_record: nil, parent_resource: nil, pagy: nil, query: nil)
-        super
         @resources = resources
         @resource = resource
         @reflection = reflection
@@ -17,6 +16,8 @@ module Avo
         @pagy = pagy
         @query = query
       end
+
+      delegate :js_map, to: :helpers
 
       def grid_layout_classes
         return unless render_table?
