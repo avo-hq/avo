@@ -296,6 +296,18 @@ module Avo
         self
       end
 
+      def detect_cards
+        self.items_holder = Avo::Resources::Items::Holder.new(parent: self)
+
+        if temporary_items.present?
+          instance_eval(&temporary_items)
+        else
+          fetch_cards
+        end
+
+        self
+      end
+
       unless defined? VIEW_METHODS_MAPPING
         VIEW_METHODS_MAPPING = {
           index: [:index_fields, :display_fields],
@@ -304,6 +316,13 @@ module Avo
           update: [:edit_fields, :form_fields],
           new: [:new_fields, :form_fields],
           create: [:new_fields, :form_fields]
+        }
+      end
+
+      unless defined? VIEW_CARDS_MAPPING
+        VIEW_CARDS_MAPPING = {
+          index: [:index_cards, :display_cards],
+          show: [:show_cards, :display_cards]
         }
       end
 
@@ -327,6 +346,20 @@ module Avo
       end
 
       def fetch_cards
+        if view.preview?
+          [:cards, :index_cards, :show_cards, :display_cards].each do |cards_method|
+            send(cards_method) if respond_to?(cards_method)
+          end
+
+          return
+        end
+
+        possible_methods_for_view = VIEW_CARDS_MAPPING[view.to_sym]
+
+        possible_methods_for_view&.each do |method_for_view|
+          return send(method_for_view) if respond_to?(method_for_view)
+        end
+
         cards
       end
 
