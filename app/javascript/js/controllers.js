@@ -53,59 +53,78 @@ import ToggleController from './controllers/toggle_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
-application.register('action', ActionController)
-application.register('actions-overflow', ActionsOverflowController)
-application.register('actions-picker', ActionsPickerController)
-application.register('attachments', AttachmentsController)
-application.register('boolean-filter', BooleanFilterController)
-application.register('card-filters', CardFiltersController)
-application.register('clear-input', ClearInputController)
-application.register('copy-to-clipboard', CopyToClipboardController)
-application.register('dashboard-card', DashboardCardController)
-application.register('date-time-filter', DateTimeFilterController)
-application.register('filter', FilterController)
-application.register('form', FormController)
-application.register('hidden-input', HiddenInputController)
-application.register('input-autofocus', InputAutofocusController)
-application.register('item-select-all', ItemSelectAllController)
-application.register('item-selector', ItemSelectorController)
-application.register('loading-button', LoadingButtonController)
-application.register('media-library-attach', MediaLibraryAttachController)
-application.register('media-library', MediaLibraryController)
-application.register('menu', MenuController)
-application.register('modal', ModalController)
-application.register('multiple-select-filter', MultipleSelectFilterController)
-application.register('avo-nested-form', NestedFormController)
-application.register('panel-refresh', PanelRefreshController)
-application.register('per-page', PerPageController)
-application.register('preview', PreviewController)
-application.register('record-selector', RecordSelectorController)
-application.register('resource-edit', ResourceEditController)
-application.register('resource-index', ResourceIndexController)
-application.register('resource-show', ResourceShowController)
-application.register('search', SearchController)
-application.register('select-filter', SelectFilterController)
-application.register('select', SelectController)
-application.register('self-destroy', SelfDestroyController)
-application.register('sidebar', SidebarController)
-application.register('sign-out', SignOutController)
-application.register('table-row', TableRowController)
-application.register('tabs', TabsController)
-application.register('text-filter', TextFilterController)
-application.register('tippy', TippyController)
-application.register('toggle', ToggleController)
-application.register('trix-body', TrixBodyController)
+// Special cases for controller registration names
+const SPECIAL_CASES = {
+  nested_form: 'avo-nested-form'
+}
 
-// Field controllers
-application.register('belongs-to-field', BelongsToFieldController)
-application.register('code-field', CodeFieldController)
-application.register('date-field', DateFieldController)
-application.register('easy-mde', EasyMdeController)
-application.register('key-value', KeyValueController)
-application.register('progress-bar-field', ProgressBarFieldController)
-application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
-application.register('tags-field', TagsFieldController)
-application.register('tiptap-field', TiptapFieldController)
-application.register('trix-field', TrixFieldController)
+// Helper function to convert snake_case to kebab-case
+function toKebabCase(str) {
+  return str.replace(/_/g, '-')
+}
+
+// Controllers registry - automatically registers all controllers
+const CONTROLLERS = [
+  ['action', ActionController],
+  ['actions_overflow', ActionsOverflowController],
+  ['actions_picker', ActionsPickerController],
+  ['attachments', AttachmentsController],
+  ['boolean_filter', BooleanFilterController],
+  ['card_filters', CardFiltersController],
+  ['copy_to_clipboard', CopyToClipboardController],
+  ['dashboard_card', DashboardCardController],
+  ['date_time_filter', DateTimeFilterController],
+  ['filter', FilterController],
+  ['form', FormController],
+  ['hidden_input', HiddenInputController],
+  ['input_autofocus', InputAutofocusController],
+  ['item_select_all', ItemSelectAllController],
+  ['item_selector', ItemSelectorController],
+  ['loading_button', LoadingButtonController],
+  ['media_library_attach', MediaLibraryAttachController],
+  ['media_library', MediaLibraryController],
+  ['menu', MenuController],
+  ['modal', ModalController],
+  ['multiple_select_filter', MultipleSelectFilterController],
+  ['nested_form', NestedFormController],
+  ['panel_refresh', PanelRefreshController],
+  ['per_page', PerPageController],
+  ['preview', PreviewController],
+  ['record_selector', RecordSelectorController],
+  ['resource_edit', ResourceEditController],
+  ['resource_index', ResourceIndexController],
+  ['resource_show', ResourceShowController],
+  ['search', SearchController],
+  ['select', SelectController],
+  ['select_filter', SelectFilterController],
+  ['self_destroy', SelfDestroyController],
+  ['sidebar', SidebarController],
+  ['sign_out', SignOutController],
+  ['table_row', TableRowController],
+  ['tabs', TabsController],
+  ['text_filter', TextFilterController],
+  ['tippy', TippyController],
+  ['toggle', ToggleController],
+  ['trix_body', TrixBodyController],
+  
+  // Field controllers
+  ['belongs_to_field', BelongsToFieldController],
+  ['clear_input', ClearInputController],
+  ['code_field', CodeFieldController],
+  ['date_field', DateFieldController],
+  ['easy_mde', EasyMdeController],
+  ['key_value', KeyValueController],
+  ['progress_bar_field', ProgressBarFieldController],
+  ['reload_belongs_to_field', ReloadBelongsToFieldController],
+  ['tags_field', TagsFieldController],
+  ['tiptap_field', TiptapFieldController],
+  ['trix_field', TrixFieldController],
+]
+
+// Auto-register all controllers
+CONTROLLERS.forEach(([controllerName, ControllerClass]) => {
+  const registrationName = SPECIAL_CASES[controllerName] || toKebabCase(controllerName)
+  application.register(registrationName, ControllerClass)
+})
 
 // Custom controllers
