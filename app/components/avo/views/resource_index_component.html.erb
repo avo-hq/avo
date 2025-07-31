@@ -18,7 +18,7 @@
         <% panel_name_component.with_body do %>
           <% if reloadable %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
-              <%= svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
+              <%= helpers.svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
             <% end %>
           <% end %>
         <% end %>
