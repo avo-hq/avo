@@ -70,33 +70,25 @@ module Avo
 
       respond_to do |format|
         format.html
-          format.turbo_stream do
+        format.turbo_stream do
+          common_args = {
+            resources: @resources,
+            resource: @resource,
+            reflection: @reflection,
+            parent_record: @parent_record,
+            parent_resource: @parent_resource,
+            pagy: @pagy,
+            query: @query,
+            actions: @actions
+          }
+
           render turbo_stream: [
             turbo_stream.replace("#{@resource.model_key}_body_content") do
-              Avo::Current.view_context.render Avo::ResourceBodyContentComponent.new(
-                resources: @resources,
-                resource: @resource,
-                reflection: @reflection,
-                parent_record: @parent_record,
-                parent_resource: @parent_resource,
-                pagy: @pagy,
-                query: @query,
-                actions: @actions,
-                turbo_frame: @turbo_frame,
-                index_params: @index_params,
-                field: nil
-              )
+              Avo::Current.view_context.render Avo::ResourceBodyContentComponent.new(**common_args)
             end,
             turbo_stream.replace("#{@resource.model_key}_bare_content") do
               Avo::Current.view_context.render Avo::ResourceBareContentComponent.new(
-                resources: @resources,
-                resource: @resource,
-                reflection: @reflection,
-                parent_record: @parent_record,
-                parent_resource: @parent_resource,
-                pagy: @pagy,
-                query: @query,
-                actions: @actions,
+                **common_args,
                 turbo_frame: @turbo_frame,
                 index_params: @index_params
               )
