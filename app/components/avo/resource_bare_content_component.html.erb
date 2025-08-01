@@ -10,7 +10,7 @@
   <% end %>
 
   <% if @resource.view_type.to_sym == :table || @resource.view_type.to_sym == :map %>
-    <% if @records.present? %>
+    <% if @resources.present? %>
       <div class="mt-4 w-full">
         <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
       </div>

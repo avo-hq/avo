@@ -91,7 +91,6 @@ module Avo
               Avo::Current.view_context.render Avo::ResourceBareContentComponent.new(
                 resources: @resources,
                 resource: @resource,
-                records: @records,
                 reflection: @reflection,
                 parent_record: @parent_record,
                 parent_resource: @parent_resource,
@@ -99,8 +98,7 @@ module Avo
                 query: @query,
                 actions: @actions,
                 turbo_frame: @turbo_frame,
-                index_params: @index_params,
-                field: nil
+                index_params: @index_params
               )
             end
           ]

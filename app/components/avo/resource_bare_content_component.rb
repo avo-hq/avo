@@ -3,7 +3,6 @@
 class Avo::ResourceBareContentComponent < Avo::BaseComponent
   prop :resources
   prop :resource
-  prop :records
   prop :reflection
   prop :parent_record
   prop :parent_resource
@@ -12,5 +11,4 @@ class Avo::ResourceBareContentComponent < Avo::BaseComponent
   prop :actions
   prop :turbo_frame
   prop :index_params
-  prop :field
 end
