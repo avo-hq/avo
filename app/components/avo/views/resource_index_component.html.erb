@@ -66,27 +66,11 @@
           <% end %>
         </div>
       </div>
-      <%= render Avo::ResourceBodyContentComponent.new(
-        resources: @resources,
-        resource: @resource,
-        reflection: @reflection,
-        parent_record: @parent_record,
-        parent_resource: @parent_resource,
-        pagy: @pagy,
-        query: @query,
-        actions: @actions
-      ) %>
+      <%= render Avo::ResourceBodyContentComponent.new(**resource_content_components_common_args) %>
     <% end %>
     <% c.with_bare_content do %>
      <%= render Avo::ResourceBareContentComponent.new(
-        resources: @resources,
-        resource: @resource,
-        reflection: @reflection,
-        parent_record: @parent_record,
-        parent_resource: @parent_resource,
-        pagy: @pagy,
-        query: @query,
-        actions: @actions,
+        **resource_content_components_common_args,
         turbo_frame: @turbo_frame,
         index_params: @index_params
       ) %>
