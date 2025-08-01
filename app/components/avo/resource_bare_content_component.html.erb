@@ -2,7 +2,15 @@
   <% if @resource.view_type.to_sym == :map %>
     <% if @resources.present? %>
       <div>
-        <%= render(@resource.resolve_component(Avo::Index::ResourceMapComponent).new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
+        <%= render(@resource.resolve_component(Avo::Index::ResourceMapComponent).new(
+          resources: @resources,
+          resource: @resource,
+          reflection: @reflection,
+          parent_record: @parent_record,
+          parent_resource: @parent_resource,
+          pagy: @pagy,
+          query: @query
+        )) %>
       </div>
     <% else %>
       <%= helpers.empty_state by_association: params[:related_name].present?, view_type: @resource.view_type, add_background: true %>
@@ -12,17 +20,24 @@
   <% if @resource.view_type.to_sym == :table || @resource.view_type.to_sym == :map %>
     <% if @resources.present? %>
       <div class="mt-4 w-full">
-        <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
+        <%= render paginator_component %>
       </div>
     <% end %>
   <% end %>
 
   <% if @resource.view_type.to_sym == :grid %>
     <div id="records_panel">
-      <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: @actions) %>
+      <%= render Avo::Index::ResourceGridComponent.new(
+        resources: @resources,
+        resource: @resource,
+        reflection: @reflection,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource,
+        actions: @actions
+      ) %>
     </div>
     <div class="mt-6">
-      <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
+      <%= render paginator_component %>
     </div>
   <% end %>
 <% end %>
