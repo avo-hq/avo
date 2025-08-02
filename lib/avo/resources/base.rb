@@ -307,6 +307,17 @@ module Avo
         }
       end
 
+      unless defined? VIEW_CARDS_MAPPING
+        VIEW_CARDS_MAPPING = {
+          index: [:index_cards, :display_cards],
+          show: [:show_cards, :display_cards],
+          edit: [:edit_cards, :form_cards],
+          update: [:edit_cards, :form_cards],
+          new: [:new_cards, :form_cards],
+          create: [:new_cards, :form_cards]
+        }
+      end
+
       def fetch_fields
         if view.preview?
           [:fields, :index_fields, :show_fields, :display_fields].each do |fields_method|
@@ -327,6 +338,12 @@ module Avo
       end
 
       def fetch_cards
+        possible_methods_for_view = VIEW_CARDS_MAPPING[view.to_sym]
+
+        possible_methods_for_view&.each do |method_for_view|
+          return send(method_for_view) if respond_to?(method_for_view)
+        end
+
         cards
       end
 
