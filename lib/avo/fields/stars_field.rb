@@ -1,4 +1,4 @@
-module Avo 
+module Avo
   module Fields
     class StarsField < BaseField
       attr_reader :max
