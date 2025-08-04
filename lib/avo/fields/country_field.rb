@@ -5,6 +5,7 @@ module Avo
 
       attr_reader :countries
       attr_reader :display_code
+      attr_reader :stored_value
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_a_country")
@@ -43,10 +44,6 @@ module Avo
         else
           countries[@stored_value]
         end
-      end
-
-      def stored_value
-        @stored_value
       end
     end
   end
