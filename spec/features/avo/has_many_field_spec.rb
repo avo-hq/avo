@@ -183,7 +183,7 @@ RSpec.feature "HasManyField", type: :feature do
         visit "/admin/resources/stores/#{store.id}/patrons"
 
         expect(page).to have_css('[data-component-name="avo/filters_component"]')
-        expect(page).to have_css('[data-search-target="autocomplete"]')
+        expect(page).to have_css('[data-resource-search-target="input"]')
 
         Avo::Resources::Store.restore_items_from_backup
       end
@@ -198,7 +198,7 @@ RSpec.feature "HasManyField", type: :feature do
         visit "/admin/resources/stores/#{store.id}/patrons"
 
         expect(page).not_to have_css('[data-component-name="avo/filters_component"]')
-        expect(page).not_to have_css('[data-search-target="autocomplete"]')
+        expect(page).not_to have_css('[data-resource-search-target="input"]')
 
         Avo::Resources::Store.restore_items_from_backup
       end
