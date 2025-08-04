@@ -34,6 +34,16 @@ module Avo
       def options_for_filter
         select_options
       end
+
+      def value
+        stored_value = super
+
+        if @display_code
+          stored_value
+        else
+          countries[stored_value]
+        end
+      end
     end
   end
 end
