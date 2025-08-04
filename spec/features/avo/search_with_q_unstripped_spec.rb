@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.feature "Search with unstripped values", type: :system do
+RSpec.feature "Search with unstripped values", type: :feature do
   describe "searching with unstripped values" do
     context "when searching with leading and trailing whitespace" do
       it "'q' is stripped of leading and trailing whitespace" do
@@ -22,9 +22,9 @@ RSpec.feature "Search with unstripped values", type: :system do
 
     context "when searching with only whitespace" do
       it "'q' is stripped of whitespace" do
-        expect(TestBuddy).to receive(:hi).with("params[:q]: '   ', q: ''").at_least :once
+        expect(TestBuddy).to receive(:hi).with("params[:q]: '   1 ', q: '1'").at_least :once
 
-        visit avo.resources_courses_path(q: "   ")
+        visit avo.resources_courses_path(q: "   1 ")
       end
     end
   end
