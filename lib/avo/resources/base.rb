@@ -320,7 +320,7 @@ module Avo
 
         # Safe navigation operator is used because the view can be "destroy"
         possible_methods_for_view&.each do |method_for_view|
-          return send("#{method_for_view}_fields") if respond_to?("#{method_for_view}_fields")
+          return send(:"#{method_for_view}_fields") if respond_to?(:"#{method_for_view}_fields")
         end
 
         fields
@@ -330,7 +330,7 @@ module Avo
         possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
 
         possible_methods_for_view&.each do |method_for_view|
-          return send("#{method_for_view}_cards") if respond_to?("#{method_for_view}_cards")
+          return send(:"#{method_for_view}_cards") if respond_to?(:"#{method_for_view}_cards")
         end
 
         cards
