@@ -31,6 +31,7 @@ export default class extends Controller {
         responseKind: 'turbo-stream',
         headers: {
           Accept: 'text/vnd.turbo-stream.html',
+          'X-Search-Request': 'resource-search-controller',
         },
       })
     } catch (error) {

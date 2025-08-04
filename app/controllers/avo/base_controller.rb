@@ -68,32 +68,33 @@ module Avo
 
       set_component_for __method__
 
-      respond_to do |format|
-        format.html
-        format.turbo_stream do
-          common_args = {
-            resources: @resources,
-            resource: @resource,
-            reflection: @reflection,
-            parent_record: @parent_record,
-            parent_resource: @parent_resource,
-            pagy: @pagy,
-            query: @query,
-            actions: @actions
-          }
+      if request.headers['X-Search-Request'] == 'resource-search-controller'
+        respond_to do |format|
+          format.turbo_stream do
+            common_args = {
+              resources: @resources,
+              resource: @resource,
+              reflection: @reflection,
+              parent_record: @parent_record,
+              parent_resource: @parent_resource,
+              pagy: @pagy,
+              query: @query,
+              actions: @actions
+            }
 
-          render turbo_stream: [
-            turbo_stream.replace("#{@resource.model_key}_body_content") do
-              Avo::Current.view_context.render Avo::ResourceBodyContentComponent.new(**common_args)
-            end,
-            turbo_stream.replace("#{@resource.model_key}_bare_content") do
-              Avo::Current.view_context.render Avo::ResourceBareContentComponent.new(
-                **common_args,
-                turbo_frame: @turbo_frame,
-                index_params: @index_params
-              )
-            end
-          ]
+            render turbo_stream: [
+              turbo_stream.replace("#{@resource.model_key}_body_content") do
+                Avo::Current.view_context.render Avo::ResourceBodyContentComponent.new(**common_args)
+              end,
+              turbo_stream.replace("#{@resource.model_key}_bare_content") do
+                Avo::Current.view_context.render Avo::ResourceBareContentComponent.new(
+                  **common_args,
+                  turbo_frame: @turbo_frame,
+                  index_params: @index_params
+                )
+              end
+            ]
+          end
         end
       end
     end
@@ -475,10 +476,6 @@ module Avo
 
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message }
-        format.turbo_stream {
-          flash[:notice] = create_success_message
-          render turbo_stream: turbo_stream.redirect_to(after_create_path)
-        }
       end
     end
 
@@ -517,10 +514,6 @@ module Avo
     def update_success_action
       respond_to do |format|
         format.html { redirect_to after_update_path, notice: update_success_message }
-        format.turbo_stream {
-          flash[:notice] = update_success_message
-          render turbo_stream: turbo_stream.redirect_to(after_update_path)
-        }
       end
     end
 
