@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.feature Avo::SearchController, type: :controller do
+RSpec.feature "Search with unstripped values", type: :system do
   describe "searching with unstripped values" do
     context "when searching with leading and trailing whitespace" do
       it "'q' is stripped of leading and trailing whitespace" do

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.feature Avo::SearchController, type: :system do
+RSpec.feature "Resource Search", type: :system do
   let!(:first_project) { create :project, name: "First Project" }
   let!(:second_project) { create :project, name: "Second Project" }
   let!(:third_project) { create :project, name: "Third Project" }
