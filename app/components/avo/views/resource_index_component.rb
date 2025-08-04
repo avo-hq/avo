@@ -230,7 +230,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def resource_content_components_common_args
-    @resource_content_components_common_args ||={
+    @resource_content_components_common_args ||= {
       resources: @resources,
       resource: @resource,
       reflection: @reflection,
