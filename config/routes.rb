@@ -10,8 +10,6 @@ Avo::Engine.routes.draw do
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   scope "avo_api", as: "avo_api" do
-    get "/search", to: "search#index"
-    get "/:resource_name/search", to: "search#show"
     post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
   end
 

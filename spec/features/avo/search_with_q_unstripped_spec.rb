@@ -8,11 +8,7 @@ RSpec.feature Avo::SearchController, type: :controller do
       it "'q' is stripped of leading and trailing whitespace" do
         expect(TestBuddy).to receive(:hi).with("params[:q]: '  Ruby Programming  ', q: 'Ruby Programming'").at_least :once
 
-        get :show, params: {
-          resource_name: "course",
-          global: false,
-          q: "  Ruby Programming  "
-        }
+        visit avo.resources_courses_path(q: "  Ruby Programming  ")
       end
     end
 
@@ -20,11 +16,7 @@ RSpec.feature Avo::SearchController, type: :controller do
       it "'q' is stripped of tabs and newlines" do
         expect(TestBuddy).to receive(:hi).with("params[:q]: '\t\nRuby\t\n', q: 'Ruby'").at_least :once
 
-        get :show, params: {
-          resource_name: "course",
-          global: false,
-          q: "\t\nRuby\t\n"
-        }
+        visit avo.resources_courses_path(q: "\t\nRuby\t\n")
       end
     end
 
@@ -32,11 +24,7 @@ RSpec.feature Avo::SearchController, type: :controller do
       it "'q' is stripped of whitespace" do
         expect(TestBuddy).to receive(:hi).with("params[:q]: '   ', q: ''").at_least :once
 
-        get :show, params: {
-          resource_name: "course",
-          global: false,
-          q: "   "
-        }
+        visit avo.resources_courses_path(q: "   ")
       end
     end
   end
