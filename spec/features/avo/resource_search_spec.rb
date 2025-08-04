@@ -28,6 +28,6 @@ RSpec.feature Avo::SearchController, type: :system do
     expect(page).not_to have_content(first_project.name)
     expect(page).not_to have_content(third_project.name)
 
-    expect(page).to have_current_path("/admin/resources/projects?q=#{second_project.name.gsub(' ', '+')}&page=1")
+    expect(page).to have_current_path("/admin/resources/projects?q=#{second_project.name.tr(" ", "+")}&page=1")
   end
 end
