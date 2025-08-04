@@ -38,12 +38,7 @@ module Avo
 
       def value
         @stored_value = super
-
-        if @display_code
-          @stored_value
-        else
-          countries[@stored_value]
-        end
+        @display_code ? @stored_value : countries[@stored_value]
       end
     end
   end
