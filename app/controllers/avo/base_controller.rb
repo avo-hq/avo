@@ -68,7 +68,7 @@ module Avo
 
       set_component_for __method__
 
-      if request.headers['X-Search-Request'] == 'resource-search-controller'
+      if request.headers["X-Search-Request"] == "resource-search-controller"
         respond_to do |format|
           format.turbo_stream do
             common_args = {
