@@ -36,7 +36,18 @@
           <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= "hidden" unless header_visible? %>">
             <div class="flex items-center px-4 w-64">
               <% if show_search_input %>
-                <%= render partial: "avo/partials/resource_search", locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
+                <%= text_field_tag "q", params[:q],
+                      id: nil,
+                      placeholder: t('avo.search.placeholder'),
+                      class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm",
+                      data: {
+                        controller: "resource-search",
+                        action: "input->resource-search#search",
+                        "resource-search-target": "input",
+                        "resource-search-debounce-value": "500",
+                        "resource-search-url-value": request.fullpath
+                      }
+                %>
               <% else %>
                 <%# Offset for the space-y-2 property when the search is missing %>
                 <div class="-mb-2"></div>
@@ -57,41 +68,15 @@
           <% end %>
         </div>
       </div>
-      <% if @resource.view_type.to_sym == :table %>
-        <% if @resources.present? %>
-          <div class="w-full relative flex-1 flex mt-0">
-            <%= render(@resource.resolve_component(Avo::Index::ResourceTableComponent).new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query, actions: @actions)) %>
-          </div>
-        <% else %>
-          <%= helpers.empty_state by_association: params[:related_name].present?, view_type: @resource.view_type, add_background: true %>
-        <% end %>
-      <% end %>
+      <%= render Avo::ResourceBodyContentComponent.new(**resource_content_components_common_args) %>
     <% end %>
     <% c.with_bare_content do %>
-     <% if @resource.view_type.to_sym == :map %>
-        <% if @resources.present? %>
-          <div>
-            <%= render(@resource.resolve_component(Avo::Index::ResourceMapComponent).new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
-          </div>
-        <% else %>
-          <%= helpers.empty_state by_association: params[:related_name].present?, view_type: @resource.view_type, add_background: true %>
-        <% end %>
-      <% end %>
-      <% if @resource.view_type.to_sym == :table || @resource.view_type.to_sym == :map %>
-        <% if @records.present? %>
-          <div class="mt-4 w-full">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
-          </div>
-        <% end %>
-      <% end %>
-      <% if @resource.view_type.to_sym == :grid %>
-        <div id="records_panel">
-          <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: @actions) %>
-        </div>
-        <div class="mt-6">
-          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
-        </div>
-      <% end %>
+     <%= render Avo::ResourceBareContentComponent.new(
+        **resource_content_components_common_args,
+        turbo_frame: @turbo_frame,
+        index_params: @index_params
+      ) %>
+      </div>
     <% end %>
   <% end %>
 <% end %>

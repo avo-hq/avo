@@ -36,8 +36,8 @@ import RecordSelectorController from './controllers/record_selector_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
+import ResourceSearchController from './controllers/resource_search_controller'
 import ResourceShowController from './controllers/resource_show_controller'
-import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
@@ -82,8 +82,8 @@ application.register('preview', PreviewController)
 application.register('record-selector', RecordSelectorController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
+application.register('resource-search', ResourceSearchController)
 application.register('resource-show', ResourceShowController)
-application.register('search', SearchController)
 application.register('select-filter', SelectFilterController)
 application.register('select', SelectController)
 application.register('self-destroy', SelfDestroyController)

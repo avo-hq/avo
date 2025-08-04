@@ -93,18 +93,6 @@ module Avo
       "—"
     end
 
-    # Example usage:
-    #   click_resource_search_input # opens the first search box on the given page
-    #   opens the search box for the "users" resource
-    #   within(has_and_belongs_to_many_field_wrapper(id: :users)) {
-    #     click_resource_search_input
-    #     write_in_search("Bob")
-    #   }
-    def click_resource_search_input
-      first("[data-search-resource]:not([data-search-resource='global'])").click
-      wait_for_search_loaded
-    end
-
     def click_global_search_input
       page.find("[data-global-search-target='input']").click
     end
@@ -118,7 +106,7 @@ module Avo
     #   }
     def write_in_search(input)
       # Use xpath to find outside of within context if any
-      find(:xpath, "//input[@class='aa-Input']").set(input)
+      find('[data-resource-search-target="input"]').set(input)
       wait_for_search_loaded
     end
 
@@ -126,6 +114,7 @@ module Avo
       page.find("[data-global-search-target='input']").set(input)
     end
 
+    # TODO: this will make sense only on global search
     # Should use the click_global_search_input or click_resource_search_input method to open the search box first and optionaly write_in_search.
     # Example usage:
     #   open_search_box(:users) # opens the search box for the "users" resource

@@ -228,4 +228,17 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def linkable?
     field&.linkable?
   end
+
+  def resource_content_components_common_args
+    @resource_content_components_common_args ||= {
+      resources: @resources,
+      resource: @resource,
+      reflection: @reflection,
+      parent_record: @parent_record,
+      parent_resource: @parent_resource,
+      pagy: @pagy,
+      query: @query,
+      actions: @actions
+    }
+  end
 end
