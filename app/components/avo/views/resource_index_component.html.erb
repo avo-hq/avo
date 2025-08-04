@@ -36,16 +36,18 @@
           <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= "hidden" unless header_visible? %>">
             <div class="flex items-center px-4 w-64">
               <% if show_search_input %>
-                <label for="resource_search"></label>
-                <input type="text"
-                       name="q"
-                       data-controller="resource-search"
-                       data-resource-search-target="input"
-                       data-action="input->resource-search#search"
-                       placeholder="<%= I18n.translate 'avo.search.placeholder' %>"
-                       data-resource-search-debounce-value="500"
-                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
-                       value="<%= params[:q] %>">
+                <%= text_field_tag "q", params[:q],
+                      id: nil,
+                      placeholder: t('avo.search.placeholder'),
+                      class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm",
+                      data: {
+                        controller: "resource-search",
+                        action: "input->resource-search#search",
+                        "resource-search-target": "input",
+                        "resource-search-debounce-value": "500",
+                        "resource-search-url-value": request.fullpath
+                      }
+                %>
               <% else %>
                 <%# Offset for the space-y-2 property when the search is missing %>
                 <div class="-mb-2"></div>
