@@ -22,7 +22,7 @@ export default class extends Controller {
     const newUrl = this.buildSearchUrl(pathName, queryString, query)
 
     // Replace current URL without affecting browser history
-    if (!queryString.includes('turbo_frame')) {
+    if (!queryString || !queryString.includes('turbo_frame')) {
       window.history.replaceState({}, '', newUrl)
     }
 
