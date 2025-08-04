@@ -298,23 +298,12 @@ module Avo
 
       unless defined? VIEW_METHODS_MAPPING
         VIEW_METHODS_MAPPING = {
-          index: [:index_fields, :display_fields],
-          show: [:show_fields, :display_fields],
-          edit: [:edit_fields, :form_fields],
-          update: [:edit_fields, :form_fields],
-          new: [:new_fields, :form_fields],
-          create: [:new_fields, :form_fields]
-        }
-      end
-
-      unless defined? VIEW_CARDS_MAPPING
-        VIEW_CARDS_MAPPING = {
-          index: [:index_cards, :display_cards],
-          show: [:show_cards, :display_cards],
-          edit: [:edit_cards, :form_cards],
-          update: [:edit_cards, :form_cards],
-          new: [:new_cards, :form_cards],
-          create: [:new_cards, :form_cards]
+          index: [:index, :display],
+          show: [:show, :display],
+          edit: [:edit, :form],
+          update: [:edit, :form],
+          new: [:new, :form],
+          create: [:new, :form]
         }
       end
 
@@ -331,17 +320,17 @@ module Avo
 
         # Safe navigation operator is used because the view can be "destroy"
         possible_methods_for_view&.each do |method_for_view|
-          return send(method_for_view) if respond_to?(method_for_view)
+          return send("#{method_for_view}_fields") if respond_to?("#{method_for_view}_fields")
         end
 
         fields
       end
 
       def fetch_cards
-        possible_methods_for_view = VIEW_CARDS_MAPPING[view.to_sym]
+        possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
 
         possible_methods_for_view&.each do |method_for_view|
-          return send(method_for_view) if respond_to?(method_for_view)
+          return send("#{method_for_view}_cards") if respond_to?("#{method_for_view}_cards")
         end
 
         cards
