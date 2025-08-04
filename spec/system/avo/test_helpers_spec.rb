@@ -155,12 +155,15 @@ RSpec.describe "TestHelpers", type: :system do
     end
 
     context "search" do
-      it "opens the search box, write and select first result" do
+      it "write and select first result" do
         visit "admin/resources/projects"
 
-        click_resource_search_input
         write_in_search(projects.second.name)
-        select_first_result_in_search
+
+        expect(page).to have_content projects.second.name
+        expect(page).not_to have_content projects.first.name
+
+        click_on projects.second.id
 
         expect(page).to have_current_path "/admin/resources/projects/#{projects.second.id}"
       end
