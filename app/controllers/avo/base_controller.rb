@@ -475,6 +475,10 @@ module Avo
 
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message }
+        format.turbo_stream {
+          flash[:notice] = create_success_message
+          render turbo_stream: turbo_stream.redirect_to(after_create_path)
+        }
       end
     end
 
@@ -513,6 +517,10 @@ module Avo
     def update_success_action
       respond_to do |format|
         format.html { redirect_to after_update_path, notice: update_success_message }
+        format.turbo_stream {
+          flash[:notice] = update_success_message
+          render turbo_stream: turbo_stream.redirect_to(after_update_path)
+        }
       end
     end
 
