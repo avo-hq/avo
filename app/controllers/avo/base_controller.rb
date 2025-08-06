@@ -685,7 +685,7 @@ module Avo
     end
 
     def apply_search
-      return if @resource.class.search_query.nil? || params[:q].blank?
+      return if @resource.class.search_query.nil? || params[:q].nil?
 
       @query = Avo::ExecutionContext.new(
         target: @resource.class.search_query,
