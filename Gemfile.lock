@@ -131,19 +131,20 @@ GEM
       money-rails (~> 1.12)
     avo-record_link_field (0.0.2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1138.0)
-    aws-sdk-core (3.227.0)
+    aws-partitions (1.1143.0)
+    aws-sdk-core (3.229.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       base64
+      bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.108.0)
-      aws-sdk-core (~> 3, >= 3.227.0)
+    aws-sdk-kms (1.110.0)
+      aws-sdk-core (~> 3, >= 3.228.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.194.0)
-      aws-sdk-core (~> 3, >= 3.227.0)
+    aws-sdk-s3 (1.196.1)
+      aws-sdk-core (~> 3, >= 3.228.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -441,9 +442,9 @@ GEM
       ast (~> 2.4.1)
       racc
     path_expander (1.1.3)
-    pg (1.6.0-aarch64-linux)
-    pg (1.6.0-arm64-darwin)
-    pg (1.6.0-x86_64-linux)
+    pg (1.6.1-aarch64-linux)
+    pg (1.6.1-arm64-darwin)
+    pg (1.6.1-x86_64-linux)
     pp (0.6.2)
       prettyprint
     prefixed_ids (1.8.1)
@@ -458,7 +459,7 @@ GEM
       date
       stringio
     public_suffix (6.0.2)
-    puma (6.6.0)
+    puma (6.6.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.0)
@@ -529,7 +530,7 @@ GEM
       parser (~> 3.3.0)
       rainbow (>= 2.0, < 4.0)
       rexml (~> 3.1)
-    regexp_parser (2.10.0)
+    regexp_parser (2.11.0)
     reline (0.6.2)
       io-console (~> 0.5)
     responders (3.1.1)
