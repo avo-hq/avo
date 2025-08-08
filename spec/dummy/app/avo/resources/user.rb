@@ -20,19 +20,7 @@ class Avo::Resources::User < Avo::BaseResource
   self.index_query = -> do
     query.order(last_name: :asc)
   end
-  self.find_record_method = -> {
-    # When using friendly_id, we need to check if the id is a slug or an id.
-    # If it's a slug, we need to use the find_by_slug method.
-    # If it's an id, we need to use the find method.
-    # If the id is an array, we need to use the where method in order to return a collection.
-    if id.is_a?(Array)
-      first_is_number = true if Float(id.first, exception: false)
-      first_is_number ? query.where(id: id) : query.where(slug: id)
-    else
-      first_is_number = true if Float(id, exception: false)
-      first_is_number ? query.find(id) : query.find_by_slug(id)
-    end
-  }
+
   self.includes = [:posts, :post]
   self.attachments = [:cv]
   self.devise_password_optional = true
