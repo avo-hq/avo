@@ -12,7 +12,7 @@ RSpec.feature "FindRecordMethod", type: :feature do
   end
 
   it "finds the proper record by id" do
-    visit "/admin/resources/posts/#{post.id}"
+    visit "/admin/resources/posts/#{post.to_param}"
 
     expect(page).to have_text post.name
   end

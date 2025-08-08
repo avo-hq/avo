@@ -209,7 +209,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
   describe "Tags" do
     let(:post) { create :post }
-    let(:url) { "/admin/resources/posts/#{post.id}" }
+    let(:url) { "/admin/resources/posts/#{post.to_param}" }
 
     after do
       Avo::Resources::Post.restore_items_from_backup
@@ -233,7 +233,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
   describe "Enum Fields" do
     let(:post) { create :post }
-    let(:url) { "/admin/resources/posts/#{post.id}/edit" }
+    let(:url) { "/admin/resources/posts/#{post.to_param}/edit" }
 
     after do
       Avo::Resources::Post.restore_items_from_backup

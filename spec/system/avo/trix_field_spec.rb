@@ -6,7 +6,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "show" do
       it "displays the posts empty body (dash)" do
-        visit "/admin/resources/posts/#{post.id}"
+        visit "/admin/resources/posts/#{post.to_param}"
 
         expect(find_field_element("body")).to have_text empty_dash
       end
@@ -14,7 +14,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "edit" do
       it "has the posts body label and empty trix editor and placeholder" do
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         body_element = find_field_element("body")
 
@@ -25,7 +25,7 @@ RSpec.describe "TrixField", type: :system do
       end
 
       it "change the posts body text" do
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         fill_in_trix_editor "trix_post_body", with: "Works for us!!!"
 
@@ -35,7 +35,7 @@ RSpec.describe "TrixField", type: :system do
       end
 
       it "contains js alert messages translated" do
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         upload_warning_message = find("[data-trix-field-upload-warning-value]")[:"data-trix-field-upload-warning-value"]
         expect(upload_warning_message).to eq I18n.t("avo.you_cant_upload_new_resource")
@@ -55,7 +55,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "show" do
       it "displays the posts body" do
-        visit "/admin/resources/posts/#{post.id}"
+        visit "/admin/resources/posts/#{post.to_param}"
 
         expect(page).not_to have_link("More content", href: "javascript:void(0);")
         expect(find_field_value_element("body")).to have_text ActionView::Base.full_sanitizer.sanitize(body)
@@ -73,7 +73,7 @@ RSpec.describe "TrixField", type: :system do
         end
 
         it "displays correct button" do
-          visit "/admin/resources/posts/#{post.id}"
+          visit "/admin/resources/posts/#{post.to_param}"
 
           expect(page).to have_link("More content", href: "javascript:void(0);")
 
@@ -89,7 +89,7 @@ RSpec.describe "TrixField", type: :system do
             field :body, as: :trix, always_show: true
           end
 
-          visit "/admin/resources/posts/#{post.id}"
+          visit "/admin/resources/posts/#{post.to_param}"
 
           expect(page).not_to have_link("More content", href: "javascript:void(0);")
           expect(page).not_to have_link("Less content", href: "javascript:void(0);")
@@ -101,7 +101,7 @@ RSpec.describe "TrixField", type: :system do
 
     context "edit" do
       it "has the posts body label" do
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         body_element = find_field_element("body")
 
@@ -109,13 +109,13 @@ RSpec.describe "TrixField", type: :system do
       end
 
       it "has filled simple text in trix editor" do
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         expect(find("#trix_post_body", visible: false).value).to eq(body)
       end
 
       it "change the posts body trix to another simple text value" do
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         fill_in_trix_editor "trix_post_body", with: "New example!"
 
@@ -136,7 +136,7 @@ RSpec.describe "TrixField", type: :system do
           field :body, as: :trix, disabled: true
         end
 
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         expect(page).not_to have_selector("trix-editor")
 
@@ -152,7 +152,7 @@ RSpec.describe "TrixField", type: :system do
           field :body, as: :trix, readonly: true
         end
 
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         expect(page).not_to have_selector("trix-editor")
 
