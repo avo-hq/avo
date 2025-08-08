@@ -73,7 +73,19 @@ module Avo
         query
       }
       class_attribute :find_record_method, default: -> {
-        query.find id
+        # Check if the model uses FriendlyId and handle accordingly
+        if model_class.respond_to?(:friendly_id_config)
+          if id.is_a?(Array)
+            # For arrays, use the slug column
+            query.where(model_class.friendly_id_config.slug_column => id)
+          else
+            # For single values, use find_by_slug method
+            query.friendly.find(id)
+          end
+        else
+          # Standard Rails find behavior for non-FriendlyId models
+          query.find id
+        end
       }
       class_attribute :after_create_path, default: :show
       class_attribute :after_update_path, default: :show
@@ -236,7 +248,8 @@ module Avo
             target: find_record_method,
             query: query,
             id: id,
-            params: params
+            params: params,
+            model_class:
           ).handle
         end
 
@@ -598,6 +611,24 @@ module Avo
 
       def id_attribute
         :id
+      end
+
+      # Check if the model class uses FriendlyId
+      def model_uses_friendly_id?
+        defined?(FriendlyId) && model_class.respond_to?(:friendly_id) && model_class.instance_variable_get(:@friendly_id_config).present?
+      rescue StandardError
+        # FriendlyId not available or model doesn't use it
+        false
+      end
+
+      # Get the slug column name from FriendlyId configuration
+      def friendly_id_slug_column
+        return :slug unless model_uses_friendly_id?
+
+        config = model_class.instance_variable_get(:@friendly_id_config)
+        config&.slug_column || :slug
+      rescue StandardError
+        :slug
       end
 
       def record_id
