@@ -8,7 +8,13 @@ class Avo::Resources::ZPost < Avo::BaseResource
   self.includes = [:user]
   self.default_view_type = :grid
   self.model_class = "Post"
-
+  self.find_record_method = -> {
+    if id.is_a?(Array)
+     query.where(slug: id)
+    else
+      query.find_by_slug(id)
+    end
+  }
   self.visible_on_sidebar = false
 
   # self.show_controls = -> do
