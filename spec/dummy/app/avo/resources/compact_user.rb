@@ -1,5 +1,8 @@
 class Avo::Resources::CompactUser < Avo::BaseResource
   self.model_class = ::User
+  self.find_record_method = -> {
+    query.friendly.find id
+  }
 
   def fields
     field :personal_information, as: :heading

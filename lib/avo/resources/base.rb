@@ -73,19 +73,7 @@ module Avo
         query
       }
       class_attribute :find_record_method, default: -> {
-        # Check if the model uses FriendlyId and handle accordingly
-        if model_class.respond_to?(:friendly_id_config)
-          if id.is_a?(Array)
-            # For arrays, use the slug column
-            query.where(model_class.friendly_id_config.slug_column => id)
-          else
-            # For single values, use find_by_slug method
-            query.friendly.find(id)
-          end
-        else
-          # Standard Rails find behavior for non-FriendlyId models
-          query.find id
-        end
+        query.find id
       }
       class_attribute :after_create_path, default: :show
       class_attribute :after_update_path, default: :show
@@ -248,8 +236,7 @@ module Avo
             target: find_record_method,
             query: query,
             id: id,
-            params: params,
-            model_class:
+            params: params
           ).handle
         end
 
@@ -647,7 +634,7 @@ module Avo
       end
 
       def get_external_link
-        return unless record.persisted?
+        return unless record&.persisted?
 
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
