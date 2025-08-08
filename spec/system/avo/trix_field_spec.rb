@@ -136,7 +136,7 @@ RSpec.describe "TrixField", type: :system do
           field :body, as: :trix, disabled: true
         end
 
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         expect(page).not_to have_selector("trix-editor")
 
@@ -152,7 +152,7 @@ RSpec.describe "TrixField", type: :system do
           field :body, as: :trix, readonly: true
         end
 
-        visit "/admin/resources/posts/#{post.id}/edit"
+        visit "/admin/resources/posts/#{post.to_param}/edit"
 
         expect(page).not_to have_selector("trix-editor")
 
