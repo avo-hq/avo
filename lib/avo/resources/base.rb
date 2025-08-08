@@ -613,24 +613,6 @@ module Avo
         :id
       end
 
-      # Check if the model class uses FriendlyId
-      def model_uses_friendly_id?
-        defined?(FriendlyId) && model_class.respond_to?(:friendly_id) && model_class.instance_variable_get(:@friendly_id_config).present?
-      rescue StandardError
-        # FriendlyId not available or model doesn't use it
-        false
-      end
-
-      # Get the slug column name from FriendlyId configuration
-      def friendly_id_slug_column
-        return :slug unless model_uses_friendly_id?
-
-        config = model_class.instance_variable_get(:@friendly_id_config)
-        config&.slug_column || :slug
-      rescue StandardError
-        :slug
-      end
-
       def record_id
         record.send(id_attribute)
       end
