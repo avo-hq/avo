@@ -18,7 +18,7 @@ class Avo::Resources::Post < Avo::BaseResource
   }
   self.find_record_method = -> {
     if id.is_a?(Array)
-     query.where(slug: id)
+      query.where(slug: id)
     else
       query.find_by_slug(id)
     end
