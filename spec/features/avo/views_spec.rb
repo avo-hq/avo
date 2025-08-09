@@ -18,19 +18,19 @@ shared_examples "view pages load" do |resource|
 
   context "show" do
     it "loads the page" do
-      visit "/admin/resources/#{plural_name}/#{record.id}"
+      visit "/admin/resources/#{plural_name}/#{record.to_param}"
     end
   end
 
   context "edit" do
     it "loads the page" do
-      visit "/admin/resources/#{plural_name}/#{record.id}/edit"
+      visit "/admin/resources/#{plural_name}/#{record.to_param}/edit"
     end
   end
 
   context "destroy" do
     it "destroys the record" do
-      page.driver.submit :delete, "/admin/resources/#{plural_name}/#{record.id}", {}
+      page.driver.submit :delete, "/admin/resources/#{plural_name}/#{record.to_param}", {}
 
       expect {
         record.reload

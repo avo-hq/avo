@@ -5,7 +5,7 @@ RSpec.describe "Tags", type: :system do
     let!(:post) { create :post, tag_list: [] }
 
     context "show" do
-      let(:path) { "/admin/resources/posts/#{post.id}" }
+      let(:path) { "/admin/resources/posts/#{post.to_param}" }
 
       it "shows empty state" do
         visit path
@@ -51,7 +51,7 @@ RSpec.describe "Tags", type: :system do
     end
 
     context "edit" do
-      let(:path) { "/admin/resources/posts/#{post.id}/edit" }
+      let(:path) { "/admin/resources/posts/#{post.to_param}/edit" }
       let(:tag_input) { tags_element(find_field_value_element("tags")) }
       let(:input_textbox) { 'span[contenteditable][data-placeholder="add some tags"]' }
 
