@@ -1,6 +1,6 @@
 class Avo::Actions::Test::NoConfirmationRedirect < Avo::BaseAction
   self.name = "Test No Confirmation Redirect"
-  self.no_confirmation = true
+  self.confirmation = false
   self.standalone = true
 
   def handle(**args)
