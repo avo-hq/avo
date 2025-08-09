@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ['resourceIds', 'form', 'selectedAll', 'indexQuery']
 
   static values = {
-    noConfirmation: Boolean,
+    confirmation: Boolean,
     resourceName: String,
   }
 
@@ -21,10 +21,10 @@ export default class extends Controller {
       this.indexQueryTarget.value = this.selectionOptions.itemSelectAllSelectedAllQueryValue
     }
 
-    if (this.noConfirmationValue) {
-      this.formTarget.requestSubmit()
-    } else {
+    if (this.confirmationValue) {
       this.element.classList.remove('hidden')
+    } else {
+      this.formTarget.requestSubmit()
     }
   }
 

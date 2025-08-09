@@ -12,7 +12,7 @@ module Avo
     class_attribute :message
     class_attribute :confirm_button_label
     class_attribute :cancel_button_label
-    class_attribute :no_confirmation, default: false
+    class_attribute :confirmation, default: true
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
       # Hide on the :new view by default
@@ -372,9 +372,9 @@ module Avo
       !enabled?
     end
 
-    def no_confirmation?
+    def confirmation?
       Avo::ExecutionContext.new(
-        target: no_confirmation,
+        target: confirmation,
         action: self,
         resource: @resource,
         view: @view,
