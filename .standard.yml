@@ -13,3 +13,6 @@ ignore:                 # default: []
     - Style/TrailingCommaInHashLiteral
   - 'app/**/*':
     - Style/TrailingCommaInHashLiteral
+
+extend_config:
+  - .rubocop.yml
