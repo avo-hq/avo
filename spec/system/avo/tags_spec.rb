@@ -250,6 +250,7 @@ RSpec.describe "Tags", type: :system do
             {value: "a_c2", label: "activity_category2"},
             {value: "a_c3", label: "activity_category3"},
             {value: "a_c4", label: "activity_category4"},
+            {value: "a_c5", label: "activity_category5"},
           ]
       end
 
@@ -276,7 +277,8 @@ RSpec.describe "Tags", type: :system do
             {value: "a_c1", label: "activity_category1"},
             {value: "a_c2", label: "activity_category2"},
             {value: "a_c3", label: "activity_category3"},
-            {value: "a_c4", label: "activity_category4"}
+            {value: "a_c4", label: "activity_category4"},
+            {value: "a_c5", label: "activity_category5"}
           ]
       end
 
