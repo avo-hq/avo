@@ -1,3 +1,8 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: @field.value %>
+  <% if @field.value == :indeterminate %>
+    <%= render Avo::Fields::Common::IndeterminateStateComponent.new %>
+  <% else %>
+    <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: @field.value %>
+  <% end %>
+  
 <% end %>
