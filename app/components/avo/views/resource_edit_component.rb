@@ -8,6 +8,7 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   prop :actions, default: [].freeze
   prop :view, default: Avo::ViewInquirer.new(:edit).freeze
   prop :display_breadcrumbs, default: true, reader: :public
+  prop :query
 
   def after_initialize
     @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
@@ -72,7 +73,14 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   end
 
   def form_url
-    if is_edit?
+    if params[:controller] == "avo/bulk_update"
+      helpers.handle_bulk_update_path(
+        resource_name: @resource.name,
+        fields: {
+          avo_resource_ids: params[:fields][:avo_resource_ids]
+        }
+      )
+    elsif is_edit?
       helpers.resource_path(
         record: @resource.record,
         resource: @resource
