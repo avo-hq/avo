@@ -248,7 +248,7 @@ RSpec.describe "Tags", type: :system do
           suggestions: [
             {value: "a_c1", label: "activity_category1"},
             {value: "a_c2", label: "activity_category2"},
-            {value: "a_c3", label: "activity_category3"}
+            {value: "a_c3", label: "activity_category3"},
           ]
       end
 
@@ -274,7 +274,7 @@ RSpec.describe "Tags", type: :system do
           suggestions: [
             {value: "a_c1", label: "activity_category1"},
             {value: "a_c2", label: "activity_category2"},
-            {value: "a_c3", label: "activity_category3"}
+            {value: "a_c3", label: "activity_category33"}
           ]
       end
 
