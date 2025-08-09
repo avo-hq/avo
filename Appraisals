@@ -1,4 +1,4 @@
-["3.3.0", "3.4.0"].each do |ruby_version|
+["3.3.0", "3.4.5"].each do |ruby_version|
   ["7.1", "8.0"].each do |rails_version|
     appraise "rails-#{rails_version}-ruby-#{ruby_version}" do
       gem "psych", "< 4"
