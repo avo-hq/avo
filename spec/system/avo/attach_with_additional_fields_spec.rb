@@ -18,7 +18,8 @@ RSpec.describe "Attach with extra fields", type: :system do
       click_button "Attach"
     }.not_to change(StorePatron, :count)
 
-    expect(page).to_not have_text "Failed to attach User"
+    expect(page).not_to have_text "User attached"
+    expect(page).to have_text "Failed to attach User"
 
     select user.name
     fill_in id: "fields_review", with: "Toilet paper is phenomenal here."
