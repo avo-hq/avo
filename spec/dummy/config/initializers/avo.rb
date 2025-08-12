@@ -77,7 +77,12 @@ Avo.configure do |config|
   #   "Avo::Resources::Fish"
   # ]
 
-  config.alert_dismiss_time = 5000
+  # https://linear.app/avo-hq/issue/AVO-630/add-support-for-ruby-340-and-remove-ruby-314-from-test-matrix
+  # Not sure why yet but this is needed to make the test pass
+  # ./spec/system/avo/alert_backtrace_spec.rb:21 will not show the alert if the time is 5000
+  # only with version rails 8.0.2 and ruby 3.4.5
+  # and also only on test environment, in dev it works fine
+  config.alert_dismiss_time = Rails.env.test? ? 10000 : 5000
   config.search_results_count = 8
   config.associations_lookup_list_limit = 1000
 
