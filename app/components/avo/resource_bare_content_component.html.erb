@@ -1,4 +1,5 @@
 <%= content_tag :div, id: "#{@resource.model_key}_bare_content" do %>
+  <%= render Avo::SearchOverlayComponent.new %>
   <% if @resource.view_type.to_sym == :map %>
     <% if @resources.present? %>
       <div>
