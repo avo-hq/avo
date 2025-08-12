@@ -21,6 +21,7 @@
         </div>
       </label>
       <script>
+        //event listener to the rails checkbox to update the visual toggle
         document.getElementById('<%= @field.id %>_checkbox').addEventListener('change', function(e) {
           const track = document.querySelector('label[for="<%= @field.id %>_checkbox"] .toggle-track');
           const circle = document.querySelector('label[for="<%= @field.id %>_checkbox"] .toggle-circle');
