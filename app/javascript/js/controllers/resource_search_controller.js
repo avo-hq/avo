@@ -2,11 +2,21 @@ import { Controller } from '@hotwired/stimulus'
 import { get } from '@rails/request.js'
 
 export default class extends Controller {
-  static targets = ['input']
+  static targets = ['input', 'overlay']
 
   static values = {
     debounce: { type: Number, default: 300 },
     url: String,
+  }
+
+  connect() {
+    this.#clearSpinnerTimer()
+    this.#removeSpinner()
+  }
+
+  disconnect() {
+    this.#clearSpinnerTimer()
+    this.#removeSpinner()
   }
 
   search() {
@@ -27,6 +37,9 @@ export default class extends Controller {
     }
 
     try {
+      // Show a spinner if the request takes longer than 300ms (after debounce)
+      this.#startSpinnerTimer()
+
       await get(newUrl, {
         responseKind: 'turbo-stream',
         headers: {
@@ -35,7 +48,9 @@ export default class extends Controller {
         },
       })
     } catch (error) {
-      console.error('Error performing search:', error)
+      // Silently fail; network errors are surfaced via Turbo stream failures
+    } finally {
+      this.#stopSpinner()
     }
   }
 
@@ -65,5 +80,44 @@ export default class extends Controller {
       clearTimeout(timeout)
       timeout = setTimeout(later, wait)
     }
+  }
+
+  // Private
+
+  #spinnerTimer = null
+
+  #spinnerEl = null
+
+  #spinnerDelayMs = 500
+
+  #startSpinnerTimer() {
+    this.#clearSpinnerTimer()
+    this.#spinnerTimer = setTimeout(() => this.#showSpinner(), this.#spinnerDelayMs)
+  }
+
+  #clearSpinnerTimer() {
+    if (this.#spinnerTimer) {
+      clearTimeout(this.#spinnerTimer)
+      this.#spinnerTimer = null
+    }
+  }
+
+  #showSpinner() {
+    // Add a body class to signal loading (used by tests/possible styles)
+    document.body.classList.add('search-loading')
+
+    this.overlayTarget.classList.add('is-active')
+    this.#spinnerEl = this.overlayTarget
+  }
+
+  #removeSpinner() {
+    document.body.classList.remove('search-loading')
+    if (this.#spinnerEl) this.#spinnerEl.classList.remove('is-active')
+    this.#spinnerEl = null
+  }
+
+  #stopSpinner() {
+    this.#clearSpinnerTimer()
+    this.#removeSpinner()
   }
 }

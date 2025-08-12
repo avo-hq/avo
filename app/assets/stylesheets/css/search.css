@@ -88,3 +88,13 @@ button.aa-DetachedCancelButton {
     }
   }
 }
+
+/* Overlay used during resource search */
+.avo-search-overlay {
+  /* Very subtle blur + dim layer; hidden by default */
+  @apply hidden absolute inset-0 z-10 bg-gray-50/30 backdrop-blur-[1px] items-center justify-center pointer-events-none;
+}
+
+.avo-search-overlay.is-active {
+  @apply flex;
+}
