@@ -4,7 +4,7 @@
   data: {
     component_name: self.class.to_s.underscore,
     resource_name: @resource.class.to_s,
-    record_id: @resource.record.id,
+    record_id: @resource.record_param,
     **item_selector_data_attributes(@resource),
     **(try(:drag_reorder_item_data_attributes) || {}),
   } do %>

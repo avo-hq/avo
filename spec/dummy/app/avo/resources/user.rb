@@ -107,7 +107,7 @@ class Avo::Resources::User < Avo::BaseResource
   def main_panel_fields
     test_field("Inside main panel")
     field :id, as: :id, link_to_record: true, sortable: false
-    field :email, as: :gravatar, link_to_record: true, as_avatar: :circle, only_on: :index
+    field :email, as: :gravatar, link_to_record: true, only_on: :index
     with_options as: :text, only_on: :index do
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe", filterable: true
@@ -170,7 +170,7 @@ class Avo::Resources::User < Avo::BaseResource
       field :some_token, only_on: :show
       test_field("Inside main_panel_sidebar")
       with_options only_on: :show do
-        field :email, as: :gravatar, link_to_record: true, as_avatar: :circle
+        field :email, as: :gravatar, link_to_record: true
         field :heading, as: :heading, label: ""
         field :active, as: :boolean, name: "Is active"
       end

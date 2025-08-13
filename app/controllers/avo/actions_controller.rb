@@ -202,7 +202,10 @@ module Avo
 
     def flash_messages
       get_messages.each do |message|
-        flash[message[:type]] = message[:body]
+        flash[message[:type]] = {
+          body: message[:body],
+          timeout: message[:timeout]
+        }
       end
     end
 

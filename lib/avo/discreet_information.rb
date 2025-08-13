@@ -69,9 +69,10 @@ class Avo::DiscreetInformation
       url_target: Avo::ExecutionContext.new(target: item[:url_target], **args).handle,
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
       label: Avo::ExecutionContext.new(target: item[:label], **args).handle,
-      as: Avo::ExecutionContext.new(target: item[:as], **args).handle
+      as: Avo::ExecutionContext.new(target: item[:as], **args).handle,
+      visible: Avo::ExecutionContext.new(target: item[:visible], **args).handle
     )
   end
 
-  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, :as, keyword_init: true) unless defined?(DiscreetInformationItem)
+  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, :as, :visible, keyword_init: true) unless defined?(DiscreetInformationItem)
 end

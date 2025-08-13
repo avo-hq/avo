@@ -11,3 +11,5 @@ on:
 jobs:
   create_release:
     uses: avo-hq/support/.github/workflows/create-release.yml@main
+    secrets:
+      REFRESH_RELEASES_SECRET: ${{ secrets.REFRESH_RELEASES_SECRET }}

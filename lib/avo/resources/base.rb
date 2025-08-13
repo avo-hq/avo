@@ -588,30 +588,6 @@ module Avo
         resources_path(resource: self)
       end
 
-      def avatar_field
-        get_field_definitions.find do |field|
-          field.as_avatar.present?
-        end
-      rescue
-        nil
-      end
-
-      def avatar
-        return avatar_field.to_image if avatar_field.respond_to? :to_image
-
-        return avatar_field.value.variant(resize_to_limit: [480, 480]) if avatar_field.type == "file"
-
-        avatar_field.value
-      rescue
-        nil
-      end
-
-      def avatar_type
-        avatar_field.as_avatar
-      rescue
-        nil
-      end
-
       def form_scope
         model_class.base_class.to_s.underscore.downcase
       end

@@ -11,7 +11,7 @@ RSpec.feature "HasManyField", type: :system do
         let!(:comment) { create :comment, commentable: post, user: user }
 
         it "displays the other fields" do
-          visit "/admin/resources/posts/#{post.id}/comments?turbo_frame=has_many_field_show_comments"
+          visit "/admin/resources/posts/#{post.to_param}/comments?turbo_frame=has_many_field_show_comments"
 
           row = find("[data-resource-name='comments'][data-resource-id='#{comment.id}']")
 

@@ -37,6 +37,10 @@ module Avo
       def is_row?
         self.class.respond_to?(:item_type) && self.class.item_type == :row
       end
+
+      def is_collaboration?
+        self.class.ancestors.include?(Avo::Resources::Items::Collaboration)
+      end
     end
   end
 end
