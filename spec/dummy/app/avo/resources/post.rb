@@ -43,7 +43,8 @@ class Avo::Resources::Post < Avo::BaseResource
           resource: resource,
           arguments: {
             records: Array.wrap(record.id),
-            no_confirmation: true
+            no_confirmation: true,
+            in_discreet_information: true
           }
         )
       },
@@ -98,7 +99,7 @@ class Avo::Resources::Post < Avo::BaseResource
             main_app.url_for(record.cover_photo)
           end,
         title: record.name,
-        body: helpers.extract_excerpt(record.body)
+        body: helpers.extract_excerpt(record.body) + "(Published: #{record.published_at.present? ? "✅" : "❌"})"
       }
     end,
     # html: -> do
