@@ -123,10 +123,10 @@ module Avo
         # Verify if the relation is a collection proxy
         # If it is, add the grandparent to the collection
         # If it is not, set the grandparent as the parent of the relation
-        if parent.send(via_relation).is_a?(ActiveRecord::Associations::CollectionProxy)
-          parent.send(via_relation) << grandparent
+        if parent.public_send(via_relation).is_a?(ActiveRecord::Associations::CollectionProxy)
+          parent.public_send(via_relation) << grandparent
         else
-          parent.send(:"#{via_relation}=", grandparent)
+          parent.public_send(:"#{via_relation}=", grandparent)
         end
       end
 
