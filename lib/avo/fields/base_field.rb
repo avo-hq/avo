@@ -290,7 +290,23 @@ module Avo
         Avo::ExecutionContext.new(target: @meta, record: record, resource: @resource, view: @view).handle
       end
 
+      def parent
+        @parent ||= fetch_parent
+      end
+
       private
+
+      def fetch_parent
+        params = Avo::Current.params
+        return nil if params.blank?
+
+        via_record_id = params[:via_record_id]
+        via_relation_class = params[:via_relation_class]
+
+        return nil if via_record_id.blank? || via_relation_class.blank?
+        resource = get_resource_by_model_class(via_relation_class)
+        resource.find_record(via_record_id, params: params)
+      end
 
       def model_or_class(model)
         model.instance_of?(String) ? "class" : "model"
