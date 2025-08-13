@@ -114,19 +114,19 @@ module Avo
         grandparent = parent_resource_class.find params[:via_parent_resource_id]
         parent = reflection_class.new
 
-        # Whitelist allowed relations to prevent code injection
         via_relation = params[:via_relation].to_s
-        unless reflection_class.reflections.keys.map(&:to_s).include?(via_relation)
-          raise ArgumentError, "Invalid relation name: #{via_relation}"
-        end
-
-        # Verify if the relation is a collection proxy
-        # If it is, add the grandparent to the collection
-        # If it is not, set the grandparent as the parent of the relation
-        if parent.public_send(via_relation).is_a?(ActiveRecord::Associations::CollectionProxy)
-          parent.public_send(via_relation) << grandparent
+        # Whitelist allowed relations to prevent code injection
+        if reflection_class.reflections.keys.map(&:to_s).include?(via_relation)
+          # Verify if the relation is a collection proxy
+          # If it is, add the grandparent to the collection
+          # If it is not, set the grandparent as the parent of the relation
+          if parent.public_send(via_relation).is_a?(ActiveRecord::Associations::CollectionProxy)
+            parent.public_send(via_relation) << grandparent
+          else
+            parent.public_send(:"#{via_relation}=", grandparent)
+          end
         else
-          parent.public_send(:"#{via_relation}=", grandparent)
+          raise ArgumentError, "Invalid relation name: #{via_relation}"
         end
       end
 
