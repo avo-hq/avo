@@ -21,6 +21,8 @@ class Avo::Actions::TogglePublished < Avo::BaseAction
       end
     end
 
+    reload_records records
+
     succeed "Purrrfect!"
   end
 end
