@@ -294,8 +294,6 @@ module Avo
 
     def render_error?
       Rails.env.development?
-
-      false
     end
   end
 end
