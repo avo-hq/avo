@@ -43,7 +43,8 @@ class Avo::Resources::Post < Avo::BaseResource
           resource: resource,
           arguments: {
             records: Array.wrap(record.id),
-            no_confirmation: true
+            no_confirmation: true,
+            in_discreet_information: true
           }
         )
       },
