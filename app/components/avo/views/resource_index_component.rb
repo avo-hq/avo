@@ -146,6 +146,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def render_dynamic_filters_button
     return unless Avo.avo_dynamic_filters_installed?
     return unless @resource.has_filters?
+    return if field&.hide_filter_button
     return if Avo::DynamicFilters.configuration.always_expanded
 
     a_button size: :sm,

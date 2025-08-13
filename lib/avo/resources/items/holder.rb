@@ -11,6 +11,10 @@ class Avo::Resources::Items::Holder
     @parent = parent
   end
 
+  def collaboration_timeline(**args)
+    add_item Avo::Resources::Items::Collaboration.new(**args)
+  end
+
   # Adds a field to the items_holder
   def field(field_name, **args, &block)
     # If the field is paresed inside a tab group, add it to the tab

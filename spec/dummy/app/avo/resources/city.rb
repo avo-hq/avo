@@ -83,7 +83,7 @@ class Avo::Resources::City < Avo::BaseResource
 
         link_to resource.record.name, path, data: data
       end
-      field :population, as: :number, filterable: true, decorate: -> { number_with_delimiter(value, delimiter: ".") }
+      field :population, as: :number, filterable: true, format_display_using: -> { number_with_delimiter(value, delimiter: ".") }
       field :is_capital, as: :boolean, filterable: true
       field :features, as: :key_value
       field :image_url, as: :external_image

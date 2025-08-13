@@ -75,6 +75,7 @@ gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "pagy", "> 8"
 gem "csv"
+gem "view_component", "4.0.0"
 
 # =============================================================================
 # AWS & CLOUD SERVICES
@@ -120,7 +121,6 @@ group :development do
   gem "web-console", ">= 3.3.0"
   gem "listen", ">= 3.5.1"
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "dotenv-rails"
 
   # Uncomment for performance profiling
   # gem "rack-mini-profiler"
@@ -166,6 +166,7 @@ end
 group :development, :test do
   # Debugging & console
   gem "amazing_print"
+  gem "dotenv-rails"
 
   # Test data & factories
   gem "faker", require: false
