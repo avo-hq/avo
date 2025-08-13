@@ -13,7 +13,7 @@ class Avo::Resources::Comment < Avo::BaseResource
   def fields
     main_panel do
       field :id, as: :id
-      field :body, as: :textarea, copyable: true
+      field :body, as: :textarea, copyable: true, default: -> { "#{parent.first_name}'s comment" if parent.is_a?(User) }
       field :tiny_name, as: :text, only_on: :index
       field :posted_at,
         as: :date_time,
