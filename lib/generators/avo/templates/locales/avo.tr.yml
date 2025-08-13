@@ -18,6 +18,9 @@ tr:
     attachment_class_detached: "%{attachment_class} ilişkisi kesildi."
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
+    bulk_edit: Toplu düzenleme
+    bulk_update_failure: Kayıtlar güncellenemedi.
+    bulk_update_success: Toplu işlem başarıyla tamamlandı.
     cancel: İptal et
     choose_a_country: Bir ülke seç
     choose_an_option: Bir seçenek seç
