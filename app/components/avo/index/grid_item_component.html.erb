@@ -1,4 +1,5 @@
 <%= content_tag :div,
+  id: "#{self.class.to_s.underscore}_#{@resource.record_param}",
   class: "relative bg-white rounded-sm shadow-modal flex flex-col group",
   data: {
     component_name: self.class.to_s.underscore,
