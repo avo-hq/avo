@@ -1,49 +1,47 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div class="h-8 flex items-center">
+    <% 
+      # Common checkbox attributes
+      common_checkbox_attrs = {
+        value: @field.value,
+        checked: @field.value,
+        disabled: disabled?,
+        autofocus: @autofocus,
+        id: "#{@field.id}_checkbox"
+      }
+    %>
+    
     <% if @field.instance_variable_get(:@args)&.dig(:as_toggle) %>
-      <%= @form.check_box @field.id, 
-          value: @field.value, 
-          checked: @field.value, 
-          class: "sr-only", 
-          data: @field.get_html(:data, view: view, element: :input), 
-          disabled: disabled?, 
-          autofocus: @autofocus,
-          id: "#{@field.id}_checkbox" %>
-      
-      <!-- toggle switch -->
-      <label for="<%= @field.id %>_checkbox" class="relative inline-flex items-center cursor-pointer <%= 'cursor-not-allowed opacity-50' if disabled? %>">
-        <!-- toggle track -->
-        <div class="toggle-track relative w-11 h-6 rounded-full transition-all duration-200" 
-             style="background-color: <%= @field.value ? '#3b82f6' : '#d1d5db' %>;">
-          <!-- toggle circle -->
-          <div class="toggle-circle absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 shadow-sm"
-               style="transform: translateX(<%= @field.value ? '20px' : '0px' %>);"></div>
-        </div>
-      </label>
-      <script>
-        //event listener to the rails checkbox to update the visual toggle
-        document.getElementById('<%= @field.id %>_checkbox').addEventListener('change', function(e) {
-          const track = document.querySelector('label[for="<%= @field.id %>_checkbox"] .toggle-track');
-          const circle = document.querySelector('label[for="<%= @field.id %>_checkbox"] .toggle-circle');
-          
-          if (this.checked) {
-            track.style.backgroundColor = '#3b82f6';
-            circle.style.transform = 'translateX(20px)';
-          } else {
-            track.style.backgroundColor = '#d1d5db';
-            circle.style.transform = 'translateX(0px)';
-          }
-        });
-      </script>
+      <%# Stimulus controller wrapper %>
+      <div data-controller="avo-boolean-toggle">
+        <%= @form.check_box @field.id, 
+            class: "sr-only", 
+            data: { 
+              **@field.get_html(:data, view: view, element: :input),
+              avo_boolean_toggle_target: "checkbox"
+            },
+            **common_checkbox_attrs %>
+
+        <%# toggle switch %>
+        <label for="<%= common_checkbox_attrs[:id] %>" 
+               class="relative inline-flex items-center cursor-pointer <%= 'cursor-not-allowed opacity-50' if disabled? %>">
+          <%# toggle track %>
+          <div class="relative w-11 h-6 rounded-full transition-all duration-200" 
+               data-avo-boolean-toggle-target="track"
+               style="background-color: <%= @field.value ? '#3b82f6' : '#d1d5db' %>;">
+            <%# toggle circle %>
+            <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 shadow-sm"
+                 data-avo-boolean-toggle-target="circle"
+                 style="transform: translateX(<%= @field.value ? '20px' : '0px' %>);"></div>
+          </div>
+        </label>
+      </div>
     <% else %>
       <%= @form.check_box @field.id, 
-          value: @field.value, 
-          checked: @field.value, 
           class: "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded #{@field.get_html(:classes, view: view, element: :input)}", 
           data: @field.get_html(:data, view: view, element: :input), 
-          disabled: disabled?, 
-          autofocus: @autofocus, 
-          style: @field.get_html(:style, view: view, element: :input) %>
+          style: @field.get_html(:style, view: view, element: :input),
+          **common_checkbox_attrs %>
     <% end %>
   </div>
 <% end %>
