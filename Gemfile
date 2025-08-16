@@ -114,7 +114,7 @@ group :development do
   gem "actual_db_schema"
 
   # Component documentation & preview
-  # gem "lookbook", ">= 2.3.8"
+  gem "lookbook", ">= 2.3.8"
 
   # Performance profiling
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
