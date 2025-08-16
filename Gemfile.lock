@@ -1,4 +1,11 @@
 PATH
+  remote: ../cado
+  specs:
+    cado (0.1.0)
+      rails (>= 8.0.2)
+      view_component
+
+PATH
   remote: .
   specs:
     avo (4.0.0.pre.dev.12)
@@ -17,13 +24,6 @@ PATH
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
       zeitwerk (>= 2.6.12)
-
-PATH
-  remote: /Users/adrian/work/misc/cado/newcado/cado
-  specs:
-    cado (0.1.0)
-      rails (>= 8.0.2)
-      view_component
 
 PATH
   remote: pluggy
