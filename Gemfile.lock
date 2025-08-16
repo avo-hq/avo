@@ -19,6 +19,13 @@ PATH
       zeitwerk (>= 2.6.12)
 
 PATH
+  remote: /Users/adrian/work/misc/cado/newcado/cado
+  specs:
+    cado (0.1.0)
+      rails (>= 8.0.2)
+      view_component
+
+PATH
   remote: pluggy
   specs:
     pluggy (0.0.1)
@@ -194,8 +201,6 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    css_parser (1.21.1)
-      addressable
     cssbundling-rails (1.4.2)
       railties (>= 6.0.0)
     csv (3.3.5)
@@ -300,6 +305,7 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
+    ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     flay (2.13.3)
       erubi (~> 1.10)
@@ -338,7 +344,6 @@ GEM
       listen (>= 3.0.0)
       railties (>= 6.0.0)
     htmlbeautifier (1.4.3)
-    htmlentities (4.3.4)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     i18n-tasks (1.0.14)
@@ -387,18 +392,6 @@ GEM
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    lookbook (2.3.11)
-      activemodel
-      css_parser
-      htmlbeautifier (~> 1.3)
-      htmlentities (~> 4.3.4)
-      marcel (~> 1.0)
-      railties (>= 5.0)
-      redcarpet (~> 3.5)
-      rouge (>= 3.26, < 5.0)
-      view_component (>= 2.0)
-      yard (~> 0.9)
-      zeitwerk (~> 2.5)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -439,6 +432,8 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.9-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
     observer (0.1.2)
@@ -450,6 +445,7 @@ GEM
       ast (~> 2.4.1)
       racc
     path_expander (1.1.3)
+    pg (1.6.1-arm64-darwin)
     pg (1.6.1-x86_64-linux)
     pp (0.6.2)
       prettyprint
@@ -531,7 +527,6 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
-    redcarpet (3.6.1)
     redis (5.4.1)
       redis-client (>= 0.22.0)
     redis-client (0.25.1)
@@ -552,7 +547,6 @@ GEM
       nokogiri
     rexml (3.4.1)
     ripper-tags (1.0.2)
-    rouge (4.5.2)
     rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -722,6 +716,7 @@ GEM
     zeitwerk (2.7.3)
 
 PLATFORMS
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -743,6 +738,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   bump
   bundler-integrity (~> 1.0)
+  cado!
   capybara
   chartkick
   countries
@@ -772,7 +768,6 @@ DEPENDENCIES
   jsbundling-rails
   launchy
   listen (>= 3.5.1)
-  lookbook (>= 2.3.8)
   mapkick-rb (~> 0.1.4)
   mapkick-static
   meta-tags

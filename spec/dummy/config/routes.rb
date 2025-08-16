@@ -8,9 +8,8 @@ Rails.application.routes.draw do
   resources :posts
 
   authenticate :user, ->(user) { user.is_admin? } do
-    scope :admin do
-      get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
-    end
+    # scope :admin do
+    # end
 
     mount_avo do
       scope :resources do
@@ -19,6 +18,8 @@ Rails.application.routes.draw do
       end
 
       put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
+
+      get "custom_tool", to: "tools#custom_tool", as: :custom_tool
     end
 
     # Uncomment to test constraints /123/en/admin
