@@ -80,6 +80,8 @@ module Avo
           # Dynamically create a class with accessors for all unique keys from the records
           keys = array_of_records.flat_map(&:keys).uniq
 
+          Avo.send(:remove_const, class_name) if Avo.const_defined?(class_name, false)
+
           Avo.const_set(
             class_name,
             Class.new do
