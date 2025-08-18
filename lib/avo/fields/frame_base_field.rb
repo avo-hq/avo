@@ -20,7 +20,7 @@ module Avo
       end
 
       def turbo_frame
-        "#{self.class.name.demodulize.to_s.underscore}_show_#{frame_id}"
+        "#{self.class.name.demodulize.to_s.underscore}_show_#{@id}"
       end
 
       def frame_url(add_turbo_frame: true)
@@ -118,10 +118,6 @@ module Avo
       end
 
       private
-
-      def frame_id
-        @id
-      end
 
       def default_view
         Avo.configuration.skip_show_view ? :edit : :show
