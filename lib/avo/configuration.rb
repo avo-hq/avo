@@ -36,7 +36,7 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
-    attr_writer :disabled_features
+    attr_accessor :global_search
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
@@ -102,7 +102,6 @@ module Avo
       @display_license_request_timeout_error = true
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
-      @disabled_features = []
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
@@ -129,6 +128,10 @@ module Avo
       @column_types_mapping = {}
       @resource_row_controls_config = {}
       @clear_license_response_on_deploy = true
+      @global_search = {
+        enabled: true,
+        navigation_section: true
+      }
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
@@ -181,14 +184,6 @@ module Avo
       return "" if @root_path === "/"
 
       @root_path
-    end
-
-    def disabled_features
-      Avo::ExecutionContext.new(target: @disabled_features).handle
-    end
-
-    def feature_enabled?(feature)
-      !disabled_features.map(&:to_sym).include?(feature.to_sym)
     end
 
     def branding
