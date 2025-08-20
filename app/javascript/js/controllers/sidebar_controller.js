@@ -56,7 +56,7 @@ export default class extends Controller {
     this.attachScrollVisibilityAnchor()
 
     // Restore sidebar scroll position
-    if (this.sidebarScrollPosition && window.Avo.configuration.preserve_sidebar_scroll) {
+    if (this.sidebarScrollPosition) {
       document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTo({
         top: this.sidebarScrollPosition,
         behavior: 'instant',
@@ -77,9 +77,7 @@ export default class extends Controller {
   }
 
   attachScrollVisibilityAnchor() {
-    if (window.Avo.configuration.focus_sidebar_menu_item) {
-      scrollSidebarMenuItemIntoView()
-    }
+    scrollSidebarMenuItemIntoView()
   }
 
   toggleSidebar() {
