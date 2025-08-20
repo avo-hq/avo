@@ -59,7 +59,7 @@ module Avo
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
     attr_accessor :clear_license_response_on_deploy
-    attr_accessor :model_generator_enabled
+    attr_accessor :model_generator_hook
 
     def initialize
       @root_path = "/avo"
@@ -130,7 +130,7 @@ module Avo
       @column_types_mapping = {}
       @resource_row_controls_config = {}
       @clear_license_response_on_deploy = true
-      @model_generator_enabled = true
+      @model_generator_hook = true
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
