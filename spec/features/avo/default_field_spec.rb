@@ -105,4 +105,21 @@ RSpec.describe "DefaultField", type: :feature do
     expect(page).to have_text "You might have missed something. Please check the form."
     expect(find("#project_name").value).to have_text "New name for project"
   end
+  describe "default block has access to parent (Comment via User)" do
+    let!(:user) { create :user, first_name: "Brandy", last_name: "Will" }
+
+    it "prefills comment body using parent user when creating via association" do
+      visit "/admin/resources/comments/new?via_relation=user&via_relation_class=User&via_record_id=#{user.to_param}"
+      wait_for_loaded
+
+      expect(page).to have_field id: "comment_body", with: "#{user.first_name}'s comment"
+    end
+
+    it "is nil-safe when no association is provided" do
+      visit "/admin/resources/comments/new"
+      wait_for_loaded
+
+      expect(page).to have_field id: "comment_body", with: ""
+    end
+  end
 end

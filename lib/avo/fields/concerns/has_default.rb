@@ -5,7 +5,13 @@ module Avo
         extend ActiveSupport::Concern
 
         def computed_default_value
-          Avo::ExecutionContext.new(target: default, record: record, view: view, resource: resource).handle
+          Avo::ExecutionContext.new(
+            target: default,
+            record: record,
+            view: view,
+            resource: resource,
+            parent: parent
+          ).handle
         end
       end
     end
