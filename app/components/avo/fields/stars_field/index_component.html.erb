@@ -1,0 +1,7 @@
+<%= index_field_wrapper(**field_wrapper_args, flush: true) do %>
+    <%= render Avo::Fields::Common::StarsComponent.new(
+          value: @field.value,
+          max: @field.max
+        ) %>
+<% end %>
+  
