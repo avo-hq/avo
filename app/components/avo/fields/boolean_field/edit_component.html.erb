@@ -2,24 +2,15 @@
   <div class="h-8 flex items-center">
     <% 
       # Common checkbox attributes
-      common_checkbox_attrs = {
-        value: @field.value,
-        checked: @field.value,
-        disabled: disabled?,
-        autofocus: @autofocus,
-        id: "#{@field.id}_checkbox"
-      }
+      common_checkbox_attrs = common_checkbox_attributes
     %>
     
-    <% if @field.instance_variable_get(:@args)&.dig(:as_toggle) %>
+    <% if as_toggle? %>
       <%# Stimulus controller wrapper %>
       <div data-controller="avo-boolean-toggle">
         <%= @form.check_box @field.id, 
-            class: "sr-only", 
-            data: { 
-              **@field.get_html(:data, view: view, element: :input),
-              avo_boolean_toggle_target: "checkbox"
-            },
+            class: checkbox_classes,
+            data: checkbox_data_attributes,
             **common_checkbox_attrs %>
 
         <%# toggle switch %>
@@ -38,9 +29,9 @@
       </div>
     <% else %>
       <%= @form.check_box @field.id, 
-          class: "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded #{@field.get_html(:classes, view: view, element: :input)}", 
-          data: @field.get_html(:data, view: view, element: :input), 
-          style: @field.get_html(:style, view: view, element: :input),
+          class: checkbox_classes,
+          data: checkbox_data_attributes,
+          style: checkbox_style,
           **common_checkbox_attrs %>
     <% end %>
   </div>
