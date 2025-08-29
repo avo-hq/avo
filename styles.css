@@ -1,0 +1,429 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Animated background */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    animation: backgroundShift 10s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundShift {
+    0% { transform: translateX(-20px) translateY(-20px); }
+    100% { transform: translateX(20px) translateY(20px); }
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 40px 20px 20px;
+    position: relative;
+}
+
+.main-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    animation: titlePulse 3s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.pulse-ring {
+    width: 100px;
+    height: 100px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    animation: pulseRing 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+.pulse-ring::before,
+.pulse-ring::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    animation: pulseRing 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+.pulse-ring::before {
+    animation-delay: 0.5s;
+}
+
+.pulse-ring::after {
+    animation-delay: 1s;
+}
+
+@keyframes pulseRing {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* Main scanning area */
+.scanning-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+    gap: 40px;
+}
+
+.scan-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.left-section {
+    justify-content: flex-end;
+}
+
+.right-section {
+    justify-content: flex-start;
+}
+
+/* Arrow animations */
+.arrow-container {
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    font-size: 4rem;
+    color: #FFD700;
+    font-weight: bold;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    animation: arrowBounce 2s ease-in-out infinite;
+}
+
+.left-arrow .arrow {
+    animation-delay: 0s;
+}
+
+.right-arrow .arrow {
+    animation-delay: 1s;
+}
+
+@keyframes arrowBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(-10px);
+    }
+    60% {
+        transform: translateX(10px);
+    }
+}
+
+/* Instruction cards */
+.instruction-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    min-width: 300px;
+    position: relative;
+    overflow: hidden;
+    animation: cardFloat 4s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.instruction-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+    border-radius: 20px;
+    z-index: -1;
+    animation: borderGlow 3s linear infinite;
+    background-size: 400% 400%;
+}
+
+@keyframes borderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.icon-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.nfc-icon,
+.qr-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    animation: iconSpin 3s linear infinite;
+}
+
+@keyframes iconSpin {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.1); }
+    50% { transform: rotate(180deg) scale(1); }
+    75% { transform: rotate(270deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.tap-waves,
+.scan-lines {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #4ecdc4;
+    animation: ripple 2s linear infinite;
+}
+
+.tap-waves::before,
+.tap-waves::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #4ecdc4;
+    animation: ripple 2s linear infinite;
+}
+
+.tap-waves::before {
+    animation-delay: 0.5s;
+}
+
+.tap-waves::after {
+    animation-delay: 1s;
+}
+
+.scan-lines {
+    border-radius: 10px;
+    animation: scanLine 2s linear infinite;
+}
+
+@keyframes ripple {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes scanLine {
+    0% { transform: translate(-50%, -50%) scaleY(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scaleY(1.5); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scaleY(1); opacity: 1; }
+}
+
+.instruction-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.instruction-subtitle {
+    font-size: 1.3rem;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+
+.action-indicator {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    animation: actionPulse 2s ease-in-out infinite;
+}
+
+@keyframes actionPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    }
+}
+
+/* Center divider */
+.center-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+}
+
+.or-text {
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: orTextGlow 3s ease-in-out infinite;
+}
+
+@keyframes orTextGlow {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.divider-line {
+    width: 4px;
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, #FFD700, transparent);
+    margin: 20px 0;
+    border-radius: 2px;
+    animation: lineGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes lineGlow {
+    0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+    100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+}
+
+/* Footer */
+.footer {
+    padding: 20px;
+    text-align: center;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    border-radius: 25px;
+    color: white;
+    font-size: 1.1rem;
+    backdrop-filter: blur(10px);
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    background: #2ecc71;
+    border-radius: 50%;
+    animation: statusBlink 2s ease-in-out infinite;
+}
+
+@keyframes statusBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Responsive design for iPad landscape */
+@media screen and (min-width: 768px) and (orientation: landscape) {
+    .main-title {
+        font-size: 4rem;
+    }
+    
+    .instruction-card {
+        min-width: 350px;
+        padding: 50px 40px;
+    }
+    
+    .instruction-title {
+        font-size: 2.5rem;
+    }
+    
+    .arrow {
+        font-size: 5rem;
+    }
+}
+
+/* High contrast mode for better visibility */
+@media (prefers-contrast: high) {
+    .instruction-card {
+        background: white;
+        border: 3px solid #000;
+    }
+    
+    .instruction-title {
+        color: #000;
+    }
+    
+    .instruction-subtitle {
+        color: #333;
+    }
+}

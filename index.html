@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passport Scanning Station</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">Welcome to Passport Scanning</h1>
+            <div class="pulse-ring"></div>
+        </header>
+        
+        <div class="scanning-area">
+            <!-- Left Section - NFC Tap -->
+            <div class="scan-section left-section">
+                <div class="arrow-container left-arrow">
+                    <div class="arrow">←</div>
+                </div>
+                <div class="instruction-card">
+                    <div class="icon-container">
+                        <div class="nfc-icon">📱</div>
+                        <div class="tap-waves"></div>
+                    </div>
+                    <h2 class="instruction-title">Tap Your Passport Here</h2>
+                    <p class="instruction-subtitle">Place passport on the left device</p>
+                    <div class="action-indicator">TAP</div>
+                </div>
+            </div>
+
+            <!-- Center Divider -->
+            <div class="center-divider">
+                <div class="or-text">OR</div>
+                <div class="divider-line"></div>
+            </div>
+
+            <!-- Right Section - QR Scan -->
+            <div class="scan-section right-section">
+                <div class="arrow-container right-arrow">
+                    <div class="arrow">→</div>
+                </div>
+                <div class="instruction-card">
+                    <div class="icon-container">
+                        <div class="qr-icon">📷</div>
+                        <div class="scan-lines"></div>
+                    </div>
+                    <h2 class="instruction-title">Scan Your Passport's QR Code</h2>
+                    <p class="instruction-subtitle">Use the right device camera</p>
+                    <div class="action-indicator">SCAN</div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>Scanning Stations Active</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
