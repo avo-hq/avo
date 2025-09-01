@@ -59,6 +59,7 @@ module Avo
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
     attr_accessor :clear_license_response_on_deploy
+    attr_accessor :model_generator_hook
 
     def initialize
       @root_path = "/avo"
@@ -132,6 +133,7 @@ module Avo
         enabled: true,
         navigation_section: true
       }
+      @model_generator_hook = true
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
