@@ -258,6 +258,17 @@ module Avo
       render layout: params[:turbo_frame].blank?
     end
 
+    def search
+      # Do not remove this method, it is implemented on avo-pro
+      # Just a placeholder to avoid:
+      # The search action could not be found for the :authorize_base_action
+      # callback on Avo::UsersController, but it is listed in the controller's
+      # :except option.
+      # Raising for missing callback actions is a new default in Rails 7.1, if you'd
+      # like to turn this off you can delete the option from the environment configurations
+      # or set `config.action_controller.raise_on_missing_callback_actions` to `false`.
+    end
+
     private
 
     def save_record
