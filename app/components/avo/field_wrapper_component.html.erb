@@ -43,7 +43,7 @@
           <div class="text-red-600 mt-2 text-sm"><%= @field.record_errors.full_messages_for(@field.id).to_sentence %></div>
         <% end %>
         <% if help.present? %>
-          <div class="text-gray-600 mt-2 text-sm"><%= help %></div>
+          <div class="text-gray-600 mt-2 text-sm"><%== help %></div>
         <% end %>
       <% end %>
     </div>
