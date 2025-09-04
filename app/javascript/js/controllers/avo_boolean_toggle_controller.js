@@ -4,21 +4,29 @@ export default class extends Controller {
   static targets = ["checkbox", "track", "circle"]
 
   connect() {
-    this.checkboxTarget.addEventListener('change', this.toggle.bind(this))
+    // Initialize classes based on initial state
+    this.applyState(this.checkboxTarget.checked)
+
+    this._boundToggle = this.toggle.bind(this)
+    this.checkboxTarget.addEventListener('change', this._boundToggle)
   }
 
   disconnect() {
-    this.checkboxTarget.removeEventListener('change', this.toggle.bind(this))
+    if (this._boundToggle) this.checkboxTarget.removeEventListener('change', this._boundToggle)
   }
 
-  toggle(event) {
+  toggle() {
     const isChecked = this.checkboxTarget.checked
-    
-    //track background color
-    this.trackTarget.style.backgroundColor = isChecked ? '#3b82f6' : '#d1d5db'
-    
-    //circle position
-    this.circleTarget.style.transform = isChecked ? 'translateX(20px)' : 'translateX(0px)'
+    this.applyState(isChecked)
   }
 
+  applyState(isChecked) {
+    // Track background color via Tailwind classes
+    this.trackTarget.classList.toggle('bg-blue-500', isChecked)
+    this.trackTarget.classList.toggle('bg-gray-300', !isChecked)
+
+    // Circle translation via Tailwind classes
+    this.circleTarget.classList.toggle('translate-x-5', isChecked)
+    this.circleTarget.classList.toggle('translate-x-0', !isChecked)
+  }
 }
