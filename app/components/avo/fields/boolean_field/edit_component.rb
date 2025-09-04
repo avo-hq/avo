@@ -15,7 +15,7 @@ class Avo::Fields::BooleanField::EditComponent < Avo::Fields::EditComponent
 
   def checkbox_data_attributes
     base_data = @field.get_html(:data, view: view, element: :input) || {}
-    
+
     if as_toggle?
       base_data.merge(avo_boolean_toggle_target: "checkbox")
     else
@@ -30,7 +30,7 @@ class Avo::Fields::BooleanField::EditComponent < Avo::Fields::EditComponent
   private
 
   def common_checkbox_attributes
-    {
+    @common_checkbox_attributes ||= {
       value: @field.value,
       checked: @field.value,
       disabled: disabled?,

@@ -1,22 +1,18 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div class="h-8 flex items-center">
-    <% 
-      common_checkbox_attrs = common_checkbox_attributes
-    %>
-    
     <% if as_toggle? %>
       <%# Stimulus controller wrapper %>
       <div data-controller="avo-boolean-toggle">
-        <%= @form.check_box @field.id, 
+        <%= @form.check_box @field.id,
             class: checkbox_classes,
             data: checkbox_data_attributes,
-            **common_checkbox_attrs %>
+            **common_checkbox_attributes %>
 
         <%# toggle switch %>
-        <label for="<%= common_checkbox_attrs[:id] %>" 
+        <label for="<%= common_checkbox_attributes[:id] %>"
                class="relative inline-flex items-center cursor-pointer <%= 'cursor-not-allowed opacity-50' if disabled? %>">
           <%# toggle track %>
-          <div class="relative w-11 h-6 rounded-full transition-all duration-200" 
+          <div class="relative w-11 h-6 rounded-full transition-all duration-200"
                data-avo-boolean-toggle-target="track"
                style="background-color: <%= @field.value ? '#3b82f6' : '#d1d5db' %>;">
             <%# toggle circle %>
@@ -27,11 +23,11 @@
         </label>
       </div>
     <% else %>
-      <%= @form.check_box @field.id, 
+      <%= @form.check_box @field.id,
           class: checkbox_classes,
           data: checkbox_data_attributes,
           style: checkbox_style,
-          **common_checkbox_attrs %>
+          **common_checkbox_attributes %>
     <% end %>
   </div>
 <% end %>
