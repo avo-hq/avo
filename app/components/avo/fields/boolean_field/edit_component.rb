@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Fields::BooleanField::EditComponent < Avo::Fields::EditComponent
-  def as_toggle?
-    @field.instance_variable_get(:@args)&.dig(:as_toggle)
-  end
+  delegate :as_toggle?, to: :@field
 
   def checkbox_classes
     if as_toggle?
