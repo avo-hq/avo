@@ -4,7 +4,6 @@ import ActionController from './controllers/action_controller'
 import ActionsOverflowController from './controllers/actions_overflow_controller'
 import ActionsPickerController from './controllers/actions_picker_controller'
 import AttachmentsController from './controllers/attachments_controller'
-import AvoBooleanToggleController from "./controllers/avo_boolean_toggle_controller"
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardFiltersController from './controllers/card_filters_controller'
@@ -57,7 +56,6 @@ import TrixFieldController from './controllers/fields/trix_field_controller'
 application.register('action', ActionController)
 application.register('actions-overflow', ActionsOverflowController)
 application.register('actions-picker', ActionsPickerController)
-application.register("avo-boolean-toggle", AvoBooleanToggleController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('card-filters', CardFiltersController)

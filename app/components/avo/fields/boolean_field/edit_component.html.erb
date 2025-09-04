@@ -1,24 +1,30 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div class="h-8 flex items-center">
-    <% if as_toggle? %>
-      <%# Stimulus controller wrapper %>
-      <div data-controller="avo-boolean-toggle">
-        <%= @form.check_box @field.id, **common_checkbox_attributes %>
+    <%= content_tag :label,
+      for: @checkbox_id,
+      class: class_names(
+        "relative flex items-center",
+        "opacity-50": disabled?,
+        "cursor-pointer": !disabled?
+      ) do %>
+      <%= @form.check_box @field.id,
+        id: @checkbox_id,
+        value: @field.value,
+        checked: @field.value,
+        disabled: disabled?,
+        autofocus: @autofocus,
+        data:  @field.get_html(:data, view: view, element: :input),
+        style: @field.get_html(:style, view: view, element: :input),
+        class: class_names(
+          "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded",
+          @field.get_html(:classes, view: view, element: :input),
+          "sr-only peer": as_toggle?
+        ) %>
 
-        <%# toggle switch %>
-        <label for="<%= common_checkbox_attributes[:id] %>"
-          class="relative inline-flex items-center cursor-pointer <%= 'cursor-not-allowed opacity-50' if disabled? %>">
-          <%# toggle track %>
-          <div class="relative w-11 h-6 rounded-full transition-colors duration-200 <%= @field.value ? 'bg-blue-500' : 'bg-gray-300' %>"
-               data-avo-boolean-toggle-target="track">
-            <%# toggle circle %>
-            <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-200 shadow-sm transform <%= @field.value ? 'translate-x-5' : 'translate-x-0' %>"
-                 data-avo-boolean-toggle-target="circle"></div>
-          </div>
-        </label>
-      </div>
-    <% else %>
-      <%= @form.check_box @field.id, **common_checkbox_attributes %>
+      <% if as_toggle? %>
+        <div class="block w-10 h-6 rounded-full bg-gray-300 peer-checked:bg-green-500"></div>
+        <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 transform peer-checked:translate-x-4"></div>
+      <% end %>
     <% end %>
   </div>
 <% end %>
