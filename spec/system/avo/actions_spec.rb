@@ -476,6 +476,29 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  describe "reload records" do
+    let!(:post) { create :post, published_at: nil }
+
+    it "grid view" do
+      visit avo.resources_posts_path
+
+      grid_component = find("[id='avo/index/grid_item_component_#{post.to_param}']")
+
+      within grid_component do
+        expect(page).to have_text "Published: ❌"
+        grid_component.hover
+        find("input[type=checkbox]").click
+      end
+
+      open_panel_action(action_name: "Toggle post published")
+      run_action
+
+      within grid_component do
+        expect(page).to have_text "Published: ✅"
+      end
+    end
+  end
+
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }
 

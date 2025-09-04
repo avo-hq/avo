@@ -117,6 +117,7 @@ Avo.configure do |config|
   # config.resource_parent_controller = "Avo::ResourcesController"
   # config.first_sorting_option = :desc # :desc or :asc
   # config.exclude_from_status = []
+  # config.model_generator_hook = true
 
   ## == Branding ==
   # config.branding = {
