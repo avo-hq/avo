@@ -5,6 +5,7 @@ module Avo
 
       attr_reader :countries
       attr_reader :display_code
+      attr_reader :stored_value
 
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_a_country")
@@ -33,6 +34,11 @@ module Avo
 
       def options_for_filter
         select_options
+      end
+
+      def value
+        @stored_value = super
+        @display_code ? @stored_value : countries[@stored_value]
       end
     end
   end

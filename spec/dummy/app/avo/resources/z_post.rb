@@ -9,15 +9,11 @@ class Avo::Resources::ZPost < Avo::BaseResource
   self.default_view_type = :grid
   self.model_class = "Post"
   self.find_record_method = -> {
-    # When using friendly_id, we need to check if the id is a slug or an id.
-    # If it's a slug, we need to use the find_by_slug method.
-    # If it's an id, we need to use the find method.
-    # If the id is an array, we need to use the where method in order to return a collection.
     if id.is_a?(Array)
-      return id.first.to_i == 0 ? query.where(slug: id) : query.where(id: id)
+      query.where(slug: id)
+    else
+      query.find_by_slug(id)
     end
-
-    id.to_i == 0 ? query.find_by_slug(id) : query.find(id)
   }
   self.visible_on_sidebar = false
 
@@ -60,8 +56,8 @@ class Avo::Resources::ZPost < Avo::BaseResource
       suggestions: -> { Post.tags_suggestions },
       enforce_suggestions: true,
       help: "The only allowed values here are `one`, `two`, and `three`"
-    field :cover_photo, as: :file, is_image: true, as_avatar: :rounded, full_width: true, hide_on: [], accept: "image/*"
-    field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, as_avatar: :rounded, format_using: ->(value) { value.present? ? value&.url : nil }
+    field :cover_photo, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*"
+    field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: ->(value) { value.present? ? value&.url : nil }
     field :audio, as: :file, is_audio: true, accept: "audio/*"
     field :is_featured, as: :boolean, visible: -> { Avo::Current.context[:user].is_admin? }
     field :is_published, as: :boolean do

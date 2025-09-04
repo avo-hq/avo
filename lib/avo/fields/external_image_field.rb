@@ -1,9 +1,6 @@
 module Avo
   module Fields
     class ExternalImageField < BaseField
-      attr_reader :width
-      attr_reader :height
-      attr_reader :radius
       attr_reader :link_to_record
 
       def initialize(id, **args, &block)
@@ -11,13 +8,37 @@ module Avo
 
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
 
-        @width = args[:width].present? ? args[:width] : 40
-        @height = args[:height].present? ? args[:height] : 40
-        @radius = args[:radius].present? ? args[:radius] : 0
+        @width = args[:width]
+        @height = args[:height]
+        @radius = args[:radius]
       end
 
       def to_image
         value
+      end
+
+      def width
+        execute_context(@width, default: 40)
+      end
+
+      def height
+        execute_context(@height, default: 40)
+      end
+
+      def radius
+        execute_context(@radius, default: 0)
+      end
+
+      private
+
+      def execute_context(target, default: nil)
+        Avo::ExecutionContext.new(
+          target:,
+          record: @record,
+          resource: @resource,
+          view: @view,
+          field: self
+        ).handle || default
       end
     end
   end

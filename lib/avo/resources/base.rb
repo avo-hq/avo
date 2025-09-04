@@ -73,7 +73,19 @@ module Avo
         query
       }
       class_attribute :find_record_method, default: -> {
-        query.find id
+        # Check if the model uses FriendlyId and handle accordingly
+        if model_class.respond_to?(:friendly_id_config)
+          if id.is_a?(Array)
+            # For arrays, use the slug column
+            query.where(model_class.friendly_id_config.slug_column => id)
+          else
+            # For single values, use find_by_slug method
+            query.friendly.find(id)
+          end
+        else
+          # Standard Rails find behavior for non-FriendlyId models
+          query.find id
+        end
       }
       class_attribute :after_create_path, default: :show
       class_attribute :after_update_path, default: :show
@@ -236,7 +248,8 @@ module Avo
             target: find_record_method,
             query: query,
             id: id,
-            params: params
+            params: params,
+            model_class:
           ).handle
         end
 
@@ -298,12 +311,12 @@ module Avo
 
       unless defined? VIEW_METHODS_MAPPING
         VIEW_METHODS_MAPPING = {
-          index: [:index_fields, :display_fields],
-          show: [:show_fields, :display_fields],
-          edit: [:edit_fields, :form_fields],
-          update: [:edit_fields, :form_fields],
-          new: [:new_fields, :form_fields],
-          create: [:new_fields, :form_fields]
+          index: [:index, :display],
+          show: [:show, :display],
+          edit: [:edit, :form],
+          update: [:edit, :form],
+          new: [:new, :form],
+          create: [:new, :form]
         }
       end
 
@@ -320,13 +333,19 @@ module Avo
 
         # Safe navigation operator is used because the view can be "destroy"
         possible_methods_for_view&.each do |method_for_view|
-          return send(method_for_view) if respond_to?(method_for_view)
+          return send(:"#{method_for_view}_fields") if respond_to?(:"#{method_for_view}_fields")
         end
 
         fields
       end
 
       def fetch_cards
+        possible_methods_for_view = VIEW_METHODS_MAPPING[view.to_sym]
+
+        possible_methods_for_view&.each do |method_for_view|
+          return send(:"#{method_for_view}_cards") if respond_to?(:"#{method_for_view}_cards")
+        end
+
         cards
       end
 
@@ -586,30 +605,6 @@ module Avo
 
       def records_path
         resources_path(resource: self)
-      end
-
-      def avatar_field
-        get_field_definitions.find do |field|
-          field.as_avatar.present?
-        end
-      rescue
-        nil
-      end
-
-      def avatar
-        return avatar_field.to_image if avatar_field.respond_to? :to_image
-
-        return avatar_field.value.variant(resize_to_limit: [480, 480]) if avatar_field.type == "file"
-
-        avatar_field.value
-      rescue
-        nil
-      end
-
-      def avatar_type
-        avatar_field.as_avatar
-      rescue
-        nil
       end
 
       def form_scope

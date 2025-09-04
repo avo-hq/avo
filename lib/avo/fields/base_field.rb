@@ -36,10 +36,15 @@ module Avo
       attr_reader :nullable
       attr_reader :null_values
       attr_reader :format_using
+      attr_reader :format_display_using
+      attr_reader :format_index_using
+      attr_reader :format_show_using
+      attr_reader :format_edit_using
+      attr_reader :format_new_using
+      attr_reader :format_form_using
       attr_reader :autocomplete
       attr_reader :help
       attr_reader :default
-      attr_reader :as_avatar
       attr_reader :stacked
       attr_reader :for_presentation_only
       attr_reader :for_attribute
@@ -71,6 +76,19 @@ module Avo
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using]
+        @format_display_using = args[:format_display_using] || args[:decorate]
+
+        unless Rails.env.production?
+          if args[:decorate].present?
+            puts "[Avo DEPRECATION WARNING]: The `decorate` field configuration option is nolonger supported and will be removed in future versions. Please discontinue its use and solely utilize `format_display_using` instead."
+          end
+        end
+
+        @format_index_using = args[:format_index_using]
+        @format_show_using = args[:format_show_using]
+        @format_edit_using = args[:format_edit_using]
+        @format_new_using = args[:format_new_using]
+        @format_form_using = args[:format_form_using]
         @update_using = args[:update_using]
         @decorate = args[:decorate]
         @placeholder = args[:placeholder]
@@ -78,7 +96,6 @@ module Avo
         @help = args[:help]
         @default = args[:default]
         @visible = args[:visible]
-        @as_avatar = args[:as_avatar] || false
         @html = args[:html]
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]
@@ -172,10 +189,8 @@ module Avo
           final_value = execute_context(@block)
         end
 
-        # Run the value through resolver if present
-        if @format_using.present?
-          final_value = execute_context(@format_using, value: final_value)
-        end
+        # Format value based on available formatter
+        final_value = format_value(final_value)
 
         if @decorate.present? && @view.display?
           final_value = execute_context(@decorate, value: final_value)
@@ -332,6 +347,29 @@ module Avo
         resource = Avo.resource_manager.get_resource_by_model_class(model_class)
 
         resource || (raise Avo::MissingResourceError.new(model_class, self))
+      end
+
+      def format_value(value)
+        final_value = value
+
+        formatters_by_view = {
+          index: [:format_index_using, :format_display_using, :format_using],
+          show: [:format_show_using, :format_display_using, :format_using],
+          edit: [:format_edit_using, :format_form_using, :format_using],
+          new: [:format_new_using, :format_form_using, :format_using]
+        }
+
+        current_view = @view.to_sym
+        applicable_formatters = formatters_by_view[current_view]
+
+        applicable_formatters&.each do |formatter|
+          formatter_value = instance_variable_get(:"@#{formatter}")
+          if formatter_value.present?
+            return execute_context(formatter_value, value: final_value)
+          end
+        end
+
+        final_value
       end
     end
   end

@@ -14,7 +14,8 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_association_id: "user",
       via_reflection_class: "Review",
       via_reflection_id: 1,
-      via_reflection_view: "edit"
+      via_reflection_view: "edit",
+      q: ""
     }
 
     expect(json["users"]["results"].count).to eq 1
@@ -28,7 +29,8 @@ RSpec.feature Avo::SearchController, type: :controller do
       via_association_id: "reviewable",
       via_reflection_class: "Review",
       via_reflection_id: 1,
-      via_reflection_view: "new"
+      via_reflection_view: "new",
+      q: ""
     }
 
     expect(json["teams"]["results"].count).to eq 1

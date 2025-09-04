@@ -21,6 +21,10 @@ class Avo::Actions::TogglePublished < Avo::BaseAction
       end
     end
 
+    if !arguments[:in_discreet_information]
+      reload_records records
+    end
+
     succeed "Purrrfect!"
   end
 end

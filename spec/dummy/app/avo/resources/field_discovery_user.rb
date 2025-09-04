@@ -1,9 +1,6 @@
 class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
   self.model_class = ::User
   self.description = "This is a resource with discovered fields. It will show fields and associations as defined in the model."
-  self.find_record_method = -> {
-    query.friendly.find id
-  }
 
   def fields
     main_panel do
@@ -12,7 +9,7 @@ class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
 
       sidebar do
         with_options only_on: :show do
-          discover_columns only: %i[email], as: :gravatar, link_to_record: true, as_avatar: :circle
+          discover_columns only: %i[email], as: :gravatar, link_to_record: true
           field :heading, as: :heading, label: ""
           discover_columns only: %i[active], name: "Is active"
         end

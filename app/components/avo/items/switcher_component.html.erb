@@ -14,4 +14,6 @@
       <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
     <% end %>
   <% end %>
+<% elsif item.is_collaboration? %>
+  <%= render Avo::Collaborate::TimelineComponent.new(resource: @resource) %>
 <% end %>

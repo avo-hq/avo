@@ -63,7 +63,7 @@ RSpec.feature "belongs_to", type: :feature do
   end
 
   context "edit" do
-    let(:url) { "/admin/resources/posts/#{post.id}/edit" }
+    let(:url) { "/admin/resources/posts/#{post.to_param}/edit" }
 
     describe "without user attached" do
       let!(:post) { create :post, user: nil }

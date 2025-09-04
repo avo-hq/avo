@@ -5,6 +5,10 @@ RSpec.describe "Alert Backtrace", type: :system do
     ENV["TEST_BACKTRACE_ALERT"] = "1"
   end
 
+  after do
+    ENV["TEST_BACKTRACE_ALERT"] = nil
+  end
+
   it "responds with a backtrace alert" do
     visit "/admin/resources/courses/new"
 

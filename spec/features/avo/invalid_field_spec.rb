@@ -15,7 +15,7 @@ RSpec.feature "InvalidField", type: :feature do
 
   describe "when no invalid field is declared" do
     it "shows an alert" do
-      visit "/admin/resources/posts/#{post.id}"
+      visit "/admin/resources/posts/#{post.to_param}"
 
       expect(page.body).not_to include "There's an invalid field configuration for this resource."
       expect(page.body).not_to include "field :invalid, as: invalid_field"

@@ -88,7 +88,9 @@ module Avo
     end
 
     def action_params
-      @action_params ||= params.permit(:id, :authenticity_token, :resource_name, :action_id, :button, :arguments, fields: {})
+      @action_params ||= params.permit(
+        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, fields: {}
+      )
     end
 
     def set_action
@@ -200,7 +202,10 @@ module Avo
 
     def flash_messages
       get_messages.each do |message|
-        flash[message[:type]] = message[:body]
+        flash[message[:type]] = {
+          body: message[:body],
+          timeout: message[:timeout]
+        }
       end
     end
 
