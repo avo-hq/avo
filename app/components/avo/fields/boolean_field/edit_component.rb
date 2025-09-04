@@ -3,13 +3,7 @@
 class Avo::Fields::BooleanField::EditComponent < Avo::Fields::EditComponent
   delegate :as_toggle?, to: :@field
 
-  def checkbox_classes
-    class_names(
-      "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded",
-      @field.get_html(:classes, view: view, element: :input),
-      "sr-only": as_toggle?
-    )
-  end
+  private
 
   def checkbox_data_attributes
     base_data = @field.get_html(:data, view: view, element: :input) || {}
@@ -21,19 +15,20 @@ class Avo::Fields::BooleanField::EditComponent < Avo::Fields::EditComponent
     end
   end
 
-  def checkbox_style
-    @field.get_html(:style, view: view, element: :input)
-  end
-
-  private
-
   def common_checkbox_attributes
     @common_checkbox_attributes ||= {
       value: @field.value,
       checked: @field.value,
       disabled: disabled?,
       autofocus: @autofocus,
-      id: "#{@field.id}_checkbox"
+      id: "#{@field.id}_checkbox",
+      data: checkbox_data_attributes,
+      style: @field.get_html(:style, view: view, element: :input),
+      class: class_names(
+        "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded",
+        @field.get_html(:classes, view: view, element: :input),
+        "sr-only": as_toggle?
+      ),
     }
   end
 end

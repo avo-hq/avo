@@ -3,10 +3,7 @@
     <% if as_toggle? %>
       <%# Stimulus controller wrapper %>
       <div data-controller="avo-boolean-toggle">
-        <%= @form.check_box @field.id,
-            class: checkbox_classes,
-            data: checkbox_data_attributes,
-            **common_checkbox_attributes %>
+        <%= @form.check_box @field.id, **common_checkbox_attributes %>
 
         <%# toggle switch %>
         <label for="<%= common_checkbox_attributes[:id] %>"
@@ -23,11 +20,7 @@
         </label>
       </div>
     <% else %>
-      <%= @form.check_box @field.id,
-          class: checkbox_classes,
-          data: checkbox_data_attributes,
-          style: checkbox_style,
-          **common_checkbox_attributes %>
+      <%= @form.check_box @field.id, **common_checkbox_attributes %>
     <% end %>
   </div>
 <% end %>
