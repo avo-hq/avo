@@ -44,7 +44,7 @@
     "@tiptap/extension-text": "^2.26.1",
     "@tiptap/extension-underline": "^2.26.1",
     "@tiptap/pm": "^2.26.1",
-    "@yaireo/tagify": "^4.35.3",
+    "@yaireo/tagify": "^4.35.4",
     "add": "^2.0.6",
     "autoprefixer": "^10.4.21",
     "chart.js": "^3.9.1",
