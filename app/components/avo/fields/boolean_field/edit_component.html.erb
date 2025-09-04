@@ -1,14 +1,14 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div class="h-8 flex items-center">
     <%= content_tag :label,
-      for: @field.id,
+      for: @field.name,
       class: class_names(
         "relative flex items-center",
         "opacity-50": disabled?,
         "cursor-pointer": !disabled?
       ) do %>
       <%= @form.check_box @field.id,
-        id: @field.id,
+        id: @field.name,
         value: @field.value,
         checked: @field.value,
         disabled: disabled?,
