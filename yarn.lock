@@ -1935,10 +1935,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@yaireo/tagify@^4.35.3":
-  version "4.35.3"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.35.3.tgz#4c23f676a169fd6e6131557f0c3feb3ab70917ec"
-  integrity sha512-YXqNIHoKwZXRxeMSu1E9/CaE/e4rC81RUyg2IaPYh6ZmcAl+7dVi/QoNV1pGu7MLXIqQYpXyXxzDoweIOF7GIw==
+"@yaireo/tagify@^4.35.4":
+  version "4.35.4"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.35.4.tgz#287d8023800763ee594454b5f3855ea0b4b309c2"
+  integrity sha512-kC+1FEAZEM4DrBmn/wKMnpu5D1Lt1oMt/Wkx+VAdK13a/0B/hY+PWMoZKPePM81TX/VIpf7dstTDg6ckOvbzNw==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
