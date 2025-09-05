@@ -1,0 +1,6 @@
+<div class="rating-group" data-component="<%= component_name %>"> 
+  <% (1..@max).each do |i| %>
+    <% star_classes = "star #{'filled' if i <= (@value || 0)} inline-block mr-0.5" %>
+    <%= helpers.svg('heroicons/solid/star', class: star_classes) %>
+  <% end %>
+</div>
