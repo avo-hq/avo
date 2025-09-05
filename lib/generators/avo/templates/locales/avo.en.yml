@@ -16,6 +16,9 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
+    bulk_edit: Bulk edit
+    bulk_update_failure: Failed to update records.
+    bulk_update_success: Bulk action run successfully.
     cancel: Cancel
     choose_a_country: Choose a country
     choose_an_option: Choose an option
