@@ -8,9 +8,9 @@ RSpec.describe "StimulusJS", type: :system do
       visit "/admin/resources/courses/#{course.id}/edit"
 
       expect(page).to have_css "[data-field-id='skills']"
-      uncheck "course_has_skills"
+      uncheck "course_has_skills", allow_label_click: true
       expect(page).not_to have_css "[data-field-id='skills']"
-      check "course_has_skills"
+      check "course_has_skills", allow_label_click: true
       expect(page).to have_css "[data-field-id='skills']"
     end
   end
