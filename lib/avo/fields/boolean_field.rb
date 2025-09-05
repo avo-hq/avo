@@ -26,6 +26,8 @@ module Avo
       def falsy_values
         ["false", "0", @false_value]
       end
+
+      def as_toggle? = !!@args[:as_toggle]
     end
   end
 end
