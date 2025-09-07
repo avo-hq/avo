@@ -54,4 +54,3 @@ RSpec.feature "Stars Field", type: :system do
     end
   end
 end
-
