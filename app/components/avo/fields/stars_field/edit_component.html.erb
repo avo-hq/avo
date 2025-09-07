@@ -9,12 +9,11 @@
          data-stars-field-target="starsContainer"
          data-max="<%= @field.max %>"
          data-current-value="<%= @field.value || 0 %>">
-      <% (1..@field.max).each do |i| %>
-        <% star_classes = "star #{'filled' if i <= (@value || 0)} inline-block mr-0.5" %>
+      <% (1..@field.max).each do |rating_value| %>
         <%= helpers.svg('heroicons/solid/star', 
-                        class: star_classes,
+                        class: class_names("star #{'filled' if rating_value <= (@value || 0)} inline-block mr-0.5"),
                         data: {
-                          star_value: i,
+                          star_value: rating_value,
                           stars_field_target: "star",
                           action: "click->stars-field#setStar mouseenter->stars-field#hoverStar mouseleave->stars-field#unhoverStar"
                         }) %>
