@@ -63,7 +63,7 @@
     "flatpickr": "^4.6.13",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
-    "luxon": "^3.7.1",
+    "luxon": "^3.7.2",
     "mapkick": "^0.2.6",
     "mousetrap": "^1.6.5",
     "postcss": "^8.5.6",
@@ -86,8 +86,8 @@
     "urijs": "^1.19.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.3",
-    "@babel/eslint-parser": "^7.28.0",
+    "@babel/core": "^7.28.4",
+    "@babel/eslint-parser": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@prettier/plugin-ruby": "^2.1.0",
     "esbuild-visualizer": "^0.3.1",
