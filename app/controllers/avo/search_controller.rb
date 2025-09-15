@@ -126,10 +126,6 @@ module Avo
           else
             parent.public_send(:"#{via_relation}=", grandparent)
           end
-        # else
-          # There are some cases where the relation is not in the whitelist
-          # Don't raise an error in these cases since it could be a custom relation or a delegation
-          # raise ArgumentError, "Invalid relation name: #{via_relation}"
         end
       end
 
