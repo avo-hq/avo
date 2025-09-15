@@ -291,7 +291,7 @@ module Avo
     end
 
     def render_error?
-      false
+      Rails.env.development?
     end
   end
 end
