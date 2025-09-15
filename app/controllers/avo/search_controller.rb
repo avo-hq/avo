@@ -115,6 +115,7 @@ module Avo
         parent = reflection_class.new
 
         via_relation = params[:via_relation].to_s
+
         # Whitelist allowed relations to prevent code injection
         if reflection_class.reflections.keys.map(&:to_s).include?(via_relation)
           # Verify if the relation is a collection proxy
@@ -125,8 +126,10 @@ module Avo
           else
             parent.public_send(:"#{via_relation}=", grandparent)
           end
-        else
-          raise ArgumentError, "Invalid relation name: #{via_relation}"
+        # else
+          # There are some cases where the relation is not in the whitelist
+          # Don't raise an error in these cases since it could be a custom relation or a delegation
+          # raise ArgumentError, "Invalid relation name: #{via_relation}"
         end
       end
 
@@ -288,7 +291,7 @@ module Avo
     end
 
     def render_error?
-      Rails.env.development?
+      false
     end
   end
 end
