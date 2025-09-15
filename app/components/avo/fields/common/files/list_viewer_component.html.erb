@@ -4,8 +4,8 @@
       <div class="justify-self-end flex justify-end items-center space-x-3">
         <%= render partial: 'avo/partials/view_toggle_button',
           locals: {
-            available_view_types: available_view_types,
-            view_type: view_type,
+            available_view_types: @available_view_types,
+            view_type: @view_type,
             turbo_frame: @field.id,
           }
         %>
