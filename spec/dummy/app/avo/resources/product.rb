@@ -59,5 +59,6 @@ class Avo::Resources::Product < Avo::BaseResource
     field :image, as: :file, is_image: true
     field :category, as: :select, enum: ::Product.categories
     field :sizes, as: :select, multiple: true, options: {Large: :large, Medium: :medium, Small: :small}
+    field :rating, as: :stars
   end
 end
