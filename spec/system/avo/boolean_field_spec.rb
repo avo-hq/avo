@@ -6,7 +6,7 @@ RSpec.describe "BooleanField", type: :system do
 
     context "show" do
       it "displays the post values" do
-        visit "/admin/resources/posts/#{post.id}"
+        visit "/admin/resources/posts/#{post.to_param}"
 
         expect(page).to have_text "IS FEATURED"
 

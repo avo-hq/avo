@@ -112,9 +112,21 @@ module Avo
         reflection_class = BaseResource.get_model_by_name params[:via_reflection_class]
 
         grandparent = parent_resource_class.find params[:via_parent_resource_id]
-        parent = reflection_class.new(
-          params[:via_relation] => grandparent
-        )
+        parent = reflection_class.new
+
+        via_relation = params[:via_relation].to_s
+
+        # Whitelist allowed relations to prevent code injection
+        if reflection_class.reflections.keys.map(&:to_s).include?(via_relation)
+          # Verify if the relation is a collection proxy
+          # If it is, add the grandparent to the collection
+          # If it is not, set the grandparent as the parent of the relation
+          if parent.public_send(via_relation).is_a?(ActiveRecord::Associations::CollectionProxy)
+            parent.public_send(via_relation) << grandparent
+          else
+            parent.public_send(:"#{via_relation}=", grandparent)
+          end
+        end
       end
 
       Avo::ExecutionContext.new(target: attach_scope, query: query, parent: parent).handle

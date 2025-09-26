@@ -38,7 +38,7 @@ module Generators
 
             # pin to importmap
             say "Pin the new entrypoint to your importmap config"
-            append_to_file Rails.root.join("config", "importmap.rb"), "\n# Avo custom JS entrypoint\npin \"avo.custom\", preload: true\n"
+            append_to_file Rails.root.join("config", "importmap.rb"), "\n# Avo custom JS entrypoint\npin \"avo.custom\"\n"
           end
 
           def install_for_esbuild
