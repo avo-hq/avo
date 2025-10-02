@@ -50,7 +50,11 @@ Once you pull the code down to your machine, modify `spec/dummy/config/database.
 
 ## Running the dummy app
 
-You can run `bin/dev` from the root directory, which will start an overmind (similar to foreman) process for the rails server, jsbundling and cssbundling. Then, navigate to `localhost:3030` and enjoy the app.
+1. Make sure you have [overmind](https://github.com/DarthSim/overmind#installation) or [foreman](https://github.com/ddollar/foreman#installation) installed on your system.
+2. Run ```bin/init``` to install ruby and js dependencies, and to setup the database.
+3. If you chose to use Docker Compose for the previous step, start the services: ```docker compose up```
+4. Run `bin/dev` from the root directory, which will start an overmind (similar to foreman) process for the rails server, jsbundling and cssbundling.
+5. Navigate to `localhost:3030` and enjoy the app.
 
 ## Seeding the database for local development
 
