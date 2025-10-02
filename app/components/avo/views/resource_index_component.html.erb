@@ -43,13 +43,14 @@
               <div class="flex items-center px-4 w-64">
                 <% if show_search_input %>
                   <%= text_field_tag "q", params[:q],
-                        id: nil,
-                        placeholder: t('avo.search.placeholder'),
-                        class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm",
-                        data: {
-                          action: "input->resource-search#search",
-                          "resource-search-target": "input"
-                        }
+                    id: nil,
+                    placeholder: t('avo.search.placeholder'),
+                    class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm",
+                    data: {
+                      action: "input->resource-search#search",
+                      "resource-search-target": "input"
+                    },
+                    autocomplete: "off"
                   %>
                 <% else %>
                   <%# Offset for the space-y-2 property when the search is missing %>
@@ -81,7 +82,6 @@
         turbo_frame: @turbo_frame,
         index_params: @index_params
       ) %>
-      </div>
     <% end %>
   <% end %>
 <% end %>

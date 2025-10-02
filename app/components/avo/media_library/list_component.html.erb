@@ -53,7 +53,7 @@
         <% if @pagy.pages > 1 %>
           <%# xanchor_string is not valid key word argument and it breaks when require "pagy/extras/calendar" %>
           <%# https://github.com/ddnexus/pagy/blob/d70e443872a5b18da4e482454b3c8b4a1c86cb6b/gem/lib/pagy/extras/calendar.rb#L47 %>
-          <%#== helpers.pagy_nav(@pagy, xanchor_string: "data-turbo-frame=\"#{@turbo_frame}\"") %>
+          <%# == helpers.pagy_nav(@pagy, xanchor_string: "data-turbo-frame=\"#{@turbo_frame}\"") %>
           <%== helpers.pagy_nav(@pagy) %>
         <% end %>
       </div>
