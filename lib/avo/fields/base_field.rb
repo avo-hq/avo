@@ -48,6 +48,7 @@ module Avo
       attr_reader :stacked
       attr_reader :for_presentation_only
       attr_reader :for_attribute
+      attr_reader :redacted
 
       # Private options
       attr_reader :computable # if allowed to be computable
@@ -107,6 +108,7 @@ module Avo
         @for_attribute = args[:for_attribute]
         @meta = args[:meta]
         @copyable = args[:copyable] || false
+        @redacted = args[:redacted] || false
 
         @args = args
 
@@ -115,6 +117,10 @@ module Avo
         @computed_value = nil
 
         post_initialize if respond_to?(:post_initialize)
+      end
+
+      def redacted?
+        !!@redacted
       end
 
       def translation_key

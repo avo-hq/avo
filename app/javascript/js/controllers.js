@@ -33,6 +33,7 @@ import PerPageController from './controllers/per_page_controller'
 import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
 import RecordSelectorController from './controllers/record_selector_controller'
+import RedactedToggleController from './controllers/redacted_toggle_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
@@ -94,6 +95,7 @@ application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
+application.register('redacted-toggle', RedactedToggleController)
 application.register('trix-body', TrixBodyController)
 
 // Field controllers

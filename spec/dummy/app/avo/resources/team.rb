@@ -42,7 +42,7 @@ class Avo::Resources::Team < Avo::BaseResource
       rescue
         "nope"
       end
-      field :created_at, as: :date_time, filterable: true
+      field :created_at, as: :date_time, filterable: true, redacted: true
       field :color, as: :color_pickerrr, hide_on: :index, show_on: :preview
       field :invalid, as: :invalid_field
       field :description,
@@ -57,14 +57,14 @@ class Avo::Resources::Team < Avo::BaseResource
         null_values: ["0", "", "null", "nil"],
         show_on: :preview
 
-      field :members_count, as: :number do
+      field :members_count, as: :number, redacted: true do
         record.team_members.length
       end
 
       sidebar do
         field :url, as: :text
-        field :created_at, as: :date_time, hide_on: :forms
-        field :logo, as: :external_image do
+        field :created_at, as: :date_time, hide_on: :forms, redacted: true
+        field :logo, as: :external_image, redacted: true do
           if record&.url
             "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
           end

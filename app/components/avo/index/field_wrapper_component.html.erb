@@ -11,10 +11,32 @@
   <% else %>
     <% if @center_content %>
       <div class="flex items-center justify-center">
-        <%= content %>
+        <% if @field.redacted? %>
+          <div data-controller="redacted-toggle" data-action="click->redacted-toggle#toggle" class="inline-block relative">
+            <div data-redacted-toggle-target="content" class="blur-md">
+              <%= content %>
+            </div>
+            <div data-redacted-toggle-target="overlay" aria-hidden="true" class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+              <span class="text-black font-semibold uppercase tracking-widest text-xs">REDACTED</span>
+            </div>
+          </div>
+        <% else %>
+          <%= content %>
+        <% end %>
       </div>
     <% else %>
-      <%= content %>
+      <% if @field.redacted? %>
+        <div data-controller="redacted-toggle" data-action="click->redacted-toggle#toggle" class="inline-block relative">
+          <div data-redacted-toggle-target="content" class="blur-md">
+            <%= content %>
+          </div>
+          <div data-redacted-toggle-target="overlay" aria-hidden="true" class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+            <span class="text-black font-semibold uppercase tracking-widest text-xs">REDACTED</span>
+          </div>
+        </div>
+      <% else %>
+        <%= content %>
+      <% end %>
     <% end %>
     <% if @field.copyable %>
       <%= render Avo::ClipboardComponent.new(value: @field.value) %>
