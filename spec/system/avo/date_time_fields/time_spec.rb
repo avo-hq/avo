@@ -143,7 +143,8 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses"
 
-        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq "18:30"
+        display_time = ActiveSupport::TimeZone["Europe/Bucharest"].now.dst? ? "19:30" : "18:30"
+        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq display_time
       end
     end
 
@@ -151,7 +152,8 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses/#{course.id}"
 
-        expect(find_field_value_element("starting_at").text).to eq "18:30"
+        display_time = ActiveSupport::TimeZone["Europe/Bucharest"].now.dst? ? "19:30" : "18:30"
+        expect(find_field_value_element("starting_at").text).to eq display_time
       end
     end
 
@@ -159,17 +161,19 @@ RSpec.describe "Time field", type: :system do
       it "sets the proper time without updating" do
         visit "/admin/resources/courses/#{course.id}/edit"
 
-        expect(text_input.value).to eq "18:30"
+        display_time = ActiveSupport::TimeZone["Europe/Bucharest"].now.dst? ? "19:30" : "18:30"
+        expect(text_input.value).to eq display_time
 
         save
 
-        expect(find_field_value_element("starting_at").text).to eq "18:30"
+        expect(find_field_value_element("starting_at").text).to eq display_time
       end
 
       it "sets the proper time with updating" do
         visit "/admin/resources/courses/#{course.id}/edit"
 
-        expect(text_input.value).to eq "18:30"
+        display_time = ActiveSupport::TimeZone["Europe/Bucharest"].now.dst? ? "19:30" : "18:30"
+        expect(text_input.value).to eq display_time
 
         open_picker
         set_picker_hour 17
@@ -196,7 +200,9 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses"
 
-        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq "08:30"
+        display_time = ActiveSupport::TimeZone["America/Los_Angeles"].now.dst? ? "09:30" : "08:30"
+
+        expect(field_element_by_resource_id("starting_at", course.to_param).text).to eq display_time
       end
     end
 
@@ -204,7 +210,8 @@ RSpec.describe "Time field", type: :system do
       it "formats the time" do
         visit "/admin/resources/courses/#{course.id}"
 
-        expect(find_field_value_element("starting_at").text).to eq "08:30"
+        display_time = ActiveSupport::TimeZone["America/Los_Angeles"].now.dst? ? "09:30" : "08:30"
+        expect(find_field_value_element("starting_at").text).to eq display_time
       end
     end
 
@@ -212,18 +219,20 @@ RSpec.describe "Time field", type: :system do
       it "sets the proper time without updating" do
         visit "/admin/resources/courses/#{course.id}/edit"
 
-        expect(text_input.value).to eq "08:30"
+        display_time = ActiveSupport::TimeZone["America/Los_Angeles"].now.dst? ? "09:30" : "08:30"
+        expect(text_input.value).to eq display_time
 
         save
         wait_for_loaded
 
-        expect(find_field_value_element("starting_at").text).to eq "08:30"
+        expect(find_field_value_element("starting_at").text).to eq display_time
       end
 
       it "sets the proper time with updating" do
         visit "/admin/resources/courses/#{course.id}/edit"
 
-        expect(text_input.value).to eq "08:30"
+        display_time = ActiveSupport::TimeZone["America/Los_Angeles"].now.dst? ? "09:30" : "08:30"
+        expect(text_input.value).to eq display_time
 
         open_picker
         set_picker_hour 9
