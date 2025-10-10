@@ -48,7 +48,7 @@ module Avo
         if timezone.present? && !time.utc?
           ActiveSupport::TimeZone.new(timezone).local_to_utc(time)
         else
-          value
+          ActiveSupport::TimeZone.new("UTC").local_to_utc(time)
         end
       end
 
