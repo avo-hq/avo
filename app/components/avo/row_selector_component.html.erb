@@ -5,6 +5,7 @@
     name: t("avo.select_item"),
     title: t("avo.select_item"),
     autocomplete: :off,
+    checked: @checked,
     class: class_names("mx-3 rounded checked:bg-primary-400 focus:checked:!bg-primary-400", {
       "absolute inset-auto left-0 mt-3 z-10 hidden group-hover:block checked:block": @floating,
       "w-5 h-5": @size.to_sym == :lg,

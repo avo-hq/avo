@@ -4,6 +4,7 @@ class Avo::RowSelectorComponent < Avo::BaseComponent
   prop :floating, default: false
   prop :size, default: :md
   prop :index
+  prop :checked, default: false
 
   def data_action
     data = "input->item-selector#toggle input->item-select-all#selectRow"
