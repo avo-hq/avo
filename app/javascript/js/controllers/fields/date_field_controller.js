@@ -115,7 +115,13 @@ export default class extends Controller {
 
     // Set the zone only if the type of field is date time or relative time.
     if (this.fieldHasTime && this.relativeValue) {
-      value = value.setZone(this.displayTimezone)
+      if (this.fieldIsTime) {
+        // Reparse only the time component so Luxon uses today's date, then convert
+        const timeOnly = value.toFormat(RAW_TIME_FORMAT)
+        value = DateTime.fromFormat(timeOnly, RAW_TIME_FORMAT, { zone: 'UTC' }).setZone(this.displayTimezone)
+      } else {
+        value = value.setZone(this.displayTimezone)
+      }
     }
 
     this.context.element.innerText = value.toFormat(this.formatValue)
@@ -163,7 +169,13 @@ export default class extends Controller {
           break
         default:
         case 'time':
-          options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
+          // Reparse only the time so Luxon uses today's date, then convert
+          {
+            const timeOnly = this.parsedValue.toFormat(RAW_TIME_FORMAT)
+            options.defaultDate = DateTime.fromFormat(timeOnly, RAW_TIME_FORMAT, { zone: 'UTC' })
+              .setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue })
+              .toISO()
+          }
           break
         case 'dateTime':
           options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
