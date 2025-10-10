@@ -37,19 +37,11 @@ module Avo
 
         return record if value.blank?
 
-        record.send(:"#{id}=", utc_time(value))
+        utc_value = ActiveSupport::TimeZone.new("UTC").local_to_utc(Time.parse(value))
+
+        record.send(:"#{id}=", utc_value)
 
         record
-      end
-
-      def utc_time(value)
-        time = Time.parse(value)
-
-        if timezone.present? && !time.utc?
-          ActiveSupport::TimeZone.new(timezone).local_to_utc(time)
-        else
-          ActiveSupport::TimeZone.new("UTC").local_to_utc(time)
-        end
       end
 
       def timezone
