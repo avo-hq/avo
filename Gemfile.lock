@@ -1,20 +1,20 @@
 PATH
   remote: ../avo-loaders
   specs:
-    avo-loaders (4.0.1.alpha)
+    avo-loaders (4.0.2.alpha)
       zeitwerk (>= 2.6.12)
 
 PATH
   remote: .
   specs:
-    avo (4.0.1.alpha)
+    avo (4.0.2.alpha)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
       avo-heroicons (>= 0.1.1)
-      avo-loaders (= 4.0.1.alpha)
+      avo-loaders (= 4.0.2.alpha)
       docile
       inline_svg
       meta-tags
