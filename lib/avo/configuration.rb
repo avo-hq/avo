@@ -196,24 +196,6 @@ module Avo
       Avo::ExecutionContext.new(target: @app_name).handle
     end
 
-    def license=(value)
-      if Rails.env.development?
-        puts "[Avo DEPRECATION WARNING]: The `config.license` configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `license_key` instead."
-      end
-    end
-
-    def license
-      gems = Gem::Specification.map {|gem| gem.name}
-
-      @license ||= if gems.include?("avo-advanced")
-        "advanced"
-      elsif gems.include?("avo-pro")
-        "pro"
-      elsif gems.include?("avo")
-        "community"
-      end
-    end
-
     def resource_default_view=(view)
       @resource_default_view = Avo::ViewInquirer.new(view.to_s)
     end
@@ -230,17 +212,20 @@ module Avo
     # If it's one of rejected cache stores, we'll use the FileStore.
     # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
     def computed_cache_store
+      memory_store_instance = ActiveSupport::Cache.lookup_store(:memory_store)
+      file_store_instance = ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+
       -> {
         if Rails.env.production?
           if Rails.cache.class.to_s.in?(production_rejected_cache_stores)
-            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+            file_store_instance
           else
             Rails.cache
           end
         elsif Rails.env.test?
           Rails.cache
         else
-          ActiveSupport::Cache.lookup_store(:memory_store)
+          memory_store_instance
         end
       }
     end

@@ -88,6 +88,7 @@ module Avo
       Avo::Current.error_manager = Avo::ErrorManager.build
       # Check rails version issues only on NON Production environments
       unless Rails.env.production?
+        @license_tier = Avo::Licensing::HQ.new.response[:id]
         check_rails_version_issues
         display_menu_editor_warning
       end
@@ -162,7 +163,7 @@ module Avo
     end
 
     def check_rails_version_issues
-      if Rails.version.start_with?("7.1") && Avo.configuration.license.in?(["pro", "advanced"])
+      if Rails.version.start_with?("7.1") && @license_tier.in?(["pro", "advanced"])
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
           target: "_blank",
@@ -177,7 +178,7 @@ module Avo
     end
 
     def display_menu_editor_warning
-      if Avo.configuration.license == "community" && has_main_menu?
+      if @license_tier == "community" && has_main_menu?
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/menu-editor.html",
           target: "_blank",
