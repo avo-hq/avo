@@ -1,7 +1,7 @@
 PATH
-  remote: ../avo-loaders
+  remote: ../avo-licensing
   specs:
-    avo-loaders (4.0.3.alpha)
+    avo-licensing (4.0.3.alpha)
       zeitwerk (>= 2.6.12)
 
 PATH
@@ -14,7 +14,7 @@ PATH
       activesupport (>= 6.1)
       addressable
       avo-heroicons (>= 0.1.1)
-      avo-loaders (= 4.0.3.alpha)
+      avo-licensing (= 4.0.3.alpha)
       docile
       inline_svg
       meta-tags
@@ -746,7 +746,7 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
-  avo-loaders!
+  avo-licensing!
   avo-money_field
   avo-record_link_field
   aws-sdk-s3
