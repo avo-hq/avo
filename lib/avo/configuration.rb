@@ -235,17 +235,20 @@ module Avo
     # If it's one of rejected cache stores, we'll use the FileStore.
     # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
     def computed_cache_store
+      memory_store_instance = ActiveSupport::Cache.lookup_store(:memory_store)
+      file_store_instance = ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+
       -> {
         if Rails.env.production?
           if Rails.cache.class.to_s.in?(production_rejected_cache_stores)
-            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+            file_store_instance
           else
             Rails.cache
           end
         elsif Rails.env.test?
           Rails.cache
         else
-          ActiveSupport::Cache.lookup_store(:memory_store)
+          memory_store_instance
         end
       }
     end
