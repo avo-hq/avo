@@ -1,20 +1,20 @@
 PATH
   remote: ../avo-licensing
   specs:
-    avo-licensing (4.0.7.alpha)
+    avo-licensing (4.0.8.alpha)
       zeitwerk (>= 2.6.12)
 
 PATH
   remote: .
   specs:
-    avo (4.0.7.alpha)
+    avo (4.0.8.alpha)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
       avo-heroicons (>= 0.1.1)
-      avo-licensing (= 4.0.7.alpha)
+      avo-licensing (= 4.0.8.alpha)
       docile
       inline_svg
       meta-tags
