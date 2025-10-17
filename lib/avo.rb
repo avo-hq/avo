@@ -79,6 +79,9 @@ module Avo
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
       Avo.plugin_manager.reset
+      # Run load hooks for plugins to include them in the app.
+      # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
+      ActiveSupport.run_load_hooks(:avo_plugin_include, self)
       ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
