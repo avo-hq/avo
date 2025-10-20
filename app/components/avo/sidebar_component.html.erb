@@ -12,12 +12,9 @@
       <div class="space-y-6 mb-4">
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>
 
-        <% if Avo.plugin_manager.installed?("avo-menu") && Avo.has_main_menu? %>
-          <% Avo.main_menu.items.each do |item| %>
-            <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
-          <% end %>
+        <% if render_custom_sidebar? %>
+          <%= render custom_sidebar_component %>
         <% else %>
-
           <% if dashboards.present? %>
             <div>
               <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.dashboards'), icon: helpers.svg("avo/dashboards", class: 'h-4') %>

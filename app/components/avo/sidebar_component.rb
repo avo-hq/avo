@@ -27,4 +27,15 @@ class Avo::SidebarComponent < Avo::BaseComponent
   def stimulus_target
     @for_mobile ? "mobileSidebar" : "sidebar"
   end
+
+  def custom_sidebar_component
+    Avo::Sidebar::CustomSidebarComponent.new
+  end
+
+  def render_custom_sidebar?
+    return false unless Avo.plugin_manager.installed?("avo-menu")
+    return false unless Avo.has_main_menu?
+
+    custom_sidebar_component.render?
+  end
 end
