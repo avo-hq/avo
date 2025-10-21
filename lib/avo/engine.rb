@@ -52,14 +52,61 @@ module Avo
       # More on this: https://github.com/fxn/zeitwerk/issues/250
       avo_directory = Rails.root.join("app", "avo").to_s
       engine_avo_directory = Avo::Engine.root.join("app", "avo").to_s
+      # Additional Avo namespaces managed outside app/avo
+      host_controllers_dir = Rails.root.join("app", "controllers", "avo").to_s
+      engine_controllers_dir = Avo::Engine.root.join("app", "controllers", "avo").to_s
+      host_helpers_dir = Rails.root.join("app", "helpers", "avo").to_s
+      engine_helpers_dir = Avo::Engine.root.join("app", "helpers", "avo").to_s
+      host_components_dir = Rails.root.join("app", "components", "avo").to_s
+      engine_components_dir = Avo::Engine.root.join("app", "components", "avo").to_s
 
-      [avo_directory, engine_avo_directory].each do |directory_path|
+      [
+        avo_directory,
+        engine_avo_directory,
+        host_controllers_dir,
+        engine_controllers_dir,
+        host_helpers_dir,
+        engine_helpers_dir,
+        host_components_dir,
+        engine_components_dir
+      ].each do |directory_path|
         ActiveSupport::Dependencies.autoload_paths.delete(directory_path)
+        Rails.autoloaders.main.do_not_eager_load(directory_path)
+        Rails.autoloaders.main.ignore(directory_path)
+      end
 
-        if Dir.exist?(directory_path)
-          Rails.autoloaders.main.push_dir(directory_path, namespace: Avo)
-          app.config.watchable_dirs[directory_path] = [:rb]
-        end
+      # Load Avo app code (both host app and engine) with a dedicated Zeitwerk loader
+      # that ignores global acronyms, so Avo constants camelize in the standard way
+      # (e.g., `url_helpers` -> `UrlHelpers`).
+      unless defined?(Avo::APP_AUTOLOADER)
+        require_relative "ignore_acronyms_inflector"
+
+        Avo::APP_AUTOLOADER = Zeitwerk::Loader.new
+        Avo::APP_AUTOLOADER.tag = "avo-app"
+        Avo::APP_AUTOLOADER.inflector = Avo::IgnoreAcronymsInflector.new
+        Avo::APP_AUTOLOADER.enable_reloading if Rails.env.development?
+      end
+
+      [
+        avo_directory,
+        engine_avo_directory,
+        host_controllers_dir,
+        engine_controllers_dir,
+        host_helpers_dir,
+        engine_helpers_dir,
+        host_components_dir,
+        engine_components_dir
+      ].each do |directory_path|
+        next unless Dir.exist?(directory_path)
+        Avo::APP_AUTOLOADER.push_dir(directory_path, namespace: Avo)
+      end
+
+      Avo::APP_AUTOLOADER.setup
+
+      # Tie the Avo loader into Rails reloading lifecycle in development.
+      if Rails.env.development?
+        app.reloaders << Avo::APP_AUTOLOADER
+        app.reloader.to_run { Avo::APP_AUTOLOADER.reload }
       end
 
       # Add the mount_avo method to Rails
