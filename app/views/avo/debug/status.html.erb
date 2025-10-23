@@ -11,7 +11,6 @@
     'app_name',
   ].excluding(Avo.configuration.exclude_from_status)
 
-  hq_payload = Avo::Licensing::HQ.new(request).payload
 %>
 <div class="flex flex-col">
   <%= render Avo::PanelComponent.new(name: 'Avo Status', description: 'Use this page to debug your Avo instance.') do |c| %>
