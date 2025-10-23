@@ -105,7 +105,7 @@ GEM
     acts-as-taggable-on (12.0.0)
       activerecord (>= 7.1, < 8.1)
       zeitwerk (>= 2.4, < 3.0)
-    acts_as_list (1.2.4)
+    acts_as_list (1.2.6)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
     actual_db_schema (0.8.6)
@@ -131,8 +131,8 @@ GEM
       money-rails (~> 1.12)
     avo-record_link_field (0.0.2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1173.0)
-    aws-sdk-core (3.233.0)
+    aws-partitions (1.1175.0)
+    aws-sdk-core (3.234.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -140,11 +140,11 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.113.0)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-kms (1.115.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.200.0)
-      aws-sdk-core (~> 3, >= 3.231.0)
+    aws-sdk-s3 (1.201.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -156,7 +156,7 @@ GEM
     backport (1.2.0)
     base64 (0.3.0)
     bcrypt (3.1.20)
-    benchmark (0.4.1)
+    benchmark (0.5.0)
     benchmark-ips (2.14.0)
     better_html (2.2.0)
       actionview (>= 7.0)
@@ -190,7 +190,7 @@ GEM
     connection_pool (2.5.4)
     countries (8.0.4)
       unaccent (~> 0.3)
-    crack (1.0.0)
+    crack (1.0.1)
       bigdecimal
       rexml
     crass (1.0.6)
@@ -385,7 +385,8 @@ GEM
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    mail (2.8.1)
+    mail (2.9.0)
+      logger
       mini_mime (>= 0.1.1)
       net-imap
       net-pop
@@ -448,7 +449,7 @@ GEM
       rails (>= 6.0.0)
     prettier_print (1.2.1)
     prettyprint (0.2.0)
-    prism (1.5.2)
+    prism (1.6.0)
     prop_initializer (0.2.0)
       zeitwerk (>= 2.6.18)
     psych (3.3.4)
@@ -532,7 +533,7 @@ GEM
       nokogiri
     rexml (3.4.4)
     ripper-tags (1.0.2)
-    rspec-core (3.13.5)
+    rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
