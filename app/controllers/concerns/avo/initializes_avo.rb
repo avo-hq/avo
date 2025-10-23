@@ -7,7 +7,7 @@ module Avo
       Avo::Current.view_context = view_context
       Avo.init
       # TODO: Simplify this
-      Avo::Current.license = Licensing::LicenseManager.new(Licensing::HQ.new.response).license
+      Avo::Current.license = Licensing::LicenseManager.license
 
       # Output a warning in the logs if the license is invalid
       if Avo::Current.license.invalid?

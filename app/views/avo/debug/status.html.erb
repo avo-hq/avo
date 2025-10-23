@@ -1,16 +1,16 @@
 <%
   license = Avo.license
-  information_items = [
-    'license_key',
-    'ruby_version',
-    'rails_version',
-    'environment',
-    'host',
-    'port',
-    'ip',
-    'app_name',
-  ].excluding(Avo.configuration.exclude_from_status)
 
+  information_items = {
+    license_key: Avo.configuration.license_key,
+    ruby_version: RUBY_VERSION,
+    rails_version: Rails::VERSION::STRING,
+    environment: Rails.env,
+    host: Avo::Current.request&.host,
+    port: Avo::Current.request&.port,
+    ip: Avo::Current.request&.ip,
+    app_name: Avo.configuration.app_name,
+  }.stringify_keys.except(*Avo.configuration.exclude_from_status)
 %>
 <div class="flex flex-col">
   <%= render Avo::PanelComponent.new(name: 'Avo Status', description: 'Use this page to debug your Avo instance.') do |c| %>
@@ -52,16 +52,16 @@
               <% end %>
               <div class="mt-4">
                 <dl class="flex flex-col">
-                  <% information_items.each do |item| %>
+                  <% information_items.each do |key, value| %>
                     <div>
-                      <dt class="font-semibold text-sm"><%= item.humanize %></dt>
-                      <dd><%= license.response[item] %></dd>
+                      <dt class="font-semibold text-sm"><%= key.humanize %></dt>
+                      <dd><%= value %></dd>
                     </div>
                   <% end %>
                     <dt class="font-semibold text-sm">Last fetched at</dt>
-                    <dd><%= license.response['fetched_at'] %> <br>
-                      <% if license.response['fetched_at'].present? %>
-                        (<%= time_ago_in_words license.response['fetched_at'] %> ago)
+                    <dd><%= license.fetched_at %> <br>
+                      <% if license.fetched_at.present? %>
+                        (<%= time_ago_in_words license.fetched_at %> ago)
                       <% end %>
                     </dd>
                   <div>
