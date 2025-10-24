@@ -9,6 +9,10 @@ export default class extends Controller {
   // add another timer which starts on this method and stops on mouseleft method
   mouseLeftTimer = null
 
+  anchor = null
+
+  debug = false
+
   startMouseLeftTimer() {
     this.mouseLeftTimer = performance.now()
   }
@@ -19,33 +23,27 @@ export default class extends Controller {
   }
 
   mouseEntered(event) {
-    this.startMouseLeftTimer()
-    // add timer to this method and console log the time it took to execute
-    const startTime = performance.now()
-    // console.log('mouseEntered', event.target)
-    // const isLink = event.target.closest('a')
+    if (this.debug) {
+      console.log('mouseEntered')
+      this.startMouseLeftTimer()
+    }
     const row = event.target.closest('tr')
     const url = row.dataset.visitPath
 
     if (url) {
-      console.log('is link', window.Turbolinks.session.linkPrefetchObserver, url)
-      const anchor = this.createAnchor(url)
-      console.log('anchor', anchor)
-      // # simulate a hover event on the anchor
-      anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
-      // setTimeout(() => {
-      //   anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
-      // }, 100)
-      // console.log('t', t)
+      this.anchor = this.createAnchor(url)
+      this.anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
     }
-    // are these seconds or milliseconds?
-    const timeTaken = performance.now() - startTime
-    console.log('time taken', timeTaken, 'milliseconds')
   }
 
-  mouseLeft(event) {
-    console.log('mouseLeft', event.target)
-    this.stopMouseLeftTimer()
+  mouseLeft() {
+    if (this.anchor) {
+      this.anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
+    }
+    if (this.debug) {
+      console.log('mouseLeft')
+      this.stopMouseLeftTimer()
+    }
   }
 
   createAnchor(url) {
