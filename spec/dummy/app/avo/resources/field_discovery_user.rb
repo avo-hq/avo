@@ -7,7 +7,7 @@ class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
       discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
       discover_associations only: %i[cv_attachment]
 
-      sidebar do
+      # sidebar do
         with_options only_on: :show do
           discover_columns only: %i[email], as: :gravatar, link_to_record: true
           field :heading, as: :heading, label: ""
@@ -23,7 +23,7 @@ class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
           field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
           discover_columns only: %i[custom_css]
         end
-      end
+      # end
     end
 
     discover_associations only: %i[posts]
