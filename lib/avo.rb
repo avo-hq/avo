@@ -134,6 +134,8 @@ module Avo
     end
 
     def check_rails_version_issues
+      return if Rails.env.test?
+
       if Rails.version.start_with?("7.1")
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
