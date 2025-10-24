@@ -34,7 +34,6 @@ class Avo::SidebarComponent < Avo::BaseComponent
 
   def render_custom_sidebar?
     return false unless Avo.plugin_manager.installed?("avo-menu")
-    return false unless Avo.has_main_menu?
 
     custom_sidebar_component.render?
   end

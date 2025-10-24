@@ -90,7 +90,6 @@ RSpec.configure do |config|
   config.include Requests::JsonHelpers, type: :controller
   config.include TestHelpers::DisableAuthentication, type: :system
   config.include TestHelpers::DisableAuthentication, type: :feature
-  config.include TestHelpers::DisableHQRequest
   config.include TestHelpers::AvoHelpers, type: :feature
   config.include TestHelpers::AvoHelpers, type: :system
   config.include TestHelpers::FilterHelpers, type: :feature
@@ -148,12 +147,6 @@ RSpec.configure do |config|
   config.after(:example) { clear_downloads }
 
   config.around(:example, type: :system) do |example|
-    # Stub license request for system tests.
-    stub_request(:post, Avo::Licensing::HQ::ENDPOINT).to_return(
-      status: 200,
-      body: {}.to_json,
-      headers: json_headers
-    )
     ENV["RUN_WITH_NULL_LICENSE"] = "1"
 
     WebMock.disable_net_connect!(

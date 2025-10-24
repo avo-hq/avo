@@ -70,7 +70,7 @@ module Avo
     attr_reader :cache_store
     attr_reader :field_manager
 
-    delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
+    delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
     # Runs when the app boots up
     def boot
@@ -91,9 +91,9 @@ module Avo
       Avo::Current.error_manager = Avo::ErrorManager.build
       # Check rails version issues only on NON Production environments
       unless Rails.env.production?
-        @license_tier = Avo::Licensing::HQ.new.response[:id]
         check_rails_version_issues
         display_menu_editor_warning
+        display_profile_menu_editor_warning
       end
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
       Avo::Current.tool_manager = Avo::Tools::ToolManager.build
@@ -109,44 +109,12 @@ module Avo
         .to_s
     end
 
-    def main_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
-
-      # Return empty menu if the app doesn't have the profile menu configured
-      return Avo::Menu::Builder.new.build unless has_main_menu?
-
-      Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
-    end
-
-    def profile_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
-
-      # Return empty menu if the app doesn't have the profile menu configured
-      return Avo::Menu::Builder.new.build unless has_profile_menu?
-
-      Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
-    end
-
     def app_status
-      license.valid?
+      true
     end
 
     def avo_dynamic_filters_installed?
       defined?(Avo::DynamicFilters).present?
-    end
-
-    def has_main_menu?
-      return false if Avo.license.lacks_with_trial(:menu_editor)
-      return false if Avo.configuration.main_menu.nil?
-
-      true
-    end
-
-    def has_profile_menu?
-      return false if Avo.license.lacks_with_trial(:menu_editor)
-      return false if Avo.configuration.profile_menu.nil?
-
-      true
     end
 
     def mount_engines
@@ -166,7 +134,7 @@ module Avo
     end
 
     def check_rails_version_issues
-      if Rails.version.start_with?("7.1") && @license_tier.in?(["pro", "advanced"])
+      if Rails.version.start_with?("7.1")
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
           target: "_blank",
@@ -181,13 +149,23 @@ module Avo
     end
 
     def display_menu_editor_warning
-      if @license_tier == "community" && has_main_menu?
-        Avo.error_manager.add({
-          url: "https://docs.avohq.io/3.0/menu-editor.html",
-          target: "_blank",
-          message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
-        })
-      end
+      return if Avo.configuration.main_menu.nil?
+
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/menu-editor.html",
+        target: "_blank",
+        message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
+      })
+    end
+
+    def display_profile_menu_editor_warning
+      return if Avo.configuration.profile_menu.nil?
+
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/menu-editor.html#profile-menu",
+        target: "_blank",
+        message: "The profile menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
+      })
     end
   end
 end

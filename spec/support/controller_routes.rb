@@ -18,13 +18,4 @@ module TestHelpers
       end
     end
   end
-
-  module DisableHQRequest
-    extend ActiveSupport::Concern
-    included do
-      before do
-        stub_pro_license_request
-      end
-    end
-  end
 end

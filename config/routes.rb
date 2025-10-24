@@ -42,9 +42,6 @@ Avo::Engine.routes.draw do
 
   scope "/avo_private", as: "avo_private" do
     get "/status", to: "debug#status", as: "status"
-    post "/status/send_to_hq", to: "debug#send_to_hq", as: "send_to_hq"
-    get "/debug/report", to: "debug#report", as: "debug_report"
-    post "/debug/refresh_license", to: "debug#refresh_license"
   end
 
   resource :color_scheme
