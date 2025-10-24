@@ -6,6 +6,57 @@ export default class extends Controller {
     this.#bindSelectionEvents()
   }
 
+  // add another timer which starts on this method and stops on mouseleft method
+  mouseLeftTimer = null
+
+  startMouseLeftTimer() {
+    this.mouseLeftTimer = performance.now()
+  }
+
+  stopMouseLeftTimer() {
+    this.mouseLeftTimer = performance.now() - this.mouseLeftTimer
+    console.log('time taken', this.mouseLeftTimer, 'milliseconds')
+  }
+
+  mouseEntered(event) {
+    this.startMouseLeftTimer()
+    // add timer to this method and console log the time it took to execute
+    const startTime = performance.now()
+    // console.log('mouseEntered', event.target)
+    // const isLink = event.target.closest('a')
+    const row = event.target.closest('tr')
+    const url = row.dataset.visitPath
+
+    if (url) {
+      console.log('is link', window.Turbolinks.session.linkPrefetchObserver, url)
+      const anchor = this.createAnchor(url)
+      console.log('anchor', anchor)
+      // # simulate a hover event on the anchor
+      anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
+      // setTimeout(() => {
+      //   anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
+      // }, 100)
+      // console.log('t', t)
+    }
+    // are these seconds or milliseconds?
+    const timeTaken = performance.now() - startTime
+    console.log('time taken', timeTaken, 'milliseconds')
+  }
+
+  mouseLeft(event) {
+    console.log('mouseLeft', event.target)
+    this.stopMouseLeftTimer()
+  }
+
+  createAnchor(url) {
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.rel = 'noopener noreferrer'
+    document.body.appendChild(anchor)
+
+    return anchor
+  }
+
   visitRecord(event) {
     if (event.type !== 'click') {
       return
