@@ -1,7 +1,49 @@
 #!/usr/bin/env sh
 
+set -e
+
 PORT="${PORT:-3030}"
 export PORT
+
+# Function to read config value from dev-setup file
+read_config() {
+  key="$1"
+  if [ -f "dev-setup" ]; then
+    grep "^${key}:" dev-setup | cut -d':' -f2- | sed 's/^ *//'
+  fi
+}
+
+# Run setup if dev-setup config file doesn't exist
+if [ ! -f "dev-setup" ]; then
+  echo "This is the first time you're running the development server."
+  echo "Let's setup the project for you. This should take under a minute."
+  echo "--------------------------------"
+  echo "Running initial setup (bin/init)..."
+  if bin/init; then
+    echo "Setup completed successfully."
+  else
+    echo "Setup failed. Please check the output above and try again."
+    exit 1
+  fi
+fi
+
+# Read configuration from dev-setup file
+use_docker=$(read_config "use-docker-db")
+docker_cmd=$(read_config "docker-cmd")
+
+# If using Docker DB, ensure the db service is up before starting dev processes
+if [ "$use_docker" = "true" ] && [ -n "$docker_cmd" ]; then
+  if ! command -v docker >/dev/null 2>&1; then
+    echo "Docker is required but not found." >&2
+    exit 1
+  fi
+
+  # Start db service if not running
+  if ! $docker_cmd ps --services --filter "status=running" 2>/dev/null | grep -q '^db$'; then
+    echo "Starting Docker db service..."
+    $docker_cmd up -d db
+  fi
+fi
 
 if command -v overmind &> /dev/null; then
   overmind start -f Procfile.dev "$@"

@@ -40,16 +40,35 @@ app_root do
   run! '(cd spec/dummy; yarn)'
   run! '(cp spec/dummy/.env.test.sample spec/dummy/.env.test)'
 
+  # Determine docker compose command
+  compose_cmd = ''
   if use_docker == 'y'
+    compose_cmd =
+      if system('docker compose version > /dev/null 2>&1')
+        'docker compose'
+      elsif system('docker-compose version > /dev/null 2>&1')
+        'docker-compose'
+      else
+        abort('Neither "docker compose" nor "docker-compose" is available. Please install Docker Compose.')
+      end
+
     header 'Creating the Docker volume'
     run! 'docker volume create --name=avo-db-data'
 
     header 'Creating and running the Docker image'
-    run! 'docker-compose up -d'
+    run! "#{compose_cmd} up -d"
   end
 
+  # Create dev-setup configuration file
+  header 'Creating dev-setup configuration'
+  config = []
+  config << "use-docker-db: #{use_docker == 'y' ? 'true' : 'false'}"
+  config << "docker-cmd: #{compose_cmd}" unless compose_cmd.empty?
+  config << "setup-completed: true"
+  File.write('dev-setup', config.join("\n") + "\n")
+
   header 'Preparing the database'
-  run! 'bin/rails db:setup'
+  # run! 'bin/rails db:setup'
 
   header 'Building assets'
   run! 'yarn build:js'
@@ -58,6 +77,6 @@ app_root do
 
   if use_docker == 'y'
     header 'Stopping the Docker image'
-    run! 'docker-compose stop'
+    run! "#{compose_cmd} stop"
   end
 end

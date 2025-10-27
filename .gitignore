@@ -78,3 +78,5 @@ brakeman_results.html
 .env
 .env.test
 *~
+
+dev-setup
