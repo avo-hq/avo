@@ -1,5 +1,16 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+
+# Ensure overmind gem is installed
+begin
+  gem 'overmind'
+rescue Gem::LoadError
+  puts "Overmind gem not found. Installing..."
+  system('gem install overmind') || abort("Failed to install Overmind gem.")
+  Gem.clear_paths
+end
+
 require_relative 'helpers'
 
 app_root do
