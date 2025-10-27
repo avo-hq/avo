@@ -385,7 +385,8 @@ module Avo
           table_row_components << component_to_replace.new(
             resource: resource,
             header_fields: row_fields.map(&:table_header_label),
-            fields: row_fields
+            fields: row_fields,
+            row_selector_checked: @action.records_to_reload.include?(record)
           )
         end
 
@@ -410,7 +411,7 @@ module Avo
         @action.records_to_reload.map do |record|
           turbo_stream.replace(
             "#{component_to_replace.name.underscore}_#{record.to_param}",
-            component_to_replace.new(resource: @resource.dup.hydrate(record:, view: :index))
+            component_to_replace.new(resource: @resource.dup.hydrate(record:, view: :index), grid_item_checked: @action.records_to_reload.include?(record))
           )
         end
       }

@@ -18,7 +18,7 @@
   <% if @resource.record_selector %>
     <td class="item-selector-cell w-10">
       <div class="flex justify-center h-full">
-        <%= render Avo::RowSelectorComponent.new floating: false, index: @index %>
+        <%= render Avo::RowSelectorComponent.new floating: false, index: @index, checked: @row_selector_checked %>
       </div>
     </td>
   <% end %>

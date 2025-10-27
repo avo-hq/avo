@@ -14,6 +14,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
   prop :fields
   prop :header_fields
   prop :index
+  prop :row_selector_checked, default: false
 
   def resource_controls_component
     Avo::Index::ResourceControlsComponent.new(
