@@ -7,7 +7,7 @@ module Generators
 
       def handle
         if defined? ::Avo::Engine
-          output "Avo #{::Avo.configuration.license} #{::Avo::VERSION}"
+          output "Avo #{::Avo::VERSION}"
         else
           output "Avo not installed."
         end

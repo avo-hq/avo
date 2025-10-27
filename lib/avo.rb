@@ -70,7 +70,7 @@ module Avo
     attr_reader :cache_store
     attr_reader :field_manager
 
-    delegate :license, :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
+    delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
     # Runs when the app boots up
     def boot
@@ -79,6 +79,9 @@ module Avo
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
       Avo.plugin_manager.reset
+      # Run load hooks for plugins to include them in the app.
+      # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
+      ActiveSupport.run_load_hooks(:avo_plugin_include, self)
       ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
     end
@@ -90,6 +93,7 @@ module Avo
       unless Rails.env.production?
         check_rails_version_issues
         display_menu_editor_warning
+        display_profile_menu_editor_warning
       end
       Avo::Current.resource_manager = Avo::Resources::ResourceManager.build
       Avo::Current.tool_manager = Avo::Tools::ToolManager.build
@@ -105,44 +109,12 @@ module Avo
         .to_s
     end
 
-    def main_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
-
-      # Return empty menu if the app doesn't have the profile menu configured
-      return Avo::Menu::Builder.new.build unless has_main_menu?
-
-      Avo::Menu::Builder.parse_menu(&Avo.configuration.main_menu)
-    end
-
-    def profile_menu
-      return unless Avo.plugin_manager.installed?("avo-menu")
-
-      # Return empty menu if the app doesn't have the profile menu configured
-      return Avo::Menu::Builder.new.build unless has_profile_menu?
-
-      Avo::Menu::Builder.parse_menu(&Avo.configuration.profile_menu)
-    end
-
     def app_status
-      license.valid?
+      true
     end
 
     def avo_dynamic_filters_installed?
       defined?(Avo::DynamicFilters).present?
-    end
-
-    def has_main_menu?
-      return false if Avo.license.lacks_with_trial(:menu_editor)
-      return false if Avo.configuration.main_menu.nil?
-
-      true
-    end
-
-    def has_profile_menu?
-      return false if Avo.license.lacks_with_trial(:menu_editor)
-      return false if Avo.configuration.profile_menu.nil?
-
-      true
     end
 
     def mount_engines
@@ -162,7 +134,9 @@ module Avo
     end
 
     def check_rails_version_issues
-      if Rails.version.start_with?("7.1") && Avo.configuration.license.in?(["pro", "advanced"])
+      return if Rails.env.test?
+
+      if Rails.version.start_with?("7.1")
         Avo.error_manager.add({
           url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
           target: "_blank",
@@ -177,13 +151,23 @@ module Avo
     end
 
     def display_menu_editor_warning
-      if Avo.configuration.license == "community" && has_main_menu?
-        Avo.error_manager.add({
-          url: "https://docs.avohq.io/3.0/menu-editor.html",
-          target: "_blank",
-          message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
-        })
-      end
+      return if Avo.configuration.main_menu.nil?
+
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/menu-editor.html",
+        target: "_blank",
+        message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
+      })
+    end
+
+    def display_profile_menu_editor_warning
+      return if Avo.configuration.profile_menu.nil?
+
+      Avo.error_manager.add({
+        url: "https://docs.avohq.io/3.0/menu-editor.html#profile-menu",
+        target: "_blank",
+        message: "The profile menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
+      })
     end
   end
 end

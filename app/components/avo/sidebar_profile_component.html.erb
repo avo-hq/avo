@@ -30,14 +30,8 @@
       data-transition-leave-start="transform opacity-100 translate-y-0"
       data-transition-leave-end="transform opacity-0 translate-y-3"
     >
-      <% if Avo.plugin_manager.installed?("avo-menu") && Avo.has_profile_menu? %>
-        <div class="text-black space-y-4">
-          <% Avo.profile_menu.items.each do |item| %>
-            <% if item.is_a? Avo::Menu::Link %>
-              <%= render Avo::ProfileItemComponent.new label: item.name, path: item.path, icon: item.icon, method: item.method, params: item.params %>
-            <% end %>
-          <% end %>
-        </div>
+      <% if render_custom_profile_menu? %>
+        <%= render custom_profile_component %>
       <% end %>
       <%= render "avo/partials/profile_menu_extra" %>
       <% if can_sign_out_user? %>

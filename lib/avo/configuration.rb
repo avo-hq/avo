@@ -36,7 +36,7 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
-    attr_writer :disabled_features
+    attr_accessor :global_search
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
@@ -59,6 +59,7 @@ module Avo
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
     attr_accessor :clear_license_response_on_deploy
+    attr_accessor :model_generator_hook
 
     def initialize
       @root_path = "/avo"
@@ -102,7 +103,6 @@ module Avo
       @display_license_request_timeout_error = true
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
-      @disabled_features = []
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
@@ -129,6 +129,11 @@ module Avo
       @column_types_mapping = {}
       @resource_row_controls_config = {}
       @clear_license_response_on_deploy = true
+      @global_search = {
+        enabled: true,
+        navigation_section: true
+      }
+      @model_generator_hook = true
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
@@ -183,38 +188,12 @@ module Avo
       @root_path
     end
 
-    def disabled_features
-      Avo::ExecutionContext.new(target: @disabled_features).handle
-    end
-
-    def feature_enabled?(feature)
-      !disabled_features.map(&:to_sym).include?(feature.to_sym)
-    end
-
     def branding
       Avo::Configuration::Branding.new(**@branding || {})
     end
 
     def app_name
       Avo::ExecutionContext.new(target: @app_name).handle
-    end
-
-    def license=(value)
-      if Rails.env.development?
-        puts "[Avo DEPRECATION WARNING]: The `config.license` configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `license_key` instead."
-      end
-    end
-
-    def license
-      gems = Gem::Specification.map {|gem| gem.name}
-
-      @license ||= if gems.include?("avo-advanced")
-        "advanced"
-      elsif gems.include?("avo-pro")
-        "pro"
-      elsif gems.include?("avo")
-        "community"
-      end
     end
 
     def resource_default_view=(view)
@@ -233,17 +212,20 @@ module Avo
     # If it's one of rejected cache stores, we'll use the FileStore.
     # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
     def computed_cache_store
+      memory_store_instance = ActiveSupport::Cache.lookup_store(:memory_store)
+      file_store_instance = ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+
       -> {
         if Rails.env.production?
           if Rails.cache.class.to_s.in?(production_rejected_cache_stores)
-            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+            file_store_instance
           else
             Rails.cache
           end
         elsif Rails.env.test?
           Rails.cache
         else
-          ActiveSupport::Cache.lookup_store(:memory_store)
+          memory_store_instance
         end
       }
     end

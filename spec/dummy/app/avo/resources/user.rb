@@ -20,19 +20,7 @@ class Avo::Resources::User < Avo::BaseResource
   self.index_query = -> do
     query.order(last_name: :asc)
   end
-  self.find_record_method = -> {
-    # When using friendly_id, we need to check if the id is a slug or an id.
-    # If it's a slug, we need to use the find_by_slug method.
-    # If it's an id, we need to use the find method.
-    # If the id is an array, we need to use the where method in order to return a collection.
-    if id.is_a?(Array)
-      first_is_number = true if Float(id.first, exception: false)
-      first_is_number ? query.where(id: id) : query.where(slug: id)
-    else
-      first_is_number = true if Float(id, exception: false)
-      first_is_number ? query.find(id) : query.find_by_slug(id)
-    end
-  }
+
   self.includes = [:posts, :post]
   self.attachments = [:cv]
   self.devise_password_optional = true
@@ -159,14 +147,14 @@ class Avo::Resources::User < Avo::BaseResource
   def test_sidebar
     return unless ENV['testing_methods']
 
-    sidebar panel_wrapper: false do
+    # sidebar panel_wrapper: false do
       tool Avo::ResourceTools::SidebarTool, render_panel: true
       test_field("Inside test_sidebar")
-    end
+    # end
   end
 
   def main_panel_sidebar
-    sidebar do
+    # sidebar do
       field :some_token, only_on: :show
       test_field("Inside main_panel_sidebar")
       with_options only_on: :show do
@@ -197,7 +185,7 @@ class Avo::Resources::User < Avo::BaseResource
         field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
         field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
       end
-    end
+    # end
   end
 
   def user_information_panel
@@ -217,20 +205,20 @@ class Avo::Resources::User < Avo::BaseResource
   def panel_test_sidebars
     return unless ENV['testing_methods']
 
-    sidebar do
+    # sidebar do
       field :sidebar_test, as: :text do
         ";)"
       end
       test_field("Inside panel -> sidebar")
-    end
+    # end
 
-    sidebar do
+    # sidebar do
       field :sidebar_test_2, as: :text do
         "another ;)"
       end
       test_field("Inside panel -> sidebar 2")
       tool Avo::ResourceTools::SidebarTool
-    end
+    # end
   end
 
   def stacked_name

@@ -82,15 +82,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def sidebars
-    return [] if Avo.license.lacks_with_trial(:resource_sidebar)
-
-    @sidebars ||= @item.items
-      .select do |item|
-        item.is_sidebar?
-      end
-      .map do |sidebar|
-        sidebar.hydrate(view: view, resource: resource)
-      end
+    []
   end
 
   def has_reflection_and_is_read_only
