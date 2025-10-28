@@ -77,6 +77,14 @@ module Avo
 
     def find_records_from_resource_ids
       if (ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []).any?
+        # TODO: Extract this to a helper method
+        ids = if @resource.model_class.try(:primary_key).is_a?(Array)
+          # TODO: Should we always map to integers?
+          ids.map { it.split("_").map(&:to_i) }
+        else
+          ids
+        end
+
         @resource.find_record(ids, params: params)
       else
         []

@@ -135,6 +135,7 @@ module Avo
     end
 
     def set_record
+      # TODO: Extract this to a helper method
       id = if @resource.model_class.try(:primary_key).is_a?(Array) && params.respond_to?(:extract_value)
         params.extract_value(:id)
       else

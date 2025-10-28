@@ -22,7 +22,15 @@ module Avo
     def index
       @parent_resource = @resource.dup
       @resource = @related_resource
-      @parent_record = @parent_resource.find_record(params[:id], params: params)
+
+      # TODO: Extract this to a helper method
+      id = if @parent_resource.model_class.try(:primary_key).is_a?(Array) && params.respond_to?(:extract_value)
+        params.extract_value(:id)
+      else
+        params[:id]
+      end
+
+      @parent_record = @parent_resource.find_record(id, params: params)
       @parent_resource.hydrate(record: @parent_record)
 
       # When array field the records are fetched from the field block, from the parent record or from the resource def records
