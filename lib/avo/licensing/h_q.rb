@@ -16,9 +16,17 @@ module Avo
 
         private
 
-        # Digest the license key to a few character string. Ex: "j8q2"
-        # This will make sure that the cached response is invalidated when the license key changes.
-        def digested_license_key = Digest::MD5.hexdigest(Avo.configuration.license_key || "").yield_self { |h| "#{h[0,2]}#{h[-2,2]}" }
+        # Digest the attributes to a few character string. Ex: "j8q2"
+        def digested_license_key
+          # This list of attributes will make sure that the cached response is invalidated when any of them changes.
+          attributes_to_digest = [
+            Avo.configuration.license_key,
+          ]
+
+          attributes_to_digest.join("-")
+
+          Digest::MD5.hexdigest(attributes_to_digest.join("-")).yield_self { |h| "#{h[0,2]}#{h[-2,2]}" }
+        end
       end
 
       def initialize(current_request = nil)
