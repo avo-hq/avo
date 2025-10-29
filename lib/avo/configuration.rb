@@ -58,7 +58,6 @@ module Avo
     attr_accessor :associations_lookup_list_limit
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
-    attr_accessor :clear_license_response_on_deploy
     attr_accessor :model_generator_hook
 
     def initialize
@@ -129,7 +128,6 @@ module Avo
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
-      @clear_license_response_on_deploy = true
       @model_generator_hook = true
     end
 
@@ -204,6 +202,12 @@ module Avo
     def license=(value)
       if Rails.env.development?
         puts "[Avo DEPRECATION WARNING]: The `config.license` configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `license_key` instead."
+      end
+    end
+
+    def clear_license_response_on_deploy=(value)
+      if Rails.env.development?
+        puts "[Avo DEPRECATION WARNING]: The `config.clear_license_response_on_deploy` configuration option is deprecated and will be removed in future versions. Please discontinue its use, no extra action is needed."
       end
     end
 
