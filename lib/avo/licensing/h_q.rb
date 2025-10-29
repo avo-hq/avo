@@ -11,21 +11,20 @@ module Avo
 
       class << self
         def cache_key
-          "avo.hq-#{digested_license_key}-#{Avo::VERSION.parameterize}.response"
+          "avo.hq-#{digested_attributes}-#{Avo::VERSION.parameterize}.response"
         end
 
         private
 
         # Digest the attributes to a few character string. Ex: "j8q2"
-        def digested_license_key
+        def digested_attributes
           # This list of attributes will make sure that the cached response is invalidated when any of them changes.
           attributes_to_digest = [
             Avo.configuration.license_key,
-          ]
+            Avo.configuration.license,
+          ].join("-")
 
-          attributes_to_digest.join("-")
-
-          Digest::MD5.hexdigest(attributes_to_digest.join("-")).yield_self { |h| "#{h[0,2]}#{h[-2,2]}" }
+          Digest::MD5.hexdigest(attributes_to_digest).yield_self { |h| "#{h[0,2]}#{h[-2,2]}" }
         end
       end
 
