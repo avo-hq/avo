@@ -24,7 +24,7 @@ module Avo
             Avo.configuration.license,
           ].join("-")
 
-          Digest::MD5.hexdigest(attributes_to_digest).yield_self { |h| "#{h[0,2]}#{h[-2,2]}" }
+          Digest::MD5.hexdigest(attributes_to_digest).yield_self { |h| "#{h[0, 2]}#{h[-2, 2]}" }
         end
       end
 
