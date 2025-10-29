@@ -230,7 +230,7 @@ module Avo
       ).handle
     end
 
-    # When not in production or test we'll just use the MemoryStore which is good enough.
+    # When not in production or test we'll just use the FileStore which is good enough.
     # When running in production we'll use Rails.cache if it's not ActiveSupport::Cache::MemoryStore or ActiveSupport::Cache::NullStore.
     # If it's one of rejected cache stores, we'll use the FileStore.
     # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
