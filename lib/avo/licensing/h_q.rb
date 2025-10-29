@@ -11,8 +11,14 @@ module Avo
 
       class << self
         def cache_key
-          "avo.hq-#{Avo::VERSION.parameterize}.response"
+          "avo.hq-#{digested_license_key}-#{Avo::VERSION.parameterize}.response"
         end
+
+        private
+
+        # Digest the license key to a few character string. Ex: "j8q2"
+        # This will make sure that the cached response is invalidated when the license key changes.
+        def digested_license_key = Digest::MD5.hexdigest(Avo.configuration.license_key || "").yield_self { |h| "#{h[0,2]}#{h[-2,2]}" }
       end
 
       def initialize(current_request = nil)
