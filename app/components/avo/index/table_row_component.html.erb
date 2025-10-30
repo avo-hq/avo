@@ -2,7 +2,7 @@
 
 <%= content_tag :tr,
   id: "#{self.class.to_s.underscore}_#{@resource.record_param}",
-  class: class_names("group bg-white hover:bg-gray-50 z-21 border-b", {"cursor-pointer": click_row_to_view_record}),
+  class: class_names("group bg-white hover:bg-gray-50 z-21 border-b", {"cursor-pointer relative": click_row_to_view_record}),
   data: {
     index: @index,
     component_name: self.class.to_s.underscore,
@@ -10,7 +10,7 @@
     record_id: @resource.record_param,
     **(click_row_to_view_record ? {
       visit_path: helpers.resource_show_path(resource: @resource, parent_resource: @parent_resource, parent_record: @parent_record, parent_or_child_resource:),
-      action: "click->table-row#visitRecord keydown.enter->table-row#visitRecord keydown.space->table-row#visitRecord"
+      action: "keydown.enter->table-row#visitRecord keydown.space->table-row#visitRecord"
     } : {}),
     **item_selector_data_attributes(@resource, controller: class_names("table-row": click_row_to_view_record)),
     **(try(:drag_reorder_item_data_attributes) || {}),
@@ -27,6 +27,15 @@
       <div class="flex items-center justify-end flex-grow-0 h-full">
         <%= render resource_controls_component %>
       </div>
+    </td>
+  <% end %>
+  <% if click_row_to_view_record %>
+    <td>
+      <a
+        href="<%= helpers.resource_show_path(resource: @resource, parent_resource: @parent_resource, parent_record: @parent_record, parent_or_child_resource:) %>"
+        class="absolute inset-0"
+        tabindex="-1"
+      ></a>
     </td>
   <% end %>
   <% @header_fields.each_with_index do |table_header_lable, index| %>
