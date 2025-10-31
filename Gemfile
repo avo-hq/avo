@@ -9,7 +9,7 @@ gemspec
 # =============================================================================
 # RAILS & CORE DEPENDENCIES
 # =============================================================================
-gem "rails", ">= 8.0.0"
+gem "rails", ">= 8.1.0"
 # gem "rails", github: "rails/rails", branch: "main"
 
 # ActiveStorage for file uploads
@@ -66,7 +66,6 @@ gem "zeitwerk"
 gem "iso"
 gem "addressable"
 gem "acts_as_list"
-gem "acts-as-taggable-on", "~> 12.0"
 gem "bundler-integrity", "~> 1.0"
 gem "countries"
 gem "image_processing", "~> 1.12"
@@ -75,7 +74,7 @@ gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "pagy", "> 8"
 gem "csv"
-gem "view_component", "4.0.0"
+gem "view_component", ">= 4.0.0"
 
 # =============================================================================
 # AWS & CLOUD SERVICES
