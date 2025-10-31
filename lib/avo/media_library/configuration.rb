@@ -8,11 +8,11 @@ module Avo
       def visible?
         return false if disabled?
 
-        Avo::ExecutionContext.new(target: config[:visible]).handle
+        Avo::ExecutionContext.new(target: visible).handle
       end
 
       def enabled?
-        Avo::ExecutionContext.new(target: config[:enabled]).handle
+        Avo::ExecutionContext.new(target: enabled).handle
       end
 
       def disabled? = !enabled?
