@@ -16,6 +16,9 @@ zh-TW:
     attachment_class_detached: "%{attachment_class} 已分離。"
     attachment_destroyed: 附件已刪除
     attachment_failed: 無法附加 %{attachment_class}
+    bulk_edit: 批量編輯
+    bulk_update_failure: 記錄更新失敗。
+    bulk_update_success: 批量操作成功完成。
     cancel: 取消
     choose_a_country: 選擇一個國家
     choose_an_option: 選擇一個選項
