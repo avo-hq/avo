@@ -74,7 +74,8 @@ module Avo
       }
       class_attribute :find_record_method, default: -> {
         # Check if the model uses FriendlyId and handle accordingly
-        if model_class.respond_to?(:friendly_id_config) && model_class.friendly_id_config.scope.nil?
+        # If scope is configured, use the default find behavior
+        if model_class.respond_to?(:friendly_id_config) && !model_class.friendly_id_config.respond_to?(:scope)
           if id.is_a?(Array)
             # For arrays, use the slug column
             query.where(model_class.friendly_id_config.slug_column => id)
