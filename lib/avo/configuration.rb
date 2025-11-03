@@ -219,8 +219,6 @@ module Avo
           else
             Rails.cache
           end
-        elsif Rails.env.test?
-          Rails.cache
         else
           file_store_instance
         end
