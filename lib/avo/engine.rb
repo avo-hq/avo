@@ -11,10 +11,10 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
     require "active_storage/engine"
   when "actiontext"
     require "action_text/engine"
-  when "avo-heroicons"
-    require "avo/heroicons"
   when "avo-licensing"
     require "avo/licensing"
+  when "avo-icons"
+    require "avo/icons"
   else
     require d.name
   end
