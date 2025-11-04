@@ -6,15 +6,14 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (3.25.3)
+    avo (3.26.0)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
-      avo-heroicons (>= 0.1.1)
+      avo-icons (>= 0.1.1)
       docile
-      inline_svg
       meta-tags
       pagy (>= 7.0.0)
       prop_initializer (>= 0.2.0)
@@ -128,7 +127,8 @@ GEM
       rake
       thor (>= 0.14.0)
     ast (2.4.3)
-    avo-heroicons (0.1.1)
+    avo-icons (0.1.1)
+      inline_svg
     avo-money_field (0.0.5)
       money-rails (~> 1.12)
     avo-record_link_field (0.0.2)
@@ -774,7 +774,7 @@ DEPENDENCIES
   meta-tags
   money-rails (~> 1.12)
   net-smtp
-  pagy (> 8)
+  pagy (< 43)
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids

@@ -33,7 +33,7 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
-gem "pagy", "> 8"
+gem "pagy", "< 43"
 gem "csv"
 gem "view_component", "3.23.2"
 gem "aws-sdk-s3", require: false
