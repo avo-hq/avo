@@ -781,7 +781,7 @@ DEPENDENCIES
   meta-tags
   money-rails (~> 1.12)
   net-smtp
-  pagy (> 8)
+  pagy (< 43)
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids
