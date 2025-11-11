@@ -62,9 +62,9 @@ class Avo::Services::TelemetryService
     end
 
     def cache_operational?
-      Rails.cache.write("avo-test-cache", "test_value")
-      operational = Rails.cache.read("avo-test-cache") == "test_value"
-      Rails.cache.delete("avo-test-cache")
+      Avo.cache_store.write("avo-test-cache", "test_value")
+      operational = Avo.cache_store.read("avo-test-cache") == "test_value"
+      Avo.cache_store.delete("avo-test-cache")
       operational
     rescue => error
       "error: #{error.message}"
