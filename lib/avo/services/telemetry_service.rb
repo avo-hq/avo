@@ -52,12 +52,22 @@ class Avo::Services::TelemetryService
         main_menu_present: Avo.configuration.main_menu.present?,
         profile_menu_present: Avo.configuration.profile_menu.present?,
         cache_store: Avo.cache_store&.class&.to_s,
+        cache_operational: cache_operational?,
         **config_metadata
       }
     # rescue => error
     #   {
     #     error: error.message
     #   }
+    end
+
+    def cache_operational?
+      Avo.cache_store.write("avo-test-cache", "test_value")
+      operational = Avo.cache_store.read("avo-test-cache") == "test_value"
+      Avo.cache_store.delete("avo-test-cache")
+      operational
+    rescue => error
+      "error: #{error.message}"
     end
 
     def other_metadata(type = :actions)
