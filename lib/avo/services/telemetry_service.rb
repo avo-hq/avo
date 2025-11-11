@@ -63,8 +63,9 @@ class Avo::Services::TelemetryService
 
     def cache_operational?
       Rails.cache.write("avo-test-cache", "test_value")
-      Rails.cache.read("avo-test-cache") == "test_value"
+      operational = Rails.cache.read("avo-test-cache") == "test_value"
       Rails.cache.delete("avo-test-cache")
+      operational
     rescue => error
       false
     end
