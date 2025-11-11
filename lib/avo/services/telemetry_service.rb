@@ -67,7 +67,7 @@ class Avo::Services::TelemetryService
       Rails.cache.delete("avo-test-cache")
       operational
     rescue => error
-      false
+      "error: #{error.message}"
     end
 
     def other_metadata(type = :actions)
