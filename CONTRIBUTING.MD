@@ -38,25 +38,44 @@ Thank you for considering to contribute to Avo. These are our recommendations to
 
 Thank you!
 
-## Getting your local environment set up
+## Getting Started with Local Development
 
-NOTE: We're using our local Postgres instance.
+Getting your local environment set up and running is easy - just run `bin/dev` from the root directory!
 
-You may use docker with the provided `docker-compose.yml` file.
+### First Time Setup
 
-Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using local Postgres). Do not commit these changes. From here, running `bin/init` will get you up-and-running.
+The first time you run `bin/dev`, it will automatically:
+1. Detect that you haven't set up the project yet
+2. Run the initial setup (`bin/init`) which will:
+   - Ask if you want to use Docker Compose for PostgreSQL or a local PostgreSQL instance
+   - Configure git remotes
+   - Install dependencies (gems and yarn packages)
+   - Create the database and seed it with dummy data
+   - Build assets
+3. Create a `dev-setup` configuration file in the project root with your preferences
 
-# Local development
+**Important:** Don't delete the `dev-setup` file - it stores your configuration choices. If you want to change your setup preferences (e.g., switch between Docker and local PostgreSQL), delete this file and run `bin/dev` again to reconfigure.
 
-## Running the dummy app
+### Regular Development
 
-You can run `bin/dev` from the root directory, which will start an overmind (similar to foreman) process for the rails server, jsbundling and cssbundling. Then, navigate to `localhost:3030` and enjoy the app.
+After the initial setup, simply run `bin/dev` to start the development server. This will:
+- Start the Docker PostgreSQL service (if you chose that option during setup)
+- Launch an overmind process (similar to foreman) that runs:
+  - Rails server
+  - JavaScript bundling
+  - CSS bundling
 
-## Seeding the database for local development
+Navigate to `http://localhost:3030` to access the dummy app. You can log in with:
+- **Email:** `avo@avohq.io`
+- **Password:** `secret`
 
-NOTE: If you used the `bin/init` script, this step has already been done for you.
+### Database Configuration
 
-Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `avo@avohq.io` and password `secret`.
+The project is configured to work with PostgreSQL (port 5432 by default). The `spec/dummy/config/database.yml` file uses environment variables, so you typically won't need to modify it. If you do need custom database settings, you can set these environment variables:
+- `POSTGRES_HOST` (default: localhost)
+- `POSTGRES_PORT` (default: 5432)
+- `POSTGRES_USERNAME` (default: postgres)
+- `POSTGRES_PASSWORD` (default: nil)
 
 ## Using your fork from another project
 
