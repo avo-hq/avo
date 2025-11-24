@@ -1,3 +1,42 @@
+<% if false %>
+<%= render cado.detail_view do |detail_view| %>
+  <% detail_view.with_header do %>
+    <%= render cado.header(
+      title: args[:name],
+      description: args[:description]
+    ) do |header| %>
+      <% if args[:discreet_information].present? %>
+        <% header.with_discreet_information do %>
+          <div class="flex gap-2 items-center">
+            <% args[:discreet_information].items.each do |item| %>
+              <%= render cado.discreet_information(**item) %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+      <% if @is_main_panel && controls.any? %>
+        <% header.with_controls do %>
+          <% controls.each do |control| %>
+            <%= render_control control %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% detail_view.with_body do %>
+
+    <%= render Cado::PanelComponent.new(**args) do |c| %>
+
+  <%= render Cado::DescriptionListComponent.new do %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+    <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+<% end %>
+
+
 <%= render Avo::PanelComponent.new(**args) do |c| %>
   <% if @is_main_panel && controls.any? %>
     <% c.with_tools do %>
@@ -8,6 +47,19 @@
   <% end %>
 
   <% c.with_body do %>
+    <%= render Cado::AvatarComponent.new(
+      type: "initial",
+      size: "small",
+      shape: "square",
+      theme: "orange",
+      initial: "JD",
+      image_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+      alt_text: "User Avatar"
+      )
+    %>
+    <%= render Cado::PanelComponent.new do %>
+      yup
+    <% end %>
     <%= content_tag :div, class: "divide-y divide-gray-200 overflow-auto" do %>
       <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
     <% end %>

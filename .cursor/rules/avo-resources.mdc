@@ -1,0 +1,59 @@
+---
+description:
+globs: */avo/resources/*.rb
+alwaysApply: false
+---
+# Avo Resources
+
+Avo resources are Ruby classes under the `Avo::Resources::RESOURCE_NAME` module. They usually sit in the [app/avo/resources/](mdc:app/avo/resources) directory.
+
+## Resource Structure
+
+Resources inherit from `Avo::BaseResource` which inherits from [lib/avo/resources/base.rb](mdc:lib/avo/resources/base.rb).
+
+```ruby
+class Avo::Resources::User < Avo::BaseResource
+  # Resource configuration
+  self.title = :name
+  self.includes = [:posts]
+
+  def fields
+    field :id, as: :id
+    field :name, as: :text, required: true
+    field :email, as: :text
+    field :created_at, as: :date_time
+  end
+end
+```
+
+## Field Declarations
+
+Resources have multiple options and methods, with the most common being the `fields` method which holds all the field declarations.
+
+### Field Declaration Pattern
+In the `fields` method, users declare the attributes they want to see in the views using:
+
+```ruby
+field :field_name, as: :field_type, **options
+```
+
+### Common Field Options
+- `required: true/false` - Mark field as required
+- `readonly: true/false` - Make field read-only
+- `help: "Help text"` - Add help text
+- `placeholder: "Placeholder"` - Set input placeholder
+- `default: value` - Set default value
+- `hide_on: [:index, :show]` - Hide on specific views
+- `show_on: [:edit, :new]` - Show only on specific views
+
+### Example Field Declarations
+```ruby
+def fields
+  field :id, as: :id
+  field :name, as: :text, required: true, help: "User's full name"
+  field :email, as: :text, placeholder: "user@example.com"
+  field :admin, as: :boolean, default: false
+  field :avatar, as: :file
+  field :posts, as: :has_many
+end
+```

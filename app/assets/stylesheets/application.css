@@ -1,13 +1,32 @@
+@layer theme, base, components, utilities;
+
+/* @import "/Users/adrian/work/avocado/gems/cado/app/assets/builds/cado/ui.css"; */
 @import "tailwindcss";
 
+/* Importing this one file will register the plugin and its safelist */
+/* @import "./../builds/cado/index.css"; */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* TODO: Figure out a way to add those dynamically */
-@source "../../../tmp/avo/packages/avo-advanced";
-@source "../../../tmp/avo/packages/avo-dashboards";
+/* @source "../../../tmp/avo/packages/avo-advanced";
 @source "../../../tmp/avo/packages/avo-dynamic_filters";
 @source "../../../tmp/avo/packages/avo-kanban";
 @source "../../../tmp/avo/packages/avo-menu";
-@source "../../../tmp/avo/packages/avo-pro";
-@source "../../../tmp/avo/packages/avo-forms";
+@source "../../../tmp/avo/packages/avo-pro"; */
+
+/* @source "../../../tmp/avo/packages/avo-forms"; */
 
 /* @config "../../../tailwind.config.js"; */
 
@@ -45,10 +64,8 @@
   --breakpoint-xs: 30rem;
 }
 
-
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
-@plugin '@tailwindcss/container-queries';
 
 /* Add dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -178,3 +195,13 @@
     @apply !bg-neutral-100;
   }
 }
+
+
+
+/* @import "/Users/adrian/work/avocado/gems/cado/app/assets/builds/cado/ui.css" */
+
+/* @import "/Users/adrian/work/avocado/gems/cado/src/input.css" */
+
+
+
+

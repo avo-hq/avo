@@ -1,0 +1,96 @@
+---
+description:
+globs: *avo/actions/,*/avo/actions*,*avo/actions/*.rb,**avo/actions/*.rb,spec/dummy/app/avo/actions/*.rb
+alwaysApply: false
+---
+# Avo Fields System
+
+Fields are the building blocks of Avo resources, defining how data is displayed and edited.
+
+## Field Declaration Pattern
+
+Fields are declared in a resource's `fields` method:
+
+```ruby
+def fields
+  field :id, as: :id
+  field :name, as: :text, required: true
+  field :description, as: :textarea, rows: 4
+  field :published, as: :boolean
+end
+```
+
+## Field Types and Locations
+
+### Core Field Types
+Located in [lib/avo/fields/](mdc:lib/avo/fields):
+
+- **Text Fields**: `text_field.rb`, `textarea_field.rb`, `password_field.rb`
+- **Numeric**: `number_field.rb`
+- **Boolean**: `boolean_field.rb`, `boolean_group_field.rb`
+- **Date/Time**: `date_field.rb`, `date_time_field.rb`, `time_field.rb`
+- **Selection**: `select_field.rb`, `multiselect_field.rb`
+- **Files**: `file_field.rb`, `files_field.rb`
+- **Associations**: `belongs_to_field.rb`, `has_many_field.rb`, `has_one_field.rb`
+- **Rich Content**: `code_field.rb`, `markdown_field.rb`, `easy_mde_field.rb`
+- **Display**: `badge_field.rb`, `gravatar_field.rb`, `external_image_field.rb`
+
+### Field Components
+Located in [app/components/avo/fields/](mdc:app/components/avo/fields):
+Each field type has corresponding view components for different contexts:
+- `show_component.rb` - display on show pages
+- `edit_component.rb` - form input on edit pages
+- `index_component.rb` - display in table listings
+
+## Universal Field Options
+
+All fields support these options:
+- `required: true/false` - field validation
+- `readonly: true/false` - prevent editing
+- `disabled: true/false` - disable form input
+- `help: "Help text"` - display help text
+- `placeholder: "Placeholder"` - input placeholder
+- `hide_on: [:show, :edit]` - hide on specific views
+- `show_on: [:index, :show]` - show only on specific views
+- `sortable: true/false` - enable column sorting
+
+## Advanced Field Options
+
+### Computed Fields
+Fields can be computed using blocks with access to ExecutionContext:
+
+```ruby
+field :full_name, as: :text do
+  "#{record.first_name} #{record.last_name}"
+end
+```
+
+### Format Using
+Transform display values:
+
+```ruby
+field :price, as: :number, format_using: -> { "$#{value}" }
+```
+
+### Update Using
+Transform values before saving:
+
+```ruby
+field :slug, as: :text, update_using: -> { value.parameterize }
+```
+
+## Field Concerns and Mixins
+
+Field behavior is extended through concerns in [lib/avo/fields/concerns/](mdc:lib/avo/fields/concerns):
+- `HasDefault` - default value handling
+- `HasHelpers` - view helper methods
+- `IsRequired` - validation requirements
+- `IsReadonly` - readonly behavior
+- `IsVisible` - visibility logic
+
+## Field Testing
+
+Field tests are located in [spec/system/avo/](mdc:spec/system/avo) and follow patterns like:
+- Testing field display in different views
+- Testing form interactions
+- Testing field-specific behavior and options

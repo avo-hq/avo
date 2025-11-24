@@ -9,6 +9,7 @@ class Avo::BaseComponent < ViewComponent::Base
   delegate :d, to: :helpers
   delegate :main_app, to: :helpers
   delegate :avo, to: :helpers
+  delegate :cado, to: :helpers
 
   def component_name = self.class.name.to_s.underscore
 

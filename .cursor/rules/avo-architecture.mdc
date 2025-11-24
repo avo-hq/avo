@@ -1,0 +1,50 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Avo Architecture Overview
+
+Avo is a Ruby on Rails admin framework that provides CRUD functionality through a resource-based architecture.
+
+## Core Architecture
+
+### Resources
+- **Location**: Resources are defined in [app/avo/resources/](mdc:app/avo/resources)
+- **Base Class**: All resources inherit from `Avo::BaseResource` which inherits from [lib/avo/resources/base.rb](mdc:lib/avo/resources/base.rb)
+- **Pattern**: Resources are Ruby classes under the `Avo::Resources::RESOURCE_NAME` module
+- **Purpose**: Resources act as the bridge between Rails models and Avo's admin interface
+
+### Key Components
+
+1. **Fields**: Declared in resource `fields` method using `field :name, as: :type, **options`
+2. **Actions**: Custom operations that can be performed on resources
+3. **Filters**: Ways to filter resource listings
+4. **Components**: View components in [app/components/avo/](mdc:app/components/avo)
+5. **Controllers**: Admin controllers in [app/controllers/avo/](mdc:app/controllers/avo)
+
+### Execution Context System
+Avo uses an `ExecutionContext` pattern defined in [lib/avo/execution_context.rb](mdc:lib/avo/execution_context.rb) that allows dynamic evaluation of blocks with access to:
+- `record` - the current ActiveRecord model instance
+- `resource` - the current Avo resource
+- `view` - current view context (:index, :show, :edit, :new)
+- `current_user` - the authenticated user
+- `params` - request parameters
+
+### Resource Configuration
+Resources support extensive configuration through class attributes:
+- `self.title` - how records are displayed
+- `self.search` - search configuration
+- `self.includes` - ActiveRecord includes for queries
+- `self.authorization_policy` - authorization policy class
+- View types: `:table`, `:grid`, `:map`
+- Sorting and pagination settings
+
+## File Organization
+
+- **Gem Structure**: [lib/avo/](mdc:lib/avo) contains the core framework code
+- **Application Structure**: [app/](mdc:app) contains Rails application files
+- **Components**: [app/components/avo/](mdc:app/components/avo) for view components
+- **Assets**: [app/assets/](mdc:app/assets) for stylesheets and JavaScript
+- **Generators**: [lib/generators/avo/](mdc:lib/generators/avo) for code generation
+- **Dummy App**: [spec/dummy/](mdc:spec/dummy) for testing and development

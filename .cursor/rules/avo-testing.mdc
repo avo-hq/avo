@@ -1,0 +1,147 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Avo Testing Patterns
+
+Avo uses RSpec for testing with specific patterns for different types of tests.
+
+## Test Organization
+
+### Directory Structure
+- [spec/](mdc:spec) - Main test directory
+  - [system/avo/](mdc:spec/system/avo) - System/integration tests
+  - [components/avo/](mdc:spec/components/avo) - Component tests
+  - [features/avo/](mdc:spec/features/avo) - Feature tests
+  - [helpers/avo/](mdc:spec/helpers/avo) - Helper tests
+  - [requests/avo/](mdc:spec/requests/avo) - Request/controller tests
+
+### Test Configuration
+- [spec/rails_helper.rb](mdc:spec/rails_helper.rb) - Rails-specific test configuration
+- [spec/spec_helper.rb](mdc:spec/spec_helper.rb) - General RSpec configuration
+- [spec/support/](mdc:spec/support) - Test support files and helpers
+
+## Testing Conventions
+
+### Naming Patterns
+- Use descriptive test names without "should"
+- Group related tests with `describe` and `context`
+- Use fully qualified class names with `::` (e.g., `Avo::Resources::User`)
+
+```ruby
+RSpec.describe Avo::Resources::User do
+  describe 'validations' do
+    context 'when creating a new user' do
+      it 'requires a name' do
+        # test implementation
+      end
+    end
+  end
+end
+```
+
+### Test Helpers and Utilities
+
+#### Avo Helpers
+Located in [spec/support/avo_helpers.rb](mdc:spec/support/avo_helpers.rb):
+- Methods for setting up Avo-specific test scenarios
+- Resource and field testing utilities
+- Authentication helpers
+
+#### Database Cleaner
+Configured in [spec/support/database_cleaner.rb](mdc:spec/support/database_cleaner.rb) for test isolation.
+
+#### Factories
+Test data is generated using FactoryBot factories defined in [db/factories.rb](mdc:db/factories.rb).
+
+## Test Types and Patterns
+
+### System Tests
+Located in [spec/system/avo/](mdc:spec/system/avo):
+- Test full user workflows
+- Use Capybara for browser simulation
+- Test JavaScript interactions with Stimulus controllers
+
+```ruby
+RSpec.describe 'Resource Management', type: :system do
+  it 'allows creating a new resource' do
+    visit avo.resources_path(resource_name: 'users')
+    click_on 'Create new user'
+    fill_in 'Name', with: 'John Doe'
+    click_on 'Save'
+
+    expect(page).to have_content('User created successfully')
+  end
+end
+```
+
+### Component Tests
+Located in [spec/components/avo/](mdc:spec/components/avo):
+- Test ViewComponent rendering
+- Test component logic and helpers
+- Use ViewComponent test helpers
+
+```ruby
+RSpec.describe Avo::FlashAlertsComponent do
+  it 'renders flash messages' do
+    render_inline(described_class.new(flash: { notice: 'Success!' }))
+
+    expect(page).to have_content('Success!')
+  end
+end
+```
+
+### Feature Tests
+Located in [spec/features/avo/](mdc:spec/features/avo):
+- Test specific features and workflows
+- Focus on user interactions and business logic
+- Often organized by feature area (actions, fields, etc.)
+
+## Dummy Application
+
+### Test Environment
+The dummy application in [spec/dummy/](mdc:spec/dummy) provides:
+- Full Rails application for testing
+- Sample models and resources
+- Test data and seeds
+- Configuration examples
+
+### Key Test Models
+Located in [spec/dummy/app/models/](mdc:spec/dummy/app/models):
+- Variety of model types for testing different scenarios
+- Associations, validations, and callbacks
+- Examples of complex data relationships
+
+### Test Resources
+Located in [spec/dummy/app/avo/resources/](mdc:spec/dummy/app/avo/resources):
+- Sample resource configurations
+- Examples of field types and options
+- Testing different resource patterns
+
+## Testing Specific Avo Features
+
+### Field Testing
+- Test field display in different contexts (index, show, edit)
+- Test field options and behaviors
+- Test computed fields and formatting
+
+### Action Testing
+- Test action execution and authorization
+- Test action UI and user interactions
+- Test action responses and redirects
+
+### Authorization Testing
+- Test policy enforcement
+- Test user permissions and access control
+- Test resource visibility and actions
+
+## Test Performance and Coverage
+
+### Coverage Tools
+Coverage tracking is configured and results are stored in [coverage/](mdc:coverage).
+
+### Performance Testing
+- Focus on database query optimization
+- Test N+1 query prevention
+- Benchmark critical paths

@@ -1,0 +1,157 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# General Ruby Styling
+PREFER_RUBY_SYNTAX: >
+  - Use Ruby 3.x syntax
+  - Use snake_case for methods and variables
+  - Use CamelCase for classes and modules
+  - Use SCREAMING_SNAKE_CASE for constants
+  - Prefer string interpolation over concatenation
+  - Use modern hash syntax: { key: value }
+  - When a local variable matches the exact name of a parameter in a method call, use the shorthand syntax by providing just the parameter name with a colon instead of explicitly mapping the variable
+  - Use double quotes only when interpolation is needed
+
+# Code Examples for Syntax Reference
+EXAMPLE_PATTERNS: >
+  # Hash syntax
+  age = 49
+  user = { name: "David", age:, role: "admin" }
+
+  # String interpolation
+  greeting = "Hello, #{user[:name]}!"
+
+  # Method definition
+  def process_user(user_params)
+    User.new(user_params)
+  end
+
+# Rails-Specific Conventions
+RAILS_CONVENTIONS: >
+  - Follow REST conventions for controllers
+  - Use strong parameters in controllers
+  - Place business logic in models or service objects
+  - Use concerns for shared functionality
+  - Follow Rails directory structure
+  - Use partials for reusable view components
+
+# Database Conventions
+DATABASE_RULES: >
+  - Use plural table names
+  - Use timestamps in migrations
+  - Include foreign key constraints
+  - Add appropriate indexes
+  - Use references for associations
+
+# Example Model Structure
+MODEL_PATTERN: >
+  class User < ApplicationRecord
+    # Constants first
+    ROLES = %w[admin moderator user].freeze
+
+    # Associations
+    belongs_to :organization
+    has_many :posts, dependent: :destroy
+
+    # Validations
+    validates :name, presence: true
+    validates :email, uniqueness: true
+
+    # Scopes
+    scope :active, -> { where(status: 'active') }
+
+    # Class methods
+    def self.find_by_credentials(credentials)
+      find_by(email: credentials[:email])
+    end
+
+    # Instance methods
+    def full_name
+      "#{first_name} #{last_name}"
+    end
+  end
+
+# Testing Conventions
+TEST_RULES: >
+  - Use RSpec for testing
+  - Follow arrange-act-assert pattern
+  - Use factories with FactoryBot
+  - Write descriptive test cases
+  - Test happy and sad paths
+  - Ignore spec type while describing Rspec
+  - Don't add "require 'rails_helper'" to the spec files.
+  - Use the fully qualified namespace path with double colons (::) instead of nesting modules to improve code readability and reduce indentation levels in RSpec test files.
+
+
+# Example Test Pattern
+TEST_PATTERN: >
+  RSpec.describe User do
+    describe 'validations' do
+      it { should validate_presence_of(:name) }
+      it { should validate_uniqueness_of(:email) }
+    end
+
+    describe '#full_name' do
+      it 'returns the combined first and last name' do
+        user = create(:user, first_name: 'John', last_name: 'Doe')
+        expect(user.full_name).to eq('John Doe')
+      end
+    end
+  end
+
+# API Response Format
+API_RESPONSE_FORMAT: >
+  {
+    status: "success",
+    data: {
+      id: 1,
+      attributes: {
+        name: "David",
+        email: "david@example.com"
+      }
+    },
+    meta: {
+      timestamp: "2024-11-02T12:00:00Z"
+    }
+  }
+
+# Documentation Requirements
+DOCUMENTATION_RULES: >
+  - Add meaningful comments for complex logic
+  - Document public methods with YARD
+  - Include usage examples in README
+  - Document API endpoints with Swagger/OpenAPI
+  - Keep documentation up-to-date
+
+# Security Guidelines
+SECURITY_RULES: >
+  - Use strong parameters
+  - Implement proper authentication
+  - Add authorization checks
+  - Sanitize user inputs
+  - Protect from mass assignment
+  - Follow OWASP guidelines
+
+# Performance Guidelines
+PERFORMANCE_RULES: >
+  - Use query optimization
+  - Implement caching where appropriate
+  - Use background jobs for heavy tasks
+  - Add database indexes
+  - Monitor N+1 queries
+  - Use bulk operations when possible
+
+# Git Commit Messages
+GIT_COMMIT_FORMAT: >
+  type(scope): subject
+
+  - type: feat, fix, docs, style, refactor, test, chore
+  - scope: model, controller, migration, etc.
+  - subject: clear, concise description
+# Status
+STATUS_DOCUMENT: docs/status.md
+  You should update the status document to reflect the current status of the task,
+  - when you are working on a task
+  - when you are done with a task

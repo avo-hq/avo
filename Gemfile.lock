@@ -2,8 +2,11 @@ PATH
   remote: ../cado
   specs:
     cado (0.1.0)
+      avo-heroicons (>= 0.1.2)
+      prop_initializer (>= 0.2.0)
       rails (>= 8.0.2)
       view_component
+      zeitwerk
 
 PATH
   remote: .
@@ -133,7 +136,7 @@ GEM
       rake
       thor (>= 0.14.0)
     ast (2.4.2)
-    avo-heroicons (0.1.1)
+    avo-heroicons (0.1.2)
     avo-money_field (0.0.5)
       money-rails (~> 1.12)
     avo-record_link_field (0.0.2)

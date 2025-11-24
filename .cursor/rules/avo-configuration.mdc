@@ -1,0 +1,193 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Avo Configuration and Customization
+
+Avo provides extensive configuration options to customize the admin interface for your application.
+
+## Main Configuration
+
+### Initializer Configuration
+Located in `config/initializers/avo.rb` (example in [spec/dummy/config/initializers/avo.rb](mdc:spec/dummy/config/initializers/avo.rb)):
+
+```ruby
+Avo.configure do |config|
+  config.app_name = "My Admin"
+  config.timezone = "UTC"
+  config.currency = "USD"
+  config.per_page = 24
+  config.per_page_steps = [12, 24, 48, 72]
+  config.via_per_page = 8
+  config.default_view_type = :table
+  config.license = "community"
+  config.current_user_method = :current_user
+  config.authenticate_with = -> { redirect_to '/login' unless current_user }
+  config.authorize_with = -> { redirect_to '/unauthorized' unless current_user.admin? }
+end
+```
+
+### Core Configuration Options
+
+#### Application Settings
+- `app_name` - Name displayed in admin interface
+- `timezone` - Default timezone for date/time fields
+- `currency` - Default currency for money fields
+- `license` - License type (community, pro, advanced)
+
+#### UI Configuration
+- `per_page` - Default records per page
+- `per_page_steps` - Available pagination options
+- `default_view_type` - Default view (`:table`, `:grid`, `:map`)
+- `sidebar_width` - Sidebar width in pixels
+- `full_width_container` - Use full width layout
+
+#### Authentication & Authorization
+- `current_user_method` - Method to get current user
+- `authenticate_with` - Authentication callback
+- `authorize_with` - Authorization callback
+- `sign_out_path_name` - Sign out route name
+
+## Engine Configuration
+
+### Avo Engine
+Located in [lib/avo/engine.rb](mdc:lib/avo/engine.rb):
+- Rails engine configuration
+- Asset pipeline setup
+- Route configuration
+- Middleware setup
+
+### Route Configuration
+Routes can be customized in [config/routes/dynamic_routes.rb](mdc:config/routes/dynamic_routes.rb):
+
+```ruby
+Avo::Engine.routes.draw do
+  # Custom routes here
+end
+```
+
+## Resource-Level Configuration
+
+### Resource Options
+Resources support extensive configuration through class attributes:
+
+```ruby
+class Avo::Resources::User < Avo::BaseResource
+  self.title = :name
+  self.includes = [:posts, :comments]
+  self.search = {
+    query: -> { query.where("name ilike ?", "%#{params[:q]}%") }
+  }
+  self.default_view_type = :grid
+  self.keep_filters_panel_open = true
+  self.record_selector = false
+end
+```
+
+### View Configuration
+- `default_view_type` - Default view for this resource
+- `view_types` - Available view types
+- `grid_view` - Grid view configuration
+- `map_view` - Map view configuration
+
+### Query Configuration
+- `includes` - ActiveRecord includes for index queries
+- `single_includes` - Includes for show/edit queries
+- `index_query` - Custom index query
+- `find_record_method` - Custom record finding logic
+
+## Field Configuration
+
+### Global Field Defaults
+Fields can have global defaults through concerns and base classes:
+
+```ruby
+module FieldDefaults
+  extend ActiveSupport::Concern
+
+  included do
+    # Set global field defaults
+  end
+end
+```
+
+### Field-Level Options
+Each field supports extensive customization:
+
+```ruby
+field :name, as: :text,
+  required: true,
+  help: "User's full name",
+  placeholder: "Enter name",
+  format_using: -> { value.titleize },
+  update_using: -> { value.strip.downcase }
+```
+
+## Branding and UI Customization
+
+### Branding Configuration
+Located in [lib/avo/configuration/branding.rb](mdc:lib/avo/configuration/branding.rb):
+
+```ruby
+config.branding = {
+  colors: {
+    background: "248 250 252",
+    100 => "243 244 246",
+    400 => "156 163 175",
+    500 => "107 114 128",
+    600 => "75 85 99"
+  },
+  chart_colors: ["#0B84F3", "#8B5CF6"],
+  logo: "avo/logo.png",
+  logomark: "avo/logomark.png",
+  placeholder: "avo/placeholder.svg"
+}
+```
+
+### Custom Styling
+Stylesheets are located in [app/assets/stylesheets/](mdc:app/assets/stylesheets/):
+- [avo.base.css](mdc:app/assets/stylesheets/avo.base.css) - Base styles
+- Custom CSS can be added through the asset pipeline
+
+### JavaScript Customization
+JavaScript files are in [app/javascript/](mdc:app/javascript/):
+- [avo.base.js](mdc:app/javascript/avo.base.js) - Base JavaScript
+- Stimulus controllers in [app/javascript/js/controllers/](mdc:app/javascript/js/controllers/)
+
+## Localization
+
+### Translation Keys
+Avo supports I18n with translation keys like:
+- `avo.resource_translations.{resource_name}` - Resource names
+- `avo.field_translations.{field_name}` - Field labels
+- `avo.actions.{action_name}` - Action names
+
+### Custom Translation Keys
+Resources can specify custom translation keys:
+
+```ruby
+class Avo::Resources::User < Avo::BaseResource
+  self.translation_key = "admin.users"
+end
+```
+
+## Advanced Configuration
+
+### Licensing System
+Located in [lib/avo/licensing/](mdc:lib/avo/licensing/):
+- [license_manager.rb](mdc:lib/avo/licensing/license_manager.rb) - License management
+- [community_license.rb](mdc:lib/avo/licensing/community_license.rb) - Community license
+- Feature gating based on license type
+
+### Plugin System
+The pluggy system in [pluggy/](mdc:pluggy/) allows for:
+- Field extensions
+- Custom functionality
+- Modular feature development
+
+### Environment-Specific Configuration
+Configuration can vary by environment:
+- Development: Debug features enabled
+- Production: Performance optimizations
+- Test: Simplified setup for testing

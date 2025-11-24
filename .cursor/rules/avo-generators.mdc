@@ -1,0 +1,141 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Avo Generators and Development Tools
+
+Avo provides several generators to help developers quickly scaffold resources, actions, and other components.
+
+## Generator Location and Structure
+
+### Main Generators
+Located in [lib/generators/avo/](mdc:lib/generators/avo):
+
+- [install_generator.rb](mdc:lib/generators/avo/install_generator.rb) - Initial Avo setup
+- [resource_generator.rb](mdc:lib/generators/avo/resource_generator.rb) - Generate resources
+- [action_generator.rb](mdc:lib/generators/avo/action_generator.rb) - Generate actions
+- [filter_generator.rb](mdc:lib/generators/avo/filter_generator.rb) - Generate filters
+- [all_resources_generator.rb](mdc:lib/generators/avo/all_resources_generator.rb) - Generate all resources
+
+### Rails Integration
+- [lib/generators/rails/avo_resource_generator.rb](mdc:lib/generators/rails/avo_resource_generator.rb) - Rails resource integration
+
+### Base Generator
+- [base_generator.rb](mdc:lib/generators/avo/base_generator.rb) - Common generator functionality
+
+## Generator Templates
+
+Templates are stored in [lib/generators/avo/templates/](mdc:lib/generators/avo/templates):
+- ERB templates for generated files
+- Customizable scaffolding patterns
+- Support for different generator options
+
+## Available Generators
+
+### Install Generator
+```bash
+rails generate avo:install
+```
+- Sets up initial Avo configuration
+- Creates necessary initializers
+- Configures routes and basic setup
+
+### Resource Generator
+```bash
+rails generate avo:resource User
+rails generate avo:resource User --model-class=Person
+```
+- Generates resource files in [app/avo/resources/](mdc:app/avo/resources)
+- Introspects model structure for field generation
+- Supports custom model class mapping
+
+### Action Generator
+```bash
+rails generate avo:action SendEmail
+rails generate avo:action SendEmail --no-model
+```
+- Creates action classes and templates
+- Generates action boilerplate code
+- Supports different action types
+
+### Filter Generator
+```bash
+rails generate avo:filter PublishedFilter
+```
+- Creates filter classes for resource filtering
+- Generates filter UI components
+- Supports different filter types
+
+### All Resources Generator
+```bash
+rails generate avo:all_resources
+```
+- Scans all models and generates resources
+- Useful for quickly scaffolding an entire admin interface
+- Respects existing resources (doesn't overwrite)
+
+## Generator Patterns and Conventions
+
+### Base Generator Features
+Located in [lib/generators/avo/base_generator.rb](mdc:lib/generators/avo/base_generator.rb):
+- Common utilities for all generators
+- Model introspection helpers
+- File system utilities
+
+### Generator Concerns
+Located in [lib/generators/avo/concerns/](mdc:lib/generators/avo/concerns):
+- Shared generator behavior
+- Reusable generator methods
+- Configuration helpers
+
+### Customization
+Generators support various options:
+- `--model-class` - Specify different model class
+- `--skip-routes` - Skip route generation
+- `--namespace` - Generate in specific namespace
+
+## Development Tools
+
+### Asset Management
+- [lib/generators/avo/tailwindcss/](mdc:lib/generators/avo/tailwindcss) - TailwindCSS integration
+- [lib/generators/avo/js/](mdc:lib/generators/avo/js) - JavaScript scaffolding
+
+### Build Scripts
+Located in [scripts/](mdc:scripts):
+- [build.sh](mdc:scripts/build.sh) - Asset compilation
+- [export-tailwind-safelist.js](mdc:scripts/export-tailwind-safelist.js) - TailwindCSS optimization
+
+### Development Commands
+Available through [bin/](mdc:bin):
+- [bin/dev](mdc:bin/dev) - Development server
+- [bin/init](mdc:bin/init) - Project initialization
+- Helper scripts for common development tasks
+
+## Testing Generated Code
+
+### Generator Tests
+Generator functionality is tested through:
+- Generated file structure validation
+- Template rendering tests
+- Model introspection accuracy
+
+### Integration with Dummy App
+The [spec/dummy/](mdc:spec/dummy) application serves as:
+- Test environment for generated code
+- Example of generator output
+- Integration testing platform
+
+## Customizing Generator Output
+
+### Template Modification
+Templates can be customized by:
+- Copying templates to your application
+- Modifying ERB template files
+- Adding custom generator options
+
+### Generator Extension
+Extend generators by:
+- Inheriting from base generators
+- Adding custom generator hooks
+- Implementing application-specific logic

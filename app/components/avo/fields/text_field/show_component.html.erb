@@ -1,4 +1,4 @@
-<%= field_wrapper(**field_wrapper_args) do %>
+<%= render Cado::FieldWrapperComponent.new(label: @field.name) do %>
   <% if @field.as_html %>
     <%== @field.value %>
   <% elsif @field.protocol.present? %>

@@ -1,0 +1,115 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Avo Components System
+
+Avo uses ViewComponent for its UI architecture, providing modular and testable view components.
+
+## Component Structure
+
+### Location and Organization
+Components are located in [app/components/avo/](mdc:app/components/avo) with the following structure:
+- `component_name.rb` - Ruby component class
+- `component_name.html.erb` - ERB template
+- `component_name_spec.rb` - Component tests (in [spec/components/avo/](mdc:spec/components/avo))
+
+### Base Component Pattern
+All Avo components inherit from `ViewComponent::Base` and follow this pattern:
+
+```ruby
+module Avo
+  class ExampleComponent < ViewComponent::Base
+    def initialize(record:, resource:, **options)
+      @record = record
+      @resource = resource
+      @options = options
+    end
+
+    private
+
+    attr_reader :record, :resource, :options
+  end
+end
+```
+
+## Core Component Categories
+
+### Field Components
+Located in [app/components/avo/fields/](mdc:app/components/avo/fields):
+- Each field type has show, edit, and index components
+- Handles field-specific rendering logic
+- Manages field options and behaviors
+
+### Layout Components
+- [sidebar_component.rb](mdc:app/components/avo/sidebar_component.rb) - Main navigation
+- [breadcrumbs_component.rb](mdc:app/components/avo/breadcrumbs_component.rb) - Navigation breadcrumbs
+- [flash_alerts_component.rb](mdc:app/components/avo/flash_alerts_component.rb) - Flash messages
+
+### Index Components
+Located in [app/components/avo/index/](mdc:app/components/avo/index):
+- Table view components
+- Grid view components
+- Resource listing controls
+
+### Resource Components
+- [resource_component.rb](mdc:app/components/avo/resource_component.rb) - Base resource display
+- [panel_component.rb](mdc:app/components/avo/panel_component.rb) - Content panels
+- [tab_component.rb](mdc:app/components/avo/tab_component.rb) - Tabbed interfaces
+
+## Component Patterns
+
+### Conditional Rendering
+Components use helper methods for conditional logic:
+
+```ruby
+def render?
+  return false unless visible?
+  authorization.can_see_field?(field)
+end
+```
+
+### Slot Usage
+Components leverage ViewComponent slots for flexible content:
+
+```erb
+<%= render component do |c| %>
+  <% c.header do %>
+    <h2>Title</h2>
+  <% end %>
+
+  <% c.body do %>
+    Content here
+  <% end %>
+<% end %>
+```
+
+### Component Testing
+Components are tested in [spec/components/](mdc:spec/components) using:
+- RSpec with ViewComponent test helpers
+- Capybara for integration testing
+- Factory data for realistic scenarios
+
+## Asset Management Components
+
+### Asset Manager
+[app/components/avo/asset_manager/](mdc:app/components/avo/asset_manager):
+- `javascript_component.rb` - JavaScript asset loading
+- `stylesheet_component.rb` - CSS asset loading
+- Handles dynamic asset inclusion based on features used
+
+## Customization and Extension
+
+### Custom Components
+Resources can specify custom components:
+
+```ruby
+self.components = {
+  resource_show_component: CustomShowComponent,
+  resource_edit_component: CustomEditComponent
+}
+```
+
+### Component Resolution
+Components are resolved through the `resolve_component` method in [lib/avo/resources/base.rb](mdc:lib/avo/resources/base.rb), allowing for runtime customization.
