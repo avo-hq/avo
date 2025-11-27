@@ -1,0 +1,174 @@
+/* Avatar Component Styles */
+.cado-avatar {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/* Size variants */
+.cado-avatar--large {
+  width: 80px;
+  height: 80px;
+}
+
+.cado-avatar--medium {
+  width: 48px;
+  height: 48px;
+}
+
+.cado-avatar--small {
+  width: 32px;
+  height: 32px;
+}
+
+.cado-avatar--tiny {
+  width: 20px;
+  height: 20px;
+}
+
+/* Shape variants */
+.cado-avatar--rounded {
+  border-radius: 9999px;
+}
+
+.cado-avatar--square.cado-avatar--large {
+  border-radius: 16px;
+}
+
+.cado-avatar--square.cado-avatar--medium {
+  border-radius: 12px;
+}
+
+.cado-avatar--square.cado-avatar--small,
+.cado-avatar--square.cado-avatar--tiny {
+  border-radius: 6px;
+}
+
+/* Background colors for different types and themes */
+.cado-avatar--placeholder,
+.cado-avatar--initial {
+  background-color: #f6f6f6;
+}
+
+.cado-avatar--initial.cado-avatar--orange {
+  background-color: #fb923c;
+}
+
+.cado-avatar--initial.cado-avatar--yellow {
+  background-color: #facc15;
+}
+
+.cado-avatar--initial.cado-avatar--green {
+  background-color: #22c55e;
+}
+
+.cado-avatar--initial.cado-avatar--teal {
+  background-color: #2dd4bf;
+}
+
+.cado-avatar--initial.cado-avatar--blue {
+  background-color: #3b82f6;
+}
+
+.cado-avatar--initial.cado-avatar--purple {
+  background-color: #a855f7;
+}
+
+/* Image container */
+.cado-avatar__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cado-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Initial text styling */
+.cado-avatar__initial {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Initial text colors */
+.cado-avatar--initial .cado-avatar__initial {
+  color: #5d5d5d;
+}
+
+.cado-avatar--initial.cado-avatar--orange .cado-avatar__initial,
+.cado-avatar--initial.cado-avatar--yellow .cado-avatar__initial,
+.cado-avatar--initial.cado-avatar--green .cado-avatar__initial,
+.cado-avatar--initial.cado-avatar--teal .cado-avatar__initial,
+.cado-avatar--initial.cado-avatar--blue .cado-avatar__initial,
+.cado-avatar--initial.cado-avatar--purple .cado-avatar__initial {
+  color: #f6f6f6;
+}
+
+/* Font sizes for different avatar sizes */
+.cado-avatar--large .cado-avatar__initial {
+  font-size: 32px;
+  line-height: 40px;
+  width: 45px;
+}
+
+.cado-avatar--medium .cado-avatar__initial {
+  font-size: 20px;
+  line-height: 24px;
+  width: 26px;
+}
+
+.cado-avatar--small .cado-avatar__initial {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.cado-avatar--tiny .cado-avatar__initial {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* Border for placeholder and default initial avatars */
+.cado-avatar__border {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #d1d1d1;
+  pointer-events: none;
+}
+
+.cado-avatar--rounded .cado-avatar__border {
+  border-radius: 9999px;
+}
+
+.cado-avatar--square.cado-avatar--large .cado-avatar__border {
+  border-radius: 16px;
+}
+
+.cado-avatar--square.cado-avatar--medium .cado-avatar__border {
+  border-radius: 12px;
+}
+
+.cado-avatar--square.cado-avatar--small .cado-avatar__border,
+.cado-avatar--square.cado-avatar--tiny .cado-avatar__border {
+  border-radius: 6px;
+}
+

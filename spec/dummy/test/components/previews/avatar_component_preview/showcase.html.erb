@@ -1,0 +1,198 @@
+<div style="padding: 2rem; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 4rem;">
+      <h1
+        style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"
+      >
+        ✨ Avatar Component Showcase
+      </h1>
+
+      <p style="font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto;">
+        Complete overview of all avatar variants matching the Figma design system specifications
+      </p>
+    </div>
+
+    <div style="display: grid; gap: 3rem;">
+      <!-- Placeholders -->
+      <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">🔲 Placeholder Avatars</h2>
+          <p style="color: #666;">Empty state avatars with subtle borders</p>
+        </div>
+
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem; margin-bottom: 2rem;"
+        >
+          <% placeholder_configs = [
+              { size: "large", shape: "rounded", label: "Large Rounded" },
+              { size: "medium", shape: "rounded", label: "Medium Rounded" },
+              { size: "small", shape: "rounded", label: "Small Rounded" },
+              { size: "tiny", shape: "rounded", label: "Tiny Rounded" }
+            ] %>
+
+          <% placeholder_configs.each do |config| %>
+            <div style="text-align: center; padding: 1rem;">
+              <div style="margin-bottom: 1rem;">
+                <%= render Avo::AvatarComponent.new(type: "placeholder", size: config[:size], shape: config[:shape]) %>
+              </div>
+
+              <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem;">
+          <% square_configs = [
+              { size: "large", shape: "square", label: "Large Square" },
+              { size: "medium", shape: "square", label: "Medium Square" },
+              { size: "small", shape: "square", label: "Small Square" },
+              { size: "tiny", shape: "square", label: "Tiny Square" }
+            ] %>
+
+          <% square_configs.each do |config| %>
+            <div style="text-align: center; padding: 1rem;">
+              <div style="margin-bottom: 1rem;">
+                <%= render Avo::AvatarComponent.new(type: "placeholder", size: config[:size], shape: config[:shape]) %>
+              </div>
+
+              <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+
+      <!-- Initial Avatars - Color Spectrum -->
+      <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">🎨 Color Theme Spectrum</h2>
+          <p style="color: #666;">All available color themes for initial avatars</p>
+        </div>
+
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 2rem; margin-bottom: 2rem;"
+        >
+          <% theme_configs = [
+              { theme: "default", initial: "D", name: "Default" },
+              { theme: "orange", initial: "O", name: "Orange" },
+              { theme: "yellow", initial: "Y", name: "Yellow" },
+              { theme: "green", initial: "G", name: "Green" },
+              { theme: "teal", initial: "T", name: "Teal" },
+              { theme: "blue", initial: "B", name: "Blue" },
+              { theme: "purple", initial: "P", name: "Purple" }
+            ] %>
+
+          <% theme_configs.each do |config| %>
+            <div style="text-align: center; padding: 1rem;">
+              <div style="margin-bottom: 1rem;">
+                <%= render Avo::AvatarComponent.new(type: "initial", initial: config[:initial], theme: config[:theme]) %>
+              </div>
+
+              <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:name] %></div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+
+      <!-- Size Matrix -->
+      <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">📐 Size Matrix</h2>
+          <p style="color: #666;">Initial avatars across all size variants</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem;">
+          <% size_configs = [
+              { size: "large", label: "Large (80px)" },
+              { size: "medium", label: "Medium (48px)" },
+              { size: "small", label: "Small (32px)" },
+              { size: "tiny", label: "Tiny (20px)" }
+            ] %>
+
+          <% size_configs.each do |config| %>
+            <div style="text-align: center; padding: 1rem;">
+              <div style="margin-bottom: 1rem;">
+                <%= render Avo::AvatarComponent.new(type: "initial", initial: "A", size: config[:size], theme: "blue") %>
+              </div>
+
+              <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+
+      <!-- Avatar with Images -->
+      <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">📸 Photo Avatars</h2>
+          <p style="color: #666;">Avatars with actual user images</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem;">
+          <% photo_configs = [
+              { size: "large", label: "Large Photo", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" },
+              { size: "medium", label: "Medium Photo", image: "https://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=400&h=400&fit=crop&crop=face" },
+              { size: "small", label: "Small Photo", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face" },
+              { size: "tiny", label: "Tiny Photo", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face" }
+            ] %>
+
+          <% photo_configs.each do |config| %>
+            <div style="text-align: center; padding: 1rem;">
+              <div style="margin-bottom: 1rem;">
+                <%= render Avo::AvatarComponent.new(
+                  type: "avatar",
+                  size: config[:size],
+                  shape: "rounded",
+                  src: config[:image],
+                  alt: "User Photo"
+                ) %>
+              </div>
+
+              <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+
+      <!-- Shape Comparison -->
+      <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">🔄 Shape Variations</h2>
+          <p style="color: #666;">Rounded vs. Square avatar shapes</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; max-width: 600px; margin: 0 auto;">
+          <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 12px;">
+            <h3 style="margin-bottom: 1.5rem; color: #333;">Rounded (Circular)</h3>
+
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+              <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "rounded", size: "large") %>
+              <%= render Avo::AvatarComponent.new(type: "initial", initial: "R", shape: "rounded", size: "large", theme: "teal") %>
+            </div>
+
+            <div style="font-size: 0.9rem; color: #666;">Perfect circles</div>
+          </div>
+
+          <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 12px;">
+            <h3 style="margin-bottom: 1.5rem; color: #333;">Square (Rounded)</h3>
+
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+              <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "square", size: "large") %>
+              <%= render Avo::AvatarComponent.new(type: "initial", initial: "S", shape: "square", size: "large", theme: "blue") %>
+            </div>
+
+            <div style="font-size: 0.9rem; color: #666;">Rounded rectangles</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; margin-top: 4rem; padding: 2rem; color: #666;">
+      <p style="font-size: 0.9rem;">
+        🎯 All variants implemented according to Figma design system specifications
+        <br>
+        💡 Use the <strong>Interactive Playground</strong> to test custom configurations
+      </p>
+    </div>
+  </div>
+</div>

@@ -94,6 +94,7 @@
   @import './css/fields/tiptap.css';
 
   /* UI 4 */
+  @import './css/components/avatar.css';
   @import './css/components/discreet_information.css';
   @import './css/variables.css';
 

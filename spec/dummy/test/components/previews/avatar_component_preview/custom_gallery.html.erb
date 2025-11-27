@@ -1,0 +1,84 @@
+<div style="padding: 2rem;">
+  <div style="text-align: center; margin-bottom: 3rem;">
+    <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">🖼️ Custom Avatar Gallery</h2>
+    <p style="color: #666; margin-bottom: 1rem;">Test the avatar component with your own images</p>
+
+    <div
+      style="display: inline-flex; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; font-size: 0.9rem;"
+    >
+      <span><strong>Size:</strong> <%= gallery_size.capitalize %></span>
+      <span><strong>Shape:</strong> <%= gallery_shape.capitalize %></span>
+    </div>
+  </div>
+
+  <% image_urls = custom_images.split("\n").map(&:strip).reject(&:blank?)
+
+    if image_urls.empty?
+      image_urls = [
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=400&h=400&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face"
+      ]
+    end %>
+
+  <!-- Gallery Grid -->
+  <div
+    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1.5rem; max-width: 800px; margin: 0 auto 3rem;"
+  >
+    <% image_urls.each_with_index do |image_url, index| %>
+      <div
+        style="text-align: center; padding: 1rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease;"
+        onmouseover="this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.transform='translateY(0)'"
+      >
+        <%= render Avo::AvatarComponent.new(
+          type: "avatar",
+          src: image_url,
+          alt: "Custom Avatar #{index + 1}",
+          size: gallery_size,
+          shape: gallery_shape
+        ) %>
+
+        <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #666;">Avatar #<%= index + 1 %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Image URL Display -->
+  <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #333;">📝 Current Image URLs:</h3>
+
+    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+      <% if image_urls.any? %>
+        <% image_urls.each_with_index do |url, index| %>
+          <div style="margin-bottom: 0.5rem; font-family: monospace; font-size: 0.8rem; word-break: break-all;">
+            <strong><%= index + 1 %>.</strong>
+            <%= url %>
+          </div>
+        <% end %>
+      <% else %>
+        <div style="color: #666; font-style: italic;">No custom images provided - showing default examples</div>
+      <% end %>
+    </div>
+
+    <div style="font-size: 0.9rem; color: #666;">
+      <strong>💡 Tip:</strong> Add your own image URLs in the sidebar (one per line) to test with different photos. Use
+      services like Unsplash, Lorem Picsum, or your own hosted images.
+    </div>
+  </div>
+
+  <!-- Sample URLs -->
+  <div style="margin-top: 2rem; padding: 2rem; background: #e3f2fd; border-radius: 12px;">
+    <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #1565c0;">🌟 Sample Image URLs to Try:</h3>
+
+    <div style="display: grid; gap: 0.5rem; font-family: monospace; font-size: 0.8rem;">
+      <div>https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face</div>
+      <div>https://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=400&h=400&fit=crop&crop=face</div>
+      <div>https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face</div>
+      <div>https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=400&h=400&fit=crop&crop=face</div>
+      <div>https://picsum.photos/400/400?random=1</div>
+      <div>https://picsum.photos/400/400?random=2</div>
+    </div>
+  </div>
+</div>
