@@ -1,0 +1,19 @@
+<div style="display: flex; gap: 2rem; align-items: center; padding: 1rem;">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+    <h4>Rounded (Circular)</h4>
+
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "rounded", size: "large") %>
+      <%= render Avo::AvatarComponent.new(type: "initial", initial: "R", shape: "rounded", size: "large", theme: "teal") %>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+    <h4>Square (Rounded Rectangle)</h4>
+
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "square", size: "large") %>
+      <%= render Avo::AvatarComponent.new(type: "initial", initial: "S", shape: "square", size: "large", theme: "blue") %>
+    </div>
+  </div>
+</div>
