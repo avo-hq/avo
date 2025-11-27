@@ -1,18 +1,5 @@
-# files:
-#   exclude:
-#     - "node_modules/**/*"
-#     - "vendor/**/*"
-
 linter:
   enabled: true
-  # rules:
-  #   html-no-self-closing:
-  #     enabled: true
-  #     exclude:
-  #       - "!app/views/*_mailer/**/*"
-
-  #   erb-comment-syntax:
-  #     enabled: false
 
 formatter:
   enabled: true
