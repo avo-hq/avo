@@ -48,7 +48,6 @@
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
-@plugin '@tailwindcss/container-queries';
 
 /* Add dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
