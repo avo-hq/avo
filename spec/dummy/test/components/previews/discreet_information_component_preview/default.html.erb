@@ -1,0 +1,49 @@
+<div style="padding: 2rem;">
+  <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    <div>
+      <%= render Avo::DiscreetInformationComponent.new(
+        as: :icon,
+        icon: "heroicons/outline/information-circle",
+        url: url,
+        target: target
+      ) %>
+    </div>
+    <div>
+      <%= render Avo::DiscreetInformationComponent.new(
+        as: :text,
+        text: "Simple text",
+        url: url,
+        target: target
+      ) %>
+    </div>
+    <div>
+      <%= render Avo::DiscreetInformationComponent.new(
+        as: :key_value,
+        key: "Key",
+        text: "Value",
+        url: url,
+        target: target
+      ) %>
+    </div>
+
+    <div>
+      <%= render Avo::DiscreetInformationComponent.new(
+        as: :badge,
+        text: "Badge",
+        url: url,
+        target: target
+      ) %>
+    </div>
+
+    <div>
+      <%= render Avo::DiscreetInformationComponent.new(
+        as: :badge,
+        text: "Badge",
+        icon: "heroicons/outline/paper-clip",
+        url: url,
+        target: target
+      ) %>
+    </div>
+  </div>
+</div>
+
