@@ -194,7 +194,7 @@
   --color-border-brand: var(--color-avo-neutral-950);
   --color-border-focus: var(--color-avo-neutral-950);
   --border-border: var(--spacing-px);
-  --border-2: var(--spacing-0,5);
+  --border-2: var(--spacing-0-5);
   --border-4: var(--spacing-1);
   --border-8: var(--spacing-2);
   --icon-icon-secondary: var(--color-avo-neutral-400);
