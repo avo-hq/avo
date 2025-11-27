@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
       put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
 
-      get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
+      get "custom_tool", to: "tools#custom_tool", as: :custom_tool
     end
 
     # Uncomment to test constraints /123/en/admin
