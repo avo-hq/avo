@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (4.0.22.alpha)
+    avo (4.1.1.alpha)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -471,6 +471,7 @@ GEM
     nokogiri (1.18.9-x86_64-linux-musl)
       racc (~> 1.4)
     observer (0.1.2)
+    openssl (3.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
     pagy (9.3.5)
@@ -815,6 +816,7 @@ DEPENDENCIES
   meta-tags
   money-rails (~> 1.12)
   net-smtp
+  openssl
   pagy (> 8)
   pg (>= 0.18, < 2.0)
   pluggy!
