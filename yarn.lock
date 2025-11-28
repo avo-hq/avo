@@ -2025,10 +2025,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@yaireo/tagify@^4.35.5":
-  version "4.35.5"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.35.5.tgz#2ec78ccb470e65544d1349ec23032149a6a07a10"
-  integrity sha512-IJf1z205bocsDoiJ6syqGwW8bY/oCQttpGfMeaeUipbNwmz4j+5oaCT6Gx+Bbu9ToGqGhd0Qo1yjcbJPArjJqg==
+"@yaireo/tagify@^4.35.6":
+  version "4.35.6"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.35.6.tgz#4dabf9ec4f9bff9f6f2481452df025a50bcc77f3"
+  integrity sha512-+UsaVuU3osYwmiie8YrbMkpyEInet2el3t+8lKf9j27RsACESmOvM5QtI0MwmzFdjMSAGwqdp7UjRqOo8GJrnA==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -2583,10 +2583,10 @@ core-js-compat@^3.43.0:
   dependencies:
     browserslist "^4.25.1"
 
-core-js@^3.46.0:
-  version "3.46.0"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.46.0.tgz#323a092b96381a9184d0cd49ee9083b2f93373bb"
-  integrity sha512-vDMm9B0xnqqZ8uSBpZ8sNtRtOdmfShrvT6h2TuQGLs0Is+cR0DYbj/KWP6ALVNbWPpqA/qPLoOuppJN07humpA==
+core-js@^3.47.0:
+  version "3.47.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.47.0.tgz#436ef07650e191afeb84c24481b298bd60eb4a17"
+  integrity sha512-c3Q2VVkGAUyupsjRnaNX6u8Dq2vAdzm9iuPj5FW0fRxzlxgq9Q39MDq10IvmQSpLgHQNyQzQmOo6bgGHmH3NNg==
 
 cosmiconfig@^8.3.5:
   version "8.3.6"
