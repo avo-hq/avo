@@ -1,9 +1,9 @@
-require 'net/http'
+require "net/http"
 
 module Avo
   module Services
     class HqReporter
-      ENDPOINT = 'https://v3.avohq.io/api/v3/licenses/check'.freeze
+      ENDPOINT = "https://v3.avohq.io/api/v3/licenses/check".freeze
       REQUEST_TIMEOUT = 5 # seconds
       CACHE_TIME = 24.hours.to_i # seconds
 
@@ -17,18 +17,18 @@ module Avo
         def report(request_info = {})
           return unless should_report?
 
-          cache_store.write(cache_key, { reported_at: Time.now }, expires_in: CACHE_TIME)
+          cache_store.write(cache_key, {reported_at: Time.now}, expires_in: CACHE_TIME)
 
           perform_request(request_info)
-        rescue StandardError
+        rescue
           # Silently swallow all errors
         end
 
         private
 
         def should_report?
-          # return false unless Rails.env.production?
-          return false if Avo.plugin_manager.installed?('avo-licensing')
+          return false unless Rails.env.production?
+          return false if Avo.plugin_manager.installed?("avo-licensing")
           return false if already_reported?
 
           true
@@ -39,11 +39,11 @@ module Avo
           return false unless cached.present?
 
           # Handle cache stores that don't auto-expire
-          reported_at = cached[:reported_at] || cached['reported_at']
+          reported_at = cached[:reported_at] || cached["reported_at"]
           return false unless reported_at
 
           Time.parse(reported_at.to_s) > Time.now - CACHE_TIME
-        rescue StandardError
+        rescue
           false
         end
 
@@ -67,10 +67,10 @@ module Avo
           if Avo.configuration.send_metadata
             begin
               result[:avo_metadata] = Avo::Services::TelemetryService.avo_metadata
-            rescue StandardError => e
+            rescue => e
               result[:avo_metadata] = {
                 error_message: e.message,
-                error: 'Failed to generate the Avo metadata'
+                error: "Failed to generate the Avo metadata"
               }
             end
           else
@@ -83,21 +83,20 @@ module Avo
         def perform_request(request_info)
           uri = URI.parse(ENDPOINT)
           http = Net::HTTP.new(uri.host, uri.port)
-          http.use_ssl = (uri.scheme == 'https')
+          http.use_ssl = (uri.scheme == "https")
           http.read_timeout = REQUEST_TIMEOUT
           http.open_timeout = REQUEST_TIMEOUT
-          request = Net::HTTP::Post.new(uri.request_uri, { 'Content-Type' => 'application/json' })
+          request = Net::HTTP::Post.new(uri.request_uri, {"Content-Type" => "application/json"})
           request.body = payload(request_info).to_json
           http.request(request)
         end
 
         def app_name
-          Rails.application.class.to_s.split('::').first
-        rescue StandardError
+          Rails.application.class.to_s.split("::").first
+        rescue
           nil
         end
       end
     end
   end
 end
-
