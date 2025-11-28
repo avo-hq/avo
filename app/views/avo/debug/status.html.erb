@@ -1,5 +1,5 @@
 <% if defined?(Avo::Licensing::StatusComponent) %>
   <%= render Avo::Licensing::StatusComponent.new %>
 <% else %>
-TODO: Implement status page for community license
+  <%= render Avo::Debug::StatusComponent.new %>
 <% end %>
