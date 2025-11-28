@@ -16,4 +16,3 @@ class Avo::Debug::StatusComponent < Avo::BaseComponent
     }.stringify_keys.except(*Avo.configuration.exclude_from_status)
   end
 end
-
