@@ -82,6 +82,9 @@ module Avo
               actions: @actions
             }
 
+            # TODO: make this work.
+            # We just merged body and bare content components into one view.
+            # Everything lives in ResourceListingComponent
             render turbo_stream: [
               turbo_stream.replace("#{@resource.model_key}_body_content") do
                 Avo::Current.view_context.render Avo::ResourceBodyContentComponent.new(**common_args)

@@ -1,0 +1,22 @@
+<%= tag.div class: class_names(
+  "detail-view",
+  @class,
+  "detail-view--has-sidebar": sidebar?,
+  "detail-view--full-width": full_width?,
+  "detail-view--floating-sidebar": floating_sidebar?,
+) do %>
+  <% if breadcrumbs? %>
+    <div class="detail-view__breadcrumbs"><%= breadcrumbs %></div>
+  <% end %>
+  <% if header? %>
+    <div class="detail-view__header"><%= header %></div>
+  <% end %>
+
+  <div class="detail-view__content">
+    <div class="detail-view__body"><%= body %></div>
+
+    <% if sidebar? %>
+      <div class="detail-view__sidebar"><%= sidebar %></div>
+    <% end %>
+  </div>
+<% end %>

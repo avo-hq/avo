@@ -13,7 +13,7 @@ module TestHelpers
     end
 
     def expect_record_not_present(name)
-      within(find_component(Avo::Index::ResourceTableComponent)) do |el|
+      within(find_component(Avo::ViewTypes::TableComponent)) do |el|
         expect(el).not_to have_text name
       end
     end

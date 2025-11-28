@@ -85,6 +85,7 @@
   @import './css/scrollbar.css';
   @import './css/sidebar.css';
   @import './css/spinner.css';
+  @import './css/table.css';
 
   @import './css/fields/status.css';
   @import './css/fields/code.css';
@@ -94,10 +95,16 @@
   @import './css/fields/tiptap.css';
 
   /* UI 4 */
-  @import './css/components/avatar.css';
-  @import './css/components/discreet_information.css';
   @import './css/variables.css';
 
+  @import './css/components/avatar.css';
+  @import './css/components/breadcrumb.css';
+  @import './css/components/breadcrumb_element.css';
+  @import './css/components/detail_view.css';
+  @import './css/components/description_list.css';
+  @import './css/components/header.css';
+  @import './css/components/discreet_information.css';
+  @import './css/components/panel.css';
 
   html,
   body {

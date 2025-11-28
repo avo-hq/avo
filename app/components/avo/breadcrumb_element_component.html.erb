@@ -1,0 +1,28 @@
+<%= tag.span class: class_names(
+  "breadcrumb-element",
+  "breadcrumb-element--current": current?,
+  "breadcrumb-element--link": link?
+) do %>
+  <% if @icon.present? %>
+    <span class="breadcrumb-element__icon">
+      <%= helpers.svg @icon, class: "breadcrumb-element__icon-svg" %>
+    </span>
+  <% end %>
+
+  <% if link? %>
+    <%= link_to @text, @url, class: "breadcrumb-element__text" %>
+  <% else %>
+    <span class="breadcrumb-element__text"><%= @text %></span>
+  <% end %>
+
+  <% if @separator.present? %>
+    <span class="breadcrumb-element__separator">
+      <% if @separator == ">" %>
+        <%= helpers.svg "chevron-right", class: "breadcrumb-element__separator-icon" %>
+      <% else %>
+        <%= @separator %>
+      <% end %>
+    </span>
+  <% end %>
+<% end %>
+

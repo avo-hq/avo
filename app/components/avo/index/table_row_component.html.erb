@@ -1,8 +1,8 @@
-<%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21%>
+<%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21 %>
 
 <%= content_tag :tr,
   id: "#{self.class.to_s.underscore}_#{@resource.record_param}",
-  class: class_names("group bg-white hover:bg-gray-50 z-21 border-b border-gray-200", {"cursor-pointer": click_row_to_view_record}),
+  class: class_names("group hover:bg-gray-50 z-21", {"cursor-pointer": click_row_to_view_record}),
   data: {
     index: @index,
     component_name: self.class.to_s.underscore,
@@ -17,20 +17,21 @@
   } do %>
   <% if @resource.record_selector %>
     <td class="item-selector-cell w-10">
-      <div class="flex justify-center h-full">
+      <div class="flex h-full justify-center">
         <%= render Avo::RowSelectorComponent.new floating: false, index: @index, checked: @row_selector_checked %>
       </div>
     </td>
   <% end %>
+
   <% if @resource.render_row_controls_on_the_left? %>
     <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
-      <div class="flex items-center justify-end grow-0 h-full">
-        <%= render resource_controls_component %>
-      </div>
+      <div class="flex h-full grow-0 items-center justify-end"><%= render resource_controls_component %></div>
     </td>
   <% end %>
+
   <% @header_fields.each_with_index do |table_header_lable, index| %>
     <% field = @fields.find { |field| field.table_header_label == table_header_lable } %>
+
     <% if field.present? %>
       <%= render field.component_for_view(:index).new(
         field: field,
@@ -44,11 +45,10 @@
       <td class="px-3">—</td>
     <% end %>
   <% end %>
+
   <% if @resource.render_row_controls_on_the_right? %>
     <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
-      <div class="flex items-center justify-end grow-0 h-full">
-        <%= render resource_controls_component %>
-      </div>
+      <div class="flex h-full grow-0 items-center justify-end"><%= render resource_controls_component %></div>
     </td>
   <% end %>
 <% end %>

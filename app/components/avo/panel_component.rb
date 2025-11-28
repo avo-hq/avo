@@ -1,43 +1,50 @@
 # frozen_string_literal: true
 
 class Avo::PanelComponent < Avo::BaseComponent
-  include Avo::ApplicationHelper
-
-  delegate :white_panel_classes, to: :helpers
-
-  renders_one :cover_slot
-  renders_one :name_slot
-  renders_one :tools
-  renders_one :body
-  renders_one :sidebar
-  renders_one :bare_sidebar
-  renders_one :bare_content
-  renders_one :footer_tools
-  renders_one :footer
-
+  prop :title
   prop :description
-  prop :body_classes
-  prop :data, default: {}.freeze
-  prop :display_breadcrumbs, default: false
-  prop :discreet_information
-  prop :index
-  prop :classes
-  prop :profile_photo
-  prop :cover_photo
-  prop :args, kind: :**, default: {}.freeze
-  prop :external_link
+  prop :class
+  prop :with_padding, default: -> { true }
+  prop :variant, default: -> { :default }
+  prop :options, kind: :**
 
-  def after_initialize
-    @name = @args.dig(:name) || @args.dig(:title)
-  end
-
-  def classes
-    class_names(@classes, "has-cover-photo": @cover_photo.present?, "has-profile-photo": @profile_photo.present?)
-  end
+  renders_one :header
+  renders_one :footer
 
   private
 
-  def data_attributes
-    @data.merge(component: @data[:component] || self.class.to_s.underscore, "panel-index": @index)
-  end
+  # def panel_classes
+  #   base_classes = "panel"
+  #   variant_classes = case variant
+  #                    when :compact
+  #                      "panel--compact"
+  #                    when :full_width
+  #                      "panel--full-width"
+  #                    else
+  #                      "panel--default"
+  #                    end
+  #   padding_classes = with_padding ? "panel--with-padding" : ""
+
+  #   [base_classes, variant_classes, padding_classes].compact.join(" ")
+  # end
+
+  # def compact?
+  #   variant == :compact
+  # end
+
+  # def full_width?
+  #   variant == :full_width
+  # end
+
+  # def with_padding?
+  #   with_padding
+  # end
+
+  # def header_classes
+  #   "panel__header"
+  # end
+
+  # def body_classes
+  #   "panel__body"
+  # end
 end

@@ -45,7 +45,7 @@ RSpec.describe "Custom components", type: :feature do
         "Avo::Views::ResourceShowComponent": "Avo::ForTest::ResourceShowComponent",
         "Avo::Views::ResourceEditComponent": "Avo::ForTest::ResourceEditComponent",
         "Avo::Index::GridItemComponent": "Avo::ForTest::GridItemComponent",
-        "Avo::Index::ResourceTableComponent": "Avo::ForTest::ResourceTableComponent",
+        "Avo::ViewTypes::TableComponent": "Avo::ForTest::ResourceTableComponent",
         "Avo::Index::TableRowComponent": "Avo::ForTest::TableRowComponent"
       }
     end

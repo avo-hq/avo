@@ -1,0 +1,108 @@
+/* Panel Component - Based on Figma Design System */
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+
+  /* Design tokens from Figma */
+  border-radius: var(--rounded-xl, 12px);
+  border: 1px solid var(--border-primary-soft, rgba(209, 209, 209, 0.4));
+  background: var(--color-surface-primary-soft, #fafafa);
+}
+
+/* Panel variants */
+.panel--default {
+  /* Default styling already applied */
+}
+
+.panel--compact {
+  /* Compact variant - smaller spacing */
+  .panel__wrapper {
+    padding: var(--spacing-0-5, 2px);
+  }
+
+  .panel__header {
+    padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  }
+}
+
+.panel--full-width {
+  /* Full width variant */
+  width: 100%;
+}
+
+.panel--with-padding {
+  .panel__wrapper {
+    /* Figma  */
+    padding: calc(var(--spacing-1, 4px) - 1px);
+  }
+}
+
+/* Panel wrapper */
+.panel__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  width: 100%;
+  padding: var(--spacing-1, 0.25rem);
+}
+
+/* Panel header */
+.panel__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+  /* gap: var(--spacing-0-5, 2px); */
+}
+
+/* Panel title - Copy/14/500 from Figma */
+.panel__title {
+  color: var(--color-text-primary, #171717);
+  font-family: 'Inter', sans-serif;
+  font-size: var(--text-sm, 14px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  margin: 0;
+}
+
+/* Panel description - Copy/14/400 from Figma */
+.panel__description {
+  color: var(--color-text-secondary, #888888);
+  font-family: 'Inter', sans-serif;
+  font-size: var(--text-sm, 14px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0;
+}
+
+/* Panel body */
+.panel__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  width: 100%;
+
+  /* Inner panel styling */
+  border-radius: var(--rounded-lg, 8px);
+  border: 1px solid var(--border-primary-soft, rgba(209, 209, 209, 0.4));
+  background: var(--color-surface-surface-primary, #ffffff);
+  overflow: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .panel__header {
+    padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  }
+
+  .panel--compact .panel__header {
+    padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+  }
+}

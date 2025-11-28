@@ -238,7 +238,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       parent_resource: @parent_resource,
       pagy: @pagy,
       query: @query,
-      actions: @actions
+      actions: @actions,
+      turbo_frame: @turbo_frame,
+      index_params: @index_params
     }
   end
 end

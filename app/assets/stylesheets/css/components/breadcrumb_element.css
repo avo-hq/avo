@@ -1,0 +1,42 @@
+.breadcrumb-element {
+  @apply inline-flex items-center gap-2 font-medium leading-6;
+  font-family: var(--font-sans);
+  font-size: 16px;
+}
+
+.breadcrumb-element__icon {
+  @apply shrink-0 flex items-center;
+}
+
+.breadcrumb-element__icon-svg {
+  @apply h-4 w-4;
+}
+
+.breadcrumb-element__text {
+  @apply shrink-0 whitespace-nowrap;
+}
+
+.breadcrumb-element--link {
+  .breadcrumb-element__text {
+    @apply text-neutral-500;
+  }
+
+  &:hover .breadcrumb-element__text {
+    @apply text-neutral-700;
+  }
+}
+
+.breadcrumb-element--current {
+  .breadcrumb-element__text {
+    @apply text-neutral-900;
+  }
+}
+
+.breadcrumb-element__separator {
+  @apply text-neutral-500 ml-2 flex items-center;
+}
+
+.breadcrumb-element__separator-icon {
+  @apply h-4 w-4 stroke-current;
+}
+

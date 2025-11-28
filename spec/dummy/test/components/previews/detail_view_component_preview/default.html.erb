@@ -1,0 +1,67 @@
+<div style="padding: 2rem;" class="mx-auto">
+  <%= render Avo::DetailViewComponent.new(
+    floating_sidebar: false,
+    class: "mx-auto"
+  ) do |detail_view| %>
+    <% detail_view.with_header do %>
+      <%= render Avo::HeaderComponent.new(
+        title: "John Doe",
+        description: "Some description here on maybe how to use the resource"
+      ) do |header| %>
+        <% header.with_avatar do %>
+          <%= render Avo::AvatarComponent.new(
+            type: "initial",
+            initial: "JD",
+            size: "medium"
+          ) %>
+        <% end %>
+        <% header.with_controls do %>
+          <div class="flex gap-3">
+            <%= render Avo::ButtonComponent.new(label: "Label", size: :xs) %>
+            <%= render Avo::ButtonComponent.new(label: "Label", size: :xs) %>
+            <%= render Avo::ButtonComponent.new(label: "Label", size: :xs) %>
+          </div>
+        <% end %>
+        <% header.with_discreet_information do %>
+          <div class="flex gap-2">
+            <%= render Avo::DiscreetInformationComponent.new(
+              as: :key_value,
+              key: "Status",
+              text: "Active"
+            ) %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              as: :badge,
+              text: "Verified",
+              icon: "heroicons/outline/paper-clip"
+            ) %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              as: :text,
+              text: "Last login: 2 hours ago"
+            ) %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% detail_view.with_body do %>
+      <%= render Avo::PanelComponent.new(title: "Panel Title") do %>
+        <%= render Avo::FieldWrapperComponent.new(
+          label: "Email",
+        ) do %>
+          <div class="text-sm text-gray-900">john.doe@example.com</div>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% detail_view.with_sidebar do %>
+      <%= render Avo::PanelComponent.new(title: "Avatar", ) do %>
+        <%= render Avo::FieldWrapperComponent.new(
+          label: "Created at",
+        ) do %>
+          <div class="text-sm text-gray-900">2021-01-01</div>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+

@@ -684,6 +684,8 @@ module Avo
             view: @view
           ).handle
         end
+
+        Avo::ViewInquirer.new(@view_type)
       end
 
       private
