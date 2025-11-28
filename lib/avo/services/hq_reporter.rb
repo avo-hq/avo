@@ -3,9 +3,9 @@ require "net/http"
 module Avo
   module Services
     class HqReporter
-      ENDPOINT = "https://v3.avohq.io/api/v3/licenses/check".freeze
-      REQUEST_TIMEOUT = 5 # seconds
-      CACHE_TIME = 24.hours.to_i # seconds
+      ENDPOINT = "https://v3.avohq.io/api/v3/licenses/check".freeze unless const_defined?(:ENDPOINT)
+      REQUEST_TIMEOUT = 5 unless const_defined?(:REQUEST_TIMEOUT) # seconds
+      CACHE_TIME = 24.hours.to_i unless const_defined?(:CACHE_TIME) # seconds
 
       class << self
         def cache_key
