@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (4.0.34.alpha)
+    avo (4.0.35.alpha)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
