@@ -36,9 +36,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      RAILS_ENV: test
       RAILS_VERSION: ${{matrix.rails}}
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
-      ENV: test
 
     services:
       postgres:
