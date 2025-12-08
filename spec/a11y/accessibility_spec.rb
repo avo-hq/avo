@@ -1,4 +1,5 @@
 require "rails_helper"
+require "axe-rspec"
 
 RSpec.describe "Accessibility", type: :system do
   before do
