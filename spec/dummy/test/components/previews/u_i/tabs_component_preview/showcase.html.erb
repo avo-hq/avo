@@ -1,0 +1,42 @@
+<div class="p-8 bg-white space-y-12">
+  <div>
+    <h3 class="text-lg font-semibold mb-4">Type Group (No Border)</h3>
+    <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg">
+      <%= render Avo::UI::TabsComponent.new(variant: :group) do |tab|
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link"
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link"
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link"
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link", active: true
+      end %>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="text-lg font-semibold mb-4">Type Scope (With Border)</h3>
+    <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg">
+      <%= render Avo::UI::TabsComponent.new(variant: :scope) do |tab|
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link"
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link"
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link", active: true
+        tab.with_item label: "Tab", icon: "heroicons/outline/external-link"
+      end %>
+    </div>
+  </div>
+
+  <div class="space-y-8">
+    <h3 class="text-lg font-semibold">Scope — Active Tab Examples</h3>
+
+    <div>
+      <p class="text-sm text-gray-600 mb-2">Active by index (Integer)</p>
+      <div class="p-4 border border-gray-200 rounded-lg">
+        <% tabs_data = ["Overview", "Settings", "Files"] %>
+        <% active_index = 1 %>
+        <%= render Avo::UI::TabsComponent.new(variant: :scope) do |tab|
+          tabs_data.each_with_index.map do |label, index|
+            tab.with_item label: label, active: index == active_index
+          end
+        end %>
+      </div>
+    </div>
+  </div>
+</div>

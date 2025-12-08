@@ -1,0 +1,31 @@
+<div class="<%= wrapper_classes %>" style="<%= wrapper_style %>">
+  <% if @href.present? && @href != "#" && !@disabled %>
+    <%= link_to @href,
+        class: classes,
+        style: "#{text_color_style} #{background_style}",
+        role: tab_attributes[:role],
+        id: tab_attributes[:id],
+        "aria-selected": tab_attributes[:"aria-selected"],
+        "aria-controls": tab_attributes[:"aria-controls"],
+        tabindex: tab_attributes[:tabindex] do %>
+      <%= render_icon %>
+      <span><%= @label %></span>
+    <% end %>
+  <% else %>
+    <%= content_tag :button,
+        type: "button",
+        class: classes,
+        style: "#{text_color_style} #{background_style}",
+        disabled: @disabled,
+        role: tab_attributes[:role],
+        id: tab_attributes[:id],
+        "aria-selected": tab_attributes[:"aria-selected"],
+        "aria-controls": tab_attributes[:"aria-controls"],
+        "aria-disabled": tab_attributes[:"aria-disabled"],
+        tabindex: tab_attributes[:tabindex] do %>
+      <%= render_icon %>
+      <span><%= @label %></span>
+    <% end %>
+  <% end %>
+</div>
+
