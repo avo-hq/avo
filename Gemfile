@@ -163,12 +163,12 @@ group :test do
   # Performance testing
   gem "test-prof"
   gem "database_cleaner-active_record"
-
-  # A11y
-  gem "selenium-webdriver"
-  gem "axe-core-rspec"
-  gem "axe-core-capybara"
 end
+
+# A11y
+gem "selenium-webdriver"
+gem "axe-core-rspec"
+gem "axe-core-capybara"
 
 # =============================================================================
 # DEVELOPMENT & TEST

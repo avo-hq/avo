@@ -9,7 +9,7 @@ RSpec.describe "Accessibility", type: :system do
   context "when accessing resource index" do
     Avo::Resources::ResourceManager.fetch_resources.each do |resource|
       it "has no accessibility violations for #{resource.name}" do
-        visit avo.send("resources_#{resource.route_key}_path")
+        visit avo.send(:"resources_#{resource.route_key}_path")
 
         expect(page).to be_axe_clean
       end
