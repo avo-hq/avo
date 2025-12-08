@@ -155,6 +155,18 @@ GEM
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
+    axe-core-api (4.11.0)
+      dumb_delegator
+      ostruct
+      virtus
+    axe-core-capybara (4.11.0)
+      axe-core-api (= 4.11.0)
+      dumb_delegator
+    axe-core-rspec (4.11.0)
+      axe-core-api (= 4.11.0)
+      dumb_delegator
+      ostruct
+      virtus
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -273,6 +285,7 @@ GEM
       dry-inflector (~> 1.0)
       dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
+    dumb_delegator (1.1.0)
     erb-formatter (0.7.3)
       syntax_tree (~> 6.0)
     erb_lint (0.9.0)
@@ -624,7 +637,14 @@ GEM
       simplecov (>= 0.22.0)
       tty-which (~> 0.5.0)
       virtus (~> 2.0)
+    rubyzip (3.2.2)
     securerandom (0.4.1)
+    selenium-webdriver (4.39.0)
+      base64 (~> 0.2)
+      logger (~> 1.4)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 4.0)
+      websocket (~> 1.0)
     sexp_processor (4.17.3)
     simplecov (0.22.0)
       docile (~> 1.1)
@@ -717,6 +737,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.9.1)
+    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -748,6 +769,8 @@ DEPENDENCIES
   avo-money_field
   avo-record_link_field
   aws-sdk-s3
+  axe-core-capybara
+  axe-core-rspec
   bootsnap (>= 1.4.2)
   bump
   bundler-integrity (~> 1.0)
@@ -806,6 +829,7 @@ DEPENDENCIES
   ruby-openai
   ruby-statistics (< 4)
   rubycritic
+  selenium-webdriver
   simplecov
   simplecov-cobertura
   simplecov-lcov
