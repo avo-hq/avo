@@ -72,7 +72,7 @@ class UI::TabsComponentPreview < ViewComponent::Preview
     ]
     active_tab = 2
 
-    render Avo::UI::TabsComponent.new() do |tabs|
+    render Avo::UI::TabsComponent.new(variant: :group) do |tabs|
       tabs_data.each_with_index do |tab, index|
         tabs.with_item(
           label: tab[:label],
