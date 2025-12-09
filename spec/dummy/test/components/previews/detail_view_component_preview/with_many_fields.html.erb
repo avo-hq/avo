@@ -1,9 +1,9 @@
 <div style="padding: 2rem; background: #fafafa;">
-  <%= render Avo::DetailViewComponent.new(
+  <%= render ui.panel(
     sidebar_position: sidebar_position,
     show_sidebar: show_sidebar
-  ) do |detail_view| %>
-    <% detail_view.with_header do %>
+  ) do |panel| %>
+    <% panel.with_header do %>
       <%= render Avo::HeaderComponent.new(
         title: "Product Details",
         description: "Complete product information"
@@ -19,7 +19,7 @@
     <% end %>
 
     <% 10.times do |i| %>
-      <% detail_view.with_field do %>
+      <% panel.with_field do %>
         <%= render Avo::FieldWrapperComponent.new(
           label: "Label #{i + 1}",
           compact: false
@@ -30,7 +30,7 @@
     <% end %>
 
     <% if show_sidebar %>
-      <% detail_view.with_sidebar do %>
+      <% panel.with_sidebar do %>
         <div class="flex flex-col gap-6">
           <div class="flex flex-col items-center gap-4">
             <%= render Avo::AvatarComponent.new(

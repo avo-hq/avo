@@ -189,7 +189,13 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def user_information_panel
-    panel do
+    card(title: "User information", description: "User information description") do
+      field :is_admin?, as: :boolean
+
+      field :first_name, placeholder: "John"
+      field :last_name, placeholder: "Doe"
+    end
+    panel(title: "User information", description: "User information description") do
       test_field("Inside panel")
 
       field :user_information, as: :heading
@@ -269,7 +275,7 @@ class Avo::Resources::User < Avo::BaseResource
 
   def birthday_tab
     tab -> { "Birthday" }, description: "hey you", hide_on: :show do
-      panel do
+      card do
         field :birthday,
           as: :date,
           first_day_of_week: 1,

@@ -53,10 +53,10 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
   describe "tabs" do
     let!(:visible_fields_spouse) { create :spouse, name: "RSpec TabsPanelAndSidebarVisibility" }
     let(:url_with_visible_fields_first_tab) {
-      "/admin/resources/spouses/#{visible_fields_spouse.id}?active_tab_name=Hidden+field+inside+tabs&tab_turbo_frame=avo-tabgroup-2"
+      "/admin/resources/spouses/#{visible_fields_spouse.id}?active_tab_title=Hidden+field+inside+tabs&tab_turbo_frame=avo-tabgroup-2"
     }
     let(:url_with_visible_fields_second_tab) {
-      "/admin/resources/spouses/#{visible_fields_spouse.id}?active_tab_name=Hidden+tab+inside+tabs&tab_turbo_frame=avo-tabgroup-2"
+      "/admin/resources/spouses/#{visible_fields_spouse.id}?active_tab_title=Hidden+tab+inside+tabs&tab_turbo_frame=avo-tabgroup-2"
     }
 
     let!(:not_visible_fields_spouse) { create :spouse }

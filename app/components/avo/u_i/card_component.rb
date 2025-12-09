@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::PanelComponent < Avo::BaseComponent
+class Avo::UI::CardComponent < Avo::BaseComponent
   prop :title
   prop :description
   prop :class
@@ -9,6 +9,7 @@ class Avo::PanelComponent < Avo::BaseComponent
   prop :options, kind: :**
 
   renders_one :header
+  renders_one :body
   renders_one :footer
 
   private

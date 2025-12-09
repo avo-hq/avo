@@ -1,9 +1,9 @@
 <div style="padding: 2rem;" class="mx-auto">
-  <%= render Avo::DetailViewComponent.new(
+  <%= render ui.panel(
     floating_sidebar: false,
     class: "mx-auto"
-  ) do |detail_view| %>
-    <% detail_view.with_header do %>
+  ) do |panel| %>
+    <% panel.with_header do %>
       <%= render Avo::HeaderComponent.new(
         title: "John Doe",
         description: "Some description here on maybe how to use the resource"
@@ -43,7 +43,7 @@
       <% end %>
     <% end %>
 
-    <% detail_view.with_body do %>
+    <% panel.with_body do %>
       <%= render Avo::PanelComponent.new(title: "Panel Title") do %>
         <%= render Avo::FieldWrapperComponent.new(
           label: "Email",
@@ -53,7 +53,7 @@
       <% end %>
     <% end %>
 
-    <% detail_view.with_sidebar do %>
+    <% panel.with_sidebar do %>
       <%= render Avo::PanelComponent.new(title: "Avatar", ) do %>
         <%= render Avo::FieldWrapperComponent.new(
           label: "Created at",
@@ -64,4 +64,3 @@
     <% end %>
   <% end %>
 </div>
-

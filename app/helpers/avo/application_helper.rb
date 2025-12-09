@@ -77,12 +77,8 @@ module Avo
       classes
     end
 
-    def white_panel_classes
-      "bg-white rounded-sm shadow-md"
-    end
-
-    def card_classes
-      "bg-white rounded-sm shadow-panel"
+    def wrapped_fields(&block)
+      content_tag :div, class: "divide-y divide-border-primary overflow-auto w-full", &block
     end
 
     def get_model_class(model)

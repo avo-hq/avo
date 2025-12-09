@@ -1,6 +1,6 @@
 <turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative w-full">
   <div
-    class="mac-styled-scrollbar panel relative w-full overflow-auto"
+    class="mac-styled-scrollbar card relative w-full overflow-auto"
     data-component-name="<%= self.class.to_s.underscore %>"
     data-controller="item-select-all"
     data-resource-name="<%= @resource.model_key %>"
@@ -10,7 +10,7 @@
     data-selected-resources-name="<%= @resource.model_key %>"
     data-selected-resources="[]"
   >
-    <div class="panel__wrapper">
+    <div class="card__wrapper">
       <% if @pagy.pages > 1 %>
         <div
           class="absolute z-30 ml-10 hidden w-[calc(100%-2.5rem)] pt-px"
@@ -29,7 +29,7 @@
               <% end %>
             </div>
 
-            <div class="mt-1.5" data-item-select-all-target="selectedMessage" class="hidden">
+            <div class="mt-1.5 hidden" data-item-select-all-target="selectedMessage">
               <%= selected_all_label %>
 
               <%= a_link request.url,
@@ -47,7 +47,7 @@
       <table class="w-full border-separate border-spacing-0">
         <%= render partial: 'avo/partials/table_header', locals: {fields: @header_fields, resource: @resource} %>
 
-        <%= content_tag :tbody, class: "panel__body table-row-group rounded-lg tr>td:first:rounded-t-lg tr>td:last:rounded-b-lg",
+        <%= content_tag :tbody, class: "card__body table-row-group rounded-lg tr>td:first:rounded-t-lg tr>td:last:rounded-b-lg",
           data: {
             **(try(:drag_reorder_data_attributes) || {}),
           } do %>
@@ -58,6 +58,6 @@
       </table>
     </div>
 
-    <div class="panel__footer w-full p-2"><%= render paginator_component %></div>
+    <div class="card__footer w-full p-2"><%= render paginator_component %></div>
   </div>
 </turbo-frame>

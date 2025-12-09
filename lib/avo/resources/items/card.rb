@@ -1,4 +1,4 @@
-class Avo::Resources::Items::ItemGroup
+class Avo::Resources::Items::Card
   prepend Avo::Concerns::IsResourceItem
 
   include Avo::Concerns::HasItems
@@ -34,7 +34,7 @@ class Avo::Resources::Items::ItemGroup
     delegate :sidebar, to: :items_holder
 
     def initialize(parent:, title: nil, **args)
-      @panel = Avo::Resources::Items::Panel.new(title: title, **args)
+      @panel = Avo::Resources::Items::Card.new(title: title, **args)
       @items_holder = Avo::Resources::Items::Holder.new(from: self.class, parent: parent)
     end
 

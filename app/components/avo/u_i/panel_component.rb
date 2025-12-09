@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::DetailViewComponent < Avo::BaseComponent
+class Avo::UI::PanelComponent < Avo::BaseComponent
   prop :floating_sidebar, default: false
   prop :full_width, default: false
   prop :class, default: ""
@@ -9,7 +9,13 @@ class Avo::DetailViewComponent < Avo::BaseComponent
   prop :data, default: -> { {}.freeze }
   prop :class
 
+  prop :title, reader: :public
+  prop :description, reader: :public
+  prop :target, reader: :public
+  prop :url, reader: :public
+
   renders_one :header
+  renders_one :controls
   renders_one :breadcrumbs
   renders_one :sidebar
   renders_one :body

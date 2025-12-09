@@ -1,0 +1,38 @@
+<%= tag.div class: class_names(
+  "panel",
+  @class,
+  "panel--has-sidebar": sidebar?,
+  "panel--full-width": full_width?,
+  "panel--floating-sidebar": floating_sidebar?,
+) do %>
+  <% if breadcrumbs? %>
+    <div class="panel__breadcrumbs"><%= breadcrumbs %></div>
+  <% end %>
+
+  <% if header? %>
+    <div class="panel__header"><%= header %></div>
+  <% else %>
+    <div class="panel__header">
+      <%= render ui.header(
+        title:,
+        url:,
+        target:,
+        description:
+      ) do |header| %>
+        <% if controls? %>
+          <% header.with_controls do %>
+            <%= controls %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="panel__content">
+    <div class="panel__body"><%= body %></div>
+
+    <% if sidebar? %>
+      <div class="panel__sidebar"><%= sidebar %></div>
+    <% end %>
+  </div>
+<% end %>

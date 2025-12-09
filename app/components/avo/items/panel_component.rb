@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Rename to detail view? maybe?
 class Avo::Items::PanelComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
@@ -27,7 +28,7 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
   def args
     if @is_main_panel
       {
-        name: title,
+        title: title,
         description: @resource.description,
         display_breadcrumbs: display_breadcrumbs,
         index: 0,
@@ -38,7 +39,7 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
         discreet_information: @resource.discreet_information
       }
     else
-      {name: @item.name, description: @item.description, index: @index}
+      {title: @item.title, description: @item.description, index: @index}
     end
   end
 end

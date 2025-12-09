@@ -1,37 +1,43 @@
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new(name: "User tool") do |c| %>
-    <% c.with_tools do %>
-      <%= a_link('/avo', icon: 'heroicons/solid/academic-cap', style: :primary) do %>
-        Dummy link
+  <%= render ui.panel do |panel| %>
+    <% panel.with_header do %>
+      <%= render ui.header(title: "User tool", description: "User tool description") do |header| %>
+        <% header.with_controls do %>
+          <%= a_link('/avo', icon: 'heroicons/solid/academic-cap', style: :primary) do %>
+            Dummy link
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
 
-    <% c.with_body do %>
-      <div class="flex flex-col p-4 min-h-24">
-        <div class="space-y-4">
-          <h3>🪧 This partial is waiting to be updated</h3>
+    <% panel.with_body do %>
+      <%= render ui.card(title: "User tool", description: "User tool description") do |card| %>
+        <% card.with_body do %>
+          <div class="flex flex-col p-4 min-h-24">
+            <div class="space-y-4">
+              <h3>🪧 This partial is waiting to be updated</h3>
 
-          <p>
-            You can edit this file here <code class='p-1 rounded-sm bg-gray-500 text-white text-sm'>app/views/avo/resource_tools/user_tool.html.erb</code>.
-          </p>
+              <p>
+                You can edit this file here <code class="p-1 rounded-sm bg-gray-500 text-white text-sm">app/views/avo/resource_tools/user_tool.html.erb</code>.
+              </p>
 
-          <p>
-            The resource tool configuration file should be here <code class='p-1 rounded-sm bg-gray-500 text-white text-sm'>app/avo/resource_tools/user_tool.rb</code>.
-          </p>
+              <p>
+                The resource tool configuration file should be here <code class="p-1 rounded-sm bg-gray-500 text-white text-sm">app/avo/resource_tools/user_tool.rb</code>.
+              </p>
 
-          <%
-            # In this partial you have access to the following variables:
-            # tool
-            # @resource
-            # @resource.record
-            # params
-            # Avo::Current.context
-            # current_user
-          %>
-        </div>
-      </div>
+              <%
+                # In this partial you have access to the following variables:
+                # tool
+                # @resource
+                # @resource.record
+                # params
+                # Avo::Current.context
+                # current_user
+              %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
 </div>
-
-

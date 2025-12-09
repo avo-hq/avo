@@ -1,25 +1,34 @@
-<%= render Avo::PanelComponent.new(**args) do |c| %>
+<%= render ui.panel(title: @item.title, description: @item.description) do |panel| %>
   <% if @is_main_panel && controls.any? %>
-    <% c.with_tools do %>
-      <% controls.each do |control| %>
-        <%= render_control control %>
+    <% panel.with_header do %>
+      <%= render ui.header(
+        title: args[:title],
+        description: args[:description]
+      ) do |header| %>
+        <% header.with_controls do %>
+          <% controls.each do |control| %>
+            <%= render_control control %>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
 
-  <% c.with_body do %>
-    <%= content_tag :div, class: "divide-y divide-gray-200 overflow-auto" do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+  <% panel.with_body do %>
+    <%= render ui.card do |card| %>
+      <% card.with_body do %>
+        <%= wrapped_fields do %>
+          <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
 
   <% if sidebars.any? { |sidebar| sidebar.visible_items.any? } %>
-    <% c.with_sidebar do %>
+    <% panel.with_sidebar do %>
       <div class="justify-between space-y-4">
         <% sidebars.each_with_index do |sidebar, index| %>
-          <div class="<%= helpers.white_panel_classes if sidebar.panel_wrapper? %>">
-            <%= render Avo::ResourceSidebarComponent.new resource: @resource, sidebar: sidebar, params: params, view: view, form: @form, index: index %>
-          </div>
+          <%= render Avo::ResourceSidebarComponent.new resource: @resource, sidebar: sidebar, params: params, view: view, form: @form, index: index %>
         <% end %>
       </div>
     <% end %>
