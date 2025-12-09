@@ -113,9 +113,6 @@ group :development do
   gem "hotwire-livereload", "~> 1.3.0"
   gem "actual_db_schema"
 
-  # Component documentation & preview
-  gem "lookbook", ">= 2.3.8"
-
   # Performance profiling
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
   gem "ruby-statistics", "< 4"  # Keep version locked until derailed_benchmarks PR gets merged
@@ -198,6 +195,9 @@ group :development, :test do
   gem "appraisal", require: false
 
   gem "openssl"
+
+  # Component documentation & preview
+  gem "lookbook", ">= 2.3.8"
 end
 
 # =============================================================================
