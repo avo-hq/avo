@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['tabPanel']
+  static targets = ["tabPanel", "tabButton"]
 
   static values = {
     view: String,
@@ -35,6 +35,7 @@ export default class extends Controller {
     if (this.getTabByName(groupId)) {
       this.hideAllTabs()
       this.revealTabByName(groupId)
+      this.updateActiveTabButtons(groupId)
     }
   }
 
@@ -60,6 +61,7 @@ export default class extends Controller {
 
     this.hideAllTabs()
     this.revealTabByName(tabName)
+    this.updateActiveTabButtons(tabName)
   }
 
   // We're revealing the new tab that's lazy loaded by Turbo.
@@ -69,5 +71,34 @@ export default class extends Controller {
 
   hideAllTabs() {
     this.tabPanelTargets.map((element) => element.classList.add('hidden'))
+  }
+
+  updateActiveTabButtons(tabName) {
+    if (!this.hasTabButtonTarget) return;
+
+    this.tabButtonTargets.forEach((button) => {
+      const isActive = button.dataset.tabId === tabName;
+
+      // Update button accessibility attributes
+      button.setAttribute("aria-selected", isActive);
+      button.setAttribute("tabindex", isActive ? "0" : "-1");
+
+      // Toggle button classes
+      this.toggleTabClasses(button, isActive);
+
+      // Toggle wrapper classes (for scope variant)
+      const wrapper = button.closest(".avo-tab-wrapper--scope");
+      if (wrapper) {
+        this.toggleTabClasses(wrapper, isActive, button);
+      }
+    });
+  }
+
+  toggleTabClasses(element, isActive, sourceElement = element) {
+    const activeClass = sourceElement.dataset.tabActiveClass;
+    const inactiveClass = sourceElement.dataset.tabInactiveClass;
+
+    if (activeClass) element.classList.toggle(activeClass, isActive);
+    if (inactiveClass) element.classList.toggle(inactiveClass, !isActive);
   }
 }
