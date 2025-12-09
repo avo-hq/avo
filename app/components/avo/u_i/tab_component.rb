@@ -8,13 +8,6 @@ module Avo
       # Constants
       VARIANTS = %i[group scope].freeze
 
-      # Color constants
-      COLOR_ACTIVE = "#171717"
-      COLOR_INACTIVE = "#454545"
-      COLOR_BORDER_ACTIVE = "#171717"
-      COLOR_BORDER_INACTIVE = "#E7E7E7"
-      COLOR_BACKGROUND_ACTIVE = "#F6F6F6"
-
       # Props
       prop :label
       prop :active, default: false
@@ -24,11 +17,13 @@ module Avo
       prop :disabled, default: false
       prop :aria_controls
       prop :variant, default: :group # :group (no border) or :scope (with border)
-      prop :args, kind: :**, default: {}.freeze
+      prop :data, default: {}.freeze
+      prop :classes, default: nil
 
       # Lifecycle
       def before_render
         validate_props!
+        assign_default_data
       end
 
       # Public API - Accessibility & IDs
@@ -54,8 +49,9 @@ module Avo
       # Public API - Styling: Classes
       def wrapper_classes
         if @variant == :scope
-          border_width = @active ? "border-b-2" : "border-b"
-          "inline-block py-2 #{border_width} border-solid -mb-[1px]"
+          base = "inline-block py-2"
+          active_class = @active ? default_active_class : default_inactive_class
+          "#{base} avo-tab-wrapper--scope #{active_class}"
         else
           "flex items-center justify-center"
         end
@@ -63,23 +59,16 @@ module Avo
 
       def classes
         class_list = [
-          "inline-flex items-center gap-2 px-3 py-1 rounded-md text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500",
+          "avo-tab",
+          "inline-flex items-center gap-2 px-3 py-1 text-sm font-medium",
+          ((@variant == :scope) ? "rounded-none" : "rounded-md"),
+          (default_active_class if toggle_classes? && @active),
+          (default_inactive_class if toggle_classes? && !@active),
           ("disabled:opacity-50 disabled:cursor-not-allowed" if @disabled),
-          @args[:class]
+          @classes
         ].compact
 
         class_list.join(" ")
-      end
-
-      # Public API - Styling: Inline Styles
-      def wrapper_style
-        [border_style, text_color_style].reject(&:blank?).join(" ")
-      end
-
-      def background_style
-        return "" if @variant == :scope
-
-        @active ? "background-color: #{COLOR_BACKGROUND_ACTIVE};" : ""
       end
 
       # Public API - Template Helpers
@@ -91,19 +80,26 @@ module Avo
 
       private
 
+      # Private - Data & State Helpers
+      def toggle_classes?
+        @data[:tab_active_class].present? || @data[:tab_inactive_class].present?
+      end
+
+      def assign_default_data
+        @data = @data.deep_dup
+        @data[:tab_active_class] ||= default_active_class
+        @data[:tab_inactive_class] ||= default_inactive_class
+      end
+
+      def default_active_class
+        "avo-tab--active"
+      end
+
+      def default_inactive_class
+        "avo-tab--inactive"
+      end
+
       # Private - Styling Helpers
-      def border_style
-        return "" unless @variant == :scope
-
-        color = @active ? COLOR_BORDER_ACTIVE : COLOR_BORDER_INACTIVE
-        "border-bottom-color: #{color};"
-      end
-
-      def text_color_style
-        color = @active ? COLOR_ACTIVE : COLOR_INACTIVE
-        "color: #{color};"
-      end
-
       def icon_classes
         "h-4 w-4"
       end
@@ -115,6 +111,7 @@ module Avo
         raise ArgumentError, "active must be true or false" unless [true, false].include?(@active)
         raise ArgumentError, "disabled must be true or false" unless [true, false].include?(@disabled)
         raise ArgumentError, "href must be a String" if @href.present? && !@href.is_a?(String)
+        raise ArgumentError, "data must be a Hash" unless @data.is_a?(Hash)
       end
     end
   end

@@ -1,8 +1,8 @@
-<div class="<%= wrapper_classes %>" style="<%= wrapper_style %>">
+<div class="<%= wrapper_classes %>">
   <% if @href.present? && @href != "#" && !@disabled %>
     <%= link_to @href,
         class: classes,
-        style: "#{text_color_style} #{background_style}",
+        data: @data,
         role: tab_attributes[:role],
         id: tab_attributes[:id],
         "aria-selected": tab_attributes[:"aria-selected"],
@@ -15,7 +15,7 @@
     <%= content_tag :button,
         type: "button",
         class: classes,
-        style: "#{text_color_style} #{background_style}",
+        data: @data,
         disabled: @disabled,
         role: tab_attributes[:role],
         id: tab_attributes[:id],
@@ -28,4 +28,3 @@
     <% end %>
   <% end %>
 </div>
-

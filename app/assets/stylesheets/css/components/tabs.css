@@ -1,0 +1,41 @@
+@layer components {
+  .avo-tab {
+    color: var(--avo-tab-text, #454545);
+    border-color: var(--avo-tab-border, #e7e7e7);
+    background-color: var(--avo-tab-bg, transparent);
+    cursor: pointer;
+  }
+
+  /* Scope variant: border on wrapper */
+  .avo-tab-wrapper--scope {
+    border-bottom-style: solid;
+  }
+
+  .avo-tab-wrapper--scope.avo-tab--active,
+  .avo-tab-wrapper--scope.avo-tab--inactive {
+    border-bottom-width: var(--avo-tab-border-width, 1px);
+    border-bottom-color: var(--avo-tab-border, #e7e7e7);
+  }
+
+  .avo-tab--inactive {
+    --avo-tab-text: #454545;
+    --avo-tab-border: #e7e7e7;
+    --avo-tab-border-width: 1px;
+    --avo-tab-bg: transparent;
+  }
+
+  .avo-tab--active {
+    --avo-tab-text: #171717;
+    --avo-tab-border: #171717;
+    --avo-tab-border-width: 2px;
+    --avo-tab-bg: #f6f6f6;
+  }
+
+  /* Scope variant: no background (override group variant background) */
+  .avo-tab-wrapper--scope .avo-tab,
+  .avo-tab-wrapper--scope .avo-tab.avo-tab--active,
+  .avo-tab-wrapper--scope.avo-tab--active .avo-tab {
+    --avo-tab-bg: transparent;
+    background-color: transparent;
+  }
+}

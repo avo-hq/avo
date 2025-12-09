@@ -96,6 +96,7 @@
   /* UI 4 */
   @import './css/components/avatar.css';
   @import './css/components/discreet_information.css';
+  @import './css/components/tabs.css';
   @import './css/variables.css';
 
 
