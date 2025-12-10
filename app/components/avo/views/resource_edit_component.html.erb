@@ -28,8 +28,8 @@
       <% end %>
 
       <% if Avo.configuration.buttons_on_form_footers %>
-        <%= render Avo::PanelComponent.new do |c| %>
-          <% c.with_footer_tools do %>
+        <%= render ui.panel do |panel| %>
+          <% panel.with_footer_tools do %>
             <% @resource.render_edit_controls.each do |control| %>
               <%= render_control control %>
             <% end %>

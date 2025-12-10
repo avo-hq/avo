@@ -44,7 +44,7 @@
     <% end %>
 
     <% panel.with_body do %>
-      <%= render Avo::PanelComponent.new(title: "Panel Title") do %>
+      <%= render ui.panel(title: "Panel Title") do %>
         <%= render Avo::FieldWrapperComponent.new(
           label: "Email",
         ) do %>
@@ -54,7 +54,7 @@
     <% end %>
 
     <% panel.with_sidebar do %>
-      <%= render Avo::PanelComponent.new(title: "Avatar", ) do %>
+      <%= render ui.panel(title: "Avatar") do %>
         <%= render Avo::FieldWrapperComponent.new(
           label: "Created at",
         ) do %>

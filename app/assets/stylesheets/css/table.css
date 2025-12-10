@@ -3,26 +3,31 @@
   @apply rounded-tl-lg;
 
   &:first-child {
-    &>td:first-child {
+    & > td:first-child {
       @apply rounded-tl-lg border-l;
     }
   }
   &:first-child {
-    &>td:last-child {
+    & > td:last-child {
       @apply rounded-tr-lg border-r;
     }
   }
 
   &:last-child {
-    &>td:first-child {
+    & > td {
+      @apply border-b;
+    }
+
+    & > td:first-child {
       @apply rounded-bl-lg border-l;
     }
-    &>td:last-child {
+    & > td:last-child {
       @apply rounded-br-lg border-r;
     }
+    @apply border-t border-gray-200;
   }
 
-  &>td {
+  & > td {
     @apply border-t border-gray-200;
 
     &:first-child {
