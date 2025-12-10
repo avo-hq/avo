@@ -1,0 +1,61 @@
+<div class="flex flex-col">
+  <%= render Avo::PanelComponent.new(name: 'Avo Status', description: 'Use this page to debug your Avo instance.') do |c| %>
+    <% c.with_bare_content do %>
+      <div class="grid gap-4 grid-cols-2">
+        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
+          <div class="flex justify-between w-full">
+            <div class="font-semibold">License info</div>
+          </div>
+          <div class="flex flex-col flex-1">
+            <div>
+              <div class="text-xl font-semibold">
+                <span class="text-green-700 text-xl">
+                  <%= helpers.svg "heroicons/outline/check-badge", class: "h-5 inline -mt-1 relative" %> <span>Community</span>
+                </span> license
+              </div>
+              <div class="mt-4">
+                <dl>
+                  <% information_items.each do |key, value| %>
+                    <dt><%= key.humanize %></dt>
+                    <dd><%= value %></dd>
+                  <% end %>
+                  <dt>Cache store</dt>
+                  <dd><%= Avo.cache_store.class %></dd>
+                </dl>
+              </div>
+              <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-sm">
+                <div class="font-semibold text-blue-800 mb-2">Ready to level up?</div>
+                <p class="text-sm text-blue-700 mb-4">
+                  Visit the link below, select your license, and head to the <strong>Upgrade</strong> section to get started.
+                </p>
+                <%= a_link 'https://avohq.io/licenses',
+                  style: :primary,
+                  color: :blue,
+                  target: '_blank',
+                  icon: 'heroicons/outline/external-link' do %>
+                  Get started!
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
+          <div class="flex justify-between w-full">
+            <div class="font-semibold">Plugins</div>
+          </div>
+          <div class="flex flex-col flex-1">
+            <div>
+              <ul>
+                <li>Avo <%= Avo::VERSION %></li>
+                <% Avo.plugin_manager.plugins.each do |plugin| %>
+                  <li><%= plugin.name %> - <%= plugin.version %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+

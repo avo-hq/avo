@@ -6,6 +6,34 @@ export default class extends Controller {
     this.#bindSelectionEvents()
   }
 
+  anchor = null
+
+  mouseEntered(event) {
+    const row = event.target.closest('tr')
+    const url = row.dataset.visitPath
+
+    if (url) {
+      this.anchor = this.createAnchor(url)
+      this.anchor.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }))
+    }
+  }
+
+  mouseLeft() {
+    if (this.anchor) {
+      this.anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
+      document.body.removeChild(this.anchor)
+    }
+  }
+
+  createAnchor(url) {
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.rel = 'noopener noreferrer'
+    document.body.appendChild(anchor)
+
+    return anchor
+  }
+
   visitRecord(event) {
     if (event.type !== 'click') {
       return
