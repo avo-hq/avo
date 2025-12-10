@@ -1,22 +1,22 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div data-controller="stars-field">
     <%= @form.hidden_field @field.id,
-            value: @field.value,
-            data: { stars_field_target: "valueInput" } %>
+      value: @field.value,
+      data: { stars_field_target: "valueInput" } %>
     
     <div class="rating-group flex items-center gap-1 mb-3" 
-         data-component="avo/fields/common/stars_component"
-         data-stars-field-target="starsContainer"
-         data-max="<%= @field.max %>"
-         data-current-value="<%= @field.value || 0 %>">
+      data-component="avo/fields/common/stars_component"
+      data-stars-field-target="starsContainer"
+      data-max="<%= @field.max %>"
+      data-current-value="<%= @field.value || 0 %>">
       <% (1..@field.max).each do |rating_value| %>
         <%= helpers.svg('heroicons/solid/star', 
-                        class: class_names("star inline-block mr-0.5", filled: rating_value <= (@value || 0)),
-                        data: {
-                          star_value: rating_value,
-                          stars_field_target: "star",
-                          action: "click->stars-field#setStar mouseenter->stars-field#hoverStar mouseleave->stars-field#unhoverStar"
-                        }) %>
+          class: class_names("star inline-block mr-0.5", filled: rating_value <= (@value || 0)),
+          data: {
+            star_value: rating_value,
+            stars_field_target: "star",
+            action: "click->stars-field#setStar mouseenter->stars-field#hoverStar mouseleave->stars-field#unhoverStar"
+          }) %>
       <% end %>
     </div>
   </div>

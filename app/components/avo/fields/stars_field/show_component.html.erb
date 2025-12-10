@@ -1,6 +1,3 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-    <%= render Avo::Fields::Common::StarsComponent.new(
-          value: @field.value,
-          max: @field.max
-        ) %>
+  <%= render Avo::Fields::Common::StarsComponent.new value: @field.value, max: @field.max %>
 <% end %>
