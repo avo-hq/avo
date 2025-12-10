@@ -182,11 +182,11 @@
 
   .shift-pressed {
     & .highlighted-row {
-      @apply !bg-neutral-200;
+      @apply bg-neutral-200!;
     }
   }
 
   .selected-row {
-    @apply !bg-neutral-100;
+    @apply bg-neutral-100!;
   }
 }

@@ -42,7 +42,7 @@
 
         <div
           data-sidebar-target="mainArea"
-          class="content-area relative flex flex-1 pt-16 <%= "sidebar-open" if @sidebar_open %>"
+          class="content-area relative flex flex-1 <%= "sidebar-open" if @sidebar_open %>"
         >
           <div class="hidden lg:flex"><%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %></div>
 
@@ -50,7 +50,7 @@
             <%= render Avo::SidebarComponent.new sidebar_open: false, for_mobile: true %>
           </div>
 
-          <div class="main-content-area flex min-h-dvh max-w-full flex-1 flex-col">
+          <div class="main-content-area flex max-w-full flex-1 flex-col">
             <div class="main-content-wrapper flex flex-1 shadow-content rounded-2xl bg-white mx-2">
               <div class="content flex flex-1 flex-col items-stretch justify-between p-4 lg:p-6 <%= container_classes %>">
                 <%= render partial: "avo/partials/custom_tools_alert" %>

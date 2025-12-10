@@ -20,18 +20,16 @@
     &>td:last-child {
       @apply rounded-br-lg border-r;
     }
-    &>td {
-      @apply border-b;
-    }
   }
 
   &>td {
     @apply border-t border-gray-200;
+
     &:first-child {
       @apply border-l;
     }
     &:last-child {
-      @apply border-r;
+      @apply border-r border-t;
     }
   }
 }
