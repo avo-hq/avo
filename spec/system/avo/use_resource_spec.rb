@@ -11,7 +11,7 @@ RSpec.describe "Post comments use_resource PhotoComment", type: :system do
     it "if attach persist" do
       visit avo.resources_post_path(post)
 
-      scroll_to find('turbo-frame[id="has_many_field_show_photo_comments"]')
+      scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
 
       click_on "Attach photo comment"
 

@@ -11,7 +11,7 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
       }
     ]
   end
-  <% elsif options["http"] %>
+<% elsif options["http"] %>
   # self.http_adapter = {
   #   endpoint: "https://api.openalex.org/authors",
   #   parse_collection: -> {
@@ -36,13 +36,13 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
   # }
 
   # self.find_record_method = -> { query.find Base64.decode64(id) }
-  <% else %>
+<% else %>
   # self.includes = []
   # self.attachments = []<%= model_class_from_args %>
   # self.search = {
   #   query: -> { query.ransack(id_eq: q, m: "or").result(distinct: false) }
   # }
-  <% end %><% if options["array"] %>
+<% end %><% if options["array"] %>
   def fields
     field :id, as: :id
     field :title

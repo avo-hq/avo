@@ -63,12 +63,7 @@ module Avo
         return [key, search_query_undefined]
       end
 
-      query = Avo::ExecutionContext.new(
-        target: resource.search_query,
-        params: params,
-        q: params[:q].strip,
-        query: resource.query_scope
-      ).handle
+      query = execute_search_query(resource:, query: resource.query_scope)
 
       results_count, results = parse_results(query, resource)
 
@@ -112,9 +107,21 @@ module Avo
         reflection_class = BaseResource.get_model_by_name params[:via_reflection_class]
 
         grandparent = parent_resource_class.find params[:via_parent_resource_id]
-        parent = reflection_class.new(
-          params[:via_relation] => grandparent
-        )
+        parent = reflection_class.new
+
+        via_relation = params[:via_relation].to_s
+
+        # Whitelist allowed relations to prevent code injection
+        if reflection_class.reflections.keys.map(&:to_s).include?(via_relation)
+          # Verify if the relation is a collection proxy
+          # If it is, add the grandparent to the collection
+          # If it is not, set the grandparent as the parent of the relation
+          if parent.public_send(via_relation).is_a?(ActiveRecord::Associations::CollectionProxy)
+            parent.public_send(via_relation) << grandparent
+          else
+            parent.public_send(:"#{via_relation}=", grandparent)
+          end
+        end
       end
 
       Avo::ExecutionContext.new(target: attach_scope, query: query, parent: parent).handle
@@ -134,7 +141,7 @@ module Avo
         query = Avo::ExecutionContext.new(target: field.scope, query:, parent:, resource:, parent_resource:).handle
       end
 
-      Avo::ExecutionContext.new(target: @resource.class.search_query, params: params, query: query).handle
+      execute_search_query(resource: @resource.class, query:)
     end
 
     def apply_search_metadata(records, avo_resource)
@@ -143,6 +150,10 @@ module Avo
 
         fetch_result_information record, resource, resource.class.fetch_search(:item, record: record)
       end
+    end
+
+    def execute_search_query(resource:, query:)
+      Avo::ExecutionContext.new(target: resource.search_query, params:, query:, q: params[:q].strip).handle
     end
 
     def fetch_result_information(record, resource, item)

@@ -4,6 +4,7 @@ class Avo::Resources::CourseLink < Avo::BaseResource
   self.model_class = Course::Link
   self.search = {
     query: -> {
+      TestBuddy.hi("params[:q]: '#{params[:q]}', q: '#{q}'") if Rails.env.test?
       query
         .where("link ILIKE ?", "%#{params[:q]}%")
         .or(query.where(id: params[:q]))

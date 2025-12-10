@@ -1,13 +1,28 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div class="h-8 flex items-center">
-    <%= @form.check_box @field.id,
-      value: @field.value,
-      checked: @field.value,
-      class: "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded #{@field.get_html(:classes, view: view, element: :input)}",
-      data: @field.get_html(:data, view: view, element: :input),
-      disabled: disabled?,
-      autofocus: @autofocus,
-      style: @field.get_html(:style, view: view, element: :input)
-    %>
+    <%= @form.label @field.id,
+      class: class_names(
+        "relative flex items-center",
+        "opacity-50": disabled?,
+        "cursor-pointer": !disabled?
+      ) do %>
+      <%= @form.check_box @field.id,
+        value: @field.value,
+        checked: @field.value,
+        disabled: disabled?,
+        autofocus: @autofocus,
+        data:  @field.get_html(:data, view: view, element: :input),
+        style: @field.get_html(:style, view: view, element: :input),
+        class: class_names(
+          "text-lg h-4 w-4 checked:bg-primary-400 focus:checked:!bg-primary-400 rounded",
+          @field.get_html(:classes, view: view, element: :input),
+          "sr-only peer": as_toggle?
+        ) %>
+
+      <% if as_toggle? %>
+        <div class="block w-10 h-6 rounded-full bg-gray-300 peer-checked:bg-green-500"></div>
+        <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 transform peer-checked:translate-x-4"></div>
+      <% end %>
+    <% end %>
   </div>
 <% end %>
