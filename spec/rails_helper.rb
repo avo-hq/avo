@@ -206,6 +206,10 @@ require "support/devise"
 require "support/shared_contexts"
 require "support/timezone"
 
+# a11y support
+require "axe-rspec"
+require "support/axe_driver"
+
 # https://github.com/titusfortner/webdrivers/issues/247
 # Webdrivers::Chromedriver.required_version = "114.0.5735.90"
 # Webdrivers::Chromedriver.required_version = "116.0.5845.96"
