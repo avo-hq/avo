@@ -15,4 +15,3 @@ class Avo::BreadcrumbElementComponent < Avo::BaseComponent
     @url.present? && !current?
   end
 end
-

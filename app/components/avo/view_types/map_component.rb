@@ -4,7 +4,7 @@
 # expected to have an attribute/attribute set representing its location.
 class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
   attr_reader :resources
-  
+
   delegate :js_map, to: :helpers
 
   def grid_layout_classes

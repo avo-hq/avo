@@ -12,7 +12,7 @@ class Avo::TabSwitcherComponent < Avo::BaseComponent
   prop :active_tab_title, reader: :public
   prop :view
 
-  #TOD: helper to record:
+  # TOD: helper to record:
   def tab_path(tab)
     if is_edit?
       helpers.edit_resource_path(resource: @resource, record: @resource.record, keep_query_params: true, active_tab_title: tab.title, tab_turbo_frame: @group.turbo_frame_id)

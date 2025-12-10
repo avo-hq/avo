@@ -7,7 +7,6 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   prop :profile_photo
   prop :cover_photo
   prop :data, default: -> { {}.freeze }
-  prop :class
 
   prop :title, reader: :public
   prop :description, reader: :public

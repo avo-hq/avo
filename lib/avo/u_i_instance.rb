@@ -27,8 +27,15 @@ class Avo::UIInstance
     end
   end
 
+  def respond_to_missing?(method, include_private = false)
+    # Since method_missing always handles any method call (either with a real component
+    # or falling back to MISSING_COMPONENT_CLASS), respond_to? should return true
+    true
+  end
+
   private
 
   def full_class_name(component_class) = "Avo::#{component_class.classify}"
+
   def ui_full_class_name(component_class) = "Avo::UI::#{component_class.classify}"
 end
