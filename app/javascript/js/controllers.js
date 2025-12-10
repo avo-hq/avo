@@ -53,6 +53,7 @@ import ToggleController from './controllers/toggle_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 import SearchController from './controllers/search_controller'
+import StarsFieldController from './controllers/fields/stars_field_controller'
 
 application.register('action', ActionController)
 application.register('actions-overflow', ActionsOverflowController)
@@ -109,5 +110,6 @@ application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
 application.register('tags-field', TagsFieldController)
 application.register('tiptap-field', TiptapFieldController)
 application.register('trix-field', TrixFieldController)
+application.register('stars-field', StarsFieldController)
 
 // Custom controllers
