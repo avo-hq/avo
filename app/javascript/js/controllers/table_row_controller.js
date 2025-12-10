@@ -6,27 +6,9 @@ export default class extends Controller {
     this.#bindSelectionEvents()
   }
 
-  // add another timer which starts on this method and stops on mouseleft method
-  mouseLeftTimer = null
-
   anchor = null
 
-  debug = false
-
-  startMouseLeftTimer() {
-    this.mouseLeftTimer = performance.now()
-  }
-
-  stopMouseLeftTimer() {
-    this.mouseLeftTimer = performance.now() - this.mouseLeftTimer
-    console.log('time taken', this.mouseLeftTimer, 'milliseconds')
-  }
-
   mouseEntered(event) {
-    if (this.debug) {
-      console.log('mouseEntered')
-      this.startMouseLeftTimer()
-    }
     const row = event.target.closest('tr')
     const url = row.dataset.visitPath
 
@@ -39,10 +21,7 @@ export default class extends Controller {
   mouseLeft() {
     if (this.anchor) {
       this.anchor.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }))
-    }
-    if (this.debug) {
-      console.log('mouseLeft')
-      this.stopMouseLeftTimer()
+      document.body.removeChild(this.anchor)
     }
   }
 
