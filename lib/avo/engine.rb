@@ -11,8 +11,10 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
     require "active_storage/engine"
   when "actiontext"
     require "action_text/engine"
-  when "avo-heroicons"
-    require "avo/heroicons"
+  when "avo-licensing"
+    require "avo/licensing"
+  when "avo-icons"
+    require "avo/icons"
   else
     require d.name
   end
@@ -28,17 +30,6 @@ module Avo
 
       # Boot Avo
       ::Avo.boot
-
-      # After deploy we want to make sure the license response is being cleared.
-      # We need a fresh license response.
-      # This is disabled in development because the initialization process might be triggered more than once.
-      if !Rails.env.development? && Avo.configuration.clear_license_response_on_deploy
-        begin
-          Licensing::HQ.new.clear_response
-        rescue => exception
-          Avo.logger.info "Failed to clear Avo HQ response: #{exception.message}"
-        end
-      end
     end
 
     # Ensure we reboot the app when something changes

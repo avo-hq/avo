@@ -1,0 +1,68 @@
+<div
+  style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 3rem; border-radius: 12px; color: white;"
+>
+  <div style="max-width: 800px; margin: 0 auto;">
+    <!-- Main Avatar Display -->
+    <div style="display: flex; justify-content: center; margin-bottom: 3rem;">
+      <div style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+        <% avatar_props = { size: size, shape: shape }
+
+          case type
+          when "avatar"
+            avatar_props.merge!(type: "avatar", src: image_url, alt: alt_text)
+          when "initial"
+            avatar_props.merge!(type: "initial", initial: initial, theme: theme)
+          else
+            avatar_props.merge!(type: "placeholder")
+          end %>
+
+        <%= render Avo::AvatarComponent.new(**avatar_props) %>
+      </div>
+    </div>
+
+    <!-- Configuration Display -->
+    <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; backdrop-filter: blur(10px);">
+      <h3 style="margin-bottom: 1rem; font-size: 1.2rem;">Current Configuration:</h3>
+
+      <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-family: monospace;"
+      >
+        <div><strong>Type:</strong> <%= type %></div>
+        <div><strong>Size:</strong> <%= size %></div>
+        <div><strong>Shape:</strong> <%= shape %></div>
+
+        <% if type == "initial" %>
+          <div><strong>Theme:</strong> <%= theme %></div>
+          <div><strong>Initial:</strong> "<%= initial %>"</div>
+        <% elsif type == "avatar" %>
+          <div><strong>Alt Text:</strong> "<%= alt_text %>"</div>
+          <div style="grid-column: 1 / -1;">
+            <strong>Image URL:</strong>
+            <span style="word-break: break-all; font-size: 0.9rem;"><%= image_url %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div style="background: rgba(0,0,0,0.2); padding: 2rem; border-radius: 12px; margin-top: 2rem;">
+      <h3 style="margin-bottom: 1rem; font-size: 1.2rem;">ERB Code:</h3>
+
+      <pre
+        style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: monospace; font-size: 0.9rem;"
+      ><code>        &lt;%= render        Avo::AvatarComponent.new(<% code_props = []
+        code_props << "type: \"#{type}\"" unless type == "placeholder"
+        code_props << "size: \"#{size}\"" unless size == "large"
+        code_props << "shape: \"#{shape}\"" unless shape == "rounded"
+
+        case type
+        when "avatar"
+          code_props << "src: \"#{image_url}\""
+          code_props << "alt: \"#{alt_text}\"" if alt_text.present?
+        when "initial"
+          code_props << "initial: \"#{initial}\""
+          code_props << "theme: \"#{theme}\"" unless theme == "default"
+        end %>        <%= code_props.empty? ? "" : "\n  #{code_props.join(",\n  ")}\n" %>) %&gt;      </code></pre>
+    </div>
+  </div>
+</div>

@@ -191,6 +191,8 @@ group :development, :test do
 
   # Build & dependency management
   gem "appraisal", require: false
+
+  gem "openssl"
 end
 
 # =============================================================================

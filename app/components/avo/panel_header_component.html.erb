@@ -20,7 +20,11 @@
                   <% end %>
                 <% end %>
                 <% if @discreet_information.present? %>
-                  <%= render Avo::DiscreetInformationComponent.new(payload: @discreet_information) %>
+                  <div class="flex gap-2 items-center">
+                    <% @discreet_information.items.each do |item| %>
+                      <%= render Avo::DiscreetInformationComponent.new(**item) %>
+                    <% end %>
+                  </div>
                 <% end %>
               <% end %>
             <% end %>

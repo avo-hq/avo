@@ -48,7 +48,6 @@
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
-@plugin '@tailwindcss/container-queries';
 
 /* Add dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -93,6 +92,12 @@
   @import './css/fields/trix.css';
   @import './css/fields/tags.css';
   @import './css/fields/tiptap.css';
+
+  /* UI 4 */
+  @import './css/components/avatar.css';
+  @import './css/components/discreet_information.css';
+  @import './css/variables.css';
+
 
   html,
   body {

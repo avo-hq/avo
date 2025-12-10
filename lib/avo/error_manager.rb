@@ -15,7 +15,7 @@ module Avo
     end
 
     def add(error)
-      @errors << error
+      @errors << error unless @errors.include?(error)
     end
 
     def has_errors?

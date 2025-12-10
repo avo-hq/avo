@@ -10,10 +10,6 @@ class Avo::BaseComponent < ViewComponent::Base
   delegate :main_app, to: :helpers
   delegate :avo, to: :helpers
 
-  def has_with_trial(ability)
-    Avo.license.has_with_trial(ability)
-  end
-
   def component_name = self.class.name.to_s.underscore
 
   private

@@ -1,0 +1,86 @@
+<div style="padding: 2rem;">
+  <div style="margin-bottom: 2rem;">
+    <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">📋 Discreet Information Variants</h2>
+    <p style="color: #666; margin-bottom: 1rem;">Various use cases for the discreet information component</p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 2rem;">
+    <div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: #333;">Email Link</h3>
+      <%= render Avo::DiscreetInformationComponent.new(
+        key: "Email",
+        label: "contact@example.com",
+        url: "mailto:contact@example.com",
+        target: "_self",
+        options_icon: "more_vert"
+      ) %>
+    </div>
+
+    <div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: #333;">External Website</h3>
+      <%= render Avo::DiscreetInformationComponent.new(
+        key: "Website",
+        label: "Visit site",
+        url: "https://example.com",
+        target: "_blank",
+        options_icon: "more_vert"
+      ) %>
+    </div>
+
+    <div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: #333;">Phone Number</h3>
+      <%= render Avo::DiscreetInformationComponent.new(
+        key: "Phone",
+        label: "+1 (555) 123-4567",
+        url: "tel:+15551234567",
+        target: "_self",
+        options_icon: "more_vert"
+      ) %>
+    </div>
+
+    <div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: #333;">Status (No Link)</h3>
+      <%= render Avo::DiscreetInformationComponent.new(
+        key: "Status",
+        label: "Active",
+        url: nil,
+        options_icon: "more_vert"
+      ) %>
+    </div>
+
+    <div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: #333;">Long Content with Truncation</h3>
+      <%= render Avo::DiscreetInformationComponent.new(
+        key: "Description",
+        label: "This is a very long label that should be truncated when it exceeds the available space in the component",
+        url: "https://example.com/very/long/url/path",
+        target: "_blank",
+        options_icon: "more_vert"
+      ) %>
+    </div>
+
+    <div>
+      <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: #333;">Custom Options Icon</h3>
+      <%= render Avo::DiscreetInformationComponent.new(
+        key: "Actions",
+        label: "More options",
+        url: "#",
+        target: "_self",
+        options_icon: "expand_more"
+      ) %>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 1.5rem; background: #f8f9fa; border-radius: 12px;">
+    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">💡 Usage Tips</h3>
+    <ul style="color: #666; margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+      <li>The <strong>key</strong> appears on the left with a dark background (#171717)</li>
+      <li>The <strong>label</strong> is clickable when a URL is provided</li>
+      <li>When no URL is provided, the label is displayed as plain text</li>
+      <li>The <strong>options icon</strong> (default: "more_vert") can be customized</li>
+      <li>Long labels are automatically truncated with an ellipsis</li>
+      <li>Use <strong>target="_blank"</strong> for external links</li>
+    </ul>
+  </div>
+</div>
+

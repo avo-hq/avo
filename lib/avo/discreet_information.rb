@@ -9,26 +9,34 @@ class Avo::DiscreetInformation
   def items
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
-        timestamp_item(item, as: :text)
+        timestamp_item(item, as: :icon)
       elsif item == :timestamps_badge
         timestamp_item(item, as: :badge)
       elsif item == :id
+        id_item(item, as: :key_value)
+      elsif item == :id_text
         id_item(item, as: :text)
       elsif item == :id_badge
         id_item(item, as: :badge)
       else
         parse_payload(item)
       end
-    end
+    end.compact
   end
 
   private
 
   def id_item(item, as: :text)
-    DiscreetInformationItem.new(
-      label: "ID: #{record.id}",
-      as:
-    )
+    text = record.id
+    if as == :key_value
+      key = "ID"
+    end
+
+    {
+      text: text,
+      key: key,
+      as: as
+    }
   end
 
   def timestamp_item(item, as: :text)
@@ -46,11 +54,11 @@ class Avo::DiscreetInformation
       I18n.t("avo.updated_at_timestamp", updated_at:)
     end
 
-    DiscreetInformationItem.new(
+    {
       tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
       icon: "heroicons/outline/clock",
       as:
-    )
+    }
   end
 
   def parse_payload(item)
@@ -62,17 +70,19 @@ class Avo::DiscreetInformation
       view:
     }
 
-    DiscreetInformationItem.new(
+    visible = item[:visible].nil? || Avo::ExecutionContext.new(target: item[:visible], **args).handle
+
+    return unless visible
+
+    {
       tooltip: Avo::ExecutionContext.new(target: item[:tooltip], **args).handle,
       icon: Avo::ExecutionContext.new(target: item[:icon], **args).handle,
       url: Avo::ExecutionContext.new(target: item[:url], **args).handle,
-      url_target: Avo::ExecutionContext.new(target: item[:url_target], **args).handle,
+      target: Avo::ExecutionContext.new(target: item[:target], **args).handle,
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
-      label: Avo::ExecutionContext.new(target: item[:label], **args).handle,
-      as: Avo::ExecutionContext.new(target: item[:as], **args).handle,
-      visible: Avo::ExecutionContext.new(target: item[:visible], **args).handle
-    )
+      text: Avo::ExecutionContext.new(target: item[:text], **args).handle,
+      key: Avo::ExecutionContext.new(target: item[:key], **args).handle,
+      as: Avo::ExecutionContext.new(target: item[:as], **args).handle
+    }
   end
-
-  DiscreetInformationItem = Struct.new(:tooltip, :icon, :url, :url_target, :data, :label, :as, :visible, keyword_init: true) unless defined?(DiscreetInformationItem)
 end

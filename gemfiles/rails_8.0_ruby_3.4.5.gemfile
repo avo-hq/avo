@@ -95,6 +95,7 @@ group :development, :test do
   gem "solargraph-rails", require: false
   gem "ruby-openai"
   gem "appraisal", require: false
+  gem "openssl"
 end
 
 gemspec path: "../"

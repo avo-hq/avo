@@ -1,0 +1,67 @@
+<div style="padding: 2rem;">
+  <div style="text-align: center; margin-bottom: 3rem;">
+    <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">🎨 Theme Showcase</h2>
+    <p style="color: #666; margin-bottom: 1rem;">Explore all available color themes for initial avatars</p>
+
+    <div
+      style="display: inline-flex; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; font-size: 0.9rem;"
+    >
+      <span><strong>Initial:</strong> "<%= user_initial %>"</span>
+      <span><strong>Size:</strong> <%= avatar_size.capitalize %></span>
+      <span><strong>Shape:</strong> <%= avatar_shape.capitalize %></span>
+    </div>
+  </div>
+
+  <div
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;"
+  >
+    <% themes = [
+        { name: 'Default', key: 'default', description: 'Light gray with dark text' },
+        { name: 'Orange', key: 'orange', description: 'Warm orange tone' },
+        { name: 'Yellow', key: 'yellow', description: 'Bright yellow accent' },
+        { name: 'Green', key: 'green', description: 'Fresh green color' },
+        { name: 'Teal', key: 'teal', description: 'Cool teal shade' },
+        { name: 'Blue', key: 'blue', description: 'Classic blue theme' },
+        { name: 'Purple', key: 'purple', description: 'Rich purple hue' }
+      ] %>
+
+    <% themes.each do |theme| %>
+      <div
+        style="text-align: center; padding: 1.5rem; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease;"
+        onmouseover="this.style.transform='translateY(-4px)'"
+        onmouseout="this.style.transform='translateY(0)'"
+      >
+        <div style="margin-bottom: 1rem;">
+          <%= render Avo::AvatarComponent.new(
+            type: "initial",
+            initial: user_initial,
+            theme: theme[:key],
+            size: avatar_size,
+            shape: avatar_shape
+          ) %>
+        </div>
+
+        <% if show_names %>
+          <div style="margin-bottom: 0.5rem;">
+            <h3 style="font-size: 1rem; font-weight: 600; margin: 0; color: #333;"><%= theme[:name] %></h3>
+          </div>
+          <div style="font-size: 0.8rem; color: #666; line-height: 1.3;"><%= theme[:description] %></div>
+          <div
+            style="margin-top: 1rem; padding: 0.5rem; background: #f8f9fa; border-radius: 6px; font-family: monospace; font-size: 0.75rem; color: #666;"
+          >
+            theme: "<%= theme[:key] %>"
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f8f9fa; border-radius: 12px;">
+    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">💡 Usage Tip</h3>
+
+    <p style="color: #666; margin: 0; max-width: 600px; margin: 0 auto;">
+      Use different theme colors to create visual distinction between user types, departments, or roles in your
+      application. The default theme works well for placeholder states and maintains accessibility with proper contrast.
+    </p>
+  </div>
+</div>

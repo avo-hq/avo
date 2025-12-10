@@ -9,6 +9,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   prop :parent_record
   prop :parent_resource
   prop :actions
+  prop :grid_item_checked, default: false
 
   def after_initialize
     @card = Avo::ExecutionContext.new(target: @resource.grid_view[:card], resource: @resource, record: @resource.record).handle

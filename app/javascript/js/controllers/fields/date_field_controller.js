@@ -28,9 +28,9 @@ export default class extends Controller {
     pickerOptions: { type: Object, default: {} },
   }
 
-  flatpickrInstance;
+  flatpickrInstance
 
-  cachedInitialValue;
+  cachedInitialValue
 
   get browserZone() {
     const time = DateTime.local()
@@ -115,7 +115,13 @@ export default class extends Controller {
 
     // Set the zone only if the type of field is date time or relative time.
     if (this.fieldHasTime && this.relativeValue) {
-      value = value.setZone(this.displayTimezone)
+      if (this.fieldIsTime) {
+        // Reparse only the time component so Luxon uses today's date, then convert
+        const timeOnly = value.toFormat(RAW_TIME_FORMAT)
+        value = DateTime.fromFormat(timeOnly, RAW_TIME_FORMAT, { zone: 'UTC' }).setZone(this.displayTimezone)
+      } else {
+        value = value.setZone(this.displayTimezone)
+      }
     }
 
     this.context.element.innerText = value.toFormat(this.formatValue)
@@ -161,39 +167,29 @@ export default class extends Controller {
         case 'date':
           options.defaultDate = universalTimestamp(this.initialValue)
           break
-        default:
         case 'time':
-          options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
+          // Reparse only the time so Luxon uses today's date, then convert
+          {
+            const timeOnly = this.parsedValue.toFormat(RAW_TIME_FORMAT)
+            options.defaultDate = DateTime.fromFormat(timeOnly, RAW_TIME_FORMAT, { zone: 'UTC' })
+              .setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue })
+              .toISO()
+          }
           break
         case 'dateTime':
           options.defaultDate = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: !this.relativeValue }).toISO()
+          break
+        default:
           break
       }
     }
 
     this.flatpickrInstance = flatpickr(this.fakeInputTarget, options)
 
-    // Don't try to parse the value if the input is empty.
-    if (!this.initialValue) {
-      return
+    // Trigger an onChange after initialization so listeners react to the initial value
+    if (this.initialValue) {
+      this.inputTarget.dispatchEvent(new Event('change', { bubbles: true }))
     }
-
-    let value
-    switch (this.fieldTypeValue) {
-      case 'time':
-        // For time values, we should maintain the real value and format it to a time-friendly format.
-        value = this.parsedValue.setZone(this.displayTimezone, { keepLocalTime: true }).toFormat(RAW_TIME_FORMAT)
-        break
-      case 'date':
-        value = DateTime.fromJSDate(universalTimestamp(this.initialValue)).toFormat(RAW_DATE_FORMAT)
-        break
-      default:
-      case 'dateTime':
-        value = this.parsedValue.setZone(this.displayTimezone).toISO()
-        break
-    }
-
-    this.updateRealInput(value)
   }
 
   onChange(selectedDates) {
@@ -217,9 +213,10 @@ export default class extends Controller {
       case 'date':
         value = timezonedDate.toFormat(RAW_DATE_FORMAT)
         break
-      default:
       case 'dateTime':
         value = timezonedDate.toISO()
+        break
+      default:
         break
     }
 
@@ -232,6 +229,7 @@ export default class extends Controller {
   }
 
   clear() {
-    this.fakeInputTarget._flatpickr.clear();
+    // eslint-disable-next-line no-underscore-dangle
+    this.fakeInputTarget._flatpickr.clear()
   }
 }

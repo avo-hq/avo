@@ -13,19 +13,36 @@ class Avo::Resources::Project < Avo::BaseResource
   }
 
   self.discreet_information = [
+    :id,
+    :id_text,
     :timestamps,
-    :id_badge,
+    :timestamps_badge,
     {
       tooltip: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
       icon: -> { "heroicons/outline/arrow-top-right-on-square" },
       url: -> { main_app.root_url },
       url_target: :_blank,
-      # as: :badge
+      as: :badge,
+      text: "Label"
     },
     {
-      label: "Test",
+      tooltip: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "heroicons/outline/arrow-top-right-on-square" },
+      url: -> { main_app.root_url },
+      url_target: :_blank,
+      as: :text,
+      visible: true,
+      text: -> { "Simple text #{record.id}" }
+    },
+    {
+      text: "Test",
       as: :badge,
       visible: false
+    },
+    {
+      as: :key_value,
+      key: "Key",
+      text: "Value"
     }
   ]
 

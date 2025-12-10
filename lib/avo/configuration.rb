@@ -58,8 +58,8 @@ module Avo
     attr_accessor :associations_lookup_list_limit
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
-    attr_accessor :clear_license_response_on_deploy
     attr_accessor :model_generator_hook
+    attr_accessor :send_metadata
 
     def initialize
       @root_path = "/avo"
@@ -128,12 +128,12 @@ module Avo
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
-      @clear_license_response_on_deploy = true
       @global_search = {
         enabled: true,
         navigation_section: true
       }
       @model_generator_hook = true
+      @send_metadata = true
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
@@ -196,24 +196,6 @@ module Avo
       Avo::ExecutionContext.new(target: @app_name).handle
     end
 
-    def license=(value)
-      if Rails.env.development?
-        puts "[Avo DEPRECATION WARNING]: The `config.license` configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `license_key` instead."
-      end
-    end
-
-    def license
-      gems = Gem::Specification.map {|gem| gem.name}
-
-      @license ||= if gems.include?("avo-advanced")
-        "advanced"
-      elsif gems.include?("avo-pro")
-        "pro"
-      elsif gems.include?("avo")
-        "community"
-      end
-    end
-
     def resource_default_view=(view)
       @resource_default_view = Avo::ViewInquirer.new(view.to_s)
     end
@@ -225,22 +207,22 @@ module Avo
       ).handle
     end
 
-    # When not in production or test we'll just use the MemoryStore which is good enough.
+    # When not in production we'll just use the FileStore which is good enough.
     # When running in production we'll use Rails.cache if it's not ActiveSupport::Cache::MemoryStore or ActiveSupport::Cache::NullStore.
     # If it's one of rejected cache stores, we'll use the FileStore.
     # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
     def computed_cache_store
+      file_store_instance = ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+
       -> {
         if Rails.env.production?
           if Rails.cache.class.to_s.in?(production_rejected_cache_stores)
-            ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
+            file_store_instance
           else
             Rails.cache
           end
-        elsif Rails.env.test?
-          Rails.cache
         else
-          ActiveSupport::Cache.lookup_store(:memory_store)
+          file_store_instance
         end
       }
     end
