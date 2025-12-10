@@ -13,3 +13,7 @@ ignore: # default: []
       - Style/TrailingCommaInHashLiteral
   - "app/**/*":
       - Style/TrailingCommaInHashLiteral
+  - "spec/**/*preview*.rb":
+      - all
+  - "test/**/*preview*.rb":
+      - all
