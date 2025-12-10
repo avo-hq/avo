@@ -13,7 +13,7 @@ module Avo
 
         if args[:pretty_generated]
           args[:format_using] ||= -> { value.blank? ? value : JSON.pretty_generate(value) }
-          args[:update_using] ||= -> { JSON.parse(value) }
+          args[:update_using] ||= -> { value.blank? ? value : JSON.parse(value) }
         end
 
         super(id, **args, &block)

@@ -63,12 +63,7 @@ module Avo
         return [key, search_query_undefined]
       end
 
-      query = Avo::ExecutionContext.new(
-        target: resource.search_query,
-        params: params,
-        q: params[:q].strip,
-        query: resource.query_scope
-      ).handle
+      query = execute_search_query(resource:, query: resource.query_scope)
 
       results_count, results = parse_results(query, resource)
 
@@ -115,6 +110,7 @@ module Avo
         parent = reflection_class.new
 
         via_relation = params[:via_relation].to_s
+
         # Whitelist allowed relations to prevent code injection
         if reflection_class.reflections.keys.map(&:to_s).include?(via_relation)
           # Verify if the relation is a collection proxy
@@ -125,8 +121,6 @@ module Avo
           else
             parent.public_send(:"#{via_relation}=", grandparent)
           end
-        else
-          raise ArgumentError, "Invalid relation name: #{via_relation}"
         end
       end
 
@@ -147,7 +141,7 @@ module Avo
         query = Avo::ExecutionContext.new(target: field.scope, query:, parent:, resource:, parent_resource:).handle
       end
 
-      Avo::ExecutionContext.new(target: @resource.class.search_query, params: params, query: query).handle
+      execute_search_query(resource: @resource.class, query:)
     end
 
     def apply_search_metadata(records, avo_resource)
@@ -156,6 +150,10 @@ module Avo
 
         fetch_result_information record, resource, resource.class.fetch_search(:item, record: record)
       end
+    end
+
+    def execute_search_query(resource:, query:)
+      Avo::ExecutionContext.new(target: resource.search_query, params:, query:, q: params[:q].strip).handle
     end
 
     def fetch_result_information(record, resource, item)

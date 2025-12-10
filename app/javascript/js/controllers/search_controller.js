@@ -75,7 +75,13 @@ export default class extends Controller {
     })
 
     if (this.isGlobalSearch) {
-      Mousetrap.bind(['command+k', 'ctrl+k'], () => this.showSearchPanel())
+      Mousetrap.bind(['command+k', 'ctrl+k'], (e) => {
+        // Prevent browser from focusing the address bar
+        e.preventDefault()
+        e.stopPropagation()
+        this.showSearchPanel()
+        return false
+      })
     }
 
     // This line fixes a bug where the search box would be duplicated on back navigation.
