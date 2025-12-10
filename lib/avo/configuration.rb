@@ -58,7 +58,6 @@ module Avo
     attr_accessor :associations_lookup_list_limit
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
-    attr_accessor :clear_license_response_on_deploy
     attr_accessor :model_generator_hook
 
     def initialize
@@ -129,7 +128,6 @@ module Avo
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
-      @clear_license_response_on_deploy = true
       @model_generator_hook = true
     end
 
@@ -207,6 +205,12 @@ module Avo
       end
     end
 
+    def clear_license_response_on_deploy=(value)
+      if Rails.env.development?
+        puts "[Avo DEPRECATION WARNING]: The `config.clear_license_response_on_deploy` configuration option is deprecated and will be removed in future versions. Please discontinue its use, no extra action is needed."
+      end
+    end
+
     def license
       gems = Gem::Specification.map {|gem| gem.name}
 
@@ -230,12 +234,11 @@ module Avo
       ).handle
     end
 
-    # When not in production or test we'll just use the MemoryStore which is good enough.
+    # When not in production or test we'll just use the FileStore which is good enough.
     # When running in production we'll use Rails.cache if it's not ActiveSupport::Cache::MemoryStore or ActiveSupport::Cache::NullStore.
     # If it's one of rejected cache stores, we'll use the FileStore.
     # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
     def computed_cache_store
-      memory_store_instance = ActiveSupport::Cache.lookup_store(:memory_store)
       file_store_instance = ActiveSupport::Cache.lookup_store(:file_store, Rails.root.join("tmp", "cache"))
 
       -> {
@@ -248,7 +251,7 @@ module Avo
         elsif Rails.env.test?
           Rails.cache
         else
-          memory_store_instance
+          file_store_instance
         end
       }
     end
