@@ -674,18 +674,16 @@ module Avo
 
       def view_type
         @view_type ||= if @params[:view_type].present?
-          @params[:view_type]
+          Avo::ViewInquirer.new(@params[:view_type])
         elsif available_view_types.size == 1
-          available_view_types.first
+          Avo::ViewInquirer.new(available_view_types.first)
         else
-          Avo::ExecutionContext.new(
+          Avo::ViewInquirer.new(Avo::ExecutionContext.new(
             target: default_view_type || Avo.configuration.default_view_type,
             resource: self,
             view: @view
-          ).handle
+          ).handle)
         end
-
-        Avo::ViewInquirer.new(@view_type)
       end
 
       private

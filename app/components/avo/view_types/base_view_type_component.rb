@@ -9,7 +9,6 @@ class Avo::ViewTypes::BaseViewTypeComponent < Avo::BaseComponent
   prop :actions, reader: :public
   prop :pagy
   prop :query
-  prop :actions
   prop :turbo_frame
   prop :index_params
 
