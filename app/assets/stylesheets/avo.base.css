@@ -26,6 +26,7 @@
 @import './css/fields/trix.css';
 @import './css/fields/tags.css';
 @import './css/fields/tiptap.css';
+@import './css/fields/stars.css';
 
 @import 'tailwindcss/components';
 
