@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord", ">= 6.1"
   spec.add_dependency "activesupport", ">= 6.1"
   spec.add_dependency "actionview", ">= 6.1"
-  spec.add_dependency "pagy", ">= 7.0.0"
+  spec.add_dependency "pagy", ">= 7.0.0", "< 43"
   spec.add_dependency "zeitwerk", ">= 2.6.12"
   spec.add_dependency "active_link_to"
   spec.add_dependency "view_component", ">= 3.7.0"

@@ -59,7 +59,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def can_see_the_actions_button?
     return authorize_association_for(:act_on) if @reflection.present?
 
-    @resource.authorization.authorize_action(:act_on, raise_exception: false) && !has_reflection_and_is_read_only
+    @resource.authorization.authorize_action(:act_on, raise_exception: false)
   end
 
   def destroy_path
@@ -83,22 +83,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def sidebars
     []
-  end
-
-  def has_reflection_and_is_read_only
-    if @reflection.present? && @reflection.active_record.name && @reflection.name
-      resource = Avo.resource_manager.get_resource_by_model_class(@reflection.active_record.name).new(params: helpers.params, view: view, user: helpers._current_user)
-      fields = resource.get_field_definitions
-      filtered_fields = fields.filter { |f| f.id == @reflection.name }
-    else
-      return false
-    end
-
-    if filtered_fields.present?
-      filtered_fields.find { |f| f.id == @reflection.name }.is_disabled?
-    else
-      false
-    end
   end
 
   def render_control(control)
