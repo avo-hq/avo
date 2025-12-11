@@ -83,4 +83,16 @@ class Avo::TabGroupComponent < Avo::BaseComponent
       }
     }
   end
+
+  # Build Stimulus data attributes for tab buttons
+  def tab_button_data_attributes(tab)
+    {
+      action: "click->tabs#changeTab",
+      tabs_tab_name_param: tab.name,
+      tabs_group_id_param: group.to_param,
+      tabs_resource_name_param: resource.underscore_name,
+      tabs_target: :tabButton,
+      tab_id: tab.name
+    }
+  end
 end
