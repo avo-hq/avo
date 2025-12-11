@@ -79,11 +79,10 @@ else
   "tmp/screenshots"
 end
 
-Capybara.default_max_wait_time = 5
+Capybara.default_max_wait_time = 3
 
 require "support/controller_routes"
 require "support/avo_helpers"
-require "support/filter_helpers"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
@@ -93,8 +92,6 @@ RSpec.configure do |config|
   config.include TestHelpers::DisableHQRequest
   config.include TestHelpers::AvoHelpers, type: :feature
   config.include TestHelpers::AvoHelpers, type: :system
-  config.include TestHelpers::FilterHelpers, type: :feature
-  config.include TestHelpers::FilterHelpers, type: :system
   config.include Warden::Test::Helpers
   config.include DownloadHelpers
   config.include ViewComponent::TestHelpers, type: :component
@@ -132,8 +129,8 @@ RSpec.configure do |config|
         # js_errors: true, # consider it
         headless: %w[0 false].exclude?(ENV["HEADLESS"]),
         slowmo: ENV["SLOWMO"]&.to_f,
-        process_timeout: 15,
-        timeout: 10,
+        process_timeout: 10,
+        timeout: 8,
         browser_options: browser_options
       }
     )
@@ -141,9 +138,16 @@ RSpec.configure do |config|
 
   config.filter_gems_from_backtrace("capybara", "cuprite", "ferrum")
 
-  config.before(:example) { Rails.cache.clear }
-
-  DownloadHelpers.ensure_directory_exists
+  # Move expensive setup to suite level (runs once instead of per-test)
+  config.before(:suite) do
+    Rails.cache.clear
+    DownloadHelpers.ensure_directory_exists
+    WebMock.disable_net_connect!(
+      net_http_connect_on_start: true,
+      allow_localhost: true,
+      allow: ["googlechromelabs.github.io", "edgedl.me.gvt1.com"]
+    )
+  end
 
   config.after(:example) { clear_downloads }
 
@@ -156,14 +160,8 @@ RSpec.configure do |config|
     )
     ENV["RUN_WITH_NULL_LICENSE"] = "1"
 
-    WebMock.disable_net_connect!(
-      net_http_connect_on_start: true,
-      allow_localhost: true,
-      allow: ["googlechromelabs.github.io", "edgedl.me.gvt1.com"]
-    )
     example.run
 
-    # WebMock.allow_net_connect!
     WebMock.allow_net_connect!(net_http_connect_on_start: true)
     WebMock.reset!
     ENV["RUN_WITH_NULL_LICENSE"] = "0"
