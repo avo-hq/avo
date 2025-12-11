@@ -1,0 +1,35 @@
+<div class="p-8 bg-white">
+  <h3 class="text-lg font-semibold text-gray-900 mb-6">Subtle Style - With Icon</h3>
+  <div class="flex flex-wrap gap-3">
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "secondary", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "success", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "error", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "warning", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "informative", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "orange", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "yellow", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "green", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "teal", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "blue", icon: "avo/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "purple", icon: "avo/paperclip") %>
+  </div>
+
+  <h3 class="text-lg font-semibold text-gray-900 mb-6 mt-8">Subtle Style - Without Icon</h3>
+  <div class="flex flex-wrap gap-3">
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "secondary") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "success") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "error") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "warning") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "informative") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "orange") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "yellow") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "green") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "teal") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "blue") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Badge", color: "purple") %>
+  </div>
+
+  <p class="text-sm text-gray-600 mt-6 italic">
+    Note: Subtle style (default) available for all colors.
+  </p>
+</div>
