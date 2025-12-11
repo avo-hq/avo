@@ -7,6 +7,7 @@ class Avo::UI::CardComponent < Avo::BaseComponent
   prop :with_padding, default: -> { true }
   prop :variant, default: -> { :default }
   prop :options, kind: :**
+  prop :data, default: -> { {}.freeze }
 
   renders_one :header
   renders_one :body
