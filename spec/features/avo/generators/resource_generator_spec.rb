@@ -76,10 +76,12 @@ def keeping_original_files(files)
     FileUtils.mv(file_path, "#{file_path}_temp")
   end
 
-  yield
-
-  # Remove the _temp from the end of the files name in order to restore the original ones
-  files.each do |file_path|
-    FileUtils.mv("#{file_path}_temp", file_path)
+  begin
+    yield
+  ensure
+    # Remove the _temp from the end of the files name in order to restore the original ones
+    files.each do |file_path|
+      FileUtils.mv("#{file_path}_temp", file_path)
+    end
   end
 end
