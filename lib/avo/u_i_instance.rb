@@ -41,11 +41,11 @@ class Avo::UIInstance
     # Used in parent apps like this `ui.panel(...)`
     # @method: string "panel"
     # @return: (method: String) -> Component
-    def method_missing(method, *args, **kwargs, &block)
+    def method_missing(method, ...)
       component_class = resolve_component(method)
 
       if component_class
-        component_class.new(*args, **kwargs, &block)
+        component_class.new(...)
       else
         MISSING_COMPONENT_CLASS.safe_constantize.new(component_name: method)
       end
