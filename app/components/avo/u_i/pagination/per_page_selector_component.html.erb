@@ -1,0 +1,30 @@
+<!-- Items per page selector -->
+<div class="flex flex-col gap-2 items-start w-auto shrink-0">
+  <div class="relative inline-block">
+    <!-- Custom styled display -->
+    <div class="bg-white border border-gray-200 rounded-lg px-2 py-1 text-sm leading-5 text-gray-900 cursor-pointer shadow-[0px_1px_2px_0px_rgba(0,0,0,0.04)] hover:border-gray-300 flex items-center justify-between h-8 w-[165px] gap-2" aria-hidden="true">
+      <div class="flex items-center gap-1 w-[129px]">
+        <span class="font-bold leading-5"><%= @items_per_page %></span>
+        <span class="font-normal leading-5">per page</span>
+      </div>
+      <div class="w-4 h-4 text-gray-900 pointer-events-none">
+        <%= helpers.svg("avo/chevron-down-16", class: "w-full h-full") %>
+      </div>
+    </div>
+    <!-- Hidden native select for functionality -->
+    <label for="per-page-select" class="sr-only">Items per page</label>
+    <select
+      id="per-page-select"
+      data-action="change->pagination#changePerPage"
+      class="absolute inset-0 w-full h-full opacity-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+      aria-label="Select number of items per page"
+    >
+      <% @per_page_options.each do |option| %>
+        <option value="<%= option %>" <%= "selected" if option == @items_per_page %>>
+          <%= option %> per page
+        </option>
+      <% end %>
+    </select>
+  </div>
+</div>
+
