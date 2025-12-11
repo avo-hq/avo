@@ -1,0 +1,8 @@
+<div
+  class="<%= classes %>"
+  role="tablist"
+  id="<%= tablist_id %>"
+  aria-label="<%= tablist_aria_label %>"
+>
+  <%= safe_join(items.map { |item| render(item) }) %>
+</div>

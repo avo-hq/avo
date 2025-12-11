@@ -1,0 +1,20 @@
+<div class="p-8 bg-white space-y-6">
+  <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+    <%= render Avo::UI::TabsComponent.new(variant: variant) do |tab|
+        Array.new(tab_count) do |i|
+          tab.with_item label: "Tab #{i + 1}", active: i == active_tab, icon: show_icons ? "heroicons/outline/external-link" : nil, variant: variant
+        end
+     end %>
+  </div>
+
+  <div class="bg-gray-100 p-4 rounded-lg">
+    <h3 class="text-sm font-semibold mb-2">Configuration:</h3>
+    <div class="text-sm space-y-1 font-mono">
+      <div>Variant: <strong><%= variant %></strong></div>
+      <div>Tab Count: <strong><%= tab_count %></strong></div>
+      <div>Active Tab: <strong><%= active_tab + 1 %></strong> (index <%= active_tab %>)</div>
+      <div>Show Icons: <strong><%= show_icons ? 'Yes' : 'No' %></strong></div>
+    </div>
+  </div>
+</div>
+
