@@ -9,7 +9,7 @@ PARALLEL_PROCESSES=${PARALLEL_PROCESSES:-$(nproc 2>/dev/null || sysctl -n hw.ncp
 # Setup parallel test databases (run once before first parallel test run)
 if [[ "$1" == "setup" ]]; then
   echo "Setting up $PARALLEL_PROCESSES parallel test databases..."
-  cd spec/dummy && bundle exec rake parallel:create parallel:prepare
+  cd spec/dummy && bundle exec rake parallel:setup
   echo "Done! You can now run: bin/test system"
   exit 0
 fi;
