@@ -189,13 +189,14 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def user_information_panel
-    card(title: "User information", description: "User information description") do
+    card title: "User information", description: "User information description", only_on: :show do
       field :is_admin?, as: :boolean
 
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe"
     end
-    panel(title: "User information", description: "User information description") do
+
+    panel title: "User information", description: "User information description" do
       test_field("Inside panel")
 
       field :user_information, as: :heading
