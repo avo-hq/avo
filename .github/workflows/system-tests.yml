@@ -76,7 +76,15 @@ jobs:
         bundle config path vendor/bundle
         bundle install --jobs 4 --retry 3
 
-    - name: Setup parallel test databases
+    - name: Setup database (Rails 6.1 - sequential)
+      if: matrix.rails == '6.1'
+      run: |
+        bin/rails db:create db:migrate
+
+    - name: Setup parallel databases (Rails 7.1+)
+      if: matrix.rails != '6.1'
+      env:
+        SECRET_KEY_BASE: dummy_secret_key_for_ci_test_database_setup
       run: |
         cd spec/dummy && bundle exec rake parallel:create parallel:migrate
 
@@ -109,13 +117,15 @@ jobs:
         yarn build:css
         yarn build:custom-js
 
-    - name: Get CPU cores
-      id: cpu-cores
-      run: echo "count=$(nproc)" >> $GITHUB_OUTPUT
+    - name: Run tests (Rails 6.1 - sequential)
+      if: matrix.rails == '6.1'
+      id: run_tests_sequential
+      run: bundle exec rspec spec/system --tag=~i18n
 
-    - name: Run tests (parallel)
-      id: run_tests
-      run: bundle exec parallel_rspec spec/system/ -n ${{ steps.cpu-cores.outputs.count }} --group-by filesize -- --tag=~i18n
+    - name: Run tests (Rails 7.1+ - parallel)
+      if: matrix.rails != '6.1'
+      id: run_tests_parallel
+      run: bundle exec parallel_rspec spec/system -n $(nproc) --group-by filesize -- --tag=~i18n
 
     - uses: actions/upload-artifact@v4
       with:
@@ -123,7 +133,7 @@ jobs:
         path: coverage/.resultset.json
 
     - uses: actions/upload-artifact@v4
-      if: always() && steps.run_tests.outcome == 'failure'
+      if: always() && (steps.run_tests_sequential.outcome == 'failure' || steps.run_tests_parallel.outcome == 'failure')
       with:
         name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
         path: ./spec/dummy/tmp/screenshots
