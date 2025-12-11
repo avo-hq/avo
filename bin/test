@@ -6,6 +6,14 @@ export NODE_ENV="test"
 # Number of parallel processes (default: number of CPU cores)
 PARALLEL_PROCESSES=${PARALLEL_PROCESSES:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)}
 
+# Setup parallel test databases (run once before first parallel test run)
+if [[ "$1" == "setup" ]]; then
+  echo "Setting up $PARALLEL_PROCESSES parallel test databases..."
+  cd spec/dummy && bundle exec rake parallel:create parallel:prepare
+  echo "Done! You can now run: bin/test system"
+  exit 0
+fi;
+
 # Run unit tests
 if [[ -z "$1" ]] || [[ "$1" == "unit" ]]; then
   bundle exec rspec ./spec --tag type:feature

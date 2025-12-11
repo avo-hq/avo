@@ -78,7 +78,7 @@ jobs:
 
     - name: Setup parallel test databases
       run: |
-        bundle exec rails parallel:create parallel:prepare
+        cd spec/dummy && bundle exec rake parallel:create parallel:prepare
 
     - name: Get yarn cache directory path
       id: test-yarn-cache-dir-path
