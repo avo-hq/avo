@@ -8,6 +8,13 @@
   } do %>
   <%= render_cards_component %>
 
+  <% if Avo.configuration.display_breadcrumbs %>
+    <%= render Avo::BreadcrumbsComponent.new(items: [
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Users", url: "/users"},
+      {text: "User", current: true}]) %>
+  <% end %>
+
   <%= render ui.panel(
       cover_photo: resource.cover_photo,
       class: "w-full",
@@ -18,18 +25,6 @@
         "resource-search-url-value": request.fullpath
       },
     ) do |panel| %>
-    <% if (@reflection.blank? && @parent_resource.blank?) || (@reflection.present? && !helpers.turbo_frame_request?) %>
-      <% panel.with_breadcrumbs do %>
-        <%# TODO: fix the breadcrumbs %>
-        <%= render ui.breadcrumbs(
-          items: [
-            { text: "Home", url: "/" },
-            { text: "Users", url: "/users" }
-          ]
-        ) %>
-      <% end %>
-    <% end %>
-
     <% panel.with_header do %>
       <%= render ui.panel_header(
         title:,

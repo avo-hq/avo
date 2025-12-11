@@ -9,8 +9,17 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
+
+  <% if Avo.configuration.display_breadcrumbs %>
+    <%= render Avo::BreadcrumbsComponent.new(items: [
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Users", url: "/users"},
+      {text: "User", current: true}]) %>
+  <% end %>
+
   <%= build_form do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
+
     <%= content_tag :div, class: "space-y-12" do %>
       <% @resource.get_items.each_with_index do |item, index| %>
         <%= render Avo::Items::SwitcherComponent.new(

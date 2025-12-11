@@ -5,8 +5,8 @@
 ) do %>
   <div class="header__main">
     <div class="header__content">
-      <% if @show_avatar && avatar? %>
-        <div class="header__avatar"><%= avatar %></div>
+      <% if profile_photo? %>
+        <div class="header__avatar"><%= profile_photo %></div>
       <% end %>
 
       <div class="header__text">
@@ -17,9 +17,10 @@
             <%= @title %>
           <% end %>
         </p>
+
         <%= title_slot %>
 
-        <% if @show_description && @description.present? %>
+        <% if @description.present? %>
           <p class="header__description"><%= @description %></p>
         <% end %>
       </div>

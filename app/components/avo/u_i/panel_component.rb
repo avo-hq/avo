@@ -1,21 +1,17 @@
 # frozen_string_literal: true
 
 class Avo::UI::PanelComponent < Avo::BaseComponent
-  prop :floating_sidebar, default: false
-  prop :full_width, default: false
-  prop :class, default: ""
+  prop :external_link
+  prop :args, kind: :**, default: {}.freeze
   prop :profile_photo
   prop :cover_photo
+  prop :class
+  prop :index
   prop :data, default: -> { {}.freeze }
-
-  prop :title, reader: :public
-  prop :description, reader: :public
-  prop :target, reader: :public
-  prop :url, reader: :public
 
   renders_one :header
   renders_one :controls
-  renders_one :breadcrumbs
+  renders_one :cover_photo
   renders_one :sidebar
   renders_one :body
   renders_one :footer
@@ -26,5 +22,13 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
 
   def full_width?
     @full_width
+  end
+
+  def has_cover_photo?
+    @cover_photo.present?
+  end
+
+  def has_profile_photo?
+    @profile_photo.present?
   end
 end

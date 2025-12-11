@@ -10,9 +10,6 @@
   @apply w-full;
 }
 
-.panel__breadcrumbs {
-}
-
 .panel__content {
   @apply flex flex-col md:flex-row gap-4;
 }
@@ -29,6 +26,10 @@
   .panel__body {
     @apply w-full;
   }
+}
+
+.panel__cover-photo {
+  @apply w-full;
 }
 
 .panel--floating-sidebar {

@@ -4,9 +4,15 @@
   "panel--has-sidebar": sidebar?,
   "panel--full-width": full_width?,
   "panel--floating-sidebar": floating_sidebar?,
-) do %>
-  <% if breadcrumbs? %>
-    <div class="panel__breadcrumbs"><%= breadcrumbs %></div>
+  "has-cover-photo": has_cover_photo?,
+  "has-profile-photo": has_profile_photo?
+), data: {
+  **@data,
+  component_name:,
+  "panel-index": @index
+} do %>
+  <% if cover_photo? %>
+    <div class="panel__cover-photo"><%= cover_photo %></div>
   <% end %>
 
   <% if header? %>
@@ -17,12 +23,16 @@
         title:,
         url:,
         target:,
-        description:
+        description:,
       ) do |header| %>
         <% if controls? %>
           <% header.with_controls do %>
-            <%= controls %>
+            controls <%= controls %>
           <% end %>
+        <% end %>
+
+        <% header.with_profile_photo do %>
+          <%= render Avo::ProfilePhotoComponent.new profile_photo: @profile_photo %>
         <% end %>
       <% end %>
     </div>
@@ -36,6 +46,7 @@
         <div class="panel__footer"><%= footer %></div>
       <% end %>
     </div>
+
     <% if sidebar? %>
       <div class="panel__sidebar"><%= sidebar %></div>
     <% end %>

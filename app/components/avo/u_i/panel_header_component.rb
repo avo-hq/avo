@@ -4,13 +4,11 @@ class Avo::UI::PanelHeaderComponent < Avo::BaseComponent
   prop :title
   prop :description
   prop :size, default: :medium
-  prop :show_avatar, default: true
-  prop :show_description, default: true
   prop :url
   prop :target
 
   renders_one :title_slot
-  renders_one :avatar
+  renders_one :profile_photo
   renders_one :controls
   renders_one :discreet_information
 

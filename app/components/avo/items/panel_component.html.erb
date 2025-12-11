@@ -1,4 +1,12 @@
-<%= render ui.panel(title: @item.title, description: @item.description) do |panel| %>
+<%= render ui.panel(**args) do |panel| %>
+  <% if @resource.cover_photo.present? %>
+    <div class="panel__cover-photo">
+      <% panel.with_cover_photo do %>
+        <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
+      <% end %>
+    </div>
+  <% end %>
+
   <% if @is_main_panel && controls.any? %>
     <% panel.with_header do %>
       <%= render ui.panel_header(
@@ -8,6 +16,26 @@
         <% header.with_controls do %>
           <% controls.each do |control| %>
             <%= render_control control %>
+          <% end %>
+        <% end %>
+
+        <% header.with_profile_photo do %>
+          <%= render Avo::ProfilePhotoComponent.new profile_photo: @resource.profile_photo %>
+        <% end %>
+
+        <% header.with_discreet_information do %>
+          <% if @resource.get_external_link.present? %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              as: :icon,
+              url: @resource.get_external_link,
+              target: :_blank,
+              title: helpers.t("avo.visit_record_on_external_path"),
+              icon: "heroicons/outline/arrow-top-right-on-square"
+            ) %>
+          <% end %>
+
+          <% @resource.discreet_information.items.each do |item| %>
+            <%= render Avo::DiscreetInformationComponent.new(**item) %>
           <% end %>
         <% end %>
       <% end %>
