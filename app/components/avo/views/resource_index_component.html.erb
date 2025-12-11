@@ -31,7 +31,7 @@
     <% end %>
 
     <% panel.with_header do %>
-      <%= render ui.header(
+      <%= render ui.panel_header(
         title:,
         url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil,
         target: :_blank,

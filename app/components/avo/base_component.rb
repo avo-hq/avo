@@ -4,6 +4,7 @@ class Avo::BaseComponent < ViewComponent::Base
   extend PropInitializer::Properties
   include Turbo::FramesHelper
   include Avo::Concerns::FindAssociationField
+  include Avo::ApplicationHelper
 
   delegate :e, to: :helpers
   delegate :d, to: :helpers

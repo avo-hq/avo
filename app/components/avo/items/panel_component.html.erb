@@ -1,7 +1,7 @@
 <%= render ui.panel(title: @item.title, description: @item.description) do |panel| %>
   <% if @is_main_panel && controls.any? %>
     <% panel.with_header do %>
-      <%= render ui.header(
+      <%= render ui.panel_header(
         title: args[:title],
         description: args[:description]
       ) do |header| %>

@@ -81,7 +81,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
         url = "/admin/resources/teams/#{team.id}/team_members?view=show"
         visit url
 
-        expect(page).to have_selector "div[data-target='panel-tools'] a[href='/admin/resources/teams/#{team.id}']", text: "Go back"
+        expect(page).to have_selector ".header__controls a[href='/admin/resources/teams/#{team.id}']", text: "Go back"
       end
     end
 
@@ -97,7 +97,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       end
 
       it "does not display a back button" do
-        expect(page).to_not have_selector "div[data-target='panel-tools'] a", text: "Go back"
+        expect(page).to_not have_selector ".header__controls a", text: "Go back"
       end
     end
   end

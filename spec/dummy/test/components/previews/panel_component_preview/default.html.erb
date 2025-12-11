@@ -4,7 +4,7 @@
     class: "mx-auto"
   ) do |panel| %>
     <% panel.with_header do %>
-      <%= render Avo::HeaderComponent.new(
+      <%= render ui.panel_header(
         title: "John Doe",
         description: "Some description here on maybe how to use the resource"
       ) do |header| %>
@@ -44,21 +44,17 @@
     <% end %>
 
     <% panel.with_body do %>
-      <%= render ui.panel(title: "Panel Title") do %>
-        <%= render Avo::FieldWrapperComponent.new(
-          label: "Email",
-        ) do %>
-          <div class="text-sm text-gray-900">john.doe@example.com</div>
+      <%= render ui.card(title: "Panel Title") do |card| %>
+        <% card.with_body do %>
+          <%= render Avo::Fields::TextField::ShowComponent.new(field: Avo::Fields::TextField.new("email")) %>
         <% end %>
       <% end %>
     <% end %>
 
     <% panel.with_sidebar do %>
-      <%= render ui.panel(title: "Avatar") do %>
-        <%= render Avo::FieldWrapperComponent.new(
-          label: "Created at",
-        ) do %>
-          <div class="text-sm text-gray-900">2021-01-01</div>
+      <%= render ui.card(title: "Avatar") do |card| %>
+        <% card.with_body do %>
+          <%= render Avo::Fields::TextField::ShowComponent.new(field: Avo::Fields::TextField.new("created_at")) %>
         <% end %>
       <% end %>
     <% end %>

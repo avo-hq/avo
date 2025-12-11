@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::HeaderComponent < Avo::BaseComponent
+class Avo::UI::PanelHeaderComponent < Avo::BaseComponent
   prop :title
   prop :description
   prop :size, default: :medium
