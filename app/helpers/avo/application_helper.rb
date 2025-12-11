@@ -3,9 +3,7 @@ module Avo
     include ::Pagy::Frontend
     include Avo::ResourcesHelper
 
-    def ui(*args, **kwargs, &block)
-      @ui ||= Avo::UIInstance.new(args, kwargs, &block)
-    end
+    def ui = Avo::UIInstance
 
     # TODO: refactor this to use the breadcrumbs helper
     # Ideally it should be added to any

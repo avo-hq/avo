@@ -73,7 +73,6 @@ gem "image_processing", "~> 1.12"
 gem "prefixed_ids"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
-gem "pagy", "> 8"
 gem "csv"
 gem "view_component", "4.0.0"
 
@@ -112,9 +111,6 @@ group :development do
   gem "htmlbeautifier"
   gem "hotwire-livereload", "~> 1.3.0"
   gem "actual_db_schema"
-
-  # Component documentation & preview
-  gem "lookbook", ">= 2.3.8"
 
   # Performance profiling
   gem "derailed_benchmarks", "~> 2.1", ">= 2.1.2"
@@ -163,6 +159,11 @@ group :test do
   # Performance testing
   gem "test-prof"
   gem "database_cleaner-active_record"
+
+  # A11y
+  gem "selenium-webdriver"
+  gem "axe-core-rspec"
+  gem "axe-core-capybara"
 end
 
 # =============================================================================
@@ -191,6 +192,11 @@ group :development, :test do
 
   # Build & dependency management
   gem "appraisal", require: false
+
+  gem "openssl"
+
+  # Component documentation & preview
+  gem "lookbook", ">= 2.3.8"
 end
 
 # =============================================================================
