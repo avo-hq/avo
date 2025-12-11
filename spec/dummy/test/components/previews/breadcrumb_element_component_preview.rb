@@ -96,4 +96,3 @@ class BreadcrumbElementComponentPreview < ViewComponent::Preview
     )
   end
 end
-

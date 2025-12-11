@@ -11,11 +11,11 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
     truncate: false
   )
     items = [
-      { text: "Home", url: "https://example.com/home" },
-      { text: "Page 1", url: "https://example.com/page1" },
-      { text: "Page 2", url: "https://example.com/page2" },
-      { text: "Page 3", url: "https://example.com/page3" },
-      { text: "Page 4", current: true }
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Page 1", url: "https://example.com/page1"},
+      {text: "Page 2", url: "https://example.com/page2"},
+      {text: "Page 3", url: "https://example.com/page3"},
+      {text: "Page 4", current: true}
     ]
 
     render Avo::BreadcrumbsComponent.new(
@@ -28,8 +28,8 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Simple breadcrumb path
   def simple_path
     items = [
-      { text: "Home", url: "https://example.com/home" },
-      { text: "Current Page", current: true }
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Current Page", current: true}
     ]
 
     render Avo::BreadcrumbsComponent.new(items: items)
@@ -38,11 +38,11 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Breadcrumb with chevron separator (default)
   def with_chevron_separator
     items = [
-      { text: "Home", url: "https://example.com/home" },
-      { text: "Page 1", url: "https://example.com/page1" },
-      { text: "Page 2", url: "https://example.com/page2" },
-      { text: "Page 3", url: "https://example.com/page3" },
-      { text: "Page 4", current: true }
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Page 1", url: "https://example.com/page1"},
+      {text: "Page 2", url: "https://example.com/page2"},
+      {text: "Page 3", url: "https://example.com/page3"},
+      {text: "Page 4", current: true}
     ]
 
     render Avo::BreadcrumbsComponent.new(
@@ -54,11 +54,11 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Breadcrumb with slash separator
   def with_slash_separator
     items = [
-      { text: "Home", url: "https://example.com/home" },
-      { text: "Page 1", url: "https://example.com/page1" },
-      { text: "Page 2", url: "https://example.com/page2" },
-      { text: "Page 3", url: "https://example.com/page3" },
-      { text: "Page 4", current: true }
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Page 1", url: "https://example.com/page1"},
+      {text: "Page 2", url: "https://example.com/page2"},
+      {text: "Page 3", url: "https://example.com/page3"},
+      {text: "Page 4", current: true}
     ]
 
     render Avo::BreadcrumbsComponent.new(
@@ -70,9 +70,9 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Breadcrumb with colon separator
   def with_colon_separator
     items = [
-      { text: "Home", url: "https://example.com/home" },
-      { text: "Page 1", url: "https://example.com/page1" },
-      { text: "Page 2", current: true }
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Page 1", url: "https://example.com/page1"},
+      {text: "Page 2", current: true}
     ]
 
     render Avo::BreadcrumbsComponent.new(
@@ -84,10 +84,10 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Breadcrumb with icons
   def with_icons
     items = [
-      { text: "Home", url: "https://example.com/home", icon: "heroicons/outline/home" },
-      { text: "Dashboard", url: "https://example.com/dashboard", icon: "heroicons/outline/chart-bar" },
-      { text: "Settings", url: "https://example.com/settings", icon: "heroicons/outline/cog" },
-      { text: "Profile", current: true, icon: "heroicons/outline/user" }
+      {text: "Home", url: "https://example.com/home", icon: "heroicons/outline/home"},
+      {text: "Dashboard", url: "https://example.com/dashboard", icon: "heroicons/outline/chart-bar"},
+      {text: "Settings", url: "https://example.com/settings", icon: "heroicons/outline/cog"},
+      {text: "Profile", current: true, icon: "heroicons/outline/user"}
     ]
 
     render Avo::BreadcrumbsComponent.new(items: items)
@@ -96,14 +96,14 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Truncated breadcrumb (shows ellipsis)
   def truncated
     items = [
-      { text: "Home", url: "https://example.com/home" },
-      { text: "Page 1", url: "https://example.com/page1" },
-      { text: "Page 2", url: "https://example.com/page2" },
-      { text: "Page 3", url: "https://example.com/page3" },
-      { text: "Page 4", url: "https://example.com/page4" },
-      { text: "Page 5", url: "https://example.com/page5" },
-      { text: "Page 6", url: "https://example.com/page6" },
-      { text: "Page 7", current: true }
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Page 1", url: "https://example.com/page1"},
+      {text: "Page 2", url: "https://example.com/page2"},
+      {text: "Page 3", url: "https://example.com/page3"},
+      {text: "Page 4", url: "https://example.com/page4"},
+      {text: "Page 5", url: "https://example.com/page5"},
+      {text: "Page 6", url: "https://example.com/page6"},
+      {text: "Page 7", current: true}
     ]
 
     render Avo::BreadcrumbsComponent.new(
@@ -116,12 +116,12 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Long breadcrumb path
   def long_path
     items = [
-      { text: "Home", url: "https://example.com/home" },
-      { text: "Category", url: "https://example.com/category" },
-      { text: "Subcategory", url: "https://example.com/subcategory" },
-      { text: "Item", url: "https://example.com/item" },
-      { text: "Details", url: "https://example.com/details" },
-      { text: "Edit", current: true }
+      {text: "Home", url: "https://example.com/home"},
+      {text: "Category", url: "https://example.com/category"},
+      {text: "Subcategory", url: "https://example.com/subcategory"},
+      {text: "Item", url: "https://example.com/item"},
+      {text: "Details", url: "https://example.com/details"},
+      {text: "Edit", current: true}
     ]
 
     render Avo::BreadcrumbsComponent.new(items: items)
@@ -134,4 +134,3 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
     )
   end
 end
-

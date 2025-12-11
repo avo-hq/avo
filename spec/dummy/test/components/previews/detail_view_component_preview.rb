@@ -48,4 +48,3 @@ class DetailViewComponentPreview < ViewComponent::Preview
     )
   end
 end
-
