@@ -1,4 +1,0 @@
-AllCops:
-  Exclude:
-    - "spec/**/*preview*.rb"
-    - "test/**/*preview*.rb"
