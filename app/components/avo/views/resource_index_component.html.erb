@@ -8,13 +8,6 @@
   } do %>
   <%= render_cards_component %>
 
-  <% if Avo.configuration.display_breadcrumbs %>
-    <%= render Avo::BreadcrumbsComponent.new(items: [
-      {text: "Home", url: "https://example.com/home"},
-      {text: "Users", url: "/users"},
-      {text: "User", current: true}]) %>
-  <% end %>
-
   <%= render ui.panel(
       cover_photo: resource.cover_photo,
       class: "w-full",

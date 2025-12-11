@@ -51,9 +51,10 @@
           </div>
 
           <div class="main-content-area flex max-w-full flex-1 flex-col">
-            <div class="main-content-wrapper flex flex-1 shadow-content rounded-2xl bg-white mx-2">
+            <div class="main-content-wrapper mx-2 flex flex-1 rounded-2xl bg-white shadow-content">
               <div class="content flex flex-1 flex-col items-stretch justify-between p-4 lg:p-6 <%= container_classes %>">
                 <%= render partial: "avo/partials/custom_tools_alert" %>
+                <%= render_breadcrumbs %>
 
                 <div class="flex flex-1 flex-col items-stretch justify-between space-y-8">
                   <%= yield.force_encoding("UTF-8") %>

@@ -1,4 +1,4 @@
-<div class="flex flex-col items-center">
+<div class="flex flex-1 flex-col items-center">
   <%= render ui.panel do |panel| %>
     <% panel.with_header do %>
       <%= render ui.panel_header(
@@ -6,6 +6,8 @@
         description: "Custom tool description"
       ) do |header| %>
         <% header.with_controls do %>
+          <div class="text-sm italic">This is the panels tools section.</div>
+
           <div class="flex gap-3">
             <%= render ui.button(label: "Label", size: :xs) %>
             <%= render ui.button(label: "Label", size: :xs) %>

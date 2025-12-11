@@ -1,16 +1,15 @@
-.breadcrumb {
+.breadcrumbs {
   @apply w-full;
 }
 
-.breadcrumb__container {
+.breadcrumbs__container {
   @apply flex flex-wrap gap-2 items-center;
 }
 
-.breadcrumb__separator {
+.breadcrumbs__separator {
   @apply text-neutral-500 flex items-center mx-1;
 }
 
-.breadcrumb__separator-icon {
+.breadcrumbs__separator-icon {
   @apply h-4 w-4 stroke-current;
 }
-

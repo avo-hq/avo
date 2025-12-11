@@ -1,5 +1,5 @@
 .panel {
-  @apply flex flex-col gap-y-4;
+  @apply flex flex-col gap-y-4 w-full;
 }
 
 .panel__header {
