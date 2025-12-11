@@ -79,6 +79,7 @@ group :test do
   gem "simplecov-lcov"
   gem "test-prof"
   gem "database_cleaner-active_record"
+  gem "parallel_tests"
 end
 
 group :development, :test do
