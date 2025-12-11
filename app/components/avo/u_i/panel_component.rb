@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::UI::PanelComponent < Avo::BaseComponent
+  prop :title, reader: :public
+  prop :description, reader: :public
   prop :external_link
   prop :args, kind: :**, default: {}.freeze
   prop :profile_photo

@@ -21,13 +21,11 @@
     <div class="panel__header">
       <%= render ui.panel_header(
         title:,
-        url:,
-        target:,
         description:,
       ) do |header| %>
         <% if controls? %>
           <% header.with_controls do %>
-            controls <%= controls %>
+            <%= controls %>
           <% end %>
         <% end %>
 

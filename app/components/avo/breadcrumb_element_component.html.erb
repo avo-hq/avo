@@ -4,9 +4,7 @@
   "breadcrumb-element--link": link?
 ) do %>
   <% if @icon.present? %>
-    <span class="breadcrumb-element__icon">
-      <%= helpers.svg @icon, class: "breadcrumb-element__icon-svg" %>
-    </span>
+    <span class="breadcrumb-element__icon"><%= helpers.svg @icon, class: "breadcrumb-element__icon-svg" %></span>
   <% end %>
 
   <% if link? %>
@@ -25,4 +23,3 @@
     </span>
   <% end %>
 <% end %>
-
