@@ -37,24 +37,24 @@ class Avo::UIInstance
     def clear_cache!
       @cache_mutex.synchronize { @component_cache.clear }
     end
-  end
 
-  # Used in parent apps like this `ui.panel(...)`
-  # @method: string "panel"
-  # @return: (method: String) -> Component
-  def method_missing(method, *args, **kwargs, &block)
-    component_class = self.class.resolve_component(method)
+    # Used in parent apps like this `ui.panel(...)`
+    # @method: string "panel"
+    # @return: (method: String) -> Component
+    def method_missing(method, *args, **kwargs, &block)
+      component_class = resolve_component(method)
 
-    if component_class
-      component_class.new(*args, **kwargs, &block)
-    else
-      MISSING_COMPONENT_CLASS.safe_constantize.new(component_name: method)
+      if component_class
+        component_class.new(*args, **kwargs, &block)
+      else
+        MISSING_COMPONENT_CLASS.safe_constantize.new(component_name: method)
+      end
     end
-  end
 
-  def respond_to_missing?(method, include_private = false)
-    # Since method_missing always handles any method call (either with a real component
-    # or falling back to MISSING_COMPONENT_CLASS), respond_to? should return true
-    true
+    def respond_to_missing?(method, include_private = false)
+      # Since method_missing always handles any method call (either with a real component
+      # or falling back to MISSING_COMPONENT_CLASS), respond_to? should return true
+      true
+    end
   end
 end
