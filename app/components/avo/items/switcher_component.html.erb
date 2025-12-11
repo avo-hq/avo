@@ -6,7 +6,7 @@
     description: item.description,
   ) do |card| %>
     <% card.with_body do %>
-      <%= ui.description_list do %>
+      <%= render ui.description_list do %>
         <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: item, view: @view, form: @form, field_component_extra_args: @field_component_extra_args %>
       <% end %>
     <% end %>

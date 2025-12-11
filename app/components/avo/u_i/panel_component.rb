@@ -18,14 +18,6 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   renders_one :body
   renders_one :footer
 
-  def floating_sidebar?
-    @floating_sidebar
-  end
-
-  def full_width?
-    @full_width
-  end
-
   def has_cover_photo?
     @cover_photo.present?
   end
