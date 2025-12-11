@@ -3,9 +3,7 @@ module Avo
     include ::Pagy::Frontend
     include Avo::ResourcesHelper
 
-    def ui(*args, **kwargs, &block)
-      @ui ||= Avo::UIInstance.new(args, kwargs, &block)
-    end
+    def ui = Avo::UIInstance
 
     def render_license_warning(title: "", message: "", icon: "exclamation")
       render partial: "avo/sidebar/license_warning", locals: {

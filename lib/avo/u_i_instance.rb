@@ -1,27 +1,52 @@
 # frozen_string_literal: true
 
 class Avo::UIInstance
-  def initialize(args, kwargs, &block)
-    @args = args
-    @kwargs = kwargs
-    @block = block
+  unless defined?(MISSING_COMPONENT_CLASS)
+    MISSING_COMPONENT_CLASS = "Avo::ComponentMissingComponent"
   end
 
-  MISSING_COMPONENT_CLASS = "Avo::ComponentMissingComponent"
+  # Cache for resolved component classes to avoid repeated classify/constantize calls
+  @component_cache = {}
+  @cache_mutex = Mutex.new
+
+  class << self
+    def resolve_component(method)
+      # Check cache first (thread-safe read)
+      cached = @component_cache[method]
+      return cached if cached
+
+      # Cache miss - resolve and store (thread-safe write)
+      @cache_mutex.synchronize do
+        # Double-check after acquiring lock
+        return @component_cache[method] if @component_cache[method]
+
+        component_class = "#{method.to_s.delete_suffix("_component")}_component"
+        full_class_name = "Avo::#{component_class.classify}"
+        ui_full_class_name = "Avo::UI::#{component_class.classify}"
+
+        resolved = if Object.const_defined?(full_class_name)
+          full_class_name.constantize
+        elsif Object.const_defined?(ui_full_class_name)
+          ui_full_class_name.constantize
+        end
+
+        @component_cache[method] = resolved
+      end
+    end
+
+    def clear_cache!
+      @cache_mutex.synchronize { @component_cache.clear }
+    end
+  end
 
   # Used in parent apps like this `ui.panel(...)`
   # @method: string "panel"
   # @return: (method: String) -> Component
   def method_missing(method, *args, **kwargs, &block)
-    # ensure it has the "_component" suffix
-    component_class = "#{method.to_s.delete_suffix("_component")}_component"
-    full_class_name = full_class_name(component_class)
-    ui_full_class_name = ui_full_class_name(component_class)
+    component_class = self.class.resolve_component(method)
 
-    if Object.const_defined?(full_class_name)
-      full_class_name.safe_constantize.new(*args, **kwargs, &block)
-    elsif Object.const_defined?(ui_full_class_name)
-      ui_full_class_name.safe_constantize.new(*args, **kwargs, &block)
+    if component_class
+      component_class.new(*args, **kwargs, &block)
     else
       MISSING_COMPONENT_CLASS.safe_constantize.new(component_name: method)
     end
@@ -32,10 +57,4 @@ class Avo::UIInstance
     # or falling back to MISSING_COMPONENT_CLASS), respond_to? should return true
     true
   end
-
-  private
-
-  def full_class_name(component_class) = "Avo::#{component_class.classify}"
-
-  def ui_full_class_name(component_class) = "Avo::UI::#{component_class.classify}"
 end
