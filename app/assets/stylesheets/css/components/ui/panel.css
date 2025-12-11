@@ -6,6 +6,10 @@
   @apply w-full;
 }
 
+.panel__footer {
+  @apply w-full;
+}
+
 .panel__breadcrumbs {
 }
 

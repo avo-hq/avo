@@ -1,8 +1,5 @@
 .header {
   /* background-color: green; */
-  
-
-
 
   @apply flex flex-col gap-2 items-start justify-center pr-0 py-0;
 }

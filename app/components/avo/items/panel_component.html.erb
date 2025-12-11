@@ -17,7 +17,7 @@
   <% panel.with_body do %>
     <%= render ui.card do |card| %>
       <% card.with_body do %>
-        <%= wrapped_fields do %>
+        <%= render ui.description_list do %>
           <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
         <% end %>
       <% end %>

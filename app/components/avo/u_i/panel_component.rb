@@ -18,6 +18,7 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   renders_one :breadcrumbs
   renders_one :sidebar
   renders_one :body
+  renders_one :footer
 
   def floating_sidebar?
     @floating_sidebar

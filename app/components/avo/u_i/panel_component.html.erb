@@ -29,8 +29,13 @@
   <% end %>
 
   <div class="panel__content">
-    <div class="panel__body"><%= body %></div>
+    <div class="panel__body">
+      <%= body %>
 
+      <% if footer? %>
+        <div class="panel__footer"><%= footer %></div>
+      <% end %>
+    </div>
     <% if sidebar? %>
       <div class="panel__sidebar"><%= sidebar %></div>
     <% end %>

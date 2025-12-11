@@ -38,6 +38,7 @@ import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceSearchController from './controllers/resource_search_controller'
 import ResourceShowController from './controllers/resource_show_controller'
+import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
@@ -52,7 +53,6 @@ import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
-import SearchController from './controllers/search_controller'
 
 application.register('action', ActionController)
 application.register('actions-overflow', ActionsOverflowController)

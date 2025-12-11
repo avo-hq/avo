@@ -29,9 +29,13 @@
 
       <% if Avo.configuration.buttons_on_form_footers %>
         <%= render ui.panel do |panel| %>
-          <% panel.with_footer_tools do %>
-            <% @resource.render_edit_controls.each do |control| %>
-              <%= render_control control %>
+          <% panel.with_footer do %>
+            <%= render ui.panel_header do |header| %>
+              <% header.with_controls do %>
+                <% @resource.render_edit_controls.each do |control| %>
+                  <%= render_control control %>
+                <% end %>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>
