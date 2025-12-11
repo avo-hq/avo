@@ -85,7 +85,7 @@ RSpec.describe "Custom components", type: :feature do
 
     it "map" do
       Avo::Resources::City.components = {
-        "Avo::Index::ResourceMapComponent": "Avo::ForTest::ResourceMapComponent"
+        "Avo::ViewTypes::MapComponent": "Avo::ForTest::MapComponent"
       }
 
       City.create!

@@ -12,9 +12,9 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
         field :name, as: :text
 
         # sidebar do
-          field :hidden_field_inside_sidebar, as: :text, visible: -> {
-            resource.record.name == "RSpec TabsPanelAndSidebarVisibility"
-          }
+        field :hidden_field_inside_sidebar, as: :text, visible: -> {
+          resource.record.name == "RSpec TabsPanelAndSidebarVisibility"
+        }
         # end
       end
 
@@ -40,7 +40,7 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
         end
       end
 
-      panel "Hidden panel", visible: -> { resource.record.name == "RSpec PanelVisibility" } do
+      panel title: "Hidden panel", visible: -> { resource.record.name == "RSpec PanelVisibility" } do
         field :hidden_field_inside_panel, as: :text
       end
 
