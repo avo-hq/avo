@@ -13,7 +13,7 @@ development:
 
 test:
   <<: *default
-  database: avo_dummy_test
+  database: avo_dummy_test<%= ENV['TEST_ENV_NUMBER'] %>
 
 production:
   <<: *default
