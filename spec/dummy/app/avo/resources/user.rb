@@ -81,7 +81,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def test_field(id)
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
     field id.to_sym, as: :text do
       id
@@ -127,7 +127,7 @@ class Avo::Resources::User < Avo::BaseResource
         query.order(id: direction)
       },
       hide_on: :edit do
-        record.posts.to_a.size > 0 ? "yes" : "no"
+        (record.posts.to_a.size > 0) ? "yes" : "no"
       end
 
     field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
@@ -145,16 +145,16 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def test_sidebar
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
-    # sidebar panel_wrapper: false do
+    sidebar panel_wrapper: false do
       tool Avo::ResourceTools::SidebarTool, render_panel: true
       test_field("Inside test_sidebar")
-    # end
+    end
   end
 
   def main_panel_sidebar
-    # sidebar do
+    sidebar do
       field :some_token, only_on: :show
       test_field("Inside main_panel_sidebar")
       with_options only_on: :show do
@@ -176,7 +176,7 @@ class Avo::Resources::User < Avo::BaseResource
         hide_on: :edit do
           raise "This should not execute on Index" if view.index?
 
-          record.posts.to_a.size > 0 ? "yes" : "no"
+          (record.posts.to_a.size > 0) ? "yes" : "no"
         end
       field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do
         main_app.hey_url
@@ -185,7 +185,7 @@ class Avo::Resources::User < Avo::BaseResource
         field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
         field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
       end
-    # end
+    end
   end
 
   def user_information_panel
@@ -203,22 +203,22 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def panel_test_sidebars
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
-    # sidebar do
+    sidebar do
       field :sidebar_test, as: :text do
         ";)"
       end
       test_field("Inside panel -> sidebar")
-    # end
+    end
 
-    # sidebar do
+    sidebar do
       field :sidebar_test_2, as: :text do
         "another ;)"
       end
       test_field("Inside panel -> sidebar 2")
       tool Avo::ResourceTools::SidebarTool
-    # end
+    end
   end
 
   def stacked_name
@@ -282,7 +282,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def test_tab
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
     tab "test_tab" do
       panel do

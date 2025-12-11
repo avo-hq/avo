@@ -82,7 +82,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def sidebars
-    []
+    @sidebars ||= @item.items
+      .select do |item|
+        item.is_sidebar?
+      end
+      .map do |sidebar|
+        sidebar.hydrate(view: view, resource: resource)
+      end
   end
 
   def render_control(control)
