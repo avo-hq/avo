@@ -93,8 +93,8 @@
   @import "./css/fields/trix.css";
   @import "./css/fields/tags.css";
   @import "./css/fields/tiptap.css";
-  @import './css/fields/stars.css';
-  
+  @import "./css/fields/stars.css";
+
   /* UI 4 */
   @import "./css/variables.css";
   @import "./css/components/ui/card.css";
