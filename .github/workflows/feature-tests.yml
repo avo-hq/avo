@@ -108,9 +108,13 @@ jobs:
         yarn build:css
         yarn build:custom-js
 
-    - name: Run tests
+    - name: Get CPU cores
+      id: cpu-cores
+      run: echo "count=$(nproc)" >> $GITHUB_OUTPUT
+
+    - name: Run tests (parallel)
       id: run_tests
-      run: bundle exec rspec spec/features
+      run: bundle exec parallel_rspec spec/features -n ${{ steps.cpu-cores.outputs.count }} --group-by filesize
 
     - uses: actions/upload-artifact@v4
       with:

@@ -157,6 +157,9 @@ group :test do
   # Performance testing
   gem "test-prof"
   gem "database_cleaner-active_record"
+
+  # Parallel test execution
+  gem "parallel_tests"
 end
 
 # =============================================================================

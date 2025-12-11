@@ -3,6 +3,9 @@
 export RAILS_ENV="test"
 export NODE_ENV="test"
 
+# Number of parallel processes (default: number of CPU cores)
+PARALLEL_PROCESSES=${PARALLEL_PROCESSES:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)}
+
 # Run unit tests
 if [[ -z "$1" ]] || [[ "$1" == "unit" ]]; then
   bundle exec rspec ./spec --tag type:feature
@@ -10,15 +13,31 @@ if [[ -z "$1" ]] || [[ "$1" == "unit" ]]; then
   bundle exec rspec ./spec --tag type:component
 fi;
 
-# Run system tests
+# Run system tests (parallel by default)
 if [[ -z "$1" ]] || [[ "$1" == "system" ]]; then
   yarn build:js
   yarn build:custom-js
   yarn build:css
-  bundle exec rspec ./spec --tag type:system
+
+  if [[ "$PARALLEL" == "0" ]]; then
+    bundle exec rspec ./spec --tag type:system
+  else
+    echo "Running system tests in parallel with $PARALLEL_PROCESSES processes..."
+    bundle exec parallel_rspec ./spec/system -n $PARALLEL_PROCESSES --group-by filesize
+  fi
+fi;
+
+# Run feature tests (parallel by default)
+if [[ "$1" == "feature" ]]; then
+  if [[ "$PARALLEL" == "0" ]]; then
+    bundle exec rspec ./spec --tag type:feature
+  else
+    echo "Running feature tests in parallel with $PARALLEL_PROCESSES processes..."
+    bundle exec parallel_rspec ./spec/features -n $PARALLEL_PROCESSES --group-by filesize
+  fi
 fi;
 
 # Run open-ended test paths
-if [[ "$@" ]] && [[ "$1" != "unit" ]] && [[ "$1" != "system" ]]; then
+if [[ "$@" ]] && [[ "$1" != "unit" ]] && [[ "$1" != "system" ]] && [[ "$1" != "feature" ]]; then
   bundle exec rspec $@
 fi;
