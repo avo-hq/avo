@@ -5,7 +5,6 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
 
   prop :form
   prop :item
-  prop :is_main_panel
   prop :resource
   prop :view
   prop :actions, reader: :public
@@ -24,20 +23,10 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
     to: :@parent_component
 
   def args
-    if @is_main_panel
-      {
-        title: title,
-        description: @resource.description,
-        index: 0,
-        data: {panel_id: "main"},
-        profile_photo: @resource.profile_photo,
-      }
-    else
-      {
-        title: @item.title,
-        description: @item.description,
-        index: @index
-      }
-    end
+    {
+      title: @item.title,
+      description: @item.description,
+      index: @index
+    }
   end
 end

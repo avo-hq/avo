@@ -18,7 +18,7 @@ class Avo::Resources::Team < Avo::BaseResource
   }
 
   def fields
-    main_panel do
+    panel show_fields_on_index: true do
       field :preview, as: :preview
 
       unless params[:hide_id]

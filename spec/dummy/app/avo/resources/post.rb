@@ -101,7 +101,7 @@ class Avo::Resources::Post < Avo::BaseResource
         title: record.name,
         body: helpers.extract_excerpt(record.body) + "(Published: #{record.published_at.present? ? "✅" : "❌"})"
       }
-    end,
+    end
     # html: -> do
     #   {
     #     title: {

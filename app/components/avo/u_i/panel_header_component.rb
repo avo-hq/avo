@@ -6,6 +6,7 @@ class Avo::UI::PanelHeaderComponent < Avo::BaseComponent
   prop :size, default: :medium
   prop :url
   prop :target
+  prop :index
 
   renders_one :title_slot
   renders_one :avatar

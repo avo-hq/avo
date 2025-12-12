@@ -18,8 +18,8 @@ module Avo
         self.class.ancestors.include?(Avo::Resources::Items::Card)
       end
 
-      def is_main_panel?
-        self.class.ancestors.include?(Avo::Resources::Items::MainPanel)
+      def is_header?
+        self.class.ancestors.include?(Avo::Resources::Items::Header)
       end
 
       def is_tool?

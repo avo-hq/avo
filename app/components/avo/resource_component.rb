@@ -75,12 +75,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
     helpers.resource_path(**args)
   end
 
-  def main_panel
-    @main_panel ||= @resource.get_items.find do |item|
-      item.is_main_panel?
-    end
-  end
-
   def sidebars
     @sidebars ||= @item.items
       .select do |item|
