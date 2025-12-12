@@ -174,9 +174,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_133623) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "USD", null: false
-    t.string "sizes", default: [], array: true
+    t.string "price_currency", default: "'USD'::character varying", null: false
     t.integer "rating", default: 0, null: false
+    t.string "sizes", default: [], array: true
     t.index ["rating"], name: "index_products_on_rating"
     t.check_constraint "rating >= 0 AND rating <= 5", name: "rating_range_check"
   end

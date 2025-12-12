@@ -30,7 +30,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
         resource: @resource,
         record: @resource.record,
         keep_query_params: true,
-        active_tab_name: tab.name,
+        active_tab_title: tab.title,
         tab_turbo_frame: tab.turbo_frame_id(parent: @group)
       )
     end
@@ -46,8 +46,8 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     visible_tabs.present?
   end
 
-  def active_tab_name
-    CGI.unescape(params[group_param] || group.visible_items&.first&.name)
+  def active_tab_title
+    CGI.unescape(params[group_param] || group.visible_items&.first&.title)
   end
 
   def tabs
@@ -66,7 +66,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     return if group.visible_items.blank?
 
     group.visible_items.find do |tab|
-      tab.name.to_s == active_tab_name.to_s
+      tab.title.to_s == active_tab_title.to_s
     end
   end
 
@@ -74,12 +74,12 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     {
       # Hide the turbo frames that aren't in the current tab
       # This way we can lazy load the un-selected tabs on the show view
-      class: "block #{'hidden' unless tab.name == active_tab_name}",
+      class: "block space-y-4 #{"hidden" unless tab.title == active_tab_title}",
       data: {
         # Add a marker to know if we already loaded a turbo frame
-        loaded: tab.name == active_tab_name,
+        loaded: tab.title == active_tab_title,
         tabs_target: :tabPanel,
-        tab_id: tab.name,
+        tab_id: tab.title,
       }
     }
   end

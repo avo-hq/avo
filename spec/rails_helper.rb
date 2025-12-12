@@ -83,7 +83,6 @@ Capybara.default_max_wait_time = 5
 
 require "support/controller_routes"
 require "support/avo_helpers"
-require "support/filter_helpers"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
@@ -92,8 +91,6 @@ RSpec.configure do |config|
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::AvoHelpers, type: :feature
   config.include TestHelpers::AvoHelpers, type: :system
-  config.include TestHelpers::FilterHelpers, type: :feature
-  config.include TestHelpers::FilterHelpers, type: :system
   config.include Warden::Test::Helpers
   config.include DownloadHelpers
   config.include ViewComponent::TestHelpers, type: :component

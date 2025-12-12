@@ -22,7 +22,7 @@ export default class extends NestedForm {
   }
 
   remove(event) {
-    if (confirm(this.confirmMessageValue)) {
+    if (window.confirm(this.confirmMessageValue)) {
       super.remove(event)
       this.toggleAddButton()
     }

@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.name = "avo"
   spec.version = Avo::VERSION
   spec.authors = ["Adrian Marin", "Mihai Marin", "Paul Bob"]
-  spec.email = ["avo@avohq.io"]
+  spec.email = ["hi@avohq.io"]
   spec.homepage = "https://avohq.io"
   spec.summary = "Admin panel framework and Content Management System for Ruby on Rails."
   spec.description = "Avo is a very custom Content Management System for Ruby on Rails that saves engineers and teams months of development time by building user interfaces and logic using configuration rather than traditional coding; When configuration is not enough, you can fallback to familiar Ruby on Rails code."

@@ -1,0 +1,28 @@
+<%= tag.nav class: "breadcrumbs", aria: { label: "Breadcrumb" } do %>
+  <div class="breadcrumbs__container">
+    <% items_to_render = @truncate ? truncate_items : @items %>
+
+    <% items_to_render.each_with_index do |item, index| %>
+      <% is_last = index == items_to_render.length - 1 %>
+      <% is_current = is_last || item[:current] == true %>
+
+      <%= render Avo::BreadcrumbElementComponent.new(
+        text: item[:text] || item[:name],
+        url: item[:url] || item[:path],
+        icon: item[:icon],
+        separator: nil,
+        current: is_current
+      ) %>
+
+      <% unless is_last %>
+        <span class="breadcrumbs__separator">
+          <% if @separator == ">" %>
+            <%= helpers.svg "chevron-right", class: "breadcrumbs__separator-icon" %>
+          <% else %>
+            <%= @separator %>
+          <% end %>
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

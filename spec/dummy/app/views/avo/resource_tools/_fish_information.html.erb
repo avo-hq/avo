@@ -1,52 +1,60 @@
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new(name: @resource.record.name, description: "There should be an image of this fish below 🐠") do |c| %>
-    <% c.with_tools do %>
+  <%= render ui.panel(title: @resource.record.name, description: "There should be an image of this fish below 🐠") do |panel| %>
+    <% panel.with_controls do %>
       <%= a_link('/admin', icon: 'heroicons/solid/academic-cap', style: :primary) do %>
         Primary
       <% end %>
     <% end %>
     <% if form.present? %>
-      <% c.with_body do %>
-        <div class="divide-y divide-gray-200">
-          <div class="flex">
-            <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
-            <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
-          </div>
-          <%= avo_edit_field :properties, as: :text, form: form, name: "Property 2", help: "Prop 2", required: true, component_options: {multiple: true} %>
+      <% panel.with_body do %>
+        <%= render ui.card do |card| %>
+          <% card.with_body do %>
+            <%= render ui.description_list do %>
+              <div class="flex">
+                <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
+                <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
+              </div>
+              <%= avo_edit_field :properties, as: :text, form: form, name: "Property 2", help: "Prop 2", required: true, component_options: {multiple: true} %>
 
-          <%= form.fields_for :information do |information_form| %>
-            <%= avo_edit_field :name, name: "Information name", as: :text, form: information_form, value: "information name", help: "This is going to be passed to the model", required: true %>
-            <%= avo_edit_field :history, name: "Information history", as: :text, form: information_form, value: "information history", help: "This is going to be passed to the model", required: true %>
-            <%= avo_edit_field :age, name: "Information age", as: :text, form: information_form, value: "information age", help: "This is NOT going to be passed to the model", required: true %>
+              <%= form.fields_for :information do |information_form| %>
+                <%= avo_edit_field :name, name: "Information name", as: :text, form: information_form, value: "information name", help: "This is going to be passed to the model", required: true %>
+                <%= avo_edit_field :history, name: "Information history", as: :text, form: information_form, value: "information history", help: "This is going to be passed to the model", required: true %>
+                <%= avo_edit_field :age, name: "Information age", as: :text, form: information_form, value: "information age", help: "This is NOT going to be passed to the model", required: true %>
+              <% end %>
+            <% end %>
           <% end %>
-        </div>
+        <% end %>
       <% end %>
     <% else %>
-      <% c.with_body do %>
-        <div class="flex flex-col p-4 min-h-24">
-          <div class="space-y-4">
-            <p>
-              The fish's name is <strong><%= @resource.record.name %></strong>. The ID of the record is <%= @resource.record_param %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
-            </p>
-            <p>
-              <%= turbo_frame_tag "fish_custom_action_demo" do %>
-                <% if params[:change_to].present? %>
-                  <%= params[:change_to] %>
-                <% else %>
-                  This text will change when you press the <code class="p-1 rounded-sm bg-sky-500 text-white">Turbo demo</code> button on the top.
+      <% panel.with_body do %>
+        <%= render ui.card do |card| %>
+          <% card.with_body do %>
+            <%= render ui.description_list do %>
+              <div class="flex flex-col p-4 min-h-24 space-y-4">
+                <p>
+                  The fish's name is <strong><%= @resource.record.name %></strong>. The ID of the record is <%= @resource.record_param %> and the tool's name is <strong><%= tool.class.to_s %></strong>.
+                </p>
+                <p>
+                  <%= turbo_frame_tag "fish_custom_action_demo" do %>
+                    <% if params[:change_to].present? %>
+                      <%= params[:change_to] %>
+                    <% else %>
+                      This text will change when you press the <code class="p-1 rounded-sm bg-sky-500 text-white">Turbo demo</code> button on the top.
+                    <% end %>
+                  <% end %>
+                </p>
+                <% if tool.has_fish_image? @resource.record.name.to_s.downcase.to_sym %>
+                  <%= image_tag tool.images[@resource.record.name.to_s.downcase.to_sym], loading: :lazy, class: 'rounded-sm' %>
                 <% end %>
-              <% end %>
-            </p>
-            <% if tool.has_fish_image? @resource.record.name.to_s.downcase.to_sym %>
-              <%= image_tag tool.images[@resource.record.name.to_s.downcase.to_sym], loading: :lazy, class: 'rounded-sm' %>
+                <%#= = ap @resource.record %>
+                <%#= = ap tool %>
+                <%#= = ap params %>
+                <%#= = ap Avo::Current.context %>
+                <%#= = ap current_user %>
+              </div>
             <% end %>
-            <%#== ap @resource.record %>
-            <%#== ap tool %>
-            <%#== ap params %>
-            <%#== ap Avo::Current.context %>
-            <%#== ap current_user %>
-          </div>
-        </div>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

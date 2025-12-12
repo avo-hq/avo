@@ -1,10 +1,9 @@
-<thead
-  data-component-name="avo/partials/table_header"
-  class="bg-white border-b border-gray-200 pb-1">
+<thead data-component-name="avo/partials/table_header" class="panel__header table-header-group">
   <% if resource.record_selector %>
     <th class="rounded-lg" data-control="item-select-th">
       <%= content_tag :label, name: t("avo.select_all") do %>
         <%= content_tag :span, t("avo.select_all"), class: 'sr-only' %>
+
         <%= tag :input,
           type: "checkbox",
           name: t("avo.select_all"),
@@ -15,19 +14,19 @@
             action: "input->item-select-all#toggle",
             item_select_all_target: "checkbox",
             tippy: "tooltip",
-          }
-        %>
+          } %>
       <% end %>
     </th>
   <% end %>
+
   <% if resource.render_row_controls_on_the_left? %>
     <th class="max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
   <% end %>
-  <% fields.each_with_index do |field, index|  %>
-    <%
-      first_option = Avo.configuration.first_sorting_option.to_s
+
+  <% fields.each_with_index do |field, index| %>
+    <% first_option = Avo.configuration.first_sorting_option.to_s
 
       if params[:sort_by] == field.id.to_s
         second_option = first_option == "desc" ? "asc" : "desc"
@@ -54,8 +53,8 @@
         sort_by = field.id
         sort_direction = first_option
       end
-      text_classes = "text-gray-600 tracking-tight leading-tight text-xs font-semibold"
-    %>
+      text_classes = "text-gray-600 tracking-tight leading-tight text-xs font-semibold" %>
+
     <%= content_tag :th,
       class: "relative text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",
       data: {
@@ -71,6 +70,7 @@
             class: class_names("flex-1 flex justify-between", text_classes),
             'data-turbo-frame': params[:turbo_frame] do %>
             <%= field.table_header_label %>
+
             <%= render partial: 'avo/partials/sortable_component', locals: {
               field: field,
               sort_tippy_content: I18n.t("avo.sort_#{sort_direction || "reset"}")
@@ -81,8 +81,13 @@
             <%= field.table_header_label %>
           <% end %>
         <% end %>
+
         <% if field.summarizable %>
-          <div id="summary-header-<%= field.id %>" class="<%= text_classes %> cursor-pointer" data-action="click->toggle#togglePanel">
+          <div
+            id="summary-header-<%= field.id %>"
+            class="cursor-pointer <%= text_classes %>"
+            data-action="click->toggle#togglePanel"
+          >
             <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
           </div>
           <turbo-frame
@@ -97,7 +102,10 @@
                 association_name: @field&.attribute_id
               }.compact
             ) %>"
-            class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded-sm overflow-hidden hidden border border-gray-50"
+            class="
+              absolute inset-auto top-0 z-40 mt-6 hidden w-full overflow-hidden rounded-sm border border-gray-50
+              bg-white p-4 shadow-modal sm:w-[400px]
+            "
             data-toggle-target="panel"
           >
             <%= render Avo::LoadingComponent.new %>
@@ -106,6 +114,7 @@
       <% end %>
     <% end %>
   <% end %>
+
   <% if resource.render_row_controls_on_the_right? %>
     <th class="w-px max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->

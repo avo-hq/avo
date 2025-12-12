@@ -1,11 +1,14 @@
 <!DOCTYPE html>
+
 <!-- ✨ Built with Avo • https://www.avohq.io/ -->
 <html lang="<%= I18n.default_locale %>">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <% if !Avo.configuration.turbo[:instant_click] %>
       <meta name="turbo-prefetch" content="false">
     <% end %>
+
     <%= display_meta_tags site: Avo.configuration.app_name, reverse: true, separator: "—" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -27,33 +30,48 @@
     <%= render partial: 'avo/partials/color_theme_override' %>
     <%= content_for :head %>
   </head>
-  <body class="bg-application os-mac floating-controls">
-    <div class="relative flex flex-1 w-full min-h-dvh" data-controller="sidebar" data-sidebar-open-value="<%= @sidebar_open %>">
-      <div class="flex-1 flex flex-col max-w-full">
+
+  <body class="os-mac floating-controls bg-application">
+    <div
+      class="relative flex min-h-dvh w-full flex-1"
+      data-controller="sidebar"
+      data-sidebar-open-value="<%= @sidebar_open %>"
+    >
+      <div class="flex max-w-full flex-1 flex-col">
         <%= render partial: "avo/partials/navbar", locals: { resource: @resource } %>
-        <div data-sidebar-target="mainArea" class="content-area flex-1 flex pt-16 relative <%= "sidebar-open" if @sidebar_open %>">
-          <div class="hidden lg:flex">
-            <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %>
-          </div>
+
+        <div
+          data-sidebar-target="mainArea"
+          class="content-area relative flex flex-1 <%= "sidebar-open" if @sidebar_open %>"
+        >
+          <div class="hidden lg:flex"><%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %></div>
+
           <div class="flex lg:hidden">
             <%= render Avo::SidebarComponent.new sidebar_open: false, for_mobile: true %>
           </div>
-          <div class="main-content-area flex-1 flex flex-col min-h-dvh max-w-full">
-            <div class="content p-4 lg:p-6 flex-1 flex flex-col justify-between items-stretch <%= container_classes %>">
-              <%= render partial: "avo/partials/custom_tools_alert" %>
-              <div class="flex flex-1 flex-col justify-between items-stretch space-y-8">
-                <%= yield.force_encoding("UTF-8") %>
-                <%= render partial: "avo/partials/footer" %>
+
+          <div class="main-content-area flex max-w-full flex-1 flex-col">
+            <div class="main-content-wrapper mx-2 flex flex-1 rounded-2xl bg-white shadow-content">
+              <div class="content flex flex-1 flex-col items-stretch justify-between p-4 lg:p-6 <%= container_classes %>">
+                <%= render partial: "avo/partials/custom_tools_alert" %>
+                <%= render_breadcrumbs %>
+
+                <div class="flex flex-1 flex-col items-stretch justify-between space-y-8">
+                  <%= yield.force_encoding("UTF-8") %>
+                  <%= render partial: "avo/partials/footer" %>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <%= turbo_frame_tag Avo::MODAL_FRAME_ID %>
     <%= render partial: "avo/partials/alerts" %>
     <%= render partial: "avo/partials/scripts" %>
     <%= render partial: "avo/partials/confirm_dialog" %>
   </body>
 </html>
+
 <!-- ✨ Built with Avo • https://www.avohq.io/ -->

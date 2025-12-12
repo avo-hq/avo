@@ -1,21 +1,12 @@
 # frozen_string_literal: true
 
-class Avo::Index::ResourceTableComponent < Avo::BaseComponent
+class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
   include Avo::ApplicationHelper
   attr_reader :pagy, :query
 
   def before_render
     @header_fields, @table_row_components = cache_table_rows
   end
-
-  prop :resources
-  prop :resource
-  prop :reflection
-  prop :parent_record
-  prop :parent_resource
-  prop :pagy
-  prop :query
-  prop :actions
 
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern

@@ -1,0 +1,37 @@
+<%= tag.div class: class_names(
+  "header",
+  "header--size-medium": size_medium?,
+  "header--size-small": size_small?
+) do %>
+  <div class="header__main">
+    <div class="header__content">
+      <% if profile_photo? %>
+        <div class="header__avatar"><%= profile_photo %></div>
+      <% end %>
+
+      <div class="header__text">
+        <p class="header__title">
+          <% if @url.present? %>
+            <%= link_to @title, @url, target: @target %>
+          <% else %>
+            <%= @title %>
+          <% end %>
+        </p>
+
+        <%= title_slot %>
+
+        <% if @description.present? %>
+          <p class="header__description"><%= @description %></p>
+        <% end %>
+      </div>
+    </div>
+
+    <% if controls? %>
+      <div class="header__controls"><%= controls %></div>
+    <% end %>
+  </div>
+
+  <% if discreet_information? %>
+    <div class="header__discreet-information"><%= discreet_information %></div>
+  <% end %>
+<% end %>

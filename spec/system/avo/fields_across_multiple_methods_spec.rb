@@ -11,13 +11,13 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     visit "/admin/resources/users/#{user.to_param}"
 
     # Finds heading test field
-    find("[data-panel-index='1'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
+    find("[data-item-index='1'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
 
     # Finds main panel
-    find("[data-panel-id='main'][data-panel-index='0']")
+    find("[data-panel-id='main'][data-item-index='0']")
 
     # Verify that Heading comes before main panel
-    assert_selector(:xpath, "//*[contains(@data-panel-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-panel-id, 'main')][contains(@data-panel-index, '0')]")
+    assert_selector(:xpath, "//*[contains(@data-item-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-panel-id, 'main')][contains(@data-item-index, '0')]")
 
     # Find inside main panel test field
     show_field_wrapper(id: "Inside main panel")
@@ -40,15 +40,16 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     end
 
     # Inside user information panel
-    within('[data-panel-index="3"]') do
+    within('[data-item-index="4"]') do
       # Find inside panel test field
       find("[data-field-id='Inside panel'][data-resource-show-target='inside panelTextWrapper']")
 
       # Inside row component
-      within('[data-component="Avo::RowComponent"]') do
+      within('[data-component-name="avo/row_component"]') do
         find("[data-field-id='Inside panel -> row'][data-resource-show-target='inside panel > rowTextWrapper']")
       end
 
+      # Sidebars were removed from the community tier
       # Find panel test first sidebar
       within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
         # Find inside panel inside sidebar test field
@@ -65,7 +66,7 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     end
 
     # Tabs
-    within("[data-tabs-group-id-value='4']") do
+    within("[data-tabs-group-id-value='first-tabs-group']") do
       within('[data-tabs-target="tabSwitcher"]') do
         expect(page).to have_text("test_tab")
         expect(page).to have_text("Inside tabs")
