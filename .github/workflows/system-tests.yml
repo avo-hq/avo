@@ -7,6 +7,7 @@ on:
       - 1.x
       - 2.x
       - 4-dev
+      - feature/ui4-panel-component
   push:
     branches:
       - main
