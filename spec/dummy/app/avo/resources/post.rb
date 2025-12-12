@@ -55,6 +55,8 @@ class Avo::Resources::Post < Avo::BaseResource
   def fields
     field :id, as: :id
     field :name, required: true, sortable: true
+    header
+    header
     field :created_at, as: :date_time
     field :body,
       as: :trix,
@@ -101,7 +103,7 @@ class Avo::Resources::Post < Avo::BaseResource
         title: record.name,
         body: helpers.extract_excerpt(record.body) + "(Published: #{record.published_at.present? ? "✅" : "❌"})"
       }
-    end,
+    end
     # html: -> do
     #   {
     #     title: {

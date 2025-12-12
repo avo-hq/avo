@@ -50,6 +50,7 @@ module Avo
       delegate :heading, to: :items_holder
       delegate :sidebar, to: :items_holder
       delegate :main_panel, to: :items_holder
+      delegate :header, to: :items_holder
       delegate :collaboration_timeline, to: :items_holder
 
       def items_holder
@@ -286,7 +287,8 @@ module Avo
             next true if item.is_a?(Avo::Resources::Items::TabGroup) ||
               item.is_a?(Avo::Resources::Items::Tab) ||
               item.is_heading? ||
-              item.is_a?(Avo::Fields::LocationField)
+              item.is_a?(Avo::Fields::LocationField) ||
+              item.is_header?
 
             # Skip nested fields
             next true if item.try(:nested_on?, view)

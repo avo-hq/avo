@@ -22,6 +22,10 @@ module Avo
         self.class.ancestors.include?(Avo::Resources::Items::MainPanel)
       end
 
+      def is_header?
+        self.class.ancestors.include?(Avo::Resources::Items::Header)
+      end
+
       def is_tool?
         self.class.ancestors.include?(Avo::BaseResourceTool)
       end
