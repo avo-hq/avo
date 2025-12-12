@@ -42,6 +42,7 @@ module Avo
 
       delegate :field, to: :items_holder
       delegate :panel, to: :items_holder
+      delegate :card, to: :items_holder
       delegate :row, to: :items_holder
       delegate :cluster, to: :items_holder
       delegate :tabs, to: :items_holder
@@ -108,6 +109,10 @@ module Avo
 
             # Dive into sidebar to fetch their fields
             if item.is_sidebar?
+              fields << extract_fields(item)
+            end
+
+            if item.is_card?
               fields << extract_fields(item)
             end
           end
@@ -207,16 +212,28 @@ module Avo
           # Slice when the item type changes from standalone to panel or vice-versa
           is_standalone?(prev) != is_standalone?(curr)
         end.to_a.map do |group|
-          { elements: group, is_standalone: is_standalone?(group.first) }
+          {elements: group, is_standalone: is_standalone?(group.first)}
         end
 
         # Creates a main panel if it's missing and adds first standalone group of items if present
         if items.none? { |item| item.is_main_panel? }
           if (standalone_group = grouped_items.find { |group| group[:is_standalone] }).present?
+            # Create a main panel
             calculated_main_panel = Avo::Resources::Items::MainPanel.new
             hydrate_item calculated_main_panel
-            calculated_main_panel.items_holder.items = standalone_group[:elements]
-            grouped_items[grouped_items.index standalone_group] = { elements: [calculated_main_panel], is_standalone: false }
+
+            # Create a card
+            card = Avo::Resources::Items::Card.new
+            hydrate_item card
+
+            # Add the items to the card
+            card.items_holder.items = standalone_group[:elements]
+
+            # Add the card to the main panel
+            calculated_main_panel.items_holder.items = [card]
+
+            # Add the main panel to the grouped items
+            grouped_items[grouped_items.index standalone_group] = {elements: [calculated_main_panel], is_standalone: false}
           end
         end
 
@@ -332,7 +349,7 @@ module Avo
       # Extractable structures are panels, rows and sidebars
       # Sidebars are only extractable if they are not on the index view
       def extractable_structure?(structure)
-        structure.is_panel? || structure.is_row? || (structure.is_sidebar? && !view.index?)
+        structure.is_panel? || structure.is_row? || structure.is_card? || (structure.is_sidebar? && !view.index?)
       end
 
       # Standalone items are fields that don't have their own panel

@@ -4,7 +4,6 @@
 // Possibly have much more logic that it uses, but it's not worth the effort to refactor it since we're going to replace it with a new searchable fields way
 
 /* eslint-disable no-underscore-dangle */
-import * as Mousetrap from 'mousetrap'
 import { Controller } from '@hotwired/stimulus'
 import { Turbo } from '@hotwired/turbo-rails'
 import { autocomplete } from '@algolia/autocomplete-js'

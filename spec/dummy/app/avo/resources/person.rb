@@ -12,9 +12,9 @@ class Avo::Resources::Person < Avo::BaseResource
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :type, as: ::Pluggy::Fields::RadioField, name: "Type", options: {Spouse: "Spouse", Sibling: "Sibling"}, include_blank: true, filterable: true
     field :link, as: :text, as_html: true
-    field :spouses, as: :has_many, hide_search_input: true
     field :person, as: :belongs_to
     field :another_person, as: :belongs_to, link_to_child_resource: true
+    field :spouses, as: :has_many, hide_search_input: true
     field :relatives,
       as: :has_many,
       hide_search_input: true,
@@ -28,37 +28,36 @@ class Avo::Resources::Person < Avo::BaseResource
     tabs do
       tab "Employment" do
         panel do
-          field :job_title, as: :heading do
-            "Software Engineer"
+          card title: "Software Engineer" do
+            cluster do
+              field :company, stacked: true do
+                "TechCorp Inc."
+              end
+              field :department, stacked: true do
+                "Research & Development"
+              end
+            end
+
+            field :years_of_experience do
+              "7 Years"
+            end
           end
 
-          cluster do
-            field :company, stacked: true do
-              "TechCorp Inc."
-            end
-            field :department, stacked: true do
-              "Research & Development"
+          sidebar do
+            card title: "Employee info" do
+              field :employee_id do
+                "EMP123456"
+              end
+              field :supervisor do
+                "Jane Smith"
+              end
             end
           end
-
-          field :years_of_experience do
-            "7 Years"
-          end
-
-          # sidebar do
-            field :employee_id do
-              "EMP123456"
-            end
-            field :supervisor do
-              "Jane Smith"
-            end
-          # end
         end
       end
 
       tab "Address", lazy_load: true do
-        panel do
-          field :address, as: :heading
+        panel(title: "Address") do
           row divider: true do
             field :street_address, stacked: true do
               "1234 Elm Street"
@@ -72,14 +71,16 @@ class Avo::Resources::Person < Avo::BaseResource
             "California"
           end
 
-          # sidebar do
-            field :phone_number do
-              "+1 (555) 123-4567"
+          sidebar do
+            card do
+              field :phone_number do
+                "+1 (555) 123-4567"
+              end
+              field :zip_code do
+                "90001"
+              end
             end
-            field :zip_code do
-              "90001"
-            end
-          # end
+          end
         end
       end
 
@@ -97,11 +98,13 @@ class Avo::Resources::Person < Avo::BaseResource
             "Email & SMS"
           end
 
-          # sidebar do
-            field :timezone do
-              "Pacific Time (PST)"
+          sidebar do
+            card do
+              field :timezone do
+                "Pacific Time (PST)"
+              end
             end
-          # end
+          end
         end
       end
     end

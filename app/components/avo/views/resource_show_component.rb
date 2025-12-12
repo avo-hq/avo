@@ -3,8 +3,6 @@
 class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
 
-  attr_reader :display_breadcrumbs
-
   prop :resource
   prop :reflection
   prop :parent_resource
@@ -14,7 +12,6 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def after_initialize
     @view = Avo::ViewInquirer.new("show")
-    @display_breadcrumbs = @reflection.blank?
   end
 
   def title

@@ -9,6 +9,7 @@
   } do %>
   <%= content_tag :div, class: 'space-y-12' do %>
     <%= render_cards_component %>
+
     <% @resource.get_items.each_with_index do |item, index| %>
       <%= render Avo::Items::SwitcherComponent.new(
         resource: @resource,
@@ -23,6 +24,7 @@
       ) %>
     <% end %>
   <% end %>
+
   <% if should_display_invalid_fields_errors? %>
     <turbo-stream action="append" target="alerts">
       <template>

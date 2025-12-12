@@ -9,20 +9,15 @@ class Avo::Resources::Items::Sidebar
 
   delegate :items, :add_item, to: :items_holder
 
-  attr_reader :name
+  attr_reader :title
 
-  def initialize(name: nil, view: nil, **args)
-    @name = name
+  def initialize(title: nil, view: nil, **args)
+    @title = title
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
-    @panel_wrapper = args[:panel_wrapper].nil? ? true : args[:panel_wrapper]
     @args = args
 
     post_initialize if respond_to?(:post_initialize)
-  end
-
-  def panel_wrapper?
-    @panel_wrapper
   end
 
   class Builder
@@ -33,8 +28,11 @@ class Avo::Resources::Items::Sidebar
     delegate :tool, to: :items_holder
     delegate :items, to: :items_holder
     delegate :heading, to: :items_holder
+    delegate :card, to: :items_holder
 
-    def initialize(parent: , name: nil, **args)
+    # TODO: since we retired the panel_wrapper we probably don't need to automatically wrap everything in another sidebar.
+    # I'll let Paul refactor this (AVO-900)
+    def initialize(parent:, **args)
       @sidebar = Avo::Resources::Items::Sidebar.new(**args)
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent)
     end

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.feature "FullWidthContainer", type: :feature do
   let(:user) { create :user }
-  let(:contained_classes) { "justify-between items-stretch 2xl:container 2xl:mx-auto" }
+  let(:contained_classes) { "2xl:container 2xl:mx-auto" }
   let(:is_contained) { is_expected.to include contained_classes }
   let(:is_not_contained) { is_expected.not_to include contained_classes }
   subject do

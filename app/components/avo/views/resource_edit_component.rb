@@ -8,11 +8,6 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   prop :record
   prop :actions, default: [].freeze
   prop :view, default: Avo::ViewInquirer.new(:edit).freeze
-  prop :display_breadcrumbs, default: true, reader: :public
-
-  def after_initialize
-    @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
-  end
 
   def title
     @resource.default_panel_name

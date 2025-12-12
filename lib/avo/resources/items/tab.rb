@@ -12,8 +12,8 @@ class Avo::Resources::Items::Tab
   attr_accessor :description
   attr_reader :lazy_load
 
-  def initialize(name: nil, description: nil, view: nil, **args)
-    @name = name
+  def initialize(title: nil, description: nil, view: nil, **args)
+    @title = title
     @description = description
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
@@ -24,17 +24,17 @@ class Avo::Resources::Items::Tab
     post_initialize if respond_to?(:post_initialize)
   end
 
-  def name
-    Avo::ExecutionContext.new(target: @name).handle
+  def title
+    Avo::ExecutionContext.new(target: @title).handle
   end
 
   def id
-    name.to_s.parameterize
+    title.to_s.parameterize
   end
   alias_method :to_param, :id
 
   def turbo_frame_id(parent: nil)
-    digest_name = Digest::MD5.hexdigest(name)
+    digest_name = Digest::MD5.hexdigest(title)
     id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{digest_name}".parameterize
     return id if parent.nil?
 
@@ -49,8 +49,8 @@ class Avo::Resources::Items::Tab
     delegate :panel, to: :items_holder
     delegate :items, to: :items_holder
 
-    def initialize(parent:, name: nil, **args)
-      @tab = Avo::Resources::Items::Tab.new(name: name, **args)
+    def initialize(parent:, title: nil, **args)
+      @tab = Avo::Resources::Items::Tab.new(title: title, **args)
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent)
     end
 

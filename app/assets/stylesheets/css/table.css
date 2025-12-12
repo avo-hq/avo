@@ -1,0 +1,40 @@
+/* The dance we need to do to be able to have rounded corners on an HTML table */
+[data-component-name="avo/index/table_row_component"] {
+  @apply rounded-tl-lg;
+
+  &:first-child {
+    & > td:first-child {
+      @apply rounded-tl-lg border-l;
+    }
+  }
+  &:first-child {
+    & > td:last-child {
+      @apply rounded-tr-lg border-r;
+    }
+  }
+
+  &:last-child {
+    & > td {
+      @apply border-b;
+    }
+
+    & > td:first-child {
+      @apply rounded-bl-lg border-l;
+    }
+    & > td:last-child {
+      @apply rounded-br-lg border-r;
+    }
+    @apply border-t border-gray-200;
+  }
+
+  & > td {
+    @apply border-t border-gray-200;
+
+    &:first-child {
+      @apply border-l;
+    }
+    &:last-child {
+      @apply border-r border-t;
+    }
+  }
+}

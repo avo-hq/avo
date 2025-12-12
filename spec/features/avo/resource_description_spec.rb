@@ -5,7 +5,7 @@ RSpec.describe "resource panel description", type: :feature do
 
   subject do
     visit url
-    find_all("[data-target='description']").first
+    find_all("[data-component-name='avo/ui/panel_component'] .header__description").first
   end
 
   describe "without description" do

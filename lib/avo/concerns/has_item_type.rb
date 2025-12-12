@@ -14,6 +14,10 @@ module Avo
         self.class.ancestors.include?(Avo::Resources::Items::Panel)
       end
 
+      def is_card?
+        self.class.ancestors.include?(Avo::Resources::Items::Card)
+      end
+
       def is_main_panel?
         self.class.ancestors.include?(Avo::Resources::Items::MainPanel)
       end
