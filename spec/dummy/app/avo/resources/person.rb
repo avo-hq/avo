@@ -28,21 +28,19 @@ class Avo::Resources::Person < Avo::BaseResource
     tabs do
       tab "Employment" do
         panel do
-          field :job_title, as: :heading do
-            "Software Engineer"
-          end
-
-          cluster do
-            field :company, stacked: true do
-              "TechCorp Inc."
+          card title: "Software Engineer" do
+            cluster do
+              field :company, stacked: true do
+                "TechCorp Inc."
+              end
+              field :department, stacked: true do
+                "Research & Development"
+              end
             end
-            field :department, stacked: true do
-              "Research & Development"
-            end
-          end
 
-          field :years_of_experience do
-            "7 Years"
+            field :years_of_experience do
+              "7 Years"
+            end
           end
 
           sidebar do

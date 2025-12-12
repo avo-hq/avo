@@ -218,9 +218,21 @@ module Avo
         # Creates a main panel if it's missing and adds first standalone group of items if present
         if items.none? { |item| item.is_main_panel? }
           if (standalone_group = grouped_items.find { |group| group[:is_standalone] }).present?
+            # Create a main panel
             calculated_main_panel = Avo::Resources::Items::MainPanel.new
             hydrate_item calculated_main_panel
-            calculated_main_panel.items_holder.items = standalone_group[:elements]
+
+            # Create a card
+            card = Avo::Resources::Items::Card.new
+            hydrate_item card
+
+            # Add the items to the card
+            card.items_holder.items = standalone_group[:elements]
+
+            # Add the card to the main panel
+            calculated_main_panel.items_holder.items = [card]
+
+            # Add the main panel to the grouped items
             grouped_items[grouped_items.index standalone_group] = {elements: [calculated_main_panel], is_standalone: false}
           end
         end
