@@ -93,13 +93,15 @@ class Avo::Resources::Items::Holder
   end
 
   def sidebar(**args, &block)
-    return if Rails.env.production?
+    check_sidebar_is_inside_a_panel
 
-    Avo.error_manager.add({
-      url: "https://docs.avohq.io/3.0/resource-sidebar.html",
-      target: "_blank",
-      message: "The sidebar is available exclusively with the Pro license or above. Consider upgrading to access this feature."
-    })
+    add_item Avo::Resources::Items::Sidebar::Builder.parse_block(parent: @parent, **args, &block)
+  end
+
+  def check_sidebar_is_inside_a_panel
+    unless @from.eql?(Avo::Resources::Items::Panel::Builder) || @from.eql?(Avo::Resources::Items::MainPanel::Builder)
+      raise "The sidebar must be inside a panel."
+    end
   end
 
   def add_item(instance)

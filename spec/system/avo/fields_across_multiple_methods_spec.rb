@@ -25,18 +25,18 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     # Inside main panel
     within('[data-panel-id="main"]') do
       # Find first test sidebar
-      # within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
-      expect(page).to have_content("Sidebar tool")
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
+        expect(page).to have_content("Sidebar tool")
 
-      # Find inside sidebar test field
-      find("[data-field-id='Inside test_sidebar'][data-resource-show-target='inside testSidebarTextWrapper']")
-      # end
+        # Find inside sidebar test field
+        find("[data-field-id='Inside test_sidebar'][data-resource-show-target='inside testSidebarTextWrapper']")
+      end
 
       # Find user sidebar
-      # within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
-      # Find inside main panel sidebar test field
-      find("[data-field-id='Inside main_panel_sidebar'][data-resource-show-target='inside mainPanelSidebarTextWrapper']")
-      # end
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
+        # Find inside main panel sidebar test field
+        find("[data-field-id='Inside main_panel_sidebar'][data-resource-show-target='inside mainPanelSidebarTextWrapper']")
+      end
     end
 
     # Inside user information panel
@@ -51,18 +51,18 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
 
       # Sidebars were removed from the community tier
       # Find panel test first sidebar
-      # within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
-      # Find inside panel inside sidebar test field
-      # find("[data-field-id='Inside panel -> sidebar'][data-resource-show-target='inside panel > sidebarTextWrapper']")
-      # end
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
+        # Find inside panel inside sidebar test field
+        find("[data-field-id='Inside panel -> sidebar'][data-resource-show-target='inside panel > sidebarTextWrapper']")
+      end
 
       # Find panel test second sidebar
-      # within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
-      # Find inside panel inside second sidebar test field
-      # find("[data-field-id='Inside panel -> sidebar 2'][data-resource-show-target='inside panel > sidebar 2TextWrapper']")
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
+        # Find inside panel inside second sidebar test field
+        find("[data-field-id='Inside panel -> sidebar 2'][data-resource-show-target='inside panel > sidebar 2TextWrapper']")
 
-      # expect(page).to have_text("🪧 This sidebar partial is waiting to be updated")
-      # end
+        expect(page).to have_text("🪧 This sidebar partial is waiting to be updated")
+      end
     end
 
     # Tabs

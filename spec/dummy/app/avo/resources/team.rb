@@ -61,15 +61,17 @@ class Avo::Resources::Team < Avo::BaseResource
         record.team_members.length
       end
 
-      # sidebar do
-        field :url, as: :text
-        field :created_at, as: :date_time, hide_on: :forms
-        field :logo, as: :external_image do
-          if record&.url
-            "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
+      sidebar do
+        card do
+          field :url, as: :text
+          field :created_at, as: :date_time, hide_on: :forms
+          field :logo, as: :external_image do
+            if record&.url
+              "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
+            end
           end
         end
-      # end
+      end
     end
 
     field :memberships,
