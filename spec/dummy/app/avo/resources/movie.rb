@@ -266,7 +266,7 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
   end
 
   def fields
-    main_panel do
+    panel show_fields_on_index: true do
       field :id, as: :id
       field :name, as: :text
       field :release_date, as: :date

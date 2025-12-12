@@ -41,7 +41,7 @@ class Avo::Resources::User < Avo::BaseResource
   def fields
     test_field("Heading")
 
-    main_panel do
+    panel show_fields_on_index: true do
       main_panel_fields
     end
 

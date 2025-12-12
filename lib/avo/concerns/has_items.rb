@@ -89,10 +89,8 @@ module Avo
           next if item.nil?
 
           if only_root
-            # When `item.is_main_panel? == true` then also `item.is_panel? == true`
-            # But when only_root == true we want to extract main_panel items
-            # In all other circumstances items will get extracted when checking for `item.is_panel?`
-            if item.is_main_panel?
+            # When only_root == true we want to extract the computed panel items
+            if item.is_panel? && item.show_fields_on_index?
               fields << extract_fields(item)
             end
           else
@@ -216,19 +214,16 @@ module Avo
           {elements: group, is_standalone: is_standalone?(group.first)}
         end
 
-        # Creates a main panel if it's missing and adds first standalone group of items if present
-        if items.none? { |item| item.is_main_panel? }
-          if (standalone_group = grouped_items.find { |group| group[:is_standalone] }).present?
-            calculated_main_panel = Avo::Resources::Items::MainPanel.new
-            hydrate_item calculated_main_panel
-            calculated_main_panel.items_holder.items = standalone_group[:elements]
-            grouped_items[grouped_items.index standalone_group] = {elements: [calculated_main_panel], is_standalone: false}
-          end
+        if items.none? { |item| item.is_header? }
+          header = Avo::Resources::Items::Header.new
+          hydrate_item header
+          grouped_items.unshift({elements: [header], is_standalone: false})
         end
 
         # For each standalone group, wrap items in a panel
-        grouped_items.select { |group| group[:is_standalone] }.each do |group|
-          calculated_panel = Avo::Resources::Items::Panel.new
+        standalone_groups = grouped_items.select { |group| group[:is_standalone] }
+        standalone_groups.each_with_index do |group, index|
+          calculated_panel = Avo::Resources::Items::Panel.new(show_fields_on_index: index == 0)
           calculated_panel.items_holder.items = group[:elements]
           hydrate_item calculated_panel
           group[:elements] = calculated_panel

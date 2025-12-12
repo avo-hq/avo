@@ -9,6 +9,7 @@ class Avo::Resources::Items::ItemGroup
 
   attr_reader :title
   attr_reader :description
+  def show_fields_on_index? = @show_fields_on_index
 
   delegate :items, :add_item, to: :items_holder
 
@@ -19,6 +20,7 @@ class Avo::Resources::Items::ItemGroup
     @items_holder = Avo::Resources::Items::Holder.new
     @args = args
     @visible = args[:visible]
+    @show_fields_on_index = args[:show_fields_on_index]
 
     post_initialize if respond_to?(:post_initialize)
   end

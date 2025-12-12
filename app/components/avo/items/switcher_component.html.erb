@@ -1,4 +1,4 @@
-<% if item.is_panel? || item.is_main_panel? %>
+<% if item.is_panel? %>
   <%= render panel_component %>
 <% elsif item.is_card? %>
   <%= render Avo::UI::CardComponent.new(
