@@ -31,7 +31,8 @@
 <% elsif item.is_header? %>
 <%= render ui.panel_header(
         title: title,
-        description: @resource.description
+        description: @resource.description,
+        index: index,
       ) do |header| %>
         <% header.with_controls do %>
           <% controls.each do |control| %>
