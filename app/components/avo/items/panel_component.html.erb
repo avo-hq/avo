@@ -1,10 +1,8 @@
 <%= render ui.panel(**args) do |panel| %>
   <% if @resource.cover_photo.present? %>
-    <div class="panel__cover-photo">
-      <% panel.with_cover_photo do %>
-        <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
-      <% end %>
-    </div>
+    <% panel.with_cover_photo do %>
+      <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
+    <% end %>
   <% end %>
 
   <% if @is_main_panel && controls.any? %>

@@ -9,8 +9,8 @@ export default class extends Controller {
 
   // get the table or grid component, if both null, get the panel body (for show page for example)
   get parentTarget() {
-    return document.querySelector('[data-component-name="avo/index/resource_table_component"]')
-      || document.querySelector('[data-component-name="avo/index/resource_grid_component"]')
+    return document.querySelector('[data-component-name="avo/view_types/table_component"]')
+      || document.querySelector('[data-component-name="avo/view_types/grid_component"]')
       || document.querySelector('[data-component-name="avo/ui/panel_component"] .panel__body')
   }
 
