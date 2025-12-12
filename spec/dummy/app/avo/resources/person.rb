@@ -12,9 +12,9 @@ class Avo::Resources::Person < Avo::BaseResource
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :type, as: ::Pluggy::Fields::RadioField, name: "Type", options: {Spouse: "Spouse", Sibling: "Sibling"}, include_blank: true, filterable: true
     field :link, as: :text, as_html: true
-    field :spouses, as: :has_many, hide_search_input: true
     field :person, as: :belongs_to
     field :another_person, as: :belongs_to, link_to_child_resource: true
+    field :spouses, as: :has_many, hide_search_input: true
     field :relatives,
       as: :has_many,
       hide_search_input: true,
@@ -44,7 +44,7 @@ class Avo::Resources::Person < Avo::BaseResource
           end
 
           sidebar do
-            card do
+            card title: "Employee info" do
               field :employee_id do
                 "EMP123456"
               end
@@ -57,8 +57,7 @@ class Avo::Resources::Person < Avo::BaseResource
       end
 
       tab "Address", lazy_load: true do
-        panel do
-          field :address, as: :heading
+        panel(title: "Address") do
           row divider: true do
             field :street_address, stacked: true do
               "1234 Elm Street"
