@@ -6,6 +6,6 @@ class Avo::ComponentMissingComponent < ViewComponent::Base
   end
 
   def call
-    "Component #{@component_name} not found in the Cado catalog."
+    "Component #{@component_name} not found in the Avo UI catalog."
   end
 end
