@@ -18,8 +18,10 @@ RSpec.feature "ArrayResource", type: :feature do
 
       first('a[href="/admin/resources/movies/28"]').click
 
-      fun_fact_text = find('div[data-field-id="fun_fact"] [data-slot="value"]').text
-      expect(fun_fact_text).to eq "Ryan Gosling learned to play the piano for his role, mastering several songs within three months."
+      within("div.resource-sidebar-component") do
+        fun_fact_text = find('div[data-field-id="fun_fact"] [data-slot="value"]').text
+        expect(fun_fact_text).to eq "Ryan Gosling learned to play the piano for his role, mastering several songs within three months."
+      end
     end
 
     it "render the attendees index using the def records resource method and navigate to show" do
