@@ -4,6 +4,7 @@
   <%= render Avo::UI::CardComponent.new(
     title: item.title,
     description: item.description,
+    index:
   ) do |card| %>
     <% card.with_body do %>
       <%= render ui.description_list do %>

@@ -8,6 +8,7 @@ class Avo::UI::CardComponent < Avo::BaseComponent
   prop :variant, default: -> { :default }
   prop :options, kind: :**
   prop :data, default: -> { {}.freeze }
+  prop :index
 
   renders_one :header
   renders_one :body

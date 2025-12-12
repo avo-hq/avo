@@ -5,7 +5,7 @@
   class: class_names("group hover:bg-gray-50 z-21", {"cursor-pointer": click_row_to_view_record}),
   data: {
     index: @index,
-    component_name: self.class.to_s.underscore,
+    component_name:,
     resource_name: @resource.class.to_s,
     record_id: @resource.record_param,
     **(click_row_to_view_record ? {

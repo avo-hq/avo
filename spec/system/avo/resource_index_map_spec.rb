@@ -15,7 +15,7 @@ RSpec.describe "Resource index map", type: :system do
     let!(:city) { create :city, latitude: 48.8584, longitude: 2.2945 }
 
     before do
-      allow_any_instance_of(Avo::Index::ResourceMapComponent)
+      allow_any_instance_of(Avo::ViewTypes::MapComponent)
         .to(receive(:js_map).and_return("resource_index_map_content_here"))
     end
 
