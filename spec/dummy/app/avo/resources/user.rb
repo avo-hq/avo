@@ -155,35 +155,37 @@ class Avo::Resources::User < Avo::BaseResource
 
   def main_panel_sidebar
     sidebar do
-      field :some_token, only_on: :show
-      test_field("Inside main_panel_sidebar")
-      with_options only_on: :show do
-        field :email, as: :gravatar, link_to_record: true
-        field :heading, as: :heading, label: ""
-        field :active, as: :boolean, name: "Is active"
-      end
-      field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
-      field :birthday,
-        as: :date,
-        first_day_of_week: 1,
-        picker_format: "F J Y",
-        format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
-        placeholder: "Feb 24th 1955",
-        required: true,
-        filterable: true,
-        only_on: [:show]
-      field :is_writer, as: :text,
-        hide_on: :edit do
-          raise "This should not execute on Index" if view.index?
-
-          (record.posts.to_a.size > 0) ? "yes" : "no"
+      card do
+        field :some_token, only_on: :show
+        test_field("Inside main_panel_sidebar")
+        with_options only_on: :show do
+          field :email, as: :gravatar, link_to_record: true
+          field :heading, as: :heading, label: ""
+          field :active, as: :boolean, name: "Is active"
         end
-      field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do
-        main_app.hey_url
-      end
-      with_options only_on: :forms do
-        field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
-        field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+        field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
+        field :birthday,
+          as: :date,
+          first_day_of_week: 1,
+          picker_format: "F J Y",
+          format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
+          placeholder: "Feb 24th 1955",
+          required: true,
+          filterable: true,
+          only_on: [:show]
+        field :is_writer, as: :text,
+          hide_on: :edit do
+            raise "This should not execute on Index" if view.index?
+
+            (record.posts.to_a.size > 0) ? "yes" : "no"
+          end
+        field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do
+          main_app.hey_url
+        end
+        with_options only_on: :forms do
+          field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+          field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+        end
       end
     end
   end
@@ -213,18 +215,22 @@ class Avo::Resources::User < Avo::BaseResource
     return unless ENV["testing_methods"]
 
     sidebar do
-      field :sidebar_test, as: :text do
-        ";)"
+      card do
+        field :sidebar_test, as: :text do
+          ";)"
+        end
+        test_field("Inside panel -> sidebar")
       end
-      test_field("Inside panel -> sidebar")
     end
 
     sidebar do
-      field :sidebar_test_2, as: :text do
-        "another ;)"
+      card do
+        field :sidebar_test_2, as: :text do
+          "another ;)"
+        end
+        test_field("Inside panel -> sidebar 2")
+        tool Avo::ResourceTools::SidebarTool
       end
-      test_field("Inside panel -> sidebar 2")
-      tool Avo::ResourceTools::SidebarTool
     end
   end
 

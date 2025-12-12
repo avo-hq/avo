@@ -46,11 +46,13 @@ class Avo::Resources::Person < Avo::BaseResource
           end
 
           sidebar do
-            field :employee_id do
-              "EMP123456"
-            end
-            field :supervisor do
-              "Jane Smith"
+            card do
+              field :employee_id do
+                "EMP123456"
+              end
+              field :supervisor do
+                "Jane Smith"
+              end
             end
           end
         end
@@ -73,11 +75,13 @@ class Avo::Resources::Person < Avo::BaseResource
           end
 
           sidebar do
-            field :phone_number do
-              "+1 (555) 123-4567"
-            end
-            field :zip_code do
-              "90001"
+            card do
+              field :phone_number do
+                "+1 (555) 123-4567"
+              end
+              field :zip_code do
+                "90001"
+              end
             end
           end
         end
@@ -98,8 +102,10 @@ class Avo::Resources::Person < Avo::BaseResource
           end
 
           sidebar do
-            field :timezone do
-              "Pacific Time (PST)"
+            card do
+              field :timezone do
+                "Pacific Time (PST)"
+              end
             end
           end
         end

@@ -275,8 +275,10 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
       end
 
       sidebar do
-        field :fun_fact, as: :text do
-          record.fun_fact || "There is no register of a fun fact for #{record.name}"
+        card do
+          field :fun_fact, as: :text do
+            record.fun_fact || "There is no register of a fun fact for #{record.name}"
+          end
         end
       end
     end

@@ -11,20 +11,22 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
         discover_associations only: %i[cv_attachment]
 
         sidebar do
-          with_options only_on: :show do
-            discover_columns only: %i[email], as: :gravatar, link_to_record: true
-            field :heading, as: :heading, label: ""
-            discover_columns only: %i[active], name: "Is active"
-          end
+          card do
+            with_options only_on: :show do
+              discover_columns only: %i[email], as: :gravatar, link_to_record: true
+              field :heading, as: :heading, label: ""
+              discover_columns only: %i[active], name: "Is active"
+            end
 
-          discover_columns only: %i[birthday]
+            discover_columns only: %i[birthday]
 
-          field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-          field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
+            field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
+            field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
 
-          with_options only_on: :forms do
-            field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
-            discover_columns only: %i[custom_css]
+            with_options only_on: :forms do
+              field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+              discover_columns only: %i[custom_css]
+            end
           end
         end
       end

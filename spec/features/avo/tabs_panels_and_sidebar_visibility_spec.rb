@@ -12,9 +12,11 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
         field :name, as: :text
 
         sidebar do
-          field :hidden_field_inside_sidebar, as: :text, visible: -> {
-            resource.record.name == "RSpec TabsPanelAndSidebarVisibility"
-          }
+          card do
+            field :hidden_field_inside_sidebar, as: :text, visible: -> {
+              resource.record.name == "RSpec TabsPanelAndSidebarVisibility"
+            }
+          end
         end
       end
 
