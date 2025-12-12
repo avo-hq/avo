@@ -1,6 +1,6 @@
 <turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative w-full">
   <div
-    class="mac-styled-scrollbar card relative w-full overflow-auto"
+    class="card relative w-full"
     data-component-name="<%= self.class.to_s.underscore %>"
     data-controller="item-select-all"
     data-resource-name="<%= @resource.model_key %>"
@@ -10,7 +10,7 @@
     data-selected-resources-name="<%= @resource.model_key %>"
     data-selected-resources="[]"
   >
-    <div class="card__wrapper">
+    <div class="card__wrapper mac-styled-scrollbar overflow-auto">
       <% if @pagy.pages > 1 %>
         <div
           class="absolute z-30 ml-10 hidden w-[calc(100%-2.5rem)] pt-px"
