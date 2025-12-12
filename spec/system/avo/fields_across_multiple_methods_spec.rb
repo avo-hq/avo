@@ -53,15 +53,15 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
       # Find panel test first sidebar
       # within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
       # Find inside panel inside sidebar test field
-      # find("[data-field-id='Inside panel -> sidebar'][data-resource-show-target='inside panel > sidebarTextWrapper']")
+      find("[data-field-id='Inside panel -> sidebar'][data-resource-show-target='inside panel > sidebarTextWrapper']")
       # end
 
       # Find panel test second sidebar
       # within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
       # Find inside panel inside second sidebar test field
-      # find("[data-field-id='Inside panel -> sidebar 2'][data-resource-show-target='inside panel > sidebar 2TextWrapper']")
+      find("[data-field-id='Inside panel -> sidebar 2'][data-resource-show-target='inside panel > sidebar 2TextWrapper']")
 
-      # expect(page).to have_text("🪧 This sidebar partial is waiting to be updated")
+      expect(page).to have_text("🪧 This sidebar partial is waiting to be updated")
       # end
     end
 
