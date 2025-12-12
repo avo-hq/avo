@@ -111,6 +111,10 @@ module Avo
             if item.is_sidebar?
               fields << extract_fields(item)
             end
+
+            if item.is_card?
+              fields << extract_fields(item)
+            end
           end
 
           if item.is_field?
@@ -333,7 +337,7 @@ module Avo
       # Extractable structures are panels, rows and sidebars
       # Sidebars are only extractable if they are not on the index view
       def extractable_structure?(structure)
-        structure.is_panel? || structure.is_row? || (structure.is_sidebar? && !view.index?)
+        structure.is_panel? || structure.is_row? || structure.is_card? || (structure.is_sidebar? && !view.index?)
       end
 
       # Standalone items are fields that don't have their own panel
