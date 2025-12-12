@@ -8,6 +8,7 @@ class Avo::UI::PanelHeaderComponent < Avo::BaseComponent
   prop :target
 
   renders_one :title_slot
+  renders_one :avatar
   renders_one :profile_photo
   renders_one :controls
   renders_one :discreet_information

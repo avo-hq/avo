@@ -18,6 +18,8 @@
 
     <% if body? %>
       <div class="card__body"><%= body %></div>
+    <% elsif content? %>
+      <div class="card__body"><%= content %></div>
     <% end %>
 
     <% if footer? %>

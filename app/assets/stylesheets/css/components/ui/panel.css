@@ -14,6 +14,7 @@
   @apply flex flex-col md:flex-row gap-4;
 }
 
+.panel__card,
 .panel__body {
   @apply w-full;
 }

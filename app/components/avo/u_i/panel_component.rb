@@ -16,6 +16,7 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   renders_one :cover_photo
   renders_one :sidebar
   renders_one :body
+  renders_one :card, "Avo::UI::CardComponent" # wraps content into a card automatically
   renders_one :footer
 
   def has_cover_photo?

@@ -7,13 +7,9 @@
     </div>
   <% end %>
 
-  <% panel.with_body do %>
-    <%= render ui.card do |card| %>
-      <% card.with_body do %>
-        <%= render ui.description_list do %>
-          <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, parent_component: @parent_component %>
-        <% end %>
-      <% end %>
+  <% panel.with_card do %>
+    <%= render ui.description_list do %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
     <% end %>
   <% end %>
 

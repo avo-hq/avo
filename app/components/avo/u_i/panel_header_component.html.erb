@@ -7,6 +7,8 @@
     <div class="header__content">
       <% if profile_photo? %>
         <div class="header__avatar"><%= profile_photo %></div>
+      <% elsif avatar? %>
+        <div class="header__avatar"><%= avatar %></div>
       <% end %>
 
       <div class="header__text">

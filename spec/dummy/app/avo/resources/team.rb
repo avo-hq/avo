@@ -62,7 +62,7 @@ class Avo::Resources::Team < Avo::BaseResource
       end
 
       sidebar do
-        card do
+        card title: "Other information" do
           field :url, as: :text
           field :created_at, as: :date_time, hide_on: :forms
           field :logo, as: :external_image do
