@@ -201,7 +201,7 @@ module Avo
     end
 
     def close_picker
-      find('[data-target="title"]').trigger("click")
+      find(".header__title").trigger("click")
       sleep 0.3
     end
 

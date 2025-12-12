@@ -66,7 +66,7 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     end
 
     # Tabs
-    within("[data-tabs-group-id-value='5']") do
+    within("[data-tabs-group-id-value='first-tabs-group']") do
       within('[data-tabs-target="tabSwitcher"]') do
         expect(page).to have_text("test_tab")
         expect(page).to have_text("Inside tabs")

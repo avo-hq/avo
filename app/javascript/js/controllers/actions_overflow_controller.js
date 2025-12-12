@@ -11,7 +11,7 @@ export default class extends Controller {
   get parentTarget() {
     return document.querySelector('[data-component-name="avo/index/resource_table_component"]')
       || document.querySelector('[data-component-name="avo/index/resource_grid_component"]')
-      || document.querySelector('[data-target="panel-body"]')
+      || document.querySelector('[data-component-name="avo/ui/panel_component"] .panel__body')
   }
 
   childDimensions = null
