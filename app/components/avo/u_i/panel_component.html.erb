@@ -36,7 +36,11 @@
 
   <div class="panel__content">
     <div class="panel__body">
-      <%= body %>
+      <% if card? %>
+        <div class="panel__card"><%= card %></div>
+      <% else %>
+        <%= body %>
+      <% end %>
 
       <% if footer? %>
         <div class="panel__footer"><%= footer %></div>
