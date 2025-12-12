@@ -1,7 +1,12 @@
-<div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-2xl space-y-2 sm:space-y-0">
+<div
+  class="
+    aborder-t aborder-slate-200 flex flex-col items-center justify-between space-y-2 rounded-2xl sm:flex-row
+    sm:space-y-0
+  "
+>
   <div class="flex-2 sm:flex sm:items-center sm:justify-between">
     <div>
-      <div class="text-sm leading-5 text-slate-600 flex items-center">
+      <div class="flex items-center text-sm leading-5 text-slate-600">
         <div data-controller="per-page">
           <div class="flex items-center">
             <%= content_tag :label, name: t('avo.per_page').downcase do %>
@@ -12,10 +17,12 @@
                   'turbo-frame': @turbo_frame,
                   'per-page-target': 'selector',
                   action: 'change->per-page#reload'
-                }
-              %> <%= t('avo.per_page').downcase %>
+                } %>
+
+              <%= t('avo.per_page').downcase %>
             <% end %>
           </div>
+
           <% per_page_options.each do |option| %>
             <%= link_to "Change to #{option} items per page", change_items_per_page_url(option), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': @turbo_frame %>
           <% end %>
@@ -23,10 +30,11 @@
       </div>
     </div>
   </div>
+
   <div class="flex">
-    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= helpers.pagy_major_version %>">
+    <div class="flex-2 space-y-2 text-center sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:text-left <%= "pagy-gem-version-#{helpers.pagy_major_version}" %>">
       <% if @resource.pagination_type.default? %>
-        <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
+        <div class="mr-4 text-sm text-slate-600"><%== helpers.pagy_info @pagy %></div>
       <% end %>
 
       <% if @pagy.pages > 1 %>
