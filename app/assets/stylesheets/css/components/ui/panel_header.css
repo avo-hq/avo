@@ -1,6 +1,4 @@
 .header {
-  /* background-color: green; */
-
   @apply flex flex-col gap-2 items-start justify-center pr-0 py-0;
 }
 
@@ -52,6 +50,3 @@
 .header--size-small {
   /* Small variant uses same structure but can have different spacing if needed */
 }
-
-/* test */
-/* test change */

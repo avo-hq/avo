@@ -55,7 +55,7 @@
     </div>
 
     <div class="mt-4 flex w-full flex-1">
-      <div class="pagy-gem-version- w-full flex-2 space-y-2 text-center sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:text-left <%= helpers.pagy_major_version %>">
+      <div class="w-full flex-2 space-y-2 text-center sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:text-left <%= "pagy-gem-version-#{helpers.pagy_major_version}" %>">
         <div class="mr-4 text-sm text-slate-600"><%== helpers.pagy_info @pagy %></div>
 
         <% if @pagy.pages > 1 %>
