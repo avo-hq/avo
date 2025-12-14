@@ -87,7 +87,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   # Build Stimulus data attributes for tab buttons
   def tab_button_data_attributes(tab)
     {
-      action: "click->tabs#changeTab",
+      action: "click->tabs#changeTab keydown->tabs#handleKeyDown blur->tabs#handleBlur mousedown->tabs#handleMouseDown",
       tabs_tab_name_param: tab.name,
       tabs_group_id_param: group.to_param,
       tabs_resource_name_param: resource.underscore_name,

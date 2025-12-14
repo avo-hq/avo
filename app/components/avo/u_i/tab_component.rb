@@ -42,7 +42,7 @@ module Avo
           "aria-selected": @active,
           "aria-controls": tab_aria_controls,
           "aria-disabled": @disabled,
-          tabindex: (@active && !@disabled) ? 0 : -1
+          tabindex: @disabled ? -1 : 0
         }
       end
 
