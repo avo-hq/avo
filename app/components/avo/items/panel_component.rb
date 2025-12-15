@@ -21,24 +21,23 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
     :edit_path,
     :can_see_the_destroy_button?,
     :can_see_the_save_button?,
-    :display_breadcrumbs,
     to: :@parent_component
 
   def args
     if @is_main_panel
       {
-        name: title,
+        title: title,
         description: @resource.description,
-        display_breadcrumbs: display_breadcrumbs,
         index: 0,
         data: {panel_id: "main"},
-        cover_photo: @resource.cover_photo,
         profile_photo: @resource.profile_photo,
-        external_link: @resource.get_external_link,
-        discreet_information: @resource.discreet_information
       }
     else
-      {name: @item.name, description: @item.description, index: @index}
+      {
+        title: @item.title,
+        description: @item.description,
+        index: @index
+      }
     end
   end
 end

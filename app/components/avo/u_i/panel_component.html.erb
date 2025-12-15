@@ -1,0 +1,54 @@
+<%= tag.div class: class_names(
+  "panel",
+  @class,
+  "panel--has-sidebar": sidebar?,
+  "has-cover-photo": has_cover_photo?,
+  "has-profile-photo": has_profile_photo?
+), data: {
+  **@data,
+  component_name:,
+  "item-index": @index
+} do %>
+  <% if cover_photo? %>
+    <div class="panel__cover-photo"><%= cover_photo %></div>
+  <% end %>
+
+  <% if header? %>
+    <div class="panel__header"><%= header %></div>
+  <% else %>
+    <div class="panel__header">
+      <%= render ui.panel_header(
+        title:,
+        description:,
+      ) do |header| %>
+        <% if controls? %>
+          <% header.with_controls do %>
+            <%= controls %>
+          <% end %>
+        <% end %>
+
+        <% header.with_profile_photo do %>
+          <%= render Avo::ProfilePhotoComponent.new profile_photo: @profile_photo %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="panel__content">
+    <div class="panel__body">
+      <% if card? %>
+        <div class="panel__card"><%= card %></div>
+      <% else %>
+        <%= body %>
+      <% end %>
+
+      <% if footer? %>
+        <div class="panel__footer"><%= footer %></div>
+      <% end %>
+    </div>
+
+    <% if sidebar? %>
+      <div class="panel__sidebar"><%= sidebar %></div>
+    <% end %>
+  </div>
+<% end %>

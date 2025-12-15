@@ -83,7 +83,6 @@ Capybara.default_max_wait_time = 5
 
 require "support/controller_routes"
 require "support/avo_helpers"
-require "support/filter_helpers"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
@@ -92,8 +91,6 @@ RSpec.configure do |config|
   config.include TestHelpers::DisableAuthentication, type: :feature
   config.include TestHelpers::AvoHelpers, type: :feature
   config.include TestHelpers::AvoHelpers, type: :system
-  config.include TestHelpers::FilterHelpers, type: :feature
-  config.include TestHelpers::FilterHelpers, type: :system
   config.include Warden::Test::Helpers
   config.include DownloadHelpers
   config.include ViewComponent::TestHelpers, type: :component
@@ -205,6 +202,10 @@ require "support/js_error_detector"
 require "support/devise"
 require "support/shared_contexts"
 require "support/timezone"
+
+# a11y support
+require "axe-rspec"
+require "support/axe_driver"
 
 # https://github.com/titusfortner/webdrivers/issues/247
 # Webdrivers::Chromedriver.required_version = "114.0.5735.90"

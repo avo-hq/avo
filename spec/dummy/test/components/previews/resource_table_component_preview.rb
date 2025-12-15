@@ -5,7 +5,6 @@ class ResourceTableComponentPreview < Lookbook::Preview
 
   delegate :helpers, to: :view_context
 
-
   def standard
     view = Avo::ViewInquirer.new("index")
     resource_class = Avo::Resources::ResourceManager.build.get_resource_by_name("user")

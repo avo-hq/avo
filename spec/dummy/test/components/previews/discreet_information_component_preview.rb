@@ -93,4 +93,3 @@ class DiscreetInformationComponentPreview < ViewComponent::Preview
     )
   end
 end
-

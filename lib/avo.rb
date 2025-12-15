@@ -35,6 +35,8 @@ module Avo
 
   class DeprecatedAPIError < StandardError; end
 
+  class ViewTypeComponentNotFoundError < StandardError; end
+
   # Exception raised when a resource is missing
   class MissingResourceError < StandardError
     def initialize(model_class, field)

@@ -37,12 +37,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     return authorize_association_for(:create) if @reflection.present?
 
-    @resource.authorization.authorize_action(:new, raise_exception: false) && !has_reflection_and_is_read_only
+    @resource.authorization.authorize_action(:new, raise_exception: false)
   end
 
   def can_attach?
-    return false if has_reflection_and_is_read_only
-
     reflection_class = if @reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
       @reflection.through_reflection.class
     else
@@ -238,7 +236,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       parent_resource: @parent_resource,
       pagy: @pagy,
       query: @query,
-      actions: @actions
+      actions: @actions,
+      turbo_frame: @turbo_frame,
+      index_params: @index_params
     }
   end
 end

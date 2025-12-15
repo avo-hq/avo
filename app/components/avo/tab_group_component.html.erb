@@ -5,28 +5,30 @@
     controller: "tabs",
     tabs_view_value: view,
     tabs_group_id_value: group.id,
-    tabs_active_tab_value: active_tab_name,
+    tabs_active_tab_value: active_tab_title,
     tabs_resource_name_value: resource.underscore_name
   } do %>
 
   <% visible_tabs.each_with_index do |tab, index| %>
     <%= content_tag :div, **args(tab) do %>
-      <%= render Avo::PanelHeaderComponent.new name: group.title, description: group.description %>
-      <div class="border border-gray-200 rounded-lg p-2 -mx-2 -my-2 lg:p-4 lg:-mx-4 lg:-my-3 space-y-4">
+      <%= render ui.panel_header(title: group.title, description: group.description) %>
+
+      <div class="-mx-2 -my-2 space-y-4 rounded-lg border border-gray-200 p-2 lg:-mx-4 lg:-my-3 lg:p-4">
         <%= render Avo::UI::TabsComponent.new(variant: :scope, aria_label: group.title) do |tabs| %>
           <% visible_tabs.each do |tab| %>
             <% tabs.with_item \
-              label: tab.name,
-              active: tab.name == active_tab_name,
+              label: tab.title,
+              active: tab.title == active_tab_title,
               data: tab_button_data_attributes(tab)
             %>
           <% end %>
         <% end %>
+
         <% if !tab.is_empty? %>
           <% if tab.lazy_load && view.display? %>
             <%= turbo_frame_tag tab.turbo_frame_id(parent: @group), **frame_args(tab) do %>
               <% if is_not_loaded?(tab) %>
-                <%= render Avo::LoadingComponent.new(title: tab.name) %>
+                <%= render Avo::LoadingComponent.new(title: tab.title) %>
               <% else %>
                 <%= render Avo::TabContentComponent.new tab:, resource:, index:, form:, view: %>
               <% end %>

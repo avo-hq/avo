@@ -3,6 +3,18 @@ module Avo
     include ::Pagy::Frontend
     include Avo::ResourcesHelper
 
+    def ui = Avo::UIInstance
+
+    # TODO: refactor this to use the breadcrumbs helper
+    # Ideally it should be added to any
+    def render_breadcrumbs(items: [])
+      render Avo::BreadcrumbsComponent.new(items: [
+        {text: "Home", url: "https://example.com/home"},
+        {text: "Users", url: "/users"},
+        {text: "User", current: true}
+      ])
+    end
+
     def render_license_warning(title: "", message: "", icon: "exclamation")
       render partial: "avo/sidebar/license_warning", locals: {
         title: title,
@@ -71,14 +83,6 @@ module Avo
       classes += " #{extra_classes}"
 
       classes
-    end
-
-    def white_panel_classes
-      "bg-white rounded-sm shadow-md"
-    end
-
-    def card_classes
-      "bg-white rounded-sm shadow-panel"
     end
 
     def get_model_class(model)

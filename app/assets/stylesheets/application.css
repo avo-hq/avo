@@ -11,7 +11,6 @@
 
 /* @config "../../../tailwind.config.js"; */
 
-
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
 
@@ -37,14 +36,15 @@
   --aspect-cover-lg: 9 / 4;
   --aspect-media-library-item: 4 / 3;
 
-  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-  --shadow-panel: '0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04)';
-  --shadow-modal: ' 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)';
+  --shadow-panel: "0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04)";
+  --shadow-modal: " 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)";
 
   --breakpoint-xs: 30rem;
 }
-
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
@@ -66,39 +66,47 @@
 @custom-variant hover (&:hover);
 
 @layer components {
-  @import './../../../node_modules/easymde/dist/easymde.min.css';
-  @import './../../../node_modules/tippy.js/dist/tippy.css';
-  @import './../../../node_modules/tippy.js/themes/light.css';
-  @import './../../../node_modules/flatpickr/dist/flatpickr.css';
-  @import './../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css';
-  @import './../../../node_modules/@yaireo/tagify/dist/tagify.css';
+  @import "./../../../node_modules/easymde/dist/easymde.min.css";
+  @import "./../../../node_modules/tippy.js/dist/tippy.css";
+  @import "./../../../node_modules/tippy.js/themes/light.css";
+  @import "./../../../node_modules/flatpickr/dist/flatpickr.css";
+  @import "./../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css";
+  @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
 
-  @import './css/fonts.css';
-  @import './css/buttons.css';
-  @import './css/typography.css';
-  @import './css/tooltips.css';
-  @import './css/loader.css';
-  @import './css/pagination.css';
-  @import './css/breadcrumbs.css';
-  @import './css/search.css';
-  @import './css/active-storage.css';
-  @import './css/scrollbar.css';
-  @import './css/sidebar.css';
-  @import './css/spinner.css';
+  @import "./css/fonts.css";
+  @import "./css/buttons.css";
+  @import "./css/typography.css";
+  @import "./css/tooltips.css";
+  @import "./css/loader.css";
+  @import "./css/pagination.css";
+  @import "./css/breadcrumbs.css";
+  @import "./css/search.css";
+  @import "./css/active-storage.css";
+  @import "./css/scrollbar.css";
+  @import "./css/sidebar.css";
+  @import "./css/spinner.css";
+  @import "./css/table.css";
 
-  @import './css/fields/status.css';
-  @import './css/fields/code.css';
-  @import './css/fields/progress.css';
-  @import './css/fields/trix.css';
-  @import './css/fields/tags.css';
-  @import './css/fields/tiptap.css';
+  @import "./css/fields/status.css";
+  @import "./css/fields/code.css";
+  @import "./css/fields/progress.css";
+  @import "./css/fields/trix.css";
+  @import "./css/fields/tags.css";
+  @import "./css/fields/tiptap.css";
+  @import "./css/fields/stars.css";
 
   /* UI 4 */
-  @import './css/components/avatar.css';
-  @import './css/components/discreet_information.css';
-  @import './css/components/tabs.css';
-  @import './css/variables.css';
+  @import "./css/variables.css";
+  @import "./css/components/ui/card.css";
+  @import "./css/components/ui/panel.css";
+  @import "./css/components/ui/panel_header.css";
+  @import "./css/components/ui/description_list.css";
+  @import "./css/components/ui/tabs.css";
 
+  @import "./css/components/avatar.css";
+  @import "./css/components/breadcrumbs.css";
+  @import "./css/components/breadcrumb_element.css";
+  @import "./css/components/discreet_information.css";
 
   html,
   body {
@@ -130,7 +138,7 @@
   }
 
   .fade-enter-to {
-    @apply  delay-150 opacity-100 translate-y-0;
+    @apply delay-150 opacity-100 translate-y-0;
   }
 
   .fade-leave {
@@ -176,11 +184,11 @@
 
   .shift-pressed {
     & .highlighted-row {
-      @apply !bg-neutral-200;
+      @apply bg-neutral-200!;
     }
   }
 
   .selected-row {
-    @apply !bg-neutral-100;
+    @apply bg-neutral-100!;
   }
 }

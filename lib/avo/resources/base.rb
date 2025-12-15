@@ -74,7 +74,8 @@ module Avo
       }
       class_attribute :find_record_method, default: -> {
         # Check if the model uses FriendlyId and handle accordingly
-        if model_class.respond_to?(:friendly_id_config)
+        # If scope is configured, use the default find behavior
+        if model_class.respond_to?(:friendly_id_config) && !model_class.friendly_id_config.respond_to?(:scope)
           if id.is_a?(Array)
             # For arrays, use the slug column
             query.where(model_class.friendly_id_config.slug_column => id)
@@ -674,15 +675,15 @@ module Avo
 
       def view_type
         @view_type ||= if @params[:view_type].present?
-          @params[:view_type]
+          Avo::ViewInquirer.new(@params[:view_type])
         elsif available_view_types.size == 1
-          available_view_types.first
+          Avo::ViewInquirer.new(available_view_types.first)
         else
-          Avo::ExecutionContext.new(
+          Avo::ViewInquirer.new(Avo::ExecutionContext.new(
             target: default_view_type || Avo.configuration.default_view_type,
             resource: self,
             view: @view
-          ).handle
+          ).handle)
         end
       end
 

@@ -9,7 +9,7 @@ RSpec.describe "Attachment fail", type: :system do
   it "if attach persist" do
     ENV["MEMBERSHIP_FAIL"] = "true"
 
-    visit avo.resources_user_path(user, "tab-group_3" => "Teams")
+    visit avo.resources_user_path(user, "tab-group_first-tabs-group" => "Teams")
 
     scroll_to first_tab_group
 

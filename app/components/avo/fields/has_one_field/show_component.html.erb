@@ -1,10 +1,10 @@
 <% if @field.value %>
-  <turbo-frame id="<%= @field.turbo_frame %>" src="<%= @field.frame_url %>" loading=<%= turbo_frame_loading %> target="_top" class="block">
+  <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: turbo_frame_loading, target: "_top", class: "block" do %>
     <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
-  </turbo-frame>
+  <% end %>
 <% else %>
-  <%= render Avo::PanelComponent.new(name: @field.name) do |c| %>
-    <% c.with_tools do %>
+  <%= render ui.panel(title: @field.name) do |panel| %>
+    <% panel.with_controls do %>
       <% if can_attach? %>
         <%= a_link attach_path,
           icon: 'heroicons/outline/link',
@@ -17,6 +17,7 @@
           <%= t('avo.attach_item', item: @field.name.humanize(capitalize: false)) %>
         <% end %>
       <% end %>
+
       <% if can_see_the_create_button? %>
         <%= a_link create_path,
           icon: 'heroicons/outline/plus',
@@ -29,8 +30,8 @@
       <% end %>
     <% end %>
 
-    <% c.with_body do %>
-      <div class="py-8 flex justify-center items-center">
+    <% panel.with_body do %>
+      <div class="flex items-center justify-center py-8">
         <%= empty_state by_association: params[:related_name].present? %>
       </div>
     <% end %>

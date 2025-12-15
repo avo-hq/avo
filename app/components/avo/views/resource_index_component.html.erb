@@ -7,40 +7,50 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
-  <%= render Avo::PanelComponent.new(
-      description: description,
+
+  <%= render ui.panel(
       cover_photo: resource.cover_photo,
+      class: "w-full",
       data: {
-        component: "resources-index",
+        component_name:,
         controller: "resource-search",
         "resource-search-debounce-value": "500",
         "resource-search-url-value": request.fullpath
       },
-      display_breadcrumbs: (@reflection.blank? && @parent_resource.blank?) || (@reflection.present? && !helpers.turbo_frame_request?)
-    ) do |c| %>
-    <% c.with_name_slot do %>
-      <%= render Avo::PanelNameComponent.new name: title, url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
-        <% panel_name_component.with_body do %>
+    ) do |panel| %>
+    <% panel.with_header do %>
+      <%= render ui.panel_header(
+        title:,
+        url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil,
+        target: :_blank,
+        description:
+      ) do |header| %>
+        <% header.with_title_slot do %>
           <% if reloadable %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
               <%= helpers.svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
             <% end %>
           <% end %>
         <% end %>
+
+        <% header.with_controls do %>
+          <div class="flex gap-3">
+            <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
+              <%= render_control control %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
-    <% c.with_tools do %>
-      <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
-        <%= render_control control %>
-      <% end %>
-    <% end %>
-    <% c.with_body do %>
+
+    <% panel.with_body do %>
       <div class="relative z-20">
         <div class="flex flex-col">
           <%= render scopes_list if can_render_scopes? %>
+
           <div class="flex flex-col">
-            <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= "hidden" unless header_visible? %>">
-              <div class="flex items-center px-4 w-64">
+            <div class="flex flex-col space-y-2 py-4 xs:flex-row xs:justify-between xs:space-y-0 <%= "hidden" unless header_visible? %>">
+              <div class="flex w-64 items-center px-4">
                 <% if show_search_input %>
                   <%= text_field_tag "q", params[:q],
                     id: nil,
@@ -50,16 +60,16 @@
                       action: "input->resource-search#search",
                       "resource-search-target": "input"
                     },
-                    autocomplete: "off"
-                  %>
+                    autocomplete: "off" %>
                 <% else %>
                   <%# Offset for the space-y-2 property when the search is missing %>
                   <div class="-mb-2"></div>
                 <% end %>
               </div>
 
-              <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
+              <div class="flex items-center justify-start space-x-3 justify-self-end px-4 xs:justify-end">
                 <%= render_dynamic_filters_button %>
+
                 <% unless field&.hide_filter_button %>
                   <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
                 <% end %>
@@ -67,6 +77,7 @@
                 <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
               </div>
             </div>
+
             <% if has_dynamic_filters? %>
               <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
             <% end %>
@@ -74,14 +85,7 @@
         </div>
       </div>
 
-      <%= render Avo::ResourceBodyContentComponent.new(**resource_content_components_common_args) %>
-    <% end %>
-    <% c.with_bare_content do %>
-     <%= render Avo::ResourceBareContentComponent.new(
-        **resource_content_components_common_args,
-        turbo_frame: @turbo_frame,
-        index_params: @index_params
-      ) %>
+      <%= render Avo::ResourceListingComponent.new(**resource_content_components_common_args) %>
     <% end %>
   <% end %>
 <% end %>

@@ -1,0 +1,13 @@
+[data-component="avo/fields/common/stars_component"] {
+    .star {
+      @apply h-5 w-5 text-gray-300 transition-colors;
+    }
+  
+    .star.filled {
+      @apply text-yellow-400;
+    }
+  
+    .rating-group {
+      @apply flex items-center gap-1;
+    }
+  }

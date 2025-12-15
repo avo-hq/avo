@@ -61,7 +61,7 @@ You can run `bin/dev` from the root directory, which will start an overmind (sim
 
 NOTE: If you used the `bin/init` script, this step has already been done for you.
 
-Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `avo@avohq.io` and password `secret`.
+Run `AVO_ADMIN_PASSWORD=secret bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `hi@avohq.io` and password `secret`.
 
 ## Using your fork from another project
 

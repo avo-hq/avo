@@ -274,8 +274,12 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
         record.fun_fact.truncate_words(10)
       end
 
-      field :fun_fact, only_on: :show do
-        record.fun_fact || "There is no register of a fun fact for #{record.name}"
+      sidebar do
+        card do
+          field :fun_fact, as: :text do
+            record.fun_fact || "There is no register of a fun fact for #{record.name}"
+          end
+        end
       end
     end
 

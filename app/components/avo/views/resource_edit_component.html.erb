@@ -9,8 +9,10 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
+
   <%= build_form do |form| %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
+
     <%= content_tag :div, class: "space-y-12" do %>
       <% @resource.get_items.each_with_index do |item, index| %>
         <%= render Avo::Items::SwitcherComponent.new(
@@ -28,10 +30,14 @@
       <% end %>
 
       <% if Avo.configuration.buttons_on_form_footers %>
-        <%= render Avo::PanelComponent.new do |c| %>
-          <% c.with_footer_tools do %>
-            <% @resource.render_edit_controls.each do |control| %>
-              <%= render_control control %>
+        <%= render ui.panel do |panel| %>
+          <% panel.with_footer do %>
+            <%= render ui.panel_header do |header| %>
+              <% header.with_controls do %>
+                <% @resource.render_edit_controls.each do |control| %>
+                  <%= render_control control %>
+                <% end %>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>

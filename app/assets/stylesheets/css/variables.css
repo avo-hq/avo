@@ -246,4 +246,6 @@
 
 
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
 }
