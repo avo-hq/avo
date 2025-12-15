@@ -224,8 +224,18 @@ module Avo
         standalone_groups = grouped_items.select { |group| group[:is_standalone] }
         standalone_groups.each_with_index do |group, index|
           calculated_panel = Avo::Resources::Items::Panel.new(show_fields_on_index: index == 0)
-          calculated_panel.items_holder.items = group[:elements]
           hydrate_item calculated_panel
+
+          # Create a card
+          card = Avo::Resources::Items::Card.new
+          hydrate_item card
+
+          # Add the items to the card
+          card.items_holder.items = group[:elements]
+
+          # Add the card to the main panel
+          calculated_panel.items_holder.items = [card]
+
           group[:elements] = calculated_panel
         end
 

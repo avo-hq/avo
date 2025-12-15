@@ -1,16 +1,12 @@
 <%= render ui.panel(**args) do |panel| %>
   <% if @resource.cover_photo.present? %>
-    <div class="panel__cover-photo">
-      <% panel.with_cover_photo do %>
-        <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
-      <% end %>
-    </div>
+    <% panel.with_cover_photo do %>
+      <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
+    <% end %>
   <% end %>
 
-  <% panel.with_card do %>
-    <%= render ui.description_list do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
-    <% end %>
+  <% panel.with_body do %>
+    <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
   <% end %>
 
   <% if sidebars.any? { |sidebar| sidebar.visible_items.any? } %>

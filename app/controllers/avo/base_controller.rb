@@ -268,6 +268,12 @@ module Avo
 
     private
 
+    def unprocessable_status
+      # :unprocessable_content was added in Rails 7.1
+      # Use it when available, fall back to :unprocessable_entity for older versions
+      (Rails.version.to_f >= 7.1) ? :unprocessable_content : :unprocessable_entity
+    end
+
     def save_record
       perform_action_and_record_errors do
         save_record_action
@@ -491,7 +497,7 @@ module Avo
       flash.now[:error] = create_fail_message
 
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_content }
+        format.html { render :new, status: unprocessable_status }
         format.turbo_stream { render "create_fail_action" }
       end
     end
@@ -529,7 +535,7 @@ module Avo
       flash.now[:error] = update_fail_message
 
       respond_to do |format|
-        format.html { render :edit, status: :unprocessable_content }
+        format.html { render :edit, status: unprocessable_status }
         format.turbo_stream { render "update_fail_action" }
       end
     end
