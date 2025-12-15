@@ -21,12 +21,4 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
     :can_see_the_destroy_button?,
     :can_see_the_save_button?,
     to: :@parent_component
-
-  def args
-    {
-      title: @item.title,
-      description: @item.description,
-      index: @index
-    }
-  end
 end
