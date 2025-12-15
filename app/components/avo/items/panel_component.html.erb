@@ -5,41 +5,6 @@
     <% end %>
   <% end %>
 
-  <% if @is_main_panel && controls.any? %>
-    <% panel.with_header do %>
-      <%= render ui.panel_header(
-        title: args[:title],
-        description: args[:description]
-      ) do |header| %>
-        <% header.with_controls do %>
-          <% controls.each do |control| %>
-            <%= render_control control %>
-          <% end %>
-        <% end %>
-
-        <% header.with_profile_photo do %>
-          <%= render Avo::ProfilePhotoComponent.new profile_photo: @resource.profile_photo %>
-        <% end %>
-
-        <% header.with_discreet_information do %>
-          <% if @resource.get_external_link.present? %>
-            <%= render Avo::DiscreetInformationComponent.new(
-              as: :icon,
-              url: @resource.get_external_link,
-              target: :_blank,
-              title: helpers.t("avo.visit_record_on_external_path"),
-              icon: "heroicons/outline/arrow-top-right-on-square"
-            ) %>
-          <% end %>
-
-          <% @resource.discreet_information.items.each do |item| %>
-            <%= render Avo::DiscreetInformationComponent.new(**item) %>
-          <% end %>
-        <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-
   <% panel.with_body do %>
     <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
   <% end %>

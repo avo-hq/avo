@@ -3,7 +3,7 @@ class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
   self.description = "This is a resource with discovered fields. It will show fields and associations as defined in the model."
 
   def fields
-    main_panel do
+    panel show_fields_on_index: true do
       discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
       discover_associations only: %i[cv_attachment]
 

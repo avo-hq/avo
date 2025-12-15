@@ -11,7 +11,7 @@ class Avo::Resources::Comment < Avo::BaseResource
   self.after_update_path = :index
 
   def fields
-    main_panel do
+    panel show_fields_on_index: true do
       field :id, as: :id
       field :body, as: :textarea, copyable: true, default: -> { "#{parent.first_name}'s comment" if parent.is_a?(User) }
       field :tiny_name, as: :text, only_on: :index
