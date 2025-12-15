@@ -89,8 +89,8 @@ module Avo
           next if item.nil?
 
           if only_root
-            # When only_root == true we want to extract the computed panel items
-            if item.is_panel? && item.show_fields_on_index?
+            # When only_root == true we want to extract the panel and card items
+            if item.is_panel? || item.is_card?
               fields << extract_fields(item)
             end
           else
@@ -225,9 +225,8 @@ module Avo
         # For each standalone group, wrap items in a panel and card
         # If the resource has at least one panel defined, we compute nothing, user took control of the panels
         if items.none? { |item| item.is_panel? }
-          standalone_groups = grouped_items.select { |group| group[:is_standalone] }
-          standalone_groups.each_with_index do |group, index|
-            calculated_panel = Avo::Resources::Items::Panel.new(show_fields_on_index: index == 0)
+          grouped_items.select { |group| group[:is_standalone] }.each do |group|
+            calculated_panel = Avo::Resources::Items::Panel.new
             hydrate_item calculated_panel
 
             # Create a card
