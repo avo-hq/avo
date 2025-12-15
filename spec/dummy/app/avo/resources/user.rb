@@ -109,7 +109,7 @@ class Avo::Resources::User < Avo::BaseResource
       field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
       field :active, as: :boolean, name: "Is active", only_on: :index
       field :cv, as: :file, name: "CV"
-      field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
+      field :is_admin, as: :boolean, name: "Is admin", only_on: :index
       field :roles, as: :boolean_group, options: -> do
         # test condition
         raise if record.nil?
@@ -172,7 +172,7 @@ class Avo::Resources::User < Avo::BaseResource
           field :heading, as: :heading, label: ""
           field :active, as: :boolean, name: "Is active"
         end
-        field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
+        field :is_admin, as: :boolean, name: "Is admin", only_on: :index
         field :birthday,
           as: :date,
           first_day_of_week: 1,
