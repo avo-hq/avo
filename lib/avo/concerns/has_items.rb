@@ -90,7 +90,9 @@ module Avo
           if only_root
             # When only_root == true we want to extract the panel and card items
             if item.is_panel? || item.is_card?
-              fields << extract_fields(item)
+              if item.visible_in_view?(view: view)
+                fields << extract_fields(item)
+              end
             end
           else
             # Dive into panels to fetch their fields
