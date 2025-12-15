@@ -17,7 +17,7 @@ RSpec.feature "StackedWrapperLayouts", type: :feature do
         it "displays the stacked layout" do
           subject
 
-          within("[data-item-index='3']") do
+          within("[data-item-index='4']") do
             expect(page).to have_css("div.field-wrapper-layout-stacked")
           end
         end

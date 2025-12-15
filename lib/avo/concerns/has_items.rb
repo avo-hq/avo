@@ -49,7 +49,7 @@ module Avo
       delegate :tool, to: :items_holder
       delegate :heading, to: :items_holder
       delegate :sidebar, to: :items_holder
-      delegate :main_panel, to: :items_holder
+      delegate :header, to: :items_holder
       delegate :collaboration_timeline, to: :items_holder
 
       def items_holder
@@ -88,11 +88,11 @@ module Avo
           next if item.nil?
 
           if only_root
-            # When `item.is_main_panel? == true` then also `item.is_panel? == true`
-            # But when only_root == true we want to extract main_panel items
-            # In all other circumstances items will get extracted when checking for `item.is_panel?`
-            if item.is_main_panel?
-              fields << extract_fields(item)
+            # When only_root == true we want to extract the panel and card items
+            if item.is_panel? || item.is_card?
+              if item.visible_in_view?(view: view)
+                fields << extract_fields(item)
+              end
             end
           else
             # Dive into panels to fetch their fields
@@ -215,34 +215,33 @@ module Avo
           {elements: group, is_standalone: is_standalone?(group.first)}
         end
 
-        # Creates a main panel if it's missing and adds first standalone group of items if present
-        if items.none? { |item| item.is_main_panel? }
-          if (standalone_group = grouped_items.find { |group| group[:is_standalone] }).present?
-            # Create a main panel
-            calculated_main_panel = Avo::Resources::Items::MainPanel.new
-            hydrate_item calculated_main_panel
+        # Add the header automatically as first item if the user didn't define one
+        # This is to ensure that the header is always present
+        if items.none? { |item| item.is_header? }
+          header = Avo::Resources::Items::Header.new
+          hydrate_item header
+          grouped_items.unshift({elements: [header], is_standalone: false})
+        end
+
+        # For each standalone group, wrap items in a panel and card
+        # If the resource has at least one panel defined, we compute nothing, user took control of the panels
+        if items.none? { |item| item.is_panel? }
+          grouped_items.select { |group| group[:is_standalone] }.each do |group|
+            calculated_panel = Avo::Resources::Items::Panel.new
+            hydrate_item calculated_panel
 
             # Create a card
             card = Avo::Resources::Items::Card.new
             hydrate_item card
 
             # Add the items to the card
-            card.items_holder.items = standalone_group[:elements]
+            card.items_holder.items = group[:elements]
 
             # Add the card to the main panel
-            calculated_main_panel.items_holder.items = [card]
+            calculated_panel.items_holder.items = [card]
 
-            # Add the main panel to the grouped items
-            grouped_items[grouped_items.index standalone_group] = {elements: [calculated_main_panel], is_standalone: false}
+            group[:elements] = calculated_panel
           end
-        end
-
-        # For each standalone group, wrap items in a panel
-        grouped_items.select { |group| group[:is_standalone] }.each do |group|
-          calculated_panel = Avo::Resources::Items::Panel.new
-          calculated_panel.items_holder.items = group[:elements]
-          hydrate_item calculated_panel
-          group[:elements] = calculated_panel
         end
 
         grouped_items.flat_map { |group| group[:elements] }
@@ -298,7 +297,8 @@ module Avo
             next true if item.is_a?(Avo::Resources::Items::TabGroup) ||
               item.is_a?(Avo::Resources::Items::Tab) ||
               item.is_heading? ||
-              item.is_a?(Avo::Fields::LocationField)
+              item.is_a?(Avo::Fields::LocationField) ||
+              item.is_header?
 
             # Skip nested fields
             next true if item.try(:nested_on?, view)

@@ -18,7 +18,7 @@ class Avo::Resources::Team < Avo::BaseResource
   }
 
   def fields
-    main_panel do
+    panel do
       field :preview, as: :preview
 
       unless params[:hide_id]

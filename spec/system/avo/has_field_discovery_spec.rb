@@ -6,8 +6,11 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
   before do
     Avo::Resources::User.with_temporary_items do
-      main_panel do
-        discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
+      panel do
+        card do
+          discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
+        end
+
         discover_associations only: %i[cv_attachment]
 
         sidebar do
@@ -87,7 +90,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       within(".main-content-area") do
-        within("[data-panel-id='main']") do
+        within("[data-item-index='2']") do
           # Basic fields
           ## Main Panel
           expect(page).to have_text("FIRST NAME", count: 1)
@@ -277,7 +280,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     it "displays polymorphic association correctly" do
       wait_for_loaded
 
-      within("[data-panel-id='main']") do
+      within("[data-item-index='2']") do
         expect(page).to have_text("COMMENTABLE")
         expect(page).to have_link(post.name, href: /\/admin\/resources\/posts\//)
       end
@@ -290,7 +293,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     it "does not display sensitive fields" do
       wait_for_loaded
 
-      within("[data-panel-id='main']") do
+      within("[data-item-index='2']") do
         expect(page).not_to have_text("ENCRYPTED_PASSWORD")
         expect(page).not_to have_text("RESET_PASSWORD_TOKEN")
         expect(page).not_to have_text("REMEMBER_CREATED_AT")

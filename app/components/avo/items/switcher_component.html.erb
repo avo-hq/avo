@@ -1,4 +1,4 @@
-<% if item.is_panel? || item.is_main_panel? %>
+<% if item.is_panel? %>
   <%= render panel_component %>
 <% elsif item.is_card? %>
   <%= render Avo::UI::CardComponent.new(
@@ -28,4 +28,32 @@
   <% end %>
 <% elsif item.is_collaboration? %>
   <%= render Avo::Collaborate::TimelineComponent.new(resource: @resource) %>
+<% elsif item.is_header? %>
+  <%= render ui.panel_header(title:, description: @resource.description, index:) do |header| %>
+    <% header.with_controls do %>
+      <% controls.each do |control| %>
+        <%= render_control control %>
+      <% end %>
+    <% end %>
+
+    <% header.with_profile_photo do %>
+      <%= render Avo::ProfilePhotoComponent.new profile_photo: @resource.profile_photo %>
+    <% end %>
+
+    <% header.with_discreet_information do %>
+      <% if @resource.get_external_link.present? %>
+        <%= render Avo::DiscreetInformationComponent.new(
+          as: :icon,
+          url: @resource.get_external_link,
+          target: :_blank,
+          title: helpers.t("avo.visit_record_on_external_path"),
+          icon: "heroicons/outline/arrow-top-right-on-square"
+        ) %>
+      <% end %>
+
+      <% @resource.discreet_information.items.each do |item| %>
+        <%= render Avo::DiscreetInformationComponent.new(**item) %>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>

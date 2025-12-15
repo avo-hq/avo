@@ -14,16 +14,17 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     find("[data-item-index='1'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
 
     # Finds main panel
-    find("[data-panel-id='main'][data-item-index='0']")
+    find("[data-item-index='3']")
+    find("[data-item-index='3'] [data-field-id='id'][data-resource-show-target='idIdWrapper']")
 
     # Verify that Heading comes before main panel
-    assert_selector(:xpath, "//*[contains(@data-item-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-panel-id, 'main')][contains(@data-item-index, '0')]")
+    assert_selector(:xpath, "//*[contains(@data-item-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-item-index, '2')]")
 
     # Find inside main panel test field
     show_field_wrapper(id: "Inside main panel")
 
     # Inside main panel
-    within('[data-panel-id="main"]') do
+    within('[data-item-index="3"]') do
       # Find first test sidebar
       within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
         expect(page).to have_content("Sidebar tool")
@@ -35,12 +36,12 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
       # Find user sidebar
       within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
         # Find inside main panel sidebar test field
-        find("[data-field-id='Inside main_panel_sidebar'][data-resource-show-target='inside mainPanelSidebarTextWrapper']")
+        find("[data-field-id='Inside first_panel_sidebar'][data-resource-show-target='inside firstPanelSidebarTextWrapper']")
       end
     end
 
     # Inside user information panel
-    within('[data-item-index="4"]') do
+    within('[data-item-index="5"]') do
       # Find inside panel test field
       find("[data-field-id='Inside panel'][data-resource-show-target='inside panelTextWrapper']")
 

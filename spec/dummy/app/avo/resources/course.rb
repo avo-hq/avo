@@ -29,22 +29,24 @@ class Avo::Resources::Course < Avo::BaseResource
   end
 
   def fields_bag
-    field :id, as: :id
-    field :name, as: :text, html: {
-      edit: {
-        input: {
-          # classes: "bg-primary-500",
-          data: {
-            action: "input->resource-edit#debugOnInput"
+    card do
+      field :id, as: :id
+      field :name, as: :text, html: {
+        edit: {
+          input: {
+            # classes: "bg-primary-500",
+            data: {
+              action: "input->resource-edit#debugOnInput"
+            }
+          },
+          wrapper: {
+            # style: "background: red;",
           }
-        },
-        wrapper: {
-          # style: "background: red;",
         }
       }
-    }
+    end
 
-    panel do
+    card do
       field :has_skills, as: :boolean, as_toggle: true, filterable: true, html: -> do
         edit do
           input do
@@ -90,37 +92,39 @@ class Avo::Resources::Course < Avo::BaseResource
         end
     end
 
-    field :starting_at,
-      as: :time,
-      picker_format: "H:i",
-      format: "HH:mm:ss z",
-      timezone: -> { "Europe/Berlin" },
-      picker_options: {
-        hourIncrement: 1,
-        minuteIncrement: 1,
-        secondsIncrement: 1
-      },
-      filterable: true,
-      relative: true
+    card do
+      field :starting_at,
+        as: :time,
+        picker_format: "H:i",
+        format: "HH:mm:ss z",
+        timezone: -> { "Europe/Berlin" },
+        picker_options: {
+          hourIncrement: 1,
+          minuteIncrement: 1,
+          secondsIncrement: 1
+        },
+        filterable: true,
+        relative: true
 
-    field :country,
-      as: :select,
-      options: Course.countries.map { |country| [country, country] }.prepend(["-", nil]).to_h,
-      html: {
-        edit: {
-          input: {
-            data: {
-              action: "city-in-country#onCountryChange"
+      field :country,
+        as: :select,
+        options: Course.countries.map { |country| [country, country] }.prepend(["-", nil]).to_h,
+        html: {
+          edit: {
+            input: {
+              data: {
+                action: "city-in-country#onCountryChange"
+              }
             }
           }
         }
-      }
-    field :city,
-      as: :select,
-      options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
-      display_value: false
+      field :city,
+        as: :select,
+        options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
+        display_value: false
+    end
 
-    if params[:show_location_field] == '1'
+    if params[:show_location_field] == "1"
       # Example for error message when resource is missing
       field :locations, as: :has_and_belongs_to_many
     end

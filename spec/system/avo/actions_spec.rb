@@ -23,7 +23,7 @@ RSpec.describe "Actions", type: :system do
       it "does not find an action on show" do
         visit "/admin/resources/users/#{user.id}"
 
-        within "[data-panel-id=\"main\"]" do
+        within all(".header__controls").first do
           click_on "Actions"
         end
 
@@ -38,7 +38,7 @@ RSpec.describe "Actions", type: :system do
       it "finds the action on edit" do
         visit "/admin/resources/users/#{user.id}/edit"
 
-        within "[data-panel-id=\"main\"]" do
+        within ".header__controls" do
           click_on "Actions"
         end
 
@@ -52,7 +52,7 @@ RSpec.describe "Actions", type: :system do
       it "finds the action on show" do
         visit "/admin/resources/users/new"
 
-        within "[data-panel-id=\"main\"]" do
+        within ".header__controls" do
           click_on "Actions"
         end
 
@@ -223,7 +223,6 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
-
   describe "do_nothing" do
     it "closes the modal and flashes messages" do
       allow(TestBuddy).to receive(:hi).and_call_original
@@ -233,7 +232,6 @@ RSpec.describe "Actions", type: :system do
 
       fill_in "user_first_name", with: "First name should persist after action."
 
-
       click_on "Actions"
       click_on "Do Nothing"
       expect(page).to have_css("turbo-frame#modal_frame")
@@ -241,7 +239,7 @@ RSpec.describe "Actions", type: :system do
       click_on "Run"
       expect(page).not_to have_selector(modal)
       expect(page).to have_text "Nothing Done!!"
-      expect(page).to have_field('user_first_name', with: 'First name should persist after action.')
+      expect(page).to have_field("user_first_name", with: "First name should persist after action.")
     end
   end
 
