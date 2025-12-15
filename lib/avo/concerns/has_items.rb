@@ -214,29 +214,34 @@ module Avo
           {elements: group, is_standalone: is_standalone?(group.first)}
         end
 
+        # Add the header automatically as first item if the user didn't define one
+        # This is to ensure that the header is always present
         if items.none? { |item| item.is_header? }
           header = Avo::Resources::Items::Header.new
           hydrate_item header
           grouped_items.unshift({elements: [header], is_standalone: false})
         end
 
-        # For each standalone group, wrap items in a panel
-        standalone_groups = grouped_items.select { |group| group[:is_standalone] }
-        standalone_groups.each_with_index do |group, index|
-          calculated_panel = Avo::Resources::Items::Panel.new(show_fields_on_index: index == 0)
-          hydrate_item calculated_panel
+        # For each standalone group, wrap items in a panel and card
+        # If the resource has at least one panel defined, we compute nothing, user took control of the panels
+        if items.none? { |item| item.is_panel? }
+          standalone_groups = grouped_items.select { |group| group[:is_standalone] }
+          standalone_groups.each_with_index do |group, index|
+            calculated_panel = Avo::Resources::Items::Panel.new(show_fields_on_index: index == 0)
+            hydrate_item calculated_panel
 
-          # Create a card
-          card = Avo::Resources::Items::Card.new
-          hydrate_item card
+            # Create a card
+            card = Avo::Resources::Items::Card.new
+            hydrate_item card
 
-          # Add the items to the card
-          card.items_holder.items = group[:elements]
+            # Add the items to the card
+            card.items_holder.items = group[:elements]
 
-          # Add the card to the main panel
-          calculated_panel.items_holder.items = [card]
+            # Add the card to the main panel
+            calculated_panel.items_holder.items = [card]
 
-          group[:elements] = calculated_panel
+            group[:elements] = calculated_panel
+          end
         end
 
         grouped_items.flat_map { |group| group[:elements] }
