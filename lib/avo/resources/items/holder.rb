@@ -92,6 +92,10 @@ class Avo::Resources::Items::Holder
     add_item Avo::Resources::Items::MainPanel::Builder.parse_block(parent: @parent, **args, &block)
   end
 
+  def header(**args, &block)
+    add_item Avo::Resources::Items::Header.new(**args)
+  end
+
   def sidebar(**args, &block)
     check_sidebar_is_inside_a_panel
 

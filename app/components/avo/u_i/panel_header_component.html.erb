@@ -2,7 +2,7 @@
   "header",
   "header--size-medium": size_medium?,
   "header--size-small": size_small?
-) do %>
+), data: { "item-index": @index }.compact_blank do %>
   <div class="header__main">
     <div class="header__content">
       <% if profile_photo? %>

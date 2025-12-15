@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
-class Avo::Items::SwitcherComponent < Avo::BaseComponent
+class Avo::Items::SwitcherComponent < Avo::ResourceComponent
   attr_reader :resource
   attr_reader :reflection
   attr_reader :index
   attr_reader :item
   attr_reader :view
+
+  delegate :controls,
+    :title,
+    :back_path,
+    :edit_path,
+    :can_see_the_destroy_button?,
+    :can_see_the_save_button?,
+    to: :@parent_component
 
   def initialize(
     resource: nil,
