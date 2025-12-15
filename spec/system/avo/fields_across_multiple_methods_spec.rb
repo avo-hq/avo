@@ -11,14 +11,14 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     visit "/admin/resources/users/#{user.to_param}"
 
     # Finds heading test field
-    find("[data-item-index='2'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
+    find("[data-item-index='1'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
 
     # Finds main panel
     find("[data-item-index='3']")
     find("[data-item-index='3'] [data-field-id='id'][data-resource-show-target='idIdWrapper']")
 
     # Verify that Heading comes before main panel
-    assert_selector(:xpath, "//*[contains(@data-item-index, '2')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-item-index, '3')]")
+    assert_selector(:xpath, "//*[contains(@data-item-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-item-index, '2')]")
 
     # Find inside main panel test field
     show_field_wrapper(id: "Inside main panel")

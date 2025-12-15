@@ -39,7 +39,11 @@ class Avo::Resources::User < Avo::BaseResource
   # }
 
   def fields
-    test_field("Heading")
+    panel do
+      card do
+        test_field("Heading")
+      end
+    end
 
     header
     panel do
@@ -152,7 +156,9 @@ class Avo::Resources::User < Avo::BaseResource
 
     sidebar panel_wrapper: false do
       tool Avo::ResourceTools::SidebarTool, render_panel: true
-      test_field("Inside test_sidebar")
+      card do
+        test_field("Inside test_sidebar")
+      end
     end
   end
 
@@ -304,7 +310,9 @@ class Avo::Resources::User < Avo::BaseResource
 
     tab "test_tab" do
       panel do
-        test_field("Inside tabs -> tab -> panel")
+        card do
+          test_field("Inside tabs -> tab -> panel")
+        end
       end
 
       test_field("Inside tabs -> tab")
