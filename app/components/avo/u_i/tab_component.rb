@@ -49,9 +49,9 @@ module Avo
       # Public API - Styling: Classes
       def wrapper_classes
         if @variant == :scope
-          base = "inline-block py-2"
+          base = "tabs__item-wrapper tabs__item-wrapper--scope"
           active_class = @active ? default_active_class : default_inactive_class
-          "#{base} avo-tab-wrapper--scope #{active_class}"
+          "#{base} #{active_class}"
         else
           "flex items-center justify-center"
         end
@@ -59,12 +59,11 @@ module Avo
 
       def classes
         class_list = [
-          "avo-tab",
-          "inline-flex items-center gap-2 px-3 py-1 text-sm font-medium",
-          ((@variant == :scope) ? "rounded-none" : "rounded-md"),
+          "tabs__item",
+          ((@variant == :scope) ? "tabs__item--scope" : "tabs__item--group"),
           (default_active_class if toggle_classes? && @active),
           (default_inactive_class if toggle_classes? && !@active),
-          ("disabled:opacity-50 disabled:cursor-not-allowed" if @disabled),
+          ("tabs__item--disabled" if @disabled),
           @classes
         ].compact
 
@@ -92,16 +91,16 @@ module Avo
       end
 
       def default_active_class
-        "avo-tab--active"
+        "tabs__item--active"
       end
 
       def default_inactive_class
-        "avo-tab--inactive"
+        "tabs__item--inactive"
       end
 
       # Private - Styling Helpers
       def icon_classes
-        "h-4 w-4"
+        "tabs__item-icon"
       end
 
       # Private - Validation

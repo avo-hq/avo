@@ -97,7 +97,7 @@ export default class extends Controller {
 
       this.toggleTabClasses(button, isActive);
 
-      const wrapper = button.closest(".avo-tab-wrapper--scope");
+      const wrapper = button.closest(".tabs__item-wrapper--scope");
       if (wrapper) {
         this.toggleTabClasses(wrapper, isActive, button);
       }
@@ -177,7 +177,7 @@ export default class extends Controller {
     this.removeKeyboardFocusClass();
 
     // Add keyboard focus class and focus the tab
-    tabButton.classList.add("avo-tab--focused");
+    tabButton.classList.add("tabs__item--focused");
     tabButton.setAttribute("tabindex", "0");
     tabButton.focus();
   }
@@ -185,13 +185,13 @@ export default class extends Controller {
   removeKeyboardFocusClass() {
     // Remove keyboard focus class from all tabs
     this.tabButtonTargets.forEach((button) => {
-      button.classList.remove("avo-tab--focused");
+      button.classList.remove("tabs__item--focused");
     });
   }
 
   // Handle blur event - remove focus class when tab loses focus
   handleBlur(e) {
-    e.currentTarget.classList.remove("avo-tab--focused");
+    e.currentTarget.classList.remove("tabs__item--focused");
   }
 
   // Handle mousedown - remove focus class immediately on mouse interaction

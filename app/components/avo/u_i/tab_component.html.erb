@@ -9,7 +9,7 @@
         "aria-controls": tab_attributes[:"aria-controls"],
         tabindex: tab_attributes[:tabindex] do %>
       <%= render_icon %>
-      <span><%= @label %></span>
+      <span class="tabs__item-label"><%= @label %></span>
     <% end %>
   <% else %>
     <%= content_tag :button,
@@ -24,7 +24,7 @@
         "aria-disabled": tab_attributes[:"aria-disabled"],
         tabindex: tab_attributes[:tabindex] do %>
       <%= render_icon %>
-      <span><%= @label %></span>
+      <span class="tabs__item-label"><%= @label %></span>
     <% end %>
   <% end %>
 </div>

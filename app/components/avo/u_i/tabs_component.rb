@@ -19,13 +19,9 @@ module Avo
       end
 
       def classes
-        if @variant == :scope
-          # Scope: keep tabs tight so borders connect
-          "flex items-center"
-        else
-          # Group: spaced pills
-          "flex gap-1 items-center"
-        end
+        base = "tabs"
+        variant_class = (@variant == :scope) ? "tabs--scope" : "tabs--group"
+        "#{base} #{variant_class}"
       end
 
       def tablist_id
@@ -33,7 +29,7 @@ module Avo
       end
 
       def tablist_aria_label
-        @aria_label || "Tabs"
+        @aria_label || "Tabs navigation"
       end
     end
   end

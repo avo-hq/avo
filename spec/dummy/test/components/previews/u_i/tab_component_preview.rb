@@ -33,6 +33,48 @@ class UI::TabComponentPreview < ViewComponent::Preview
     )
   end
 
+  # Keyboard focus styles (as per tabs.css 114-120)
+
+  # Scope variant - active with focus
+  def scope_active_focused
+    render Avo::UI::TabComponent.new(
+      label: "Tab",
+      active: true,
+      variant: :scope,
+      classes: "tabs__item--focused"
+    )
+  end
+
+  # Scope variant - inactive with focus
+  def scope_inactive_focused
+    render Avo::UI::TabComponent.new(
+      label: "Tab",
+      active: false,
+      variant: :scope,
+      classes: "tabs__item--focused"
+    )
+  end
+
+  # Group variant - active with focus
+  def group_active_focused
+    render Avo::UI::TabComponent.new(
+      label: "Tab",
+      active: true,
+      variant: :group,
+      classes: "tabs__item--focused"
+    )
+  end
+
+  # Group variant - inactive with focus
+  def group_inactive_focused
+    render Avo::UI::TabComponent.new(
+      label: "Tab",
+      active: false,
+      variant: :group,
+      classes: "tabs__item--focused"
+    )
+  end
+
   # @!endgroup
 
   # @!group Interactive Playground
