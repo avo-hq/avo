@@ -29,105 +29,99 @@ class Avo::Resources::Course < Avo::BaseResource
   end
 
   def fields_bag
-    panel do
-      card do
-        field :id, as: :id
-        field :name, as: :text, html: {
-          edit: {
-            input: {
-              # classes: "bg-primary-500",
-              data: {
-                action: "input->resource-edit#debugOnInput"
-              }
-            },
-            wrapper: {
-              # style: "background: red;",
+    card do
+      field :id, as: :id
+      field :name, as: :text, html: {
+        edit: {
+          input: {
+            # classes: "bg-primary-500",
+            data: {
+              action: "input->resource-edit#debugOnInput"
             }
+          },
+          wrapper: {
+            # style: "background: red;",
           }
         }
-      end
+      }
     end
 
-    panel do
-      card do
-        field :has_skills, as: :boolean, as_toggle: true, filterable: true, html: -> do
+    card do
+      field :has_skills, as: :boolean, as_toggle: true, filterable: true, html: -> do
+        edit do
+          input do
+            # classes('block')
+            data({
+              # foo: record,
+              # resource: resource,
+              action: "input->resource-edit#toggle",
+              resource_edit_toggle_target_param: "skills_textarea_wrapper",
+              resource_edit_toggle_targets_param: ["skills_tags_wrapper"]
+            })
+          end
+        end
+      end
+
+      # field :skills,
+      #   as: :tags,
+      #   fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1", # {value: 1, label: "Jose"}
+      #   format_using: -> {
+      #     User.find(value).map do |user|
+      #       {
+      #         value: user.id,
+      #         label: user.name
+      #       }
+      #     end
+      #   }
+
+      field :skills,
+        as: :tags,
+        disallowed: -> { record.skill_disallowed },
+        suggestions: -> { record.skill_suggestions },
+        html: -> do
           edit do
-            input do
-              # classes('block')
-              data({
-                # foo: record,
-                # resource: resource,
-                action: "input->resource-edit#toggle",
-                resource_edit_toggle_target_param: "skills_textarea_wrapper",
-                resource_edit_toggle_targets_param: ["skills_tags_wrapper"]
-              })
+            wrapper do
+              classes do
+                unless record.has_skills
+                  "hidden"
+                end
+              end
+              # classes: "hidden"
             end
           end
         end
-
-        # field :skills,
-        #   as: :tags,
-        #   fetch_values_from: "/admin/resources/users/get_users?hey=you&record_id=1", # {value: 1, label: "Jose"}
-        #   format_using: -> {
-        #     User.find(value).map do |user|
-        #       {
-        #         value: user.id,
-        #         label: user.name
-        #       }
-        #     end
-        #   }
-
-        field :skills,
-          as: :tags,
-          disallowed: -> { record.skill_disallowed },
-          suggestions: -> { record.skill_suggestions },
-          html: -> do
-            edit do
-              wrapper do
-                classes do
-                  unless record.has_skills
-                    "hidden"
-                  end
-                end
-                # classes: "hidden"
-              end
-            end
-          end
-      end
     end
 
-    panel do
-      card do
-        field :starting_at,
-          as: :time,
-          picker_format: "H:i",
-          format: "HH:mm:ss z",
-          timezone: -> { "Europe/Berlin" },
-          picker_options: {
-            hourIncrement: 1,
-            minuteIncrement: 1,
-            secondsIncrement: 1
-          },
-          filterable: true,
-          relative: true
+    card do
+      field :starting_at,
+        as: :time,
+        picker_format: "H:i",
+        format: "HH:mm:ss z",
+        timezone: -> { "Europe/Berlin" },
+        picker_options: {
+          hourIncrement: 1,
+          minuteIncrement: 1,
+          secondsIncrement: 1
+        },
+        filterable: true,
+        relative: true
 
-        field :country,
-          as: :select,
-          options: Course.countries.map { |country| [country, country] }.prepend(["-", nil]).to_h,
-          html: {
-            edit: {
-              input: {
-                data: {
-                  action: "city-in-country#onCountryChange"
-                }
+      field :country,
+        as: :select,
+        options: Course.countries.map { |country| [country, country] }.prepend(["-", nil]).to_h,
+        html: {
+          edit: {
+            input: {
+              data: {
+                action: "city-in-country#onCountryChange"
               }
             }
           }
-        field :city,
-          as: :select,
-          options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
-          display_value: false
-      end
+        }
+      field :city,
+        as: :select,
+        options: Course.cities.values.flatten.map { |city| [city, city] }.to_h,
+        display_value: false
     end
 
     if params[:show_location_field] == "1"

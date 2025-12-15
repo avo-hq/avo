@@ -39,10 +39,8 @@ class Avo::Resources::User < Avo::BaseResource
   # }
 
   def fields
-    panel do
-      card do
-        test_field("Heading")
-      end
+    card do
+      test_field("Heading")
     end
 
     header

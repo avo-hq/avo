@@ -38,73 +38,55 @@ class Avo::Resources::Fish < Avo::BaseResource
     tabs visible: true do
       tab "big useless tab here" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "another big useless tab here 2" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "big tab here 3" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "big tab here 3.5" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "tab here 4" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "tab" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "big useless tab here 6" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "big useless tab here 7" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
 
       tab "big tab 8" do
         panel do
-          card do
-            field :id, as: :id
-          end
+          field :id, as: :id
         end
       end
     end
