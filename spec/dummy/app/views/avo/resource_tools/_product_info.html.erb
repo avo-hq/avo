@@ -1,0 +1,37 @@
+<div class="flex flex-col">
+  <%= render ui.card(title: "Quick Stats") do |card| %>
+    <div class="flex flex-col p-4 space-y-4">
+      <%# Status & Category %>
+      <div class="flex items-center justify-between">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          In Stock
+        </span>
+      </div>
+
+      <%# Price Card %>
+      <div class="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-xl p-4 border border-purple-100/50 shadow-sm">
+        <div class="text-[10px] uppercase tracking-widest text-purple-500 font-bold mb-1">Retail Price</div>
+        <div class="text-xs text-green-600 mt-1 font-medium">↓ 15% from last month</div>
+      </div>
+
+      <%# Quick Stats %>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="text-center p-2 bg-gray-50 rounded-lg">
+          <div class="text-lg font-bold text-gray-800">847</div>
+          <div class="text-[10px] text-gray-500 uppercase tracking-wide">Sold</div>
+        </div>
+        <div class="text-center p-2 bg-gray-50 rounded-lg">
+          <div class="text-lg font-bold text-gray-800">124</div>
+          <div class="text-[10px] text-gray-500 uppercase tracking-wide">In Stock</div>
+        </div>
+        <div class="text-center p-2 bg-gray-50 rounded-lg">
+          <div class="text-lg font-bold text-gray-800"><%= @record.rating %></div>
+          <div class="text-[10px] text-gray-500 uppercase tracking-wide">Rating</div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+

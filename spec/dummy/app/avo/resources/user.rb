@@ -152,7 +152,7 @@ class Avo::Resources::User < Avo::BaseResource
   def test_sidebar
     return unless ENV["testing_methods"]
 
-    sidebar panel_wrapper: false do
+    sidebar do
       tool Avo::ResourceTools::SidebarTool, render_panel: true
       card do
         test_field("Inside test_sidebar")
