@@ -79,7 +79,6 @@ class Avo::Items::SwitcherComponent < Avo::ResourceComponent
       actions: @actions,
       form: form,
       index: index,
-      is_main_panel: item.is_main_panel?,
       item: item.hydrate(view: view),
       parent_component: @parent_component,
       parent_record: @parent_record,

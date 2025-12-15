@@ -58,17 +58,19 @@ class Avo::Resources::Person < Avo::BaseResource
 
       tab "Address", lazy_load: true do
         panel(title: "Address") do
-          row divider: true do
-            field :street_address, stacked: true do
-              "1234 Elm Street"
+          card do
+            row divider: true do
+              field :street_address, stacked: true do
+                "1234 Elm Street"
+              end
+              field :city, stacked: true do
+                "Los Angeles"
+              end
             end
-            field :city, stacked: true do
-              "Los Angeles"
-            end
-          end
 
-          field :state do
-            "California"
+            field :state do
+              "California"
+            end
           end
 
           sidebar do
@@ -86,16 +88,18 @@ class Avo::Resources::Person < Avo::BaseResource
 
       tab "Preferences" do
         panel do
-          field :preferred_language do
-            "English"
-          end
+          card do
+            field :preferred_language do
+              "English"
+            end
 
-          field :theme_mode do
-            "Dark Mode"
-          end
+            field :theme_mode do
+              "Dark Mode"
+            end
 
-          field :notification_preference do
-            "Email & SMS"
+            field :notification_preference do
+              "Email & SMS"
+            end
           end
 
           sidebar do

@@ -87,11 +87,6 @@ class Avo::Resources::Items::Holder
     add_item Avo::Resources::Items::Card::Builder.parse_block(title: title, parent: @parent, **args, &block)
   end
 
-  # The main panel is the one that also render the header of the resource with the breadcrumbs, the title and the controls.
-  def main_panel(**args, &block)
-    add_item Avo::Resources::Items::MainPanel::Builder.parse_block(parent: @parent, **args, &block)
-  end
-
   def header(**args, &block)
     add_item Avo::Resources::Items::Header.new(**args)
   end

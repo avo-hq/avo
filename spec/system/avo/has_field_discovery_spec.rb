@@ -6,7 +6,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
   before do
     Avo::Resources::User.with_temporary_items do
-      main_panel do
+      panel do
         discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
         discover_associations only: %i[cv_attachment]
 

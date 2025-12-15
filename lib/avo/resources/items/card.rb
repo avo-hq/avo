@@ -25,6 +25,7 @@ class Avo::Resources::Items::Card
 
   class Builder
     include Avo::Concerns::BorrowItemsHolder
+    include Avo::Concerns::HasFieldDiscovery
 
     delegate :heading, to: :items_holder
     delegate :field, to: :items_holder

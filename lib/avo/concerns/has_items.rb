@@ -49,7 +49,6 @@ module Avo
       delegate :tool, to: :items_holder
       delegate :heading, to: :items_holder
       delegate :sidebar, to: :items_holder
-      delegate :main_panel, to: :items_holder
       delegate :header, to: :items_holder
       delegate :collaboration_timeline, to: :items_holder
 

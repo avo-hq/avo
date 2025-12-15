@@ -36,7 +36,7 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
       # Find user sidebar
       within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
         # Find inside main panel sidebar test field
-        find("[data-field-id='Inside main_panel_sidebar'][data-resource-show-target='inside mainPanelSidebarTextWrapper']")
+        find("[data-field-id='Inside first_panel_sidebar'][data-resource-show-target='inside firstPanelSidebarTextWrapper']")
       end
     end
 
