@@ -1,0 +1,29 @@
+<%= tag.div class: class_names("card", @class), data: {**@data, item_index: @index} do %>
+  <div class="card__wrapper">
+    <% if header? %>
+      <div class="card__header"><%= header %></div>
+    <% else %>
+      <% if @title.present? || @description.present? %>
+        <div class="card__header">
+          <% if @title.present? %>
+            <div class="card__title"><%= @title %></div>
+          <% end %>
+
+          <% if @description.present? %>
+            <div class="card__description"><%= @description %></div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if body? %>
+      <div class="card__body"><%= body %></div>
+    <% elsif content? %>
+      <div class="card__body"><%= content %></div>
+    <% end %>
+
+    <% if footer? %>
+      <div class="card__footer"><%= footer %></div>
+    <% end %>
+  </div>
+<% end %>

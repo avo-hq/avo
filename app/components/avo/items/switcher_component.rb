@@ -1,13 +1,19 @@
 # frozen_string_literal: true
 
-class Avo::Items::SwitcherComponent < Avo::BaseComponent
-  include Turbo::FramesHelper
-
+class Avo::Items::SwitcherComponent < Avo::ResourceComponent
   attr_reader :resource
   attr_reader :reflection
   attr_reader :index
   attr_reader :item
   attr_reader :view
+
+  delegate :controls,
+    :title,
+    :back_path,
+    :edit_path,
+    :can_see_the_destroy_button?,
+    :can_see_the_save_button?,
+    to: :@parent_component
 
   def initialize(
     resource: nil,
@@ -73,7 +79,6 @@ class Avo::Items::SwitcherComponent < Avo::BaseComponent
       actions: @actions,
       form: form,
       index: index,
-      is_main_panel: item.is_main_panel?,
       item: item.hydrate(view: view),
       parent_component: @parent_component,
       parent_record: @parent_record,

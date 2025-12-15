@@ -84,10 +84,7 @@ module Avo
 
             render turbo_stream: [
               turbo_stream.replace("#{@resource.model_key}_body_content") do
-                Avo::Current.view_context.render Avo::ResourceBodyContentComponent.new(**common_args)
-              end,
-              turbo_stream.replace("#{@resource.model_key}_bare_content") do
-                Avo::Current.view_context.render Avo::ResourceBareContentComponent.new(
+                Avo::Current.view_context.render Avo::ResourceListingComponent.new(
                   **common_args,
                   turbo_frame: @turbo_frame,
                   index_params: @index_params
@@ -270,6 +267,12 @@ module Avo
     end
 
     private
+
+    def unprocessable_status
+      # :unprocessable_content was added in Rails 7.1
+      # Use it when available, fall back to :unprocessable_entity for older versions
+      (Rails.version.to_f >= 7.1) ? :unprocessable_content : :unprocessable_entity
+    end
 
     def save_record
       perform_action_and_record_errors do
@@ -494,7 +497,7 @@ module Avo
       flash.now[:error] = create_fail_message
 
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: unprocessable_status }
         format.turbo_stream { render "create_fail_action" }
       end
     end
@@ -532,7 +535,7 @@ module Avo
       flash.now[:error] = update_fail_message
 
       respond_to do |format|
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: unprocessable_status }
         format.turbo_stream { render "update_fail_action" }
       end
     end

@@ -17,7 +17,9 @@ RSpec.feature "StackedWrapperLayouts", type: :feature do
         it "displays the stacked layout" do
           subject
 
-          expect(field_wrapper(:first_name)[:class]).to include "field-wrapper-layout-stacked"
+          within("[data-item-index='4']") do
+            expect(page).to have_css("div.field-wrapper-layout-stacked")
+          end
         end
       end
     end
@@ -41,7 +43,9 @@ RSpec.feature "StackedWrapperLayouts", type: :feature do
         it "displays the stacked layout" do
           subject
 
-          expect(field_wrapper(:first_name)[:class]).to include "field-wrapper-layout-stacked"
+          within("[data-item-index='3']") do
+            expect(page).to have_css("div.field-wrapper-layout-stacked")
+          end
         end
       end
     end

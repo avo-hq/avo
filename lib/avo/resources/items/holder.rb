@@ -49,14 +49,13 @@ class Avo::Resources::Items::Holder
     add_item field_parser.instance
   end
 
-  def tabs(tab = nil, id: nil, name: nil, title: nil, description: nil, **args, &block)
+  def tabs(tab = nil, id: nil, title: nil, description: nil, **args, &block)
     if tab.present?
       add_item tab
     else
       add_item Avo::Resources::Items::TabGroup::Builder.parse_block(
         parent: @parent,
         id: id,
-        name: name,
         title: title,
         description: description,
         **args,
@@ -65,8 +64,8 @@ class Avo::Resources::Items::Holder
     end
   end
 
-  def tab(name, **args, &block)
-    add_item Avo::Resources::Items::Tab::Builder.parse_block(name: name, parent: @parent, **args, &block)
+  def tab(title, **args, &block)
+    add_item Avo::Resources::Items::Tab::Builder.parse_block(title: title, parent: @parent, **args, &block)
   end
 
   def cluster(**args, &block)
@@ -77,26 +76,31 @@ class Avo::Resources::Items::Holder
   alias_method :row, :cluster
 
   def tool(klass, **args)
-    add_item klass.new(**args, view: self.parent.view, parent: self.parent)
+    add_item klass.new(**args, view: parent.view, parent: parent)
   end
 
-  def panel(panel_name = nil, **args, &block)
-    add_item Avo::Resources::Items::ItemGroup::Builder.parse_block(name: panel_name, parent: @parent, **args, &block)
+  def panel(title: nil, **args, &block)
+    add_item Avo::Resources::Items::ItemGroup::Builder.parse_block(title: title, parent: @parent, **args, &block)
   end
 
-  # The main panel is the one that also render the header of the resource with the breadcrumbs, the title and the controls.
-  def main_panel(**args, &block)
-    add_item Avo::Resources::Items::MainPanel::Builder.parse_block(name: "main_panel", parent: @parent, **args, &block)
+  def card(title: nil, **args, &block)
+    add_item Avo::Resources::Items::Card::Builder.parse_block(title: title, parent: @parent, **args, &block)
+  end
+
+  def header(**args, &block)
+    add_item Avo::Resources::Items::Header.new(**args)
   end
 
   def sidebar(**args, &block)
-    return if Rails.env.production?
+    check_sidebar_is_inside_a_panel
 
-    Avo.error_manager.add({
-      url: "https://docs.avohq.io/3.0/resource-sidebar.html",
-      target: "_blank",
-      message: "The sidebar is available exclusively with the Pro license or above. Consider upgrading to access this feature."
-    })
+    add_item Avo::Resources::Items::Sidebar::Builder.parse_block(parent: @parent, **args, &block)
+  end
+
+  def check_sidebar_is_inside_a_panel
+    unless @from.eql?(Avo::Resources::Items::Panel::Builder) || @from.eql?(Avo::Resources::Items::MainPanel::Builder)
+      raise "The sidebar must be inside a panel."
+    end
   end
 
   def add_item(instance)

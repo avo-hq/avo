@@ -18,58 +18,62 @@ class Avo::Resources::Team < Avo::BaseResource
   }
 
   def fields
-    main_panel do
-      field :preview, as: :preview
+    panel do
+      card do
+        field :preview, as: :preview
 
-      unless params[:hide_id]
-        field :id, as: :id, filterable: true
-      end
-      field :name, as: :text, sortable: true, show_on: :preview, filterable: true, html: -> do
-        index do
-          wrapper do
-            style do
-              if record.color
-                "color: #{record.color}"
+        unless params[:hide_id]
+          field :id, as: :id, filterable: true
+        end
+        field :name, as: :text, sortable: true, show_on: :preview, filterable: true, html: -> do
+          index do
+            wrapper do
+              style do
+                if record.color
+                  "color: #{record.color}"
+                end
               end
             end
           end
         end
-      end
-      field :logo, as: :external_image, hide_on: :show do
-        if record&.url
-          "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
-        end
-      rescue
-        "nope"
-      end
-      field :created_at, as: :date_time, filterable: true
-      field :color, as: :color_pickerrr, hide_on: :index, show_on: :preview
-      field :invalid, as: :invalid_field
-      field :description,
-        as: :textarea,
-        rows: 5,
-        readonly: false,
-        hide_on: :index,
-        format_using: -> { value.to_s.truncate 30 },
-        default: "This is a wonderful team!",
-        filterable: true,
-        nullable: true,
-        null_values: ["0", "", "null", "nil"],
-        show_on: :preview
-
-      field :members_count, as: :number do
-        record.team_members.length
-      end
-
-      # sidebar do
-        field :url, as: :text
-        field :created_at, as: :date_time, hide_on: :forms
-        field :logo, as: :external_image do
+        field :logo, as: :external_image, hide_on: :show do
           if record&.url
             "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
           end
+        rescue
+          "nope"
         end
-      # end
+        field :created_at, as: :date_time, filterable: true
+        field :color, as: :color_pickerrr, hide_on: :index, show_on: :preview
+        field :invalid, as: :invalid_field
+        field :description,
+          as: :textarea,
+          rows: 5,
+          readonly: false,
+          hide_on: :index,
+          format_using: -> { value.to_s.truncate 30 },
+          default: "This is a wonderful team!",
+          filterable: true,
+          nullable: true,
+          null_values: ["0", "", "null", "nil"],
+          show_on: :preview
+
+        field :members_count, as: :number do
+          record.team_members.length
+        end
+      end
+
+      sidebar do
+        card title: "Other information" do
+          field :url, as: :text
+          field :created_at, as: :date_time, hide_on: :forms
+          field :logo, as: :external_image do
+            if record&.url
+              "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
+            end
+          end
+        end
+      end
     end
 
     field :memberships,

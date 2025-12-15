@@ -1,0 +1,63 @@
+<turbo-frame id="<%= "#{@resource.model_key}_list" %>" target="_top" class="relative w-full">
+  <div
+    class="card relative w-full"
+    data-component-name="<%= self.class.to_s.underscore %>"
+    data-controller="item-select-all"
+    data-resource-name="<%= @resource.model_key %>"
+    data-item-select-all-selected-all-value="false"
+    data-item-select-all-selected-all-query-value="<%= encrypted_query %>"
+    data-item-select-all-page-count-value="<%= @pagy.pages %>"
+    data-selected-resources-name="<%= @resource.model_key %>"
+    data-selected-resources="[]"
+  >
+    <div class="card__wrapper mac-styled-scrollbar overflow-auto">
+      <% if @pagy.pages > 1 %>
+        <div
+          class="absolute z-30 ml-10 hidden w-[calc(100%-2.5rem)] pt-px"
+          data-item-select-all-target="selectAllOverlay"
+        >
+          <div class="mt-0.5 flex h-9 items-center bg-white">
+            <div class="mt-1.5" data-item-select-all-target="unselectedMessage">
+              <%= selected_page_label %>
+
+              <%= a_link request.url,
+                size: :xs,
+                color: :primary,
+                class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
+                data: {action: "click->item-select-all#selectAll"} do %>
+                <%= t "avo.select_all_matching" %>
+              <% end %>
+            </div>
+
+            <div class="mt-1.5 hidden" data-item-select-all-target="selectedMessage">
+              <%= selected_all_label %>
+
+              <%= a_link request.url,
+                size: :xs,
+                color: :primary,
+                class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
+                data: {action: "click->item-select-all#selectAll"} do %>
+                <%= t("avo.undo").humanize %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <table class="w-full border-separate border-spacing-0">
+        <%= render partial: 'avo/partials/table_header', locals: {fields: @header_fields, resource: @resource} %>
+
+        <%= content_tag :tbody, class: "card__body table-row-group rounded-lg tr>td:first:rounded-t-lg tr>td:last:rounded-b-lg",
+          data: {
+            **(try(:drag_reorder_data_attributes) || {}),
+          } do %>
+          <% @table_row_components.each do |table_row_component| %>
+            <%= render table_row_component %>
+          <% end %>
+        <% end %>
+      </table>
+    </div>
+
+    <div class="card__footer w-full p-2"><%= render paginator_component %></div>
+  </div>
+</turbo-frame>

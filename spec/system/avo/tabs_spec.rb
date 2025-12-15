@@ -66,7 +66,7 @@ RSpec.describe "Tabs", type: :system do
         visit avo.edit_resources_user_path user
 
         # Birthday not visible on the first panel
-        expect(find_all('[data-panel-index="0"]').first).not_to have_text "Birthday"
+        expect(find_all('[data-item-index="0"]').first).not_to have_text "Birthday"
 
         scroll_to first_tab_group
 
@@ -174,10 +174,10 @@ RSpec.describe "Tabs", type: :system do
     visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Main comment"]').click
-    expect(page).not_to have_text 'Invalid DateTime'
+    expect(page).not_to have_text "Invalid DateTime"
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Created at"]').click
-    expect(page).not_to have_text 'Invalid DateTime'
+    expect(page).not_to have_text "Invalid DateTime"
   end
 
   it "keeps the pagination on tab when back is used" do

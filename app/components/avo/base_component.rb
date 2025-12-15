@@ -4,11 +4,13 @@ class Avo::BaseComponent < ViewComponent::Base
   extend PropInitializer::Properties
   include Turbo::FramesHelper
   include Avo::Concerns::FindAssociationField
+  include Avo::ApplicationHelper
 
   delegate :e, to: :helpers
   delegate :d, to: :helpers
   delegate :main_app, to: :helpers
   delegate :avo, to: :helpers
+  delegate :ui, to: :helpers
 
   def component_name = self.class.name.to_s.underscore
 

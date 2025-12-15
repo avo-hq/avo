@@ -15,7 +15,7 @@ PATH
       avo-icons (>= 0.1.1)
       docile
       meta-tags
-      pagy (>= 7.0.0)
+      pagy (>= 7.0.0, < 43)
       prop_initializer (>= 0.2.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
@@ -810,7 +810,6 @@ DEPENDENCIES
   money-rails (~> 1.12)
   net-smtp
   openssl
-  pagy (> 8)
   pg (>= 0.18, < 2.0)
   pluggy!
   prefixed_ids

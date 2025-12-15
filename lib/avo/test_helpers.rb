@@ -28,7 +28,7 @@ module Avo
     #   show_field_wrapper(id: "name", type: "text")
     #   show_field_wrapper(id: "name")
     def show_field_wrapper(id:, type: nil)
-      base_data = "[data-panel-id='main'] [data-field-id='#{id}']"
+      base_data = "[data-field-id='#{id}']"
 
       if type.present?
         find("#{base_data}[data-resource-show-target='#{wrapper_name_for(id: id, type: type)}']")
@@ -201,7 +201,7 @@ module Avo
     end
 
     def close_picker
-      find('[data-target="title"]').trigger("click")
+      all(".header__title").first.trigger("click")
       sleep 0.3
     end
 
@@ -213,7 +213,7 @@ module Avo
     #   open_panel_action(list: nil, action_name: "Release fish")
     #   open_panel_action(list: "Runnables", action_name: "Release fish")
     def open_panel_action(action_name:, list: "Actions")
-      open_action(action_name: action_name, list: list, context: first("[data-target='panel-tools']"))
+      open_action(action_name: action_name, list: list, context: first(".header__controls"))
     end
 
     # Open the action from the record_id row

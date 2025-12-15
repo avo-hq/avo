@@ -58,7 +58,7 @@ Avo.configure do |config|
       100 => "#CEE7F8",
       400 => "#399EE5",
       500 => "#0886DE",
-      600 => "#066BB2",
+      600 => "#066BB2"
       # # ORANGE
       # 100 => "#FFECCC",
       # 400 => "#FFB435",

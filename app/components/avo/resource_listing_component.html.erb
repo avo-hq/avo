@@ -1,0 +1,22 @@
+<%= content_tag :div, id: "#{@resource.model_key}_body_content" do %>
+  <%= render Avo::SearchOverlayComponent.new %>
+
+  <% if @resources.present? %>
+    <div class="relative mt-0 flex w-full flex-1">
+      <%= render(@resource.resolve_component(specific_view_component).new(
+        resources: @resources,
+        resource: @resource,
+        reflection: @reflection,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource,
+        pagy: @pagy,
+        query: @query,
+        actions: @actions,
+        turbo_frame: @turbo_frame,
+        index_params: @index_params
+      )) %>
+    </div>
+  <% else %>
+    <%= helpers.empty_state by_association: params[:related_name].present?, view_type: @resource.view_type, add_background: true %>
+  <% end %>
+<% end %>

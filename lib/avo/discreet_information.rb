@@ -55,7 +55,7 @@ class Avo::DiscreetInformation
     end
 
     {
-      tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
+      title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
       icon: "heroicons/outline/clock",
       as:
     }
@@ -75,7 +75,7 @@ class Avo::DiscreetInformation
     return unless visible
 
     {
-      tooltip: Avo::ExecutionContext.new(target: item[:tooltip], **args).handle,
+      title: Avo::ExecutionContext.new(target: item[:title], **args).handle,
       icon: Avo::ExecutionContext.new(target: item[:icon], **args).handle,
       url: Avo::ExecutionContext.new(target: item[:url], **args).handle,
       target: Avo::ExecutionContext.new(target: item[:target], **args).handle,

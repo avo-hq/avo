@@ -1,0 +1,43 @@
+.panel {
+  @apply flex flex-col gap-y-4 w-full;
+}
+
+.panel__header {
+  @apply w-full;
+}
+
+.panel__footer {
+  @apply w-full;
+}
+
+.panel__content {
+  @apply flex flex-col md:flex-row gap-4;
+}
+
+.panel__card,
+.panel__body {
+  @apply w-full;
+}
+
+.panel__sidebar {
+  @apply w-full md:w-1/3;
+}
+
+.panel--has-sidebar {
+  .panel__body {
+    @apply w-full;
+  }
+}
+
+.panel__cover-photo {
+  @apply w-full;
+}
+
+.panel--floating-sidebar {
+}
+
+.panel--full-width {
+  .panel__body {
+    @apply w-full;
+  }
+}

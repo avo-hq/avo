@@ -1,0 +1,52 @@
+.header {
+  @apply flex flex-col gap-2 items-start justify-center pr-0 py-0 !mb-0;
+}
+
+.header__main {
+  @apply flex flex-col sm:flex-row gap-4 items-center w-full;
+}
+
+.header__content {
+  @apply flex gap-3 items-center grow shrink basis-0 min-h-px min-w-px;
+}
+
+.header__avatar {
+  @apply shrink-0;
+}
+
+.header__text {
+  @apply flex flex-col gap-0.5 items-start grow shrink basis-0 min-h-px min-w-px not-italic;
+}
+
+.header__title {
+  @apply font-medium leading-6 overflow-ellipsis overflow-hidden w-full text-text-primary;
+  font-size: 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.header__description {
+  @apply font-normal leading-5 overflow-ellipsis overflow-hidden w-full text-text-secondary;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.header__controls {
+  @apply flex gap-3 items-center cursor-pointer shrink-0;
+}
+
+.header__discreet-information {
+  @apply flex justify-center sm:justify-start gap-2 items-start w-full;
+}
+
+/* Size variants */
+.header--size-medium {
+  /* Default styles already applied */
+}
+
+.header--size-small {
+  /* Small variant uses same structure but can have different spacing if needed */
+}

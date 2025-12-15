@@ -10,7 +10,7 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
   prop :as, default: :text
   prop :url
   prop :target
-  prop :tooltip
+  prop :title
   prop :data
 
   def as_icon?
@@ -29,4 +29,3 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
     @as == :key_value
   end
 end
-

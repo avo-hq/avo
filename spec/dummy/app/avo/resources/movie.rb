@@ -266,16 +266,22 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
   end
 
   def fields
-    main_panel do
-      field :id, as: :id
-      field :name, as: :text
-      field :release_date, as: :date
-      field :fun_fact, only_on: :index, visible: -> { resource.record&.fun_fact.present? } do
-        record.fun_fact.truncate_words(10)
+    panel do
+      card do
+        field :id, as: :id
+        field :name, as: :text
+        field :release_date, as: :date
+        field :fun_fact, only_on: :index, visible: -> { resource.record&.fun_fact.present? } do
+          record.fun_fact.truncate_words(10)
+        end
       end
 
-      field :fun_fact, only_on: :show do
-        record.fun_fact || "There is no register of a fun fact for #{record.name}"
+      sidebar do
+        card do
+          field :fun_fact, as: :text do
+            record.fun_fact || "There is no register of a fun fact for #{record.name}"
+          end
+        end
       end
     end
 

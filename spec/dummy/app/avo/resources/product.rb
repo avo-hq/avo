@@ -40,24 +40,35 @@ class Avo::Resources::Product < Avo::BaseResource
   }
 
   def fields
-    field :id, as: :id
-    field :title, as: :text, html: {
-      show: {
-        label: {
-          classes: "bg-gray-50 !text-pink-600"
-        },
-        content: {
-          classes: "bg-gray-50 !text-pink-600"
-        },
-        wrapper: {
-          classes: "bg-gray-50"
+    panel do
+      card do
+        field :id, as: :id
+        field :title, as: :text, html: {
+          show: {
+            label: {
+              classes: "bg-gray-50 !text-pink-600"
+            },
+            content: {
+              classes: "bg-gray-50 !text-pink-600"
+            },
+            wrapper: {
+              classes: "bg-gray-50"
+            }
+          }
         }
-      }
-    }
-    field :price, as: :money, currencies: %w[EUR USD RON PEN]
-    field :description, as: :tiptap, placeholder: "Enter text", always_show: false
-    field :image, as: :file, is_image: true
-    field :category, as: :select, enum: ::Product.categories
-    field :sizes, as: :select, multiple: true, options: {Large: :large, Medium: :medium, Small: :small}
+        field :price, as: :money, currencies: %w[EUR USD RON PEN]
+        field :description, as: :tiptap, placeholder: "Enter text", always_show: false
+        field :image, as: :file, is_image: true
+        field :category, as: :select, enum: ::Product.categories
+        field :sizes, as: :select, multiple: true, options: {Large: :large, Medium: :medium, Small: :small}
+      end
+
+      sidebar do
+        tool Avo::ResourceTools::ProductInfo
+        card do
+          field :rating, as: :stars
+        end
+      end
+    end
   end
 end

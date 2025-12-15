@@ -6,23 +6,32 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
   before do
     Avo::Resources::User.with_temporary_items do
-      main_panel do
-        discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
+      panel do
+        card do
+          discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
+        end
+
         discover_associations only: %i[cv_attachment]
 
-        # sidebar do
-          discover_columns only: %i[email], as: :gravatar, link_to_record: true, only_on: :show
-          field :heading, as: :heading, label: "", only_on: :show
-          discover_columns only: %i[active], name: "Is active", only_on: :show
+        sidebar do
+          card do
+            with_options only_on: :show do
+              discover_columns only: %i[email], as: :gravatar, link_to_record: true
+              field :heading, as: :heading, label: ""
+              discover_columns only: %i[active], name: "Is active"
+            end
 
-          discover_columns only: %i[birthday]
+            discover_columns only: %i[birthday]
 
-          field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-          field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
+            field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
+            field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
 
-          field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true, only_on: :forms
-          discover_columns only: %i[custom_css], only_on: :forms
-        # end
+            with_options only_on: :forms do
+              field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+              discover_columns only: %i[custom_css]
+            end
+          end
+        end
       end
 
       discover_associations only: %i[posts]
@@ -56,9 +65,9 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     end
 
     it "displays the email as a gravatar field with a link to the record" do
-      # within(".resource-sidebar-component") do
+      within(".resource-sidebar-component") do
         expect(page).to have_css("img") # Check for avatar
-      # end
+      end
     end
 
     it "displays discovered associations correctly" do
@@ -81,7 +90,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       within(".main-content-area") do
-        within("[data-panel-id='main']") do
+        within("[data-item-index='2']") do
           # Basic fields
           ## Main Panel
           expect(page).to have_text("FIRST NAME", count: 1)
@@ -271,7 +280,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     it "displays polymorphic association correctly" do
       wait_for_loaded
 
-      within("[data-panel-id='main']") do
+      within("[data-item-index='2']") do
         expect(page).to have_text("COMMENTABLE")
         expect(page).to have_link(post.name, href: /\/admin\/resources\/posts\//)
       end
@@ -284,7 +293,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     it "does not display sensitive fields" do
       wait_for_loaded
 
-      within("[data-panel-id='main']") do
+      within("[data-item-index='2']") do
         expect(page).not_to have_text("ENCRYPTED_PASSWORD")
         expect(page).not_to have_text("RESET_PASSWORD_TOKEN")
         expect(page).not_to have_text("REMEMBER_CREATED_AT")
