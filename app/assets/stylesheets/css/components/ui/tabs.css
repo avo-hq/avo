@@ -73,9 +73,14 @@
     background-color: transparent;
   }
 
-  /* Element: tabs__item-wrapper (for scope variant) */
+  /* Element: tabs__item-wrapper */
   .tabs__item-wrapper {
     @apply inline-block py-2;
+  }
+
+  /* Modifier: tabs__item-wrapper--group */
+  .tabs__item-wrapper--group {
+    @apply flex items-center justify-center;
   }
 
   /* Modifier: tabs__item-wrapper--scope */

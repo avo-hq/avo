@@ -53,7 +53,7 @@ module Avo
           active_class = @active ? default_active_class : default_inactive_class
           "#{base} #{active_class}"
         else
-          "flex items-center justify-center"
+          "tabs__item-wrapper tabs__item-wrapper--group"
         end
       end
 
