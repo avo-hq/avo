@@ -1,0 +1,184 @@
+/* Badge Component - Based on Figma Design System */
+/* BEM Methodology: .badge (block), .badge__icon, .badge__label (elements), .badge--modifier (modifiers) */
+
+.badge {
+  /* Layout */
+  @apply inline-flex items-center justify-center;
+  height: var(--spacing-6, 24px);
+  padding: var(--spacing-05, 2px) var(--spacing-2, 8px);
+  gap: var(--spacing-05, 2px);
+
+  /* Style */
+  border-radius: var(--rounded-md, 6px);
+  background: var(--color-surface-secondary, #f6f6f6);
+
+  /* Typography */
+  color: var(--color-text-primary, #171717);
+  @apply text-center font-medium leading-4;
+  font-family: Inter;
+  font-size: var(--text-xs, 12px);
+
+  /* Interactions */
+  @apply transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+/* Badge elements */
+.badge__icon {
+  @apply shrink-0 w-3 h-3;
+}
+
+.badge__label {
+  @apply truncate;
+}
+
+/* Icon-only modifier (circular badges) */
+.badge--icon-only {
+  @apply w-5 h-5 p-0 rounded-full flex items-center justify-center;
+}
+
+/* Color definitions using CSS custom properties */
+.badge--subtle,
+.badge--solid {
+  --badge-bg: var(--color-surface-secondary, #f6f6f6);
+  --badge-text: var(--color-text-primary, #171717);
+  --badge-icon: var(--color-text-primary, #171717);
+}
+
+/* Default/Secondary - Subtle */
+.badge--subtle.badge--default,
+.badge--subtle.badge--secondary {
+  --badge-bg: var(--color-surface-secondary, var(--color-avo-neutral-50, #f6f6f6));
+  --badge-text: var(--color-text-primary, var(--color-avo-neutral-950, #171717));
+  --badge-icon: var(--color-text-primary, var(--color-avo-neutral-950, #171717));
+}
+
+/* Semantic colors - Subtle */
+.badge--subtle.badge--success {
+  --badge-bg: var(--color-semantic-surface-success, var(--color-success-100, #d3f8e0));
+  --badge-text: var(--color-semantic-text-success, var(--color-success-600, #0d8e54));
+  --badge-icon: var(--icon-semantic-icon-success, var(--color-success-600, #0d8e54));
+}
+
+.badge--subtle.badge--informative {
+  --badge-bg: var(--color-semantic-surface-informative, var(--color-informative-100, #d6f1ff));
+  --badge-text: var(--color-semantic-text-informative, var(--color-informative-600, #068aff));
+  --badge-icon: var(--icon-semantic-icon-informative, var(--color-informative-600, #068aff));
+}
+
+.badge--subtle.badge--warning {
+  --badge-bg: var(--color-semantic-surface-warning, var(--color-warning-100, #ffefc6));
+  --badge-text: var(--color-semantic-text-warning, var(--color-warning-600, #db6704));
+  --badge-icon: var(--icon-semantic-icon-warning, var(--color-warning-600, #db6704));
+}
+
+.badge--subtle.badge--error {
+  --badge-bg: var(--color-semantic-surface-error, var(--color-error-100, #fee4e2));
+  --badge-text: var(--color-semantic-text-error, var(--color-error-600, #de3024));
+  --badge-icon: var(--icon-semantic-icon-error, var(--color-error-600, #de3024));
+}
+
+/* Accent colors - Subtle */
+.badge--subtle.badge--orange {
+  --badge-bg: var(--color-accent-orange, var(--color-orange-100, #ffedd5));
+  --badge-text: var(--color-accent-text-orange, var(--color-orange-700, #c2410c));
+  --badge-icon: var(--icon-accent-icon-orange, var(--color-orange-700, #c2410c));
+}
+
+.badge--subtle.badge--yellow {
+  --badge-bg: var(--color-accent-yellow, var(--color-yellow-100, #fef9c3));
+  --badge-text: var(--color-accent-text-yellow, var(--color-yellow-700, #a16207));
+  --badge-icon: var(--icon-accent-icon-yellow, var(--color-yellow-700, #a16207));
+}
+
+.badge--subtle.badge--green {
+  --badge-bg: var(--color-accent-green, var(--color-green-100, #dcfce7));
+  --badge-text: var(--color-accent-text-green, var(--color-green-700, #15803d));
+  --badge-icon: var(--icon-accent-icon-green, var(--color-green-700, #15803d));
+}
+
+.badge--subtle.badge--teal {
+  --badge-bg: var(--color-accent-teal, var(--color-teal-100, #ccfbf1));
+  --badge-text: var(--color-accent-text-teal, var(--color-teal-700, #0f766e));
+  --badge-icon: var(--icon-accent-icon-teal, var(--color-teal-700, #0f766e));
+}
+
+.badge--subtle.badge--blue {
+  --badge-bg: var(--color-accent-blue, var(--color-blue-100, #dbeafe));
+  --badge-text: var(--color-accent-text-blue, var(--color-blue-700, #1d4ed8));
+  --badge-icon: var(--icon-accent-icon-blue, var(--color-blue-700, #1d4ed8));
+}
+
+.badge--subtle.badge--purple {
+  --badge-bg: var(--color-accent-purple, var(--color-purple-100, #f3e8ff));
+  --badge-text: var(--color-accent-text-purple, var(--color-purple-700, #7e22ce));
+  --badge-icon: var(--icon-accent-icon-purple, var(--color-purple-700, #7e22ce));
+}
+
+/* Accent colors - Solid */
+.badge--solid.badge--orange {
+  --badge-bg: var(--color-accent-orange-secondary, var(--color-orange-400, #fb923c));
+  --badge-text: var(--color-text-invert, var(--color-avo-neutral-50, #f6f6f6));
+  --badge-icon: var(--icon-icon-invert, var(--color-avo-neutral-50, #f6f6f6));
+}
+
+.badge--solid.badge--yellow {
+  --badge-bg: var(--color-accent-yellow-secondary, var(--color-yellow-400, #facc15));
+  --badge-text: var(--color-text-invert, var(--color-avo-neutral-50, #f6f6f6));
+  --badge-icon: var(--icon-icon-invert, var(--color-avo-neutral-50, #f6f6f6));
+}
+
+.badge--solid.badge--green {
+  --badge-bg: var(--color-accent-green-secondary, var(--color-green-500, #22c55e));
+  --badge-text: var(--color-text-invert, var(--color-avo-neutral-50, #f6f6f6));
+  --badge-icon: var(--icon-icon-invert, var(--color-avo-neutral-50, #f6f6f6));
+}
+
+.badge--solid.badge--teal {
+  --badge-bg: var(--color-accent-teal-secondary, var(--color-teal-400, #2dd4bf));
+  --badge-text: var(--color-text-invert, var(--color-avo-neutral-50, #f6f6f6));
+  --badge-icon: var(--icon-icon-invert, var(--color-avo-neutral-50, #f6f6f6));
+}
+
+.badge--solid.badge--blue {
+  --badge-bg: var(--color-accent-blue-secondary, var(--color-blue-500, #3b82f6));
+  --badge-text: var(--color-text-invert, var(--color-avo-neutral-50, #f6f6f6));
+  --badge-icon: var(--icon-icon-invert, var(--color-avo-neutral-50, #f6f6f6));
+}
+
+.badge--solid.badge--purple {
+  --badge-bg: var(--color-accent-purple-secondary, var(--color-purple-500, #a855f7));
+  --badge-text: var(--color-text-invert, var(--color-avo-neutral-50, #f6f6f6));
+  --badge-icon: var(--icon-icon-invert, var(--color-avo-neutral-50, #f6f6f6));
+}
+
+/* Apply color variables */
+.badge--subtle,
+.badge--solid {
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
+}
+
+.badge--subtle .badge__icon,
+.badge--solid .badge__icon {
+  color: var(--badge-icon);
+}
+
+/* Icon-only badges (circular) - Success and Error only */
+.badge--icon-only.badge--success {
+  --badge-bg: var(--color-semantic-surface-success, var(--color-success-100, #d3f8e0));
+  --badge-icon: var(--icon-semantic-icon-success, var(--color-success-600, #0d8e54));
+  background-color: var(--badge-bg);
+  border: 1px solid var(--color-semantic-text-success, var(--color-success-600, #0d8e54));
+}
+
+.badge--icon-only.badge--error {
+  --badge-bg: var(--color-semantic-surface-error, var(--color-error-100, #fee4e2));
+  --badge-icon: var(--icon-semantic-icon-error, var(--color-error-600, #de3024));
+  background-color: var(--badge-bg);
+  border: 1px solid var(--color-semantic-text-error, var(--color-error-600, #de3024));
+}
+
+.badge--icon-only.badge--success .badge__icon,
+.badge--icon-only.badge--error .badge__icon {
+  color: var(--badge-icon);
+}

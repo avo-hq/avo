@@ -1,9 +1,11 @@
-<span class="<%= badge_classes %>" style="<%= badge_style %>"<%= tag.attributes(options) %>>
-  <%= render_icon_content if icon.present? && icon_position == "left" %>
+<span class="<%= badge_classes %>">
+  <% if icon_only? %>
+    <%= helpers.svg(icon, class: icon_classes) if icon.present? %>
+  <% else %>
+    <%= render_icon_content if icon.present? %>
 
-  <% if label.present? %>
-    <span class="truncate"><%= label %></span>
+    <% if label.present? %>
+      <span class="badge__label"><%= label %></span>
+    <% end %>
   <% end %>
-
-  <%= render_icon_content_right if icon.present? && icon_position == "right" %>
 </span>

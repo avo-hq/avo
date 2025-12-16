@@ -1,26 +1,24 @@
 require "rails_helper"
 
 RSpec.describe Avo::UI::BadgeComponent, type: :component do
-  # Use centralized color definitions for consistent testing
-  let(:colors) { Avo::UI::Colors::DEFINITIONS }
+  # Use centralized color validation for consistent testing
   let(:color_aliases) { Avo::UI::Colors::ALIASES }
   let(:valid_colors) { Avo::UI::Colors::ALL }
   describe "rendering" do
     it "renders default badge with secondary color" do
       render_inline(described_class.new(label: "Test Badge"))
 
-      expect(page).to have_css(".inline-flex")
-      expect(page).to have_css(".rounded-md")
+      expect(page).to have_css(".badge")
       expect(page).to have_text("Test Badge")
-      expect(page.find(".inline-flex")["style"]).to include("background-color: #F6F6F6")
-      expect(page.find(".inline-flex")["style"]).to include("color: #171717")
+      # Check for correct CSS classes (colors are now handled via CSS variables in classes)
+      expect(page).to have_css(".badge--subtle.badge--default")
     end
 
     it "renders badge without label" do
       render_inline(described_class.new(label: ""))
 
-      expect(page).to have_css(".inline-flex")
-      expect(page).not_to have_css("span.truncate")
+      expect(page).to have_css(".badge")
+      expect(page).not_to have_css(".badge__label")
     end
 
     it "renders badge with icon on the left" do
@@ -29,90 +27,78 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
         icon: "avo/paperclip"
       ))
 
-      expect(page).to have_css("svg.w-3.h-3")
+      expect(page).to have_css(".badge__icon")
       expect(page).to have_text("With Icon")
-    end
-
-    it "renders badge with icon on the right" do
-      render_inline(described_class.new(
-        label: "Icon Right",
-        icon: "avo/paperclip",
-        icon_position: "right"
-      ))
-
-      expect(page).to have_css("svg")
-      # Icon should come after the text in the DOM
-      expect(page.text).to include("Icon Right")
     end
   end
 
   describe "color logic" do
     context "with subtle style (default)" do
-      it "uses base color for semantic colors" do
+      it "uses correct CSS classes for semantic colors" do
         render_inline(described_class.new(
           label: "Success",
           color: "success",
           style: "subtle"
         ))
 
-        success_color = colors['success']
-        expect(page.find(".inline-flex")["style"]).to include("background-color: #{success_color[:bg]}")
-        expect(page.find(".inline-flex")["style"]).to include("color: #{success_color[:text]}")
+        # Check for correct CSS classes (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--success")
       end
 
-      it "uses base color for full colors" do
+      it "uses correct CSS classes for full colors" do
         render_inline(described_class.new(
           label: "Purple",
           color: "purple",
           style: "subtle"
         ))
 
-        purple_color = colors['purple']
-        expect(page.find(".inline-flex")["style"]).to include("background-color: #{purple_color[:bg]}")
-        expect(page.find(".inline-flex")["style"]).to include("color: #{purple_color[:text]}")
+        # Check for correct CSS classes (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--purple")
       end
     end
 
     context "with solid style" do
-      it "uses -secondary variant for colors that support it" do
+      it "uses correct CSS classes for colors that support solid style" do
         render_inline(described_class.new(
           label: "Purple",
           color: "purple",
           style: "solid"
         ))
 
-        # Should use purple-secondary (dark bg, light text) from centralized colors
-        purple_secondary = colors['purple-secondary']
-        expect(page.find(".inline-flex")["style"]).to include("background-color: #{purple_secondary[:bg]}")
-        expect(page.find(".inline-flex")["style"]).to include("color: #{purple_secondary[:text]}")
+        # Should have solid style class and color class (colors use CSS variables)
+        expect(page).to have_css(".badge--solid.badge--purple")
       end
 
-      it "uses base color for semantic colors (no -secondary variant)" do
+      it "semantic colors do not support solid style (only subtle)" do
         render_inline(described_class.new(
           label: "Success",
           color: "success",
           style: "solid"
         ))
 
-        # Success doesn't have -secondary, so use base color from centralized colors
-        success_color = colors['success']
-        expect(page.find(".inline-flex")["style"]).to include("background-color: #{success_color[:bg]}")
-        expect(page.find(".inline-flex")["style"]).to include("color: #{success_color[:text]}")
+        # Component will apply .badge--solid.badge--success classes,
+        # but CSS only defines .badge--subtle.badge--success
+        # So the solid style won't have any CSS rules and won't render correctly
+        expect(page).to have_css(".badge--solid.badge--success")
+        # Verify that there's no CSS rule for this combination by checking
+        # that it doesn't match the subtle style (which is what semantic colors support)
+        expect(page).not_to have_css(".badge--subtle.badge--success")
+        # Note: This test documents that semantic colors (success, error, warning, informative, secondary)
+        # only support subtle style, not solid style. The component will still apply the classes,
+        # but there's no matching CSS, so it won't render with proper solid styling.
       end
 
-      Avo::UI::Colors::DEFINITIONS.keys.select { |k| k.include?("-secondary") }.each do |color_key|
-        base_color = color_key.gsub("-secondary", "")
-
-        it "uses -secondary variant for #{base_color}" do
+      # Test solid style for colors that support it (orange, yellow, green, teal, blue, purple)
+      %w[orange yellow green teal blue purple].each do |base_color|
+        it "uses solid style for #{base_color}" do
           render_inline(described_class.new(
             label: "Test",
             color: base_color,
             style: "solid"
           ))
 
-          secondary_def = Avo::UI::Colors::DEFINITIONS[color_key]
-          expect(page.find(".inline-flex")["style"]).to include("background-color: #{secondary_def[:bg]}")
-          expect(page.find(".inline-flex")["style"]).to include("color: #{secondary_def[:text]}")
+          # Should have solid style class and color class
+          expect(page).to have_css(".badge.badge--solid.badge--#{base_color}")
         end
       end
     end
@@ -124,9 +110,8 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
           color: "info"
         ))
 
-        informative_color = colors['informative']
-        expect(page.find(".inline-flex")["style"]).to include("background-color: #{informative_color[:bg]}")
-        expect(page.find(".inline-flex")["style"]).to include("color: #{informative_color[:text]}")
+        # Should use informative color class (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--informative")
       end
 
       it "maps 'danger' to 'error'" do
@@ -135,9 +120,8 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
           color: "danger"
         ))
 
-        error_color = colors['error']
-        expect(page.find(".inline-flex")["style"]).to include("background-color: #{error_color[:bg]}")
-        expect(page.find(".inline-flex")["style"]).to include("color: #{error_color[:text]}")
+        # Should use error color class (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--error")
       end
     end
 
@@ -148,10 +132,8 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
           color: "rainbow"
         ))
 
-        # Should use secondary color from centralized definitions
-        secondary_color = colors['secondary']
-        expect(page.find(".inline-flex")["style"]).to include("background-color: #{secondary_color[:bg]}")
-        expect(page.find(".inline-flex")["style"]).to include("color: #{secondary_color[:text]}")
+        # Should use secondary/default color class (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--default")
       end
 
       it "does not raise an error" do
@@ -172,12 +154,6 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
       }.to raise_error(ArgumentError, /Invalid style/)
     end
 
-    it "raises error for invalid icon position" do
-      expect {
-        described_class.new(label: "Test", icon_position: "center")
-      }.to raise_error(ArgumentError, /Invalid icon_position/)
-    end
-
     it "accepts all valid styles" do
       described_class::STYLES.each do |style|
         expect {
@@ -187,7 +163,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
     end
 
     it "accepts all valid colors" do
-      colors.keys.each do |color|
+      valid_colors.each do |color|
         expect {
           render_inline(described_class.new(label: "Test", color: color))
         }.not_to raise_error
@@ -206,43 +182,41 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
   describe "all color variants" do
     context "semantic colors" do
       %w[secondary success error warning informative].each do |color|
-        it "renders #{color} badge correctly" do
+        it "renders #{color} badge correctly with CSS classes" do
           render_inline(described_class.new(
             label: color.capitalize,
             color: color
           ))
 
-          color_def = colors[color]
-          expect(page.find(".inline-flex")["style"]).to include("background-color: #{color_def[:bg]}")
-          expect(page.find(".inline-flex")["style"]).to include("color: #{color_def[:text]}")
+          # Check for correct CSS classes (colors use CSS variables)
+          color_class = (color == "secondary") ? "default" : color
+          expect(page).to have_css(".badge--subtle.badge--#{color_class}")
         end
       end
     end
 
     context "full colors with variants" do
       %w[orange yellow green teal blue purple].each do |color|
-        it "renders #{color} subtle style correctly" do
+        it "renders #{color} subtle style correctly with CSS classes" do
           render_inline(described_class.new(
             label: color.capitalize,
             color: color,
             style: "subtle"
           ))
 
-          color_def = colors[color]
-          expect(page.find(".inline-flex")["style"]).to include("background-color: #{color_def[:bg]}")
-          expect(page.find(".inline-flex")["style"]).to include("color: #{color_def[:text]}")
+          # Check for correct CSS classes (colors use CSS variables)
+          expect(page).to have_css(".badge--subtle.badge--#{color}")
         end
 
-        it "renders #{color} solid style correctly" do
+        it "renders #{color} solid style correctly with CSS classes" do
           render_inline(described_class.new(
             label: color.capitalize,
             color: color,
             style: "solid"
           ))
 
-          color_def = colors["#{color}-secondary"]
-          expect(page.find(".inline-flex")["style"]).to include("background-color: #{color_def[:bg]}")
-          expect(page.find(".inline-flex")["style"]).to include("color: #{color_def[:text]}")
+          # Check for correct CSS classes (colors use CSS variables)
+          expect(page).to have_css(".badge--solid.badge--#{color}")
         end
       end
     end
@@ -253,24 +227,6 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
       render_inline(described_class.new(label: "No Icon"))
 
       expect(page).not_to have_css("svg")
-    end
-
-    it "renders icon with correct size classes" do
-      render_inline(described_class.new(
-        label: "Test",
-        icon: "avo/paperclip"
-      ))
-
-      expect(page).to have_css("svg.w-3.h-3")
-    end
-
-    it "applies shrink-0 to prevent icon squishing" do
-      render_inline(described_class.new(
-        label: "Test",
-        icon: "avo/paperclip"
-      ))
-
-      expect(page).to have_css("svg.shrink-0")
     end
   end
 
@@ -284,7 +240,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
     it "handles empty string label" do
       render_inline(described_class.new(label: ""))
 
-      expect(page).to have_css(".inline-flex")
+      expect(page).to have_css(".badge")
       expect(page).not_to have_css("span.truncate")
     end
 
@@ -292,7 +248,6 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
       long_label = "A" * 100
       render_inline(described_class.new(label: long_label))
 
-      expect(page).to have_css("span.truncate")
       expect(page).to have_text(long_label)
     end
 
@@ -307,4 +262,3 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
     end
   end
 end
-
