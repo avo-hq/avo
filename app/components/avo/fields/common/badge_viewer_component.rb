@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# @deprecated Use Avo::UI::BadgeComponent instead
+# @see Avo::UI::BadgeComponent
 class Avo::Fields::Common::BadgeViewerComponent < Avo::BaseComponent
   prop :value
   prop :options

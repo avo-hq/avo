@@ -4,7 +4,6 @@ class Avo::UI::BadgeComponent < Avo::BaseComponent
   STYLES = %w[solid subtle].freeze
 
   # Use centralized color validation
-  COLOR_ALIASES = Avo::UI::Colors::ALIASES
   VALID_COLORS = Avo::UI::Colors::ALL
 
   def initialize(
@@ -30,11 +29,11 @@ class Avo::UI::BadgeComponent < Avo::BaseComponent
   attr_reader :label, :color, :style, :icon, :icon_only
 
   def normalize_color(value)
-    # Map aliases to their canonical color names
-    normalized = COLOR_ALIASES[value] || value
+    # Normalize aliases (info → informative, danger → error) using centralized Colors module
+    normalized = Avo::UI::Colors.normalize(value)
 
     # Fallback to 'secondary' if color is invalid
-    VALID_COLORS.include?(normalized) ? normalized : "secondary"
+    Avo::UI::Colors.valid?(normalized) ? normalized : "secondary"
   end
 
   def validate_params!
