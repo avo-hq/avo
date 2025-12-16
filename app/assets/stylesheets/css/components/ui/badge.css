@@ -15,7 +15,6 @@
   /* Typography */
   color: var(--color-text-primary, #171717);
   @apply text-center font-medium leading-4;
-  font-family: Inter;
   font-size: var(--text-xs, 12px);
 
   /* Interactions */
@@ -44,8 +43,7 @@
   --badge-icon: var(--color-text-primary, #171717);
 }
 
-/* Default/Secondary - Subtle */
-.badge--subtle.badge--default,
+/* Secondary - Subtle */
 .badge--subtle.badge--secondary {
   --badge-bg: var(--color-surface-secondary, var(--color-avo-neutral-50, #f6f6f6));
   --badge-text: var(--color-text-primary, var(--color-avo-neutral-950, #171717));

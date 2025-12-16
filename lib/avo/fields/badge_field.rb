@@ -4,7 +4,7 @@ module Avo
       attr_reader :options
 
       def initialize(id, **args, &block)
-        super
+        super(id, **args, &block)
 
         hide_on [:edit, :new]
 

@@ -54,9 +54,8 @@ class Avo::UI::BadgeComponent < Avo::BaseComponent
     # Style modifier
     classes << "badge--#{style}"
 
-    # Color modifier (map 'secondary' to 'default' for BEM class)
-    color_class = (color == "secondary") ? "default" : color
-    classes << "badge--#{color_class}"
+    # Color modifier
+    classes << "badge--#{color}"
 
     # Icon-only modifier
     classes << "badge--icon-only" if icon_only?

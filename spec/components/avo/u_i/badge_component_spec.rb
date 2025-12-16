@@ -11,7 +11,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
       expect(page).to have_css(".badge")
       expect(page).to have_text("Test Badge")
       # Check for correct CSS classes (colors are now handled via CSS variables in classes)
-      expect(page).to have_css(".badge--subtle.badge--default")
+      expect(page).to have_css(".badge--subtle.badge--secondary")
     end
 
     it "renders badge without label" do
@@ -132,8 +132,8 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
           color: "rainbow"
         ))
 
-        # Should use secondary/default color class (colors use CSS variables)
-        expect(page).to have_css(".badge--subtle.badge--default")
+        # Should use secondary color class (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--secondary")
       end
 
       it "does not raise an error" do
