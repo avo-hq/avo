@@ -5,25 +5,29 @@ module Avo
     module Colors
       # Valid color names for badge and UI components
       # Colors are implemented via CSS variables and BEM classes
-      VALID_COLORS = %w[
-        secondary
-        success
-        informative
-        warning
-        error
-        orange
-        yellow
-        green
-        teal
-        blue
-        purple
-      ].freeze
+      unless defined? VALID_COLORS
+        VALID_COLORS = %w[
+          secondary
+          success
+          informative
+          warning
+          error
+          orange
+          yellow
+          green
+          teal
+          blue
+          purple
+        ].freeze
+      end
 
-      # Color name aliases for backward compatibility
-      ALIASES = {
-        "info" => "informative",
-        "danger" => "error"
-      }.freeze
+      unless defined? ALIASES
+        # Color name aliases for backward compatibility
+        ALIASES = {
+          "info" => "informative",
+          "danger" => "error"
+        }.freeze
+      end
 
       # Normalize a color name (resolve aliases)
       def self.normalize(color_name)
