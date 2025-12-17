@@ -1,11 +1,11 @@
 <span class="<%= badge_classes %>">
   <% if icon_only? %>
-    <%= helpers.svg(icon, class: icon_classes) if icon.present? %>
+    <%= render_icon %>
   <% else %>
-    <%= render_icon_content if icon.present? %>
+    <%= render_icon %>
 
-    <% if label.present? %>
-      <span class="badge__label"><%= label %></span>
+    <% if @label.present? %>
+      <span class="badge__label"><%= @label %></span>
     <% end %>
   <% end %>
 </span>

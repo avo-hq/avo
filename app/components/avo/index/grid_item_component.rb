@@ -78,8 +78,10 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
       data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do
       render Avo::UI::BadgeComponent.new(
         label: @card[:badge_label],
-        color: @card[:badge_color] || "secondary",
-        style: "subtle"
+        color: @card[:badge_color],
+        style: @card[:badge_style],
+        icon: @card[:badge_icon],
+        icon_only: @card[:badge_icon_only],
       )
     end
   end

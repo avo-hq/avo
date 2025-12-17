@@ -3,22 +3,16 @@
 
 .badge {
   /* Layout */
-  @apply inline-flex items-center justify-center;
+  @apply inline-flex items-center justify-center text-center font-medium leading-4 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
   height: var(--spacing-6, 24px);
   padding: var(--spacing-05, 2px) var(--spacing-2, 8px);
   gap: var(--spacing-05, 2px);
 
   /* Style */
   border-radius: var(--rounded-md, 6px);
-  background: var(--color-surface-secondary, #f6f6f6);
 
   /* Typography */
-  color: var(--color-text-primary, #171717);
-  @apply text-center font-medium leading-4;
   font-size: var(--text-xs, 12px);
-
-  /* Interactions */
-  @apply transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
 }
 
 /* Badge elements */
@@ -32,18 +26,11 @@
 
 /* Icon-only modifier (circular badges) */
 .badge--icon-only {
-  @apply w-5 h-5 p-0 rounded-full flex items-center justify-center;
+  @apply w-6 h-6 p-0 rounded-full flex items-center justify-center;
+  min-width: unset !important;
 }
 
-/* Color definitions using CSS custom properties */
-.badge--subtle,
-.badge--solid {
-  --badge-bg: var(--color-surface-secondary, #f6f6f6);
-  --badge-text: var(--color-text-primary, #171717);
-  --badge-icon: var(--color-text-primary, #171717);
-}
-
-/* Secondary - Subtle */
+/* Secondary - Subtle (default) */
 .badge--subtle.badge--secondary {
   --badge-bg: var(--color-surface-secondary, var(--color-avo-neutral-50, #f6f6f6));
   --badge-text: var(--color-text-primary, var(--color-avo-neutral-950, #171717));
@@ -158,25 +145,5 @@
 
 .badge--subtle .badge__icon,
 .badge--solid .badge__icon {
-  color: var(--badge-icon);
-}
-
-/* Icon-only badges (circular) - Success and Error only */
-.badge--icon-only.badge--success {
-  --badge-bg: var(--color-semantic-surface-success, var(--color-success-100, #d3f8e0));
-  --badge-icon: var(--icon-semantic-icon-success, var(--color-success-600, #0d8e54));
-  background-color: var(--badge-bg);
-  border: 1px solid var(--color-semantic-text-success, var(--color-success-600, #0d8e54));
-}
-
-.badge--icon-only.badge--error {
-  --badge-bg: var(--color-semantic-surface-error, var(--color-error-100, #fee4e2));
-  --badge-icon: var(--icon-semantic-icon-error, var(--color-error-600, #de3024));
-  background-color: var(--badge-bg);
-  border: 1px solid var(--color-semantic-text-error, var(--color-error-600, #de3024));
-}
-
-.badge--icon-only.badge--success .badge__icon,
-.badge--icon-only.badge--error .badge__icon {
   color: var(--badge-icon);
 }

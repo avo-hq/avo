@@ -1,9 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Avo::UI::BadgeComponent, type: :component do
-  # Use centralized color validation for consistent testing
   let(:color_aliases) { Avo::UI::Colors::ALIASES }
-  let(:valid_colors) { Avo::UI::Colors::ALL }
+  let(:valid_colors) { Avo::UI::Colors::VALID_COLORS }
   describe "rendering" do
     it "renders default badge with secondary color" do
       render_inline(described_class.new(label: "Test Badge"))

@@ -2,8 +2,6 @@
 
 module Avo
   module UI
-    # Color validation and aliases for Avo UI components
-    # Actual color values are defined in CSS variables (see css/variables.css)
     module Colors
       # Valid color names for badge and UI components
       # Colors are implemented via CSS variables and BEM classes
@@ -27,17 +25,13 @@ module Avo
         "danger" => "error"
       }.freeze
 
-      # All valid color names (including aliases)
-      ALL = (VALID_COLORS + ALIASES.keys).freeze
-
       # Normalize a color name (resolve aliases)
       def self.normalize(color_name)
         ALIASES[color_name.to_s] || color_name.to_s
       end
 
-      # Check if a color is valid
-      def self.valid?(color_name)
-        ALL.include?(color_name.to_s)
+      def self.valid(color_name)
+        VALID_COLORS.include?(color_name.to_s)
       end
     end
   end

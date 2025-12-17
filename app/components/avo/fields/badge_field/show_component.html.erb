@@ -1,6 +1,10 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <%= render Avo::UI::BadgeComponent.new(
-    label: @field.value.to_s,
-    color: @field.badge_color_for_value,
+    label: @field.label,
+    color: @field.color,
+    style: @field.style,
+    icon: @field.icon,
+    icon_only: @field.icon_only,
+    classes: 'min-w-28'
   ) %>
 <% end %>

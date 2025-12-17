@@ -10,7 +10,11 @@ class Avo::Resources::Product < Avo::BaseResource
         body: simple_format(record.description),
         badge_label: (record.status == :new) ? "New" : "Updated",
         badge_color: (record.status == :new) ? "green" : "orange",
-        badge_title: (record.status == :new) ? "New product here" : "Updated product here"
+        badge_style: (record.status == :new) ? "solid" : "subtle",
+        badge_title: (record.status == :new) ? "New product here" : "Updated product here",
+        badge_icon: (record.status == :new) ? "heroicons/outline/arrow-trending-up" : "",
+        badge_icon_only: (record.status == :new) || false,
+        badge_auto_width: (record.status == :new) || false
       }
     end,
     html: -> do

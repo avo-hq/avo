@@ -3,59 +3,33 @@
 class Avo::UI::BadgeComponent < Avo::BaseComponent
   STYLES = %w[solid subtle].freeze
 
-  # Use centralized color validation
-  VALID_COLORS = Avo::UI::Colors::ALL
-
-  def initialize(
-    label: "",
-    color: "secondary",
-    style: "subtle",
-    icon: nil,
-    icon_only: false
-  )
-    @label = label.to_s
-    @color = normalize_color(color.to_s)
-    @style = style.to_s
-    @icon = icon&.to_s
-    @icon_only = icon_only
-
-    validate_params!
-
-    super()
-  end
+  prop :label, default: ""
+  prop :color, default: "secondary"
+  prop :style, default: "subtle"
+  prop :icon
+  prop :icon_only, default: false
+  prop :classes, default: ""
 
   private
 
-  attr_reader :label, :color, :style, :icon, :icon_only
-
   def normalize_color(value)
-    # Normalize aliases (info → informative, danger → error) using centralized Colors module
+    return "secondary" if value.blank?
+
     normalized = Avo::UI::Colors.normalize(value)
-
-    # Fallback to 'secondary' if color is invalid
-    Avo::UI::Colors.valid?(normalized) ? normalized : "secondary"
-  end
-
-  def validate_params!
-    raise ArgumentError, "Invalid style: #{style}. Must be one of #{STYLES.join(", ")}" unless STYLES.include?(style)
-
-    if icon_only && label.present?
-      raise ArgumentError, "icon_only cannot be true when label is present"
-    end
-
-    if icon_only && icon.blank?
-      raise ArgumentError, "icon_only requires an icon to be present"
-    end
+    Avo::UI::Colors.valid(normalized) ? normalized : "secondary"
   end
 
   def badge_classes
     classes = ["badge"]
 
-    # Style modifier
-    classes << "badge--#{style}"
+    # Add custom classes if provided
+    classes << @classes if @classes.present?
 
-    # Color modifier
-    classes << "badge--#{color}"
+    style_value = normalize_style(@style).to_s
+    classes << "badge--#{style_value}" if style_value.present?
+
+    color_value = normalize_color(@color).to_s
+    classes << "badge--#{color_value}" if color_value.present?
 
     # Icon-only modifier
     classes << "badge--icon-only" if icon_only?
@@ -63,17 +37,22 @@ class Avo::UI::BadgeComponent < Avo::BaseComponent
     classes.compact.join(" ")
   end
 
+  def normalize_style(value)
+    style_str = value.to_s
+    STYLES.include?(style_str) ? style_str : "subtle"
+  end
+
   def icon_only?
-    @icon_only || (icon.present? && label.blank?)
+    @icon_only || (@icon.present? && @label.blank?)
   end
 
   def icon_classes
     "badge__icon"
   end
 
-  def render_icon_content
-    return unless icon.present?
+  def render_icon
+    return unless @icon.present?
 
-    helpers.svg(icon, class: icon_classes)
+    helpers.svg(@icon, class: icon_classes)
   end
 end
