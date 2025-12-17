@@ -147,10 +147,12 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
   end
 
   describe "parameter validation" do
-    it "raises error for invalid style" do
-      expect {
-        described_class.new(label: "Test", style: "invalid")
-      }.to raise_error(ArgumentError, /Invalid style/)
+    it "normalizes invalid style to 'subtle'" do
+      render_inline(described_class.new(label: "Test", style: "invalid"))
+
+      # Component should normalize invalid style to "subtle" (default)
+      expect(page).to have_css(".badge--subtle")
+      expect(page).not_to have_css(".badge--invalid")
     end
 
     it "accepts all valid styles" do
@@ -188,8 +190,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
           ))
 
           # Check for correct CSS classes (colors use CSS variables)
-          color_class = (color == "secondary") ? "default" : color
-          expect(page).to have_css(".badge--subtle.badge--#{color_class}")
+          expect(page).to have_css(".badge--subtle.badge--#{color}")
         end
       end
     end
