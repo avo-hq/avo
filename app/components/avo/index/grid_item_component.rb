@@ -81,7 +81,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
         color: @card[:badge_color],
         style: @card[:badge_style],
         icon: @card[:badge_icon],
-        icon_only: @card[:badge_icon_only],
+        icon_only: @card[:badge_icon_only]
       )
     end
   end
