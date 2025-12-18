@@ -1,11 +1,12 @@
-<span class="<%= badge_classes %>">
-  <% if icon_only? %>
-    <%= render_icon %>
-  <% else %>
-    <%= render_icon %>
+<%= content_tag :span, class: helpers.class_names("badge", {
+      :"badge--#{@style}" => @style.present?,
+      :"badge--#{@color}" => @color.present?,
+      :"badge--icon-only" => icon_only?,
+      @classes => @classes.present?,
+}) do %>
+  <%= helpers.svg(@icon, class: "badge__icon") if @icon.present? %>
 
-    <% if @label.present? %>
-      <span class="badge__label"><%= @label %></span>
-    <% end %>
+  <% if !icon_only? && @label.present? %>
+    <span class="badge__label"><%= @label %></span>
   <% end %>
-</span>
+<% end %>
