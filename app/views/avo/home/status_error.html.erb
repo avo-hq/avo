@@ -6,7 +6,7 @@
       </div>
 
       <h1 class="text-3xl font-bold text-gray-900 mb-4">
-        <%= t("avo.status_error_title", default: "Configuration Error") %>
+        <%= "Configuration error" %>
       </h1>
 
       <% if @show_details && @status_error.present? %>
@@ -27,12 +27,12 @@
              target="_blank"
              class="inline-flex items-center px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors font-semibold">
             <%= svg "heroicons/outline/book-open", class: "w-5 h-5 mr-2" %>
-            <%= t("avo.view_documentation", default: "View Documentation") %>
+            <%= "View documentation" %>
           </a>
         <% end %>
       <% else %>
         <p class="text-gray-600 text-lg">
-          <%= t("avo.status_error_user_message", default: "Oops! Something went wrong. Please contact your administrator for assistance.") %>
+          <%= "Oops! Something went wrong. Please contact your administrator for assistance." %>
         </p>
       <% end %>
     </div>
