@@ -9,6 +9,7 @@ Avo.configure do |config|
   # ---
   # config.prefix_path = "/development/internal-api"
   # ---
+  # config.cache_store = ActiveSupport::Cache::NullStore.new
 
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]

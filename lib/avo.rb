@@ -33,6 +33,8 @@ module Avo
 
   class MissingGemError < StandardError; end
 
+  class CacheStoreNotOperationalError < StandardError; end
+
   class DeprecatedAPIError < StandardError; end
 
   class ViewTypeComponentNotFoundError < StandardError; end
@@ -87,8 +89,35 @@ module Avo
       eager_load_actions
     end
 
+    def ensure_cache_store_operational!
+      raise CacheStoreNotOperationalError, "Avo cache store is not configured" if @cache_store.nil?
+
+      test_key = "avo-cache-store-test-#{SecureRandom.hex(4)}"
+      test_value = "test_value"
+
+      @cache_store.write(test_key, test_value)
+      operational = @cache_store.read(test_key) == test_value
+      @cache_store.delete(test_key)
+
+      unless operational
+        raise CacheStoreNotOperationalError,
+          "Avo cache store is not operational. Cache store class: #{@cache_store.class}. " \
+          "Please ensure a working cache store is configured for Avo. " \
+          "More info: https://docs.avohq.io/4.0/cache.html"
+      end
+    rescue CacheStoreNotOperationalError
+      raise
+    rescue => error
+      raise CacheStoreNotOperationalError,
+        "Avo cache store check failed: #{error.message}. " \
+        "Please ensure a working cache store is configured for Avo. " \
+        "More info: https://docs.avohq.io/4.0/cache.html"
+    end
+
     # Runs on each request
     def init
+      ensure_cache_store_operational!
+
       Avo::Current.error_manager = Avo::ErrorManager.build
       # Check rails version issues only on NON Production environments
       unless Rails.env.production?
