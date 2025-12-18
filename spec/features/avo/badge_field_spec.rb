@@ -13,14 +13,14 @@ RSpec.describe "BadgeField", type: :feature do
       let!(:url) { "/admin/resources/projects" }
 
       it { is_expected.to have_text empty_dash }
-      it { is_expected.not_to have_css ".rounded-md" }
+      it { expect(subject).not_to have_css ".badge" }
     end
 
     context "show" do
       let!(:url) { "/admin/resources/projects/#{project.id}" }
 
       it { is_expected.to have_text empty_dash }
-      it { is_expected.not_to have_css ".rounded-md" }
+      it { expect(subject).not_to have_css ".badge" }
     end
 
     context "edit" do
@@ -45,19 +45,21 @@ RSpec.describe "BadgeField", type: :feature do
     context "index" do
       let!(:url) { "/admin/resources/projects" }
 
-      it { is_expected.to have_text "Discovery" }
-      it { is_expected.to have_css ".rounded-md" }
-      it { is_expected.to have_css ".bg-blue-500" }
-      it { is_expected.not_to have_css ".bg-red-500" }
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Discovery"
+        expect(subject).to have_css ".badge.badge--subtle.badge--green.min-w-28"
+        expect(subject).not_to have_css ".badge--error"
+      end
     end
 
     context "show" do
       let!(:url) { "/admin/resources/projects/#{project.id}" }
 
-      it { is_expected.to have_text "Discovery" }
-      it { is_expected.to have_css ".rounded-md" }
-      it { is_expected.to have_css ".bg-blue-500" }
-      it { is_expected.not_to have_css ".bg-red-500" }
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Discovery"
+        expect(subject).to have_css ".badge.badge--subtle.badge--green.min-w-28"
+        expect(subject).not_to have_css ".badge--error"
+      end
     end
   end
 
@@ -72,19 +74,19 @@ RSpec.describe "BadgeField", type: :feature do
     context "index" do
       let!(:url) { "/admin/resources/projects" }
 
-      it { is_expected.to have_text "Cancelled" }
-      it { is_expected.to have_css ".rounded-md" }
-      it { is_expected.to have_css ".bg-red-500" }
-      it { is_expected.not_to have_css ".bg-blue-500" }
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Cancelled"
+        expect(subject).to have_css ".badge.badge--solid.badge--orange.min-w-28"
+      end
     end
 
     context "show" do
       let!(:url) { "/admin/resources/projects/#{project.id}" }
 
-      it { is_expected.to have_text "Cancelled" }
-      it { is_expected.to have_css ".rounded-md" }
-      it { is_expected.to have_css ".bg-red-500" }
-      it { is_expected.not_to have_css ".bg-blue-500" }
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Cancelled"
+        expect(subject).to have_css ".badge.badge--solid.badge--orange.min-w-28"
+      end
     end
   end
 
@@ -99,19 +101,21 @@ RSpec.describe "BadgeField", type: :feature do
     context "index" do
       let!(:url) { "/admin/resources/projects" }
 
-      it { is_expected.to have_text "Drafting" }
-      it { is_expected.to have_css ".rounded-md" }
-      it { is_expected.to have_css ".bg-gray-500" }
-      it { is_expected.not_to have_css ".bg-blue-500" }
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Drafting"
+        expect(subject).to have_css ".badge.badge--subtle.badge--purple.min-w-28"
+        expect(subject).not_to have_css ".badge--blue"
+      end
     end
 
     context "show" do
       let!(:url) { "/admin/resources/projects/#{project.id}" }
 
-      it { is_expected.to have_text "Drafting" }
-      it { is_expected.to have_css ".rounded-md" }
-      it { is_expected.to have_css ".bg-gray-500" }
-      it { is_expected.not_to have_css ".bg-blue-500" }
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Drafting"
+        expect(subject).to have_css ".badge.badge--subtle.badge--purple.min-w-28"
+        expect(subject).not_to have_css ".badge--blue"
+      end
     end
   end
 end
