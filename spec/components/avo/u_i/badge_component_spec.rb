@@ -1,8 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Avo::UI::BadgeComponent, type: :component do
-  let(:color_aliases) { Avo::UI::Colors::ALIASES }
-  let(:valid_colors) { Avo::UI::Colors::VALID_COLORS }
+  let(:valid_colors) { described_class::VALID_COLORS }
   describe "rendering" do
     it "renders default badge with secondary color" do
       render_inline(described_class.new(label: "Test Badge"))
@@ -156,7 +155,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
     end
 
     it "accepts all valid styles" do
-      described_class::STYLES.each do |style|
+      described_class::VALID_STYLES.each do |style|
         expect {
           render_inline(described_class.new(label: "Test", style: style))
         }.not_to raise_error
@@ -167,14 +166,6 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
       valid_colors.each do |color|
         expect {
           render_inline(described_class.new(label: "Test", color: color))
-        }.not_to raise_error
-      end
-    end
-
-    it "accepts all color aliases" do
-      color_aliases.keys.each do |alias_name|
-        expect {
-          render_inline(described_class.new(label: "Test", color: alias_name))
         }.not_to raise_error
       end
     end
