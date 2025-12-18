@@ -2,6 +2,8 @@ require_dependency "avo/application_controller"
 
 module Avo
   class HomeController < ApplicationController
+    skip_before_action :ensure_cache_store_operational, only: [:status_error]
+
     def index
       if Avo.configuration.home_path.present?
         # If the home_path is a block run it, if not, just use it
@@ -20,6 +22,15 @@ module Avo
     end
 
     def failed_to_load
+    end
+
+    def status_error
+      @show_details = Avo::Current.user_is_admin? || Avo::Current.user_is_developer?
+      @status_error = Avo.status_error
+      # Set stylesheet path manually since we skip some before_actions
+      @stylesheet_assets_path = "avo/application"
+
+      render layout: "avo/minimal"
     end
   end
 end

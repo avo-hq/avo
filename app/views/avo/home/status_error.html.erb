@@ -1,0 +1,40 @@
+<div class="flex items-center justify-center min-h-screen">
+  <div class="max-w-xl w-full mx-4">
+    <div class="bg-white rounded-xl shadow-xl p-8 text-center">
+      <div class="mb-6">
+        <%= svg "heroicons/outline/exclamation-triangle", class: "w-24 h-24 mx-auto text-red-500" %>
+      </div>
+
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">
+        <%= t("avo.status_error_title", default: "Configuration Error") %>
+      </h1>
+
+      <% if @show_details && @status_error.present? %>
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 text-left">
+          <p class="text-sm text-red-800 font-mono break-words whitespace-pre-wrap">
+            <%= @status_error[:message] %>
+          </p>
+        </div>
+
+        <% if @status_error[:help].present? %>
+          <p class="text-gray-600 mb-6">
+            <%= @status_error[:help] %>
+          </p>
+        <% end %>
+
+        <% if @status_error[:doc_url].present? %>
+          <a href="<%= @status_error[:doc_url] %>"
+             target="_blank"
+             class="inline-flex items-center px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors font-semibold">
+            <%= svg "heroicons/outline/book-open", class: "w-5 h-5 mr-2" %>
+            <%= t("avo.view_documentation", default: "View Documentation") %>
+          </a>
+        <% end %>
+      <% else %>
+        <p class="text-gray-600 text-lg">
+          <%= t("avo.status_error_user_message", default: "Oops! Something went wrong. Please contact your administrator for assistance.") %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>
