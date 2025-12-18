@@ -81,6 +81,7 @@ module Avo
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
+      ensure_cache_store_operational!
       Avo.plugin_manager.reset
       # Run load hooks for plugins to include them in the app.
       # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
@@ -116,8 +117,6 @@ module Avo
 
     # Runs on each request
     def init
-      ensure_cache_store_operational!
-
       Avo::Current.error_manager = Avo::ErrorManager.build
       # Check rails version issues only on NON Production environments
       unless Rails.env.production?
