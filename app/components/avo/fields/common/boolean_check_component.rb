@@ -30,10 +30,9 @@ class Avo::Fields::Common::BooleanCheckComponent < Avo::BaseComponent
   end
 
   def classes
-    helpers.class_names({
+    helpers.class_names(STATE_CONFIG[@checked][:color], {
       "h-5": @size == :sm,
       "h-6": @size == :md,
-      STATE_CONFIG[@checked][:color] => true
     })
   end
 end
