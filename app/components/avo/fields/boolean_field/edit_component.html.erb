@@ -1,6 +1,7 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div class="h-8 flex items-center">
-    <%= @form.label @field.id,
+    <%= content_tag :label,
+      for: "#{@form.object_name}_#{@field.id}",
       class: class_names(
         "relative flex items-center",
         "opacity-50": disabled?,
