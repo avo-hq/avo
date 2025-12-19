@@ -45,10 +45,6 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   end
 
   def render_dash?
-    if @field.type == "boolean"
-      @field.value.nil?
-    else
-      @field.value.blank? && @dash_if_blank
-    end
+    @field.value.blank? && @dash_if_blank
   end
 end
