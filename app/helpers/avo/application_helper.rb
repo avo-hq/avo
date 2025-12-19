@@ -59,17 +59,6 @@ module Avo
       classes
     end
 
-    # Use inline_svg gem but with our own finder implementation.
-    def svg(file_name, **args)
-      return if file_name.blank?
-
-      file_name = "#{file_name}.svg" unless file_name.end_with? ".svg"
-
-      with_asset_finder(::Avo::SvgFinder) do
-        inline_svg file_name, **args
-      end
-    end
-
     def input_classes(extra_classes = "", has_error: false)
       classes = "appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 placeholder:text-gray-300"
 
@@ -183,16 +172,6 @@ module Avo
     end
 
     private
-
-    # Taken from the original library
-    # https://github.com/jamesmartin/inline_svg/blob/main/lib/inline_svg/action_view/helpers.rb#L76
-    def with_asset_finder(asset_finder)
-      Thread.current[:inline_svg_asset_finder] = asset_finder
-      output = yield
-      Thread.current[:inline_svg_asset_finder] = nil
-
-      output
-    end
 
     def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)
       if as.present?

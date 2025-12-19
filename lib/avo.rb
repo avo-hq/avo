@@ -17,7 +17,6 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
-  CACHED_SVGS = {}
 
   # Frame IDs
   MODAL_FRAME_ID = :modal_frame

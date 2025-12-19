@@ -28,6 +28,10 @@ module Avo
       end
 
       def as_toggle? = !!@args[:as_toggle]
+
+      def nil_as_indeterminate? = !!@args[:nil_as_indeterminate]
+
+      def dash_if_blank? = value.nil? && !nil_as_indeterminate?
     end
   end
 end
