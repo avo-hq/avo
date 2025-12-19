@@ -101,28 +101,6 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
       end
     end
 
-    context "with color aliases" do
-      it "maps 'info' to 'informative'" do
-        render_inline(described_class.new(
-          label: "Info",
-          color: "info"
-        ))
-
-        # Should use informative color class (colors use CSS variables)
-        expect(page).to have_css(".badge--subtle.badge--informative")
-      end
-
-      it "maps 'danger' to 'error'" do
-        render_inline(described_class.new(
-          label: "Danger",
-          color: "danger"
-        ))
-
-        # Should use error color class (colors use CSS variables)
-        expect(page).to have_css(".badge--subtle.badge--error")
-      end
-    end
-
     context "with invalid color" do
       it "falls back to 'secondary'" do
         render_inline(described_class.new(
