@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class UI::TabsComponentPreview < ViewComponent::Preview
+class UI::ScopeTabsComponentPreview < ViewComponent::Preview
   # @!group Interactive Playground
 
-  # Interactive tabs with customizable options
+  # Interactive scope tabs with customizable options
   # @param tab_count number "Number of tabs"
   # @param active_tab number "Index of active tab (0-based)"
   # @param show_icons toggle "Show icons on tabs"
@@ -13,7 +13,7 @@ class UI::TabsComponentPreview < ViewComponent::Preview
     show_icons: false
   )
     render_with_template(
-      template: "u_i/tabs_component_preview/playground",
+      template: "u_i/scope_tabs_component_preview/playground",
       locals: {
         tab_count: tab_count.to_i,
         active_tab: active_tab.to_i,
@@ -25,11 +25,12 @@ class UI::TabsComponentPreview < ViewComponent::Preview
   # @!endgroup
 
   # @!group Standard Examples
-
-  # All variants showcase
-  def showcase
-    render_with_template(template: "u_i/tabs_component_preview/showcase")
+  def standard
+    render_with_template(template: "u_i/scope_tabs_component_preview/standard")
   end
 
   # @!endgroup
 end
+
+
+

@@ -121,6 +121,7 @@
   --color-avo-neutral-900: rgba(61, 61, 61, 1.00);
   --color-avo-neutral-950: rgba(23, 23, 23, 1.00);
   --color-avo-neutral-alpha-500: rgba(23, 23, 23, 0.20);
+  --color-avo-neutral-50-alpha-50: rgba(246, 246, 246, 0.50);
   --color-gray-alpha-100: rgba(0, 0, 0, 0.04);
   --color-gray-alpha-200: rgba(0, 0, 0, 0.08);
   --color-gray-alpha-300: rgba(0, 0, 0, 0.12);
@@ -168,6 +169,14 @@
   --color-surface-secondary: var(--color-avo-neutral-50);
   --color-surface-tertiary: var(--color-avo-neutral-100);
   --color-surface-invert: var(--color-avo-neutral-950);
+
+  /* Base color variables (matching Figma design system) */
+  --color-base-primary: var(--color-white);
+  --color-base-secondary: var(--color-surface-secondary);
+  --color-base-secondary-50: var(--color-avo-neutral-50-alpha-50);
+  --color-base-tertiary: var(--color-border-primary);
+  --color-base-content: var(--color-text-primary);
+  --color-accent: var(--color-text-primary);
 
   --color-semantic-surface-success: var(--color-success-100);
   --color-semantic-surface-informative: var(--color-informative-100);
@@ -237,6 +246,8 @@
   --border-primary-soft: rgba(209, 209, 209, 0.4);
   --rounded-xl: 12px;
   --rounded-lg: 8px;
+  --rounded-md: 6px;
+  --radius-md: var(--rounded-md, 6px);
   --text-sm: 14px;
   --spacing-0-5: 2px;
   --spacing-1: 4px;

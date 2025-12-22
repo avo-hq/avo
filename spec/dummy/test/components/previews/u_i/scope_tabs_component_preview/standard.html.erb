@@ -1,0 +1,24 @@
+<div class="p-8 bg-white space-y-12">
+  <div>
+    <h3 class="text-lg font-semibold mb-4">Scope Tabs</h3>
+    <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg">
+      <%= render Avo::UI::Tabs::ScopeTabsComponent.new do %>
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(label: "Overview", icon: "heroicons/outline/home", active: true) %>
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(label: "Settings", icon: "heroicons/outline/cog") %>
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(label: "Analytics", icon: "heroicons/outline/chart-bar") %>
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(label: "Files", icon: "heroicons/outline/folder") %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="text-lg font-semibold mb-4">Scope Tabs Without Icons</h3>
+    <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg">
+      <%= render Avo::UI::Tabs::ScopeTabsComponent.new do %>
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(label: "Overview", active: true) %>
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(label: "Settings") %>
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(label: "Analytics") %>
+      <% end %>
+    </div>
+  </div>
+</div>

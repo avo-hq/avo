@@ -1,8 +1,8 @@
 <div class="p-8 bg-white space-y-6">
-  <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg">
-    <%= render Avo::UI::Tabs::TabsComponent.new do %>
+  <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-white">
+    <%= render Avo::UI::Tabs::ScopeTabsComponent.new do %>
       <% Array.new(tab_count) do |i| %>
-        <%= render Avo::UI::Tabs::TabComponent.new(
+        <%= render Avo::UI::Tabs::ScopeTabComponent.new(
           label: "Tab #{i + 1}",
           active: i == active_tab,
           icon: show_icons ? "heroicons/outline/external-link" : nil

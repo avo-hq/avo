@@ -1,126 +1,22 @@
-/* Tabs Component - BEM CSS Structure */
+/* Tabs Component (Group Variant) - Group-Specific Styles */
 @layer components {
-  /* Block: tabs */
-  .tabs {
-    @apply flex items-center;
-  }
-
-  /* Modifier: tabs--scope (with border) */
-  .tabs--scope {
-    @apply flex items-center;
-  }
-
-  /* Modifier: tabs--group (spaced pills) */
+  /* Container */
   .tabs--group {
     @apply flex gap-1 items-center;
   }
 
-  /* Element: tabs__item */
-  .tabs__item {
-    @apply inline-flex items-center gap-2 px-3 py-1 text-sm font-medium;
-    color: var(--color-text-secondary, #454545);
-    border-color: var(--color-border-primary, #e7e7e7);
-    background-color: transparent;
-    cursor: pointer;
-    font-family: var(--font-sans);
-    font-size: var(--text-sm, 14px);
-    font-weight: 400;
-    line-height: 20px;
-  }
-
-  /* Element: tabs__item-icon */
-  .tabs__item-icon {
-    @apply h-4 w-4;
-    color: inherit;
-  }
-
-  /* Element: tabs__item-label */
-  .tabs__item-label {
-    @apply whitespace-nowrap;
-  }
-
-  /* Modifier: tabs__item--active */
-  .tabs__item--active {
-    color: var(--color-text-primary, #171717);
-    border-color: var(--color-text-primary, #171717);
-  }
-
-  /* Modifier: tabs__item--inactive */
-  .tabs__item--inactive {
-    color: var(--color-text-secondary, #454545);
-    border-color: var(--color-border-primary, #e7e7e7);
-    background-color: transparent;
-  }
-
-  /* Modifier: tabs__item--disabled */
-  .tabs__item--disabled {
-    @apply opacity-50 cursor-not-allowed;
-  }
-
-  /* Modifier: tabs__item--group (rounded pills) */
+  /* Item */
   .tabs__item--group {
-    @apply rounded-md;
+    border-radius: var(--radius-md, 6px);
   }
 
-  /* Active group variant - background only for group variant */
   .tabs__item--group.tabs__item--active {
-    background-color: var(--color-surface-secondary, #f6f6f6);
+    border-color: var(--color-accent, #171717);
+    background-color: var(--color-base-secondary, #f6f6f6);
   }
 
-  /* Modifier: tabs__item--scope (no border radius) */
-  .tabs__item--scope {
-    @apply rounded-none;
-    background-color: transparent;
-  }
-
-  /* Element: tabs__item-wrapper */
-  .tabs__item-wrapper {
-    @apply inline-block py-2;
-  }
-
-  /* Modifier: tabs__item-wrapper--group */
+  /* Wrapper */
   .tabs__item-wrapper--group {
     @apply flex items-center justify-center;
-  }
-
-  /* Modifier: tabs__item-wrapper--scope */
-  .tabs__item-wrapper--scope {
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: var(--color-border-primary, #e7e7e7);
-  }
-
-  /* Modifier: tabs__item-wrapper--scope with active item */
-  .tabs__item-wrapper--scope.tabs__item--active {
-    border-bottom-width: 2px;
-    border-bottom-color: var(--color-text-primary, #171717);
-  }
-
-  /* Modifier: tabs__item-wrapper--scope with inactive item */
-  .tabs__item-wrapper--scope.tabs__item--inactive {
-    border-bottom-width: 1px;
-    border-bottom-color: var(--color-border-primary, #e7e7e7);
-  }
-
-  /* Scope variant: no background (scope variant never has background) */
-  /* This applies to tabs inside a .tabs--scope container */
-  .tabs--scope .tabs__item,
-  .tabs--scope .tabs__item--active,
-  .tabs__item-wrapper--scope .tabs__item,
-  .tabs__item-wrapper--scope .tabs__item--active {
-    background-color: transparent;
-  }
-
-  /* Scope variant standalone (not in container) - ensure no background */
-  .tabs__item--scope.tabs__item--active {
-    background-color: transparent;
-  }
-
-  /* Focus styles - Only show focus ring for keyboard navigation */
-  .tabs__item:focus-visible,
-  .tabs__item--focused {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--color-border-focus, #171717);
-    border-radius: var(--rounded-md, 6px);
   }
 }
