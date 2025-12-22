@@ -17,3 +17,145 @@
 form.button_to {
   @apply inline-flex;
 }
+
+a.btn,
+.btn {
+  @apply inline-flex px-3 py-2.5 justify-center items-center gap-1 shrink-0 rounded-lg font-sans font-medium text-sm leading-5 text-center flex-nowrap outline-offset-2 cursor-pointer self-start;
+
+  --primary-color: var(--color-avo-neutral-950);
+  --primary-color-hover: var(--color-avo-neutral-800);
+
+  /* colors */
+  &.btn-blue {
+    --primary-color: var(--color-blue-700);
+  }
+  &.btn-red {
+    --primary-color: var(--color-red-700);
+  }
+  &.btn-green {
+    --primary-color: var(--color-green-700);
+  }
+  &.btn-orange {
+    --primary-color: var(--color-orange-700);
+  }
+  &.btn-purple {
+    --primary-color: var(--color-purple-700);
+  }
+  &.btn-gray {
+    --primary-color: var(--color-gray-700);
+  }
+
+  &.btn-primary {
+    @apply text-button-primary-text;
+
+    border: 1px solid var(--primary-color);
+    background: linear-gradient(
+        180deg,
+        var(--primary-color) 0,
+        color-mix(in srgb, var(--primary-color) 100%, var(--color-white) 10%) 100%
+      );
+    box-shadow: inset 0px 1px color-mix(in oklab, var(--color-white) 50%, transparent);
+
+    --bg-hover:
+      linear-gradient(
+        180deg,
+        var(--primary-color) 0%,
+        color-mix(in srgb, var(--primary-color) 100%, var(--color-white) 20%) 100%
+      ),
+      linear-gradient(
+        180deg,
+        var(--primary-color) 0%,
+        var(--primary-color-hover, #454545) 100%
+      );
+
+    &.btn--active,
+    &:active:not(:disabled) {
+      box-shadow: 0 4px 2px 0.5px var(--primary-color) inset;
+    }
+  }
+
+  &.btn-outline {
+    @apply text-button-text;
+    color: var(--primary-color);
+
+    border-radius: var(--rounded-md, 0.375rem);
+    border: 1px solid var(--border-color);
+
+    /* shadows/skeumorphic-secondary */
+    box-shadow: 0 -1.5px 0 0 var(--color-border-tertiary, #F6F6F6) inset, 0 0.8px 0 1.3px var(--color-surface-primary, #FFF) inset;
+
+    --border-color: var(--subtle-color);
+    --subtle-color: color-mix(in srgb, var(--primary-color) 20%, var(--color-white) 90%);
+    --bg-hover: linear-gradient(180deg, var(--color-surface-gradient-secondary-dark, rgba(0, 0, 0, 0.04)) 0%, var(--color-avo-neutral-950-alpha-0, rgba(23, 23, 23, 0.00)) 100%), var(--color-button-secondary-background, #FFF);
+
+
+
+    @media (hover: hover) {
+      &.btn--hover,
+      &:hover:not(:disabled) {
+        background: linear-gradient(180deg, var(--color-surface-gradient-secondary-dark, rgba(0, 0, 0, 0.04)) 0%, var(--color-avo-neutral-950-alpha-0, rgba(23, 23, 23, 0.00)) 100%), color-mix(in srgb, var(--primary-color) 10%, var(--color-white) 90%);
+        box-shadow: none;
+      }
+    }
+    &.btn--active,
+    &:active:not(:disabled) {
+      border-radius: var(--rounded-md, 0.375rem);
+      border: var(--spacing-px, 1px) solid var(--border-color);
+      background: linear-gradient(0deg, var(--color-avo-neutral-950-alpha-0, rgba(23, 23, 23, 0.00)) 0%, var(--subtle-color, rgba(0, 0, 0, 0.04)) 100%), var(--subtle-color);
+
+      /* shadows/skeumorphic-secondary-active */
+      box-shadow: 0 4px 4px 0.5px var(--color-surface-gradient-secondary-dark, rgba(0, 0, 0, 0.04)) inset;
+    }
+  }
+
+  &.btn-text {
+    --bg-hover: var(--color-button-background-hover);
+    border: 1px solid transparent;
+    @apply text-button-text;
+
+    &.btn--active,
+    &:active:not(:disabled) {
+      background: linear-gradient(180deg, var(--color-surface-gradient-secondary-dark, rgba(0, 0, 0, 0.04)) 0%, var(--color-avo-neutral-950-alpha-0, rgba(23, 23, 23, 0.00)) 100%), var(--bg-hover, #F6F6F6);
+    }
+  }
+
+  &.btn--active,
+  &:active:not(:disabled) {
+    transform: translateY(0.5px);
+  }
+
+  @media (hover: hover) {
+    &.btn--hover,
+    &:hover:not(:disabled) {
+      background: var(--bg-hover);
+    }
+  }
+
+  &.btn-loading{
+    box-shadow: 0 4px 2px 0.5px #171717 inset;
+  }
+
+  &:focus-visible {
+    outline-color: var(--border--invert, #3D3D3D);
+    outline-width: 2px;
+    outline-offset: 2px;
+    outline-style: solid;
+  }
+
+  &:disabled {
+    background: var(--button-background-disabled, #E7E7E7);
+    @apply border-none shadow-none cursor-not-allowed text-text-disabled;
+  }
+
+  &.btn-lg {
+    @apply py-2 px-3 text-sm;
+  }
+
+  &.btn-md {
+    @apply py-0.75 text-sm;
+  }
+
+  &.btn-sm {
+    @apply py-0.5 px-2 text-xs;
+  }
+}

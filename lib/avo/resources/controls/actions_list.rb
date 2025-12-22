@@ -7,7 +7,7 @@ module Avo
         attr_reader :color, :exclude, :include, :style, :icon
 
         def initialize(**args)
-          super(**args)
+          super
 
           @color = args[:color] || :primary
           @exclude = args[:exclude] || []
