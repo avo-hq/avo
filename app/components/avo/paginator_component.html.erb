@@ -7,7 +7,7 @@
             <%= content_tag :label, name: t('avo.per_page').downcase do %>
               <%= select_tag 'per_page',
                 options_for_select(per_page_options, @index_params[:per_page]),
-                class: 'appearance-none inline-flex bg-white-100 disabled:bg-white-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-none focus:border-slate-400 outline w-16 mr-1 text-sm',
+                class: 'appearance-none inline-flex bg-white-100 disabled:bg-white-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-none focus:border-slate-400 outline w-16 me-1 text-sm',
                 data: {
                   'turbo-frame': @turbo_frame,
                   'per-page-target': 'selector',
@@ -24,9 +24,9 @@
     </div>
   </div>
   <div class="flex">
-    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= helpers.pagy_major_version %>">
+    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-start pagy-gem-version-<%= helpers.pagy_major_version %>">
       <% if @resource.pagination_type.default? %>
-        <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
+        <div class="text-sm text-slate-600 me-4"><%== helpers.pagy_info @pagy %></div>
       <% end %>
 
       <% if @pagy.pages > 1 %>

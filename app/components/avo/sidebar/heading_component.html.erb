@@ -1,5 +1,5 @@
 <% if @collapsable %>
-  <div class="flex justify-between cursor-pointer px-4 pr-2 py-1 text-gray-500"
+  <div class="flex justify-between cursor-pointer px-4 pe-2 py-1 text-gray-500"
     data-action="click->menu#triggerCollapse"
     data-menu-key-param="<%= @key %>"
   >
@@ -13,7 +13,7 @@
     </div>
   </div>
 <% else %>
-  <div class="flex justify-between px-4 pr-2 py-1 text-gray-500">
+  <div class="flex justify-between px-4 pe-2 py-1 text-gray-500">
     <div class="flex items-center text-sm uppercase font-semibold leading-none space-x-1">
       <span class="min-w-[20px]"><%= @icon %></span> <span><%= @label %></span>
     </div>

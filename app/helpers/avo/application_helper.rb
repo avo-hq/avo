@@ -159,6 +159,18 @@ module Avo
       container_is_full_width? ? "" : "2xl:container 2xl:mx-auto"
     end
 
+    # RTL Support
+    RTL_LOCALES = %w[ar he fa ur yi].freeze
+
+    def rtl_locale?(locale = nil)
+      locale ||= I18n.locale
+      RTL_LOCALES.include?(locale.to_s.split("-").first)
+    end
+
+    def html_dir
+      rtl_locale? ? "rtl" : "ltr"
+    end
+
     # encode & encrypt params
     def e(value)
       Avo::Services::EncryptionService.encrypt(message: value, purpose: :return_to, serializer: Marshal)

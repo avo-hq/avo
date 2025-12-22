@@ -12,7 +12,7 @@
     %>
 
     <% if @field.revealable %>
-      <button data-action="password-visibility#toggle" type="button" class="text-gray-500 absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+      <button data-action="password-visibility#toggle" type="button" class="text-gray-500 absolute inset-y-0 end-0 pe-3 flex items-center cursor-pointer">
         <!-- Heroicon name: outline/eye -->
         <%= helpers.svg('heroicons/outline/eye', class: "size-6", data: { 'password-visibility-target': 'icon' }) %>
 

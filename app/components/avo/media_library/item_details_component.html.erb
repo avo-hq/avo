@@ -1,6 +1,6 @@
 <div class="relative flex flex-col w-full max @container/details">
   <%= link_to helpers.svg('heroicons/outline/x-mark', class: "size-6"), helpers.avo.media_library_index_path,
-    class: "absolute z-10 inset-auto right-0 top-0 mt-2 mr-2 block bg-white p-1 rounded-lg text-slate-600 hover:text-slate-900",
+    class: "absolute z-10 inset-auto end-0 top-0 mt-2 me-2 block bg-white p-1 rounded-lg text-slate-600 hover:text-slate-900",
     title: t('avo.close'),
     data: {
       tippy: :tooltip,
@@ -24,7 +24,7 @@
         <%= link_to "Delete", helpers.avo.media_library_path(@blob), class: "text-red-500", data: {turbo_confirm: "Are you sure you want to destroy this attachment?", turbo_method: :delete} %>
       </div>
     </div>
-    <div class="flex flex-col w-1/2 @3xl/details:w-1/3 border-l">
+    <div class="flex flex-col w-1/2 @3xl/details:w-1/3 border-s rtl:border-e rtl:border-s-0">
       <%= render partial: "avo/media_library/information", locals: {blob: @blob} %>
       <%= render partial: "avo/media_library/form", locals: {blob: @blob} %>
     </div>

@@ -11,7 +11,7 @@
       data-current-value="<%= @field.value || 0 %>">
       <% (1..@field.max).each do |rating_value| %>
         <%= helpers.svg('heroicons/solid/star', 
-          class: class_names("star inline-block mr-0.5", filled: rating_value <= (@value || 0)),
+          class: class_names("star inline-block me-0.5", filled: rating_value <= (@value || 0)),
           data: {
             star_value: rating_value,
             stars_field_target: "star",

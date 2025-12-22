@@ -43,13 +43,13 @@
         <%= render Avo::MediaLibrary::ListItemComponent.with_collection(@blobs, attaching: @attaching, multiple: @attaching) %>
       </div>
       <%# TODO: fix the extra margin  %>
-      <%= helpers.turbo_frame_tag ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID, class: 'relative empty:hidden bg-white inset-0 w-full h-full block empty:-ml-4 max-h-full', style: 'grid-area: stack;' %>
+      <%= helpers.turbo_frame_tag ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID, class: 'relative empty:hidden bg-white inset-0 w-full h-full block empty:-ms-4 rtl:empty:-me-4 max-h-full', style: 'grid-area: stack;' %>
     </div>
   <% end %>
   <% c.with_bare_content do %>
     <div class="flex-1 flex w-full mt-4">
-      <div class="flex-2 w-full sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= helpers.pagy_major_version %> ">
-        <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
+      <div class="flex-2 w-full sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-start pagy-gem-version-<%= helpers.pagy_major_version %> ">
+        <div class="text-sm text-slate-600 me-4"><%== helpers.pagy_info @pagy %></div>
         <% if @pagy.pages > 1 %>
           <%# xanchor_string is not valid key word argument and it breaks when require "pagy/extras/calendar" %>
           <%# https://github.com/ddnexus/pagy/blob/d70e443872a5b18da4e482454b3c8b4a1c86cb6b/gem/lib/pagy/extras/calendar.rb#L47 %>

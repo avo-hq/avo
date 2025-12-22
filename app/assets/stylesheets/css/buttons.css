@@ -2,14 +2,14 @@
   @apply flex;
 
   .button-component {
-    @apply -mr-px;
+    @apply -me-px;
 
     &:first-child {
-      @apply rounded-l;
+      @apply rounded-s;
     }
 
     &:last-child {
-      @apply rounded-r;
+      @apply rounded-e;
     }
   }
 }

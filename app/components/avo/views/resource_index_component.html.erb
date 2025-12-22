@@ -18,7 +18,7 @@
         <% panel_name_component.with_body do %>
           <% if reloadable %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
-              <%= helpers.svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
+              <%= helpers.svg "heroicons/outline/arrow-path", class: "ms-2 text-2xl h-6 " %>
             <% end %>
           <% end %>
         <% end %>
@@ -43,7 +43,7 @@
               <% end %>
             </div>
 
-            <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
+            <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3 rtl:space-x-reverse">
               <%= render_dynamic_filters_button %>
               <% unless field&.hide_filter_button %>
                 <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
