@@ -1,11 +1,11 @@
 <div class="text-black border-gray-150 p-4 flex border-t">
-  <div class="flex-1 flex space-x-4 w-full">
+  <div class="flex-1 flex space-x-4 rtl:space-x-reverse w-full">
     <% if avatar.present? %>
       <div class="relative aspect-square w-10 h-10 overflow-hidden rounded shrink-0">
         <%= image_tag helpers.main_app.url_for(avatar), class: "object-cover min-w-full min-h-full h-full" %>
       </div>
     <% end %>
-    <div class="flex flex-col pe-3 min-w-0">
+    <div class="flex flex-col flex-1 min-w-0">
       <div class="font-medium text-ellipsis overflow-hidden">
         <%= name %>
       </div>
@@ -16,7 +16,7 @@
       <% end %>
     </div>
   </div>
-  <div class="relative" data-controller="toggle">
+  <div class="relative ms-2" data-controller="toggle">
     <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle#togglePanel">
       <%= helpers.svg "avo/three-dots", class: 'h-4' %>
     </a>
