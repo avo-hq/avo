@@ -12,8 +12,9 @@
 
   &.sidebar-open {
     /* Add padding to the main area to allow for the sidebar to expand. */
+    /* Using ps-64 (padding-start) which automatically flips in RTL */
     .main-content-area {
-      @apply lg:ps-64 rtl:lg:pe-64;
+      @apply lg:ps-64;
       transition: padding 0.1s ease;
     }
   }
