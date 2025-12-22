@@ -3,11 +3,21 @@
 module Avo
   module UI
     module Tabs
-      class TabsComponent < BaseComponent
-        private
+      class TabsComponent < Avo::BaseComponent
+        prop :variant, default: :group
+        prop :aria_label
+        prop :id
 
-        def variant
-          :group
+        def classes
+          "tabs tabs--#{@variant}"
+        end
+
+        def tablist_id
+          @id || "tabs-#{object_id}"
+        end
+
+        def tablist_aria_label
+          @aria_label || "Tabs navigation"
         end
       end
     end
