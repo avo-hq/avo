@@ -5,7 +5,7 @@
         Primary
       <% end %>
 
-      <%= a_link('/admin', icon: "heroicons/outline/arrow-left", style: :outline, is_link: true) do %>
+      <%= a_link('/admin', icon: "heroicons/outline/arrow-left", is_link: true) do %>
         Outline
       <% end %>
 
@@ -14,10 +14,14 @@
       <% end %>
 
       <%= a_link('/admin', icon: "heroicons/outline/arrow-left", style: :text, color: :orange, is_link: true) do %>
-        Text
+        Orange
       <% end %>
 
-      <%= a_link('/admin', color: :slate, style: :primary, is_link: true) do %>
+      <%= a_link('/admin', icon: "heroicons/outline/arrow-left", style: :text, is_link: true) do %>
+        Back
+      <% end %>
+
+      <%= a_link('/admin', icon: "heroicons/outline/plus", color: :primary, style: :primary, is_link: true) do %>
         Create entry
       <% end %>
     <% end %>

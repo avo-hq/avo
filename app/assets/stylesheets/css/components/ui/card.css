@@ -92,7 +92,8 @@
   /* Inner card styling */
   border-radius: var(--rounded-lg, 8px);
   border: 1px solid var(--border-primary-soft, rgba(209, 209, 209, 0.4));
-  background: var(--color-surface-surface-primary, #ffffff);
+  @apply bg-surface-primary;
+
   overflow: hidden;
 }
 
