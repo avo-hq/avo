@@ -19,6 +19,7 @@ Avo::Engine.routes.draw do
   get "/:resource_name/:field_id/distribution_chart", to: "charts#distribution_chart", as: "distribution_chart"
 
   get "failed_to_load", to: "home#failed_to_load"
+  get "status_error", to: "home#status_error"
 
   scope "resources", as: "resources" do
     # Attachments

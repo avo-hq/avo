@@ -70,6 +70,7 @@ module Avo
     attr_reader :logger
     attr_reader :cache_store
     attr_reader :field_manager
+    attr_reader :status_error
 
     delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
@@ -79,12 +80,63 @@ module Avo
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
       @cache_store = Avo.configuration.cache_store
+      @status_error = nil
+      check_cache_store_status!
       Avo.plugin_manager.reset
       # Run load hooks for plugins to include them in the app.
       # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
       ActiveSupport.run_load_hooks(:avo_plugin_include, self)
       ActiveSupport.run_load_hooks(:avo_boot, self)
       eager_load_actions
+    end
+
+    def status_ok?
+      @status_error.nil?
+    end
+
+    # Set a status error with message, help text, and documentation URL
+    def set_status_error(message:, help: nil, doc_url: nil)
+      @status_error = {
+        message: message,
+        help: help,
+        doc_url: doc_url
+      }
+    end
+
+    def clear_status_error
+      @status_error = nil
+    end
+
+    def check_cache_store_status!
+      if @cache_store.nil?
+        set_status_error(
+          message: "Avo cache store is not configured.",
+          help: "Please configure a working cache store for Avo.",
+          doc_url: "https://docs.avohq.io/4.0/cache.html"
+        )
+        return
+      end
+
+      test_key = "avo-cache-store-test-#{SecureRandom.hex(4)}"
+      test_value = "test_value"
+
+      @cache_store.write(test_key, test_value)
+      operational = @cache_store.read(test_key) == test_value
+      @cache_store.delete(test_key)
+
+      unless operational
+        set_status_error(
+          message: "Avo cache store is not operational. Cache store class: #{@cache_store.class}.",
+          help: "Please ensure a working cache store is configured for Avo.",
+          doc_url: "https://docs.avohq.io/4.0/cache.html"
+        )
+      end
+    rescue => error
+      set_status_error(
+        message: "Avo cache store check failed: #{error.message}.",
+        help: "Please ensure a working cache store is configured for Avo.",
+        doc_url: "https://docs.avohq.io/4.0/cache.html"
+      )
     end
 
     # Runs on each request

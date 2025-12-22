@@ -22,6 +22,7 @@ module Avo
     before_action :set_resource_name
     before_action :_authenticate!
     before_action :set_authorization
+    before_action :ensure_cache_store_operational
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
@@ -224,6 +225,12 @@ module Avo
 
     def _authenticate!
       instance_eval(&Avo.configuration.authenticate)
+    end
+
+    def ensure_cache_store_operational
+      return if Avo.status_ok?
+
+      redirect_to avo.status_error_path
     end
 
     def render_unauthorized(exception)
