@@ -166,6 +166,10 @@ module.exports = {
       addVariant('kanban-dragging', '.kanban-dragging & ')
       addVariant('floating-controls', '.floating-controls & ')
       addVariant('shift-pressed', '.shift-pressed & ')
+      
+      // RTL support variants
+      addVariant('rtl', '[dir="rtl"] &')
+      addVariant('ltr', '[dir="ltr"] &')
     }),
   ],
 }
