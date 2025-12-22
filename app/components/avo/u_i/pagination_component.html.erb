@@ -1,0 +1,28 @@
+<nav
+  class="flex items-end justify-between w-full pt-1 gap-4"
+  data-controller="pagination"
+  data-current-page="<%= @current_page %>"
+  data-total-pages="<%= total_pages %>"
+  aria-label="Pagination"
+>
+  <%= render Avo::UI::Pagination::PerPageSelectorComponent.new(
+    items_per_page: @items_per_page,
+    per_page_options: @per_page_options
+  ) %>
+
+  <!-- Page navigation -->
+  <div class="flex items-center gap-3 bg-white border border-gray-200 rounded-lg py-0 shrink-0" style="padding-left: 12px; padding-right: 8px;">
+    <%= render Avo::UI::Pagination::PageInfoComponent.new(
+      start_item: start_item,
+      end_item: end_item,
+      total_items: @total_items
+    ) %>
+
+    <%= render Avo::UI::Pagination::NavigationControlsComponent.new(
+      current_page: @current_page,
+      page_numbers: page_numbers,
+      can_go_previous: can_go_previous?,
+      can_go_next: can_go_next?
+    ) %>
+  </div>
+</nav>
