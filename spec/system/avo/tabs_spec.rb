@@ -56,7 +56,7 @@ RSpec.describe "Tabs", type: :system do
         visit avo.resources_user_path user
 
         within first_tab_group do
-          expect(find('[data-tabs-target="tabSwitcher"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at"
+          expect(find('[role="tablist"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at"
         end
       end
     end
@@ -87,7 +87,7 @@ RSpec.describe "Tabs", type: :system do
         visit avo.edit_resources_user_path user
 
         within first_tab_group do
-          expect(find('[data-tabs-target="tabSwitcher"]')).to have_text "Birthday\nPeople"
+          expect(find('[role="tablist"]')).to have_text "Birthday\nPeople"
         end
       end
 
@@ -95,7 +95,7 @@ RSpec.describe "Tabs", type: :system do
         visit avo.edit_resources_user_path user
 
         within second_tab_group do
-          expect(find('[data-tabs-target="tabSwitcher"]').text).to eq "Posts"
+          expect(find('[role="tablist"]').text).to eq "Posts"
         end
       end
     end
@@ -108,7 +108,7 @@ RSpec.describe "Tabs", type: :system do
       scroll_to first_tab_group
 
       within first_tab_group do
-        expect(find('[data-tabs-target="tabSwitcher"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at", exact: true
+        expect(find('[role="tablist"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at", exact: true
       end
     end
   end
