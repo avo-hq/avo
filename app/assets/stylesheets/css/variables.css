@@ -171,12 +171,12 @@
   --color-surface-invert: var(--color-avo-neutral-950);
 
   /* Base color variables (matching Figma design system) */
-  --color-base-primary: var(--color-white);
-  --color-base-secondary: var(--color-surface-secondary);
-  --color-base-secondary-50: var(--color-avo-neutral-50-alpha-50);
-  --color-base-tertiary: var(--color-border-primary);
-  --color-base-content: var(--color-text-primary);
-  --color-accent: var(--color-text-primary);
+  --color-neutral-primary: var(--color-white);
+  --color-neutral-secondary: var(--color-avo-neutral-50);
+  --color-neutral-secondary-50: var(--color-avo-neutral-50-alpha-50);
+  --color-neutral-tertiary: var(--color-avo-neutral-100);
+  --color-neutral-content: var(--color-avo-neutral-950);
+  --color-accent: var(--color-avo-neutral-800);
 
   --color-semantic-surface-success: var(--color-success-100);
   --color-semantic-surface-informative: var(--color-informative-100);
