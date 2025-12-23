@@ -4,7 +4,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   delegate :group_param, to: :@group
 
   prop :resource, reader: :public
-  # variable @group was chnaged with group to avoid cases where we need to pass down the group object as a prop
+  # variable @group was changed with group to avoid cases where we need to pass down the group object as a prop
   prop :group, reader: :public
   prop :index, reader: :public
   prop :form, reader: :public
@@ -112,9 +112,5 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     }
     data[:tippy] = "tooltip" if scope_tab.description.present?
     data
-  end
-
-  def scope_tab_active?(scope_tab, current_tab)
-    scope_tab.title == current_tab.title
   end
 end

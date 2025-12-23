@@ -31,6 +31,3 @@ class UI::ScopeTabsComponentPreview < ViewComponent::Preview
 
   # @!endgroup
 end
-
-
-
