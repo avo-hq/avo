@@ -143,8 +143,7 @@ module Avo
     end
 
     def click_tab(tab_name = "", within_target: nil, **args)
-      # Support both old TabSwitcherComponent (data-tabs-target) and new ScopeTabsComponent (role=tablist)
-      tab_container_selector = '[data-controller="tabs"] [data-tabs-target="tabSwitcher"], [data-controller="tabs"] [role="tablist"]'
+      tab_container_selector = '[data-controller="tabs"] [role="tablist"]'
 
       if within_target.present?
         within within_target do
