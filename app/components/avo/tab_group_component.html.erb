@@ -17,7 +17,7 @@
           <% visible_tabs.each do |scope_tab| %>
             <%= render Avo::UI::Tabs::ScopeTabComponent.new(
               label: scope_tab.title,
-              active: scope_tab.title == current_tab.title,
+              active: scope_tab_active?(scope_tab, tab),
               href: scope_tab_path(scope_tab),
               title: scope_tab.description,
               data: scope_tab_data(scope_tab, tab)

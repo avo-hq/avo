@@ -113,4 +113,8 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     data[:tippy] = "tooltip" if scope_tab.description.present?
     data
   end
+
+  def scope_tab_active?(scope_tab, current_tab)
+    scope_tab.title == current_tab.title
+  end
 end
