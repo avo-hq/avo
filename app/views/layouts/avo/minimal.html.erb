@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<!-- ✨ Built with Avo • https://www.avohq.io/ -->
+<html lang="<%= I18n.default_locale %>">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= display_meta_tags site: Avo.configuration.app_name, reverse: true, separator: "—" %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= favicon_link_tag "avo/favicon.ico" %>
+    <%= render partial: "avo/partials/branding" %>
+    <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
+    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", as: "style" %>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen">
+    <%= yield.force_encoding("UTF-8") %>
+    <%= render partial: "avo/partials/alerts" %>
+  </body>
+</html>
+
+<!-- ✨ Built with Avo • https://www.avohq.io/ -->
