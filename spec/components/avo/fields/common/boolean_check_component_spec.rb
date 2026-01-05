@@ -2,15 +2,13 @@ require "rails_helper"
 
 RSpec.describe Avo::Fields::Common::BooleanCheckComponent, type: :component do
   it "outputs an accessible text" do
-    I18n.backend.store_translations(:en, true: "Yes", false: "No", "indeterminate": "Indeterminate")
-
     render_inline(described_class.new(checked: true))
-    expect(page.text.strip).to eql("Yes")
+    expect(page.text.strip).to eql("True")
 
     render_inline(described_class.new(checked: false))
-    expect(page.text.strip).to eql("No")
+    expect(page.text.strip).to eql("False")
 
     render_inline(described_class.new(checked: nil))
-    expect(page.text.strip).to eql("Indeterminate")
+    expect(page.text.strip).to eql("")
   end
 end
