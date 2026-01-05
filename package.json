@@ -27,7 +27,7 @@
     "@stimulus-components/clipboard": "^5.0.0",
     "@stimulus-components/password-visibility": "^3.0.0",
     "@tailwindcss/container-queries": "^0.1.1",
-    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.19",
     "@tiptap/core": "^2.27.1",
     "@tiptap/extension-bold": "^2.27.1",
@@ -81,7 +81,7 @@
     "tailwindcss": "^3.4.19",
     "tailwindcss-stimulus-components": "^3.0.4",
     "tippy.js": "^6.3.7",
-    "trix": "^2.1.15",
+    "trix": "^2.1.16",
     "turbo_power": "^0.6.2",
     "urijs": "^1.19.11"
   },
