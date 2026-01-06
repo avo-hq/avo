@@ -97,7 +97,7 @@ class Avo::Resources::Project < Avo::BaseResource
           "Discovery" => "heroicons/outline/magnifying-glass",
           # "Idea" => "heroicons/outline/light-bulb",
           "Drafting" => "heroicons/outline/document-text",
-          "Done" => "heroicons/outline/check-circle",
+          "Done" => "tabler/outline/circle-check",
           "On hold" => "heroicons/outline/pause-circle",
           "Cancelled" => "heroicons/outline/x-circle"
         }[record.stage]
