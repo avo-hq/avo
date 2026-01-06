@@ -14,7 +14,6 @@
     "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/avo/application.css --postcss",
     "export": "yarn export:heroicons && yarn export:tailwind-safelist",
     "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js",
-    "fetch:figma-tokens": "node scripts/fetch-figma-tokens.js",
     "build:design-tokens": "node scripts/build-design-tokens.js"
   },
   "dependencies": {
