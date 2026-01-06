@@ -1,3 +1,7 @@
+
+/* Import the design tokens generated from Figma */
+@import "./design-tokens.css";
+
 @theme {
   --color-white: rgba(255, 255, 255, 1.00);
   --color-white-alpha-800: rgba(255, 255, 255, 0.48);

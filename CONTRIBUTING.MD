@@ -254,3 +254,23 @@ OPENAI_API_KEY=TOKEN bundle exec i18n-tasks translate-missing --backend=openai
 ```
 
 Replace `TOKEN` with your actual OpenAI API key. This step will both add the missing keys and translate them automatically.
+
+# Refreshing Figam tokens (WIP)
+
+To refresh the Figma tokens, we need to do a few things:
+
+## 1. Get the tokens JSON file form Figma (Manual process)
+
+1. Go to the Avo Figma file
+1. Open the Tokens Studio plugin
+1. Click the zipper on the bottom left corner and select export to file/folder
+1. You'll get a zip file, unzip it and you'll get a few `.json` files
+1. Move the `design-tokens.json` file to the `app/assets/stylesheets/design-tokens.json` file
+
+## 2. Build the CSS variables from the JSON file (automated)
+
+Run the following command to build the CSS variables from the JSON file:
+
+```bash
+yarn build:design-tokens
+```

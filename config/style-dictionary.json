@@ -1,0 +1,16 @@
+{
+  "source": ["app/assets/stylesheets/design-tokens.json"],
+  "platforms": {
+    "css": {
+      "transformGroup": "css",
+      "buildPath": "app/assets/stylesheets/css/",
+      "files": [
+        {
+          "destination": "design-tokens.css",
+          "format": "css/variables"
+        }
+      ]
+    }
+  }
+}
+
