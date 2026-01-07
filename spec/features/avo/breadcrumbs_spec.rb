@@ -1,151 +1,155 @@
-# require "rails_helper"
+require "rails_helper"
 
-# RSpec.feature "Breadcrumbs", type: :feature do
-#   let!(:project) { create :project, users: [admin] }
-#   let!(:url) { "/admin/resources/projects/#{project.id}/edit" }
+RSpec.feature "Breadcrumbs", type: :feature do
+  let!(:project) { create :project, users: [admin] }
+  let!(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
-#   before do
-#     visit url
-#   end
+  def initials_for(record)
+    record.name.to_s.split(" ").map(&:first).join("").first(2).upcase
+  end
 
-#   describe "with breadcrumbs" do
-#     it do
-#       login_as admin
-#       visit url
+  before do
+    visit url
+  end
 
-#       # Find the breadcrumbs container
-#       breadcrumbs = find(".breadcrumbs")
+  describe "with breadcrumbs" do
+    it do
+      login_as admin
+      visit url
 
-#       # Verify that the text includes all breadcrumbs
-#       expect(breadcrumbs).to have_text("Home")
-#       expect(breadcrumbs).to have_text("Projects")
-#       expect(breadcrumbs).to have_text(project.name)
-#       expect(breadcrumbs).to have_text("Edit")
+      # Find the breadcrumbs container
+      breadcrumbs = find(".breadcrumbs")
 
-#       # Ensure the breadcrumbs are in the correct order
-#       expect(breadcrumbs.text).to match(/Home.*Projects.*#{project.name}.*Edit/)
-#     end
-#   end
+      # Verify that the text includes all breadcrumbs
+      expect(breadcrumbs).to have_text("Home")
+      expect(breadcrumbs).to have_text("Projects")
+      expect(breadcrumbs).to have_text(project.name)
+      expect(breadcrumbs).to have_text("Edit")
 
-#   describe "on a custom tool" do
-#     let!(:url) { "/admin/custom_tool" }
+      # Ensure the breadcrumbs are in the correct order
+      expect(breadcrumbs.text).to match(/Home.*Projects.*#{project.name}.*Edit/)
+    end
+  end
 
-#     it do
-#       visit url
+  describe "on a custom tool" do
+    let!(:url) { "/admin/custom_tool" }
 
-#       # Find the breadcrumbs container
-#       breadcrumbs = find(".breadcrumbs")
+    it do
+      visit url
 
-#       # Verify that the text includes all breadcrumbs
-#       expect(breadcrumbs).to have_text("Home")
+      # Find the breadcrumbs container
+      breadcrumbs = find(".breadcrumbs")
 
-#       # Ensure the breadcrumbs are in the correct order
-#       expect(breadcrumbs.text).to match(/Home/)
-#     end
-#   end
+      # Verify that the text includes all breadcrumbs
+      expect(breadcrumbs).to have_text("Home")
 
-#   describe "on a has_and_belongs_to_many turbo frame" do
-#     let!(:user) { create(:user) }
-#     let!(:team) { create(:team) }
+      # Ensure the breadcrumbs are in the correct order
+      expect(breadcrumbs.text).to match(/Home/)
+    end
+  end
 
-#     context "when HTML request" do
-#       it "displays breadcrumbs" do
-#         url = "/admin/resources/users/#{user.slug}/teams?view=show"
-#         visit url
+  describe "on a has_and_belongs_to_many turbo frame" do
+    let!(:user) { create(:user) }
+    let!(:team) { create(:team) }
 
-#         expect(page).to have_selector ".breadcrumbs"
-#         expect(page.find(".breadcrumbs").text).to eq "Home Users #{user.name} Teams"
+    context "when HTML request" do
+      it "displays breadcrumbs" do
+        url = "/admin/resources/users/#{user.slug}/teams?view=show"
+        visit url
 
-#         breadcrumbs = find(".breadcrumbs")
-#         expect(breadcrumbs).to have_link "Home"
-#         expect(breadcrumbs).to have_link "Users"
-#         expect(breadcrumbs).to have_link user.name.to_s
-#         expect(breadcrumbs).to_not have_link "Teams"
-#       end
+        expect(page).to have_selector ".breadcrumbs"
+        expect(page.find(".breadcrumbs").text).to eq "Home / U Users / #{initials_for(user)} #{user.name} / T Teams"
 
-#       it "displays breadcrumbs" do
-#         url = "/admin/resources/teams/#{team.id}/team_members?view=show"
-#         visit url
+        breadcrumbs = find(".breadcrumbs")
+        expect(breadcrumbs).to have_link "Home"
+        expect(breadcrumbs).to have_link "Users"
+        expect(breadcrumbs).to have_link user.name.to_s
+        expect(breadcrumbs).to_not have_link "Teams"
+      end
 
-#         expect(page).to have_selector ".breadcrumbs"
-#         expect(page.find(".breadcrumbs").text).to eq "Home Teams #{team.name} Users"
+      it "displays breadcrumbs" do
+        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        visit url
 
-#         breadcrumbs = find(".breadcrumbs")
-#         expect(breadcrumbs).to have_link "Home"
-#         expect(breadcrumbs).to have_link "Teams"
-#         expect(breadcrumbs).to have_link team.name.to_s
-#         expect(breadcrumbs).to_not have_link "Users"
-#       end
+        expect(page).to have_selector ".breadcrumbs"
+        expect(page.find(".breadcrumbs").text).to eq "Home / T Teams / #{initials_for(team)} #{team.name} / U Users"
 
-#       it "displays a back button" do
-#         url = "/admin/resources/teams/#{team.id}/team_members?view=show"
-#         visit url
+        breadcrumbs = find(".breadcrumbs")
+        expect(breadcrumbs).to have_link "Home"
+        expect(breadcrumbs).to have_link "Teams"
+        expect(breadcrumbs).to have_link team.name.to_s
+        expect(breadcrumbs).to_not have_link "Users"
+      end
 
-#         expect(page).to have_selector ".header__controls a[href='/admin/resources/teams/#{team.id}']", text: "Go back"
-#       end
-#     end
+      it "displays a back button" do
+        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        visit url
 
-#     context "when Turbo request" do
-#       before(:example) do
-#         url = "/admin/resources/teams/#{team.id}/team_members?view=show"
-#         page.driver.browser.header("Turbo-Frame", true)
-#         visit url
-#       end
+        expect(page).to have_selector ".header__controls a[href='/admin/resources/teams/#{team.id}']", text: "Go back"
+      end
+    end
 
-#       it "does not display breadcrumbs" do
-#         expect(page).to_not have_selector ".breadcrumbs"
-#       end
+    context "when Turbo request" do
+      before(:example) do
+        url = "/admin/resources/teams/#{team.id}/team_members?view=show"
+        page.driver.browser.header("Turbo-Frame", true)
+        visit url
+      end
 
-#       it "does not display a back button" do
-#         expect(page).to_not have_selector ".header__controls a", text: "Go back"
-#       end
-#     end
-#   end
+      it "does not display breadcrumbs" do
+        expect(page).to_not have_selector ".breadcrumbs"
+      end
 
-#   describe "on associations" do
-#     it "show" do
-#       url = avo.resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
-#       visit url
+      it "does not display a back button" do
+        expect(page).to_not have_selector ".header__controls a", text: "Go back"
+      end
+    end
+  end
 
-#       breadcrumbs = find(".breadcrumbs")
-#       expect(breadcrumbs).to have_link "Home"
-#       expect(breadcrumbs).to have_link "Users"
-#       expect(breadcrumbs).to have_link admin.name
-#       expect(breadcrumbs).to_not have_link "Projects"
-#       expect(breadcrumbs).to have_text "Projects"
-#       expect(breadcrumbs).to_not have_link project.name
-#       expect(breadcrumbs).to have_text project.name
-#       expect(breadcrumbs).to_not have_link "Details"
-#       expect(breadcrumbs).to have_text "Details"
-#     end
+  describe "on associations" do
+    it "show" do
+      url = avo.resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
+      visit url
 
-#     it "edit" do
-#       url = avo.edit_resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
-#       visit url
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link admin.name
+      expect(breadcrumbs).to_not have_link "Projects"
+      expect(breadcrumbs).to have_text "Projects"
+      expect(breadcrumbs).to_not have_link project.name
+      expect(breadcrumbs).to have_text project.name
+      expect(breadcrumbs).to_not have_link "Details"
+      expect(breadcrumbs).to have_text "Details"
+    end
 
-#       breadcrumbs = find(".breadcrumbs")
-#       expect(breadcrumbs).to have_link "Home"
-#       expect(breadcrumbs).to have_link "Users"
-#       expect(breadcrumbs).to have_link admin.name
-#       expect(breadcrumbs).to_not have_link "Projects"
-#       expect(breadcrumbs).to have_text "Projects"
-#       expect(breadcrumbs).to have_link project.name
-#       expect(breadcrumbs).to_not have_link "Edit"
-#       expect(breadcrumbs).to have_text "Edit"
-#     end
+    it "edit" do
+      url = avo.edit_resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
+      visit url
 
-#     it "new" do
-#       url = avo.new_resources_project_path(via_record_id: admin, via_resource_class: Avo::Resources::User, via_relation: :users, via_relation_class: "User")
-#       visit url
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link admin.name
+      expect(breadcrumbs).to_not have_link "Projects"
+      expect(breadcrumbs).to have_text "Projects"
+      expect(breadcrumbs).to have_link project.name
+      expect(breadcrumbs).to_not have_link "Edit"
+      expect(breadcrumbs).to have_text "Edit"
+    end
 
-#       breadcrumbs = find(".breadcrumbs")
-#       expect(breadcrumbs).to have_link "Home"
-#       expect(breadcrumbs).to have_link "Users"
-#       expect(breadcrumbs).to have_link admin.name
-#       expect(breadcrumbs).to_not have_link "Projects"
-#       expect(breadcrumbs).to have_text "Projects"
-#       expect(breadcrumbs).to_not have_link "New"
-#       expect(breadcrumbs).to have_text "New"
-#     end
-#   end
-# end
+    it "new" do
+      url = avo.new_resources_project_path(via_record_id: admin, via_resource_class: Avo::Resources::User, via_relation: :users, via_relation_class: "User")
+      visit url
+
+      breadcrumbs = find(".breadcrumbs")
+      expect(breadcrumbs).to have_link "Home"
+      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link admin.name
+      expect(breadcrumbs).to_not have_link "Projects"
+      expect(breadcrumbs).to have_text "Projects"
+      expect(breadcrumbs).to_not have_link "New"
+      expect(breadcrumbs).to have_text "New"
+    end
+  end
+end
