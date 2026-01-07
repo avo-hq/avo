@@ -3,13 +3,13 @@ require "rails_helper"
 RSpec.describe Avo::UI::BadgeComponent, type: :component do
   let(:valid_colors) { described_class::VALID_COLORS }
   describe "rendering" do
-    it "renders default badge with secondary color" do
+    it "renders default badge with neutral color" do
       render_inline(described_class.new(label: "Test Badge"))
 
       expect(page).to have_css(".badge")
       expect(page).to have_text("Test Badge")
       # Check for correct CSS classes (colors are now handled via CSS variables in classes)
-      expect(page).to have_css(".badge--subtle.badge--secondary")
+      expect(page).to have_css(".badge--subtle.badge--neutral")
     end
 
     it "renders badge without label" do
@@ -67,23 +67,16 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
         expect(page).to have_css(".badge--solid.badge--purple")
       end
 
-      it "semantic colors do not support solid style (only subtle)" do
+      it "semantic colors support solid style" do
         render_inline(described_class.new(
           label: "Success",
           color: "success",
           style: "solid"
         ))
 
-        # Component will apply .badge--solid.badge--success classes,
-        # but CSS only defines .badge--subtle.badge--success
-        # So the solid style won't have any CSS rules and won't render correctly
+        # Semantic colors now support solid style
         expect(page).to have_css(".badge--solid.badge--success")
-        # Verify that there's no CSS rule for this combination by checking
-        # that it doesn't match the subtle style (which is what semantic colors support)
         expect(page).not_to have_css(".badge--subtle.badge--success")
-        # Note: This test documents that semantic colors (success, error, warning, informative, secondary)
-        # only support subtle style, not solid style. The component will still apply the classes,
-        # but there's no matching CSS, so it won't render with proper solid styling.
       end
 
       # Test solid style for colors that support it (orange, yellow, green, teal, blue, purple)
@@ -102,14 +95,14 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
     end
 
     context "with invalid color" do
-      it "falls back to 'secondary'" do
+      it "falls back to 'neutral'" do
         render_inline(described_class.new(
           label: "Invalid",
           color: "rainbow"
         ))
 
-        # Should use secondary color class (colors use CSS variables)
-        expect(page).to have_css(".badge--subtle.badge--secondary")
+        # Should use neutral color class (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--neutral")
       end
 
       it "does not raise an error" do
@@ -151,7 +144,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
 
   describe "all color variants" do
     context "semantic colors" do
-      %w[secondary success error warning informative].each do |color|
+      %w[neutral success danger warning info].each do |color|
         it "renders #{color} badge correctly with CSS classes" do
           render_inline(described_class.new(
             label: color.capitalize,

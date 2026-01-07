@@ -8,13 +8,13 @@ class Avo::Resources::Product < Avo::BaseResource
         cover_url: record.image.attached? ? main_app.url_for(record.image.variant(resize_to_fill: [300, 300])) : nil,
         title: record.title,
         body: simple_format(record.description),
-        badge_label: (record.status == :new) ? "New" : "Updated",
-        badge_color: (record.status == :new) ? "green" : "orange",
-        badge_style: (record.status == :new) ? "solid" : "subtle",
-        badge_title: (record.status == :new) ? "New product here" : "Updated product here",
-        badge_icon: (record.status == :new) ? "heroicons/outline/arrow-trending-up" : "",
-        badge_icon_only: (record.status == :new) || false,
-        badge_auto_width: (record.status == :new) || false
+        badge: {
+          label: (record.status == :new) ? "" : "Updated",
+          color: (record.status == :new) ? "green" : "orange",
+          style: (record.status == :new) ? "solid" : "subtle",
+          title: (record.status == :new) ? "New product here" : "Updated product here",
+          icon: (record.status == :new) ? "heroicons/outline/arrow-trending-up" : ""
+        }
       }
     end,
     html: -> do

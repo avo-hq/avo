@@ -1,46 +1,20 @@
 # frozen_string_literal: true
 
 class Avo::UI::BadgeComponent < Avo::BaseComponent
-  unless defined?(VALID_STYLES)
-    VALID_STYLES = %w[solid subtle].freeze
-  end
-
-  unless defined?(VALID_COLORS)
-    VALID_COLORS = %w[
-      secondary
-      success
-      informative
-      warning
-      error
-      orange
-      yellow
-      green
-      teal
-      blue
-      purple
-    ].freeze
-  end
+  VALID_STYLES = %i[solid subtle].freeze unless defined?(VALID_STYLES)
+  VALID_COLORS = %i[neutral success info warning danger orange yellow green teal blue purple].freeze unless defined?(VALID_COLORS)
 
   prop :color do |value|
-    value = value.to_s
-
-    VALID_COLORS.include?(value) ? value : "secondary"
+    normalized_value = value.to_s.to_sym
+    VALID_COLORS.include?(normalized_value) ? normalized_value : :neutral
   end
 
   prop :style do |value|
-    value = value.to_s
-
-    VALID_STYLES.include?(value) ? value : "subtle"
+    normalized_value = value.to_s.to_sym
+    VALID_STYLES.include?(normalized_value) ? normalized_value : :subtle
   end
 
-  prop :label, default: ""
+  prop :label
   prop :icon
-  prop :icon_only, default: false
-  prop :classes, default: ""
-
-  private
-
-  def icon_only?
-    @icon_only || (@icon.present? && @label.blank?)
-  end
+  prop :classes
 end

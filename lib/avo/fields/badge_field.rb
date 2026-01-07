@@ -3,18 +3,21 @@ module Avo
     class BadgeField < BaseField
       attr_reader :options
 
+      # Identity mappings: field values like "success" automatically use the success color
+      DEFAULT_OPTIONS = {info: :info, success: :success, danger: :danger, warning: :warning, neutral: :neutral}.freeze unless defined?(DEFAULT_OPTIONS)
+
       def initialize(id, **args, &block)
         super
 
         hide_on [:edit, :new]
 
-        default_options = {info: :info, success: :success, danger: :danger, warning: :warning, neutral: :neutral}
-        @options = args[:options].present? ? default_options.merge(args[:options]) : default_options
+        # Default options provide identity mappings for semantic colors
+        # These allow field values like "success" or "info" to automatically map to their color types
+        @options = DEFAULT_OPTIONS.merge(args[:options] || {})
 
-        @color_raw = args[:color]
-        @style_raw = args[:style]
-        @icon_raw = args[:icon]
-        @icon_only_raw = args[:icon_only]
+        @color = args[:color]
+        @style = args[:style]
+        @icon = args[:icon]
       end
 
       def options_for_filter
@@ -22,68 +25,47 @@ module Avo
       end
 
       def color
-        evaluate_dynamic_value(@color_raw) || badge_color_for_value
+        # Priority 1: Use explicit color if provided (via proc/lambda or direct value)
+        # Priority 2: Fall back to automatic color detection based on field value and options mapping
+        execute_context(@color) || badge_color_for_value
       end
 
       def style
-        evaluate_dynamic_value(@style_raw) || "subtle"
+        execute_context(@style) || "subtle"
       end
 
       def icon
-        evaluate_dynamic_value(@icon_raw)
+        execute_context(@icon)
       end
 
-      def icon_only
-        evaluate_dynamic_value(@icon_only_raw) || false
-      end
+      # Maps field value to a color based on @options configuration
+      # Example: "Done" -> "success" if options = { success: [:done, :complete] }
+      def badge_color_for_value
+        return "neutral" if value.blank?
 
-      def badge_color_for_value(value = nil)
-        value ||= self.value
-        return "secondary" if value.blank?
-
-        value_str = value.to_s.strip
-        color_type = find_color_type_for_value(value_str)
-
-        map_color_type_to_badge_color(color_type)
+        find_color_for(normalize(value)) || "neutral"
       end
 
       private
 
-      def find_color_type_for_value(value_str)
-        @options.each do |type, values|
-          next if values.is_a?(Symbol) && values == type
+      def normalize(value)
+        value.to_s.strip.downcase
+      end
 
-          values_array = Array.wrap(values).map { |v| v.to_s.strip }
-          return type.to_sym if values_array.include?(value_str)
+      # Searches through all configured color options to find a match for the field value
+      # Returns the color type (e.g., "success", "info") as a string, or nil if no match
+      def find_color_for(normalized_value)
+        @options.each do |color_type, configured_values|
+          return color_type.to_s if normalize_list(configured_values).include?(normalized_value)
         end
 
         nil
       end
 
-      def map_color_type_to_badge_color(color_type)
-        case color_type
-        when :info
-          "informative"
-        when :success
-          "success"
-        when :danger
-          "error"
-        when :warning
-          "warning"
-        when :neutral
-          "secondary"
-        else
-          "secondary"
-        end
-      end
-
-      private
-
-      def evaluate_dynamic_value(value)
-        return nil if value.nil?
-        return value unless value.respond_to?(:call)
-
-        execute_context(value)
+      # Normalizes values for case-insensitive comparison
+      # :Done -> ["done"], [:Foo, "Bar"] -> ["foo", "bar"]
+      def normalize_list(values)
+        Array.wrap(values).map { |v| normalize(v) }
       end
     end
   end

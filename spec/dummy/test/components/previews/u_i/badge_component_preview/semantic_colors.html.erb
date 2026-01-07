@@ -1,14 +1,19 @@
 <div class="p-8 space-y-6 bg-white">
   <h3 class="text-lg font-semibold text-gray-900 mb-4">Semantic Colors - Subtle Style (default)</h3>
   <div class="flex flex-wrap gap-3">
-    <%= render Avo::UI::BadgeComponent.new(label: "Secondary", color: "secondary") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Neutral", color: "neutral") %>
     <%= render Avo::UI::BadgeComponent.new(label: "Success", color: "success") %>
-    <%= render Avo::UI::BadgeComponent.new(label: "Error", color: "error") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Danger", color: "danger") %>
     <%= render Avo::UI::BadgeComponent.new(label: "Warning", color: "warning") %>
-    <%= render Avo::UI::BadgeComponent.new(label: "Informative", color: "informative") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Info", color: "info") %>
   </div>
 
-  <p class="text-sm text-gray-600 mt-4 italic">
-    Note: Semantic colors only support subtle style. For solid style (dark backgrounds), use: orange, yellow, green, teal, blue, purple.
-  </p>
+  <h3 class="text-lg font-semibold text-gray-900 mb-4 mt-8">Semantic Colors - Solid Style</h3>
+  <div class="flex flex-wrap gap-3">
+    <%= render Avo::UI::BadgeComponent.new(label: "Neutral", color: "neutral", style: "solid") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Success", color: "success", style: "solid") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Danger", color: "danger", style: "solid") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Warning", color: "warning", style: "solid") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Info", color: "info", style: "solid") %>
+  </div>
 </div>

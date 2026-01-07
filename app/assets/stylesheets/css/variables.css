@@ -1,5 +1,6 @@
 @theme {
   --color-white: rgba(255, 255, 255, 1.00);
+  --color-white-alpha-85: rgba(255, 255, 255, 0.85);
   --color-white-alpha-800: rgba(255, 255, 255, 0.48);
   --color-orange-50: rgba(255, 247, 237, 1.00);
   --color-orange-100: rgba(255, 237, 213, 1.00);
@@ -108,8 +109,8 @@
   --color-informative-800: rgba(8, 90, 197, 1.00);
   --color-informative-900: rgba(13, 78, 155, 1.00);
   --color-black: rgba(0, 0, 0, 1.00);
+  --color-avo-neutral-25: rgba(250, 250, 250, 1.00);
   --color-avo-neutral-50: rgba(246, 246, 246, 1.00);
-  --color-avo-neutral-100: rgba(231, 231, 231, 1.00);
   --color-avo-neutral-100: rgba(231, 231, 231, 1.00);
   --color-avo-neutral-200: rgba(209, 209, 209, 1.00);
   --color-avo-neutral-300: rgba(176, 176, 176, 1.00);
@@ -130,7 +131,7 @@
   --color-gray-alpha-700: rgba(0, 0, 0, 0.40);
   --color-gray-alpha-800: rgba(0, 0, 0, 0.48);
   --color-gray-alpha-900: rgba(0, 0, 0, 0.56);
-
+  --color-neutral-primary: var(--color-white-alpha-85);
 
   /* accent colors are the same as TW 4 */
   /* semantic colors are the same as TW 4 */
@@ -203,6 +204,18 @@
   --icon-icon-brand: var(--color-avo-neutral-950);
   --icon-icon-disabled: var(--color-avo-neutral-500);
 
+  /* Badge Component Variables */
+  --color-success: var(--color-success-400);
+  --color-success-content: var(--color-success-600);
+  --color-info: var(--color-informative-400);
+  --color-info-content: var(--color-informative-600);
+  --color-warning: var(--color-warning-400);
+  --color-warning-content: var(--color-warning-600);
+  --color-danger: var(--color-error-400);
+  --color-danger-content: var(--color-error-600);
+  --color-background: var(--color-avo-neutral-25);
+  --color-foreground: var(--color-avo-neutral-800);
+
   --button-primary-background: var(--surface-surface-brand);
   --button-primary-background-alpha: var(--color-avo-neutral-alpha-500);
   --button-primary-background-hover: var(--surface-surface-brand-secondary);
@@ -237,12 +250,16 @@
   --border-primary-soft: rgba(209, 209, 209, 0.4);
   --rounded-xl: 12px;
   --rounded-lg: 8px;
+  --rounded-md: 6px;
   --text-sm: 14px;
+  --text-xs: 12px;
   --spacing-0-5: 2px;
+  --spacing-05: 2px;
   --spacing-1: 4px;
   --spacing-2: 8px;
   --spacing-3: 12px;
   --spacing-4: 16px;
+  --spacing-6: 24px;
 
 
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;

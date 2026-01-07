@@ -68,20 +68,19 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   end
 
   def render_badge
-    return if @card[:badge_label].blank?
+    return if @card[:badge].blank? || (@card[:badge][:label].blank? && @card[:badge][:icon].blank?)
 
     # Wrap BadgeComponent in positioned container to maintain absolute positioning
     content_tag :div,
       class: class_names("absolute block inset-auto top-0 right-0 mt-2 mr-2 z-10", html(:badge, :classes)),
-      title: @card[:badge_title],
+      title: @card[:badge][:title],
       style: html(:badge, :style),
       data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do
       render Avo::UI::BadgeComponent.new(
-        label: @card[:badge_label],
-        color: @card[:badge_color],
-        style: @card[:badge_style],
-        icon: @card[:badge_icon],
-        icon_only: @card[:badge_icon_only]
+        label: @card[:badge][:label],
+        color: @card[:badge][:color],
+        style: @card[:badge][:style],
+        icon: @card[:badge][:icon]
       )
     end
   end

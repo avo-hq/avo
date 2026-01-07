@@ -4,15 +4,15 @@ module UI
 
     # Default badge
     def default
-      render Avo::UI::BadgeComponent.new(label: "Secondary")
+      render Avo::UI::BadgeComponent.new(label: "Neutral")
     end
 
     # Badge with icon
     def with_icon
       render Avo::UI::BadgeComponent.new(
-        label: "Secondary",
+        label: "Neutral",
         icon: "paperclip",
-        color: "secondary"
+        color: "neutral"
       )
     end
 
@@ -22,8 +22,8 @@ module UI
 
     # Interactive badge with customizable options
     # @param label text "Badge text"
-    # @param color select { choices: [secondary, success, error, warning, informative, orange, yellow, green, teal, blue, purple] } "Badge color"
-    # @param style select { choices: [subtle, solid] } "Badge style (solid = dark background for orange, yellow, green, teal, blue, purple)"
+    # @param color select { choices: [neutral, success, danger, warning, info, orange, yellow, green, teal, blue, purple] } "Badge color"
+    # @param style select { choices: [subtle, solid] } "Badge style (solid = dark background with light text, available for all colors)"
     # @param icon text "Icon name (e.g., avo/paperclip)"
     def playground(
       label: "Purple",
@@ -43,7 +43,7 @@ module UI
 
     # @!group Examples
 
-    # Semantic color badges (secondary, success, error, warning, informative)
+    # Semantic color badges (neutral, success, danger, warning, info)
     def semantic_colors
       render_with_template(template: "u_i/badge_component_preview/semantic_colors")
     end
