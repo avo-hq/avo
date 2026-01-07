@@ -479,10 +479,10 @@ module Avo
         }
         add_breadcrumb title: @resource.plural_name.humanize, avatar: @resource.cover_photo, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource)
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), avatar: @resource.cover_photo, initials: @resource.class.initials
       end
 
-      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args)
+      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.profile_photo, initials: @resource.profile_photo.initials
       add_breadcrumb title: t("avo.edit").humanize
     end
 
