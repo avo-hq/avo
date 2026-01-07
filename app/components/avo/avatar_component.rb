@@ -46,7 +46,7 @@ class Avo::AvatarComponent < Avo::BaseComponent
   end
 
   def container_classes
-    classes = [ "cado-avatar" ]
+    classes = ["cado-avatar"]
     classes << "cado-avatar--#{type}"
     classes << "cado-avatar--#{size}"
     classes << "cado-avatar--#{shape}"

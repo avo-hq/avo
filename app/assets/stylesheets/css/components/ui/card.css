@@ -57,6 +57,11 @@
   align-self: stretch;
   padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
   /* gap: var(--spacing-0-5, 2px); */
+
+  /* `sm` size buttons make the header too tall. This will compensate for it. */
+  .button-component {
+    @apply -my-1;
+  }
 }
 
 /* Card title - Copy/14/500 from Figma */

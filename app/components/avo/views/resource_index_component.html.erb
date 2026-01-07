@@ -6,6 +6,7 @@
     resource_name: @resource.class.to_s,
     **@resource.stimulus_data_attributes
   } do %>
+
   <%= render_cards_component %>
 
   <%= render ui.panel(
@@ -18,6 +19,12 @@
         "resource-search-url-value": request.fullpath
       },
     ) do |panel| %>
+      <% if @resource.cover_photo.present? %>
+        <% panel.with_cover_photo do %>
+          <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
+        <% end %>
+      <% end %>
+
     <% panel.with_header do %>
       <%= render ui.panel_header(
         title:,
@@ -50,7 +57,7 @@
 
           <div class="flex flex-col">
             <div class="flex flex-col space-y-2 py-4 xs:flex-row xs:justify-between xs:space-y-0 <%= "hidden" unless header_visible? %>">
-              <div class="flex w-64 items-center px-4">
+              <div class="flex w-64 items-center">
                 <% if show_search_input %>
                   <%= text_field_tag "q", params[:q],
                     id: nil,

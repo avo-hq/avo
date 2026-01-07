@@ -36,7 +36,7 @@ class Avo::Resources::Event < Avo::BaseResource
     field :body,
       as: :trix,
       meta: {
-        foo: :bar,
+        foo: :bar
       }
 
     field :profile_photo, as: :file, is_image: true, only_on: :forms

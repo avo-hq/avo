@@ -10,7 +10,7 @@ module Avo
       end
 
       # Add instance property to compute the options
-      def profile_photo
+      def profile_photo # TODO: rename to avatar
         ProfilePhoto.new resource: self
       end
     end

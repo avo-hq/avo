@@ -249,7 +249,7 @@ module Avo
           through_foreign_key => @record.id
         ),
         additional_params,
-        fields: @attach_fields,
+        fields: @attach_fields
       )
     end
 

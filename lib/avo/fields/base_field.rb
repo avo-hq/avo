@@ -172,7 +172,7 @@ module Avo
         Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
       end
 
-      def attribute_id = (@attribure_id ||= @for_attribute || @id)
+      def attribute_id = (@attribute_id ||= @for_attribute || @id)
 
       def value(property = nil)
         return @value if @value.present?

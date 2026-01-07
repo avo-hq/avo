@@ -21,10 +21,10 @@ module Avo
       @page_title = @resource.plural_name.humanize
 
       if @reflection.present? && !turbo_frame_request?
-        add_breadcrumb @record.class.to_s.pluralize, resources_path(resource: @parent_resource)
-        add_breadcrumb @parent_resource.record_title, resource_path(record: @record, resource: @parent_resource)
+        add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials, avatar: @parent_resource.class.cover_photo
+        add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.profile_photo.initials, avatar: @parent_resource.profile_photo
       end
-      add_breadcrumb @resource.plural_name.humanize
+      add_breadcrumb title: @resource.plural_name.humanize, avatar: @resource.cover_photo, initials: @resource.class.initials
 
       set_index_params
       set_filters
@@ -114,16 +114,17 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
-        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), avatar: via_resource.cover_photo, initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.profile_photo, initials: via_resource.profile_photo.initials
 
-        add_breadcrumb @resource.plural_name.humanize
+        # The path is nil because it's not easy to compute the association link (course->course_links = /links)
+        add_breadcrumb title: @resource.plural_name.humanize, path: nil, avatar: @resource.cover_photo, initials: @resource.class.initials
       else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), avatar: @resource.cover_photo, initials: @resource.class.initials
       end
 
-      add_breadcrumb @resource.record_title
-      add_breadcrumb I18n.t("avo.details").upcase_first
+      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.profile_photo, initials: @resource.profile_photo.initials
+      add_breadcrumb title: I18n.t("avo.details").upcase_first, path: nil
 
       set_component_for __method__
     end
@@ -147,15 +148,15 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
-        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), avatar: via_resource.class.cover_photo, initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.profile_photo, initials: via_resource.profile_photo.initials
 
-        add_breadcrumb @resource.plural_name.humanize
+        add_breadcrumb title: @resource.plural_name.humanize, avatar: @resource.cover_photo, initials: @resource.class.initials
       else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), avatar: @resource.cover_photo, initials: @resource.class.initials
       end
 
-      add_breadcrumb t("avo.new").humanize
+      add_breadcrumb title: t("avo.new").humanize
 
       set_component_for __method__, fallback_view: :edit
 
@@ -198,8 +199,8 @@ module Avo
       saved = save_record
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-      add_breadcrumb t("avo.new").humanize
+      add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), avatar: @resource.cover_photo, initials: @resource.class.initials
+      add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.profile_photo, initials: @resource.profile_photo.initials
       set_actions
 
       set_component_for :edit
@@ -469,20 +470,20 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
-        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), avatar: via_resource.class.cover_photo, initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.profile_photo, initials: via_resource.profile_photo.initials
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
-        add_breadcrumb @resource.plural_name.humanize
+        add_breadcrumb title: @resource.plural_name.humanize, avatar: @resource.cover_photo, initials: @resource.class.initials
       else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource)
       end
 
-      add_breadcrumb @resource.record_title, resource_path(record: @resource.record, resource: @resource, **last_crumb_args)
-      add_breadcrumb t("avo.edit").humanize
+      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args)
+      add_breadcrumb title: t("avo.edit").humanize
     end
 
     def create_success_action

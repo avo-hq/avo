@@ -36,8 +36,10 @@
       <% end %>
     <% end %>
 
-    <% header.with_profile_photo do %>
-      <%= render Avo::ProfilePhotoComponent.new profile_photo: @resource.profile_photo %>
+    <% if @resource.profile_photo.present? %>
+      <% header.with_profile_photo do %>
+        <%= render Avo::ProfilePhotoComponent.new profile_photo: @resource.profile_photo %>
+      <% end %>
     <% end %>
 
     <% header.with_discreet_information do %>

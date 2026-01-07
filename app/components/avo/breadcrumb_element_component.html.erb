@@ -1,17 +1,19 @@
-<%= tag.span class: class_names(
+<%= wrapper_element class: class_names(
   "breadcrumb-element",
-  "breadcrumb-element--current": current?,
   "breadcrumb-element--link": link?
 ) do %>
+  <% if @avatar.present? %>
+    <div class="breadcrumb-element__avatar">
+      <%= render Avo::AvatarComponent.new src: helpers.main_app.url_for(@avatar.value), shape: :square, type: :avatar, size: :tiny %>
+    </div>
+  <% elsif @initials.present? %>
+    <span class="breadcrumb-element__initials"><%= @initials %></span>
+  <% end %>
   <% if @icon.present? %>
-    <span class="breadcrumb-element__icon"><%= helpers.svg @icon, class: "breadcrumb-element__icon-svg" %></span>
+    <%= helpers.svg @icon, class: "breadcrumb-element__icon" %>
   <% end %>
 
-  <% if link? %>
-    <%= link_to @text, @url, class: "breadcrumb-element__text" %>
-  <% else %>
-    <span class="breadcrumb-element__text"><%= @text %></span>
-  <% end %>
+  <%= content_tag :span, @text, class: "breadcrumb-element__text" %>
 
   <% if @separator.present? %>
     <span class="breadcrumb-element__separator">

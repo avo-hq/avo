@@ -12,84 +12,25 @@ module Avo
       extend ActiveSupport::Concern
 
       included do |base|
-        helper HelperMethods
-        extend ClassMethods
         helper_method :add_breadcrumb, :avo_breadcrumbs
       end
 
-      Crumb = Struct.new(:name, :path) unless defined?(Crumb)
+      Crumb = Data.define(:title, :path, :avatar, :initials, :icon) unless defined?(Crumb)
 
       class Builder
-        DEFAULT_SEPARATOR = " &raquo; ".freeze unless defined?(DEFAULT_SEPARATOR)
+        extend PropInitializer::Properties
+        prop :context, reader: :public
+        prop :options, reader: :public
 
-        attr_reader :context, :options
-
-        def initialize(context, options)
-          @context = context
-          @options = options
-        end
-
-        def render
-          separator = options.fetch(:separator, DEFAULT_SEPARATOR)
-          breadcrumbs.map(&method(:render_element)).join(separator)
-        end
-
-        private
-
-        def breadcrumbs
-          context.avo_breadcrumbs
-        end
-
-        def render_element(element)
-          content = element.path.nil? ? compute_name(element) : context.link_to_unless_current(compute_name(element), compute_path(element))
-          options[:tag] ? context.content_tag(options[:tag], content) : ERB::Util.h(content)
-        end
-
-        def compute_name(element)
-          case name = element.name
-          when Symbol
-            context.send(name)
-          when Proc
-            Avo::ExecutionContext.new(target: name, context: context).handle
-          else
-            name.to_s
-          end
-        end
-
-        def compute_path(element)
-          case path = element.path
-          when Symbol
-            context.send(path)
-          when Proc
-            Avo::ExecutionContext.new(target: path, context: context).handle
-          else
-            context.url_for(path)
-          end
-        end
+        def breadcrumbs = context.avo_breadcrumbs
       end
 
-      module ClassMethods
-        def add_breadcrumb(name, path = nil)
-          before_action(filter_options) do |controller|
-            controller.send(:add_breadcrumb, name, path)
-          end
-        end
-      end
-
-      def add_breadcrumb(name, path = nil)
-        avo_breadcrumbs << Crumb.new(name, path)
+      def add_breadcrumb(title: nil, path: nil, avatar: nil, initials: nil, icon: nil)
+        avo_breadcrumbs << Crumb.new(title:, path:, avatar:, initials:, icon:)
       end
 
       def avo_breadcrumbs
         @avo_breadcrumbs ||= []
-      end
-
-      module HelperMethods
-        def render_avo_breadcrumbs(options = {}, &)
-          builder = Builder.new(self, options)
-          content = builder.render.html_safe
-          block_given? ? capture(content, &) : content
-        end
       end
     end
   end
