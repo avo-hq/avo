@@ -33,6 +33,21 @@ class Avo::Resources::User < Avo::BaseResource
     end
   }
 
+  self.avatar = {
+    source: -> {
+      record.avatar
+    }
+  }
+
+  self.cover = {
+    visible_on: :show,
+    source: -> {
+      if record.present?
+        record.avatar
+      end
+    }
+  }
+
   # self.row_controls_config = {
   #   float: true,
   #   show_on_hover: true
