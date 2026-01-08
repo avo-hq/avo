@@ -31,8 +31,8 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
         initials: "JD"
       ))
 
-      expect(result).to have_css(".cado-avatar--initial")
-      expect(result).to have_css(".cado-avatar__initial", text: "J")
+      expect(result).to have_css(".cado-avatar--initials")
+      expect(result).to have_css(".cado-avatar__initials", text: "J")
       expect(result).to have_css(".cado-avatar__border")
     end
 
@@ -72,10 +72,10 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
   end
 
   describe "parameter validation" do
-    it "requires initials when type is initial" do
+    it "requires initials when type is initials" do
       expect do
-        described_class.new(type: "initial")
-      end.to raise_error(ArgumentError, "Initial is required when type is 'initial'")
+        described_class.new(type: "initials")
+      end.to raise_error(ArgumentError, "Initials is required when type is 'initials'")
     end
 
     it "requires src when type is avatar" do
@@ -103,7 +103,7 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
       expect(component.send(:display_initial)).to eq "J"
     end
 
-    it "returns empty string when initial missing" do
+    it "returns empty string when initials missing" do
       component = described_class.new(type: "placeholder")
       expect(component.send(:display_initial)).to eq ""
     end
