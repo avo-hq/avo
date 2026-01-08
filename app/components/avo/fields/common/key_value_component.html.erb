@@ -8,14 +8,14 @@
   <div class="w-full flex flex-col">
     <div class="flex w-full">
       <div class="flex w-full bg-gray-700 shadow-sm overflow-hidden">
-        <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white border-gray-600 border-r border-gray-200">
+        <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white border-gray-600 border-e border-gray-200">
           <%= @field.key_label %>
         </div>
         <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white">
           <%= @field.value_label %>
         </div>
         <% if @view.form? %>
-          <div class="flex items-center justify-center p-2 px-[48px] border-l border-gray-600">
+          <div class="flex items-center justify-center p-2 px-[48px] border-s border-gray-600">
             <a href="javascript:void(0);"
               title="<%= @field.action_text %>"
               data-tippy="tooltip"

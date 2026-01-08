@@ -32,7 +32,7 @@ trix-toolbar {
   }
 
   .trix-button-group:not(:first-child) {
-    @apply ml-0;
+    @apply ms-0;
   }
 }
 

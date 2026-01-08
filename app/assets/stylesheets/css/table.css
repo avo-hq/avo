@@ -1,15 +1,15 @@
 /* The dance we need to do to be able to have rounded corners on an HTML table */
 [data-component-name="avo/index/table_row_component"] {
-  @apply rounded-tl-lg;
+  @apply rounded-ss-lg;
 
   &:first-child {
     & > td:first-child {
-      @apply rounded-tl-lg border-l;
+      @apply rounded-ss-lg border-s;
     }
   }
   &:first-child {
     & > td:last-child {
-      @apply rounded-tr-lg border-r;
+      @apply rounded-se-lg border-e;
     }
   }
 
@@ -19,10 +19,10 @@
     }
 
     & > td:first-child {
-      @apply rounded-bl-lg border-l;
+      @apply rounded-es-lg border-s;
     }
     & > td:last-child {
-      @apply rounded-br-lg border-r;
+      @apply rounded-ee-lg border-e;
     }
     @apply border-t border-gray-200;
   }
@@ -31,10 +31,10 @@
     @apply border-t border-gray-200;
 
     &:first-child {
-      @apply border-l;
+      @apply border-s;
     }
     &:last-child {
-      @apply border-r border-t;
+      @apply border-e border-t;
     }
   }
 }
