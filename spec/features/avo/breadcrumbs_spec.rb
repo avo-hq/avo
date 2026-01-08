@@ -25,7 +25,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       expect(breadcrumbs).to have_text("Edit")
 
       # Ensure the breadcrumbs are in the correct order
-      expect(breadcrumbs.text).to match(/Home.*Projects.*#{project.name}.*Edit/)
+      expect(strip_html(breadcrumbs.text)).to eq "Home / P Projects / #{initials_for(project)} #{project.name} / Edit"
     end
 
     describe "with avatar" do
@@ -34,7 +34,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       it "displays avatar" do
         visit avo.resources_event_path(event)
 
-        expect(breadcrumbs.text).to eq "Home / E Events /\n#{event.name} / Details"
+        expect(strip_html(breadcrumbs.text)).to eq "Home / E Events / #{event.name} / Details"
         expect(breadcrumbs).to have_link "Home"
         expect(breadcrumbs).to have_link "Events"
         expect(breadcrumbs).to have_text event.name
@@ -70,7 +70,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
         visit url
 
         expect(page).to have_selector ".breadcrumbs"
-        expect(breadcrumbs.text).to eq "Home / U Users / #{initials_for(user)} #{user.name} / T Teams"
+        expect(strip_html(breadcrumbs.text)).to eq "Home / U Users / #{initials_for(user)} #{user.name} / T Teams"
 
         expect(breadcrumbs).to have_link "Home"
         expect(breadcrumbs).to have_link "Users"
@@ -83,7 +83,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
         visit url
 
         expect(page).to have_selector ".breadcrumbs"
-        expect(breadcrumbs.text).to eq "Home / T Teams / #{initials_for(team)} #{team.name} / U Users"
+        expect(strip_html(breadcrumbs.text)).to eq "Home / T Teams / #{initials_for(team)} #{team.name} / U Users"
 
         expect(breadcrumbs).to have_link "Home"
         expect(breadcrumbs).to have_link "Teams"
@@ -121,7 +121,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       url = avo.resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
       visit url
 
-      expect(breadcrumbs.text).to eq "Home / U Users / #{initials_for(admin)} #{admin.name} / P Projects / #{initials_for(project)} #{project.name} / Details"
+      expect(strip_html(breadcrumbs.text)).to eq "Home / U Users / #{initials_for(admin)} #{admin.name} / P Projects / #{initials_for(project)} #{project.name} / Details"
       expect(breadcrumbs).to have_link "Home"
       expect(breadcrumbs).to have_link "Users"
       expect(breadcrumbs).to have_link admin.name

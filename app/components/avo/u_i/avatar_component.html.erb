@@ -1,4 +1,4 @@
-<div class="<%= container_classes %>"<%= tag.attributes(options) %>>
+<%= tag.div class: container_classes, data: { component: "avo/avatar_component" }, **options do %>
   <% if type == "avatar" && src.present? %>
     <div class="cado-avatar__image">
       <%= image_tag src, alt: alt, class: "cado-avatar__img" %>
@@ -12,4 +12,4 @@
   <% if type == "placeholder" || (type == "initials" && theme == "default") %>
     <div class="cado-avatar__border" aria-hidden="true"></div>
   <% end %>
-</div>
+<% end %>
