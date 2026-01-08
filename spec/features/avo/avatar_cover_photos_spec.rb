@@ -15,7 +15,7 @@ RSpec.describe "Avatar and cover photos", type: :feature do
       visit avo.resources_event_path(event)
 
       expect(page).not_to have_selector '[data-component="avo/cover_component"]'
-      expect(page).not_to have_selector '[data-component="avo/avatar_component"]'
+      expect(find_all(".header__content").first).not_to have_selector '[data-component="avo/avatar_component"]'
     end
   end
 

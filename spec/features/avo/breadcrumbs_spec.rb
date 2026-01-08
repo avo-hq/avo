@@ -9,6 +9,10 @@ RSpec.feature "Breadcrumbs", type: :feature do
     record.name.to_s.split(" ").map(&:first).join("").first(2).upcase
   end
 
+  def find_avatar
+    find(".breadcrumbs .breadcrumb-element__avatar img")
+  end
+
   before do
     visit url
   end
@@ -39,9 +43,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
         expect(breadcrumbs).to have_link "Events"
         expect(breadcrumbs).to have_text event.name
 
-        # Find the avatar image
-        avatar = find(".breadcrumbs .breadcrumb-element__avatar img")
-        expect(avatar["src"]).to eq(main_app.url_for(event.avatar))
+        expect(find_avatar["src"]).to eq(main_app.url_for(event.avatar))
       end
     end
   end
@@ -70,12 +72,14 @@ RSpec.feature "Breadcrumbs", type: :feature do
         visit url
 
         expect(page).to have_selector ".breadcrumbs"
-        expect(strip_html(breadcrumbs.text)).to eq "Home / U Users / #{initials_for(user)} #{user.name} / T Teams"
+        expect(strip_html(breadcrumbs.text)).to eq "Home / U Users / #{user.name} / T Teams"
 
         expect(breadcrumbs).to have_link "Home"
         expect(breadcrumbs).to have_link "Users"
         expect(breadcrumbs).to have_link user.name.to_s
         expect(breadcrumbs).to_not have_link "Teams"
+
+        expect(find_avatar["src"]).to eq(user.avatar)
       end
 
       it "displays breadcrumbs" do
@@ -121,7 +125,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
       url = avo.resources_project_path(project, via_record_id: admin, via_resource_class: Avo::Resources::User)
       visit url
 
-      expect(strip_html(breadcrumbs.text)).to eq "Home / U Users / #{initials_for(admin)} #{admin.name} / P Projects / #{initials_for(project)} #{project.name} / Details"
+      expect(strip_html(breadcrumbs.text)).to eq "Home / U Users / #{admin.name} / P Projects / #{initials_for(project)} #{project.name} / Details"
       expect(breadcrumbs).to have_link "Home"
       expect(breadcrumbs).to have_link "Users"
       expect(breadcrumbs).to have_link admin.name
