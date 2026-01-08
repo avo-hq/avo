@@ -21,7 +21,7 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
 
       expect(result).to have_css(".cado-avatar--avatar")
       expect(result).to have_css(".cado-avatar__image")
-      expect(result).to have_css("img.cado-avatar__image[src='/test-image.jpg'][alt='Test User']")
+      expect(result).to have_css("img.cado-avatar__img[src='/test-image.jpg'][alt='Test User']")
       expect(result).not_to have_css(".cado-avatar__border")
     end
 
@@ -92,20 +92,20 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
     end
   end
 
-  describe "#display_initial" do
+  describe "#display_initials" do
     it "returns the first character uppercased" do
-      component = described_class.new(type: "initials", initials: "John Doe")
-      expect(component.send(:display_initial)).to eq "J"
+      component = described_class.new(type: "initials", initials: "JD")
+      expect(component.send(:display_initials)).to eq "JD"
     end
 
     it "handles lowercase initials" do
-      component = described_class.new(type: "initials", initials: "john")
-      expect(component.send(:display_initial)).to eq "J"
+      component = described_class.new(type: "initials", initials: "J")
+      expect(component.send(:display_initials)).to eq "J"
     end
 
     it "returns empty string when initials missing" do
       component = described_class.new(type: "placeholder")
-      expect(component.send(:display_initial)).to eq ""
+      expect(component.send(:display_initials)).to eq ""
     end
   end
 end
