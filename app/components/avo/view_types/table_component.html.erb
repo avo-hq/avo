@@ -13,7 +13,7 @@
     <div class="card__wrapper mac-styled-scrollbar overflow-auto">
       <% if @pagy.pages > 1 %>
         <div
-          class="absolute z-30 ml-10 hidden w-[calc(100%-2.5rem)] pt-px"
+          class="absolute z-30 ms-10 hidden w-[calc(100%-2.5rem)] pt-px"
           data-item-select-all-target="selectAllOverlay"
         >
           <div class="mt-0.5 flex h-9 items-center bg-white">
@@ -23,7 +23,7 @@
               <%= a_link request.url,
                 size: :xs,
                 color: :primary,
-                class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
+                class: "relative -top-[0.1rem] ms-2 cursor-pointer text-primary-500",
                 data: {action: "click->item-select-all#selectAll"} do %>
                 <%= t "avo.select_all_matching" %>
               <% end %>
@@ -35,7 +35,7 @@
               <%= a_link request.url,
                 size: :xs,
                 color: :primary,
-                class: "relative -top-[0.1rem] ml-2 cursor-pointer text-primary-500",
+                class: "relative -top-[0.1rem] ms-2 cursor-pointer text-primary-500",
                 data: {action: "click->item-select-all#selectAll"} do %>
                 <%= t("avo.undo").humanize %>
               <% end %>

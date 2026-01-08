@@ -159,7 +159,7 @@ export default class extends Controller {
               createElement('img', {
                 src: item._avatar,
                 alt: item._label,
-                class: `shrink-0 w-8 h-8 my-[2px] inline mr-2 ${classes}`,
+                class: `shrink-0 w-8 h-8 my-[2px] inline me-2 ${classes}`,
               }),
             )
           }

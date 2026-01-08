@@ -12,7 +12,7 @@
   @apply inline-flex bg-neutral-25 rounded-md items-center font-semibold gap-1;
 
   .discreet-information__icon {
-    @apply text-neutral-600 mr-1 size-3;
+    @apply text-neutral-600 me-1 size-3;
   }
 }
 

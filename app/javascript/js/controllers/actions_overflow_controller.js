@@ -14,6 +14,11 @@ export default class extends Controller {
       || document.querySelector('[data-component-name="avo/ui/panel_component"] .panel__body')
   }
 
+  // Check if the document is in RTL mode
+  get isRTL() {
+    return document.documentElement.dir === 'rtl'
+  }
+
   childDimensions = null
 
   parentDimensions = null
@@ -41,9 +46,18 @@ export default class extends Controller {
   }
 
   adjustHorizontalOverflow() {
-    if (this.contentLeftOverflow) {
-      this.contentTarget.classList.remove('xl:right-0', 'sm:right-0')
-      this.contentTarget.classList.add('xl:left-0', 'sm:left-0')
+    if (this.isRTL) {
+      // RTL: Check for right overflow and flip to left if needed
+      if (this.contentRightOverflow) {
+        this.contentTarget.classList.remove('xl:start-0', 'sm:start-0')
+        this.contentTarget.classList.add('xl:end-0', 'sm:end-0')
+      }
+    } else {
+      // LTR: Check for left overflow and flip to right if needed
+      if (this.contentLeftOverflow) {
+        this.contentTarget.classList.remove('xl:end-0', 'sm:end-0')
+        this.contentTarget.classList.add('xl:start-0', 'sm:start-0')
+      }
     }
   }
 
@@ -58,5 +72,9 @@ export default class extends Controller {
 
   get contentLeftOverflow() {
     return this.parentDimensions.left > this.childDimensions.left
+  }
+
+  get contentRightOverflow() {
+    return this.parentDimensions.right < this.childDimensions.right
   }
 }

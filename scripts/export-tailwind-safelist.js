@@ -38,8 +38,10 @@ const ignoredDynamicClasses = buttonColors.map((color) => buttonClasses.map((but
 // Add the whitespace class for newlines and text alignment
 ignoredDynamicClasses.push(
   'whitespace-pre-line',
-  'text-right',
   'text-left',
+  'text-right',
+  'text-end',
+  'text-start',
   'text-center',
   'font-sans',
   'font-serif',
