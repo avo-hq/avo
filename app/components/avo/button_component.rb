@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # A button/link can have the following settings:
-# style: primary/outline/text/icon
-# size: :xs :sm, :md, :lg, :xl
+# style: outline/primary/text/icon
+# size: :sm, :md, :lg
 # color: :gray, :red, :green, :blue, or any other tailwind color
 # icon: "heroicons/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
@@ -23,20 +23,91 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :args, kind: :**, default: {}.freeze
   prop :class
 
+  def call
+    if is_link?
+      output_link
+    else
+      output_button
+    end
+  end
+
+  def output_link
+    link_to @path, **args do
+      full_content
+    end
+  end
+
+  def output_button
+    if args.dig(:method).present? || args.dig(:data, :turbo_method).present?
+      button_to args[:url], **args do
+        full_content
+      end
+    else
+      button_tag(**args) do
+        full_content
+      end
+    end
+  end
+
   def args
     if @args[:loading]
       @args[:"data-controller"] = "loading-button"
       @args[:"data-action"] = "click->loading-button#attemptSubmit"
     end
 
-    @args[:class] = button_classes
+    @args[:class] = btn_classes
     @args[:aria] = @aria
 
     @args
   end
 
+  def btn_classes
+    class_names(
+      "btn",
+      @class,
+      btn_size_class,
+      btn_color_class,
+      btn_style_class,
+      btn_loading_class
+    )
+  end
+
+  def btn_size_class
+    case @size
+    when :sm then "btn-sm"
+    when :md then "btn-md"
+    when :lg then "btn-lg"
+    else ""
+    end
+  end
+
+  def btn_color_class
+    case @color
+    when :red then "btn-red"
+    when :blue then "btn-blue"
+    when :gray then "btn-gray"
+    when :green then "btn-green"
+    when :orange then "btn-orange"
+    when :purple then "btn-purple"
+    else ""
+    end
+  end
+
+  def btn_style_class
+    case @style
+    when :primary then "btn-primary"
+    when :outline then "btn-outline"
+    when :text then "btn-text"
+    else ""
+    end
+  end
+
+  def btn_loading_class
+    @loading ? "btn-loading" : ""
+  end
+
   def button_classes
-    classes = "button-component inline-flex grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center #{@class}"
+    classes = "button-component inline-flex grow-0 items-center font-semibold leading-6 fill-current whitespace-nowrap transition duration-100 transform transition duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 justify-center self-start #{@class}"
 
     # For non-icon-styled buttons we should not add borders.
     classes += " border active:outline active:outline-1" if is_not_icon_style?
@@ -76,32 +147,6 @@ class Avo::ButtonComponent < Avo::BaseComponent
     end
 
     result.html_safe
-  end
-
-  def call
-    if is_link?
-      output_link
-    else
-      output_button
-    end
-  end
-
-  def output_link
-    link_to @path, **args do
-      full_content
-    end
-  end
-
-  def output_button
-    if args.dig(:method).present? || args.dig(:data, :turbo_method).present?
-      button_to args[:url], **args do
-        full_content
-      end
-    else
-      button_tag(**args) do
-        full_content
-      end
-    end
   end
 
   private
@@ -174,16 +219,16 @@ class Avo::ButtonComponent < Avo::BaseComponent
     return icon_classes if is_icon_style?
 
     case @size
-    when :xs
-      icon_classes += " h-4 my-1"
     when :sm
-      icon_classes += " h-4 my-1"
+      icon_classes += " h-3 my-1"
     when :md
       icon_classes += " h-4 my-1"
     when :lg
-      icon_classes += " h-5 my-0.5"
-    when :xl
-      icon_classes += " h-6"
+      icon_classes += " h-4 my-1"
+      # when :lg
+      #   icon_classes += " h-5 my-0.5"
+      # when :xl
+      #   icon_classes += " h-6"
     end
 
     icon_classes

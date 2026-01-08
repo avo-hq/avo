@@ -34,23 +34,23 @@
                         end
                       %>
                       <%
-                        a_button_or_link = "a_#{entity}"
+                        a_button_or_link = :"a_#{entity}"
                         args = {icon: "heroicons/outline/arrow-left", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled, rounded:}
                       %>
                       <% if entity == :link %>
                         <div>
-                          <%= send a_button_or_link, '/admin/avo_private/design', **args do %>
+                          <%= render Avo::ButtonComponent.new(**args, is_link: entity == :link), '/admin/avo_private/design' do %>
                             <%= entity.to_s.humanize.capitalize %> <%= state %>
                           <% end %>
                         </div>
                       <% else %>
                         <div>
-                          <%= send a_button_or_link, **args do %>
+                          <%= render Avo::ButtonComponent.new(**args, is_link: entity == :button), **args do %>
                             <%= entity.to_s.humanize.capitalize %> <%= state %>
                           <% end %>
                         </div>
                         <div>
-                          <%= a_button icon: "avo/bell", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled %>
+                          <%= render Avo::ButtonComponent.new(icon: "avo/bell", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled, is_link: false) %>
                         </div>
                       <% end %>
                     <% end %>
