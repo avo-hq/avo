@@ -8,7 +8,7 @@ module Avo
       end
 
       def table_header_label
-        nil
+        @args[:name] || nil
       end
 
       def table_header_class
