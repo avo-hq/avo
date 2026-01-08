@@ -7,13 +7,13 @@
     method: method,
     disabled: disabled,
     params: params do %>
-    <%= helpers.svg(icon, class: 'h-4 mr-1') if icon.present? %> <%= label %>
+    <%= helpers.svg(icon, class: 'h-4 me-1') if icon.present? %> <%= label %>
   <% end %>
 <% else %>
   <%= link_to path,
     class: button_classes,
     target: target,
     title: title do %>
-    <%= helpers.svg(icon, class: 'h-4 mr-1') if icon.present? %> <%= label %>
+    <%= helpers.svg(icon, class: 'h-4 me-1') if icon.present? %> <%= label %>
   <% end %>
 <% end %>

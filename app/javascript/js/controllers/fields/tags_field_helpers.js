@@ -36,7 +36,7 @@ export function suggestionItemTemplate(tagData) {
   ${
   tagData.avatar
     ? `
-  <div class='rounded-sm w-8 h-8 block mr-2'>
+  <div class='rounded-sm w-8 h-8 block me-2'>
       <img onerror="this.style.visibility='hidden'" class="w-full" src="${tagData.avatar}">
   </div>`
     : ''

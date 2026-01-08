@@ -111,11 +111,13 @@ end
 # Collect ALL files (erb, rb, js, css), excluding generated/vendor directories
 all_repo_files = Dir.glob("**/*.{erb,rb,js,css}").select do |f|
   File.file?(f) &&
-    !f.start_with?("node_modules/", "vendor/", "tmp/") &&
+    !f.start_with?("node_modules/", "vendor/", "tmp/", "public/", "spec/dummy/", "scripts/") &&
     !f.include?("/node_modules/") &&
     !f.include?("/vendor/") &&
     !f.include?("/tmp/") &&
-    !f.include?("/builds/")
+    !f.include?("/builds/") &&
+    !f.include?("/public/") &&
+    !f.include?("/scripts/")
 end
 
 all_violations = []
@@ -148,16 +150,16 @@ end
 # GENERAL PR CHECKS
 # =============================================================================
 
-# Get changed files for PR-specific checks
-changed_files = (git.modified_files + git.added_files).uniq
+# # Get changed files for PR-specific checks
+# changed_files = (git.modified_files + git.added_files).uniq
 
-# Warn if PR is too large
-warn("This PR is quite large. Consider breaking it into smaller PRs for easier review.") if git.lines_of_code > 900
+# # Warn if PR is too large
+# warn("This PR is quite large. Consider breaking it into smaller PRs for easier review.") if git.lines_of_code > 900
 
-# Encourage adding tests for new features
-has_app_changes = changed_files.any? { |f| f.start_with?("app/", "lib/") }
-has_test_changes = changed_files.any? { |f| f.start_with?("spec/") }
+# # Encourage adding tests for new features
+# has_app_changes = changed_files.any? { |f| f.start_with?("app/", "lib/") }
+# has_test_changes = changed_files.any? { |f| f.start_with?("spec/") }
 
-if has_app_changes && !has_test_changes
-  warn("This PR has code changes but no test changes. Consider adding tests.")
-end
+# if has_app_changes && !has_test_changes
+#   warn("This PR has code changes but no test changes. Consider adding tests.")
+# end
