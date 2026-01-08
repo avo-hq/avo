@@ -19,7 +19,7 @@
 }
 
 .header__title {
-  @apply font-medium leading-6 overflow-ellipsis overflow-hidden w-full text-text-primary;
+  @apply font-medium leading-6 overflow-ellipsis overflow-hidden w-full text-neutral-950;
   font-size: 20px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -27,7 +27,7 @@
 }
 
 .header__description {
-  @apply font-normal leading-5 overflow-ellipsis overflow-hidden w-full text-text-secondary;
+  @apply font-normal leading-5 overflow-ellipsis overflow-hidden w-full text-neutral-400;
   font-size: 14px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
