@@ -28,7 +28,7 @@
         <% header.with_title_slot do %>
           <% if reloadable %>
             <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
-              <%= helpers.svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
+              <%= helpers.svg "heroicons/outline/arrow-path", class: "ms-2 text-2xl h-6 " %>
             <% end %>
           <% end %>
         <% end %>
@@ -67,7 +67,7 @@
                 <% end %>
               </div>
 
-              <div class="flex items-center justify-start space-x-3 justify-self-end px-4 xs:justify-end">
+              <div class="flex items-center justify-start space-x-3 rtl:space-x-reverse justify-self-end px-4 xs:justify-end">
                 <%= render_dynamic_filters_button %>
 
                 <% unless field&.hide_filter_button %>
