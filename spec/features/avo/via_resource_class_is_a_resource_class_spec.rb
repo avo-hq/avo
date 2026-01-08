@@ -14,19 +14,19 @@ RSpec.feature "ViaResourceClassIsAResourceClasses", type: :feature do
     end
   end
 
-  # it "displays the right breadcrumb link" do
-  #   visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=Avo%3A%3AResources%3A%3AZPost&via_record_id=#{post.to_param}"
+  it "displays the right breadcrumb link" do
+    visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=Avo%3A%3AResources%3A%3AZPost&via_record_id=#{post.to_param}"
 
-  #   within ".breadcrumbs" do
-  #     expect(page).to have_link post.name, href: "/admin/resources/z_posts/#{post.slug}"
-  #   end
-  # end
+    within ".breadcrumbs" do
+      expect(page).to have_link post.name, href: "/admin/resources/z_posts/#{post.slug}"
+    end
+  end
 
-  # it "displays the right breadcrumb link" do
-  #   visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=Avo%3A%3AResources%3A%3APost&via_record_id=#{post.slug}"
+  it "displays the right breadcrumb link" do
+    visit "/admin/resources/photo_comments/#{comment.id}?via_resource_class=Avo%3A%3AResources%3A%3APost&via_record_id=#{post.slug}"
 
-  #   within ".breadcrumbs" do
-  #     expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.slug}"
-  #   end
-  # end
+    within ".breadcrumbs" do
+      expect(page).to have_link post.name, href: "/admin/resources/posts/#{post.slug}"
+    end
+  end
 end
