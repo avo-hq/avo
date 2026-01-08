@@ -3,9 +3,9 @@
   <div class="hidden" data-tippy-target="content">
     <div class="p-1 space-y-1">
       <% @options.each do |id, label| %>
-        <div class="flex items-center flex-nowrap space-x-1">
+        <div class="flex items-center flex-nowrap space-x-1 rtl:space-x-reverse">
           <%= render Avo::Fields::Common::BooleanCheckComponent.new checked: checked(id), size: :sm %>
-          <div class="flex itdems-center text-left text-sm py-px"><%= label %></div>
+          <div class="flex itdems-center text-start text-sm py-px"><%= label %></div>
         </div>
       <% end %>
     </div>

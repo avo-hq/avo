@@ -63,7 +63,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   private
 
   def icon(icon)
-    helpers.svg icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
+    helpers.svg icon, class: "h-5 shrink-0 me-1 inline pointer-events-none"
   end
 
   def render_item(action)

@@ -1,6 +1,6 @@
 <div class="flex items-center" data-component="<%= component_name %>">
   <% if @display_value %>
-    <div class="text-right text-sm font-semibold leading-none mr-2 min-w-[2rem]">
+    <div class="text-end text-sm font-semibold leading-none me-2 min-w-[2rem]">
       <%= @value %><%= @value_suffix if @value_suffix.present? %>
     </div>
   <% end %>

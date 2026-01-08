@@ -12,7 +12,7 @@
   @apply inline-flex bg-surface-secondary rounded-md items-center font-semibold gap-1;
 
   .discreet-information__icon {
-    @apply text-text-primary mr-1 size-3;
+    @apply text-text-primary me-1 size-3;
   }
 }
 

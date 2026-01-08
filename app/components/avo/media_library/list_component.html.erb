@@ -51,12 +51,12 @@
       </div>
 
       <%# TODO: fix the extra margin %>
-      <%= helpers.turbo_frame_tag ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID, class: 'relative empty:hidden bg-white inset-0 w-full h-full block empty:-ml-4 max-h-full', style: 'grid-area: stack;' %>
+      <%= helpers.turbo_frame_tag ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID, class: 'relative empty:hidden bg-white inset-0 w-full h-full block empty:-ms-4 max-h-full', style: 'grid-area: stack;' %>
     </div>
 
     <div class="mt-4 flex w-full flex-1">
-      <div class="w-full flex-2 space-y-2 text-center sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:text-left <%= "pagy-gem-version-#{helpers.pagy_major_version}" %>">
-        <div class="mr-4 text-sm text-slate-600"><%== helpers.pagy_info @pagy %></div>
+      <div class="w-full flex-2 space-y-2 text-center sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:text-start <%= "pagy-gem-version-#{helpers.pagy_major_version}" %>">
+        <div class="me-4 text-sm text-slate-600"><%== helpers.pagy_info @pagy %></div>
 
         <% if @pagy.pages > 1 %>
           <%# xanchor_string is not valid key word argument and it breaks when require "pagy/extras/calendar" %>

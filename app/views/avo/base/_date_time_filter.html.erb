@@ -9,14 +9,14 @@
     <div class="flex relative">
       <div class="self-center w-full" data-slot="value">
         <%= text_field_tag :value, "",
-          class: input_classes('w-full mb-0 !pr-9'),
+          class: input_classes('w-full mb-0 !pe-9'),
           placeholder: filter.class.empty_message,
           data: {
             date_time_filter_target: "input",
           } %>
       </div>
       <%= content_tag :button,
-        class: "absolute right-0 self-center mr-4 uppercase font-semibold text-xs",
+        class: "absolute end-0 self-center me-4 uppercase font-semibold text-xs",
         id: :reset,
         type: :button,
         title: t("avo.reset").capitalize,

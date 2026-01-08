@@ -173,7 +173,7 @@
     }
 
     dd {
-      @apply ml-0 col-start-2;
+      @apply ms-0 col-start-2;
     }
   }
 
