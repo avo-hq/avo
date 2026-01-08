@@ -1,23 +1,5 @@
 module UI
   class BadgeComponentPreview < ViewComponent::Preview
-    # @!group Types
-
-    # Default badge
-    def default
-      render Avo::UI::BadgeComponent.new(label: "Neutral")
-    end
-
-    # Badge with icon
-    def with_icon
-      render Avo::UI::BadgeComponent.new(
-        label: "Neutral",
-        icon: "paperclip",
-        color: "neutral"
-      )
-    end
-
-    # @!endgroup
-
     # @!group Interactive Playground
 
     # Interactive badge with customizable options
