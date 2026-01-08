@@ -5,7 +5,7 @@
 ) do %>
   <%= turbo_frame_tag @field.id do %>
     <% unless @field.hide_view_type_switcher %>
-      <div class="justify-self-end flex justify-end items-center space-x-3 rtl:space-x-reverse">
+      <div class="justify-self-end flex justify-end items-center space-x-3">
         <%= render partial: 'avo/partials/view_toggle_button',
           locals: {
             available_view_types: @available_view_types,
