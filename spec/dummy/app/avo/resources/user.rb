@@ -39,14 +39,14 @@ class Avo::Resources::User < Avo::BaseResource
     }
   }
 
-  self.cover = {
-    visible_on: :show,
-    source: -> {
-      if record.present?
-        record.avatar
-      end
-    }
-  }
+  # self.cover = {
+  #   visible_on: :show,
+  #   source: -> {
+  #     if record.present?
+  #       record.avatar
+  #     end
+  #   }
+  # }
 
   # self.row_controls_config = {
   #   float: true,
