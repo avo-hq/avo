@@ -1,5 +1,7 @@
 class Avo::Resources::Items::Card < Avo::Resources::Items::ItemGroup
   class Builder < Avo::Resources::Items::ItemGroup::Builder
+    include Avo::Concerns::HasFieldDiscovery
+
     def initialize(parent:, title: nil, **args)
       @card = Avo::Resources::Items::Card.new(title: title, **args)
       @items_holder = Avo::Resources::Items::Holder.new(from: self.class, parent: parent)

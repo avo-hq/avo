@@ -10,17 +10,17 @@ tags.tagify {
 }
 
 tags.tagify {
-  @apply !ml-0 !gap-1 !border-gray-200;
+  @apply !ms-0 !gap-1 !border-gray-200;
 
   &.tagify--focus {
     @apply !border-gray-600;
   }
 
   span.tagify__input {
-    @apply !m-0 !pl-1;
+    @apply !m-0 !ps-1;
   }
 }
 
 tag.tagify__tag {
-  @apply text-sm !ml-0;
+  @apply text-sm !ms-0;
 }

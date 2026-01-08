@@ -33,7 +33,7 @@
 }
 
 .breadcrumb-element__separator {
-  @apply text-neutral-500 ml-2 flex items-center;
+  @apply text-neutral-500 ms-2 flex items-center;
 }
 
 .breadcrumb-element__separator-icon {

@@ -270,6 +270,24 @@ module Avo
       @locale || I18n.default_locale
     end
 
+    # Known RTL (Right-to-Left) locale codes
+    RTL_LOCALES = %w[ar he fa ur yi ps sd ku ckb ug dv].freeze
+
+    # Check if the given locale is RTL
+    def self.rtl_locale?(locale = I18n.locale)
+      RTL_LOCALES.include?(locale.to_s.split("-").first.downcase)
+    end
+
+    # Check if the current locale is RTL
+    def rtl?
+      self.class.rtl_locale?(I18n.locale)
+    end
+
+    # Returns "rtl" or "ltr" based on current locale
+    def text_direction
+      rtl? ? "rtl" : "ltr"
+    end
+
     def explicit_authorization
       Avo::ExecutionContext.new(target: @explicit_authorization).handle
     end

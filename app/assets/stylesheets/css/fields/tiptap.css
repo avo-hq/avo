@@ -9,7 +9,7 @@
 
   ul,
   ol {
-    @apply pl-6 list-outside;
+    @apply ps-6 list-outside;
   }
 
   ul {
@@ -94,7 +94,7 @@
 }
 
 .tiptap__link-field {
-  @apply text-sm mr-2 py-1 border border-gray-200 rounded-sm;
+  @apply text-sm me-2 py-1 border border-gray-200 rounded-sm;
 }
 
 /* SHOW STYLES */
@@ -108,7 +108,7 @@
 
   ul,
   ol {
-    @apply pl-6 list-outside;
+    @apply ps-6 list-outside;
   }
 
   ul {

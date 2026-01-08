@@ -16,7 +16,7 @@
           <% styles.each do |style| %>
             <% colors.each do |color| %>
               <% next if style == :primary && color != :primary %>
-              <div class="flex space-x-1">
+              <div class="flex space-x-1 rtl:space-x-reverse">
                 <% states.each do |state| %>
                   <% rounded.each do |rounded| %>
                     <%

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!-- ✨ Built with Avo • https://www.avohq.io/ -->
-<html lang="<%= I18n.default_locale %>">
+<html lang="<%= I18n.locale %>" dir="<%= text_direction %>">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -50,7 +50,7 @@
             <%= render Avo::SidebarComponent.new sidebar_open: false, for_mobile: true %>
           </div>
 
-          <div class="main-content-area flex max-w-full flex-1 flex-col">
+          <div class="main-content-area flex max-w-full flex-1 flex-col z-50">
             <div class="main-content-wrapper mx-2 flex flex-1 rounded-2xl bg-white shadow-content">
               <div class="content flex w-full flex-1 flex-col items-stretch justify-between p-4 lg:p-6 <%= container_classes %>">
                 <%= render partial: "avo/partials/custom_tools_alert" %>

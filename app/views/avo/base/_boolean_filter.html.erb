@@ -12,7 +12,7 @@
           <% filter.options.each do |value, label| %>
             <label class="flex items-center text-gray-700 text-sm">
               <%= check_box_tag filter.id, value, filter.selected_value(value.to_s, @applied_filters),
-                class: 'mr-2 text-lg h-4 w-4',
+                class: 'me-2 text-lg h-4 w-4',
                 id: "avo_filters_#{filter.id.parameterize.underscore}",
                 'data-filter-class': filter.class,
                 'data-boolean-filter-target': 'option',

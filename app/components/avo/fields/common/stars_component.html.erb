@@ -2,7 +2,7 @@
   <% (1..@max).each do |rating_value| %>
     <%= helpers.svg(
       'heroicons/solid/star',
-      class: class_names("star inline-block mr-0.5", filled: rating_value <= (@value || 0))
+      class: class_names("star inline-block me-0.5", filled: rating_value <= (@value || 0))
     ) %>
   <% end %>
 </div>

@@ -159,6 +159,16 @@ module Avo
       end
     end
 
+    # Check if the current locale is RTL (Right-to-Left)
+    def rtl?
+      Avo.configuration.rtl?
+    end
+
+    # Returns "rtl" or "ltr" based on current locale
+    def text_direction
+      Avo.configuration.text_direction
+    end
+
     def container_classes
       container_is_full_width? ? "" : "2xl:container 2xl:mx-auto"
     end
