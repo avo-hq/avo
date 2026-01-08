@@ -1,250 +1,57 @@
 @theme {
-  --color-white: rgba(255, 255, 255, 1.00);
-  --color-white-alpha-800: rgba(255, 255, 255, 0.48);
-  --color-orange-50: rgba(255, 247, 237, 1.00);
-  --color-orange-100: rgba(255, 237, 213, 1.00);
-  --color-orange-200: rgba(254, 215, 170, 1.00);
-  --color-orange-300: rgba(253, 186, 116, 1.00);
-  --color-orange-400: rgba(251, 146, 60, 1.00);
-  --color-orange-500: rgba(249, 115, 22, 1.00);
-  --color-orange-600: rgba(234, 88, 12, 1.00);
-  --color-orange-700: rgba(194, 65, 12, 1.00);
-  --color-orange-800: rgba(154, 52, 18, 1.00);
-  --color-orange-900: rgba(124, 45, 18, 1.00);
-  --color-orange-950: rgba(67, 20, 7, 1.00);
-  --color-yellow-50: rgba(254, 252, 232, 1.00);
-  --color-yellow-100: rgba(254, 249, 195, 1.00);
-  --color-yellow-200: rgba(254, 240, 138, 1.00);
-  --color-yellow-300: rgba(253, 224, 71, 1.00);
-  --color-yellow-400: rgba(250, 204, 21, 1.00);
-  --color-yellow-500: rgba(234, 179, 8, 1.00);
-  --color-yellow-600: rgba(202, 138, 4, 1.00);
-  --color-yellow-700: rgba(161, 98, 7, 1.00);
-  --color-yellow-800: rgba(133, 77, 14, 1.00);
-  --color-yellow-900: rgba(113, 63, 18, 1.00);
-  --color-yellow-950: rgba(66, 32, 6, 1.00);
-  --color-green-50: rgba(240, 253, 244, 1.00);
-  --color-green-100: rgba(220, 252, 231, 1.00);
-  --color-green-200: rgba(187, 247, 208, 1.00);
-  --color-green-300: rgba(134, 239, 172, 1.00);
-  --color-green-400: rgba(74, 222, 128, 1.00);
-  --color-green-500: rgba(34, 197, 94, 1.00);
-  --color-green-600: rgba(22, 163, 74, 1.00);
-  --color-green-700: rgba(21, 128, 61, 1.00);
-  --color-green-800: rgba(22, 101, 52, 1.00);
-  --color-green-900: rgba(20, 83, 45, 1.00);
-  --color-green-950: rgba(5, 46, 22, 1.00);
-  --color-teal-50: rgba(240, 253, 250, 1.00);
-  --color-teal-100: rgba(204, 251, 241, 1.00);
-  --color-teal-200: rgba(153, 246, 228, 1.00);
-  --color-teal-300: rgba(94, 234, 212, 1.00);
-  --color-teal-400: rgba(45, 212, 191, 1.00);
-  --color-teal-500: rgba(20, 184, 166, 1.00);
-  --color-teal-600: rgba(13, 148, 136, 1.00);
-  --color-teal-700: rgba(15, 118, 110, 1.00);
-  --color-teal-800: rgba(17, 94, 89, 1.00);
-  --color-teal-900: rgba(19, 78, 74, 1.00);
-  --color-teal-950: rgba(4, 47, 46, 1.00);
-  --color-blue-50: rgba(239, 246, 255, 1.00);
-  --color-blue-100: rgba(219, 234, 254, 1.00);
-  --color-blue-200: rgba(191, 219, 254, 1.00);
-  --color-blue-300: rgba(147, 197, 253, 1.00);
-  --color-blue-400: rgba(96, 165, 250, 1.00);
-  --color-blue-500: rgba(59, 130, 246, 1.00);
-  --color-blue-600: rgba(37, 99, 235, 1.00);
-  --color-blue-700: rgba(29, 78, 216, 1.00);
-  --color-blue-800: rgba(30, 64, 175, 1.00);
-  --color-blue-900: rgba(30, 58, 138, 1.00);
-  --color-blue-950: rgba(23, 37, 84, 1.00);
-  --color-purple-50: rgba(250, 245, 255, 1.00);
-  --color-purple-100: rgba(243, 232, 255, 1.00);
-  --color-purple-200: rgba(233, 213, 255, 1.00);
-  --color-purple-300: rgba(216, 180, 254, 1.00);
-  --color-purple-400: rgba(192, 132, 252, 1.00);
-  --color-purple-500: rgba(168, 85, 247, 1.00);
-  --color-purple-600: rgba(147, 51, 234, 1.00);
-  --color-purple-700: rgba(126, 34, 206, 1.00);
-  --color-purple-800: rgba(107, 33, 168, 1.00);
-  --color-purple-900: rgba(88, 28, 135, 1.00);
-  --color-purple-950: rgba(59, 7, 100, 1.00);
-  --color-warning-50: rgba(255, 250, 235, 1.00);
-  --color-warning-100: rgba(255, 239, 198, 1.00);
-  --color-warning-200: rgba(254, 223, 137, 1.00);
-  --color-warning-300: rgba(254, 199, 75, 1.00);
-  --color-warning-400: rgba(253, 176, 34, 1.00);
-  --color-warning-500: rgba(247, 142, 9, 1.00);
-  --color-warning-600: rgba(219, 103, 4, 1.00);
-  --color-warning-700: rgba(182, 70, 7, 1.00);
-  --color-warning-800: rgba(147, 54, 13, 1.00);
-  --color-warning-900: rgba(121, 45, 14, 1.00);
-  --color-error-50: rgba(254, 243, 242, 1.00);
-  --color-error-100: rgba(254, 228, 226, 1.00);
-  --color-error-200: rgba(255, 205, 201, 1.00);
-  --color-error-300: rgba(253, 170, 164, 1.00);
-  --color-error-400: rgba(249, 121, 112, 1.00);
-  --color-error-500: rgba(240, 68, 56, 1.00);
-  --color-error-600: rgba(222, 48, 36, 1.00);
-  --color-error-700: rgba(187, 36, 26, 1.00);
-  --color-error-800: rgba(154, 34, 26, 1.00);
-  --color-error-900: rgba(128, 35, 28, 1.00);
-  --color-success-50: rgba(237, 252, 243, 1.00);
-  --color-success-100: rgba(211, 248, 224, 1.00);
-  --color-success-200: rgba(171, 239, 198, 1.00);
-  --color-success-300: rgba(117, 224, 167, 1.00);
-  --color-success-400: rgba(71, 205, 137, 1.00);
-  --color-success-500: rgba(25, 176, 104, 1.00);
-  --color-success-600: rgba(13, 142, 84, 1.00);
-  --color-success-700: rgba(10, 114, 69, 1.00);
-  --color-success-800: rgba(11, 90, 57, 1.00);
-  --color-success-900: rgba(10, 74, 48, 1.00);
-  --color-informative-50: rgba(237, 250, 255, 1.00);
-  --color-informative-100: rgba(214, 241, 255, 1.00);
-  --color-informative-200: rgba(181, 233, 255, 1.00);
-  --color-informative-300: rgba(131, 221, 255, 1.00);
-  --color-informative-400: rgba(72, 199, 255, 1.00);
-  --color-informative-500: rgba(30, 168, 255, 1.00);
-  --color-informative-600: rgba(6, 138, 255, 1.00);
-  --color-informative-700: rgba(0, 112, 243, 1.00);
-  --color-informative-800: rgba(8, 90, 197, 1.00);
-  --color-informative-900: rgba(13, 78, 155, 1.00);
-  --color-black: rgba(0, 0, 0, 1.00);
-  --color-avo-neutral-50: rgba(246, 246, 246, 1.00);
-  --color-avo-neutral-100: rgba(231, 231, 231, 1.00);
-  --color-avo-neutral-100: rgba(231, 231, 231, 1.00);
-  --color-avo-neutral-200: rgba(209, 209, 209, 1.00);
-  --color-avo-neutral-300: rgba(176, 176, 176, 1.00);
-  --color-avo-neutral-400: rgba(136, 136, 136, 1.00);
-  --color-avo-neutral-500: rgba(109, 109, 109, 1.00);
-  --color-avo-neutral-600: rgba(93, 93, 93, 1.00);
-  --color-avo-neutral-700: rgba(79, 79, 79, 1.00);
-  --color-avo-neutral-800: rgba(69, 69, 69, 1.00);
-  --color-avo-neutral-900: rgba(61, 61, 61, 1.00);
-  --color-avo-neutral-950: rgba(23, 23, 23, 1.00);
-  --color-avo-neutral-alpha-500: rgba(23, 23, 23, 0.20);
-  --color-gray-alpha-100: rgba(0, 0, 0, 0.04);
-  --color-gray-alpha-200: rgba(0, 0, 0, 0.08);
-  --color-gray-alpha-300: rgba(0, 0, 0, 0.12);
-  --color-gray-alpha-400: rgba(0, 0, 0, 0.16);
-  --color-gray-alpha-500: rgba(0, 0, 0, 0.24);
-  --color-gray-alpha-600: rgba(0, 0, 0, 0.32);
-  --color-gray-alpha-700: rgba(0, 0, 0, 0.40);
-  --color-gray-alpha-800: rgba(0, 0, 0, 0.48);
-  --color-gray-alpha-900: rgba(0, 0, 0, 0.56);
+  --color-neutral-25: oklch(98.51% 0.0000 89.88);
+  --color-neutral-50: oklch(97.31% 0.0000 89.88);
+  --color-neutral-100: oklch(92.80% 0.0000 89.88);
+  --color-neutral-200: oklch(86.07% 0.0000 89.88);
+  --color-neutral-300: oklch(75.72% 0.0000 89.88);
+  --color-neutral-400: oklch(62.68% 0.0000 89.88);
+  --color-neutral-500: oklch(53.48% 0.0000 89.88);
+  --color-neutral-600: oklch(47.84% 0.0000 89.88);
+  --color-neutral-700: oklch(42.76% 0.0000 89.88);
+  --color-neutral-800: oklch(39.04% 0.0000 89.88);
+  --color-neutral-900: oklch(27.68% 0.0000 89.88);
+  --color-neutral-950: oklch(20.46% 0.0000 89.88);
 
-
-  /* accent colors are the same as TW 4 */
-  /* semantic colors are the same as TW 4 */
-
-  --surface-surface-brand: var(--color-avo-neutral-950);
-  --surface-surface-brand-secondary: var(--color-avo-neutral-800);
-
-  --color-text-primary: var(--color-avo-neutral-950);
-  --color-text-secondary: var(--color-avo-neutral-400);
-  --color-text-tertiary: var(--color-avo-neutral-600);
-  --color-text-invert: var(--color-avo-neutral-50);
-  --color-text-brand: var(--color-avo-neutral-950);
-  --color-text-disabled: var(--color-avo-neutral-500);
-
-  --color-text-informative: var(--color-informative-600);
-  --color-text-informative-hover: var(--color-informative-700);
-
-  --color-semantic-text-success: var(--color-success-600);
-  --color-semantic-text-informative: var(--color-informative-600);
-  --color-semantic-text-warning: var(--color-warning-600);
-  --color-semantic-text-error: var(--color-error-600);
-  --color-accent-text-orange: var(--color-orange-700);
-  --color-accent-text-orange-secondary: var(--color-orange-950);
-  --color-accent-text-yellow: var(--color-yellow-700);
-  --color-accent-text-yellow-secondary: var(--color-yellow-950);
-  --color-accent-text-green: var(--color-green-700);
-  --color-accent-text-green-secondary: var(--color-green-950);
-  --color-accent-text-teal: var(--color-teal-700);
-  --color-accent-text-teal-secondary: var(--color-teal-950);
-  --color-accent-text-blue: var(--color-blue-700);
-  --color-accent-text-blue-secondary: var(--color-blue-950);
-  --color-accent-text-purple: var(--color-purple-700);
-  --color-accent-text-purple-secondary: var(--color-purple-950);
-  --color-surface-primary: var(--color-white);
-  --color-surface-secondary: var(--color-avo-neutral-50);
-  --color-surface-tertiary: var(--color-avo-neutral-100);
-  --color-surface-invert: var(--color-avo-neutral-950);
-
-  --color-semantic-surface-success: var(--color-success-100);
-  --color-semantic-surface-informative: var(--color-informative-100);
-  --color-semantic-surface-warning: var(--color-warning-100);
-  --color-semantic-surface-error: var(--color-error-100);
-  --color-accent-orange: var(--color-orange-100);
-  --color-accent-orange-secondary: var(--color-orange-400);
-  --color-accent-yellow: var(--color-yellow-100);
-  --color-accent-yellow-secondary: var(--color-yellow-400);
-  --color-accent-green: var(--color-green-100);
-  --color-accent-green-secondary: var(--color-green-500);
-  --color-accent-teal: var(--color-teal-100);
-  --color-accent-teal-secondary: var(--color-teal-400);
-  --color-accent-blue: var(--color-blue-100);
-  --color-accent-blue-secondary: var(--color-blue-500);
-  --color-accent-purple: var(--color-purple-100);
-  --color-accent-purple-secondary: var(--color-purple-500);
-  --icon-icon-primary: var(--color-avo-neutral-950);
-  --color-border-primary: var(--color-avo-neutral-100);
-  --color-border-secondary: var(--color-avo-neutral-200);
-  --color-border-tertiary: var(--color-avo-neutral-50);
-  --color-border-invert: var(--color-avo-neutral-900);
-  --color-border-brand: var(--color-avo-neutral-950);
-  --color-border-focus: var(--color-avo-neutral-950);
-  --border-border: var(--spacing-px);
-  --border-2: var(--spacing-0-5);
-  --border-4: var(--spacing-1);
-  --border-8: var(--spacing-2);
-  --icon-icon-secondary: var(--color-avo-neutral-400);
-  --icon-icon-tertiary: var(--color-avo-neutral-600);
-  --icon-icon-invert: var(--color-avo-neutral-50);
-  --icon-icon-brand: var(--color-avo-neutral-950);
-  --icon-icon-disabled: var(--color-avo-neutral-500);
-
-  --button-primary-background: var(--surface-surface-brand);
-  --button-primary-background-alpha: var(--color-avo-neutral-alpha-500);
-  --button-primary-background-hover: var(--surface-surface-brand-secondary);
-
-  --button-background-hover: var(--color-avo-neutral-50);
-  --color-button-primary-text: var(--color-text-invert);
-  --button-border: var(--border--primary);
-  --button-border-focus: var(--border--focus);
-  --button-primary-icon: var(--icon-icon-invert);
-  --button-secondary-background: var(--surface-surface-primary);
-  --button-text: var(--text-text-primary);
-  --button-icon: var(--icon-icon-primary);
-  --button-icon-secondary: var(--icon-icon-secondary);
-  --button-background-disabled: var(--color-avo-neutral-100);
-  --button-text-disabled: var(--text-text-disabled);
-  --button-icon-disabled: var(--icon-icon-disabled);
-  --icon-semantic-icon-success: var(--color-success-600);
-  --icon-semantic-icon-informative: var(--color-informative-600);
-  --icon-semantic-icon-warning: var(--color-warning-600);
-  --icon-semantic-icon-error: var(--color-error-600);
-  --icon-accent-icon-orange: var(--color-orange-700);
-  --icon-accent-icon-yellow: var(--color-yellow-700);
-  --icon-accent-icon-green: var(--color-green-700);
-  --icon-accent-icon-teal: var(--color-teal-700);
-  --icon-accent-icon-blue: var(--color-blue-700);
-  --icon-accent-icon-purple: var(--color-purple-700);
-
-  /* Panel Component Design Tokens */
-  --color-surface-primary-soft: var(--color-avo-neutral-50);
-  --color-surface-secondary: var(--color-avo-neutral-50);
-
-  --border-primary-soft: rgba(209, 209, 209, 0.4);
-  --rounded-xl: 12px;
-  --rounded-lg: 8px;
-  --text-sm: 14px;
-  --spacing-0-5: 2px;
-  --spacing-1: 4px;
-  --spacing-2: 8px;
-  --spacing-3: 12px;
-  --spacing-4: 16px;
-
-
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  /* semantic - Mode 1 */
+  --color-success: var(--color-green-500);
+  --color-success-content: var(--color-green-700);
+  --color-info: var(--color-blue-400);
+  --color-info-content: var(--color-blue-700);
+  --color-warning: var(--color-yellow-500);
+  --color-warning-content: var(--color-yellow-700);
+  --color-danger: var(--color-red-500);
+  --color-danger-content: var(--color-red-700);
 
   --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
+
+  /* foundations - Light Mode */
+  --color-background: var(--color-neutral-25);
+  --color-foreground: var(--color-neutral-800);
+  --color-neutral-primary: var(--color-white);
+  --color-neutral-secondary: var(--color-neutral-50);
+  --color-neutral-tertiary: var(--color-neutral-100);
+  --color-neutral-content: var(--color-neutral-950);
+  --color-neutral-content-secondary: var(--color-neutral-500);
+
+  /* themes - Neutral Light */
+  --color-accent: var(--color-neutral-800);
+  --color-accent-content: var(--color-neutral-950);
+  --color-accent-foreground: var(--color-white);
+}
+
+/* Dark theme */
+.dark {
+  /* foundations - Dark Mode */
+  --color-background: var(--color-neutral-900);
+  --color-foreground: var(--color-neutral-50);
+  --color-neutral-primary: var(--color-neutral-950);
+  --color-neutral-secondary: var(--color-neutral-800);
+  --color-neutral-tertiary: var(--color-neutral-700);
+  --color-neutral-content: var(--color-white);
+  --color-neutral-content-secondary: var(--color-neutral-300);
+
+  /* themes - Neutral Dark */
+  --color-accent: var(--color-neutral-50);
+  --color-accent-content: var(--color-neutral-100);
+  --color-accent-foreground: var(--color-neutral-950);
 }
