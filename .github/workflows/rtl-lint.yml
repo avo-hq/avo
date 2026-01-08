@@ -1,0 +1,28 @@
+name: RTL Lint
+
+on:
+  pull_request:
+    paths:
+      - "**/*.erb"
+      - "**/*.rb"
+      - "**/*.js"
+      - "**/*.css"
+      - "Dangerfile"
+      - ".github/workflows/rtl-lint.yml"
+
+jobs:
+  rtl-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Run Danger
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bundle exec danger
+

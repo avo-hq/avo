@@ -174,6 +174,9 @@ group :development, :test do
   gem "amazing_print"
   gem "dotenv-rails"
 
+  # CI automation & code review
+  gem "danger", require: false
+
   # Test data & factories
   gem "faker", require: false
   gem "factory_bot_rails"
