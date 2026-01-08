@@ -109,15 +109,18 @@ end
 # =============================================================================
 
 # Collect ALL files (erb, rb, js, css), excluding generated/vendor directories
-all_repo_files = Dir.glob("**/*.{erb,rb,js,css}").reject do |f|
-  f.include?("/node_modules/") || f.include?("/vendor/") || f.include?("/tmp/") || f.include?("/builds/")
+all_repo_files = Dir.glob("**/*.{erb,rb,js,css}").select do |f|
+  File.file?(f) &&
+    !f.start_with?("node_modules/", "vendor/", "tmp/") &&
+    !f.include?("/node_modules/") &&
+    !f.include?("/vendor/") &&
+    !f.include?("/tmp/") &&
+    !f.include?("/builds/")
 end
 
 all_violations = []
 
 all_repo_files.each do |file|
-  next unless File.exist?(file)
-
   content = File.read(file)
   violations = check_rtl_compliance(file, content)
   all_violations.concat(violations)
