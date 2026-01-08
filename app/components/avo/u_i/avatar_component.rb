@@ -1,15 +1,15 @@
-class Avo::AvatarComponent < Avo::BaseComponent
+class Avo::UI::AvatarComponent < Avo::BaseComponent
   SIZES = %w[large medium small tiny].freeze
   SHAPES = %w[rounded square].freeze
   THEMES = %w[default orange yellow green teal blue purple].freeze
-  TYPES = %w[avatar placeholder initial].freeze
+  TYPES = %w[avatar placeholder initials].freeze
 
   def initialize(
     type: "placeholder",
     size: "large",
     shape: "rounded",
     theme: "default",
-    initial: nil,
+    initials: nil,
     src: nil,
     alt: nil,
     **options
@@ -18,7 +18,7 @@ class Avo::AvatarComponent < Avo::BaseComponent
     @size = size.to_s
     @shape = shape.to_s
     @theme = theme.to_s
-    @initial = initial
+    @initials = initials
     @src = src
     @alt = alt
     @options = options
@@ -28,7 +28,7 @@ class Avo::AvatarComponent < Avo::BaseComponent
 
   private
 
-  attr_reader :type, :size, :shape, :theme, :initial, :src, :alt, :options
+  attr_reader :type, :size, :shape, :theme, :initials, :src, :alt, :options
 
   def validate_params!
     raise ArgumentError, "Invalid type: #{type}" unless TYPES.include?(type)
@@ -36,8 +36,8 @@ class Avo::AvatarComponent < Avo::BaseComponent
     raise ArgumentError, "Invalid shape: #{shape}" unless SHAPES.include?(shape)
     raise ArgumentError, "Invalid theme: #{theme}" unless THEMES.include?(theme)
 
-    if type == "initial" && initial.blank?
-      raise ArgumentError, "Initial is required when type is 'initial'"
+    if type == "initials" && initials.blank?
+      raise ArgumentError, "Initials is required when type is 'initials'"
     end
 
     if type == "avatar" && src.blank?
@@ -54,20 +54,8 @@ class Avo::AvatarComponent < Avo::BaseComponent
     classes.join(" ")
   end
 
-  def image_classes
-    "cado-avatar__image"
-  end
-
-  def initial_classes
-    "cado-avatar__initial"
-  end
-
-  def border_classes
-    "cado-avatar__border"
-  end
-
-  def display_initial
-    return "" if initial.blank?
-    initial.to_s.first.upcase
+  def display_initials
+    return "" if initials.blank?
+    initials.to_s.upcase
   end
 end

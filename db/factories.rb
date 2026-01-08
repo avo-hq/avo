@@ -145,10 +145,10 @@ FactoryBot.define do
     body { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
   end
 
-  trait :with_profile_photo do
+  trait :with_avatar do
     after(:create) do |event|
       file = Rails.root.join("db", "seed_files", "dummy-image.jpg")
-      event.profile_photo.attach(io: file.open, filename: "dummy-image.jpg")
+      event.avatar.attach(io: file.open, filename: "dummy-image.jpg")
     end
   end
 

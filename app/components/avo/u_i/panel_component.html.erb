@@ -3,7 +3,6 @@
   @class,
   "panel--has-sidebar": sidebar?,
   "has-cover-photo": has_cover_photo?,
-  "has-profile-photo": has_profile_photo?
 ), data: {
   **@data,
   component_name:,
@@ -25,10 +24,6 @@
           <% header.with_controls do %>
             <%= controls %>
           <% end %>
-        <% end %>
-
-        <% header.with_profile_photo do %>
-          <%= render Avo::ProfilePhotoComponent.new profile_photo: @profile_photo %>
         <% end %>
       <% end %>
     </div>

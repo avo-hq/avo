@@ -160,6 +160,10 @@ module Avo
         @table_header_label ||= name
       end
 
+      def table_header_class
+        @table_header_class ||= ""
+      end
+
       def custom_name?
         !@name.nil?
       end

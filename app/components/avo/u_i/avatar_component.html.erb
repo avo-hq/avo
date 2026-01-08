@@ -1,0 +1,15 @@
+<div class="<%= container_classes %>"<%= tag.attributes(options) %>>
+  <% if type == "avatar" && src.present? %>
+    <div class="cado-avatar__image">
+      <%= image_tag src, alt: alt, class: "cado-avatar__img" %>
+    </div>
+  <% elsif type == "initials" && initials.present? %>
+    <div class="cado-avatar__initials">
+      <%= display_initials %>
+    </div>
+  <% end %>
+
+  <% if type == "placeholder" || (type == "initials" && theme == "default") %>
+    <div class="cado-avatar__border" aria-hidden="true"></div>
+  <% end %>
+</div>

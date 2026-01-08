@@ -29,7 +29,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
     end
 
     describe "with avatar" do
-      let!(:event) { create(:event, :with_profile_photo) }
+      let!(:event) { create(:event, :with_avatar) }
 
       it "displays avatar" do
         visit avo.resources_event_path(event)
@@ -41,7 +41,7 @@ RSpec.feature "Breadcrumbs", type: :feature do
 
         # Find the avatar image
         avatar = find(".breadcrumbs .breadcrumb-element__avatar img")
-        expect(avatar["src"]).to eq(main_app.url_for(event.profile_photo))
+        expect(avatar["src"]).to eq(main_app.url_for(event.avatar))
       end
     end
   end

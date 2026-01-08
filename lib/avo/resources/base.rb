@@ -10,10 +10,9 @@ module Avo
       include Avo::Concerns::HasControls
       include Avo::Concerns::HasResourceStimulusControllers
       include Avo::Concerns::ModelClassConstantized
-      # include Avo::Concerns::HasAvatar
       include Avo::Concerns::HasDescription
       include Avo::Concerns::HasCoverPhoto # TODO: rename to cover
-      include Avo::Concerns::HasProfilePhoto # TODO: rename to avatar
+      include Avo::Concerns::HasAvatar
       include Avo::Concerns::HasHelpers
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination

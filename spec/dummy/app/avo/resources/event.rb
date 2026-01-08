@@ -14,8 +14,8 @@ class Avo::Resources::Event < Avo::BaseResource
       end
     }
   }
-  self.profile_photo = {
-    source: :profile_photo
+  self.avatar = {
+    source: :avatar
   }
   self.discreet_information = :timestamps
 
@@ -26,6 +26,7 @@ class Avo::Resources::Event < Avo::BaseResource
   }
 
   def fields
+    field :avatar, as: :avatar
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :first_user,
       as: :record_link,
@@ -39,7 +40,7 @@ class Avo::Resources::Event < Avo::BaseResource
         foo: :bar
       }
 
-    field :profile_photo, as: :file, is_image: true, only_on: :forms
+    field :avatar, as: :file, is_image: true, only_on: :forms
     field :cover_photo, as: :file, is_image: true, only_on: :forms
 
     if params[:show_location_field] == "1"

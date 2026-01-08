@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Avo::AvatarComponent, type: :component do
+RSpec.describe Avo::UI::AvatarComponent, type: :component do
   describe "rendering" do
     it "renders the placeholder avatar by default" do
       result = render_inline(described_class.new)
@@ -27,8 +27,8 @@ RSpec.describe Avo::AvatarComponent, type: :component do
 
     it "renders initials" do
       result = render_inline(described_class.new(
-        type: "initial",
-        initial: "JD"
+        type: "initials",
+        initials: "JD"
       ))
 
       expect(result).to have_css(".cado-avatar--initial")
@@ -38,8 +38,8 @@ RSpec.describe Avo::AvatarComponent, type: :component do
 
     it "applies themed colors without border" do
       result = render_inline(described_class.new(
-        type: "initial",
-        initial: "A",
+        type: "initials",
+        initials: "A",
         theme: "blue"
       ))
 
@@ -64,7 +64,7 @@ RSpec.describe Avo::AvatarComponent, type: :component do
     it "passes through global options" do
       result = render_inline(described_class.new(
         id: "my-avatar",
-        data: { testid: "avatar-component" }
+        data: {testid: "avatar-component"}
       ))
 
       expect(result).to have_css(".cado-avatar#my-avatar[data-testid='avatar-component']")
@@ -94,12 +94,12 @@ RSpec.describe Avo::AvatarComponent, type: :component do
 
   describe "#display_initial" do
     it "returns the first character uppercased" do
-      component = described_class.new(type: "initial", initial: "John Doe")
+      component = described_class.new(type: "initials", initials: "John Doe")
       expect(component.send(:display_initial)).to eq "J"
     end
 
     it "handles lowercase initials" do
-      component = described_class.new(type: "initial", initial: "john")
+      component = described_class.new(type: "initials", initials: "john")
       expect(component.send(:display_initial)).to eq "J"
     end
 
@@ -109,4 +109,3 @@ RSpec.describe Avo::AvatarComponent, type: :component do
     end
   end
 end
-

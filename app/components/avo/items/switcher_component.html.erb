@@ -36,9 +36,9 @@
       <% end %>
     <% end %>
 
-    <% if @resource.profile_photo.present? %>
-      <% header.with_profile_photo do %>
-        <%= render Avo::ProfilePhotoComponent.new profile_photo: @resource.profile_photo %>
+    <% if @resource.avatar.present? %>
+      <% header.with_avatar do %>
+        <%= render Avo::UI::AvatarComponent.new src: helpers.main_app.url_for(@resource.avatar.value), shape: :square, type: :avatar %>
       <% end %>
     <% end %>
 

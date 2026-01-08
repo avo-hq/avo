@@ -5,7 +5,7 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   prop :description, reader: :public
   prop :external_link
   prop :args, kind: :**, default: {}.freeze
-  prop :profile_photo
+  prop :avatar
   prop :cover_photo
   prop :class
   prop :index
@@ -23,7 +23,7 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
     @cover_photo.present?
   end
 
-  def has_profile_photo?
-    @profile_photo.present?
+  def has_avatar?
+    @avatar.present?
   end
 end

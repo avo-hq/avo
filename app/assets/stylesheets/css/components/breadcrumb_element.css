@@ -8,7 +8,7 @@
 
 .breadcrumb-element__initials {
   /* TODO: refresh the design tokens (border color, bg, text color) */
-  @apply aspect-square shrink-0 flex items-center justify-center rounded-md border border-neutral-300 bg-neutral-50 text-xs text-neutral-600 p-px font-semibold leading-tight min-h-5 text-center;
+  @apply shrink-0 flex items-center justify-center ;
 }
 
 .breadcrumb-element__avatar {
