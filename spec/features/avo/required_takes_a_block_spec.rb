@@ -6,7 +6,7 @@ RSpec.feature "RequiredTakesABlock", type: :feature do
       visit "/admin/resources/fish/new"
 
       within '[data-resource-edit-target="nameTextWrapper"][data-field-id="name"]' do
-        expect(page).to have_selector ".text-red-600.ml-1"
+        expect(page).to have_selector ".text-red-600.ms-1"
       end
     end
   end
