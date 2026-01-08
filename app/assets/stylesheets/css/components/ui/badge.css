@@ -32,6 +32,31 @@
   background: color-mix(in oklab, oklch(from var(--badge-text) l calc(c * 1.2) h) 80%, white);
 }
 
+.badge--success {
+  --badge-bg: var(--color-green-400);
+  --badge-text: var(--color-green-600);
+}
+
+.badge--warning {
+  --badge-bg: var(--color-orange-400);
+  --badge-text: var(--color-orange-600);
+}
+
+.badge--danger {
+  --badge-bg: var(--color-red-400);
+  --badge-text: var(--color-red-600);
+}
+
+.badge--info {
+  --badge-bg: var(--color-blue-400);
+  --badge-text: var(--color-blue-600);
+}
+
+.badge--neutral {
+  --badge-bg: var(--color-gray-400);
+  --badge-text: var(--color-gray-600);
+}
+
 .badge--red {
   --badge-bg: var(--color-red-400);
   --badge-text: var(--color-red-600);

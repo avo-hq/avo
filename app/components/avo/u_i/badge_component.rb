@@ -11,10 +11,18 @@ class Avo::UI::BadgeComponent < Avo::BaseComponent
 
   prop :style do |value|
     normalized_value = value.to_s.to_sym
-    VALID_STYLES.include?(normalized_value) ? normalized_value : :subtle
+    VALID_STYLES.include?(normalized_value) ? normalized_value : :solid
   end
 
   prop :label
   prop :icon
   prop :classes
+
+  def style_classes
+    "badge--#{@style}" if @style.present?
+  end
+
+  def color_classes
+    "badge--#{@color}" if @color.present?
+  end
 end

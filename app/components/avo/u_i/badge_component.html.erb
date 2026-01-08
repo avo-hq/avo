@@ -1,9 +1,7 @@
 <%= content_tag :span, class: class_names(
   "badge",
-  {
-    "badge--#{@style}" => @style.present?,
-    "badge--#{@color}" => @color.present?,
-  },
+  style_classes,
+  color_classes,
   @classes
 ) do %>
   <%= svg(@icon, class: "badge__icon") if @icon.present? %>
