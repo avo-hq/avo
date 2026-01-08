@@ -28,9 +28,6 @@
   &:hover {
     @apply bg-gray-100;
   }
-  /* &:hover .breadcrumb-element__text {
-    @apply text-neutral-700;
-  } */
 }
 
 .breadcrumb-element--current {

@@ -1,10 +1,4 @@
 <%= render ui.panel(title: @item.title, description: @item.description, index: @index) do |panel| %>
-  <% if @resource.cover.present? %>
-    <% panel.with_cover do %>
-      <%= render Avo::CoverComponent.new cover: @resource.cover %>
-    <% end %>
-  <% end %>
-
   <% panel.with_body do %>
     <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, parent_component: @parent_component %>
   <% end %>

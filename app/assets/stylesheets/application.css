@@ -31,9 +31,6 @@
   --color-primary-850: rgb(var(--avo-color-primary-850));
   --color-primary-900: rgb(var(--avo-color-primary-900));
 
-  --aspect-cover-sm: 9 / 2;
-  --aspect-cover-md: 9 / 3;
-  --aspect-cover-lg: 9 / 4;
   --aspect-media-library-item: 4 / 3;
 
   --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",

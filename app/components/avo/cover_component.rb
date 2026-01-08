@@ -6,11 +6,17 @@ class Avo::CoverComponent < Avo::BaseComponent
     @cover&.size
   end
 
-  # aspect-cover-sm
-  # aspect-cover-md
-  # aspect-cover-lg
   def size_class
-    "aspect-cover-#{@size}"
+    case @size
+    when :sm
+      "max-h-60"
+    when :md
+      "max-h-100"
+    when :lg
+      "max-h-140"
+    when :full
+      "max-h-auto"
+    end
   end
 
   def render?
