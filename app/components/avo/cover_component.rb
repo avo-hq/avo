@@ -15,7 +15,7 @@ class Avo::CoverComponent < Avo::BaseComponent
     when :lg
       "max-h-140"
     when :full
-      "max-h-auto"
+      "max-h-none"
     end
   end
 

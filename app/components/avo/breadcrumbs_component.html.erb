@@ -1,7 +1,7 @@
 <%= tag.nav class: "breadcrumbs", aria: { label: "Breadcrumb" } do %>
   <div class="breadcrumbs__container">
     <% @items.each_with_index do |item, index| %>
-      <% is_last = index == helpers.avo_breadcrumbs.length - 1 %>
+      <% is_last = index == @items.length - 1 %>
 
       <%= render Avo::BreadcrumbElementComponent.new(
         text: item.title,
@@ -13,13 +13,7 @@
       ) %>
 
       <% unless is_last %>
-        <span class="breadcrumbs__separator">
-          <% if @separator == ">" %>
-            <%= helpers.svg "chevron-right", class: "breadcrumbs__separator-icon" %>
-          <% else %>
-            /
-          <% end %>
-        </span>
+        <span class="breadcrumbs__separator">/</span>
       <% end %>
     <% end %>
   </div>

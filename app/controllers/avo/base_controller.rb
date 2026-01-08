@@ -120,7 +120,7 @@ module Avo
         add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
         # The path is nil because it's not easy to compute the association link (course->course_links = /links)
-        add_breadcrumb title: @resource.plural_name.humanize, path: nil, avatar: @resource.cover, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize, path: nil, initials: @resource.class.initials
       else
         add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
