@@ -72,7 +72,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
 
     # Wrap BadgeComponent in positioned container to maintain absolute positioning
     content_tag :div,
-      class: class_names("absolute block inset-auto top-0 right-0 mt-2 mr-2 z-10", html(:badge, :classes)),
+      class: class_names("absolute block inset-auto top-0 end-0 mt-2 me-2 z-10", html(:badge, :classes)),
       title: @card[:badge][:title],
       style: html(:badge, :style),
       data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do
