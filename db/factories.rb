@@ -152,10 +152,10 @@ FactoryBot.define do
     end
   end
 
-  trait :with_cover_photo do
+  trait :with_cover do
     after(:create) do |event|
       file = Rails.root.join("db", "seed_files", "watch.jpg")
-      event.cover_photo.attach(io: file.open, filename: "watch.jpg")
+      event.cover.attach(io: file.open, filename: "watch.jpg")
     end
   end
 

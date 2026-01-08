@@ -57,7 +57,7 @@ class Avo::Resources::User < Avo::BaseResource
 
     # Uncomment this to test computed file fields
     # field :first_post_image, as: :file, is_image: true do
-    #   record&.posts&.first&.cover_photo
+    #   record&.posts&.first&.cover
     # end
   end
 

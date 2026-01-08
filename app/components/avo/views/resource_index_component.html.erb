@@ -10,7 +10,7 @@
   <%= render_cards_component %>
 
   <%= render ui.panel(
-      cover_photo: resource.cover_photo,
+      cover: resource.cover,
       class: "w-full",
       data: {
         component_name:,
@@ -19,9 +19,9 @@
         "resource-search-url-value": request.fullpath
       },
     ) do |panel| %>
-      <% if @resource.cover_photo.present? %>
-        <% panel.with_cover_photo do %>
-          <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
+      <% if @resource.cover.present? %>
+        <% panel.with_cover do %>
+          <%= render Avo::CoverComponent.new cover: @resource.cover %>
         <% end %>
       <% end %>
 

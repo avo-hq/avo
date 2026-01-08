@@ -16,7 +16,7 @@ class Event < ApplicationRecord
   belongs_to :location, optional: true
   has_many :volunteers, primary_key: :uuid
   has_one_attached :avatar
-  has_one_attached :cover_photo
+  has_one_attached :cover
 
   before_create -> { self.uuid = SecureRandom.uuid }
 

@@ -2,14 +2,14 @@
   "panel",
   @class,
   "panel--has-sidebar": sidebar?,
-  "has-cover-photo": has_cover_photo?,
+  "has-cover": has_cover?,
 ), data: {
   **@data,
   component_name:,
   "item-index": @index
 } do %>
-  <% if cover_photo? %>
-    <div class="panel__cover-photo"><%= cover_photo %></div>
+  <% if cover? %>
+    <div class="panel__cover"><%= cover %></div>
   <% end %>
 
   <% if header? %>

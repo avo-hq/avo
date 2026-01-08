@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class Avo::CoverPhotoComponent < Avo::BaseComponent
-  prop :cover_photo
+class Avo::CoverComponent < Avo::BaseComponent
+  prop :cover
   prop :size do |value|
-    @cover_photo&.size
+    @cover&.size
   end
 
   # aspect-cover-sm
@@ -14,6 +14,6 @@ class Avo::CoverPhotoComponent < Avo::BaseComponent
   end
 
   def render?
-    @cover_photo.present? && @cover_photo.visible_in_current_view?
+    @cover.present? && @cover.visible_in_current_view?
   end
 end

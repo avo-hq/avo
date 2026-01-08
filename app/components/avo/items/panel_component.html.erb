@@ -1,7 +1,7 @@
 <%= render ui.panel(title: @item.title, description: @item.description, index: @index) do |panel| %>
-  <% if @resource.cover_photo.present? %>
-    <% panel.with_cover_photo do %>
-      <%= render Avo::CoverPhotoComponent.new cover_photo: @resource.cover_photo %>
+  <% if @resource.cover.present? %>
+    <% panel.with_cover do %>
+      <%= render Avo::CoverComponent.new cover: @resource.cover %>
     <% end %>
   <% end %>
 
