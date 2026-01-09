@@ -143,14 +143,16 @@ module Avo
     end
 
     def click_tab(tab_name = "", within_target: nil, **args)
+      tab_container_selector = '[data-controller="tabs"] [role="tablist"]'
+
       if within_target.present?
         within within_target do
-          within find('[data-controller="tabs"] [data-tabs-target="tabSwitcher"]') do
+          within find(tab_container_selector) do
             find_link(tab_name).trigger("click")
           end
         end
       else
-        within find('[data-controller="tabs"] [data-tabs-target="tabSwitcher"]') do
+        within find(tab_container_selector) do
           find_link(tab_name).trigger("click")
         end
       end
