@@ -144,19 +144,17 @@ RSpec.configure do |config|
   config.after(:example) { clear_downloads }
 
   config.around(:example, type: :system) do |example|
-    ENV["RUN_WITH_NULL_LICENSE"] = "1"
-
     WebMock.disable_net_connect!(
       net_http_connect_on_start: true,
       allow_localhost: true,
       allow: ["googlechromelabs.github.io", "edgedl.me.gvt1.com"]
     )
+
     example.run
 
     # WebMock.allow_net_connect!
     WebMock.allow_net_connect!(net_http_connect_on_start: true)
     WebMock.reset!
-    ENV["RUN_WITH_NULL_LICENSE"] = "0"
   end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.

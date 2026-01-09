@@ -17,7 +17,7 @@
       <span class="text-gray-500 mt-1 text-sm truncate" title="<%= file.filename %>"><%= file.filename %></span>
     <% end %>
   </div>
-  <div class="flex space-x-2">
+  <div class="flex space-x-2 rtl:space-x-reverse">
     <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: file, resource: @resource) %>
   </div>
 </div>

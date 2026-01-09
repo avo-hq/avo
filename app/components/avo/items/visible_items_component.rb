@@ -6,4 +6,5 @@ class Avo::Items::VisibleItemsComponent < Avo::BaseComponent
   prop :view
   prop :form
   prop :field_component_extra_args, default: {}.freeze
+  prop :parent_component
 end

@@ -30,8 +30,6 @@ class Avo::Resources::Items::Sidebar
     delegate :heading, to: :items_holder
     delegate :card, to: :items_holder
 
-    # TODO: since we retired the panel_wrapper we probably don't need to automatically wrap everything in another sidebar.
-    # I'll let Paul refactor this (AVO-900)
     def initialize(parent:, **args)
       @sidebar = Avo::Resources::Items::Sidebar.new(**args)
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent)

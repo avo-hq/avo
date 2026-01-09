@@ -106,6 +106,7 @@
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
   @import "./css/components/breadcrumb_element.css";
+  @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
 
   html,
@@ -178,7 +179,7 @@
     }
 
     dd {
-      @apply ml-0 col-start-2;
+      @apply ms-0 col-start-2;
     }
   }
 
