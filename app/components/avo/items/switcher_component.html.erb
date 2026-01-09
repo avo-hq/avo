@@ -29,6 +29,12 @@
 <% elsif item.is_collaboration? %>
   <%= render Avo::Collaborate::TimelineComponent.new(resource: @resource) %>
 <% elsif item.is_header? %>
+  <% if @resource.cover.present? && @resource.cover.visible_in_current_view? %>
+    <div class="mb-6">
+      <%= render Avo::CoverComponent.new cover: @resource.cover %>
+    </div>
+  <% end %>
+
   <%= render ui.panel_header(title:, description: @resource.description, index:) do |header| %>
     <% header.with_controls do %>
       <% controls.each do |control| %>
@@ -36,8 +42,10 @@
       <% end %>
     <% end %>
 
-    <% header.with_profile_photo do %>
-      <%= render Avo::ProfilePhotoComponent.new profile_photo: @resource.profile_photo %>
+    <% if @resource.avatar.present? %>
+      <% header.with_avatar do %>
+        <%= render Avo::UI::AvatarComponent.new src: helpers.main_app.url_for(@resource.avatar.value), shape: :square, type: :avatar %>
+      <% end %>
     <% end %>
 
     <% header.with_discreet_information do %>

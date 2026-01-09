@@ -368,5 +368,9 @@ module Avo
     def row(id)
       "[data-component-name='avo/index/table_row_component'][data-resource-id='#{id}']"
     end
+
+    def strip_html(text)
+      text.strip.gsub(/\s+/, " ")
+    end
   end
 end

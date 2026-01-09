@@ -160,6 +160,10 @@ module Avo
         @table_header_label ||= name
       end
 
+      def table_header_class
+        @table_header_class ||= ""
+      end
+
       def custom_name?
         !@name.nil?
       end
@@ -172,7 +176,7 @@ module Avo
         Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
       end
 
-      def attribute_id = (@attribure_id ||= @for_attribute || @id)
+      def attribute_id = (@attribute_id ||= @for_attribute || @id)
 
       def value(property = nil)
         return @value if @value.present?

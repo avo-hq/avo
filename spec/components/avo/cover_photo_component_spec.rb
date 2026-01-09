@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Avo::CoverPhotoComponent, type: :component do
+RSpec.describe Avo::CoverComponent, type: :component do
   # let(:cover_photo) { double("cover_photo") }
   # let(:resource) { double("resource", cover_photo: cover_photo) }
 

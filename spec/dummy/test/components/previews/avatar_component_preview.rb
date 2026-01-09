@@ -3,12 +3,12 @@ class AvatarComponentPreview < ViewComponent::Preview
 
   # Placeholder avatar (default state)
   def placeholder
-    render Avo::AvatarComponent.new(type: "placeholder")
+    render Avo::UI::AvatarComponent.new(type: "placeholder")
   end
 
   # Avatar with image
   def with_image
-    render Avo::AvatarComponent.new(
+    render Avo::UI::AvatarComponent.new(
       type: "avatar",
       src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
       alt: "John Doe"
@@ -17,9 +17,9 @@ class AvatarComponentPreview < ViewComponent::Preview
 
   # Avatar with initials
   def with_initials
-    render Avo::AvatarComponent.new(
-      type: "initial",
-      initial: "JD"
+    render Avo::UI::AvatarComponent.new(
+      type: "initials",
+      initials: "JD"
     )
   end
 
@@ -28,19 +28,19 @@ class AvatarComponentPreview < ViewComponent::Preview
   # @!group Interactive Playground
 
   # Interactive avatar with customizable options
-  # @param type select { choices: [placeholder, avatar, initial] } "Avatar type"
+  # @param type select { choices: [placeholder, avatar, initials] } "Avatar type"
   # @param size select { choices: [large, medium, small, tiny] } "Avatar size"
   # @param shape select { choices: [rounded, square] } "Avatar shape"
   # @param theme select { choices: [default, orange, yellow, green, teal, blue, purple] } "Color theme"
-  # @param initial text "Initial text (for initial type)"
+  # @param initials text "Initials text (for initials type)"
   # @param image_url url "Image URL (for avatar type)"
   # @param alt_text text "Alt text for image"
   def playground(
-    type: "initial",
+    type: "initials",
     size: "large",
     shape: "rounded",
     theme: "blue",
-    initial: "JD",
+    initials: "JD",
     image_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
     alt_text: "User Avatar"
   )
@@ -51,7 +51,7 @@ class AvatarComponentPreview < ViewComponent::Preview
         size: size,
         shape: shape,
         theme: theme,
-        initial: initial,
+        initials: initials,
         image_url: image_url,
         alt_text: alt_text
       }
@@ -61,11 +61,11 @@ class AvatarComponentPreview < ViewComponent::Preview
   # Size comparison with toggles
   # @param show_labels toggle "Show size labels"
   # @param background_color select { choices: [white, gray, dark] } "Background color"
-  # @param avatar_type select { choices: [placeholder, initial, avatar] } "Avatar type to show"
+  # @param avatar_type select { choices: [placeholder, initials, avatar] } "Avatar type to show"
   def size_comparison(
     show_labels: true,
     background_color: "white",
-    avatar_type: "initial"
+    avatar_type: "initials"
   )
     render_with_template(
       template: "avatar_component_preview/size_comparison",
@@ -78,12 +78,12 @@ class AvatarComponentPreview < ViewComponent::Preview
   end
 
   # Theme showcase with personalization
-  # @param user_initial text "Your initial"
+  # @param user_initials text "Your initials"
   # @param show_names toggle "Show theme names"
   # @param avatar_size select { choices: [large, medium, small, tiny] } "Avatar size"
   # @param avatar_shape select { choices: [rounded, square] } "Avatar shape"
   def theme_showcase(
-    user_initial: "A",
+    user_initials: "A",
     show_names: true,
     avatar_size: "large",
     avatar_shape: "rounded"
@@ -91,7 +91,7 @@ class AvatarComponentPreview < ViewComponent::Preview
     render_with_template(
       template: "avatar_component_preview/theme_showcase",
       locals: {
-        user_initial: user_initial,
+        user_initials: user_initials,
         show_names: show_names,
         avatar_size: avatar_size,
         avatar_shape: avatar_shape

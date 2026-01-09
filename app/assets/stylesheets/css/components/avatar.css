@@ -48,31 +48,31 @@
 
 /* Background colors for different types and themes */
 .cado-avatar--placeholder,
-.cado-avatar--initial {
+.cado-avatar--initials {
   background-color: #f6f6f6;
 }
 
-.cado-avatar--initial.cado-avatar--orange {
+.cado-avatar--initials.cado-avatar--orange {
   background-color: #fb923c;
 }
 
-.cado-avatar--initial.cado-avatar--yellow {
+.cado-avatar--initials.cado-avatar--yellow {
   background-color: #facc15;
 }
 
-.cado-avatar--initial.cado-avatar--green {
+.cado-avatar--initials.cado-avatar--green {
   background-color: #22c55e;
 }
 
-.cado-avatar--initial.cado-avatar--teal {
+.cado-avatar--initials.cado-avatar--teal {
   background-color: #2dd4bf;
 }
 
-.cado-avatar--initial.cado-avatar--blue {
+.cado-avatar--initials.cado-avatar--blue {
   background-color: #3b82f6;
 }
 
-.cado-avatar--initial.cado-avatar--purple {
+.cado-avatar--initials.cado-avatar--purple {
   background-color: #a855f7;
 }
 
@@ -95,8 +95,8 @@
   background-repeat: no-repeat;
 }
 
-/* Initial text styling */
-.cado-avatar__initial {
+/* Initials text styling */
+.cado-avatar__initials {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -110,39 +110,39 @@
   text-overflow: ellipsis;
 }
 
-/* Initial text colors */
-.cado-avatar--initial .cado-avatar__initial {
+/* Initials text colors */
+.cado-avatar--initials .cado-avatar__initials {
   color: #5d5d5d;
 }
 
-.cado-avatar--initial.cado-avatar--orange .cado-avatar__initial,
-.cado-avatar--initial.cado-avatar--yellow .cado-avatar__initial,
-.cado-avatar--initial.cado-avatar--green .cado-avatar__initial,
-.cado-avatar--initial.cado-avatar--teal .cado-avatar__initial,
-.cado-avatar--initial.cado-avatar--blue .cado-avatar__initial,
-.cado-avatar--initial.cado-avatar--purple .cado-avatar__initial {
+.cado-avatar--initials.cado-avatar--orange .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--yellow .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--green .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--teal .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--blue .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--purple .cado-avatar__initials {
   color: #f6f6f6;
 }
 
 /* Font sizes for different avatar sizes */
-.cado-avatar--large .cado-avatar__initial {
+.cado-avatar--large .cado-avatar__initials {
   font-size: 32px;
   line-height: 40px;
   width: 45px;
 }
 
-.cado-avatar--medium .cado-avatar__initial {
+.cado-avatar--medium .cado-avatar__initials {
   font-size: 20px;
   line-height: 24px;
   width: 26px;
 }
 
-.cado-avatar--small .cado-avatar__initial {
-  font-size: 16px;
+.cado-avatar--small .cado-avatar__initials {
+  font-size: 14px;
   line-height: 24px;
 }
 
-.cado-avatar--tiny .cado-avatar__initial {
+.cado-avatar--tiny .cado-avatar__initials {
   font-size: 12px;
   line-height: 16px;
 }

@@ -7,7 +7,7 @@
 }
 
 .breadcrumbs__separator {
-  @apply text-neutral-500 flex items-center mx-1;
+  @apply text-neutral-500 flex items-center;
 }
 
 .breadcrumbs__separator-icon {

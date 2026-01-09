@@ -33,6 +33,21 @@ class Avo::Resources::User < Avo::BaseResource
     end
   }
 
+  self.avatar = {
+    source: -> {
+      record.avatar
+    }
+  }
+
+  # self.cover = {
+  #   visible_on: :show,
+  #   source: -> {
+  #     if record.present?
+  #       record.avatar
+  #     end
+  #   }
+  # }
+
   # self.row_controls_config = {
   #   float: true,
   #   show_on_hover: true
@@ -57,7 +72,7 @@ class Avo::Resources::User < Avo::BaseResource
 
     # Uncomment this to test computed file fields
     # field :first_post_image, as: :file, is_image: true do
-    #   record&.posts&.first&.cover_photo
+    #   record&.posts&.first&.cover
     # end
   end
 
@@ -99,7 +114,7 @@ class Avo::Resources::User < Avo::BaseResource
     card do
       test_field("Inside main panel")
       field :id, as: :id, link_to_record: true, sortable: false
-      field :email, as: :gravatar, link_to_record: true, only_on: :index
+      field :email, as: :gravatar, link_to_record: true, only_on: :index, name: :gravatar
       with_options as: :text, only_on: :index do
         field :first_name, placeholder: "John"
         field :last_name, placeholder: "Doe", filterable: true

@@ -94,6 +94,7 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers
   config.include DownloadHelpers
   config.include ViewComponent::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
   config.include Avo::TestHelpers
 
   # Include Avo::PrefixedTestHelpers if you want to use the avo_ prefixed helpers

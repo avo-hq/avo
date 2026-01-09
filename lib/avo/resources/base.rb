@@ -11,8 +11,8 @@ module Avo
       include Avo::Concerns::HasResourceStimulusControllers
       include Avo::Concerns::ModelClassConstantized
       include Avo::Concerns::HasDescription
-      include Avo::Concerns::HasCoverPhoto
-      include Avo::Concerns::HasProfilePhoto
+      include Avo::Concerns::HasCover
+      include Avo::Concerns::HasAvatar
       include Avo::Concerns::HasHelpers
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
@@ -53,7 +53,7 @@ module Avo
       attr_accessor :record
 
       class_attribute :id, default: :id
-      class_attribute :title
+      class_attribute :title # TODO: extract this to HasTitle concern
       class_attribute :search, default: {}
       class_attribute :includes, default: []
       class_attribute :attachments, default: []
@@ -204,6 +204,10 @@ module Avo
           name_from_translation_key(count: 1, default: class_name.underscore.humanize)
         end
         alias_method :singular_name, :name
+
+        def initials
+          name.to_s.split(" ").map(&:first).join("").first(2).upcase
+        end
 
         def plural_name
           name_from_translation_key(count: 2, default: name.pluralize)

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Avo
-  class CoverPhoto < PhotoObject
-    def key = :cover_photo
+  class Cover < PhotoObject
+    def key = :cover
 
     def size
       options.fetch(:size, :md)

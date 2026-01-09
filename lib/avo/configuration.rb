@@ -93,7 +93,7 @@ module Avo
       }
       @context = proc {}
       @initial_breadcrumbs = proc {
-        add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
+        add_breadcrumb title: I18n.t("avo.home").humanize, path: avo.root_path, icon: "tabler/outline/home"
       }
       @display_breadcrumbs = true
       @hide_layout_when_printing = false

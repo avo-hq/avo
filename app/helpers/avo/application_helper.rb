@@ -5,16 +5,6 @@ module Avo
 
     def ui = Avo::UIInstance
 
-    # TODO: refactor this to use the breadcrumbs helper
-    # Ideally it should be added to any
-    def render_breadcrumbs(items: [])
-      render Avo::BreadcrumbsComponent.new(items: [
-        {text: "Home", url: "https://example.com/home"},
-        {text: "Users", url: "/users"},
-        {text: "User", current: true}
-      ])
-    end
-
     def render_license_warning(title: "", message: "", icon: "exclamation")
       render partial: "avo/sidebar/license_warning", locals: {
         title: title,

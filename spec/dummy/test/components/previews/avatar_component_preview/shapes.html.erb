@@ -3,8 +3,8 @@
     <h4>Rounded (Circular)</h4>
 
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "rounded", size: "large") %>
-      <%= render Avo::AvatarComponent.new(type: "initial", initial: "R", shape: "rounded", size: "large", theme: "teal") %>
+      <%= render Avo::UI::AvatarComponent.new(type: "placeholder", shape: "rounded", size: "large") %>
+      <%= render Avo::UI::AvatarComponent.new(type: "initials", initials: "R", shape: "rounded", size: "large", theme: "teal") %>
     </div>
   </div>
 
@@ -12,8 +12,8 @@
     <h4>Square (Rounded Rectangle)</h4>
 
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "square", size: "large") %>
-      <%= render Avo::AvatarComponent.new(type: "initial", initial: "S", shape: "square", size: "large", theme: "blue") %>
+      <%= render Avo::UI::AvatarComponent.new(type: "placeholder", shape: "square", size: "large") %>
+      <%= render Avo::UI::AvatarComponent.new(type: "initials", initials: "S", shape: "square", size: "large", theme: "blue") %>
     </div>
   </div>
 </div>

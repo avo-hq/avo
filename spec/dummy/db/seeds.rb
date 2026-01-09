@@ -173,7 +173,7 @@ puts "Creating posts"
   rescue
     puts "Failed to fetch cover photo from Picsum"
   end
-  post.cover_photo.attach(io: io, filename: "cover.jpg") if io
+  post.cover.attach(io: io, filename: "cover.jpg") if io
 
   puts "Creating posts comments"
 

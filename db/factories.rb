@@ -145,6 +145,20 @@ FactoryBot.define do
     body { Faker::Lorem.paragraphs(number: rand(1...3)).join("\n") }
   end
 
+  trait :with_avatar do
+    after(:create) do |event|
+      file = Rails.root.join("db", "seed_files", "dummy-image.jpg")
+      event.avatar.attach(io: file.open, filename: "dummy-image.jpg")
+    end
+  end
+
+  trait :with_cover do
+    after(:create) do |event|
+      file = Rails.root.join("db", "seed_files", "watch.jpg")
+      event.cover.attach(io: file.open, filename: "watch.jpg")
+    end
+  end
+
   factory :volunteer do
     name { Faker::Name.name }
     role { Faker::Job.title }
