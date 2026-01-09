@@ -4,16 +4,43 @@ module Avo
       attr_reader :options
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         hide_on [:edit, :new]
 
-        default_options = {info: :info, success: :success, danger: :danger, warning: :warning, neutral: :neutral}
-        @options = args[:options].present? ? default_options.merge(args[:options]) : default_options
+        @options = args[:options] || {}
+        @color = args[:color]
+        @style = args[:style]
+        @icon = args[:icon]
       end
 
       def options_for_filter
         @options.values.flatten.uniq
+      end
+
+      def color
+        # Priority 1: Use explicit color if provided (via proc/lambda or direct value)
+        # Priority 2: Fall back to automatic color detection based on field value and options mapping
+        execute_context(@color) || badge_color_for_value
+      end
+
+      def style
+        execute_context(@style) || "subtle"
+      end
+
+      def icon
+        execute_context(@icon)
+      end
+
+      # Maps field value to a color based on @options configuration
+      # Example: "Done" -> "success" if options = { success: [:done, :complete] }
+      def badge_color_for_value
+        return "neutral" if value.blank?
+
+        values = @options.find do |_, configured_values|
+          Array.wrap(configured_values).map { |v| v.to_s }.include?(value.to_s)
+        end
+        values&.first&.to_s || "neutral"
       end
     end
   end

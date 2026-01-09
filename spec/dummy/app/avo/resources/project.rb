@@ -79,9 +79,32 @@ class Avo::Resources::Project < Avo::BaseResource
         info: ["Discovery", "Idea"],
         success: :Done,
         warning: "On hold",
-        danger: :Cancelled,
+        danger: "Cancelled",
         neutral: :Drafting
       },
+      color: -> {
+        {
+          "Discovery" => "green",
+          "Idea" => "blue",
+          "Drafting" => "purple",
+          "Done" => "green",
+          "On hold" => "orange",
+          "Cancelled" => "orange"
+        }[record.stage]
+      },
+      style: -> { ["Done", "Cancelled"].include?(record.stage) ? "solid" : "subtle" },
+      # style: :solid,
+      icon: -> {
+        {
+          "Discovery" => "tabler/outline/zoom",
+          "Idea" => "tabler/outline/bulb",
+          "Drafting" => "tabler/outline/file-text",
+          "Done" => "tabler/outline/circle-check",
+          "On hold" => "tabler/outline/player-pause",
+          "Cancelled" => "tabler/outline/xbox-x"
+        }[record.stage]
+      },
+
       filterable: true,
       sortable: true,
       summarizable: true

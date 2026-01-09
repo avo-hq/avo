@@ -14,7 +14,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text empty_dash
-        is_expected.not_to have_css ".rounded-md"
+        is_expected.not_to have_css ".badge"
       }
     end
 
@@ -24,8 +24,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-blue-500"
+        is_expected.to have_css ".badge.badge--subtle.badge--green"
       }
     end
 
@@ -35,8 +34,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-green-500"
+        is_expected.to have_css ".badge.badge--solid.badge--green"
       }
     end
 
@@ -46,8 +44,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-yellow-500"
+        is_expected.to have_css ".badge.badge--subtle.badge--orange"
       }
     end
 
@@ -57,8 +54,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-red-500"
+        is_expected.to have_css ".badge.badge--solid.badge--orange"
       }
     end
 
@@ -68,8 +64,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-gray-500"
+        is_expected.to have_css ".badge.badge--subtle.badge--purple"
       }
     end
   end
@@ -87,7 +82,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text empty_dash
-        is_expected.not_to have_css ".rounded-md"
+        is_expected.not_to have_css ".badge"
       }
     end
 
@@ -97,8 +92,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-blue-500"
+        is_expected.to have_css ".badge.badge--subtle.badge--green"
       }
     end
 
@@ -108,8 +102,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-green-500"
+        is_expected.to have_css ".badge.badge--solid.badge--green"
       }
     end
 
@@ -119,8 +112,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-yellow-500"
+        is_expected.to have_css ".badge.badge--subtle.badge--orange"
       }
     end
 
@@ -130,8 +122,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-red-500"
+        is_expected.to have_css ".badge.badge--solid.badge--orange"
       }
     end
 
@@ -141,8 +132,7 @@ RSpec.describe "badge", type: :feature do
 
       it {
         is_expected.to have_text stage
-        is_expected.to have_css ".rounded-md"
-        is_expected.to have_css ".bg-gray-500"
+        is_expected.to have_css ".badge.badge--subtle.badge--purple"
       }
     end
   end

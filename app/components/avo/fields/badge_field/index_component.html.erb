@@ -1,3 +1,9 @@
 <%= index_field_wrapper(**field_wrapper_args, flush: true) do %>
-  <%= render Avo::Fields::Common::BadgeViewerComponent.new value: @field.value, options: @field.options %>
+  <%= render Avo::UI::BadgeComponent.new(
+    label: @field.value,
+    color: @field.color,
+    style: @field.style,
+    icon: @field.icon,
+    classes: 'min-w-24'
+  ) %>
 <% end %>

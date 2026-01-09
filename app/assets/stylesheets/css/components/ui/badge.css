@@ -1,0 +1,143 @@
+/* Badge Component - Based on Figma Design System */
+/* BEM Methodology: .badge (block), .badge__icon, .badge__label (elements), .badge--modifier (modifiers) */
+
+.badge {
+  /* Layout */
+  @apply inline-flex items-center justify-center text-center font-medium leading-4 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2;
+  height: var(--spacing-6, 24px);
+  padding: var(--spacing-05, 2px) var(--spacing-2, 8px);
+  gap: var(--spacing-05, 2px);
+
+  /* Style */
+  border-radius: var(--rounded-md, 6px);
+
+  /* Typography */
+  font-size: var(--text-xs, 12px);
+
+  background: color-mix(in oklab, var(--badge-bg), var(--color-neutral-primary) 85%);
+  color: var(--badge-text);
+}
+
+/* Badge elements */
+.badge__icon {
+  @apply shrink-0 size-3;
+}
+
+.badge--subtle {
+}
+
+.badge--solid {
+  color: var(--color-white);
+  /* work with the bg color to make it more saturated and lighter */
+  background: color-mix(in oklab, oklch(from var(--badge-text) l calc(c * 1.2) h) 80%, white);
+}
+
+.badge--success {
+  --badge-bg: var(--color-green-400);
+  --badge-text: var(--color-green-600);
+}
+
+.badge--warning {
+  --badge-bg: var(--color-orange-400);
+  --badge-text: var(--color-orange-600);
+}
+
+.badge--danger {
+  --badge-bg: var(--color-red-400);
+  --badge-text: var(--color-red-600);
+}
+
+.badge--info {
+  --badge-bg: var(--color-blue-400);
+  --badge-text: var(--color-blue-600);
+}
+
+.badge--neutral {
+  --badge-bg: var(--color-gray-400);
+  --badge-text: var(--color-gray-600);
+}
+
+.badge--red {
+  --badge-bg: var(--color-red-400);
+  --badge-text: var(--color-red-600);
+}
+
+.badge--orange {
+  --badge-bg: var(--color-orange-400);
+  --badge-text: var(--color-orange-600);
+}
+
+.badge--amber {
+  --badge-bg: var(--color-amber-400);
+  --badge-text: var(--color-amber-600);
+}
+
+.badge--yellow {
+  --badge-bg: var(--color-yellow-400);
+  --badge-text: var(--color-yellow-600);
+}
+
+.badge--lime {
+  --badge-bg: var(--color-lime-400);
+  --badge-text: var(--color-lime-600);
+}
+
+.badge--green {
+  --badge-bg: var(--color-green-400);
+  --badge-text: var(--color-green-600);
+}
+
+.badge--emerald {
+  --badge-bg: var(--color-emerald-400);
+  --badge-text: var(--color-emerald-600);
+}
+
+.badge--teal {
+  --badge-bg: var(--color-teal-400);
+  --badge-text: var(--color-teal-600);
+}
+
+.badge--cyan {
+  --badge-bg: var(--color-cyan-400);
+  --badge-text: var(--color-cyan-600);
+}
+
+.badge--sky {
+  --badge-bg: var(--color-sky-400);
+  --badge-text: var(--color-sky-600);
+}
+
+.badge--blue {
+  --badge-bg: var(--color-blue-400);
+  --badge-text: var(--color-blue-600);
+}
+
+.badge--indigo {
+  --badge-bg: var(--color-indigo-400);
+  --badge-text: var(--color-indigo-600);
+}
+
+.badge--violet {
+  --badge-bg: var(--color-violet-400);
+  --badge-text: var(--color-violet-600);
+}
+
+.badge--purple {
+  --badge-bg: var(--color-purple-400);
+  --badge-text: var(--color-purple-600);
+}
+
+.badge--fuchsia {
+  --badge-bg: var(--color-fuchsia-400);
+  --badge-text: var(--color-fuchsia-600);
+}
+
+.badge--pink {
+  --badge-bg: var(--color-pink-400);
+  --badge-text: var(--color-pink-600);
+}
+
+.badge--rose {
+  --badge-bg: var(--color-rose-400);
+  --badge-text: var(--color-rose-600);
+}
