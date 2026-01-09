@@ -6,7 +6,7 @@
 
   /* Container */
   .tabs {
-    @apply flex items-center;
+    @apply flex flex-wrap;
   }
 
   /* Base Item */
@@ -57,7 +57,7 @@
      ============================================ */
 
   .tabs--group {
-    @apply flex gap-1 items-center;
+    @apply gap-1;
   }
 
   .tabs__item--group {

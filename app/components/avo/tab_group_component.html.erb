@@ -13,14 +13,14 @@
       <%= render ui.panel_header(title: group.title, description: group.description) %>
 
       <div class="-mx-2 -my-2 space-y-4 rounded-lg border border-gray-200 p-2 lg:-mx-4 lg:-my-3 lg:p-4">
-        <%= render Avo::UI::Tabs::ScopeTabsComponent.new do %>
-          <% visible_tabs.each do |scope_tab| %>
-            <%= render Avo::UI::Tabs::ScopeTabComponent.new(
-              label: scope_tab.title,
-              active: scope_tab_active?(scope_tab, tab),
-              href: scope_tab_path(scope_tab),
-              title: scope_tab.description,
-              data: scope_tab_data(scope_tab, tab)
+        <%= render Avo::UI::Tabs::TabsComponent.new do %>
+          <% visible_tabs.each do |tab_item| %>
+            <%= render Avo::UI::Tabs::TabComponent.new(
+              label: tab_item.title,
+              active: tab_active?(tab_item, tab),
+              href: tab_path(tab_item),
+              title: tab_item.description,
+              data: tab_data(tab_item, tab)
             ) %>
           <% end %>
         <% end %>

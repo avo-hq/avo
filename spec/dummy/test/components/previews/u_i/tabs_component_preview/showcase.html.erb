@@ -1,23 +1,24 @@
 <div class="p-8 bg-white space-y-12">
   <div>
-    <h3 class="text-lg font-semibold mb-4">Group Tabs (Pills, No Border)</h3>
+    <h3 class="text-lg font-semibold mb-4">Standard Tabs (Scope - Default)</h3>
     <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg">
       <%= render Avo::UI::Tabs::TabsComponent.new do %>
-        <%= render Avo::UI::Tabs::TabComponent.new(label: "Overview", icon: "heroicons/outline/home") %>
+        <%= render Avo::UI::Tabs::TabComponent.new(label: "Overview", icon: "heroicons/outline/home", active: true) %>
         <%= render Avo::UI::Tabs::TabComponent.new(label: "Settings", icon: "heroicons/outline/cog") %>
-        <%= render Avo::UI::Tabs::TabComponent.new(label: "Analytics", icon: "heroicons/outline/chart-bar", active: true) %>
+        <%= render Avo::UI::Tabs::TabComponent.new(label: "Analytics", icon: "heroicons/outline/chart-bar") %>
         <%= render Avo::UI::Tabs::TabComponent.new(label: "Files", icon: "heroicons/outline/folder") %>
       <% end %>
     </div>
   </div>
 
   <div>
-    <h3 class="text-lg font-semibold mb-4">Group Tabs Without Icons</h3>
+    <h3 class="text-lg font-semibold mb-4">Group Tabs (Pills, No Border)</h3>
     <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg">
-      <%= render Avo::UI::Tabs::TabsComponent.new do %>
-        <%= render Avo::UI::Tabs::TabComponent.new(label: "Overview", active: true) %>
-        <%= render Avo::UI::Tabs::TabComponent.new(label: "Settings") %>
-        <%= render Avo::UI::Tabs::TabComponent.new(label: "Analytics") %>
+      <%= render Avo::UI::Tabs::TabsComponent.new(variant: :group) do %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :group, label: "Overview", icon: "heroicons/outline/home") %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :group, label: "Settings", icon: "heroicons/outline/cog") %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :group, label: "Analytics", icon: "heroicons/outline/chart-bar", active: true) %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :group, label: "Files", icon: "heroicons/outline/folder") %>
       <% end %>
     </div>
   </div>

@@ -9,7 +9,7 @@ module Avo
         ACTIVE_CLASS = "tabs__item--active"
 
         prop :label
-        prop :variant, default: :group
+        prop :variant, default: :scope
         prop :active, default: false
         prop :icon
         prop :href, default: nil

@@ -4,7 +4,7 @@ module Avo
   module UI
     module Tabs
       class TabsComponent < Avo::BaseComponent
-        prop :variant, default: :group
+        prop :variant, default: :scope
         prop :aria_label
         prop :id
 

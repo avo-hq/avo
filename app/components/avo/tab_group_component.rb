@@ -85,11 +85,11 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     }
   end
 
-  def scope_tab_path(scope_tab)
+  def tab_path(tab)
     base_options = {
       resource: resource,
       keep_query_params: true,
-      active_tab_title: scope_tab.title,
+      active_tab_title: tab.title,
       tab_turbo_frame: group.turbo_frame_id
     }
 
@@ -102,19 +102,19 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     end
   end
 
-  def scope_tab_data(scope_tab, current_tab)
+  def tab_data(tab, current_tab)
     data = {
       action: "click->tabs#changeTab",
-      tabs_tab_name_param: scope_tab.title,
+      tabs_tab_name_param: tab.title,
       tabs_group_id_param: group.to_param,
       tabs_resource_name_param: resource.underscore_name,
-      selected: scope_tab_active?(scope_tab, current_tab)
+      selected: tab_active?(tab, current_tab)
     }
-    data[:tippy] = "tooltip" if scope_tab.description.present?
+    data[:tippy] = "tooltip" if tab.description.present?
     data
   end
 
-  def scope_tab_active?(scope_tab, current_tab)
-    scope_tab.title == current_tab.title
+  def tab_active?(tab, current_tab)
+    tab.title == current_tab.title
   end
 end
