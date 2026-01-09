@@ -1,7 +1,7 @@
 @theme {
   --main-content-wrapper-background: var(--color-white);
 
-  --color-avo-25: oklch(98.51% 0.0000 89.88);
+  --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: oklch(97.31% 0.0000 89.88);
   --color-avo-neutral-100: oklch(92.80% 0.0000 89.88);
   --color-avo-neutral-200: oklch(86.07% 0.0000 89.88);
@@ -27,7 +27,7 @@
   --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
 
   /* foundations - Light Mode */
-  --color-background: var(--color-avo-neutral-50);
+  --color-background: var(--color-avo-neutral-25);
   --color-foreground: var(--color-avo-neutral-800);
   --color-primary: var(--color-white);
   --color-secondary: var(--color-avo-neutral-50);

@@ -9,7 +9,7 @@
   @apply px-1 inline;
 }
 .discreet-information__badge {
-  @apply inline-flex bg-avo-25 rounded-md items-center font-semibold gap-1;
+  @apply inline-flex bg-avo-neutral-25 rounded-md items-center font-semibold gap-1;
 
   .discreet-information__icon {
     @apply text-neutral-600 me-1 size-3;
