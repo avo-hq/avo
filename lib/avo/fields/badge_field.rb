@@ -37,9 +37,10 @@ module Avo
       def badge_color_for_value
         return "neutral" if value.blank?
 
-        @options.find { |_, configured_values|
-          Array(configured_values).map { |v| v.to_s }.include?(value.to_s)
-        }&.first&.to_s || "neutral"
+        values = @options.find do |_, configured_values|
+          Array.wrap(configured_values).map { |v| v.to_s }.include?(value.to_s)
+        end
+        values&.first&.to_s || "neutral"
       end
     end
   end
