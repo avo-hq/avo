@@ -5,4 +5,13 @@
   } else {
     document.documentElement.classList.remove('dark')
   }
+
+  // Apply theme class
+  // Remove all theme- classes first
+  document.documentElement.classList.remove('theme-slate', 'theme-stone')
+
+  // Add the selected theme class (brand means no theme class)
+  <% if @theme.present? && @theme != 'brand' %>
+    document.documentElement.classList.add('theme-<%= @theme %>')
+  <% end %>
 </script>

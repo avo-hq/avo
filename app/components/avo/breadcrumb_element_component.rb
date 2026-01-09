@@ -4,7 +4,6 @@ class Avo::BreadcrumbElementComponent < Avo::BaseComponent
   prop :text
   prop :url, default: nil
   prop :icon, default: nil
-  prop :separator, default: nil
   prop :initials, default: nil
   prop :avatar
 

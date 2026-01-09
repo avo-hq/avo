@@ -100,13 +100,13 @@
 
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
-  @import "./css/components/breadcrumb_element.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
 
   html,
   body {
-    @apply antialiased relative h-full;
+    @apply antialiased relative h-full text-content;
+
   }
 
   .will-change-transform {

@@ -5,6 +5,7 @@
 
 .color-scheme-switcher__button {
   @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
+  @apply border-0 bg-transparent cursor-pointer;
 }
 
 .color-scheme-switcher__button--active {
@@ -13,4 +14,8 @@
 
 .color-scheme-switcher__icon {
   @apply size-4;
+}
+
+.color-scheme-switcher__text {
+  @apply text-xs font-medium px-1;
 }

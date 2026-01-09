@@ -1,36 +1,84 @@
 <%
   current_scheme = @color_scheme || ""
   current_scheme = "auto" if current_scheme.blank?
+  current_theme = @theme || ""
+  current_theme = "brand" if current_theme.blank?
 %>
-<div class="color-scheme-switcher">
-  <%= link_to avo.color_scheme_path(color_scheme: :auto),
-    class: class_names(
-      "color-scheme-switcher__button",
-      "color-scheme-switcher__button--active": current_scheme == "auto"
-    ),
-    data: {turbo_method: :post, turbo_frame: :_top},
-    title: "Auto (system preference)" do %>
+<div class="color-scheme-switcher"
+     data-controller="color-scheme-switcher"
+     data-color-scheme-switcher-current-scheme-value="<%= current_scheme %>"
+     data-color-scheme-switcher-current-theme-value="<%= current_theme %>"
+     data-path="<%= avo.color_scheme_path %>">
+  <button type="button"
+          data-color-scheme-switcher-target="button"
+          data-action="click->color-scheme-switcher#setTheme"
+          data-theme="brand"
+          class="<%= class_names(
+            "color-scheme-switcher__button",
+            "color-scheme-switcher__button--active": current_theme == "brand"
+          ) %>"
+          title="Brand theme">
+    <span class="color-scheme-switcher__text">Brand</span>
+    <span class="sr-only">Brand</span>
+  </button>
+  <button type="button"
+          data-color-scheme-switcher-target="button"
+          data-action="click->color-scheme-switcher#setTheme"
+          data-theme="slate"
+          class="<%= class_names(
+            "color-scheme-switcher__button",
+            "color-scheme-switcher__button--active": current_theme == "slate"
+          ) %>"
+          title="Slate theme">
+    <span class="color-scheme-switcher__text">Slate</span>
+    <span class="sr-only">Slate</span>
+  </button>
+  <button type="button"
+          data-color-scheme-switcher-target="button"
+          data-action="click->color-scheme-switcher#setTheme"
+          data-theme="stone"
+          class="<%= class_names(
+            "color-scheme-switcher__button",
+            "color-scheme-switcher__button--active": current_theme == "stone"
+          ) %>"
+          title="Stone theme">
+    <span class="color-scheme-switcher__text">Stone</span>
+    <span class="sr-only">Stone</span>
+  </button>
+  <button type="button"
+          data-color-scheme-switcher-target="button"
+          data-action="click->color-scheme-switcher#setScheme"
+          data-scheme="auto"
+          class="<%= class_names(
+            "color-scheme-switcher__button",
+            "color-scheme-switcher__button--active": current_scheme == "auto"
+          ) %>"
+          title="Auto (system preference)">
     <%= svg "heroicons/outline/computer-desktop", class: "color-scheme-switcher__icon" %>
     <span class="sr-only">Auto</span>
-  <% end %>
-  <%= link_to avo.color_scheme_path(color_scheme: :light),
-    class: class_names(
-      "color-scheme-switcher__button",
-      "color-scheme-switcher__button--active": current_scheme == "light"
-    ),
-    data: {turbo_method: :post, turbo_frame: :_top},
-    title: "Light mode" do %>
+  </button>
+  <button type="button"
+          data-color-scheme-switcher-target="button"
+          data-action="click->color-scheme-switcher#setScheme"
+          data-scheme="light"
+          class="<%= class_names(
+            "color-scheme-switcher__button",
+            "color-scheme-switcher__button--active": current_scheme == "light"
+          ) %>"
+          title="Light mode">
     <%= svg "heroicons/outline/sun", class: "color-scheme-switcher__icon" %>
     <span class="sr-only">Light</span>
-  <% end %>
-  <%= link_to avo.color_scheme_path(color_scheme: :dark),
-    class: class_names(
-      "color-scheme-switcher__button",
-      "color-scheme-switcher__button--active": current_scheme == "dark"
-    ),
-    data: {turbo_method: :post, turbo_frame: :_top},
-    title: "Dark mode" do %>
+  </button>
+  <button type="button"
+          data-color-scheme-switcher-target="button"
+          data-action="click->color-scheme-switcher#setScheme"
+          data-scheme="dark"
+          class="<%= class_names(
+            "color-scheme-switcher__button",
+            "color-scheme-switcher__button--active": current_scheme == "dark"
+          ) %>"
+          title="Dark mode">
     <%= svg "heroicons/outline/moon", class: "color-scheme-switcher__icon" %>
     <span class="sr-only">Dark</span>
-  <% end %>
+  </button>
 </div>

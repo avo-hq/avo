@@ -334,6 +334,7 @@ module Avo
 
     def set_color_scheme
       @color_scheme = cookies[:color_scheme] || ""
+      @theme = cookies[:theme] || ""
     end
   end
 end
