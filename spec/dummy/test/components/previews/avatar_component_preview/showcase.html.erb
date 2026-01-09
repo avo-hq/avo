@@ -14,7 +14,7 @@
 
     <div style="display: grid; gap: 3rem;">
       <!-- Placeholders -->
-      <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+      <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" class="hidden">
         <div style="text-align: center; margin-bottom: 2rem;">
           <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">🔲 Placeholder Avatars</h2>
           <p style="color: #666;">Empty state avatars with subtle borders</p>
@@ -88,6 +88,37 @@
               </div>
 
               <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:name] %></div>
+            </div>
+          <% end %>
+        </div>
+      </section>
+      <!-- Initials Avatars - Color Spectrum -->
+      <section style="background: #333; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" class="dark">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: white;">🎨 Color Theme Spectrum</h2>
+          <p style="color: white;">All available color themes for initials avatars</p>
+        </div>
+
+        <div
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 2rem; margin-bottom: 2rem;"
+        >
+          <% theme_configs = [
+              { theme: "default", initials: "D", name: "Default" },
+              { theme: "orange", initials: "O", name: "Orange" },
+              { theme: "yellow", initials: "Y", name: "Yellow" },
+              { theme: "green", initials: "G", name: "Green" },
+              { theme: "teal", initials: "T", name: "Teal" },
+              { theme: "blue", initials: "B", name: "Blue" },
+              { theme: "purple", initials: "P", name: "Purple" }
+            ] %>
+
+          <% theme_configs.each do |config| %>
+            <div style="text-align: center; padding: 1rem;">
+              <div style="margin-bottom: 1rem;">
+                <%= render Avo::UI::AvatarComponent.new(type: "initials", initials: config[:initials], theme: config[:theme]) %>
+              </div>
+
+              <div style="font-size: 0.9rem; font-weight: 500; color: white;"><%= config[:name] %></div>
             </div>
           <% end %>
         </div>
