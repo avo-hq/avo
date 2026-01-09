@@ -9,7 +9,7 @@ RSpec.describe "Tabs", type: :system do
       it "doesn't display the birthday from the tab content" do
         visit "/admin/resources/users"
 
-        expect(find("table thead").text).to eq "Select all\n\t\nID\n\t\nAVATAR\n\t\nFIRST NAME\n\t\nLAST NAME\n\t\nUSER EMAIL\n\t\nIS ACTIVE\n\t\nCV\n\t\nIS ADMIN\n\t\nROLES\n\t\nPERMISSIONS\n\t\nBIRTHDAY\n\t\nIS WRITER"
+        expect(strip_html(find("table thead").text)).to eq "Select all ID GRAVATAR FIRST NAME LAST NAME USER EMAIL IS ACTIVE CV IS ADMIN ROLES PERMISSIONS BIRTHDAY IS WRITER"
         within find("tr[data-resource-id='#{user.to_param}']") do
           expect(find_all("table tbody tr td")[11].text).to eq "Wednesday, 10 February 1988"
         end
@@ -56,7 +56,7 @@ RSpec.describe "Tabs", type: :system do
         visit avo.resources_user_path user
 
         within first_tab_group do
-          expect(find('[role="tablist"]').text).to eq "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at"
+          expect(strip_html(find('[role="tablist"]').text)).to eq "Fish Teams People Spouses Projects Team memberships Created at"
         end
       end
     end
@@ -108,7 +108,7 @@ RSpec.describe "Tabs", type: :system do
       scroll_to first_tab_group
 
       within first_tab_group do
-        expect(find('[role="tablist"]')).to have_text "Fish\nTeams\nPeople\nSpouses\nProjects\nTeam memberships\nCreated at", exact: true
+        expect(strip_html(find('[role="tablist"]').text)).to eq "Fish Teams People Spouses Projects Team memberships Created at"
       end
     end
   end

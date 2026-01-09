@@ -154,7 +154,7 @@ RSpec.feature "belongs_to", type: :feature do
       expect(find("thead")).not_to have_text "User"
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
-      expect(page).not_to have_text user.name, count: 1
+      expect(page.find('[data-component-name="avo/view_types/table_component"]')).not_to have_text user.name
     end
   end
 
@@ -187,7 +187,7 @@ RSpec.feature "belongs_to", type: :feature do
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
       expect(page).to have_text user.name
-      expect(page).not_to have_text project.name, count: 1
+      expect(page.find('[data-component-name="avo/view_types/table_component"]')).not_to have_text project.name
     end
   end
 
@@ -206,7 +206,7 @@ RSpec.feature "belongs_to", type: :feature do
       expect(page).to have_text review.id
       expect(page).to have_text "a review"
       expect(page).to have_text user.name
-      expect(page).not_to have_text team.name, count: 1
+      expect(page.find('[data-component-name="avo/view_types/table_component"]')).not_to have_text team.name
     end
   end
 end

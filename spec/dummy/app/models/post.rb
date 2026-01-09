@@ -29,7 +29,7 @@ class Post < ApplicationRecord
   #   status
   # }
 
-  has_one_attached :cover_photo
+  has_one_attached :cover
   has_one_attached :audio
   has_many_attached :attachments
 

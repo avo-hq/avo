@@ -5,13 +5,18 @@ class Avo::BreadcrumbElementComponent < Avo::BaseComponent
   prop :url, default: nil
   prop :icon, default: nil
   prop :separator, default: nil
-  prop :current, default: false
-
-  def current?
-    @current
-  end
+  prop :initials, default: nil
+  prop :avatar
 
   def link?
-    @url.present? && !current?
+    @url.present?
+  end
+
+  def wrapper_element(args = {}, &block)
+    if link?
+      link_to @url, **args, &block
+    else
+      content_tag :span, **args, &block
+    end
   end
 end

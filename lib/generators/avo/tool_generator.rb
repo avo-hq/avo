@@ -25,7 +25,7 @@ module Generators
           <<-METHOD
   def #{file_name}
     @page_title = "#{human_name}"
-    add_breadcrumb "#{human_name}"
+    add_breadcrumb title: "#{human_name}"
   end
           METHOD
         end

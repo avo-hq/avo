@@ -1,0 +1,3 @@
+<%= tag.div class: class_names("related w-full flex overflow-hidden rounded-2xl", size_class) do %>
+  <%= image_tag helpers.main_app.url_for(@cover.value), class: class_names("w-full object-cover self-center"), data: {component: self.class.to_s.underscore} %>
+<% end %>

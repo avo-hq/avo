@@ -9,9 +9,9 @@
         description: "Some description here on maybe how to use the resource"
       ) do |header| %>
         <% header.with_avatar do %>
-          <%= render Avo::AvatarComponent.new(
-            type: "initial",
-            initial: "JD",
+          <%= render Avo::UI::AvatarComponent.new(
+            type: "initials",
+            initials: "JD",
             size: "medium"
           ) %>
         <% end %>

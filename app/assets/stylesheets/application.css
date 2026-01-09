@@ -31,9 +31,6 @@
   --color-primary-850: rgb(var(--avo-color-primary-850));
   --color-primary-900: rgb(var(--avo-color-primary-900));
 
-  --aspect-cover-sm: 9 / 2;
-  --aspect-cover-md: 9 / 3;
-  --aspect-cover-lg: 9 / 4;
   --aspect-media-library-item: 4 / 3;
 
   --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -52,7 +49,7 @@
 /* Add dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
 
-@custom-variant has-cover-photo (&:where(.has-cover-photo *));
+@custom-variant has-cover (&:where(.has-cover *));
 @custom-variant has-sidebar (&:where(.has-sidebar *));
 @custom-variant has-record-selector (&:where(.has-record-selector *));
 @custom-variant index-grid-view (&:where(.index-grid-view *));
@@ -79,7 +76,6 @@
   @import "./css/tooltips.css";
   @import "./css/loader.css";
   @import "./css/pagination.css";
-  @import "./css/breadcrumbs.css";
   @import "./css/search.css";
   @import "./css/active-storage.css";
   @import "./css/scrollbar.css";

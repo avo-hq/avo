@@ -27,8 +27,8 @@ class Avo::Resources::ZPost < Avo::BaseResource
     card: -> do
       {
         cover_url:
-          if record.cover_photo.attached?
-            main_app.url_for(record.cover_photo.url)
+          if record.cover.attached?
+            main_app.url_for(record.cover.url)
           end,
         title: record.name,
         body: ActionView::Base.full_sanitizer.sanitize(record.body).truncate(130)
@@ -56,8 +56,8 @@ class Avo::Resources::ZPost < Avo::BaseResource
       suggestions: -> { Post.tags_suggestions },
       enforce_suggestions: true,
       help: "The only allowed values here are `one`, `two`, and `three`"
-    field :cover_photo, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*"
-    field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: ->(value) { value.present? ? value&.url : nil }
+    field :cover, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*"
+    field :cover, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: ->(value) { value.present? ? value&.url : nil }
     field :audio, as: :file, is_audio: true, accept: "audio/*"
     field :is_featured, as: :boolean, visible: -> { Avo::Current.context[:user].is_admin? }
     field :is_published, as: :boolean do

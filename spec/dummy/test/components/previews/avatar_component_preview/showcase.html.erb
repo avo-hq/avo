@@ -33,7 +33,7 @@
           <% placeholder_configs.each do |config| %>
             <div style="text-align: center; padding: 1rem;">
               <div style="margin-bottom: 1rem;">
-                <%= render Avo::AvatarComponent.new(type: "placeholder", size: config[:size], shape: config[:shape]) %>
+                <%= render Avo::UI::AvatarComponent.new(type: "placeholder", size: config[:size], shape: config[:shape]) %>
               </div>
 
               <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>
@@ -52,7 +52,7 @@
           <% square_configs.each do |config| %>
             <div style="text-align: center; padding: 1rem;">
               <div style="margin-bottom: 1rem;">
-                <%= render Avo::AvatarComponent.new(type: "placeholder", size: config[:size], shape: config[:shape]) %>
+                <%= render Avo::UI::AvatarComponent.new(type: "placeholder", size: config[:size], shape: config[:shape]) %>
               </div>
 
               <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>
@@ -61,30 +61,30 @@
         </div>
       </section>
 
-      <!-- Initial Avatars - Color Spectrum -->
+      <!-- Initials Avatars - Color Spectrum -->
       <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
         <div style="text-align: center; margin-bottom: 2rem;">
           <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">🎨 Color Theme Spectrum</h2>
-          <p style="color: #666;">All available color themes for initial avatars</p>
+          <p style="color: #666;">All available color themes for initials avatars</p>
         </div>
 
         <div
           style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 2rem; margin-bottom: 2rem;"
         >
           <% theme_configs = [
-              { theme: "default", initial: "D", name: "Default" },
-              { theme: "orange", initial: "O", name: "Orange" },
-              { theme: "yellow", initial: "Y", name: "Yellow" },
-              { theme: "green", initial: "G", name: "Green" },
-              { theme: "teal", initial: "T", name: "Teal" },
-              { theme: "blue", initial: "B", name: "Blue" },
-              { theme: "purple", initial: "P", name: "Purple" }
+              { theme: "default", initials: "D", name: "Default" },
+              { theme: "orange", initials: "O", name: "Orange" },
+              { theme: "yellow", initials: "Y", name: "Yellow" },
+              { theme: "green", initials: "G", name: "Green" },
+              { theme: "teal", initials: "T", name: "Teal" },
+              { theme: "blue", initials: "B", name: "Blue" },
+              { theme: "purple", initials: "P", name: "Purple" }
             ] %>
 
           <% theme_configs.each do |config| %>
             <div style="text-align: center; padding: 1rem;">
               <div style="margin-bottom: 1rem;">
-                <%= render Avo::AvatarComponent.new(type: "initial", initial: config[:initial], theme: config[:theme]) %>
+                <%= render Avo::UI::AvatarComponent.new(type: "initials", initials: config[:initials], theme: config[:theme]) %>
               </div>
 
               <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:name] %></div>
@@ -97,7 +97,7 @@
       <section style="background: white; padding: 3rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
         <div style="text-align: center; margin-bottom: 2rem;">
           <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #333;">📐 Size Matrix</h2>
-          <p style="color: #666;">Initial avatars across all size variants</p>
+          <p style="color: #666;">Initials avatars across all size variants</p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem;">
@@ -111,7 +111,7 @@
           <% size_configs.each do |config| %>
             <div style="text-align: center; padding: 1rem;">
               <div style="margin-bottom: 1rem;">
-                <%= render Avo::AvatarComponent.new(type: "initial", initial: "A", size: config[:size], theme: "blue") %>
+                <%= render Avo::UI::AvatarComponent.new(type: "initials", initials: "A", size: config[:size], theme: "blue") %>
               </div>
 
               <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>
@@ -138,7 +138,7 @@
           <% photo_configs.each do |config| %>
             <div style="text-align: center; padding: 1rem;">
               <div style="margin-bottom: 1rem;">
-                <%= render Avo::AvatarComponent.new(
+                <%= render Avo::UI::AvatarComponent.new(
                   type: "avatar",
                   size: config[:size],
                   shape: "rounded",
@@ -165,8 +165,8 @@
             <h3 style="margin-bottom: 1.5rem; color: #333;">Rounded (Circular)</h3>
 
             <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
-              <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "rounded", size: "large") %>
-              <%= render Avo::AvatarComponent.new(type: "initial", initial: "R", shape: "rounded", size: "large", theme: "teal") %>
+              <%= render Avo::UI::AvatarComponent.new(type: "placeholder", shape: "rounded", size: "large") %>
+              <%= render Avo::UI::AvatarComponent.new(type: "initials", initials: "R", shape: "rounded", size: "large", theme: "teal") %>
             </div>
 
             <div style="font-size: 0.9rem; color: #666;">Perfect circles</div>
@@ -176,8 +176,8 @@
             <h3 style="margin-bottom: 1.5rem; color: #333;">Square (Rounded)</h3>
 
             <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
-              <%= render Avo::AvatarComponent.new(type: "placeholder", shape: "square", size: "large") %>
-              <%= render Avo::AvatarComponent.new(type: "initial", initial: "S", shape: "square", size: "large", theme: "blue") %>
+              <%= render Avo::UI::AvatarComponent.new(type: "placeholder", shape: "square", size: "large") %>
+              <%= render Avo::UI::AvatarComponent.new(type: "initials", initials: "S", shape: "square", size: "large", theme: "blue") %>
             </div>
 
             <div style="font-size: 0.9rem; color: #666;">Rounded rectangles</div>

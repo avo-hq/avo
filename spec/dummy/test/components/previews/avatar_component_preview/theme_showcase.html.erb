@@ -1,12 +1,12 @@
 <div style="padding: 2rem;">
   <div style="text-align: center; margin-bottom: 3rem;">
     <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem;">🎨 Theme Showcase</h2>
-    <p style="color: #666; margin-bottom: 1rem;">Explore all available color themes for initial avatars</p>
+    <p style="color: #666; margin-bottom: 1rem;">Explore all available color themes for initials avatars</p>
 
     <div
       style="display: inline-flex; gap: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px; font-size: 0.9rem;"
     >
-      <span><strong>Initial:</strong> "<%= user_initial %>"</span>
+      <span><strong>initials:</strong> "<%= user_initials %>"</span>
       <span><strong>Size:</strong> <%= avatar_size.capitalize %></span>
       <span><strong>Shape:</strong> <%= avatar_shape.capitalize %></span>
     </div>
@@ -32,9 +32,9 @@
         onmouseout="this.style.transform='translateY(0)'"
       >
         <div style="margin-bottom: 1rem;">
-          <%= render Avo::AvatarComponent.new(
-            type: "initial",
-            initial: user_initial,
+          <%= render Avo::UI::AvatarComponent.new(
+            type: "initials",
+            initials: user_initials,
             theme: theme[:key],
             size: avatar_size,
             shape: avatar_shape

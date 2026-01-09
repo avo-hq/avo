@@ -37,6 +37,9 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
 
   # self.find_record_method = -> { query.find Base64.decode64(id) }
 <% else %>
+  # self.avatar = {
+  #   source: :avatar
+  # }
   # self.includes = []
   # self.attachments = []<%= model_class_from_args %>
   # self.search = {
@@ -52,6 +55,7 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
     # field :display_name
   end<% else %>
   def fields
-    field :id, as: :id<%= generate_fields %>
+    field :id, as: :id
+    # field :avatar, as: :avatar<%= generate_fields %>
   end<% end %>
 end

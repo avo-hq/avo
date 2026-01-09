@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Avo::AvatarComponent, type: :component do
+RSpec.describe Avo::UI::AvatarComponent, type: :component do
   describe "rendering" do
     it "renders the placeholder avatar by default" do
       result = render_inline(described_class.new)
@@ -21,25 +21,25 @@ RSpec.describe Avo::AvatarComponent, type: :component do
 
       expect(result).to have_css(".cado-avatar--avatar")
       expect(result).to have_css(".cado-avatar__image")
-      expect(result).to have_css("img.cado-avatar__image[src='/test-image.jpg'][alt='Test User']")
+      expect(result).to have_css("img.cado-avatar__img[src='/test-image.jpg'][alt='Test User']")
       expect(result).not_to have_css(".cado-avatar__border")
     end
 
     it "renders initials" do
       result = render_inline(described_class.new(
-        type: "initial",
-        initial: "JD"
+        type: "initials",
+        initials: "JD"
       ))
 
-      expect(result).to have_css(".cado-avatar--initial")
-      expect(result).to have_css(".cado-avatar__initial", text: "J")
+      expect(result).to have_css(".cado-avatar--initials")
+      expect(result).to have_css(".cado-avatar__initials", text: "J")
       expect(result).to have_css(".cado-avatar__border")
     end
 
     it "applies themed colors without border" do
       result = render_inline(described_class.new(
-        type: "initial",
-        initial: "A",
+        type: "initials",
+        initials: "A",
         theme: "blue"
       ))
 
@@ -64,7 +64,7 @@ RSpec.describe Avo::AvatarComponent, type: :component do
     it "passes through global options" do
       result = render_inline(described_class.new(
         id: "my-avatar",
-        data: { testid: "avatar-component" }
+        data: {testid: "avatar-component"}
       ))
 
       expect(result).to have_css(".cado-avatar#my-avatar[data-testid='avatar-component']")
@@ -72,10 +72,10 @@ RSpec.describe Avo::AvatarComponent, type: :component do
   end
 
   describe "parameter validation" do
-    it "requires initials when type is initial" do
+    it "requires initials when type is initials" do
       expect do
-        described_class.new(type: "initial")
-      end.to raise_error(ArgumentError, "Initial is required when type is 'initial'")
+        described_class.new(type: "initials")
+      end.to raise_error(ArgumentError, "Initials is required when type is 'initials'")
     end
 
     it "requires src when type is avatar" do
@@ -92,21 +92,20 @@ RSpec.describe Avo::AvatarComponent, type: :component do
     end
   end
 
-  describe "#display_initial" do
+  describe "#display_initials" do
     it "returns the first character uppercased" do
-      component = described_class.new(type: "initial", initial: "John Doe")
-      expect(component.send(:display_initial)).to eq "J"
+      component = described_class.new(type: "initials", initials: "JD")
+      expect(component.send(:display_initials)).to eq "JD"
     end
 
     it "handles lowercase initials" do
-      component = described_class.new(type: "initial", initial: "john")
-      expect(component.send(:display_initial)).to eq "J"
+      component = described_class.new(type: "initials", initials: "J")
+      expect(component.send(:display_initials)).to eq "J"
     end
 
-    it "returns empty string when initial missing" do
+    it "returns empty string when initials missing" do
       component = described_class.new(type: "placeholder")
-      expect(component.send(:display_initial)).to eq ""
+      expect(component.send(:display_initials)).to eq ""
     end
   end
 end
-

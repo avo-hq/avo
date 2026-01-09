@@ -1,5 +1,6 @@
 class Avo::Resources::Project < Avo::BaseResource
   self.title = :name
+  self.description = "This is the app's projects"
 
   self.search = {
     query: -> {
