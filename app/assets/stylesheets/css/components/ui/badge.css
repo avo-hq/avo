@@ -14,7 +14,7 @@
   /* Typography */
   font-size: var(--text-xs, 12px);
 
-  background: color-mix(in oklab, var(--badge-bg), var(--color-neutral-primary) 85%);
+  background: color-mix(in oklab, var(--badge-bg), var(--color-primary) 85%);
   color: var(--badge-text);
 }
 
