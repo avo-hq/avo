@@ -8,7 +8,7 @@ export default class extends Controller {
     tippy(this.sourceTarget, {
       content: this.contentTarget.innerHTML,
       allowHTML: true,
-      theme: 'light',
+      theme: 'basic',
     })
   }
 }

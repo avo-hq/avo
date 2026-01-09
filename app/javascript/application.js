@@ -55,7 +55,7 @@ document.addEventListener('keyup', (event) => {
 
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
-    theme: 'light',
+    theme: 'basic',
     allowHTML: true,
     content(reference) {
       const title = reference.getAttribute('title')

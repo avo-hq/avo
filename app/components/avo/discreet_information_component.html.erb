@@ -4,7 +4,7 @@
   "discreet-information--as-text": as_text?,
   "discreet-information--as-badge": as_badge?,
   "discreet-information--as-key-value": as_key_value?
-), title: @title do %>
+), data: { tippy: (@title.present? ? :tooltip : nil) }, title: @title do %>
   <% if as_icon? %>
     <%= helpers.svg @icon, class: "discreet-information__icon" %>
   <% elsif as_text? %>
