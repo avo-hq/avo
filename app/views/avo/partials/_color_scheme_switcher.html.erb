@@ -13,10 +13,7 @@
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setTheme"
           data-theme="brand"
-          class="<%= class_names(
-            "color-scheme-switcher__button",
-            "color-scheme-switcher__button--active": current_theme == "brand"
-          ) %>"
+          class="color-scheme-switcher__button"
           title="Brand theme">
     <span class="color-scheme-switcher__text">Brand</span>
     <span class="sr-only">Brand</span>
@@ -25,10 +22,7 @@
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setTheme"
           data-theme="slate"
-          class="<%= class_names(
-            "color-scheme-switcher__button",
-            "color-scheme-switcher__button--active": current_theme == "slate"
-          ) %>"
+          class="color-scheme-switcher__button"
           title="Slate theme">
     <span class="color-scheme-switcher__text">Slate</span>
     <span class="sr-only">Slate</span>
@@ -37,10 +31,7 @@
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setTheme"
           data-theme="stone"
-          class="<%= class_names(
-            "color-scheme-switcher__button",
-            "color-scheme-switcher__button--active": current_theme == "stone"
-          ) %>"
+          class="color-scheme-switcher__button"
           title="Stone theme">
     <span class="color-scheme-switcher__text">Stone</span>
     <span class="sr-only">Stone</span>
@@ -49,10 +40,7 @@
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setScheme"
           data-scheme="auto"
-          class="<%= class_names(
-            "color-scheme-switcher__button",
-            "color-scheme-switcher__button--active": current_scheme == "auto"
-          ) %>"
+          class="color-scheme-switcher__button"
           title="Auto (system preference)">
     <%= svg "heroicons/outline/computer-desktop", class: "color-scheme-switcher__icon" %>
     <span class="sr-only">Auto</span>
@@ -61,10 +49,7 @@
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setScheme"
           data-scheme="light"
-          class="<%= class_names(
-            "color-scheme-switcher__button",
-            "color-scheme-switcher__button--active": current_scheme == "light"
-          ) %>"
+          class="color-scheme-switcher__button"
           title="Light mode">
     <%= svg "heroicons/outline/sun", class: "color-scheme-switcher__icon" %>
     <span class="sr-only">Light</span>
@@ -73,10 +58,7 @@
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setScheme"
           data-scheme="dark"
-          class="<%= class_names(
-            "color-scheme-switcher__button",
-            "color-scheme-switcher__button--active": current_scheme == "dark"
-          ) %>"
+          class="color-scheme-switcher__button"
           title="Dark mode">
     <%= svg "heroicons/outline/moon", class: "color-scheme-switcher__icon" %>
     <span class="sr-only">Dark</span>

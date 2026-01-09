@@ -18,7 +18,6 @@ export default class extends Controller {
     this.currentSchemeValue = cookieScheme || this.currentSchemeValue || 'auto'
     this.currentThemeValue = cookieTheme || this.currentThemeValue || 'brand'
 
-    this.updateActiveStates()
     this.applyScheme()
     this.applyTheme()
 
@@ -47,7 +46,6 @@ export default class extends Controller {
     this.currentSchemeValue = scheme
     this.saveScheme()
     this.applyScheme()
-    this.updateActiveStates()
   }
 
   setTheme(event) {
@@ -59,7 +57,6 @@ export default class extends Controller {
     this.currentThemeValue = theme
     this.saveTheme()
     this.applyTheme()
-    this.updateActiveStates()
   }
 
   saveScheme() {
@@ -117,12 +114,25 @@ export default class extends Controller {
 
   applyScheme() {
     const scheme = this.currentSchemeValue || 'auto'
-    const isDark = scheme === 'dark' || (scheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
 
-    if (isDark) {
-      document.documentElement.classList.add('dark')
-    } else {
+    // Remove all scheme selection classes
+    document.documentElement.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto')
+
+    if (scheme === 'light') {
+      document.documentElement.classList.add('scheme-light')
       document.documentElement.classList.remove('dark')
+    } else if (scheme === 'dark') {
+      document.documentElement.classList.add('scheme-dark')
+      document.documentElement.classList.add('dark')
+    } else if (scheme === 'auto') {
+      document.documentElement.classList.add('scheme-auto')
+      // Set dark class based on system preference
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      if (isDark) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
     }
   }
 
@@ -135,16 +145,5 @@ export default class extends Controller {
     if (theme !== 'brand') {
       document.documentElement.classList.add(`theme-${theme}`)
     }
-  }
-
-  updateActiveStates() {
-    this.buttonTargets.forEach((button) => {
-      const { scheme, theme } = button.dataset
-
-      const isActive = (scheme && scheme === this.currentSchemeValue)
-        || (theme && theme === this.currentThemeValue)
-
-      button.classList.toggle('color-scheme-switcher__button--active', isActive)
-    })
   }
 }

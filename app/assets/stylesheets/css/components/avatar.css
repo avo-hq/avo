@@ -45,10 +45,11 @@
   --text: var(--color-avo-neutral-600);
 
 
-  @apply bg-secondary border;
   background-color: color-mix(in oklab, var(--bg), var(--color-primary) 85%);
   border-color: color-mix(in oklab, var(--bg), var(--color-primary) 10%);
   color: var(--text);
+
+  @apply border;
 }
 
 .cado-avatar--initials.cado-avatar--orange {
