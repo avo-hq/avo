@@ -122,6 +122,11 @@ class AvatarComponentPreview < ViewComponent::Preview
 
   # @!group Standard Examples
 
+  # All variants showcase
+  def showcase
+    render_with_template(template: "avatar_component_preview/showcase")
+  end
+
   # Different sizes
   def sizes
     render_with_template(template: "avatar_component_preview/sizes")
@@ -135,11 +140,6 @@ class AvatarComponentPreview < ViewComponent::Preview
   # Different color themes for initials
   def themes
     render_with_template(template: "avatar_component_preview/themes")
-  end
-
-  # All variants showcase
-  def showcase
-    render_with_template(template: "avatar_component_preview/showcase")
   end
 
   # @!endgroup
