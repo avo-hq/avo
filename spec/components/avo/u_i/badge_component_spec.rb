@@ -22,7 +22,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
     it "renders badge with icon on the left" do
       render_inline(described_class.new(
         label: "With Icon",
-        icon: "avo/paperclip"
+        icon: "tabler/outline/paperclip"
       ))
 
       expect(page).to have_css(".badge__icon")
@@ -216,7 +216,7 @@ RSpec.describe Avo::UI::BadgeComponent, type: :component do
     it "handles icon without label" do
       render_inline(described_class.new(
         label: "",
-        icon: "avo/paperclip"
+        icon: "tabler/outline/paperclip"
       ))
 
       expect(page).to have_css("svg")

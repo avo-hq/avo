@@ -6,12 +6,12 @@ module UI
     # @param label text "Badge text"
     # @param color select { choices: [neutral, success, danger, warning, info, orange, yellow, green, teal, blue, purple] } "Badge color"
     # @param style select { choices: [subtle, solid] } "Badge style (solid = dark background with light text, available for all colors)"
-    # @param icon text "Icon name (e.g., avo/paperclip)"
+    # @param icon text "Icon name (e.g., tabler/outline/paperclip)"
     def playground(
       label: "Purple",
       color: "purple",
       style: "solid",
-      icon: "paperclip"
+      icon: "tabler/outline/paperclip"
     )
       render Avo::UI::BadgeComponent.new(
         label: label,
