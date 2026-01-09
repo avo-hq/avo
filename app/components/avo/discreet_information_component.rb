@@ -28,4 +28,12 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
   def as_key_value?
     @as == :key_value
   end
+
+  def wrapper_element(args = {}, &block)
+    if @url.present?
+      link_to @url, **args, target: @target, &block
+    else
+      tag.div(**args, &block)
+    end
+  end
 end
