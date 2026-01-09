@@ -108,7 +108,7 @@ RSpec.describe Avo::Fields::BadgeField, type: :model do
 
       it "falls back to badge_color_for_value which defaults to neutral" do
         allow(field).to receive(:execute_context).with(nil).and_return(nil)
-        expect(field.color).to eq("neutral") 
+        expect(field.color).to eq("neutral")
       end
     end
   end
