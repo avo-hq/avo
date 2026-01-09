@@ -8,9 +8,9 @@ class Avo::Resources::Post < Avo::BaseResource
   }
 
   self.includes = [:user, :comments]
-  self.attachments = [:cover_photo, :audio, :attachments]
+  self.attachments = [:cover, :audio, :attachments]
   self.single_includes = [:user, :reviews]
-  self.single_attachments = [:cover_photo, :audio, :attachments]
+  self.single_attachments = [:cover, :audio, :attachments]
   self.default_view_type = -> {
     mobile_user = request.user_agent =~ /Mobile/
 
@@ -64,8 +64,8 @@ class Avo::Resources::Post < Avo::BaseResource
       hide_attachment_url: true,
       hide_attachment_filename: true,
       hide_attachment_filesize: true
-    field :cover_photo, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*", stacked: true
-    field :cover_photo, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: -> { value.present? ? value&.url : nil }
+    field :cover, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*", stacked: true
+    field :cover, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: -> { value.present? ? value&.url : nil }
     field :audio, as: :file, is_audio: true, accept: "audio/*"
 
     field :is_featured, as: :boolean, visible: -> do
@@ -86,7 +86,7 @@ class Avo::Resources::Post < Avo::BaseResource
       # suggestions_max_items: 2,
       help: "The only allowed values here are `one`, `two`, and `three`"
 
-    field :cover_photo_attachment, as: :has_one
+    field :cover_attachment, as: :has_one
 
     field :comments, as: :has_many, use_resource: Avo::Resources::PhotoComment
   end
@@ -95,8 +95,8 @@ class Avo::Resources::Post < Avo::BaseResource
     card: -> do
       {
         cover_url:
-          if record.cover_photo.attached?
-            main_app.url_for(record.cover_photo)
+          if record.cover.attached?
+            main_app.url_for(record.cover)
           end,
         title: record.name,
         body: helpers.extract_excerpt(record.body) + "(Published: #{record.published_at.present? ? "✅" : "❌"})"

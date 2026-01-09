@@ -5,9 +5,7 @@
 ), data: { "item-index": @index }.compact_blank do %>
   <div class="header__main">
     <div class="header__content">
-      <% if profile_photo? %>
-        <div class="header__avatar"><%= profile_photo %></div>
-      <% elsif avatar? %>
+      <% if avatar? %>
         <div class="header__avatar"><%= avatar %></div>
       <% end %>
 

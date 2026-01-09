@@ -30,7 +30,7 @@
 
         avatar_configs = {
           'placeholder' => { type: 'placeholder' },
-          'initial' => { type: 'initial', initial: 'A', theme: 'blue' },
+          'initials' => { type: 'initials', initials: 'A', theme: 'blue' },
           'avatar' => {
             type: 'avatar',
             src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
@@ -47,7 +47,7 @@
             </div>
           <% end %>
 
-          <%= render Avo::AvatarComponent.new(
+          <%= render Avo::UI::AvatarComponent.new(
             **avatar_configs[avatar_type].merge(size: size_info[:key])
           ) %>
         </div>

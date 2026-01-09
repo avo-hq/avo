@@ -32,7 +32,7 @@
         onmouseover="this.style.transform='translateY(-2px)'"
         onmouseout="this.style.transform='translateY(0)'"
       >
-        <%= render Avo::AvatarComponent.new(
+        <%= render Avo::UI::AvatarComponent.new(
           type: "avatar",
           src: image_url,
           alt: "Custom Avatar #{index + 1}",

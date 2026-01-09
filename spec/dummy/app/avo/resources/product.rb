@@ -39,7 +39,7 @@ class Avo::Resources::Product < Avo::BaseResource
     },
     :timestamps
   ]
-  self.profile_photo = {
+  self.avatar = {
     source: -> { record.image.attached? ? main_app.url_for(record.image.variant(resize_to_fill: [300, 300])) : nil }
   }
 
