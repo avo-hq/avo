@@ -5,13 +5,11 @@ class Avo::UI::BadgeComponent < Avo::BaseComponent
   VALID_COLORS = %i[neutral success info warning danger red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze unless defined?(VALID_COLORS)
 
   prop :color do |value|
-    normalized_value = value.to_s.to_sym
-    VALID_COLORS.include?(normalized_value) ? normalized_value : :neutral
+    normalize_to_valid(value, VALID_COLORS, :neutral)
   end
 
-  prop :style do |value|
-    normalized_value = value.to_s.to_sym
-    VALID_STYLES.include?(normalized_value) ? normalized_value : :subtle
+  prop :style, default: :subtle do |value|
+    normalize_to_valid(value, VALID_STYLES, :subtle)
   end
 
   prop :label
@@ -24,5 +22,14 @@ class Avo::UI::BadgeComponent < Avo::BaseComponent
 
   def color_classes
     "badge--#{@color}" if @color.present?
+  end
+
+  private
+
+  def normalize_to_valid(value, valid_options, fallback)
+    return fallback if value.blank?
+
+    normalized = value.to_s.to_sym
+    valid_options.include?(normalized) ? normalized : fallback
   end
 end
