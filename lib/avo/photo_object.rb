@@ -26,8 +26,8 @@ class Avo::PhotoObject
     end
   end
 
-  def visible_on
-    @visible_on ||= Array.wrap(options[:visible_on] || [:show, :forms])
+  def visible
+    @visible ||= Array.wrap(options[:visible] || [:show, :forms])
   end
 
   def visible_in_current_view?
@@ -49,6 +49,6 @@ class Avo::PhotoObject
   private
 
   def visible_in_either?(*options)
-    options.intersection(visible_on).present?
+    options.intersection(visible).present?
   end
 end
