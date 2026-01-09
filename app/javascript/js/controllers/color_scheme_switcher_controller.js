@@ -4,19 +4,14 @@ import Cookies from 'js-cookie'
 export default class extends Controller {
   static targets = ['button']
 
-  static values = {
-    currentScheme: String,
-    currentTheme: String,
-  }
-
   connect() {
-    // Prioritize cookie values over server-side values (cookie is source of truth)
+    // Read from cookies (cookie is source of truth)
     const cookieScheme = Cookies.get('color_scheme')
     const cookieTheme = Cookies.get('theme')
 
-    // Use cookie value if it exists, otherwise fall back to server value or default
-    this.currentSchemeValue = cookieScheme || this.currentSchemeValue || 'auto'
-    this.currentThemeValue = cookieTheme || this.currentThemeValue || 'brand'
+    // Use cookie value if it exists, otherwise use default
+    this.currentSchemeValue = cookieScheme || 'auto'
+    this.currentThemeValue = cookieTheme || 'brand'
 
     this.applyScheme()
     this.applyTheme()
@@ -65,9 +60,6 @@ export default class extends Controller {
     } else {
       Cookies.set('color_scheme', this.currentSchemeValue)
     }
-
-    // Persist to server via AJAX
-    this.persistToServer('color_scheme', this.currentSchemeValue === 'auto' ? null : this.currentSchemeValue)
   }
 
   saveTheme() {
@@ -76,40 +68,6 @@ export default class extends Controller {
     } else {
       Cookies.set('theme', this.currentThemeValue)
     }
-
-    // Persist to server via AJAX
-    this.persistToServer('theme', this.currentThemeValue === 'brand' ? null : this.currentThemeValue)
-  }
-
-  persistToServer(type, value) {
-    const formData = new FormData()
-    if (type === 'color_scheme') {
-      formData.append('color_scheme', value || 'auto')
-    } else if (type === 'theme') {
-      formData.append('theme', value || 'brand')
-    }
-
-    // Get the current values to preserve the other setting
-    const currentScheme = Cookies.get('color_scheme') || 'auto'
-    const currentTheme = Cookies.get('theme') || 'brand'
-
-    if (type === 'color_scheme') {
-      formData.append('theme', currentTheme === 'brand' ? '' : currentTheme)
-    } else {
-      formData.append('color_scheme', currentScheme === 'auto' ? '' : currentScheme)
-    }
-
-    const path = this.element.dataset.path || '/avo/color_scheme'
-    fetch(path, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content || '',
-        Accept: 'text/vnd.turbo-stream.html',
-      },
-    }).catch(() => {
-      // Silently fail - cookies are already set
-    })
   }
 
   applyScheme() {

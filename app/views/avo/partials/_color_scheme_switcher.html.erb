@@ -1,14 +1,5 @@
-<%
-  current_scheme = @color_scheme || ""
-  current_scheme = "auto" if current_scheme.blank?
-  current_theme = @theme || ""
-  current_theme = "brand" if current_theme.blank?
-%>
 <div class="color-scheme-switcher"
-     data-controller="color-scheme-switcher"
-     data-color-scheme-switcher-current-scheme-value="<%= current_scheme %>"
-     data-color-scheme-switcher-current-theme-value="<%= current_theme %>"
-     data-path="<%= avo.color_scheme_path %>">
+     data-controller="color-scheme-switcher">
   <button type="button"
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setTheme"

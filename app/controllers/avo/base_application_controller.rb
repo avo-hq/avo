@@ -26,7 +26,6 @@ module Avo
     before_action :set_view
     before_action :set_sidebar_open
     before_action :set_stylesheet_assets_path
-    before_action :set_color_scheme
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -330,11 +329,6 @@ module Avo
         params[:raw_return_to] = params[:return_to]
         params[:return_to] = d(params[:return_to])
       end
-    end
-
-    def set_color_scheme
-      @color_scheme = cookies[:color_scheme] || ""
-      @theme = cookies[:theme] || ""
     end
   end
 end

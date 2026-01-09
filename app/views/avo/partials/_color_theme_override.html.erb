@@ -1,17 +1,39 @@
 <script>
-  // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-  if ('<%= @color_scheme %>' === 'dark' || ('<%= @color_scheme %>' == '' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
+  // On page load, apply color scheme and theme from cookies to avoid FOUC
+  (function() {
+    // Read cookies
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return null;
+    }
 
-  // Apply theme class
-  // Remove all theme- classes first
-  document.documentElement.classList.remove('theme-slate', 'theme-stone')
+    const colorScheme = getCookie('color_scheme') || 'auto';
+    const theme = getCookie('theme') || 'brand';
 
-  // Add the selected theme class (brand means no theme class)
-  <% if @theme.present? && @theme != 'brand' %>
-    document.documentElement.classList.add('theme-<%= @theme %>')
-  <% end %>
+    // Apply color scheme
+    const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Apply scheme selection classes
+    document.documentElement.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
+    if (colorScheme === 'light') {
+      document.documentElement.classList.add('scheme-light');
+    } else if (colorScheme === 'dark') {
+      document.documentElement.classList.add('scheme-dark');
+    } else {
+      document.documentElement.classList.add('scheme-auto');
+    }
+
+    // Apply theme class
+    document.documentElement.classList.remove('theme-slate', 'theme-stone');
+    if (theme && theme !== 'brand') {
+      document.documentElement.classList.add('theme-' + theme);
+    }
+  })();
 </script>
