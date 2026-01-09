@@ -7,9 +7,37 @@
 }
 
 .breadcrumbs__separator {
-  @apply text-neutral-500 flex items-center;
+  @apply text-content-secondary flex items-center;
 }
 
-.breadcrumbs__separator-icon {
-  @apply h-4 w-4 stroke-current;
+.breadcrumb-element {
+  @apply inline-flex items-center gap-2 font-medium leading-6 text-sm rounded-lg px-2 py-0.5 text-content-secondary;
+}
+
+.breadcrumb-element__icon {
+  @apply shrink-0 flex items-center size-4 text-content-secondary;
+}
+
+.breadcrumb-element__initials {
+  /* TODO: refresh the design tokens (border color, bg, text color) */
+  @apply shrink-0 flex items-center justify-center;
+}
+
+.breadcrumb-element__avatar {
+  @apply inline-flex items-center;
+
+}
+
+.breadcrumb-element__text {
+  @apply shrink-0 whitespace-nowrap text-content;
+}
+
+.breadcrumb-element--link {
+  .breadcrumb-element__text {
+    @apply text-content-secondary;
+  }
+
+  &:hover {
+    @apply bg-secondary;
+  }
 }

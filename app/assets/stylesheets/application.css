@@ -47,7 +47,10 @@
 @plugin '@tailwindcss/typography';
 
 /* Add dark mode variant */
+@custom-variant light (&:where(.light, .light *));
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant theme-slate (&:where(.theme-slate, .theme-slate *));
+@custom-variant theme-stone (&:where(.theme-stone, .theme-stone *));
 
 @custom-variant has-cover (&:where(.has-cover *));
 @custom-variant has-sidebar (&:where(.has-sidebar *));
@@ -101,13 +104,13 @@
 
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
-  @import "./css/components/breadcrumb_element.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
 
   html,
   body {
-    @apply antialiased relative h-full;
+    @apply antialiased relative h-full text-content;
+
   }
 
   .will-change-transform {

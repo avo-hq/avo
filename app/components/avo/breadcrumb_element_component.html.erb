@@ -14,14 +14,4 @@
   <% end %>
 
   <%= content_tag :span, @text, class: "breadcrumb-element__text" %>
-
-  <% if @separator.present? %>
-    <span class="breadcrumb-element__separator">
-      <% if @separator == ">" %>
-        <%= helpers.svg "chevron-right", class: "breadcrumb-element__separator-icon" %>
-      <% else %>
-        <%= @separator %>
-      <% end %>
-    </span>
-  <% end %>
 <% end %>
