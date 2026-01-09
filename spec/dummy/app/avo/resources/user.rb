@@ -40,7 +40,7 @@ class Avo::Resources::User < Avo::BaseResource
   }
 
   # self.cover = {
-  #   visible: :show,
+  #   visible_on: :show,
   #   source: -> {
   #     if record.present?
   #       record.avatar

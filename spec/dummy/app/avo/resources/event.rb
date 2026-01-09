@@ -5,7 +5,7 @@ class Avo::Resources::Event < Avo::BaseResource
 
   self.cover = {
     # size: :sm,
-    visible: [:show, :index],
+    visible_on: [:show, :index],
     source: -> {
       if record.present?
         record.cover
