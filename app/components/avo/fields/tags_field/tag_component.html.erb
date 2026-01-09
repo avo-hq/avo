@@ -1,5 +1,8 @@
 <%= tag.div class: "flex px-2 py-1 rounded-sm bg-gray-100 text-sm text-gray-800 font-normal shrink-0",
-  data: { target: "tag-component", tippy: :tooltip }.compact,
+  data: {
+    target: "tag-component",
+    tippy: (@title.present? ? "tooltip" : nil),
+  }.compact,
   title: @title do %>
   <%= @label %>
 <% end %>
