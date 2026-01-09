@@ -44,8 +44,6 @@ Avo::Engine.routes.draw do
     get "/status", to: "debug#status", as: "status"
   end
 
-  resource :color_scheme
-
   if Rails.env.development? || Rails.env.staging? || Rails.env.test?
     scope "/avo_private", as: "avo_private" do
       get "/design", to: "private#design"
