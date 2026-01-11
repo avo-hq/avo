@@ -89,4 +89,7 @@ module Avo
       end
     end
   end
+  # Host apps may configure `inflect.acronym "URL"`, which makes Zeitwerk fail
+  URLHelpers = UrlHelpers unless const_defined?(:URLHelpers, false)
+  UrlHelpers = URLHelpers unless const_defined?(:UrlHelpers, false)
 end
