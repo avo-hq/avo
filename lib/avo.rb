@@ -2,6 +2,7 @@ require "zeitwerk"
 require "net/http"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
+require_relative "avo/acronym_support" if defined?(Rails)
 
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
@@ -11,6 +12,7 @@ loader.inflector.inflect(
 )
 loader.ignore("#{__dir__}/generators")
 loader.setup
+Avo::AcronymSupport.apply!
 
 module Avo
   ROOT_PATH = Pathname.new(File.join(__dir__, ".."))
