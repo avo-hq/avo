@@ -13,7 +13,7 @@ class Avo::DiscreetInformation
         timestamp_item(item, as: :icon)
       elsif item == :timestamps_key_value
         timestamp_item(item, as: :key_value)
-      elsif item == :id
+      elsif item == :id_key_value
         id_item(item, as: :key_value)
       elsif item == :id_badge
         id_item(item, as: :badge)
@@ -25,7 +25,7 @@ class Avo::DiscreetInformation
 
   private
 
-  def id_item(item, as: :text)
+  def id_item(item, as: :key_value)
     text = record.id
     if as == :key_value
       key = "ID"
