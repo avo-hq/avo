@@ -137,13 +137,13 @@ RSpec.describe Avo::Fields::BadgeField, type: :model do
     [
       [
         "arrays",
-        { success: ["Done", :Complete], danger: ["Cancelled"], warning: ["On hold", "Pending"] },
-        ["Done", :Complete, "Cancelled", "On hold", "Pending"]
+        {success: ["Done", :Complete], danger: ["Cancelled"], warning: ["On hold", "Pending"], info: ["Discovery", "Idea"]},
+        ["Done", :Complete, "Cancelled", "On hold", "Pending", "Discovery", "Idea"]
       ],
       [
         "single values",
-        { success: :Done, danger: "Cancelled" },
-        [:Done, "Cancelled"]
+        {success: :Done, danger: "Cancelled", info: "Discovery"},
+        [:Done, "Cancelled", "Discovery"]
       ],
       [
         "empty hash",
