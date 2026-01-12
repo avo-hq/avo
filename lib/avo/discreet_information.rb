@@ -10,9 +10,11 @@ class Avo::DiscreetInformation
   def items
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
-        timestamp_item(item, as: :icon)
-      elsif item == :timestamps_key_value
-        timestamp_item(item, as: :key_value)
+        timestamps_item(item)
+      elsif item == :created_at
+        timestamp_item(item, key: :created_at)
+      elsif item == :updated_at
+        timestamp_item(item, key: :updated_at)
       elsif item == :id
         id_item
       else
@@ -31,7 +33,8 @@ class Avo::DiscreetInformation
     }
   end
 
-  def timestamp_item(item, as: :text)
+  def timestamps_item(item)
+    as = :icon
     return if record.created_at.blank? && record.updated_at.blank?
 
     time_format = "%Y-%m-%d %H:%M:%S"
@@ -45,38 +48,31 @@ class Avo::DiscreetInformation
     updated_at_tag = if record.updated_at.present?
       I18n.t("avo.updated_at_timestamp", updated_at:)
     end
+    {
+      title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
+      icon: "heroicons/outline/clock",
+      as:
+    }
+  end
 
-    if as == :key_value
-      # Older versions of rails don't have the relative_time_in_words helper
-      if defined?(relative_time_in_words)
-        created_at_text = relative_time_in_words(record.created_at)
-        updated_at_text = relative_time_in_words(record.updated_at)
-      else
-        created_at_text = created_at
-        updated_at_text = updated_at
-      end
+  def timestamp_item(item, key: nil)
+    return if record.created_at.blank? && record.updated_at.blank?
 
-      [
-        {
-          text: created_at_text,
-          key: I18n.t("avo.created_at"),
-          as: :key_value,
-          title: created_at
-        },
-        {
-          text: updated_at_text,
-          key: I18n.t("avo.updated_at"),
-          as: :key_value,
-          title: updated_at
-        }
-      ]
-    elsif as == :icon
-      {
-        title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
-        icon: "heroicons/outline/clock",
-        as:
-      }
+    time_format = "%Y-%m-%d %H:%M:%S"
+    timestamp = record[key].strftime(time_format)
+
+    # Older versions of rails don't have the relative_time_in_words helper
+    text = if defined?(relative_time_in_words)
+      relative_time_in_words(record[key])
+    else
+      timestamp
     end
+
+    {
+      text: text,
+      key: I18n.t("avo.created_at"),
+      as: :key_value,
+    }
   end
 
   def parse_payload(item)

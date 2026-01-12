@@ -16,7 +16,8 @@ class Avo::Resources::Project < Avo::BaseResource
   self.discreet_information = [
     :id,
     :timestamps,
-    :timestamps_key_value,
+    :created_at,
+    :updated_at,
     {
       text: "label",
       as: :badge,
