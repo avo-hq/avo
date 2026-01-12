@@ -11,7 +11,7 @@
 
   /* Base Item */
   .tabs__item {
-    @apply inline-flex items-center;
+    @apply inline-flex items-center mx-1;
     padding: var(--spacing-1, 4px) var(--spacing-3, 12px);
     gap: 8px;
     border-radius: var(--radius-md, 6px) !important;
@@ -55,11 +55,6 @@
   /* ============================================
      GROUP VARIANT
      ============================================ */
-
-  .tabs--group {
-    @apply gap-1;
-  }
-
   .tabs__item--group {
     border-radius: var(--radius-md, 6px);
   }
