@@ -56,8 +56,8 @@ class Avo::DiscreetInformation
     if as == :key_value
       # Older versions of rails don't have the relative_time_in_words helper
       if defined?(relative_time_in_words)
-        created_at_text = relative_time_in_words(created_at)
-        updated_at_text = relative_time_in_words(updated_at)
+        created_at_text = relative_time_in_words(record.created_at)
+        updated_at_text = relative_time_in_words(record.updated_at)
       else
         created_at_text = created_at
         updated_at_text = updated_at
