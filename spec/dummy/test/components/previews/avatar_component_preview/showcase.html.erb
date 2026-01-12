@@ -43,16 +43,16 @@
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 2rem;">
           <% square_configs = [
-              { size: "large", shape: "square", label: "Large Square" },
-              { size: "medium", shape: "square", label: "Medium Square" },
-              { size: "small", shape: "square", label: "Small Square" },
-              { size: "tiny", shape: "square", label: "Tiny Square" }
+              { size: "large", shape: "square", label: "Large Square", initials: "AM", type: "initials" },
+              { size: "medium", shape: "square", label: "Medium Square", initials: "AM", type: "initials" },
+              { size: "small", shape: "square", label: "Small Square", initials: "AM", type: "initials" },
+              { size: "tiny", shape: "square", label: "Tiny Square", initials: "AM", type: "initials" }
             ] %>
 
           <% square_configs.each do |config| %>
             <div style="text-align: center; padding: 1rem;">
               <div style="margin-bottom: 1rem;">
-                <%= render Avo::UI::AvatarComponent.new(type: "placeholder", size: config[:size], shape: config[:shape]) %>
+                <%= render Avo::UI::AvatarComponent.new(type: config[:type], size: config[:size], shape: config[:shape], initials: config[:initials]) %>
               </div>
 
               <div style="font-size: 0.9rem; font-weight: 500; color: #333;"><%= config[:label] %></div>

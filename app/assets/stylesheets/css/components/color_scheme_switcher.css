@@ -5,12 +5,66 @@
 
 .color-scheme-switcher__button {
   @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
+  @apply border-0 bg-transparent cursor-pointer;
 }
 
-.color-scheme-switcher__button--active {
+/* Theme buttons - active states using Tailwind variants */
+.color-scheme-switcher__button[data-theme="brand"] {
+  /* Active by default (when no theme class is present) */
+  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+  /* Inactive when theme variants are active */
+  @apply theme-slate:bg-transparent theme-slate:text-neutral-600 theme-slate:dark:text-neutral-400 theme-slate:shadow-none;
+  @apply theme-stone:bg-transparent theme-stone:text-neutral-600 theme-stone:dark:text-neutral-400 theme-stone:shadow-none;
+}
+
+.color-scheme-switcher__button[data-theme="slate"] {
+  /* Inactive by default, active when theme-slate variant is present */
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-slate:bg-white theme-slate:dark:bg-neutral-700 theme-slate:text-primary-600 theme-slate:dark:text-primary-400 theme-slate:shadow-sm;
+}
+
+.color-scheme-switcher__button[data-theme="stone"] {
+  /* Inactive by default, active when theme-stone variant is present */
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-stone:bg-white theme-stone:dark:bg-neutral-700 theme-stone:text-primary-600 theme-stone:dark:text-primary-400 theme-stone:shadow-sm;
+}
+
+/* Scheme buttons - active states using scheme selection classes */
+.color-scheme-switcher__button[data-scheme="light"] {
+  /* Inactive by default */
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+}
+
+/* Active when scheme-light class is present */
+.scheme-light .color-scheme-switcher__button[data-scheme="light"] {
+  @apply bg-white text-primary-600 shadow-sm;
+  @apply dark:bg-transparent dark:text-neutral-400 dark:shadow-none;
+}
+
+.color-scheme-switcher__button[data-scheme="dark"] {
+  /* Inactive by default */
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+}
+
+/* Active when scheme-dark class is present */
+.scheme-dark .color-scheme-switcher__button[data-scheme="dark"] {
+  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+}
+
+.color-scheme-switcher__button[data-scheme="auto"] {
+  /* Inactive by default */
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+}
+
+/* Active when scheme-auto class is present */
+.scheme-auto .color-scheme-switcher__button[data-scheme="auto"] {
   @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
 }
 
 .color-scheme-switcher__icon {
   @apply size-4;
+}
+
+.color-scheme-switcher__text {
+  @apply text-xs font-medium px-1;
 }

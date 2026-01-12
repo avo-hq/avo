@@ -9,6 +9,7 @@ import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardFiltersController from './controllers/card_filters_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
+import ColorSchemeSwitcherController from './controllers/color_scheme_switcher_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
@@ -62,6 +63,7 @@ application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('card-filters', CardFiltersController)
 application.register('clear-input', ClearInputController)
+application.register('color-scheme-switcher', ColorSchemeSwitcherController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)

@@ -17,6 +17,8 @@ RSpec.feature "ArrayResource", type: :system do
       expect(page).to have_text("John Doe")
       expect(page).to have_text("Ethan Williams")
 
+      all('button[data-action="alert#close"]').each(&:click)
+
       within("nav.pagy.nav") do
         click_link("2")
       end

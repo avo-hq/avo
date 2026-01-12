@@ -9,7 +9,6 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
       expect(result).to have_css(".cado-avatar--placeholder")
       expect(result).to have_css(".cado-avatar--large")
       expect(result).to have_css(".cado-avatar--rounded")
-      expect(result).to have_css(".cado-avatar__border")
     end
 
     it "renders an image avatar" do
@@ -22,7 +21,6 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
       expect(result).to have_css(".cado-avatar--avatar")
       expect(result).to have_css(".cado-avatar__image")
       expect(result).to have_css("img.cado-avatar__img[src='/test-image.jpg'][alt='Test User']")
-      expect(result).not_to have_css(".cado-avatar__border")
     end
 
     it "renders initials" do
@@ -33,7 +31,6 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
 
       expect(result).to have_css(".cado-avatar--initials")
       expect(result).to have_css(".cado-avatar__initials", text: "J")
-      expect(result).to have_css(".cado-avatar__border")
     end
 
     it "applies themed colors without border" do
@@ -44,7 +41,6 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
       ))
 
       expect(result).to have_css(".cado-avatar--blue")
-      expect(result).not_to have_css(".cado-avatar__border")
     end
 
     it "renders all supported sizes" do

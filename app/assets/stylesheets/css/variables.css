@@ -1,16 +1,18 @@
 @theme {
-  --color-neutral-25: oklch(98.51% 0.0000 89.88);
-  --color-neutral-50: oklch(97.31% 0.0000 89.88);
-  --color-neutral-100: oklch(92.80% 0.0000 89.88);
-  --color-neutral-200: oklch(86.07% 0.0000 89.88);
-  --color-neutral-300: oklch(75.72% 0.0000 89.88);
-  --color-neutral-400: oklch(62.68% 0.0000 89.88);
-  --color-neutral-500: oklch(53.48% 0.0000 89.88);
-  --color-neutral-600: oklch(47.84% 0.0000 89.88);
-  --color-neutral-700: oklch(42.76% 0.0000 89.88);
-  --color-neutral-800: oklch(39.04% 0.0000 89.88);
-  --color-neutral-900: oklch(27.68% 0.0000 89.88);
-  --color-neutral-950: oklch(20.46% 0.0000 89.88);
+  --main-content-wrapper-background: var(--color-white);
+
+  --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
+  --color-avo-neutral-50: oklch(97.31% 0.0000 89.88);
+  --color-avo-neutral-100: oklch(92.80% 0.0000 89.88);
+  --color-avo-neutral-200: oklch(86.07% 0.0000 89.88);
+  --color-avo-neutral-300: oklch(75.72% 0.0000 89.88);
+  --color-avo-neutral-400: oklch(62.68% 0.0000 89.88);
+  --color-avo-neutral-500: oklch(53.48% 0.0000 89.88);
+  --color-avo-neutral-600: oklch(47.84% 0.0000 89.88);
+  --color-avo-neutral-700: oklch(42.76% 0.0000 89.88);
+  --color-avo-neutral-800: oklch(39.04% 0.0000 89.88);
+  --color-avo-neutral-900: oklch(27.68% 0.0000 89.88);
+  --color-avo-neutral-950: oklch(20.46% 0.0000 89.88);
 
   /* semantic - Mode 1 */
   --color-success: var(--color-green-500);
@@ -25,33 +27,62 @@
   --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
 
   /* foundations - Light Mode */
-  --color-background: var(--color-neutral-25);
-  --color-foreground: var(--color-neutral-800);
-  --color-neutral-primary: var(--color-white);
-  --color-neutral-secondary: var(--color-neutral-50);
-  --color-neutral-tertiary: var(--color-neutral-100);
-  --color-neutral-content: var(--color-neutral-950);
-  --color-neutral-content-secondary: var(--color-neutral-500);
+  --color-background: var(--color-avo-neutral-25);
+  --color-foreground: var(--color-avo-neutral-800);
+  --color-primary: var(--color-white);
+  --color-secondary: var(--color-avo-neutral-50);
+  --color-tertiary: var(--color-avo-neutral-100);
+  --color-content: var(--color-avo-neutral-950);
+  --color-content-secondary: var(--color-avo-neutral-500);
 
   /* themes - Neutral Light */
-  --color-accent: var(--color-neutral-800);
-  --color-accent-content: var(--color-neutral-950);
+  --color-accent: var(--color-avo-neutral-800);
+  --color-accent-content: var(--color-avo-neutral-950);
   --color-accent-foreground: var(--color-white);
 }
 
 /* Dark theme */
 .dark {
   /* foundations - Dark Mode */
-  --color-background: var(--color-neutral-900);
-  --color-foreground: var(--color-neutral-50);
-  --color-neutral-primary: var(--color-neutral-950);
-  --color-neutral-secondary: var(--color-neutral-800);
-  --color-neutral-tertiary: var(--color-neutral-700);
-  --color-neutral-content: var(--color-white);
-  --color-neutral-content-secondary: var(--color-neutral-300);
+  --color-background: var(--color-avo-neutral-900);
+  --color-foreground: var(--color-avo-neutral-50);
+  --color-primary: var(--color-avo-neutral-950);
+  --color-secondary: var(--color-avo-neutral-800);
+  --color-tertiary: var(--color-avo-neutral-700);
+  --color-content: var(--color-white);
+  --color-content-secondary: var(--color-avo-neutral-300);
 
   /* themes - Neutral Dark */
-  --color-accent: var(--color-neutral-50);
-  --color-accent-content: var(--color-neutral-100);
-  --color-accent-foreground: var(--color-neutral-950);
+  --color-accent: var(--color-avo-neutral-50);
+  --color-accent-content: var(--color-avo-neutral-100);
+  --color-accent-foreground: var(--color-avo-neutral-950);
+}
+
+.theme-slate {
+  --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
+  --color-avo-neutral-50: var(--color-slate-50);
+  --color-avo-neutral-100: var(--color-slate-100);
+  --color-avo-neutral-200: var(--color-slate-200);
+  --color-avo-neutral-300: var(--color-slate-300);
+  --color-avo-neutral-400: var(--color-slate-400);
+  --color-avo-neutral-500: var(--color-slate-500);
+  --color-avo-neutral-600: var(--color-slate-600);
+  --color-avo-neutral-700: var(--color-slate-700);
+  --color-avo-neutral-800: var(--color-slate-800);
+  --color-avo-neutral-900: var(--color-slate-900);
+  --color-avo-neutral-950: var(--color-slate-950);
+}
+.theme-stone {
+  --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
+  --color-avo-neutral-50: var(--color-stone-50);
+  --color-avo-neutral-100: var(--color-stone-100);
+  --color-avo-neutral-200: var(--color-stone-200);
+  --color-avo-neutral-300: var(--color-stone-300);
+  --color-avo-neutral-400: var(--color-stone-400);
+  --color-avo-neutral-500: var(--color-stone-500);
+  --color-avo-neutral-600: var(--color-stone-600);
+  --color-avo-neutral-700: var(--color-stone-700);
+  --color-avo-neutral-800: var(--color-stone-800);
+  --color-avo-neutral-900: var(--color-stone-900);
+  --color-avo-neutral-950: var(--color-stone-950);
 }
