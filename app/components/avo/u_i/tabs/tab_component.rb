@@ -22,7 +22,6 @@ module Avo
 
         def before_render
           @data = @data.deep_dup
-          @data[:tab_active_class] ||= ACTIVE_CLASS
         end
 
         def link?
@@ -47,23 +46,28 @@ module Avo
         end
 
         def tab_content
-          safe_join([render_icon, label_span].compact)
+          safe_join([render_icon, render_label].compact)
+        end
+
+        def render_label
+          tag.span(@label, class: "tabs__item-label")
+        end
+
+        def render_icon
+          return if @icon.blank?
+
+          svg @icon, class: "tabs__item-icon", "aria-hidden": "true"
         end
 
         def wrapper_classes
-          base = "tabs__item-wrapper tabs__item-wrapper--#{@variant}"
-          # Scope variant needs active class on wrapper for underline CSS
-          active_class = (scope? && @active) ? ACTIVE_CLASS : nil
-          [base, active_class].compact.join(" ")
+          class_names(
+            "tabs__item-wrapper",
+            "tabs__item-wrapper--#{@variant}",
+            (ACTIVE_CLASS if scope? && @active)
+          )
         end
 
         private
-
-        def render_icon
-          return unless @icon.present?
-
-          helpers.svg @icon, class: "tabs__item-icon", "aria-hidden": "true"
-        end
 
         def scope?
           @variant == :scope
@@ -89,17 +93,13 @@ module Avo
         end
 
         def element_classes
-          [
+          class_names(
             "tabs__item",
-            "tabs__item--#{@variant}",
+            ("tabs__item--group" if @variant == :group),
             (ACTIVE_CLASS if @active),
             ("tabs__item--disabled" if @disabled),
             @classes
-          ].compact.join(" ")
-        end
-
-        def label_span
-          content_tag(:span, @label, class: "tabs__item-label")
+          )
         end
       end
     end

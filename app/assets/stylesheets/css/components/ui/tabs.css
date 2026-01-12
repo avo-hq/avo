@@ -11,40 +11,34 @@
 
   /* Base Item */
   .tabs__item {
-    @apply inline-flex items-center mx-1;
-    padding: var(--spacing-1, 4px) var(--spacing-3, 12px);
-    gap: 8px;
-    border-radius: var(--radius-md, 6px) !important;
-    color: var(--color-neutral-content, #171717);
-    background-color: transparent;
-    cursor: pointer;
+    @apply inline-flex items-center mx-1 px-3 py-1 cursor-pointer text-sm font-medium leading-4 bg-transparent gap-2 rounded-md;
+    color: var(--color-content);
     font-family: var(--font-sans);
-    font-size: var(--text-sm, 14px);
-    font-style: normal;
-    font-weight: 500;
-    line-height: 20px;
   }
 
   /* Item Sub-elements */
   .tabs__item-icon {
-    width: 16px;
-    height: 16px;
-    color: inherit;
+    @apply size-4;
+    color: var(--color-content);
   }
 
   .tabs__item-label {
     @apply whitespace-nowrap;
   }
 
-  /* Item States */
+  /* Item States - Shared */
   .tabs__item--disabled {
     @apply opacity-50 cursor-not-allowed;
   }
 
+  .tabs__item:hover:not(.tabs__item--disabled) {
+    background: var(--color-secondary);
+  }
+
   .tabs__item:focus-visible {
     outline: none;
-    background: var(--color-neutral-primary, #FFF);
-    box-shadow: 0 0 0 2px var(--color-neutral-primary, #FFF), 0 0 0 4px var(--color-neutral-content, #171717);
+    background: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary), 0 0 0 4px var(--color-content);
   }
 
   /* Wrapper */
@@ -55,16 +49,8 @@
   /* ============================================
      GROUP VARIANT
      ============================================ */
-  .tabs__item--group {
-    border-radius: var(--radius-md, 6px);
-  }
-
-  .tabs__item--group:hover:not(.tabs__item--disabled) {
-    background: var(--color-neutral-secondary-50, rgba(246, 246, 246, 0.50));
-  }
-
   .tabs__item--group.tabs__item--active {
-    background: var(--color-neutral-secondary, #F6F6F6);
+    background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
   }
 
   .tabs__item-wrapper--group {
@@ -74,24 +60,13 @@
   /* ============================================
      SCOPE VARIANT
      ============================================ */
-
-  .tabs__item--scope {
-    @apply rounded-none;
-  }
-
-  .tabs__item--scope:hover:not(.tabs__item--disabled) {
-    background: var(--color-neutral-secondary, #F6F6F6);
-  }
-
-  .tabs__item--scope.tabs__item--active {
-    border-color: var(--color-accent, #171717);
-  }
-
   .tabs__item-wrapper--scope {
-    border-bottom: var(--border-border, 1px) solid var(--color-neutral-tertiary, #E7E7E7);
+    @apply border-b-1;
+    border-color: var(--color-tertiary);
   }
 
   .tabs__item-wrapper--scope.tabs__item--active {
-    border-bottom: var(--border-2, 2px) solid var(--color-accent, #454545);
+    @apply border-b-2;
+    border-color: var(--color-accent);
   }
 }

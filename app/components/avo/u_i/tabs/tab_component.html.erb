@@ -1,7 +1,7 @@
 <div class="<%= wrapper_classes %>">
-  <% if link? %>
-    <%= link_to tab_content, @href, shared_attributes %>
-  <% else %>
-    <%= content_tag :button, tab_content, button_attributes %>
-  <% end %>
+  <%= if link?
+        link_to(tab_content, @href, shared_attributes)
+      else
+        content_tag(:button, tab_content, button_attributes)
+      end %>
 </div>

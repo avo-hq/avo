@@ -8,10 +8,6 @@ module Avo
         prop :aria_label
         prop :id
 
-        def classes
-          "tabs tabs--#{@variant}"
-        end
-
         def tablist_id
           @id || "tabs-#{object_id}"
         end
