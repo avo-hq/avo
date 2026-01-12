@@ -13,7 +13,7 @@ class Avo::DiscreetInformation
         timestamp_item(item, as: :icon)
       elsif item == :timestamps_key_value
         timestamp_item(item, as: :key_value)
-      elsif item == :id_key_value
+      elsif item == :id
         id_item
       else
         parse_payload(item)
