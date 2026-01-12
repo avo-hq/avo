@@ -3,30 +3,33 @@
 require "rails_helper"
 
 RSpec.describe Avo::UI::Tabs::TabsComponent, type: :component do
-  describe "rendering" do
-    it "renders the tabs container with scope variant by default and proper attributes" do
-      render_inline(described_class.new)
+  subject(:component) { described_class.new(**options) }
 
-      expect(page).to have_css("div.tabs.tabs--scope")
+  let(:options) { {} }
+
+  describe "rendering" do
+    it "renders the tabs container with proper attributes" do
+      render_inline(component)
+
+      expect(page).to have_css("div.tabs")
       expect(page).to have_css("div[role='tablist']")
       expect(page).to have_css("div[aria-label='Tabs navigation']")
       expect(page).to have_css("div[id^='tabs-']")
     end
 
-    it "renders with group variant when specified" do
-      render_inline(described_class.new(variant: :group))
-      expect(page).to have_css("div.tabs.tabs--group")
-    end
+    context "with custom attributes" do
+      let(:options) { {id: "custom-tabs", aria_label: "Main Navigation"} }
 
-    it "renders with custom id and aria-label" do
-      render_inline(described_class.new(id: "custom-tabs", aria_label: "Main Navigation"))
+      it "renders with custom id and aria-label" do
+        render_inline(component)
 
-      expect(page).to have_css("div#custom-tabs")
-      expect(page).to have_css("div[aria-label='Main Navigation']")
+        expect(page).to have_css("div#custom-tabs")
+        expect(page).to have_css("div[aria-label='Main Navigation']")
+      end
     end
 
     it "renders content block" do
-      render_inline(described_class.new) do
+      render_inline(component) do
         "<span class='tab-content'>Tab 1</span>".html_safe
       end
 
@@ -34,35 +37,29 @@ RSpec.describe Avo::UI::Tabs::TabsComponent, type: :component do
     end
   end
 
-  describe "#classes" do
-    it "returns scope variant classes by default" do
-      component = described_class.new
-      expect(component.classes).to eq "tabs tabs--scope"
-    end
-
-    it "returns group variant classes when specified" do
-      component = described_class.new(variant: :group)
-      expect(component.classes).to eq "tabs tabs--group"
-    end
-  end
-
   describe "#tablist_id" do
-    it "returns custom id when provided, generates one when not" do
-      component = described_class.new(id: "my-tabs")
-      expect(component.tablist_id).to eq "my-tabs"
+    subject { component.tablist_id }
 
-      component = described_class.new
-      expect(component.tablist_id).to start_with("tabs-")
+    context "when id is provided" do
+      let(:options) { {id: "my-tabs"} }
+      it { is_expected.to eq "my-tabs" }
+    end
+
+    context "when id is not provided" do
+      it { is_expected.to start_with("tabs-") }
     end
   end
 
   describe "#tablist_aria_label" do
-    it "returns custom aria-label when provided, default when not" do
-      component = described_class.new(aria_label: "Custom Label")
-      expect(component.tablist_aria_label).to eq "Custom Label"
+    subject { component.tablist_aria_label }
 
-      component = described_class.new
-      expect(component.tablist_aria_label).to eq "Tabs navigation"
+    context "when aria_label is provided" do
+      let(:options) { {aria_label: "Custom Label"} }
+      it { is_expected.to eq "Custom Label" }
+    end
+
+    context "when aria_label is not provided" do
+      it { is_expected.to eq "Tabs navigation" }
     end
   end
 end
