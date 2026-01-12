@@ -29,7 +29,7 @@ pt:
     confirm: Confirmar
     copy: Copiar
     create_new_item: Criar novo %{item}
-    created_at: Created at
+    created_at: Criado em
     created_at_timestamp: Criado em %{created_at}
     dashboard: Painel
     dashboards: Painéis
@@ -137,7 +137,7 @@ pt:
     type_to_search: Escreva para pesquisar.
     unauthorized: Não autorizado
     undo: desfazer
-    updated_at: Updated at
+    updated_at: Atualizado em
     updated_at_timestamp: Atualizado em %{updated_at}
     view: Ver
     view_item: ver %{item}

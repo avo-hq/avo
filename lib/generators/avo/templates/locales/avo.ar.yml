@@ -33,7 +33,7 @@ ar:
     confirm: تأكيد
     copy: نسخ
     create_new_item: إنشاء %{item} جديد
-    created_at: Created at
+    created_at: تم الإنشاء في
     created_at_timestamp: تم الإنشاء في %{created_at}
     dashboard: لوحة القيادة
     dashboards: لوحات القيادة
@@ -145,7 +145,7 @@ ar:
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
-    updated_at: Updated at
+    updated_at: تم التحديث في
     updated_at_timestamp: تم التحديث في %{updated_at}
     view: عرض
     view_item: عرض %{item}

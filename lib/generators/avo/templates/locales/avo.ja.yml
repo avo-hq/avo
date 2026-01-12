@@ -29,7 +29,7 @@ ja:
     confirm: 確認
     copy: コピー
     create_new_item: 新しい%{item}を作成
-    created_at: Created at
+    created_at: 作成日時
     created_at_timestamp: "%{created_at}で作成"
     dashboard: ダッシュボード
     dashboards: ダッシュボード
@@ -137,7 +137,7 @@ ja:
     type_to_search: 検索する内容を入力してください。
     unauthorized: 許可されていません
     undo: 元に戻す
-    updated_at: Updated at
+    updated_at: 更新日時
     updated_at_timestamp: "%{updated_at}で更新"
     view: ビュー
     view_item: "%{item}を表示"
