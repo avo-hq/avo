@@ -13,11 +13,11 @@ RSpec.describe Avo::Fields::BadgeField, type: :model do
     field.instance_variable_set(:@options, options_hash)
   end
 
-  describe "#badge_color_for_value" do
+  describe "#color" do
     context "when value is blank" do
       it "returns neutral" do
         stub_field_value(nil)
-        expect(field.badge_color_for_value).to eq("neutral")
+        expect(field.color).to eq("neutral")
       end
     end
 
@@ -40,7 +40,7 @@ RSpec.describe Avo::Fields::BadgeField, type: :model do
       ].each do |value, expected_color|
         it "returns #{expected_color} for '#{value}'" do
           stub_field_value(value)
-          expect(field.badge_color_for_value).to eq(expected_color)
+          expect(field.color).to eq(expected_color)
         end
       end
     end
@@ -55,7 +55,7 @@ RSpec.describe Avo::Fields::BadgeField, type: :model do
 
       it "returns neutral for unknown value" do
         stub_field_value("unknown")
-        expect(field.badge_color_for_value).to eq("neutral")
+        expect(field.color).to eq("neutral")
       end
     end
 
@@ -63,16 +63,16 @@ RSpec.describe Avo::Fields::BadgeField, type: :model do
       it "returns neutral for any value" do
         set_options({})
         stub_field_value("any_value")
-        expect(field.badge_color_for_value).to eq("neutral")
+        expect(field.color).to eq("neutral")
       end
     end
   end
 
   describe "#color" do
-    it "delegates to badge_color_for_value" do
+    it "delegates to color" do
       set_options({success: ["Done"]})
       stub_field_value("Done")
-      expect(field.color).to eq(field.badge_color_for_value)
+      expect(field.color).to eq(field.color)
     end
   end
 
