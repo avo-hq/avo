@@ -32,7 +32,6 @@ class Avo::Resources::Project < Avo::BaseResource
       title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
       icon: -> { "tabler/outline/external-link" },
       url: -> { main_app.root_url },
-      # target: :_blank,
       visible: true
     },
     {
