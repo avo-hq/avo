@@ -76,21 +76,12 @@ class Avo::Resources::Project < Avo::BaseResource
     field :stage,
       as: :badge,
       options: {
-        info: ["Discovery", "Idea"],
+        info: ["Discovery"],
         success: :Done,
         warning: "On hold",
         danger: "Cancelled",
+        violet: "Idea",
         neutral: :Drafting
-      },
-      color: -> {
-        {
-          "Discovery" => "green",
-          "Idea" => "blue",
-          "Drafting" => "purple",
-          "Done" => "green",
-          "On hold" => "orange",
-          "Cancelled" => "orange"
-        }[record.stage]
       },
       style: -> { ["Done", "Cancelled"].include?(record.stage) ? "solid" : "subtle" },
       # style: :solid,

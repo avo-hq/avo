@@ -47,7 +47,7 @@ RSpec.describe "BadgeField", type: :feature do
 
       it "renders a badge with correct classes" do
         expect(subject).to have_text "Discovery"
-        expect(subject).to have_css ".badge.badge--subtle.badge--green.min-w-24"
+        expect(subject).to have_css ".badge.badge--subtle.badge--info.min-w-24"
         expect(subject).not_to have_css ".badge--danger"
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe "BadgeField", type: :feature do
 
       it "renders a badge with correct classes" do
         expect(subject).to have_text "Discovery"
-        expect(subject).to have_css ".badge.badge--subtle.badge--green"
+        expect(subject).to have_css ".badge.badge--subtle.badge--info"
         expect(subject).not_to have_css ".badge--danger.min-w-24"
       end
     end
@@ -76,7 +76,7 @@ RSpec.describe "BadgeField", type: :feature do
 
       it "renders a badge with correct classes" do
         expect(subject).to have_text "Cancelled"
-        expect(subject).to have_css ".badge.badge--solid.badge--orange.min-w-24"
+        expect(subject).to have_css ".badge.badge--solid.badge--danger.min-w-24"
       end
     end
 
@@ -85,13 +85,42 @@ RSpec.describe "BadgeField", type: :feature do
 
       it "renders a badge with correct classes" do
         expect(subject).to have_text "Cancelled"
-        expect(subject).to have_css ".badge.badge--solid.badge--orange"
-        expect(subject).not_to have_css ".badge--green.min-w-24"
+        expect(subject).to have_css ".badge.badge--solid.badge--danger"
+        expect(subject).not_to have_css ".badge--success.min-w-24"
       end
     end
   end
 
-  describe "with a secondary status" do
+  describe "with a violet status" do
+    let!(:project) { create :project, stage: "idea" }
+
+    subject {
+      visit url
+      find_field_element(:stage)
+    }
+
+    context "index" do
+      let!(:url) { "/admin/resources/projects" }
+
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Idea"
+        expect(subject).to have_css ".badge.badge--subtle.badge--violet.min-w-24"
+        expect(subject).not_to have_css ".badge--info"
+      end
+    end
+
+    context "show" do
+      let!(:url) { "/admin/resources/projects/#{project.id}" }
+
+      it "renders a badge with correct classes" do
+        expect(subject).to have_text "Idea"
+        expect(subject).to have_css ".badge.badge--subtle.badge--violet"
+        expect(subject).not_to have_css ".badge--info.min-w-24"
+      end
+    end
+  end
+
+  describe "with a neutral status" do
     let!(:project) { create :project, stage: "drafting" }
 
     subject {
@@ -104,7 +133,7 @@ RSpec.describe "BadgeField", type: :feature do
 
       it "renders a badge with correct classes" do
         expect(subject).to have_text "Drafting"
-        expect(subject).to have_css ".badge.badge--subtle.badge--purple.min-w-24"
+        expect(subject).to have_css ".badge.badge--subtle.badge--neutral.min-w-24"
         expect(subject).not_to have_css ".badge--blue"
       end
     end
@@ -114,7 +143,7 @@ RSpec.describe "BadgeField", type: :feature do
 
       it "renders a badge with correct classes" do
         expect(subject).to have_text "Drafting"
-        expect(subject).to have_css ".badge.badge--subtle.badge--purple"
+        expect(subject).to have_css ".badge.badge--subtle.badge--neutral"
         expect(subject).not_to have_css ".badge--blue.min-w-24"
       end
     end
