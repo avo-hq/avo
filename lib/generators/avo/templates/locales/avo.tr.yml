@@ -29,6 +29,7 @@ tr:
     confirm: Onayla
     copy: Kopya
     create_new_item: Yeni bir %{item} oluşturun
+    created_at: Created at
     created_at_timestamp: "%{created_at} tarihinde oluşturuldu"
     dashboard: Yönetim Paneli
     dashboards: Yönetim Panelleri
@@ -136,6 +137,7 @@ tr:
     type_to_search: Aramak için yazın.
     unauthorized: Yetkisiz
     undo: geri al
+    updated_at: Updated at
     updated_at_timestamp: "%{updated_at} tarihinde güncellendi"
     view: Görünüm
     view_item: "%{item} öğresini görüntüle"

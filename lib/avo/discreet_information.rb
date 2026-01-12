@@ -1,6 +1,7 @@
 class Avo::DiscreetInformation
   extend PropInitializer::Properties
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::DateHelper
 
   prop :resource, reader: :public
 
@@ -10,18 +11,16 @@ class Avo::DiscreetInformation
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
         timestamp_item(item, as: :icon)
-      elsif item == :timestamps_badge
-        timestamp_item(item, as: :badge)
+      elsif item == :timestamps_key_value
+        timestamp_item(item, as: :key_value)
       elsif item == :id
         id_item(item, as: :key_value)
-      elsif item == :id_text
-        id_item(item, as: :text)
       elsif item == :id_badge
         id_item(item, as: :badge)
       else
         parse_payload(item)
       end
-    end.compact
+    end.flatten.compact
   end
 
   private
@@ -54,11 +53,37 @@ class Avo::DiscreetInformation
       I18n.t("avo.updated_at_timestamp", updated_at:)
     end
 
-    {
-      title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
-      icon: "heroicons/outline/clock",
-      as:
-    }
+    if as == :key_value
+      # Older versions of rails don't have the relative_time_in_words helper
+      if defined?(relative_time_in_words)
+        created_at_text = relative_time_in_words(created_at)
+        updated_at_text = relative_time_in_words(updated_at)
+      else
+        created_at_text = created_at
+        updated_at_text = updated_at
+      end
+
+      [
+        {
+          text: created_at_text,
+          key: I18n.t("avo.created_at"),
+          as: :key_value,
+          title: created_at
+        },
+        {
+          text: updated_at_text,
+          key: I18n.t("avo.updated_at"),
+          as: :key_value,
+          title: updated_at
+        }
+      ]
+    elsif as == :icon
+      {
+        title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
+        icon: "heroicons/outline/clock",
+        as:
+      }
+    end
   end
 
   def parse_payload(item)

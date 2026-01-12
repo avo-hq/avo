@@ -27,6 +27,7 @@ nl:
     confirm: Bevestigen
     copy: Kopie
     create_new_item: Nieuw %{item} aanmaken
+    created_at: Created at
     created_at_timestamp: Aangemaakt op %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -134,6 +135,7 @@ nl:
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
+    updated_at: Updated at
     updated_at_timestamp: Bijgewerkt op %{updated_at}
     view: Bekijken
     view_item: "%{item} bekijken"

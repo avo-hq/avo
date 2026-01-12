@@ -15,25 +15,24 @@ class Avo::Resources::Project < Avo::BaseResource
 
   self.discreet_information = [
     :id,
-    :id_text,
     :timestamps,
-    :timestamps_badge,
+    :timestamps_key_value,
     {
+      text: "label",
+      as: :badge,
       title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
       icon: -> { "heroicons/outline/arrow-top-right-on-square" },
       url: -> { main_app.root_url },
-      target: :_blank,
-      as: :badge,
-      text: "label"
+      target: :_blank
     },
     {
+      text: -> { "Simple text #{record.id}" },
+      as: :text,
       title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
       icon: -> { "heroicons/outline/arrow-top-right-on-square" },
       url: -> { main_app.root_url },
       # target: :_blank,
-      as: :text,
-      visible: true,
-      text: -> { "Simple text #{record.id}" }
+      visible: true
     },
     {
       text: "Test",

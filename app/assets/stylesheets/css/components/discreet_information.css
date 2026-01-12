@@ -7,14 +7,14 @@
 }
 
 .discreet-information__text {
-  @apply px-1 inline;
+  @apply inline px-2;
 }
 
 .discreet-information__badge {
-  @apply inline-flex bg-secondary rounded-md items-center font-semibold gap-1;
+  @apply inline-flex rounded-md items-center font-semibold gap-1 py-1 px-1 bg-linear-to-b from-primary/85 to-primary/85 bg-foreground text-foreground;
 
   .discreet-information__icon {
-    @apply text-neutral-600 me-1 size-3;
+    @apply text-foreground me-1 size-3;
   }
 }
 
@@ -23,13 +23,12 @@
 }
 
 .discreet-information__key {
-  @apply rounded-sm py-0.5 px-2 font-normal;
-  background: linear-gradient(180deg, var(--color-gray-alpha-100, rgba(0, 0, 0, 0.04)) 0%, rgba(0, 0, 0, 0.00) 100%), var(--button-background-hover, #F6F6F6);
+  @apply rounded-sm py-0.5 px-2 font-normal bg-linear-to-b  to-avo-neutral-200 from-foreground/6 to-black/4 bg-secondary;
 }
 
 .discreet-information--as-key-value,
 .discreet-information--as-badge {
-  @apply text-foreground font-semibold;
+  @apply text-content-secondary font-semibold rounded-md;
 }
 
 .discreet-information--as-text {
@@ -37,10 +36,14 @@
 }
 
 .discreet-information--as-badge {
-  @apply bg-background px-2;
+  @apply rounded-md;
+
+  .discreet-information__text {
+    @apply px-1;
+  }
 }
 
 .discreet-information--as-key-value {
-  @apply inline-flex items-center bg-background px-0.5;
+  @apply inline-flex items-center bg-secondary px-0.5;
 }
 

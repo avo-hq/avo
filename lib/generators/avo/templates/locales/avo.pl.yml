@@ -27,6 +27,7 @@ pl:
     confirm: Potwierdź
     copy: Kopiuj
     create_new_item: Utwórz nowy %{item}
+    created_at: Created at
     created_at_timestamp: Utworzono o %{created_at}
     dashboard: Pulpit nawigacyjny
     dashboards: Pulpity nawigacyjne
@@ -136,6 +137,7 @@ pl:
     type_to_search: Wpisz, aby wyszukać.
     unauthorized: Brak autoryzacji
     undo: Cofnij
+    updated_at: Updated at
     updated_at_timestamp: Zaktualizowano o %{updated_at}
     view: Widok
     view_item: Wyświetl %{item}
