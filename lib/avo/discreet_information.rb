@@ -50,7 +50,7 @@ class Avo::DiscreetInformation
     end
     {
       title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
-      icon: "heroicons/outline/clock",
+      icon: "tabler/outline/calendar-time",
       as:
     }
   end
