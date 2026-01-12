@@ -27,7 +27,7 @@ class Avo::DiscreetInformation
 
   def id_item
     {
-      text: record.id,
+      value: record.id,
       key: "ID",
       as: :key_value
     }
@@ -62,14 +62,14 @@ class Avo::DiscreetInformation
     timestamp = record[key].strftime(time_format)
 
     # Older versions of rails don't have the relative_time_in_words helper
-    text = if defined?(relative_time_in_words)
+    value = if defined?(relative_time_in_words)
       relative_time_in_words(record[key])
     else
       timestamp
     end
 
     {
-      text: text,
+      value:,
       key: I18n.t("avo.created_at"),
       as: :key_value,
     }
@@ -96,6 +96,7 @@ class Avo::DiscreetInformation
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
       text: Avo::ExecutionContext.new(target: item[:text], **args).handle,
       key: Avo::ExecutionContext.new(target: item[:key], **args).handle,
+      value: Avo::ExecutionContext.new(target: item[:value], **args).handle,
       as: Avo::ExecutionContext.new(target: item[:as], **args).handle
     }
   end

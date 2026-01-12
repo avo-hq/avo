@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-# TODO: support url and target
 class Avo::DiscreetInformationComponent < Avo::BaseComponent
   prop :icon
-  # if as is :badge, this gets added with a darker bg
   prop :key
   prop :text
-  # as: :icon, :text, :badge, :key_value
+  prop :value
   prop :as, default: :text
   prop :url
   prop :target

@@ -30,7 +30,7 @@ class Avo::Resources::Project < Avo::BaseResource
       text: -> { "Simple text #{record.id}" },
       as: :text,
       title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/arrow-top-right-on-square" },
+      icon: -> { "tabler/outline/external-link" },
       url: -> { main_app.root_url },
       # target: :_blank,
       visible: true
@@ -43,7 +43,12 @@ class Avo::Resources::Project < Avo::BaseResource
     {
       as: :key_value,
       key: "Key",
-      text: "Value"
+      value: "Value"
+    },
+    {
+      as: :icon,
+      icon: "tabler/outline/cube-3d-sphere",
+      title: -> { Time.now }
     }
   ]
 
