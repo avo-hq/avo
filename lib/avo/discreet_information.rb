@@ -14,9 +14,7 @@ class Avo::DiscreetInformation
       elsif item == :timestamps_key_value
         timestamp_item(item, as: :key_value)
       elsif item == :id_key_value
-        id_item(item, as: :key_value)
-      elsif item == :id_badge
-        id_item(item, as: :badge)
+        id_item
       else
         parse_payload(item)
       end
@@ -25,16 +23,11 @@ class Avo::DiscreetInformation
 
   private
 
-  def id_item(item, as: :key_value)
-    text = record.id
-    if as == :key_value
-      key = "ID"
-    end
-
+  def id_item
     {
-      text: text,
-      key: key,
-      as: as
+      text: record.id,
+      key: "ID",
+      as: :key_value
     }
   end
 

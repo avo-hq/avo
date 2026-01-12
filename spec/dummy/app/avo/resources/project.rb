@@ -15,7 +15,6 @@ class Avo::Resources::Project < Avo::BaseResource
 
   self.discreet_information = [
     :id_key_value,
-    :id_badge,
     :timestamps,
     :timestamps_key_value,
     {
