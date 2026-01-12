@@ -9,7 +9,6 @@ module Avo
         hide_on [:edit, :new]
 
         @options = args[:options] || {}
-        @color = args[:color]
         @style = args[:style]
         @icon = args[:icon]
       end
@@ -19,9 +18,8 @@ module Avo
       end
 
       def color
-        # Priority 1: Use explicit color if provided (via proc/lambda or direct value)
-        # Priority 2: Fall back to automatic color detection based on field value and options mapping
-        execute_context(@color) || badge_color_for_value
+        # Maps field value to a color based on @options configuration
+        badge_color_for_value
       end
 
       def style

@@ -3,20 +3,27 @@ require "rails_helper"
 RSpec.describe Avo::Fields::BadgeField, type: :model do
   let(:field) { described_class.new(:status) }
 
+  # Helper method to set field value
+  def stub_field_value(value)
+    allow(field).to receive(:value).and_return(value)
+  end
+
+  # Helper method to set options
+  def set_options(options_hash)
+    field.instance_variable_set(:@options, options_hash)
+  end
+
   describe "#badge_color_for_value" do
     context "when value is blank" do
-      before do
-        allow(field).to receive(:value).and_return(nil)
-      end
-
       it "returns neutral" do
+        stub_field_value(nil)
         expect(field.badge_color_for_value).to eq("neutral")
       end
     end
 
     context "when value matches options" do
       before do
-        field.instance_variable_set(:@options, {
+        set_options({
           success: ["Done", :Complete],
           danger: :Cancelled,
           warning: ["On hold"],
@@ -24,200 +31,131 @@ RSpec.describe Avo::Fields::BadgeField, type: :model do
         })
       end
 
-      it "returns success for 'Done'" do
-        allow(field).to receive(:value).and_return("Done")
-        expect(field.badge_color_for_value).to eq("success")
-      end
-
-      it "returns success for 'Complete' string" do
-        allow(field).to receive(:value).and_return(:Complete)
-        expect(field.badge_color_for_value).to eq("success")
-      end
-
-      it "returns danger for 'Cancelled'" do
-        allow(field).to receive(:value).and_return("Cancelled")
-        expect(field.badge_color_for_value).to eq("danger")
-      end
-
-      it "returns warning for 'On hold'" do
-        allow(field).to receive(:value).and_return("On hold")
-        expect(field.badge_color_for_value).to eq("warning")
-      end
-
-      it "returns info for 'Idea' string" do
-        allow(field).to receive(:value).and_return("Idea")
-        expect(field.badge_color_for_value).to eq("info")
+      [
+        ["Done", "success"],
+        [:Complete, "success"],
+        ["Cancelled", "danger"],
+        ["On hold", "warning"],
+        ["Idea", "info"]
+      ].each do |value, expected_color|
+        it "returns #{expected_color} for '#{value}'" do
+          stub_field_value(value)
+          expect(field.badge_color_for_value).to eq(expected_color)
+        end
       end
     end
 
     context "when value does not match options" do
       before do
-        field.instance_variable_set(:@options, {
+        set_options({
           success: ["Done"],
           danger: ["Cancelled"]
         })
       end
 
       it "returns neutral for unknown value" do
-        allow(field).to receive(:value).and_return("unknown")
+        stub_field_value("unknown")
         expect(field.badge_color_for_value).to eq("neutral")
       end
     end
 
     context "when options are empty" do
-      before do
-        field.instance_variable_set(:@options, {})
-      end
-
       it "returns neutral for any value" do
-        allow(field).to receive(:value).and_return("any_value")
+        set_options({})
+        stub_field_value("any_value")
         expect(field.badge_color_for_value).to eq("neutral")
       end
     end
   end
 
   describe "#color" do
-    context "when explicit color is provided as a string" do
-      before do
-        field.instance_variable_set(:@color, "success")
-      end
-
-      it "returns the explicit color" do
-        allow(field).to receive(:execute_context).with("success").and_return("success")
-        expect(field.color).to eq("success")
-      end
-    end
-
-    context "when explicit color is provided as a proc" do
-      before do
-        field.instance_variable_set(:@color, -> { "danger" })
-      end
-
-      it "executes the proc and returns the result" do
-        allow(field).to receive(:execute_context).with(anything).and_return("danger")
-        expect(field.color).to eq("danger")
-      end
-    end
-
-    context "when no explicit color is provided" do
-      before do
-        field.instance_variable_set(:@color, nil)
-        field.instance_variable_set(:@options, {})  # Empty options
-        allow(field).to receive(:value).and_return(nil)  # Blank value
-      end
-
-      it "falls back to badge_color_for_value which defaults to neutral" do
-        allow(field).to receive(:execute_context).with(nil).and_return(nil)
-        expect(field.color).to eq("neutral")
-      end
+    it "delegates to badge_color_for_value" do
+      set_options({success: ["Done"]})
+      stub_field_value("Done")
+      expect(field.color).to eq(field.badge_color_for_value)
     end
   end
 
   describe "#style" do
-    context "when explicit style is provided" do
-      before do
-        field.instance_variable_set(:@style, "solid")
-      end
+    def stub_execute_context(input, output)
+      allow(field).to receive(:execute_context).with(input).and_return(output)
+    end
 
+    context "when explicit style is provided" do
       it "returns the explicit style" do
-        allow(field).to receive(:execute_context).with("solid").and_return("solid")
+        field.instance_variable_set(:@style, "solid")
+        stub_execute_context("solid", "solid")
         expect(field.style).to eq("solid")
       end
     end
 
     context "when style is provided as a proc" do
-      before do
-        field.instance_variable_set(:@style, -> { "solid" })
-      end
-
       it "executes the proc and returns the result" do
-        allow(field).to receive(:execute_context).with(anything).and_return("solid")
+        field.instance_variable_set(:@style, -> { "solid" })
+        stub_execute_context(anything, "solid")
         expect(field.style).to eq("solid")
       end
     end
 
     context "when no explicit style is provided" do
-      before do
-        field.instance_variable_set(:@style, nil)
-      end
-
       it "defaults to subtle" do
-        allow(field).to receive(:execute_context).with(nil).and_return(nil)
+        field.instance_variable_set(:@style, nil)
+        stub_execute_context(nil, nil)
         expect(field.style).to eq("subtle")
       end
     end
   end
 
   describe "#icon" do
-    context "when icon is provided" do
-      before do
-        field.instance_variable_set(:@icon, "tabler/outline/check")
-      end
-
-      it "executes context and returns the icon" do
-        allow(field).to receive(:execute_context).with("tabler/outline/check").and_return("tabler/outline/check")
-        expect(field.icon).to eq("tabler/outline/check")
-      end
+    def stub_execute_context(input, output)
+      allow(field).to receive(:execute_context).with(input).and_return(output)
     end
 
-    context "when icon is provided as a proc" do
-      before do
-        field.instance_variable_set(:@icon, -> { "tabler/outline/alert" })
-      end
-
-      it "executes the proc and returns the result" do
-        allow(field).to receive(:execute_context).with(anything).and_return("tabler/outline/alert")
-        expect(field.icon).to eq("tabler/outline/alert")
+    [
+      ["string icon", "tabler/outline/check", "tabler/outline/check"],
+      ["proc icon", -> { "tabler/outline/alert" }, "tabler/outline/alert"]
+    ].each do |description, icon_value, expected_result|
+      context "when icon is provided as #{description}" do
+        it "executes context and returns the icon" do
+          field.instance_variable_set(:@icon, icon_value)
+          stub_execute_context(icon_value.is_a?(Proc) ? anything : icon_value, expected_result)
+          expect(field.icon).to eq(expected_result)
+        end
       end
     end
 
     context "when no icon is provided" do
-      before do
-        field.instance_variable_set(:@icon, nil)
-      end
-
       it "returns nil" do
-        allow(field).to receive(:execute_context).with(nil).and_return(nil)
+        field.instance_variable_set(:@icon, nil)
+        stub_execute_context(nil, nil)
         expect(field.icon).to be_nil
       end
     end
   end
 
   describe "#options_for_filter" do
-    context "when options contain arrays" do
-      before do
-        field.instance_variable_set(:@options, {
-          success: ["Done", :Complete],
-          danger: ["Cancelled"],
-          warning: ["On hold", "Pending"]
-        })
-      end
-
-      it "returns flattened unique values without converting to strings" do
-        expect(field.options_for_filter).to match_array(["Done", :Complete, "Cancelled", "On hold", "Pending"])
-      end
-    end
-
-    context "when options contain single values" do
-      before do
-        field.instance_variable_set(:@options, {
-          success: :Done,
-          danger: "Cancelled"
-        })
-      end
-
-      it "returns the values without converting to strings" do
-        expect(field.options_for_filter).to match_array([:Done, "Cancelled"])
-      end
-    end
-
-    context "when options are empty" do
-      before do
-        field.instance_variable_set(:@options, {})
-      end
-
-      it "returns an empty array" do
-        expect(field.options_for_filter).to eq([])
+    [
+      [
+        "arrays",
+        { success: ["Done", :Complete], danger: ["Cancelled"], warning: ["On hold", "Pending"] },
+        ["Done", :Complete, "Cancelled", "On hold", "Pending"]
+      ],
+      [
+        "single values",
+        { success: :Done, danger: "Cancelled" },
+        [:Done, "Cancelled"]
+      ],
+      [
+        "empty hash",
+        {},
+        []
+      ]
+    ].each do |description, options, expected_result|
+      context "when options contain #{description}" do
+        it "returns the correct flattened values" do
+          set_options(options)
+          expect(field.options_for_filter).to match_array(expected_result)
+        end
       end
     end
   end
