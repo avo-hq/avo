@@ -56,7 +56,7 @@ class Avo::DiscreetInformation
   end
 
   def timestamp_item(item, key: nil)
-    return if record.created_at.blank? && record.updated_at.blank?
+    return if record[key].blank?
 
     time_format = "%Y-%m-%d %H:%M:%S"
     timestamp = record[key].strftime(time_format)
@@ -70,7 +70,7 @@ class Avo::DiscreetInformation
 
     {
       value:,
-      key: I18n.t("avo.created_at"),
+      key: I18n.t("avo.#{key}"),
       as: :key_value,
     }
   end
