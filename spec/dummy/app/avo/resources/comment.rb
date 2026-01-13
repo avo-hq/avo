@@ -25,6 +25,8 @@ class Avo::Resources::Comment < Avo::BaseResource
           field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
         end
       end
+
+      field :key_value, as: :key_value
     end
   end
 
