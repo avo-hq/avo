@@ -1,6 +1,7 @@
 class Avo::DiscreetInformation
   extend PropInitializer::Properties
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::DateHelper
 
   prop :resource, reader: :public
 
@@ -9,37 +10,31 @@ class Avo::DiscreetInformation
   def items
     Array.wrap(resource.class.discreet_information).map do |item|
       if item == :timestamps
-        timestamp_item(item, as: :icon)
-      elsif item == :timestamps_badge
-        timestamp_item(item, as: :badge)
+        timestamps_item(item)
+      elsif item == :created_at
+        timestamp_item(item, key: :created_at)
+      elsif item == :updated_at
+        timestamp_item(item, key: :updated_at)
       elsif item == :id
-        id_item(item, as: :key_value)
-      elsif item == :id_text
-        id_item(item, as: :text)
-      elsif item == :id_badge
-        id_item(item, as: :badge)
+        id_item
       else
         parse_payload(item)
       end
-    end.compact
+    end.flatten.compact
   end
 
   private
 
-  def id_item(item, as: :text)
-    text = record.id
-    if as == :key_value
-      key = "ID"
-    end
-
+  def id_item
     {
-      text: text,
-      key: key,
-      as: as
+      value: record.id,
+      key: "ID",
+      as: :key_value
     }
   end
 
-  def timestamp_item(item, as: :text)
+  def timestamps_item(item)
+    as = :icon
     return if record.created_at.blank? && record.updated_at.blank?
 
     time_format = "%Y-%m-%d %H:%M:%S"
@@ -53,11 +48,30 @@ class Avo::DiscreetInformation
     updated_at_tag = if record.updated_at.present?
       I18n.t("avo.updated_at_timestamp", updated_at:)
     end
-
     {
       title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
-      icon: "heroicons/outline/clock",
+      icon: "tabler/outline/calendar-time",
       as:
+    }
+  end
+
+  def timestamp_item(item, key: nil)
+    return if record[key].blank?
+
+    time_format = "%Y-%m-%d %H:%M:%S"
+    timestamp = record[key].strftime(time_format)
+
+    # Older versions of rails don't have the relative_time_in_words helper
+    value = if defined?(relative_time_in_words)
+      relative_time_in_words(record[key])
+    else
+      timestamp
+    end
+
+    {
+      value:,
+      key: I18n.t("avo.#{key}"),
+      as: :key_value,
     }
   end
 
@@ -82,6 +96,7 @@ class Avo::DiscreetInformation
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
       text: Avo::ExecutionContext.new(target: item[:text], **args).handle,
       key: Avo::ExecutionContext.new(target: item[:key], **args).handle,
+      value: Avo::ExecutionContext.new(target: item[:value], **args).handle,
       as: Avo::ExecutionContext.new(target: item[:as], **args).handle
     }
   end

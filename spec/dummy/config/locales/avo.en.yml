@@ -40,6 +40,8 @@ en:
     details: details
     created_at_timestamp: "Created at %{created_at}"
     updated_at_timestamp: "Updated at %{updated_at}"
+    created_at: Created at
+    updated_at: Updated at
     download: Download
     download_file: Download file
     download_item: Download %{item}

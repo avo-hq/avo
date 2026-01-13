@@ -3,7 +3,7 @@
 }
 
 .breadcrumbs__container {
-  @apply flex flex-wrap gap-2 items-center;
+  @apply flex flex-wrap gap-y-0 gap-x-px sm:gap-2 items-center;
 }
 
 .breadcrumbs__separator {

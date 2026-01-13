@@ -7,7 +7,7 @@
 }
 
 .header__content {
-  @apply flex gap-3 items-center grow shrink basis-0 min-h-px min-w-px;
+  @apply flex gap-3 items-center grow shrink basis-0;
 }
 
 .header__avatar {
@@ -19,11 +19,11 @@
 }
 
 .header__title {
-  @apply font-medium leading-6 overflow-ellipsis overflow-hidden w-full text-xl;
+  @apply font-medium leading-6 overflow-ellipsis w-full text-xl;
 }
 
 .header__description {
-  @apply font-normal leading-5 overflow-ellipsis overflow-hidden w-full text-neutral-400;
+  @apply font-normal leading-5 overflow-ellipsis w-full text-neutral-400;
   font-size: 14px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -31,11 +31,11 @@
 }
 
 .header__controls {
-  @apply flex gap-3 items-center cursor-pointer shrink-0;
+  @apply flex gap-3 items-center cursor-pointer shrink-0 flex-wrap;
 }
 
 .header__discreet-information {
-  @apply flex justify-center sm:justify-start gap-2 items-start w-full;
+  @apply flex justify-center sm:justify-start gap-2 items-start w-full flex-wrap;
 }
 
 /* Size variants */
