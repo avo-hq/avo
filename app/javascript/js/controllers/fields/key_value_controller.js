@@ -23,7 +23,17 @@ export default class extends Controller {
     this.setOptions()
 
     try {
-      const objectValue = JSON.parse(this.inputTarget.value)
+      const objectValue = JSON.parse(this.inputTarget.value, (key, value) => {
+        // convert primitives to string
+        if (
+          typeof value === "number" ||
+          typeof value === "boolean"
+        ) {
+          return String(value);
+        }
+        return value; // objects stay objects
+      });
+
       Object.keys(objectValue).forEach((key) => this.fieldValue.push([key, objectValue[key]]))
     } catch (error) {
       this.fieldValue = []
