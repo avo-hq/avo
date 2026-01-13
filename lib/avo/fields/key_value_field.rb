@@ -70,25 +70,29 @@ module Avo
         end
 
         # Try to cast the new values to the same class as the original value
-        record.send(key).each do |key, value|
-          new_value_for_current_key = new_value[key.to_s]
+        old_value = record.send(key)
 
-          try do
-            # Since ruby doesn't have a boolean type, we need some extra logic to handle it
-            new_value[key.to_s] = if [TrueClass, FalseClass].include?(value.class)
-              if new_value_for_current_key == "true"
-                true
-              elsif new_value_for_current_key == "false"
-                false
+        if old_value.respond_to?(:each)
+          old_value.each do |key, value|
+            new_value_for_current_key = new_value[key.to_s]
+
+            try do
+              # Since ruby doesn't have a boolean type, we need some extra logic to handle it
+              new_value[key.to_s] = if [TrueClass, FalseClass].include?(value.class)
+                if new_value_for_current_key == "true"
+                  true
+                elsif new_value_for_current_key == "false"
+                  false
+                else
+                  new_value_for_current_key
+                end
               else
-                new_value_for_current_key
+                # This is something like Integer("1") or Float("1.2"), etc...
+                Kernel.public_send(value.class.name, new_value_for_current_key)
               end
-            else
-              # This is something like Integer("1") or Float("1.2"), etc...
-              Kernel.public_send(value.class.name, new_value_for_current_key)
+            rescue
+              new_value[key.to_s] = new_value_for_current_key
             end
-          rescue
-            new_value[key.to_s] = new_value_for_current_key
           end
         end
 
