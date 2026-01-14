@@ -104,6 +104,7 @@
   @import "./css/components/ui/description_list.css";
   @import "./css/components/ui/badge.css";
 
+  @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
   @import "./css/components/color_scheme_switcher.css";
