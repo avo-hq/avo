@@ -25,7 +25,7 @@ module Avo
       if other.is_a? Symbol
         to_sym == other
       else
-        super(other)
+        super
       end
     end
 

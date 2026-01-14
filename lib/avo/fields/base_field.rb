@@ -61,6 +61,7 @@ module Avo
       attr_accessor :action
       attr_accessor :user
       attr_accessor :panel_name
+      attr_accessor :width
 
       class_attribute :field_name_attribute
 
@@ -117,7 +118,17 @@ module Avo
         @computed = block.present?
         @computed_value = nil
 
+        @width = args[:width] || 100
+
+        if width_option.present? && width_option != 100
+          @stacked = true
+        end
+
         post_initialize if respond_to?(:post_initialize)
+      end
+
+      def width_option
+        @width_option ||= execute_context(@width)
       end
 
       def translation_key
@@ -132,6 +143,25 @@ module Avo
         t(translation_key, count: 2, default: default).humanize
       end
 
+      def width_class
+        case width_option
+        when 25
+          "w-1/4"
+        when 33
+          "w-1/3"
+        when 50
+          "w-1/2"
+        when 66
+          "w-2/3"
+        when 75
+          "w-3/4"
+        when 100
+          "w-full"
+        else
+          "w-full"
+        end
+      end
+
       # Getting the name of the resource (user/users, post/posts)
       # We'll first check to see if the user passed a name
       # Secondly we'll try to find a translation key
@@ -139,12 +169,16 @@ module Avo
       def name
         if custom_name?
           Avo::ExecutionContext.new(target: @name).handle
+        elsif name_override.present?
+          name_override
         elsif translation_key
           translated_name default: default_name
         else
           default_name
         end
       end
+
+      def name_override = nil
 
       def plural_name
         default = name.pluralize

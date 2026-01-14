@@ -9,7 +9,7 @@
     <% if form.present? %>
       <% panel.with_card do %>
         <div class="flex">
-          <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {compact: false, stacked: false} %>
+          <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {stacked: false} %>123
           <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
         </div>
 

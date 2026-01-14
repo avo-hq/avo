@@ -12,7 +12,6 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   prop :full_width, default: false
   prop :label
   prop :resource
-  prop :short, default: false
   prop :stacked
   prop :style, default: ""
   prop :view, default: Avo::ViewInquirer.new(:show).freeze
@@ -27,19 +26,14 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   end
 
   def classes(extra_classes = "")
-    class_names("field-wrapper relative flex flex-col grow pb-2 md:pb-0 leading-tight size-auto",
+    class_names("field-wrapper",
       @classes,
       extra_classes,
+      @field.width_class,
       @field.get_html(:classes, view: @view, element: :wrapper),
       {
-        "min-h-14": !short?,
-        "min-h-10": short?,
-        "field-wrapper-size-compact": compact?,
-        "field-wrapper-size-regular": !compact?,
-        "field-width-full": full_width?,
-        "field-width-regular": !full_width?,
-        "field-wrapper-layout-stacked": stacked?,
-        "field-wrapper-layout-inline md:flex-row md:items-center": !stacked?
+        "field-wrapper--stacked": stacked?,
+        "field-wrapper--full-width": full_width?,
       })
   end
 
@@ -99,14 +93,6 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
     # Fallback to defaults
     Avo.configuration.field_wrapper_layout == :stacked
-  end
-
-  def compact?
-    @compact
-  end
-
-  def short?
-    @short
   end
 
   def full_width?

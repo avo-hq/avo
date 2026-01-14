@@ -159,8 +159,21 @@ module Avo
       Avo.configuration.text_direction
     end
 
+    LARGE_CONTAINER_CLASSES = "2xl:container 2xl:mx-auto"
+    SMALL_CONTAINER_CLASSES = "2xl:px-0 2xl:max-w-196 2xl:mx-auto"
+    FULL_WIDTH_CONTAINER_CLASSES = ""
+
     def container_classes
-      container_is_full_width? ? "" : "2xl:container 2xl:mx-auto"
+      return FULL_WIDTH_CONTAINER_CLASSES if container_is_full_width?
+
+      # Run overrides if present
+      return Avo::ApplicationHelper.const_get("#{@container_size.upcase}_CONTAINER_CLASSES") if @container_size.present? && @container_size.in?(%w[large small])
+
+      # On show and form views, use the small container
+      return SMALL_CONTAINER_CLASSES if @view.show? || @view.form?
+
+      # The rest will fallback to the lage container
+      LARGE_CONTAINER_CLASSES
     end
 
     # encode & encrypt params
@@ -197,12 +210,6 @@ module Avo
 
     def avo_edit_field(id, type = nil, view: :edit, **args, &block)
       avo_field(id, type, **args, view: view, &block)
-    end
-
-    def field_container(**args, &block)
-      classes = args[:class] || ""
-      classes << "flex flex-col divide-y"
-      content_tag :div, **args, class: classes, &block
     end
   end
 end

@@ -1,9 +1,9 @@
 <div class="flex flex-col">
-  <%= render ui.panel do |panel| %>
-    <% panel.with_body do %>
+  <%= render ui.card do |card| %>
+    <% card.with_body do %>
       <% if form.present? %>
-        <%= field_container do %>
-        <%= @resource.get_stimulus_controllers %>
+        <%= tag.div class: "description-list w-full" do %>
+          <%= @resource.get_stimulus_controllers %>
           <%= avo_edit_field :team, form: form, as: :belongs_to, resource: @resource.hydrate(record: @record), html: {
             edit: {
               input: {

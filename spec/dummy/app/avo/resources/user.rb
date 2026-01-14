@@ -98,10 +98,10 @@ class Avo::Resources::User < Avo::BaseResource
     filter Avo::Filters::DummyMultipleSelectFilter
   end
 
-  def test_field(id)
+  def test_field(id, **args)
     return unless ENV["testing_methods"]
 
-    field id.to_sym, as: :text do
+    field id.to_sym, as: :text, **args do
       id
     end
   end
@@ -218,6 +218,7 @@ class Avo::Resources::User < Avo::BaseResource
 
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe"
+      field :last_name, placeholder: "Doe"
     end
 
     panel title: "User information", description: "User information description" do
@@ -225,10 +226,8 @@ class Avo::Resources::User < Avo::BaseResource
         test_field("Inside panel")
 
         field :user_information, as: :heading
-        row do
-          test_field("Inside panel -> row")
-          stacked_name
-        end
+        test_field("Inside panel -> row", width: 33)
+        stacked_name
       end
 
       panel_test_sidebars
@@ -259,7 +258,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def stacked_name
-    with_options as: :text, stacked: true do
+    with_options as: :text, stacked: true, width: 33 do
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe"
     end

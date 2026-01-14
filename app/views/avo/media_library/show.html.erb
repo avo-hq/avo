@@ -1,5 +1,9 @@
 <%= render ui.panel(title: t("avo.media_library.title")) do |panel| %>
   <%= panel.with_body do %>
-    <%= render Avo::MediaLibrary::ItemDetailsComponent.new(blob: @blob) %>
+    <%= render ui.card do |card| %>
+      <% card.with_body do %>
+        <%= render Avo::MediaLibrary::ItemDetailsComponent.new(blob: @blob) %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

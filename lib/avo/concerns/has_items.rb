@@ -44,7 +44,6 @@ module Avo
       delegate :panel, to: :items_holder
       delegate :card, to: :items_holder
       delegate :row, to: :items_holder
-      delegate :cluster, to: :items_holder
       delegate :tabs, to: :items_holder
       delegate :tool, to: :items_holder
       delegate :heading, to: :items_holder
