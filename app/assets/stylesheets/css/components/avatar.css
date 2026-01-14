@@ -41,13 +41,13 @@
 /* Background colors for different types and themes */
 .cado-avatar--placeholder,
 .cado-avatar--initials {
-  --bg: var(--color-avo-neutral-200);
-  --text: var(--color-avo-neutral-600);
+  --bg: var(--color-tertiary);
+  --text: var(--color-foreground);
+  --bg-color: color-mix(in oklab, var(--bg), var(--color-primary) 85%);
 
-
-  background-color: color-mix(in oklab, var(--bg), var(--color-primary) 85%);
-  border-color: color-mix(in oklab, var(--bg), var(--color-primary) 10%);
-  color: var(--text);
+  background: color-mix(in oklab, var(--bg-color), var(--color-primary) 10%);
+  border-color: color-mix(in oklab, var(--bg), var(--color-content) 10%);
+  color: color-mix(in oklab, var(--text), var(--color-content) 40%);
 
   @apply border;
 }
