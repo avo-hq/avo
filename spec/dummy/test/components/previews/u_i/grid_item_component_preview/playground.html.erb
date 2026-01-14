@@ -1,0 +1,29 @@
+<%
+  # Get seed image URL if selected (we can use helpers here in the template)
+  final_image = image.presence
+
+  if seed_image != "none" && final_image.blank?
+    product_titles = {
+      "macbook" => "MacBook Pro",
+      "watch" => "Apple watch",
+      "iphone" => "iPhone",
+      "ipod" => "iPod"
+    }
+    product = Product.find_by(title: product_titles[seed_image])
+    if product&.image&.attached?
+      variant = product.image.variant(resize_to_fill: [300, 300])
+      final_image = main_app.url_for(variant)
+    end
+  end
+%>
+<%= content_tag :div,
+  class: class_names("grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4") do %>
+  <%= render Avo::UI::GridItemComponent.new(
+    title: title,
+    description: description,
+    badge_label: badge_label,
+    badge_color: badge_color,
+    image: final_image,
+    checkbox_checked: checkbox_checked
+  ) %>
+<% end %>
