@@ -61,6 +61,7 @@ group :development do
   gem "listen", ">= 3.5.1"
   gem "actioncable"
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
+  gem "ruby-lsp-rspec", require: false
 end
 
 group :test do

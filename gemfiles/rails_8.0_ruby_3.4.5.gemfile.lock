@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (4.0.42.alpha)
+    avo (4.0.43.alpha)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -666,6 +666,12 @@ GEM
       rubocop-ast (>= 1.38.0, < 2.0)
     rubocop-shopify (2.17.1)
       rubocop (~> 1.62)
+    ruby-lsp (0.26.4)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 1.2, < 2.0)
+      rbs (>= 3, < 5)
+    ruby-lsp-rspec (0.1.28)
+      ruby-lsp (~> 0.26.0)
     ruby-openai (8.1.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
@@ -890,6 +896,7 @@ DEPENDENCIES
   rspec-retry (~> 0.6.2)
   rubocop
   rubocop-shopify
+  ruby-lsp-rspec
   ruby-openai
   ruby-statistics (< 4)
   rubycritic
