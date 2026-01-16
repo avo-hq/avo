@@ -11,13 +11,17 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
     require "active_storage/engine"
   when "actiontext"
     require "action_text/engine"
-  when "avo-licensing"
-    require "avo/licensing"
   when "avo-icons"
     require "avo/icons"
   else
     require d.name
   end
+end
+
+# Check for avo-licensing as a transitive dependency
+# This handles cases where avo-licensing is a dependency of other avo gems
+if Gem.loaded_specs.key?("avo-licensing") && !defined?(Avo::Licensing)
+  require "avo/licensing"
 end
 
 module Avo
