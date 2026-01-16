@@ -75,7 +75,7 @@ RSpec.describe "UserForms", type: :system do
     user_slug = User.find(user_id).slug
     expect(current_path).to eq "/admin/resources/users/#{user_slug}"
 
-    within(".application-sidebar") do
+    within(".avo-sidebar") do
       click_on "Users"
     end
 

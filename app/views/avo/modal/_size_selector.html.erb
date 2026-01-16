@@ -1,0 +1,50 @@
+<%
+  type = local_assigns[:type] || 'width'
+  is_width = type == 'width'
+  icon = is_width ? "tabler/outline/arrows-horizontal" : "tabler/outline/arrows-vertical"
+  selector_class = is_width ? "modal__width-selector" : "modal__height-selector"
+  aria_label = is_width ? "Change modal width" : "Change modal height"
+  controller_action = is_width ? "click->modal-size#changeWidth" : "click->modal-size#changeHeight"
+  current_value = is_width ? @width : @height
+  options = is_width ? %w[sm md lg xl 2xl 3xl 4xl full] : %w[auto sm md lg xl 2xl 3xl 4xl full]
+%>
+<div class="relative"
+  data-controller="toggle"
+>
+  <button
+    type="button"
+    class="<%= selector_class %> relative shrink-0 size-5 flex items-center justify-center"
+    data-action="click->toggle#togglePanel"
+    aria-label="<%= aria_label %>"
+    title="<%= aria_label %>"
+  >
+    <%= svg icon, class: "size-4 text-content" %>
+  </button>
+  <div
+    class="absolute inset-auto top-full z-50 mt-2 flex hidden w-auto overflow-hidden rounded-sm bg-white shadow-modal border border-tertiary"
+    data-toggle-target="panel"
+    data-transition-enter="transition ease-out duration-100"
+    data-transition-enter-start="transform opacity-0 -translate-y-1"
+    data-transition-enter-end="transform opacity-100 translate-y-0"
+    data-transition-leave="transition ease-in duration-75"
+    data-transition-leave-start="transform opacity-100 translate-y-0"
+    data-transition-leave-end="transform opacity-0 -translate-y-1"
+  >
+    <div class="flex flex-col divide-y divide-tertiary min-w-[120px]">
+      <% options.each do |size| %>
+        <button
+          type="button"
+          class="px-3 py-2 text-sm text-content hover:bg-primary-50 text-left <%= 'bg-primary-50 font-medium' if current_value.to_s == size %>"
+          <% if is_width %>
+            data-width="<%= size %>"
+          <% else %>
+            data-height="<%= size %>"
+          <% end %>
+          data-action="<%= controller_action %> click->toggle#togglePanel"
+        >
+          <%= size.upcase %>
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -25,3 +25,15 @@ Don't implement a component if the Figma MCP is not available and fails and aler
 
 #### Files
 
+## Javascript
+
+We use StimulusJS for the javascript.
+Aboid writing inline script tags in the HTML unless instructed so or mentioned some kind of "temporary" or "quick" solution .
+
+## HTML Structure
+
+When toggling the visibility of some html elements, use the `hidden` HTML attribute instead of the `hidden` class.
+
+## Ruby on Rails
+
+Whenever possible use the `partial:` keyword when rendering partials unless needed otherwise.

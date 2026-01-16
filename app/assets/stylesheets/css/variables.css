@@ -1,6 +1,4 @@
 @theme {
-  --main-content-wrapper-background: var(--color-white);
-
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: oklch(97.31% 0.0000 89.88);
   --color-avo-neutral-100: oklch(92.80% 0.0000 89.88);
@@ -39,6 +37,8 @@
   --color-accent: var(--color-avo-neutral-800);
   --color-accent-content: var(--color-avo-neutral-950);
   --color-accent-foreground: var(--color-white);
+
+  --sidebar-width: 0rem;
 }
 
 /* Dark theme */

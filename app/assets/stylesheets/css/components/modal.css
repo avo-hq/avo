@@ -1,0 +1,170 @@
+/* Modal Component - Based on Figma Design System */
+
+/* CSS Variables for height sizes matching width sizes */
+.modal {
+  --modal-height-sm: 24rem; /* 384px - matches w-sm */
+  --modal-height-md: 28rem; /* 448px - matches w-md */
+  --modal-height-lg: 32rem; /* 512px - matches w-lg */
+  --modal-height-xl: 36rem; /* 576px - matches w-xl */
+  --modal-height-2xl: 42rem; /* 672px - matches w-2xl */
+  --modal-height-3xl: 48rem; /* 768px - matches w-3xl */
+  --modal-height-4xl: 56rem; /* 896px - matches w-4xl */
+}
+
+.modal {
+  @apply fixed inset-0 w-full z-100 flex justify-center items-center;
+}
+
+.modal__overlay {
+  @apply absolute w-full h-full bg-gray-800/25 flex justify-center items-center;
+}
+
+.modal__card-container {
+  @apply flex flex-col items-center justify-center relative shrink-0 w-full;
+}
+
+.modal__card {
+  @apply flex flex-col items-start relative size-full rounded-xl shadow-[0px_32px_64px_0px_rgba(0,0,0,0.04)] shrink-0;
+}
+
+.modal__content {
+  @apply bg-primary border border-tertiary border-solid flex flex-col items-start overflow-clip relative rounded-[11px] shrink-0 size-full;
+}
+
+.modal__header {
+  @apply border-b border-tertiary border-solid flex flex-col gap-0 items-start p-4 relative shrink-0 w-full;
+}
+
+.modal__title {
+  @apply line-clamp-1 font-medium leading-6 relative shrink-0 text-xl text-content;
+}
+
+.modal__description {
+  @apply line-clamp-1 font-normal leading-5 overflow-ellipsis overflow-hidden relative shrink-0 text-sm text-content-secondary;
+}
+
+.modal__close-button {
+  @apply relative shrink-0 size-5 cursor-pointer hover:opacity-70 transition-opacity;
+}
+
+.modal__width-selector {
+  @apply relative shrink-0 size-5 cursor-pointer hover:opacity-70 transition-opacity;
+}
+
+.modal__height-selector {
+  @apply relative shrink-0 size-5 cursor-pointer hover:opacity-70 transition-opacity;
+}
+
+.modal__body {
+  @apply flex flex-col flex-1 justify-between gap-4 items-start pb-4 pt-0 px-0 relative shrink-0 w-full min-h-64;
+}
+
+.modal__body-content {
+  @apply size-full;
+}
+
+.modal__controls {
+  @apply flex items-center justify-between px-4 py-0 relative shrink-0 w-full;
+}
+
+.modal--width-sm {
+  .modal__card-container {
+    @apply w-sm;
+  }
+}
+
+.modal--width-md {
+  .modal__card-container {
+    @apply w-md;
+  }
+}
+
+.modal--width-lg {
+  .modal__card-container {
+    @apply w-lg;
+  }
+}
+
+.modal--width-xl {
+  .modal__card-container {
+    @apply w-xl;
+  }
+}
+
+.modal--width-2xl {
+  .modal__card-container {
+    @apply w-2xl;
+  }
+}
+
+.modal--width-3xl {
+  .modal__card-container {
+    @apply w-3xl;
+  }
+}
+
+.modal--width-4xl {
+  .modal__card-container {
+    @apply w-4xl;
+  }
+}
+
+.modal--width-full {
+  .modal__card-container {
+    @apply w-full;
+  }
+}
+
+.modal--height-auto {
+  .modal__card-container {
+    @apply min-h-32;
+  }
+}
+
+.modal--height-sm {
+  .modal__card-container {
+    min-height: var(--modal-height-sm);
+  }
+}
+
+.modal--height-md {
+  .modal__card-container {
+    min-height: var(--modal-height-md);
+  }
+}
+
+.modal--height-lg {
+  .modal__card-container {
+    min-height: var(--modal-height-lg);
+  }
+}
+
+.modal--height-xl {
+  .modal__card-container {
+    min-height: var(--modal-height-xl);
+  }
+}
+
+.modal--height-2xl {
+  .modal__card-container {
+    min-height: var(--modal-height-2xl);
+  }
+}
+
+.modal--height-3xl {
+  .modal__card-container {
+    min-height: var(--modal-height-3xl);
+  }
+}
+
+.modal--height-4xl {
+  .modal__card-container {
+    min-height: var(--modal-height-4xl);
+  }
+}
+
+.modal--height-full {
+  .modal__card-container {
+    @apply h-full;
+  }
+}
