@@ -2,7 +2,7 @@ module Avo
   class MediaLibraryController < ApplicationController
     include Pagy::Backend
     before_action :authorize_access!
-    before_action -> { @container_size = "large" }, on: [:show]
+    before_action -> { @container_size = "large" }, only: [:show]
 
     def index
       @attaching = false
