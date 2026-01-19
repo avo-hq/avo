@@ -1,0 +1,45 @@
+<div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
+  <div class="flex flex-wrap gap-8">
+    <div class="relative inline-flex" data-controller="dropdown">
+      <%= render Avo::UI::IconButtonComponent.new(
+        action: "click->dropdown#dropdownItemActions",
+        icon: "tabler/outline/dots-vertical"
+      ) %>
+
+      <%= render Avo::UI::DropdownMenuComponent.new(
+        data: {dropdown_target: "dropdownMenuComponent"},
+        classes: "hidden"
+      ) do %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(
+          title: "Edit",
+          icon: "tabler/outline/pencil"
+        ) %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(
+          title: "View",
+          icon: "tabler/outline/eye"
+        ) %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(
+          title: "Delete",
+          icon: "tabler/outline/trash"
+        ) %>
+      <% end %>
+    </div>
+
+    <div class="relative inline-flex" data-controller="dropdown">
+      <%= render Avo::UI::IconButtonComponent.new(
+        action: "click->dropdown#dropdownItemActions",
+        icon: "tabler/outline/dots-vertical"
+      ) %>
+
+      <%= render Avo::UI::DropdownMenuComponent.new(
+        data: {dropdown_target: "dropdownMenuComponent"},
+        classes: "hidden"
+      ) do %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(title: "Source Code") %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(title: "Documentation") %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(title: "Blog") %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

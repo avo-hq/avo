@@ -1,0 +1,31 @@
+<div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
+  <div class="flex flex-col gap-6">
+    <div class="relative inline-flex" data-controller="dropdown">
+      <%= render Avo::UI::IconButtonComponent.new(
+        action: "click->dropdown#dropdownItemActions",
+        icon: "tabler/outline/dots-vertical"
+      ) %>
+
+      <%= render Avo::UI::DropdownMenuComponent.new(
+        data: {dropdown_target: "dropdownMenuComponent"},
+      ) do %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(
+          title: first_label,
+          icon: (with_icons ? "tabler/outline/pencil" : nil),
+          url: (as_links ? "https://example.com/edit" : nil)
+        ) %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(
+          title: second_label,
+          icon: (with_icons ? "tabler/outline/eye" : nil),
+          url: (as_links ? "https://example.com/view" : nil)
+        ) %>
+        <%= render Avo::UI::DropdownMenuItemComponent.new(
+          title: third_label,
+          icon: (with_icons ? "tabler/outline/trash" : nil),
+          url: (as_links ? "https://example.com/delete" : nil)
+        ) %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

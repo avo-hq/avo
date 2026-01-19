@@ -51,6 +51,7 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
+import DropdownController from './controllers/dropdown_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 import SearchController from './controllers/search_controller'
@@ -98,6 +99,7 @@ application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
+application.register('dropdown', DropdownController)
 application.register('trix-body', TrixBodyController)
 application.register('search', SearchController)
 

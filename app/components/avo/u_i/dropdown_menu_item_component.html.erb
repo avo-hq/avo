@@ -1,0 +1,8 @@
+<% item_content = capture do %>
+  <span class="dropdown-menu__label"><%= @title %></span>
+  <%= svg(@icon, class: "dropdown-menu__icon") if @icon.present? %>
+<% end %>
+
+<%= @url.present? ?
+  link_to(item_content, @url, class: class_names("dropdown-menu__item", @classes), data: item_data, method: @method, target: @target) :
+  tag.button(item_content, type: @type, class: class_names("dropdown-menu__item", @classes), data: item_data) %>
