@@ -2,7 +2,7 @@
 /* BEM Methodology: .dropdown-menu (block), .dropdown-menu__list/.dropdown-menu__item (elements) */
 
 .dropdown-menu {
-  @apply absolute right-0 top-full z-10 mt-2 flex rounded-lg border-1;
+  @apply absolute end-0 top-full z-10 mt-2 flex rounded-lg border-1;
   border-color: var(--color-tertiary);
   background: var(--color-secondary);
   box-shadow: var(--box-shadow);
@@ -16,7 +16,7 @@
 }
 
 .dropdown-menu__item {
-  @apply flex items-center w-full text-right justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer;
+  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer;
   color: var(--color-content);
 
 }
