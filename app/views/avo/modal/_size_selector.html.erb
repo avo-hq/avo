@@ -21,14 +21,9 @@
     <%= svg icon, class: "size-4 text-content" %>
   </button>
   <div
-    class="absolute inset-auto top-full z-50 mt-2 flex hidden w-auto overflow-hidden rounded-sm bg-white shadow-modal border border-tertiary"
+    class="absolute inset-auto top-full z-50 mt-2 flex w-auto overflow-hidden rounded-sm bg-white shadow-modal border border-tertiary css-animate-slide-down"
     data-toggle-target="panel"
-    data-transition-enter="transition ease-out duration-100"
-    data-transition-enter-start="transform opacity-0 -translate-y-1"
-    data-transition-enter-end="transform opacity-100 translate-y-0"
-    data-transition-leave="transition ease-in duration-75"
-    data-transition-leave-start="transform opacity-100 translate-y-0"
-    data-transition-leave-end="transform opacity-0 -translate-y-1"
+    hidden
   >
     <div class="flex flex-col divide-y divide-tertiary min-w-[120px]">
       <% options.each do |size| %>

@@ -103,10 +103,11 @@
               }.compact
             ) %>"
             class="
-              absolute inset-auto top-0 z-40 mt-6 hidden w-full overflow-hidden rounded-sm border border-gray-50
+              absolute inset-auto top-0 z-40 mt-6 w-full overflow-hidden rounded-sm border border-gray-50
               bg-white p-4 shadow-modal sm:w-[400px]
             "
             data-toggle-target="panel"
+            hidden
           >
             <%= render Avo::LoadingComponent.new %>
           </turbo-frame>

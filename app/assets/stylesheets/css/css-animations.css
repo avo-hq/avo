@@ -1,0 +1,56 @@
+/* Actions Dropdown Animations */
+
+.css-animate-slide-down {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition:
+    opacity 75ms ease-out,
+    transform 75ms ease-out,
+    display 75ms allow-discrete;
+
+  /* Starting state when transitioning FROM [hidden] */
+  @starting-style {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+/* Hidden state - CSS handles the leave animation */
+.css-animate-slide-down[hidden] {
+  display: block;
+  opacity: 0;
+  transform: translateY(-0.25rem);
+  transition:
+    opacity 75ms ease-in,
+    transform 75ms ease-in,
+    display 75ms allow-discrete;
+}
+
+/* Sidebar Profile Dropdown Animation (slides up from bottom) */
+.css-animate-slide-up {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition:
+    opacity 100ms ease-in-out,
+    transform 100ms ease-in-out,
+    display 100ms allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}
+
+.css-animate-slide-up[hidden] {
+  display: block;
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 75ms ease-in,
+    transform 75ms ease-in,
+    display 75ms allow-discrete;
+}
+
+

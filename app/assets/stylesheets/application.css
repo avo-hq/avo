@@ -111,7 +111,7 @@
   @import "./css/components/discreet_information.css";
   @import "./css/components/tooltip.css";
   @import "./css/components/modal.css";
-  @import "./css/components/actions_dropdown.css";
+  @import "./css/components/css-animations.css";
 
   html,
   body {
