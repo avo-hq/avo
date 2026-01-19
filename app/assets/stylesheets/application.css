@@ -197,4 +197,16 @@
   .selected-row {
     @apply bg-neutral-100!;
   }
+
+  .container-large {
+    @apply 2xl:container 2xl:mx-auto;
+  }
+
+  .container-small {
+    @apply 2xl:px-0 2xl:max-w-196 2xl:mx-auto;
+  }
+
+  .container-full-width {
+    @apply w-full;
+  }
 }

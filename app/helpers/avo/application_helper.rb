@@ -159,21 +159,17 @@ module Avo
       Avo.configuration.text_direction
     end
 
-    LARGE_CONTAINER_CLASSES = "2xl:container 2xl:mx-auto"
-    SMALL_CONTAINER_CLASSES = "2xl:px-0 2xl:max-w-196 2xl:mx-auto"
-    FULL_WIDTH_CONTAINER_CLASSES = ""
-
     def container_classes
-      return FULL_WIDTH_CONTAINER_CLASSES if container_is_full_width?
+      return "container-full-width" if container_is_full_width?
 
       # Run overrides if present
-      return Avo::ApplicationHelper.const_get("#{@container_size.upcase}_CONTAINER_CLASSES") if @container_size.present? && @container_size.in?(%w[large small])
+      return "container-#{@container_size}" if @container_size.present? && @container_size.in?(%w[large small])
 
       # On show and form views, use the small container
-      return SMALL_CONTAINER_CLASSES if @view.show? || @view.form?
+      return "container-small" if @view.show? || @view.form?
 
       # The rest will fallback to the lage container
-      LARGE_CONTAINER_CLASSES
+      "container-large"
     end
 
     # encode & encrypt params
