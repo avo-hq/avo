@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+// TODO: remove the `el-transition` dependency. check the toggle_controller for a better solution.
 import { enter, leave } from 'el-transition'
 
 export default class extends Controller {

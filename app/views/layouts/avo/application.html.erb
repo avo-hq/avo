@@ -31,7 +31,7 @@
     <%= content_for :head %>
   </head>
 
-  <body class="<%= class_names("os-mac floating-controls bg-background", "all-fields-stacked": Avo.configuration.use_stacked_fields) %> bg-red-600!">
+  <body class="<%= class_names("os-mac floating-controls bg-background", "all-fields-stacked": Avo.configuration.use_stacked_fields) %>">
     <div
       class="relative flex min-h-dvh w-full flex-1"
       data-controller="sidebar"
@@ -57,7 +57,7 @@
 
                 <%= render partial: "avo/partials/custom_tools_alert" %>
 
-                <div class="avo-main-scrollable flex flex-1 flex-col items-stretch justify-between space-y-8 overflow-scroll h-full">
+                <div class="avo-main-scrollable flex flex-1 flex-col items-stretch justify-between space-y-8 h-full">
                   <%= yield.force_encoding("UTF-8") %>
                   <%= render partial: "avo/partials/footer" %>
                 </div>

@@ -3,39 +3,6 @@ module Avo
     module HasItems
       extend ActiveSupport::Concern
 
-      class_methods do
-        def deprecated_dsl_api(name, method)
-          message = "This API was deprecated. Please use the `#{name}` method inside the `#{method}` method."
-          raise DeprecatedAPIError.new message
-        end
-
-        # DSL methods
-        def field(name, as: :text, **args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def panel(name = nil, **args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def row(**args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def tabs(**args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def tool(klass, **args)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def sidebar(**args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-        # END DSL methods
-      end
-
       attr_writer :items_holder
 
       delegate :invalid_fields, to: :items_holder
@@ -43,7 +10,6 @@ module Avo
       delegate :field, to: :items_holder
       delegate :panel, to: :items_holder
       delegate :card, to: :items_holder
-      delegate :row, to: :items_holder
       delegate :tabs, to: :items_holder
       delegate :tool, to: :items_holder
       delegate :heading, to: :items_holder

@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus'
-import { leave, toggle } from 'el-transition'
 import { useClickOutside } from 'stimulus-use'
 
 export default class extends Controller {
@@ -22,23 +21,31 @@ export default class extends Controller {
     if (this.hasPanelTarget) {
       const isInExemptionContainer = this.hasExemptionContainersValue && this.exemptionContainerTargets.some((container) => container.contains(e.target))
 
-      if (!isInExemptionContainer && !this.panelTarget.classList.contains('hidden')) {
-        leave(this.panelTarget)
+      if (!isInExemptionContainer && !this.panelTarget.hasAttribute('hidden')) {
+        this.leave(this.panelTarget)
       }
     }
   }
 
   togglePanel() {
     if (this.hasPanelTarget) {
-      toggle(this.panelTarget)
+      this.toggle(this.panelTarget)
     }
+  }
+
+  toggle(element) {
+    element.toggleAttribute('hidden')
+  }
+
+  leave(element) {
+    element.setAttribute('hidden', true)
   }
 
   outlet({ params }) {
     const { outlet } = params
 
     if (outlet && document.querySelector(outlet)) {
-      document.querySelector(outlet).classList.toggle('hidden')
+      this.toggle(document.querySelector(outlet))
     }
   }
 }
