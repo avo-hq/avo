@@ -40,6 +40,8 @@ class Avo::Resources::Comment < Avo::BaseResource
       # field :test4 do
       #   "test"
       # end
+
+      field :key_value, as: :key_value
     end
   end
 

@@ -80,7 +80,7 @@
     "tailwindcss": "^4.1.17",
     "tailwindcss-stimulus-components": "^3.0.4",
     "tippy.js": "^6.3.7",
-    "trix": "^2.1.15",
+    "trix": "^2.1.16",
     "turbo_power": "^0.6.2",
     "urijs": "^1.19.11"
   },
