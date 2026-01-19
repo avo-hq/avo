@@ -8,7 +8,7 @@
   <span class="radio-button__input-wrapper">
     <%= tag.input(
       type: "radio",
-      class: "radio-button__input",
+      class: "sr-only radio-button__input",
       id: @id,
       name: @name,
       value: @value,
@@ -29,4 +29,3 @@
     <%= content_tag(:span, @description, class: "radio-button__description") if @description.present? %>
   </span>
 <% end %>
-
