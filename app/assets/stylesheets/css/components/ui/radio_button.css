@@ -6,7 +6,7 @@ Base Structure
 ========================================================================== */
 
 .radio-button {
-  @apply inline-flex items-start gap-2 cursor-pointer;
+  @apply inline-flex items-start gap-2 cursor-pointer py-1;
 }
 
 .radio-button__input-wrapper {

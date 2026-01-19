@@ -2,8 +2,13 @@
   <div class="flex flex-col gap-2">
     <% @field.options.each do |key, value| %>
       <div>
-        <%= form.radio_button @field.id, key, checked: (@field.value.to_s == key.to_s) %>
-        <%= form.label @field.id, value, value: key %>
+        <%= render Avo::UI::RadioButtonComponent.new(
+          id: form.field_id(@field.id, key),
+          name: form.field_name(@field.id),
+          value: key,
+          label: value,
+          checked: (@field.value.to_s == key.to_s)
+        ) %>
       </div>
     <% end %>
   </div>

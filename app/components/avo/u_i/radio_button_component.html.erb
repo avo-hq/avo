@@ -4,7 +4,7 @@
   {
     "radio-button--disabled": @disabled
   }
-) do %>
+), for: @id do %>
   <span class="radio-button__input-wrapper">
     <%= tag.input(
       type: "radio",
