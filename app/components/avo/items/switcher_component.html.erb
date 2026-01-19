@@ -48,7 +48,7 @@
       <% end %>
     <% end %>
 
-    <% if @resource.get_external_link.present? && @resource.discreet_information.items.any? %>
+    <% if @resource.get_external_link.present? || @resource.discreet_information.items.any? %>
       <% header.with_discreet_information do %>
         <% if @resource.get_external_link.present? %>
           <%= render Avo::DiscreetInformationComponent.new(
