@@ -1,0 +1,32 @@
+<%= content_tag :label, class: class_names(
+  "radio-button",
+  @classes,
+  {
+    "radio-button--disabled": @disabled
+  }
+) do %>
+  <span class="radio-button__input-wrapper">
+    <%= tag.input(
+      type: "radio",
+      class: "radio-button__input",
+      id: @id,
+      name: @name,
+      value: @value,
+      checked: @checked,
+      disabled: @disabled,
+      title: @title,
+      autocomplete: @autocomplete,
+      data: @data
+    ) %>
+
+    <span class="radio-button__radio" aria-hidden="true">
+      <span class="radio-button__dot"></span>
+    </span>
+  </span>
+
+  <span class="radio-button__content">
+    <%= content_tag(:span, @label, class: "radio-button__label") if @label.present? %>
+    <%= content_tag(:span, @description, class: "radio-button__description") if @description.present? %>
+  </span>
+<% end %>
+

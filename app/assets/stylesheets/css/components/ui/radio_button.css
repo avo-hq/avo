@@ -1,0 +1,86 @@
+/* Radio Button Component - Based on Figma Design System */
+/* BEM Methodology: .radio-button (block), .radio-button__* (elements), .radio-button--modifier (modifiers) */
+
+/* ==========================================================================
+Base Structure
+========================================================================== */
+
+.radio-button {
+  @apply inline-flex items-start gap-2 cursor-pointer;
+}
+
+.radio-button__input-wrapper {
+  @apply relative shrink-0 size-4;
+}
+
+.radio-button__input {
+  /* Keep the native radio for a11y + form submits, but visually hide it. */
+  @apply absolute inset-0 z-20 opacity-0 cursor-pointer pointer-events-auto;
+}
+
+.radio-button__radio {
+  @apply flex items-center justify-center overflow-hidden relative size-4 rounded-full border-1 transition-colors transition-shadow duration-150 box-border;
+
+  border-color: var(--color-tertiary);
+  background-color: var(--color-primary);
+  box-shadow: 0 1px 2px 0 var(--color-black-4);
+}
+
+.radio-button__dot {
+  @apply shrink-0 hidden size-2 rounded-full;
+  background-color: var(--color-accent-content);
+}
+
+.radio-button__content {
+  @apply flex flex-col;
+}
+
+.radio-button__label {
+  @apply text-sm leading-5 font-normal self-start text-start;
+  color: var(--color-content);
+}
+
+.radio-button__description {
+  @apply text-sm leading-5 font-normal self-start text-start;
+  color: var(--color-content-secondary);
+}
+
+/* ==========================================================================
+State: Checked
+========================================================================== */
+
+.radio-button__input:checked ~ .radio-button__radio .radio-button__dot {
+  @apply block;
+}
+
+/* ==========================================================================
+State: Focus & Hover
+========================================================================== */
+
+/* Focus ring */
+.radio-button__input:focus-visible + .radio-button__radio {
+  @apply ring-2 ring-offset-2 ring-accent-content;
+}
+
+/* Hover ring */
+.radio-button:not(.radio-button--disabled):hover .radio-button__radio {
+  @apply ring-2 ring-offset-2 ring-accent-content;
+}
+
+/* ==========================================================================
+State: Disabled
+========================================================================== */
+
+.radio-button--disabled {
+  @apply opacity-60 cursor-not-allowed;
+
+  mix-blend-mode: luminosity;
+}
+
+.radio-button--disabled .radio-button__input,
+.radio-button--disabled .radio-button__radio,
+.radio-button--disabled .radio-button__label,
+.radio-button--disabled .radio-button__description {
+  @apply cursor-not-allowed;
+}
+
