@@ -11,7 +11,7 @@ RSpec.feature "ArrayResource", type: :system do
 
       wait_for_loaded
 
-      expect(strip_html(find("table thead").text)).to eq "Select all ID NAME ROLE ORGANIZATION"
+      expect(strip_html(find("table thead").text)).to eq "ID NAME ROLE ORGANIZATION"
 
       expect(page).to have_text("Attendees from field")
       expect(page).to have_text("John Doe")
@@ -43,7 +43,7 @@ RSpec.feature "ArrayResource", type: :system do
 
       expect(page).to have_text("First 6 users")
 
-      expect(strip_html(find("table thead").text)).to eq "Select all ID NAME"
+      expect(strip_html(find("table thead").text)).to eq "ID NAME"
 
       User.first(6).each do |user|
         expect(page).to have_text(user.name)

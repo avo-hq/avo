@@ -1,0 +1,116 @@
+<div class="p-8 bg-white">
+  <h3 class="text-lg font-semibold text-gray-900 mb-6">All Checkbox States</h3>
+
+  <table class="w-full border-collapse">
+    <thead>
+      <tr>
+        <th class="text-left p-4 border-b border-gray-200 font-medium text-gray-700">State</th>
+        <th class="text-center p-4 border-b border-gray-200 font-medium text-gray-700">Enabled</th>
+        <th class="text-center p-4 border-b border-gray-200 font-medium text-gray-700">Disabled</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Unchecked -->
+      <tr>
+        <td class="p-4 border-b border-gray-100 text-gray-600">Unchecked</td>
+        <td class="p-4 border-b border-gray-100 text-center">
+          <%= render Avo::UI::CheckboxComponent.new(
+            checked: false,
+            disabled: false,
+            label: "Label 2 Label 2 Label 2 Label 2" ,
+            description: "Description 2 Description 2 Description 2 Description 2 Description 2 Description 2Description 2 Description 2 Description 2 Description 2 Description 2 Description 2Description 2 Description 2 Description 2 Description 2 Description 2 Description 2Description 2 Description 2 Description 2 Description 2 Description 2 Description 2"
+          ) %>
+        </td>
+        <td class="p-4 border-b border-gray-100 text-center">
+          <%= render Avo::UI::CheckboxComponent.new(
+            checked: false,
+            disabled: true,
+            label: "Label",
+            description: "Description"
+          ) %>
+        </td>
+      </tr>
+      <!-- Indeterminate -->
+      <tr>
+        <td class="p-4 border-b border-gray-100 text-gray-600">Indeterminate</td>
+        <td class="p-4 border-b border-gray-100 text-center">
+          <%= render Avo::UI::CheckboxComponent.new(
+            indeterminate: true,
+            disabled: false,
+            label: "Label",
+            description: "Description"
+          ) %>
+        </td>
+        <td class="p-4 border-b border-gray-100 text-center">
+          <%= render Avo::UI::CheckboxComponent.new(
+            indeterminate: true,
+            disabled: true,
+            label: "Label",
+            description: "Description"
+          ) %>
+        </td>
+      </tr>
+      <!-- Checked -->
+      <tr>
+        <td class="p-4 border-b border-gray-100 text-gray-600">Checked</td>
+        <td class="p-4 border-b border-gray-100 text-center">
+          <%= render Avo::UI::CheckboxComponent.new(
+            checked: true,
+            disabled: false,
+            label: "Label",
+            description: "Description"
+          ) %>
+        </td>
+        <td class="p-4 border-b border-gray-100 text-center">
+          <%= render Avo::UI::CheckboxComponent.new(
+            checked: true,
+            disabled: true,
+            label: "Label",
+            description: "Description"
+          ) %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="text-lg font-semibold text-gray-900 mb-6 mt-12">Without Label/Description</h3>
+
+  <div class="flex flex-wrap gap-8 items-center">
+    <div class="flex flex-col gap-2 items-center">
+      <span class="text-sm text-gray-600">Unchecked</span>
+      <%= render Avo::UI::CheckboxComponent.new(checked: false) %>
+    </div>
+    <div class="flex flex-col gap-2 items-center">
+      <span class="text-sm text-gray-600">Indeterminate</span>
+      <%= render Avo::UI::CheckboxComponent.new(indeterminate: true) %>
+    </div>
+    <div class="flex flex-col gap-2 items-center">
+      <span class="text-sm text-gray-600">Checked</span>
+      <%= render Avo::UI::CheckboxComponent.new(checked: true) %>
+    </div>
+    <div class="flex flex-col gap-2 items-center">
+      <span class="text-sm text-gray-600">Disabled Unchecked</span>
+      <%= render Avo::UI::CheckboxComponent.new(checked: false, disabled: true) %>
+    </div>
+    <div class="flex flex-col gap-2 items-center">
+      <span class="text-sm text-gray-600">Disabled Checked</span>
+      <%= render Avo::UI::CheckboxComponent.new(checked: true, disabled: true) %>
+    </div>
+  </div>
+
+  <h3 class="text-lg font-semibold text-gray-900 mb-6 mt-12">With Label Only</h3>
+
+  <div class="flex flex-wrap gap-8">
+    <%= render Avo::UI::CheckboxComponent.new(checked: false, label: "Unchecked option") %>
+    <%= render Avo::UI::CheckboxComponent.new(indeterminate: true, label: "Indeterminate option") %>
+    <%= render Avo::UI::CheckboxComponent.new(checked: true, label: "Checked option") %>
+  </div>
+  <!-- Add this at the end of the file, before closing </div> -->
+  <script>
+    // Set indeterminate state for checkboxes with data-indeterminate="true"
+    document.querySelectorAll('input[type="checkbox"][data-indeterminate="true"]').forEach(checkbox => {
+      checkbox.indeterminate = true
+    })
+  </script>
+</div>
+

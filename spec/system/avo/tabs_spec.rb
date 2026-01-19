@@ -9,7 +9,7 @@ RSpec.describe "Tabs", type: :system do
       it "doesn't display the birthday from the tab content" do
         visit "/admin/resources/users"
 
-        expect(strip_html(find("table thead").text)).to eq "Select all ID GRAVATAR FIRST NAME LAST NAME USER EMAIL IS ACTIVE CV IS ADMIN ROLES PERMISSIONS BIRTHDAY IS WRITER"
+        expect(strip_html(find("table thead").text)).to eq "ID GRAVATAR FIRST NAME LAST NAME USER EMAIL IS ACTIVE CV IS ADMIN ROLES PERMISSIONS BIRTHDAY IS WRITER"
         within find("tr[data-resource-id='#{user.to_param}']") do
           expect(find_all("table tbody tr td")[11].text).to eq "Wednesday, 10 February 1988"
         end
@@ -268,10 +268,10 @@ RSpec.describe "Tabs", type: :system do
 
     # Find the phone number from lazy loaded tab after clicking on it
     within(:css, '.block[data-tabs-target="tabPanel"][data-tab-id="Address"]', visible: :all) do
-      # Find the field wrapper for "Phone number"
-      field_wrapper = find('div[data-field-id="phone_number"]', visible: :all)
+      # Wait for the lazy-loaded content to render, then assert
+      expect(page).to have_selector('div[data-field-id="phone_number"]', visible: :all)
 
-      # Locate the label and value within the wrapper
+      field_wrapper = find('div[data-field-id="phone_number"]', visible: :all)
       label = field_wrapper.find('div[data-slot="label"]', visible: :all)
       value = field_wrapper.find('div[data-slot="value"]', visible: :all)
 

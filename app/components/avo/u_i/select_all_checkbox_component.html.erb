@@ -1,0 +1,10 @@
+<%= render Avo::UI::CheckboxComponent.new(
+  checked: @checked,
+  indeterminate: @indeterminate,
+  disabled: @disabled,
+  name: t("avo.select_all"),
+  title: t("avo.select_all"),
+  data: computed_data,
+  classes: @classes
+) %>
+

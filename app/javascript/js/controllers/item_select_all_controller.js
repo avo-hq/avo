@@ -21,23 +21,27 @@ export default class extends Controller {
     this.selectedResourcesObserver.start()
   }
 
+  setSelectAllCheckboxState({ checked, indeterminate }) {
+    this.checkboxTarget.checked = checked
+    this.checkboxTarget.indeterminate = indeterminate
+  }
+
   elementAttributeValueChanged(element) {
     // Check if anything is selected.
     const selectedResources = JSON.parse(element.dataset.selectedResources)
     // If all are selected, mark the checkbox as checked.
     const rowCount = this.element.querySelectorAll('tbody tr').length
     // Reset the checkbox
-    this.checkboxTarget.indeterminate = false
-    this.checkboxTarget.checked = false
+    this.setSelectAllCheckboxState({ checked: false, indeterminate: false })
 
     if (selectedResources.length === rowCount) {
-      this.checkboxTarget.checked = true
+      this.setSelectAllCheckboxState({ checked: true, indeterminate: false })
     } else if (selectedResources.length === 0) {
       // If nothing is selected, mark the checkbox as unchecked.
-      this.checkboxTarget.checked = false
+      this.setSelectAllCheckboxState({ checked: false, indeterminate: false })
     } else if (selectedResources.length > 0 && selectedResources.length < rowCount) {
       // If some are selected, mark the checkbox as indeterminate.
-      this.checkboxTarget.indeterminate = true
+      this.setSelectAllCheckboxState({ checked: false, indeterminate: true })
     }
   }
 
@@ -63,7 +67,7 @@ export default class extends Controller {
     let allSelected = true
     // eslint-disable-next-line no-return-assign
     this.itemCheckboxTargets.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
-    this.checkboxTarget.checked = allSelected
+    this.setSelectAllCheckboxState({ checked: allSelected, indeterminate: false })
 
     if (this.selectAllEnabled()) {
       this.selectAllOverlay(allSelected)

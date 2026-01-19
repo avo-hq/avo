@@ -462,7 +462,8 @@ RSpec.describe "Actions", type: :system do
     it "record is assigned when 1 selected from index view" do
       visit avo.resources_fish_index_path
 
-      find("tr[data-resource-name=fish][data-record-id='#{fish.id}'] input[type=checkbox]").click
+      input = find("tr[data-resource-name=fish][data-record-id='#{fish.id}'] input[type=checkbox]", visible: :all)
+      input.trigger("click")
 
       open_panel_action(action_name: "Release fish")
       expect(page).to have_text "Are you sure you want to release the #{fish.name}?"
@@ -485,7 +486,8 @@ RSpec.describe "Actions", type: :system do
       within grid_component do
         expect(page).to have_text "Published: ❌"
         grid_component.hover
-        find("input[type=checkbox]").click
+        input = find("input[type=checkbox]", visible: :all)
+        input.trigger("click")
       end
 
       open_panel_action(action_name: "Toggle post published")

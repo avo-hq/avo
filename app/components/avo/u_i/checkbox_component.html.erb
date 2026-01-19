@@ -1,0 +1,40 @@
+<%= content_tag :label, class: class_names(
+  "checkbox",
+  @classes,
+  {
+    "checkbox--indeterminate": indeterminate?,
+    "checkbox--disabled": @disabled,
+  }
+) do %>
+  <div class="checkbox__input-wrapper">
+    <%= tag.input(
+      type: "checkbox",
+      id: @id,
+      class: "checkbox__input",
+      name: @name,
+      value: @value,
+      checked: state == :checked,
+      disabled: @disabled,
+      title: @title,
+      autocomplete: @autocomplete,
+      data: computed_data,
+      aria: {
+        checked: (indeterminate? ? "mixed" : nil)
+      }
+    ) %>
+    <div class="checkbox__box">
+      <%= svg "avo/checkbox-check", class: "checkbox__icon checkbox__icon--checked" %>
+      <%= svg "avo/checkbox-minus", class: "checkbox__icon checkbox__icon--indeterminate" %>
+    </div>
+  </div>
+  <% if @label.present? || @description.present? %>
+    <div class="checkbox__content">
+      <% if @label.present? %>
+        <span class="checkbox__label"><%= @label %></span>
+      <% end %>
+      <% if @description.present? %>
+        <span class="checkbox__description"><%= @description %></span>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

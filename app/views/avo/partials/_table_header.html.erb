@@ -1,21 +1,9 @@
 <thead data-component-name="avo/partials/table_header" class="panel__header table-header-group">
   <% if resource.record_selector %>
     <th class="rounded-lg" data-control="item-select-th">
-      <%= content_tag :label, name: t("avo.select_all") do %>
-        <%= content_tag :span, t("avo.select_all"), class: 'sr-only' %>
-
-        <%= tag :input,
-          type: "checkbox",
-          name: t("avo.select_all"),
-          title: t("avo.select_all"),
-          autocomplete: :off,
-          class: "mx-3 rounded-sm w-4 h-4 checked:bg-primary-400 focus:checked:!bg-primary-400",
-          data: {
-            action: "input->item-select-all#toggle",
-            item_select_all_target: "checkbox",
-            tippy: "tooltip",
-          } %>
-      <% end %>
+      <div class="flex items-center justify-center">
+        <%= render Avo::UI::SelectAllCheckboxComponent.new %>
+      </div>
     </th>
   <% end %>
 

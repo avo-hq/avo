@@ -39,6 +39,11 @@
   --color-accent: var(--color-avo-neutral-800);
   --color-accent-content: var(--color-avo-neutral-950);
   --color-accent-foreground: var(--color-white);
+
+
+  /* TODO:: to check how should this be handled */
+  /* this is a color for checkbox box-shadow */
+  --color-black-4: rgba(0, 0, 0, 0.04);
 }
 
 /* Dark theme */

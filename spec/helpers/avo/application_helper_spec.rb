@@ -31,8 +31,10 @@ RSpec.describe Avo::ApplicationHelper do
     end
 
     it "starts the list of colors again if index is higher than the amount of defined colors" do
-      expect(helper.chart_color(20)).to eq(Avo.configuration.branding.chart_colors[0])
-      expect(helper.chart_color(55)).to eq(Avo.configuration.branding.chart_colors[15])
+      colors = Avo.configuration.branding.chart_colors
+
+      expect(helper.chart_color(colors.length)).to eq(colors[0])
+      expect(helper.chart_color(55)).to eq(colors[55 % colors.length])
     end
   end
 end

@@ -9,16 +9,17 @@ RSpec.describe "Filters", type: :system do
 
     it "allows selecting and deselecting all" do
       visit url
-      expect(page.all("input[name='Select item']").any?(&:checked?)).to be false
+      expect(page.all("input[name='Select item']", visible: :all).any?(&:checked?)).to be false
 
-      check("Select all")
+      check_select_all
 
-      expect(page.all("input[name='Select item']").all?(&:checked?)).to be true
+      expect(page.all("input[name='Select item']", visible: :all).all?(&:checked?)).to be true
 
-      uncheck("Select item", match: :first)
-      expect(page.all("input[name='Select item']").map(&:checked?)).to match_array([false, true])
+      first_item = find("input[name='Select item']", match: :first, visible: :all)
+      first_item.trigger("click")
+      expect(page.all("input[name='Select item']", visible: :all).map(&:checked?)).to match_array([false, true])
 
-      expect(page.find("input[name='Select all']")).not_to be_checked
+      expect(page.find("input[name='Select all']", visible: :all)).not_to be_checked
     end
   end
 end

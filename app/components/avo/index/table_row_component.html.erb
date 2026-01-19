@@ -17,8 +17,11 @@
   } do %>
   <% if @resource.record_selector %>
     <td class="item-selector-cell w-10">
-      <div class="flex h-full justify-center">
-        <%= render Avo::RowSelectorComponent.new floating: false, index: @index, checked: @row_selector_checked %>
+      <div class="flex h-full justify-center items-center">
+        <%= render Avo::UI::RowSelectorCheckboxComponent.new(
+          checked: @row_selector_checked,
+          index: @index
+        ) %>
       </div>
     </td>
   <% end %>

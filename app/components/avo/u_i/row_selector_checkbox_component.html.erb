@@ -1,0 +1,12 @@
+<%= render Avo::UI::CheckboxComponent.new(
+  checked: @checked,
+  disabled: @disabled,
+  name: t("avo.select_item"),
+  title: t("avo.select_item"),
+  classes: class_names(
+    "mx-3",
+    @classes,
+    "checkbox--floating": @floating
+  ),
+  data: computed_data,
+) %>

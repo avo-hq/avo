@@ -237,7 +237,10 @@ module Avo
     end
 
     def check_select_all
-      find("input[type='checkbox'][name='Select all'][data-action='input->item-select-all#toggle']").set(true)
+      input = find("input[type='checkbox'][name='Select all'][data-action='input->item-select-all#toggle']", visible: :all)
+      # The native checkbox is visually hidden (opacity: 0) in the new CheckboxComponent.
+      # Use `trigger` to avoid overlap issues with Cuprite click coordinates.
+      input.trigger("click")
     end
 
     def toggle_collapsable(section)

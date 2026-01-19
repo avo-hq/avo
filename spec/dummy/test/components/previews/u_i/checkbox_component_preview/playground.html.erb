@@ -1,0 +1,50 @@
+<!-- spec/dummy/test/components/previews/u_i/checkbox_component_preview/playground.html.erb -->
+<div class="p-8 bg-white">
+  <div class="max-w-md mx-auto">
+    <h3 class="text-lg font-semibold text-gray-900 mb-6">Interactive Checkbox Playground</h3>
+
+    <div class="mb-8">
+      <%= render Avo::UI::CheckboxComponent.new(
+        checked: checked,
+        indeterminate: indeterminate,
+        disabled: disabled,
+        label: label.present? ? label : nil,
+        description: description.present? ? description : nil
+      ) %>
+    </div>
+
+    <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+      <h4 class="text-sm font-semibold text-gray-700 mb-2">Current State:</h4>
+      <ul class="text-sm text-gray-600 space-y-1">
+        <li><strong>Checked:</strong> <%= checked %></li>
+        <li><strong>Indeterminate:</strong> <%= indeterminate %></li>
+        <li><strong>Disabled:</strong> <%= disabled %></li>
+        <li><strong>Label:</strong> <%= label.present? ? label : "None" %></li>
+        <li><strong>Description:</strong> <%= description.present? ? description : "None" %></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Set indeterminate state for checkboxes with data-indeterminate="true"
+  // This runs after Lookbook updates the component
+  function setIndeterminateState() {
+    document.querySelectorAll('input[type="checkbox"][data-indeterminate="true"]').forEach(checkbox => {
+      checkbox.indeterminate = true
+    })
+  }
+
+  // Run on initial load
+  setIndeterminateState()
+
+  // Run after Lookbook updates (when parameters change)
+  if (window.Lookbook) {
+    // Listen for Lookbook's update events
+    document.addEventListener('lookbook:update', setIndeterminateState)
+  }
+
+  // Fallback: observe for changes
+  const observer = new MutationObserver(setIndeterminateState)
+  observer.observe(document.body, { childList: true, subtree: true })
+</script>

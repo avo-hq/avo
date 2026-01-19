@@ -11,7 +11,8 @@ RSpec.describe "Multiple Actions Flux", type: :system do
         expect(page).to have_text "Spec City"
         expect(page).to have_text "123.456"
 
-        find(:css, 'input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', match: :first).set(true)
+        input = find(:css, 'input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', match: :first, visible: :all)
+        input.trigger("click")
 
         open_panel_action(action_name: "Update")
 

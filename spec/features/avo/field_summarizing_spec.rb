@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.feature "Field Summarizing", type: :system do
-  before_all do
+  before do
     create_list :project, 3, status: :rejected
     create_list :project, 1, status: :closed
     create_list :project, 4, status: :loading

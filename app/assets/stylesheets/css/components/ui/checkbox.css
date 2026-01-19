@@ -1,0 +1,112 @@
+/* Checkbox Component - Based on Figma Design System */
+/* BEM Methodology: .checkbox (block), .checkbox__box, .checkbox__label (elements), .checkbox--modifier (modifiers) */
+
+/* ==========================================================================
+   Base Structure
+   ========================================================================== */
+
+.checkbox {
+  @apply inline-flex items-start gap-2 cursor-pointer;
+}
+
+.checkbox__input-wrapper {
+  @apply relative shrink-0 size-4;
+}
+
+.checkbox__input {
+  /* Keep the native checkbox for a11y + form submits, but visually hide it. */
+  @apply absolute inset-0 z-20 opacity-0 cursor-pointer pointer-events-auto;
+}
+
+.checkbox__box {
+  @apply flex items-center justify-center size-4 rounded-sm border-1 transition-colors transition-shadow duration-150 box-border;
+  border-color: var(--color-tertiary);
+  background-color: var(--color-primary);
+  box-shadow: 0 1px 2px 0 var(--color-black-4);
+}
+
+.checkbox__icon {
+  @apply shrink-0 hidden;
+}
+
+.checkbox__content {
+  @apply flex flex-col;
+}
+
+.checkbox__label {
+  @apply text-sm leading-5 font-normal self-start text-start;
+  color: var(--color-content);
+}
+
+.checkbox__description {
+  @apply text-sm leading-5 font-normal self-start text-start;
+  color: var(--color-content-secondary);
+}
+
+/* ==========================================================================
+   State: Checked & Indeterminate
+   ========================================================================== */
+
+.checkbox__input:checked ~ .checkbox__box .checkbox__icon--checked,
+.checkbox__input:indeterminate ~ .checkbox__box .checkbox__icon--indeterminate {
+  @apply block;
+}
+
+.checkbox__input:checked ~ .checkbox__box,
+.checkbox__input:indeterminate ~ .checkbox__box,
+.checkbox--indeterminate .checkbox__box {
+  @apply bg-accent-content border-accent-content;
+  color: var(--color-accent-foreground);
+}
+
+/* ==========================================================================
+   State: Focus & Hover
+   ========================================================================== */
+
+/* Focus ring */
+.checkbox__input:focus-visible + .checkbox__box {
+  @apply ring-2 ring-offset-2 ring-accent-content;
+}
+
+/* Hover ring and text color */
+.checkbox:not(.checkbox--disabled):hover .checkbox__box {
+  @apply ring-2 ring-offset-2 ring-accent-content;
+  color: var(--color-accent-foreground);
+}
+
+/* Maintain checked/indeterminate appearance on hover */
+.checkbox__input:checked:not(:disabled) ~ .checkbox__box,
+.checkbox__input:indeterminate:not(:disabled) ~ .checkbox__box {
+  @apply border-accent-content;
+  color: var(--color-accent-foreground);
+}
+
+/* ==========================================================================
+   State: Disabled
+   ========================================================================== */
+
+.checkbox--disabled {
+  @apply cursor-not-allowed opacity-60;
+  mix-blend-mode: luminosity;
+}
+
+.checkbox--disabled .checkbox__input,
+.checkbox--disabled .checkbox__box,
+.checkbox--disabled .checkbox__label,
+.checkbox--disabled .checkbox__description {
+  @apply cursor-not-allowed;
+}
+
+/* Floating row selector checkbox (grid overlay behavior) */
+.checkbox--floating {
+  @apply hidden absolute inset-auto start-0 mt-3 z-10;
+}
+
+.group:hover .checkbox--floating {
+  @apply inline-flex;
+}
+
+/* Keep visible when checked (label contains a checked input) */
+.checkbox--floating:has(.checkbox__input:checked) {
+  @apply inline-flex;
+}

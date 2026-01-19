@@ -150,7 +150,8 @@ RSpec.describe "SelectAll", type: :system do
 end
 
 def uncheck_first_record
-  find(:css, 'input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', match: :first).set(false)
+  input = find(:css, 'input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', match: :first, visible: :all)
+  input.trigger("click")
   expect(page).not_to have_text info_string
 end
 
