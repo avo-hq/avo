@@ -16,7 +16,7 @@ module Avo
       end
 
       def name_override
-        :ID
+        "ID"
       end
     end
   end
