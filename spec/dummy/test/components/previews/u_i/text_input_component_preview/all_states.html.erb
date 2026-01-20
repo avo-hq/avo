@@ -1,0 +1,15 @@
+<div class="p-8 space-y-8 bg-white">
+  <h3 class="text-lg font-semibold text-gray-900">Text input — all states</h3>
+
+  <div class="grid grid-cols-2 gap-8">
+    <div class="space-y-4 p-6 rounded-lg">
+      <div class="space-y-4">
+        <%= render Avo::UI::TextInputComponent.new(label: "Label", hint: "Help text enabled", placeholder: "Placeholder enabled", value: "", type: "text") %>
+        <%= render Avo::UI::TextInputComponent.new(label: "Label", value: "Value error", error: true, error_message: "Error message", placeholder: "Placeholder error", type: "text") %>
+        <%= render Avo::UI::TextInputComponent.new(label: "Label", value: "Value loading", hint: "Help text loading", loading: true, placeholder: "Placeholder loading", type: "text") %>
+        <%= render Avo::UI::TextInputComponent.new(label: "Label", value: "Value read only", readonly: true, placeholder: "Placeholder read only", type: "text") %>
+        <%= render Avo::UI::TextInputComponent.new(label: "Label", hint: "Help text disabled", disabled: true, placeholder: "Placeholder disabled", type: "text") %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -34,6 +34,7 @@
   --color-primary: var(--color-white);
   --color-secondary: var(--color-avo-neutral-50);
   --color-tertiary: var(--color-avo-neutral-100);
+  --color-border-tertiary: var(--color-avo-neutral-50);
   --color-content: var(--color-avo-neutral-950);
   --color-content-secondary: var(--color-avo-neutral-500);
 

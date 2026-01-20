@@ -1,0 +1,35 @@
+<%= content_tag :div, class: computed_classes do %>
+  <div class="text-input__field-wrapper">
+    <%= tag.input(
+      type: @type,
+      id: @id,
+      name: @name,
+      value: @value,
+      placeholder: @placeholder.presence || @label,
+      autocomplete: @autocomplete,
+      disabled: @disabled,
+      readonly: @readonly,
+      class: "text-input__field",
+      aria: {
+        label: @aria_label.presence,
+        invalid: @error || nil
+      }.compact,
+      data: @data
+    ) %>
+
+    <% if @loading %>
+      <span class="text-input__spinner" aria-hidden="true"></span>
+    <% end %>
+  </div>
+
+  <% if show_hint? %>
+    <span class="text-input__hint"><%= @hint %></span>
+  <% end %>
+
+  <% if @error && @error_message.present? %>
+    <span class="text-input__error">
+      <%= svg("tabler/outline/circle-letter-x", class: "text-input__error-icon") %>
+      <span class="text-input__error-text"><%= @error_message %></span>
+    </span>
+  <% end %>
+<% end %>

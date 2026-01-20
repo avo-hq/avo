@@ -1,0 +1,137 @@
+/* Text Input Component - Based on Figma Design System */
+/* BEM Methodology: .text-input (block), .text-input__* (elements), .text-input--modifier (modifiers) */
+
+/* ==========================================================================
+Base Structure
+========================================================================== */
+
+.text-input {
+  @apply flex flex-col items-start gap-2 text-xs leading-4 font-normal;
+
+}
+
+.text-input__field-wrapper {
+  @apply relative w-full;
+}
+
+.text-input__field {
+  @apply w-full h-8 px-2 py-1 flex items-center justify-center gap-1 self-stretch rounded-lg border-1 text-sm font-normal leading-5;
+
+  border-color: var(--color-tertiary);
+  background-color: var(--color-primary);
+  box-shadow: var(--box-shadow);
+  color: var(--color-content);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-input__field::placeholder {
+  @apply leading-5 text-sm font-normal;
+
+  color: var(--color-content-secondary);
+  overflow: hidden;
+}
+
+.text-input__field:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.text-input__hint {
+  color: var(--color-content-secondary);
+}
+
+.text-input__error {
+  @apply inline-flex items-center gap-0.5;
+  color: var(--color-danger-content);
+}
+
+.text-input__error-icon {
+  @apply shrink-0 size-3;
+}
+
+.text-input__error-text {
+  color: var(--color-danger-content);
+}
+
+.text-input__spinner {
+  @apply absolute right-2 top-1/2 border-2 w-4 h-4 rounded-full;
+
+  border-color: var(--color-content);
+  border-right-color: var(--color-tertiary);
+  transform: translateY(-50%);
+  transform-origin: center center;
+  animation: text-input-spin 0.9s linear infinite;
+}
+
+@keyframes text-input-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+
+/* ==========================================================================
+State: Hover & Focus
+========================================================================== */
+
+.text-input:not(.text-input--disabled):hover .text-input__field {
+  background: var(--color-secondary);
+}
+
+.text-input__field:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-primary), 0 0 0 4px var(--color-content);
+}
+
+/* ==========================================================================
+State: Pressed/Active & Typing
+========================================================================== */
+
+.text-input__field:active {
+  box-shadow: 0 0 0 2px var(--color-border-tertiary);
+}
+
+/* ==========================================================================
+State: Loading
+========================================================================== */
+
+.text-input--loading .text-input__field {
+  padding-right: calc(var(--spacing-2, 8px) + 14px + var(--spacing-1, 4px));
+}
+
+/* ==========================================================================
+State: Error
+========================================================================== */
+
+.text-input--error .text-input__field {
+  box-shadow:
+    0 0 5px 1px var(--color-red-600),
+    0 0 0 1px var(--color-red-600),
+    0 0 0 3px var(--color-red-300);
+}
+
+/* ==========================================================================
+State: Disabled
+========================================================================== */
+
+.text-input--disabled {
+  @apply opacity-60 cursor-not-allowed;
+  mix-blend-mode: luminosity;
+}
+
+.text-input--disabled .text-input__field {
+  @apply cursor-not-allowed;
+}
+
+/* ==========================================================================
+State: Read Only
+========================================================================== */
+
+.text-input--read-only .text-input__field {
+  @apply border-0 bg-transparent shadow-none cursor-default;
+  color: var(--color-content);
+}
+
+.text-input--read-only .text-input__field:focus-visible {
+  box-shadow: none;
+}
