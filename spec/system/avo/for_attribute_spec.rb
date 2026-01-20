@@ -48,6 +48,12 @@ RSpec.feature "for_attribute option", type: :system do
     end
 
     it "attach" do
+      # Ensure we have a review with an even ID for the "Attach even review" scope
+      # The even_reviews field filters by id % 2 = 0, so we need an even ID
+      # Create an additional review to ensure we have at least one with an even ID
+      additional_review = create(:review, user: user)
+      even_review = [review, additional_review].find { |r| r.id.even? }
+
       visit avo.resources_project_path(project)
 
       scroll_to find('turbo-frame[id="has_many_field_show_reviews"]')
@@ -57,7 +63,7 @@ RSpec.feature "for_attribute option", type: :system do
       expect(page).to have_text "Choose even review"
       expect(page).to have_select "fields_related_id", selected: "Choose an option"
 
-      select review.tiny_name, from: "fields_related_id"
+      select even_review.tiny_name, from: "fields_related_id"
 
       expect {
         within '[aria-modal="true"]' do
