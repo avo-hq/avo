@@ -7,8 +7,13 @@
       value: @value,
       placeholder: @placeholder.presence || @label,
       autocomplete: @autocomplete,
+      autofocus: @autofocus,
       disabled: @disabled,
       readonly: @readonly,
+      min: @min,
+      max: @max,
+      step: @step,
+      style: @style,
       class: "text-input__field",
       aria: {
         label: @aria_label.presence,

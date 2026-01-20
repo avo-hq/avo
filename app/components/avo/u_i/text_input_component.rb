@@ -11,6 +11,11 @@ class Avo::UI::TextInputComponent < Avo::BaseComponent
   prop :type, default: "text"
   prop :data, default: -> { {} }
   prop :placeholder
+  prop :autofocus, default: false
+  prop :style
+  prop :min
+  prop :max
+  prop :step
   prop :disabled, default: false
   prop :readonly, default: false
   prop :hint
