@@ -56,7 +56,7 @@ Base Structure
 }
 
 .text-input__spinner {
-  @apply absolute right-2 top-1/2 border-2 w-4 h-4 rounded-full;
+  @apply absolute end-2 top-1/2 border-2 w-4 h-4 rounded-full;
 
   border-color: var(--color-content);
   border-right-color: var(--color-tertiary);
@@ -96,7 +96,7 @@ State: Loading
 ========================================================================== */
 
 .text-input--loading .text-input__field {
-  padding-right: calc(var(--spacing-2, 8px) + 14px + var(--spacing-1, 4px));
+  @apply pe-[26px];
 }
 
 /* ==========================================================================
