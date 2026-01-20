@@ -7,6 +7,6 @@ class Avo::Fields::Common::NestedFieldComponent < Avo::BaseComponent
   prop :kwargs, kind: :**
 
   def render?
-    Avo.plugin_manager.installed?("avo-advanced")
+    Avo.plugin_manager.installed?("avo-nested")
   end
 end

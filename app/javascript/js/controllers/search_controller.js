@@ -232,7 +232,7 @@ export default class extends Controller {
 
     return url.segment([window.Avo.configuration.root_path, ...this.searchSegments()])
       .search(this.searchParams(encodeURIComponent(query)))
-      .readable().toString()
+      .toString()
   }
 
   searchSegments() {
