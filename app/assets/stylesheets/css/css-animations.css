@@ -18,7 +18,6 @@
 
 /* Hidden state - CSS handles the leave animation */
 .css-animate-slide-down[hidden] {
-  display: block;
   opacity: 0;
   transform: translateY(-0.25rem);
   transition:
@@ -44,7 +43,6 @@
 }
 
 .css-animate-slide-up[hidden] {
-  display: block;
   opacity: 0;
   transform: translateY(0.75rem);
   transition:
