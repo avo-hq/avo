@@ -1,0 +1,20 @@
+<div class="p-8 space-y-8 bg-white">
+  <h3 class="text-lg font-semibold text-gray-900">Radio button — all states</h3>
+
+  <div class="space-y-4">
+    <div class="grid grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <div class="flex gap-6">
+          <%= render Avo::UI::RadioButtonComponent.new(label: "Label", description: "Description", checked: true, disabled: false, name: "light-enabled") %>
+          <%= render Avo::UI::RadioButtonComponent.new(label: "Label", description: "Description", checked: false, disabled: false, name: "light-enabled") %>
+        </div>
+
+        <div class="flex gap-6">
+          <%= render Avo::UI::RadioButtonComponent.new(label: "Label", description: "Description", checked: true, disabled: true, name: "light-disabled") %>
+          <%= render Avo::UI::RadioButtonComponent.new(label: "Label", description: "Description", checked: false, disabled: true, name: "light-disabled") %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

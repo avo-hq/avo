@@ -5,14 +5,14 @@
   @apply absolute end-0 top-full z-10 mt-2 flex rounded-lg border-1;
   border-color: var(--color-tertiary);
   background: var(--color-secondary);
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow-card);
 }
 
 .dropdown-menu__list {
   @apply flex flex-col items-stretch w-full m-0.5 p-1 rounded-lg border-1 gap-2;
   border-color: var(--color-tertiary);
   background: var(--color-primary);
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--box-shadow-card);
 }
 
 .dropdown-menu__item {
