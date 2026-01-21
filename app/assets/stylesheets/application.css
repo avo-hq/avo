@@ -42,6 +42,7 @@
 
   --breakpoint-xs: 30rem;
 
+  /* Tiny text size originally added for discreet information */
   --text-tiny: 0.625rem;
 }
 
