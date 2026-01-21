@@ -18,6 +18,8 @@ Don't implement a component if the Figma MCP is not available and fails and aler
 - Use clean CSS and convert the variables to Tailwind CSS `@apply` statements where possible.
 - add the new component to the `src/input.css` file.
 - use the BEMCSS methodology for the component classes.
+- when the width and height are the same, use the `size-` class instead of `width-` and `height-`.
+- don't use `left`/`right` modifiers as we need to support RTL. Use `start`/`end` instead. Same for short names like `ml`, `mr`, `pl`, `pr`, `left`, `right`, etc.
 
 #### Figma
 

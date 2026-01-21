@@ -114,7 +114,7 @@ class Avo::Resources::User < Avo::BaseResource
     card do
       test_field("Inside main panel")
       field :id, as: :id, link_to_record: true, sortable: false
-      field :email, as: :gravatar, link_to_record: true, only_on: :index, name: :gravatar
+      field :email, as: :gravatar, link_to_record: true, only_on: :index, name: :Gravatar
       with_options as: :text, only_on: :index do
         field :first_name, placeholder: "John"
         field :last_name, placeholder: "Doe", filterable: true
