@@ -28,8 +28,8 @@
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <%= render partial: "avo/modal/size_selector", locals: { type: 'width' } %>
-                <%= render partial: "avo/modal/size_selector", locals: { type: 'height' } %>
+                <%= render partial: "avo/modal/size_selector", locals: { type: 'width', width: @width, height: @height } %>
+                <%= render partial: "avo/modal/size_selector", locals: { type: 'height', width: @width, height: @height } %>
                 <% if @show_close_button %>
                   <button class="modal__close-button relative shrink-0 size-5" data-action="click->modal#closeModal" aria-label="<%= t('avo.close') %>">
                     <%= helpers.svg "heroicons/outline/x-mark", class: "size-5 text-content" %>

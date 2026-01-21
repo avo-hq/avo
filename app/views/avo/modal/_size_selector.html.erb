@@ -5,7 +5,7 @@
   selector_class = is_width ? "modal__width-selector" : "modal__height-selector"
   aria_label = is_width ? "Change modal width" : "Change modal height"
   controller_action = is_width ? "click->modal-size#changeWidth" : "click->modal-size#changeHeight"
-  current_value = is_width ? @width : @height
+  current_value = is_width ? local_assigns[:width] : local_assigns[:height]
   options = is_width ? %w[sm md lg xl 2xl 3xl 4xl full] : %w[auto sm md lg xl 2xl 3xl 4xl full]
 %>
 <div class="relative"

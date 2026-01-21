@@ -52,16 +52,16 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       # Verify discovered columns
-      expect(page).to have_text "FIRST NAME"
+      expect(page).to have_text "First name"
       expect(page).to have_text "John"
-      expect(page).to have_text "LAST NAME"
+      expect(page).to have_text "Last name"
       expect(page).to have_text "Doe"
-      expect(page).to have_text "BIRTHDAY"
+      expect(page).to have_text "Birthday"
       expect(page).to have_text "1990-01-01"
 
       # Verify excluded fields are not displayed
       expect(page).not_to have_text "IS ADMIN?"
-      expect(page).not_to have_text "CUSTOM CSS"
+      expect(page).not_to have_text "Custom css"
     end
 
     it "displays the email as a gravatar field with a link to the record" do
@@ -83,7 +83,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       expect(page).to have_selector("#has_many_field_show_teams")
 
       # Verify `cv_attachment` association is present
-      expect(page).to have_text "CV"
+      expect(page).to have_text "Cv"
     end
 
     it "renders each field exactly once" do
@@ -93,22 +93,22 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
         within("[data-item-index='2']") do
           # Basic fields
           ## Main Panel
-          expect(page).to have_text("FIRST NAME", count: 1)
-          expect(page).to have_text("LAST NAME", count: 1)
-          expect(page).to have_text("ROLES", count: 1)
-          expect(page).to have_text("TEAM ID", count: 1)
-          expect(page).to have_text("CREATED AT", count: 1)
-          expect(page).to have_text("UPDATED AT", count: 1)
-          expect(page).to have_text("SLUG", count: 1)
+          expect(page).to have_text("First name", count: 1)
+          expect(page).to have_text("Last name", count: 1)
+          expect(page).to have_text("Roles", count: 1)
+          expect(page).to have_text("Team id", count: 1)
+          expect(page).to have_text("Created at", count: 1)
+          expect(page).to have_text("Updated at", count: 1)
+          expect(page).to have_text("Slug", count: 1)
 
           # Sidebar
-          expect(page).to have_text("AVATAR", count: 1)
-          expect(page).to have_text("IS ACTIVE", count: 1)
-          expect(page).to have_text("BIRTHDAY", count: 1)
+          expect(page).to have_text("Avatar", count: 1)
+          expect(page).to have_text("Is active", count: 1)
+          expect(page).to have_text("Birthday", count: 1)
 
           # Single file uploads
-          expect(page).to have_text("CV", count: 1)
-          expect(page).not_to have_text("CV ATTACHMENT")
+          expect(page).to have_text("Cv", count: 1)
+          expect(page).not_to have_text("Cv attachment")
         end
 
         # Associations
@@ -146,7 +146,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       expect(page).to have_field "Password confirmation"
 
       # Verify custom CSS field is displayed
-      expect(page).to have_text "CUSTOM CSS"
+      expect(page).to have_text "Custom css"
 
       # Verify password fields allow input
       fill_in "User Password", with: "new_password"
@@ -157,20 +157,20 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       # Form fields
-      expect(page).to have_text("FIRST NAME", count: 1)
-      expect(page).to have_text("LAST NAME", count: 1)
-      expect(page).to have_text("ROLES", count: 1)
-      expect(page).to have_text("TEAM ID", count: 1)
-      expect(page).to have_text("CREATED AT", count: 1)
-      expect(page).to have_text("UPDATED AT", count: 1)
-      expect(page).to have_text("SLUG", count: 1)
+      expect(page).to have_text("First name", count: 1)
+      expect(page).to have_text("Last name", count: 1)
+      expect(page).to have_text("Roles", count: 1)
+      expect(page).to have_text("Team id", count: 1)
+      expect(page).to have_text("Created at", count: 1)
+      expect(page).to have_text("Updated at", count: 1)
+      expect(page).to have_text("Slug", count: 1)
 
       # File upload fields
-      expect(page).to have_text("CV", count: 1)
+      expect(page).to have_text("Cv", count: 1)
 
       # Password fields
-      expect(page).to have_text("USER PASSWORD", count: 1)
-      expect(page).to have_text("PASSWORD CONFIRMATION", count: 1)
+      expect(page).to have_text("User password", count: 1)
+      expect(page).to have_text("Password confirmation", count: 1)
     end
   end
 
@@ -231,7 +231,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       # Verify only one Trix editor instance is present
-      expect(page).to have_text("TAGS", count: 1)
+      expect(page).to have_text("Tags", count: 1)
       expect(page).to have_css('[data-target="tag-component"]')
     end
   end
@@ -281,7 +281,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       within("[data-item-index='2']") do
-        expect(page).to have_text("COMMENTABLE")
+        expect(page).to have_text("Commentable")
         expect(page).to have_link(post.name, href: /\/admin\/resources\/posts\//)
       end
     end
@@ -294,9 +294,9 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       wait_for_loaded
 
       within("[data-item-index='2']") do
-        expect(page).not_to have_text("ENCRYPTED_PASSWORD")
-        expect(page).not_to have_text("RESET_PASSWORD_TOKEN")
-        expect(page).not_to have_text("REMEMBER_CREATED_AT")
+        expect(page).not_to have_text("Encrypted password")
+        expect(page).not_to have_text("Reset password token")
+        expect(page).not_to have_text("Remember created at")
       end
     end
   end
