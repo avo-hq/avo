@@ -29,7 +29,7 @@
       <% options.each do |size| %>
         <button
           type="button"
-          class="px-3 py-2 text-sm text-content hover:bg-primary-50 text-left <%= 'bg-primary-50 font-medium' if current_value.to_s == size %>"
+          class="px-3 py-2 text-sm text-content hover:bg-primary-50 text-start <%= 'bg-primary-50 font-medium' if current_value.to_s == size %>"
           <% if is_width %>
             data-width="<%= size %>"
           <% else %>

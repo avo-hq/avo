@@ -1,16 +1,21 @@
 <%= content_tag :td,
-  class: "group/clipboard min-h-[3rem] px-3 leading-tight whitespace-nowrap h-full text-slate-800 text-base #{classes}",
+  class: class_names("group/clipboard px-2 leading-tight whitespace-nowrap h-full text-content text-sm",
+    @classes,
+    @field.get_html(:classes, view: @view, element: :wrapper),
+    {
+      "py-4": !@flush
+    }),
   data: {
     field_id: @field.id,
     field_type: @field.type,
     **stimulus_attributes
   },
-  style: style do %>
+  style: @field.get_html(:style, view: @view, element: :wrapper) do %>
   <% if render_dash? %>
     —
   <% else %>
     <% if @center_content %>
-      <div class="flex items-center justify-center">
+      <div class="flex items-center justify-center leading-1">
         <%= content %>
       </div>
     <% else %>

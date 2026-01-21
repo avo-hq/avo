@@ -41,15 +41,3 @@
     @apply pt-0 px-4 w-full;
   }
 }
-
-
-/* Dividers between side-by-side fields */
-.field-wrapper:not(.w-full) + .field-wrapper:not(.w-full) {
-  /* @apply md:border-l md:border-gray-200 md:border-t-0; */
-  /* @apply md:border-b-0; */
-
-  /* Remove left padding from content to maintain alignment */
-  .field-wrapper__content {
-    /* @apply md:pl-0; */
-  }
-}
