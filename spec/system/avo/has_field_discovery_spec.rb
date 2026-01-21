@@ -169,7 +169,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
       expect(page).to have_text("Cv", count: 1)
 
       # Password fields
-      expect(page).to have_text("User password", count: 1)
+      expect(page).to have_text("User Password", count: 1)
       expect(page).to have_text("Password confirmation", count: 1)
     end
   end

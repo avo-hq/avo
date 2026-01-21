@@ -1,4 +1,3 @@
-# ENV["testing_methods"] = "1"
 class Avo::Resources::User < Avo::BaseResource
   self.title = -> {
     record.name

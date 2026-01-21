@@ -242,7 +242,7 @@ RSpec.describe "Tabs", type: :system do
     field_wrapper = find('div[data-field-id="company"]')
     label = field_wrapper.find('div[data-slot="label"]')
     value = field_wrapper.find('div[data-slot="value"]')
-    expect(label.text.strip).to eq("COMPANY")
+    expect(label.text.strip).to eq("Company")
     expect(value.text.strip).to eq("TechCorp Inc.")
 
     # Expect text from preferences and employment tabs (not lazy loaded) to be visible

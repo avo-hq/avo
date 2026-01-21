@@ -10,35 +10,35 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
     ENV["testing_methods"] = "1"
     visit "/admin/resources/users/#{user.to_param}"
 
-    # # Finds heading test field
-    # find("[data-item-index='1'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
+    # Finds heading test field
+    find("[data-item-index='1'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
 
-    # # Finds main panel
-    # find("[data-item-index='3']")
-    # find("[data-item-index='3'] [data-field-id='id'][data-resource-show-target='idIdWrapper']")
+    # Finds main panel
+    find("[data-item-index='3']")
+    find("[data-item-index='3'] [data-field-id='id'][data-resource-show-target='idIdWrapper']")
 
-    # # Verify that Heading comes before main panel
-    # assert_selector(:xpath, "//*[contains(@data-item-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-item-index, '2')]")
+    # Verify that Heading comes before main panel
+    assert_selector(:xpath, "//*[contains(@data-item-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-item-index, '2')]")
 
-    # # Find inside main panel test field
-    # show_field_wrapper(id: "Inside main panel")
+    # Find inside main panel test field
+    show_field_wrapper(id: "Inside main panel")
 
-    # # Inside main panel
-    # within('[data-item-index="3"]') do
-    #   # Find first test sidebar
-    #   within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
-    #     expect(page).to have_content("Sidebar tool")
+    # Inside main panel
+    within('[data-item-index="3"]') do
+      # Find first test sidebar
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
+        expect(page).to have_content("Sidebar tool")
 
-    #     # Find inside sidebar test field
-    #     find("[data-field-id='Inside test_sidebar'][data-resource-show-target='inside testSidebarTextWrapper']")
-    #   end
+        # Find inside sidebar test field
+        find("[data-field-id='Inside test_sidebar'][data-resource-show-target='inside testSidebarTextWrapper']")
+      end
 
-    #   # Find user sidebar
-    #   within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
-    #     # Find inside main panel sidebar test field
-    #     find("[data-field-id='Inside first_panel_sidebar'][data-resource-show-target='inside firstPanelSidebarTextWrapper']")
-    #   end
-    # end
+      # Find user sidebar
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
+        # Find inside main panel sidebar test field
+        find("[data-field-id='Inside first_panel_sidebar'][data-resource-show-target='inside firstPanelSidebarTextWrapper']")
+      end
+    end
 
     # Inside user information panel
     within('[data-item-index="5"]') do
@@ -46,9 +46,9 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
       find("[data-field-id='Inside panel'][data-resource-show-target='inside panelTextWrapper']")
 
       # Inside row component
-      within("[data-item-index='5'] .card:first-child") do
+      within(".card", match: :first) do
         find("[data-field-id='Inside panel -> row'][data-resource-show-target='inside panel > rowTextWrapper']")
-        find("[data-field-id='Inside panel -> row'].w-1/3")
+        expect(find("[data-field-id='Inside panel -> row']")[:class]).to include("w-1/3")
       end
 
       # Sidebars were removed from the community tier
