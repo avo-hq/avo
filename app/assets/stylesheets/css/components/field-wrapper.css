@@ -42,6 +42,10 @@
     @apply md:w-full min-h-0 pt-0;
   }
 
+  .field-wrapper__label-help {
+    @apply pb-0;
+  }
+
   .field-wrapper__content {
     @apply pt-0 px-4 w-full;
   }
