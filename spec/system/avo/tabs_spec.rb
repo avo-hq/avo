@@ -9,7 +9,7 @@ RSpec.describe "Tabs", type: :system do
       it "doesn't display the birthday from the tab content" do
         visit "/admin/resources/users"
 
-        expect(strip_html(find("table thead").text)).to eq "Select all ID GRAVATAR FIRST NAME LAST NAME USER EMAIL IS ACTIVE CV IS ADMIN ROLES PERMISSIONS BIRTHDAY IS WRITER"
+        expect(strip_html(find("table thead").text)).to eq "Select all ID Gravatar First name Last name User Email Is active CV Is admin Roles Permissions Birthday Is writer"
         within find("tr[data-resource-id='#{user.to_param}']") do
           expect(find_all("table tbody tr td")[11].text).to eq "Wednesday, 10 February 1988"
         end

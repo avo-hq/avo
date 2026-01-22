@@ -29,7 +29,7 @@ RSpec.describe "Multiple Actions Flux", type: :system do
           expect(page).to_not have_text "Name"
         end
 
-        expect(page).to have_text "IS CAPITAL"
+        expect(page).to have_text "Is capital"
         expect(page).to have_text "Spec City"
         expect(page).to have_text "123.456"
 

@@ -9,7 +9,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         it "displays the users name" do
           visit "/admin/resources/users"
 
-          expect(page).to have_text "ROLES"
+          expect(page).to have_text "Roles"
           expect(page).to have_text "View"
           find("tr[data-resource-id='#{user.to_param}'] [data-field-id='roles']").find("a", text: "View").hover
           sleep 0.1
@@ -83,7 +83,7 @@ RSpec.describe "BooleanGroupField", type: :system do
       it "displays the users permissions" do
         visit "/admin/resources/users"
 
-        expect(page).to have_text "PERMISSIONS"
+        expect(page).to have_text "Permissions"
         expect(page).to have_text "View"
         find("tr[data-resource-id='#{user.to_param}'] [data-field-id='permissions']").find("a", text: "View").hover
         sleep 0.1
