@@ -1,6 +1,6 @@
 <% if @resources.present? %>
-  <div class="map-view-container grid <%= grid_layout_classes %> w-full">
-    <div class="map-component min-h-full <%= map_component_order_class %>">
+  <div class="map-view-container grid <%= grid_layout_classes %> w-full gap-4">
+    <div class="map-component rounded-2xl overflow-hidden <%= map_component_order_class %>">
       <%= js_map(resource_location_markers, **resource_mapkick_options) %>
     </div>
 
