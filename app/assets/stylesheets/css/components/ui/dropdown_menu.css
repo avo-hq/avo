@@ -2,31 +2,25 @@
 /* BEM Methodology: .dropdown-menu (block), .dropdown-menu__list/.dropdown-menu__item (elements) */
 
 .dropdown-menu {
-  @apply absolute end-0 top-full z-10 mt-2 flex rounded-lg border-1;
-  border-color: var(--color-tertiary);
-  background: var(--color-secondary);
+  @apply absolute end-0 top-full z-10 mt-2 flex rounded-lg border-1 border-tertiary bg-secondary;
   box-shadow: var(--box-shadow-card);
 }
 
 .dropdown-menu__list {
-  @apply flex flex-col items-stretch w-full m-0.5 p-1 rounded-lg border-1 gap-2;
-  border-color: var(--color-tertiary);
-  background: var(--color-primary);
+  @apply flex flex-col items-stretch w-full m-0.5 p-1 rounded-lg border-1 gap-2 border-tertiary bg-primary;
   box-shadow: var(--box-shadow-card);
 }
 
 .dropdown-menu__item {
-  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer;
-  color: var(--color-content);
+  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer color-content;
 
 }
 
 .dropdown-menu__item:hover {
-  border-radius: var(--radius-md, 6px);
+  @apply rounded-md;
   background: color-mix(in oklab, var(--color-content) 5%, var(--color-secondary) 95%);
 }
 
 .dropdown-menu__icon {
-  @apply shrink-0 size-4;
-  color: var(--color-content-secondary, #6d6d6d);
+  @apply shrink-0 size-4 color-content-secondary;
 }

@@ -1,9 +1,11 @@
 <%= content_tag :div, class: class_names(
   "dropdown-menu",
-  ("hidden" if @hidden),
-  @classes
-), data: merged_data do %>
+  @classes,
+  {
+    "hidden": @hidden
+  }
+), data: do %>
   <div class="dropdown-menu__list">
-      <%= content %>
+    <%= content %>
   </div>
 <% end %>
