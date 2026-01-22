@@ -9,7 +9,7 @@
 .dropdown-menu {
   @apply absolute end-0 top-full z-10 mt-2 flex rounded-lg border-1 border-tertiary bg-secondary;
   box-shadow: var(--box-shadow-card);
-  /* TODO: to clarify if we need this to be a state __posiiton_button_left */
+  /* TODO: to clarify if we need this to be a state __positon_button_left */
   inset: 100% 0 auto auto;
 
   /* Closed state animation values */

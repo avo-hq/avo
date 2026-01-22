@@ -2,53 +2,128 @@ require "rails_helper"
 
 RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
   describe "rendering" do
-    it "adds default dropdown data attributes" do
-      render_inline(described_class.new) do |menu|
-        menu.with_item(title: "View")
+    it "renders as a dialog element" do
+      render_inline(described_class.new) do
+        "Menu content"
       end
 
-      expect(page).to have_css('[data-dropdown-target="dropdownMenuComponent"]')
-      expect(page).to have_css('[data-transition-enter="transition ease-out duration-100"]')
-      expect(page).to have_css('[data-transition-enter-start="transform opacity-0 -translate-y-1"]')
-      expect(page).to have_css('[data-transition-enter-end="transform opacity-100 translate-y-0"]')
-      expect(page).to have_css('[data-transition-leave="transition ease-in duration-75"]')
-      expect(page).to have_css('[data-transition-leave-start="transform opacity-100 translate-y-0"]')
-      expect(page).to have_css('[data-transition-leave-end="transform opacity-0 -translate-y-1"]')
+      expect(page).to have_css("dialog.dropdown-menu")
+    end
+
+    it "has the closedby attribute set to 'any'" do
+      render_inline(described_class.new) do
+        "Menu content"
+      end
+
+      expect(page).to have_css("dialog[closedby='any']")
+    end
+
+    it "renders the dropdown-menu__list wrapper" do
+      render_inline(described_class.new) do
+        "Menu content"
+      end
+
+      expect(page).to have_css(".dropdown-menu__list", text: "Menu content")
+    end
+
+    it "renders content inside the list" do
+      render_inline(described_class.new) do
+        # Simple text content - in real usage, this would be link_to, button_tag, etc.
+        "Edit"
+      end
+
+      expect(page).to have_css(".dropdown-menu__list", text: "Edit")
+      expect(page).to have_text("Edit")
     end
 
     it "merges custom data attributes" do
-      render_inline(described_class.new(data: {test_id: "dropdown-menu"})) do |menu|
-        menu.with_item(title: "Delete")
+      render_inline(described_class.new(data: {test_id: "dropdown-menu", dropdown_menu_target: "dropdownMenuComponent"})) do
+        "Menu content"
       end
 
       expect(page).to have_css('[data-test-id="dropdown-menu"]')
-      # Should still have default attributes
-      expect(page).to have_css('[data-dropdown-target="dropdownMenuComponent"]')
-    end
-
-    it "applies hidden class by default" do
-      render_inline(described_class.new) do |menu|
-        menu.with_item(title: "Edit")
-      end
-
-      expect(page).to have_css(".dropdown-menu.hidden")
-    end
-
-    it "does not apply hidden class when hidden is false" do
-      render_inline(described_class.new(hidden: false)) do |menu|
-        menu.with_item(title: "Edit")
-      end
-
-      expect(page).to have_css(".dropdown-menu")
-      expect(page).not_to have_css(".dropdown-menu.hidden")
+      expect(page).to have_css('[data-dropdown-menu-target="dropdownMenuComponent"]')
     end
 
     it "applies custom classes" do
-      render_inline(described_class.new(classes: "custom-class another-class")) do |menu|
-        menu.with_item(title: "Edit")
+      render_inline(described_class.new(classes: "custom-class another-class")) do
+        "Menu content"
       end
 
-      expect(page).to have_css(".dropdown-menu.custom-class.another-class")
+      expect(page).to have_css("dialog.dropdown-menu.custom-class.another-class")
+    end
+
+    it "applies default dropdown-menu class" do
+      render_inline(described_class.new) do
+        "Menu content"
+      end
+
+      expect(page).to have_css(".dropdown-menu")
+    end
+
+    it "does not have open attribute by default" do
+      render_inline(described_class.new) do
+        "Menu content"
+      end
+
+      expect(page).not_to have_css("dialog[open]")
+    end
+  end
+
+  describe "data attributes" do
+    it "allows setting dropdown_menu_target via data prop" do
+      render_inline(described_class.new(data: {dropdown_menu_target: "dropdownMenuComponent"})) do
+        "Menu content"
+      end
+
+      expect(page).to have_css('[data-dropdown-menu-target="dropdownMenuComponent"]')
+    end
+
+    it "merges multiple data attributes" do
+      render_inline(described_class.new(data: {
+        dropdown_menu_target: "dropdownMenuComponent",
+        controller: "dropdown-menu",
+        action: "click->dropdown-menu#close"
+      })) do
+        "Menu content"
+      end
+
+      expect(page).to have_css('[data-dropdown-menu-target="dropdownMenuComponent"]')
+      expect(page).to have_css('[data-controller="dropdown-menu"]')
+      expect(page).to have_css('[data-action="click->dropdown-menu#close"]')
+    end
+  end
+
+  describe "edge cases" do
+    it "handles empty content gracefully" do
+      expect {
+        render_inline(described_class.new) do
+          ""
+        end
+      }.not_to raise_error
+
+      expect(page).to have_css("dialog.dropdown-menu")
+      expect(page).to have_css(".dropdown-menu__list")
+    end
+
+    it "handles nil classes gracefully" do
+      expect {
+        render_inline(described_class.new(classes: nil)) do
+          "Menu content"
+        end
+      }.not_to raise_error
+
+      expect(page).to have_css("dialog.dropdown-menu")
+    end
+
+    it "handles empty data hash" do
+      expect {
+        render_inline(described_class.new(data: {})) do
+          "Menu content"
+        end
+      }.not_to raise_error
+
+      expect(page).to have_css("dialog.dropdown-menu")
     end
   end
 end

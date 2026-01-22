@@ -5,12 +5,12 @@ class Avo::UI::IconButtonComponent < Avo::BaseComponent
   prop :action
   prop :classes
   prop :type, default: :button
-  prop :data
+  prop :data, default: {}.freeze
 
   def merged_data
     {
       action: @action
-    }.merge(@data || {})
+    }.merge(@data)
   end
 
   def button_classes
