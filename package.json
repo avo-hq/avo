@@ -62,7 +62,7 @@
     "file-saver": "^2.0.5",
     "flatpickr": "^4.6.13",
     "js-cookie": "^3.0.5",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "luxon": "^3.7.2",
     "mapkick": "^0.2.6",
     "mousetrap": "^1.6.5",
