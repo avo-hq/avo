@@ -49,14 +49,6 @@ class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
     map_options.dig(:map, :position)
   end
 
-  def layout_horizontal?
-    %i[left right].include?(map_position)
-  end
-
-  def layout_vertical?
-    !layout_horizontal?
-  end
-
   def resource_location_markers
     # If we have no proc and no default location method, don't try to create markers
     return [] unless resource_mappable?
@@ -78,7 +70,7 @@ class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
   def resource_mapkick_options
     options = map_options[:mapkick_options] || {}
 
-    options[:height] = if layout_horizontal?
+    options[:height] = if horizontal_layout?
       "100%"
     else
       "26rem"
