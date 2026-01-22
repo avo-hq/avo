@@ -1,10 +1,7 @@
-<%= content_tag :div, class: class_names(
+<%= content_tag :dialog, class: class_names(
   "dropdown-menu",
-  @classes,
-  {
-    "hidden": @hidden
-  }
-), data: do %>
+  @classes
+), closedby: "any", data: @data do %>
   <div class="dropdown-menu__list">
     <%= content %>
   </div>

@@ -1,14 +1,13 @@
 <div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
   <div class="flex flex-wrap gap-8">
-    <div class="relative inline-flex" data-controller="dropdown">
+     <div class="relative inline-flex" data-controller="dropdown-menu">
       <%= render Avo::UI::IconButtonComponent.new(
-        action: "click->dropdown#dropdownItemActions",
+        action: "click->dropdown-menu#toggle",
         icon: "tabler/outline/dots-vertical"
       ) %>
 
-      <%= render Avo::UI::DropdownMenuComponent.new(
-        data: {dropdown_target: "dropdownMenuComponent"},
-        classes: "hidden"
+     <%= render Avo::UI::DropdownMenuComponent.new(
+        data: {dropdown_menu_target: "dropdownMenuComponent"},
       ) do %>
         <%= link_to("#", class: "dropdown-menu__item") do %>
           <%= svg("tabler/outline/pencil", class: "dropdown-menu__icon") %>
@@ -25,15 +24,14 @@
       <% end %>
     </div>
 
-    <div class="relative inline-flex" data-controller="dropdown">
+     <div class="relative inline-flex" data-controller="dropdown-menu">
       <%= render Avo::UI::IconButtonComponent.new(
-        action: "click->dropdown#dropdownItemActions",
+        action: "click->dropdown-menu#toggle",
         icon: "tabler/outline/dots-vertical"
       ) %>
 
       <%= render Avo::UI::DropdownMenuComponent.new(
-        data: {dropdown_target: "dropdownMenuComponent"},
-        classes: "hidden"
+        data: {dropdown_menu_target: "dropdownMenuComponent"},
       ) do %>
         <%= button_tag("Source Code button", type: "button", class: "dropdown-menu__item") %>
         <%= button_tag("Documentation button", type: "button", class: "dropdown-menu__item") %>

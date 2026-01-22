@@ -1,10 +1,67 @@
 /* Dropdown Menu Component - Based on Figma Design System */
 /* BEM Methodology: .dropdown-menu (block), .dropdown-menu__list/.dropdown-menu__item (elements) */
 
+/* ==========================================================================
+   Dialog Base & Transitions (native <dialog> element)
+   ========================================================================== */
+
+/* Closed state - hidden by default */
 .dropdown-menu {
   @apply absolute end-0 top-full z-10 mt-2 flex rounded-lg border-1 border-tertiary bg-secondary;
   box-shadow: var(--box-shadow-card);
+  /* TODO: to clarify if we need this to be a state __posiiton_button_left */
+  inset: 100% 0 auto auto;
+
+  /* Closed state animation values */
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+
+  /* Transitions for open/close */
+  transition:
+    opacity 0.15s ease-out,
+    transform 0.15s ease-out,
+    overlay 0.15s ease-out allow-discrete,
+    display 0.15s ease-out allow-discrete;
 }
+
+/* Open state */
+.dropdown-menu:open {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Entry animation - defines starting values when dialog opens */
+@starting-style {
+  .dropdown-menu:open {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+/* Backdrop - transparent for dropdown (no overlay) */
+.dropdown-menu::backdrop {
+  background-color: transparent;
+  transition:
+    display 0.15s allow-discrete,
+    overlay 0.15s allow-discrete,
+    background-color 0.15s;
+}
+
+/* Backdrop remains transparent when open */
+.dropdown-menu:open::backdrop {
+  background-color: transparent;
+}
+
+@starting-style {
+  .dropdown-menu:open::backdrop {
+    background-color: transparent;
+  }
+}
+
+/* ==========================================================================
+   List & Items
+   ========================================================================== */
 
 .dropdown-menu__list {
   @apply flex flex-col items-stretch w-full m-0.5 p-1 rounded-lg border-1 gap-2 border-tertiary bg-primary;
@@ -12,8 +69,7 @@
 }
 
 .dropdown-menu__item {
-  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer text-content whitespace-nowrap;
-
+  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer whitespace-nowrap;
 }
 
 .dropdown-menu__item:hover {
@@ -24,3 +80,4 @@
 .dropdown-menu__icon {
   @apply shrink-0 size-4 text-content-secondary;
 }
+

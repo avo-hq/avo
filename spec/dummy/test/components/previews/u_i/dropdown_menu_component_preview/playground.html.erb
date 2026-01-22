@@ -1,23 +1,23 @@
 <div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
   <div class="flex flex-col gap-6">
-    <div class="relative inline-flex" data-controller="dropdown">
+    <div class="relative inline-flex" data-controller="dropdown-menu">
       <%= render Avo::UI::IconButtonComponent.new(
-        action: "click->dropdown#dropdownItemActions",
+        action: "click->dropdown-menu#toggle",
         icon: "tabler/outline/dots-vertical"
       ) %>
 
       <%= render Avo::UI::DropdownMenuComponent.new(
-        data: {dropdown_target: "dropdownMenuComponent"},
+        data: {dropdown_menu_target: "dropdownMenuComponent"},
       ) do %>
-        <%= link_to("https://example.com/edit", class: "dropdown-menu__item") do %>
+        <%= link_to("https://example.com/edit", class: "dropdown-menu__item", data: {action: "click->dropdown-menu#close"}) do %>
           <%= first_label %>
           <%= svg("tabler/outline/pencil", class: "dropdown-menu__icon") if with_icons %>
         <% end %>
-        <%= link_to("https://example.com/view", class: "dropdown-menu__item") do %>
+        <%= link_to("https://example.com/view", class: "dropdown-menu__item", data: {action: "click->dropdown-menu#close"}) do %>
           <%= second_label %>
           <%= svg("tabler/outline/eye", class: "dropdown-menu__icon") if with_icons %>
         <% end %>
-        <%= link_to("https://example.com/delete", class: "dropdown-menu__item") do %>
+        <%= link_to("https://example.com/delete", class: "dropdown-menu__item", data: {action: "click->dropdown-menu#close"}) do %>
           <%= third_label %>
           <%= svg("tabler/outline/trash", class: "dropdown-menu__icon") if with_icons %>
         <% end %>

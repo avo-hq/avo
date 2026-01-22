@@ -1,49 +1,66 @@
 import { Controller } from '@hotwired/stimulus'
-import { leave, toggle } from 'el-transition'
-import { useClickOutside } from 'stimulus-use'
 
 export default class extends Controller {
-  static targets = ['dropdownMenuComponent']
-
-  static values = {
-    // One may want to have elements that are exempt from triggering the click outside event
-    exemptionContainers: Array,
-  }
-
-  get exemptionContainerTargets() {
-    return this.exemptionContainersValue.map((selector) => document.querySelector(selector)).filter(Boolean)
-  }
+  static targets = ["dropdownMenuComponent"]
 
   connect() {
-    useClickOutside(this)
-  }
+    this.isOpen = false
 
-  clickOutside(e) {
     if (this.hasDropdownMenuComponentTarget) {
-      const isInExemptionContainer = this.hasExemptionContainersValue && this.exemptionContainerTargets.some((container) => container.contains(e.target))
+      // Listen to clicks on the dialog itself (backdrop)
+      this.dropdownMenuComponentTarget.addEventListener('click', (event) => {
+        // If clicked directly on the dialog (not its children), it's the backdrop
+        if (event.target === this.dropdownMenuComponentTarget) {
+          console.log('Clicked backdrop, closing')
+          this.close()
+        }
+      })
 
-      if (!isInExemptionContainer && !this.dropdownMenuComponentTarget.classList.contains('hidden')) {
-        leave(this.dropdownMenuComponentTarget)
-      }
+      this.dropdownMenuComponentTarget.addEventListener('close', () => {
+        this.isOpen = false
+      })
     }
   }
 
-  togglePanel() {
-    if (this.hasDropdownMenuComponentTarget) {
-      toggle(this.dropdownMenuComponentTarget)
+  toggle(event) {
+    if (event) {
+      event.stopPropagation()
+      event.preventDefault()
+      event.stopImmediatePropagation()
     }
-  }
-
-  dropdownItemActions(event) {
+    console.log('toggle')
     if (this.hasDropdownMenuComponentTarget) {
-      const menuTarget = this.dropdownMenuComponentTarget
-      const clickedInsideMenu = event?.target && menuTarget.contains(event.target)
-
-      if (clickedInsideMenu) {
-        leave(menuTarget)
+      console.log('dropdownMenuComponentTarget.open', this.isOpen)
+      if (this.isOpen) {
+        console.log('>>> CLOSING')
+        this.close()
       } else {
-        toggle(menuTarget)
+        console.log('>>> OPENING')
+        this.show()
       }
     }
+  }
+
+  show() {
+    console.log('show')
+    if (this.hasDropdownMenuComponentTarget) {
+      console.log('dropdownMenuComponentTarget', this.dropdownMenuComponentTarget)
+      this.dropdownMenuComponentTarget.show()
+      this.isOpen = true
+    }
+  }
+
+  close() {
+    console.log('close')
+    if (this.hasDropdownMenuComponentTarget) {
+      console.log('dropdownMenuComponentTarget', this.dropdownMenuComponentTarget)
+      this.dropdownMenuComponentTarget.close()
+      this.isOpen = false
+    }
+  }
+
+  preventClose(event) {
+    console.log('preventClose')
+    event.stopPropagation()
   }
 }

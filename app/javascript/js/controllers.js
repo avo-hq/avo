@@ -99,7 +99,7 @@ application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
-application.register('dropdown', DropdownController)
+application.register('dropdown-menu', DropdownController)
 application.register('trix-body', TrixBodyController)
 application.register('search', SearchController)
 
