@@ -93,7 +93,7 @@ RSpec.describe "TestHelpers", type: :system do
         projects.each do |project|
           name_label = index_field_label(id: "name")
 
-          expect(name_label).to eql "NAME"
+          expect(name_label).to eql "Name"
         end
       end
     end
