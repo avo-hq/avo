@@ -12,7 +12,7 @@
 }
 
 .dropdown-menu__item {
-  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer text-content;
+  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer text-content whitespace-nowrap;
 
 }
 

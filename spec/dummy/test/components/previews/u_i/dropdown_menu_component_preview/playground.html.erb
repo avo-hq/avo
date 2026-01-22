@@ -9,21 +9,18 @@
       <%= render Avo::UI::DropdownMenuComponent.new(
         data: {dropdown_target: "dropdownMenuComponent"},
       ) do %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(
-          title: first_label,
-          icon: (with_icons ? "tabler/outline/pencil" : nil),
-          url: (as_links ? "https://example.com/edit" : nil)
-        ) %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(
-          title: second_label,
-          icon: (with_icons ? "tabler/outline/eye" : nil),
-          url: (as_links ? "https://example.com/view" : nil)
-        ) %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(
-          title: third_label,
-          icon: (with_icons ? "tabler/outline/trash" : nil),
-          url: (as_links ? "https://example.com/delete" : nil)
-        ) %>
+        <%= link_to("https://example.com/edit", class: "dropdown-menu__item") do %>
+          <%= first_label %>
+          <%= svg("tabler/outline/pencil", class: "dropdown-menu__icon") if with_icons %>
+        <% end %>
+        <%= link_to("https://example.com/view", class: "dropdown-menu__item") do %>
+          <%= second_label %>
+          <%= svg("tabler/outline/eye", class: "dropdown-menu__icon") if with_icons %>
+        <% end %>
+        <%= link_to("https://example.com/delete", class: "dropdown-menu__item") do %>
+          <%= third_label %>
+          <%= svg("tabler/outline/trash", class: "dropdown-menu__icon") if with_icons %>
+        <% end %>
       <% end %>
     </div>
   </div>

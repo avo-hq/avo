@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Avo::UI::DropdownMenuComponent < Avo::BaseComponent
-  renders_many :items, "Avo::UI::DropdownMenuItemComponent"
-
   prop :data, default: {}.freeze
   prop :classes
   prop :hidden, default: true

@@ -37,12 +37,6 @@ module UI
     def default
       render_with_template(template: "u_i/dropdown_menu_component_preview/default")
     end
-
-    # Dropdown menu with icons and link items
-    def with_icons_and_links
-      render_with_template(template: "u_i/dropdown_menu_component_preview/with_icons_and_links")
-    end
-
     # @!endgroup
   end
 end

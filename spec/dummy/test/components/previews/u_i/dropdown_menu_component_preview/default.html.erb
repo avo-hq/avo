@@ -10,18 +10,18 @@
         data: {dropdown_target: "dropdownMenuComponent"},
         classes: "hidden"
       ) do %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(
-          title: "Edit",
-          icon: "tabler/outline/pencil"
-        ) %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(
-          title: "View",
-          icon: "tabler/outline/eye"
-        ) %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(
-          title: "Delete",
-          icon: "tabler/outline/trash"
-        ) %>
+        <%= link_to("#", class: "dropdown-menu__item") do %>
+          <%= svg("tabler/outline/pencil", class: "dropdown-menu__icon") %>
+          <span class="dropdown-menu__label">Edit</span>
+        <% end %>
+        <%= link_to("#", class: "dropdown-menu__item") do %>
+          <%= svg("tabler/outline/eye", class: "dropdown-menu__icon") %>
+          <span class="dropdown-menu__label">View</span>
+        <% end %>
+        <%= link_to("#", class: "dropdown-menu__item") do %>
+          <%= svg("tabler/outline/trash", class: "dropdown-menu__icon") %>
+          <span class="dropdown-menu__label">Delete</span>
+        <% end %>
       <% end %>
     </div>
 
@@ -35,9 +35,9 @@
         data: {dropdown_target: "dropdownMenuComponent"},
         classes: "hidden"
       ) do %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(title: "Source Code") %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(title: "Documentation") %>
-        <%= render Avo::UI::DropdownMenuItemComponent.new(title: "Blog") %>
+        <%= button_tag("Source Code button", type: "button", class: "dropdown-menu__item") %>
+        <%= button_tag("Documentation button", type: "button", class: "dropdown-menu__item") %>
+        <%= button_tag("Blog button", type: "button", class: "dropdown-menu__item") %>
       <% end %>
     </div>
   </div>
