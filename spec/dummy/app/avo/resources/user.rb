@@ -119,11 +119,11 @@ class Avo::Resources::User < Avo::BaseResource
         field :first_name, placeholder: "John"
         field :last_name, placeholder: "Doe", filterable: true
       end
-      field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
+      field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true, label_help: "The email of the user"
       field :active, as: :boolean, name: "Is active", only_on: :index
       field :cv, as: :file, name: "CV"
       field :is_admin, as: :boolean, name: "Is admin", only_on: :index
-      field :roles, as: :boolean_group, options: -> do
+      field :roles, as: :boolean_group, label_help: "The roles of the user", options: -> do
         # test condition
         raise if record.nil?
         {admin: "Administrator", manager: "Manager", writer: "Writer"}

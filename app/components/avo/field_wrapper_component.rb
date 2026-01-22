@@ -7,6 +7,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   prop :data, default: {}.freeze
   prop :compact, default: false
   prop :help
+  prop :label_help
   prop :field
   prop :form
   prop :full_width, default: false
@@ -53,6 +54,10 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   def help
     Avo::ExecutionContext.new(target: @help || @field.help, record: record, resource: @resource, view: @view).handle
+  end
+
+  def label_help
+    Avo::ExecutionContext.new(target: @label_help || @field.label_help, record: record, resource: @resource, view: @view).handle
   end
 
   def record

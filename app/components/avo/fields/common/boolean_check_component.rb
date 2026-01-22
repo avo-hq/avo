@@ -4,17 +4,17 @@ class Avo::Fields::Common::BooleanCheckComponent < Avo::BaseComponent
   STATE_CONFIG = {
     true => {
       name: "checked",
-      icon: "heroicons/outline/check-circle",
+      icon: "tabler/outline/circle-check",
       color: "text-green-600"
     },
     false => {
       name: "unchecked",
-      icon: "heroicons/outline/x-circle",
+      icon: "tabler/outline/circle-x",
       color: "text-red-600"
     },
     nil => {
       name: "indeterminate",
-      icon: "heroicons/outline/minus-circle",
+      icon: "tabler/outline/circle-minus",
       color: "text-gray-400"
     }
   }.freeze

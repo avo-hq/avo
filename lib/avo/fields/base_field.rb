@@ -45,6 +45,7 @@ module Avo
       attr_reader :format_form_using
       attr_reader :autocomplete
       attr_reader :help
+      attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
       attr_reader :for_presentation_only
@@ -96,6 +97,7 @@ module Avo
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete]
         @help = args[:help]
+        @label_help = args[:label_help]
         @default = args[:default]
         @visible = args[:visible]
         @html = args[:html]

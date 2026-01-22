@@ -3,11 +3,16 @@
 }
 
 .field-wrapper__label {
-  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-36 pt-3;
+  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-60 pt-3;
 }
 
 .field-wrapper__help {
   @apply text-content-secondary mt-2 text-sm;
+}
+
+.field-wrapper__label-help {
+  /* pb-3 offsets the pt of the label */
+  @apply text-content-secondary text-xs leading-none font-normal pb-3;
 }
 
 .field-wrapper__error {
