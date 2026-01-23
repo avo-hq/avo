@@ -6,15 +6,15 @@
   aria_label = is_width ? "Change modal width" : "Change modal height"
   controller_action = is_width ? "click->modal-size#changeWidth" : "click->modal-size#changeHeight"
   current_value = is_width ? local_assigns[:width] : local_assigns[:height]
-  options = is_width ? %w[sm md lg xl 2xl 3xl 4xl full] : %w[auto sm md lg xl 2xl 3xl 4xl full]
+  options = is_width ? %w[sm md lg xl 2xl 3xl 4xl 25 50 75 100 full] : %w[auto sm md lg xl 2xl 3xl 4xl 25 50 75 100 full]
 %>
-<div class="relative"
+<div class="relative pb-2"
   data-controller="toggle"
+  data-action="mouseenter->toggle#showPanel mouseleave->toggle#hidePanel"
 >
   <button
     type="button"
     class="<%= selector_class %> relative shrink-0 size-5 flex items-center justify-center"
-    data-action="click->toggle#togglePanel"
     aria-label="<%= aria_label %>"
     title="<%= aria_label %>"
   >
@@ -23,6 +23,7 @@
   <div
     class="absolute inset-auto top-full z-50 mt-2 flex w-auto overflow-hidden rounded-sm bg-white shadow-modal border border-tertiary css-animate-slide-down"
     data-toggle-target="panel"
+    data-action="mouseenter->toggle#showPanel mouseleave->toggle#hidePanel"
     hidden
   >
     <div class="flex flex-col divide-y divide-tertiary min-w-[120px]">
@@ -35,7 +36,7 @@
           <% else %>
             data-height="<%= size %>"
           <% end %>
-          data-action="<%= controller_action %> click->toggle#togglePanel"
+          data-action="<%= controller_action %> click->toggle#hidePanel"
         >
           <%= size.upcase %>
         </button>

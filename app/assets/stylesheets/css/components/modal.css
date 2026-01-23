@@ -68,103 +68,158 @@
 }
 
 .modal--width-sm {
-  .modal__card-container {
+  .modal__card {
     @apply w-sm;
   }
 }
 
 .modal--width-md {
-  .modal__card-container {
+  .modal__card {
     @apply w-md;
   }
 }
 
 .modal--width-lg {
-  .modal__card-container {
+  .modal__card {
     @apply w-lg;
   }
 }
 
 .modal--width-xl {
-  .modal__card-container {
+  .modal__card {
     @apply w-xl;
   }
 }
 
 .modal--width-2xl {
-  .modal__card-container {
+  .modal__card {
     @apply w-2xl;
   }
 }
 
 .modal--width-3xl {
-  .modal__card-container {
+  .modal__card {
     @apply w-3xl;
   }
 }
 
 .modal--width-4xl {
-  .modal__card-container {
+  .modal__card {
     @apply w-4xl;
   }
 }
 
 .modal--width-full {
-  .modal__card-container {
+  .modal__card {
+    @apply w-[calc(100dvw-2rem)];
+  }
+}
+
+.modal--width-25 {
+  .modal__card {
+    @apply w-[25dvw];
+  }
+}
+
+.modal--width-50 {
+  .modal__card {
+    @apply w-[50dvw];
+  }
+}
+
+.modal--width-75 {
+  .modal__card {
+    @apply w-[75dvw];
+  }
+}
+
+.modal--width-100 {
+  .modal__card {
     @apply w-full;
   }
 }
 
+.modal--width-full {
+  .modal__card {
+    @apply w-[calc(100dvw-2rem)];
+  }
+}
+
 .modal--height-auto {
-  .modal__card-container {
+  .modal__card {
     @apply min-h-32;
   }
 }
 
 .modal--height-sm {
-  .modal__card-container {
-    min-height: var(--modal-height-sm);
+  .modal__card {
+    @apply h-[var(--modal-height-sm)];
   }
 }
 
 .modal--height-md {
-  .modal__card-container {
-    min-height: var(--modal-height-md);
+  .modal__card {
+    @apply h-[var(--modal-height-md)];
   }
 }
 
 .modal--height-lg {
-  .modal__card-container {
-    min-height: var(--modal-height-lg);
+  .modal__card {
+    @apply h-[var(--modal-height-lg)];
   }
 }
 
 .modal--height-xl {
-  .modal__card-container {
-    min-height: var(--modal-height-xl);
+  .modal__card {
+    @apply h-[var(--modal-height-xl)];
   }
 }
 
 .modal--height-2xl {
-  .modal__card-container {
-    min-height: var(--modal-height-2xl);
+  .modal__card {
+    @apply h-[var(--modal-height-2xl)];
   }
 }
 
 .modal--height-3xl {
-  .modal__card-container {
-    min-height: var(--modal-height-3xl);
+  .modal__card {
+    @apply h-[var(--modal-height-3xl)];
   }
 }
 
 .modal--height-4xl {
-  .modal__card-container {
-    min-height: var(--modal-height-4xl);
+  .modal__card {
+    @apply h-[var(--modal-height-4xl)];
   }
 }
 
 .modal--height-full {
-  .modal__card-container {
+  .modal__card {
+    @apply h-[calc(100dvh-2rem)];
+  }
+}
+
+
+.modal--height-25 {
+  .modal__card {
+    @apply h-[25dvh];
+  }
+}
+
+.modal--height-50 {
+  .modal__card {
+    @apply h-[50dvh];
+  }
+}
+
+.modal--height-75 {
+  .modal__card {
+    @apply h-[75dvh];
+  }
+}
+
+.modal--height-100 {
+  .modal__card {
     @apply h-full;
   }
 }

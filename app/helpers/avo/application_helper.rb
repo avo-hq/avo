@@ -184,6 +184,14 @@ module Avo
       value
     end
 
+    def wrap_in_modal(content)
+      turbo_frame_tag Avo::MODAL_FRAME_ID do
+        render(Avo::ModalComponent.new(width: :xl, body_class: "bg-application")) do |c|
+          content
+        end
+      end
+    end
+
     private
 
     def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)

@@ -38,6 +38,10 @@ export default class extends Controller {
       'modal--width-3xl',
       'modal--width-4xl',
       'modal--width-full',
+      'modal--width-25',
+      'modal--width-50',
+      'modal--width-75',
+      'modal--width-100',
     )
 
     // Remove all width classes from the container
@@ -66,6 +70,10 @@ export default class extends Controller {
       'modal--height-3xl',
       'modal--height-4xl',
       'modal--height-full',
+      'modal--height-25',
+      'modal--height-50',
+      'modal--height-75',
+      'modal--height-100',
     )
 
     // Add the new modal height class to the modal element

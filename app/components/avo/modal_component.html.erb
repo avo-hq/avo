@@ -1,4 +1,4 @@
-<div class="<%= class_names("modal", "modal--width-#{@width}", "modal--height-#{@height}") %>"
+<div class="<%= class_names("modal", {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}) %>"
   data-controller="modal modal-size"
   data-modal-target="modal"
   data-modal-close-modal-on-backdrop-click-value="<%= close_modal_on_backdrop_click %>"
@@ -39,9 +39,9 @@
             </div>
           </div>
         <% end %>
-        <div class="modal__body">
+        <div class="modal__body <%= @body_class %>">
           <% if content? %>
-            <div class="modal__body-content<%= @body_class %>">
+            <div class="modal__body-content overflow-auto">
               <%= content %>
             </div>
           <% end %>

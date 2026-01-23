@@ -15,6 +15,7 @@ export default class extends Controller {
 
   connect() {
     useClickOutside(this)
+    this.hideTimeout = null
   }
 
   clickOutside(e) {
@@ -31,6 +32,33 @@ export default class extends Controller {
     if (this.hasPanelTarget) {
       this.toggle(this.panelTarget)
     }
+  }
+
+  showPanel() {
+    // Clear any pending hide timeout
+    if (this.hideTimeout) {
+      clearTimeout(this.hideTimeout)
+      this.hideTimeout = null
+    }
+    
+    if (this.hasPanelTarget) {
+      this.panelTarget.removeAttribute('hidden')
+    }
+  }
+
+  hidePanel() {
+    // Clear any existing timeout
+    if (this.hideTimeout) {
+      clearTimeout(this.hideTimeout)
+    }
+    
+    // Add a small delay before hiding to allow smooth transition from button to panel
+    this.hideTimeout = setTimeout(() => {
+      if (this.hasPanelTarget) {
+        this.panelTarget.setAttribute('hidden', true)
+      }
+      this.hideTimeout = null
+    }, 100)
   }
 
   toggle(element) {

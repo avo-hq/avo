@@ -168,6 +168,10 @@
     display: none;
   }
 
+  body.modal-open {
+    @apply overflow-hidden;
+  }
+
   trix-editor {
     max-height: 320px !important;
     overflow-y: auto;

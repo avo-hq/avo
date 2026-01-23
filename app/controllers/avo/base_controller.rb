@@ -17,6 +17,9 @@ module Avo
     before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
 
+    before_action :set_modal_params
+    layout :choose_layout
+
     def index
       @page_title = @resource.plural_name.humanize
 
@@ -138,7 +141,13 @@ module Avo
 
       # Handle special cases when creating a new record via a belongs_to relationship
       if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to")
+        # render :new, layout: "avo/in_modal"
+        # return
+        # return render turbo_stream: [
+        #   turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to"),
+        #   turbo_stream.turbo_progress_bar_hide
+        # ]
+
       end
 
       set_actions
@@ -710,6 +719,22 @@ module Avo
         q: params[:q].strip,
         query: @query
       ).handle
+    end
+
+    def choose_layout
+      if params[:modal_layout].present?
+        "avo/modal"
+      else
+        "avo/application"
+      end
+    end
+
+    def set_modal_params
+      return unless params[:modal_layout].present?
+
+      @modal_width = params[:modal_width] || "4xl"
+      @modal_height = params[:modal_height] || "4xl"
+      @wrapper_class = params[:wrapper_class] || ""
     end
   end
 end
