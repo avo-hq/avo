@@ -1,14 +1,13 @@
 <div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
   <div class="flex flex-wrap gap-8">
-     <div class="relative inline-flex" data-controller="dropdown-menu">
-      <%= render Avo::UI::IconButtonComponent.new(
-        action: "click->dropdown-menu#toggle",
-        icon: "tabler/outline/dots-vertical"
-      ) %>
-
-     <%= render Avo::UI::DropdownMenuComponent.new(
-        data: {dropdown_menu_target: "dropdownMenuComponent"},
-      ) do %>
+    <%= render Avo::UI::DropdownComponent.new do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::UI::IconButtonComponent.new(
+          data: {action: component.action},
+          icon: "tabler/outline/dots-vertical"
+        ) %>
+      <% end %>
+      <% component.with_items do %>
         <%= link_to("#", class: "dropdown-menu__item") do %>
           <%= svg("tabler/outline/pencil", class: "dropdown-menu__icon") %>
           <span class="dropdown-menu__label">Edit</span>
@@ -22,22 +21,20 @@
           <span class="dropdown-menu__label">Delete</span>
         <% end %>
       <% end %>
-    </div>
+    <% end %>
 
-     <div class="relative inline-flex" data-controller="dropdown-menu">
-      <%= render Avo::UI::IconButtonComponent.new(
-        action: "click->dropdown-menu#toggle",
-        icon: "tabler/outline/dots-vertical"
-      ) %>
-
-      <%= render Avo::UI::DropdownMenuComponent.new(
-        data: {dropdown_menu_target: "dropdownMenuComponent"},
-      ) do %>
+    <%= render Avo::UI::DropdownComponent.new do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::UI::IconButtonComponent.new(
+          data: {action: component.action},
+          icon: "tabler/outline/settings"
+        ) %>
+      <% end %>
+      <% component.with_items do %>
         <%= button_tag("Source Code button", type: "button", class: "dropdown-menu__item") %>
         <%= button_tag("Documentation button", type: "button", class: "dropdown-menu__item") %>
         <%= button_tag("Blog button", type: "button", class: "dropdown-menu__item") %>
       <% end %>
-    </div>
+    <% end %>
   </div>
-
 </div>

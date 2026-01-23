@@ -11,7 +11,6 @@ export default class extends Controller {
       this.dropdownMenuComponentTarget.addEventListener('click', (event) => {
         // If clicked directly on the dialog (not its children), it's the backdrop
         if (event.target === this.dropdownMenuComponentTarget) {
-          console.log('Clicked backdrop, closing')
           this.close()
         }
       })
@@ -28,39 +27,30 @@ export default class extends Controller {
       event.preventDefault()
       event.stopImmediatePropagation()
     }
-    console.log('toggle')
     if (this.hasDropdownMenuComponentTarget) {
-      console.log('dropdownMenuComponentTarget.open', this.isOpen)
       if (this.isOpen) {
-        console.log('>>> CLOSING')
         this.close()
       } else {
-        console.log('>>> OPENING')
         this.show()
       }
     }
   }
 
   show() {
-    console.log('show')
     if (this.hasDropdownMenuComponentTarget) {
-      console.log('dropdownMenuComponentTarget', this.dropdownMenuComponentTarget)
       this.dropdownMenuComponentTarget.show()
       this.isOpen = true
     }
   }
 
   close() {
-    console.log('close')
     if (this.hasDropdownMenuComponentTarget) {
-      console.log('dropdownMenuComponentTarget', this.dropdownMenuComponentTarget)
       this.dropdownMenuComponentTarget.close()
       this.isOpen = false
     }
   }
 
   preventClose(event) {
-    console.log('preventClose')
     event.stopPropagation()
   }
 }

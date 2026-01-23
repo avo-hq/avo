@@ -1,5 +1,9 @@
-/* Dropdown Menu Component - Based on Figma Design System */
+/* Dropdown Component - Based on Figma Design System */
 /* BEM Methodology: .dropdown-menu (block), .dropdown-menu__list/.dropdown-menu__item (elements) */
+
+.dropdown {
+  @apply relative inline-flex;
+}
 
 /* ==========================================================================
    Dialog Base & Transitions (native <dialog> element)

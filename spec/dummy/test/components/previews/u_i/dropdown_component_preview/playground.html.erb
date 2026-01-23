@@ -1,0 +1,44 @@
+<div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
+  <div class="flex flex-col gap-6">
+    <%= render Avo::UI::DropdownComponent.new do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::UI::IconButtonComponent.new(
+          data: {action: component.action},
+          icon: "tabler/outline/dots-vertical"
+        ) %>
+      <% end %>
+
+      <% if as_links %>
+        <% component.with_items do %>
+          <%= link_to("https://example.com/edit", class: "dropdown-menu__item", data: {action: "click->dropdown-menu#close"}) do %>
+            <%= first_label %>
+            <%= svg("tabler/outline/pencil", class: "dropdown-menu__icon") if with_icons %>
+          <% end %>
+          <%= link_to("https://example.com/view", class: "dropdown-menu__item", data: {action: "click->dropdown-menu#close"}) do %>
+            <%= second_label %>
+            <%= svg("tabler/outline/eye", class: "dropdown-menu__icon") if with_icons %>
+          <% end %>
+          <%= link_to("https://example.com/delete", class: "dropdown-menu__item", data: {action: "click->dropdown-menu#close"}) do %>
+            <%= third_label %>
+            <%= svg("tabler/outline/trash", class: "dropdown-menu__icon") if with_icons %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <% component.with_items do %>
+          <%= button_tag(class: "dropdown-menu__item", type: "button", data: {action: "click->dropdown-menu#close"}) do %>
+            <%= first_label %>
+            <%= svg("tabler/outline/pencil", class: "dropdown-menu__icon") if with_icons %>
+          <% end %>
+          <%= button_tag(class: "dropdown-menu__item", type: "button", data: {action: "click->dropdown-menu#close"}) do %>
+            <%= second_label %>
+            <%= svg("tabler/outline/eye", class: "dropdown-menu__icon") if with_icons %>
+          <% end %>
+          <%= button_tag(class: "dropdown-menu__item", type: "button", data: {action: "click->dropdown-menu#close"}) do %>
+            <%= third_label %>
+            <%= svg("tabler/outline/trash", class: "dropdown-menu__icon") if with_icons %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

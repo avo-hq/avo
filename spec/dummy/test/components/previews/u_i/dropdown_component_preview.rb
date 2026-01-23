@@ -1,5 +1,5 @@
 module UI
-  class DropdownMenuComponentPreview < ViewComponent::Preview
+  class DropdownComponentPreview < ViewComponent::Preview
     layout "component_preview"
 
     # @!group Interactive Playground
@@ -18,7 +18,7 @@ module UI
       as_links: false
     )
       render_with_template(
-        template: "u_i/dropdown_menu_component_preview/playground",
+        template: "u_i/dropdown_component_preview/playground",
         locals: {
           first_label: first_label,
           second_label: second_label,
@@ -33,9 +33,9 @@ module UI
 
     # @!group Examples
 
-    # Default dropdown menu variants
+    # Default dropdown component variants
     def default
-      render_with_template(template: "u_i/dropdown_menu_component_preview/default")
+      render_with_template(template: "u_i/dropdown_component_preview/default")
     end
     # @!endgroup
   end
