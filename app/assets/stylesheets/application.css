@@ -104,6 +104,7 @@
   @import "./css/components/ui/panel_header.css";
   @import "./css/components/ui/description_list.css";
   @import "./css/components/ui/badge.css";
+  @import "./css/components/ui/checkbox.css";
   @import "./css/components/ui/radio_button.css";
 
   @import "./css/components/field-wrapper.css";
@@ -192,16 +193,6 @@
     dd {
       @apply ms-0 col-start-2;
     }
-  }
-
-  .shift-pressed {
-    & .highlighted-row {
-      @apply bg-neutral-200!;
-    }
-  }
-
-  .selected-row {
-    @apply bg-neutral-100!;
   }
 
   .container-large {

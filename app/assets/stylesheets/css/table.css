@@ -1,5 +1,5 @@
 /* The dance we need to do to be able to have rounded corners on an HTML table */
-[data-component-name="avo/index/table_row_component"] {
+.table-row {
   @apply rounded-ss-lg;
 
   &:first-child {
@@ -37,4 +37,20 @@
       @apply border-e border-t;
     }
   }
+
+  &:hover {
+    background: var(--color-secondary);
+  }
+}
+
+.shift-pressed {
+  & .highlighted-row {
+    background: color-mix(in oklab, var(--color-content) 10%, transparent);
+  }
+}
+
+.table-row:hover.selected-row,
+.selected-row {
+
+  background: color-mix(in oklab, var(--color-content) 10%, transparent);
 }

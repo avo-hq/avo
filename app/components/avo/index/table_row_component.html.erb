@@ -2,7 +2,7 @@
 
 <%= content_tag :tr,
   id: "#{self.class.to_s.underscore}_#{@resource.record_param}",
-  class: class_names("group hover:bg-tertiary z-21", {"cursor-pointer": click_row_to_view_record}),
+  class: class_names("table-row group z-21", {"cursor-pointer": click_row_to_view_record}),
   data: {
     index: @index,
     component_name:,
