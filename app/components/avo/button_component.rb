@@ -38,7 +38,8 @@ class Avo::ButtonComponent < Avo::BaseComponent
       "button",
       "button--size-#{@size}",
       "button--style-#{@style}",
-      @class
+      @class,
+      "button--color-#{@color}": @color.present?
     ]
     base_classes << "button--loading" if @args[:loading]
 

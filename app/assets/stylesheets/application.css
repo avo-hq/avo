@@ -14,6 +14,9 @@
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
 
+/* Tailwind colors */
+/* red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose */
+
 @theme {
   --spacing-3/4: 75%;
 

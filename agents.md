@@ -24,6 +24,7 @@ Don't implement a component if the Figma MCP is not available and fails and aler
 #### Figma
 
 - check the components and see if they use other components. If so, use the existing components.
+- don't add the default color in `var()` statements when implementing them from Figma.
 
 #### SVGs
 - use `svg` helper to render the SVGs.

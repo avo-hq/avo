@@ -1,148 +1,127 @@
 .button {
   @apply inline-flex justify-center grow-0 items-center font-medium leading-none fill-current whitespace-nowrap transition-transform duration-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 gap-1.5 border border-transparent;
 
+  --color-black-4: color-mix(in oklab, var(--color-black) 4%, transparent);
 
   /* Base styles for all button types */
   @apply rounded-lg;
-  &:active {
+  &:active:not(:disabled) {
     @apply translate-y-px;
   }
 }
 
-/* Primary style (dark/primary buttons) */
+/* Primary style */
 .button--style-primary {
-  @apply text-accent-foreground;
+  @apply text-accent-foreground border-accent-content;
   background: linear-gradient(180deg, var(--color-accent-content) 0%, var(--color-accent) 100%);
 
 
-  /* Skeumorphic effect for primary buttons */
   box-shadow:
-    inset 0 0.8px 0 0.1px rgba(255, 255, 255, 0.45),
-    inset 0 -1px 0 0.1px #171717;
-}
+    0 -0.5px 0 0.1px var(--color-accent-content) inset,
+    0 0.8px 0 0.1px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
 
-.button--style-primary:hover {
-  @apply bg-accent/90;
+  &.button--hover,
+  &:hover {
+    @apply bg-accent/90;
+
+    background: linear-gradient(180deg, color-mix(in oklab, var(--color-accent-content) 90%, var(--color-black)) 0%, color-mix(in oklab, var(--color-accent) 90%, var(--color-black)) 100%), var(--color-primary);
+
+    /* shadows/skeumorphic-secondary */
+    box-shadow: 0 -0.5px 0 0.1px var(--color-accent-content) inset, 0 0.8px 0 0.1px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
+
+  }
+
+  &.button--active,
+  &:active {
+    @apply bg-accent;
+    box-shadow: 0 0.5px 2px 0.5px var(--color-accent-content) inset;
+  }
+
+  &.button--focus-visible,
+  &:focus-visible {
+    @apply outline-none;
     box-shadow:
-      0 -2px 0 1px var(--color-accent-content) inset,
-      0 0.8px 0 0.1px var(--color-white-45) inset;
+      inset 0 0.8px 0 0.1px rgba(255, 255, 255, 0.45),
+      inset 0 -2px 0 1px #171717,
+      0 0 0 4px rgba(23, 23, 23, 1),
+      0 0 0 6px rgba(255, 255, 255, 1);
+  }
+
+  &.button--disabled,
+  &:disabled,
+  &[disabled],
+  &[data-disabled='true'] {
+    @apply bg-tertiary text-accent-foreground border-transparent;
+    box-shadow: none;
+  }
 }
 
-.button--style-primary:active {
-  @apply bg-accent;
-
-  box-shadow:
-    inset 0 4px 4px 0.5px rgba(0, 0, 0, 0.04),
-    inset 0 2px 0 0.5px #171717;
-}
-
-.button--style-primary:focus-visible {
-  @apply outline-none;
-  box-shadow:
-    inset 0 0.8px 0 0.1px rgba(255, 255, 255, 0.45),
-    inset 0 -2px 0 1px #171717,
-    0 0 0 4px rgba(23, 23, 23, 1),
-    0 0 0 6px rgba(255, 255, 255, 1);
-}
-
-.button--style-primary:disabled,
-.button--style-primary[disabled],
-.button--style-primary[data-disabled='true'] {
-  @apply bg-tertiary text-accent-foreground border-transparent;
-  box-shadow: none;
-}
-
-/* Secondary style (light/secondary buttons) */
+/* Outline style */
 .button--style-outline {
-  @apply bg-primary text-content border-tertiary;
-  box-shadow:
-    inset 0 0.8px 0 0.1px rgba(255, 255, 255, 1),
-    inset 0 -1.5px 0 1px #f6f6f6,
-    0 1px 2px rgba(0, 0, 0, 0.05);
-}
+  @apply bg-primary text-accent-content border-tertiary;
+  box-shadow: 0 -1.5px 0 0.1px var(--color-secondary) inset, 0 0.8px 0 0.1px var(--color-primary) inset;
 
-.button--style-outline:hover {
-  @apply bg-white/95;
-  box-shadow:
-    inset 0 0.8px 0 0.1px rgba(255, 255, 255, 1),
-    inset 0 -1.5px 0 1px #f6f6f6,
-    0 1px 2px rgba(0, 0, 0, 0.05);
-}
+  &.button--hover,
+  &:hover {
+    background: linear-gradient(180deg, color-mix(in oklab, var(--color-accent-content) 10%, transparent) 0%, var(--color-black-4) 100%), var(--color-primary);
 
-.button--style-outline:active {
-  @apply bg-secondary;
-  box-shadow:
-    inset 0 4px 4px 0.5px rgba(0, 0, 0, 0.04);
-}
+    /* shadows/skeumorphic-secondary */
+    box-shadow: 0 -1.5px 0 0.1px var(--color-black-4) inset, 0 0.8px 0 0.1px var(--color-primary, #FFF) inset;
+  }
 
-.button--style-outline:focus-visible {
-  @apply outline-none;
-  box-shadow:
-    inset 0 0.8px 0 0.1px rgba(255, 255, 255, 1),
-    inset 0 -1.5px 0 1px #f6f6f6,
-    0 1px 2px rgba(0, 0, 0, 0.05),
-    0 0 0 4px rgba(23, 23, 23, 1),
-    0 0 0 6px rgba(255, 255, 255, 1);
-}
+  &.button--active,
+  &:active {
+    /* box-shadow: inset 0 4px 4px 0.5px rgba(0, 0, 0, 0.04); */
+  }
 
-.button--style-outline:disabled,
-.button--style-outline[disabled],
-.button--style-outline[data-disabled='true'] {
-  @apply bg-secondary text-accent-foreground;
-  box-shadow: none;
+  &.button--focus-visible,
+  &:focus-visible {
+    @apply outline-none;
+
+    box-shadow:
+      0 0 0 2px var(--color-primary),
+      0 0 0 4px var(--color-content),
+      0 -1.5px 0 1px var(--color-secondary) inset,
+      0 0.8px 0 1.3px var(--color-primary) inset;
+  }
+
+  &.button--disabled,
+  &:disabled,
+  &[disabled],
+  &[data-disabled='true'] {
+    @apply bg-secondary text-accent-content;
+    box-shadow: none;
+  }
 }
 
 /* Tertiary style (outline buttons) */
 .button--style-text {
-  @apply bg-transparent text-content border border-content/20;
-}
+  @apply bg-transparent text-accent-content border border-transparent;
 
-.button--style-text:hover {
-  @apply bg-secondary/50 border-content/30;
-}
+  &.button--hover,
+  &:hover {
+    @apply bg-secondary;
+  }
 
-.button--style-text:active {
-  @apply bg-secondary border-content/40;
-}
+  &.button--active,
+  &:active {
+    @apply bg-secondary;
+  }
 
-.button--style-text:focus-visible {
-  @apply outline-none;
-  box-shadow:
-    0 0 0 2px rgba(23, 23, 23, 1),
-    0 0 0 4px rgba(255, 255, 255, 1);
-  border-color: rgba(23, 23, 23, 1);
-}
+  &.button--focus-visible,
+  &:focus-visible {
+    @apply outline-none;
+    box-shadow:
+      0 0 0 2px rgba(23, 23, 23, 1),
+      0 0 0 4px rgba(255, 255, 255, 1);
+  }
 
-.button--style-text:disabled,
-.button--style-text[disabled],
-.button--style-text[data-disabled='true'] {
-  @apply text-content/40 border-content/10;
-}
-
-/* Text style (for text-only buttons) */
-.button--style-text {
-  @apply bg-transparent text-content border-transparent;
-}
-
-.button--style-text:hover {
-  @apply bg-secondary/50;
-}
-
-.button--style-text:active {
-  @apply bg-secondary;
-}
-
-.button--style-text:focus-visible {
-  @apply outline-none;
-  box-shadow:
-    0 0 0 2px rgba(23, 23, 23, 1),
-    0 0 0 4px rgba(255, 255, 255, 1);
-}
-
-.button--style-text:disabled,
-.button--style-text[disabled],
-.button--style-text[data-disabled='true'] {
-  @apply text-content/40;
+  &.button--disabled,
+  &:disabled,
+  &[disabled],
+  &[data-disabled='true'] {
+    @apply text-content;
+  }
 }
 
 /* Size variants */
@@ -197,4 +176,118 @@
 
 .button__spinner {
   @apply absolute inset-0 flex items-center justify-center;
+}
+
+
+.button--color-black {
+  --color-accent: var(--color-avo-neutral-800);
+  --color-accent-content: var(--color-avo-neutral-950);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-teal {
+  --color-accent: var(--color-teal-500);
+  --color-accent-content: var(--color-teal-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-red {
+  --color-accent: var(--color-red-500);
+  --color-accent-content: var(--color-red-600);
+  --color-accent-foreground: var(--color-white);
+}
+.button--color-blue {
+  --color-accent: var(--color-blue-500);
+  --color-accent-content: var(--color-blue-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-gray {
+  --color-accent: var(--color-gray-500);
+  --color-accent-content: var(--color-gray-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-orange {
+  --color-accent: var(--color-orange-500);
+  --color-accent-content: var(--color-orange-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-green {
+  --color-accent: var(--color-green-500);
+  --color-accent-content: var(--color-green-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-amber {
+  --color-accent: var(--color-amber-500);
+  --color-accent-content: var(--color-amber-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-yellow {
+  --color-accent: var(--color-yellow-500);
+  --color-accent-content: var(--color-yellow-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-lime {
+  --color-accent: var(--color-lime-500);
+  --color-accent-content: var(--color-lime-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-emerald {
+  --color-accent: var(--color-emerald-500);
+  --color-accent-content: var(--color-emerald-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-cyan {
+  --color-accent: var(--color-cyan-500);
+  --color-accent-content: var(--color-cyan-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-sky {
+  --color-accent: var(--color-sky-500);
+  --color-accent-content: var(--color-sky-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-indigo {
+  --color-accent: var(--color-indigo-500);
+  --color-accent-content: var(--color-indigo-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-violet {
+  --color-accent: var(--color-violet-500);
+  --color-accent-content: var(--color-violet-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-purple {
+  --color-accent: var(--color-purple-500);
+  --color-accent-content: var(--color-purple-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-fuchsia {
+  --color-accent: var(--color-fuchsia-500);
+  --color-accent-content: var(--color-fuchsia-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-pink {
+  --color-accent: var(--color-pink-500);
+  --color-accent-content: var(--color-pink-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.button--color-rose {
+  --color-accent: var(--color-rose-500);
+  --color-accent-content: var(--color-rose-600);
+  --color-accent-foreground: var(--color-white);
 }
