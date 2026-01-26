@@ -11,10 +11,8 @@
 
 /* Closed state - hidden by default */
 .dropdown-popover {
-  @apply absolute end-0 top-full z-10 rounded-lg bg-primary;
+  @apply absolute z-10 rounded-lg bg-primary top-full end-0 bottom-auto start-auto;
   box-shadow: var(--box-shadow-card);
-  /* TODO: to clarify if we need this to be a state __positon_button_left */
-  inset: 100% 0 auto auto;
 
   /* Closed state animation values */
   opacity: 0;
