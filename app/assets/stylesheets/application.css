@@ -41,6 +41,9 @@
   --shadow-modal: " 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)";
 
   --breakpoint-xs: 30rem;
+
+  /* Tiny text size originally added for discreet information */
+  --text-tiny: 0.625rem;
 }
 
 @plugin '@tailwindcss/forms';
@@ -104,11 +107,14 @@
   @import "./css/components/ui/checkbox.css";
   @import "./css/components/ui/radio_button.css";
 
+  @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
   @import "./css/components/tooltip.css";
+  @import "./css/components/modal.css";
+  @import "./css/css-animations.css";
 
   html,
   body {
@@ -164,6 +170,10 @@
     display: none;
   }
 
+  body.modal-open {
+    @apply overflow-hidden;
+  }
+
   trix-editor {
     max-height: 320px !important;
     overflow-y: auto;
@@ -193,5 +203,17 @@
 
   .selected-row {
     @apply bg-neutral-100!;
+  }
+
+  .container-large {
+    @apply 2xl:container 2xl:mx-auto;
+  }
+
+  .container-small {
+    @apply 2xl:px-0 2xl:max-w-196 2xl:mx-auto;
+  }
+
+  .container-full-width {
+    @apply w-full;
   }
 }

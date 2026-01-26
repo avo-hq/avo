@@ -192,10 +192,10 @@ RSpec.describe "Actions", type: :system do
       click_on "Export CSV"
       find('[data-modal-target="backdrop"]').trigger("click")
 
-      expect(page).to have_selector '[data-controller="modal"]'
+      expect(page).to have_selector '[data-controller~="modal"]'
 
       click_on "Cancel"
-      expect(page).not_to have_selector '[data-controller="modal"]'
+      expect(page).not_to have_selector '[data-controller~="modal"]'
     end
   end
 

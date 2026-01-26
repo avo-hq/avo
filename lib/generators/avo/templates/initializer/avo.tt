@@ -108,6 +108,7 @@ Avo.configure do |config|
   # config.hide_layout_when_printing = false
   # config.full_width_container = false
   # config.full_width_index_view = false
+  # config.use_stacked_fields = false
   # config.search_debounce = 300
   # config.view_component_path = "app/components"
   # config.display_license_request_timeout_error = true

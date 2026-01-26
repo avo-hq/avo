@@ -1,3 +1,3 @@
 .description-list {
-  @apply w-full divide-y divide-neutral-100 flex flex-col overflow-auto;
+  @apply w-full flex flex-wrap overflow-auto flex-1 divide-y divide-tertiary;
 }
