@@ -123,6 +123,8 @@ group :development do
   gem "actioncable"
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
 
+  gem "ruby-lsp-rspec", require: false
+
   # Uncomment for performance profiling
   # gem "rack-mini-profiler"
   # gem "memory_profiler"

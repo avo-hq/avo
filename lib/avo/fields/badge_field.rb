@@ -9,7 +9,6 @@ module Avo
         hide_on [:edit, :new]
 
         @options = args[:options] || {}
-        @color = args[:color]
         @style = args[:style]
         @icon = args[:icon]
       end
@@ -18,10 +17,15 @@ module Avo
         @options.values.flatten.uniq
       end
 
+      # Maps field value to a color based on @options configuration
+      # Example: "Done" -> "success" if options = { success: [:done, :complete] }
       def color
-        # Priority 1: Use explicit color if provided (via proc/lambda or direct value)
-        # Priority 2: Fall back to automatic color detection based on field value and options mapping
-        execute_context(@color) || badge_color_for_value
+        return "neutral" if value.blank?
+
+        values = @options.find do |_, configured_values|
+          Array.wrap(configured_values).map { |v| v.to_s }.include?(value.to_s)
+        end
+        values&.first&.to_s || "neutral"
       end
 
       def style
@@ -30,17 +34,6 @@ module Avo
 
       def icon
         execute_context(@icon)
-      end
-
-      # Maps field value to a color based on @options configuration
-      # Example: "Done" -> "success" if options = { success: [:done, :complete] }
-      def badge_color_for_value
-        return "neutral" if value.blank?
-
-        values = @options.find do |_, configured_values|
-          Array.wrap(configured_values).map { |v| v.to_s }.include?(value.to_s)
-        end
-        values&.first&.to_s || "neutral"
       end
     end
   end

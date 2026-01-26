@@ -27,6 +27,7 @@ zh-TW:
     confirm: 確認
     copy: 複製
     create_new_item: 新增 %{item}
+    created_at: 建立於
     created_at_timestamp: 建立於%{created_at}
     dashboard: 儀表板
     dashboards: 儀表板
@@ -134,6 +135,7 @@ zh-TW:
     type_to_search: 輸入以搜尋。
     unauthorized: 未經授權
     undo: 復原
+    updated_at: 更新於
     updated_at_timestamp: 更新於%{updated_at}
     view: 檢視
     view_item: 檢視 %{item}

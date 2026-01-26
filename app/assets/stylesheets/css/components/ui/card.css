@@ -1,14 +1,6 @@
 /* Card Component - Based on Figma Design System */
 .card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-
-  /* Design tokens from Figma */
-  border-radius: var(--rounded-xl, 12px);
-  border: 1px solid var(--border-primary-soft, rgba(209, 209, 209, 0.4));
-  background: var(--color-surface-primary-soft, #fafafa);
+  @apply flex flex-col items-start self-stretch rounded-xl border border-tertiary bg-secondary;
 }
 
 /* Card variants */
@@ -19,44 +11,29 @@
 .card--compact {
   /* Compact variant - smaller spacing */
   .card__wrapper {
-    padding: var(--spacing-0-5, 2px);
+    @apply p-0.5;
   }
 
   .card__header {
-    padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+    @apply py-2 px-3;
   }
 }
 
 .card--full-width {
   /* Full width variant */
-  width: 100%;
-}
-
-.card--with-padding {
-  .card__wrapper {
-    /* Figma  */
-    padding: calc(var(--spacing-1, 4px) - 1px);
-  }
+  @apply w-full;
 }
 
 /* Card wrapper */
 .card__wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-  width: 100%;
-  padding: var(--spacing-1, 0.25rem);
+  @apply flex flex-col items-start self-stretch w-full;
+  /* offset 1px from the wrapper to match the design */
+  padding: calc(var(--spacing) - 1px);
 }
 
 /* Card header */
 .card__header {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-  padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
-  /* gap: var(--spacing-0-5, 2px); */
+  @apply flex flex-col items-start self-stretch py-3 px-4;
 
   /* `sm` size buttons make the header too tall. This will compensate for it. */
   .button-component {
@@ -66,48 +43,26 @@
 
 /* Card title - Copy/14/500 from Figma */
 .card__title {
-  color: var(--color-text-primary, #171717);
-  font-family: 'Inter', sans-serif;
-  font-size: var(--text-sm, 14px);
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
-  margin: 0;
+  @apply text-content font-medium leading-6 text-sm;
 }
 
 /* Card description - Copy/14/400 from Figma */
 .card__description {
-  color: var(--color-text-secondary, #888888);
-  font-family: 'Inter', sans-serif;
-  font-size: var(--text-sm, 14px);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
-  margin: 0;
+  @apply text-content-secondary font-normal leading-5 text-sm;
 }
 
 /* Card body */
 .card__body {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-  width: 100%;
-
-  /* Inner card styling */
-  border-radius: var(--rounded-lg, 8px);
-  border: 1px solid var(--border-primary-soft, rgba(209, 209, 209, 0.4));
-  background: var(--color-surface-surface-primary, #ffffff);
-  overflow: hidden;
+  @apply flex flex-col items-start self-stretch w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .card__header {
-    padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+    @apply py-2 px-3;
   }
 
   .card--compact .card__header {
-    padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+    @apply py-1 px-2;
   }
 }

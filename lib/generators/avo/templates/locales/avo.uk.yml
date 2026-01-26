@@ -27,6 +27,7 @@ uk:
     confirm: Підтвердити
     copy: Копіювати
     create_new_item: Створити новий %{item}
+    created_at: Створено
     created_at_timestamp: Sukurta %{created_at}
     dashboard: Панель керування
     dashboards: Панелі керування
@@ -136,6 +137,7 @@ uk:
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
     undo: Скасувати
+    updated_at: Оновлено
     updated_at_timestamp: Atnaujinta %{updated_at}
     view: Перегляд
     view_item: Перегляд %{item}

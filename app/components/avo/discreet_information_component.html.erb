@@ -1,21 +1,21 @@
-<%= tag.div class: class_names(
+<%= wrapper_element class: class_names(
   "discreet-information",
   "discreet-information--as-icon": as_icon?,
   "discreet-information--as-text": as_text?,
   "discreet-information--as-badge": as_badge?,
   "discreet-information--as-key-value": as_key_value?
-), title: @title do %>
+), title: @title, data: { **(@data || {}), tippy: (@title.present? ? :tooltip : nil) } do %>
   <% if as_icon? %>
     <%= helpers.svg @icon, class: "discreet-information__icon" %>
   <% elsif as_text? %>
     <div class="discreet-information__text">
-      <%= helpers.svg @icon, class: "discreet-information__icon" %>
+      <%= helpers.svg @icon, class: "discreet-information__icon" if @icon.present? %>
       <%= @text %>
     </div>
   <% elsif as_badge? %>
     <div class="discreet-information__badge">
       <div class="discreet-information__text">
-        <%= helpers.svg @icon, class: "discreet-information__icon" %>
+        <%= helpers.svg @icon, class: "discreet-information__icon" if @icon.present? %>
         <%= @text %>
       </div>
     </div>
@@ -24,8 +24,7 @@
       <div class="discreet-information__key"><%= @key %></div>
 
       <div class="discreet-information__text">
-        <%= helpers.svg @icon, class: "discreet-information__icon" %>
-        <%= @text %>
+        <%= @value %>
       </div>
     </div>
   <% end %>

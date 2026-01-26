@@ -6,10 +6,8 @@
     title: t("avo.select_item"),
     autocomplete: :off,
     checked: @checked,
-    class: class_names("mx-3 rounded-sm checked:bg-primary-400 focus:checked:!bg-primary-400", {
-      "absolute inset-auto start-0 mt-3 z-10 hidden group-hover:block checked:block": @floating,
-      "w-5 h-5": @size.to_sym == :lg,
-      "w-4 h-4": @size.to_sym != :lg,
+    class: class_names("checkbox__input", {
+      "checkbox__input--floating": @floating,
     }),
     data: {
       index: @index,

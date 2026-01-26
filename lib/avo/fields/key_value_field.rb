@@ -8,7 +8,7 @@ module Avo
       attr_reader :key_label, :value_label, :action_text
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         hide_on :index
 
@@ -67,6 +67,33 @@ module Avo
           new_value = JSON.parse(value)
         rescue
           new_value = {}
+        end
+
+        # Try to cast the new values to the same class as the original value
+        old_key_value_hash = record.send(key)
+
+        if old_key_value_hash.is_a?(Hash)
+          old_key_value_hash.transform_keys!(&:to_s)
+
+          new_value.each do |key, value|
+            old_value = old_key_value_hash[key.to_s]
+
+            try do
+              new_value[key.to_s] = if [TrueClass, FalseClass].include?(old_value.class)
+                if value == "true"
+                  true
+                elsif value == "false"
+                  false
+                else
+                  value
+                end
+              else
+                Kernel.public_send(old_value.class.name, value)
+              end
+            rescue
+              new_value[key.to_s] = value
+            end
+          end
         end
 
         record.send(:"#{key}_will_change!") if record.respond_to?(:"#{key}_will_change!")

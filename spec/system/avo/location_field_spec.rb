@@ -28,7 +28,7 @@ RSpec.describe "LocationField", type: :system do
 
         coordinates_element = find_field_element("coordinates")
 
-        expect(coordinates_element).to have_text "COORDINATES"
+        expect(coordinates_element).to have_text "Coordinates"
 
         expect(find_by_id("city_coordinates_latitude", visible: false)).to have_text("")
         expect(find_by_id("city_coordinates_latitude", visible: false)[:placeholder]).to have_text("Enter latitude")

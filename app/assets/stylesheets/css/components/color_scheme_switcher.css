@@ -68,3 +68,37 @@
 .color-scheme-switcher__text {
   @apply text-xs font-medium px-1;
 }
+
+/* Accent color dropdown */
+.color-scheme-switcher__accent-wrapper {
+  @apply relative;
+}
+
+.color-scheme-switcher__accent-panel {
+  @apply absolute top-full mt-2 end-0 z-40;
+  @apply rounded-lg bg-white dark:bg-neutral-800;
+  @apply border border-neutral-200 dark:border-neutral-700;
+  @apply shadow-lg p-2 min-w-[160px];
+  animation: css-animate-slide-down 0.15s ease-out;
+}
+
+.color-scheme-switcher__accent-options {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.color-scheme-switcher__accent-option {
+  @apply flex items-center justify-center p-1;
+  @apply rounded-md transition-all duration-150;
+  @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
+  @apply border-0 bg-transparent cursor-pointer;
+}
+
+.color-scheme-switcher__accent-preview {
+  @apply size-6 rounded-full border-2 border-white dark:border-neutral-600 shadow-sm;
+}
+
+.color-scheme-switcher__accent-preview--neutral {
+  @apply bg-neutral-400 dark:bg-neutral-500;
+  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+}

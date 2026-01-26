@@ -1,0 +1,58 @@
+/* Checkbox Component - Based on Figma Design System */
+/* BEM Methodology: .checkbox (block), .checkbox__input (element), .checkbox--modifier (modifiers) */
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+.checkbox__input {
+  @apply size-4 mx-3 cursor-pointer rounded-sm border-1 border-tertiary bg-primary;
+  box-shadow: var(--box-shadow);
+}
+
+/* ==========================================================================
+   State: Checked & Indeterminate
+   ========================================================================== */
+
+.checkbox__input:checked,
+.checkbox__input:indeterminate {
+  @apply bg-accent-content border-accent-content;
+}
+
+/* ==========================================================================
+   State: Focus & Hover
+   ========================================================================== */
+
+.checkbox__input:focus-visible,
+.checkbox__input:hover:not(:disabled) {
+  @apply ring-2 ring-offset-2 ring-accent-content outline-none;
+}
+
+/* Maintain checked/indeterminate appearance on focus/hover */
+.checkbox__input:checked:focus-visible,
+.checkbox__input:checked:hover:not(:disabled),
+.checkbox__input:indeterminate:focus-visible,
+.checkbox__input:indeterminate:hover:not(:disabled) {
+  @apply bg-accent-content border-accent-content;
+}
+
+/* ==========================================================================
+   State: Disabled
+   ========================================================================== */
+
+.checkbox__input:disabled {
+  @apply cursor-not-allowed opacity-60;
+}
+
+/* ==========================================================================
+   Modifier: Floating (row selector behavior)
+   ========================================================================== */
+
+.checkbox__input--floating {
+  @apply absolute start-0 top-0 mt-3 z-10 hidden;
+}
+
+.checkbox__input--floating:checked,
+.group:hover .checkbox__input--floating {
+  @apply block;
+}

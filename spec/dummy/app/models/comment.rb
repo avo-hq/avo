@@ -36,4 +36,15 @@ class Comment < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["body", "commentable_id", "commentable_type", "created_at", "id", "posted_at", "updated_at", "user_id"]
   end
+
+  def key_value
+    @key_value ||= {
+      key_value_1: 0,
+      key_value_3: false
+    }
+  end
+
+  def key_value=(value)
+    TestBuddy.hi("[#{value.values.map { |v| v.class.name }.join(", ")}]")
+  end
 end

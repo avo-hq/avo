@@ -109,18 +109,6 @@ module Avo
         delegate :t, to: ::I18n
         delegate :context, to: ::Avo::Current
 
-        def action(action_class, arguments: {})
-          deprecated_dsl_api __method__, "actions"
-        end
-
-        def filter(filter_class, arguments: {})
-          deprecated_dsl_api __method__, "filters"
-        end
-
-        def scope(scope_class)
-          deprecated_dsl_api __method__, "scopes"
-        end
-
         # This resolves the scope when doing "where" queries (not find queries)
         #
         # It's used to apply the authorization feature.

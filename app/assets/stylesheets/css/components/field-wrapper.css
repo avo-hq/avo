@@ -1,0 +1,52 @@
+.field-wrapper {
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-2 min-h-15 w-full grow-0 text-ellipsis overflow-scroll;
+}
+
+.field-wrapper__label {
+  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-60 pt-3;
+}
+
+.field-wrapper__help {
+  @apply text-content-secondary mt-2 text-sm;
+}
+
+.field-wrapper__label-help {
+  /* pb-3 offsets the pt of the label */
+  @apply text-content-secondary text-xs leading-none font-normal pb-3;
+}
+
+.field-wrapper__error {
+  @apply text-danger mt-2 text-sm;
+}
+
+.field-wrapper__content {
+  @apply flex-1 flex flex-row px-4;
+}
+
+.field-wrapper__content-wrapper {
+  @apply w-full md:w-8/12;
+}
+
+.field-wrapper--full-width {
+  .field-wrapper__content-wrapper {
+    @apply w-full;
+  }
+}
+
+/* Stacked modifier */
+.all-fields-stacked .field-wrapper,
+.field-wrapper.field-wrapper--stacked {
+  @apply md:flex-col md:items-start gap-y-1 py-3;
+
+  .field-wrapper__label {
+    @apply md:w-full min-h-0 pt-0;
+  }
+
+  .field-wrapper__label-help {
+    @apply pb-0;
+  }
+
+  .field-wrapper__content {
+    @apply pt-0 px-4 w-full;
+  }
+}

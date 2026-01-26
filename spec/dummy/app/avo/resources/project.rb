@@ -15,25 +15,24 @@ class Avo::Resources::Project < Avo::BaseResource
 
   self.discreet_information = [
     :id,
-    :id_text,
     :timestamps,
-    :timestamps_badge,
+    :created_at,
+    :updated_at,
     {
-      tooltip: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      text: "label",
+      as: :badge,
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
       icon: -> { "heroicons/outline/arrow-top-right-on-square" },
       url: -> { main_app.root_url },
-      url_target: :_blank,
-      as: :badge,
-      text: "Label"
+      target: :_blank
     },
     {
-      tooltip: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/arrow-top-right-on-square" },
-      url: -> { main_app.root_url },
-      url_target: :_blank,
+      text: -> { "Simple text #{record.id}" },
       as: :text,
-      visible: true,
-      text: -> { "Simple text #{record.id}" }
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "tabler/outline/external-link" },
+      url: -> { main_app.root_url },
+      visible: true
     },
     {
       text: "Test",
@@ -43,7 +42,12 @@ class Avo::Resources::Project < Avo::BaseResource
     {
       as: :key_value,
       key: "Key",
-      text: "Value"
+      value: "Value"
+    },
+    {
+      as: :icon,
+      icon: "tabler/outline/cube-3d-sphere",
+      title: -> { Time.now }
     }
   ]
 
@@ -76,21 +80,12 @@ class Avo::Resources::Project < Avo::BaseResource
     field :stage,
       as: :badge,
       options: {
-        info: ["Discovery", "Idea"],
+        info: ["Discovery"],
         success: :Done,
         warning: "On hold",
         danger: "Cancelled",
+        violet: "Idea",
         neutral: :Drafting
-      },
-      color: -> {
-        {
-          "Discovery" => "green",
-          "Idea" => "blue",
-          "Drafting" => "purple",
-          "Done" => "green",
-          "On hold" => "orange",
-          "Cancelled" => "orange"
-        }[record.stage]
       },
       style: -> { ["Done", "Cancelled"].include?(record.stage) ? "solid" : "subtle" },
       # style: :solid,
