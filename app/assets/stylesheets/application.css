@@ -105,6 +105,7 @@
 
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
+  @import "./css/components/button.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
   @import "./css/components/tooltip.css";
@@ -193,4 +194,19 @@
   .selected-row {
     @apply bg-neutral-100!;
   }
+}
+
+.loading-spinner {
+  @apply absolute top-1/2 border-2 w-4 h-4 rounded-full;
+
+  border-color: var(--color-content);
+  border-right-color: var(--color-tertiary);
+  transform: translateY(-50%);
+  transform-origin: center center;
+  animation: text-input-spin 0.9s linear infinite;
+}
+
+@keyframes text-input-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
 }
