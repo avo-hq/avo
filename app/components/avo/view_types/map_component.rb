@@ -10,23 +10,23 @@ class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
   def grid_layout_classes
     return unless render_table?
 
-    if table_positioned_horizontally
+    if horizontal_layout?
       "grid-flow-row sm:grid-flow-col grid-rows-1 auto-cols-fr"
-    elsif table_positioned_vertically
+    elsif vertical_layout?
       "grid-flow-row grid-cols-1"
     end
   end
 
-  def table_positioned_horizontally
-    %i[left right].include?(map_view_table_layout)
+  def horizontal_layout?
+    %i[left right].include?(map_position)
   end
 
-  def table_positioned_vertically
-    %i[bottom top].include?(map_view_table_layout)
+  def vertical_layout?
+    %i[bottom top].include?(map_position)
   end
 
   def map_component_order_class
-    if render_table? && table_positioned_at_the_start
+    if render_table? && table_positioned_at_the_start?
       "order-last"
     else
       "order-first"
@@ -34,19 +34,19 @@ class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
   end
 
   def table_component_order_class
-    if table_positioned_at_the_start
+    if table_positioned_at_the_start?
       "order-first"
     else
       "order-last"
     end
   end
 
-  def table_positioned_at_the_start
-    %i[left top].include?(map_view_table_layout)
+  def table_positioned_at_the_start?
+    %i[right bottom].include?(map_position)
   end
 
-  def map_view_table_layout
-    map_options.dig(:table, :layout)
+  def map_position
+    map_options.dig(:map, :position)
   end
 
   def resource_location_markers
@@ -68,7 +68,17 @@ class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
   end
 
   def resource_mapkick_options
-    map_options[:mapkick_options] || {}
+    options = map_options[:mapkick_options] || {}
+
+    options[:height] = if horizontal_layout?
+      "100%"
+    else
+      "26rem"
+    end
+
+    options[:style] ||= "mapbox://styles/mapbox/light-v11"
+
+    options
   end
 
   def render_table?

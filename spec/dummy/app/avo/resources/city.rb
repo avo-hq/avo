@@ -28,9 +28,11 @@ class Avo::Resources::City < Avo::BaseResource
         }
       ]
     end,
+    map: {
+      position: :top
+    },
     table: {
-      visible: true,
-      layout: :bottom
+      visible: true
     }
   }
 

@@ -1,6 +1,12 @@
-.application-sidebar .active:hover,
-.application-sidebar .active {
+.avo-sidebar .active:hover,
+.avo-sidebar .active {
   @apply bg-primary-100 text-primary-500;
+}
+
+.content-area {
+  &.sidebar-open {
+    --sidebar-width: calc(var(--spacing) * 64); /* 16rem */
+  }
 }
 
 .content-area {
@@ -13,9 +19,22 @@
   &.sidebar-open {
     /* Add padding to the main area to allow for the sidebar to expand. */
     .main-content-area {
-      @apply lg:ps-64;
+      @apply lg:ps-[var(--sidebar-width)];
       transition: padding 0.1s ease;
     }
+  }
+}
+
+.main-content-wrapper {
+  transition: width 0.1s ease;
+  /* width: auto; */
+  @apply w-full;
+}
+
+@screen md {
+  /* @media (min-width: var(--breakpoint-xs)) { */
+  .main-content-wrapper {
+    width: calc(100% - var(--sidebar-width) - var(--spacing));
   }
 }
 
@@ -23,6 +42,8 @@
 .avo-sidebar {
   transform: translateX(-100%);
   transition: transform 0.1s ease;
+
+  @apply w-[var(--sidebar-width)];
 }
 
 /* RTL: sidebar slides in from right when hidden */

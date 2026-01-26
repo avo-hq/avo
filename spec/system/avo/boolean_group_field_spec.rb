@@ -9,7 +9,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         it "displays the users name" do
           visit "/admin/resources/users"
 
-          expect(page).to have_text "ROLES"
+          expect(page).to have_text "Roles"
           expect(page).to have_text "View"
           find("tr[data-resource-id='#{user.to_param}'] [data-field-id='roles']").find("a", text: "View").hover
           sleep 0.1
@@ -26,7 +26,7 @@ RSpec.describe "BooleanGroupField", type: :system do
           show_popup_for("roles")
           sleep 0.1
 
-          assert_popup_texts %w[ROLES Administrator Manager Writer]
+          assert_popup_texts %w[Administrator Manager Writer]
           assert_svg_classes %w[text-red-600 text-red-600 text-red-600]
         end
       end
@@ -53,7 +53,7 @@ RSpec.describe "BooleanGroupField", type: :system do
           show_popup_for("roles")
           sleep 0.1
 
-          assert_popup_texts %w[ROLES Administrator Manager Writer]
+          assert_popup_texts %w[Administrator Manager Writer]
           assert_svg_classes %w[text-green-600 text-red-600 text-red-600]
         end
 
@@ -83,13 +83,13 @@ RSpec.describe "BooleanGroupField", type: :system do
       it "displays the users permissions" do
         visit "/admin/resources/users"
 
-        expect(page).to have_text "PERMISSIONS"
+        expect(page).to have_text "Permissions"
         expect(page).to have_text "View"
         find("tr[data-resource-id='#{user.to_param}'] [data-field-id='permissions']").find("a", text: "View").hover
         sleep 0.1
         wait_for_loaded
 
-        assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
+        assert_popup_texts %w[Create Read Update Delete]
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         show_popup_for("permissions")
         sleep 0.1
 
-        assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
+        assert_popup_texts %w[Create Read Update Delete]
         assert_svg_classes %w[text-green-600 text-green-600 text-red-600 text-green-600]
       end
     end
@@ -127,7 +127,7 @@ RSpec.describe "BooleanGroupField", type: :system do
         show_popup_for("permissions")
         sleep 0.1
 
-        assert_popup_texts %w[PERMISSIONS Create Read Update Delete]
+        assert_popup_texts %w[Create Read Update Delete]
         assert_svg_classes %w[text-green-600 text-green-600 text-red-600 text-green-600]
       end
     end

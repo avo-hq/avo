@@ -20,9 +20,9 @@ class Avo::Debug::StatusComponent < Avo::BaseComponent
 
   def cache_operational
     icon, color = if Avo::Services::TelemetryService.cache_operational?
-      ["heroicons/outline/check-circle", "text-green-500"]
+      ["tabler/outline/circle-check", "text-green-500"]
     else
-      ["heroicons/outline/x-circle", "text-red-500"]
+      ["tabler/outline/circle-x", "text-red-500"]
     end
 
     helpers.svg(icon, class: "h-5 inline -mt-1 relative #{color}")

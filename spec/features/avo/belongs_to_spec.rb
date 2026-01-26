@@ -148,7 +148,7 @@ RSpec.feature "belongs_to", type: :feature do
     it "hides the User column" do
       visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
 
-      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "ID"
       expect(find("thead")).to have_text "Tiny name"
       expect(find("thead")).to have_text "Commentable"
       expect(find("thead")).not_to have_text "User"
@@ -180,7 +180,7 @@ RSpec.feature "belongs_to", type: :feature do
     it "hides the Commentable column" do
       visit "/admin/resources/projects/#{project.id}/comments?turbo_frame=has_many_field_show_comments"
 
-      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "ID"
       expect(find("thead")).to have_text "Tiny name"
       expect(find("thead")).to have_text "User"
       expect(find("thead")).not_to have_text "Commentable"
@@ -199,7 +199,7 @@ RSpec.feature "belongs_to", type: :feature do
     it "hides the Reviewable column" do
       visit "/admin/resources/teams/#{team.id}/reviews?turbo_frame=has_many_field_show_reviews"
 
-      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "ID"
       expect(find("thead")).to have_text "Excerpt"
       expect(find("thead")).to have_text "User"
       expect(find("thead")).not_to have_text "Reviewable"

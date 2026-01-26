@@ -13,9 +13,9 @@ RSpec.describe "Record previews", type: :system do
     expect(page).to have_css("#tippy-1")
 
     within find("#tippy-1") do
-      expect(page).to have_text "DESCRIPTION"
+      expect(page).to have_text "Description"
       expect(page).to have_text "xyz123"
-      expect(page).to have_text "COLOR"
+      expect(page).to have_text "Color"
       expect(page).to have_text "#cc00cc"
     end
   end

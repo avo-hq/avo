@@ -1,3 +1,4 @@
+<%# TODO: update this %>
 <%= turbo_frame_tag params[:turbo_frame] do %>
   <% if @authorized %>
     <%= content_tag :div, class: "-mx-2" do %>
@@ -16,14 +17,14 @@
                 view: Avo::ViewInquirer.new(:show)
               )
               .component_for_view(:show)
-              .new(field: field, resource: @resource, index: index, compact: true, short: true)
+              .new(field: field, resource: @resource, index: index, stacked: true)
             %>
           <% end %>
         </div>
       <% end %>
     <% end %>
   <% else %>
-    <div class="shadow-lg rounded px-4 py-3 rounded relative border text-white pointer-events-auto bg-blue-400 border-blue-600 m-2">
+    <div class="shadow-lg rounded px-4 py-3 relative border text-white pointer-events-auto bg-blue-400 border-blue-600 m-2">
       <div class="flex px-2">
         <div class="shrink-0">
           <%= svg "heroicons/solid/exclamation-circle", class: "h-6" %>

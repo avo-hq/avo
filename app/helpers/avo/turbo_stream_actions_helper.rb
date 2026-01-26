@@ -19,6 +19,15 @@ module Avo
     def avo_turbo_reload
       turbo_stream_action_tag :turbo_reload
     end
+
+    def avo_update_belongs_to(relation_name:, target_record_id:, target_resource_label:, target_resource_class:)
+      turbo_stream_action_tag "update-belongs-to",
+        data: {
+          relation_name: relation_name,
+          target_record_id: target_record_id,
+          target_resource_label: target_resource_label,
+          target_resource_class: target_resource_class
+        }
+    end
   end
 end
-
