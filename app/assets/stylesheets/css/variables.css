@@ -1,6 +1,5 @@
+/* TODO: rename this file to theming or something similar */
 @theme {
-  --main-content-wrapper-background: var(--color-white);
-
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: oklch(97.31% 0.0000 89.88);
   --color-avo-neutral-100: oklch(92.80% 0.0000 89.88);
@@ -41,6 +40,8 @@
   --color-accent: var(--color-avo-neutral-800);
   --color-accent-content: var(--color-avo-neutral-950);
   --color-accent-foreground: var(--color-white);
+
+  --sidebar-width: 0rem;
 }
 
 /* Dark theme */
@@ -87,4 +88,60 @@
   --color-avo-neutral-800: var(--color-stone-800);
   --color-avo-neutral-900: var(--color-stone-900);
   --color-avo-neutral-950: var(--color-stone-950);
+}
+
+.accent-orange {
+  /* themes - Orange */
+  --color-accent: var(--color-orange-500);
+  --color-accent-content: var(--color-orange-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.accent-yellow {
+  /* themes - Yellow */
+  --color-accent: var(--color-yellow-500);
+  --color-accent-content: var(--color-yellow-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.accent-green {
+  /* themes - Green */
+  --color-accent: var(--color-green-500);
+  --color-accent-content: var(--color-green-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.accent-blue {
+  /* themes - Blue */
+  --color-accent: var(--color-blue-500);
+  --color-accent-content: var(--color-blue-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.accent-purple {
+  /* themes - Purple */
+  --color-accent: var(--color-purple-500);
+  --color-accent-content: var(--color-purple-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.accent-pink {
+  /* themes - Pink */
+  --color-accent: var(--color-pink-500);
+  --color-accent-content: var(--color-pink-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.accent-red {
+  /* themes - Red */
+  --color-accent: var(--color-red-500);
+  --color-accent-content: var(--color-red-600);
+  --color-accent-foreground: var(--color-white);
+}
+
+.accent-teal {
+  /* themes - Teal */
+  --color-accent: var(--color-teal-500);
+  --color-accent-content: var(--color-teal-600);
+  --color-accent-foreground: var(--color-white);
 }

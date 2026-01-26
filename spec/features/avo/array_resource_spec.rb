@@ -5,12 +5,12 @@ RSpec.feature "ArrayResource", type: :feature do
     it "render the movies index using the def records resource method and navigate to show" do
       visit path = avo.resources_movies_path(per_page: 12)
 
-      expect(find("table thead").text).to eq "Select all\nId\nName\nRelease date\nFun fact"
+      expect(find("table thead").text).to eq "Select all\nID\nName\nRelease date\nFun fact"
       expect(page).to have_text "The Shawshank Redemption"
       expect(page).to have_text "The iconic cat in the opening scene was a stray..."
 
       first("a[href=\"#{path}&page=2\"]").click
-      expect(find("table thead").text).to eq "Select all\nId\nName\nRelease date"
+      expect(find("table thead").text).to eq "Select all\nID\nName\nRelease date"
 
       expect(page).to have_text "The Lord of the Rings: The Fellowship of the Ring"
 
@@ -27,7 +27,7 @@ RSpec.feature "ArrayResource", type: :feature do
     it "render the attendees index using the def records resource method and navigate to show" do
       visit avo.resources_attendees_path
 
-      expect(find("table thead").text).to eq "Select all\nId\nName"
+      expect(find("table thead").text).to eq "Select all\nID\nName"
       expect(page).to have_text User.first.name
 
       first("a[href=\"#{avo.resources_attendee_path User.first}\"]").click

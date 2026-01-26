@@ -124,5 +124,5 @@
 }
 
 .cado-avatar--tiny .cado-avatar__initials {
-  @apply text-xs leading-4;
+  @apply text-tiny leading-4;
 }

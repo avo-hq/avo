@@ -53,7 +53,6 @@
     "css-loader": "^6.11.0",
     "dompurify": "^3.3.0",
     "easymde": "^2.20.0",
-    "el-transition": "^0.0.7",
     "esbuild": "^0.25.11",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-import-resolver-alias": "^1.1.2",

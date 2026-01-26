@@ -24,11 +24,11 @@
     & > td:last-child {
       @apply rounded-ee-lg border-e;
     }
-    @apply border-t border-gray-200;
+    @apply border-t border-tertiary;
   }
 
   & > td {
-    @apply border-t border-gray-200;
+    @apply border-t border-tertiary;
 
     &:first-child {
       @apply border-s;

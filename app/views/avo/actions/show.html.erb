@@ -26,7 +26,7 @@
         <%= @action.action_name %>
       <% end %>
 
-      <div class="flex-1 flex">
+      <div class="flex-1 flex p-4">
         <%= @action.get_message %>
       </div>
       <%= form.hidden_field :avo_resource_ids, value: params[:id] || params[:resource_ids], 'data-action-target': 'resourceIds' %>
@@ -34,15 +34,13 @@
       <%= form.hidden_field :avo_index_query, 'data-action-target': 'indexQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
       <% if @fields.present? %>
-        <div class="mt-4 -mx-6">
-          <% @fields.each_with_index do |field, index| %>
-            <%= render field
-              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
-              .component_for_view(@view)
-              .new(field: field, resource: @resource, index: index, form: form, compact: true, autofocus: index == 0)
-            %>
-          <% end %>
-        </div>
+        <% @fields.each_with_index do |field, index| %>
+          <%= render field
+            .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
+            .component_for_view(@view)
+            .new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == 0)
+          %>
+        <% end %>
       <% end %>
 
       <% c.with_controls do %>

@@ -3,24 +3,22 @@
 class Avo::Fields::ShowComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
-  attr_reader :compact
   attr_reader :field
   attr_reader :index
   attr_reader :kwargs
   attr_reader :resource
   attr_reader :stacked
-  attr_reader :short
   attr_reader :view
+  attr_reader :full_width
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, short: false, stacked: nil, **kwargs)
-    @compact = compact
+  def initialize(field: nil, resource: nil, index: 0, form: nil, stacked: nil, full_width: nil, **kwargs)
     @field = field
     @index = index
     @resource = resource
     @stacked = stacked
-    @short = short
     @kwargs = kwargs
     @view = Avo::ViewInquirer.new("show")
+    @full_width = full_width
   end
 
   def wrapper_data
@@ -48,12 +46,11 @@ class Avo::Fields::ShowComponent < Avo::BaseComponent
 
   def field_wrapper_args
     {
-      compact: compact,
       field: field,
       index: index,
       resource: resource,
-      short: short,
       stacked: stacked,
+      full_width: full_width,
       view: view
     }
   end

@@ -28,8 +28,6 @@ class Avo::Resources::Items::ItemGroup
 
     delegate :heading, to: :items_holder
     delegate :field, to: :items_holder
-    delegate :row, to: :items_holder
-    delegate :cluster, to: :items_holder
     delegate :items, to: :items_holder
     delegate :sidebar, to: :items_holder
 

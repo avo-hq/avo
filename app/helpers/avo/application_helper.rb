@@ -160,7 +160,16 @@ module Avo
     end
 
     def container_classes
-      container_is_full_width? ? "" : "2xl:container 2xl:mx-auto"
+      return "container-full-width" if container_is_full_width?
+
+      # Run overrides if present
+      return "container-#{@container_size}" if @container_size.present? && @container_size.in?(%w[large small])
+
+      # On show and form views, use the small container
+      return "container-small" if @view.show? || @view.form?
+
+      # The rest will fallback to the lage container
+      "container-large"
     end
 
     # encode & encrypt params
@@ -173,6 +182,14 @@ module Avo
       Avo::Services::EncryptionService.decrypt(message: value, purpose: :return_to, serializer: Marshal)
     rescue
       value
+    end
+
+    def wrap_in_modal(content)
+      turbo_frame_tag Avo::MODAL_FRAME_ID do
+        render(Avo::ModalComponent.new(width: :xl, body_class: "bg-application")) do |c|
+          content
+        end
+      end
     end
 
     private
@@ -197,12 +214,6 @@ module Avo
 
     def avo_edit_field(id, type = nil, view: :edit, **args, &block)
       avo_field(id, type, **args, view: view, &block)
-    end
-
-    def field_container(**args, &block)
-      classes = args[:class] || ""
-      classes << "flex flex-col divide-y"
-      content_tag :div, **args, class: classes, &block
     end
   end
 end

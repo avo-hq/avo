@@ -13,20 +13,13 @@
         <span class="ms-1">(<%= "#{@applied_filters.count} #{t('avo.applied', count: @applied_filters.count)}" %>)</span>
       <% end %>
     <% end %>
-    <div
-      class="absolute block inset-auto sm:end-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded-sm divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] == '1' %>"
-      data-toggle-target="panel"
-      data-transition-enter="transition ease-out duration-100"
-      data-transition-enter-start="transform opacity-0 -translate-y-1"
-      data-transition-enter-end="transform opacity-100 translate-y-0"
-      data-transition-leave="transition ease-in duration-75"
-      data-transition-leave-start="transform opacity-100 translate-y-0"
-      data-transition-leave-end="transform opacity-0 -translate-y-1"
-    >
+    <%= tag.div class: 'absolute block inset-auto sm:end-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded-sm divide-y divide-gray-300 css-animate-slide-down',
+      data: {toggle_target: 'panel'},
+      hidden: params[:keep_filters_panel_open] != '1' do %>
       <% @filters.each do |filter| %>
         <%= render partial: filter.class.template, locals: {filter: filter} %>
       <% end %>
-      <div class="p-4 border-gray-200 border-t">
+      <div class="p-4 border-tertiary border-t">
         <% if @applied_filters.present? %>
           <%= a_link reset_path, data: {turbo_frame: params[:turbo_frame]}, color: :gray, size: :sm, class: 'w-full justify-center' do %>
             <%= t('avo.reset_filters') %>
@@ -37,6 +30,6 @@
           <% end %>
         <% end %>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>
