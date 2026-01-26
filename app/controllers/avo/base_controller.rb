@@ -139,17 +139,6 @@ module Avo
       @record = @resource.record
       @resource.hydrate(view: Avo::ViewInquirer.new(:new), user: _current_user)
 
-      # Handle special cases when creating a new record via a belongs_to relationship
-      if params[:via_belongs_to_resource_class].present?
-        # render :new, layout: "avo/in_modal"
-        # return
-        # return render turbo_stream: [
-        #   turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to"),
-        #   turbo_stream.turbo_progress_bar_hide
-        # ]
-
-      end
-
       set_actions
 
       @page_title = @resource.default_panel_name.to_s
@@ -498,7 +487,22 @@ module Avo
     end
 
     def create_success_action
-      return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
+      if params[:via_belongs_to_resource_class].present?
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.remove(Avo::MODAL_FRAME_ID),
+              turbo_stream.avo_update_belongs_to(
+                relation_name: params[:via_relation],
+                target_record_id: @record.to_param,
+                target_resource_label: @resource.record_title,
+                target_resource_class: @record.class.name
+              )
+            ]
+          end
+        end
+        return
+      end
 
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message }
