@@ -1,4 +1,4 @@
-.button-component {
+.button {
   @apply inline-flex justify-center grow-0 items-center font-medium leading-none fill-current whitespace-nowrap transition-transform duration-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 gap-1.5 border border-transparent;
 
 
@@ -10,7 +10,7 @@
 }
 
 /* Primary style (dark/primary buttons) */
-.button-component--style-primary {
+.button--style-primary {
   @apply text-accent-foreground;
   background: linear-gradient(180deg, var(--color-accent-content) 0%, var(--color-accent) 100%);
 
@@ -21,14 +21,14 @@
     inset 0 -1px 0 0.1px #171717;
 }
 
-.button-component--style-primary:hover {
+.button--style-primary:hover {
   @apply bg-accent/90;
     box-shadow:
       0 -2px 0 1px var(--color-accent-content) inset,
       0 0.8px 0 0.1px var(--color-white-45) inset;
 }
 
-.button-component--style-primary:active {
+.button--style-primary:active {
   @apply bg-accent;
 
   box-shadow:
@@ -36,7 +36,7 @@
     inset 0 2px 0 0.5px #171717;
 }
 
-.button-component--style-primary:focus-visible {
+.button--style-primary:focus-visible {
   @apply outline-none;
   box-shadow:
     inset 0 0.8px 0 0.1px rgba(255, 255, 255, 0.45),
@@ -45,15 +45,15 @@
     0 0 0 6px rgba(255, 255, 255, 1);
 }
 
-.button-component--style-primary:disabled,
-.button-component--style-primary[disabled],
-.button-component--style-primary[data-disabled='true'] {
+.button--style-primary:disabled,
+.button--style-primary[disabled],
+.button--style-primary[data-disabled='true'] {
   @apply bg-tertiary text-accent-foreground border-transparent;
   box-shadow: none;
 }
 
 /* Secondary style (light/secondary buttons) */
-.button-component--style-outline {
+.button--style-outline {
   @apply bg-primary text-content border-tertiary;
   box-shadow:
     inset 0 0.8px 0 0.1px rgba(255, 255, 255, 1),
@@ -61,7 +61,7 @@
     0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.button-component--style-outline:hover {
+.button--style-outline:hover {
   @apply bg-white/95;
   box-shadow:
     inset 0 0.8px 0 0.1px rgba(255, 255, 255, 1),
@@ -69,13 +69,13 @@
     0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.button-component--style-outline:active {
+.button--style-outline:active {
   @apply bg-secondary;
   box-shadow:
     inset 0 4px 4px 0.5px rgba(0, 0, 0, 0.04);
 }
 
-.button-component--style-outline:focus-visible {
+.button--style-outline:focus-visible {
   @apply outline-none;
   box-shadow:
     inset 0 0.8px 0 0.1px rgba(255, 255, 255, 1),
@@ -85,27 +85,27 @@
     0 0 0 6px rgba(255, 255, 255, 1);
 }
 
-.button-component--style-outline:disabled,
-.button-component--style-outline[disabled],
-.button-component--style-outline[data-disabled='true'] {
+.button--style-outline:disabled,
+.button--style-outline[disabled],
+.button--style-outline[data-disabled='true'] {
   @apply bg-secondary text-accent-foreground;
   box-shadow: none;
 }
 
 /* Tertiary style (outline buttons) */
-.button-component--style-text {
+.button--style-text {
   @apply bg-transparent text-content border border-content/20;
 }
 
-.button-component--style-text:hover {
+.button--style-text:hover {
   @apply bg-secondary/50 border-content/30;
 }
 
-.button-component--style-text:active {
+.button--style-text:active {
   @apply bg-secondary border-content/40;
 }
 
-.button-component--style-text:focus-visible {
+.button--style-text:focus-visible {
   @apply outline-none;
   box-shadow:
     0 0 0 2px rgba(23, 23, 23, 1),
@@ -113,88 +113,88 @@
   border-color: rgba(23, 23, 23, 1);
 }
 
-.button-component--style-text:disabled,
-.button-component--style-text[disabled],
-.button-component--style-text[data-disabled='true'] {
+.button--style-text:disabled,
+.button--style-text[disabled],
+.button--style-text[data-disabled='true'] {
   @apply text-content/40 border-content/10;
 }
 
 /* Text style (for text-only buttons) */
-.button-component--style-text {
+.button--style-text {
   @apply bg-transparent text-content border-transparent;
 }
 
-.button-component--style-text:hover {
+.button--style-text:hover {
   @apply bg-secondary/50;
 }
 
-.button-component--style-text:active {
+.button--style-text:active {
   @apply bg-secondary;
 }
 
-.button-component--style-text:focus-visible {
+.button--style-text:focus-visible {
   @apply outline-none;
   box-shadow:
     0 0 0 2px rgba(23, 23, 23, 1),
     0 0 0 4px rgba(255, 255, 255, 1);
 }
 
-.button-component--style-text:disabled,
-.button-component--style-text[disabled],
-.button-component--style-text[data-disabled='true'] {
+.button--style-text:disabled,
+.button--style-text[disabled],
+.button--style-text[data-disabled='true'] {
   @apply text-content/40;
 }
 
 /* Size variants */
-.button-component--size-xs {
+.button--size-xs {
   @apply text-xs px-2 py-1.5;
 }
 
-.button-component--size-sm {
+.button--size-sm {
   @apply text-xs px-2 py-1.5;
 }
 
-.button-component--size-md {
+.button--size-md {
   @apply text-sm px-3 py-2;
 }
 
-.button-component--size-lg {
+.button--size-lg {
   @apply text-sm px-3 py-3;
 }
 
 /* Icon button sizes */
-.button-component--size-xs .button-component__icon,
-.button-component--size-sm .button-component__icon{
+.button--size-xs .button__icon,
+.button--size-sm .button__icon{
   @apply h-3;
 }
-.button-component--size-md .button-component__icon,
-.button-component--size-lg .button-component__icon {
+.button--size-md .button__icon,
+.button--size-lg .button__icon {
   @apply h-4;
 }
 
 /* Content wrapper */
-.button-component__content {
+.button__content {
   @apply inline-flex items-center;
 }
 
 /* Icon spacing */
-.button-component__icon {
+.button__icon {
   @apply pointer-events-none shrink-0 grow-0 w-auto -my-px;
 }
 
-.button-component__icon:not(:last-child) {
+.button__icon:not(:last-child) {
   @apply me-1;
 }
 
 /* Loading state */
-.button-component--loading {
+.button--loading {
   @apply relative;
 }
 
-.button-component--loading .button-component__content {
+.button--loading .button__content {
   @apply opacity-0;
 }
 
-.button-component__spinner {
+.button__spinner {
   @apply absolute inset-0 flex items-center justify-center;
 }

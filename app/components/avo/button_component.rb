@@ -35,12 +35,12 @@ class Avo::ButtonComponent < Avo::BaseComponent
 
   def button_classes
     base_classes = [
-      "button-component",
-      "button-component--size-#{@size}",
-      "button-component--style-#{@style}",
+      "button",
+      "button--size-#{@size}",
+      "button--style-#{@style}",
       @class
     ]
-    base_classes << "button-component--loading" if @args[:loading]
+    base_classes << "button--loading" if @args[:loading]
 
     class_names(*base_classes.compact)
   end
@@ -87,10 +87,10 @@ class Avo::ButtonComponent < Avo::BaseComponent
 
   def render_content
     # if is_icon_style?
-    #   helpers.svg(@icon, class: class_names("button-component__icon", @icon_class)) if @icon.present?
+    #   helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
     # else
-    # content_tag :span, class: "button-component__content" do
-    concat helpers.svg(@icon, class: class_names("button-component__icon", @icon_class)) if @icon.present?
+    # content_tag :span, class: "button__content" do
+    concat helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
     concat content if content.present?
     # end
     # end

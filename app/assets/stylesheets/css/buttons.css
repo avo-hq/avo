@@ -1,7 +1,7 @@
 .button-group {
   @apply flex;
 
-  .button-component {
+  .button {
     @apply -me-px;
 
     &:first-child {

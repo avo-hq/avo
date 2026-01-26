@@ -36,7 +36,7 @@
   @apply flex flex-col items-start self-stretch py-3 px-4;
 
   /* `sm` size buttons make the header too tall. This will compensate for it. */
-  .button-component {
+  .button {
     @apply -my-1;
   }
 }
