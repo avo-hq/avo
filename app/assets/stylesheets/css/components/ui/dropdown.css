@@ -1,53 +1,17 @@
-/* Dropdown Component - Based on Figma Design System */
-/* BEM Methodology: .dropdown-popover/.dropdown-menu (blocks), .dropdown-menu__* (elements) */
-
 .dropdown {
   @apply relative inline-flex;
 }
 
-/* ==========================================================================
-   Dialog Base & Transitions (native <dialog> element)
-   ========================================================================== */
 
 /* Closed state - hidden by default */
 .dropdown-popover {
   @apply absolute z-10 rounded-lg bg-primary top-full end-0 bottom-auto start-auto;
   box-shadow: var(--box-shadow-card);
-
-  /* Closed state animation values */
-  opacity: 0;
-  transform: scaleY(0);
-  transform-origin: top;
-
-  /* Transitions for open/close */
-  transition:
-    opacity 0.15s ease-out,
-    transform 0.15s ease-out,
-    overlay 0.15s ease-out allow-discrete,
-    display 0.15s ease-out allow-discrete;
-}
-
-/* Open state */
-.dropdown-popover:open {
-  opacity: 1;
-  transform: scaleY(1);
-}
-
-/* Entry animation - defines starting values when dialog opens */
-@starting-style {
-  .dropdown-popover:open {
-    opacity: 0;
-    transform: scaleY(0);
-  }
 }
 
 /* Backdrop - transparent for dropdown (no overlay) */
 .dropdown-popover::backdrop {
   background-color: transparent;
-  transition:
-    display 0.15s allow-discrete,
-    overlay 0.15s allow-discrete,
-    background-color 0.15s;
 }
 
 /* Backdrop remains transparent when open */
@@ -55,17 +19,8 @@
   background-color: transparent;
 }
 
-@starting-style {
-  .dropdown-popover:open::backdrop {
-    background-color: transparent;
-  }
-}
-
-/* ==========================================================================
-   Menu Structure
-   ========================================================================== */
 .dropdown-menu {
-  @apply flex flex-col w-full rounded-lg border-1 border-tertiary bg-primary overflow-hidden;
+  @apply flex flex-col w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
 }
 
 /* ==========================================================================
@@ -91,7 +46,7 @@
 
 .dropdown-menu__item:focus-visible,
 .dropdown-menu__list > :is(a, button):focus-visible {
-  @apply ring-2 ring-inset ring-content bg-primary outline-none ring-inset;
+  @apply ring-2 ring-inset ring-content bg-primary outline-none;
 }
 
 .dropdown-menu__icon,
