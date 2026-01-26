@@ -1,8 +1,12 @@
 <%= content_tag :dialog, class: class_names(
-  "dropdown-menu",
+  "dropdown-popover",
   @classes
 ), closedby: "any", data: @data do %>
-  <div class="dropdown-menu__list">
-    <%= content %>
+  <div class="dropdown-menu">
+    <div class="dropdown-menu__group">
+      <div class="dropdown-menu__list">
+        <%= content %>
+      </div>
+    </div>
   </div>
 <% end %>

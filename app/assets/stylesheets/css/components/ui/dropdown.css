@@ -1,5 +1,5 @@
 /* Dropdown Component - Based on Figma Design System */
-/* BEM Methodology: .dropdown-menu (block), .dropdown-menu__list/.dropdown-menu__item (elements) */
+/* BEM Methodology: .dropdown-popover/.dropdown-menu (blocks), .dropdown-menu__* (elements) */
 
 .dropdown {
   @apply relative inline-flex;
@@ -10,8 +10,8 @@
    ========================================================================== */
 
 /* Closed state - hidden by default */
-.dropdown-menu {
-  @apply absolute end-0 top-full z-10 mt-2 flex rounded-lg border-1 border-tertiary bg-secondary;
+.dropdown-popover {
+  @apply absolute end-0 top-full z-10 rounded-lg bg-primary;
   box-shadow: var(--box-shadow-card);
   /* TODO: to clarify if we need this to be a state __positon_button_left */
   inset: 100% 0 auto auto;
@@ -30,21 +30,21 @@
 }
 
 /* Open state */
-.dropdown-menu:open {
+.dropdown-popover:open {
   opacity: 1;
   transform: scaleY(1);
 }
 
 /* Entry animation - defines starting values when dialog opens */
 @starting-style {
-  .dropdown-menu:open {
+  .dropdown-popover:open {
     opacity: 0;
     transform: scaleY(0);
   }
 }
 
 /* Backdrop - transparent for dropdown (no overlay) */
-.dropdown-menu::backdrop {
+.dropdown-popover::backdrop {
   background-color: transparent;
   transition:
     display 0.15s allow-discrete,
@@ -53,35 +53,51 @@
 }
 
 /* Backdrop remains transparent when open */
-.dropdown-menu:open::backdrop {
+.dropdown-popover:open::backdrop {
   background-color: transparent;
 }
 
 @starting-style {
-  .dropdown-menu:open::backdrop {
+  .dropdown-popover:open::backdrop {
     background-color: transparent;
   }
+}
+
+/* ==========================================================================
+   Menu Structure
+   ========================================================================== */
+.dropdown-menu {
+  @apply flex flex-col w-full rounded-lg border-1 border-tertiary bg-primary overflow-hidden;
 }
 
 /* ==========================================================================
    List & Items
    ========================================================================== */
 
+.dropdown-menu__group {
+  @apply flex flex-col items-start self-stretch py-1;
+}
 .dropdown-menu__list {
-  @apply flex flex-col items-stretch w-full m-0.5 p-1 rounded-lg border-1 gap-2 border-tertiary bg-primary;
-  box-shadow: var(--box-shadow-card);
+  @apply flex flex-col items-start self-stretch px-1;
 }
 
-.dropdown-menu__item {
-  @apply flex items-center w-full text-end justify-end focus:outline-none gap-2 px-2 py-1 h-8 rounded-md border-none bg-transparent text-content font-medium text-sm cursor-pointer whitespace-nowrap;
+.dropdown-menu__item,
+.dropdown-menu__list > :is(a, button) {
+  @apply flex items-center w-full justify-start focus:outline-none gap-2 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent overflow-hidden text-ellipsis whitespace-nowrap text-content font-medium text-sm cursor-pointer leading-5;
 }
 
-.dropdown-menu__item:hover {
-  @apply rounded-md;
-  background: color-mix(in oklab, var(--color-content) 5%, var(--color-secondary) 95%);
+.dropdown-menu__item:hover,
+.dropdown-menu__list > :is(a, button):hover {
+  @apply bg-secondary;
 }
 
-.dropdown-menu__icon {
-  @apply shrink-0 size-4 text-content-secondary;
+.dropdown-menu__item:focus-visible,
+.dropdown-menu__list > :is(a, button):focus-visible {
+  @apply ring-2 ring-inset ring-content bg-primary outline-none ring-inset;
+}
+
+.dropdown-menu__icon,
+.dropdown-menu__list > :is(a, button) svg {
+  @apply shrink-0 size-4 text-content;
 }
 

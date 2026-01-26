@@ -7,7 +7,7 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
         "Menu content"
       end
 
-      expect(page).to have_css("dialog.dropdown-menu")
+      expect(page).to have_css("dialog.dropdown-popover")
     end
 
     it "has the closedby attribute set to 'any'" do
@@ -50,10 +50,18 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
         "Menu content"
       end
 
-      expect(page).to have_css("dialog.dropdown-menu.custom-class.another-class")
+      expect(page).to have_css("dialog.dropdown-popover.custom-class.another-class")
     end
 
-    it "applies default dropdown-menu class" do
+    it "applies default dropdown-popover class" do
+      render_inline(described_class.new) do
+        "Menu content"
+      end
+
+      expect(page).to have_css(".dropdown-popover")
+    end
+
+    it "renders the dropdown-menu wrapper" do
       render_inline(described_class.new) do
         "Menu content"
       end
@@ -102,7 +110,7 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
         end
       }.not_to raise_error
 
-      expect(page).to have_css("dialog.dropdown-menu")
+      expect(page).to have_css("dialog.dropdown-popover")
       expect(page).to have_css(".dropdown-menu__list")
     end
 
@@ -113,7 +121,7 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
         end
       }.not_to raise_error
 
-      expect(page).to have_css("dialog.dropdown-menu")
+      expect(page).to have_css("dialog.dropdown-popover")
     end
 
     it "handles empty data hash" do
@@ -123,7 +131,7 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
         end
       }.not_to raise_error
 
-      expect(page).to have_css("dialog.dropdown-menu")
+      expect(page).to have_css("dialog.dropdown-popover")
     end
   end
 end
