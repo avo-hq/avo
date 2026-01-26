@@ -145,7 +145,7 @@ RSpec.configure do |config|
         result = visit_without_light_mode(visit_uri)
         # Set light mode cookie and ensure browser preference is applied
         # Set prefers-color-scheme via CDP if available
-        driver.browser&.page&.command("Emulation.setEmulatedMedia", features: [{name: "prefers-color-scheme", value: "light"}])
+        driver&.browser&.page&.command("Emulation.setEmulatedMedia", features: [{name: "prefers-color-scheme", value: "light"}])
 
         result
       end
