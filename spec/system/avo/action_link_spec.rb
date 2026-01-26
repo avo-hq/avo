@@ -13,8 +13,8 @@ RSpec.describe "Action link", type: :system do
         click_on "Action link City"
 
         within(find("[role='dialog']")) do
-          expect(page).to_not have_text "POPULATION"
-          expect(page).to have_text "NAME"
+          expect(page).to_not have_text "Population"
+          expect(page).to have_text "Name"
         end
 
         fill_in "fields_name", with: "Action link Updated City"

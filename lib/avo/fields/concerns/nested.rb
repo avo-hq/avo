@@ -27,7 +27,7 @@ module Avo
         def component_for_view(view = Avo::ViewInquirer.new("index"))
           view = Avo::ViewInquirer.new(view)
 
-          nested_on?(view) ? Avo::Fields::Common::NestedFieldComponent : super(view)
+          nested_on?(view) ? Avo::Fields::Common::NestedFieldComponent : super
         end
 
         def nested_on?(view)

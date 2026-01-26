@@ -41,7 +41,7 @@ RSpec.describe "TestHelpers", type: :system do
           name_wrapper_without_type = show_field_wrapper(id: "name")
 
           expect(name_wrapper).to eq name_wrapper_without_type
-          expect(name_wrapper.text).to eql "NAME\n#{project.name}"
+          expect(name_wrapper.text).to eql "Name\n#{project.name}"
         end
       end
     end
@@ -79,7 +79,7 @@ RSpec.describe "TestHelpers", type: :system do
           name_wrapper_without_type = within(has_one_post) { show_field_wrapper(id: "name") }
 
           expect(name_wrapper).to eq name_wrapper_without_type
-          expect(name_wrapper.text).to eql "NAME\n#{user.post.name}"
+          expect(name_wrapper.text).to eql "Name\n#{user.post.name}"
         end
       end
     end
@@ -93,7 +93,7 @@ RSpec.describe "TestHelpers", type: :system do
         projects.each do |project|
           name_label = index_field_label(id: "name")
 
-          expect(name_label).to eql "NAME"
+          expect(name_label).to eql "Name"
         end
       end
     end
@@ -107,7 +107,7 @@ RSpec.describe "TestHelpers", type: :system do
 
           name_label = show_field_label(id: "name")
 
-          expect(name_label).to eql "NAME"
+          expect(name_label).to eql "Name"
         end
       end
     end

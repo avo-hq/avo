@@ -14,7 +14,7 @@ class Avo::Resources::Membership < Avo::BaseResource
     field :level,
       as: :select,
       display_value: true,
-      default: -> { Time.now.hour < 12 ? "advanced" : "beginner" },
+      default: -> { (Time.now.hour < 12) ? "advanced" : "beginner" },
       options: -> do
         {
           Beginner: :beginner,
@@ -32,7 +32,7 @@ class Avo::Resources::Membership < Avo::BaseResource
       query
     }
     field :team, as: :belongs_to
-  end
 
-  # tool Avo::ResourceTools::TeamMembershipToolPlayground, show_on: :all
+    # tool Avo::ResourceTools::TeamMembershipToolPlayground, show_on: :all
+  end
 end

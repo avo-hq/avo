@@ -1,5 +1,6 @@
 <div class="color-scheme-switcher"
-     data-controller="color-scheme-switcher">
+     data-controller="color-scheme-switcher toggle"
+     data-toggle-exemption-containers-value='["[data-controller*=\"color-scheme-switcher\"]"]'>
   <button type="button"
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setTheme"
@@ -27,6 +28,44 @@
     <span class="color-scheme-switcher__text">Stone</span>
     <span class="sr-only">Stone</span>
   </button>
+
+  <div class="color-scheme-switcher__accent-wrapper">
+    <button type="button"
+            data-color-scheme-switcher-target="button"
+            data-action="click->toggle#togglePanel"
+            class="color-scheme-switcher__button"
+            title="Accent color">
+      <%= svg "avo/color-swatch", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only">Accent color</span>
+    </button>
+
+    <div class="color-scheme-switcher__accent-panel"
+         hidden
+         data-toggle-target="panel"
+         data-color-scheme-switcher-target="accentPanel">
+      <div class="color-scheme-switcher__accent-options">
+        <% %w[neutral orange yellow green blue purple pink red teal].each do |accent| %>
+          <%
+            preview_class = if accent == "neutral"
+              "color-scheme-switcher__accent-preview color-scheme-switcher__accent-preview--neutral"
+            else
+              "color-scheme-switcher__accent-preview bg-#{accent}-500"
+            end
+          %>
+          <button type="button"
+                  data-action="click->color-scheme-switcher#setAccent"
+                  data-accent="<%= accent %>"
+                  data-tippy="tooltip"
+                  title="<%= accent.capitalize %>"
+                  class="color-scheme-switcher__accent-option">
+            <span class="<%= preview_class %>"></span>
+            <span class="sr-only"><%= accent.capitalize %></span>
+          </button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
   <button type="button"
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setScheme"

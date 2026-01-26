@@ -60,6 +60,7 @@ module Avo
     attr_accessor :column_types_mapping
     attr_accessor :model_generator_hook
     attr_accessor :send_metadata
+    attr_accessor :use_stacked_fields
 
     def initialize
       @root_path = "/avo"
@@ -134,6 +135,7 @@ module Avo
       }
       @model_generator_hook = true
       @send_metadata = true
+      @use_stacked_fields = false
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)

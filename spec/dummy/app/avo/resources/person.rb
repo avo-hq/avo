@@ -29,15 +29,12 @@ class Avo::Resources::Person < Avo::BaseResource
       tab "Employment" do
         panel do
           card title: "Software Engineer" do
-            cluster do
-              field :company, stacked: true do
-                "TechCorp Inc."
-              end
-              field :department, stacked: true do
-                "Research & Development"
-              end
+            field :company, stacked: true, width: 50 do
+              "TechCorp Inc."
             end
-
+            field :department, stacked: true, width: 50 do
+              "Research & Development"
+            end
             field :years_of_experience do
               "7 Years"
             end
@@ -59,13 +56,11 @@ class Avo::Resources::Person < Avo::BaseResource
       tab "Address", lazy_load: true do
         panel(title: "Address") do
           card do
-            row divider: true do
-              field :street_address, stacked: true do
-                "1234 Elm Street"
-              end
-              field :city, stacked: true do
-                "Los Angeles"
-              end
+            field :street_address, stacked: true, width: 50 do
+              "1234 Elm Street"
+            end
+            field :city, stacked: true, width: 50 do
+              "Los Angeles"
             end
 
             field :state do

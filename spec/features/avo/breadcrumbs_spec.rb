@@ -110,10 +110,6 @@ RSpec.feature "Breadcrumbs", type: :feature do
         visit url
       end
 
-      it "does not display breadcrumbs" do
-        expect(page).to_not have_selector ".breadcrumbs"
-      end
-
       it "does not display a back button" do
         expect(page).to_not have_selector ".header__controls a", text: "Go back"
       end

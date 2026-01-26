@@ -2,7 +2,7 @@
 
 class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   def initialize(...)
-    super(...)
+    super
 
     @polymorphic_record = nil
   end
@@ -57,15 +57,25 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @field.get_html(:data, view: view, element: :input).fetch(:action, nil)
   end
 
-  def create_path(target_resource = nil)
+  def create_path(target_resource = nil, **args)
     return nil if @resource.blank?
 
     helpers.new_resource_path(**{
       via_relation: @field.id.to_s,
       resource: target_resource || @field.target_resource,
       via_record_id: resource.record.persisted? ? resource.record.to_param : nil,
-      via_belongs_to_resource_class: resource.class.name
+      via_belongs_to_resource_class: resource.class.name,
+      **args
     }.compact)
+  end
+
+  def modal_args
+    {
+      modal_layout: true,
+      modal_width: :full,
+      modal_height: :full,
+      wrapper_class: "container mx-auto py-4"
+    }
   end
 
   private

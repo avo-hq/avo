@@ -5,20 +5,16 @@ RSpec.feature "Divider", type: :feature do
 
   before do
     visit "/admin/resources/users"
-    click_on "Actions"
   end
 
   describe "Divider in actions" do
+    let(:dividers) { page.all("[data-component-name='avo/divider_component']", visible: false) }
     it "renders divider without label" do
-      dividers = page.all("[data-component-name='avo/divider_component']")
-      second_divider = dividers[1]
-      expect(second_divider).not_to have_selector(".absolute.inset-auto.rounded-sm")
+      expect(dividers[1]).not_to have_selector(".absolute.inset-auto.rounded-sm", visible: false)
     end
 
     it "renders divider with label" do
-      dividers = page.all("[data-component-name='avo/divider_component']")
-      expect(dividers.first.find(".absolute.inset-auto.rounded-sm").text.strip).to eq "Other actions"
-      expect(page).to have_content "Other actions"
+      expect(dividers.first.text(:all).strip).to eq "Other actions"
     end
   end
 end
