@@ -136,6 +136,22 @@ RSpec.configure do |config|
     )
   }
 
+  # Wrap visit to set light mode using browser CDP preference and cookie
+  unless Capybara::Session.instance_methods(false).include?(:visit_without_light_mode)
+    Capybara::Session.class_eval do
+      alias_method :visit_without_light_mode, :visit
+
+      def visit(visit_uri)
+        result = visit_without_light_mode(visit_uri)
+        # Set light mode cookie and ensure browser preference is applied
+        # Set prefers-color-scheme via CDP if available
+        driver.browser&.page&.command("Emulation.setEmulatedMedia", features: [{name: "prefers-color-scheme", value: "light"}])
+
+        result
+      end
+    end
+  end
+
   config.filter_gems_from_backtrace("capybara", "cuprite", "ferrum")
 
   config.before(:example) { Rails.cache.clear }

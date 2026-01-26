@@ -109,12 +109,6 @@
   }
 }
 
-.modal--width-full {
-  .modal__card {
-    @apply w-[calc(100dvw-2rem)];
-  }
-}
-
 .modal--width-25 {
   .modal__card {
     @apply w-[25dvw];

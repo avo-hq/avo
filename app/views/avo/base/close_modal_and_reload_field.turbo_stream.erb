@@ -1,4 +1,4 @@
-<%= turbo_stream.remove("new_via_belongs_to") %>
+<%= turbo_stream.remove(Avo::MODAL_FRAME_ID) %>
 
 <turbo-stream action="update-belongs-to"
               data-relation-name="<%= params[:via_relation] %>"

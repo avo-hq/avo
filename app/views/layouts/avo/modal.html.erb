@@ -1,5 +1,5 @@
 <%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
-  <%= render(Avo::ModalComponent.new(width: @modal_width, height: @modal_height, body_class: "bg-application")) do |c| %>
+  <%= render(Avo::ModalComponent.new(width: @modal_width, height: @modal_height, body_class: "bg-backgrund")) do |c| %>
     <%= tag.div class: @wrapper_class do %>
       <%= yield %>
     <% end %>
