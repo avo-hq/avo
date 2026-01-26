@@ -39,7 +39,6 @@
   }
 
   &:hover {
-    background: color-mix(in oklab, var(--color-content) 5%, transparent);
     background: var(--color-secondary);
   }
 }
