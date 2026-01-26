@@ -71,7 +71,8 @@
 
   &.button--active,
   &:active {
-    /* box-shadow: inset 0 4px 4px 0.5px rgba(0, 0, 0, 0.04); */
+    background: linear-gradient(180deg, color-mix(in oklab, var(--color-foreground) 10%, transparent) 0%, var(--color-black-4) 100%), var(--color-primary, #FFF);
+    box-shadow: 0 4px 4px 0.5px var(--color-black-4)
   }
 
   &.button--focus-visible,

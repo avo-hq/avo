@@ -5,11 +5,15 @@
     @apply -me-px;
 
     &:first-child {
-      @apply rounded-s;
+      @apply rounded-e-none;
     }
 
     &:last-child {
-      @apply rounded-e;
+      @apply rounded-s-none;
+    }
+
+    &:not(:first-child):not(:last-child) {
+      @apply rounded-none;
     }
   }
 }

@@ -80,7 +80,7 @@
   @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
 
   @import "./css/fonts.css";
-  @import "./css/buttons.css";
+  @import "./css/button-group.css";
   @import "./css/typography.css";
   @import "./css/tooltips.css";
   @import "./css/loader.css";
