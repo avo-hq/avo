@@ -21,7 +21,7 @@ export default class extends Controller {
     }
   }
 
-    toggle(event) {
+  toggle(event) {
     if (event) {
       event.stopPropagation()
       event.preventDefault()
