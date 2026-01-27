@@ -14,10 +14,10 @@ RSpec.describe Avo::UI::Tabs::TabComponent, type: :component do
   end
 
   describe "rendering" do
-    it "renders a button tab by default" do
+    it "renders a link tab by default" do
       render_component
 
-      expect(page).to have_css("button[type='button']")
+      expect(page).to have_css("a[href='#']")
       expect(page).to have_css("span.tabs__item-label", text: "Tab")
       expect(page).to have_css(".tabs__item")
       expect(page).to have_css(".tabs__item-wrapper")
@@ -79,26 +79,25 @@ RSpec.describe Avo::UI::Tabs::TabComponent, type: :component do
         data: {testid: "test-tab", action: "click->tabs#select"}
       )
 
-      expect(page).to have_css("button#custom-tab-id")
-      expect(page).to have_css("button[title='Click to view settings']")
+      expect(page).to have_css("a#custom-tab-id[href='#']")
+      expect(page).to have_css("a[title='Click to view settings']")
       expect(page).to have_css(".tabs__item.my-custom-class")
-      expect(page).to have_css("button[data-testid='test-tab'][data-action='click->tabs#select']")
+      expect(page).to have_css("a[data-testid='test-tab'][data-action='click->tabs#select']")
     end
   end
 
   describe "disabled state" do
-    it "applies disabled attributes to button" do
+    it "applies disabled attributes to link" do
       render_component(disabled: true)
 
-      expect(page).to have_css("button[disabled]")
-      expect(page).to have_css("button[aria-disabled='true']")
-      expect(page).to have_css("button[tabindex='-1']")
+      expect(page).to have_css("a[aria-disabled='true']")
+      expect(page).to have_css("a[tabindex='-1']")
       expect(page).to have_css(".tabs__item--disabled")
     end
 
     it "sets tabindex to 0 when enabled" do
       render_component(disabled: false)
-      expect(page).to have_css("button[tabindex='0']")
+      expect(page).to have_css("a[tabindex='0']")
     end
   end
 
@@ -106,30 +105,29 @@ RSpec.describe Avo::UI::Tabs::TabComponent, type: :component do
     it "includes proper ARIA attributes" do
       render_component(id: "my-tab", active: true)
 
-      expect(page).to have_css("button[role='tab']")
-      expect(page).to have_css("button[aria-selected='true']")
-      expect(page).to have_css("button[id='my-tab']")
-      expect(page).to have_css("button[aria-controls]")
+      expect(page).to have_css("a[role='tab']")
+      expect(page).to have_css("a[aria-selected='true']")
+      expect(page).to have_css("a[id='my-tab']")
+      expect(page).to have_css("a[aria-controls]")
     end
 
     it "uses custom aria-controls when provided" do
       render_component(aria_controls: "custom-panel")
-      expect(page).to have_css("button[aria-controls='custom-panel']")
+      expect(page).to have_css("a[aria-controls='custom-panel']")
     end
 
     it "sets aria-selected based on active state" do
       render_component(active: false)
-      expect(page).to have_css("button[aria-selected='false']")
+      expect(page).to have_css("a[aria-selected='false']")
     end
   end
 
   describe "data attributes" do
     it "preserves custom data attributes" do
       render_component(data: {custom: "value"})
-      expect(page).to have_css("button[data-custom='value']")
+      expect(page).to have_css("a[data-custom='value']")
     end
   end
-
 
   describe "variants" do
     describe "group variant" do
