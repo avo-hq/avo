@@ -7,7 +7,7 @@ class Avo::UI::IconButtonComponent < Avo::BaseComponent
   prop :type, default: :button
   prop :data, default: {}.freeze
 
-  def merged_data
+  def data
     {
       action: @action
     }.merge(@data)
