@@ -36,5 +36,4 @@ RSpec.describe Avo::UI::Tabs::TabsComponent, type: :component do
       expect(page).to have_css(".tab-content", text: "Tab 1")
     end
   end
-
 end
