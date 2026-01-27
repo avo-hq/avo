@@ -25,6 +25,7 @@ Don't implement a component if the Figma MCP is not available and fails and aler
 
 - check the components and see if they use other components. If so, use the existing components.
 - don't add the default color in `var()` statements when implementing them from Figma.
+- when the Figma component has an "icon-mode", usually this doesn't need to be an option inn tha actual component but make it react properly to when the component doesn't have text or other elements.
 
 #### SVGs
 - use `svg` helper to render the SVGs.

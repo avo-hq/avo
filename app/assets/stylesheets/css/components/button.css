@@ -152,11 +152,6 @@
   @apply h-4;
 }
 
-/* Content wrapper */
-.button__content {
-  @apply inline-flex items-center;
-}
-
 /* Icon spacing */
 .button__icon {
   @apply pointer-events-none shrink-0 grow-0 w-auto -my-px;
@@ -169,10 +164,6 @@
 /* Loading state */
 .button--loading {
   @apply relative;
-}
-
-.button--loading .button__content {
-  @apply opacity-0;
 }
 
 .button__spinner {

@@ -15,8 +15,6 @@ class Avo::ButtonComponent < Avo::BaseComponent
   end
   prop :icon_class, default: ""
   prop :is_link, default: false
-  prop :rounded, default: true
-  prop :compact, default: false
   prop :aria, default: {}.freeze
   prop :args, kind: :**, default: {}.freeze
   prop :class
@@ -50,14 +48,6 @@ class Avo::ButtonComponent < Avo::BaseComponent
     @is_link
   end
 
-  def is_icon_style?
-    @style == :icon
-  end
-
-  def is_not_icon_style?
-    !is_icon_style?
-  end
-
   def call
     if is_link?
       output_link
@@ -87,13 +77,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   private
 
   def render_content
-    # if is_icon_style?
-    #   helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
-    # else
-    # content_tag :span, class: "button__content" do
     concat helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
     concat content if content.present?
-    # end
-    # end
   end
 end
