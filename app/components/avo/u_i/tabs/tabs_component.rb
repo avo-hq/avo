@@ -5,16 +5,8 @@ module Avo
     module Tabs
       class TabsComponent < Avo::BaseComponent
         prop :variant, default: :scope
-        prop :aria_label
-        prop :id
-
-        def tablist_id
-          @id || "tabs-#{object_id}"
-        end
-
-        def tablist_aria_label
-          @aria_label || "Tabs navigation"
-        end
+        prop :aria_label, default: "Tabs navigation"
+        prop :id, default: -> { "tabs-#{object_id}" }
       end
     end
   end
