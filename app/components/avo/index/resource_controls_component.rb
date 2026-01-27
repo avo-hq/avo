@@ -76,7 +76,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     link_to helpers.svg("tabler/outline/edit", class: svg_classes),
       edit_path,
-      style: :text,
       class: "flex items-center",
       title: control.title,
       aria: {label: control.title},
@@ -93,7 +92,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     link_to helpers.svg("tabler/outline/eye", class: svg_classes),
       show_path,
-      style: :text,
       class: "flex items-center",
       title: control.title,
       aria: {label: control.title},
@@ -113,7 +111,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     return unless send policy_method
 
     button_to helpers.resource_path(record: @resource.record, resource: @resource),
-      style: :text,
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria: {label: control.title},
@@ -136,7 +133,6 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     return unless can_detach?
 
     button_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
-      style: :text,
       form_class: "flex items-center",
       title: control.title,
       aria: {label: control.title},
