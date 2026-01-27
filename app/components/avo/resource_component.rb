@@ -153,7 +153,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     a_link destroy_path,
       style: :text,
       color: :red,
-      icon: "avo/trash",
+      icon: "tabler/outline/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria_label: control.title,
@@ -196,7 +196,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       title: control.title,
       data: {tippy: control.title ? :tooltip : nil},
-      icon: "avo/edit" do
+      icon: "tabler/outline/edit" do
       control.label
     end
   end
@@ -205,7 +205,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless is_a_related_resource? && can_detach?
 
     a_link detach_path,
-      icon: "avo/detach",
+      icon: "tabler/outline/unlink",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {
