@@ -33,9 +33,15 @@
     <button type="button"
             data-color-scheme-switcher-target="button"
             data-action="click->toggle#togglePanel"
-            class="color-scheme-switcher__button"
+            class="color-scheme-switcher__button color-scheme-switcher__button--accent"
             title="Accent color">
       <%= svg "avo/color-swatch", class: "color-scheme-switcher__icon" %>
+      <span class="color-scheme-switcher__accent-badge">
+        <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--neutral"></span>
+        <% %w[orange yellow green blue purple pink red teal].each do |accent| %>
+          <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--<%= accent %> bg-<%= accent %>-500"></span>
+        <% end %>
+      </span>
       <span class="sr-only">Accent color</span>
     </button>
 
