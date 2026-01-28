@@ -138,6 +138,7 @@ task "avo:yarn_install" do
 end
 
 if ENV["BUILD_AVO_ASSETS"] == "true"
+  puts ["ENV->", ENV["BUILD_AVO_ASSETS"]].inspect
   Rake::Task["db:migrate"].enhance do
     Rake::Task["avo:build-assets"].execute
   end
