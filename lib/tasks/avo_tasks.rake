@@ -139,8 +139,8 @@ end
 
 if ENV["BUILD_AVO_ASSETS"] == "true"
   puts ["ENV->", ENV["BUILD_AVO_ASSETS"]].inspect
-  Rake::Task["app:assets:precompile"].enhance do
-    puts "Ran app:assets:precompile"
+  Rake::Task["assets:precompile"].enhance do
+    puts "Ran assets:precompile"
     Rake::Task["avo:build-assets"].execute
   end
 end
