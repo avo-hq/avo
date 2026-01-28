@@ -28,6 +28,17 @@ module Avo
   class Engine < ::Rails::Engine
     isolate_namespace Avo
 
+    rake_tasks do
+      if ENV["BUILD_AVO_ASSETS"] == "true"
+        # Ensure avo tasks are loaded first
+        load File.expand_path("../tasks/avo_tasks.rake", __dir__)
+
+        if Rake::Task.task_defined?("assets:precompile")
+          Rake::Task["assets:precompile"].enhance(["avo:build-assets"])
+        end
+      end
+    end
+
     config.after_initialize do
       # Reset before reloads in development
       ::Avo.asset_manager.reset
