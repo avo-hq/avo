@@ -20,6 +20,6 @@ h5 {
 
 @layer base {
   a {
-    @apply text-primary-500;
+    color: color-mix(in oklab, var(--color-accent-content), var(--color-content) 10%);
   }
 }

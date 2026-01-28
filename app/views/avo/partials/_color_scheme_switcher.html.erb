@@ -38,7 +38,7 @@
       <%= svg "avo/color-swatch", class: "color-scheme-switcher__icon" %>
       <span class="color-scheme-switcher__accent-badge">
         <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--neutral"></span>
-        <% %w[orange yellow green blue purple pink red teal].each do |accent| %>
+        <% accent_colors.each do |accent| %>
           <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--<%= accent %> bg-<%= accent %>-500"></span>
         <% end %>
       </span>
@@ -50,7 +50,7 @@
          data-toggle-target="panel"
          data-color-scheme-switcher-target="accentPanel">
       <div class="color-scheme-switcher__accent-options">
-        <% %w[neutral orange yellow green blue purple pink red teal].each do |accent| %>
+        <% (['neutral'] + accent_colors).each do |accent| %>
           <%
             preview_class = if accent == "neutral"
               "color-scheme-switcher__accent-preview color-scheme-switcher__accent-preview--neutral"

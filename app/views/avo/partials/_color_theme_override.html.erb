@@ -1,5 +1,5 @@
 <script>
-  // On page load, apply color scheme and theme from cookies to avoid FOUC
+  // On page load, apply color scheme, theme, and accent from cookies to avoid FOUC
   (function() {
     // Read cookies
     function getCookie(name) {
@@ -11,6 +11,7 @@
 
     const colorScheme = getCookie('color_scheme') || 'auto';
     const theme = getCookie('theme') || 'brand';
+    const accent = getCookie('accent_color') || 'neutral';
 
     // Apply color scheme
     const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -34,6 +35,15 @@
     document.documentElement.classList.remove('theme-slate', 'theme-stone');
     if (theme && theme !== 'brand') {
       document.documentElement.classList.add('theme-' + theme);
+    }
+
+    // Apply accent class
+    const accentColors = <%= accent_colors.inspect.html_safe %>;
+    accentColors.forEach((color) => {
+      document.documentElement.classList.remove('accent-' + color);
+    });
+    if (accent && accent !== 'neutral') {
+      document.documentElement.classList.add('accent-' + accent);
     }
   })();
 </script>

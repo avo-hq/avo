@@ -88,7 +88,7 @@
   @import "./css/search.css";
   @import "./css/active-storage.css";
   @import "./css/scrollbar.css";
-  @import "./css/sidebar.css";
+  @import "./css/layout.css";
   @import "./css/spinner.css";
   @import "./css/table.css";
 
@@ -197,18 +197,6 @@
     dd {
       @apply ms-0 col-start-2;
     }
-  }
-
-  .container-large {
-    @apply 2xl:container 2xl:mx-auto;
-  }
-
-  .container-small {
-    @apply 2xl:px-0 2xl:max-w-196 2xl:mx-auto;
-  }
-
-  .container-full-width {
-    @apply w-full;
   }
 }
 
