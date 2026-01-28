@@ -13,6 +13,8 @@ end
 
 desc "Installs Avo assets and bundles them for when you want to use the GitHub repo in your app"
 task "avo:build-assets" do
+  puts "Building Avo assets"
+  Rails.logger.info "Building Avo assets"
   spec = get_gem_spec "avo"
   # Uncomment to enable only when the source is github.com
   # enabled = spec.source.to_s.include?('https://github.com/avo-hq/avo')
