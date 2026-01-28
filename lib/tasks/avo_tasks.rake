@@ -131,7 +131,7 @@ task "avo:yarn_install" do
   `yarn add tailwindcss@^4.0.0 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
 end
 
-if ENV["BUILD_AVO_ASSETS"] == "1"
+if ENV["BUILD_AVO_ASSETS"] == "true"
   Rake::Task["db:migrate"].enhance do
     Rake::Task["avo:build-assets"].execute
   end
