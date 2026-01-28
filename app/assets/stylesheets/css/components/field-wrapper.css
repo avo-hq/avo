@@ -54,3 +54,9 @@
     @apply w-full;
   }
 }
+
+.container-small {
+  .field-wrapper__content-wrapper {
+    @apply w-full;
+  }
+}
