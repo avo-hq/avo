@@ -110,7 +110,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    button_to helpers.resource_path(record: @resource.record, resource: @resource),
+    link_to helpers.resource_path(record: @resource.record, resource: @resource),
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria: {label: control.title},
@@ -132,7 +132,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_detach_button(control)
     return unless can_detach?
 
-    button_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
+    link_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
       form_class: "flex items-center",
       title: control.title,
       aria: {label: control.title},
