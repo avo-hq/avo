@@ -20,6 +20,11 @@ h5 {
 
 @layer base {
   a {
-    color: color-mix(in oklab, var(--color-accent-content), var(--color-content) 10%);
+    color: var(--color-content-secondary);
+
+    &:active,
+    &:hover {
+      color: color-mix(in oklab, var(--color-accent-content), var(--color-content) 10%);
+    }
   }
 }
