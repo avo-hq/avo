@@ -139,7 +139,8 @@ end
 
 if ENV["BUILD_AVO_ASSETS"] == "true"
   puts ["ENV->", ENV["BUILD_AVO_ASSETS"]].inspect
-  Rake::Task["db:migrate"].enhance do
-    Rake::Task["avo:build-assets"].execute
-  end
+  Rake::Task["avo:build-assets"].execute
+  # Rake::Task["db:migrate"].enhance do
+  #   Rake::Task["avo:build-assets"].execute
+  # end
 end
