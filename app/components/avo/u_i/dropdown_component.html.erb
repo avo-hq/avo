@@ -1,0 +1,11 @@
+<%= content_tag :div, class: class_names("dropdown"), data: {controller: "dropdown-menu"} do %>
+  <%= trigger %>
+
+  <%= render Avo::UI::DropdownMenuComponent.new(
+    data: {dropdown_menu_target: "menu"}
+  ) do %>
+    <% if items.present? %>
+      <%= items %>
+    <% end %>
+  <% end %>
+<% end %>

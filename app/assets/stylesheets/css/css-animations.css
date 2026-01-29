@@ -1,5 +1,6 @@
 /* Actions Dropdown Animations */
 
+.css-animate-dialog-slide-down[open],
 .css-animate-slide-down {
   opacity: 1;
   transform: translateY(0);
@@ -17,6 +18,7 @@
 }
 
 /* Hidden state - CSS handles the leave animation */
+.css-animate-dialog-slide-down,
 .css-animate-slide-down[hidden] {
   opacity: 0;
   transform: translateY(-0.25rem);
