@@ -141,11 +141,3 @@ task "avo:yarn_install" do
   puts "[Avo->] Adding yarn dependencies"
   `yarn add tailwindcss@^4.0.0 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
 end
-
-# if ENV["BUILD_AVO_ASSETS"] == "true"
-#   puts ["ENV->", ENV["BUILD_AVO_ASSETS"]].inspect
-#   Rake::Task["assets:precompile"].enhance do
-#     puts "Ran assets:precompile"
-#     Rake::Task["avo:build-assets"].execute
-#   end
-# end

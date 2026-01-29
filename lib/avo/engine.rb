@@ -29,10 +29,10 @@ module Avo
     isolate_namespace Avo
 
     rake_tasks do
-      if ENV["BUILD_AVO_ASSETS"] == "true"
-        # Ensure avo tasks are loaded first
-        load File.expand_path("../tasks/avo_tasks.rake", __dir__)
+      # Ensure Avo tasks are loaded
+      load File.expand_path("../tasks/avo_tasks.rake", __dir__)
 
+      if ENV["BUILD_AVO_ASSETS"] == "true"
         if Rake::Task.task_defined?("assets:precompile")
           Rake::Task["assets:precompile"].enhance(["avo:build"])
         end
