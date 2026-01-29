@@ -11,7 +11,7 @@ export default class extends Controller {
   get parentTarget() {
     return document.querySelector('[data-component-name="avo/view_types/table_component"]')
       || document.querySelector('[data-component-name="avo/view_types/grid_component"]')
-      || document.querySelector('[data-component-name="avo/ui/panel_component"] .panel__body')
+      || document.querySelector('.main-content-area .scrollable-wrapper') // TODO: to be fixed when we get to the row controls
   }
 
   // Check if the document is in RTL mode
@@ -52,12 +52,9 @@ export default class extends Controller {
         this.contentTarget.classList.remove('xl:start-0', 'sm:start-0')
         this.contentTarget.classList.add('xl:end-0', 'sm:end-0')
       }
-    } else {
-      // LTR: Check for left overflow and flip to right if needed
-      if (this.contentLeftOverflow) {
-        this.contentTarget.classList.remove('xl:end-0', 'sm:end-0')
-        this.contentTarget.classList.add('xl:start-0', 'sm:start-0')
-      }
+    } else if (this.contentLeftOverflow) {
+      this.contentTarget.classList.remove('xl:end-0', 'sm:end-0')
+      this.contentTarget.classList.add('xl:start-0', 'sm:start-0')
     }
   }
 

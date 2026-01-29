@@ -127,7 +127,7 @@ class Avo::Resources::Project < Avo::BaseResource
       end
     end
 
-    field :users, as: :has_and_belongs_to_many
+    field :users, as: :has_and_belongs_to_many, linkable: true
     field :comments, as: :has_many, searchable: true
     field :even_reviews, as: :has_many, for_attribute: :reviews, scope: -> { query.where("reviews.id % 2 = ?", "0") }
     field :reviews, as: :has_many
