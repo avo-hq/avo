@@ -20,11 +20,15 @@ h5 {
 
 @layer base {
   a {
-    color: var(--color-content-secondary);
+    color: var(--color-info-content);
 
     &:active,
     &:hover {
       color: color-mix(in oklab, var(--color-accent-content), var(--color-content) 10%);
+    }
+
+    &:focus-visible {
+      @apply outline-2 outline-offset-2 rounded-xs outline-content;
     }
   }
 }

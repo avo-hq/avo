@@ -93,6 +93,7 @@
   @import "./css/layout.css";
   @import "./css/spinner.css";
   @import "./css/table.css";
+  @import "./css/resource-controls.css";
 
   @import "./css/fields/status.css";
   @import "./css/fields/code.css";

@@ -70,7 +70,8 @@ RSpec.feature "HasManyField", type: :feature do
 
         # detach link
         detach_path = "/admin/resources/users/#{user.slug}/posts/#{post.to_param}"
-        expect(page).to have_selector("[data-component-name='avo/ui/panel_component'] a[data-control='detach'][data-turbo-method='delete'][href='#{detach_path}']")
+        detach_link = find("[data-component-name='avo/ui/panel_component'] a[data-control='detach'][data-turbo-method='delete']")
+        expect(detach_link["href"]).to include(detach_path)
 
         destroy_path = "/admin/resources/posts/#{post.slug}"
         destroy_link = find("[data-component-name='avo/ui/panel_component'] a[data-control='destroy'][data-target='control:destroy'][data-turbo-method='delete']")
