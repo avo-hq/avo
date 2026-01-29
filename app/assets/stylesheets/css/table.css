@@ -39,20 +39,22 @@
   }
 
   &:hover {
-    background: var(--table-row-selected-background);
+    background: var(--color-table-row-hover);
   }
+}
 
-  --table-row-hover-background: var(--color-secondary);
-  --table-row-selected-background: color-mix(in oklab, var(--color-content) 10%, transparent);
+@theme {
+  --color-table-row-selected: var(--color-secondary);
+  --color-table-row-hover: color-mix(in oklab, var(--color-secondary), var(--color-primary) 5%);
 }
 
 .shift-pressed {
   & .highlighted-row {
-    background: var(--table-row-hover-background);
+    background: var(--color-table-row-selected);
   }
 }
 
 .table-row:hover.selected-row,
 .selected-row {
-  background: var(--table-row-selected-background);
+  background: var(--color-table-row-hover);
 }

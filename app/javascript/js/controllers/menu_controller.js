@@ -66,8 +66,9 @@ export default class extends Controller {
     this.enter(this.itemsTarget)
   }
 
-  toggle(element) {
+  async toggle(element) {
     element.toggleAttribute('hidden')
+    await this.animateTransition(element)
   }
 
   async leave(element) {

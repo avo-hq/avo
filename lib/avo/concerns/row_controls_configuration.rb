@@ -26,14 +26,15 @@ module Avo
       end
 
       def row_controls_classes
-        float_classes = "bg-white
-          group-hover:bg-gray-50
+        float_classes = "bg-primary
+          group-hover:bg-table-row-hover
+
           sticky inset-auto end-0
 
           before:content-[''] before:absolute before:z-10 before:inset-auto before:start-0 before:top-0 before:mt-0 before:-translate-x-full before:w-3 before:h-full
           before:bg-gradient-to-r
-          before:from-transparent before:to-white
-          group-hover:before:from-transparent group-hover:before:to-gray-50
+          before:from-transparent before:to-primary
+          group-hover:before:from-transparent group-hover:before:to-table-row-hover
         "
 
         # TODO: add this to the css classes above
