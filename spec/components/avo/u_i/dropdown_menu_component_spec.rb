@@ -37,12 +37,12 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
     end
 
     it "merges custom data attributes" do
-      render_inline(described_class.new(data: {test_id: "dropdown-menu", dropdown_menu_target: "dropdownMenuComponent"})) do
+      render_inline(described_class.new(data: {test_id: "dropdown-menu", dropdown_menu_target: "menu"})) do
         "Menu content"
       end
 
       expect(page).to have_css('[data-test-id="dropdown-menu"]')
-      expect(page).to have_css('[data-dropdown-menu-target="dropdownMenuComponent"]')
+      expect(page).to have_css('[data-dropdown-menu-target="menu"]')
     end
 
     it "applies custom classes" do
@@ -80,23 +80,23 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
 
   describe "data attributes" do
     it "allows setting dropdown_menu_target via data prop" do
-      render_inline(described_class.new(data: {dropdown_menu_target: "dropdownMenuComponent"})) do
+      render_inline(described_class.new(data: {dropdown_menu_target: "menu"})) do
         "Menu content"
       end
 
-      expect(page).to have_css('[data-dropdown-menu-target="dropdownMenuComponent"]')
+      expect(page).to have_css('[data-dropdown-menu-target="menu"]')
     end
 
     it "merges multiple data attributes" do
       render_inline(described_class.new(data: {
-        dropdown_menu_target: "dropdownMenuComponent",
+        dropdown_menu_target: "menu",
         controller: "dropdown-menu",
         action: "click->dropdown-menu#close"
       })) do
         "Menu content"
       end
 
-      expect(page).to have_css('[data-dropdown-menu-target="dropdownMenuComponent"]')
+      expect(page).to have_css('[data-dropdown-menu-target="menu"]')
       expect(page).to have_css('[data-controller="dropdown-menu"]')
       expect(page).to have_css('[data-action="click->dropdown-menu#close"]')
     end
