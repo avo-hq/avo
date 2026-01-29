@@ -21,12 +21,14 @@
   /* Inactive by default, active when theme-slate variant is present */
   @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
   @apply theme-slate:bg-white theme-slate:dark:bg-neutral-700 theme-slate:text-primary-600 theme-slate:dark:text-primary-400 theme-slate:shadow-sm;
+  @apply gap-1.5;
 }
 
 .color-scheme-switcher__button[data-theme="stone"] {
   /* Inactive by default, active when theme-stone variant is present */
   @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
   @apply theme-stone:bg-white theme-stone:dark:bg-neutral-700 theme-stone:text-primary-600 theme-stone:dark:text-primary-400 theme-stone:shadow-sm;
+  @apply gap-1.5;
 }
 
 /* Scheme buttons - active states using scheme selection classes */
@@ -101,4 +103,66 @@
 .color-scheme-switcher__accent-preview--neutral {
   @apply bg-neutral-400 dark:bg-neutral-500;
   background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+}
+
+/* Accent button with badge */
+.color-scheme-switcher__button--accent {
+  @apply relative;
+}
+
+.color-scheme-switcher__accent-badge {
+  @apply absolute top-0 end-0;
+  @apply translate-x-1/2 -translate-y-1/2;
+  @apply hidden;
+}
+
+.color-scheme-switcher__accent-badge-preview {
+  @apply size-2 rounded-full border border-white dark:border-neutral-800 shadow-sm;
+  @apply hidden;
+}
+
+.color-scheme-switcher__accent-badge-preview--neutral {
+  @apply bg-neutral-400 dark:bg-neutral-500;
+  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+}
+
+/* Show accent badge based on body accent class */
+.accent-red .color-scheme-switcher__accent-badge,
+.accent-orange .color-scheme-switcher__accent-badge,
+.accent-amber .color-scheme-switcher__accent-badge,
+.accent-yellow .color-scheme-switcher__accent-badge,
+.accent-lime .color-scheme-switcher__accent-badge,
+.accent-green .color-scheme-switcher__accent-badge,
+.accent-emerald .color-scheme-switcher__accent-badge,
+.accent-teal .color-scheme-switcher__accent-badge,
+.accent-cyan .color-scheme-switcher__accent-badge,
+.accent-sky .color-scheme-switcher__accent-badge,
+.accent-blue .color-scheme-switcher__accent-badge,
+.accent-indigo .color-scheme-switcher__accent-badge,
+.accent-violet .color-scheme-switcher__accent-badge,
+.accent-purple .color-scheme-switcher__accent-badge,
+.accent-fuchsia .color-scheme-switcher__accent-badge,
+.accent-pink .color-scheme-switcher__accent-badge,
+.accent-rose .color-scheme-switcher__accent-badge {
+  @apply inline-block;
+}
+
+.accent-red .color-scheme-switcher__accent-badge-preview--red,
+.accent-orange .color-scheme-switcher__accent-badge-preview--orange,
+.accent-amber .color-scheme-switcher__accent-badge-preview--amber,
+.accent-yellow .color-scheme-switcher__accent-badge-preview--yellow,
+.accent-lime .color-scheme-switcher__accent-badge-preview--lime,
+.accent-green .color-scheme-switcher__accent-badge-preview--green,
+.accent-emerald .color-scheme-switcher__accent-badge-preview--emerald,
+.accent-teal .color-scheme-switcher__accent-badge-preview--teal,
+.accent-cyan .color-scheme-switcher__accent-badge-preview--cyan,
+.accent-sky .color-scheme-switcher__accent-badge-preview--sky,
+.accent-blue .color-scheme-switcher__accent-badge-preview--blue,
+.accent-indigo .color-scheme-switcher__accent-badge-preview--indigo,
+.accent-violet .color-scheme-switcher__accent-badge-preview--violet,
+.accent-purple .color-scheme-switcher__accent-badge-preview--purple,
+.accent-fuchsia .color-scheme-switcher__accent-badge-preview--fuchsia,
+.accent-pink .color-scheme-switcher__accent-badge-preview--pink,
+.accent-rose .color-scheme-switcher__accent-badge-preview--rose {
+  @apply inline-block;
 }

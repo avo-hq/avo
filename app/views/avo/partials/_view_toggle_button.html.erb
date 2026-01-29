@@ -30,15 +30,14 @@
 
         <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
           icon: is_active_view ? info[type][:active_icon] : info[type][:icon],
-          color: is_active_view ? :primary : :gray,
-          rounded: false,
-          size: :sm,
-          class: is_active_view ? "z-20" : "bg-gray-100 border-gray-300",
+          color: :primary,
+          class: is_active_view ? "button--active" : "",
           title: t('avo.switch_to_view', view_type: type),
           data: {
             tippy: 'tooltip',
             'turbo-frame': turbo_frame,
-            control: "view-type-toggle-#{type}"
+            control: "view-type-toggle-#{type}",
+            is_active: is_active_view
           }
         %>
       <% end %>

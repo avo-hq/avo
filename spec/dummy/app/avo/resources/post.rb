@@ -33,7 +33,7 @@ class Avo::Resources::Post < Avo::BaseResource
     :timestamps,
     {
       tooltip: -> { sanitize("Product is <strong>#{record.published_at ? "published" : "draft"}</strong>", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/#{record.published_at ? "eye" : "eye-slash"}" }
+      icon: -> { "tabler/outline/#{record.published_at ? "eye" : "eye-off"}" }
     },
     {
       label: -> { record.published_at ? "✅" : "🙄" },

@@ -1,0 +1,22 @@
+<div class="space-y-4">
+  <h2 class="text-xl font-semibold">Primary Style</h2>
+  <div class="flex gap-3 flex-wrap">
+    <%= render Avo::ButtonComponent.new(style: :primary, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :sm, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :lg, icon: "tabler/outline/arrow-up") { "Label" } %>
+  </div>
+
+  <h2 class="text-xl font-semibold">Outline Style</h2>
+  <div class="flex gap-3 flex-wrap">
+    <%= render Avo::ButtonComponent.new(style: :outline, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :outline, size: :sm, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :outline, size: :lg, icon: "tabler/outline/arrow-up") { "Label" } %>
+  </div>
+
+  <h2 class="text-xl font-semibold">Text Style</h2>
+  <div class="flex gap-3 flex-wrap">
+    <%= render Avo::ButtonComponent.new(style: :text, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :text, size: :sm, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :text, size: :lg, icon: "tabler/outline/arrow-up") { "Label" } %>
+  </div>
+</div>

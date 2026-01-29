@@ -11,15 +11,12 @@
 
   /* Base Item */
   .tabs__item {
-    @apply inline-flex items-center mx-1 px-3 py-1 cursor-pointer text-sm font-medium leading-4 bg-transparent gap-2 rounded-md;
-    color: var(--color-content);
-    font-family: var(--font-sans);
+    @apply inline-flex items-center mx-1 px-3 py-1 cursor-pointer text-sm font-medium leading-4 bg-transparent gap-2 rounded-md text-content;
   }
 
   /* Item Sub-elements */
   .tabs__item-icon {
-    @apply size-4;
-    color: var(--color-content);
+    @apply size-4 text-content;
   }
 
   .tabs__item-label {
@@ -32,13 +29,11 @@
   }
 
   .tabs__item:hover:not(.tabs__item--disabled) {
-    background: var(--color-secondary);
+    @apply bg-secondary;
   }
 
   .tabs__item:focus-visible {
-    outline: none;
-    background: var(--color-primary);
-    box-shadow: 0 0 0 2px var(--color-primary), 0 0 0 4px var(--color-content);
+    @apply bg-primary outline-none ring-offset-2 ring-offset-primary ring-2 ring-content;
   }
 
   /* Wrapper */
@@ -61,12 +56,10 @@
      SCOPE VARIANT
      ============================================ */
   .tabs__item-wrapper--scope {
-    @apply border-b-1;
-    border-color: var(--color-tertiary);
+    @apply border-b-1 border-tertiary;
   }
 
   .tabs__item-wrapper--scope.tabs__item--active {
-    @apply border-b-2;
-    border-color: var(--color-accent);
+    @apply border-b-2 border-accent;
   }
 }

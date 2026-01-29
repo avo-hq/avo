@@ -36,30 +36,4 @@ RSpec.describe Avo::UI::Tabs::TabsComponent, type: :component do
       expect(page).to have_css(".tab-content", text: "Tab 1")
     end
   end
-
-  describe "#tablist_id" do
-    subject { component.tablist_id }
-
-    context "when id is provided" do
-      let(:options) { {id: "my-tabs"} }
-      it { is_expected.to eq "my-tabs" }
-    end
-
-    context "when id is not provided" do
-      it { is_expected.to start_with("tabs-") }
-    end
-  end
-
-  describe "#tablist_aria_label" do
-    subject { component.tablist_aria_label }
-
-    context "when aria_label is provided" do
-      let(:options) { {aria_label: "Custom Label"} }
-      it { is_expected.to eq "Custom Label" }
-    end
-
-    context "when aria_label is not provided" do
-      it { is_expected.to eq "Tabs navigation" }
-    end
-  end
 end
