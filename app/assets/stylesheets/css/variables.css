@@ -25,6 +25,7 @@
 
   --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
 
+  --box-shadow-card: 0px 8px 16px 0px rgba(0, 0, 0, 0.04);
   --box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
 
   /* foundations - Light Mode */
