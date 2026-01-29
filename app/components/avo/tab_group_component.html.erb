@@ -10,14 +10,25 @@
   } do %>
   <% visible_tabs.each_with_index do |tab, index| %>
     <%= content_tag :div, **args(tab) do %>
-      <%= render ui.panel_header(title: group.title, description: group.description) %>
+      <% if group.title.present? || group.description.present? %>
+        <%= render ui.panel_header(title: group.title, description: group.description) %>
+      <% end %>
 
-      <div class="-mx-2 -my-2 space-y-4 rounded-lg border border-gray-200 p-2 lg:-mx-4 lg:-my-3 lg:p-4">
-        <%= render Avo::TabSwitcherComponent.new resource: resource, current_tab: visible_tabs.first, group: group, active_tab_title: tab.title, view: view %>
+        <%= render Avo::UI::Tabs::TabsComponent.new do %>
+          <% visible_tabs.each do |tab_item| %>
+            <%= render Avo::UI::Tabs::TabComponent.new(
+              label: tab_item.title,
+              active: tab_active?(tab_item, tab),
+              href: tab_path(tab_item),
+              title: tab_item.description,
+              data: tab_data(tab_item, tab)
+            ) %>
+          <% end %>
+        <% end %>
 
         <% if !tab.is_empty? %>
           <% if tab.lazy_load && view.display? %>
-            <%= turbo_frame_tag tab.turbo_frame_id(parent: @group), **frame_args(tab) do %>
+            <%= turbo_frame_tag tab.turbo_frame_id(parent: group), **frame_args(tab) do %>
               <% if is_not_loaded?(tab) %>
                 <%= render Avo::LoadingComponent.new(title: tab.title) %>
               <% else %>
@@ -28,7 +39,6 @@
             <%= render Avo::TabContentComponent.new tab:, resource:, index:, form:, view: %>
           <% end %>
         <% end %>
-      </div>
     <% end %>
   <% end %>
 <% end %>
