@@ -118,7 +118,8 @@ class Avo::Resources::Project < Avo::BaseResource
       as: :files,
       translation_key: "avo.field_translations.files",
       direct_upload: true,
-      view_type: :list, stacked: false,
+      view_type: :list,
+      stacked: true,
       hide_view_type_switcher: false
     field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_editing_values: true, disable_adding_rows: false, disable_deleting_rows: false, html: -> do
       show do
@@ -126,7 +127,7 @@ class Avo::Resources::Project < Avo::BaseResource
       end
     end
 
-    field :users, as: :has_and_belongs_to_many
+    field :users, as: :has_and_belongs_to_many, linkable: true
     field :comments, as: :has_many, searchable: true
     field :even_reviews, as: :has_many, for_attribute: :reviews, scope: -> { query.where("reviews.id % 2 = ?", "0") }
     field :reviews, as: :has_many

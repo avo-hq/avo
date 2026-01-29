@@ -27,7 +27,7 @@ RSpec.describe "Associations using *_fields api", type: :system do
 
     expect {
       accept_custom_alert do
-        find("tr[data-resource-id='#{course.links.first.to_param}'] [data-control='detach']").click
+        find("tr[data-resource-id='#{course.links.first.to_param}'] a[data-control='detach']").click
       end
     }.to change(course.links, :count).by(-1)
   end

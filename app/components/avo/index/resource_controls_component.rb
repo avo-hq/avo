@@ -110,12 +110,10 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    button_to helpers.resource_path(record: @resource.record, resource: @resource),
+    link_to helpers.resource_path(record: @resource.record, resource: @resource, **hidden_params),
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria: {label: control.title},
-      method: :delete,
-      params: hidden_params,
       data: {
         turbo_frame: params[:turbo_frame],
         turbo_confirm: control.confirmation_message,
@@ -132,13 +130,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_detach_button(control)
     return unless can_detach?
 
-    button_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
-      form_class: "flex items-center",
+    link_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param, **hidden_params),
       title: control.title,
       aria: {label: control.title},
-      method: :delete,
-      params: hidden_params,
       data: {
+        turbo_method: :delete,
         turbo_frame: params[:turbo_frame],
         turbo_confirm: control.confirmation_message,
         target: "control:detach",
@@ -157,7 +153,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def svg_classes
-    "text-gray-600 h-6 hover:text-gray-600"
+    "h-6"
   end
 
   def hidden_params

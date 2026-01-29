@@ -30,7 +30,7 @@ class Avo::Resources::Course < Avo::BaseResource
 
   def fields_bag
     card do
-      field :id, as: :id
+      field :id, as: :id, show_on: :all
       field :name, as: :text, html: {
         edit: {
           input: {

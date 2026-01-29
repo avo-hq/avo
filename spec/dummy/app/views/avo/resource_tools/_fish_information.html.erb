@@ -8,17 +8,17 @@
 
     <% if form.present? %>
       <% panel.with_card do %>
-        <div class="flex">
-          <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, component_options: {stacked: false} %>
-          <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, component_options: {multiple: true} %>
-        </div>
+        <%= tag.div class: "description-list w-full" do %>
+          <%= avo_edit_field :fish_type, as: :text, form: form, help: "Set the fish type", required: true, width: 50 %>
+          <%= avo_edit_field :properties, as: :text, form: form, name: "Property 1", help: "Prop 1", required: true, width:50, component_options: {multiple: true} %>
 
-        <%= avo_edit_field :properties, as: :text, form: form, name: "Property 2", help: "Prop 2", required: true, component_options: {multiple: true} %>
+          <%= avo_edit_field :properties, as: :text, form: form, name: "Property 2", help: "Prop 2", required: true, component_options: {multiple: true} %>
 
-        <%= form.fields_for :information do |information_form| %>
-          <%= avo_edit_field :name, name: "Information name", as: :text, form: information_form, value: "information name", help: "This is going to be passed to the model", required: true %>
-          <%= avo_edit_field :history, name: "Information history", as: :text, form: information_form, value: "information history", help: "This is going to be passed to the model", required: true %>
-          <%= avo_edit_field :age, name: "Information age", as: :text, form: information_form, value: "information age", help: "This is NOT going to be passed to the model", required: true %>
+          <%= form.fields_for :information do |information_form| %>
+            <%= avo_edit_field :name, name: "Information name", as: :text, form: information_form, value: "information name", help: "This is going to be passed to the model", required: true %>
+            <%= avo_edit_field :history, name: "Information history", as: :text, form: information_form, value: "information history", help: "This is going to be passed to the model", required: true %>
+            <%= avo_edit_field :age, name: "Information age", as: :text, form: information_form, value: "information age", help: "This is NOT going to be passed to the model", required: true %>
+          <% end %>
         <% end %>
       <% end %>
     <% else %>

@@ -16,23 +16,22 @@ class Avo::Resources::Comment < Avo::BaseResource
       field :body, as: :textarea, copyable: true, default: -> { "#{parent.first_name}'s comment" if parent.is_a?(User) }
       field :tiny_name, as: :text, only_on: :index
       field :posted_at,
-        stacked: true,
-        width: 33,
+        width: 50,
         as: :date_time,
         picker_format: "Y-m-d H:i:S",
         format: "cccc, d LLLL yyyy, HH:mm ZZZZ" # Wednesday, 10 February 1988, 16:00 GMT
-      with_options stacked: true do
-        field :user, as: :belongs_to, use_resource: Avo::Resources::CompactUser, link_to_record: true, width: 33
-        field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project], width: 33
+      with_options width: 50 do
+        field :user, as: :belongs_to, use_resource: Avo::Resources::CompactUser, link_to_record: true
       end
+      field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
       field :test, stacked: true, width: 33 do
-        "test"
+        "test1"
       end
       field :test2, stacked: true, width: 33 do
-        "test"
+        "test2"
       end
       field :test2, stacked: true, width: 33 do
-        "test"
+        "test3"
       end
       # field :test3 do
       #   "test"
