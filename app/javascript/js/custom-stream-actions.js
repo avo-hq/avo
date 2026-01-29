@@ -38,4 +38,12 @@ StreamActions.download = function () {
   )
 }
 
+// Overriding the turbo_power as it needs the timeout to work
+
+StreamActions.turbo_progress_bar_hide = function () {
+  setTimeout(() => {
+    window.Turbo.navigator.adapter.progressBar.hide()
+  }, 1)
+}
+
 window.StreamActions = StreamActions

@@ -3,31 +3,27 @@
   class: classes,
   style: style,
   data: data do %>
-  <%= content_tag :div, class: class_names("pt-4 flex self-start items-center shrink-0 w-full px-6 uppercase font-semibold text-gray-500 text-sm", @field.get_html(:classes, view: @view, element: :label), {
-    "md:pt-4": stacked?,
-    "h-full md:pt-0": !stacked?,
-    "md:h-10 ": !stacked? && short?,
-    "md:h-14 ": !stacked? && !short?,
-    "md:w-48": !stacked? && compact?,
-    "md:w-64": !stacked? && !compact?,
-  }), data: {slot: "label"} do %>
+  <%= content_tag :div,
+    class: class_names("field-wrapper__label", @field.get_html(:classes, view: @view, element: :label)),
+    data: {slot: "label"} do %>
+    <span class="self-center">
     <% if @form.present? %>
       <%= @form.label label_for, label %>
     <% else %>
       <%= @field.name %>
     <% end %>
     <% if on_edit? && @field.is_required? %> <span class="text-red-600 ms-1">*</span> <% end %>
+    <% if label_help.present? %>
+      <div class="field-wrapper__label-help"><%== label_help %></div>
+    <% end %>
+    </span>
   <% end %>
-  <%= content_tag :div, class: class_names("flex-1 flex flex-row md:min-h-inherit px-6",
-    @field.get_html(:classes, view: @view, element: :content),
-      {
-        "pb-4": stacked?,
-        "py-2": !compact?,
-        "py-1": compact?,
-      }), data: {slot: "value"} do %>
-    <div class="self-center w-full <% unless full_width? || compact? || stacked? %> md:w-8/12 has-sidebar:w-full <% end %>">
+  <%= content_tag :div,
+    class: class_names("field-wrapper__content", @field.get_html(:classes, view: @view, element: :content)),
+    data: {slot: "value"} do %>
+    <%= tag.div class: "field-wrapper__content-wrapper" do %>
       <% if on_show? %>
-        <div class="flex flex-row items-center group gap-x-1 group/clipboard">
+        <div class="flex flex-row items-center group gap-x-1 group/clipboard w-full">
           <% if render_dash? %>
             —
           <% else %>
@@ -40,13 +36,13 @@
       <% elsif on_edit? %>
         <%= content %>
         <% if @field.record_errors.include?(@field.id) %>
-          <div class="text-red-600 mt-2 text-sm"><%= @field.record_errors.full_messages_for(@field.id).to_sentence %></div>
+          <div class="field-wrapper__error"><%= @field.record_errors.full_messages_for(@field.id).to_sentence %></div>
         <% end %>
         <% if help.present? %>
-          <div class="text-gray-600 mt-2 text-sm"><%== help %></div>
+          <div class="field-wrapper__help"><%== help %></div>
         <% end %>
       <% end %>
-    </div>
+    <% end %>
   <% end %>
   <% if params[:avo_debug].present? %>
     <!-- Raw value: -->

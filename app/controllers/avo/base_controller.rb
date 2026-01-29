@@ -17,6 +17,9 @@ module Avo
     before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
 
+    before_action :set_modal_params
+    layout :choose_layout
+
     def index
       @page_title = @resource.plural_name.humanize
 
@@ -135,11 +138,6 @@ module Avo
       # Record is already hydrated on set_record_to_fill method
       @record = @resource.record
       @resource.hydrate(view: Avo::ViewInquirer.new(:new), user: _current_user)
-
-      # Handle special cases when creating a new record via a belongs_to relationship
-      if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to")
-      end
 
       set_actions
 
@@ -489,7 +487,22 @@ module Avo
     end
 
     def create_success_action
-      return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
+      if params[:via_belongs_to_resource_class].present?
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.remove(Avo::MODAL_FRAME_ID),
+              turbo_stream.avo_update_belongs_to(
+                relation_name: params[:via_relation],
+                target_record_id: @record.to_param,
+                target_resource_label: @resource.record_title,
+                target_resource_class: @record.class.name
+              )
+            ]
+          end
+        end
+        return
+      end
 
       respond_to do |format|
         format.html { redirect_to after_create_path, notice: create_success_message }
@@ -710,6 +723,22 @@ module Avo
         q: params[:q].strip,
         query: @query
       ).handle
+    end
+
+    def choose_layout
+      if params[:modal_layout].present?
+        "avo/modal"
+      else
+        "avo/application"
+      end
+    end
+
+    def set_modal_params
+      return unless params[:modal_layout].present?
+
+      @modal_width = params[:modal_width] || "4xl"
+      @modal_height = params[:modal_height] || "4xl"
+      @wrapper_class = params[:wrapper_class] || ""
     end
   end
 end

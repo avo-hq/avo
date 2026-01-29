@@ -1,0 +1,23 @@
+<div class="space-y-4">
+  <h2 class="text-xl font-semibold">All Sizes</h2>
+  <div class="flex gap-3 items-center flex-wrap">
+    <%#= render Avo::ButtonComponent.new(style: :primary, size: :xs, icon: "tabler/outline/arrow-up") do %>
+      <%# Label %>
+    <%# end %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :sm, icon: "tabler/outline/arrow-up", loading: true) do %>
+      Label
+    <% end %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :md, icon: "tabler/outline/arrow-up") do %>
+      Label
+    <% end %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :lg, icon: "tabler/outline/arrow-up") do %>
+      Label
+    <% end %>
+  </div>
+  <div class="flex gap-3 items-center flex-wrap">
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :xs, icon: "tabler/outline/arrow-up") %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :sm, icon: "tabler/outline/arrow-up") %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :md, icon: "tabler/outline/arrow-up") %>
+    <%= render Avo::ButtonComponent.new(style: :primary, size: :lg, icon: "tabler/outline/arrow-up") %>
+  </div>
+</div>

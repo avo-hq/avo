@@ -30,6 +30,7 @@ ro:
     confirm: Confirm
     copy: Copiază
     create_new_item: Creează %{item}
+    created_at: Creat la
     created_at_timestamp: Creat la %{created_at}
     dashboard: Panou de control
     dashboards: Panouri de control
@@ -138,6 +139,7 @@ ro:
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează
+    updated_at: Actualizat la
     updated_at_timestamp: Actualizat la %{updated_at}
     view: vezi
     view_item: vezi %{item}

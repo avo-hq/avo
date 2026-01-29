@@ -33,7 +33,7 @@ class Avo::Resources::Post < Avo::BaseResource
     :timestamps,
     {
       tooltip: -> { sanitize("Product is <strong>#{record.published_at ? "published" : "draft"}</strong>", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/#{record.published_at ? "eye" : "eye-slash"}" }
+      icon: -> { "tabler/outline/#{record.published_at ? "eye" : "eye-off"}" }
     },
     {
       label: -> { record.published_at ? "✅" : "🙄" },
@@ -53,38 +53,46 @@ class Avo::Resources::Post < Avo::BaseResource
   ]
 
   def fields
-    field :id, as: :id
-    field :name, required: true, sortable: true
-    field :created_at, as: :date_time
-    field :body,
-      as: :trix,
-      placeholder: "Enter text",
-      always_show: false,
-      attachment_key: :attachments,
-      hide_attachment_url: true,
-      hide_attachment_filename: true,
-      hide_attachment_filesize: true
-    field :cover, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*", stacked: true
-    field :cover, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: -> { value.present? ? value&.url : nil }
-    field :audio, as: :file, is_audio: true, accept: "audio/*"
+    panel do
+      card do
+        field :id, as: :id
+        field :name, required: true, sortable: true
+        field :created_at, as: :date_time
+        field :body,
+          as: :trix,
+          placeholder: "Enter text",
+          always_show: false,
+          attachment_key: :attachments,
+          hide_attachment_url: true,
+          hide_attachment_filename: true,
+          hide_attachment_filesize: true
+        field :cover, as: :file, is_image: true, full_width: true, hide_on: [], accept: "image/*", stacked: true
+        field :cover, as: :external_image, name: "Cover photo", required: true, hide_on: :all, link_to_record: true, format_using: -> { value.present? ? value&.url : nil }
+        field :audio, as: :file, is_audio: true, accept: "audio/*"
 
-    field :is_featured, as: :boolean, visible: -> do
-      Avo::Current.context[:user].is_admin?
+        field :user, as: :belongs_to, placeholder: "—"
+        field :status, as: :select, enum: ::Post.statuses, display_value: false
+        field :slug, as: :text
+        field :tags, as: :tags,
+          acts_as_taggable_on: :tags,
+          close_on_select: false,
+          placeholder: "add some tags",
+          suggestions: -> { Post.tags_suggestions },
+          enforce_suggestions: true,
+          # suggestions_max_items: 2,
+          help: "The only allowed values here are `one`, `two`, and `three`"
+      end
+      sidebar do
+        card title: "Post meta" do
+          field :is_featured, as: :boolean, visible: -> do
+            Avo::Current.context[:user].is_admin?
+          end
+          field :is_published, as: :boolean do
+            record.published_at.present?
+          end
+        end
+      end
     end
-    field :is_published, as: :boolean do
-      record.published_at.present?
-    end
-    field :user, as: :belongs_to, placeholder: "—"
-    field :status, as: :select, enum: ::Post.statuses, display_value: false
-    field :slug, as: :text
-    field :tags, as: :tags,
-      acts_as_taggable_on: :tags,
-      close_on_select: false,
-      placeholder: "add some tags",
-      suggestions: -> { Post.tags_suggestions },
-      enforce_suggestions: true,
-      # suggestions_max_items: 2,
-      help: "The only allowed values here are `one`, `two`, and `three`"
 
     field :cover_attachment, as: :has_one
 

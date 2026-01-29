@@ -27,6 +27,7 @@ en:
     confirm: Confirm
     copy: Copy
     create_new_item: Create new %{item}
+    created_at: Created at
     created_at_timestamp: Created at %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -134,6 +135,7 @@ en:
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo
+    updated_at: Updated at
     updated_at_timestamp: Updated at %{updated_at}
     view: View
     view_item: view %{item}

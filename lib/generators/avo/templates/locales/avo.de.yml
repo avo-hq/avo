@@ -27,6 +27,7 @@ de:
     confirm: Bestätigen
     copy: Kopieren
     create_new_item: Neues %{item} erstellen
+    created_at: Erstellt am
     created_at_timestamp: Erstellt am %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -134,6 +135,7 @@ de:
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
+    updated_at: Aktualisiert am
     updated_at_timestamp: Aktualisiert am %{updated_at}
     view: Anzeigen
     view_item: "%{item} anzeigen"

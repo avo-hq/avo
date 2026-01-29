@@ -35,7 +35,7 @@
     </div>
   <% end %>
 
-  <%= render ui.panel_header(title:, description: @resource.description, index:) do |header| %>
+  <%= render ui.panel_header(title:, description: @resource.description, index:, class: "!-mb-8") do |header| %>
     <% header.with_controls do %>
       <% controls.each do |control| %>
         <%= render_control control %>
@@ -48,19 +48,21 @@
       <% end %>
     <% end %>
 
-    <% header.with_discreet_information do %>
-      <% if @resource.get_external_link.present? %>
-        <%= render Avo::DiscreetInformationComponent.new(
-          as: :icon,
-          url: @resource.get_external_link,
-          target: :_blank,
-          title: helpers.t("avo.visit_record_on_external_path"),
-          icon: "heroicons/outline/arrow-top-right-on-square"
-        ) %>
-      <% end %>
+    <% if @resource.get_external_link.present? || @resource.discreet_information.items.any? %>
+      <% header.with_discreet_information do %>
+        <% if @resource.get_external_link.present? %>
+          <%= render Avo::DiscreetInformationComponent.new(
+            as: :icon,
+            url: @resource.get_external_link,
+            target: :_blank,
+            title: helpers.t("avo.visit_record_on_external_path"),
+            icon: "tabler/outline/external-link"
+          ) %>
+        <% end %>
 
-      <% @resource.discreet_information.items.each do |item| %>
-        <%= render Avo::DiscreetInformationComponent.new(**item) %>
+        <% @resource.discreet_information.items.each do |item| %>
+          <%= render Avo::DiscreetInformationComponent.new(**item) %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

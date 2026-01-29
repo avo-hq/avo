@@ -13,22 +13,6 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
     @classes = @args.dig(:class) || ""
   end
 
-  def classes
-    result = @classes
-
-    unless @flush
-      result += " py-3"
-    end
-
-    result += " #{@field.get_html(:classes, view: @view, element: :wrapper)}"
-
-    result
-  end
-
-  def style
-    @field.get_html(:style, view: @view, element: :wrapper)
-  end
-
   def stimulus_attributes
     attributes = {}
 
@@ -45,10 +29,6 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   end
 
   def render_dash?
-    if @field.type == "boolean"
-      @field.value.nil?
-    else
-      @field.value.blank? && @dash_if_blank
-    end
+    @field.value.blank? && @dash_if_blank
   end
 end

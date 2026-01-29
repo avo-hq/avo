@@ -121,7 +121,7 @@ RSpec.describe "KeyValueFields", type: :system do
   end
 
   describe "with value" do
-    let!(:meta_data) { {'foo': "bar", 'hey': "hi"} }
+    let!(:meta_data) { {foo: "bar", hey: "hi"} }
     let!(:project) { create :project, meta: meta_data }
 
     context "show" do
@@ -301,7 +301,7 @@ RSpec.describe "KeyValueFields", type: :system do
   end
 
   describe "with null values" do
-    let!(:meta_data) { {'foo' => nil, nil => 'bar'} }
+    let!(:meta_data) { {"foo" => nil, nil => "bar"} }
     let!(:project) { create :project, meta: meta_data }
 
     context "show" do
@@ -339,6 +339,59 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(keys[1].value).to eq ""
         expect(values[1].value).to eq "bar"
+      end
+    end
+  end
+
+  describe "with 0 and false" do
+    let!(:comment) { create :comment }
+
+    context "show" do
+      it "displays the comment key_value field with correct values" do
+        visit "/admin/resources/comments/#{comment.id}"
+        wait_for_loaded
+
+        key_value_element = find_field_element("key_value")
+
+        # Find all key and value inputs using class selectors
+        keys = key_value_element.all('input.key-value-input-key[disabled="disabled"]')
+        values = key_value_element.all('input.key-value-input-value[disabled="disabled"]')
+
+        expect(keys.length).to eq 2
+        expect(values.length).to eq 2
+
+        expect(keys[0].value).to eq "key_value_1"
+        expect(values[0].value).to eq "0"
+
+        expect(keys[1].value).to eq "key_value_3"
+        expect(values[1].value).to eq "false"
+      end
+    end
+
+    context "edit" do
+      it "preserves types when changing 0 to 1 (Integer) and false to true (Boolean)" do
+        expect(TestBuddy).to receive(:hi).with("[Integer, TrueClass]").at_least(:once)
+
+        visit "/admin/resources/comments/#{comment.id}/edit"
+        wait_for_loaded
+
+        key_value_element = find_field_element("key_value")
+
+        # Find all key and value inputs using class selectors
+        keys = key_value_element.all("input.key-value-input-key")
+        values = key_value_element.all("input.key-value-input-value")
+
+        # Verify initial values
+        expect(keys[0].value).to eq "key_value_1"
+        expect(values[0].value).to eq "0"
+        expect(keys[1].value).to eq "key_value_3"
+        expect(values[1].value).to eq "false"
+        # Change 0 to 1
+        values[0].set("1")
+        # Change false to true
+        values[1].set("true")
+
+        save
       end
     end
   end

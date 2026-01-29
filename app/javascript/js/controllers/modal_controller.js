@@ -8,6 +8,10 @@ export default class extends Controller {
     closeModalOnBackdropClick: true,
   }
 
+  connect() {
+    document.body.classList.add('modal-open')
+  }
+
   close(event) {
     if (event.target === this.backdropTarget && !this.closeModalOnBackdropClickValue) return
 

@@ -7,17 +7,15 @@
       class: 'text-center',
       title: t('avo.download_file'),
       data: { tippy: :tooltip },
-      compact: true,
-      size: :xs %>
+      size: :sm %>
   <% end %>
 </div>
 <div>
   <% if can_delete_file? %>
     <%= a_link destroy_path,
-      icon: "avo/trash",
+      icon: "tabler/outline/trash",
       color: :red,
-      compact: true,
-      size: :xs,
+      size: :sm,
       class: 'text-center',
       title: t('avo.delete_file', item: @file.filename),
       data: {

@@ -14,6 +14,9 @@
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
 
+/* Tailwind colors */
+/* red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose */
+
 @theme {
   --spacing-3/4: 75%;
 
@@ -41,6 +44,11 @@
   --shadow-modal: " 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)";
 
   --breakpoint-xs: 30rem;
+
+  --container-8xl: 96rem;
+
+  /* Tiny text size originally added for discreet information */
+  --text-tiny: 0.625rem;
 }
 
 @plugin '@tailwindcss/forms';
@@ -74,7 +82,7 @@
   @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
 
   @import "./css/fonts.css";
-  @import "./css/buttons.css";
+  @import "./css/button-group.css";
   @import "./css/typography.css";
   @import "./css/tooltips.css";
   @import "./css/loader.css";
@@ -82,9 +90,10 @@
   @import "./css/search.css";
   @import "./css/active-storage.css";
   @import "./css/scrollbar.css";
-  @import "./css/sidebar.css";
+  @import "./css/layout.css";
   @import "./css/spinner.css";
   @import "./css/table.css";
+  @import "./css/resource-controls.css";
 
   @import "./css/fields/status.css";
   @import "./css/fields/code.css";
@@ -102,11 +111,18 @@
   @import "./css/components/ui/description_list.css";
   @import "./css/components/ui/tabs.css";
   @import "./css/components/ui/badge.css";
+  @import "./css/components/ui/checkbox.css";
+  @import "./css/components/ui/radio_button.css";
 
+  @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
+  @import "./css/components/button.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
+  @import "./css/components/tooltip.css";
+  @import "./css/components/modal.css";
+  @import "./css/css-animations.css";
 
   html,
   body {
@@ -162,6 +178,10 @@
     display: none;
   }
 
+  body.modal-open {
+    @apply overflow-hidden;
+  }
+
   trix-editor {
     max-height: 320px !important;
     overflow-y: auto;
@@ -182,14 +202,19 @@
       @apply ms-0 col-start-2;
     }
   }
+}
 
-  .shift-pressed {
-    & .highlighted-row {
-      @apply bg-neutral-200!;
-    }
-  }
+.loading-spinner {
+  @apply absolute top-1/2 border-2 w-4 h-4 rounded-full;
 
-  .selected-row {
-    @apply bg-neutral-100!;
-  }
+  border-color: var(--color-content);
+  border-right-color: var(--color-tertiary);
+  transform: translateY(-50%);
+  transform-origin: center center;
+  animation: text-input-spin 0.9s linear infinite;
+}
+
+@keyframes text-input-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
 }

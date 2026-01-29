@@ -1,4 +1,4 @@
-<%= field_wrapper(**field_wrapper_args) do %>
+<%= field_wrapper(**field_wrapper_args, full_width: true) do %>
   <%= content_tag :div,
     class: "tiptap__field",
     data: {
@@ -58,7 +58,7 @@
               <%= helpers.svg("heroicons/outline/check-circle") %>
             <% end %>
             <%= button_tag type: "button", class: "tiptap__button tiptap__link-button--unset", data: { action: "click->tiptap-field#unsetLink" } do %>
-              <%= helpers.svg("avo/trash") %>
+              <%= helpers.svg("tabler/outline/trash") %>
             <% end %>
           <% end %>
         <% end %>

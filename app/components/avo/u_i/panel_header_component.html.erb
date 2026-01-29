@@ -1,4 +1,5 @@
 <%= tag.div class: class_names(
+  @class,
   "header",
   "header--size-medium": size_medium?,
   "header--size-small": size_small?
@@ -23,6 +24,10 @@
         <% if @description.present? %>
           <p class="header__description"><%= @description %></p>
         <% end %>
+
+      <% if discreet_information? %>
+        <div class="header__discreet-information mt-2"><%= discreet_information %></div>
+      <% end %>
       </div>
     </div>
 
@@ -30,8 +35,4 @@
       <div class="header__controls"><%= controls %></div>
     <% end %>
   </div>
-
-  <% if discreet_information? %>
-    <div class="header__discreet-information"><%= discreet_information %></div>
-  <% end %>
 <% end %>

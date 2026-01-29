@@ -29,6 +29,7 @@ nn:
     confirm: Stadfest
     copy: Kopier
     create_new_item: Lag ny %{item}
+    created_at: Oppretta den
     created_at_timestamp: Oppretta den %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -136,6 +137,7 @@ nn:
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
     undo: angre
+    updated_at: Oppdatert den
     updated_at_timestamp: Oppdatert den %{updated_at}
     view: Vis
     view_item: vis %{item}

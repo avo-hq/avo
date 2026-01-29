@@ -11,8 +11,14 @@ task "avo:update" do
   end
 end
 
+desc "Builds Avo (just assets for now)"
+task "avo:build" do
+  Rake::Task["avo:build-assets"].invoke
+end
+
 desc "Installs Avo assets and bundles them for when you want to use the GitHub repo in your app"
 task "avo:build-assets" do
+  puts "Building Avo assets"
   spec = get_gem_spec "avo"
   # Uncomment to enable only when the source is github.com
   # enabled = spec.source.to_s.include?('https://github.com/avo-hq/avo')
@@ -23,8 +29,13 @@ task "avo:build-assets" do
     path = spec.full_gem_path
 
     Dir.chdir(path) do
+      puts "Running `yarn install`"
       system "yarn"
+
+      puts "Running `bundle exec rails avo:sym_link`"
       system "bundle exec rails avo:sym_link"
+
+      puts "Running `yarn build`"
       system "yarn build"
     end
 
@@ -70,8 +81,13 @@ end
 
 desc "Symlinks all Avo gems to tmp/avo/packages"
 task "avo:sym_link" do
-  base_path = Rails.root.join("tmp", "avo").to_s.gsub("/spec/dummy", "")
+  puts "Running avo:sym_link"
+  base_path = Rails.root.join("tmp", "avo", "build-assets").to_s.gsub("/spec/dummy", "")
+
+  remove_directory_if_exists base_path
+
   packages_path = "#{base_path}/packages"
+
   if Dir.exist?(packages_path)
     `rm -rf #{packages_path}/*`
   else
@@ -80,7 +96,6 @@ task "avo:sym_link" do
   end
 
   gem_paths = `bundle list --paths 2>/dev/null`.split("\n")
-
   ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
     path = gem_paths.find { |gem_path| gem_path.include?("/#{gem}-") }
 
@@ -95,26 +110,22 @@ task "avo:sym_link" do
     symlink_path path, "#{packages_path}/#{gem}"
   end
 
-  application_css_path = Avo::Engine.root.join("app/assets/builds/avo/application.css")
-
-  raise "[Avo->] Failed to find application.css." unless File.exist?(application_css_path.to_s)
+  application_css_path = Avo::Engine.root.join("app", "assets", "stylesheets", "application.css")
+  raise "[Avo->] Failed to find #{application_css_path}." unless File.exist?(application_css_path.to_s)
 
   dest_css_path = "#{base_path}/application.css"
   remove_file_if_exists dest_css_path
 
   puts "[Avo->] Linking application.css to #{application_css_path}"
   symlink_path application_css_path, dest_css_path
-
-  base_preset_path = Avo::Engine.root.join("tailwind.preset.js")
-  dest_preset_path = "#{base_path}/tailwind.preset.js"
-  remove_file_if_exists dest_preset_path
-
-  puts "[Avo->] Linking tailwind.preset.js to #{base_preset_path}"
-  symlink_path base_preset_path, dest_preset_path
 end
 
 def remove_file_if_exists(path)
   `rm #{path}` if File.exist?(path) || File.symlink?(path)
+end
+
+def remove_directory_if_exists(path)
+  `rm -rf #{path}` if Dir.exist?(path) || File.symlink?(path)
 end
 
 def symlink_path(from, to)

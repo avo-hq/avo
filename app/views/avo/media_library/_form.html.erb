@@ -1,30 +1,45 @@
-<%= form_with model: @blob, url: avo.media_library_path(@blob), method: :patch, class: "pb-6" do |f| %>
-  <%= field_container do %>
-    <%= avo_edit_field :filename, as: :text, short: true, stacked: true, form: f, required: true %>
-    <%= f.fields_for :metadata do |meta_form| %>
-      <%= avo_edit_field :title,
-        as: :text,
-        value: @blob.metadata[:title],
-        short: true,
-        stacked: true,
-        form: meta_form,
-        required: true
-      %>
-      <%= avo_edit_field :alt,
-        as: :text,
-        value: @blob.metadata[:alt],
-        short: true,
-        stacked: true,
-        form: meta_form
-      %>
-      <%= avo_edit_field :description,
-        as: :textarea,
-        value: @blob.metadata[:description],
-        short: true,
-        stacked: true,
-        form: meta_form
-      %>
-    <% end %>
+<%# TODO: fix this view%>
+<%= form_with model: @blob, url: avo.media_library_path(@blob), method: :patch, class: "pb-6 description-list w-full" do |f| %>
+  <%= avo_edit_field :filename,
+      as: :text,
+      stacked: true,
+      form: f,
+      required: true,
+      component_options: {
+        full_width: true,
+        stacked: true
+      } %>
+  <%= f.fields_for :metadata do |meta_form| %>
+    <%= avo_edit_field :title,
+      as: :text,
+      value: @blob.metadata[:title],
+      form: meta_form,
+      component_options: {
+        full_width: true,
+        stacked: true
+      },
+      required: true
+    %>
+    <%= avo_edit_field :alt,
+      as: :text,
+      value: @blob.metadata[:alt],
+      stacked: true,
+      component_options: {
+        full_width: true,
+        stacked: true
+      },
+      form: meta_form
+    %>
+    <%= avo_edit_field :description,
+      as: :textarea,
+      value: @blob.metadata[:description],
+      stacked: true,
+      component_options: {
+        full_width: true,
+        stacked: true
+      },
+      form: meta_form
+    %>
   <% end %>
 
   <div class="w-full flex justify-end pe-6">

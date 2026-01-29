@@ -18,7 +18,7 @@ RSpec.describe "TiptapField", type: :system do
 
         description_element = find_field_element("description")
 
-        expect(description_element).to have_text "DESCRIPTION"
+        expect(description_element).to have_text "Description"
 
         expect(find("#tiptap_product_description_editor", visible: false)[:placeholder]).to have_text("Enter text")
         expect(find("#tiptap_product_description_editor", visible: false)).to have_text("")
@@ -58,7 +58,7 @@ RSpec.describe "TiptapField", type: :system do
 
         description_element = find_field_element("description")
 
-        expect(description_element).to have_text "DESCRIPTION"
+        expect(description_element).to have_text "Description"
       end
 
       it "has filled simple text in tiptap editor" do

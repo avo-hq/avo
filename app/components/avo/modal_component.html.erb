@@ -1,28 +1,57 @@
-<div class="modal-container fixed inset-0 w-full min-h-screen z-[100] flex justify-center items-center"
-  data-controller="modal"
+<div class="<%= class_names("modal", {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}) %>"
+  data-controller="modal modal-size"
   data-modal-target="modal"
   data-modal-close-modal-on-backdrop-click-value="<%= close_modal_on_backdrop_click %>"
+  data-modal-size-current-width-value="<%= @width %>"
+  data-modal-size-current-height-value="<%= @height %>"
 >
-  <div aria-expanded="true" class="modal-overlay absolute w-full h-full bg-gray-800/25 flex justify-center items-center" data-modal-target="backdrop" data-action="click->modal#close"></div>
-  <div aria-expanded="true" role="dialog" aria-modal="true" class="modal-body rounded-lg inset-auto bg-white flex z-50 relative shadow-modal <%= overflow_classes %> <%= width_classes %> <%= height_classes %>">
-    <div class="flex-1 flex flex-col justify-between">
-      <div>
-        <% if heading? %>
-          <div class="p-6 pb-0 text-2xl tracking-normal font-semibold text-black">
-            <%= heading %>
+  <div aria-expanded="true" class="modal__overlay" data-modal-target="backdrop" data-action="click->modal#close"></div>
+  <div aria-expanded="true" role="dialog" aria-modal="true" class="modal__card-container" data-modal-size-target="container">
+    <div class="modal__card">
+      <div class="modal__content">
+        <% if has_header? %>
+          <div class="modal__header">
+            <div class="flex gap-4 items-start relative shrink-0 w-full">
+              <div class="basis-0 flex gap-0 grow items-center min-h-px min-w-px relative shrink-0">
+                <div class="flex flex-col gap-0.5 items-start not-italic relative shrink-0">
+                  <% if @title.present? || heading? %>
+                    <p class="modal__title line-clamp-1 font-medium leading-6 relative shrink-0 text-xl text-content">
+                      <%= @title.presence || heading %>
+                    </p>
+                  <% end %>
+                  <% if @description.present? %>
+                    <p class="modal__description line-clamp-1 font-normal leading-5 overflow-ellipsis overflow-hidden relative shrink-0 text-sm text-content-secondary">
+                      <%= @description %>
+                    </p>
+
+                  <% end %>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <%= render partial: "avo/modal/size_selector", locals: { type: 'width', width: @width, height: @height } %>
+                <%= render partial: "avo/modal/size_selector", locals: { type: 'height', width: @width, height: @height } %>
+                <% if @show_close_button %>
+                  <button class="modal__close-button relative shrink-0 size-5" data-action="click->modal#closeModal" aria-label="<%= t('avo.close') %>">
+                    <%= helpers.svg "heroicons/outline/x-mark", class: "size-5 text-content" %>
+                  </button>
+                <% end %>
+              </div>
+            </div>
           </div>
         <% end %>
-        <% if content? %>
-          <div class="p-6 text-base text-gray-500">
-            <%= content %>
-          </div>
-        <% end %>
-      </div>
-      <% if controls? %>
-        <div class="flex justify-end items-baseline space-x-4 rtl:space-x-reverse p-4 bg-gray-100">
-          <%= controls %>
+        <div class="modal__body <%= @body_class %>">
+          <% if content? %>
+            <div class="modal__body-content overflow-auto">
+              <%= content %>
+            </div>
+          <% end %>
+          <% if controls? %>
+            <div class="modal__controls">
+              <%= controls %>
+            </div>
+          <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>

@@ -1,12 +1,12 @@
-<%= content_tag :nav, class: class_names("z-50 fixed p-2 w-full flex shrink-0 items-center px-4 lg:px-4 space-x-4 rtl:space-x-reverse lg:space-x-0 h-16", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
-  <div class="flex items-center space-x-2 rtl:space-x-reverse w-auto lg:w-64 shrink-0 h-full">
+<%= content_tag :nav, class: class_names("top-navbar", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
+  <div class="flex items-center space-x-2 rtl:space-x-reverse w-auto lg:w-64 shrink-0 h-full py-2">
     <div>
-      <%= a_button class: 'lg:hidden', icon: 'avo/menu', size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebarOnMobile' }, aria: {label: "Toggle sidebar"} %>
-      <%= a_button class: '!hidden lg:!inline-flex', icon: 'avo/menu', size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebar' }, aria: {label: "Toggle sidebar"} %>
+      <%= a_button class: 'lg:hidden', icon: 'avo/menu', size: :sm, style: :text, data: { action: 'click->sidebar#toggleSidebarOnMobile' }, aria: {label: "Toggle sidebar"} %>
+      <%= a_button class: '!hidden lg:!inline-flex', icon: 'avo/menu', size: :sm, style: :text, data: { action: 'click->sidebar#toggleSidebar' }, aria: {label: "Toggle sidebar"} %>
     </div>
     <%= render partial: "avo/partials/logo" %>
   </div>
-  <div class="flex-1 flex items-center justify-between lg:justify-start space-x-2 rtl:space-x-reverse sm:space-x-8 lg:px-2">
+  <div class="flex-1 flex items-center justify-between lg:justify-start space-x-2 rtl:space-x-reverse sm:space-x-8 lg:px-1">
     <%= render Avo::Pro::GlobalSearch::InputComponent.new(resource:) if defined?(Avo::Pro::GlobalSearch::InputComponent) %>
     <div class="flex justify-between w-full h-full items-center m-0">
       <%= render partial: "avo/partials/header" %>
@@ -15,4 +15,7 @@
   </div>
 <% end %>
 <!-- This is a hack to fix the issue with the navbar not being accesible because of the .main-content-wrapper padding-->
+<!-- TODO: when implementing the final layout (search covered issue) see if we still need this hack-->
+<%#
 <div class="relative opacity-0 h-16 pointer-events-none"></div>
+%>
