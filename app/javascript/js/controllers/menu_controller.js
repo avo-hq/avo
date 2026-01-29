@@ -5,6 +5,8 @@ export default class extends Controller {
 
   collapsed = true
 
+  transitionClass = 'css-animate-slide-down'
+
   get key() {
     return this.selfTarget.getAttribute('data-menu-key-param')
   }
@@ -68,11 +70,25 @@ export default class extends Controller {
     element.toggleAttribute('hidden')
   }
 
-  leave(element) {
+  async leave(element) {
     element.setAttribute('hidden', true)
+    await this.animateTransition(element)
   }
 
-  enter(element) {
+  async enter(element) {
     element.removeAttribute('hidden')
+    await this.animateTransition(element)
+  }
+
+  async animateTransition(element) {
+    element.classList.add(this.transitionClass)
+    await this.onTransitionsEnded(element)
+    element.classList.remove(this.transitionClass)
+  }
+
+  onTransitionsEnded(node) {
+    return Promise.allSettled(
+      node.getAnimations().map((animation) => animation.finished),
+    )
   }
 }

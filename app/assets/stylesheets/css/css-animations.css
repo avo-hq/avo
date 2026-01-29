@@ -21,8 +21,8 @@
   opacity: 0;
   transform: translateY(-0.25rem);
   transition:
-    opacity 75ms ease-in,
-    transform 75ms ease-in,
+    opacity 75ms ease-out,
+    transform 75ms ease-out,
     display 75ms allow-discrete;
 }
 

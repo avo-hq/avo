@@ -157,7 +157,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def svg_classes
-    "text-gray-600 h-6 hover:text-gray-600"
+    "h-6"
   end
 
   def hidden_params

@@ -11,6 +11,11 @@ task "avo:update" do
   end
 end
 
+desc "Builds Avo (just assets for now)"
+task "avo:build" do
+  Rake::Task["avo:build-assets"].invoke
+end
+
 desc "Installs Avo assets and bundles them for when you want to use the GitHub repo in your app"
 task "avo:build-assets" do
   puts "Building Avo assets"

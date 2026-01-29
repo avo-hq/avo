@@ -34,7 +34,7 @@ module Avo
         load File.expand_path("../tasks/avo_tasks.rake", __dir__)
 
         if Rake::Task.task_defined?("assets:precompile")
-          Rake::Task["assets:precompile"].enhance(["avo:build-assets"])
+          Rake::Task["assets:precompile"].enhance(["avo:build"])
         end
       end
     end
