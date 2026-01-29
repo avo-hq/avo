@@ -14,6 +14,9 @@
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
 
+/* Tailwind colors */
+/* red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose */
+
 @theme {
   --spacing-3/4: 75%;
 
@@ -41,6 +44,8 @@
   --shadow-modal: " 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)";
 
   --breakpoint-xs: 30rem;
+
+  --container-8xl: 96rem;
 
   /* Tiny text size originally added for discreet information */
   --text-tiny: 0.625rem;
@@ -77,7 +82,7 @@
   @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
 
   @import "./css/fonts.css";
-  @import "./css/buttons.css";
+  @import "./css/button-group.css";
   @import "./css/typography.css";
   @import "./css/tooltips.css";
   @import "./css/loader.css";
@@ -85,9 +90,10 @@
   @import "./css/search.css";
   @import "./css/active-storage.css";
   @import "./css/scrollbar.css";
-  @import "./css/sidebar.css";
+  @import "./css/layout.css";
   @import "./css/spinner.css";
   @import "./css/table.css";
+  @import "./css/resource-controls.css";
 
   @import "./css/fields/status.css";
   @import "./css/fields/code.css";
@@ -111,6 +117,7 @@
   @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
+  @import "./css/components/button.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
   @import "./css/components/tooltip.css";
@@ -195,16 +202,19 @@
       @apply ms-0 col-start-2;
     }
   }
+}
 
-  .container-large {
-    @apply 2xl:container 2xl:mx-auto;
-  }
+.loading-spinner {
+  @apply absolute top-1/2 border-2 w-4 h-4 rounded-full;
 
-  .container-small {
-    @apply 2xl:px-0 2xl:max-w-196 2xl:mx-auto;
-  }
+  border-color: var(--color-content);
+  border-right-color: var(--color-tertiary);
+  transform: translateY(-50%);
+  transform-origin: center center;
+  animation: text-input-spin 0.9s linear infinite;
+}
 
-  .container-full-width {
-    @apply w-full;
-  }
+@keyframes text-input-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
 }

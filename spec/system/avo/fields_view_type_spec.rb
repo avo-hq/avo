@@ -18,8 +18,8 @@ RSpec.feature "Fields view types", type: :system do
     expect(files_wrapper).to have_selector("div.button-group", count: 1)
 
     button_group = files_wrapper.find("div.button-group")
-    expect(button_group).to have_selector('a[data-control="view-type-toggle-list"].text-gray-500', count: 1)
-    expect(button_group).to have_selector('a[data-control="view-type-toggle-grid"].text-primary-500', count: 1)
+    expect(button_group).to have_selector('a[data-control="view-type-toggle-list"][data-is-active="false"]', count: 1)
+    expect(button_group).to have_selector('a[data-control="view-type-toggle-grid"][data-is-active="true"]', count: 1)
 
     project.files.each do |file|
       expect(page).not_to have_content(ActiveSupport::NumberHelper.number_to_human_size(file.byte_size))
@@ -48,8 +48,8 @@ RSpec.feature "Fields view types", type: :system do
     expect(files_wrapper).to have_selector("div.button-group", count: 1)
 
     button_group = files_wrapper.find("div.button-group")
-    expect(button_group).to have_selector('a[data-control="view-type-toggle-list"].text-primary-500', count: 1)
-    expect(button_group).to have_selector('a[data-control="view-type-toggle-grid"].text-gray-500', count: 1)
+    expect(button_group).to have_selector('a[data-control="view-type-toggle-list"][data-is-active="true"]', count: 1)
+    expect(button_group).to have_selector('a[data-control="view-type-toggle-grid"][data-is-active="false"]', count: 1)
 
     project.files.each do |file|
       expect(page).to have_content(ActiveSupport::NumberHelper.number_to_human_size(file.byte_size))
@@ -64,8 +64,8 @@ RSpec.feature "Fields view types", type: :system do
 
     find('a[data-control="view-type-toggle-grid"]').click
 
-    expect(button_group).to have_selector('a[data-control="view-type-toggle-list"].text-gray-500', count: 1)
-    expect(button_group).to have_selector('a[data-control="view-type-toggle-grid"].text-primary-500', count: 1)
+    expect(button_group).to have_selector('a[data-control="view-type-toggle-list"][data-is-active="false"]', count: 1)
+    expect(button_group).to have_selector('a[data-control="view-type-toggle-grid"][data-is-active="true"]', count: 1)
 
     project.files.each do |file|
       expect(page).not_to have_content(ActiveSupport::NumberHelper.number_to_human_size(file.byte_size))

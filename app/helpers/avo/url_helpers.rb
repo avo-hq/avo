@@ -52,9 +52,10 @@ module Avo
       model_name, # teams
       record_id, # 1
       related_name, # admin
-      related_id = nil
+      related_id = nil,
+      **args
     )
-      avo.resources_associations_destroy_path(model_name, record_id, related_name, related_id)
+      avo.resources_associations_destroy_path(model_name, record_id, related_name, related_id, **args)
     end
 
     def related_resources_path(

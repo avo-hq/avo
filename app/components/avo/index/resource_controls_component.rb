@@ -74,7 +74,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_edit_button(control)
     return unless can_edit?
 
-    link_to helpers.svg("avo/edit", class: svg_classes),
+    link_to helpers.svg("tabler/outline/edit", class: svg_classes),
       edit_path,
       class: "flex items-center",
       title: control.title,
@@ -90,7 +90,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_show_button(control)
     return unless can_view?
 
-    link_to helpers.svg("avo/eye", class: svg_classes),
+    link_to helpers.svg("tabler/outline/eye", class: svg_classes),
       show_path,
       class: "flex items-center",
       title: control.title,
@@ -110,15 +110,10 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    a_button url: helpers.resource_path(record: @resource.record, resource: @resource),
-      style: :icon,
-      color: :gray,
-      icon: "avo/trash",
+    link_to helpers.resource_path(record: @resource.record, resource: @resource, **hidden_params),
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria: {label: control.title},
-      method: :delete,
-      params: hidden_params,
       data: {
         turbo_frame: params[:turbo_frame],
         turbo_confirm: control.confirmation_message,
@@ -127,29 +122,28 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
         "resource-id": @resource.record_param,
-      }
+      } do
+        svg "tabler/outline/trash", class: svg_classes
+      end
   end
 
   def render_detach_button(control)
     return unless can_detach?
 
-    a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
-      style: :icon,
-      color: :gray,
-      icon: "avo/detach",
-      form_class: "flex items-center",
+    link_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param, **hidden_params),
       title: control.title,
       aria: {label: control.title},
-      method: :delete,
-      params: hidden_params,
       data: {
+        turbo_method: :delete,
         turbo_frame: params[:turbo_frame],
         turbo_confirm: control.confirmation_message,
         target: "control:detach",
         control: :detach,
         "resource-id": @resource.record_param,
         tippy: :tooltip,
-      }
+      } do
+        svg "tabler/outline/unlink", class: svg_classes
+      end
   end
 
   def render_order_controls(control)
@@ -159,7 +153,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   end
 
   def svg_classes
-    "text-gray-600 h-6 hover:text-gray-600"
+    "h-6"
   end
 
   def hidden_params
