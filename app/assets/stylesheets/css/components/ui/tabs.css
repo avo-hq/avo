@@ -44,6 +44,7 @@
   /* ============================================
      GROUP VARIANT
      ============================================ */
+  .tabs__item--group.tabs__item--active:hover,
   .tabs__item--group.tabs__item--active {
     background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
   }
@@ -56,7 +57,7 @@
      SCOPE VARIANT
      ============================================ */
   .tabs__item-wrapper--scope {
-    @apply border-b-1 border-tertiary;
+    @apply border-b border-tertiary;
   }
 
   .tabs__item-wrapper--scope.tabs__item--active {

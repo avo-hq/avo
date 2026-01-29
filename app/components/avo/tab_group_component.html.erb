@@ -10,9 +10,10 @@
   } do %>
   <% visible_tabs.each_with_index do |tab, index| %>
     <%= content_tag :div, **args(tab) do %>
-      <%= render ui.panel_header(title: group.title, description: group.description) %>
+      <% if group.title.present? || group.description.present? %>
+        <%= render ui.panel_header(title: group.title, description: group.description) %>
+      <% end %>
 
-      <div class="-mx-2 -my-2 space-y-4 rounded-lg border border-gray-200 p-2 lg:-mx-4 lg:-my-3 lg:p-4">
         <%= render Avo::UI::Tabs::TabsComponent.new do %>
           <% visible_tabs.each do |tab_item| %>
             <%= render Avo::UI::Tabs::TabComponent.new(
@@ -38,7 +39,6 @@
             <%= render Avo::TabContentComponent.new tab:, resource:, index:, form:, view: %>
           <% end %>
         <% end %>
-      </div>
     <% end %>
   <% end %>
 <% end %>
