@@ -34,7 +34,10 @@
           <% end %>
         </div>
       <% elsif on_edit? %>
-        <%= content %>
+        <div class="field-wrapper__input">
+          <%= content %>
+          <%= tag.span class: "input__spinner", "aria-hidden": "true" if @field.loading? %>
+        </div>
         <% if @field.record_errors.include?(@field.id) %>
           <div class="field-wrapper__error"><%= @field.record_errors.full_messages_for(@field.id).to_sentence %></div>
         <% end %>

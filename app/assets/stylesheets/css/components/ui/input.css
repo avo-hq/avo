@@ -1,0 +1,111 @@
+/* Text Input Component - Based on Figma Design System */
+/* BEM Methodology: .input (block), .input__field (element), .input--modifier (modifier) */
+
+/* ==========================================================================
+  Base Styles
+  ========================================================================== */
+
+.input__field {
+  @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border-1 border-tertiary px-2 py-1 text-sm leading-5 font-normal overflow-hidden text-ellipsis whitespace-nowrap;
+
+  box-shadow: var(--box-shadow);
+}
+
+/* ==========================================================================
+  Placeholder
+  ========================================================================== */
+
+.input__field::placeholder {
+  @apply text-sm leading-5 font-normal text-content-secondary overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+/* ==========================================================================
+  State: Hover
+  ========================================================================== */
+
+.input__field:hover:not(:disabled) {
+  @apply bg-secondary;
+}
+
+/* ==========================================================================
+  State: Focus
+  ========================================================================== */
+
+.input__field:focus {
+  @apply outline-none;
+
+  box-shadow: none;
+}
+
+.input__field:focus-visible {
+  @apply outline-none ring-2 ring-content ring-offset-2 ring-offset-primary;
+}
+
+/* ==========================================================================
+  State: Active
+  ========================================================================== */
+
+.input__field:active:not(:disabled) {
+  box-shadow: var(--box-shadow-active);
+}
+
+/* ==========================================================================
+  State: Disabled
+  ========================================================================== */
+
+.input__field:disabled {
+  @apply cursor-not-allowed opacity-60 mix-blend-luminosity;
+}
+
+.input__field:disabled:hover {
+  @apply bg-primary;
+}
+
+/* ==========================================================================
+  State: Error
+  ========================================================================== */
+
+.input__field--error {
+  @apply text-danger-content;
+
+  box-shadow: var(--box-shadow-error);
+}
+
+.input__field--error:focus-visible {
+  @apply text-content;
+
+  box-shadow: var(--box-shadow-error);
+}
+
+.input__field--error::placeholder {
+  @apply text-danger-content;
+}
+
+/* ==========================================================================
+  State: Loading
+  ========================================================================== */
+
+.input__field--loading {
+  @apply pe-7;
+}
+
+/* ==========================================================================
+  Spinner (Loading Indicator)
+  ========================================================================== */
+
+.input__spinner {
+  @apply absolute end-2 top-1/2 size-4 rounded-full border-2 border-content border-r-tertiary pointer-events-none;
+
+  transform: translateY(-50%);
+  transform-origin: center;
+  animation: input-spinner-rotation 0.9s linear infinite;
+}
+
+@keyframes input-spinner-rotation {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

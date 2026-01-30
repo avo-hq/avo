@@ -14,6 +14,7 @@ module Avo
       include Avo::Fields::Concerns::HandlesFieldArgs
       include Avo::Fields::Concerns::IsReadonly
       include Avo::Fields::Concerns::IsDisabled
+      include Avo::Fields::Concerns::IsLoading
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::UseViewComponents
       include Avo::Fields::Concerns::DomId
@@ -74,6 +75,7 @@ module Avo
         @required = args.dig(:required) # Value if :required present on args, nil otherwise
         @readonly = args[:readonly] || false
         @disabled = args[:disabled] || false
+        @loading = args[:loading] || false
         @sortable = args[:sortable] || false
         @summarizable = args[:summarizable] || false
         @nullable = args[:nullable] || false

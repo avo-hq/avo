@@ -109,6 +109,7 @@
   @import "./css/components/ui/badge.css";
   @import "./css/components/ui/checkbox.css";
   @import "./css/components/ui/radio_button.css";
+  @import "./css/components/ui/input.css";
 
   @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";

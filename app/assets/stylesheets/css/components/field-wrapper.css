@@ -7,16 +7,27 @@
 }
 
 .field-wrapper__help {
-  @apply text-content-secondary mt-2 text-sm;
+  @apply text-content-secondary mt-2 text-xs leading-4;
 }
 
 .field-wrapper__label-help {
-  /* pb-3 offsets the pt of the label */
   @apply text-content-secondary text-xs leading-none font-normal pb-3;
 }
 
+.field-wrapper__input:has(.input__field:disabled) ~ .field-wrapper__help {
+  @apply opacity-60 cursor-not-allowed;
+}
+
 .field-wrapper__error {
-  @apply text-danger mt-2 text-sm;
+  @apply text-danger-content mt-2 text-xs leading-4 inline-flex items-center gap-0.5;
+}
+
+.field-wrapper__error::before {
+  content: "";
+  @apply inline-block size-3 shrink-0;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M10 8l4 8'/%3E%3Cpath d='M10 16l4 -8'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M10 8l4 8'/%3E%3Cpath d='M10 16l4 -8'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
 .field-wrapper__content {
@@ -24,7 +35,11 @@
 }
 
 .field-wrapper__content-wrapper {
-  @apply w-full md:w-8/12;
+  @apply relative w-full md:w-8/12;
+}
+
+.field-wrapper__input {
+  @apply relative w-full;
 }
 
 .field-wrapper--full-width {

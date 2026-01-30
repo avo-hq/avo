@@ -61,17 +61,11 @@ module Avo
       classes
     end
 
-    def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded-sm py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 placeholder:text-gray-300"
-
-      classes += if has_error
-        " border-red-600"
-      else
-        " border-gray-200"
-      end
-
+    def input_classes(extra_classes = "", has_error: false, loading: false)
+      classes = "input__field"
+      classes += " input__field--error" if has_error
+      classes += " input__field--loading" if loading
       classes += " #{extra_classes}"
-
       classes
     end
 

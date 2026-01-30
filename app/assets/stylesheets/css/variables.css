@@ -27,6 +27,9 @@
 
   --box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
 
+  --box-shadow-active: 0 0 0 2px var(--color-tertiary);
+  --box-shadow-error: 0 0 5px 1px var(--color-red-600), 0 0 0 1px var(--color-red-600), 0 0 0 3px var(--color-red-300);
+
   /* foundations - Light Mode */
   --color-background: var(--color-avo-neutral-25);
   --color-foreground: var(--color-avo-neutral-800);
