@@ -1,5 +1,5 @@
 <% if is_polymorphic? %>
-  <div class="divide-y divide-gray-200"
+  <div class="w-full divide-y divide-gray-200"
       data-controller="belongs-to-field"
       data-searchable="<%= @field.is_searchable? %>"
       data-association="<%= @field.id %>"
@@ -71,14 +71,15 @@
             <% end %>
             <% target_resource_for_type = Avo.resource_manager.get_resource_by_model_class(type.to_s) %>
             <% if field.can_create?(target_resource_for_type) %>
-              <% create_href = create_path(target_resource_for_type) %>
+              <% create_href = create_path(target_resource_for_type, **modal_args) %>
               <% if !disabled && create_href.present? %>
                 <%= link_to t("avo.create_new_item", item: type.model_name.human.downcase),
-                      create_href,
-                      class: "text-sm",
-                      data: {
-                        turbo_prefetch: false
-                      }
+                  create_href,
+                  class: "text-sm",
+                  data: {
+                    turbo_frame: Avo::MODAL_FRAME_ID,
+                    turbo_prefetch: false
+                  }
                 %>
               <% end %>
             <% end %>
@@ -123,11 +124,12 @@
     <% if field.can_create? %>
       <% if !disabled && create_path.present? %>
         <%= link_to t("avo.create_new_item", item: @field.name.downcase),
-              create_path,
-              class: "text-sm",
-              data: {
-                turbo_prefetch: false
-              }
+          create_path(**modal_args),
+          class: "text-sm",
+          data: {
+            turbo_frame: Avo::MODAL_FRAME_ID,
+            turbo_prefetch: false
+          }
         %>
       <% end %>
     <% end %>

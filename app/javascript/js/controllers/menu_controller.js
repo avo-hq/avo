@@ -1,10 +1,11 @@
 import { Controller } from '@hotwired/stimulus'
-import { enter, leave } from 'el-transition'
 
 export default class extends Controller {
   static targets = ['svg', 'items', 'self']
 
   collapsed = true
+
+  transitionClass = 'css-animate-slide-down'
 
   get key() {
     return this.selfTarget.getAttribute('data-menu-key-param')
@@ -49,27 +50,46 @@ export default class extends Controller {
 
   updateDom() {
     if (this.collapsed) {
-      this.markCollapsed(true)
+      this.markCollapsed()
     } else {
-      this.markExpanded(true)
+      this.markExpanded()
     }
   }
 
-  markCollapsed(animate = false) {
+  markCollapsed() {
     this.svgTarget.classList.add('rotate-90')
-    if (animate) {
-      leave(this.itemsTarget)
-    } else {
-      this.itemsTarget.classList.add('hidden')
-    }
+    this.leave(this.itemsTarget)
   }
 
-  markExpanded(animate = false) {
+  markExpanded() {
     this.svgTarget.classList.remove('rotate-90')
-    if (animate) {
-      enter(this.itemsTarget)
-    } else {
-      this.itemsTarget.classList.remove('hidden')
-    }
+    this.enter(this.itemsTarget)
+  }
+
+  async toggle(element) {
+    element.toggleAttribute('hidden')
+    await this.animateTransition(element)
+  }
+
+  async leave(element) {
+    element.setAttribute('hidden', true)
+    await this.animateTransition(element)
+  }
+
+  async enter(element) {
+    element.removeAttribute('hidden')
+    await this.animateTransition(element)
+  }
+
+  async animateTransition(element) {
+    element.classList.add(this.transitionClass)
+    await this.onTransitionsEnded(element)
+    element.classList.remove(this.transitionClass)
+  }
+
+  onTransitionsEnded(node) {
+    return Promise.allSettled(
+      node.getAnimations().map((animation) => animation.finished),
+    )
   }
 }

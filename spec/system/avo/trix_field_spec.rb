@@ -18,7 +18,7 @@ RSpec.describe "TrixField", type: :system do
 
         body_element = find_field_element("body")
 
-        expect(body_element).to have_text "BODY"
+        expect(body_element).to have_text "Body"
 
         expect(find("#trix_post_body", visible: false)[:placeholder]).to have_text("Enter text")
         expect(find("#trix_post_body", visible: false)).to have_text("")
@@ -105,7 +105,7 @@ RSpec.describe "TrixField", type: :system do
 
         body_element = find_field_element("body")
 
-        expect(body_element).to have_text "BODY"
+        expect(body_element).to have_text "Body"
       end
 
       it "has filled simple text in trix editor" do

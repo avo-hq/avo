@@ -11,8 +11,6 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
     require "active_storage/engine"
   when "actiontext"
     require "action_text/engine"
-  when "avo-licensing"
-    require "avo/licensing"
   when "avo-icons"
     require "avo/icons"
   else
@@ -20,9 +18,26 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
   end
 end
 
+# Check for avo-licensing as a transitive dependency
+# This handles cases where avo-licensing is a dependency of other avo gems
+if Gem.loaded_specs.key?("avo-licensing") && !defined?(Avo::Licensing)
+  require "avo/licensing"
+end
+
 module Avo
   class Engine < ::Rails::Engine
     isolate_namespace Avo
+
+    rake_tasks do
+      # Ensure Avo tasks are loaded
+      load File.expand_path("../tasks/avo_tasks.rake", __dir__)
+
+      if ENV["BUILD_AVO_ASSETS"] == "true"
+        if Rake::Task.task_defined?("assets:precompile")
+          Rake::Task["assets:precompile"].enhance(["avo:build"])
+        end
+      end
+    end
 
     config.after_initialize do
       # Reset before reloads in development

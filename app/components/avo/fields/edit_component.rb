@@ -3,7 +3,6 @@
 class Avo::Fields::EditComponent < Avo::BaseComponent
   include Avo::ResourcesHelper
 
-  attr_reader :compact
   attr_reader :field
   attr_reader :form
   attr_reader :index
@@ -12,9 +11,9 @@ class Avo::Fields::EditComponent < Avo::BaseComponent
   attr_reader :resource
   attr_reader :stacked
   attr_reader :view
+  attr_reader :full_width
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, compact: false, stacked: nil, multiple: false, autofocus: false, **kwargs)
-    @compact = compact
+  def initialize(field: nil, resource: nil, index: 0, form: nil, stacked: nil, full_width: nil, multiple: false, autofocus: false, **kwargs)
     @field = field
     @form = form
     @index = index
@@ -24,6 +23,7 @@ class Avo::Fields::EditComponent < Avo::BaseComponent
     @stacked = stacked
     @view = Avo::ViewInquirer.new("edit")
     @autofocus = autofocus
+    @full_width = full_width
   end
 
   def classes(extra_classes = "")
@@ -36,12 +36,12 @@ class Avo::Fields::EditComponent < Avo::BaseComponent
 
   def field_wrapper_args
     {
-      compact: compact,
       field: field,
       form: form,
       index: index,
       resource: resource,
       stacked: stacked,
+      full_width: full_width,
       view: view
     }
   end

@@ -1,0 +1,13 @@
+@layer base {
+  .resource-controls {
+    .resource-control,
+    button,
+    a {
+      @apply text-content-secondary;
+
+      &:hover {
+        @apply text-content;
+      }
+    }
+  }
+}

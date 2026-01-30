@@ -2342,11 +2342,6 @@ easymde@^2.20.0:
     codemirror-spell-checker "1.1.2"
     marked "^4.1.0"
 
-el-transition@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/el-transition/-/el-transition-0.0.7.tgz#714fd47aa46fc2ff3df7d59e789271aa09f247d0"
-  integrity sha512-a23pEa7ahqLmBIEqtxi8CdL6CRLF52ZoAwawDFTD1IDkegrL4iValQAj6IMEgIEXPSrXZtx/Nr/ej6ebov4uoA==
-
 electron-to-chromium@^1.5.238:
   version "1.5.241"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.241.tgz#350a2cdcde43829d36af245a27167243e917c6ed"
@@ -4660,10 +4655,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-trix@^2.1.15:
-  version "2.1.15"
-  resolved "https://registry.yarnpkg.com/trix/-/trix-2.1.15.tgz#fabad796ea779a8ae96522402fbc214cbfc4015f"
-  integrity sha512-LoaXWczdTUV8+3Box92B9b1iaDVbxD14dYemZRxi3PwY+AuDm97BUJV2aHLBUFPuDABhxp0wzcbf0CxHCVmXiw==
+trix@^2.1.16:
+  version "2.1.16"
+  resolved "https://registry.yarnpkg.com/trix/-/trix-2.1.16.tgz#601be839258b87cc83019915650c50eb7cbc161e"
+  integrity sha512-XtZgWI+oBvLzX7CWnkIf+ZWC+chL+YG/TkY43iMTV0Zl+CJjn18B1GJUCEWJ8qgfpcyMBuysnNAfPWiv2sV14A==
   dependencies:
     dompurify "^3.2.5"
 

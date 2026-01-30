@@ -98,10 +98,10 @@ class Avo::Resources::User < Avo::BaseResource
     filter Avo::Filters::DummyMultipleSelectFilter
   end
 
-  def test_field(id)
+  def test_field(id, **args)
     return unless ENV["testing_methods"]
 
-    field id.to_sym, as: :text do
+    field id.to_sym, as: :text, **args do
       id
     end
   end
@@ -114,16 +114,16 @@ class Avo::Resources::User < Avo::BaseResource
     card do
       test_field("Inside main panel")
       field :id, as: :id, link_to_record: true, sortable: false
-      field :email, as: :gravatar, link_to_record: true, only_on: :index, name: :gravatar
+      field :email, as: :gravatar, link_to_record: true, only_on: :index, name: :Gravatar
       with_options as: :text, only_on: :index do
         field :first_name, placeholder: "John"
         field :last_name, placeholder: "Doe", filterable: true
       end
-      field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
+      field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true, label_help: "The email of the user"
       field :active, as: :boolean, name: "Is active", only_on: :index
       field :cv, as: :file, name: "CV"
       field :is_admin, as: :boolean, name: "Is admin", only_on: :index
-      field :roles, as: :boolean_group, options: -> do
+      field :roles, as: :boolean_group, label_help: "The roles of the user", options: -> do
         # test condition
         raise if record.nil?
         {admin: "Administrator", manager: "Manager", writer: "Writer"}
@@ -218,6 +218,7 @@ class Avo::Resources::User < Avo::BaseResource
 
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe"
+      field :last_name, placeholder: "Doe"
     end
 
     panel title: "User information", description: "User information description" do
@@ -225,10 +226,8 @@ class Avo::Resources::User < Avo::BaseResource
         test_field("Inside panel")
 
         field :user_information, as: :heading
-        row do
-          test_field("Inside panel -> row")
-          stacked_name
-        end
+        test_field("Inside panel -> row", width: 33)
+        stacked_name
       end
 
       panel_test_sidebars
@@ -259,7 +258,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def stacked_name
-    with_options as: :text, stacked: true do
+    with_options as: :text, stacked: true, width: 33 do
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe"
     end
@@ -272,7 +271,7 @@ class Avo::Resources::User < Avo::BaseResource
       test_field("Inside tabs")
       first_tabs_group_fields
       tab "Created at" do
-        panel do
+        card do
           field :created_at, as: :date_time
         end
       end

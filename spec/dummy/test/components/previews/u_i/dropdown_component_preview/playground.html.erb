@@ -1,0 +1,44 @@
+<div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
+  <div class="flex flex-col gap-6">
+    <%= render Avo::UI::DropdownComponent.new do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::UI::IconButtonComponent.new(
+          data: {action: component.action},
+          icon: "tabler/outline/dots-vertical"
+        ) %>
+      <% end %>
+
+      <% if as_links %>
+        <% component.with_items do %>
+          <%= link_to("https://example.com/edit") do %>
+            <%= svg("tabler/outline/pencil") if with_icons %>
+            <%= first_label %>
+          <% end %>
+          <%= link_to("https://example.com/view") do %>
+            <%= svg("tabler/outline/eye") if with_icons %>
+            <%= second_label %>
+          <% end %>
+          <%= link_to("https://example.com/delete") do %>
+            <%= svg("tabler/outline/trash") if with_icons %>
+            <%= third_label %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <% component.with_items do %>
+          <%= button_tag(type: "button") do %>
+            <%= svg("tabler/outline/pencil") if with_icons %>
+            <%= first_label %>
+          <% end %>
+          <%= button_tag(type: "button") do %>
+            <%= svg("tabler/outline/eye") if with_icons %>
+            <%= second_label %>
+          <% end %>
+          <%= button_tag(type: "button") do %>
+            <%= svg("tabler/outline/trash") if with_icons %>
+            <%= third_label %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

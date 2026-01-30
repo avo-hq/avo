@@ -2,19 +2,22 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button']
+  static targets = ['button', 'accentPanel']
 
   connect() {
     // Read from cookies (cookie is source of truth)
     const cookieScheme = Cookies.get('color_scheme')
     const cookieTheme = Cookies.get('theme')
+    const cookieAccent = Cookies.get('accent_color')
 
     // Use cookie value if it exists, otherwise use default
     this.currentSchemeValue = cookieScheme || 'auto'
     this.currentThemeValue = cookieTheme || 'brand'
+    this.currentAccentValue = cookieAccent || 'neutral'
 
     this.applyScheme()
     this.applyTheme()
+    this.applyAccent()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -54,6 +57,22 @@ export default class extends Controller {
     this.applyTheme()
   }
 
+  setAccent(event) {
+    event.preventDefault()
+    const { accent } = event.currentTarget.dataset
+
+    if (!accent) return
+
+    this.currentAccentValue = accent
+    this.saveAccent()
+    this.applyAccent()
+
+    // Close the dropdown
+    if (this.hasAccentPanelTarget) {
+      this.accentPanelTarget.setAttribute('hidden', true)
+    }
+  }
+
   saveScheme() {
     if (this.currentSchemeValue === 'auto') {
       Cookies.remove('color_scheme')
@@ -67,6 +86,14 @@ export default class extends Controller {
       Cookies.remove('theme')
     } else {
       Cookies.set('theme', this.currentThemeValue)
+    }
+  }
+
+  saveAccent() {
+    if (this.currentAccentValue === 'neutral') {
+      Cookies.remove('accent_color')
+    } else {
+      Cookies.set('accent_color', this.currentAccentValue)
     }
   }
 
@@ -102,6 +129,20 @@ export default class extends Controller {
     const theme = this.currentThemeValue || 'brand'
     if (theme !== 'brand') {
       document.documentElement.classList.add(`theme-${theme}`)
+    }
+  }
+
+  applyAccent() {
+    // Remove all accent classes from body
+    const accentColors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
+    accentColors.forEach((color) => {
+      document.documentElement.classList.remove(`accent-${color}`)
+    })
+
+    // Add the selected accent class (neutral means no accent class)
+    const accent = this.currentAccentValue || 'neutral'
+    if (accent !== 'neutral') {
+      document.documentElement.classList.add(`accent-${accent}`)
     }
   }
 }

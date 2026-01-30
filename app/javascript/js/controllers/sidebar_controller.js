@@ -98,7 +98,7 @@ export default class extends Controller {
       // immediately add the sidebar-open class
       // which doesn't give the browser enough time to apply the
       // transition.
-      this.mainAreaTarget.offsetHeight;
+      this.mainAreaTarget.offsetHeight // eslint-disable-line no-unused-expressions
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
   }
@@ -108,7 +108,7 @@ export default class extends Controller {
     if (oldValue === undefined) {
       return '0'
     }
+
     return oldValue === '1' ? '0' : '1'
   }
-
 }

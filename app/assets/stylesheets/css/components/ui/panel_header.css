@@ -1,5 +1,5 @@
 .header {
-  @apply flex flex-col gap-2 items-start justify-center pe-0 py-0 !mb-0 px-1;
+  @apply flex flex-col gap-2 items-start justify-center pe-0 py-0 px-1;
 }
 
 .header__main {
@@ -19,11 +19,11 @@
 }
 
 .header__title {
-  @apply font-medium leading-6 overflow-ellipsis w-full text-xl;
+  @apply font-medium leading-6 overflow-ellipsis w-full text-xl text-content;
 }
 
 .header__description {
-  @apply font-normal leading-5 overflow-ellipsis w-full text-neutral-400;
+  @apply font-normal leading-5 overflow-ellipsis w-full text-content-secondary;
   font-size: 14px;
   display: -webkit-box;
   -webkit-box-orient: vertical;

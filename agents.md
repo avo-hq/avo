@@ -18,10 +18,42 @@ Don't implement a component if the Figma MCP is not available and fails and aler
 - Use clean CSS and convert the variables to Tailwind CSS `@apply` statements where possible.
 - add the new component to the `src/input.css` file.
 - use the BEMCSS methodology for the component classes.
+- when the width and height are the same, use the `size-` class instead of `width-` and `height-`.
+- don't use `left`/`right` modifiers as we need to support RTL. Use `start`/`end` instead. Same for short names like `ml`, `mr`, `pl`, `pr`, `left`, `right`, etc.
 
 #### Figma
 
 - check the components and see if they use other components. If so, use the existing components.
+- don't add the default color in `var()` statements when implementing them from Figma.
+- when the Figma component has an "icon-mode", usually this doesn't need to be an option inn tha actual component but make it react properly to when the component doesn't have text or other elements.
+
+#### SVGs
+- use `svg` helper to render the SVGs.
+- use the `helpers.svg` helper to render the SVGs only in view components, never in lookbook previews.
+- use a string that is composed of `tabler/outline/{NAME_OF_ICON}` or `tabler/filled/{NAME_OF_ICON}` and the name of the icon and choose an existing icon from the library. if you can't think of one use `paperclip`, `info-circle`, or `external-link` for outgoing links.
+
+#### Tailwind CSS
+- when writing css try to use the `@apply` directive whenever you can and preserve the regular Tailwind syntax.
+- when writing media queries, try to land in Tailwind's regular breakpoints and write the media query as a Tailwind prefix `sm:text-sm` instead of `@media (min-width: 640px) { .text-sm { font-size: 1rem; } }`.
+- we work only with Tailwind CSS v4 and above. don't try to support anything below v4.
+
+#### Naming conventions
+- use header, sidebar, and body for the component areas.
+- use `title` instead of `name` when you need to reference the title of a component.
+
+#### Node.js
+- use `yarn`, not npm
 
 #### Files
+## Javascript
 
+We use StimulusJS for the javascript.
+Aboid writing inline script tags in the HTML unless instructed so or mentioned some kind of "temporary" or "quick" solution .
+
+## HTML Structure
+
+When toggling the visibility of some html elements, use the `hidden` HTML attribute instead of the `hidden` class.
+
+## Ruby on Rails
+
+Whenever possible use the `partial:` keyword when rendering partials unless needed otherwise.

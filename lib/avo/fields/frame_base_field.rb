@@ -7,7 +7,7 @@ module Avo
       include Avo::Concerns::HasDescription
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         @use_resource = args[:use_resource]
         @reloadable = args[:reloadable]
@@ -73,7 +73,7 @@ module Avo
       def component_for_view(view = Avo::ViewInquirer.new("index"))
         view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
 
-        super(view)
+        super
       end
 
       def authorized?

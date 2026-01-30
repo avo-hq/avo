@@ -1,0 +1,41 @@
+<div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
+  <div class="flex flex-wrap gap-8">
+    <%= render Avo::UI::DropdownComponent.new do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::UI::IconButtonComponent.new(
+          data: {action: component.action},
+          icon: "tabler/outline/dots-vertical"
+        ) %>
+      <% end %>
+      <% component.with_items do %>
+        <%= link_to("#") do %>
+          <%= svg("tabler/outline/pencil") %>
+          Edit
+        <% end %>
+        <%= link_to("#") do %>
+          <%= svg("tabler/outline/eye") %>
+          View
+        <% end %>
+        <%= link_to("#") do %>
+          <%= svg("tabler/outline/trash") %>
+          Delete
+        <% end %>
+      <% end %>
+  <% end %>
+
+    <%= render Avo::UI::DropdownComponent.new do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::UI::IconButtonComponent.new(
+          data: {action: component.action},
+          icon: "tabler/outline/settings"
+        ) %>
+      <% end %>
+
+      <% component.with_items do %>
+        <%= button_tag("Source Code", type: "button") %>
+        <%= button_tag("Documentation", type: "button") %>
+        <%= button_tag("Blog", type: "button") %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

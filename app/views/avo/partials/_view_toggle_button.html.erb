@@ -2,23 +2,24 @@
   <%
     info = {
       table: {
-        new_view_type: 'table',
-        new_icon: "avo/table-view-type",
+        icon: "tabler/outline/layout-list",
+        active_icon: "tabler/filled/layout-list",
         translation_key: 'avo.table_view',
       },
       grid: {
-        new_view_type: 'grid',
-        new_icon: "avo/grid-view-type",
+        icon: "tabler/outline/layout-grid",
+        active_icon: "tabler/filled/layout-grid",
         translation_key: 'avo.grid_view',
       },
-      list: {
-        new_view_type: 'list',
-        new_icon: 'queue-list',
-      },
       map: {
-        new_view_type: 'map',
-        new_icon: "avo/map-view-type",
+        icon: "tabler/outline/compass",
+        active_icon: "tabler/filled/compass",
         translation_key: 'avo.map_view',
+      },
+      list: {
+        icon: "tabler/outline/layout-list",
+        active_icon: "tabler/filled/layout-list",
+        translation_key: 'avo.list_view',
       },
     }
   %>
@@ -28,16 +29,15 @@
         <% is_active_view = view_type.to_s == type.to_s %>
 
         <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
-          icon: info[type][:new_icon],
-          color: is_active_view ? :primary : :gray,
-          rounded: false,
-          size: :sm,
-          class: is_active_view ? "z-20" : "bg-gray-100 border-gray-300",
+          icon: is_active_view ? info[type][:active_icon] : info[type][:icon],
+          color: :primary,
+          class: is_active_view ? "button--active" : "",
           title: t('avo.switch_to_view', view_type: type),
           data: {
             tippy: 'tooltip',
             'turbo-frame': turbo_frame,
-            control: "view-type-toggle-#{type}"
+            control: "view-type-toggle-#{type}",
+            is_active: is_active_view
           }
         %>
       <% end %>

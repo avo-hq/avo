@@ -2,11 +2,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  spinnerMarkup = `
-    <div class="button-spinner">
-      <div class="double-bounce1"></div>
-      <div class="double-bounce2"></div>
-    </div>`
+  spinnerMarkup = '<span class="loading-spinner" aria-hidden="true"></span>'
 
   static values = {
     confirmationMessage: String,

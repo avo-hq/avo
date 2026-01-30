@@ -1,19 +1,18 @@
 module Avo
   module MediaLibrary
     class Configuration
-      include ActiveSupport::Configurable
 
-      config_accessor(:visible) { true }
-      config_accessor(:enabled) { false }
+      class_attribute :visible, default: true
+      class_attribute :enabled, default: false
 
       def visible?
         return false if disabled?
 
-        Avo::ExecutionContext.new(target: config[:visible]).handle
+        Avo::ExecutionContext.new(target: visible).handle
       end
 
       def enabled?
-        Avo::ExecutionContext.new(target: config[:enabled]).handle
+        Avo::ExecutionContext.new(target: enabled).handle
       end
 
       def disabled? = !enabled?

@@ -17,6 +17,7 @@ Fixes # (issue)
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the [documentation](https://github.com/avo-hq/avodocs)
 - [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] I tested the design in Light and Dark mode, and all default themes
 
 ## Screenshots & recording
 <!-- "A picture is worth a thousand words." A video, ten thousand. -->

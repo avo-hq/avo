@@ -46,8 +46,9 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
       find("[data-field-id='Inside panel'][data-resource-show-target='inside panelTextWrapper']")
 
       # Inside row component
-      within('[data-component-name="avo/row_component"]') do
+      within(".card", match: :first) do
         find("[data-field-id='Inside panel -> row'][data-resource-show-target='inside panel > rowTextWrapper']")
+        expect(find("[data-field-id='Inside panel -> row']")[:class]).to include("w-1/3")
       end
 
       # Sidebars were removed from the community tier
@@ -68,7 +69,7 @@ RSpec.describe "Main menu and fields across multiple methods", type: :system do
 
     # Tabs
     within("[data-tabs-group-id-value='first-tabs-group']") do
-      within('[data-tabs-target="tabSwitcher"]') do
+      within('[role="tablist"]') do
         expect(page).to have_text("test_tab")
         expect(page).to have_text("Inside tabs")
         expect(page).to have_text("Fish")

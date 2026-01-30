@@ -2,9 +2,11 @@ require "rails_helper"
 
 RSpec.feature "FullWidthContainer", type: :feature do
   let(:user) { create :user }
-  let(:contained_classes) { "2xl:container 2xl:mx-auto" }
-  let(:is_contained) { is_expected.to include contained_classes }
-  let(:is_not_contained) { is_expected.not_to include contained_classes }
+  let(:contained_large_classes) { "container-large" }
+  let(:contained_small_classes) { "container-small" }
+  let(:is_contained_large) { is_expected.to include contained_large_classes }
+  let(:is_contained_small) { is_expected.to include contained_small_classes }
+  let(:is_not_contained) { is_expected.not_to include contained_large_classes }
   subject do
     visit url
     page.body
@@ -65,13 +67,13 @@ RSpec.feature "FullWidthContainer", type: :feature do
       context ".index" do
         let(:url) { "/admin/resources/users" }
 
-        it { is_contained }
+        it { is_contained_large }
       end
 
       context ".show" do
         let(:url) { "/admin/resources/users/#{user.slug}" }
 
-        it { is_contained }
+        it { is_contained_small }
       end
     end
 
@@ -89,7 +91,7 @@ RSpec.feature "FullWidthContainer", type: :feature do
       context ".show" do
         let(:url) { "/admin/resources/users/#{user.slug}" }
 
-        it { is_contained }
+        it { is_contained_small }
       end
     end
   end

@@ -27,6 +27,7 @@ import MediaLibraryAttachController from './controllers/media_library_attach_con
 import MediaLibraryController from './controllers/media_library_controller'
 import MenuController from './controllers/menu_controller'
 import ModalController from './controllers/modal_controller'
+import ModalSizeController from './controllers/modal_size_controller'
 import MultipleSelectFilterController from './controllers/multiple_select_filter_controller'
 import NestedFormController from './controllers/nested_form_controller'
 import PanelRefreshController from './controllers/fields/panel_refresh_controller'
@@ -39,11 +40,13 @@ import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceSearchController from './controllers/resource_search_controller'
 import ResourceShowController from './controllers/resource_show_controller'
+import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
 import SidebarController from './controllers/sidebar_controller'
 import SignOutController from './controllers/sign_out_controller'
+import StarsFieldController from './controllers/fields/stars_field_controller'
 import TableRowController from './controllers/table_row_controller'
 import TabsController from './controllers/tabs_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
@@ -51,10 +54,9 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
+import DropdownController from './controllers/dropdown_menu_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
-import SearchController from './controllers/search_controller'
-import StarsFieldController from './controllers/fields/stars_field_controller'
 
 application.register('action', ActionController)
 application.register('actions-overflow', ActionsOverflowController)
@@ -78,6 +80,7 @@ application.register('media-library-attach', MediaLibraryAttachController)
 application.register('media-library', MediaLibraryController)
 application.register('menu', MenuController)
 application.register('modal', ModalController)
+application.register('modal-size', ModalSizeController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('avo-nested-form', NestedFormController)
 application.register('panel-refresh', PanelRefreshController)
@@ -98,6 +101,7 @@ application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
+application.register('dropdown-menu', DropdownController)
 application.register('trix-body', TrixBodyController)
 application.register('search', SearchController)
 

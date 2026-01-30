@@ -1,5 +1,6 @@
 <%= content_tag :div,
-  class: "opacity-0 group-hover/clipboard:opacity-100 transition-opacity duration-200 inline-block",
+  # the div is making the row taller without without the -my-1 class
+  class: "opacity-0 group-hover/clipboard:opacity-100 transition-opacity duration-200 inline-block -my-1 cursor-pointer",
   data: {
     controller: "clipboard",
     clipboard_success_duration_value: @duration_value,
@@ -15,7 +16,7 @@
         tippy: "tooltip",
         tippy_content: I18n.t("avo.copy")
       } do %>
-      <%= helpers.svg "heroicons/outline/clipboard", class: "h-4 inline" %>
+      <%= helpers.svg "tabler/outline/clipboard", class: "h-4 inline" %>
     <% end %>
   </div>
 <% end %>

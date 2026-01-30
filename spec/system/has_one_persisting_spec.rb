@@ -15,7 +15,7 @@ RSpec.describe "has_one persisting", type: :system do
 
         expect(page).to have_text "This is a comment"
 
-        find("a.button-component[href^='/admin/resources/comments'][href*='/edit']").click
+        find("a.button[href^='/admin/resources/comments'][href*='/edit']").click
 
         expect(page).to have_text "This is a comment"
 
@@ -41,7 +41,7 @@ RSpec.describe "has_one persisting", type: :system do
 
         expect(page).to have_text "This is a comment"
 
-        find("a.button-component[href^='/admin/resources/comments'][href*='/edit']").click
+        find("a.button[href^='/admin/resources/comments'][href*='/edit']").click
 
         expect(page).to have_text "This is a comment"
 
