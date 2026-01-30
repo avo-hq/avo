@@ -35,7 +35,7 @@
     </div>
   <% end %>
 
-  <%= render ui.panel_header(title:, description: @resource.description, index:) do |header| %>
+  <%= render ui.panel_header(title:, description: @resource.description, index:, class: "!-mb-8") do |header| %>
     <% header.with_controls do %>
       <% controls.each do |control| %>
         <%= render_control control %>

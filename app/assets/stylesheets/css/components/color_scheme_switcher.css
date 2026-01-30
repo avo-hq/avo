@@ -127,66 +127,42 @@
 }
 
 /* Show accent badge based on body accent class */
-.accent-orange .color-scheme-switcher__accent-badge {
+.accent-red .color-scheme-switcher__accent-badge,
+.accent-orange .color-scheme-switcher__accent-badge,
+.accent-amber .color-scheme-switcher__accent-badge,
+.accent-yellow .color-scheme-switcher__accent-badge,
+.accent-lime .color-scheme-switcher__accent-badge,
+.accent-green .color-scheme-switcher__accent-badge,
+.accent-emerald .color-scheme-switcher__accent-badge,
+.accent-teal .color-scheme-switcher__accent-badge,
+.accent-cyan .color-scheme-switcher__accent-badge,
+.accent-sky .color-scheme-switcher__accent-badge,
+.accent-blue .color-scheme-switcher__accent-badge,
+.accent-indigo .color-scheme-switcher__accent-badge,
+.accent-violet .color-scheme-switcher__accent-badge,
+.accent-purple .color-scheme-switcher__accent-badge,
+.accent-fuchsia .color-scheme-switcher__accent-badge,
+.accent-pink .color-scheme-switcher__accent-badge,
+.accent-rose .color-scheme-switcher__accent-badge {
   @apply inline-block;
 }
 
-.accent-orange .color-scheme-switcher__accent-badge-preview--orange {
-  @apply inline-block;
-}
-
-.accent-yellow .color-scheme-switcher__accent-badge {
-  @apply inline-block;
-}
-
-.accent-yellow .color-scheme-switcher__accent-badge-preview--yellow {
-  @apply inline-block;
-}
-
-.accent-green .color-scheme-switcher__accent-badge {
-  @apply inline-block;
-}
-
-.accent-green .color-scheme-switcher__accent-badge-preview--green {
-  @apply inline-block;
-}
-
-.accent-blue .color-scheme-switcher__accent-badge {
-  @apply inline-block;
-}
-
-.accent-blue .color-scheme-switcher__accent-badge-preview--blue {
-  @apply inline-block;
-}
-
-.accent-purple .color-scheme-switcher__accent-badge {
-  @apply inline-block;
-}
-
-.accent-purple .color-scheme-switcher__accent-badge-preview--purple {
-  @apply inline-block;
-}
-
-.accent-pink .color-scheme-switcher__accent-badge {
-  @apply inline-block;
-}
-
-.accent-pink .color-scheme-switcher__accent-badge-preview--pink {
-  @apply inline-block;
-}
-
-.accent-red .color-scheme-switcher__accent-badge {
-  @apply inline-block;
-}
-
-.accent-red .color-scheme-switcher__accent-badge-preview--red {
-  @apply inline-block;
-}
-
-.accent-teal .color-scheme-switcher__accent-badge {
-  @apply inline-block;
-}
-
-.accent-teal .color-scheme-switcher__accent-badge-preview--teal {
+.accent-red .color-scheme-switcher__accent-badge-preview--red,
+.accent-orange .color-scheme-switcher__accent-badge-preview--orange,
+.accent-amber .color-scheme-switcher__accent-badge-preview--amber,
+.accent-yellow .color-scheme-switcher__accent-badge-preview--yellow,
+.accent-lime .color-scheme-switcher__accent-badge-preview--lime,
+.accent-green .color-scheme-switcher__accent-badge-preview--green,
+.accent-emerald .color-scheme-switcher__accent-badge-preview--emerald,
+.accent-teal .color-scheme-switcher__accent-badge-preview--teal,
+.accent-cyan .color-scheme-switcher__accent-badge-preview--cyan,
+.accent-sky .color-scheme-switcher__accent-badge-preview--sky,
+.accent-blue .color-scheme-switcher__accent-badge-preview--blue,
+.accent-indigo .color-scheme-switcher__accent-badge-preview--indigo,
+.accent-violet .color-scheme-switcher__accent-badge-preview--violet,
+.accent-purple .color-scheme-switcher__accent-badge-preview--purple,
+.accent-fuchsia .color-scheme-switcher__accent-badge-preview--fuchsia,
+.accent-pink .color-scheme-switcher__accent-badge-preview--pink,
+.accent-rose .color-scheme-switcher__accent-badge-preview--rose {
   @apply inline-block;
 }

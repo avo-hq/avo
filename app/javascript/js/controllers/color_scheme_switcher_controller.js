@@ -134,15 +134,15 @@ export default class extends Controller {
 
   applyAccent() {
     // Remove all accent classes from body
-    const accentColors = ['orange', 'yellow', 'green', 'blue', 'purple', 'pink', 'red', 'teal']
-    accentColors.forEach(color => {
-      document.body.classList.remove(`accent-${color}`)
+    const accentColors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
+    accentColors.forEach((color) => {
+      document.documentElement.classList.remove(`accent-${color}`)
     })
 
     // Add the selected accent class (neutral means no accent class)
     const accent = this.currentAccentValue || 'neutral'
     if (accent !== 'neutral') {
-      document.body.classList.add(`accent-${accent}`)
+      document.documentElement.classList.add(`accent-${accent}`)
     }
   }
 }

@@ -1,0 +1,66 @@
+/* Tabs Component - All Styles */
+@layer components {
+  /* ============================================
+     BASE STYLES (Common to both variants)
+     ============================================ */
+
+  /* Container */
+  .tabs {
+    @apply flex flex-wrap;
+  }
+
+  /* Base Item */
+  .tabs__item {
+    @apply inline-flex items-center mx-1 px-3 py-1 cursor-pointer text-sm font-medium leading-4 bg-transparent gap-2 rounded-md text-content;
+  }
+
+  /* Item Sub-elements */
+  .tabs__item-icon {
+    @apply size-4 text-content;
+  }
+
+  .tabs__item-label {
+    @apply whitespace-nowrap;
+  }
+
+  /* Item States - Shared */
+  .tabs__item--disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .tabs__item:hover:not(.tabs__item--disabled) {
+    @apply bg-secondary;
+  }
+
+  .tabs__item:focus-visible {
+    @apply bg-primary outline-none ring-offset-2 ring-offset-primary ring-2 ring-content;
+  }
+
+  /* Wrapper */
+  .tabs__item-wrapper {
+    @apply inline-block py-2;
+  }
+
+  /* ============================================
+     GROUP VARIANT
+     ============================================ */
+  .tabs__item--group.tabs__item--active:hover,
+  .tabs__item--group.tabs__item--active {
+    background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+  }
+
+  .tabs__item-wrapper--group {
+    @apply flex items-center justify-center;
+  }
+
+  /* ============================================
+     SCOPE VARIANT
+     ============================================ */
+  .tabs__item-wrapper--scope {
+    @apply border-b border-tertiary;
+  }
+
+  .tabs__item-wrapper--scope.tabs__item--active {
+    @apply border-b-2 border-accent;
+  }
+}

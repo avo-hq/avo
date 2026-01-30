@@ -209,5 +209,9 @@ module Avo
     def avo_edit_field(id, type = nil, view: :edit, **args, &block)
       avo_field(id, type, **args, view: view, &block)
     end
+
+    def accent_colors
+      %w[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose]
+    end
   end
 end

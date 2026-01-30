@@ -1,7 +1,6 @@
 <%= content_tag :div, class: class_names(
-  {
-    "-mt-9": @field.stacked && !@field.hide_view_type_switcher
-  }
+  "w-full @container",
+  "-mt-6": @field.stacked && !@field.hide_view_type_switcher
 ) do %>
   <%= turbo_frame_tag @field.id do %>
     <% unless @field.hide_view_type_switcher %>
@@ -19,7 +18,7 @@
       "py-4 rounded-2xl max-w-full",
       {
         "flex flex-col space-y-2": @view_type == :list,
-        "relative grid xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6": @view_type == :grid
+        "relative grid xs:grid-cols-2 @sm:grid-cols-2 @xl:grid-cols-3 @2xl:grid-cols-4 @4xl:grid-cols-5 @6xl:grid-cols-6 @7xl:grid-cols-7 @8xl:grid-cols-8 gap-6": @view_type == :grid
       }
     ) do %>
       <% @field.value.attachments.each do |file| %>

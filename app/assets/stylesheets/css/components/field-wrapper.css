@@ -64,4 +64,14 @@
   .field-wrapper__content {
     @apply pt-0 px-4 w-full;
   }
+
+  .field-wrapper__content-wrapper {
+    @apply w-full;
+  }
+}
+
+.container-small {
+  .field-wrapper__content-wrapper {
+    @apply w-full;
+  }
 }

@@ -39,18 +39,22 @@
   }
 
   &:hover {
-    background: var(--color-secondary);
+    background: var(--color-table-row-hover);
   }
+}
+
+@theme {
+  --color-table-row-selected: var(--color-secondary);
+  --color-table-row-hover: color-mix(in oklab, var(--color-secondary), var(--color-primary) 5%);
 }
 
 .shift-pressed {
   & .highlighted-row {
-    background: color-mix(in oklab, var(--color-content) 10%, transparent);
+    background: var(--color-table-row-selected);
   }
 }
 
 .table-row:hover.selected-row,
 .selected-row {
-
-  background: color-mix(in oklab, var(--color-content) 10%, transparent);
+  background: var(--color-table-row-hover);
 }

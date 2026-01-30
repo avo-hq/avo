@@ -4,6 +4,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   delegate :group_param, to: :@group
 
   prop :resource, reader: :public
+  # variable @group was changed with group to avoid cases where we need to pass down the group object as a prop
   prop :group, reader: :public
   prop :index, reader: :public
   prop :form, reader: :public
@@ -27,11 +28,11 @@ class Avo::TabGroupComponent < Avo::BaseComponent
     if is_not_loaded?(tab)
       args[:loading] = :lazy
       args[:src] = helpers.resource_path(
-        resource: @resource,
-        record: @resource.record,
+        resource: resource,
+        record: resource.record,
         keep_query_params: true,
         active_tab_title: tab.title,
-        tab_turbo_frame: tab.turbo_frame_id(parent: @group)
+        tab_turbo_frame: tab.turbo_frame_id(parent: group)
       )
     end
 
@@ -39,7 +40,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def is_not_loaded?(tab)
-    params[:tab_turbo_frame] != tab.turbo_frame_id(parent: @group)
+    params[:tab_turbo_frame] != tab.turbo_frame_id(parent: group)
   end
 
   def tabs_have_content?
@@ -51,7 +52,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def tabs
-    @group.visible_items.map do |tab|
+    group.visible_items.map do |tab|
       tab.hydrate(view: view)
     end
   end
@@ -82,5 +83,38 @@ class Avo::TabGroupComponent < Avo::BaseComponent
         tab_id: tab.title,
       }
     }
+  end
+
+  def tab_path(tab)
+    base_options = {
+      resource: resource,
+      keep_query_params: true,
+      active_tab_title: tab.title,
+      tab_turbo_frame: group.turbo_frame_id
+    }
+
+    if view.in?(%w[edit update])
+      helpers.edit_resource_path(**base_options, record: resource.record)
+    elsif view.in?(%w[new create])
+      helpers.new_resource_path(**base_options)
+    else
+      helpers.resource_path(**base_options, record: resource.record)
+    end
+  end
+
+  def tab_data(tab, current_tab)
+    data = {
+      action: "click->tabs#changeTab",
+      tabs_tab_name_param: tab.title,
+      tabs_group_id_param: group.to_param,
+      tabs_resource_name_param: resource.underscore_name,
+      selected: tab_active?(tab, current_tab)
+    }
+    data[:tippy] = "tooltip" if tab.description.present?
+    data
+  end
+
+  def tab_active?(tab, current_tab)
+    tab.title == current_tab.title
   end
 end

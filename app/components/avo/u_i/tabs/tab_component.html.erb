@@ -1,0 +1,26 @@
+<%= content_tag :div, class: class_names(
+  "tabs__item-wrapper",
+  "tabs__item-wrapper--#{@variant}",
+  "#{ACTIVE_CLASS}": @variant == :scope && @active
+) do %>
+  <%= link_to(@href,
+    class: class_names(
+      @classes,
+      "tabs__item",
+      "tabs__item--group": @variant == :group,
+      "tabs__item--disabled": @disabled,
+      "#{ACTIVE_CLASS}": @active
+    ),
+    data: @data,
+    title: @title,
+    role: "tab",
+    id: @id,
+    "aria-selected": @active,
+    "aria-controls": @aria_controls,
+    "aria-disabled": @disabled,
+    tabindex: @disabled ? -1 : 0
+  ) do %>
+    <%= svg @icon, class: "tabs__item-icon", "aria-hidden": "true" if @icon.present? %>
+    <%= tag.span @label, class: "tabs__item-label" if @label.present? %>
+  <% end %>
+<% end %>

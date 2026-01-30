@@ -273,7 +273,7 @@ module Avo
     end
 
     # Known RTL (Right-to-Left) locale codes
-    RTL_LOCALES = %w[ar he fa ur yi ps sd ku ckb ug dv].freeze
+    RTL_LOCALES = %w[ar he fa ur yi ps sd ku ckb ug dv].freeze unless defined?(RTL_LOCALES)
 
     # Check if the given locale is RTL
     def self.rtl_locale?(locale = I18n.locale)
