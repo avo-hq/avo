@@ -1,20 +1,8 @@
 /* Grid Item Component - Based on Figma Design System */
 /* BEM Methodology: .grid-item (block), .grid-item__element (elements) */
 
-:root {
-  --spacing-52: 208px;
-  --spacing-2: 8px;
-  --spacing-2: 8px;
-  --rounded-xl: 12px;
-  --spacing-1-5: 6px; /* 1.5 */
-}
-
 .grid-item {
-  /* Layout */
-  @apply flex flex-col flex-1 shrink-0 basis-0 items-start border-1 rounded-xl p-2 gap-2 min-w-52;
-
-  background-color: var(--color-primary);
-  border-color: var(--color-tertiary);
+  @apply flex flex-col flex-1 shrink-0 basis-0 items-start border-1 rounded-xl p-2 gap-2 min-w-52 bg-primary border-tertiary;
 
   /* Skeumorphic shadow from Figma */
   box-shadow: 0 -1.5px 0 1px var(--color-secondary) inset, 0 0.8px 0 1.3px var(--color-primary) inset;
@@ -22,8 +10,7 @@
 
 /* Image container */
 .grid-item__image-container {
-  @apply relative w-full overflow-hidden rounded-lg min-h-52;
-  background-color: var(--color-secondary);
+  @apply relative w-full overflow-hidden rounded-lg min-h-52 bg-secondary;
 }
 
 /* Image */
@@ -33,15 +20,11 @@
 
 /* Image placeholder */
 .grid-item__image-placeholder {
-  @apply flex flex-1 shrink-0 basis-0 self-stretch items-center justify-center w-full h-full;
-  background-color: var(--color-secondary);
+  @apply flex flex-1 shrink-0 basis-0 self-stretch items-center justify-center w-full h-full bg-secondary;
 }
 
 .grid-item__image-icon {
-  @apply shrink-0 w-6 h-6;
-  /* width: 24px; */
-  /* height: 24px; */
-  color: var(--color-content-secondary);
+  @apply shrink-0 size-6 text-content-secondary;
 }
 
 /* Checkbox */
@@ -73,8 +56,7 @@
 }
 
 .grid-item__action-icon {
-  @apply shrink-0 w-3.5 h-3.5 shrink-0 aspect-square;
-  color: var(--color-content-secondary);
+  @apply shrink-0 w-3.5 h-3.5 shrink-0 aspect-square text-content-secondary;
 }
 
 /* Content section */
@@ -84,14 +66,10 @@
 
 /* Title */
 .grid-item__title {
-  @apply font-medium self-stretch text-base leading-6 font-medium;
-
-  color: var(--color-content);
+  @apply font-medium self-stretch text-base leading-6 font-medium text-content;
 }
 
 /* Description */
 .grid-item__description {
-  @apply font-normal self-stretch text-xs leading-4 font-normal;
-
-  color: var(--color-content-secondary);
+  @apply font-normal self-stretch text-xs leading-4 font-normal text-content-secondary;
 }

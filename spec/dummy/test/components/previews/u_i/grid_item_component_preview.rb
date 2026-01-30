@@ -37,11 +37,6 @@ module UI
 
     # @!group Examples
 
-    # Default grid item
-    def default
-      render_with_template(template: "u_i/grid_item_component_preview/default")
-    end
-
     # Mixed cases - 8 items showing various combinations
     def mixed_cases
       render_with_template(template: "u_i/grid_item_component_preview/mixed_cases")
