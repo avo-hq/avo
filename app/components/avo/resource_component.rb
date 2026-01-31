@@ -154,7 +154,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       color: :red,
       icon: "tabler/outline/trash",
-      form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria_label: control.title,
       data: {
@@ -204,9 +203,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_detach_button(control)
     return unless is_a_related_resource? && can_detach?
 
-    a_link detach_path,
+    link_to detach_path,
       icon: "tabler/outline/unlink",
-      form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {
         turbo_method: :delete,

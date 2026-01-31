@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::UI::DropdownComponent < Avo::BaseComponent
+  prop :classes
+
   renders_one :trigger
   renders_one :items
 

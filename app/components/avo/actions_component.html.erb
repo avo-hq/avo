@@ -9,24 +9,34 @@
     data-record-id="<%= @resource.record_param %>"
   <% end %>
 >
-  <%= a_button style: @style,
-    type: :button,
-    color: @color,
-    size: @size,
-    class: "focus:outline-hidden",
-    icon: @icon,
-    icon_class: @icon_class,
-    data: {
-      action: "click->toggle#togglePanel",
-      actions_dropdown_button: @resource.model_key,
-      tippy: "tooltip",
-      tippy_content: @title
-    } do %>
-    <%= @label %>
+
+  <%= render ui.dropdown(classes: "z-100") do |component| %>
+    <% component.with_trigger do %>
+      <%= a_button style: @style,
+        type: :button,
+        color: @color,
+        size: @size,
+        class: "focus:outline-hidden",
+        icon: @icon,
+        icon_class: @icon_class,
+        data: {
+          action: component.action,
+          actions_dropdown_button: @resource.model_key,
+          tippy: "tooltip",
+          tippy_content: @title
+        } do %>
+        <%= @label %>
+      <% end %>
+    <% end %>
+    <% component.with_items do %>
+      <% @actions.each do |action| %>
+        <%= render_item(action) %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <div
-    class="
+    class="hidden
       css-animate-slide-down
       absolute inset-auto top-full z-40 mt-2 flex w-full overflow-hidden rounded-sm bg-white shadow-modal
       sm:w-auto sm:min-w-[300px] xl:end-0
