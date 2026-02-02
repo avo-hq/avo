@@ -45,7 +45,7 @@ it:
     failed: Fallito
     failed_to_find_attachment: Impossibile trovare l'allegato
     failed_to_load: Caricamento fallito
-    'false': 'False'
+    'false': Falso
     file:
       one: file
       other: file
@@ -117,7 +117,7 @@ it:
     table_view: Vista tabella
     this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.
     tools: Strumenti
-    'true': 'true'
+    'true': Vero
     type_to_search: Digita per cercare.
     unauthorized: Non autorizzato
     undo: Annulla

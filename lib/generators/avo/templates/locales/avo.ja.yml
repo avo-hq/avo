@@ -47,7 +47,7 @@ ja:
     failed: 失敗
     failed_to_find_attachment: アタッチメントを見つけるのに失敗
     failed_to_load: 読み込みに失敗
-    'false': 'False'
+    'false': 偽
     file:
       one: ファイル
       other: ファイル
@@ -119,7 +119,7 @@ ja:
     table_view: テーブルビュー
     this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。
     tools: ツール
-    'true': 'true'
+    'true': 真
     type_to_search: 検索する内容を入力してください。
     unauthorized: 許可されていません
     undo: 元に戻す
