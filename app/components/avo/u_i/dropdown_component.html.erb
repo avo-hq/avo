@@ -3,7 +3,7 @@
 
   <% if items.present? %>
     <%= render Avo::UI::DropdownMenuComponent.new(
-      data: {dropdown_menu_target: "menu"},
+      data: {dropdown_menu_target: "menu"}.merge(@data),
       classes: @classes
     ) do %>
       <%= items %>

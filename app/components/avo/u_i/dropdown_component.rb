@@ -2,6 +2,7 @@
 
 class Avo::UI::DropdownComponent < Avo::BaseComponent
   prop :classes
+  prop :data
 
   renders_one :trigger
   renders_one :items

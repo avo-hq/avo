@@ -10,7 +10,7 @@
   <% end %>
 >
 
-  <%= render ui.dropdown(classes: "z-100") do |component| %>
+  <%= render ui.dropdown(classes: "z-100", data: { dropdown_list: @label }) do |component| %>
     <% component.with_trigger do %>
       <%= a_button style: @style,
         type: :button,
