@@ -24,7 +24,23 @@
     variant = ipod_product.image.variant(resize_to_fill: [300, 300])
     main_app.url_for(variant)
   end
-%>
+
+  simulated_actions = capture do %>
+  <div>
+    <%= link_to "#", class: "flex items-center gap-2" do %>
+      <%= svg("tabler/outline/pencil", class: "h-6") %>
+      Edit
+    <% end %>
+    <%= link_to "#", class: "flex items-center gap-2" do %>
+      <%= svg("tabler/outline/eye", class: "h-6") %>
+      View
+    <% end %>
+    <%= link_to "#", class: "flex items-center gap-2" do %>
+      <%= svg("tabler/outline/trash", class: "h-6") %>
+      Delete
+    <% end %>
+  </div>
+<% end %>
 <div class="p-8 bg-white">
   <h3 class="text-lg font-semibold text-gray-900 mb-6">Mixed Cases - 8 Items</h3>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -34,7 +50,8 @@
       badge_label: "New",
       badge_color: :success,
       image: nil,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
     <%= render Avo::UI::GridItemComponent.new(
       title: "iPhone",
@@ -42,23 +59,23 @@
       badge_label: "Updated",
       badge_color: :warning,
       image: iphone_image,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
     <%= render Avo::UI::GridItemComponent.new(
       title: "Apple watch",
       description: "A healthy leap ahead",
-      badge_label: nil,
-      badge_color: :blue,
       image: watch_image,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
     <%= render Avo::UI::GridItemComponent.new(
       title: "iPod",
-      description: nil,
       badge_label: "Sale",
       badge_color: :danger,
       image: ipod_image,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
     <%= render Avo::UI::GridItemComponent.new(
       title: nil,
@@ -66,31 +83,29 @@
       badge_label: "Featured",
       badge_color: :purple,
       image: macbook_image,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
     <%= render Avo::UI::GridItemComponent.new(
       title: "No Description",
-      description: nil,
       badge_label: "Info",
       badge_color: :info,
       image: iphone_image,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
     <%= render Avo::UI::GridItemComponent.new(
       title: "No Badge Item",
       description: "This item has no badge",
-      badge_label: nil,
-      badge_color: :blue,
       image: watch_image,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
     <%= render Avo::UI::GridItemComponent.new(
       title: "Minimal Item",
-      description: nil,
-      badge_label: nil,
-      badge_color: :blue,
       image: ipod_image,
-      checkbox_checked: false
+      checkbox_checked: false,
+      actions: simulated_actions,
     ) %>
   </div>
 </div>
