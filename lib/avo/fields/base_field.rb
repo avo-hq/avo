@@ -14,7 +14,6 @@ module Avo
       include Avo::Fields::Concerns::HandlesFieldArgs
       include Avo::Fields::Concerns::IsReadonly
       include Avo::Fields::Concerns::IsDisabled
-      include Avo::Fields::Concerns::IsLoading
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::UseViewComponents
       include Avo::Fields::Concerns::DomId

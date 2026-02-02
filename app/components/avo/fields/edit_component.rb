@@ -29,8 +29,7 @@ class Avo::Fields::EditComponent < Avo::BaseComponent
   def classes(extra_classes = "")
     helpers.input_classes(
       "#{@field.get_html(:classes, view: view, element: :input)} #{extra_classes}",
-      has_error: @field.record_errors.include?(@field.id),
-      loading: @field.loading?
+      has_error: @field.record_errors.include?(@field.id)
     )
   end
 

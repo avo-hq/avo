@@ -61,10 +61,9 @@ module Avo
       classes
     end
 
-    def input_classes(extra_classes = "", has_error: false, loading: false)
+    def input_classes(extra_classes = "", has_error: false)
       classes = "input__field"
       classes += " input__field--error" if has_error
-      classes += " input__field--loading" if loading
       classes += " #{extra_classes}"
       classes
     end
