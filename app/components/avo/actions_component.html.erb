@@ -34,23 +34,4 @@
       <% end %>
     <% end %>
   <% end %>
-
-  <div
-    class="hidden
-      css-animate-slide-down
-      absolute inset-auto top-full z-40 mt-2 flex w-full overflow-hidden rounded-sm bg-white shadow-modal
-      sm:w-auto sm:min-w-[300px] xl:end-0
-    "
-    hidden
-    data-toggle-target="panel"
-    data-controller="actions-overflow"
-    data-actions-overflow-panel-list-value="<%= !@as_row_control %>"
-    data-actions-overflow-target="content"
-  >
-    <div data-target="actions-list" class="space w-full divide-y divide-gray-200">
-      <% @actions.each do |action| %>
-        <%= render_item(action) %>
-      <% end %>
-    </div>
-  </div>
 </div>

@@ -102,7 +102,6 @@ class Avo::ActionsComponent < Avo::BaseComponent
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
       disabled: action.disabled?,
       turbo_prefetch: false,
-      enabled_classes: "",
       disabled_classes: "dropdown-menu__item--disabled",
       resource_name: action.resource.model_key
     }
