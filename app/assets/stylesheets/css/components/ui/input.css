@@ -6,17 +6,39 @@
   ========================================================================== */
 
 .input__field {
-  @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 py-1 text-sm leading-5 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative;
+  @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative;
 
   box-shadow: var(--box-shadow);
 }
 
 /* ==========================================================================
-  Placeholder
+  Size Variants
+  ========================================================================== */
+
+/* Small */
+.input__field--sm,
+.input__field--sm::placeholder {
+  @apply py-1 text-xs leading-4;
+}
+
+/* Medium (default) */
+.input__field--md,
+.input__field--md::placeholder {
+  @apply py-1.5 text-sm leading-5;
+}
+
+/* Large */
+.input__field--lg,
+.input__field--lg::placeholder {
+  @apply py-2.5 text-sm leading-5;
+}
+
+/* ==========================================================================
+  Placeholder (fallback for inputs without size modifier)
   ========================================================================== */
 
 .input__field::placeholder {
-  @apply text-sm leading-5 font-normal text-content-secondary overflow-hidden text-ellipsis whitespace-nowrap;
+  @apply font-normal text-content-secondary overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 /* ==========================================================================
@@ -38,7 +60,8 @@
 }
 
 .input__field:focus-visible {
-  @apply outline-none ring-2 ring-content ring-offset-2 ring-offset-primary;
+  @apply outline-none;
+  box-shadow: var(--box-shadow-focus);
 }
 
 /* ==========================================================================

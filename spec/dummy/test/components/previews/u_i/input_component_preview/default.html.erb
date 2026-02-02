@@ -1,45 +1,210 @@
-<div class="p-8 space-y-6 bg-white">
-  <div class="text-sm font-medium text-content">Default</div>
-  <%= content_tag :div,
-    class: class_names("field-wrapper__content") do %>
-    <%= tag.div class: "field-wrapper__content-wrapper" do %>
-      <div class="field-wrapper__input">
-        <input class="input__field w-full" placeholder="Value">
-      </div>
-      <div class="field-wrapper__help max-w-sm">This is a help text</div>
-    <% end %>
-  <% end %>
+<div class="p-8 space-y-8 bg-white">
+  <div class="text-lg font-semibold text-content mb-6">Input Field - Size Variants & States</div>
 
-  <div class="text-sm font-medium text-content">Error</div>
-  <%= content_tag :div,
-    class: class_names("field-wrapper__content") do %>
-    <%= tag.div class: "field-wrapper__content-wrapper" do %>
-      <div class="field-wrapper__input">
-        <input class="input__field input__field--error w-full" placeholder="Value">
-      </div>
-      <div class="field-wrapper__error max-w-sm">This is a error text</div>
-    <% end %>
-  <% end %>
+  <div class="grid grid-cols-3 gap-6">
+    <!-- Header Row -->
+    <div class="text-sm font-semibold text-content">Small (sm)</div>
+    <div class="text-sm font-semibold text-content">Medium (md)</div>
+    <div class="text-sm font-semibold text-content">Large (lg)</div>
 
-  <div class="text-sm font-medium text-content">Loading</div>
-  <%= content_tag :div,
-    class: class_names("field-wrapper__content") do %>
-    <%= tag.div class: "field-wrapper__content-wrapper" do %>
-      <div class="field-wrapper__input">
-        <input class="input__field input__field--loading w-full" placeholder="Value">
-      </div>
-      <div class="field-wrapper__help max-w-sm">This is a help text</div>
-    <% end %>
-  <% end %>
+    <!-- Default (Enabled) -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--sm w-full" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
 
-  <div class="text-sm font-medium text-content">Disabled</div>
-  <%= content_tag :div,
-    class: class_names("field-wrapper__content") do %>
-    <%= tag.div class: "field-wrapper__content-wrapper" do %>
-      <div class="field-wrapper__input">
-        <input class="input__field w-full" placeholder="Disabled value" disabled>
-      </div>
-      <div class="field-wrapper__help">This is a help text</div>
-    <% end %>
-  <% end %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--md w-full" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--lg w-full" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Filled -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Filled</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--sm w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Filled</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--md w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Filled</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--lg w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Error -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Error</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--sm input__field--error w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__error max-w-sm">Error message</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Error</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--md input__field--error w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__error max-w-sm">Error message</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Error</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--lg input__field--error w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__error max-w-sm">Error message</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Loading -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Loading</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--sm input__field--loading w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Loading</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--md input__field--loading w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Loading</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--lg input__field--loading w-full" value="Value" placeholder="Label">
+          </div>
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <!-- Disabled -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--sm w-full" placeholder="Disabled value" disabled>
+          </div>
+          <div class="field-wrapper__help">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--md w-full" placeholder="Disabled value" disabled>
+          </div>
+          <div class="field-wrapper__help">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <%= content_tag :div,
+        class: class_names("field-wrapper__content") do %>
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="field-wrapper__input">
+            <input class="input__field input__field--lg w-full" placeholder="Disabled value" disabled>
+          </div>
+          <div class="field-wrapper__help">Help text</div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 </div>

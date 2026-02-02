@@ -61,8 +61,9 @@ module Avo
       classes
     end
 
-    def input_classes(extra_classes = "", has_error: false)
+    def input_classes(extra_classes = "", has_error: false, size: :md)
       classes = "input__field"
+      classes += " input__field--#{size}" if [:sm, :md, :lg].include?(size)
       classes += " input__field--error" if has_error
       classes += " #{extra_classes}"
       classes
