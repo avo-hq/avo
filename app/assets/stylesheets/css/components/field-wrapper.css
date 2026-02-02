@@ -42,6 +42,24 @@
   @apply relative w-full;
 }
 
+.field-wrapper__input:has(.input__field--loading)::after {
+  content: "";
+  @apply absolute end-2 top-1/2 size-4 rounded-full border-2 border-content border-e-tertiary pointer-events-none;
+
+  transform: translateY(-50%);
+  transform-origin: center;
+  animation: input-spinner-rotation 0.9s linear infinite;
+}
+
+@keyframes input-spinner-rotation {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
 .field-wrapper--full-width {
   .field-wrapper__content-wrapper {
     @apply w-full;

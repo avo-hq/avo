@@ -6,7 +6,7 @@
   ========================================================================== */
 
 .input__field {
-  @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border-1 border-tertiary px-2 py-1 text-sm leading-5 font-normal overflow-hidden text-ellipsis whitespace-nowrap;
+  @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 py-1 text-sm leading-5 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative;
 
   box-shadow: var(--box-shadow);
 }
@@ -87,18 +87,6 @@
 
 .input__field--loading {
   @apply pe-7;
-}
-
-/* ==========================================================================
-  Spinner (Loading Indicator)
-  ========================================================================== */
-
-.input__spinner {
-  @apply absolute end-2 top-1/2 size-4 rounded-full border-2 border-content border-e-tertiary pointer-events-none;
-
-  transform: translateY(-50%);
-  transform-origin: center;
-  animation: input-spinner-rotation 0.9s linear infinite;
 }
 
 @keyframes input-spinner-rotation {

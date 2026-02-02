@@ -3,7 +3,9 @@
   <%= content_tag :div,
     class: class_names("field-wrapper__content") do %>
     <%= tag.div class: "field-wrapper__content-wrapper" do %>
-      <input class="input__field w-full" placeholder="Value">
+      <div class="field-wrapper__input">
+        <input class="input__field w-full" placeholder="Value">
+      </div>
       <div class="field-wrapper__help max-w-sm">This is a help text</div>
     <% end %>
   <% end %>
@@ -12,7 +14,9 @@
   <%= content_tag :div,
     class: class_names("field-wrapper__content") do %>
     <%= tag.div class: "field-wrapper__content-wrapper" do %>
-      <input class="input__field input__field--error w-full" placeholder="Value">
+      <div class="field-wrapper__input">
+        <input class="input__field input__field--error w-full" placeholder="Value">
+      </div>
       <div class="field-wrapper__error max-w-sm">This is a error text</div>
     <% end %>
   <% end %>
@@ -23,7 +27,6 @@
     <%= tag.div class: "field-wrapper__content-wrapper" do %>
       <div class="field-wrapper__input">
         <input class="input__field input__field--loading w-full" placeholder="Value">
-        <span class="input__spinner" aria-hidden="true"></span>
       </div>
       <div class="field-wrapper__help max-w-sm">This is a help text</div>
     <% end %>
@@ -33,7 +36,9 @@
   <%= content_tag :div,
     class: class_names("field-wrapper__content") do %>
     <%= tag.div class: "field-wrapper__content-wrapper" do %>
-      <input class="input__field w-full" placeholder="Disabled value" disabled>
+      <div class="field-wrapper__input">
+        <input class="input__field w-full" placeholder="Disabled value" disabled>
+      </div>
       <div class="field-wrapper__help">This is a help text</div>
     <% end %>
   <% end %>
