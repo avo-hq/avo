@@ -74,7 +74,6 @@ module Avo
         @required = args.dig(:required) # Value if :required present on args, nil otherwise
         @readonly = args[:readonly] || false
         @disabled = args[:disabled] || false
-        @loading = args[:loading] || false
         @sortable = args[:sortable] || false
         @summarizable = args[:summarizable] || false
         @nullable = args[:nullable] || false
