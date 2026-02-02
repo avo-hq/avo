@@ -39,6 +39,7 @@ module Avo3Dummy
     # ---
     # config.i18n.available_locales = [:fr, :en, :ro]
     # config.i18n.default_locale = :fr
+    config.i18n.raise_on_missing_translations = true
     # ---
 
     config.action_view.form_with_generates_remote_forms = false

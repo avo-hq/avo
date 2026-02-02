@@ -45,6 +45,7 @@ ru:
     failed: Ошибка
     failed_to_find_attachment: Вложение не найдено
     failed_to_load: Загрузка не удалась
+    'false': 'False'
     file:
       few: файла
       many: файлов
@@ -118,6 +119,7 @@ ru:
     table_view: Таблица
     this_field_has_attachments_disabled: Для этого поля прикрепления отключены.
     tools: Инструменты
+    'true': 'true'
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить

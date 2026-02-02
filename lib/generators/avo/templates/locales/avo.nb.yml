@@ -47,6 +47,7 @@ nb:
     failed: Feilet
     failed_to_find_attachment: Fant ikke vedlegg
     failed_to_load: Lasting feilet
+    'false': 'False'
     file:
       one: file
       other: files
@@ -118,6 +119,7 @@ nb:
     table_view: Tabell visning
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
     tools: Redskapene
+    'true': 'true'
     type_to_search: Søk.
     unauthorized: Ikke autorisert
     undo: angre

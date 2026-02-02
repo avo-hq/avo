@@ -45,6 +45,7 @@ de:
     failed: Fehlgeschlagen
     failed_to_find_attachment: Anhang nicht gefunden
     failed_to_load: Laden fehlgeschlagen
+    'false': 'False'
     file:
       one: Datei
       other: Dateien
@@ -116,6 +117,7 @@ de:
     table_view: Tabellenansicht
     this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.
     tools: Werkzeuge
+    'true': 'true'
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen

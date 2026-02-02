@@ -45,6 +45,7 @@ nl:
     failed: Mislukt
     failed_to_find_attachment: Bijlage niet gevonden
     failed_to_load: Laden mislukt
+    'false': 'False'
     file:
       one: bestand
       other: bestanden
@@ -116,6 +117,7 @@ nl:
     table_view: Tabelweergave
     this_field_has_attachments_disabled: Bijlagen zijn uitgeschakeld voor dit veld.
     tools: Gereedschappen
+    'true': 'true'
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken

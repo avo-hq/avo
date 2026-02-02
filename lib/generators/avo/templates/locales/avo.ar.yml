@@ -51,6 +51,7 @@ ar:
     failed: فشل
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
+    'false': 'False'
     file:
       few: ملفات
       many: ملفات
@@ -126,6 +127,7 @@ ar:
     table_view: عرض الجدول
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
     tools: الأدوات
+    'true': 'true'
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
