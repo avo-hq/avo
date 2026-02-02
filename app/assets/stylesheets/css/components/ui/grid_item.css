@@ -52,11 +52,12 @@
 
 /* Action button */
 .grid-item__action-button {
-  @apply flex items-center justify-center cursor-pointer p-1.5 rounded-lg border-none bg-transparent gap-1;
+  @apply  border-none bg-transparent;
+  box-shadow: none !important;
 }
 
-.grid-item__action-icon {
-  @apply shrink-0 w-3.5 h-3.5 shrink-0 aspect-square text-content-secondary;
+.grid-item__action-button:hover {
+  background: transparent !important;
 }
 
 /* Content section */

@@ -7,6 +7,7 @@ class Avo::UI::GridItemComponent < Avo::BaseComponent
   prop :badge_color, default: :blue
   prop :title
   prop :description
+  prop :actions
   prop :action_icon, default: "avo/three-dots-vertical"
   prop :classes
 end

@@ -7,9 +7,7 @@
         <%= svg "tabler/filled/photo", class: "grid-item__image-icon" %>
       </div>
     <% end %>
-    <%= tag.input type: "checkbox",
-        checked: @checkbox_checked,
-        class: "grid-item__checkbox" %>
+    <%= render Avo::RowSelectorComponent.new(floating: true, checked: @checkbox_checked) %>
   </div>
   <div class="grid-item__badge-row">
     <div class="grid-item__badge-container">
@@ -20,9 +18,20 @@
         ) %>
       <% end %>
     </div>
-    <button type="button" class="grid-item__action-button">
-      <%= svg @action_icon, class: "grid-item__action-icon" %>
-    </button>
+    <% if @actions.present? %>
+      <%= render Avo::UI::DropdownComponent.new do |component| %>
+        <% component.with_trigger do %>
+          <%= render Avo::ButtonComponent.new(
+            icon: @action_icon,
+            size: :lg,
+            class: "grid-item__action-button",
+            data: {action: component.action} ) %>
+        <% end %>
+        <% component.with_items do %>
+          <%= @actions %>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
   <div class="grid-item__content">
     <div class="grid-item__title"><%= @title %></div>

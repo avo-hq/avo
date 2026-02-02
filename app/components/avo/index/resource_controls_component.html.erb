@@ -1,4 +1,8 @@
-<%= content_tag :div, class: class_names("resource-controls flex flex-row justify-evenly ms-2 has-record-selector:ms-0", {"flex-wrap": view_type == "grid", "space-x-2 rtl:space-x-reverse": view_type != "grid"}) do %>
+<%= content_tag :div, class: class_names({
+  "resource-controls flex flex-row justify-evenly ms-2 has-record-selector:ms-0": !dropdown?,
+  "flex-wrap": view_type == "grid" && !dropdown?,
+  "space-x-2 rtl:space-x-reverse": view_type != "grid" && !dropdown?
+}) do %>
   <% @resource.render_row_controls(item: singular_resource_name).each do |control| %>
     <%= render_control control %>
   <% end %>
