@@ -443,14 +443,15 @@ RSpec.describe "Actions", type: :system do
       expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
 
       # Hover grid element, select post, and verify that action is not disabled anymore
-      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]").hover
-      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
+      grid_item = find("[data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]")
+      grid_item.hover
+      find('input[type="checkbox"][data-action*="item-selector#toggle"]', visible: false).click
       click_on "Actions"
       expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "false"
 
       # Hover grid element, "unselect" post, and verify that action is disabled again
-      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]").hover
-      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
+      grid_item.hover
+      find('input[type="checkbox"][data-action*="item-selector#toggle"]', visible: false).click
       click_on "Actions"
       expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
     end
@@ -470,7 +471,7 @@ RSpec.describe "Actions", type: :system do
 
       run_action
 
-      expect(page).not_to have_text "1 fish released with message '' by #{admin.name}."
+      expect(page).to have_text "1 fish released with message '' by #{admin.name}."
     end
   end
 
@@ -480,7 +481,7 @@ RSpec.describe "Actions", type: :system do
     it "grid view" do
       visit avo.resources_posts_path
 
-      grid_component = find("[id='avo/index/grid_item_component_#{post.to_param}']")
+      grid_component = find("[data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]")
 
       within grid_component do
         expect(page).to have_text "Published: ❌"

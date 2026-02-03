@@ -1,4 +1,7 @@
-<%= content_tag :div, class: class_names("grid-item group", @classes) do %>
+<%= content_tag :div,
+  id: component_id,
+  class: class_names("grid-item group", @classes),
+  data: component_data_attributes do %>
   <div class="grid-item__image-container">
     <% if @image.present? %>
       <%= image_tag @image, class: "grid-item__image", alt: @title %>
