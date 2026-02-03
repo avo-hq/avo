@@ -67,6 +67,7 @@
 @custom-variant kanban-dragging (&:where(.kanban-dragging *));
 @custom-variant floating-controls (&:where(.floating-controls *));
 @custom-variant shift-pressed (&:where(.shift-pressed *));
+@custom-variant discreet-information-below (&:where(.discreet-information-below *));
 
 /* https://tailwindcss.com/docs/upgrade-guide#hover-styles-on-mobile */
 /* needed to fix hover on system tests we need to find a better solution */
