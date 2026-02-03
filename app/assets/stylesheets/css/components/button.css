@@ -59,20 +59,21 @@
 /* Outline style */
 .button--style-outline {
   @apply bg-primary text-accent-content border-tertiary;
-  box-shadow: 0 -1.5px 0 0.1px var(--color-secondary) inset, 0 0.8px 0 0.1px var(--color-primary) inset;
+  box-shadow: 0 -1.5px 0 0.1px color-mix(in oklab, var(--color-accent-content) 10%, transparent) inset, 0 0.8px 0 0.1px var(--color-primary) inset;
+  border-color: color-mix(in oklab, var(--color-accent-content) 10%, transparent);
 
   &.button--hover,
   &:hover {
-    background: linear-gradient(180deg, color-mix(in oklab, var(--color-accent-content) 10%, transparent) 0%, var(--color-black-4) 100%), var(--color-primary);
+    background-color: color-mix(in oklab, var(--color-accent-content) 5%, transparent);
+    border-color: color-mix(in oklab, var(--color-accent-content) 5%, transparent);
 
-    /* shadows/skeumorphic-secondary */
-    box-shadow: 0 -1.5px 0 0.1px var(--color-black-4) inset, 0 0.8px 0 0.1px var(--color-primary, #FFF) inset;
+    box-shadow: none;
   }
 
   &.button--active,
   &:active {
-    background: linear-gradient(180deg, color-mix(in oklab, var(--color-foreground) 10%, transparent) 0%, var(--color-black-4) 100%), var(--color-primary, #FFF);
-    box-shadow: 0 4px 4px 0.5px var(--color-black-4)
+    background-color: color-mix(in oklab, var(--color-accent-content) 10%, transparent);
+    border-color: color-mix(in oklab, var(--color-accent-content) 10%, transparent);
   }
 
   &.button--focus-visible,

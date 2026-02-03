@@ -102,16 +102,15 @@ class Avo::ActionsComponent < Avo::BaseComponent
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
       disabled: action.disabled?,
       turbo_prefetch: false,
-      enabled_classes: "text-black",
-      disabled_classes: "text-gray-500",
+      disabled_classes: "dropdown-menu__item--disabled",
       resource_name: action.resource.model_key
     }
   end
 
   def action_css_class(action)
-    helpers.class_names("flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100", {
-      "text-gray-500": action.disabled?,
-      "text-black": action.enabled?,
+    helpers.class_names("", {
+      "dropdown-menu__item--disabled": action.disabled?,
+      "": action.enabled?,
     })
   end
 end

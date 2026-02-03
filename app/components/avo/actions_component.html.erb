@@ -9,38 +9,29 @@
     data-record-id="<%= @resource.record_param %>"
   <% end %>
 >
-  <%= a_button style: @style,
-    type: :button,
-    color: @color,
-    size: @size,
-    class: "focus:outline-hidden",
-    icon: @icon,
-    icon_class: @icon_class,
-    data: {
-      action: "click->toggle#togglePanel",
-      actions_dropdown_button: @resource.model_key,
-      tippy: "tooltip",
-      tippy_content: @title
-    } do %>
-    <%= @label %>
-  <% end %>
 
-  <div
-    class="
-      css-animate-slide-down
-      absolute inset-auto top-full z-40 mt-2 flex w-full overflow-hidden rounded-sm bg-white shadow-modal
-      sm:w-auto sm:min-w-[300px] xl:end-0
-    "
-    hidden
-    data-toggle-target="panel"
-    data-controller="actions-overflow"
-    data-actions-overflow-panel-list-value="<%= !@as_row_control %>"
-    data-actions-overflow-target="content"
-  >
-    <div data-target="actions-list" class="space w-full divide-y divide-gray-200">
+  <%= render ui.dropdown(classes: "z-100", data: { dropdown_list: @label }) do |component| %>
+    <% component.with_trigger do %>
+      <%= a_button style: @style,
+        type: :button,
+        color: @color,
+        size: @size,
+        class: "focus:outline-hidden",
+        icon: @icon,
+        icon_class: @icon_class,
+        data: {
+          action: component.action,
+          actions_dropdown_button: @resource.model_key,
+          tippy: "tooltip",
+          tippy_content: @title
+        } do %>
+        <%= @label %>
+      <% end %>
+    <% end %>
+    <% component.with_items do %>
       <% @actions.each do |action| %>
         <%= render_item(action) %>
       <% end %>
-    </div>
-  </div>
+    <% end %>
+  <% end %>
 </div>

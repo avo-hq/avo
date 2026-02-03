@@ -1,6 +1,6 @@
 /* Avatar Component Styles */
 .cado-avatar {
-  @apply relative inline-block overflow-hidden size-full;
+  @apply relative block overflow-hidden size-full;
 }
 
 /* Size variants */

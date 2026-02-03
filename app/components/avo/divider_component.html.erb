@@ -1,6 +1,6 @@
-<div class="relative flex justify-center items-center w-full border-b! border-gray-200 border-solid" data-component-name="<%= self.class.to_s.underscore %>">
+<div class="relative flex items-center w-[calc(100%+2rem)] border-t border-tertiary border-solid my-1 -mx-2 px-2" data-component-name="<%= self.class.to_s.underscore %>">
   <% if @label.present? %>
-    <div class="absolute inset-auto z-20 text-[11px] font-semibold uppercase leading-none text-gray-500 bg-white border border-gray-200 px-2 py-1 rounded-sm">
+    <div class="relative inset-auto z-20 text-xs leading-none text-content-secondary px-2 pt-2 pb-1 font-medium">
       <%= @label %>
     </div>
   <% end %>
