@@ -7,7 +7,8 @@ RSpec.describe "PasswordField", type: :system do
         visit "/admin/resources/users/new"
 
         expect(page).to have_field type: "password", id: "user_password_confirmation"
-        find("[data-action='password-visibility#toggle']").click
+        # Toggle is the next sibling of the password_confirmation input
+        find("#user_password_confirmation + [data-action='password-visibility#toggle']").click
         expect(page).to have_field type: "text", id: "user_password_confirmation"
       end
     end

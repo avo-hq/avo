@@ -96,12 +96,18 @@
 
 .input__field--error:focus-visible {
   @apply text-content;
-
-  box-shadow: var(--box-shadow-error);
 }
 
 .input__field--error::placeholder {
   @apply text-danger-content;
+}
+
+/* ==========================================================================
+  State: Success
+  ========================================================================== */
+
+.input__field--success {
+  box-shadow: var(--box-shadow-success);
 }
 
 /* ==========================================================================
@@ -119,4 +125,46 @@
   to {
     transform: translateY(-50%) rotate(360deg);
   }
+}
+
+
+/* ==========================================================================
+  State: Password Visibility
+  ========================================================================== */
+/* password visibility button */
+.input__field--password-visibility {
+  @apply absolute text-content-secondary inset-y-0 end-0 pe-2 flex items-center cursor-pointer;
+}
+
+/* Both icons (loading AND password) */
+.input__field--loading ~ .input__field--password-visibility {
+  @apply pe-7;
+}
+
+/* ==========================================================================
+  State: Password Icon Size
+  ========================================================================== */
+
+/* Small size */
+.input__field--sm ~ .input__field--password-visibility svg {
+  @apply size-5.5;
+}
+
+/* Medium size */
+.input__field--md ~ .input__field--password-visibility svg {
+  @apply size-6;
+}
+
+/* Large size */
+.input__field--lg ~ .input__field--password-visibility svg {
+  @apply size-6.5;
+}
+
+
+/* ==========================================================================
+  State: Password Icon Disabled
+  ========================================================================== */
+
+.input__field:disabled ~ .input__field--password-visibility svg {
+  @apply opacity-60 cursor-not-allowed;
 }

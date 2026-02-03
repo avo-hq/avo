@@ -1,0 +1,121 @@
+<div class="p-8 space-y-8 bg-white">
+  <div class="text-lg font-semibold text-content mb-6">Password Field – States</div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl">
+    <!-- Error -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Error</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper">
+          <div class="field-wrapper__input relative">
+            <input
+              type="password"
+              class="input__field input__field--md input__field--error w-full"
+              placeholder="Password"
+              value=""
+              autocomplete="off"
+            >
+            <button type="button" class="input__field--password-visibility" aria-label="Toggle password visibility">
+              <%= svg("tabler/outline/eye", data: { "password-visibility-target": "icon" }) %>
+              <%= svg("tabler/outline/eye-off", class: "hidden", data: { "password-visibility-target": "icon" }) %>
+            </button>
+          </div>
+          <div class="field-wrapper__error mt-2">Password is required</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Success</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper">
+          <div class="field-wrapper__input relative">
+            <input
+              type="password"
+              class="input__field input__field--md input__field--success w-full"
+              placeholder="Password"
+              value="••••••••"
+              autocomplete="off"
+            >
+            <button type="button" class="input__field--password-visibility" aria-label="Toggle password visibility">
+              <%= svg("tabler/outline/eye", data: { "password-visibility-target": "icon" }) %>
+              <%= svg("tabler/outline/eye-off", class: "hidden", data: { "password-visibility-target": "icon" }) %>
+            </button>
+          </div>
+          <div class="field-wrapper__help mt-2">Password meets requirements</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden password (default) -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Hidden password</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper">
+          <div class="field-wrapper__input relative" data-controller="password-visibility">
+            <input
+              type="password"
+              class="input__field input__field--md w-full"
+              placeholder="Password"
+              value=""
+              autocomplete="off"
+              data-password-visibility-target="input"
+            >
+            <button type="button" class="input__field--password-visibility" data-action="password-visibility#toggle" aria-label="Show password">
+              <%= svg("tabler/outline/eye", data: { "password-visibility-target": "icon" }) %>
+              <%= svg("tabler/outline/eye-off", class: "hidden", data: { "password-visibility-target": "icon" }) %>
+            </button>
+          </div>
+          <div class="field-wrapper__help mt-2">Click the eye to reveal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Show password (visible) -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Show password</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper">
+          <div class="field-wrapper__input relative">
+            <input
+              type="text"
+              class="input__field input__field--md w-full"
+              placeholder="Password"
+              value="mySecretPass123"
+              autocomplete="off"
+            >
+            <button type="button" class="input__field--password-visibility" aria-label="Hide password">
+              <%= svg("tabler/outline/eye", class: "hidden", data: { "password-visibility-target": "icon" }) %>
+              <%= svg("tabler/outline/eye-off", data: { "password-visibility-target": "icon" }) %>
+            </button>
+          </div>
+          <div class="field-wrapper__help mt-2">Password is visible</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden and loading -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Hidden and loading</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper">
+          <div class="field-wrapper__input relative">
+            <input
+              type="password"
+              class="input__field input__field--md input__field--loading w-full"
+              placeholder="Verifying…"
+              value="••••••••"
+              autocomplete="off"
+            >
+            <button type="button" class="input__field--password-visibility" aria-label="Toggle password visibility">
+              <%= svg("tabler/outline/eye", data: { "password-visibility-target": "icon" }) %>
+              <%= svg("tabler/outline/eye-off", class: "hidden", data: { "password-visibility-target": "icon" }) %>
+            </button>
+          </div>
+          <div class="field-wrapper__help mt-2">Validating password…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

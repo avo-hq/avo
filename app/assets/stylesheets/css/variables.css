@@ -31,6 +31,7 @@
 
   --box-shadow-active: 0 0 0 2px var(--color-tertiary);
   --box-shadow-error: 0 0 5px 1px var(--color-red-600), 0 0 0 1px var(--color-red-600), 0 0 0 3px var(--color-red-300);
+  --box-shadow-success: 0 0 5px 1px var(--color-green-600), 0 0 0 1px var(--color-green-600), 0 0 0 3px var(--color-green-300);
   --box-shadow-focus: 0 0 0 1px var(--color-primary), 0 0 0 3px var(--color-info-foreground);
 
   /* foundations - Light Mode */
