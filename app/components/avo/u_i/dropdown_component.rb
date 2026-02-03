@@ -2,7 +2,7 @@
 
 class Avo::UI::DropdownComponent < Avo::BaseComponent
   prop :classes
-  prop :data
+  prop :data, default: {}.freeze
 
   renders_one :trigger
   renders_one :items
@@ -11,5 +11,13 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
   # data: {action: component.action} => click->dropdown-menu#toggle
   def action
     @action ||= "click->dropdown-menu#toggle"
+  end
+
+  def data
+    return {} if items.blank?
+
+    {
+      controller: "dropdown-menu"
+    }
   end
 end

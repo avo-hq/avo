@@ -203,7 +203,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_detach_button(control)
     return unless is_a_related_resource? && can_detach?
 
-    link_to detach_path,
+    a_link detach_path,
       icon: "tabler/outline/unlink",
       style: :text,
       data: {
