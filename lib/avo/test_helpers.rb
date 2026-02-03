@@ -20,7 +20,7 @@ module Avo
     # Example usage:
     #   grid_field_wrapper(record_id: 5)
     def grid_field_wrapper(record_id:)
-      find("[data-component-name='avo/index/grid_item_component'][data-resource-id='#{record_id}']")
+      find("[data-component-name='avo/u_i/grid_item_component'][data-resource-id='#{record_id}']")
     end
 
     # Finds the wrapper element on the show view for the given field id and type

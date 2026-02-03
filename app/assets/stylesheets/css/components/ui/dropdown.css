@@ -35,22 +35,22 @@
 }
 
 .dropdown-menu__item,
-.dropdown-menu__list > :is(a, button) {
+.dropdown-menu__list > :is(div) > :is(a, button) {
   @apply flex items-center w-full justify-start focus:outline-none gap-2 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent overflow-hidden text-ellipsis whitespace-nowrap text-content font-medium text-sm cursor-pointer leading-5;
 }
 
 .dropdown-menu__item:hover,
-.dropdown-menu__list > :is(a, button):hover {
+.dropdown-menu__list > :is(div) > :is(a, button):hover {
   @apply bg-secondary;
 }
 
 .dropdown-menu__item:focus-visible,
-.dropdown-menu__list > :is(a, button):focus-visible {
+.dropdown-menu__list > :is(div) > :is(a, button):focus-visible {
   @apply ring-2 ring-inset ring-content bg-primary outline-none;
 }
 
 .dropdown-menu__icon,
-.dropdown-menu__list > :is(a, button) svg {
+.dropdown-menu__list >  :is(div) > :is(a, button) svg {
   @apply shrink-0 size-4 text-content;
 }
 

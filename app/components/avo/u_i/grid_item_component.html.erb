@@ -1,0 +1,43 @@
+<%= content_tag :div,
+  id: component_id,
+  class: class_names("grid-item group", @classes),
+  data: component_data_attributes do %>
+  <div class="grid-item__image-container">
+    <% if @image.present? %>
+      <%= image_tag @image, class: "grid-item__image", alt: @title %>
+    <% else %>
+      <div class="grid-item__image-placeholder">
+        <%= svg "tabler/filled/photo", class: "grid-item__image-icon" %>
+      </div>
+    <% end %>
+    <%= render Avo::RowSelectorComponent.new(floating: true, checked: @checkbox_checked) %>
+  </div>
+  <div class="grid-item__badge-row">
+    <div class="grid-item__badge-container">
+      <% if @badge_label.present? %>
+      <%= render Avo::UI::BadgeComponent.new(
+          label: @badge_label,
+          color: @badge_color
+        ) %>
+      <% end %>
+    </div>
+    <% if @actions.present? %>
+      <%= render Avo::UI::DropdownComponent.new do |component| %>
+        <% component.with_trigger do %>
+          <%= render Avo::ButtonComponent.new(
+            icon: @action_icon,
+            size: :lg,
+            class: "grid-item__action-button",
+            data: {action: component.action} ) %>
+        <% end %>
+        <% component.with_items do %>
+          <%= @actions %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="grid-item__content">
+    <div class="grid-item__title"><%= @title %></div>
+    <div class="grid-item__description"><%= @description %></div>
+  </div>
+<% end %>

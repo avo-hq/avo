@@ -406,12 +406,48 @@ module Avo
 
     def reload_grid_items
       append_to_response -> {
-        component_to_replace = @resource.resolve_component(Avo::Index::GridItemComponent)
+        component_to_replace = @resource.resolve_component(Avo::UI::GridItemComponent)
 
         @action.records_to_reload.map do |record|
+          resource = @resource.dup.hydrate(record:, view: :index)
+          # Generate card data using the same method as grid_component
+          card = Avo::ExecutionContext.new(target: resource.grid_view[:card], resource: resource, record: resource.record).handle
+
+          # Generate actions HTML
+          actions_html = begin
+            actions_list = resource.get_actions.map do |action_bag|
+              action_class = action_bag[:class]
+              action_class.new(record: record, resource: resource, view: Avo::ViewInquirer.new(:index), **action_bag.except(:class))
+            end.select { |action| action.is_a?(Avo::DividerComponent) || action.visible_in_view }
+
+            view_context.render(Avo::Index::ResourceControlsComponent.new(
+              resource: resource,
+              reflection: nil,
+              parent_record: nil,
+              parent_resource: nil,
+              view_type: :grid,
+              actions: actions_list,
+              layout: :dropdown
+            ))
+          rescue
+            nil
+          end
+
+          grid_item_component = component_to_replace.new(
+            image: card[:cover_url],
+            title: card[:title],
+            description: card[:body],
+            badge_label: card.dig(:badge, :label),
+            badge_color: card.dig(:badge, :color),
+            checkbox_checked: @action.records_to_reload.include?(record),
+            actions: actions_html,
+            record_id: record.to_param,
+            resource_model_key: resource.model_key
+          )
+
           turbo_stream.replace(
             "#{component_to_replace.name.underscore}_#{record.to_param}",
-            component_to_replace.new(resource: @resource.dup.hydrate(record:, view: :index), grid_item_checked: @action.records_to_reload.include?(record))
+            grid_item_component
           )
         end
       }

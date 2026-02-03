@@ -10,6 +10,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   prop :parent_resource
   prop :view_type, default: :table
   prop :actions
+  prop :layout, default: :default
+
+  def dropdown?
+    @layout == :dropdown
+  end
 
   def can_detach?
     is_has_many_association? ? super : false
@@ -40,6 +45,14 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     end
 
     helpers.edit_resource_path(record: @resource.record, resource: parent_or_child_resource, **args)
+  end
+
+  def detach_path
+    helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param, **hidden_params)
+  end
+
+  def delete_path
+    helpers.resource_path(record: @resource.record, resource: @resource, **hidden_params)
   end
 
   def singular_resource_name
@@ -74,9 +87,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_edit_button(control)
     return unless can_edit?
 
-    link_to helpers.svg("tabler/outline/edit", class: svg_classes),
-      edit_path,
-      class: "flex items-center",
+    link_options = {
+      class: "flex items-center gap-2",
       title: control.title,
       aria: {label: control.title},
       data: {
@@ -85,14 +97,24 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         "resource-id": @resource.record_param,
         tippy: "tooltip",
       }
+    }
+
+    svg = svg("tabler/outline/edit", class: svg_classes)
+    if dropdown?
+      link_to edit_path, **link_options.except(:title) do
+        concat svg
+        concat control_title_without_resource(control.title)
+      end
+    else
+      link_to svg, edit_path, **link_options
+    end
   end
 
   def render_show_button(control)
     return unless can_view?
 
-    link_to helpers.svg("tabler/outline/eye", class: svg_classes),
-      show_path,
-      class: "flex items-center",
+    link_options = {
+      class: "flex items-center gap-2",
       title: control.title,
       aria: {label: control.title},
       data: {
@@ -100,6 +122,17 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :show,
         tippy: "tooltip",
       }
+    }
+
+    svg = svg("tabler/outline/eye", class: svg_classes)
+    if dropdown?
+      link_to show_path, **link_options.except(:title) do
+        concat svg
+        concat control_title_without_resource(control.title)
+      end
+    else
+      link_to svg, show_path, **link_options
+    end
   end
 
   def render_delete_button(control)
@@ -110,7 +143,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    link_to helpers.resource_path(record: @resource.record, resource: @resource, **hidden_params),
+    link_options = {
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria: {label: control.title},
@@ -122,15 +155,24 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
         "resource-id": @resource.record_param,
-      } do
-        svg "tabler/outline/trash", class: svg_classes
+      }
+    }
+
+    svg = svg("tabler/outline/trash", class: svg_classes)
+    if dropdown?
+      link_to delete_path, **link_options.except(:title) do
+        concat svg
+        concat control_title_without_resource(control.title)
       end
+    else
+      link_to svg, delete_path, **link_options
+    end
   end
 
   def render_detach_button(control)
     return unless can_detach?
 
-    link_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param, **hidden_params),
+    link_options = {
       title: control.title,
       aria: {label: control.title},
       data: {
@@ -141,9 +183,18 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :detach,
         "resource-id": @resource.record_param,
         tippy: :tooltip,
-      } do
-        svg "tabler/outline/unlink", class: svg_classes
+      }
+    }
+
+    svg = svg("tabler/outline/unlink", class: svg_classes)
+    if dropdown?
+      link_to detach_path, **link_options do
+        concat svg
+        concat control.title
       end
+    else
+      link_to svg, detach_path, **link_options
+    end
   end
 
   def render_order_controls(control)
@@ -172,5 +223,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
   def view_type
     params[:view_type]
+  end
+
+  def control_title_without_resource(title)
+    # Remove resource name in any case (Product, product, PRODUCT)
+    resource_name = singular_resource_name.humanize
+    title.gsub(/\b#{Regexp.escape(resource_name)}\b/i, "").strip
   end
 end
