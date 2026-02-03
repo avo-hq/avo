@@ -351,7 +351,7 @@ module Avo
         if list.present?
           sleep 0.1
           click_on list
-          within("[data-toggle-target='panel']") do
+          within("[data-dropdown-list='#{list}']", visible: :all) do
             find("a[data-action-name='#{action_name}']").click
           end
         else

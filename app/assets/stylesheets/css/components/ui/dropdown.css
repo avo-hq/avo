@@ -5,7 +5,7 @@
 
 /* Closed state - hidden by default */
 .dropdown-popover {
-  @apply absolute z-10 rounded-lg bg-primary top-full end-0 bottom-auto start-auto;
+  @apply absolute z-10 rounded-lg bg-primary top-full end-0 bottom-auto start-auto mt-2;
   box-shadow: var(--box-shadow-card);
 }
 
@@ -37,6 +37,10 @@
 .dropdown-menu__item,
 .dropdown-menu__list > :is(a, button) {
   @apply flex items-center w-full justify-start focus:outline-none gap-2 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent overflow-hidden text-ellipsis whitespace-nowrap text-content font-medium text-sm cursor-pointer leading-5;
+
+  &.dropdown-menu__item--disabled {
+    @apply text-content-secondary cursor-not-allowed !bg-transparent;
+  }
 }
 
 .dropdown-menu__item:hover,

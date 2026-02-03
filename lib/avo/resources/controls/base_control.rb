@@ -10,7 +10,7 @@ module Avo
           @color = args[:color] || :gray
           @style = args[:style] || :text
           @icon = args[:icon]
-          @icon_class = @style == :icon ? " text-gray-600 h-6 hover:text-gray-600" : ""
+          @icon_class = (@style == :icon) ? " text-gray-600 h-6 hover:text-gray-600" : ""
           @confirmation_message = args[:confirmation_message]
           @size = args[:size] || :md
           @as_index_control = args[:as_index_control]

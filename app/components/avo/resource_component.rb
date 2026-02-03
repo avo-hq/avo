@@ -154,7 +154,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       color: :red,
       icon: "tabler/outline/trash",
-      form_class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria_label: control.title,
       data: {
@@ -206,7 +205,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_link detach_path,
       icon: "tabler/outline/unlink",
-      form_class: "flex flex-col sm:flex-row sm:inline-flex",
       style: :text,
       data: {
         turbo_method: :delete,

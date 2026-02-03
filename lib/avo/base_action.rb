@@ -118,7 +118,7 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil, index_query: nil)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: "tabler/outline/player-play", query: nil, index_query: nil)
       @record = record
       @resource = resource
       @user = user

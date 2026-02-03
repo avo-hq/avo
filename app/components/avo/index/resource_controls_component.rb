@@ -110,8 +110,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    link_to helpers.resource_path(record: @resource.record, resource: @resource, **hidden_params),
-      form_class: "flex flex-col sm:flex-row sm:inline-flex",
+    link_to svg("tabler/outline/trash", class: svg_classes), helpers.resource_path(record: @resource.record, resource: @resource, **hidden_params),
+      class: "flex flex-col sm:flex-row sm:inline-flex",
       title: control.title,
       aria: {label: control.title},
       data: {
@@ -122,15 +122,13 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
         "resource-id": @resource.record_param,
-      } do
-        svg "tabler/outline/trash", class: svg_classes
-      end
+      }
   end
 
   def render_detach_button(control)
     return unless can_detach?
 
-    link_to helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param, **hidden_params),
+    link_to svg("tabler/outline/unlink", class: svg_classes), helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param, **hidden_params),
       title: control.title,
       aria: {label: control.title},
       data: {
@@ -141,9 +139,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :detach,
         "resource-id": @resource.record_param,
         tippy: :tooltip,
-      } do
-        svg "tabler/outline/unlink", class: svg_classes
-      end
+      }
   end
 
   def render_order_controls(control)

@@ -58,7 +58,9 @@
               <div class="avo-container <%= container_classes %>">
                 <%= yield.force_encoding("UTF-8") %>
 
-              <%= render partial: "avo/partials/footer" %>
+                <div class="mt-8">
+                  <%= render partial: "avo/partials/footer" %>
+                </div>
               </div>
             </div>
           </div>
