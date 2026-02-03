@@ -53,14 +53,22 @@
     @apply flex items-center justify-center;
   }
 
-  /* ============================================
-     SCOPE VARIANT
-     ============================================ */
-  .tabs__item-wrapper--scope {
+/* ============================================
+    SCOPE VARIANT
+    ============================================ */
+  /* Full-width border on tabs container */
+  .tabs:has(.tabs__item-wrapper--scope) {
     @apply border-b border-tertiary;
   }
 
+  /* Remove default border from scope wrappers */
+  .tabs__item-wrapper--scope {
+    @apply border-b-0;
+  }
+
+  /* Active border only on active tab wrapper - positioned to overlay container border */
   .tabs__item-wrapper--scope.tabs__item--active {
     @apply border-b-2 border-accent;
+    margin-bottom: -1px; /* Overlap with container border */
   }
 }
