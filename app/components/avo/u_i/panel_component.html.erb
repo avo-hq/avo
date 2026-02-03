@@ -14,7 +14,7 @@
 
   <% if header? %>
     <div class="panel__header"><%= header %></div>
-  <% else %>
+  <% elsif title.present? || description.present? || controls? %>
     <div class="panel__header">
       <%= render ui.panel_header(
         title:,
