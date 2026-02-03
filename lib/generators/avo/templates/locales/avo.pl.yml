@@ -45,6 +45,7 @@ pl:
     failed: Niepowodzenie
     failed_to_find_attachment: Nie udało się znaleźć załącznika
     failed_to_load: Nie udało się załadować
+    'false': Fałsz
     file:
       few: pliki
       many: plików
@@ -118,6 +119,7 @@ pl:
     table_view: Widok tabelaryczny
     this_field_has_attachments_disabled: Załączniki są wyłączone dla tego pola.
     tools: Narzędzia
+    'true': Prawda
     type_to_search: Wpisz, aby wyszukać.
     unauthorized: Brak autoryzacji
     undo: Cofnij

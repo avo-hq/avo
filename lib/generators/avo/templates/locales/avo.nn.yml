@@ -47,6 +47,7 @@ nn:
     failed: Feila
     failed_to_find_attachment: Fann ikkje vedlegg
     failed_to_load: Lasting feila
+    'false': Falsk
     file:
       one: file
       other: files
@@ -118,6 +119,7 @@ nn:
     table_view: Tabellvisning
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
     tools: Reiskapane
+    'true': Sann
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
     undo: angre
