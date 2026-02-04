@@ -142,20 +142,23 @@
 }
 
 /* ==========================================================================
-  State: Password Icon Size
+  State: Icon Size
   ========================================================================== */
 
 /* Small size */
+.field-wrapper__input:has(.input__field--sm.input__field--date)::after,
 .input__field--sm ~ .input__field--password-visibility svg {
   @apply size-5.5;
 }
 
 /* Medium size */
+.field-wrapper__input:has(.input__field--md.input__field--date)::after,
 .input__field--md ~ .input__field--password-visibility svg {
   @apply size-6;
 }
 
 /* Large size */
+.field-wrapper__input:has(.input__field--lg.input__field--date)::after,
 .input__field--lg ~ .input__field--password-visibility svg {
   @apply size-6.5;
 }
