@@ -73,6 +73,8 @@
 /* I discovered that the Tailwind v4 `hover` change is affecting the test browser. As a temporary fix, I forced a custom variant to preserve the Tailwind v3 `hover` behavior, since it resolves the failing tests. However, we’ll need to find a more robust long-term solution. This one was tricky to pinpoint. */
 @custom-variant hover (&:hover);
 
+@import "./css/components/ui/checkbox.css";
+
 @layer components {
   @import "./../../../node_modules/easymde/dist/easymde.min.css";
   @import "./../../../node_modules/tippy.js/dist/tippy.css";
@@ -112,7 +114,6 @@
   @import "./css/components/ui/tabs.css";
   @import "./css/components/ui/badge.css";
   @import "./css/components/ui/dropdown.css";
-  @import "./css/components/ui/checkbox.css";
   @import "./css/components/ui/radio_button.css";
 
   @import "./css/components/field-wrapper.css";
