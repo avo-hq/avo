@@ -3,6 +3,8 @@
 require "view_component/version"
 
 class Avo::Sidebar::LinkComponent < Avo::BaseComponent
+  TYPES = %i[item group sub_item].freeze
+
   prop :label
   prop :path
   prop :active, default: :inclusive do |value|
@@ -13,6 +15,12 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   end
   prop :data, default: {}.freeze
   prop :icon
+  prop :type, default: :item do |value|
+    value&.to_sym
+  end
+  prop :disabled, default: false
+  prop :counter
+  prop :actions, default: false
   prop :args, kind: :**, default: {}.freeze
 
   def is_external?
@@ -36,7 +44,39 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     end
   end
 
-  def classes
-    "px-4 pe-0 flex-1 flex mx-6 leading-none py-2 text-content rounded-sm font-medium hover:bg-gray-100 gap-1"
+  def item?
+    @type == :item
+  end
+
+  def group?
+    @type == :group
+  end
+
+  def sub_item?
+    @type == :sub_item
+  end
+
+  def show_counter?
+    @counter.present?
+  end
+
+  def wrapper_classes
+    class_names(
+      "navigation-item",
+      @args[:class],
+      "navigation-item--item": item?,
+      "navigation-item--group": group?,
+      "navigation-item--sub-item": sub_item?,
+      "navigation-item--disabled": @disabled
+    )
+  end
+
+  def wrapper_element(**args, &block)
+    merged = args.merge(class: wrapper_classes)
+    if @path.present? && !@disabled
+      link_caller.send(link_method, @path, **merged, &block)
+    else
+      tag.div(**merged.except(:active, :active_class, :target), &block)
+    end
   end
 end

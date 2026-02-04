@@ -121,6 +121,7 @@
   @import "./css/components/button.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
+  @import "./css/components/navigation_item.css";
   @import "./css/components/tooltip.css";
   @import "./css/components/modal.css";
   @import "./css/css-animations.css";
