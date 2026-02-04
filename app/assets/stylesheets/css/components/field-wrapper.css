@@ -18,6 +18,11 @@
   @apply opacity-60 cursor-not-allowed;
 }
 
+.field-wrapper__input:has(.input__field:disabled).field-wrapper__input:has(.input__field--date)::after,
+.field-wrapper__input:has(.input__field:disabled).field-wrapper__input:has(.input__field--loading)::after {
+  @apply opacity-60 cursor-not-allowed;
+}
+
 .field-wrapper__error {
   @apply text-danger-content mt-2 text-xs leading-4 inline-flex items-center gap-0.5;
 }
@@ -42,7 +47,17 @@
   @apply relative w-full;
 }
 
-.field-wrapper__input:has(.input__field--loading)::after {
+.field-wrapper__input:has(.input__field--date)::after {
+  content: "";
+  @apply absolute end-2 top-1/2 pointer-events-none text-content-secondary;
+  transform: translateY(-50%);
+  background-color: currentColor;
+  opacity: 0.6;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.field-wrapper__input:has(.input__field--loading):not(:has(.input__field--date))::after {
   content: "";
   @apply absolute end-2 top-1/2 size-4 rounded-full border-2 border-content border-e-tertiary pointer-events-none;
 
