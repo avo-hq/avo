@@ -6,6 +6,5 @@
 
 set -e
 
-# echo "CONDUCTOR_WORKSPACE_NAME: $CONDUCTOR_WORKSPACE_NAME"
 DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME"
 DATABASE_URL=postgresql://localhost/$DATABASE_NAME bin/rails db:drop
