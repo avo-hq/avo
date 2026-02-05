@@ -1,0 +1,11 @@
+#!/bin/sh
+#/ Usage: bin/conductor-setup
+#/
+#/ Setup files that are not tracked in git for Conductor workspaces.
+#/ This is run automatically when a new workspace is created.
+
+set -e
+
+# echo "CONDUCTOR_WORKSPACE_NAME: $CONDUCTOR_WORKSPACE_NAME"
+DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME"
+DATABASE_URL=postgresql://localhost/$DATABASE_NAME bin/rails db:drop
