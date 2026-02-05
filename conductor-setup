@@ -36,7 +36,9 @@ yarn install
 
 # echo "setting up database..."
 DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME"
+TEST_DATABASE_NAME="avo_dummy_($CONDUCTOR_WORKSPACE_NAME)_test"
 DATABASE_URL=postgresql://localhost/$DATABASE_NAME bin/rails db:setup
+RAILS_ENV=test DATABASE_URL=postgresql://localhost/$TEST_DATABASE_NAME bin/rails db:setup
 
 # Generate custom icon with ImageMagick if available
 if command -v magick >/dev/null 2>&1; then
@@ -57,7 +59,7 @@ if command -v magick >/dev/null 2>&1; then
         -fill white \
         -stroke black \
         -strokewidth 2 \
-        -annotate +0+60 "$CONDUCTOR_WORKSPACE_NAME" \
+        -annotate +0+0 "$CONDUCTOR_WORKSPACE_NAME" \
         "$OUTPUT_ICON"
 
 
