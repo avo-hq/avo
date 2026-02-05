@@ -46,7 +46,7 @@ if command -v magick >/dev/null 2>&1; then
     # Generate icon with workspace name overlay
     # Use the dev icon as base
     BASE_ICON="$SCRIPT_DIR/app/assets/images/avo/favicon.ico"
-    OUTPUT_ICON="$SCRIPT_DIR/app/assets/images/avo/favicon-new.ico"
+    OUTPUT_ICON="$SCRIPT_DIR/app/assets/images/avo/favicon.ico"
 
     # Create icon with text overlay
     # Position text in the bottom third of the icon
@@ -63,7 +63,7 @@ if command -v magick >/dev/null 2>&1; then
 
     echo "Generating custom logo..."
     LOGO="$SCRIPT_DIR/app/assets/images/avo/logo.png"
-    OUTPUT_LOGO="$SCRIPT_DIR/app/assets/images/avo/logo-new.png"
+    OUTPUT_LOGO="$SCRIPT_DIR/app/assets/images/avo/logo.png"
     magick "$LOGO" \
         -gravity South \
         -pointsize 26 \
