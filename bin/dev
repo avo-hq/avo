@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-PORT="${CONDUCTOR_PORT:-${PORT:-3030}}"
+PORT="${PORT:-3030}"
 export PORT
 
 if command -v overmind &> /dev/null; then
