@@ -46,6 +46,7 @@ zh:
     failed: 失败
     failed_to_find_attachment: 找不到附件
     failed_to_load: 加载失败
+    'false': 假
     file:
       one: 文件
       other: 文件
@@ -132,6 +133,7 @@ zh:
     table_view: 表格视图
     this_field_has_attachments_disabled: 此字段已禁用附件。
     tools: 工具
+    'true': 真
     type_to_search: 输入以搜索。
     unauthorized: 未经授权
     undo: 撤销

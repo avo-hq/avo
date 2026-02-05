@@ -49,6 +49,7 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
+    'false': Fals
     file:
       few: fişiere
       one: fişier
@@ -136,6 +137,7 @@ ro:
     table_view: Vezi sub formă de tabel
     this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
     tools: Instrumente
+    'true': Adevărat
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează

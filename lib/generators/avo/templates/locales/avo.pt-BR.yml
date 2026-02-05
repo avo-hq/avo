@@ -48,6 +48,7 @@ pt-BR:
     failed: Falhou
     failed_to_find_attachment: Falhou ao achar anexo
     failed_to_load: Falha ao carregar
+    'false': Falso
     file:
       one: ficheiro
       other: ficheiros
@@ -134,6 +135,7 @@ pt-BR:
     table_view: Visualização em tabela
     this_field_has_attachments_disabled: Este campo tem anexos desativados.
     tools: Ferramentas
+    'true': Verdadeiro
     type_to_search: Digite para buscar.
     unauthorized: Não autorizado
     undo: desfazer

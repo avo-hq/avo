@@ -48,6 +48,7 @@ es:
     failed: Fallo
     failed_to_find_attachment: No se ha encontrado el archivo adjunto
     failed_to_load: No se ha podido cargar
+    'false': Falso
     file:
       one: archivo
       other: archivos
@@ -134,6 +135,7 @@ es:
     table_view: Vista en tabla
     this_field_has_attachments_disabled: Este campo tiene los adjuntos deshabilitados.
     tools: Herramientas
+    'true': Verdadero
     type_to_search: Escribe para buscar.
     unauthorized: No autorizado
     undo: deshacer
