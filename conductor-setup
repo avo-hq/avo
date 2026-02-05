@@ -6,9 +6,6 @@
 
 set -e
 
-echo "mise trust"
-mise trust
-
 echo "CONDUCTOR_WORKSPACE_NAME: $CONDUCTOR_WORKSPACE_NAME"
 
 # Get the directory containing this script
