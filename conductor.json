@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "setup": "conductor-setup",
+    "setup": "mise truest && conductor-setup",
     "run": "PORT=$CONDUCTOR_PORT bin/dev",
     "archive": "conductor-archive"
   }
