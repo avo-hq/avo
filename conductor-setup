@@ -68,7 +68,7 @@ if command -v magick >/dev/null 2>&1; then
     OUTPUT_LOGO="$SCRIPT_DIR/app/assets/images/avo/logo.png"
     magick "$LOGO" \
         -gravity South \
-        -pointsize 26 \
+        -pointsize 60 \
         -font Arial-Bold \
         -fill white \
         -stroke black \
