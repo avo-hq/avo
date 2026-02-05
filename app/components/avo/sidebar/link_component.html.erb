@@ -1,14 +1,14 @@
-<% if @path.present? %>
-  <%= link_caller.send link_method, @path, class: classes, active: @active, target: @target, data: @data, **@args do %>
-    <%= helpers.svg @icon, class: "h-4 text-gray-700" if @icon.present? %>
-    <%= @label %>
-    <% if @target == :_blank %>
-      <%= helpers.svg('heroicons/outline/external-link', class: 'self-center ms-auto h-3 me-2') %>
-    <% end %>
+<%= wrapper_element active: @active, active_class: "navigation-item--active", target: @target, data: @data, **@args do %>
+  <% if item? %>
+    <span class="navigation-item__icon-wrapper">
+      <%= helpers.svg @icon, class: "navigation-item__icon" if @icon.present? %>
+    </span>
   <% end %>
-<% else %>
-  <%= content_tag :div, class: classes, active: @active, target: @target, data: @data do %>
-    <%= helpers.svg @icon, class: "h-4 text-gray-700" if @icon.present? %>
-    <%= @label %>
+  <span class="navigation-item__label"><%= @label %></span>
+  <% if show_counter? %>
+    <span class="navigation-item__counter"><%= @counter %></span>
+  <% end %>
+  <% if @actions %>
+    <%= helpers.svg "tabler/outline/dots", class: "navigation-item__actions-icon" %>
   <% end %>
 <% end %>

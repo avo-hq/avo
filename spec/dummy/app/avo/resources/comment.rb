@@ -5,6 +5,8 @@ class Avo::Resources::Comment < Avo::BaseResource
     query: -> { query.ransack(id_eq: params[:q], body_cont: params[:q], m: "or").result(distinct: false) }
   }
 
+  self.icon = "tabler/outline/message-circle"
+
   self.record_selector = false
 
   self.after_create_path = :index

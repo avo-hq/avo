@@ -1,0 +1,94 @@
+/* ==========================================================================
+   Navigation Item Component
+   ========================================================================== */
+
+/* Base navigation item styles */
+.navigation-item {
+  @apply flex items-center gap-2 rounded-lg font-medium text-sm leading-5 cursor-pointer;
+  @apply focus:outline-none focus-visible:bg-primary focus-visible:ring-3 focus-visible:ring-blue-500 focus-visible:ring-offset-1;
+}
+
+/* ==========================================================================
+   Types
+   ========================================================================== */
+
+/* Item type - main navigation items */
+.navigation-item--item {
+  @apply px-2 py-1.5 max-h-8 text-content-secondary;
+
+  &:hover {
+    @apply bg-secondary text-content;
+
+    .navigation-item__icon {
+      @apply text-content;
+    }
+  }
+
+  &.navigation-item--active {
+    @apply text-content;
+    background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+
+    .navigation-item__icon {
+      @apply text-content;
+    }
+  }
+}
+
+/* Group type - section headers */
+.navigation-item--group {
+  @apply px-2 py-1.5 text-xs leading-4 text-content-secondary cursor-default;
+}
+
+/* Sub-item type - nested navigation items */
+.navigation-item--sub-item {
+  @apply ps-8 pe-2 py-1 text-content-secondary;
+
+  &:hover {
+    @apply text-content;
+  }
+
+  &.navigation-item--active {
+    @apply text-content;
+  }
+}
+
+/* ==========================================================================
+   States
+   ========================================================================== */
+
+.navigation-item--disabled {
+  @apply opacity-60 cursor-not-allowed;
+
+  &:hover {
+    @apply bg-transparent text-content-secondary;
+
+    .navigation-item__icon {
+      @apply text-content-secondary;
+    }
+  }
+}
+
+/* ==========================================================================
+   Elements
+   ========================================================================== */
+
+.navigation-item__icon-wrapper {
+  @apply shrink-0 size-4 flex items-center justify-center;
+}
+
+.navigation-item__icon {
+  @apply size-4 text-content-secondary;
+}
+
+.navigation-item__label {
+  @apply flex-1 min-w-0 truncate;
+}
+
+.navigation-item__counter {
+  @apply shrink-0 flex items-center justify-center p-1.5 text-xs font-medium leading-3 rounded-lg text-green-600;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), linear-gradient(90deg, rgb(74, 222, 128), rgb(74, 222, 128));
+}
+
+.navigation-item__actions-icon {
+  @apply shrink-0 size-4 text-content-secondary;
+}

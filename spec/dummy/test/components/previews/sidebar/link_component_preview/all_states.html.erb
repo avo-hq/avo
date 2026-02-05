@@ -1,0 +1,123 @@
+<div class="flex gap-x-16 p-8 space-y-8">
+  <%# Item type %>
+  <div class="bg-primary rounded-lg p-6 max-w-xs">
+    <h4 class="text-xs font-semibold text-content-secondary uppercase tracking-wide mb-4">Item Type</h4>
+    <div class="space-y-1">
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Default",
+        type: :item,
+        icon: "tabler/outline/layout-dashboard",
+        path: "#default"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "With Counter",
+        type: :item,
+        icon: "tabler/outline/users",
+        path: "#with-counter",
+        counter: "12"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "With Actions",
+        type: :item,
+        icon: "tabler/outline/folder",
+        path: "#with-actions",
+        actions: true
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "With All Options",
+        type: :item,
+        icon: "tabler/outline/settings",
+        path: "#all-options",
+        counter: "5",
+        actions: true
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Disabled",
+        type: :item,
+        icon: "tabler/outline/lock",
+        disabled: true,
+        path: "#disabled"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Without Icon",
+        type: :item,
+        path: "#no-icon"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "No Path (Static)",
+        type: :item,
+        icon: "tabler/outline/info-circle"
+      ) %>
+    </div>
+  </div>
+
+  <%# Group type %>
+  <div class="bg-primary rounded-lg p-6 max-w-xs">
+    <h4 class="text-xs font-semibold text-content-secondary uppercase tracking-wide mb-4">Group Type (Section Headers)</h4>
+    <div class="space-y-1">
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "RESOURCES",
+        type: :group
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Users",
+        type: :item,
+        icon: "tabler/outline/users",
+        path: "#users"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Products",
+        type: :item,
+        icon: "tabler/outline/package",
+        path: "#products"
+      ) %>
+
+      <div class="pt-4"></div>
+
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "SETTINGS",
+        type: :group
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Configuration",
+        type: :item,
+        icon: "tabler/outline/settings",
+        path: "#config"
+      ) %>
+    </div>
+  </div>
+
+  <%# Sub-item type %>
+  <div class="bg-primary rounded-lg p-6 max-w-xs">
+    <h4 class="text-xs font-semibold text-content-secondary uppercase tracking-wide mb-4">Sub-item Type (Nested Items)</h4>
+    <div class="space-y-1">
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Settings",
+        type: :item,
+        icon: "tabler/outline/settings",
+        path: "#settings"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "General",
+        type: :sub_item,
+        path: "#general"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Security",
+        type: :sub_item,
+        path: "#security"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Notifications",
+        type: :sub_item,
+        path: "#notifications"
+      ) %>
+      <%= render Avo::Sidebar::LinkComponent.new(
+        label: "Disabled Sub-item",
+        type: :sub_item,
+        disabled: true,
+        path: "#disabled-sub"
+      ) %>
+    </div>
+  </div>
+</div>

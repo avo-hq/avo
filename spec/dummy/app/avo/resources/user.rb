@@ -39,6 +39,8 @@ class Avo::Resources::User < Avo::BaseResource
     }
   }
 
+  self.icon = "heroicons/outline/user"
+
   # self.cover = {
   #   visible_on: :show,
   #   source: -> {
