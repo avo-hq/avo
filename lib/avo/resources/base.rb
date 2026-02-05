@@ -11,6 +11,7 @@ module Avo
       include Avo::Concerns::HasResourceStimulusControllers
       include Avo::Concerns::ModelClassConstantized
       include Avo::Concerns::HasDescription
+      include Avo::Concerns::HasClasses
       include Avo::Concerns::HasCover
       include Avo::Concerns::HasAvatar
       include Avo::Concerns::HasHelpers

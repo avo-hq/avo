@@ -4,35 +4,42 @@
   "header--size-medium": size_medium?,
   "header--size-small": size_small?
 ), data: { "item-index": @index }.compact_blank do %>
-  <div class="header__main">
-    <div class="header__content">
-      <% if avatar? %>
-        <div class="header__avatar"><%= avatar %></div>
-      <% end %>
+  <div class="flex flex-col gap-y-0 w-full">
+    <div class="header__main">
+      <div class="header__content">
 
-      <div class="header__text">
-        <p class="header__title">
-          <% if @url.present? %>
-            <%= link_to @title, @url, target: @target %>
-          <% else %>
-            <%= @title %>
-          <% end %>
-        </p>
-
-        <%= title_slot %>
-
-        <% if @description.present? %>
-          <p class="header__description"><%= @description %></p>
+        <% if avatar? %>
+          <div class="header__avatar"><%= avatar %></div>
         <% end %>
 
-      <% if discreet_information? %>
-        <div class="header__discreet-information mt-2"><%= discreet_information %></div>
-      <% end %>
+        <div class="header__text">
+          <p class="header__title">
+            <% if @url.present? %>
+              <%= link_to @title, @url, target: @target %>
+            <% else %>
+              <%= @title %>
+            <% end %>
+          </p>
+
+          <%= title_slot %>
+
+          <% if @description.present? %>
+            <p class="header__description"><%= @description %></p>
+          <% end %>
+
+          <% if discreet_information? %>
+            <div class="header__discreet-information discreet-information-below:hidden"><%= discreet_information %></div>
+          <% end %>
+        </div>
       </div>
+
+      <% if controls? %>
+        <div class="header__controls"><%= controls %></div>
+      <% end %>
     </div>
 
-    <% if controls? %>
-      <div class="header__controls"><%= controls %></div>
+    <% if discreet_information? %>
+      <div class="header__discreet-information hidden discreet-information-below:block"><%= discreet_information %></div>
     <% end %>
   </div>
 <% end %>

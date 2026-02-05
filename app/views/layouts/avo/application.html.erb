@@ -31,7 +31,7 @@
     <%= content_for :head %>
   </head>
 
-  <body class="<%= class_names("os-mac floating-controls bg-background", "all-fields-stacked": Avo.configuration.use_stacked_fields) %>">
+  <body class="<%= class_names("os-mac floating-controls bg-background", @resource&.classes, @body_classes, "all-fields-stacked": Avo.configuration.use_stacked_fields) %>">
     <div
       class="relative flex min-h-dvh w-full flex-1"
       data-controller="sidebar"

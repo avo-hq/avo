@@ -39,6 +39,8 @@ class Avo::Resources::User < Avo::BaseResource
     }
   }
 
+  self.classes = "discreet-information-below"
+
   # self.cover = {
   #   visible_on: :show,
   #   source: -> {

@@ -26,6 +26,7 @@ module Avo
     before_action :set_view
     before_action :set_sidebar_open
     before_action :set_stylesheet_assets_path
+    before_action :set_body_classes
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -329,6 +330,11 @@ module Avo
         params[:raw_return_to] = params[:return_to]
         params[:return_to] = d(params[:return_to])
       end
+    end
+
+    def set_body_classes
+      @body_classes = ""
+      # abort 12.inspect
     end
   end
 end
