@@ -180,57 +180,58 @@ RSpec.describe "Tabs", type: :system do
     expect(page).not_to have_text "Invalid DateTime"
   end
 
-  # TODO: let Paul fix this
-  # it "keeps the pagination on tab when back is used" do
-  #   Avo.configuration.persistence = {driver: :session}
+  it "keeps the pagination on tab when back is used" do
+    Avo.configuration.persistence = {driver: :session}
 
-  #   visit avo.resources_user_path user
+    visit avo.resources_user_path user
 
-  #   find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
-  #   expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
-  #   expect(page).to have_text "Displaying items 1-8 of 9 in total"
+    find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
+    expect(page).to have_text "Displaying items 1-8 of 9 in total"
 
-  #   find('a[data-turbo-frame="has_and_belongs_to_many_field_show_projects"]', text: "2").click
-  #   expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
-  #   expect(page).to have_text "Displaying items 9-9 of 9 in total"
+    find('a[data-turbo-frame="has_and_belongs_to_many_field_show_projects"]', text: "2").click
+    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    expect(page).to have_text "Displaying items 9-9 of 9 in total"
 
-  #   find('a[aria-label="View project"]').click
-  #   wait_for_loaded
+    find('a[aria-label="View project"]').click
+    wait_for_loaded
 
-  #   page.go_back
-  #   wait_for_loaded
+    page.go_back
+    wait_for_loaded
 
-  #   expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
-  #   expect(page).to have_text "Displaying items 9-9 of 9 in total"
+    scroll_to find('a[data-tabs-tab-name-param="Projects"]')
+    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    expect(page).to have_text "Displaying items 9-9 of 9 in total"
 
-  #   Avo.configuration.persistence = {driver: nil}
-  # end
+    Avo.configuration.persistence = {driver: nil}
+  end
 
-  # it "keeps the per_page on association when back is used" do
-  #   Avo.configuration.persistence = {driver: :session}
+  it "keeps the per_page on association when back is used" do
+    Avo.configuration.persistence = {driver: :session}
 
-  #   visit avo.resources_user_path user
+    visit avo.resources_user_path user
 
-  #   find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
-  #   within("#has_and_belongs_to_many_field_show_projects") do
-  #     expect(page).to have_text "Displaying items 1-8 of 9 in total"
-  #     find("select#per_page.appearance-none").select("24")
-  #   end
+    find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+    within("#has_and_belongs_to_many_field_show_projects") do
+      expect(page).to have_text "Displaying items 1-8 of 9 in total"
+      find("select#per_page.appearance-none").select("24")
+    end
 
-  #   expect(page).to have_text "Displaying 9 items"
-  #   expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+    expect(page).to have_text "Displaying 9 items"
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
 
-  #   find_all('a[aria-label="View project"]')[0].click
-  #   wait_for_loaded
+    find_all('a[aria-label="View project"]')[0].click
+    wait_for_loaded
 
-  #   page.go_back
-  #   wait_for_loaded
+    page.go_back
+    wait_for_loaded
 
-  #   expect(page).to have_text "Displaying 9 items"
-  #   expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+    scroll_to find('a[data-tabs-tab-name-param="Projects"]')
+    expect(page).to have_text "Displaying 9 items"
+    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
 
-  #   Avo.configuration.persistence = {driver: nil}
-  # end
+    Avo.configuration.persistence = {driver: nil}
+  end
 
   let!(:person) { create :person }
 
