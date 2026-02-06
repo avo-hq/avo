@@ -7,7 +7,7 @@
 set -e
 
 DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME"
-TEST_DATABASE_NAME="avo_dummy_($CONDUCTOR_WORKSPACE_NAME)_test"
+TEST_DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME_test"
 
 DATABASE_URL=postgresql://localhost/$DATABASE_NAME bin/rails db:drop
 RAILS_ENV=test DATABASE_URL=postgresql://localhost/$TEST_DATABASE_NAME bin/rails db:drop
