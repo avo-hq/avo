@@ -28,9 +28,16 @@ export default class extends Controller {
       options.status = false
     }
 
-    const easyMde = new EasyMDE(options)
+    this.easyMde = new EasyMDE(options)
     if (this.view === 'show') {
-      easyMde.codemirror.options.readOnly = true
+      this.easyMde.codemirror.options.readOnly = true
+    }
+  }
+
+  disconnect() {
+    if (this.easyMde) {
+      this.easyMde.toTextArea()
+      this.easyMde = null
     }
   }
 }

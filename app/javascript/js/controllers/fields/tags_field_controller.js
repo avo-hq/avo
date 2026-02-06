@@ -79,6 +79,13 @@ export default class extends Controller {
     }
   }
 
+  disconnect() {
+    if (this.tagify) {
+      this.tagify.destroy()
+      this.tagify = null
+    }
+  }
+
   initTagify() {
     this.tagify = new Tagify(this.inputTarget, this.tagifyOptions)
     const that = this
