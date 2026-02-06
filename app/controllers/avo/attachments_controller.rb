@@ -28,10 +28,22 @@ module Avo
       if authorized_to :delete
         attachment = ActiveStorage::Attachment.find(params[:attachment_id])
 
-        flash[:notice] = if attachment.present?
-          @destroyed = attachment.destroy
+        if attachment.present?
+          ActiveRecord::Base.transaction do
+            @destroyed = attachment
+            attachment.destroy!
+            @record.reload
+            unless @record.save
+              @destroyed = nil
+              raise ActiveRecord::Rollback
+            end
+          end
 
-          t("avo.attachment_destroyed")
+          if @destroyed.present?
+            flash[:notice] = t("avo.attachment_destroyed")
+          else
+            flash[:error] = @record.errors.full_messages.join(", ")
+          end
         else
           t("avo.failed_to_find_attachment")
         end
