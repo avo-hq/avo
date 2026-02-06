@@ -1,0 +1,57 @@
+/* Grid Card Component - Based on Figma Design System */
+/* BEM Methodology: .grid-card (block), .grid-card__element (elements) */
+
+.grid-card {
+  @apply flex flex-col flex-1 shrink-0 basis-0 items-start border rounded-xl p-2 gap-2 min-w-52 bg-primary border-tertiary;
+
+  box-shadow: var(--box-shadow-grid-card);
+}
+
+.grid-card__image {
+  @apply relative w-full overflow-hidden rounded-lg h-40 bg-secondary;
+}
+
+.grid-card input[type="checkbox"] {
+  @apply hidden;
+}
+
+input[type="checkbox"]:checked,
+.grid-card:hover input[type="checkbox"] {
+  @apply block z-10 absolute top-1 start-1;
+
+/* I need to overwrite the mx-2 */
+  margin: 0 !important;
+}
+
+.grid-card__actions-row {
+  @apply flex items-center justify-end w-full gap-2 self-stretch;
+}
+
+.grid-card__badge {
+  @apply flex-1 shrink-0 basis-0 flex;
+}
+
+.grid-card__action {
+  @apply border-none bg-transparent p-1.5;
+  box-shadow: none;
+}
+
+.grid-card__action:hover {
+  @apply bg-transparent;
+}
+
+.grid-card__content {
+  @apply flex flex-col items-start w-full px-2 pb-2;
+}
+
+.grid-card__title {
+  @apply text-content text-base font-medium self-stretch leading-6;
+}
+
+.grid-card__title a {
+  color: inherit;
+}
+
+.grid-card__description {
+  @apply text-content-secondary text-xs font-normal self-stretch leading-4;
+}

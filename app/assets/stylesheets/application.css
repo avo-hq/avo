@@ -120,6 +120,7 @@
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
   @import "./css/components/button.css";
+  @import "./css/components/ui/grid.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
   @import "./css/components/tooltip.css";
