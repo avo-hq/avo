@@ -1,0 +1,88 @@
+#!/bin/sh
+#/ Usage: bin/conductor-setup
+#/
+#/ Setup files that are not tracked in git for Conductor workspaces.
+#/ This is run automatically when a new workspace is created.
+
+set -e
+
+echo "CONDUCTOR_WORKSPACE_NAME: $CONDUCTOR_WORKSPACE_NAME"
+
+# Get the directory containing this script
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Get the parent directory (the repo root)
+REPO_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
+
+# Get the workspace name name from the first argument, or use the directory name if not provided
+WORKSPACE_NAME="${1:-$CONDUCTOR_WORKSPACE_NAME}"
+
+# If the workspace name is not filesystem-safe, abort
+if ! echo "$WORKSPACE_NAME" | sed 's/[^a-zA-Z0-9_-]/_/g' >/dev/null 2>&1; then
+    echo "Workspace name is not filesystem-safe"
+    exit 1
+fi
+
+# Create the unique identifier
+IDENTIFIER="io.avohq.$WORKSPACE_NAME"
+
+echo "Setting up Conductor development workspace: $WORKSPACE_NAME"
+echo "App identifier: $IDENTIFIER"
+
+echo "Running bundle install..."
+bundle install
+
+echo "Running yarn install..."
+yarn install
+
+# echo "setting up database..."
+DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME"
+TEST_DATABASE_NAME="${DATABASE_NAME}_test"
+DATABASE_URL=postgresql://localhost/$DATABASE_NAME bin/rails db:setup
+RAILS_ENV=test DATABASE_URL=postgresql://localhost/$TEST_DATABASE_NAME bin/rails db:setup
+
+# Generate custom icon with ImageMagick if available
+if command -v magick >/dev/null 2>&1; then
+    echo ""
+    echo "Generating custom icon..."
+
+    # Generate icon with workspace name overlay
+    # Use the dev icon as base
+    BASE_ICON="$SCRIPT_DIR/app/assets/images/avo/favicon.ico"
+    OUTPUT_ICON="$SCRIPT_DIR/app/assets/images/avo/favicon.ico"
+
+    # Create icon with text overlay
+    # Position text in the bottom third of the icon
+    magick "$BASE_ICON" \
+        -gravity South \
+        -pointsize 26 \
+        -font Arial-Bold \
+        -fill white \
+        -stroke black \
+        -strokewidth 2 \
+        -annotate +0+0 "$CONDUCTOR_WORKSPACE_NAME" \
+        "$OUTPUT_ICON"
+
+
+    echo "Generating custom logo..."
+    LOGO="$SCRIPT_DIR/app/assets/images/avo/logo.png"
+    OUTPUT_LOGO="$SCRIPT_DIR/app/assets/images/avo/logo.png"
+    magick "$LOGO" \
+        -gravity South \
+        -pointsize 60 \
+        -font Arial-Bold \
+        -fill white \
+        -stroke black \
+        -strokewidth 2 \
+        -annotate +0+60 "$CONDUCTOR_WORKSPACE_NAME" \
+        "$OUTPUT_LOGO"
+
+    echo "✓ Custom icon generated!"
+else
+    echo ""
+    echo "⚠ ImageMagick not found - skipping icon generation"
+    echo "  Install with: brew install imagemagick"
+fi
+
+echo ""
+echo "✅ Setup complete! You can now run:"
+echo "    bin/dev"
