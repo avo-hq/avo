@@ -36,7 +36,7 @@ yarn install
 
 # echo "setting up database..."
 DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME"
-TEST_DATABASE_NAME="avo_dummy_($CONDUCTOR_WORKSPACE_NAME)_test"
+TEST_DATABASE_NAME="${DATABASE_NAME}_test"
 DATABASE_URL=postgresql://localhost/$DATABASE_NAME bin/rails db:setup
 RAILS_ENV=test DATABASE_URL=postgresql://localhost/$TEST_DATABASE_NAME bin/rails db:setup
 
