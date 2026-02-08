@@ -3,7 +3,15 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   connect() {
     this.isSelecting = false
-    this.#bindSelectionEvents()
+    this.boundHandleMouseDown = this.#handleMouseDown.bind(this)
+    this.boundHandleMouseMove = this.#handleMouseMove.bind(this)
+    this.element.addEventListener('mousedown', this.boundHandleMouseDown)
+    this.element.addEventListener('mousemove', this.boundHandleMouseMove)
+  }
+
+  disconnect() {
+    this.element.removeEventListener('mousedown', this.boundHandleMouseDown)
+    this.element.removeEventListener('mousemove', this.boundHandleMouseMove)
   }
 
   visitRecord(event) {
@@ -40,11 +48,6 @@ export default class extends Controller {
     } else {
       this.#visitInSameTab(url)
     }
-  }
-
-  #bindSelectionEvents() {
-    this.element.addEventListener('mousedown', this.#handleMouseDown.bind(this))
-    this.element.addEventListener('mousemove', this.#handleMouseMove.bind(this))
   }
 
   #handleMouseDown() {
