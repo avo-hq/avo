@@ -40,7 +40,6 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).not_to have_css ".input__field"
         expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
@@ -48,7 +47,6 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).to have_css ".input__field"
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         find('input[placeholder="Meta key"]').set("Test Key")
@@ -76,7 +74,6 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).not_to have_css ".input__field"
         expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
@@ -84,7 +81,6 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).to have_css ".input__field"
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         save
@@ -258,7 +254,9 @@ RSpec.describe "KeyValueFields", type: :system do
         values = page.all('input[placeholder="Meta value"]')
 
         keys[2].set("Test Key")
+        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", keys[2].native)
         values[2].set("Test Value")
+        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", values[2].native)
 
         save
 

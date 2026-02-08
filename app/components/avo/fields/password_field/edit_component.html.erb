@@ -12,7 +12,7 @@
     %>
 
     <% if @field.revealable %>
-      <button data-action="password-visibility#toggle" type="button" class="input__field--password-visibility">
+      <button data-action="password-visibility#toggle" type="button" class="input-field__password-toggle">
         <%= helpers.svg('tabler/outline/eye', data: { 'password-visibility-target': 'icon' }) %>
         <%= helpers.svg('tabler/outline/eye-off', class: "hidden", data: { 'password-visibility-target': 'icon' }) %>
       </button>

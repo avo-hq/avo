@@ -1,12 +1,12 @@
 /* Text Input Component - Based on Figma Design System */
-/* BEM Methodology: .input (block), .input__field (element), .input--modifier (modifier) */
+/* BEM Methodology: .input (block), .input-field (element), .input--modifier (modifier) */
 
 /* ==========================================================================
   Base Styles
   ========================================================================== */
-
-.input__field {
-  @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative;
+textarea,
+input {
+  @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative py-1.5 text-sm leading-5 w-full;
 
   box-shadow: var(--box-shadow);
 }
@@ -16,50 +16,51 @@
   ========================================================================== */
 
 /* Small */
-.input__field--sm,
-.input__field--sm::placeholder {
+.input--size-sm,
+.input--size-sm::placeholder {
   @apply py-1 text-xs leading-4;
 }
 
 /* Medium (default) */
-.input__field--md,
-.input__field--md::placeholder {
+.input--size-md,
+.input--size-md::placeholder {
   @apply py-1.5 text-sm leading-5;
 }
 
 /* Large */
-.input__field--lg,
-.input__field--lg::placeholder {
+.input--size-lg,
+.input--size-lg::placeholder {
   @apply py-2.5 text-sm leading-5;
 }
 
 /* ==========================================================================
   Placeholder (fallback for inputs without size modifier)
   ========================================================================== */
-
-.input__field::placeholder {
+textarea::placeholder,
+input::placeholder {
   @apply font-normal text-content-secondary overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 /* ==========================================================================
   State: Hover
   ========================================================================== */
-
-.input__field:hover:not(:disabled) {
+textarea,
+input:hover:not(:disabled) {
   @apply bg-secondary;
 }
 
 /* ==========================================================================
   State: Focus
   ========================================================================== */
-
-.input__field:focus {
+textarea::focus,
+input:focus {
   @apply outline-none;
 
   box-shadow: none;
 }
 
-.input__field:focus-visible {
+textarea:focus-visible,
+input:focus-visible {
   @apply outline-none;
   box-shadow: var(--box-shadow-focus);
 }
@@ -67,8 +68,8 @@
 /* ==========================================================================
   State: Active
   ========================================================================== */
-
-.input__field:active:not(:disabled) {
+textarea:active:not(:disabled),
+input:active:not(:disabled) {
   box-shadow: var(--box-shadow-active);
 }
 
@@ -76,11 +77,12 @@
   State: Disabled
   ========================================================================== */
 
-.input__field:disabled {
+input:disabled {
   @apply cursor-not-allowed opacity-60 mix-blend-luminosity;
 }
 
-.input__field:disabled:hover {
+textarea:disabled:hover,
+input:disabled:hover {
   @apply bg-primary;
 }
 
@@ -88,17 +90,17 @@
   State: Error
   ========================================================================== */
 
-.input__field--error {
+.input-field--error {
   @apply text-danger-content;
 
   box-shadow: var(--box-shadow-error);
 }
 
-.input__field--error:focus-visible {
+.input-field--error:focus-visible {
   @apply text-content;
 }
 
-.input__field--error::placeholder {
+.input-field--error::placeholder {
   @apply text-danger-content;
 }
 
@@ -106,17 +108,13 @@
   State: Success
   ========================================================================== */
 
-.input__field--success {
+.input-field--success {
   box-shadow: var(--box-shadow-success);
 }
 
 /* ==========================================================================
   State: Loading
   ========================================================================== */
-
-.input__field--loading {
-  @apply pe-7;
-}
 
 @keyframes input-spinner-rotation {
   from {
@@ -132,13 +130,8 @@
   State: Password Visibility
   ========================================================================== */
 /* password visibility button */
-.input__field--password-visibility {
+.input-field__password-toggle {
   @apply absolute text-content-secondary inset-y-0 end-0 pe-2 flex items-center cursor-pointer;
-}
-
-/* Both icons (loading AND password) */
-.input__field--loading ~ .input__field--password-visibility {
-  @apply pe-7;
 }
 
 /* ==========================================================================
@@ -146,21 +139,19 @@
   ========================================================================== */
 
 /* Small size */
-.field-wrapper__input:has(.input__field--sm.input__field--date)::after,
-.input__field--sm ~ .input__field--password-visibility svg {
-  @apply size-5.5;
+.input--size-sm ~ .input-field__password-toggle svg {
+  @apply size-3.5;
 }
 
 /* Medium size */
-.field-wrapper__input:has(.input__field--md.input__field--date)::after,
-.input__field--md ~ .input__field--password-visibility svg {
-  @apply size-6;
+input ~ .input-field__password-toggle svg ,
+.input--size-md ~ .input-field__password-toggle svg {
+  @apply size-4;
 }
 
 /* Large size */
-.field-wrapper__input:has(.input__field--lg.input__field--date)::after,
-.input__field--lg ~ .input__field--password-visibility svg {
-  @apply size-6.5;
+.input--size-lg ~ .input-field__password-toggle svg {
+  @apply size-4.5;
 }
 
 
@@ -168,6 +159,57 @@
   State: Password Icon Disabled
   ========================================================================== */
 
-.input__field:disabled ~ .input__field--password-visibility svg {
-  @apply opacity-60 cursor-not-allowed;
+input:disabled ~ .input-field__password-toggle {
+  @apply pointer-events-none opacity-60 cursor-not-allowed;
+}
+
+/* ==========================================================================
+  State: Password Icon Disabled and Loading
+  ========================================================================== */
+
+/* Move the toggle button left when loading spinner is present */
+.input-wrapper--loading .input-field__password-toggle {
+  @apply end-5;
+}
+
+/* Password input with loading spinner needs extra padding for both icons */
+.input-wrapper--loading:has(.input-field__password-toggle) input {
+  @apply pe-11;
+}
+
+/* ==========================================================================
+   Date Input: Hide native icon & add custom icon
+   ========================================================================== */
+
+/* Step 1: Make the native indicator cover the custom icon area */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Step 2: Ensure the input is positioned for the absolute indicator */
+input[type="date"] {
+  @apply bg-no-repeat relative;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E");
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+
+/* date size variants */
+.input--size-sm[type="date"] {
+  background-size: 14px;
+}
+
+.input--size-md[type="date"] {
+  background-size: 16px;
+}
+
+.input--size-lg[type="date"] {
+  background-size: 18px;
 }

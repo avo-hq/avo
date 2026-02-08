@@ -1,0 +1,172 @@
+<div class="p-8 space-y-8 bg-white">
+  <div class="text-lg font-semibold text-content mb-6">Input Field - Size Variants & States</div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <!-- Header Row -->
+    <div class="text-sm font-semibold text-content">Small (sm)</div>
+    <div class="text-sm font-semibold text-content">Medium (md)</div>
+    <div class="text-sm font-semibold text-content">Large (lg)</div>
+
+    <!-- Default (Enabled) -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-sm" placeholder="Label" autocomplete="off">
+          <div class="field-wrapper__help max-w-sm">Help text</div>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" placeholder="Label" autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-lg" placeholder="Label" autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Filled -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Filled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-sm" value="Value" placeholder="Label" autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Filled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-md" value="Value" placeholder="Label" autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Filled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+        <input name="text" type="text" class="input--size-lg" value="Value" placeholder="Label" autocomplete="off">
+        <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Error</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+        <input name="text" type="text" class="input--size-sm input-field--error" value="Value" placeholder="Label" autocomplete="off">
+        <span class="field-wrapper__error max-w-sm">Error message</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Error</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-md input-field--error" value="Value" placeholder="Label" autocomplete="off">
+          <span class="field-wrapper__error max-w-sm">Error message</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Error</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-lg input-field--error" value="Value" placeholder="Label" autocomplete="off">
+          <span class="field-wrapper__error max-w-sm">Error message</span>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Loading</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="input-wrapper--loading">
+            <input name="text" type="text" class="input--size-sm" value="Value" placeholder="Label" autocomplete="off">
+          </div>
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Loading</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="input-wrapper--loading">
+            <input name="text" type="text" class="input--size-md" value="Value" placeholder="Label" autocomplete="off">
+          </div>
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Loading</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="input-wrapper--loading">
+            <input name="text" type="text" class="input--size-lg" value="Value" placeholder="Label" autocomplete="off">
+          </div>
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+
+    <!-- Disabled -->
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-sm" placeholder="Disabled value" autocomplete="off" disabled>
+          <span class="field-wrapper__help">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <div class="input-wrapper--loading">
+            <input name="text" type="text" placeholder="Disabled value" autocomplete="off" disabled>
+          </div>
+          <span class="field-wrapper__help">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="text" type="text" class="input--size-lg" placeholder="Disabled value" autocomplete="off" disabled>
+          <span class="field-wrapper__help">Help text</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
