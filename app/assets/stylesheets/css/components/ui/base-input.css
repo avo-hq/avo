@@ -173,7 +173,7 @@ input:disabled:hover {
   ========================================================================== */
 /* password visibility button */
 .input-field__password-toggle {
-  @apply absolute text-content-secondary inset-y-0 end-0 pe-2 flex items-center cursor-pointer;
+  @apply absolute text-content-secondary inset-y-0 end-0 px-1 flex items-center cursor-pointer;
 }
 
 /* Password inputs need padding for the toggle button */
@@ -215,13 +215,35 @@ input:disabled ~ .input-field__password-toggle {
   ========================================================================== */
 
 /* Move the toggle button left when loading spinner is present */
-.input-wrapper--loading .input-field__password-toggle {
+/* Size-specific adjustments */
+.input-wrapper--loading:has(.input--size-sm) .input-field__password-toggle {
   @apply end-5;
 }
 
+.input-wrapper--loading:has(.input--size-md) .input-field__password-toggle {
+  @apply end-6;
+}
+
+.input-wrapper--loading:has(.input--size-lg) .input-field__password-toggle {
+  @apply end-6.5;
+}
+
 /* Password input with loading spinner needs extra padding for both icons */
+/* Override the default pe-7 from field-wrapper.css to account for toggle + spinner */
 .input-wrapper--loading:has(.input-field__password-toggle) input {
   @apply pe-11;
+}
+
+.input-wrapper--loading:has(.input-field__password-toggle):has(.input--size-sm) input {
+  @apply pe-10;
+}
+
+.input-wrapper--loading:has(.input-field__password-toggle):has(.input--size-md) input {
+  @apply pe-11;
+}
+
+.input-wrapper--loading:has(.input-field__password-toggle):has(.input--size-lg) input {
+  @apply pe-12;
 }
 
 /* ==========================================================================

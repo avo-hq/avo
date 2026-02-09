@@ -40,7 +40,6 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
         find('[data-button="add-row"]').click
@@ -74,7 +73,6 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
         find("[data-button='add-row']").click

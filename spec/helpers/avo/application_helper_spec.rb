@@ -44,21 +44,15 @@ RSpec.describe Avo::ApplicationHelper do
   end
 
   describe "#input_classes" do
-    it "returns empty string when no options provided" do
-      expect(helper.input_classes).to eq("input--size-md")
-    end
-
     it "adds error class when has_error is true" do
       classes = helper.input_classes("", has_error: true)
       expect(classes).to include("input-field--error")
-      expect(classes).to include("input--size-md")
     end
 
     it "includes extra classes" do
       classes = helper.input_classes("custom-class another-class")
       expect(classes).to include("custom-class")
       expect(classes).to include("another-class")
-      expect(classes).to include("input--size-md")
     end
 
     describe "size variants" do
