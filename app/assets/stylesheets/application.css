@@ -98,6 +98,7 @@
   @import "./css/fields/status.css";
   @import "./css/fields/code.css";
   @import "./css/fields/progress.css";
+  @import "./css/fields/key_value.css";
   @import "./css/fields/trix.css";
   @import "./css/fields/tags.css";
   @import "./css/fields/tiptap.css";
@@ -114,7 +115,7 @@
   @import "./css/components/ui/dropdown.css";
   @import "./css/components/ui/checkbox.css";
   @import "./css/components/ui/radio_button.css";
-  @import "./css/components/ui/base-input.css";
+  @import "./css/components/input.css";
 
   @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";

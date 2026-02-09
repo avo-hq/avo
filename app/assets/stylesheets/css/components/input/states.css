@@ -1,0 +1,106 @@
+/* ==========================================================================
+  Placeholder (fallback for inputs without size modifier)
+  ========================================================================== */
+select::placeholder,
+textarea::placeholder,
+input::placeholder,
+.input-field::placeholder {
+  @apply font-normal text-content-secondary overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+/* ==========================================================================
+  State: Hover
+  ========================================================================== */
+select:hover:not(:disabled),
+textarea:hover:not(:disabled),
+input:not([type="range"]):hover:not(:disabled),
+.input-field:hover:not(:disabled) {
+  @apply bg-secondary;
+}
+
+/* ==========================================================================
+  State: Focus
+  ========================================================================== */
+select::focus,
+textarea::focus,
+input:not([type="range"]):focus,
+.input-field:focus {
+  @apply outline-none;
+
+  box-shadow: none;
+}
+
+select:focus-visible,
+textarea:focus-visible,
+input:not([type="range"]):focus-visible,
+.input-field:focus-visible {
+  @apply outline-none;
+  box-shadow: var(--box-shadow-focus);
+}
+
+/* ==========================================================================
+  State: Active
+  ========================================================================== */
+select:active:not(:disabled),
+textarea:active:not(:disabled),
+input:not([type="range"]):active:not(:disabled),
+.input-field:active:not(:disabled) {
+  box-shadow: var(--box-shadow-active);
+}
+
+/* ==========================================================================
+  State: Disabled
+  ========================================================================== */
+
+select:disabled,
+textarea:disabled,
+input:not([type="range"]):disabled,
+.input-field:disabled {
+  @apply cursor-not-allowed opacity-60 mix-blend-luminosity;
+}
+
+select:disabled:hover,
+textarea:disabled:hover,
+input:not([type="range"]):disabled:hover,
+.input-field:disabled:hover {
+  @apply bg-primary;
+}
+
+/* ==========================================================================
+  State: Error
+  ========================================================================== */
+
+.input-field--error {
+  @apply text-danger-content;
+
+  box-shadow: var(--box-shadow-error);
+}
+
+.input-field--error:focus-visible {
+  @apply text-content;
+}
+
+.input-field--error::placeholder {
+  @apply text-danger-content;
+}
+
+/* ==========================================================================
+  State: Success
+  ========================================================================== */
+
+.input-field--success {
+  box-shadow: var(--box-shadow-success);
+}
+
+/* ==========================================================================
+  State: Loading
+  ========================================================================== */
+
+@keyframes input-spinner-rotation {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

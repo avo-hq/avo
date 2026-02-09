@@ -1,0 +1,40 @@
+/* ==========================================================================
+  Date Input: Hide native icon & add custom icon
+  ========================================================================== */
+
+/* Step 1: Make the native indicator cover the custom icon area */
+input[type="date"]::-webkit-calendar-picker-indicator,
+.input-field--date::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Step 2: Ensure the input is positioned for the absolute indicator */
+input[type="date"],
+.input-field--date {
+  @apply bg-no-repeat relative;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E");
+  background-position: right 8px center;
+  background-size: 16px;
+}
+
+/* date size variants */
+.input--size-sm[type="date"],
+.input-field--date.input--size-sm {
+  background-size: 14px;
+}
+
+.input--size-md[type="date"],
+.input-field--date.input--size-md {
+  background-size: 16px;
+}
+
+.input--size-lg[type="date"],
+.input-field--date.input--size-lg {
+  background-size: 18px;
+}
