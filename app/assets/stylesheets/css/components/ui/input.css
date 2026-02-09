@@ -1,6 +1,13 @@
 /* Text Input Component - Based on Figma Design System */
 /* BEM Methodology: .input (block), .input-field (element), .input--modifier (modifier) */
 
+/* Replaced input heights (range, color): content + padding + border */
+:root {
+  --input-height-sm: calc(1rem + 0.5rem + 2px);
+  --input-height-md: calc(1.25rem + 0.75rem + 2px);
+  --input-height-lg: calc(1.25rem + 1.25rem + 2px);
+}
+
 /* ==========================================================================
   Base Styles
   ========================================================================== */
@@ -34,22 +41,30 @@ input {
   @apply py-2.5 text-sm leading-5;
 }
 
-/* Range: match total height of text inputs */
-input[type="range"] {
-  height: calc(1.25rem + 0.75rem + 2px);
-  /* sm: leading-4 (1rem) + py-1 (0.5rem) + border (2px) = ~1.625rem */
-  /* md: leading-5 (1.25rem) + py-1.5 (0.75rem) + border (2px) = ~2.125rem */
-  /* lg: leading-5 (1.25rem) + py-2.5 (1.25rem) + border (2px) = ~2.625rem */
+/* Range & Color: match total height of text inputs (replaced elements) */
+input[type="range"],
+input[type="color"] {
+  height: var(--input-height-md);
 }
 
-input[type="range"].input--size-sm {
-  height: calc(1rem + 0.5rem + 2px);
+input[type="range"].input--size-sm,
+input[type="color"].input--size-sm {
+  height: var(--input-height-sm);
 }
-input[type="range"].input--size-md {
-  height: calc(1.25rem + 0.75rem + 2px);
+
+input[type="range"].input--size-md,
+input[type="color"].input--size-md {
+  height: var(--input-height-md);
 }
-input[type="range"].input--size-lg {
-  height: calc(1.25rem + 1.25rem + 2px);
+
+input[type="range"].input--size-lg,
+input[type="color"].input--size-lg {
+  height: var(--input-height-lg);
+}
+
+input[type="range"],
+input[type="color"] {
+  cursor: pointer;
 }
 
 /* ==========================================================================
@@ -159,6 +174,11 @@ input:disabled:hover {
 /* password visibility button */
 .input-field__password-toggle {
   @apply absolute text-content-secondary inset-y-0 end-0 pe-2 flex items-center cursor-pointer;
+}
+
+/* Password inputs need padding for the toggle button */
+input:has(~ .input-field__password-toggle) {
+  @apply pe-7;
 }
 
 /* ==========================================================================

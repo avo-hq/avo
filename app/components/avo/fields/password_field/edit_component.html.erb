@@ -1,7 +1,8 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <div class="relative" data-controller="<%= @field.revealable && !disabled? ? 'password-visibility' : nil %>">
+  <div class="field-wrapper__input" data-controller="<%= @field.revealable && !disabled? ? 'password-visibility' : nil %>">
     <%= @form.password_field @field.id,
       value: @field.value,
+      type: "password",
       class: classes("w-full"),
       data: @field.get_html(:data, view: view, element: :input).merge(password_visibility_target: "input"),
       disabled: disabled?,
