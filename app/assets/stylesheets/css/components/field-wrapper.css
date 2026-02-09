@@ -14,15 +14,6 @@
   @apply text-content-secondary text-xs leading-none font-normal pb-3;
 }
 
-/* .field-wrapper__input:has(.input__field:disabled) ~ .field-wrapper__help {
-  @apply opacity-60 cursor-not-allowed;
-}
-
-
-.field-wrapper__input:has(.input__field:disabled).input-wrapper--loading::after {
-  @apply opacity-60 cursor-not-allowed;
-} */
-
 .field-wrapper__error {
   @apply text-danger-content mt-2 text-xs leading-4 inline-flex items-center gap-0.5;
 }

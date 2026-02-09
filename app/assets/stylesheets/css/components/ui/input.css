@@ -4,6 +4,7 @@
 /* ==========================================================================
   Base Styles
   ========================================================================== */
+select,
 textarea,
 input {
   @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative py-1.5 text-sm leading-5 w-full;
@@ -33,9 +34,28 @@ input {
   @apply py-2.5 text-sm leading-5;
 }
 
+/* Range: match total height of text inputs */
+input[type="range"] {
+  height: calc(1.25rem + 0.75rem + 2px);
+  /* sm: leading-4 (1rem) + py-1 (0.5rem) + border (2px) = ~1.625rem */
+  /* md: leading-5 (1.25rem) + py-1.5 (0.75rem) + border (2px) = ~2.125rem */
+  /* lg: leading-5 (1.25rem) + py-2.5 (1.25rem) + border (2px) = ~2.625rem */
+}
+
+input[type="range"].input--size-sm {
+  height: calc(1rem + 0.5rem + 2px);
+}
+input[type="range"].input--size-md {
+  height: calc(1.25rem + 0.75rem + 2px);
+}
+input[type="range"].input--size-lg {
+  height: calc(1.25rem + 1.25rem + 2px);
+}
+
 /* ==========================================================================
   Placeholder (fallback for inputs without size modifier)
   ========================================================================== */
+select::placeholder,
 textarea::placeholder,
 input::placeholder {
   @apply font-normal text-content-secondary overflow-hidden text-ellipsis whitespace-nowrap;
@@ -44,7 +64,8 @@ input::placeholder {
 /* ==========================================================================
   State: Hover
   ========================================================================== */
-textarea,
+select:hover:not(:disabled),
+textarea:hover:not(:disabled),
 input:hover:not(:disabled) {
   @apply bg-secondary;
 }
@@ -52,6 +73,7 @@ input:hover:not(:disabled) {
 /* ==========================================================================
   State: Focus
   ========================================================================== */
+select::focus,
 textarea::focus,
 input:focus {
   @apply outline-none;
@@ -59,6 +81,7 @@ input:focus {
   box-shadow: none;
 }
 
+select:focus-visible,
 textarea:focus-visible,
 input:focus-visible {
   @apply outline-none;
@@ -68,6 +91,7 @@ input:focus-visible {
 /* ==========================================================================
   State: Active
   ========================================================================== */
+select:active:not(:disabled),
 textarea:active:not(:disabled),
 input:active:not(:disabled) {
   box-shadow: var(--box-shadow-active);
@@ -77,10 +101,13 @@ input:active:not(:disabled) {
   State: Disabled
   ========================================================================== */
 
+select:disabled,
+textarea:disabled,
 input:disabled {
   @apply cursor-not-allowed opacity-60 mix-blend-luminosity;
 }
 
+select:disabled:hover,
 textarea:disabled:hover,
 input:disabled:hover {
   @apply bg-primary;
