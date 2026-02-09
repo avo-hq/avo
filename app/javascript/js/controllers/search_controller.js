@@ -241,7 +241,7 @@ export default class extends Controller {
     const url = URI()
 
     return url.segment([window.Avo.configuration.root_path, ...this.searchSegments()])
-      .search(this.searchParams(encodeURIComponent(query)))
+      .search(this.searchParams(query))
       .toString()
   }
 
