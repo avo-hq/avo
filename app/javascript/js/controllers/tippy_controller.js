@@ -5,10 +5,17 @@ export default class extends Controller {
   static targets = ['source', 'content']
 
   connect() {
-    tippy(this.sourceTarget, {
+    this.tippyInstance = tippy(this.sourceTarget, {
       content: this.contentTarget.innerHTML,
       allowHTML: true,
       theme: 'light',
     })
+  }
+
+  disconnect() {
+    if (this.tippyInstance) {
+      this.tippyInstance.destroy()
+      this.tippyInstance = null
+    }
   }
 }

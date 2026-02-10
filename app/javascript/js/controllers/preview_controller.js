@@ -9,7 +9,7 @@ export default class extends Controller {
   connect() {
     const vm = this;
 
-    tippy(vm.context.element, {
+    this.tippyInstance = tippy(vm.context.element, {
       content: "loading...",
       allowHTML: true,
       theme: 'light',
@@ -20,5 +20,12 @@ export default class extends Controller {
         instance.setContent(content)
       },
     })
+  }
+
+  disconnect() {
+    if (this.tippyInstance) {
+      this.tippyInstance.destroy()
+      this.tippyInstance = null
+    }
   }
 }

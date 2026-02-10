@@ -82,10 +82,14 @@ export default class extends Controller {
   }
 
   #addEventListeners() {
+    // Create bound handler references so the same functions are used for add and remove
+    this.boundMouseenterHandler = this.#selectorMouseenterHandler.bind(this)
+    this.boundMouseleaveHandler = this.#selectorMouseleaveHandler.bind(this)
+
     // Attach event listeners to item selector cells
     Array.from(this.itemSelectorCells).forEach((itemSelectorCell) => {
-      itemSelectorCell.addEventListener('mouseenter', this.#selectorMouseenterHandler.bind(this))
-      itemSelectorCell.addEventListener('mouseleave', this.#selectorMouseleaveHandler.bind(this))
+      itemSelectorCell.addEventListener('mouseenter', this.boundMouseenterHandler)
+      itemSelectorCell.addEventListener('mouseleave', this.boundMouseleaveHandler)
     })
 
     // Attach event listeners to keyboard events
@@ -94,13 +98,13 @@ export default class extends Controller {
   }
 
   #removeEventListeners() {
-    // Remove event listeners
+    // Remove event listeners using the same bound references from #addEventListeners
     Array.from(this.itemSelectorCells).forEach((itemSelectorCell) => {
-      itemSelectorCell.removeEventListener('mouseenter', this.#selectorMouseenterHandler.bind(this))
-      itemSelectorCell.removeEventListener('mouseleave', this.#selectorMouseleaveHandler.bind(this))
+      itemSelectorCell.removeEventListener('mouseenter', this.boundMouseenterHandler)
+      itemSelectorCell.removeEventListener('mouseleave', this.boundMouseleaveHandler)
     })
-    document.removeEventListener('keydown', this.#keydownHandler.bind(this))
-    document.removeEventListener('keyup', this.#keyupHandler.bind(this))
+    document.removeEventListener('keydown', this.#keydownHandler)
+    document.removeEventListener('keyup', this.#keyupHandler)
   }
 
   #selectorMouseenterHandler(event) {
