@@ -3,6 +3,7 @@
   ========================================================================== */
 select::placeholder,
 textarea::placeholder,
+.textarea-field::placeholder,
 input::placeholder,
 .input-field::placeholder {
   @apply font-normal text-content-secondary overflow-hidden text-ellipsis whitespace-nowrap;
@@ -13,7 +14,8 @@ input::placeholder,
   ========================================================================== */
 select:hover:not(:disabled),
 textarea:hover:not(:disabled),
-input:not([type="range"]):hover:not(:disabled),
+.textarea-field:hover:not(:disabled),
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):hover:not(:disabled),
 .input-field:hover:not(:disabled) {
   @apply bg-secondary;
 }
@@ -21,9 +23,10 @@ input:not([type="range"]):hover:not(:disabled),
 /* ==========================================================================
   State: Focus
   ========================================================================== */
-select::focus,
-textarea::focus,
-input:not([type="range"]):focus,
+select:focus,
+textarea:focus,
+.textarea-field:focus,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus,
 .input-field:focus {
   @apply outline-none;
 
@@ -32,7 +35,8 @@ input:not([type="range"]):focus,
 
 select:focus-visible,
 textarea:focus-visible,
-input:not([type="range"]):focus-visible,
+.textarea-field:focus-visible,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus-visible,
 .input-field:focus-visible {
   @apply outline-none;
   box-shadow: var(--box-shadow-focus);
@@ -43,7 +47,8 @@ input:not([type="range"]):focus-visible,
   ========================================================================== */
 select:active:not(:disabled),
 textarea:active:not(:disabled),
-input:not([type="range"]):active:not(:disabled),
+.textarea-field:active:not(:disabled),
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):active:not(:disabled),
 .input-field:active:not(:disabled) {
   box-shadow: var(--box-shadow-active);
 }
@@ -54,14 +59,16 @@ input:not([type="range"]):active:not(:disabled),
 
 select:disabled,
 textarea:disabled,
-input:not([type="range"]):disabled,
+.textarea-field:disabled,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):disabled,
 .input-field:disabled {
   @apply cursor-not-allowed opacity-60 mix-blend-luminosity;
 }
 
 select:disabled:hover,
 textarea:disabled:hover,
-input:not([type="range"]):disabled:hover,
+.textarea-field:disabled:hover,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):disabled:hover,
 .input-field:disabled:hover {
   @apply bg-primary;
 }
@@ -70,17 +77,30 @@ input:not([type="range"]):disabled:hover,
   State: Error
   ========================================================================== */
 
-.input-field--error {
+/* Match base specificity: base uses input:not():not():not() so we need same + class */
+select.input-field--error,
+textarea.input-field--error,
+.textarea-field.input-field--error,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]).input-field--error,
+.input-field.input-field--error {
   @apply text-danger-content;
 
   box-shadow: var(--box-shadow-error);
 }
 
-.input-field--error:focus-visible {
+select.input-field--error:focus-visible,
+textarea.input-field--error:focus-visible,
+.textarea-field.input-field--error:focus-visible,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]).input-field--error:focus-visible,
+.input-field.input-field--error:focus-visible {
   @apply text-content;
 }
 
-.input-field--error::placeholder {
+select.input-field--error::placeholder,
+textarea.input-field--error::placeholder,
+.textarea-field.input-field--error::placeholder,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]).input-field--error::placeholder,
+.input-field.input-field--error::placeholder {
   @apply text-danger-content;
 }
 
@@ -88,7 +108,11 @@ input:not([type="range"]):disabled:hover,
   State: Success
   ========================================================================== */
 
-.input-field--success {
+select.input-field--success,
+textarea.input-field--success,
+.textarea-field.input-field--success,
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]).input-field--success,
+.input-field.input-field--success {
   box-shadow: var(--box-shadow-success);
 }
 

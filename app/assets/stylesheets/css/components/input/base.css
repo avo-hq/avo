@@ -9,11 +9,23 @@
 }
 
 /* Base styles — exclude range, checkbox, radio so they keep their own shape */
-select,
-textarea,
-input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
-.input-field {
+:where(
+  select,
+  textarea,
+  .textarea-field,
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+  .input-field
+) {
   @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative py-1.5 text-sm leading-5 w-full;
 
   box-shadow: var(--box-shadow);
+}
+
+/* Textarea overrides — only what differs */
+textarea,
+.textarea-field {
+  @apply block;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-overflow: clip;
 }
