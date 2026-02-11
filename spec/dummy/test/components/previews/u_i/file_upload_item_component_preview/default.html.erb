@@ -1,0 +1,70 @@
+<div class="flex flex-col gap-4 max-w-xl">
+  <h3 class="text-sm font-semibold text-content">State: Default</h3>
+  <%= render Avo::UI::FileUploadItemComponent.new(
+    title: "ExampleFileExampleFileExampleFileExampleFileExampleFile ExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFileExampleFile.png",
+    size_label: "200KB",
+    classes: "w-full"
+  ) do %>
+    <%= link_to "#",
+      class: "file-upload-item__action",
+      title: t("avo.download_file"),
+      data: { tippy: :tooltip } do %>
+      <%= svg "tabler/outline/download" %>
+    <% end %>
+    <%= link_to "#",
+      class: "file-upload-item__action",
+      title: t("avo.delete_file", item: "ExampleFile.png"),
+      data: { tippy: :tooltip } do %>
+      <%= svg "tabler/outline/trash" %>
+    <% end %>
+    <%= link_to "#",
+      class: "file-upload-item__action",
+      title: t("avo.reupload_file", item: "ExampleFile.png"),
+      data: { tippy: :tooltip } do %>
+      <%= svg "tabler/outline/refresh" %>
+    <% end %>
+  <% end %>
+
+  <h3 class="text-sm font-semibold text-content mt-4">State: Uploading (via CSS class)</h3>
+  <%= render Avo::UI::FileUploadItemComponent.new(
+    title: "ExampleFile.png",
+    size_label: "200KB",
+    progress: 75,
+    state: :uploading,
+    classes: "w-full file-upload-item--uploading"
+  ) do %>
+    <%= link_to "#", class: "file-upload-item__action", aria: { label: "Cancel" } do %>
+      <%= svg "tabler/outline/trash" %>
+    <% end %>
+  <% end %>
+
+  <h3 class="text-sm font-semibold text-content mt-4">State: Complete (via CSS class)</h3>
+  <%= render Avo::UI::FileUploadItemComponent.new(
+    title: "ExampleFile.png",
+    size_label: "200KB",
+    state: :complete,
+    classes: "w-full file-upload-item--complete"
+  ) do %>
+    <%= link_to "#", class: "file-upload-item__action", aria: { label: "Download" } do %>
+      <%= svg "tabler/outline/download" %>
+    <% end %>
+    <%= link_to "#", class: "file-upload-item__action", aria: { label: "Delete" } do %>
+      <%= svg "tabler/outline/trash" %>
+    <% end %>
+  <% end %>
+
+  <h3 class="text-sm font-semibold text-content mt-4">State: Error (via CSS class)</h3>
+  <%= render Avo::UI::FileUploadItemComponent.new(
+    title: "ExampleFile.png",
+    size_label: "Upload failed.",
+    state: :error,
+    classes: "w-full file-upload-item--error"
+  ) do %>
+    <%= link_to "#", class: "file-upload-item__action", aria: { label: "Try again" } do %>
+      <%= svg "tabler/outline/refresh" %>
+    <% end %>
+    <%= link_to "#", class: "file-upload-item__action", aria: { label: "Delete" } do %>
+      <%= svg "tabler/outline/trash" %>
+    <% end %>
+  <% end %>
+</div>

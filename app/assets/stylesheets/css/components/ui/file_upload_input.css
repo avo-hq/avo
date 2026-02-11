@@ -1,0 +1,92 @@
+/* File Upload Input Component - Based on Figma Design System */
+/* BEM Methodology: .file-upload-input (block), .file-upload-input__* (elements), .file-upload-input--* (modifiers) */
+
+.file-upload-input {
+  @apply relative flex flex-col justify-center items-center p-4 gap-2 overflow-clip rounded-xl border border-dashed border-tertiary bg-primary text-content-secondary transition cursor-pointer;
+}
+
+.file-upload-input__icon {
+  @apply shrink-0 size-6 text-content-secondary;
+}
+
+.file-upload-input__content {
+  @apply flex flex-col gap-0.5 whitespace-nowrap;
+}
+
+.file-upload-input__title {
+  @apply text-xs font-medium leading-4 text-content;
+}
+
+.file-upload-input__subtitle {
+  @apply text-content-secondary;
+}
+
+.file-upload-input__description {
+  @apply text-xs font-normal leading-4 text-content-secondary;
+}
+
+.file-upload-input__native-input {
+  @apply absolute inset-0 h-full w-full cursor-pointer opacity-0;
+}
+
+.file-upload-input__native-input input[type="file"]::-webkit-file-upload-button,
+.file-upload-input__native-input input {
+  @apply cursor-pointer;
+}
+
+/* ==========================================================================
+   Size Variants
+   ========================================================================== */
+
+.file-upload-input--lg {
+  @apply flex-col p-4;
+}
+
+.file-upload-input--md {
+  @apply flex-row h-14 py-0;
+}
+
+.file-upload-input--sm {
+  @apply size-14 justify-center p-4;
+}
+
+/* Hide text content in small size */
+.file-upload-input--sm .file-upload-input__content {
+  display: none;
+}
+
+/* ==========================================================================
+   State: Hover
+   ========================================================================== */
+
+.file-upload-input:hover:not(.file-upload-input--disabled) {
+  @apply bg-secondary;
+}
+
+/* ==========================================================================
+   State: Dragging (managed by JS via data-dragging attribute)
+   ========================================================================== */
+
+.file-upload-input[data-dragging="true"] {
+  @apply border-2 border-solid bg-secondary;
+}
+
+/* ==========================================================================
+   State: Focus (via focus-within for native input focus)
+   ========================================================================== */
+
+.file-upload-input:has(.file-upload-input__native-input:focus-visible) {
+  box-shadow: var(--box-shadow-focus);
+}
+
+/* ==========================================================================
+   State: Disabled
+   ========================================================================== */
+
+.file-upload-input--disabled {
+  @apply opacity-60 cursor-not-allowed;
+}
+
+.file-upload-input--disabled .file-upload-input__native-input {
+  @apply cursor-not-allowed;
+}

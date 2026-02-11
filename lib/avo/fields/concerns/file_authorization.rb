@@ -20,6 +20,10 @@ module Avo
           authorize_file_action(:download)
         end
 
+        def can_reupload_file?
+          # TODO: Implement this when we have the reupload action
+        end
+
         private
 
         def authorize_file_action(action)
