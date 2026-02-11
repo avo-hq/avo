@@ -317,11 +317,10 @@ module Avo
         return true unless reflection.inverse_of.present?
         return true unless reflection.inverse_of.respond_to?(:foreign_key)
 
-        if is_polymorphic?
-          reflection.inverse_of.foreign_key != self.reflection&.foreign_key
-        else
-          reflection.inverse_of.foreign_key != foreign_key
-        end
+        inverse_fk = reflection.inverse_of.foreign_key
+        self_fk = is_polymorphic? ? self.reflection&.foreign_key : foreign_key
+
+        inverse_fk != self_fk
       end
 
       private
