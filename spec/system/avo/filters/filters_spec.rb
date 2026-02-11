@@ -386,6 +386,46 @@ RSpec.describe "Filters", type: :system do
       end
     end
 
+    context "flatpickr date navigation does not close filters panel" do
+      subject(:text_input) { find 'input[type="text"][placeholder="Filter by birthday"][data-date-time-filter-target="input"]' }
+
+      it "keeps the filters panel open when clicking flatpickr month navigation" do
+        visit avo.resources_users_path
+
+        open_filters_menu
+
+        expect(page).to have_text "Apply birthday filter"
+
+        open_picker
+
+        # Click the next month navigation arrow inside the flatpickr calendar
+        find(".flatpickr-next-month").click
+        sleep 0.3
+
+        # The filters panel should still be visible
+        expect(page).to have_text "Apply birthday filter"
+        expect(page).to have_css ".flatpickr-calendar"
+      end
+
+      it "keeps the filters panel open when clicking flatpickr previous month navigation" do
+        visit avo.resources_users_path
+
+        open_filters_menu
+
+        expect(page).to have_text "Apply birthday filter"
+
+        open_picker
+
+        # Click the previous month navigation arrow inside the flatpickr calendar
+        find(".flatpickr-prev-month").click
+        sleep 0.3
+
+        # The filters panel should still be visible
+        expect(page).to have_text "Apply birthday filter"
+        expect(page).to have_css ".flatpickr-calendar"
+      end
+    end
+
     # TODO
     # context "date with single selector" do
     # end
