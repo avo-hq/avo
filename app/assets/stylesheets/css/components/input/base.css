@@ -14,11 +14,18 @@
   textarea,
   .textarea-field,
   input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
-  .input-field
+  .input-field,
+  tags.tagify
 ) {
   @apply appearance-none inline-flex self-stretch bg-primary text-content rounded-lg border border-tertiary px-2 font-normal overflow-hidden text-ellipsis whitespace-nowrap relative py-1.5 text-sm leading-5 w-full;
 
   box-shadow: var(--box-shadow);
+}
+
+/* Tags override: allow wrapping, overflow, and add padding for tags */
+tags.tagify {
+  @apply overflow-visible whitespace-normal p-2;
+  text-overflow: clip;
 }
 
 /* Textarea overrides — only what differs */
