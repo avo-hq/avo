@@ -115,6 +115,7 @@ zh:
     resource_destroyed: 记录已删除
     resource_updated: 记录已更新
     resources: 资源
+    reupload_file: Reupload %{item}
     run: 运行
     save: 保存
     search:

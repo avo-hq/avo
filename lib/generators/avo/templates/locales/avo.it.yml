@@ -115,6 +115,7 @@ it:
     resource_destroyed: Record distrutto
     resource_updated: Record aggiornato
     resources: Risorse
+    reupload_file: Reupload %{item}
     run: Esegui
     save: Salva
     search:

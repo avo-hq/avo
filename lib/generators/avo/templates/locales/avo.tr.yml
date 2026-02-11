@@ -117,6 +117,7 @@ tr:
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi
     resources: Kaynaklar
+    reupload_file: Reupload %{item}
     run: Başlat
     save: Kaydet
     search:

@@ -117,6 +117,7 @@ es:
     resource_destroyed: Recurso eliminado
     resource_updated: Recurso actualizado
     resources: Recursos
+    reupload_file: Reupload %{item}
     run: Ejecutar
     save: Guardar
     search:

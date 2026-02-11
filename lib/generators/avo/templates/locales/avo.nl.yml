@@ -115,6 +115,7 @@ nl:
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt
     resources: Bronnen
+    reupload_file: Reupload %{item}
     run: Uitvoeren
     save: Opslaan
     search:
