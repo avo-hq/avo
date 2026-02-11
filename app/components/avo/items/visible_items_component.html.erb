@@ -1,6 +1,7 @@
 <% @item.visible_items.each_with_index do |field, index| %>
   <%= render Avo::Items::SwitcherComponent.new(
     resource: @resource,
+    reflection: @reflection,
     item: field,
     index: index,
     view: @view,
