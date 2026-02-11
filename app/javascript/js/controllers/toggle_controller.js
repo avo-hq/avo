@@ -11,7 +11,7 @@ export default class extends Controller {
   }
 
   get exemptionContainerTargets() {
-    return this.exemptionContainersValue.map((selector) => document.querySelector(selector)).filter(Boolean)
+    return this.exemptionContainersValue.flatMap((selector) => [...document.querySelectorAll(selector)])
   }
 
   connect() {
