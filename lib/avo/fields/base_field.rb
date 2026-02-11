@@ -272,12 +272,12 @@ module Avo
         true
       end
 
-      def visible_in_reflection?
+      def visible_in_reflection?(reflection = nil)
         true
       end
 
-      def hidden_in_reflection?
-        !visible_in_reflection?
+      def hidden_in_reflection?(reflection = nil)
+        !visible_in_reflection?(reflection)
       end
 
       def options_for_filter

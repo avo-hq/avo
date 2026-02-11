@@ -64,7 +64,7 @@ module Avo
         true
       end
 
-      def visible_in_reflection?
+      def visible_in_reflection?(reflection = nil)
         false
       end
 

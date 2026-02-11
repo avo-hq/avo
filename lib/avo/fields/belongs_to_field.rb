@@ -308,6 +308,22 @@ module Avo
         "#{id}_type"
       end
 
+      # When displayed inside a has_one/has_many reflection, hide this field if it
+      # points back to the parent record (i.e., it is the inverse of the reflection).
+      # This mirrors the filtering logic in Avo::Concerns::HasItems#get_fields.
+      def visible_in_reflection?(reflection = nil)
+        return true if reflection.nil?
+        return true unless respond_to?(:foreign_key)
+        return true unless reflection.inverse_of.present?
+        return true unless reflection.inverse_of.respond_to?(:foreign_key)
+
+        if is_polymorphic?
+          reflection.inverse_of.foreign_key != self.reflection&.foreign_key
+        else
+          reflection.inverse_of.foreign_key != foreign_key
+        end
+      end
+
       private
 
       def get_model_class(record)

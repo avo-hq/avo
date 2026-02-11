@@ -8,7 +8,7 @@
   <% end %>
    <% c.with_body do %>
     <% content_tag :div, class: "divide-y overflow-auto" do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, reflection: @reflection %>
     <% end %>
   <% end %>
    <% if sidebars.any? { |sidebar| sidebar.visible_items.any? } %>

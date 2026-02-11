@@ -11,7 +11,7 @@
 <% elsif item.is_row? %>
   <%= render Avo::RowComponent.new(divider: item.divider) do |c| %>
     <% c.with_body do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, reflection: @reflection %>
     <% end %>
   <% end %>
 <% elsif item.is_collaboration? %>
