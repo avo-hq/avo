@@ -343,6 +343,56 @@ RSpec.describe "KeyValueFields", type: :system do
     end
   end
 
+  describe "with double quotes in keys and values" do
+    let!(:meta_data) { {'key with "quotes"' => 'value with "quotes"', "normal" => "plain"} }
+    let!(:project) { create :project, meta: meta_data }
+
+    context "show" do
+      it "displays the full untruncated keys and values" do
+        visit "/admin/resources/projects/#{project.id}"
+        wait_for_loaded
+
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
+
+        expect(keys[0].value).to eq 'key with "quotes"'
+        expect(values[0].value).to eq 'value with "quotes"'
+
+        expect(keys[1].value).to eq "normal"
+        expect(values[1].value).to eq "plain"
+      end
+    end
+
+    context "edit" do
+      it "displays and round-trips keys and values with double quotes" do
+        visit "/admin/resources/projects/#{project.id}/edit"
+        wait_for_loaded
+
+        keys = page.all('input[placeholder="Meta key"]')
+        values = page.all('input[placeholder="Meta value"]')
+
+        expect(keys[0].value).to eq 'key with "quotes"'
+        expect(values[0].value).to eq 'value with "quotes"'
+
+        expect(keys[1].value).to eq "normal"
+        expect(values[1].value).to eq "plain"
+
+        save
+
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
+
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
+
+        expect(keys[0].value).to eq 'key with "quotes"'
+        expect(values[0].value).to eq 'value with "quotes"'
+
+        expect(keys[1].value).to eq "normal"
+        expect(values[1].value).to eq "plain"
+      end
+    end
+  end
+
   describe "with 0 and false" do
     let!(:comment) { create :comment }
 
