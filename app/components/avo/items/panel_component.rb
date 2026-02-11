@@ -41,4 +41,14 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
       {name: @item.name, description: @item.description, index: @index}
     end
   end
+
+  def linkable?
+    @parent_component.respond_to?(:linkable?) && @parent_component.linkable?
+  end
+
+  def linkable_url
+    return unless @parent_component.respond_to?(:linkable_url)
+
+    @parent_component.linkable_url
+  end
 end

@@ -1,5 +1,10 @@
 <%= render Avo::PanelComponent.new(**args) do |c| %>
   <% if @is_main_panel %>
+    <% if linkable_url.present? %>
+      <% c.with_name_slot do %>
+        <%= render Avo::PanelNameComponent.new name: title, url: linkable_url, target: :_blank %>
+      <% end %>
+    <% end %>
     <% c.with_tools do %>
       <% controls.each do |control| %>
         <%= render_control control %>
@@ -8,7 +13,7 @@
   <% end %>
    <% c.with_body do %>
     <% content_tag :div, class: "divide-y overflow-auto" do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, reflection: @reflection %>
     <% end %>
   <% end %>
    <% if sidebars.any? { |sidebar| sidebar.visible_items.any? } %>

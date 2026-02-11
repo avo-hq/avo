@@ -14,7 +14,10 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def after_initialize
     @view = Avo::ViewInquirer.new("show")
-    @display_breadcrumbs = @reflection.blank?
+  end
+
+  def before_render
+    @display_breadcrumbs = @reflection.blank? || (@reflection.present? && !helpers.turbo_frame_request?)
   end
 
   def title
@@ -64,6 +67,16 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
 
   def controls
     @resource.render_show_controls
+  end
+
+  def linkable?
+    has_one_field? && field&.linkable?
+  end
+
+  def linkable_url
+    return unless linkable? && params[:turbo_frame].present?
+
+    field.frame_url(add_turbo_frame: false)
   end
 
   private

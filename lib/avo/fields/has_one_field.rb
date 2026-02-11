@@ -32,10 +32,10 @@ module Avo
         field_label
       end
 
-      def frame_url
+      def frame_url(add_turbo_frame: true)
         Avo::Services::URIService.parse(field_resource.record_path)
           .append_paths(id, value.to_param)
-          .append_query(query_params)
+          .append_query(query_params(add_turbo_frame:))
           .to_s
       end
 

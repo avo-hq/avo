@@ -89,7 +89,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def the_fish
-    field :fish, as: :has_one
+    field :fish, as: :has_one, linkable: true
   end
 
   def main_panel_fields
