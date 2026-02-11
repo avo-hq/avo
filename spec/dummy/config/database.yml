@@ -9,11 +9,11 @@ default: &default
 
 development:
   <<: *default
-  database: avo_dummy_development
+  database: <%= ENV.fetch("DATABASE_NAME", "avo_dummy_development") %>
 
 test:
   <<: *default
-  database: avo_dummy_test
+  database: <%= ENV.fetch("DATABASE_NAME", "avo_dummy_test") %>
 
 production:
   <<: *default
