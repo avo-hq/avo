@@ -151,6 +151,15 @@ export default class extends Controller {
     return result
   }
 
+  escapeAttribute(str) {
+    if (str === null || str === undefined) return ''
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+  }
+
   inputField(id = 'key', index, key, value) {
     const inputValue = id === 'key' ? key : value
 
@@ -160,7 +169,7 @@ export default class extends Controller {
   placeholder="${this.options[`${id}_label`]}"
   data-index="${index}"
   ${this[`${id}InputDisabled`] ? "disabled='disabled'" : ''}
-  value="${typeof inputValue === 'undefined' || inputValue === null ? '' : inputValue}"
+  value="${this.escapeAttribute(inputValue)}"
 />`
   }
 
