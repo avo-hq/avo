@@ -70,7 +70,6 @@ module Avo
     attr_reader :logger
     attr_reader :cache_store
     attr_reader :field_manager
-
     delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
     # Runs when the app boots up
@@ -78,6 +77,7 @@ module Avo
       Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
       @logger = Avo.configuration.logger
       @field_manager = Avo::Fields::FieldManager.build
+      @view_type_manager = nil # force re-init with defaults on next access
       @cache_store = Avo.configuration.cache_store
       Avo.plugin_manager.reset
       # Run load hooks for plugins to include them in the app.
