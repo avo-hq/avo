@@ -130,6 +130,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def render_dynamic_filters_button
     return unless Avo.avo_dynamic_filters_installed?
     return unless @resource.has_filters?
+    return unless has_resources?
     return if field&.hide_filter_button
     return if Avo::DynamicFilters.configuration.always_expanded
 
@@ -240,5 +241,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       turbo_frame: @turbo_frame,
       index_params: @index_params
     }
+  end
+
+  def has_resources?
+    @resources.present?
   end
 end

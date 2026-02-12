@@ -5,7 +5,6 @@ class Avo::EmptyStateComponent < Avo::BaseComponent
   prop :view_type, default: :table do |value|
     value&.to_sym
   end
-  prop :add_background, default: false
   prop :by_association, default: false
 
   def text
