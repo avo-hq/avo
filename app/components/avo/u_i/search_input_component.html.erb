@@ -1,0 +1,28 @@
+<%= content_tag :div, class: "search-input" do %>
+  <%= search_field_tag @name, @value,
+    id: @id,
+    placeholder: @placeholder,
+    class: class_names(
+      "search-input__input",
+      {"search-input__input--with-shortcut": @with_shortcut},
+      @classes
+    ),
+    disabled: @disabled,
+    autocomplete: "off",
+    data: @data
+  %>
+
+  <span class="search-input__prefix" aria-hidden="true">
+    <%= helpers.svg "tabler/outline/search" %>
+  </span>
+
+  <% if @with_shortcut %>
+    <span class="search-input__suffix" aria-hidden="true">
+      <kbd class="search-input__shortcut">
+        <abbr title="Command" class="no-underline pc:hidden">⌘</abbr>
+        <abbr title="CTRL" class="no-underline mac:hidden">CTRL + </abbr>
+      </kbd>
+      <kbd class="search-input__shortcut">K</kbd>
+    </span>
+  <% end %>
+<% end %>

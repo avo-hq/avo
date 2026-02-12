@@ -1,0 +1,49 @@
+/* Search Input — extends base input styles, adds left icon + optional right shortcut */
+/* BEM: .search-input (block), .search-input__* (element), .search-input--* (modifier) */
+/* States (focus, hover, disabled, etc.) inherit from input base & states.css */
+
+.search-input {
+  @apply relative w-full;
+}
+
+.search-input__prefix {
+  @apply absolute inset-y-0 start-0 flex items-center pointer-events-none ps-2 text-content-secondary z-10;
+}
+
+/* Override input padding for icons — base uses px-2 */
+.search-input__input {
+  @apply ps-8 pe-2;
+}
+
+.search-input__input--with-shortcut {
+  @apply pe-16;
+}
+
+.search-input__suffix {
+  @apply absolute inset-y-0 end-0 flex items-center pe-2 text-content-secondary pointer-events-none z-10 min-w-[18px] gap-1;
+}
+
+.search-input__shortcut {
+  @apply text-[10px] leading-[14px] font-semibold py-px px-1 border border-secondary rounded-sm bg-secondary min-w-5 flex items-center justify-center;
+
+  box-shadow: 0 -1.5px 0 1px var(--color-secondary) inset, 0 0.8px 0 1.3px var(--color-primary) inset;
+}
+
+/* ==========================================================================
+  Size variants — icon scales with input size (like password.css)
+  Input must come first in DOM for sibling selector to work
+  ========================================================================== */
+
+.search-input__prefix svg {
+  @apply shrink-0;
+}
+
+.search-input__input.input--size-sm ~ .search-input__prefix svg {
+  @apply size-3.5;
+}
+
+.search-input__prefix svg,
+.search-input__input.input--size-lg ~ .search-input__prefix svg,
+.search-input__input.input--size-md ~ .search-input__prefix svg {
+  @apply size-4;
+}

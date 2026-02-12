@@ -1,0 +1,68 @@
+<div class="p-8 space-y-8">
+  <div class="text-lg font-semibold text-content mb-6">Search Input — Size variants & shortcut</div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <%# Header row: sizes %>
+    <div class="text-sm font-semibold text-content">Small (sm)</div>
+    <div class="text-sm font-semibold text-content">Medium (md)</div>
+    <div class="text-sm font-semibold text-content">Large (lg)</div>
+
+    <%# Row 1: With shortcut (⌘K) %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">With shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_sm",
+        placeholder: "Search",
+        with_shortcut: true,
+        classes: "w-full input--size-sm"
+      ) %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">With shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_md",
+        placeholder: "Search",
+        with_shortcut: true,
+        classes: "w-full input--size-md"
+      ) %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">With shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_lg",
+        placeholder: "Search",
+        with_shortcut: true,
+        classes: "w-full input--size-lg"
+      ) %>
+    </div>
+
+    <%# Row 2: Without shortcut %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Without shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_sm_no",
+        placeholder: "Search",
+        with_shortcut: false,
+        classes: "w-full input--size-sm"
+      ) %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Without shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_md_no",
+        placeholder: "Search",
+        with_shortcut: false,
+        classes: "w-full input--size-md"
+      ) %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Without shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_lg_no",
+        placeholder: "Search",
+        with_shortcut: false,
+        classes: "w-full input--size-lg"
+      ) %>
+    </div>
+  </div>
+</div>
