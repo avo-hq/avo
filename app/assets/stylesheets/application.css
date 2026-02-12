@@ -73,6 +73,7 @@
 /* I discovered that the Tailwind v4 `hover` change is affecting the test browser. As a temporary fix, I forced a custom variant to preserve the Tailwind v3 `hover` behavior, since it resolves the failing tests. However, we’ll need to find a more robust long-term solution. This one was tricky to pinpoint. */
 @custom-variant hover (&:hover);
 
+/* TODO: to clarify why we checkbox.css outside of layer component as in this way the browser overwrites the styles */
 @import "./css/components/ui/checkbox.css";
 
 @layer components {
