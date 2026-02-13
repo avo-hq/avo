@@ -119,6 +119,7 @@ ro:
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată
     resources: Resurse
+    reupload_file: Reupload %{item}
     run: Rulează
     save: Salvează
     search:

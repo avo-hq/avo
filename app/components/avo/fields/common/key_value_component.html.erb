@@ -1,37 +1,33 @@
-<div class="w-full shadow-lg rounded-sm overflow-hidden"
+<div class="key-value"
   data-controller="key-value"
   data-key-value-target="controller"
   data-options="<%= @field.options.to_json %>"
   data-input-classes="<%= input_classes %>"
   data-editable="<%= @view.form? %>"
 >
-  <div class="w-full flex flex-col">
-    <div class="flex w-full">
-      <div class="flex w-full bg-gray-700 shadow-sm overflow-hidden">
-        <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white border-gray-600 border-e border-gray-200">
+  <div class="key-value__table">
+    <div class="key-value__header">
+      <div class="key-value__header-cell key-value__header-cell--key">
           <%= @field.key_label %>
-        </div>
-        <div class="w-1/2 py-3 px-3 uppercase font-semibold text-xs text-white">
-          <%= @field.value_label %>
-        </div>
-        <% if @view.form? %>
-          <div class="flex items-center justify-center p-2 px-[48px] border-s border-gray-600">
-            <a href="javascript:void(0);"
-              title="<%= @field.action_text %>"
-              data-tippy="tooltip"
-              data-button="add-row"
-              data-action="click->key-value#addRow"
-              <% if @field.disable_adding_rows %>
-                class="cursor-not-allowed"
-              <% end %>
-            >
-              <%= helpers.svg "heroicons/outline/plus-circle", class: 'text-gray-400 h-5 hover:text-gray-500' %>
-            </a>
-          </div>
-        <% end %>
       </div>
+      <div class="key-value__header-cell key-value__header-cell--value">
+          <%= @field.value_label %>
+      </div>
+      <% if @view.form? %>
+        <div class="key-value__header-cell key-value__header-cell--actions">
+          <a href="javascript:void(0);"
+            title="<%= @field.action_text %>"
+            data-tippy="tooltip"
+            data-button="add-row"
+            data-action="click->key-value#addRow"
+            class="key-value__action-button <%= 'cursor-not-allowed' if @field.disable_adding_rows %>"
+          >
+            <%= helpers.svg "heroicons/outline/plus-circle", class: 'key-value__action-icon' %>
+          </a>
+        </div>
+      <% end %>
     </div>
-    <div data-key-value-target="rows"></div>
+    <div class="key-value__body" data-key-value-target="rows"></div>
   </div>
   <% if @form.present? %>
     <%= @form.text_area @field.id,

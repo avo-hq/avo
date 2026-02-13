@@ -24,7 +24,7 @@
     %>
     <%= datetime_field "fake_#{@field.id}", "fake",
       value: @field.edit_formatted_value,
-      class: classes("w-full input__field--date"),
+      class: classes("w-full"),
       data: {
         'date-field-target': 'fakeInput',
         placeholder: @field.placeholder,

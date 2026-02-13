@@ -1,0 +1,23 @@
+/* ==========================================================================
+  Color Input
+  ========================================================================== */
+
+input[type="color"] {
+  height: var(--input-height-md);
+}
+
+input[type="color"].input--size-sm {
+  height: var(--input-height-sm);
+}
+
+input[type="color"].input--size-md {
+  height: var(--input-height-md);
+}
+
+input[type="color"].input--size-lg {
+  height: var(--input-height-lg);
+}
+
+input[type="color"] {
+  cursor: pointer;
+}

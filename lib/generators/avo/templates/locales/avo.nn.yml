@@ -117,6 +117,7 @@ nn:
     resource_destroyed: Ressurs sletta
     resource_updated: Ressurs oppdatert
     resources: Ressursar
+    reupload_file: Reupload %{item}
     run: Køyr
     save: Lagre
     search:

@@ -11,7 +11,7 @@
 
   <%= render ui.panel(
       cover: resource.cover,
-      class: "w-full",
+      class: "w-full px-2",
       data: {
         component_name:,
         controller: "resource-search",
@@ -59,15 +59,15 @@
             <div class="flex flex-col space-y-2 py-4 xs:flex-row xs:justify-between xs:space-y-0 <%= "hidden" unless header_visible? %>">
               <div class="flex w-64 items-center">
                 <% if show_search_input %>
-                  <%= text_field_tag "q", params[:q],
-                    id: nil,
+                  <%= render ui.search_input(
+                    name: "q",
+                    value: params[:q],
                     placeholder: t('avo.search.placeholder'),
-                    class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm",
                     data: {
                       action: "input->resource-search#search",
                       "resource-search-target": "input"
                     },
-                    autocomplete: "off" %>
+                  ) %>
                 <% else %>
                   <%# Offset for the space-y-2 property when the search is missing %>
                   <div class="-mb-2"></div>

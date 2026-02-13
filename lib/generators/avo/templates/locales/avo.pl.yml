@@ -117,6 +117,7 @@ pl:
     resource_destroyed: Rekord usunięty
     resource_updated: Rekord zaktualizowany
     resources: Zasoby
+    reupload_file: Reupload %{item}
     run: Uruchom
     save: Zapisz
     search:

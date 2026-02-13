@@ -1,5 +1,5 @@
 .field-wrapper {
-  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-2 min-h-15 w-full grow-0 text-ellipsis overflow-scroll;
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-2 min-h-15 w-full grow-0 text-ellipsis overflow-auto;
 }
 
 .field-wrapper__label {
@@ -12,15 +12,6 @@
 
 .field-wrapper__label-help {
   @apply text-content-secondary text-xs leading-none font-normal pb-3;
-}
-
-.field-wrapper__input:has(.input__field:disabled) ~ .field-wrapper__help {
-  @apply opacity-60 cursor-not-allowed;
-}
-
-.field-wrapper__input:has(.input__field:disabled).field-wrapper__input:has(.input__field--date)::after,
-.field-wrapper__input:has(.input__field:disabled).field-wrapper__input:has(.input__field--loading)::after {
-  @apply opacity-60 cursor-not-allowed;
 }
 
 .field-wrapper__error {
@@ -47,20 +38,24 @@
   @apply relative w-full;
 }
 
-.field-wrapper__input:has(.input__field--date)::after {
-  content: "";
-  @apply absolute end-2 top-1/2 pointer-events-none text-content-secondary;
-  transform: translateY(-50%);
-  background-color: currentColor;
-  opacity: 0.6;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E") no-repeat center / contain;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E") no-repeat center / contain;
+/* ==========================================================================
+   Loading Spinner
+   ========================================================================== */
+
+.input-wrapper--loading {
+    position: relative;
+    display: inline-block;
+    width: 100%;
 }
 
-.field-wrapper__input:has(.input__field--loading):not(:has(.input__field--date))::after {
-  content: "";
-  @apply absolute end-2 top-1/2 size-4 rounded-full border-2 border-content border-e-tertiary pointer-events-none;
+.input-wrapper--loading input {
+    @apply pe-7;
+}
 
+.input-wrapper--loading::after {
+   @apply absolute end-2 top-1/2 rounded-full border-2 border-content border-e-tertiary pointer-events-none size-4.5;
+
+  content: '';
   transform: translateY(-50%);
   transform-origin: center;
   animation: input-spinner-rotation 0.9s linear infinite;
@@ -73,6 +68,22 @@
   to {
     transform: translateY(-50%) rotate(360deg);
   }
+}
+
+/* loading size variants */
+.input-wrapper--loading:has(.input--size-sm)::after {
+  @apply size-3.5;
+}
+.input-wrapper--loading:has(.input--size-md)::after {
+  @apply size-4;
+}
+.input-wrapper--loading:has(.input--size-lg)::after {
+  @apply size-4.5;
+}
+
+/* disabled & loading state */
+.input-wrapper--loading:has(input:disabled)::after {
+  @apply opacity-60 cursor-not-allowed;
 }
 
 .field-wrapper--full-width {

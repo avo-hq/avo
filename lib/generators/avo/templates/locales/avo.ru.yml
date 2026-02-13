@@ -117,6 +117,7 @@ ru:
     resource_destroyed: Запись удалена
     resource_updated: Запись обновлена
     resources: Ресурсы
+    reupload_file: Reupload %{item}
     run: Запустить
     save: Сохранить
     search:

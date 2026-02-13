@@ -117,6 +117,7 @@ nb:
     resource_destroyed: Ressurs slettet
     resource_updated: Ressurs oppdatert
     resources: Ressurser
+    reupload_file: Reupload %{item}
     run: Kjør
     save: Lagre
     search:

@@ -44,13 +44,9 @@ RSpec.describe Avo::ApplicationHelper do
   end
 
   describe "#input_classes" do
-    it "returns base input__field class" do
-      expect(helper.input_classes).to include("input__field")
-    end
-
     it "adds error class when has_error is true" do
       classes = helper.input_classes("", has_error: true)
-      expect(classes).to include("input__field--error")
+      expect(classes).to include("input-field--error")
     end
 
     it "includes extra classes" do
@@ -62,29 +58,29 @@ RSpec.describe Avo::ApplicationHelper do
     describe "size variants" do
       it "adds sm size class when size is :sm" do
         classes = helper.input_classes("", size: :sm)
-        expect(classes).to include("input__field--sm")
+        expect(classes).to include("input--size-sm")
       end
 
       it "adds md size class when size is :md" do
         classes = helper.input_classes("", size: :md)
-        expect(classes).to include("input__field--md")
+        expect(classes).to include("input--size-md")
       end
 
       it "adds lg size class when size is :lg" do
         classes = helper.input_classes("", size: :lg)
-        expect(classes).to include("input__field--lg")
+        expect(classes).to include("input--size-lg")
       end
 
       it "defaults to md size when size is not specified" do
         classes = helper.input_classes("")
-        expect(classes).to include("input__field--md")
+        expect(classes).to include("input--size-md")
       end
 
       it "does not add size class for invalid size values" do
         classes = helper.input_classes("", size: :invalid)
-        expect(classes).to include("input__field")
-        expect(classes).not_to include("input__field--invalid")
-        expect(classes).not_to include("input__field--md")
+        expect(classes).to eq("")
+        expect(classes).not_to include("input--size-invalid")
+        expect(classes).not_to include("input--size-md")
       end
     end
   end

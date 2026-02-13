@@ -28,7 +28,7 @@ export function tagTemplate(tagData) {
 export function suggestionItemTemplate(tagData) {
   return `
 <div ${this.getAttributes(tagData)}
-  class='tagify__dropdown__item flex items-center ${
+  class='tagify__dropdown__item dropdown-menu__item ${
   tagData.class ? tagData.class : ''
 }'
   tabindex="0"
