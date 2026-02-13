@@ -61,6 +61,7 @@ module Avo
     attr_accessor :model_generator_hook
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
+    attr_accessor :body_classes
 
     def initialize
       @root_path = "/avo"
@@ -136,6 +137,7 @@ module Avo
       @model_generator_hook = true
       @send_metadata = true
       @use_stacked_fields = false
+      @body_classes = nil
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
