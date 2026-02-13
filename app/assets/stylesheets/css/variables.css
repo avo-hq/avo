@@ -33,6 +33,7 @@
   --box-shadow-error: 0 0 5px 1px var(--color-red-600), 0 0 0 1px var(--color-red-600), 0 0 0 3px var(--color-red-300);
   --box-shadow-success: 0 0 5px 1px var(--color-green-600), 0 0 0 1px var(--color-green-600), 0 0 0 3px var(--color-green-300);
   --box-shadow-focus: 0 0 0 1px var(--color-primary), 0 0 0 3px var(--color-info-foreground);
+  --box-shadow-search-input-shortcut: 0 -1.5px 0 1px var(--color-secondary) inset, 0 0.8px 0 1.3px var(--color-primary) inset;
 
   /* foundations - Light Mode */
   --color-background: var(--color-avo-neutral-25);

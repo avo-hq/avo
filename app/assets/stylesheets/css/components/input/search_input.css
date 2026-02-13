@@ -11,12 +11,14 @@
 }
 
 /* Override input padding for icons — base uses px-2 */
+input[type=search],
 .search-input__input {
   @apply ps-8 pe-2;
 }
 
-.search-input__input--with-shortcut {
-  @apply pe-16;
+input[type=search].search-input__input--with-shortcut,
+.search-input__input.search-input__input--with-shortcut{
+  @apply pe-14;
 }
 
 .search-input__suffix {
@@ -26,8 +28,18 @@
 .search-input__shortcut {
   @apply text-[10px] leading-[14px] font-semibold py-px px-1 border border-secondary rounded-sm bg-secondary min-w-5 flex items-center justify-center;
 
-  box-shadow: 0 -1.5px 0 1px var(--color-secondary) inset, 0 0.8px 0 1.3px var(--color-primary) inset;
+  box-shadow: var(--box-shadow-search-input-shortcut);
 }
+
+/* :disabled state */
+.search-input:has(.search-input__input) .search-input__suffix,
+.search-input:has(.search-input__input) .search-input__prefix,
+.search-input:has(input[type=search]:disabled) .search-input__suffix,
+.search-input:has(input[type=search]:disabled) .search-input__prefix,
+input[type=search]:disabled{
+  @apply opacity-60;
+}
+
 
 /* ==========================================================================
   Size variants — icon scales with input size (like password.css)
@@ -38,11 +50,14 @@
   @apply shrink-0;
 }
 
+input[type="search"].input--size-sm ~ .search-input__prefix svg,
 .search-input__input.input--size-sm ~ .search-input__prefix svg {
   @apply size-3.5;
 }
 
 .search-input__prefix svg,
+input[type=search].input--size-lg ~ .search-input__prefix svg,
+input[type=search].input--size-md ~ .search-input__prefix svg,
 .search-input__input.input--size-lg ~ .search-input__prefix svg,
 .search-input__input.input--size-md ~ .search-input__prefix svg {
   @apply size-4;
