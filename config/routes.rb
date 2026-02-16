@@ -1,6 +1,8 @@
 Avo::Engine.routes.draw do
   root "home#index"
 
+  resource :user_preference, only: [:show, :update]
+
   get "resources", to: redirect(Avo.configuration.root_path), as: :avo_resources_redirect
   get "dashboards", to: redirect(Avo.configuration.root_path), as: :avo_dashboards_redirect
 

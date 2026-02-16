@@ -25,6 +25,7 @@ module Avo
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
+    before_action :load_user_preferences
     before_action :set_stylesheet_assets_path
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
@@ -279,6 +280,43 @@ module Avo
     def set_sidebar_open
       value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
       @sidebar_open = value.blank? || value == "1"
+    end
+
+    unless defined?(USER_PREFERENCE_DEFAULTS)
+      USER_PREFERENCE_DEFAULTS = {
+        color_scheme: "auto",
+        theme: "brand",
+        accent_color: "neutral"
+      }.freeze
+    end
+
+    def load_user_preferences
+      return unless Avo.configuration.user_preferences_configured?
+      return unless _current_user.present?
+      return @user_preferences if defined?(@user_preferences)
+
+      prefs = Avo.configuration.load_user_preferences(user: _current_user, request: request)
+      @user_preferences = prefs || {}
+
+      # Sync loaded preferences to cookies for FOUC prevention
+      Avo.configuration.all_user_preference_keys.each do |key|
+        value = @user_preferences[key] || @user_preferences[key.to_s]
+        default = USER_PREFERENCE_DEFAULTS[key]
+        cookie_name = if key.in?(Avo::Configuration::BUILT_IN_USER_PREFERENCE_KEYS)
+          key.to_s
+        else
+          "#{Avo::COOKIES_KEY}.#{key}"
+        end
+
+        if !value.nil? && value.to_s != default.to_s
+          cookies[cookie_name] = value.to_s
+        else
+          cookies.delete(cookie_name)
+        end
+      end
+    rescue => error
+      Avo.logger.debug "Failed to load user preferences: #{error.message}"
+      @user_preferences = {}
     end
 
     # Set the current host for ActiveStorage

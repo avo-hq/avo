@@ -61,6 +61,8 @@ module Avo
     attr_accessor :model_generator_hook
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
+    attr_reader :user_preferences
+    attr_accessor :user_preference_keys
 
     def initialize
       @root_path = "/avo"
@@ -136,6 +138,8 @@ module Avo
       @model_generator_hook = true
       @send_metadata = true
       @use_stacked_fields = false
+      @user_preferences = nil
+      @user_preference_keys = []
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
@@ -300,6 +304,44 @@ module Avo
 
     def session_persistence_enabled?
       persistence[:driver] == :session
+    end
+
+    BUILT_IN_USER_PREFERENCE_KEYS = %i[color_scheme theme accent_color].freeze unless defined?(BUILT_IN_USER_PREFERENCE_KEYS)
+
+    def user_preferences=(value)
+      if value.is_a?(Hash) && !(value.respond_to?(:load) && value.respond_to?(:save))
+        raise Avo::ConfigurationError, "user_preferences hash must include both :load and :save keys" unless value[:load] && value[:save]
+      end
+
+      @user_preferences = value
+    end
+
+    def user_preferences_configured?
+      @user_preferences.present?
+    end
+
+    def all_user_preference_keys
+      BUILT_IN_USER_PREFERENCE_KEYS + @user_preference_keys.map(&:to_sym)
+    end
+
+    def load_user_preferences(user:, request:)
+      return {} unless user_preferences_configured?
+
+      if @user_preferences.respond_to?(:load) && @user_preferences.respond_to?(:save)
+        @user_preferences.load(user: user, request: request)
+      else
+        @user_preferences[:load].call(user: user, request: request)
+      end
+    end
+
+    def save_user_preferences(user:, request:, key:, value:, preferences:)
+      return unless user_preferences_configured?
+
+      if @user_preferences.respond_to?(:load) && @user_preferences.respond_to?(:save)
+        @user_preferences.save(user: user, request: request, key: key, value: value, preferences: preferences)
+      else
+        @user_preferences[:save].call(user: user, request: request, key: key, value: value, preferences: preferences)
+      end
     end
 
     def mount_avo_engines=(...)
