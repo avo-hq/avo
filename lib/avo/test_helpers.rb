@@ -204,6 +204,12 @@ module Avo
       find(".flatpickr-second").set(value)
     end
 
+    def set_picker_text_input(value)
+      element = find("input.form-control[type='text']")
+      # Set value without firing input/change events
+      page.execute_script("arguments[0].value = arguments[1]", element.native, value)
+    end
+
     def open_picker
       text_input.click
     end

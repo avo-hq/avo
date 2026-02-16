@@ -148,6 +148,35 @@ RSpec.describe "Date field", type: :system do
     end
   end
 
+  describe "with allowInput: true", tz: "Europe/Bucharest" do
+    before do
+      Avo::Resources::Project.with_temporary_items do
+        field :started_at, as: :date_time, relative: true, time_24hr: true, format: "MMMM dd, y HH:mm:ss z", picker_options: {allowInput: true}
+      end
+    end
+
+    it { reset_browser }
+
+    context "edit" do
+      describe "when manually typing a value" do
+        it "saves the valid date" do
+          visit "/admin/resources/projects/#{project.id}/edit"
+
+          expect(text_input.value).to eq "2000-01-01 08:00:00"
+          open_picker
+
+          set_picker_text_input("2001-01-31 17:17:17")
+          close_picker
+
+          save
+          wait_for_loaded
+
+          expect(show_field_value(id: :started_at)).to eq "January 31, 2001 17:17:17 Europe/Bucharest"
+        end
+      end
+    end
+  end
+
   describe "with relative: false", tz: "Europe/Bucharest" do
     before do
       Avo::Resources::Project.with_temporary_items do
