@@ -207,6 +207,10 @@
       @apply ms-0 col-start-2;
     }
   }
+
+  select {
+    @apply text-foreground bg-background border-tertiary;
+  }
 }
 
 .loading-spinner {

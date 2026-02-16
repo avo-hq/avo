@@ -11,7 +11,7 @@
 .main {
   --sidebar-width: --spacing(64);
   --sidebar-offset-size: 0rem;
-  --content-width: calc(100% - var(--sidebar-offset-size) - var(--spacing)*2);
+  --content-width: calc(100% - var(--sidebar-offset-size) - var(--spacing) * 2);
 
   @media (min-width: theme(--breakpoint-lg)) {
     &.sidebar-open {
@@ -29,7 +29,7 @@
     height: calc(100dvh - var(--spacing) - var(--top-navbar-height));
 
     .scrollable-wrapper {
-      @apply overflow-y-auto h-full flex-1 flex flex-col;
+      @apply overflow-y-auto h-full flex-1 flex flex-col px-2;
     }
     .avo-container {
       @apply  flex flex-1 flex-col justify-between;
