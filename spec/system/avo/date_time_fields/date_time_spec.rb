@@ -173,6 +173,21 @@ RSpec.describe "Date field", type: :system do
 
           expect(show_field_value(id: :started_at)).to eq "January 31, 2001 17:17:17 Europe/Bucharest"
         end
+
+        it "reverts invalid date" do
+          visit "/admin/resources/projects/#{project.id}/edit"
+
+          expect(text_input.value).to eq "2000-01-01 08:00:00"
+          open_picker
+
+          set_picker_text_input("invalid")
+          close_picker
+
+          save
+          wait_for_loaded
+
+          expect(show_field_value(id: :started_at)).to eq "January 01, 2000 08:00:00 Europe/Bucharest"
+        end
       end
     end
   end
