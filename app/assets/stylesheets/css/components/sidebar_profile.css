@@ -1,0 +1,70 @@
+/* Sidebar Profile Component - BEM structure */
+.sidebar-profile {
+  @apply flex items-center rtl:flex-row-reverse border-t border-gray-200 px-4 py-2 gap-4 text-content;
+}
+
+.sidebar-profile__body {
+  @apply flex flex-1 items-center gap-2 w-full min-w-0;
+}
+
+.sidebar-profile__avatar-wrapper {
+  @apply flex items-center justify-center shrink-0 overflow-hidden rounded-lg border border-tertiary;
+
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary) 100%), var(--color-tertiary);
+}
+
+.sidebar-profile__avatar {
+   @apply size-8 flex items-center justify-center;
+}
+
+.sidebar-profile__avatar-img {
+  @apply size-full min-w-full min-h-full object-cover;
+}
+
+.sidebar-profile__avatar-initials {
+  @apply w-6 font-semibold text-sm leading-5 text-center text-ellipsis overflow-hidden text-foreground tracking-tighter;
+}
+
+.sidebar-profile__info {
+  @apply flex flex-col min-w-0 rtl:text-end;
+}
+
+.sidebar-profile__title {
+  @apply font-medium text-ellipsis overflow-hidden text-sm leading-5 text-content;
+}
+
+.sidebar-profile__subtitle {
+  @apply text-xs text-ellipsis overflow-hidden leading-4 text-content-secondary;
+}
+
+.sidebar-profile__actions {
+  @apply flex items-center gap-1 shrink-0;
+}
+
+.sidebar-profile__action-trigger {
+  @apply flex items-center cursor-pointer text-content-secondary;
+}
+
+.sidebar-profile__action-trigger:hover {
+  @apply text-content;
+}
+
+.sidebar-profile__action-icon {
+  @apply size-4;
+}
+
+.sidebar-profile__panel {
+  @apply absolute flex flex-col inset-auto end-0 bottom-0 mb-8 bg-white rounded-sm min-w-[200px] shadow-2xl z-40;
+}
+
+.sidebar-profile__form {
+  @apply flex-1;
+}
+
+.sidebar-profile__sign-out {
+  @apply flex items-center justify-start gap-1 w-full px-4 py-3 rounded-sm cursor-pointer text-red-600 font-semibold bg-white hover:bg-red-100;
+}
+
+.sidebar-profile__sign-out-icon {
+  @apply size-4 me-1 shrink-0;
+}

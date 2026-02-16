@@ -1,30 +1,35 @@
-<div class="text-black border-gray-200 p-4 flex rtl:flex-row-reverse border-t">
-  <div class="flex-1 flex gap-4 rtl:flex-row-reverse w-full">
-    <% if avatar.present? %>
-      <div class="relative aspect-square w-10 h-10 overflow-hidden rounded-sm shrink-0">
-        <%= image_tag helpers.main_app.url_for(avatar), class: "object-cover min-w-full min-h-full h-full" %>
-      </div>
-    <% end %>
-    <div class="flex flex-col min-w-0 rtl:text-end">
-      <div class="font-medium text-ellipsis overflow-hidden">
+<div class="sidebar-profile">
+  <div class="sidebar-profile__body">
+    <div class="sidebar-profile__avatar-wrapper">
+    <div class="sidebar-profile__avatar">
+        <% if avatar.present? %>
+          <%= image_tag helpers.main_app.url_for(avatar), class: "sidebar-profile__avatar-img" %>
+        <% else %>
+          <span class="sidebar-profile__avatar-initials">
+            <%= name.first.upcase %><%= name.last.upcase %>
+          </span>
+        <% end %>
+    </div>
+    </div>
+    <div class="sidebar-profile__info">
+      <div class="sidebar-profile__title">
         <%= name %>
       </div>
-      <% if title.present? %>
-        <div class="text-xs text-gray-500 uppercase">
-          <%= title %>
+      <% if true %>
+        <div class="sidebar-profile__subtitle">
+          <%= "title - email" %>
         </div>
       <% end %>
     </div>
   </div>
-  <div class="relative" data-controller="toggle">
-    <a class="flex items-center h-full cursor-pointer" data-control="profile-dots" data-action="click->toggle#togglePanel">
-      <%= helpers.svg "avo/three-dots", class: 'h-4' %>
+  <div class="sidebar-profile__actions" data-controller="toggle">
+    <a href="#" class="sidebar-profile__action-trigger">
+      <%= helpers.svg "tabler/outline/bell", class: 'sidebar-profile__action-icon' %>
     </a>
-    <div
-      class="css-animate-slide-up absolute flex flex-col inset-auto end-0 bottom-0 mb-8 bg-white rounded-sm min-w-[200px] shadow-2xl z-40"
-      data-toggle-target="panel"
-      hidden
-    >
+    <a href="#" class="sidebar-profile__action-trigger" data-control="profile-dots" data-action="click->toggle#togglePanel">
+      <%= helpers.svg "tabler/outline/dots", class: 'sidebar-profile__action-icon' %>
+    </a>
+    <div class="css-animate-slide-up sidebar-profile__panel" data-toggle-target="panel" hidden>
       <% if render_custom_profile_menu? %>
         <%= render custom_profile_component %>
       <% end %>
@@ -37,9 +42,9 @@
             sign_out_confirm_value: t('avo.are_you_sure'),
             action: "submit->sign-out#handle",
           },
-          class: 'flex-1' do |form| %>
-          <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "flex-1 flex items-center justify-center bg-white text-start cursor-pointer text-red-600 font-semibold hover:bg-red-100 block px-4 py-1 w-full py-3 text-center rounded-sm w-full" do %>
-          <%= helpers.svg "avo/logout", class: 'h-4 me-1' %> <%= t('avo.sign_out') %>
+          class: 'sidebar-profile__form' do |form| %>
+          <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "sidebar-profile__sign-out" do %>
+            <%= helpers.svg "avo/logout", class: 'sidebar-profile__sign-out-icon' %> <%= t('avo.sign_out') %>
           <% end %>
         <% end %>
       <% end %>

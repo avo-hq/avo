@@ -125,6 +125,7 @@
   @import "./css/components/button.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
+  @import "./css/components/sidebar_profile.css";
   @import "./css/components/tooltip.css";
   @import "./css/components/modal.css";
   @import "./css/css-animations.css";
