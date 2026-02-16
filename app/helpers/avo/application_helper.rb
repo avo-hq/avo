@@ -192,6 +192,10 @@ module Avo
       end
     end
 
+    def editor_url(path)
+      Avo.configuration.default_editor_url.gsub("%{path}", path)
+    end
+
     private
 
     def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)

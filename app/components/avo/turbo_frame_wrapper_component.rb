@@ -2,6 +2,7 @@
 
 class Avo::TurboFrameWrapperComponent < Avo::BaseComponent
   prop :name, kind: :positional
+  prop :class, kind: :positional
 
   # When rendering the frames the flashed content gets lost.
   # We're appending it back if it's a turbo_frame_request.
