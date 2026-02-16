@@ -2,7 +2,12 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentPanel']
+  static targets = ['button', 'accentPanel', 'saveButton', 'saveWrapper']
+
+  static values = {
+    saveUrl: String,
+    persistable: Boolean,
+  }
 
   connect() {
     // Read from cookies (cookie is source of truth)
@@ -14,6 +19,9 @@ export default class extends Controller {
     this.currentSchemeValue = cookieScheme || 'auto'
     this.currentThemeValue = cookieTheme || 'brand'
     this.currentAccentValue = cookieAccent || 'neutral'
+
+    // Snapshot the saved state so we can detect unsaved changes
+    this.snapshotSavedState()
 
     this.applyScheme()
     this.applyTheme()
@@ -44,6 +52,7 @@ export default class extends Controller {
     this.currentSchemeValue = scheme
     this.saveScheme()
     this.applyScheme()
+    this.updateSaveButtonState()
   }
 
   setTheme(event) {
@@ -55,6 +64,7 @@ export default class extends Controller {
     this.currentThemeValue = theme
     this.saveTheme()
     this.applyTheme()
+    this.updateSaveButtonState()
   }
 
   setAccent(event) {
@@ -66,6 +76,7 @@ export default class extends Controller {
     this.currentAccentValue = accent
     this.saveAccent()
     this.applyAccent()
+    this.updateSaveButtonState()
 
     // Close the dropdown
     if (this.hasAccentPanelTarget) {
@@ -95,6 +106,115 @@ export default class extends Controller {
     } else {
       Cookies.set('accent_color', this.currentAccentValue)
     }
+  }
+
+  // Snapshot the current state as "saved" — used to detect unsaved changes
+  snapshotSavedState() {
+    this.savedScheme = this.currentSchemeValue
+    this.savedTheme = this.currentThemeValue
+    this.savedAccent = this.currentAccentValue
+    this.updateSaveButtonState()
+  }
+
+  // Check if current preferences differ from the last saved state
+  hasUnsavedChanges() {
+    return this.currentSchemeValue !== this.savedScheme
+           || this.currentThemeValue !== this.savedTheme
+           || this.currentAccentValue !== this.savedAccent
+  }
+
+  // Show/hide the save button wrapper based on dirty state
+  updateSaveButtonState() {
+    if (!this.hasSaveWrapperTarget) return
+
+    if (this.hasUnsavedChanges()) {
+      this.saveWrapperTarget.classList.add('color-scheme-switcher__save-wrapper--visible')
+    } else {
+      this.saveWrapperTarget.classList.remove('color-scheme-switcher__save-wrapper--visible')
+    }
+  }
+
+  // Collect all current preference values from cookies
+  collectPreferences() {
+    return {
+      color_scheme: Cookies.get('color_scheme') || 'auto',
+      theme: Cookies.get('theme') || 'brand',
+      accent_color: Cookies.get('accent_color') || 'neutral',
+    }
+  }
+
+  // Save preferences to server via PATCH
+  async save(event) {
+    event.preventDefault()
+
+    if (!this.persistableValue || !this.saveUrlValue) return
+
+    const button = this.hasSaveButtonTarget ? this.saveButtonTarget : event.currentTarget
+    const preferences = this.collectPreferences()
+
+    button.disabled = true
+
+    try {
+      const response = await fetch(this.saveUrlValue, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content,
+        },
+        body: JSON.stringify({ preferences }),
+      })
+
+      if (response.ok) {
+        this.showSaveSuccess(button)
+        this.dispatch('saved', { detail: { preferences } })
+
+        // Collapse the button after showing success feedback
+        setTimeout(() => {
+          this.snapshotSavedState()
+        }, 1500)
+      } else {
+        this.showSaveError(button)
+      }
+    } catch {
+      this.showSaveError(button)
+    }
+  }
+
+  showSaveSuccess(button) {
+    button.classList.add('color-scheme-switcher__save--success')
+    setTimeout(() => {
+      button.classList.remove('color-scheme-switcher__save--success')
+    }, 2000)
+  }
+
+  showSaveError(button) {
+    button.classList.add('color-scheme-switcher__save--error')
+    setTimeout(() => {
+      button.classList.remove('color-scheme-switcher__save--error')
+    }, 2000)
+  }
+
+  // Public API: set any cookie-based preference
+  setPreference(key, value) {
+    const builtInKeys = ['color_scheme', 'theme', 'accent_color']
+
+    if (builtInKeys.includes(key)) {
+      Cookies.set(key, value)
+    } else {
+      // Custom keys use avo. prefix
+      Cookies.set(`avo.${key}`, value)
+    }
+  }
+
+  // Public API: read any cookie-based preference
+  getPreference(key) {
+    const builtInKeys = ['color_scheme', 'theme', 'accent_color']
+
+    if (builtInKeys.includes(key)) {
+      return Cookies.get(key)
+    }
+
+    return Cookies.get(`avo.${key}`)
   }
 
   applyScheme() {

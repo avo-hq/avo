@@ -1,6 +1,21 @@
-<div class="color-scheme-switcher"
-     data-controller="color-scheme-switcher toggle"
-     data-toggle-exemption-containers-value='["[data-controller*=\"color-scheme-switcher\"]"]'>
+<% persistable = Avo.configuration.user_preferences_configured? && _current_user.present? %>
+<% data_attrs = {
+  controller: "color-scheme-switcher toggle",
+  toggle_exemption_containers_value: '["[data-controller*=\"color-scheme-switcher\"]"]'
+}.merge(persistable ? { color_scheme_switcher_save_url_value: avo.user_preference_path, color_scheme_switcher_persistable_value: "true" } : {}) %>
+<%= tag.div class: "color-scheme-switcher", data: data_attrs do %>
+  <% if persistable %>
+    <div data-color-scheme-switcher-target="saveWrapper"
+         class="color-scheme-switcher__save-wrapper">
+      <button type="button"
+              data-color-scheme-switcher-target="saveButton"
+              data-action="click->color-scheme-switcher#save"
+              class="color-scheme-switcher__save">
+        <span class="color-scheme-switcher__save-text" data-default-text="Save" data-success-text="Saved!">Save</span>
+      </button>
+    </div>
+  <% end %>
+
   <button type="button"
           data-color-scheme-switcher-target="button"
           data-action="click->color-scheme-switcher#setTheme"
@@ -99,4 +114,5 @@
     <%= svg "heroicons/outline/moon", class: "color-scheme-switcher__icon" %>
     <span class="sr-only">Dark</span>
   </button>
-</div>
+
+<% end %>

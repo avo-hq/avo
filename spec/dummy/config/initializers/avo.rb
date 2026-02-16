@@ -34,6 +34,16 @@ Avo.configure do |config|
   # Shouldn't impact on community only if custom authorization service was configured.
   config.explicit_authorization = true
 
+  ## == User Preferences ==
+  config.user_preferences = {
+    load: ->(user:, request:) {
+      user.avo_preferences || {}
+    },
+    save: ->(user:, request:, key:, value:, preferences:) {
+      user.update(avo_preferences: preferences)
+    }
+  }
+
   ## == Customization ==
   config.id_links_to_resource = true
   config.full_width_container = false

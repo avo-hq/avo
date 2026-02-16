@@ -166,3 +166,58 @@
 .accent-rose .color-scheme-switcher__accent-badge-preview--rose {
   @apply inline-block;
 }
+
+/* Save button wrapper — slides in when dirty, collapses when clean */
+.color-scheme-switcher__save-wrapper {
+  @apply overflow-hidden inline-flex items-center;
+  max-width: 0;
+  opacity: 0;
+  transition: max-width 0.25s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.color-scheme-switcher__save-wrapper--visible {
+  max-width: 80px;
+  opacity: 1;
+}
+
+/* Save button */
+.color-scheme-switcher__save {
+  @apply inline-flex items-center justify-center px-2.5 py-1 rounded-md;
+  @apply text-xs font-medium whitespace-nowrap;
+  @apply bg-primary-500 text-white;
+  @apply hover:bg-primary-600 active:scale-95;
+  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
+  @apply border-0 cursor-pointer;
+  transition: background-color 0.15s, transform 0.15s;
+}
+
+.color-scheme-switcher__save--success {
+  @apply bg-green-500 hover:bg-green-500;
+}
+
+.color-scheme-switcher__save--success .color-scheme-switcher__save-text::after {
+  content: attr(data-success-text);
+}
+
+.color-scheme-switcher__save--success .color-scheme-switcher__save-text {
+  font-size: 0;
+}
+
+.color-scheme-switcher__save--success .color-scheme-switcher__save-text::after {
+  @apply text-xs;
+}
+
+.color-scheme-switcher__save--error {
+  @apply bg-red-500 hover:bg-red-500;
+  animation: color-scheme-switcher-shake 0.3s ease-in-out;
+}
+
+.color-scheme-switcher__save-text {
+  @apply leading-none;
+}
+
+@keyframes color-scheme-switcher-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}

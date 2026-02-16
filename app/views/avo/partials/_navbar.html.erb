@@ -10,7 +10,10 @@
     <%= render Avo::Pro::GlobalSearch::InputComponent.new(resource:) if defined?(Avo::Pro::GlobalSearch::InputComponent) %>
     <div class="flex justify-between w-full h-full items-center m-0">
       <%= render partial: "avo/partials/header" %>
-      <%= render partial: "avo/partials/color_scheme_switcher" %>
+      <div class="flex items-center space-x-2 rtl:space-x-reverse">
+        <%= render Avo::Notifications::BellComponent.new if defined?(Avo::Notifications::BellComponent) %>
+        <%= render partial: "avo/partials/color_scheme_switcher" %>
+      </div>
     </div>
   </div>
 <% end %>

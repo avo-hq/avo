@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_133623) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_13_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -174,9 +174,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_133623) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "'USD'::character varying", null: false
-    t.integer "rating", default: 0, null: false
+    t.string "price_currency", default: "USD", null: false
     t.string "sizes", default: [], array: true
+    t.integer "rating", default: 0, null: false
     t.index ["rating"], name: "index_products_on_rating"
     t.check_constraint "rating >= 0 AND rating <= 5", name: "rating_range_check"
   end
@@ -296,6 +296,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_133623) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: true
     t.string "slug"
+    t.jsonb "avo_preferences", default: {}
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
