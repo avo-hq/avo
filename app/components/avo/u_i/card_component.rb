@@ -17,6 +17,7 @@ class Avo::UI::CardComponent < Avo::BaseComponent
 
   class BodyComponent < Avo::BaseComponent
     prop :class
+    prop :data, default: -> { {}.freeze }
 
     def call
       tag.div class: class_names("card__body", @class), data: {**@data, item_index: @index} do
