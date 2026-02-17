@@ -5,7 +5,8 @@ import { saveAs } from 'file-saver'
 // TODO: move these to the avo_filters gem
 
 StreamActions.close_filters_dropdown = function () {
-  document.querySelector('.filters-dropdown-selector').classList.add('hidden')
+  const el = document.querySelector('.filters-dropdown-selector')
+  if (el) el.hidden = true
 }
 
 // Uses Turbo to refresh the page

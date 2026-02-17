@@ -1,9 +1,9 @@
 <%= content_tag :div, class: @classes, data: @data do %>
-  <div class="py-2 px-6 h-full w-full">
+  <div class="py-2 px-4 h-full w-full">
     <% if @field.as_html %>
       <%= sanitize @field.value %>
     <% else %>
-      <div class="font-semibold uppercase"><%= @field.value %></div>
+      <div class="font-medium uppercase"><%= @field.value %></div>
     <% end %>
   </div>
 <% end %>

@@ -48,6 +48,7 @@ fr:
     failed: Échec
     failed_to_find_attachment: Impossible de trouver la pièce jointe
     failed_to_load: Impossible de charger
+    'false': Faux
     file:
       one: fichier
       other: fichiers
@@ -135,6 +136,7 @@ fr:
     table_view: Vue table
     this_field_has_attachments_disabled: Ce champ a les pièces jointes désactivées.
     tools: Outils
+    'true': Vrai
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
     undo: annuler

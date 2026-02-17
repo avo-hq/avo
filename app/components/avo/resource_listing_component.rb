@@ -11,16 +11,7 @@ class Avo::ResourceListingComponent < Avo::BaseComponent
   prop :index_params
 
   def specific_view_component
-    case @resource.view_type.to_sym
-    when :grid
-      Avo::ViewTypes::GridComponent
-    when :map
-      Avo::ViewTypes::MapComponent
-    when :table
-      Avo::ViewTypes::TableComponent
-    else
-      raise "Invalid view type: #{@resource.view_type}"
-    end
+    Avo.view_type_manager.component_for(@resource.view_type)
   end
 
   def paginator_component

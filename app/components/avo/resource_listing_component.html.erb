@@ -17,6 +17,6 @@
       )) %>
     </div>
   <% else %>
-    <%= helpers.empty_state by_association: params[:related_name].present?, view_type: @resource.view_type, add_background: true %>
+    <%= helpers.empty_state by_association: params[:related_name].present? %>
   <% end %>
 <% end %>

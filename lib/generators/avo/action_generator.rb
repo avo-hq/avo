@@ -15,7 +15,7 @@ module Generators
       end
 
       def configuration_options
-        configuration = "  self.name = \"#{options[:name] || name.titleize}\""
+        configuration = "  self.name = \"#{options[:name] || name.humanize}\""
         configuration += "\n  self.standalone = true" if options[:standalone]
 
         configuration

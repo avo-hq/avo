@@ -46,6 +46,7 @@ zh-TW:
     failed: 失敗
     failed_to_find_attachment: 找不到附件
     failed_to_load: 載入失敗
+    'false': 假
     file:
       one: 檔案
       other: 檔案
@@ -133,6 +134,7 @@ zh-TW:
     table_view: 表格視圖
     this_field_has_attachments_disabled: 此欄位已禁用附件。
     tools: 工具
+    'true': 真
     type_to_search: 輸入以搜尋。
     unauthorized: 未經授權
     undo: 復原

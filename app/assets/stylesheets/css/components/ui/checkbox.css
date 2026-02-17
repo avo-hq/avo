@@ -1,58 +1,37 @@
-/* Checkbox Component - Based on Figma Design System */
-/* BEM Methodology: .checkbox (block), .checkbox__input (element), .checkbox--modifier (modifiers) */
+@layer base {
+  input[type=checkbox] {
+    @apply size-4 cursor-pointer rounded-sm border-1 border-tertiary bg-primary;
+    box-shadow: var(--box-shadow);
+  }
 
-/* ==========================================================================
-   Base Styles
-   ========================================================================== */
+  input[type=checkbox]:checked {
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%228%22%20viewBox%3D%220%200%2012%208%22%20fill%3D%22white%22%3E%3Cpath%20d%3D%22M10.1953%200.195262C10.4556%20-0.0650874%2010.8776%20-0.0650874%2011.138%200.195262C11.3983%200.455612%2011.3983%200.877621%2011.138%201.13797L4.4713%207.80464C4.21095%208.06499%203.78895%208.06499%203.5286%207.80464L0.195262%204.4713C-0.0650874%204.21095%20-0.0650874%203.78894%200.195262%203.5286C0.455612%203.26825%200.877621%203.26825%201.13797%203.5286L3.99995%206.39057L10.1953%200.195262Z%22%20fill%3D%22white%22%2F%3E%3C%2Fsvg%3E);
+    background-size: 70%;
+  }
 
-.checkbox__input {
-  @apply size-4 mx-3 cursor-pointer rounded-sm border-1 border-tertiary bg-primary;
-  box-shadow: var(--box-shadow);
-}
+  input[type=checkbox]:indeterminate {
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211%22%20height%3D%222%22%20viewBox%3D%220%200%2011%202%22%20fill%3D%22white%22%3E%3Cpath%20d%3D%22M10%200C10.3682%200%2010.6667%200.298477%2010.6667%200.666667C10.6667%201.03486%2010.3682%201.33333%2010%201.33333H0.666667C0.298477%201.33333%200%201.03486%200%200.666667C0%200.298477%200.298477%200%200.666667%200H10Z%22%20fill%3D%22white%22%2F%3E%3C%2Fsvg%3E);
+    background-size: 70%;
+  }
 
-/* ==========================================================================
-   State: Checked & Indeterminate
-   ========================================================================== */
+  input[type=checkbox]:checked,
+  input[type=checkbox]:indeterminate {
+    @apply bg-accent-content border-accent-content;
+  }
 
-.checkbox__input:checked,
-.checkbox__input:indeterminate {
-  @apply bg-accent-content border-accent-content;
-}
+  input[type=checkbox]:focus-visible,
+  input[type=checkbox]:hover:not(:disabled) {
+    @apply ring-2 ring-offset-2 ring-accent-content outline-none;
+  }
 
-/* ==========================================================================
-   State: Focus & Hover
-   ========================================================================== */
+  input[type=checkbox]:checked:focus-visible,
+  input[type=checkbox]:checked:hover:not(:disabled),
+  input[type=checkbox]:indeterminate:focus-visible,
+  input[type=checkbox]:indeterminate:hover:not(:disabled) {
+    @apply bg-accent-content border-accent-content;
+  }
 
-.checkbox__input:focus-visible,
-.checkbox__input:hover:not(:disabled) {
-  @apply ring-2 ring-offset-2 ring-accent-content outline-none;
-}
-
-/* Maintain checked/indeterminate appearance on focus/hover */
-.checkbox__input:checked:focus-visible,
-.checkbox__input:checked:hover:not(:disabled),
-.checkbox__input:indeterminate:focus-visible,
-.checkbox__input:indeterminate:hover:not(:disabled) {
-  @apply bg-accent-content border-accent-content;
-}
-
-/* ==========================================================================
-   State: Disabled
-   ========================================================================== */
-
-.checkbox__input:disabled {
-  @apply cursor-not-allowed opacity-60;
-}
-
-/* ==========================================================================
-   Modifier: Floating (row selector behavior)
-   ========================================================================== */
-
-.checkbox__input--floating {
-  @apply absolute start-0 top-0 mt-3 z-10 hidden;
-}
-
-.checkbox__input--floating:checked,
-.group:hover .checkbox__input--floating {
-  @apply block;
+  input[type=checkbox]:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
 }

@@ -46,6 +46,7 @@ uk:
     failed: Не вдалося
     failed_to_find_attachment: Не вдалося знайти вкладення
     failed_to_load: Не вдалося завантажити
+    'false': Хибно
     file:
       few: файли
       many: файлів
@@ -135,6 +136,7 @@ uk:
     table_view: Таблиця
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.
     tools: Інструменти
+    'true': Істина
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
     undo: Скасувати

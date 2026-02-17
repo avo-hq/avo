@@ -35,7 +35,7 @@
     </div>
   <% end %>
 
-  <%= render ui.panel_header(title:, description: @resource.description, index:, class: "!-mb-12") do |header| %>
+  <%= render ui.panel_header(title:, description: @resource.description, index:, class: "!-mb-8") do |header| %>
     <% header.with_controls do %>
       <% controls.each do |control| %>
         <%= render_control control %>
@@ -48,7 +48,7 @@
       <% end %>
     <% end %>
 
-    <% if @resource.get_external_link.present? || @resource.discreet_information.items.any? %>
+    <% if @resource.get_external_link.present? || @resource.discreet_information.items.any? || Rails.env.development? %>
       <% header.with_discreet_information do %>
         <% if @resource.get_external_link.present? %>
           <%= render Avo::DiscreetInformationComponent.new(
@@ -57,6 +57,15 @@
             target: :_blank,
             title: helpers.t("avo.visit_record_on_external_path"),
             icon: "tabler/outline/external-link"
+          ) %>
+        <% end %>
+
+        <% if Rails.env.development? %>
+          <%= render Avo::DiscreetInformationComponent.new(
+            as: :icon,
+            title: "Open in your editor",
+            url: helpers.editor_file_path(@resource),
+            icon: "tabler/outline/code"
           ) %>
         <% end %>
 

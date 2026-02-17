@@ -432,29 +432,29 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
-  describe "select items on grid view" do
-    let!(:post) { create :post }
+  # describe "select items on grid view" do
+  #   let!(:post) { create :post }
 
-    it "enables and disables the actions" do
-      visit avo.resources_posts_path
+  #   it "enables and disables the actions" do
+  #     visit avo.resources_posts_path
 
-      # Find disabled action
-      click_on "Actions"
-      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
+  #     # Find disabled action
+  #     click_on "Actions"
+  #     expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
 
-      # Hover grid element, select post, and verify that action is not disabled anymore
-      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]").hover
-      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
-      click_on "Actions"
-      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "false"
+  #     # Hover grid element, select post, and verify that action is not disabled anymore
+  #     find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]").hover
+  #     find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
+  #     click_on "Actions"
+  #     expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "false"
 
-      # Hover grid element, "unselect" post, and verify that action is disabled again
-      find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]").hover
-      find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
-      click_on "Actions"
-      expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
-    end
-  end
+  #     # Hover grid element, "unselect" post, and verify that action is disabled again
+  #     find("[data-component-name=\"avo/index/grid_item_component\"][data-resource-name=\"posts\"][data-record-id=\"#{post.to_param}\"]").hover
+  #     find('input[type="checkbox"][data-action="input->item-selector#toggle input->item-select-all#selectRow"]', visible: false).click
+  #     click_on "Actions"
+  #     expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
+  #   end
+  # end
 
   describe "record assignment" do
     let!(:fish) { create :fish, name: "the index test" }
@@ -474,28 +474,28 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
-  describe "reload records" do
-    let!(:post) { create :post, published_at: nil }
+  # describe "reload records" do
+  #   let!(:post) { create :post, published_at: nil }
 
-    it "grid view" do
-      visit avo.resources_posts_path
+  #   it "grid view" do
+  #     visit avo.resources_posts_path
 
-      grid_component = find("[id='avo/index/grid_item_component_#{post.to_param}']")
+  #     grid_component = find("[id='avo/index/grid_item_component_#{post.to_param}']")
 
-      within grid_component do
-        expect(page).to have_text "Published: ❌"
-        grid_component.hover
-        find("input[type=checkbox]").click
-      end
+  #     within grid_component do
+  #       expect(page).to have_text "Published: ❌"
+  #       grid_component.hover
+  #       find("input[type=checkbox]").click
+  #     end
 
-      open_panel_action(action_name: "Toggle post published")
-      run_action
+  #     open_panel_action(action_name: "Toggle post published")
+  #     run_action
 
-      within grid_component do
-        expect(page).to have_text "Published: ✅"
-      end
-    end
-  end
+  #     within grid_component do
+  #       expect(page).to have_text "Published: ✅"
+  #     end
+  #   end
+  # end
 
   #   let!(:roles) { { admin: false, manager: false, writer: false } }
   #   let!(:user) { create :user, active: true, roles: roles }

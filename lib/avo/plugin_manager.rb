@@ -19,6 +19,10 @@ module Avo
       @plugins << Plugin.new(name:, priority: priority)
     end
 
+    def register_view_type(name, component:, icon:, active_icon:, translation_key: nil)
+      Avo.view_type_manager.register(name, component:, icon:, active_icon:, translation_key:)
+    end
+
     def register_field(method_name, klass)
       # Avo.boot method is executed multiple times.
       # During the first run, it correctly loads descendants of Avo::Fields::Base.

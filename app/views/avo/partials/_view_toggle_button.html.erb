@@ -1,35 +1,12 @@
 <% if available_view_types.count > 1 %>
-  <%
-    info = {
-      table: {
-        icon: "tabler/outline/layout-list",
-        active_icon: "tabler/filled/layout-list",
-        translation_key: 'avo.table_view',
-      },
-      grid: {
-        icon: "tabler/outline/layout-grid",
-        active_icon: "tabler/filled/layout-grid",
-        translation_key: 'avo.grid_view',
-      },
-      map: {
-        icon: "tabler/outline/compass",
-        active_icon: "tabler/filled/compass",
-        translation_key: 'avo.map_view',
-      },
-      list: {
-        icon: "tabler/outline/layout-list",
-        active_icon: "tabler/filled/layout-list",
-        translation_key: 'avo.list_view',
-      },
-    }
-  %>
   <div class="flex">
     <div class="button-group">
       <% available_view_types.each do |type| %>
+        <% view_info = Avo.view_type_manager.find(type) %>
         <% is_active_view = view_type.to_s == type.to_s %>
 
         <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
-          icon: is_active_view ? info[type][:active_icon] : info[type][:icon],
+          icon: is_active_view ? view_info&.[](:active_icon) : view_info&.[](:icon),
           color: :primary,
           class: is_active_view ? "button--active" : "",
           title: t('avo.switch_to_view', view_type: type),
