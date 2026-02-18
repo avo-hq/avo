@@ -1,4 +1,4 @@
-<div class="p-8 space-y-8">
+<div class="p-8 space-y-8 bg-white">
   <div class="text-lg font-semibold text-content mb-6">Search Input — Size variants & shortcut</div>
 
   <div class="grid grid-cols-3 gap-6">
@@ -62,6 +62,41 @@
         placeholder: "Search",
         with_shortcut: false,
         classes: "w-full input--size-lg"
+      ) %>
+    </div>
+
+    <%# Row 3: Disabled with shortcut %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled with shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_sm_disabled",
+        placeholder: "Search",
+        with_shortcut: true,
+        disabled: true,
+        classes: "w-full input--size-sm",
+        value: "Disabled value"
+      ) %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled with shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_md_disabled",
+        placeholder: "Search",
+        with_shortcut: true,
+        disabled: true,
+        classes: "w-full input--size-md",
+        value: "Disabled value"
+      ) %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled with shortcut</div>
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "q_lg_disabled",
+        placeholder: "Search",
+        with_shortcut: true,
+        disabled: true,
+        classes: "w-full input--size-lg",
+        value: "Disabled value Disabled value Disabled value Disabled value Disabled value"
       ) %>
     </div>
   </div>

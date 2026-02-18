@@ -75,7 +75,8 @@
    State: Focus (via focus-within for native input focus)
    ========================================================================== */
 
-.file-upload-input:has(.file-upload-input__native-input:focus-visible) {
+/* Native input is inside the wrapper div; use :focus-within since the div receives no focus, the input does */
+.file-upload-input:has(.file-upload-input__native-input:focus-within) {
   box-shadow: var(--box-shadow-focus);
 }
 

@@ -15,4 +15,16 @@ class InputComponentPreview < Lookbook::Preview
   def password
     render_with_template(template: "input_component_preview/password")
   end
+
+  def search
+    render_with_template(template: "input_component_preview/search")
+  end
+
+  def color
+    render_with_template(template: "input_component_preview/color")
+  end
+
+  def range
+    render_with_template(template: "input_component_preview/range")
+  end
 end
