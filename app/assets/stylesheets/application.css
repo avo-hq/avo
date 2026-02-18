@@ -51,7 +51,6 @@
   --text-tiny: 0.625rem;
 }
 
-@plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
 /* Add dark mode variant */
