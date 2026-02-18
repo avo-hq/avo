@@ -373,10 +373,7 @@ RSpec.describe "Filters", type: :system do
         open_filters_menu
 
         expect(page).to have_text "Apply birthday filter"
-
-        open_picker
-        set_picker_day "#{Date::MONTHNAMES[current_month]} 15, #{current_year}"
-        set_picker_day "#{Date::MONTHNAMES[current_month]} 17, #{current_year}"
+        set_picker_dates text_input, "#{current_year}-#{current_month}-15", "#{current_year}-#{current_month}-17"
 
         click_on "Apply birthday filter"
 
@@ -418,10 +415,7 @@ RSpec.describe "Filters", type: :system do
 
         expect(page).to have_text "Filter by start time"
 
-        open_picker
-        set_picker_hour 16
-        set_picker_minute 15
-        set_picker_second 18
+        set_picker_time text_input, hour: 16, minute: 15, second: 18
 
         all("button", text: "Filter by start time").first.trigger("click")
 
