@@ -4,7 +4,9 @@
     id: "upload_lg",
     description: "Accepts .jpg and .png",
     classes: "w-full"
-  ) %>
+  ) do %>
+    <input type="file" id="upload_lg" name="upload_lg" accept=".jpg,.png">
+  <% end %>
 
   <h3 class="text-sm font-semibold text-content mt-4">Size: md and sm</h3>
   <div class="flex items-center gap-4">
@@ -13,12 +15,16 @@
       size: :md,
       description: "Accepts .jpg and .png",
       classes: "w-full"
-    ) %>
+    ) do %>
+      <input type="file" id="upload_md" name="upload_md" accept=".jpg,.png">
+    <% end %>
 
     <%= render Avo::UI::FileUploadInputComponent.new(
       id: "upload_sm",
       size: :sm
-    ) %>
+    ) do %>
+      <input type="file" id="upload_sm" name="upload_sm" >
+    <% end %>
   </div>
 
   <h3 class="text-sm font-semibold text-content mt-4">State: Disabled</h3>
@@ -27,5 +33,7 @@
     disabled: true,
     description: "Accepts .jpg and .png",
     classes: "w-full"
-  ) %>
+  ) do %>
+    <input type="file" id="upload_disabled" name="upload_disabled" disabled>
+  <% end %>
 </div>
