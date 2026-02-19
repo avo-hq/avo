@@ -58,6 +58,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant theme-slate (&:where(.theme-slate, .theme-slate *));
 @custom-variant theme-stone (&:where(.theme-stone, .theme-stone *));
+@custom-variant theme-gray (&:where(.theme-gray, .theme-gray *));
+@custom-variant theme-zinc (&:where(.theme-zinc, .theme-zinc *));
+@custom-variant theme-neutral (&:where(.theme-neutral, .theme-neutral *));
+@custom-variant theme-taupe (&:where(.theme-taupe, .theme-taupe *));
+@custom-variant theme-mauve (&:where(.theme-mauve, .theme-mauve *));
+@custom-variant theme-mist (&:where(.theme-mist, .theme-mist *));
+@custom-variant theme-olive (&:where(.theme-olive, .theme-olive *));
 
 @custom-variant has-cover (&:where(.has-cover *));
 @custom-variant has-sidebar (&:where(.has-sidebar *));

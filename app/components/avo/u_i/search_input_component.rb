@@ -9,8 +9,4 @@ class Avo::UI::SearchInputComponent < Avo::BaseComponent
   prop :with_shortcut, default: false
   prop :classes
   prop :data, default: -> { {} }
-
-  def mac?
-    helpers.request.user_agent.to_s.include?("Mac")
-  end
 end

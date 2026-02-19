@@ -143,6 +143,10 @@ module Avo
       end
     end
 
+    def os_class
+      request.user_agent.to_s.include?("Mac") ? "os-mac" : "os-pc"
+    end
+
     # Check if the current locale is RTL (Right-to-Left)
     def rtl?
       Avo.configuration.rtl?

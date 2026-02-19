@@ -28,18 +28,6 @@ Mousetrap.bind('r r r', () => {
   window.StreamActions.turbo_reload()
 })
 
-function isMac() {
-  const isMac = window.navigator.userAgent.indexOf('Mac OS X')
-
-  if (isMac >= 0) {
-    document.body.classList.add('os-mac')
-    document.body.classList.remove('os-pc')
-  } else {
-    document.body.classList.add('os-pc')
-    document.body.classList.remove('os-mac')
-  }
-}
-
 // Add the shift-pressed class to the body when the shift key is pressed
 document.addEventListener('keydown', (event) => {
   if (event.shiftKey) {
@@ -93,7 +81,6 @@ document.addEventListener('turbo:before-stream-render', () => {
 
 document.addEventListener('turbo:load', () => {
   initTippy()
-  isMac()
 
   // Restore scroll position after r r r turbo reload
   if (scrollTop) {
