@@ -5,7 +5,7 @@
 
   <% if sidebars.any? { |sidebar| sidebar.visible_items.any? } %>
     <% panel.with_sidebar do %>
-      <div class="justify-between space-y-4">
+      <div class="justify-between space-y-4 w-full">
         <% sidebars.each_with_index do |sidebar, index| %>
           <%= render Avo::ResourceSidebarComponent.new resource: @resource, sidebar: sidebar, params: params, view: view, form: @form, index: index %>
         <% end %>
