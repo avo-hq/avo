@@ -118,6 +118,7 @@ ja:
     resource_destroyed: レコードが破棄されました
     resource_updated: レコードが更新されました
     resources: リソース
+    reupload_file: Reupload %{item}
     run: 実行
     save: 保存
     search:

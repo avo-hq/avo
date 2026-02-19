@@ -44,6 +44,7 @@ en:
     updated_at: Updated at
     download: Download
     download_file: Download file
+    reupload_file: Reupload %{item}
     download_item: Download %{item}
     edit: edit
     edit_item: edit %{item}

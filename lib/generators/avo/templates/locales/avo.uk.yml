@@ -118,6 +118,7 @@ uk:
     resource_destroyed: Запис видалено
     resource_updated: Запис оновлено
     resources: Ресурси
+    reupload_file: Reupload %{item}
     run: Виконати
     save: Зберегти
     search:

@@ -2,7 +2,6 @@
   @apply relative inline-flex;
 }
 
-
 /* Closed state - hidden by default */
 .dropdown-popover {
   @apply absolute z-10 rounded-lg bg-primary top-full end-0 bottom-auto start-auto mt-2;
@@ -21,6 +20,14 @@
 
 .dropdown-menu {
   @apply flex flex-col w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
+}
+
+.dropdown-menu--scrollable {
+  @apply overflow-y-auto;
+}
+
+.dropdown-menu--standalone {
+  box-shadow: var(--box-shadow-card);
 }
 
 /* ==========================================================================

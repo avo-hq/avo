@@ -118,6 +118,7 @@ fr:
     resource_destroyed: Ressource détruite
     resource_updated: Ressource mise à jour
     resources: Ressources
+    reupload_file: Reupload %{item}
     run: Exécuter
     save: Enregistrer
     search:

@@ -1,0 +1,73 @@
+<div class="p-8 space-y-8 bg-white">
+  <div class="text-lg font-semibold text-content mb-6">Color Input — Size Variants & States</div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <%# Header row %>
+    <div class="text-sm font-semibold text-content">Small (sm)</div>
+    <div class="text-sm font-semibold text-content">Medium (md)</div>
+    <div class="text-sm font-semibold text-content">Large (lg)</div>
+
+    <%# Row 1: Default %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="color_sm" type="color" value="#3b82f6" autocomplete="off" class="input--size-sm">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="color_md" type="color" value="#3b82f6" autocomplete="off" class="input--size-md">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Default</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="color_lg" type="color" class="input--size-lg" value="#3b82f6" autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Row 2: Disabled %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="color_sm_disabled" type="color" class="input--size-sm" value="#3b82f6" disabled autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="color_md_disabled" type="color" value="#3b82f6" disabled autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <div class="field-wrapper--full-width">
+        <%= tag.div class: "field-wrapper__content-wrapper" do %>
+          <input name="color_lg_disabled" type="color" class="input--size-lg" value="#3b82f6" disabled autocomplete="off">
+          <span class="field-wrapper__help max-w-sm">Help text</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

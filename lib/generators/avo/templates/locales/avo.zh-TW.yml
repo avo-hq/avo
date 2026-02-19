@@ -116,6 +116,7 @@ zh-TW:
     resource_destroyed: 記錄已刪除
     resource_updated: 記錄已更新
     resources: 資源
+    reupload_file: Reupload %{item}
     run: 執行
     save: 保存
     search:

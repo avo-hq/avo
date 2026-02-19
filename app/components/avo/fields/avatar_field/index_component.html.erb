@@ -1,7 +1,9 @@
 <%= index_field_wrapper(**field_wrapper_args, flush: true, dash_if_blank: false, center_content: true) do %>
   <% if @resource.avatar.present? && @resource.avatar.value.present? %>
     <%= render Avo::UI::AvatarComponent.new src: helpers.main_app.url_for(@resource.avatar.value), shape: :square, type: :avatar, size: :small %>
-  <% else %>
+  <% elsif @resource.initials.present? %>
     <%= render Avo::UI::AvatarComponent.new shape: :square, type: :initials, size: :small, initials: @resource.initials %>
+  <% else %>
+    <%= render Avo::UI::AvatarComponent.new shape: :square, type: :placeholder, size: :small %>
   <% end %>
 <% end %>

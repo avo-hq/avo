@@ -15,7 +15,7 @@ RSpec.describe "DisplayPersistedAttachment", type: :system do
     it "displays persisted image on edit view" do
       visit "/admin/resources/posts/#{post.to_param}/edit"
       fill_in "Name", with: ""
-      attach_file Rails.root.join("db", "seed_files", "dummy-image.jpg"), id: "post_cover"
+      attach_file Rails.root.join("db", "seed_files", "dummy-image.jpg"), id: "post_cover", make_visible: true
 
       click_button "Save"
       wait_for_loaded
@@ -38,7 +38,7 @@ RSpec.describe "DisplayPersistedAttachment", type: :system do
     it "displays persisted audio on edit view" do
       visit "/admin/resources/posts/#{post.to_param}/edit"
       fill_in "Name", with: ""
-      attach_file Rails.root.join("db", "seed_files", "dummy-audio.mp3"), id: "post_audio"
+      attach_file Rails.root.join("db", "seed_files", "dummy-audio.mp3"), id: "post_audio", make_visible: true
 
       click_button "Save"
       wait_for_loaded
