@@ -66,6 +66,9 @@
 @custom-variant theme-mist (&:where(.theme-mist, .theme-mist *));
 @custom-variant theme-olive (&:where(.theme-olive, .theme-olive *));
 
+@custom-variant os-mac (&:where(.os-mac, .os-mac *));
+@custom-variant os-pc (&:where(.os-pc, .os-pc *));
+
 @custom-variant has-cover (&:where(.has-cover *));
 @custom-variant has-sidebar (&:where(.has-sidebar *));
 @custom-variant has-record-selector (&:where(.has-record-selector *));
@@ -183,14 +186,6 @@
 
   .turbo-progress-bar {
     @apply bg-primary-400;
-  }
-
-  body.os-mac .mac\:hidden {
-    display: none;
-  }
-
-  body.os-pc .pc\:hidden {
-    display: none;
   }
 
   body.modal-open {
