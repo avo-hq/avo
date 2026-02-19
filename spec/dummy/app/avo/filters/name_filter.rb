@@ -20,4 +20,12 @@ class Avo::Filters::NameFilter < Avo::Filters::TextFilter
       query.where("name LIKE ?", "%#{value}%")
     end
   end
+
+  def react
+    members_filter = applied_filters["Avo::Filters::MembersFilter"]
+
+    if members_filter.is_a?(Hash) && members_filter["has_members"]
+      "react:test"
+    end
+  end
 end
