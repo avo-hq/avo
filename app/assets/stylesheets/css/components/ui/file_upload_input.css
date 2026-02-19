@@ -25,13 +25,14 @@
   @apply text-xs font-normal leading-4 text-content-secondary;
 }
 
+/* Wrapper fills the drop zone; input must fill wrapper to receive drops anywhere */
 .file-upload-input__native-input {
-  @apply absolute inset-0 h-full w-full cursor-pointer opacity-0;
+  @apply absolute inset-0 h-full w-full cursor-pointer;
 }
 
 .file-upload-input__native-input input[type="file"]::-webkit-file-upload-button,
 .file-upload-input__native-input input {
-  @apply cursor-pointer;
+  @apply absolute inset-0 size-full cursor-pointer opacity-0;
 }
 
 /* ==========================================================================
