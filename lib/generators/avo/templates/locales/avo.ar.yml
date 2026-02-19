@@ -126,6 +126,7 @@ ar:
     resource_destroyed: تم حذف السجل
     resource_updated: تم تحديث السجل
     resources: المصادر
+    reupload_file: Reupload %{item}
     run: تشغيل
     save: حفظ
     search:

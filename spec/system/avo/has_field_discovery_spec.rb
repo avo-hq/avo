@@ -184,7 +184,8 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
 
       within('[data-field-id="cv"]') do
         # Verify it shows "Choose File" instead of "Choose Files"
-        expect(page).to have_css('input[type="file"]:not([multiple])')
+        # File input is hidden (opacity-0) for custom drag-and-drop UI
+        expect(page).to have_css('input[type="file"]:not([multiple])', visible: false)
       end
     end
   end

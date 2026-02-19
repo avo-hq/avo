@@ -51,7 +51,6 @@
   --text-tiny: 0.625rem;
 }
 
-@plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
 /* Add dark mode variant */
@@ -103,6 +102,7 @@
   @import "./css/fields/status.css";
   @import "./css/fields/code.css";
   @import "./css/fields/progress.css";
+  @import "./css/fields/key_value.css";
   @import "./css/fields/trix.css";
   @import "./css/fields/tags.css";
   @import "./css/fields/tiptap.css";
@@ -116,8 +116,11 @@
   @import "./css/components/ui/description_list.css";
   @import "./css/components/ui/tabs.css";
   @import "./css/components/ui/badge.css";
+  @import "./css/components/ui/file_upload_input.css";
+  @import "./css/components/ui/file_upload_item.css";
   @import "./css/components/ui/dropdown.css";
   @import "./css/components/ui/radio_button.css";
+  @import "./css/components/input.css";
 
   @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";
@@ -207,6 +210,10 @@
     dd {
       @apply ms-0 col-start-2;
     }
+  }
+
+  select {
+    @apply text-foreground bg-background border-tertiary;
   }
 }
 

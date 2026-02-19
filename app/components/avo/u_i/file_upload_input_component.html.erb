@@ -1,0 +1,26 @@
+<%= content_tag :label, for: @id, class: class_names(
+    "file-upload-input",
+    "file-upload-input--#{@size}",
+    {
+      "file-upload-input--disabled": @disabled
+    },
+    @classes) do %>
+  <span class="file-upload-input__icon" aria-hidden="true">
+    <%= svg "tabler/outline/upload" %>
+  </span>
+
+  <% if @size != :sm %>
+    <span class="file-upload-input__content">
+      <span class="file-upload-input__title">
+        <%= @title %>
+        <span class="file-upload-input__subtitle"><%= @subtitle %></span>
+      </span>
+
+      <%= content_tag(:span, @description, class: "file-upload-input__description") %>
+    </span>
+  <% end %>
+
+  <div class="file-upload-input__native-input">
+    <%= content if content.present? %>
+  </div>
+<% end %>

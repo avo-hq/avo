@@ -6,24 +6,32 @@
   <% end %>
 
   <% if can_upload_file? %>
+    <% upload_input_id = "#{@form.object_name}_#{@field.id}" %>
     <div data-controller="clear-input">
-      <div class="mt-2 flex items-center">
+      <%= render Avo::UI::FileUploadInputComponent.new(
+        id: upload_input_id,
+        title: @field.is_audio ? "Upload audio" : "Click to upload",
+        subtitle: "or drag and drop",
+        description: @field.accept.present? ? "Accepts #{@field.accept}" : nil,
+        disabled: disabled?,
+      ) do %>
         <%= @form.file_field @field.id,
+          id: upload_input_id,
           accept: @field.accept,
           data: @field.get_html(:data, view: view, element: :input)
             .merge(
               action: "change->clear-input#showClearButton",
-              clear_input_target: "input"
+              clear_input_target: "input",
+              file_upload_input_target: "input"
             ),
           direct_upload: @field.direct_upload,
           disabled: disabled?,
           style: @field.get_html(:style, view: view, element: :input),
-          autofocus: @autofocus,
-          class: "w-full"
+          autofocus: @autofocus
         %>
-      </div>
+      <% end %>
       <%= content_tag :button,
-          class: "self-center hidden font-semibold text-xs text-red-600 p-1",
+          class: "self-center hidden font-semibold text-xs text-red-600 p-1 cursor-pointer mt-2",
           id: :reset,
           type: :button,
           data: {

@@ -18,6 +18,7 @@
   --color-success-content: var(--color-green-700);
   --color-info: var(--color-blue-400);
   --color-info-content: var(--color-blue-700);
+  --color-info-foreground: var(--color-blue-500);
   --color-warning: var(--color-yellow-500);
   --color-warning-content: var(--color-yellow-700);
   --color-danger: var(--color-red-500);
@@ -27,6 +28,12 @@
 
   --box-shadow-card: 0px 8px 16px 0px rgba(0, 0, 0, 0.04);
   --box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+
+  --box-shadow-active: 0 0 0 2px var(--color-info-foreground);
+  --box-shadow-error: 0 0 5px 1px var(--color-red-600), 0 0 0 1px var(--color-red-600), 0 0 0 3px var(--color-red-300);
+  --box-shadow-success: 0 0 5px 1px var(--color-green-600), 0 0 0 1px var(--color-green-600), 0 0 0 3px var(--color-green-300);
+  --box-shadow-focus: 0 0 0 1px var(--color-primary), 0 0 0 3px var(--color-info-foreground);
+  --box-shadow-search-input-shortcut: 0 -1.5px 0 1px var(--color-secondary) inset, 0 0.8px 0 1.3px var(--color-primary) inset;
 
   /* foundations - Light Mode */
   --color-background: var(--color-avo-neutral-25);

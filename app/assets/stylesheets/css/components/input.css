@@ -1,0 +1,280 @@
+:root {
+  --input-py: --spacing(1);
+  --input-font-size: --spacing(3.5);
+  --input-leading: --spacing(5.5);
+  --input-border-w: 1px;
+
+  --input-icon-offset: --spacing(2);
+  --input-icon-size: --spacing(4.5);
+  --input-icon-gap: --spacing(1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+@layer base {
+  select,
+  textarea,
+  .textarea-field,
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+  .input-field,
+  tags.tagify {
+    @apply appearance-none inline-flex bg-primary text-content
+          rounded-lg border border-tertiary ps-2 pe-2 font-normal overflow-hidden
+          text-ellipsis whitespace-nowrap relative w-full;
+
+    /* box-shadow: var(--box-shadow); */
+    padding-block: var(--input-py);
+    font-size: var(--input-font-size);
+    line-height: var(--input-leading);
+  }
+
+  tags.tagify {
+    @apply overflow-visible whitespace-normal p-2 text-clip;
+  }
+
+  textarea,
+  .textarea-field {
+    @apply block text-ellipsis whitespace-normal wrap-break-word;
+  }
+
+  /* ==========================================================================
+    Size Variants — Tailwind utilities + token overrides
+    ========================================================================== */
+
+  .input--size-sm {
+    --input-py: --spacing(1);
+    --input-font-size: --spacing(3);
+    --input-leading: --spacing(4);
+
+    --input-icon-size: --spacing(4);
+  }
+
+  .input--size-md {
+    --input-py: --spacing(1);
+    --input-font-size: --spacing(3.5);
+    --input-leading: --spacing(5.5);
+
+    --input-icon-size: --spacing(4.5);
+  }
+
+  .input--size-lg {
+    --input-py: --spacing(2);
+    --input-font-size: --spacing(3.5);
+    --input-leading: --spacing(5.5);
+
+    --input-icon-size: --spacing(5);
+  }
+
+  /* For icons and with shortcut search command + k  where the size depends on the parent size*/
+  :has(> .input--size-sm) {
+    --input-icon-size: --spacing(4);
+    --input-leading: --spacing(3.5);
+  }
+  :has(> .input--size-md) {
+    --input-icon-size: --spacing(4.5);
+    --input-leading: --spacing(4);
+  }
+  :has(> .input--size-lg) {
+    --input-icon-size: --spacing(5);
+    --input-leading: --spacing(4.5);
+  }
+
+  /* ==========================================================================
+    Disabled State
+    ========================================================================== */
+
+  /* Disabled input — cursor on parent (input has pointer-events-none) */
+  .field-wrapper__content-wrapper:has(input:disabled),
+  .field-wrapper__content-wrapper:has(select:disabled),
+  .field-wrapper__content-wrapper:has(textarea:disabled),
+  .field-wrapper__content-wrapper:has(.input-field:disabled) {
+    @apply cursor-not-allowed;
+  }
+
+  select:disabled,
+  textarea:disabled,
+  .textarea-field:disabled,
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):disabled,
+  .input-field:disabled {
+    @apply pointer-events-none text-content-secondary;
+  }
+  /* ==========================================================================
+    Placeholder
+    ========================================================================== */
+
+  *::placeholder {
+    @apply text-content-secondary;
+  }
+
+  /* ==========================================================================
+    States: Focus
+    ========================================================================== */
+
+  select:focus-visible,
+  textarea:focus-visible,
+  .textarea-field:focus-visible,
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus-visible,
+  .input-field:focus-visible
+  {
+    @apply outline-none;
+    box-shadow: var(--box-shadow-focus);
+  }
+}
+
+@layer component {
+  /* ==========================================================================
+    States: Error, Success
+    ========================================================================== */
+  select.input-field--error,
+  textarea.input-field--error,
+  .textarea-field.input-field--error,
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]).input-field--error,
+  .input-field.input-field--error
+  {
+    box-shadow: var(--box-shadow-error);
+  }
+
+  select.input-field--success,
+  textarea.input-field--success,
+  .textarea-field.input-field--success,
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]).input-field--success,
+  .input-field.input-field--success {
+    box-shadow: var(--box-shadow-success);
+  }
+
+  /* ==========================================================================
+    Color Input
+    ========================================================================== */
+
+  input[type="color"] {
+    @apply cursor-pointer;
+
+    height: calc(var(--input-leading) + var(--input-py) * 2 + var(--input-border-w) * 2);
+  }
+
+  /* ==========================================================================
+    Password Visibility
+    ========================================================================== */
+
+  .input-field__password-toggle {
+    @apply absolute text-content-secondary inset-y-0 end-0 flex items-center cursor-pointer;
+
+    padding-inline-end: var(--input-icon-offset);
+  }
+
+  /* Wrapper-based selector: reliably targets password inputs with visibility toggle
+     (User create resource, password confirmation, etc.) */
+  .field-wrapper__input:has(.input-field__password-toggle) input {
+    padding-inline-end: calc(
+      var(--input-icon-size) +
+      var(--input-icon-offset) +
+      var(--input-icon-gap)
+    );
+  }
+
+  /* Unified icon sizing — reads from size token */
+  .input-field__password-toggle svg,
+  .input-wrapper--loading::after,
+  .search-input__prefix svg {
+    @apply shrink-0;
+    width: var(--input-icon-size);
+    height: var(--input-icon-size);
+  }
+
+  /* Loading: show spinner only — hide visibility toggle */
+  .input-wrapper--loading .input-field__password-toggle {
+    @apply hidden;
+  }
+
+  /* ==========================================================================
+    Date Input
+    ========================================================================== */
+
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  .input-field--date::-webkit-calendar-picker-indicator {
+    @apply opacity-0 absolute end-0 top-0 h-full cursor-pointer;
+  }
+
+  input[type="date"],
+  .input-field--date {
+    @apply bg-no-repeat relative;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E");
+    background-position: right var(--input-icon-offset) center;
+    background-size: var(--input-icon-size);
+  }
+
+  input[type="date"]:disabled,
+  .input-field--date:disabled {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12'/%3E%3Cpath d='M16 3v4'/%3E%3Cpath d='M8 3v4'/%3E%3Cpath d='M4 11h16'/%3E%3Cpath d='M11 15h1'/%3E%3Cpath d='M12 15v3'/%3E%3C/svg%3E");
+  }
+
+  /* ==========================================================================
+    Search Input
+    ========================================================================== */
+
+  .search-input {
+    @apply relative w-full;
+  }
+
+  .search-input__prefix {
+    @apply absolute inset-y-0 start-0 flex items-center pointer-events-none text-content-secondary z-10 ps-[var(--input-icon-offset)];
+  }
+
+  /* Input padding — prefix side, suffix side (no shortcut / with shortcut) */
+  input[type=search],
+  .search-input__input {
+    padding-inline-start: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) +
+      var(--input-icon-gap)
+    );
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-gap)
+    );
+  }
+
+  /* Mac: ⌘ + K — narrower */
+  .search-input:has(.mac_class) .search-input__input--with-shortcut {
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) * 2 +
+      var(--input-icon-gap) * 3
+    );
+  }
+
+  /* PC: CTRL + K — wider (only one abbr in DOM, so :has() matches exclusively) */
+  .search-input:has(.pc_class) .search-input__input--with-shortcut {
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) * 3 +
+      var(--input-icon-gap) * 4
+    );
+  }
+  /* Suffix (shortcut) */
+  .search-input__suffix {
+    @apply absolute inset-y-0 end-0 flex items-center text-content-secondary pointer-events-none z-10 gap-1;
+    padding-inline-end: var(--input-icon-offset);
+  }
+
+  .search-input__shortcut {
+    @apply text-xs font-semibold py-px px-1 border border-secondary rounded-sm bg-secondary min-w-5 flex items-center justify-center;
+
+    line-height: var(--input-leading);
+    box-shadow: var(--box-shadow-search-input-shortcut);
+  }
+
+  /* ==========================================================================
+    Range Input
+    ========================================================================== */
+
+  input[type="range"] {
+    @apply accent-accent ;
+  }
+
+  /* Thumb (WebKit + Firefox) */
+  input[type="range"]::-webkit-slider-thumb {
+    @apply accent-accent-content bg-accent-content;
+  }
+}

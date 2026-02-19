@@ -48,6 +48,7 @@ module Avo
       attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
+      attr_reader :size
       attr_reader :for_presentation_only
       attr_reader :for_attribute
 
@@ -104,6 +105,7 @@ module Avo
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]
         @stacked = args[:stacked]
+        @size = args[:size] || :md
         @for_presentation_only = args[:for_presentation_only] || false
         @resource = args[:resource]
         @action = args[:action]
