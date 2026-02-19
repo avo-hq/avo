@@ -163,8 +163,9 @@
     padding-inline-end: var(--input-icon-offset);
   }
 
-  input:has(~ .input-field__password-toggle),
-  .input-field:has(~ .input-field__password-toggle) {
+  /* Wrapper-based selector: reliably targets password inputs with visibility toggle
+     (User create resource, password confirmation, etc.) */
+  .field-wrapper__input:has(.input-field__password-toggle) input {
     padding-inline-end: calc(
       var(--input-icon-size) +
       var(--input-icon-offset) +
