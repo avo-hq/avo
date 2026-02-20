@@ -1,6 +1,6 @@
 <%= content_tag :div,
   id: "#{self.class.to_s.underscore}_#{@resource.record_param}",
-  class: "relative bg-white rounded-sm shadow-modal flex flex-col group",
+  class: "grid-card",
   data: {
     component_name: self.class.to_s.underscore,
     resource_name: @resource.class.to_s,
@@ -9,19 +9,36 @@
     **(try(:drag_reorder_item_data_attributes) || {}),
   } do %>
   <%= content_tag :div,
-    class: class_names("relative w-full pb-3/4 rounded-t-sm overflow-hidden", html(:cover, :classes)),
+    class: class_names("grid-card__image", html(:cover, :classes)),
     style: html(:cover, :style) do %>
-    <%= render Avo::RowSelectorComponent.new(floating: true, checked: @grid_item_checked) if @resource.record_selector %>
     <%= render_cover %>
-    <%= render_badge %>
+    <%= render Avo::RowSelectorComponent.new(checked: @grid_item_checked) if @resource.record_selector %>
   <% end %>
-  <div class="grid grid-cols-1 place-content-between p-4 h-full">
-    <div class="mb-4 h-full flex flex-col space-between">
-      <%= render_title %>
-      <%= render_body %>
-    </div>
-    <div class="place-self-end w-full">
-      <%= render(Avo::Index::ResourceControlsComponent.new(resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, view_type: :grid, actions: @actions)) %>
-    </div>
+  <div class="grid-card__actions-row">
+    <%= render_badge %>
+    <%= render Avo::UI::DropdownComponent.new do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::ButtonComponent.new(
+          icon: "tabler/outline/dots-vertical",
+          size: :lg,
+          class: "grid-card__action",
+          data: {action: component.action}
+        ) %>
+      <% end %>
+      <% component.with_items do %>
+        <%= render Avo::Index::ResourceControlsDropdownComponent.new(
+          resource: @resource,
+          reflection: @reflection,
+          parent_record: @parent_record,
+          parent_resource: @parent_resource,
+          view_type: :grid,
+          actions: @actions
+        ) %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="grid-card__content">
+    <%= render_title %>
+    <%= render_body %>
   </div>
 <% end %>
