@@ -1,7 +1,13 @@
 @layer base {
+  input[type=radio],
   input[type=checkbox] {
     @apply size-4 cursor-pointer rounded-sm border-1 border-tertiary bg-primary;
+
     box-shadow: var(--box-shadow);
+  }
+
+  input[type=radio] {
+    @apply rounded-full;
   }
 
   input[type=checkbox]:checked {
@@ -14,16 +20,21 @@
     background-size: 70%;
   }
 
+  input[type=radio]:checked,
   input[type=checkbox]:checked,
   input[type=checkbox]:indeterminate {
     @apply bg-accent-content border-accent-content;
   }
 
+  input[type=radio]:focus-visible,
+  input[type=radio]:hover:not(:disabled),
   input[type=checkbox]:focus-visible,
   input[type=checkbox]:hover:not(:disabled) {
     @apply ring-2 ring-offset-2 ring-accent-content outline-none;
   }
 
+  input[type=radio]:checked:focus-visible,
+  input[type=radio]:checked:hover:not(:disabled),
   input[type=checkbox]:checked:focus-visible,
   input[type=checkbox]:checked:hover:not(:disabled),
   input[type=checkbox]:indeterminate:focus-visible,
@@ -31,6 +42,7 @@
     @apply bg-accent-content border-accent-content;
   }
 
+  input[type=radio]:disabled,
   input[type=checkbox]:disabled {
     @apply cursor-not-allowed opacity-60;
   }
