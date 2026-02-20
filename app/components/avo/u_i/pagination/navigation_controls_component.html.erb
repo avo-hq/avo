@@ -1,0 +1,43 @@
+<!-- Navigation controls -->
+<div class="flex items-center gap-1" role="group" aria-label="Pagination navigation">
+  <!-- Previous button -->
+  <button
+    type="button"
+    data-action="click->pagination#previousPage"
+    class="all:[unset] flex items-center justify-center min-w-8 h-8 px-3 py-0 rounded-[6px] text-sm font-medium leading-5 text-center focus:outline-none text-red-500 <%= @can_go_previous ? 'text-gray-900 cursor-pointer hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-1' : 'text-gray-400 cursor-not-allowed' %>"
+    aria-label="Go to previous page"
+    <%= 'disabled' unless @can_go_previous %>
+  >
+    <div class="w-4 h-4 pointer-events-none" aria-hidden="true">
+      <%= helpers.svg("avo/chevron-left-16", class: "w-full h-full text-red-500") %>
+    </div>
+  </button>
+
+  <!-- Page numbers -->
+  <% @page_numbers.each do |page| %>
+    <button
+      type="button"
+      data-action="click->pagination#goToPage"
+      data-page="<%= page %>"
+      class="all:[unset] flex items-center justify-center min-w-8 h-8 px-3 py-0 rounded-[6px] cursor-pointer text-sm font-medium text-gray-900 leading-5 text-center <%= page == @current_page ? 'bg-gray-100' : 'hover:bg-gray-50 active:bg-gray-100' %> focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+      <%= 'aria-current="page"' if page == @current_page %>
+      aria-label="<%= page == @current_page ? "Current page, page #{page}" : "Go to page #{page}" %>"
+    >
+      <%= page %>
+    </button>
+  <% end %>
+
+  <!-- Next button -->
+  <button
+    type="button"
+    data-action="click->pagination#nextPage"
+    class="all:[unset] flex items-center justify-center min-w-8 h-8 px-3 py-0 rounded-[6px] text-sm font-medium leading-5 text-center focus:outline-none <%= @can_go_next ? 'text-gray-900 cursor-pointer hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-1' : 'text-gray-400 cursor-not-allowed' %>"
+    aria-label="Go to next page"
+    <%= 'disabled' unless @can_go_next %>
+  >
+    <div class="w-4 h-4 pointer-events-none" aria-hidden="true">
+      <%= helpers.svg("avo/chevron-right-16", class: "w-full h-full") %>
+    </div>
+  </button>
+</div>
+
