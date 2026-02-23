@@ -153,6 +153,13 @@ module Avo
       Avo.configuration.text_direction
     end
 
+    def os_class
+      user_agent = request.user_agent.to_s
+      is_mac = user_agent.include?("Mac OS X") || user_agent.include?("Macintosh")
+
+      is_mac ? "os-mac" : "os-pc"
+    end
+
     def container_classes
       return "container-full-width" if container_is_full_width?
 
