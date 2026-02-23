@@ -11,7 +11,7 @@
 }
 
 .panel__content {
-  @apply flex flex-col md:flex-row gap-4;
+  @apply relative flex flex-col md:flex-row gap-4 w-full;
 }
 
 .panel__card,
@@ -20,13 +20,7 @@
 }
 
 .panel__sidebar {
-  @apply w-full md:w-1/3;
-}
-
-.panel--has-sidebar {
-  .panel__body {
-    @apply w-full;
-  }
+  @apply w-60 top-0 end-0 flex shrink-0;
 }
 
 .panel__cover-photo {
