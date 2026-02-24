@@ -60,9 +60,9 @@ nl:
       go_to: Ga naar
       keyboard_hints:
         press: Druk
-        to_close: om te sluiten
-        to_navigate: om te navigeren
-        to_select: om te selecteren
+        close: Sluiten
+        navigate: Navigeren
+        select: Selecteren
       results:
         count_of_total: "%{count} van %{total}"
       show_all_results_for: Toon alle resultaten voor

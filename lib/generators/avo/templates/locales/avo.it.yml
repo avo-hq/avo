@@ -60,9 +60,9 @@ it:
       go_to: Vai a
       keyboard_hints:
         press: Premi
-        to_close: per chiudere
-        to_navigate: per navigare
-        to_select: per selezionare
+        close: Chiudi
+        navigate: Naviga
+        select: Seleziona
       results:
         count_of_total: "%{count} di %{total}"
       show_all_results_for: Mostra tutti i risultati per

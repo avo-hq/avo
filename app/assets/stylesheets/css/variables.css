@@ -35,10 +35,6 @@
   --box-shadow-focus: 0 0 0 1px var(--color-primary), 0 0 0 3px var(--color-info-foreground);
   --box-shadow-search-input-shortcut: 0 -1.5px 0 1px var(--color-secondary) inset, 0 0.8px 0 1.3px var(--color-primary) inset;
 
-  /* TODO: to clarify if we should use the color black-4 or we can use another variable */
-  --color-black-4: color-mix(in oklab, var(--color-black) 4%, transparent);
-  --box-shadow-global-search-container: 0 32px 64px 0 var(--color-black-4);
-
   /* foundations - Light Mode */
   --color-background: var(--color-avo-neutral-25);
   --color-foreground: var(--color-avo-neutral-800);
