@@ -1,0 +1,86 @@
+/* Pill Component - Based on Figma Design System */
+/* BEM Methodology: .pill (block), .pill__icon, .pill__label (elements), .pill--modifier (modifiers) */
+
+.pill {
+  @apply inline-flex shrink-0 items-center justify-center gap-1 rounded-full
+         border border-solid border-tertiary bg-primary
+         px-2 py-1 text-xs font-medium leading-3.5
+         text-content-secondary cursor-pointer
+         transition-colors overflow-clip relative;
+}
+
+.pill:hover {
+  @apply bg-secondary text-content;
+}
+
+.pill:focus-visible {
+  @apply outline-none;
+  box-shadow: 0 0 0 1px var(--color-primary), 0 0 0 3px var(--color-info-foreground);
+}
+
+/* Elements */
+.pill__icon {
+  @apply shrink-0 size-3.5;
+}
+
+.pill__label {
+  @apply shrink-0 text-center;
+}
+
+.pill__counter {
+  @apply text-accent-content/40 font-medium;
+}
+
+.pill__key-value {
+  @apply inline-flex items-center gap-0.5;
+}
+
+.pill__key {
+  @apply text-accent-content/40 font-medium;
+}
+
+.pill__value {
+  @apply text-accent-content/40 font-semibold leading-4;
+}
+
+/* Close button — hidden by default, visible on hover of selected pill */
+.pill__close {
+  @apply hidden absolute top-0 size-5.5 items-center justify-center rounded-full;
+  inset-inline-end: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
+              linear-gradient(90deg, var(--color-foreground) 0%, var(--color-foreground) 100%);
+}
+
+.pill__close-icon {
+  @apply size-4;
+}
+
+/* Selected state */
+.pill--selected {
+  @apply border-white;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%),
+              linear-gradient(90deg, var(--color-foreground) 0%, var(--color-foreground) 100%);
+}
+
+.pill--selected:hover {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.75) 100%),
+              linear-gradient(90deg, var(--color-foreground) 0%, var(--color-foreground) 100%);
+}
+
+.pill--selected:hover .pill__close {
+  @apply inline-flex;
+}
+
+/* Icon-only mode */
+.pill--icon-only {
+  @apply p-1;
+}
+
+/* Disabled state */
+.pill--disabled {
+  @apply opacity-60 border-dashed cursor-not-allowed;
+}
+
+.pill--disabled:hover {
+  @apply bg-primary text-content-secondary;
+}

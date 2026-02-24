@@ -1,0 +1,30 @@
+<%= content_tag :button, type: "button",
+  class: class_names("pill", {
+    "pill--selected": selected?,
+    "pill--icon-only": icon_only?,
+    "pill--disabled": disabled?,
+  }, @classes),
+  disabled: disabled?,
+  data: @data || {} do %>
+  <%= svg(@icon, class: "pill__icon") if @icon.present? %>
+  <% unless icon_only? %>
+    <% if show_details? %>
+      <% if @counter.present? %>
+        <span class="pill__counter"><%= @counter %></span>
+      <% end %>
+      <span class="pill__key-value">
+        <% if @filter_key.present? %>
+          <span class="pill__key"><%= @filter_key %></span>
+        <% end %>
+        <% if @filter_value.present? %>
+          <span class="pill__value"><%= @filter_value %></span>
+        <% end %>
+      </span>
+      <span class="pill__close">
+        <%= svg("tabler/outline/x", class: "pill__close-icon") %>
+      </span>
+    <% else %>
+      <span class="pill__label"><%= @label %></span>
+    <% end %>
+  <% end %>
+<% end %>

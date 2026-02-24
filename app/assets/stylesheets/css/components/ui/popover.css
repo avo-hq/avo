@@ -1,0 +1,23 @@
+.popover {
+  @apply flex flex-col items-center justify-center overflow-hidden rounded-lg;
+
+  box-shadow: var(--box-shadow-card);
+}
+
+.popover--simple {
+  @apply bg-primary;
+}
+
+.popover--complex {
+  @apply bg-secondary border border-tertiary p-0.5;
+}
+
+.popover__body {
+  @apply w-full;
+}
+
+.popover__action-row {
+  @apply flex items-center w-full pt-1;
+}
+
+/* Action item styles moved to menu_item.css (MenuItemComponent) */

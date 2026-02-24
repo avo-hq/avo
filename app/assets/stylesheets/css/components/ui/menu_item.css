@@ -1,0 +1,39 @@
+.menu-item {
+  @apply flex items-center gap-2 w-full px-2 py-1.5 rounded-md cursor-pointer;
+
+  &:hover {
+    @apply bg-tertiary;
+  }
+}
+
+.menu-item--action {
+  /* Action type inherits base styles */
+}
+
+.menu-item--header {
+  @apply cursor-default;
+
+  &:hover {
+    @apply bg-transparent;
+  }
+}
+
+.menu-item--disabled {
+  @apply opacity-50 cursor-not-allowed;
+
+  &:hover {
+    @apply bg-transparent;
+  }
+}
+
+.menu-item__icon-wrapper {
+  @apply flex items-center justify-center p-0.5 bg-secondary rounded-sm;
+}
+
+.menu-item__icon {
+  @apply size-4 text-content-secondary;
+}
+
+.menu-item__label {
+  @apply text-sm font-medium leading-5 text-content-secondary;
+}

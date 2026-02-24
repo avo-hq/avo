@@ -1,0 +1,53 @@
+<div class="p-8 space-y-8 bg-white">
+  <div>
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Default States</h3>
+    <div class="flex flex-wrap items-center gap-3">
+      <%= render Avo::UI::PillComponent.new(label: "Add filter") %>
+      <%= render Avo::UI::PillComponent.new(label: "Add filter", disabled: true) %>
+    </div>
+    <p class="text-xs text-gray-500 mt-2">Default &bull; Disabled (hover to see states)</p>
+  </div>
+
+  <div>
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Icon Only</h3>
+    <div class="flex flex-wrap items-center gap-3">
+      <%= render Avo::UI::PillComponent.new(icon_only: true) %>
+      <%= render Avo::UI::PillComponent.new(icon_only: true, disabled: true) %>
+    </div>
+    <p class="text-xs text-gray-500 mt-2">Icon only &bull; Icon only disabled</p>
+  </div>
+
+  <div>
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Selected States</h3>
+    <div class="flex flex-wrap items-center gap-3">
+      <%= render Avo::UI::PillComponent.new(
+        selected: true,
+        counter: "3",
+        filter_key: "Status",
+        filter_value: "Active"
+      ) %>
+      <%= render Avo::UI::PillComponent.new(
+        selected: true,
+        counter: "1",
+        filter_key: "Role",
+        filter_value: "Admin"
+      ) %>
+      <%= render Avo::UI::PillComponent.new(
+        selected: true,
+        filter_key: "Category",
+        filter_value: "Posts"
+      ) %>
+    </div>
+    <p class="text-xs text-gray-500 mt-2">Selected with counter &bull; Selected with different values &bull; Selected without counter (hover to see close button)</p>
+  </div>
+
+  <div>
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Custom Icons</h3>
+    <div class="flex flex-wrap items-center gap-3">
+      <%= render Avo::UI::PillComponent.new(label: "Add filter", icon: "tabler/outline/adjustments-horizontal") %>
+      <%= render Avo::UI::PillComponent.new(label: "Settings", icon: "tabler/outline/info-circle") %>
+      <%= render Avo::UI::PillComponent.new(label: "Attach", icon: "tabler/outline/paperclip") %>
+      <%= render Avo::UI::PillComponent.new(label: "No icon", icon: nil) %>
+    </div>
+  </div>
+</div>

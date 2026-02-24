@@ -1,0 +1,44 @@
+<div style="padding: 2rem; display: flex; flex-direction: column; gap: 2rem;">
+  <%# Action type %>
+  <div>
+    <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Action type (with icon)</p>
+    <div style="width: 260px;">
+      <%= render Avo::UI::MenuItemComponent.new(type: :action, icon: "tabler/outline/plus", label: "Menu item") %>
+    </div>
+  </div>
+
+  <%# Action type with different icons %>
+  <div>
+    <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Action type variations</p>
+    <div style="width: 260px; display: flex; flex-direction: column;">
+      <%= render Avo::UI::MenuItemComponent.new(type: :action, icon: "tabler/outline/plus", label: "Add item") %>
+      <%= render Avo::UI::MenuItemComponent.new(type: :action, icon: "tabler/outline/pencil", label: "Edit item") %>
+      <%= render Avo::UI::MenuItemComponent.new(type: :action, icon: "tabler/outline/trash", label: "Delete item") %>
+      <%= render Avo::UI::MenuItemComponent.new(type: :action, icon: "tabler/outline/external-link", label: "Open in new tab") %>
+    </div>
+  </div>
+
+  <%# Default type %>
+  <div>
+    <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Default type (no icon)</p>
+    <div style="width: 260px;">
+      <%= render Avo::UI::MenuItemComponent.new(type: :default, label: "Simple menu item") %>
+    </div>
+  </div>
+
+  <%# Default type with icon %>
+  <div>
+    <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Default type (with icon)</p>
+    <div style="width: 260px;">
+      <%= render Avo::UI::MenuItemComponent.new(type: :default, icon: "tabler/outline/info-circle", label: "Menu item with icon") %>
+    </div>
+  </div>
+
+  <%# Disabled state %>
+  <div>
+    <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Disabled</p>
+    <div style="width: 260px;">
+      <%= render Avo::UI::MenuItemComponent.new(type: :action, icon: "tabler/outline/plus", label: "Disabled item", disabled: true) %>
+    </div>
+  </div>
+</div>

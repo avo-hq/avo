@@ -1,0 +1,13 @@
+<%= content_tag wrapper_tag, **wrapper_options, class: class_names(
+  "menu-item",
+  "menu-item--action": action?,
+  "menu-item--header": header?,
+  "menu-item--disabled": @disabled
+) do %>
+  <% if @icon.present? %>
+    <div class="menu-item__icon-wrapper">
+      <%= helpers.svg @icon, class: "menu-item__icon" %>
+    </div>
+  <% end %>
+  <span class="menu-item__label"><%= @label %></span>
+<% end %>

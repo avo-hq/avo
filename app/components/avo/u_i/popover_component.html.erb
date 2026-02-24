@@ -1,0 +1,20 @@
+<%= tag.div class: class_names("popover", @class, "popover--simple": simple?,
+  "popover--complex": complex?), **(@hidden ? { hidden: true } : {}), data: @data do %>
+  <div class="popover__body">
+    <% if body? %>
+      <%= body %>
+    <% else %>
+      <%= content %>
+    <% end %>
+  </div>
+
+  <% if show_action_row? %>
+    <div class="popover__action-row">
+      <% if action_row? %>
+        <%= action_row %>
+      <% else %>
+        <%= render Avo::UI::MenuItemComponent.new(type: :action, icon: @action_icon, label: @action_label) %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

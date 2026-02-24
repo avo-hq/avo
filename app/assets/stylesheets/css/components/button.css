@@ -39,12 +39,7 @@
 
   &.button--focus-visible,
   &:focus-visible {
-    @apply outline-none;
-    box-shadow:
-      inset 0 0.8px 0 0.1px rgba(255, 255, 255, 0.45),
-      inset 0 -2px 0 1px #171717,
-      0 0 0 4px rgba(23, 23, 23, 1),
-      0 0 0 6px rgba(255, 255, 255, 1);
+    @apply ring-2 ring-offset-2 ring-blue-500 outline-none;
   }
 
   &.button--disabled,
@@ -283,4 +278,10 @@
   --color-accent: var(--color-rose-500);
   --color-accent-content: var(--color-rose-600);
   --color-accent-foreground: var(--color-white);
+}
+
+.button--color-white {
+  --color-accent: var(--color-white);
+  --color-accent-content: var(--color-avo-neutral-200);
+  --color-accent-foreground: var(--color-avo-neutral-800);
 }

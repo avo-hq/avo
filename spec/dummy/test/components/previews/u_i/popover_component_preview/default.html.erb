@@ -1,0 +1,37 @@
+<div style="padding: 2rem;">
+  <div style="display: flex; gap: 2rem; align-items: start;">
+    <%# Simple variant %>
+    <div>
+      <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Simple</p>
+      <%= render Avo::UI::PopoverComponent.new(type: :simple) do %>
+        <div style="width: 247px; height: 249px; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc; border-radius: 8px;">
+          <span style="font-size: 12px; color: #6d6d6d;">Content slot</span>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Complex variant without action row %>
+    <div>
+      <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Complex</p>
+      <%= render Avo::UI::PopoverComponent.new(type: :complex, show_action_row: true) do |popover| %>
+        <% popover.with_body do %>
+          <div style="width: 247px; height: 249px; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc; border-radius: 8px;">
+            <span style="font-size: 12px; color: #6d6d6d;">Content slot</span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# Complex variant with action row %>
+    <div>
+      <p style="margin-bottom: 0.5rem; font-size: 12px; color: #6d6d6d;">Complex with action row</p>
+      <%= render Avo::UI::PopoverComponent.new(type: :complex, show_action_row: true, action_label: action_label) do |popover| %>
+        <% popover.with_body do %>
+          <div style="width: 247px; height: 249px; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc; border-radius: 8px;">
+            <span style="font-size: 12px; color: #6d6d6d;">Content slot</span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
