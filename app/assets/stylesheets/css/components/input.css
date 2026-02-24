@@ -245,7 +245,7 @@
   }
 
   /* PC: CTRL + K — wider */
-  body.os-pc .search-input__input--with-shortcut {
+  body.os-pc .search-input__input.search-input__input--with-shortcut {
     padding-inline-end: calc(
       var(--input-icon-offset) +
       var(--input-icon-size) * 3 +
