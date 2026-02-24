@@ -235,23 +235,6 @@
     );
   }
 
-  /* Mac: ⌘ + K — narrower */
-  .search-input:has(.mac_class) .search-input__input--with-shortcut {
-    padding-inline-end: calc(
-      var(--input-icon-offset) +
-      var(--input-icon-size) * 2 +
-      var(--input-icon-gap) * 3
-    );
-  }
-
-  /* PC: CTRL + K — wider (only one abbr in DOM, so :has() matches exclusively) */
-  .search-input:has(.pc_class) .search-input__input--with-shortcut {
-    padding-inline-end: calc(
-      var(--input-icon-offset) +
-      var(--input-icon-size) * 3 +
-      var(--input-icon-gap) * 4
-    );
-  }
   /* Suffix (shortcut) */
   .search-input__suffix {
     @apply absolute inset-y-0 end-0 flex items-center text-content-secondary pointer-events-none z-10 gap-1;

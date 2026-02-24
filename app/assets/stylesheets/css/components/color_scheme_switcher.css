@@ -12,22 +12,69 @@
 .color-scheme-switcher__button[data-theme="brand"] {
   /* Active by default (when no theme class is present) */
   @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
-  /* Inactive when theme variants are active */
+  /* Inactive when any theme variant is active */
   @apply theme-slate:bg-transparent theme-slate:text-neutral-600 theme-slate:dark:text-neutral-400 theme-slate:shadow-none;
   @apply theme-stone:bg-transparent theme-stone:text-neutral-600 theme-stone:dark:text-neutral-400 theme-stone:shadow-none;
+  @apply theme-gray:bg-transparent theme-gray:text-neutral-600 theme-gray:dark:text-neutral-400 theme-gray:shadow-none;
+  @apply theme-zinc:bg-transparent theme-zinc:text-neutral-600 theme-zinc:dark:text-neutral-400 theme-zinc:shadow-none;
+  @apply theme-neutral:bg-transparent theme-neutral:text-neutral-600 theme-neutral:dark:text-neutral-400 theme-neutral:shadow-none;
+  @apply theme-taupe:bg-transparent theme-taupe:text-neutral-600 theme-taupe:dark:text-neutral-400 theme-taupe:shadow-none;
+  @apply theme-mauve:bg-transparent theme-mauve:text-neutral-600 theme-mauve:dark:text-neutral-400 theme-mauve:shadow-none;
+  @apply theme-mist:bg-transparent theme-mist:text-neutral-600 theme-mist:dark:text-neutral-400 theme-mist:shadow-none;
+  @apply theme-olive:bg-transparent theme-olive:text-neutral-600 theme-olive:dark:text-neutral-400 theme-olive:shadow-none;
 }
 
 .color-scheme-switcher__button[data-theme="slate"] {
-  /* Inactive by default, active when theme-slate variant is present */
   @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
   @apply theme-slate:bg-white theme-slate:dark:bg-neutral-700 theme-slate:text-primary-600 theme-slate:dark:text-primary-400 theme-slate:shadow-sm;
   @apply gap-1.5;
 }
 
 .color-scheme-switcher__button[data-theme="stone"] {
-  /* Inactive by default, active when theme-stone variant is present */
   @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
   @apply theme-stone:bg-white theme-stone:dark:bg-neutral-700 theme-stone:text-primary-600 theme-stone:dark:text-primary-400 theme-stone:shadow-sm;
+  @apply gap-1.5;
+}
+
+.color-scheme-switcher__button[data-theme="gray"] {
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-gray:bg-white theme-gray:dark:bg-neutral-700 theme-gray:text-primary-600 theme-gray:dark:text-primary-400 theme-gray:shadow-sm;
+  @apply gap-1.5;
+}
+
+.color-scheme-switcher__button[data-theme="zinc"] {
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-zinc:bg-white theme-zinc:dark:bg-neutral-700 theme-zinc:text-primary-600 theme-zinc:dark:text-primary-400 theme-zinc:shadow-sm;
+  @apply gap-1.5;
+}
+
+.color-scheme-switcher__button[data-theme="neutral"] {
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-neutral:bg-white theme-neutral:dark:bg-neutral-700 theme-neutral:text-primary-600 theme-neutral:dark:text-primary-400 theme-neutral:shadow-sm;
+  @apply gap-1.5;
+}
+
+.color-scheme-switcher__button[data-theme="taupe"] {
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-taupe:bg-white theme-taupe:dark:bg-neutral-700 theme-taupe:text-primary-600 theme-taupe:dark:text-primary-400 theme-taupe:shadow-sm;
+  @apply gap-1.5;
+}
+
+.color-scheme-switcher__button[data-theme="mauve"] {
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-mauve:bg-white theme-mauve:dark:bg-neutral-700 theme-mauve:text-primary-600 theme-mauve:dark:text-primary-400 theme-mauve:shadow-sm;
+  @apply gap-1.5;
+}
+
+.color-scheme-switcher__button[data-theme="mist"] {
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-mist:bg-white theme-mist:dark:bg-neutral-700 theme-mist:text-primary-600 theme-mist:dark:text-primary-400 theme-mist:shadow-sm;
+  @apply gap-1.5;
+}
+
+.color-scheme-switcher__button[data-theme="olive"] {
+  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply theme-olive:bg-white theme-olive:dark:bg-neutral-700 theme-olive:text-primary-600 theme-olive:dark:text-primary-400 theme-olive:shadow-sm;
   @apply gap-1.5;
 }
 
@@ -94,6 +141,10 @@
   @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
+}
+
+.color-scheme-switcher__accent-option--active {
+  @apply bg-neutral-100 dark:bg-neutral-700 ring-2 ring-primary-400 ring-offset-1;
 }
 
 .color-scheme-switcher__accent-preview {
