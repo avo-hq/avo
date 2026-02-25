@@ -61,9 +61,9 @@ es:
         try_adjusting_search: Intenta ajustar tus términos de búsqueda o verifica si hay errores tipográficos
       go_to: Ir a
       keyboard_hints:
-        press: Presiona
         close: Cerrar
         navigate: Navegar
+        press: Presiona
         select: Seleccionar
       results:
         count_of_total: "%{count} de %{total}"

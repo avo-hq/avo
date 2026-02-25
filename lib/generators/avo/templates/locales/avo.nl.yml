@@ -59,9 +59,9 @@ nl:
         try_adjusting_search: Probeer uw zoektermen aan te passen of controleer op typfouten
       go_to: Ga naar
       keyboard_hints:
-        press: Druk
         close: Sluiten
         navigate: Navigeren
+        press: Druk
         select: Selecteren
       results:
         count_of_total: "%{count} van %{total}"

@@ -61,9 +61,9 @@ nb:
         try_adjusting_search: Prøv å justere søkevilkårene dine eller sjekk for skrivefeil
       go_to: Gå til
       keyboard_hints:
-        press: Trykk
         close: Lukk
         navigate: Naviger
+        press: Trykk
         select: Velg
       results:
         count_of_total: "%{count} av %{total}"

@@ -59,9 +59,9 @@ en:
         try_adjusting_search: Try adjusting your search terms or check for typos
       go_to: Go to
       keyboard_hints:
-        press: Press
         close: Close
         navigate: Navigate
+        press: Press
         select: Select
       results:
         count_of_total: "%{count} of %{total}"

@@ -59,9 +59,9 @@ de:
         try_adjusting_search: Versuchen Sie, Ihre Suchbegriffe anzupassen oder auf Tippfehler zu überprüfen
       go_to: Gehe zu
       keyboard_hints:
-        press: Drücken Sie
         close: Schließen
         navigate: Navigieren
+        press: Drücken Sie
         select: Auswählen
       results:
         count_of_total: "%{count} von %{total}"

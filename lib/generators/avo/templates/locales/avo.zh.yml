@@ -59,9 +59,9 @@ zh:
         try_adjusting_search: 尝试调整您的搜索词或检查拼写错误
       go_to: 前往
       keyboard_hints:
-        press: 按
         close: 关闭
         navigate: 导航
+        press: 按
         select: 选择
       results:
         count_of_total: "%{count} / %{total}"

@@ -61,9 +61,9 @@ uk:
         try_adjusting_search: Try adjusting your search terms or checking for typos
       go_to: Go to
       keyboard_hints:
-        press: Press
         close: Закрити
         navigate: Навігація
+        press: Press
         select: Вибрати
       results:
         count_of_total: "%{count} of %{total}"

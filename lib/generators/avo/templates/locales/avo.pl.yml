@@ -61,9 +61,9 @@ pl:
         try_adjusting_search: Spróbuj dostosować swoje hasła wyszukiwania lub sprawdź błędy typograficzne
       go_to: Idź do
       keyboard_hints:
-        press: Naciśnij
         close: Zamknij
         navigate: Nawiguj
+        press: Naciśnij
         select: Wybierz
       results:
         count_of_total: "%{count} z %{total}"

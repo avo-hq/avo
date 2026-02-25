@@ -61,9 +61,9 @@ ru:
         try_adjusting_search: Попробуйте изменить условия поиска или проверьте на опечатки
       go_to: Перейти к
       keyboard_hints:
-        press: Нажмите
         close: Закрыть
         navigate: Навигация
+        press: Нажмите
         select: Выбрать
       results:
         count_of_total: "%{count} из %{total}"

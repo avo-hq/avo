@@ -59,9 +59,9 @@ it:
         try_adjusting_search: Prova a modificare i termini di ricerca o controlla eventuali errori di battitura
       go_to: Vai a
       keyboard_hints:
-        press: Premi
         close: Chiudi
         navigate: Naviga
+        press: Premi
         select: Seleziona
       results:
         count_of_total: "%{count} di %{total}"

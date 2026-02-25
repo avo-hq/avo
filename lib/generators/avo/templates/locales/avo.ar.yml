@@ -69,9 +69,9 @@ ar:
         try_adjusting_search: حاول تعديل مصطلحات البحث الخاصة بك أو تحقق من الأخطاء المطبعية
       go_to: اذهب إلى
       keyboard_hints:
-        press: اضغط
         close: إغلاق
         navigate: تنقل
+        press: اضغط
         select: اختيار
       results:
         count_of_total: "%{count} من %{total}"

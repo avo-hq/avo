@@ -61,9 +61,9 @@ tr:
         try_adjusting_search: Arama terimlerinizi ayarlamayı veya yazım hatalarını kontrol etmeyi deneyin
       go_to: Git
       keyboard_hints:
-        press: Bas
         close: Kapat
         navigate: Gezin
+        press: Bas
         select: Seç
       results:
         count_of_total: "%{count} / %{total}"

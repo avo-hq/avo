@@ -61,9 +61,9 @@ ja:
         try_adjusting_search: 検索用語を調整するか、タイプミスを確認してください
       go_to: 移動する
       keyboard_hints:
-        press: 押す
         close: 閉じる
         navigate: ナビゲート
+        press: 押す
         select: 選択
       results:
         count_of_total: "%{count} / %{total}"

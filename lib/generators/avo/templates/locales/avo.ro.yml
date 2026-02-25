@@ -63,9 +63,9 @@ ro:
         try_adjusting_search: Încercați să ajustați termenii de căutare sau verificați dacă sunt greșeli de tipar
       go_to: Mergi la
       keyboard_hints:
-        press: Apasă
         close: Închide
         navigate: Navighează
+        press: Apasă
         select: Selectează
       results:
         count_of_total: "%{count} din %{total}"
