@@ -1,31 +1,32 @@
-<%= tag.div class: "pb-2 space-y-1", data: do %>
+<%= tag.div class: "sidebar__group", data: do %>
   <% if item.name.present? %>
     <% if collapsable %>
       <div
-        class="flex justify-between cursor-pointer px-10 pe-2 pt-2 pb-0 text-gray-400"
+        class="sidebar__group__header sidebar__group__header--collapsable"
         data-action="click->menu#triggerCollapse"
         data-menu-key-param="<%= key %>"
       >
-        <div class="flex items-center text-xs uppercase font-semibold leading-none">
+        <span class="sidebar__group__header-label">
           <%= item.name %>
-        </div>
-        <div class="<%= 'rotate-90' if collapsed %>"
+        </span>
+        <div class="sidebar__group__svg <%= 'sidebar__group__svg--collapsed' if collapsed %>"
           data-menu-target="svg"
-          >
-          <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4 me-0.5" %>
+        >
+          <%= helpers.svg 'heroicons/outline/chevron-down' %>
         </div>
       </div>
     <% else %>
-      <div class="flex justify-between px-10 pe-2 pt-2 pb-0 text-gray-400">
-        <div class="flex items-center text-xs uppercase font-semibold leading-none">
+      <div class="sidebar__group__header">
+        <div class="sidebar__group__header-label">
           <%= item.name %>
         </div>
       </div>
     <% end %>
   <% end %>
 
-  <%= content_tag :div, class: class_names("w-full space-y-1"),
+  <%= content_tag :div,
     hidden: collapsed,
+    class: "sidebar__group__items",
     data: {
       menu_target: :items,
     } do %>

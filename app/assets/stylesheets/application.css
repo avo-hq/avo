@@ -142,6 +142,7 @@
   @import "./css/components/tooltip.css";
   @import "./css/components/modal.css";
   @import "./css/css-animations.css";
+  @import "./css/sidebar.css";
 
   html,
   body {

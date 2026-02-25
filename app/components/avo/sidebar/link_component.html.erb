@@ -1,14 +1,14 @@
 <% if @path.present? %>
-  <%= link_caller.send link_method, @path, class: classes, active: @active, target: @target, data: @data, **@args do %>
-    <%= helpers.svg @icon, class: "h-4 text-gray-700" if @icon.present? %>
+  <%= link_caller.send link_method, @path, class: "sidebar__link", active: @active, target: @target, data: @data, **@args do %>
+    <%= helpers.svg @icon, class: "sidebar__link__icon" if @icon.present? %>
     <%= @label %>
     <% if @target == :_blank %>
-      <%= helpers.svg('heroicons/outline/external-link', class: 'self-center ms-auto h-3 me-2') %>
+      <%= helpers.svg('heroicons/outline/external-link', class: 'sidebar__link__external-icon') %>
     <% end %>
   <% end %>
 <% else %>
   <%= content_tag :div, class: classes, active: @active, target: @target, data: @data do %>
-    <%= helpers.svg @icon, class: "h-4 text-gray-700" if @icon.present? %>
+    <%= helpers.svg @icon, class: "sidebar__link__icon" if @icon.present? %>
     <%= @label %>
   <% end %>
 <% end %>

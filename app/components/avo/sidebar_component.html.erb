@@ -8,8 +8,9 @@
     sidebar_target: stimulus_target
   } do %>
   <div class="flex flex-col w-full h-full">
-    <div class="flex-1 flex flex-col justify-between overflow-auto h-full pt-3 mac-styled-scrollbar">
-      <div class="space-y-6 mb-4">
+  <div class="py-3 flex flex-col gap-4 items-start bg-background max-w-64">
+      <%# Body area %>
+      <div class="px-3 w-full">
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>
 
         <% if render_custom_sidebar? %>
@@ -68,7 +69,7 @@
 
         <%= render partial: "/avo/partials/sidebar_extra" %>
       </div>
-    </div>
+  </div>
     <% if Rails.env.development? %>
       <div class="p-4 border-t border-gray-200 group">
         <%= link_to helpers.avo.avo_private_status_path, class: "block px-4 py-2 border border-gray-200 rounded-sm flex justify-between items-center w-full text-black text-sm" do %>
