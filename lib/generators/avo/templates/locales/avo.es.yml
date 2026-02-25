@@ -61,10 +61,10 @@ es:
         try_adjusting_search: Intenta ajustar tus términos de búsqueda o verifica si hay errores tipográficos
       go_to: Ir a
       keyboard_hints:
+        close: Cerrar
+        navigate: Navegar
         press: Presiona
-        to_close: para cerrar
-        to_navigate: para navegar
-        to_select: para seleccionar
+        select: Seleccionar
       results:
         count_of_total: "%{count} de %{total}"
       show_all_results_for: Mostrar todos los resultados para
