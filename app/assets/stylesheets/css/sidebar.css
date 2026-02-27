@@ -6,6 +6,36 @@
   @apply cursor-pointer;
 }
 
+/* ================================================ */
+/* Collapsed (icon-only) state */
+/* Applied via `.sidebar-collapsed` on the `.main` wrapper */
+/* ================================================ */
+
+.sidebar-collapsed {
+  .sidebar__link,
+  .sidebar__subitem,
+  .sidebar__group__header {
+    @apply justify-center;
+  }
+
+  .sidebar__link__label,
+  .sidebar__subitem__label,
+  .sidebar__group__label,
+  .sidebar__link__external-icon,
+  .sidebar__subitem__external-icon,
+  .sidebar__group__chevron {
+    @apply hidden;
+  }
+
+  .sidebar__group__items {
+    @apply ps-0;
+  }
+
+  .sidebar__subitems__items {
+    @apply hidden ps-0;
+  }
+}
+
 
 /* ================================================ */
 /* Sidebar heading */

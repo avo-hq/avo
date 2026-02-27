@@ -9,7 +9,9 @@
 /* The sidebar width stays the same regardless of the sidebar open state. */
 /* The content width and margin offset changes based on the sidebar open state and the :lg breakpoint. */
 .main {
-  --sidebar-width: --spacing(64);
+  --sidebar-width-open: --spacing(64);
+  --sidebar-width-collapsed: --spacing(14);
+  --sidebar-width: var(--sidebar-width-open);
   --sidebar-offset-size: 0rem;
   --content-width: calc(100% - var(--sidebar-offset-size) - var(--spacing) * 2);
 
@@ -17,6 +19,11 @@
     &.sidebar-open {
       --sidebar-offset-size: var(--sidebar-width);
     }
+  }
+
+  &.sidebar-collapsed {
+    --sidebar-width: var(--sidebar-width-collapsed);
+    --sidebar-offset-size: var(--sidebar-width);
   }
 
   @apply mt-(--top-navbar-height);
@@ -44,6 +51,13 @@
         width: var(--content-width);
 
       }
+    }
+  }
+
+  &.sidebar-collapsed {
+    .main-content-area {
+      margin-inline-start: calc(var(--sidebar-width) + var(--spacing));
+      width: var(--content-width);
     }
   }
 }
@@ -89,7 +103,16 @@ html[dir="rtl"] .avo-sidebar {
   transform: translateX(0);
 }
 
+/* When sidebar is collapsed (icon-only), show it */
+.sidebar-collapsed .avo-sidebar {
+  transform: translateX(0);
+}
+
 /* RTL: ensure sidebar is visible when open (higher specificity) */
 html[dir="rtl"] .sidebar-open .avo-sidebar {
+  transform: translateX(0);
+}
+
+html[dir="rtl"] .sidebar-collapsed .avo-sidebar {
   transform: translateX(0);
 }

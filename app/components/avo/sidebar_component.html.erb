@@ -8,7 +8,7 @@
     sidebar_target: stimulus_target
   } do %>
   <div class="flex flex-col w-full h-full">
-  <div class="py-3 flex flex-col gap-4 items-start bg-background max-w-64">
+  <div class="py-3 flex flex-col gap-4 items-start bg-background">
       <%# Body area %>
       <div class="px-3 w-full">
         <%= render Avo::Sidebar::LinkComponent.new label: 'Get started', path: helpers.avo.root_path, active: :exclusive if Rails.env.development? && Avo.configuration.home_path.nil? %>

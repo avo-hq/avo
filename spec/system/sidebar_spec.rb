@@ -12,11 +12,18 @@ RSpec.describe "sidebar", type: :system do
       expect(page).to have_selector "div.sidebar-open"
     end
 
-    it "toggles between open and closed" do
+    it "toggles between open, collapsed, and closed" do
       sidebar_button = page.find("button[data-action='click->sidebar#toggleSidebar']")
       expect(page).to have_selector "div.sidebar-open"
       sidebar_button.click
+      expect(page).to have_selector "div.sidebar-collapsed"
+
+      sidebar_button.click
       expect(page).to_not have_selector "div.sidebar-open"
+      expect(page).to_not have_selector "div.sidebar-collapsed"
+
+      sidebar_button.click
+      expect(page).to have_selector "div.sidebar-open"
     end
 
     it "remembers user choice" do
@@ -25,11 +32,12 @@ RSpec.describe "sidebar", type: :system do
 
       visit "/admin/resources/users"
 
-      expect(page).to_not have_selector "div.sidebar-open"
+      expect(page).to have_selector "div.sidebar-collapsed"
       sidebar_button.click
 
       visit "/admin/resources/posts"
-      expect(page).to have_selector "div.sidebar-open"
+      expect(page).to_not have_selector "div.sidebar-open"
+      expect(page).to_not have_selector "div.sidebar-collapsed"
     end
   end
 
@@ -39,33 +47,30 @@ RSpec.describe "sidebar", type: :system do
       visit "/"
     end
 
-    it "is closed on login" do
-      expect(page).to have_selector "div.sidebar-open"
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
+    it "is collapsed on login" do
+      expect(page).to have_selector "div.sidebar-collapsed"
+      expect(page).to_not have_selector "div.avo-sidebar.hidden", visible: false
     end
 
-    it "toggles between open and closed" do
+    it "toggles between collapsed and open" do
       sidebar_button = page.find("button[data-action='click->sidebar#toggleSidebarOnMobile']")
-      expect(page).to have_selector "div.sidebar-open"
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
+      expect(page).to have_selector "div.sidebar-collapsed"
 
       sidebar_button.click
       expect(page).to have_selector "div.sidebar-open"
-      expect(page).to_not have_selector "div.avo-sidebar.hidden", visible: false
+      expect(page).to_not have_selector "div.sidebar-collapsed"
       expect(page).to have_selector "div.avo-sidebar", visible: true
     end
 
-    it "remains closed on navigation" do
+    it "remains collapsed on navigation" do
       sidebar_button = page.find("button[data-action='click->sidebar#toggleSidebarOnMobile']")
-      sidebar_button.click
-
-      visit "/admin/resources/users"
-
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
-      sidebar_button.click
+      # Ensure we're collapsed
+      if page.has_selector?("div.sidebar-open")
+        sidebar_button.click
+      end
 
       visit "/admin/resources/posts"
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
+      expect(page).to have_selector "div.sidebar-collapsed"
     end
   end
 end

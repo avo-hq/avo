@@ -4,6 +4,8 @@ import Cookies from 'js-cookie'
 // Detect whether an element is in view inside a parent element.
 // Original here: https://gist.github.com/jjmu15/8646226
 function isInViewport(element, parentElement) {
+  if (!element || !parentElement) return false
+
   const rect = element.getBoundingClientRect()
   const html = document.documentElement
   const parent = parentElement.getBoundingClientRect()
@@ -28,16 +30,29 @@ function scrollSidebarMenuItemIntoView() {
 export default class extends Controller {
   static targets = ['sidebar', 'mobileSidebar', 'mainArea']
 
-  static values = {
-    open: Boolean,
+
+
+  get stateCookieKey() {
+    return `${window.Avo.configuration.cookies_key}.sidebar.state`
   }
 
-  get cookieKey() {
-    return `${window.Avo.configuration.cookies_key}.sidebar.open`
+  get isDesktop() {
+    // Tailwind `lg` is 1024px
+    return window.matchMedia('(min-width: 1024px)').matches
   }
 
-  get sidebarOpen() {
-    return Cookies.get(this.cookieKey) === '1'
+  get isMobile() {
+    return !this.isDesktop
+  }
+
+  get state() {
+    const cookieState = Cookies.get(this.stateCookieKey)
+    if (cookieState === 'open' || cookieState === 'collapsed' || cookieState === 'closed') {
+      return cookieState
+    }
+
+    // Default: open on desktop, collapsed on mobile
+    return this.isDesktop ? 'open' : 'collapsed'
   }
 
   get sidebarScrollPosition() {
@@ -48,19 +63,38 @@ export default class extends Controller {
     window.Avo.localStorage.set('sidebar.sidebarScrollPosition', value)
   }
 
-  set cookie(state) {
-    Cookies.set(this.cookieKey, state === true ? 1 : 0)
+  set state(state) {
+    Cookies.set(this.stateCookieKey, state)
   }
 
   connect() {
     this.attachScrollVisibilityAnchor()
 
+    const hadStateCookie = Cookies.get(this.stateCookieKey) !== undefined
+
+    let state = this.state
+
+    // On mobile we never keep it fully closed; fall back to icon-only.
+    if (this.isMobile && state === 'closed') {
+      state = 'collapsed'
+    }
+
+    // Persist default / normalized state so server can render it next time.
+    if (!hadStateCookie || Cookies.get(this.stateCookieKey) !== state) {
+      this.state = state
+    }
+
+    this.applyState(state)
+
     // Restore sidebar scroll position
     if (this.sidebarScrollPosition) {
-      document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTo({
-        top: this.sidebarScrollPosition,
-        behavior: 'instant',
-      })
+      const scrollingArea = document.querySelector('.avo-sidebar .mac-styled-scrollbar')
+      if (scrollingArea) {
+        scrollingArea.scrollTo({
+          top: this.sidebarScrollPosition,
+          behavior: 'instant',
+        })
+      }
     }
     this.rememberScrollPosition()
   }
@@ -70,7 +104,10 @@ export default class extends Controller {
 
     document.addEventListener('turbo:visit', handler = () => {
       // Remember sidebar scroll position before changing pages.
-      this.sidebarScrollPosition = document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTop
+      const scrollingArea = document.querySelector('.avo-sidebar .mac-styled-scrollbar')
+      if (scrollingArea) {
+        this.sidebarScrollPosition = scrollingArea.scrollTop
+      }
       // remove event handler after disconnection
       document.removeEventListener('turbo:visit', handler)
     })
@@ -80,35 +117,43 @@ export default class extends Controller {
     scrollSidebarMenuItemIntoView()
   }
 
-  toggleSidebar() {
-    if (this.sidebarTarget.classList.contains('hidden')) {
-      this.sidebarTarget.classList.remove('hidden')
-    }
-    this.mainAreaTarget.classList.toggle('sidebar-open')
+  applyState(state) {
+    this.mainAreaTarget.classList.toggle('sidebar-open', state === 'open')
+    this.mainAreaTarget.classList.toggle('sidebar-collapsed', state === 'collapsed')
 
-    Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
+    if (this.hasSidebarTarget) {
+      this.sidebarTarget.classList.toggle('hidden', state === 'closed')
+    }
+
+    if (this.hasMobileSidebarTarget) {
+      // On mobile, "closed" is treated as collapsed by connect(); still keep the guard.
+      this.mobileSidebarTarget.classList.toggle('hidden', state === 'closed')
+    }
+  }
+
+  toggleSidebar() {
+    // Desktop cycles: open -> collapsed -> closed -> open
+    const next =
+      this.state === 'open' ? 'collapsed'
+      : this.state === 'collapsed' ? 'closed'
+      : 'open'
+
+    this.state = next
+    this.applyState(next)
   }
 
   toggleSidebarOnMobile() {
-    if (this.mobileSidebarTarget.classList.contains('hidden')) {
-      this.mainAreaTarget.classList.remove('sidebar-open')
-      this.mobileSidebarTarget.classList.remove('hidden')
+    // Mobile toggles: collapsed <-> open
+    const current = this.state === 'closed' ? 'collapsed' : this.state
+    const next = current === 'open' ? 'collapsed' : 'open'
 
-      // we force a reflow here because we remove then
-      // immediately add the sidebar-open class
-      // which doesn't give the browser enough time to apply the
-      // transition.
+    if (this.hasMobileSidebarTarget && this.mobileSidebarTarget.classList.contains('hidden')) {
+      this.mobileSidebarTarget.classList.remove('hidden')
+      // force reflow so transitions apply
       this.mainAreaTarget.offsetHeight // eslint-disable-line no-unused-expressions
     }
-    this.mainAreaTarget.classList.toggle('sidebar-open')
-  }
 
-  // private
-  newValue(oldValue) {
-    if (oldValue === undefined) {
-      return '0'
-    }
-
-    return oldValue === '1' ? '0' : '1'
+    this.state = next
+    this.applyState(next)
   }
 }
