@@ -34,6 +34,10 @@
   .sidebar__subitems__items {
     @apply hidden ps-0;
   }
+
+  .sidebar__avo-status {
+    @apply hidden;
+  }
 }
 
 
@@ -46,12 +50,6 @@
 
 .sidebar__heading:hover {
   @apply bg-secondary;
-
- /* background: linear-gradient(
-    90deg,
-    var(--color-content) 0%,
-    var(--color-content) 100%),
-    var(--color-secondary); */
 }
 
 .sidebar__heading__label-icon {
@@ -87,7 +85,7 @@
 }
 
 .sidebar__group__items {
-  @apply w-full flex flex-col ps-4;
+  @apply w-full flex flex-col;
 }
 
 /* ================================================ */
@@ -115,7 +113,8 @@
   box-shadow: var(--box-shadow-focus);
 }
 
-.sidebar__subitem:disabled {
+.sidebar__subitem[disabled],
+.sidebar__subitem[aria-disabled='true'] {
   @apply opacity-60 pointer-events-none;
 }
 
@@ -143,8 +142,6 @@
 .sidebar__subitems__header:active,
 .sidebar__link:active {
   @apply text-content;
-
-  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
 }
 
 .sidebar__subitems__header:hover,
@@ -165,8 +162,14 @@
   @apply opacity-60 pointer-events-none;
 }
 
+/* Icon wrapper reserves space when icon is absent (same size as icon) */
+.sidebar__link__icon-wrapper {
+  @apply size-4 shrink-0 flex items-center justify-center;
+}
+
 .sidebar__subitems__svg,
-.sidebar__link__icon {
+.sidebar__link__icon,
+.sidebar__subitem__icon {
   @apply size-4;
 }
 

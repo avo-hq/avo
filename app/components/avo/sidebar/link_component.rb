@@ -41,4 +41,8 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     return false if @path.blank?
     helpers.is_active_link?(@path, @active)
   end
+
+  def link_icon
+    @icon.presence || "tabler/outline/arrow-right"
+  end
 end

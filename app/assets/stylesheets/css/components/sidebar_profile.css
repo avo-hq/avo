@@ -68,3 +68,30 @@
 .sidebar-profile__sign-out-icon {
   @apply size-4 me-1 shrink-0;
 }
+
+/* Collapsed (icon-only) state - applied when .sidebar-collapsed on ancestor .main */
+.sidebar-collapsed .sidebar-profile .sidebar-profile__info,
+.sidebar-collapsed .sidebar-profile .sidebar-profile__action-trigger {
+  @apply hidden;
+}
+
+.sidebar-collapsed .sidebar-profile {
+  @apply justify-center;
+}
+
+.sidebar-collapsed .sidebar-profile .sidebar-profile__body {
+  @apply justify-center flex-initial min-w-0;
+}
+
+.sidebar-collapsed .sidebar-profile .sidebar-profile__avatar-wrapper {
+  @apply cursor-pointer;
+}
+
+.sidebar-collapsed .sidebar-profile .sidebar-profile__avatar-wrapper:hover {
+  @apply opacity-90;
+}
+
+/* Position panel to the right of the collapsed sidebar (opens into content area) */
+.sidebar-collapsed .sidebar-profile .sidebar-profile__panel {
+  @apply end-auto start-full ms-2;
+}
