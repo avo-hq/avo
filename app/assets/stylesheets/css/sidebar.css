@@ -1,4 +1,57 @@
 /* ================================================ */
+/* Avo sidebar layout — SidebarComponent */
+/* ================================================ */
+
+.avo-sidebar__inner {
+  @apply flex flex-col w-full h-full;
+}
+
+.avo-sidebar__body {
+  @apply flex-1 min-h-0 overflow-y-auto py-3 flex flex-col gap-4 items-start bg-background;
+}
+
+.avo-sidebar__body-content {
+  @apply px-3 w-full;
+}
+
+.avo-sidebar__nav-list {
+  @apply w-full space-y-1;
+}
+
+.avo-sidebar__footer {
+  @apply shrink-0;
+}
+
+/* Avo Status block (development only) */
+.sidebar__avo-status {
+  @apply p-4 border-t border-content-secondary;
+}
+
+.sidebar__avo-status:hover .sidebar__avo-status__hint {
+  @apply block;
+}
+
+.sidebar__avo-status__link {
+  @apply block px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm;
+}
+
+.sidebar__avo-status__indicator {
+  @apply rounded-full size-4;
+}
+
+.sidebar__avo-status__indicator--ok {
+  @apply bg-green-400;
+}
+
+.sidebar__avo-status__indicator--error {
+  @apply bg-orange-400;
+}
+
+.sidebar__avo-status__hint {
+  @apply absolute text-xs text-content-secondary hidden text-center w-full -ms-4;
+}
+
+/* ================================================ */
 /* Base */
 /* ================================================ */
 
@@ -176,4 +229,105 @@
 .sidebar__subitems__external-svg,
 .sidebar__link__external-icon {
   @apply self-center ms-auto size-4 me-2;
+}
+
+/* ================================================ */
+/* Sidebar profile — SidebarProfileComponent */
+/* ================================================ */
+
+.sidebar-profile {
+  @apply flex items-center rtl:flex-row-reverse border-t border-gray-200 px-4 py-2 gap-4 text-content;
+}
+
+.sidebar-profile__body {
+  @apply flex flex-1 items-center gap-2 w-full min-w-0;
+}
+
+.sidebar-profile__avatar-wrapper {
+  @apply flex items-center justify-center shrink-0 overflow-hidden rounded-lg border border-tertiary;
+
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary) 100%), var(--color-tertiary);
+}
+
+.sidebar-profile__avatar {
+   @apply size-8 flex items-center justify-center;
+}
+
+.sidebar-profile__avatar-img {
+  @apply size-full min-w-full min-h-full object-cover;
+}
+
+.sidebar-profile__avatar-initials {
+  @apply w-6 font-semibold text-sm leading-5 text-center text-ellipsis overflow-hidden text-foreground tracking-tighter;
+}
+
+.sidebar-profile__info {
+  @apply flex flex-col min-w-0 rtl:text-end;
+}
+
+.sidebar-profile__title {
+  @apply font-medium text-ellipsis overflow-hidden text-sm leading-5 text-content;
+}
+
+.sidebar-profile__subtitle {
+  @apply text-xs text-ellipsis overflow-hidden leading-4 text-content-secondary;
+}
+
+.sidebar-profile__actions {
+  @apply flex items-center justify-center gap-1 shrink-0;
+}
+
+.sidebar-profile__action-trigger {
+  @apply flex items-center cursor-pointer text-content-secondary;
+}
+
+.sidebar-profile__action-trigger:hover {
+  @apply text-content;
+}
+
+.sidebar-profile__action-icon {
+  @apply size-4;
+}
+
+.sidebar-profile__panel {
+  @apply absolute flex flex-col items-center inset-auto end-0 bottom-0 mb-8 bg-white rounded-sm min-w-[200px] shadow-2xl z-40;
+}
+
+.sidebar-profile__form {
+  @apply flex-1;
+}
+
+.sidebar-profile__sign-out {
+  @apply flex items-center justify-start gap-1 w-full px-4 py-3 rounded-sm cursor-pointer text-red-600 font-semibold bg-white hover:bg-red-100;
+}
+
+.sidebar-profile__sign-out-icon {
+  @apply size-4 me-1 shrink-0;
+}
+
+/* Collapsed (icon-only) state - applied when .sidebar-collapsed on ancestor .main */
+.sidebar-collapsed .sidebar-profile .sidebar-profile__info,
+.sidebar-collapsed .sidebar-profile .sidebar-profile__action-trigger {
+  @apply hidden;
+}
+
+.sidebar-collapsed .sidebar-profile {
+  @apply justify-center;
+}
+
+.sidebar-collapsed .sidebar-profile .sidebar-profile__body {
+  @apply justify-center flex-initial min-w-0;
+}
+
+.sidebar-collapsed .sidebar-profile .sidebar-profile__avatar-wrapper {
+  @apply cursor-pointer;
+}
+
+.sidebar-collapsed .sidebar-profile .sidebar-profile__avatar-wrapper:hover {
+  @apply opacity-90;
+}
+
+/* Position panel to the right of the collapsed sidebar (opens into content area) */
+.sidebar-collapsed .sidebar-profile .sidebar-profile__panel {
+  @apply end-auto start-full ms-2;
 }
