@@ -1,6 +1,6 @@
-<div class="sidebar-profile">
+<div class="sidebar-profile" data-controller="toggle">
   <div class="sidebar-profile__body">
-    <div class="sidebar-profile__avatar-wrapper">
+    <div class="sidebar-profile__avatar-wrapper" data-action="click->toggle#togglePanel">
     <div class="sidebar-profile__avatar">
         <% if avatar.present? %>
           <%= image_tag helpers.main_app.url_for(avatar), class: "sidebar-profile__avatar-img" %>
@@ -15,20 +15,20 @@
       <div class="sidebar-profile__title">
         <%= name %>
       </div>
-      <% if true %>
+      <% if title.present? %>
         <div class="sidebar-profile__subtitle">
           <%= "title - email" %>
         </div>
       <% end %>
     </div>
   </div>
-  <div class="sidebar-profile__actions" data-controller="toggle">
-    <a href="#" class="sidebar-profile__action-trigger">
+  <div class="sidebar-profile__actions">
+    <button type="button" class="sidebar-profile__action-trigger">
       <%= helpers.svg "tabler/outline/bell", class: 'sidebar-profile__action-icon' %>
-    </a>
-    <a href="#" class="sidebar-profile__action-trigger" data-control="profile-dots" data-action="click->toggle#togglePanel">
+    </button>
+    <button type="button" class="sidebar-profile__action-trigger" data-control="profile-dots" data-action="click->toggle#togglePanel">
       <%= helpers.svg "tabler/outline/dots", class: 'sidebar-profile__action-icon' %>
-    </a>
+    </button>
     <div class="css-animate-slide-up sidebar-profile__panel" data-toggle-target="panel" hidden>
       <% if render_custom_profile_menu? %>
         <%= render custom_profile_component %>

@@ -38,7 +38,7 @@
 }
 
 .sidebar-profile__actions {
-  @apply flex items-center gap-1 shrink-0;
+  @apply flex items-center justify-center gap-1 shrink-0;
 }
 
 .sidebar-profile__action-trigger {
@@ -54,7 +54,7 @@
 }
 
 .sidebar-profile__panel {
-  @apply absolute flex flex-col inset-auto end-0 bottom-0 mb-8 bg-white rounded-sm min-w-[200px] shadow-2xl z-40;
+  @apply absolute flex flex-col items-center inset-auto end-0 bottom-0 mb-8 bg-white rounded-sm min-w-[200px] shadow-2xl z-40;
 }
 
 .sidebar-profile__form {
