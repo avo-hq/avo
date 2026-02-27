@@ -61,10 +61,10 @@ ru:
         try_adjusting_search: Попробуйте изменить условия поиска или проверьте на опечатки
       go_to: Перейти к
       keyboard_hints:
+        close: Закрыть
+        navigate: Навигация
         press: Нажмите
-        to_close: для закрытия
-        to_navigate: для навигации
-        to_select: для выбора
+        select: Выбрать
       results:
         count_of_total: "%{count} из %{total}"
       show_all_results_for: Показать все результаты для
