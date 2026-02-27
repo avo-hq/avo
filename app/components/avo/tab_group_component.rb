@@ -48,7 +48,14 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def active_tab_title
-    CGI.unescape(params[group_param] || group.visible_items&.first&.title)
+    requested_tab_title = CGI.unescape(params[group_param].to_s)
+    visible_tab_titles = visible_tabs.map { |tab| tab.title.to_s }
+
+    if requested_tab_title.present? && visible_tab_titles.include?(requested_tab_title)
+      requested_tab_title
+    else
+      visible_tab_titles.first
+    end
   end
 
   def tabs
@@ -64,9 +71,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   end
 
   def active_tab
-    return if group.visible_items.blank?
-
-    group.visible_items.find do |tab|
+    visible_tabs.find do |tab|
       tab.title.to_s == active_tab_title.to_s
     end
   end
