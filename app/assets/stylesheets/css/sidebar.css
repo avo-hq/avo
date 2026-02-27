@@ -81,7 +81,8 @@
 }
 
 .sidebar__subitem:focus-visible {
-  @apply text-content-secondary;
+  @apply text-content-secondary outline-none;
+  box-shadow: var(--box-shadow-focus);
 }
 
 .sidebar__subitem:disabled {
