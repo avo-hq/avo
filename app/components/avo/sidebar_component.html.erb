@@ -64,11 +64,11 @@
   </div>
   <div class="avo-sidebar__footer shrink-0">
     <% if Rails.env.development? %>
-      <div class="sidebar__avo-status p-4 border-t border-gray-200 group">
-        <%= link_to helpers.avo.avo_private_status_path, class: "block px-4 py-2 border border-gray-200 rounded-sm flex justify-between items-center w-full text-black text-sm" do %>
+      <div class="sidebar__avo-status p-4 border-t border-content-secondary group">
+        <%= link_to helpers.avo.avo_private_status_path, class: "block px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm" do %>
           <span>Avo Status</span> <span><div class="rounded-full w-4 h-4 <%= Avo.app_status ? "bg-green-400" : "bg-orange-400" %>"></div></span>
         <% end %>
-        <div class="absolute text-xs text-gray-700 group-hover:block hidden text-center w-full -ms-4">👆Visible only in development👆</div>
+        <div class="absolute text-xs text-content-secondary group-hover:block hidden text-center w-full -ms-4">👆Visible only in development👆</div>
       </div>
     <% end %>
     <%= render Avo::SidebarProfileComponent.new user: helpers._current_user %>

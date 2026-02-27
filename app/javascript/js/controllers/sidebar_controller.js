@@ -1,6 +1,13 @@
 import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
+// Sidebar states — uncomment COLLAPSED and the collapsed branch below to re-enable icon-only mode
+const SIDEBAR_STATES = {
+  OPEN: 'open',
+  CLOSED: 'closed'
+  // COLLAPSED: 'collapsed'
+}
+
 // Detect whether an element is in view inside a parent element.
 // Original here: https://gist.github.com/jjmu15/8646226
 function isInViewport(element, parentElement) {
@@ -47,12 +54,16 @@ export default class extends Controller {
 
   get state() {
     const cookieState = Cookies.get(this.stateCookieKey)
-    if (cookieState === 'open' || cookieState === 'collapsed' || cookieState === 'closed') {
+    const validStates = Object.values(SIDEBAR_STATES)
+    // When COLLAPSED is enabled, add: SIDEBAR_STATES.COLLAPSED
+    if (validStates.includes(cookieState)) {
       return cookieState
     }
-
-    // Default: open on desktop, collapsed on mobile
-    return this.isDesktop ? 'open' : 'collapsed'
+    // Normalize unknown/collapsed (when collapsed is disabled) to open
+    if (cookieState === 'collapsed') {
+      return SIDEBAR_STATES.OPEN
+    }
+    return SIDEBAR_STATES.OPEN
   }
 
   get sidebarScrollPosition() {
@@ -73,11 +84,6 @@ export default class extends Controller {
     const hadStateCookie = Cookies.get(this.stateCookieKey) !== undefined
 
     let state = this.state
-
-    // On mobile we never keep it fully closed; fall back to icon-only.
-    if (this.isMobile && state === 'closed') {
-      state = 'collapsed'
-    }
 
     // Persist default / normalized state so server can render it next time.
     if (!hadStateCookie || Cookies.get(this.stateCookieKey) !== state) {
@@ -118,34 +124,35 @@ export default class extends Controller {
   }
 
   applyState(state) {
-    this.mainAreaTarget.classList.toggle('sidebar-open', state === 'open')
-    this.mainAreaTarget.classList.toggle('sidebar-collapsed', state === 'collapsed')
+    this.mainAreaTarget.classList.toggle('sidebar-open', state === SIDEBAR_STATES.OPEN)
+    // When COLLAPSED is enabled, use: state === SIDEBAR_STATES.COLLAPSED
+    this.mainAreaTarget.classList.toggle('sidebar-collapsed', SIDEBAR_STATES.COLLAPSED != null && state === SIDEBAR_STATES.COLLAPSED)
 
     if (this.hasSidebarTarget) {
-      this.sidebarTarget.classList.toggle('hidden', state === 'closed')
+      this.sidebarTarget.classList.toggle('hidden', state === SIDEBAR_STATES.CLOSED)
     }
 
     if (this.hasMobileSidebarTarget) {
-      // On mobile, "closed" is treated as collapsed by connect(); still keep the guard.
-      this.mobileSidebarTarget.classList.toggle('hidden', state === 'closed')
+      this.mobileSidebarTarget.classList.toggle('hidden', state === SIDEBAR_STATES.CLOSED)
     }
   }
 
   toggleSidebar() {
-    // Desktop cycles: open -> collapsed -> closed -> open
-    const next =
-      this.state === 'open' ? 'collapsed'
-      : this.state === 'collapsed' ? 'closed'
-      : 'open'
+    // Desktop: open <-> closed
+    // When COLLAPSED is enabled, use: open -> collapsed -> closed -> open
+    const next = this.state === SIDEBAR_STATES.OPEN ? SIDEBAR_STATES.CLOSED : SIDEBAR_STATES.OPEN
+    // const next = this.state === SIDEBAR_STATES.OPEN ? SIDEBAR_STATES.COLLAPSED
+    //   : this.state === SIDEBAR_STATES.COLLAPSED ? SIDEBAR_STATES.CLOSED
+    //   : SIDEBAR_STATES.OPEN
 
     this.state = next
     this.applyState(next)
   }
 
   toggleSidebarOnMobile() {
-    // Mobile toggles: collapsed <-> open
-    const current = this.state === 'closed' ? 'collapsed' : this.state
-    const next = current === 'open' ? 'collapsed' : 'open'
+    // Mobile: open <-> closed (when COLLAPSED enabled: open <-> collapsed)
+    const next = this.state === SIDEBAR_STATES.OPEN ? SIDEBAR_STATES.CLOSED : SIDEBAR_STATES.OPEN
+    // const next = this.state === SIDEBAR_STATES.OPEN ? SIDEBAR_STATES.COLLAPSED : SIDEBAR_STATES.OPEN
 
     if (this.hasMobileSidebarTarget && this.mobileSidebarTarget.classList.contains('hidden')) {
       this.mobileSidebarTarget.classList.remove('hidden')
