@@ -14,6 +14,7 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   prop :data, default: {}.freeze
   prop :icon
   prop :args, kind: :**, default: {}.freeze
+  prop :items
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
@@ -34,5 +35,10 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     else
       self
     end
+  end
+
+  def parent_link_active?
+    return false if @path.blank?
+    helpers.is_active_link?(@path, @active)
   end
 end

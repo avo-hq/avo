@@ -71,9 +71,11 @@
   transform: translateX(-100%);
   transition: transform 0.1s ease;
 
+  /* TODO: this is global, to confirm that we will use the same styles everywhere */
   .active:hover,
   .active {
-    @apply bg-primary-100 text-primary-500;
+    /* @apply bg-primary-100 text-primary-500; */
+  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
   }
 }
 

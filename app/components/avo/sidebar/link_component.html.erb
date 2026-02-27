@@ -1,9 +1,11 @@
 <% if @path.present? %>
-  <%= link_caller.send link_method, @path, class: "sidebar__link", active: @active, target: @target, data: @data, **@args do %>
+  <%= link_caller.send link_method, @path, class: "sidebar__link", active: @active, target: @target, data: @data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
+    <%# TODO:MM to remove after testing %>
     <%= helpers.svg @icon, class: "sidebar__link__icon" if @icon.present? %>
     <%= @label %>
+    <%# TODO: dsign for count  and posible options %>
     <% if @target == :_blank %>
-      <%= helpers.svg('heroicons/outline/external-link', class: 'sidebar__link__external-icon') %>
+      <%= helpers.svg('tabler/outline/dots', class: 'sidebar__link__external-icon') %>
     <% end %>
   <% end %>
 <% else %>
@@ -11,4 +13,26 @@
     <%= helpers.svg @icon, class: "sidebar__link__icon" if @icon.present? %>
     <%= @label %>
   <% end %>
+<% end %>
+<% if @items.present? && parent_link_active? %>
+  <div class="sidebar__subitems__items">
+    <% @items.each do |item| %>
+      <% if item.path.present? %>
+        <%= link_caller.send link_method, item.path, class: "sidebar__subitem", active: @active, target: item.target, data: item.data, disabled: @disabled, "aria-disabled": @disabled, **item.args do %>
+          <%# TODO:MM to remove after testing %>
+          <%= helpers.svg item.icon, class: "sidebar__subitem__icon" if item.icon.present? %>
+          <%= item.try(:label).presence || item.try(:name).presence %>
+          <%# TODO: dsign for count  and posible options %>
+          <% if item.target == :_blank %>
+            <%= helpers.svg('tabler/outline/dots', class: 'sidebar__link__external-icon') %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= content_tag :div, class: classes, active: @active, target: item.target, data: item.data do %>
+          <%= helpers.svg item.icon, class: "sidebar__subitem__icon" if item.icon.present? %>
+          <%= item.try(:label).presence || item.try(:name).presence %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>

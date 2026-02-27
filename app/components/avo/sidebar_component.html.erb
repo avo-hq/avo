@@ -18,8 +18,6 @@
         <% else %>
           <% if dashboards.present? %>
             <div>
-              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.dashboards'), icon: helpers.svg("avo/dashboards", class: 'h-4') %>
-
               <div class="w-full space-y-1">
                 <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
                   <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: helpers.avo_dashboards.dashboard_path(dashboard) %>
@@ -29,8 +27,6 @@
           <% end %>
 
           <div>
-            <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.resources'), icon: helpers.svg("avo/resources", class: 'h-4') %>
-
             <div class="w-full space-y-1">
               <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
                 <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource) %>
@@ -40,8 +36,6 @@
 
           <% if tools.present? %>
             <div>
-              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.tools'), icon: helpers.svg("avo/tools", class: 'h-4') %>
-
               <div class="w-full space-y-1">
                 <% tools.each do |partial| %>
                   <%= render partial: "/avo/sidebar/items/#{partial}" %>
@@ -52,8 +46,6 @@
 
           <% if pages.present? %>
             <div>
-              <%= render Avo::Sidebar::HeadingComponent.new label: t('avo.pages'), icon: helpers.svg("document-chart-bar", class: 'h-4') %>
-
               <div class="w-full space-y-1">
                 <% pages.each do |page| %>
                   <%= render Avo::Sidebar::LinkComponent.new label: page.get_navigation_label, path: page.path %>

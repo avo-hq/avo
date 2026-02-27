@@ -1,4 +1,13 @@
 /* ================================================ */
+/* Base */
+/* ================================================ */
+
+.sidebar--collapsable {
+  @apply cursor-pointer;
+}
+
+
+/* ================================================ */
 /* Sidebar heading */
 /* ================================================ */
 .sidebar__heading {
@@ -15,10 +24,6 @@
     var(--color-secondary); */
 }
 
-.sidebar__heading--collapsable {
-  @apply cursor-pointer;
-}
-
 .sidebar__heading__label-icon {
   @apply size-4;
 }
@@ -32,40 +37,15 @@
   @apply rotate-90;
 }
 
-
-/* ================================================ */
-/* Sidebar section */
-/* ================================================ */
-.sidebar__section {
-  @apply pb-2;
-}
-
-.sidebar__section__items {
-  @apply ps-7 w-full flex flex-col;
-}
-
 /* ================================================ */
 /* Sidebar group — used by Sidebar::GroupComponent */
 /* ================================================ */
-/* .sidebar__group {
-  @apply
-} */
 
+.sidebar__group {
+  @apply pb-2;
+}
 .sidebar__group__header {
-  @apply flex px-2 py-1.5 gap-2 rounded-lg;
-  /* background: linear-gradient(90deg, var(--color-content) 0%, var(--color-content) 100%), var(--color-secondary); */
-}
-
-.sidebar__group__header:hover {
-  @apply bg-secondary;
-}
-
-.sidebar__group__header--collapsable {
-  @apply cursor-pointer;
-}
-
-.sidebar__group__header-label {
-  @apply text-content text-sm font-medium leading-5;
+  @apply flex px-2 py-1.5 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4;
 }
 
 .sidebar__group__svg {
@@ -77,24 +57,89 @@
 }
 
 .sidebar__group__items {
-  @apply ps-7 w-full flex flex-col;
+  @apply w-full flex flex-col ps-4;
+}
+
+/* ================================================ */
+/* Sidebar subitem — single row, used by Sidebar::SubitemComponent */
+/* ================================================ */
+
+.sidebar__subitems__items {
+  @apply w-full flex flex-col ps-6;
+}
+
+.sidebar__subitem {
+  @apply flex items-center py-1 px-2 rounded-lg gap-2 text-content-secondary text-sm font-medium leading-4;
+}
+
+.sidebar__subitem:hover {
+  @apply text-content;
+}
+
+.sidebar__subitem:active {
+  @apply text-content;
+}
+
+.sidebar__subitem:focus-visible {
+  @apply text-content-secondary;
+}
+
+.sidebar__subitem:disabled {
+  @apply opacity-60 pointer-events-none;
+}
+
+.sidebar__subitem__icon {
+  @apply size-4;
+}
+
+.sidebar__subitem__external-icon {
+  @apply self-center ms-auto size-4 me-2;
 }
 
 /* ================================================ */
 /* Sidebar link — used by Sidebar::LinkComponent */
 /* ================================================ */
+.sidebar__subitems__header,
 .sidebar__link {
-  @apply flex items-center py-1 px-2 rounded-lg gap-2 text-content-secondary text-sm font-medium leading-5;
+  @apply flex items-center py-1.5 px-2 rounded-lg gap-2 text-content-secondary text-sm font-medium leading-5;
 }
 
+.sidebar__subitems__header
 .sidebar__link:hover {
   @apply bg-secondary;
 }
 
-.sidebar__link__icon {
-  @apply h-4 text-content;
+.sidebar__subitems__header:active,
+.sidebar__link:active {
+  @apply text-content;
+
+  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
 }
 
+.sidebar__subitems__header:hover,
+.sidebar__link:hover {
+  @apply bg-secondary;
+}
+
+.sidebar__subitems__header:focus-visible,
+.sidebar__link:focus-visible {
+  @apply outline-none bg-primary;
+  box-shadow: var(--box-shadow-focus);
+}
+
+.sidebar__subitems__header[disabled],
+.sidebar__subitems__header[aria-disabled='true'],
+.sidebar__link[disabled],
+.sidebar__link[aria-disabled='true'] {
+  @apply opacity-60 pointer-events-none;
+}
+
+.sidebar__subitems__svg,
+.sidebar__link__icon {
+  @apply size-4;
+}
+
+.sidebar__subitems__external-svg,
 .sidebar__link__external-icon {
-  @apply self-center ms-auto h-3 me-2;
+  @apply self-center ms-auto size-4 me-2;
 }
