@@ -1,242 +1,155 @@
 /* ================================================ */
-/* Avo sidebar layout — SidebarComponent */
+/* Sidebar Shared Utilities                         */
 /* ================================================ */
 
-.avo-sidebar__inner {
+.sidebar-icon {
+  @apply size-4;
+}
+
+.sidebar-icon--collapsed {
+  @apply rotate-90;
+}
+
+.sidebar-group__header:focus-visible,
+.sidebar-link:focus-visible,
+.sidebar-link.active:focus-visible,
+.sidebar-subitem:focus-visible {
+  @apply outline-none;
+  box-shadow: var(--box-shadow-focus);
+}
+
+.sidebar-link[disabled],
+.sidebar-link[aria-disabled='true'],
+.sidebar-subitem[disabled],
+.sidebar-subitem[aria-disabled='true'] {
+  @apply opacity-60 pointer-events-none;
+}
+
+/* ================================================ */
+/* Sidebar Layout — SidebarComponent                */
+/* BEM: .sidebar (block)                            */
+/* ================================================ */
+
+.sidebar__inner {
   @apply flex flex-col w-full h-full;
 }
 
-.avo-sidebar__body {
+.sidebar__body {
   @apply flex-1 min-h-0 overflow-y-auto py-3 flex flex-col gap-4 items-start bg-background;
 }
 
-.avo-sidebar__body-content {
+.sidebar__body-content {
   @apply px-3 w-full;
 }
 
-.avo-sidebar__nav-list {
+.sidebar__nav-list {
   @apply w-full space-y-1;
 }
 
-.avo-sidebar__footer {
+.sidebar__footer {
   @apply shrink-0;
 }
 
-/* Avo Status block (development only) */
-.sidebar__avo-status {
-  @apply p-4 border-t border-content-secondary;
-}
-
-.sidebar__avo-status:hover .sidebar__avo-status__hint {
-  @apply block;
-}
-
-.sidebar__avo-status__link {
-  @apply block px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm;
-}
-
-.sidebar__avo-status__indicator {
-  @apply rounded-full size-4;
-}
-
-.sidebar__avo-status__indicator--ok {
-  @apply bg-green-400;
-}
-
-.sidebar__avo-status__indicator--error {
-  @apply bg-orange-400;
-}
-
-.sidebar__avo-status__hint {
-  @apply absolute text-xs text-content-secondary hidden text-center w-full -ms-4;
-}
 
 /* ================================================ */
-/* Base */
+/* Sidebar Group — Sidebar::GroupComponent          */
+/* BEM: .sidebar-group (block)                      */
 /* ================================================ */
 
-.sidebar--collapsable {
-  @apply cursor-pointer;
-}
-
-/* ================================================ */
-/* Collapsed (icon-only) state */
-/* Applied via `.sidebar-collapsed` on the `.main` wrapper */
-/* ================================================ */
-
-.sidebar-collapsed {
-  .sidebar__link,
-  .sidebar__subitem,
-  .sidebar__group__header {
-    @apply justify-center;
-  }
-
-  .sidebar__link__label,
-  .sidebar__subitem__label,
-  .sidebar__group__label,
-  .sidebar__link__external-icon,
-  .sidebar__subitem__external-icon,
-  .sidebar__group__chevron {
-    @apply hidden;
-  }
-
-  .sidebar__group__items {
-    @apply ps-0;
-  }
-
-  .sidebar__subitems__items {
-    @apply hidden ps-0;
-  }
-
-  .sidebar__avo-status {
-    @apply hidden;
-  }
-}
-
-
-/* ================================================ */
-/* Sidebar heading */
-/* ================================================ */
-.sidebar__heading {
-  @apply flex items-center py-1.5 px-2 gap-2 rounded-lg text-content text-sm font-medium leading-5;
-}
-
-.sidebar__heading:hover {
-  @apply bg-secondary;
-}
-
-.sidebar__heading__label-icon {
-  @apply size-4;
-}
-
-/* TODO:MM to remove the svg logic in the future as it is not in the design */
-.sidebar__heading__svg {
-  @apply size-4;
-}
-
-.sidebar__heading__svg--collapsed {
-  @apply rotate-90;
-}
-
-/* ================================================ */
-/* Sidebar group — used by Sidebar::GroupComponent */
-/* ================================================ */
-
-.sidebar__group {
+.sidebar-group {
   @apply pb-2;
 }
-.sidebar__group__header {
-  @apply flex px-2 py-1.5 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4;
+
+.sidebar-group__header {
+  @apply flex w-full text-start px-2 py-1.5 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
 }
 
-.sidebar__group__svg {
-  @apply size-4;
+/* We do not have hover in design, but I added it as we have a button for collapse on it */
+.sidebar-group__header:hover {
+  @apply bg-primary;
 }
 
-.sidebar__group__svg--collapsed {
-  @apply rotate-90;
+.sidebar-group__header:focus-visible {
+  @apply bg-primary relative z-10;
 }
 
-.sidebar__group__items {
+.sidebar-group__items {
   @apply w-full flex flex-col;
 }
 
 /* ================================================ */
-/* Sidebar subitem — single row, used by Sidebar::SubitemComponent */
+/* Sidebar Link — Sidebar::LinkComponent            */
+/* BEM: .sidebar-link (block)                       */
 /* ================================================ */
 
-.sidebar__subitems__items {
+.sidebar-link,
+.sidebar-subitem {
+  @apply flex items-center px-2 rounded-lg gap-2 text-content-secondary text-sm font-medium leading-5;
+}
+
+.sidebar-link {
+  @apply py-1.5;
+}
+
+/* The bg should be secondary, but the sidebar bg is secondary and thus the hover is not visible and I changed it into the bg-primary */
+.sidebar-link.active:hover,
+.sidebar-link:hover {
+  @apply bg-primary text-content;
+}
+
+.sidebar-link:focus-visible,
+.sidebar-link.active:focus-visible {
+  @apply bg-primary;
+}
+
+.sidebar-link:active,
+.sidebar-link.active {
+  @apply text-content;
+  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+}
+
+.sidebar-link__icon-wrapper {
+  @apply shrink-0 flex items-center justify-center;
+}
+
+.sidebar-link__external-icon {
+  @apply self-center ms-auto me-2;
+}
+
+/* ================================================ */
+/* Sidebar Subitem — Sidebar::SubitemComponent      */
+/* BEM: .sidebar-subitem (block)                    */
+/* ================================================ */
+
+.sidebar-subitem {
+  @apply py-1;
+}
+
+.sidebar-subitem__items {
   @apply w-full flex flex-col ps-6;
 }
 
-.sidebar__subitem {
-  @apply flex items-center py-1 px-2 rounded-lg gap-2 text-content-secondary text-sm font-medium leading-4;
-}
-
-.sidebar__subitem:hover {
+.sidebar-subitem:hover {
   @apply text-content;
 }
 
-.sidebar__subitem:active {
-  @apply text-content;
+.sidebar-subitem:focus-visible {
+  @apply text-content-secondary;
 }
 
-.sidebar__subitem:focus-visible {
-  @apply text-content-secondary outline-none;
-  box-shadow: var(--box-shadow-focus);
-}
-
-.sidebar__subitem[disabled],
-.sidebar__subitem[aria-disabled='true'] {
-  @apply opacity-60 pointer-events-none;
-}
-
-.sidebar__subitem__icon {
-  @apply size-4;
-}
-
-.sidebar__subitem__external-icon {
-  @apply self-center ms-auto size-4 me-2;
+.sidebar-subitem.active:hover,
+.sidebar-subitem:active,
+.sidebar-subitem.active {
+  @apply text-content bg-transparent;
 }
 
 /* ================================================ */
-/* Sidebar link — used by Sidebar::LinkComponent */
-/* ================================================ */
-.sidebar__subitems__header,
-.sidebar__link {
-  @apply flex items-center py-1.5 px-2 rounded-lg gap-2 text-content-secondary text-sm font-medium leading-5;
-}
-
-.sidebar__subitems__header
-.sidebar__link:hover {
-  @apply bg-secondary;
-}
-
-.sidebar__subitems__header:active,
-.sidebar__link:active {
-  @apply text-content;
-}
-
-.sidebar__subitems__header:hover,
-.sidebar__link:hover {
-  @apply bg-secondary;
-}
-
-.sidebar__subitems__header:focus-visible,
-.sidebar__link:focus-visible {
-  @apply outline-none bg-primary;
-  box-shadow: var(--box-shadow-focus);
-}
-
-.sidebar__subitems__header[disabled],
-.sidebar__subitems__header[aria-disabled='true'],
-.sidebar__link[disabled],
-.sidebar__link[aria-disabled='true'] {
-  @apply opacity-60 pointer-events-none;
-}
-
-/* Icon wrapper reserves space when icon is absent (same size as icon) */
-.sidebar__link__icon-wrapper {
-  @apply size-4 shrink-0 flex items-center justify-center;
-}
-
-.sidebar__subitems__svg,
-.sidebar__link__icon,
-.sidebar__subitem__icon {
-  @apply size-4;
-}
-
-.sidebar__subitems__external-svg,
-.sidebar__link__external-icon {
-  @apply self-center ms-auto size-4 me-2;
-}
-
-/* ================================================ */
-/* Sidebar profile — SidebarProfileComponent */
+/* Sidebar Profile — SidebarProfileComponent        */
+/* BEM: .sidebar-profile (block)                    */
 /* ================================================ */
 
 .sidebar-profile {
-  @apply flex items-center rtl:flex-row-reverse border-t border-gray-200 px-4 py-2 gap-4 text-content;
+  @apply flex items-center rtl:flex-row-reverse px-4 py-2 gap-4 text-content;
 }
 
 .sidebar-profile__body {
@@ -245,12 +158,11 @@
 
 .sidebar-profile__avatar-wrapper {
   @apply flex items-center justify-center shrink-0 overflow-hidden rounded-lg border border-tertiary;
-
   background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary) 100%), var(--color-tertiary);
 }
 
 .sidebar-profile__avatar {
-   @apply size-8 flex items-center justify-center;
+  @apply size-8 flex items-center justify-center;
 }
 
 .sidebar-profile__avatar-img {
@@ -285,12 +197,8 @@
   @apply text-content;
 }
 
-.sidebar-profile__action-icon {
-  @apply size-4;
-}
-
 .sidebar-profile__panel {
-  @apply absolute flex flex-col items-center inset-auto end-0 bottom-0 mb-8 bg-white rounded-sm min-w-[200px] shadow-2xl z-40;
+  @apply absolute flex flex-col items-center inset-auto end-0 bottom-0 mb-8 bg-primary rounded-sm min-w-[200px] shadow-2xl z-40;
 }
 
 .sidebar-profile__form {
@@ -298,36 +206,50 @@
 }
 
 .sidebar-profile__sign-out {
-  @apply flex items-center justify-start gap-1 w-full px-4 py-3 rounded-sm cursor-pointer text-red-600 font-semibold bg-white hover:bg-red-100;
+  @apply flex items-center justify-start gap-1 w-full px-4 py-3 rounded-sm cursor-pointer text-danger font-semibold bg-primary hover:bg-danger/10;
 }
 
 .sidebar-profile__sign-out-icon {
-  @apply size-4 me-1 shrink-0;
+  @apply me-1 shrink-0;
 }
 
-/* Collapsed (icon-only) state - applied when .sidebar-collapsed on ancestor .main */
-.sidebar-collapsed .sidebar-profile .sidebar-profile__info,
-.sidebar-collapsed .sidebar-profile .sidebar-profile__action-trigger {
-  @apply hidden;
+.sidebar-profile__menu-item {
+  @apply flex-1 flex items-center justify-center text-start cursor-pointer font-semibold block px-4 py-3 w-full text-center rounded-sm bg-primary text-content hover:bg-tertiary;
 }
 
-.sidebar-collapsed .sidebar-profile {
-  @apply justify-center;
+.sidebar-profile__menu-item .sidebar-icon {
+  @apply me-1;
 }
 
-.sidebar-collapsed .sidebar-profile .sidebar-profile__body {
-  @apply justify-center flex-initial min-w-0;
+/* ================================================ */
+/* Sidebar Status (development only)                */
+/* BEM: .sidebar-status (block)                     */
+/* ================================================ */
+
+.sidebar-status {
+  @apply p-4 border-t border-content-secondary;
 }
 
-.sidebar-collapsed .sidebar-profile .sidebar-profile__avatar-wrapper {
-  @apply cursor-pointer;
+.sidebar-status__link {
+  @apply block px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm;
 }
 
-.sidebar-collapsed .sidebar-profile .sidebar-profile__avatar-wrapper:hover {
-  @apply opacity-90;
+.sidebar-status__indicator {
+  @apply rounded-full size-4;
 }
 
-/* Position panel to the right of the collapsed sidebar (opens into content area) */
-.sidebar-collapsed .sidebar-profile .sidebar-profile__panel {
-  @apply end-auto start-full ms-2;
+.sidebar-status__indicator--ok {
+  @apply bg-green-400;
+}
+
+.sidebar-status__indicator--error {
+  @apply bg-orange-400;
+}
+
+.sidebar-status__hint {
+  @apply absolute text-xs text-content-secondary hidden text-center w-full -ms-4;
+}
+
+.sidebar-status:hover .sidebar-status__hint {
+  @apply block;
 }

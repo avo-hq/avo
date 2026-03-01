@@ -1,32 +1,31 @@
 <% if @path.present? %>
-  <%= link_caller.send link_method, @path, class: "sidebar__link", active: @active, target: @target, data: @data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
-    <span class="sidebar__link__icon-wrapper">
-      <%= helpers.svg link_icon, class: "sidebar__link__icon" %>
+  <%= link_caller.send link_method, @path, class: "sidebar-link", active: @active, target: @target, data: @data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
+    <span class="sidebar-link__icon-wrapper sidebar-icon">
+      <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
     </span>
-    <span class="sidebar__link__label"><%= @label %></span>
-    <%# TODO: dsign for count  and posible options %>
+    <span><%= @label %></span>
     <% if @target == :_blank %>
-      <%= helpers.svg('tabler/outline/dots', class: 'sidebar__link__external-icon') %>
+      <%= helpers.svg("tabler/outline/external-link", class: "sidebar-link__external-icon sidebar-icon") %>
     <% end %>
   <% end %>
 <% else %>
-  <%= content_tag :div, class: classes, active: @active, target: @target, data: @data do %>
-    <span class="sidebar__link__icon-wrapper">
-      <%= helpers.svg link_icon, class: "sidebar__link__icon" %>
+  <%= content_tag :div, class: "sidebar-link", active: @active, target: @target, data: @data do %>
+    <span class="sidebar-link__icon-wrapper sidebar-icon">
+      <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
     </span>
-    <span class="sidebar__link__label"><%= @label %></span>
+    <span><%= @label %></span>
   <% end %>
 <% end %>
 <% if @items.present? && parent_link_active? %>
-  <div class="sidebar__subitems__items">
+  <div class="sidebar-subitem__items">
     <% @items.each do |item| %>
       <% if item.path.present? %>
-        <%= link_caller.send link_method, item.path, class: "sidebar__subitem", active: @active, target: item.target, data: item.data, disabled: @disabled, "aria-disabled": @disabled, **item.args do %>
-          <span class="sidebar__subitem__label"><%= item.try(:label).presence || item.try(:name).presence %></span>
+        <%= link_caller.send link_method, item.path, class: "sidebar-subitem", active: @active, target: item.target, data: item.data, disabled: @disabled, "aria-disabled": @disabled, **item.args do %>
+          <span><%= item.try(:label).presence || item.try(:name).presence %></span>
         <% end %>
       <% else %>
-        <%= content_tag :div, class: classes, active: @active, target: item.target, data: item.data do %>
-          <span class="sidebar__subitem__label"><%= item.try(:label).presence || item.try(:name).presence %></span>
+        <%= content_tag :div, class: "sidebar-subitem", active: @active, target: item.target, data: item.data do %>
+          <span><%= item.try(:label).presence || item.try(:name).presence %></span>
         <% end %>
       <% end %>
     <% end %>

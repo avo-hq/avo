@@ -6,7 +6,7 @@
           <%= image_tag helpers.main_app.url_for(avatar), class: "sidebar-profile__avatar-img" %>
         <% else %>
           <span class="sidebar-profile__avatar-initials">
-            <%= name.first.upcase %><%= name.last.upcase %>
+            <%= initials %>
           </span>
         <% end %>
     </div>
@@ -17,14 +17,14 @@
       </div>
       <% if title.present? %>
         <div class="sidebar-profile__subtitle">
-          <%= "title - email" %>
+            <%= title %>
         </div>
       <% end %>
     </div>
   </div>
   <div class="sidebar-profile__actions">
     <button type="button" class="sidebar-profile__action-trigger" data-control="profile-dots" data-action="click->toggle#togglePanel">
-      <%= helpers.svg "tabler/outline/dots", class: 'sidebar-profile__action-icon' %>
+      <%= helpers.svg "tabler/outline/dots", class: 'sidebar-profile__action-icon sidebar-icon' %>
     </button>
     <div class="css-animate-slide-up sidebar-profile__panel" data-toggle-target="panel" hidden>
       <% if render_custom_profile_menu? %>
@@ -41,7 +41,7 @@
           },
           class: 'sidebar-profile__form' do |form| %>
           <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "sidebar-profile__sign-out" do %>
-            <%= helpers.svg "avo/logout", class: 'sidebar-profile__sign-out-icon' %> <%= t('avo.sign_out') %>
+            <%= helpers.svg "avo/logout", class: 'sidebar-profile__sign-out-icon sidebar-icon' %> <%= t('avo.sign_out') %>
           <% end %>
         <% end %>
       <% end %>
