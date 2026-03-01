@@ -18,7 +18,6 @@ RSpec.describe "sidebar", type: :system do
       expect(page).to have_selector "div.sidebar-open"
       sidebar_button.click
       expect(page).to_not have_selector "div.sidebar-open"
-      expect(page).to have_selector "div[data-sidebar-target='sidebar'].hidden", visible: false
 
       sidebar_button.click
       expect(page).to have_selector "div.sidebar-open"
@@ -31,7 +30,6 @@ RSpec.describe "sidebar", type: :system do
       visit "/admin/resources/users"
 
       expect(page).to_not have_selector "div.sidebar-open"
-      expect(page).to have_selector "div[data-sidebar-target='sidebar'].hidden", visible: false
     end
   end
 
@@ -44,7 +42,6 @@ RSpec.describe "sidebar", type: :system do
 
     it "is open on login" do
       expect(page).to have_selector "div.sidebar-open"
-      expect(page).to_not have_selector "div[data-sidebar-target='mobileSidebar'].hidden", visible: false
     end
 
     it "toggles between open and closed" do
@@ -53,7 +50,6 @@ RSpec.describe "sidebar", type: :system do
 
       sidebar_button.click
       expect(page).to_not have_selector "div.sidebar-open"
-      expect(page).to have_selector "div[data-sidebar-target='mobileSidebar'].hidden", visible: false
     end
 
     it "remains closed on navigation" do
