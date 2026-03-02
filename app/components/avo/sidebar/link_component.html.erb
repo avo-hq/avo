@@ -1,8 +1,10 @@
 <% if @path.present? %>
   <%= link_caller.send link_method, @path, class: "sidebar-link", active: @active, target: @target, data: @data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
-    <span class="sidebar-link__icon-wrapper sidebar-icon">
-      <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
-    </span>
+    <% if link_icon.present? %>
+      <span class="sidebar-link__icon-wrapper sidebar-icon">
+        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
+      </span>
+    <% end %>
     <span><%= @label %></span>
     <% if @target == :_blank %>
       <%= helpers.svg("tabler/outline/external-link", class: "sidebar-link__external-icon sidebar-icon") %>
@@ -10,9 +12,11 @@
   <% end %>
 <% else %>
   <%= content_tag :div, class: "sidebar-link", active: @active, target: @target, data: @data do %>
-    <span class="sidebar-link__icon-wrapper sidebar-icon">
-      <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
-    </span>
+    <% if link_icon.present? %>
+      <span class="sidebar-link__icon-wrapper sidebar-icon">
+        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
+      </span>
+    <% end %>
     <span><%= @label %></span>
   <% end %>
 <% end %>

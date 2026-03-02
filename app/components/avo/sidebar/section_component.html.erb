@@ -1,23 +1,23 @@
-<%= tag.div class: "sidebar-group", data: data do %>
+<%= tag.div class: "sidebar-section", data: data do %>
   <% if item.name.present? %>
     <% if collapsable %>
       <button
         type="button"
-        class="sidebar-group__header justify-between"
+        class="sidebar-section__header justify-between"
         data-action="click->menu#triggerCollapse"
         data-menu-target="trigger"
         aria-expanded="<%= !collapsed %>"
       >
         <span><%= item.name %></span>
-        <span class="sidebar-group__icon sidebar-icon <%= 'sidebar-icon--collapsed' if collapsed %>"
+        <span class="sidebar-section__icon sidebar-icon mt-1 <%= 'sidebar-icon--collapsed' if collapsed %>"
           data-menu-target="svg"
         >
-          <%= helpers.svg 'heroicons/outline/chevron-down', class: 'h-4' %>
+          <%= helpers.svg 'heroicons/outline/chevron-down' %>
         </span>
       </button>
     <% else %>
-      <div class="sidebar-group__header">
-        <%= helpers.svg icon, class: "sidebar-group__icon sidebar-icon" if icon.present? %>
+      <div class="sidebar-section__header">
+        <%= helpers.svg icon, class: "sidebar-section__icon sidebar-icon  mt-1" if icon.present? %>
         <span><%= item.name %></span>
       </div>
     <% end %>
@@ -25,7 +25,7 @@
 
   <%= content_tag :div,
     hidden: collapsed,
-    class: "sidebar-group__items",
+    class: "sidebar-section__items",
     data: {
       menu_target: :items,
     } do %>

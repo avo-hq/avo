@@ -39,11 +39,11 @@
 }
 
 .sidebar__body {
-  @apply flex-1 min-h-0 overflow-y-auto py-3 flex flex-col gap-y-4 items-start bg-background;
+  @apply flex-1 min-h-0 overflow-y-auto py-3 flex flex-col gap-y-4 items-start;
 }
 
 .sidebar__body-content {
-  @apply flex flex-col px-3 w-full gap-y-1;
+  @apply flex flex-col px-3 w-full;
 }
 
 .sidebar__nav-list {
@@ -55,16 +55,38 @@
 }
 
 /* ================================================ */
+/* Sidebar Section — Sidebar::SectionComponent      */
+/* BEM: .sidebar-section (block)                    */
+/* ================================================ */
+
+.sidebar-section {
+  @apply pt-4;
+}
+
+.sidebar-section__header {
+  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-base font-semibold leading-6 cursor-pointer border-none bg-transparent;
+}
+
+.sidebar-section__header:focus-visible {
+  @apply bg-primary relative z-10;
+  box-shadow: var(--box-shadow-focus);
+}
+
+.sidebar-section__items {
+  @apply w-full flex flex-col;
+}
+
+/* ================================================ */
 /* Sidebar Group — Sidebar::GroupComponent          */
 /* BEM: .sidebar-group (block)                      */
 /* ================================================ */
 
-.sidebar-group {
-  @apply pb-2;
+.sidebar-group:not(:last-of-type) {
+  @apply pb-4;
 }
 
 .sidebar-group__header {
-  @apply flex w-full text-start px-2 py-1.5 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
+  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
 }
 
 .sidebar-group__header:focus-visible {
@@ -73,6 +95,11 @@
 
 .sidebar-group__items {
   @apply w-full flex flex-col;
+}
+
+/* Remove link gap when no items in the group have icons */
+.sidebar-group__items:not(:has(.sidebar-link__icon-wrapper)) .sidebar-link {
+  @apply gap-0;
 }
 
 /* ================================================ */
