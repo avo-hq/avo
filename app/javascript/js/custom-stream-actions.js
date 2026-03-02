@@ -17,7 +17,8 @@ StreamActions.turbo_reload = function () {
 StreamActions.open_filter = function () {
   const id = this.getAttribute('unique-id')
   setTimeout(() => {
-    document.querySelector(`[data-filter-id="${id}"] .pill`).click()
+    const trigger = document.querySelector(`[data-filter-id="${id}"].pill`)
+    trigger?.click()
   }, 150)
 }
 // END TODO: move these to the avo_filters gem
