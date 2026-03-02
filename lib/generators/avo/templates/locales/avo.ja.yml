@@ -129,6 +129,7 @@ ja:
     select_item: アイテムを選択
     show_content: 内容を表示
     sign_out: サインアウト
+    skip_to_content: コンテンツへスキップ
     sort_asc: 昇順で並べ替え
     sort_desc: 降順で並べ替え
     sort_reset: ソートをリセット

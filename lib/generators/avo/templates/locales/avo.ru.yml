@@ -129,6 +129,7 @@ ru:
     select_item: Выбрать элемент
     show_content: Показать содержимое
     sign_out: Выйти
+    skip_to_content: Перейти к содержимому
     sort_asc: Сортировать по возрастанию
     sort_desc: Сортировать по убыванию
     sort_reset: Сбросить сортировку

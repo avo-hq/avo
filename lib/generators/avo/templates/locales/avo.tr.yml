@@ -129,6 +129,7 @@ tr:
     select_item: Öğe seç
     show_content: İçeriği göster
     sign_out: Çıkış yap
+    skip_to_content: İçeriğe atla
     sort_asc: Artan sırala
     sort_desc: Azalan sırala
     sort_reset: Sıralamayı sıfırla

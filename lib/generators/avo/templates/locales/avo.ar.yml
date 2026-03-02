@@ -137,6 +137,7 @@ ar:
     select_item: تحديد العنصر
     show_content: عرض المحتوى
     sign_out: تسجيل الخروج
+    skip_to_content: انتقل إلى المحتوى
     sort_asc: ترتيب تصاعدي
     sort_desc: ترتيب تنازلي
     sort_reset: إعادة تهيئة الترتيب

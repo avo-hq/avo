@@ -129,6 +129,7 @@ pl:
     select_item: Wybierz element
     show_content: Pokaż zawartość
     sign_out: Wyloguj się
+    skip_to_content: Przejdź do treści
     sort_asc: Sortuj rosnąco
     sort_desc: Sortuj malejąco
     sort_reset: Resetuj sortowanie
