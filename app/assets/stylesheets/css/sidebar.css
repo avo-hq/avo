@@ -67,6 +67,10 @@
   @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-base font-semibold leading-6 cursor-pointer border-none bg-transparent;
 }
 
+.sidebar-section__header-inner {
+  @apply flex gap-2;
+}
+
 .sidebar-section__header:focus-visible {
   @apply bg-primary relative z-10;
   box-shadow: var(--box-shadow-focus);
@@ -74,6 +78,11 @@
 
 .sidebar-section__items {
   @apply w-full flex flex-col;
+}
+
+/* Remove link gap when no items in the section have icons */
+.sidebar-section__items:not(:has(.sidebar-link__icon-wrapper)) .sidebar-link {
+  @apply gap-0;
 }
 
 /* ================================================ */
@@ -133,6 +142,11 @@
 
 .sidebar-link__icon-wrapper {
   @apply shrink-0 flex items-center justify-center;
+}
+
+/* Reserve same width when group has icons but this link has none (alignment) */
+.sidebar-link__icon-wrapper--placeholder {
+  @apply w-4 min-w-4;
 }
 
 .sidebar-link__external-icon {

@@ -8,7 +8,10 @@
         data-menu-target="trigger"
         aria-expanded="<%= !collapsed %>"
       >
-        <span><%= item.name %></span>
+        <div class="sidebar-group__header-inner">
+          <%= helpers.svg icon, class: "sidebar-group__icon sidebar-icon" if icon.present? %>
+          <span><%= item.name %></span>
+        </div>
         <span class="sidebar-group__icon sidebar-icon <%= 'sidebar-icon--collapsed' if collapsed %>"
           data-menu-target="svg"
         >
@@ -16,10 +19,12 @@
         </span>
       </button>
     <% else %>
-      <div class="sidebar-group__header">
-        <%= helpers.svg icon, class: "sidebar-group__icon sidebar-icon" if icon.present? %>
-        <span><%= item.name %></span>
-      </div>
+       <div class="sidebar-group__header">
+          <div class="sidebar-group__header-inner">
+            <%= helpers.svg icon, class: "sidebar-group__icon sidebar-icon" if icon.present? %>
+            <span><%= item.name %></span>
+          </div>
+       </div>
     <% end %>
   <% end %>
 
@@ -30,7 +35,7 @@
       menu_target: :items,
     } do %>
     <% @items.each do |item| %>
-      <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
+      <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item, group_has_icons: group_has_any_icon? %>
     <% end %>
   <% end %>
 <% end %>

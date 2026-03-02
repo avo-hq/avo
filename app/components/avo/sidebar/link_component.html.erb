@@ -1,8 +1,8 @@
 <% if @path.present? %>
   <%= link_caller.send link_method, @path, class: "sidebar-link", active: @active, target: @target, data: @data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
-    <% if link_icon.present? %>
-      <span class="sidebar-link__icon-wrapper sidebar-icon">
-        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
+    <% if @reserve_icon_space || link_icon.present? %>
+      <span class="sidebar-link__icon-wrapper sidebar-icon<%= ' sidebar-link__icon-wrapper--placeholder' if link_icon.blank? %>">
+        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" if link_icon.present? %>
       </span>
     <% end %>
     <span><%= @label %></span>
@@ -12,9 +12,9 @@
   <% end %>
 <% else %>
   <%= content_tag :div, class: "sidebar-link", active: @active, target: @target, data: @data do %>
-    <% if link_icon.present? %>
-      <span class="sidebar-link__icon-wrapper sidebar-icon">
-        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" %>
+    <% if @reserve_icon_space || link_icon.present? %>
+      <span class="sidebar-link__icon-wrapper sidebar-icon<%= ' sidebar-link__icon-wrapper--placeholder' if link_icon.blank? %>">
+        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" if link_icon.present? %>
       </span>
     <% end %>
     <span><%= @label %></span>
