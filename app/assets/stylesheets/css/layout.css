@@ -70,11 +70,6 @@
 
   transform: translateX(-100%);
   transition: transform 0.1s ease;
-
-  .active:hover,
-  .active {
-    @apply bg-primary-100 text-primary-500;
-  }
 }
 
 /* RTL: sidebar slides in from right when hidden */

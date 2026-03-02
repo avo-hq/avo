@@ -14,7 +14,7 @@
 .sidebar-link:focus-visible,
 .sidebar-link.active:focus-visible,
 .sidebar-subitem:focus-visible {
-  @apply outline-none;
+  @apply outline-none relative z-10;
   box-shadow: var(--box-shadow-focus);
 }
 
@@ -50,7 +50,6 @@
   @apply shrink-0;
 }
 
-
 /* ================================================ */
 /* Sidebar Group — Sidebar::GroupComponent          */
 /* BEM: .sidebar-group (block)                      */
@@ -62,11 +61,6 @@
 
 .sidebar-group__header {
   @apply flex w-full text-start px-2 py-1.5 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
-}
-
-/* We do not have hover in design, but I added it as we have a button for collapse on it */
-.sidebar-group__header:hover {
-  @apply bg-primary;
 }
 
 .sidebar-group__header:focus-visible {
@@ -91,18 +85,16 @@
   @apply py-1.5;
 }
 
-/* The bg should be secondary, but the sidebar bg is secondary and thus the hover is not visible and I changed it into the bg-primary */
 .sidebar-link.active:hover,
 .sidebar-link:hover {
-  @apply bg-primary text-content;
+  @apply bg-secondary text-content;
 }
 
 .sidebar-link:focus-visible,
 .sidebar-link.active:focus-visible {
-  @apply bg-primary;
+  @apply bg-primary relative z-10;
 }
 
-.sidebar-link:active,
 .sidebar-link.active {
   @apply text-content;
   background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
@@ -134,11 +126,10 @@
 }
 
 .sidebar-subitem:focus-visible {
-  @apply text-content-secondary;
+  @apply text-content-secondary relative z-10;
 }
 
 .sidebar-subitem.active:hover,
-.sidebar-subitem:active,
 .sidebar-subitem.active {
   @apply text-content bg-transparent;
 }
