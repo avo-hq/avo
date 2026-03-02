@@ -2,6 +2,10 @@
 /* Sidebar Shared Utilities                         */
 /* ================================================ */
 
+.avo-sidebar {
+  --color-active: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+}
+
 .sidebar-icon {
   @apply size-4;
 }
@@ -35,11 +39,11 @@
 }
 
 .sidebar__body {
-  @apply flex-1 min-h-0 overflow-y-auto py-3 flex flex-col gap-4 items-start bg-background;
+  @apply flex-1 min-h-0 overflow-y-auto py-3 flex flex-col gap-y-4 items-start bg-background;
 }
 
 .sidebar__body-content {
-  @apply px-3 w-full;
+  @apply flex flex-col px-3 w-full gap-y-1;
 }
 
 .sidebar__nav-list {
@@ -85,7 +89,7 @@
   @apply py-1.5;
 }
 
-.sidebar-link.active:hover,
+/* .sidebar-link.active:hover, */
 .sidebar-link:hover {
   @apply bg-secondary text-content;
 }
@@ -97,7 +101,7 @@
 
 .sidebar-link.active {
   @apply text-content;
-  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+  background: var(--color-active);
 }
 
 .sidebar-link__icon-wrapper {
@@ -132,6 +136,32 @@
 .sidebar-subitem.active:hover,
 .sidebar-subitem.active {
   @apply text-content bg-transparent;
+}
+
+/* Bar indicators for submenu items */
+.sidebar-subitem--bar-pass,
+.sidebar-subitem--bar-active {
+  @apply relative;
+}
+
+/* I-shape: vertical line passing through items above active */
+.sidebar-subitem--bar-pass::before {
+  content: '';
+  @apply absolute top-0 bottom-0;
+  inset-inline-start: -10px;
+  border-inline-start: 2px solid var(--color-active);
+}
+
+/* L-shape: vertical line curving right at active item */
+.sidebar-subitem--bar-active::before {
+  content: '';
+  @apply absolute top-0;
+  inset-inline-start: -10px;
+  height: 50%;
+  width: 10px;
+  border-inline-start: 2px solid var(--color-active);
+  border-block-end: 2px solid var(--color-active);
+  border-end-start-radius: 2px;
 }
 
 /* ================================================ */

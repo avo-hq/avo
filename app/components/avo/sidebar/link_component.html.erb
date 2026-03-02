@@ -18,13 +18,13 @@
 <% end %>
 <% if @items.present? && parent_link_active? %>
   <div class="sidebar-subitem__items">
-    <% @items.each do |item| %>
+    <% @items.each_with_index do |item, index| %>
       <% if item.path.present? %>
-        <%= link_caller.send link_method, item.path, class: "sidebar-subitem", active: @active, target: item.target, data: item.data, disabled: @disabled, "aria-disabled": @disabled, **item.args do %>
+        <%= link_caller.send link_method, item.path, class: "sidebar-subitem #{subitem_bar_class(index)}", active: @active, target: item.target, data: item.data, disabled: @disabled, "aria-disabled": @disabled, **item.args do %>
           <span><%= item.try(:label).presence || item.try(:name).presence %></span>
         <% end %>
       <% else %>
-        <%= content_tag :div, class: "sidebar-subitem", active: @active, target: item.target, data: item.data do %>
+        <%= content_tag :div, class: "sidebar-subitem #{subitem_bar_class(index)}", active: @active, target: item.target, data: item.data do %>
           <span><%= item.try(:label).presence || item.try(:name).presence %></span>
         <% end %>
       <% end %>
