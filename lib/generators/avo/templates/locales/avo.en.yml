@@ -127,6 +127,7 @@ en:
     select_item: Select item
     show_content: Show content
     sign_out: Sign out
+    skip_to_content: Skip to content
     sort_asc: Sort ascending
     sort_desc: Sort descending
     sort_reset: Reset sorting

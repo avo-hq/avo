@@ -129,6 +129,7 @@ es:
     select_item: Selecionar elemento
     show_content: Mostrar contenido
     sign_out: Salir
+    skip_to_content: Ir al contenido
     sort_asc: Ordenar de forma ascendente
     sort_desc: Ordenar de forma descendente
     sort_reset: Restablecer ordenación

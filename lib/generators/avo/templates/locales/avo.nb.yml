@@ -129,6 +129,7 @@ nb:
     select_item: Velg
     show_content: Vis innhold
     sign_out: Logg ut
+    skip_to_content: Hopp til innhold
     sort_asc: Sorter stigende
     sort_desc: Sorter synkende
     sort_reset: Tilbakestill sortering

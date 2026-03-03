@@ -2,6 +2,24 @@
   --top-navbar-height: 4rem;
 }
 
+.skip-to-content {
+  @apply absolute overflow-hidden whitespace-nowrap border-0 p-0;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+
+  &:focus {
+    @apply z-[9999] fixed top-2 start-2 w-auto h-auto overflow-visible px-4 py-2 rounded-lg text-sm font-medium;
+
+    clip: auto;
+    margin: 0;
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+  }
+}
+
 .top-navbar {
   height: var(--top-navbar-height);
 }
