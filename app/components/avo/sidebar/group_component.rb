@@ -23,7 +23,7 @@ class Avo::Sidebar::GroupComponent < Avo::Sidebar::BaseItemComponent
       label = menu_item.name
     when Avo::Menu::Resource
       icon = menu_item.icon.presence || menu_item.parsed_resource&.icon
-      label = menu_item.navigation_label rescue menu_item.try(:name).to_s
+      label = menu_item.try(:navigation_label) || menu_item.try(:name).to_s
     when Avo::Menu::Dashboard, Avo::Menu::Board, Avo::Menu::Page
       icon = menu_item.icon
       label = menu_item.try(:navigation_label).to_s
