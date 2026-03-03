@@ -23,13 +23,7 @@ export default class extends Controller {
     }
   }
 
-  toggle(event) {
-    if (event) {
-      event.stopPropagation()
-      event.preventDefault()
-      event.stopImmediatePropagation()
-    }
-
+  toggle() {
     if (this.isOpen) {
       this.menuTarget.close()
     } else {

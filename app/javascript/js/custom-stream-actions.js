@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver'
 
 StreamActions.close_filters_dropdown = function () {
   const el = document.querySelector('.filters-dropdown-selector')
-  if (el) el.hidden = true
+  if (el) el.close()
 }
 
 // Uses Turbo to refresh the page
