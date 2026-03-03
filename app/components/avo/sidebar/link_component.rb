@@ -47,7 +47,7 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   # Used by LinkComponent (display) and GroupComponent (group_has_any_icon? alignment).
   def self.effective_icon(icon:, label:)
     return icon.to_s if icon.present?
-    return "tabler/outline/users" if label.to_s.in?(%w[Users People ])
+    return "tabler/outline/users" if label.to_s.in?(%w[Users People])
     return "tabler/outline/users-group" if label.to_s.in?(%w[Spouses])
     return "tabler/outline/building-store" if label.to_s.in?(%w[Projects])
     ""
