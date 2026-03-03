@@ -48,7 +48,7 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   def self.effective_icon(icon:, label:)
     return icon.to_s if icon.present?
     return "tabler/outline/users" if label.to_s.in?(%w[Users People ])
-    return "tabler/outline/user-group" if label.to_s.in?(%w[Spouses])
+    return "tabler/outline/users-group" if label.to_s.in?(%w[Spouses])
     return "tabler/outline/building-store" if label.to_s.in?(%w[Projects])
     ""
   end
