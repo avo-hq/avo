@@ -114,6 +114,7 @@ RSpec.describe "CodeField", type: :system do
       expect(JSON.parse(json_text, symbolize_names: true)).to eq(metadata)
 
       click_on "Edit"
+      wait_for_loaded
 
       json_text = page.evaluate_script('document.querySelector(".CodeMirror").CodeMirror.getValue()')
       expect(JSON.parse(json_text, symbolize_names: true)).to eq(metadata)

@@ -1,26 +1,23 @@
+/* Tags Field - Tagify design token overrides.
+   Base styles: input/base.css. Dropdown: dropdown.css (classes via JS).
+   Tagify uses CSS vars for borders/colors; override them for design system. */
+
 tags.tagify {
-  --tag-inset-shadow-size: 3em;
-  --tags-border-color: rgb(var(--color-primary-500));
-  --tags-hover-border-color: rgb(var(--color-primary-500));
-  --tags-hover-border-color: rgb(var(--color-primary-500));
+  --tags-border-color: var(--color-tertiary);
+  --tags-hover-border-color: var(--color-tertiary);
+  --tags-focus-border-color: var(--color-primary);
+}
+
+tags.tagify.tagify--focus {
+  box-shadow: var(--box-shadow-focus);
 }
 
 .tagify__dropdown {
-  --tagify-dd-color-primary: rgb(var(--color-primary-500));
+  --tagify-dd-color-primary: var(--color-tertiary);
+  --tagify-dd-text-color: var(--color-content);
+  --tagify-dd-bg-color: var(--color-primary);
 }
 
-tags.tagify {
-  @apply !ms-0 !gap-1 !border-gray-200;
-
-  &.tagify--focus {
-    @apply !border-gray-600;
-  }
-
-  span.tagify__input {
-    @apply !m-0 !ps-1;
-  }
-}
-
-tag.tagify__tag {
-  @apply text-sm !ms-0;
+.tagify__dropdown__item.tagify__dropdown__item--active {
+  @apply bg-secondary text-content;
 }

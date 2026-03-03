@@ -24,6 +24,11 @@
     <%= render Avo::ModalComponent.new(close_modal_on_backdrop_click: @action.close_modal_on_backdrop_click) do |c| %>
       <% c.with_heading do %>
         <%= @action.action_name %>
+        <% if Rails.env.development? %>
+          <%= link_to editor_file_path(@action), target: "_blank", class: "inline-block align-middle ms-1", title: "Open action in your editor", data: { tippy: "tooltip" } do %>
+            <%= svg "tabler/outline/code", class: "size-4 text-content-secondary cursor-pointer" %>
+          <% end %>
+        <% end %>
       <% end %>
 
       <div class="flex-1 flex p-4">

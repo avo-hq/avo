@@ -40,7 +40,7 @@ export default class extends Controller {
       clearTimeout(this.hideTimeout)
       this.hideTimeout = null
     }
-    
+
     if (this.hasPanelTarget) {
       this.panelTarget.removeAttribute('hidden')
     }
@@ -51,7 +51,7 @@ export default class extends Controller {
     if (this.hideTimeout) {
       clearTimeout(this.hideTimeout)
     }
-    
+
     // Add a small delay before hiding to allow smooth transition from button to panel
     this.hideTimeout = setTimeout(() => {
       if (this.hasPanelTarget) {

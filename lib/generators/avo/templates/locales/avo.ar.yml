@@ -69,10 +69,10 @@ ar:
         try_adjusting_search: حاول تعديل مصطلحات البحث الخاصة بك أو تحقق من الأخطاء المطبعية
       go_to: اذهب إلى
       keyboard_hints:
+        close: إغلاق
+        navigate: تنقل
         press: اضغط
-        to_close: لإغلاق
-        to_navigate: للتنقل،
-        to_select: للاختيار،
+        select: اختيار
       results:
         count_of_total: "%{count} من %{total}"
       show_all_results_for: عرض جميع النتائج لـ
@@ -126,6 +126,7 @@ ar:
     resource_destroyed: تم حذف السجل
     resource_updated: تم تحديث السجل
     resources: المصادر
+    reupload_file: Reupload %{item}
     run: تشغيل
     save: حفظ
     search:
@@ -136,6 +137,7 @@ ar:
     select_item: تحديد العنصر
     show_content: عرض المحتوى
     sign_out: تسجيل الخروج
+    skip_to_content: انتقل إلى المحتوى
     sort_asc: ترتيب تصاعدي
     sort_desc: ترتيب تنازلي
     sort_reset: إعادة تهيئة الترتيب

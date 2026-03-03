@@ -31,7 +31,9 @@
     <%= content_for :head %>
   </head>
 
-  <body class="<%= class_names("os-mac floating-controls bg-background", "all-fields-stacked": Avo.configuration.use_stacked_fields) %>">
+  <body class="<%= class_names(os_class, "floating-controls bg-background", "all-fields-stacked": Avo.configuration.use_stacked_fields) %>">
+    <a href="#main-content" class="skip-to-content"><%= t("avo.skip_to_content") %></a>
+
     <div
       class="relative flex min-h-dvh w-full flex-1"
       data-controller="sidebar"
@@ -47,7 +49,7 @@
             <%= render Avo::SidebarComponent.new sidebar_open: false, for_mobile: true %>
           </div>
 
-          <div class="main-content-area">
+          <main id="main-content" class="main-content-area" tabindex="-1">
             <div class="mb-4">
               <%= render Avo::BreadcrumbsComponent.new(items: avo_breadcrumbs) %>
             </div>
@@ -63,7 +65,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </main>
         </div>
       </div>
     </div>

@@ -35,9 +35,20 @@
 .card__header {
   @apply flex flex-col items-start self-stretch py-3 px-4;
 
+  &:has(select),
+  &:has(.button) {
+    @apply pe-0;
+  }
+
   /* `sm` size buttons make the header too tall. This will compensate for it. */
   .button {
     @apply -my-1;
+  }
+}
+
+.card--compact-header {
+  .card__header {
+    @apply py-1 px-2;
   }
 }
 

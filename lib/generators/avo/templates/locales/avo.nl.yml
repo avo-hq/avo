@@ -59,10 +59,10 @@ nl:
         try_adjusting_search: Probeer uw zoektermen aan te passen of controleer op typfouten
       go_to: Ga naar
       keyboard_hints:
+        close: Sluiten
+        navigate: Navigeren
         press: Druk
-        to_close: om te sluiten
-        to_navigate: om te navigeren
-        to_select: om te selecteren
+        select: Selecteren
       results:
         count_of_total: "%{count} van %{total}"
       show_all_results_for: Toon alle resultaten voor
@@ -116,6 +116,7 @@ nl:
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt
     resources: Bronnen
+    reupload_file: Reupload %{item}
     run: Uitvoeren
     save: Opslaan
     search:
@@ -126,6 +127,7 @@ nl:
     select_item: Item selecteren
     show_content: Inhoud tonen
     sign_out: Afmelden
+    skip_to_content: Ga naar de inhoud
     sort_asc: Oplopend sorteren
     sort_desc: Aflopend sorteren
     sort_reset: Sortering resetten

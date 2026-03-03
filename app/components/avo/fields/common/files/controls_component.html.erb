@@ -1,27 +1,32 @@
-<div class="flex">
-  <% if can_download_file? %>
-    <%= a_link helpers.main_app.rails_blob_path(@file, only_path: true, disposition: :attachment),
-      icon: "heroicons/outline/download",
-      color: :primary,
-      download: true,
-      class: 'text-center',
-      title: t('avo.download_file'),
-      data: { tippy: :tooltip },
-      size: :sm %>
+<% if can_download_file? %>
+  <%= link_to helpers.main_app.rails_blob_path(@file, only_path: true, disposition: :attachment),
+    class: "file-upload-item__action",
+    download: true,
+    title: t("avo.download_file"),
+    data: { tippy: :tooltip } do %>
+    <%= svg "tabler/outline/download" %>
   <% end %>
-</div>
-<div>
-  <% if can_delete_file? %>
-    <%= a_link destroy_path,
-      icon: "tabler/outline/trash",
-      color: :red,
-      size: :sm,
-      class: 'text-center',
-      title: t('avo.delete_file', item: @file.filename),
-      data: {
-        turbo_method: :delete,
-        turbo_confirm: t('avo.are_you_sure'),
-        tippy: :tooltip
-      } %>
+<% end %>
+
+<% if can_delete_file? %>
+  <%= link_to destroy_path,
+    class: "file-upload-item__action",
+    title: t("avo.delete_file", item: @file.filename),
+    data: {
+      turbo_method: :delete,
+      turbo_confirm: t("avo.are_you_sure"),
+      tippy: :tooltip
+    } do %>
+    <%= svg "tabler/outline/trash" %>
   <% end %>
-</div>
+<% end %>
+<% if can_reupload_file? %>
+  <%= link_to "#",
+    class: "file-upload-item__action",
+    title: t("avo.reupload_file", item: @file.filename),
+    data: {
+      tippy: :tooltip
+    } do %>
+    <%= svg "tabler/outline/refresh" %>
+  <% end %>
+<% end %>

@@ -61,10 +61,10 @@ uk:
         try_adjusting_search: Try adjusting your search terms or checking for typos
       go_to: Go to
       keyboard_hints:
+        close: Закрити
+        navigate: Навігація
         press: Press
-        to_close: to close
-        to_navigate: to navigate
-        to_select: to select
+        select: Вибрати
       results:
         count_of_total: "%{count} of %{total}"
       show_all_results_for: Show all results for
@@ -118,6 +118,7 @@ uk:
     resource_destroyed: Запис видалено
     resource_updated: Запис оновлено
     resources: Ресурси
+    reupload_file: Reupload %{item}
     run: Виконати
     save: Зберегти
     search:
@@ -128,6 +129,7 @@ uk:
     select_item: Вибрати елемент
     show_content: Показати вміст
     sign_out: Вийти
+    skip_to_content: Перейти до вмісту
     sort_asc: Rūšiuoti didėjančia tvarka
     sort_desc: Rūšiuoti mažėjančia tvarka
     sort_reset: Atstatyti rūšiavimą

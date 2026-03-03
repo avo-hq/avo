@@ -1,7 +1,8 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <div class="relative" data-controller="<%= @field.revealable ? 'password-visibility' : nil %>">
+  <div class="field-wrapper__input" data-controller="<%= @field.revealable ? 'password-visibility' : nil %>">
     <%= @form.password_field @field.id,
       value: @field.value,
+      type: "password",
       class: classes("w-full"),
       data: @field.get_html(:data, view: view, element: :input).merge(password_visibility_target: "input"),
       disabled: disabled?,
@@ -12,9 +13,9 @@
     %>
 
     <% if @field.revealable %>
-      <button data-action="password-visibility#toggle" type="button" class="text-gray-500 absolute inset-y-0 end-0 pe-3 flex items-center cursor-pointer">
-        <%= helpers.svg('tabler/outline/eye', class: "size-6", data: { 'password-visibility-target': 'icon' }) %>
-        <%= helpers.svg('tabler/outline/eye-off', class: "size-6 hidden", data: { 'password-visibility-target': 'icon' }) %>
+      <button data-action="password-visibility#toggle" type="button" class="input-field__password-toggle">
+        <%= helpers.svg('tabler/outline/eye', data: { 'password-visibility-target': 'icon' }) %>
+        <%= helpers.svg('tabler/outline/eye-off', class: "hidden", data: { 'password-visibility-target': 'icon' }) %>
       </button>
     <% end %>
   </div>

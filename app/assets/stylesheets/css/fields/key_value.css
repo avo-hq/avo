@@ -1,0 +1,92 @@
+/* ==========================================================================
+  Key Value Field
+  ========================================================================== */
+
+.key-value {
+  @apply w-full;
+}
+
+.key-value__table {
+  @apply w-full rounded-lg border border-tertiary overflow-hidden bg-primary;
+  --key-value-actions-width: 3rem;
+}
+
+.key-value__header,
+.key-value__row {
+  @apply grid items-center;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--key-value-actions-width);
+  column-gap: 0;
+}
+
+.key-value__header {
+  @apply bg-secondary border-b border-tertiary text-content text-xs font-semibold uppercase;
+}
+
+.key-value__header-cell {
+  @apply px-3 py-2;
+}
+
+.key-value__header-cell--key {
+  @apply border-e border-tertiary;
+}
+
+.key-value__header-cell--value {
+  @apply border-e border-tertiary;
+}
+
+.key-value__header-cell--actions {
+  @apply flex items-center justify-center px-2;
+}
+
+.key-value__body {
+  @apply bg-primary;
+}
+
+.key-value__row {
+  @apply py-2;
+}
+
+.key-value__row + .key-value__row {
+  @apply border-t border-tertiary;
+}
+
+.key-value__cell {
+  @apply w-full;
+}
+
+.key-value__cell--key {
+  @apply px-3 border-e border-tertiary;
+}
+
+.key-value__cell--value {
+  @apply px-3 border-e border-tertiary;
+}
+
+.key-value__cell--actions {
+  @apply flex items-center justify-center gap-1 px-2;
+}
+
+.key-value__input {
+  @apply w-full;
+}
+
+.key-value__action-button {
+  @apply flex items-center justify-center size-8 text-content-secondary hover:text-content;
+}
+
+.key-value__action-button.cursor-not-allowed,
+.key-value__action-button[disabled] {
+  @apply opacity-50 pointer-events-none;
+}
+
+.key-value__action-button--drag {
+  @apply cursor-grab;
+}
+
+.key-value__action-icon {
+  @apply size-5;
+}
+
+.key-value__action-icon--small {
+  @apply size-4;
+}

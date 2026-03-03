@@ -59,10 +59,10 @@ zh:
         try_adjusting_search: 尝试调整您的搜索词或检查拼写错误
       go_to: 前往
       keyboard_hints:
+        close: 关闭
+        navigate: 导航
         press: 按
-        to_close: 关闭
-        to_navigate: 进行导航，
-        to_select: 选择，
+        select: 选择
       results:
         count_of_total: "%{count} / %{total}"
       show_all_results_for: 显示所有结果
@@ -116,6 +116,7 @@ zh:
     resource_destroyed: 记录已删除
     resource_updated: 记录已更新
     resources: 资源
+    reupload_file: Reupload %{item}
     run: 运行
     save: 保存
     search:
@@ -126,6 +127,7 @@ zh:
     select_item: 选择项目
     show_content: 显示内容
     sign_out: 登出
+    skip_to_content: 跳转至内容
     sort_asc: 升序排序
     sort_desc: 降序排序
     sort_reset: 重置排序

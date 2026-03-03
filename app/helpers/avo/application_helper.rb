@@ -61,18 +61,12 @@ module Avo
       classes
     end
 
-    def input_classes(extra_classes = "", has_error: false)
-      classes = "appearance-none inline-flex bg-gray-25 disabled:cursor-not-allowed text-gray-600 disabled:opacity-50 rounded-sm py-2 px-3 leading-tight border focus:border-gray-600 focus-visible:ring-0 focus:text-gray-700 placeholder:text-gray-300"
-
-      classes += if has_error
-        " border-red-600"
-      else
-        " border-gray-200"
-      end
-
+    def input_classes(extra_classes = "", has_error: false, size: :md)
+      classes = ""
+      classes += "input--size-#{size}" if [:sm, :md, :lg].include?(size)
+      classes += " input-field--error" if has_error
       classes += " #{extra_classes}"
-
-      classes
+      classes.strip
     end
 
     def get_model_class(model)
@@ -149,6 +143,10 @@ module Avo
       end
     end
 
+    def os_class
+      request.user_agent.to_s.include?("Mac") ? "os-mac" : "os-pc"
+    end
+
     # Check if the current locale is RTL (Right-to-Left)
     def rtl?
       Avo.configuration.rtl?
@@ -190,6 +188,14 @@ module Avo
           content
         end
       end
+    end
+
+    def editor_file_path(path)
+      editor_url(Object.const_source_location(path.class.to_s)&.first)
+    end
+
+    def editor_url(path)
+      Avo.configuration.default_editor_url.gsub("%{path}", path)
     end
 
     private

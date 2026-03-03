@@ -44,6 +44,7 @@ en:
     updated_at: Updated at
     download: Download
     download_file: Download file
+    reupload_file: Reupload %{item}
     download_item: Download %{item}
     edit: edit
     edit_item: edit %{item}
@@ -109,6 +110,7 @@ en:
     more_content: More content
     less_content: Less content
     sign_out: Sign out
+    skip_to_content: Skip to content
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
     tools: Tools

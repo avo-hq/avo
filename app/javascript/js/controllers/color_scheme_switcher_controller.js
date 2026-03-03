@@ -50,7 +50,7 @@ export default class extends Controller {
     event.preventDefault()
     const { theme } = event.currentTarget.dataset
 
-    if (!theme || !['brand', 'slate', 'stone'].includes(theme)) return
+    if (!theme || !['brand', 'slate', 'stone', 'gray', 'zinc', 'neutral', 'taupe', 'mauve', 'mist', 'olive'].includes(theme)) return
 
     this.currentThemeValue = theme
     this.saveTheme()
@@ -123,7 +123,7 @@ export default class extends Controller {
 
   applyTheme() {
     // Remove all theme classes
-    document.documentElement.classList.remove('theme-slate', 'theme-stone')
+    document.documentElement.classList.remove('theme-slate', 'theme-stone', 'theme-gray', 'theme-zinc', 'theme-neutral', 'theme-taupe', 'theme-mauve', 'theme-mist', 'theme-olive')
 
     // Add the selected theme class (brand means no theme class)
     const theme = this.currentThemeValue || 'brand'

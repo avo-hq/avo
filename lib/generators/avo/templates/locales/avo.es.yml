@@ -61,10 +61,10 @@ es:
         try_adjusting_search: Intenta ajustar tus términos de búsqueda o verifica si hay errores tipográficos
       go_to: Ir a
       keyboard_hints:
+        close: Cerrar
+        navigate: Navegar
         press: Presiona
-        to_close: para cerrar
-        to_navigate: para navegar
-        to_select: para seleccionar
+        select: Seleccionar
       results:
         count_of_total: "%{count} de %{total}"
       show_all_results_for: Mostrar todos los resultados para
@@ -118,6 +118,7 @@ es:
     resource_destroyed: Recurso eliminado
     resource_updated: Recurso actualizado
     resources: Recursos
+    reupload_file: Reupload %{item}
     run: Ejecutar
     save: Guardar
     search:
@@ -128,6 +129,7 @@ es:
     select_item: Selecionar elemento
     show_content: Mostrar contenido
     sign_out: Salir
+    skip_to_content: Ir al contenido
     sort_asc: Ordenar de forma ascendente
     sort_desc: Ordenar de forma descendente
     sort_reset: Restablecer ordenación

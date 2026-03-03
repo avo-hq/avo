@@ -4,6 +4,7 @@ class Avo::UI::CardComponent < Avo::BaseComponent
   prop :title
   prop :description
   prop :class
+  prop :wrapper_class
   prop :with_padding, default: -> { true }
   prop :variant, default: -> { :default }
   prop :options, kind: :**
@@ -11,8 +12,19 @@ class Avo::UI::CardComponent < Avo::BaseComponent
   prop :index
 
   renders_one :header
-  renders_one :body
+  renders_one :body, "BodyComponent"
   renders_one :footer
+
+  class BodyComponent < Avo::BaseComponent
+    prop :class
+    prop :data, default: -> { {}.freeze }
+
+    def call
+      tag.div class: class_names("card__body", @class), data: {**@data, item_index: @index} do
+        content
+      end
+    end
+  end
 
   private
 

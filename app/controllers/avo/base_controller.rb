@@ -76,6 +76,7 @@ module Avo
       if request.headers["X-Search-Request"] == "resource-search-controller"
         respond_to do |format|
           format.turbo_stream do
+            has_resources = @resources.present?
             common_args = {
               resources: @resources,
               resource: @resource,
@@ -94,7 +95,9 @@ module Avo
                   turbo_frame: @turbo_frame,
                   index_params: @index_params
                 )
-              end
+              end,
+              # used to show/hide the filters button and bar
+              has_resources ? turbo_stream.remove_css_class("body", "index-missing-resources") : turbo_stream.add_css_class("body", "index-missing-resources")
             ]
           end
         end
