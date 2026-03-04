@@ -1,0 +1,317 @@
+/* ================================================ */
+/* Sidebar Shared Utilities                         */
+/* ================================================ */
+
+.avo-sidebar {
+  --color-active: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+}
+
+.sidebar-icon {
+  @apply size-4;
+}
+
+.sidebar-icon--collapsed {
+  @apply rotate-90;
+}
+
+.sidebar-group__header:focus-visible,
+.sidebar-link:focus-visible,
+.sidebar-link.active:focus-visible,
+.sidebar-subitem:focus-visible {
+  @apply outline-none relative z-10;
+  box-shadow: var(--box-shadow-focus);
+}
+
+.sidebar-link[disabled],
+.sidebar-link[aria-disabled='true'],
+.sidebar-subitem[disabled],
+.sidebar-subitem[aria-disabled='true'] {
+  @apply opacity-60 pointer-events-none;
+}
+
+/* ================================================ */
+/* Sidebar Layout — SidebarComponent                */
+/* BEM: .sidebar (block)                            */
+/* ================================================ */
+
+.sidebar__inner {
+  @apply flex flex-col w-full h-full;
+}
+
+.sidebar__body {
+  @apply flex-1 min-h-0 overflow-y-auto flex flex-col gap-y-4 items-start;
+}
+
+.sidebar__body-content {
+  @apply flex flex-col px-3 w-full;
+}
+
+.sidebar__nav-list {
+  @apply w-full space-y-1;
+}
+
+.sidebar__footer {
+  @apply shrink-0;
+}
+
+/* ================================================ */
+/* Sidebar Section — Sidebar::SectionComponent      */
+/* BEM: .sidebar-section (block)                    */
+/* ================================================ */
+
+.sidebar-section {
+  @apply pt-4;
+}
+
+.sidebar-section__header {
+  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-base font-semibold leading-6 cursor-pointer border-none bg-transparent;
+}
+
+.sidebar-section__header-inner {
+  @apply flex gap-2;
+}
+
+.sidebar-section__header:focus-visible {
+  @apply bg-primary relative z-10;
+  box-shadow: var(--box-shadow-focus);
+}
+
+.sidebar-section__items {
+  @apply w-full flex flex-col;
+}
+
+/* Remove link gap when no items in the section have icons */
+.sidebar-section__items:not(:has(.sidebar-link__icon-wrapper)) .sidebar-link {
+  @apply gap-0;
+}
+
+/* ================================================ */
+/* Sidebar Group — Sidebar::GroupComponent          */
+/* BEM: .sidebar-group (block)                      */
+/* ================================================ */
+
+.sidebar-group:not(:last-of-type) {
+  @apply pb-4;
+}
+
+.sidebar-group__header {
+  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
+}
+
+.sidebar-group__header:focus-visible {
+  @apply bg-primary relative z-10;
+}
+
+.sidebar-group__items {
+  @apply w-full flex flex-col;
+}
+
+/* Remove link gap when no items in the group have icons */
+.sidebar-group__items:not(:has(.sidebar-link__icon-wrapper)) .sidebar-link {
+  @apply gap-0;
+}
+
+/* ================================================ */
+/* Sidebar Link — Sidebar::LinkComponent            */
+/* BEM: .sidebar-link (block)                       */
+/* ================================================ */
+
+.sidebar-link,
+.sidebar-subitem {
+  @apply flex items-center px-2 rounded-lg gap-2 text-content-secondary text-sm font-medium leading-5;
+}
+
+.sidebar-link {
+  @apply py-1.5 my-px;
+}
+
+.sidebar-link:hover {
+  @apply text-content;
+  background-color: color-mix(in oklab, var(--color-secondary), var(--color-content) 2%);
+}
+
+.sidebar-link:focus-visible,
+.sidebar-link.active:focus-visible {
+  @apply bg-primary relative z-10;
+}
+
+.sidebar-link.active {
+  @apply text-content;
+  background: var(--color-active);
+}
+
+.sidebar-link__icon-wrapper {
+  @apply shrink-0 flex items-center justify-center;
+}
+
+/* Reserve same width when group has icons but this link has none (alignment) */
+.sidebar-link__icon-wrapper--placeholder {
+  @apply w-4 min-w-4;
+}
+
+.sidebar-link__external-icon {
+  @apply self-center ms-auto me-2;
+}
+
+/* ================================================ */
+/* Sidebar Subitem — Sidebar::SubitemComponent      */
+/* BEM: .sidebar-subitem (block)                    */
+/* ================================================ */
+
+.sidebar-subitem {
+  @apply py-1;
+}
+
+.sidebar-subitem__items {
+  @apply w-full flex flex-col ps-6;
+}
+
+.sidebar-subitem:hover {
+  @apply text-content;
+}
+
+.sidebar-subitem:focus-visible {
+  @apply text-content-secondary relative z-10;
+}
+
+.sidebar-subitem.active:hover,
+.sidebar-subitem.active {
+  @apply text-content bg-transparent;
+}
+
+/* Bar indicators for submenu items */
+.sidebar-subitem--bar-pass,
+.sidebar-subitem--bar-active {
+  @apply relative;
+}
+
+/* I-shape: vertical line passing through items above active */
+.sidebar-subitem--bar-pass::before {
+  content: '';
+  @apply absolute top-0 bottom-0;
+  inset-inline-start: -10px;
+  border-inline-start: 2px solid var(--color-active);
+}
+
+/* L-shape: vertical line curving right at active item */
+.sidebar-subitem--bar-active::before {
+  content: '';
+  @apply absolute top-0;
+  inset-inline-start: -10px;
+  height: 50%;
+  width: 10px;
+  border-inline-start: 2px solid var(--color-active);
+  border-block-end: 2px solid var(--color-active);
+  border-end-start-radius: 2px;
+}
+
+/* ================================================ */
+/* Sidebar Profile — SidebarProfileComponent        */
+/* BEM: .sidebar-profile (block)                    */
+/* ================================================ */
+
+.sidebar-profile {
+  @apply flex items-center rtl:flex-row-reverse px-4 py-2 gap-4 text-content;
+}
+
+.sidebar-profile__body {
+  @apply flex flex-1 items-center gap-2 w-full min-w-0;
+}
+
+.sidebar-profile__avatar-wrapper {
+  @apply flex items-center justify-center shrink-0 overflow-hidden rounded-lg border border-tertiary;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary) 100%), var(--color-tertiary);
+}
+
+.sidebar-profile__avatar {
+  @apply size-8 flex items-center justify-center;
+}
+
+.sidebar-profile__avatar-img {
+  @apply size-full min-w-full min-h-full object-cover;
+}
+
+.sidebar-profile__avatar-initials {
+  @apply w-6 font-semibold text-sm leading-5 text-center text-ellipsis overflow-hidden text-foreground tracking-tighter;
+}
+
+.sidebar-profile__info {
+  @apply flex flex-col min-w-0 rtl:text-end;
+}
+
+.sidebar-profile__title {
+  @apply font-medium text-ellipsis overflow-hidden text-sm leading-5 text-content;
+}
+
+.sidebar-profile__subtitle {
+  @apply text-xs text-ellipsis overflow-hidden leading-4 text-content-secondary;
+}
+
+.sidebar-profile__actions {
+  @apply flex items-center justify-center gap-1 shrink-0;
+}
+
+.sidebar-profile__action-trigger {
+  @apply flex items-center cursor-pointer text-content-secondary;
+}
+
+.sidebar-profile__action-trigger:hover {
+  @apply text-content;
+}
+
+.sidebar-profile__panel {
+  @apply absolute flex flex-col items-center inset-auto end-0 bottom-0 mb-8 bg-primary rounded-sm min-w-[200px] shadow-2xl z-40;
+}
+
+.sidebar-profile__form {
+  @apply flex-1;
+}
+
+.sidebar-profile__sign-out {
+  @apply flex items-center justify-start gap-1 w-full px-4 py-3 rounded-sm cursor-pointer text-danger font-semibold bg-primary hover:bg-danger/10;
+}
+
+.sidebar-profile__sign-out-icon {
+  @apply me-1 shrink-0;
+}
+
+.sidebar-profile__menu-item {
+  @apply flex-1 flex items-center justify-center text-start cursor-pointer font-semibold px-4 py-3 w-full rounded-sm bg-primary text-content hover:bg-tertiary;
+}
+
+.sidebar-profile__menu-item .sidebar-icon {
+  @apply me-1;
+}
+
+/* ================================================ */
+/* Sidebar Status (development only)                */
+/* BEM: .sidebar-status (block)                     */
+/* ================================================ */
+
+.sidebar-status {
+  @apply p-4 border-t border-content-secondary;
+}
+
+.sidebar-status__link {
+  @apply px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm;
+}
+
+.sidebar-status__indicator {
+  @apply rounded-full size-4;
+}
+
+.sidebar-status__indicator--ok {
+  @apply bg-green-400;
+}
+
+.sidebar-status__indicator--error {
+  @apply bg-orange-400;
+}
+
+.sidebar-status__hint {
+  @apply absolute text-xs text-content-secondary hidden text-center w-full -ms-4;
+}
+
+.sidebar-status:hover .sidebar-status__hint {
+  @apply block;
+}

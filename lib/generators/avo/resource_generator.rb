@@ -321,6 +321,49 @@ module Generators
         def field(name, type)
           ::Avo::Mappings::NAMES_MAPPING[name.to_sym] || ::Avo::Mappings::FIELDS_MAPPING[type&.to_sym] || {field: "text"}
         end
+
+        ICON_MAP = {
+          user: "tabler/outline/users",
+          customer: "tabler/outline/user",
+          transaction: "tabler/outline/credit-card-pay",
+          post: "tabler/outline/ballpen",
+          comment: "tabler/outline/message",
+          product: "tabler/outline/package",
+          order: "tabler/outline/shopping-cart",
+          category: "tabler/outline/folder",
+          tag: "tabler/outline/tag",
+          project: "tabler/outline/building-store",
+          team: "tabler/outline/users-group",
+          company: "tabler/outline/building",
+          invoice: "tabler/outline/file-invoice",
+          payment: "tabler/outline/cash",
+          article: "tabler/outline/article",
+          event: "tabler/outline/calendar-event",
+          notification: "tabler/outline/bell",
+          message: "tabler/outline/mail",
+          setting: "tabler/outline/settings",
+          report: "tabler/outline/chart-bar",
+          task: "tabler/outline/checklist",
+          review: "tabler/outline/star",
+          photo: "tabler/outline/photo",
+          image: "tabler/outline/photo",
+          video: "tabler/outline/video",
+          file: "tabler/outline/file",
+          document: "tabler/outline/file-text",
+          role: "tabler/outline/shield",
+          permission: "tabler/outline/lock",
+          subscription: "tabler/outline/credit-card",
+          plan: "tabler/outline/list",
+          address: "tabler/outline/map-pin",
+          location: "tabler/outline/map-pin",
+          country: "tabler/outline/globe",
+          city: "tabler/outline/building-community",
+          account: "tabler/outline/user-circle",
+        }.freeze
+
+        def icon_for_resource
+          ICON_MAP[singular_name.underscore.split("/").last.downcase.to_sym]
+        end
       end
     end
 
