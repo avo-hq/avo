@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver'
 // TODO: move these to the avo_filters gem
 
 StreamActions.close_filters_dropdown = function () {
-  const el = document.querySelector('.filters-dropdown-selector')
+  const el = document.querySelector('.filters-dropdown-selector[open]')
   if (el) el.close()
 }
 
