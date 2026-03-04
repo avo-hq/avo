@@ -17,6 +17,7 @@ class Avo::Sidebar::GroupComponent < Avo::Sidebar::BaseItemComponent
   def effective_icon_for(menu_item)
     icon = nil
     label = nil
+
     case menu_item
     when Avo::Menu::Link
       icon = menu_item.icon
@@ -31,6 +32,7 @@ class Avo::Sidebar::GroupComponent < Avo::Sidebar::BaseItemComponent
       icon = menu_item.try(:icon)
       label = menu_item.try(:name).to_s
     end
+
     Avo::Sidebar::LinkComponent.effective_icon(icon: icon, label: label)
   end
 end
