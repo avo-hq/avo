@@ -3,4 +3,5 @@
 class Avo::UI::DropdownMenuComponent < Avo::BaseComponent
   prop :data, default: {}.freeze
   prop :classes
+  prop :open, default: false
 end
