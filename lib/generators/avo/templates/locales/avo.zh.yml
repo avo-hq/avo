@@ -127,6 +127,7 @@ zh:
     select_item: 选择项目
     show_content: 显示内容
     sign_out: 登出
+    skip_to_content: 跳转至内容
     sort_asc: 升序排序
     sort_desc: 降序排序
     sort_reset: 重置排序

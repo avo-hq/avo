@@ -127,6 +127,7 @@ zh-TW:
     select_item: 選擇項目
     show_content: 顯示內容
     sign_out: 登出
+    skip_to_content: 跳至內容
     sort_asc: 升冪排序
     sort_desc: 降冪排序
     sort_reset: 重置排序
