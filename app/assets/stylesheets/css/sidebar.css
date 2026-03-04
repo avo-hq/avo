@@ -122,12 +122,12 @@
 }
 
 .sidebar-link {
-  @apply py-1.5;
+  @apply py-1.5 my-px;
 }
 
-/* .sidebar-link.active:hover, */
 .sidebar-link:hover {
-  @apply bg-secondary text-content;
+  @apply text-content;
+  background-color: color-mix(in oklab, var(--color-secondary), var(--color-content) 2%);
 }
 
 .sidebar-link:focus-visible,
@@ -276,7 +276,7 @@
 }
 
 .sidebar-profile__menu-item {
-  @apply flex-1 flex items-center justify-center text-start cursor-pointer font-semibold block px-4 py-3 w-full text-center rounded-sm bg-primary text-content hover:bg-tertiary;
+  @apply flex-1 flex items-center justify-center text-start cursor-pointer font-semibold px-4 py-3 w-full rounded-sm bg-primary text-content hover:bg-tertiary;
 }
 
 .sidebar-profile__menu-item .sidebar-icon {
@@ -293,7 +293,7 @@
 }
 
 .sidebar-status__link {
-  @apply block px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm;
+  @apply px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm;
 }
 
 .sidebar-status__indicator {
