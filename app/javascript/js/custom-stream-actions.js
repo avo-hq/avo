@@ -13,13 +13,6 @@ StreamActions.close_filters_dropdown = function () {
 StreamActions.turbo_reload = function () {
   window.Turbo.visit(window.location.href, { action: 'replace' })
 }
-
-StreamActions.open_filter = function () {
-  const id = this.getAttribute('unique-id')
-  setTimeout(() => {
-    document.querySelector(`[data-filter-id="${id}"] .pill`).click()
-  }, 150)
-}
 // END TODO: move these to the avo_filters gem
 
 // https://stackoverflow.com/a/77850750/9067704
