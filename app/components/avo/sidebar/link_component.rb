@@ -43,18 +43,8 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     helpers.is_active_link?(@path, @active)
   end
 
-  # Single source of truth for "what icon is shown": resource/menu icon OR label-based rules.
-  # Used by LinkComponent (display) and GroupComponent (group_has_any_icon? alignment).
-  def self.effective_icon(icon:, label:)
-    return icon.to_s if icon.present?
-    return "tabler/outline/users" if label.to_s.in?(%w[Users People])
-    return "tabler/outline/users-group" if label.to_s.in?(%w[Spouses])
-    return "tabler/outline/building-store" if label.to_s.in?(%w[Projects])
-    ""
-  end
-
   def link_icon
-    self.class.effective_icon(icon: @icon, label: @label)
+    @icon
   end
 
   def active_item_index
