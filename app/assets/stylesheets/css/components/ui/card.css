@@ -67,6 +67,11 @@
   @apply flex flex-col items-start self-stretch w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
 }
 
+/* Card footer - full width so pagination can span edge to edge */
+.card__footer {
+  @apply w-full;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .card__header {
