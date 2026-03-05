@@ -19,6 +19,7 @@ export default class extends Controller {
     this.applyTheme()
     this.applyAccent()
     this.updateThemeLabel()
+    this.updateActiveThemeOption()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -57,6 +58,7 @@ export default class extends Controller {
     this.saveTheme()
     this.applyTheme()
     this.updateThemeLabel()
+    this.updateActiveThemeOption()
 
     // Close the dropdown
     if (this.hasThemePanelTarget) {
@@ -137,6 +139,24 @@ export default class extends Controller {
     if (theme !== 'brand') {
       document.documentElement.classList.add(`theme-${theme}`)
     }
+  }
+
+  updateActiveThemeOption() {
+    if (!this.hasThemeOptionTarget) return
+
+    const activeTheme = this.currentThemeValue || 'brand'
+
+    this.themeOptionTargets.forEach((option) => {
+      const { theme } = option.dataset
+
+      if (!theme) return
+
+      if (theme === activeTheme) {
+        option.classList.add('color-scheme-switcher__theme-option--active')
+      } else {
+        option.classList.remove('color-scheme-switcher__theme-option--active')
+      }
+    })
   }
 
   applyAccent() {
