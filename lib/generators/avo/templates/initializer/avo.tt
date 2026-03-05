@@ -118,6 +118,7 @@ Avo.configure do |config|
   # config.first_sorting_option = :desc # :desc or :asc
   # config.exclude_from_status = []
   # config.model_generator_hook = true
+  # config.predict_menu_item = false
 
   ## == Branding ==
   # config.branding = {

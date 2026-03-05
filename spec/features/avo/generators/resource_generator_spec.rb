@@ -68,6 +68,64 @@ RSpec.feature "resource generator", type: :feature do
       end
     end
   end
+
+  context "when predicting menu icons" do
+    around do |example|
+      previous_value = Avo.configuration.predict_menu_item
+      example.run
+      Avo.configuration.predict_menu_item = previous_value
+    end
+
+    it "uses ICON_MAP when prediction is disabled" do
+      files = [
+        Rails.root.join("app", "avo", "resources", "transaction.rb").to_s,
+        Rails.root.join("app", "controllers", "avo", "transactions_controller.rb").to_s
+      ]
+
+      Avo.configuration.predict_menu_item = false
+      files.each { |file| FileUtils.rm_f(file) }
+
+      Rails::Generators.invoke("avo:resource", ["transaction", "--quiet", "--skip"], {destination_root: Rails.root})
+
+      expect(File.read(files[0])).to include('self.icon = "tabler/outline/credit-card-pay"')
+
+      check_files_and_clean_up files
+    end
+
+    it "uses a predicted tabler icon when enabled" do
+      files = [
+        Rails.root.join("app", "avo", "resources", "home.rb").to_s,
+        Rails.root.join("app", "controllers", "avo", "homes_controller.rb").to_s
+      ]
+
+      Avo.configuration.predict_menu_item = true
+      files.each { |file| FileUtils.rm_f(file) }
+
+      Rails::Generators.invoke("avo:resource", ["home", "--quiet", "--skip"], {destination_root: Rails.root})
+
+      expect(File.read(files[0])).to include('self.icon = "tabler/outline/home"')
+
+      check_files_and_clean_up files
+    end
+
+    it "falls back to ICON_MAP when prediction has no confident match" do
+      files = [
+        Rails.root.join("app", "avo", "resources", "transaction.rb").to_s,
+        Rails.root.join("app", "controllers", "avo", "transactions_controller.rb").to_s
+      ]
+
+      Avo.configuration.predict_menu_item = true
+      files.each { |file| FileUtils.rm_f(file) }
+      allow(Dir).to receive(:glob).and_call_original
+      allow(Dir).to receive(:glob).with(a_string_including("tabler/outline/*.svg")).and_return([])
+
+      Rails::Generators.invoke("avo:resource", ["transaction", "--quiet", "--skip"], {destination_root: Rails.root})
+
+      expect(File.read(files[0])).to include('self.icon = "tabler/outline/credit-card-pay"')
+
+      check_files_and_clean_up files
+    end
+  end
 end
 
 def keeping_original_files(files)

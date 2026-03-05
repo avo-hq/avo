@@ -20,6 +20,7 @@ module Avo
       include Avo::Concerns::RowControlsConfiguration
       include Avo::Concerns::SafeCall
       include Avo::Concerns::AbstractResource
+      include Avo::Concerns::PredictsMenuItemIcon
 
       abstract_resource!
 
@@ -223,6 +224,13 @@ module Avo
 
         def navigation_label
           plural_name.humanize
+        end
+
+        def icon_for_resource
+          return icon if icon.present?
+
+          predictor = Object.new.extend(Avo::Concerns::PredictsMenuItemIcon)
+          predictor.icon_for_name(singular_route_key, predict: ::Avo.configuration.predict_menu_item)
         end
 
         def find_record(id, query: nil, params: nil)
@@ -449,10 +457,17 @@ module Avo
       end
 
       def fetch_record_icon
-        return icon if @record.nil?
+        if @record.nil?
+          return icon if icon.present?
+          return predicted_resource_icon
+        end
 
         # Get the icon from the record if icon is not set
-        return @record.try(:icon) if icon.nil?
+        if icon.nil?
+          record_icon = @record.try(:icon)
+          return record_icon if record_icon.present?
+          return predicted_resource_icon
+        end
 
         # If the icon is a symbol, get the value from the record else execute the block/string
         case icon
@@ -460,6 +475,8 @@ module Avo
           @record.send icon
         when Proc
           Avo::ExecutionContext.new(target: icon, resource: self, record: @record).handle
+        else
+          icon
         end
       end
 
@@ -700,6 +717,12 @@ module Avo
       end
 
       private
+
+      def predicted_resource_icon
+        return unless ::Avo.configuration.predict_menu_item
+
+        icon_for_name(self.class.singular_route_key, predict: true)
+      end
 
       def flatten_keys(array)
         # [:fish_type, information: [:name, :history], reviews_attributes: [:body, :user_id]]

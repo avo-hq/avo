@@ -9,7 +9,7 @@ Avo.configure do |config|
   # ---
   # config.prefix_path = "/development/internal-api"
   # ---
-
+  config.predict_menu_item = true
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]
   config.exclude_from_status = ["license_key"]

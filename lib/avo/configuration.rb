@@ -62,6 +62,7 @@ module Avo
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
     attr_accessor :default_editor_url
+    attr_accessor :predict_menu_item
 
     def initialize
       @root_path = "/avo"
@@ -138,6 +139,7 @@ module Avo
       @send_metadata = true
       @use_stacked_fields = false
       @default_editor_url = "cursor://file/%{path}"
+      @predict_menu_item = false
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)

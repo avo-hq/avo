@@ -28,7 +28,7 @@
 
           <div class="sidebar__nav-list">
             <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
-              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon %>
+              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon_for_resource %>
             <% end %>
           </div>
 
