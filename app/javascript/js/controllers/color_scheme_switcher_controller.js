@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentPanel']
+  static targets = ['button', 'accentPanel', 'themePanel', 'themeLabel', 'themeOption']
 
   connect() {
     // Read from cookies (cookie is source of truth)
@@ -18,6 +18,7 @@ export default class extends Controller {
     this.applyScheme()
     this.applyTheme()
     this.applyAccent()
+    this.updateThemeLabel()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -55,6 +56,12 @@ export default class extends Controller {
     this.currentThemeValue = theme
     this.saveTheme()
     this.applyTheme()
+    this.updateThemeLabel()
+
+    // Close the dropdown
+    if (this.hasThemePanelTarget) {
+      this.themePanelTarget.setAttribute('hidden', true)
+    }
   }
 
   setAccent(event) {
@@ -144,5 +151,12 @@ export default class extends Controller {
     if (accent !== 'neutral') {
       document.documentElement.classList.add(`accent-${accent}`)
     }
+  }
+
+  updateThemeLabel() {
+    if (!this.hasThemeLabelTarget) return
+
+    const theme = this.currentThemeValue || 'brand'
+    this.themeLabelTarget.textContent = theme.charAt(0).toUpperCase() + theme.slice(1)
   }
 }
