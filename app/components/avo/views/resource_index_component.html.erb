@@ -47,6 +47,17 @@
             <% end %>
           </div>
         <% end %>
+
+        <% if Rails.env.development? %>
+          <% header.with_discreet_information do %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              as: :icon,
+              title: "Open in your editor",
+              url: helpers.editor_file_path(@resource),
+              icon: "tabler/outline/code"
+            ) %>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
 
