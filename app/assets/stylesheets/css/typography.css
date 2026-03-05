@@ -20,11 +20,11 @@ h5 {
 
 @layer base {
   a {
-    color: var(--color-info-content);
+    color: var(--color-info-foreground);
 
     &:active,
     &:hover {
-      color: color-mix(in oklab, var(--color-accent-content), var(--color-content) 10%);
+      color: color-mix(in oklab, var(--color-info-foreground), var(--color-content) 10%);
     }
 
     &:focus-visible {

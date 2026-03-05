@@ -101,6 +101,8 @@ fr:
       other: "%{count} %{item}"
       zero: aucun %{item}
     oops_nothing_found: Oups ! Rien n'a été trouvé...
+    open_in_new_tab: Ouvrir dans un nouvel onglet
+    open_in_your_editor: Ouvrir dans votre éditeur
     order:
       higher: Déplacer plus haut
       lower: Déplacer plus bas
@@ -111,6 +113,7 @@ fr:
     per_page: Par page
     prev_page: Page précédente
     records_selected_from_all_pages_html: tous les éléments sélectionnés de toutes les pages
+    reload: Recharger
     remove_selection: Supprimer la sélection
     reset: réinitialiser
     reset_filters: Réinitialiser les filtres

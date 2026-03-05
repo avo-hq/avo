@@ -101,6 +101,8 @@ uk:
       other: "%{count} %{item}"
       zero: жодного %{item}
     oops_nothing_found: Ой! Нічого не знайдено...
+    open_in_new_tab: Відкрити в новій вкладці
+    open_in_your_editor: Open in your editor
     order:
       higher: Перемістити запис вище
       lower: Перемістити запис нижче
@@ -111,6 +113,7 @@ uk:
     per_page: На сторінці
     prev_page: Попередня сторінка
     records_selected_from_all_pages_html: Вибрані всі записи з усіх сторінок
+    reload: Перезавантажити
     remove_selection: Видалити вибір
     reset: Скинути
     reset_filters: Скинути фільтри
