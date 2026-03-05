@@ -5,6 +5,7 @@
     <%= render Avo::UI::DropdownMenuComponent.new(
       data: {dropdown_menu_target: "menu"}.merge(@data),
       classes: @classes,
+      dropdown_menu_classes: @dropdown_menu_classes,
       open: @open
     ) do %>
       <%= items %>

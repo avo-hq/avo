@@ -6,7 +6,7 @@
   ), 
   open: @open,
   data: @data do %>
-  <div class="dropdown-menu">
+  <div class="dropdown-menu <%= @dropdown_menu_classes %>">
     <div class="dropdown-menu__group">
       <div class="dropdown-menu__list">
         <%= content %>
