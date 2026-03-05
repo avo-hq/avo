@@ -77,6 +77,13 @@ export default class extends Controller {
     this.setupFileInput()
   }
 
+  disconnect() {
+    if (this.fileInput) {
+      this.fileInput.remove()
+      this.fileInput = null
+    }
+  }
+
   setupFileInput() {
     // Create a hidden file input element
     this.fileInput = document.createElement('input')
