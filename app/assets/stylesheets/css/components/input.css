@@ -188,6 +188,36 @@
   }
 
   /* ==========================================================================
+    Select Input — Custom Chevron
+    ========================================================================== */
+
+  select:not([multiple]) {
+    @apply cursor-pointer pe-[calc(var(--input-icon-offset)+var(--input-icon-size)+var(--input-icon-gap))];
+  }
+
+  .select-wrapper {
+    @apply relative;
+  }
+
+  .select-wrapper:has(select[multiple])::after {
+    @apply hidden;
+  }
+
+  .select-wrapper::after {
+    content: '';
+    @apply absolute top-1/2 -translate-y-1/2 end-[var(--input-icon-offset)] size-[var(--input-icon-size)] bg-content pointer-events-none mask-no-repeat mask-center mask-contain;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+
+  .select-wrapper:has(select:disabled)::after {
+    @apply opacity-60 pointer-events-none;
+  }
+
+  /* ==========================================================================
     Date Input
     ========================================================================== */
 
