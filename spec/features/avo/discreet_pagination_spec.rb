@@ -53,7 +53,7 @@ RSpec.describe "DiscreetPagination", type: :feature do
           wait_for_loaded
 
           expect(current_path).to eql "/admin/resources/people/#{person_with_two_pages_of_spouses.id}/spouses"
-          expect(page).to have_text "Displaying items 1-#{per_page} of #{per_page * 2} in total"
+          expect(page).to have_text "1-#{per_page} of #{per_page * 2}"
         end
       end
     end

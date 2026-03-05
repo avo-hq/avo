@@ -47,4 +47,13 @@ class Avo::PaginatorComponent < Avo::BaseComponent
       options.sort.uniq
     end
   end
+
+  def current_per_page_label
+    per_page_option_label(@index_params[:per_page])
+  end
+
+  def per_page_option_label(option)
+    num = helpers.content_tag(:span, option, class: "pagination__per-page-option-num")
+    "#{num} #{t('avo.per_page').downcase}".html_safe
+  end
 end

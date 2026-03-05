@@ -19,7 +19,7 @@ module Avo
         unless defined? PAGINATION_DEFAULTS
           PAGINATION_DEFAULTS = {
             type: :default,
-            size: ::Pagy::VERSION >= ::Gem::Version.new("9.0") ? 9 : [1, 2, 2, 1],
+            size: (::Pagy::VERSION >= ::Gem::Version.new("9.0")) ? 3 : [0, 1, 1, 0],
           }
         end
       end
