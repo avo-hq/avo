@@ -64,7 +64,7 @@
 }
 
 .sidebar-section__header {
-  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-base font-semibold leading-6 cursor-pointer border-none bg-transparent;
+  @apply flex w-full text-start p-2 pb-1 gap-2 rounded-lg text-content-secondary text-base font-medium leading-6 cursor-pointer border-none bg-transparent;
 }
 
 .sidebar-section__header-inner {
@@ -289,11 +289,11 @@
 /* ================================================ */
 
 .sidebar-status {
-  @apply p-4 border-t border-content-secondary;
+  @apply p-4 border-t border-tertiary;
 }
 
 .sidebar-status__link {
-  @apply px-4 py-2 border border-content-secondary rounded-sm flex justify-between items-center w-full text-content text-sm;
+  @apply px-4 py-2 border border-tertiary rounded-sm flex justify-between items-center w-full text-content text-sm;
 }
 
 .sidebar-status__indicator {
