@@ -5,7 +5,7 @@ RSpec.describe "Attachment destroy", type: :system do
     context "when validation fails after destroying attachment" do
       let(:post_record) do
         create(:post) do |p|
-          p.cover_photo.attach(
+          p.cover.attach(
             io: File.open(Rails.root.join("db", "seed_files", "iphone.jpg")),
             filename: "iphone.jpg",
             content_type: "image/jpeg"
@@ -14,7 +14,7 @@ RSpec.describe "Attachment destroy", type: :system do
       end
 
       it "rolls back the transaction and keeps the attachment" do
-        attachment_id = post_record.cover_photo.id
+        attachment_id = post_record.cover.id
 
         # Make the name blank so validation fails on save
         # (name has presence: true validation that definitely works)
@@ -22,7 +22,7 @@ RSpec.describe "Attachment destroy", type: :system do
 
         visit "/admin/resources/posts/#{post_record.to_param}"
 
-        destroy_path = "/admin/resources/posts/#{post_record.to_param}/active_storage_attachments/cover_photo/#{attachment_id}"
+        destroy_path = "/admin/resources/posts/#{post_record.to_param}/active_storage_attachments/cover/#{attachment_id}"
 
         expect {
           accept_custom_alert do
@@ -37,16 +37,16 @@ RSpec.describe "Attachment destroy", type: :system do
         # Attachment should still exist
         expect(ActiveStorage::Attachment.exists?(attachment_id)).to be true
 
-        # Post should still have the cover_photo
+        # Post should still have the cover
         post_record.reload
-        expect(post_record.cover_photo).to be_attached
+        expect(post_record.cover).to be_attached
       end
     end
 
     context "when destroying an attachment succeeds" do
       let(:post_record) do
         create(:post) do |p|
-          p.cover_photo.attach(
+          p.cover.attach(
             io: File.open(Rails.root.join("db", "seed_files", "iphone.jpg")),
             filename: "iphone.jpg",
             content_type: "image/jpeg"
