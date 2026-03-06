@@ -27,8 +27,4 @@ class InputComponentPreview < Lookbook::Preview
   def range
     render_with_template(template: "input_component_preview/range")
   end
-
-  def select
-    render_with_template(template: "input_component_preview/select")
-  end
 end
