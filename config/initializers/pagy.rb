@@ -1,8 +1,10 @@
-require "pagy/extras/trim"
-require "pagy/extras/countless"
-require "pagy/extras/array"
-if ::Pagy::VERSION >= ::Gem::Version.new("9.0")
-  require "pagy/extras/size"
+if ::Gem::Version.new(::Pagy::VERSION) < ::Gem::Version.new("43.0")
+  require "pagy/extras/trim"
+  require "pagy/extras/countless"
+  require "pagy/extras/array"
+  if ::Gem::Version.new(::Pagy::VERSION) >= ::Gem::Version.new("9.0")
+    require "pagy/extras/size"
+  end
 end
 
 # For locales without native pagy i18n support
@@ -23,4 +25,11 @@ extra_locales = [
   {locale: "ro", filepath: pagy_locale_path("ro.yml")}
 ]
 
-Pagy::I18n.send(:build, *extra_locales)
+if defined?(Pagy::I18n)
+  if Pagy::I18n.respond_to?(:pathnames) && ::Gem::Version.new(::Pagy::VERSION) >= ::Gem::Version.new("43.0")
+    # Load custom dictionaries that are not bundled by Pagy.
+    Pagy::I18n.pathnames << Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "pagy")
+  elsif Pagy::I18n.respond_to?(:build, true)
+    Pagy::I18n.send(:build, *extra_locales)
+  end
+end
