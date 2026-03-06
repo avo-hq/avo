@@ -72,46 +72,7 @@
   @apply flex items-center;
 }
 
-/* === Pagy v7 nav === */
-
-.pagy-gem-version-7 {
-  .pagy-nav {
-    @apply flex items-center gap-0.5;
-  }
-
-  .pagy-nav .page a {
-    @apply inline-flex items-center justify-center min-w-8 px-[13px] py-[9px] rounded-lg border border-transparent
-      text-sm font-medium leading-[14px] text-content no-underline transition-colors;
-
-    &:hover {
-      @apply bg-secondary;
-    }
-
-    &:active {
-      @apply bg-tertiary;
-    }
-  }
-
-  .pagy-nav .page.active a {
-    @apply bg-secondary text-content cursor-default font-medium;
-
-    &:hover {
-      @apply bg-secondary;
-    }
-  }
-
-  .pagy-nav .page.prev.disabled a,
-  .pagy-nav .page.next.disabled a {
-    @apply opacity-60 cursor-default pointer-events-none;
-
-    &:hover {
-      @apply bg-transparent;
-    }
-  }
-}
-
 /* === Pagy v8+ nav === */
-
 .pagy-gem-version-8-or-more {
   .pagy.nav {
     @apply flex items-center gap-0.5;
