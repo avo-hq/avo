@@ -11,6 +11,11 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
   prop :title
   prop :data
   prop :classes
+  prop :visible, default: true
+
+  def render?
+    @visible
+  end
 
   def as_icon?
     @as == :icon

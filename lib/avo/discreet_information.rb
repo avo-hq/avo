@@ -84,20 +84,17 @@ class Avo::DiscreetInformation
       view:
     }
 
-    visible = item[:visible].nil? || Avo::ExecutionContext.new(target: item[:visible], **args).handle
-
-    return unless visible
-
     {
-      title: Avo::ExecutionContext.new(target: item[:title], **args).handle,
+      visible: item[:visible].nil? || Avo::ExecutionContext.new(target: item[:visible], **args).handle,
+      title: Avo::ExecutionContext.new(target: item[:title] || item[:tooltip], **args).handle,
       icon: Avo::ExecutionContext.new(target: item[:icon], **args).handle,
       url: Avo::ExecutionContext.new(target: item[:url], **args).handle,
       target: Avo::ExecutionContext.new(target: item[:target], **args).handle,
       data: Avo::ExecutionContext.new(target: item[:data], **args).handle,
-      text: Avo::ExecutionContext.new(target: item[:text], **args).handle,
+      text: Avo::ExecutionContext.new(target: item[:text] || item[:label], **args).handle,
       key: Avo::ExecutionContext.new(target: item[:key], **args).handle,
       value: Avo::ExecutionContext.new(target: item[:value], **args).handle,
       as: Avo::ExecutionContext.new(target: item[:as], **args).handle
-    }
+    }.compact
   end
 end

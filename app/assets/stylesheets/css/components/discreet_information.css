@@ -7,6 +7,11 @@
 }
 
 .discreet-information__text {
+  @apply inline;
+}
+
+.discreet-information__badge-text,
+.discreet-information__key-value-text {
   @apply inline px-2;
 }
 
