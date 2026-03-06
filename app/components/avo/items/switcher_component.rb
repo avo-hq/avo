@@ -48,7 +48,7 @@ class Avo::Items::SwitcherComponent < Avo::ResourceComponent
   def render?
     # Stops rendering if the field should be hidden in reflections
     if item.is_field?
-      return false if in_reflection? && item.hidden_in_reflection?
+      return false if in_reflection? && item.hidden_in_reflection?(@reflection)
     end
 
     true

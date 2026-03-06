@@ -7,7 +7,6 @@ module Avo
 
     before_action :set_resource_name
     before_action :set_resource
-    before_action :set_applied_filters, only: :index
     before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
@@ -31,6 +30,7 @@ module Avo
       end
       add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
 
+      set_applied_filters
       set_index_params
       set_filters
       set_actions
