@@ -188,6 +188,33 @@
   }
 
   /* ==========================================================================
+    Select Input — Custom Chevron (background, light + dark mode)
+    ========================================================================== */
+
+  select:not([multiple]) {
+    @apply cursor-pointer text-content;
+    padding-inline-end: calc(var(--input-icon-offset) + var(--input-icon-size) + var(--input-icon-gap));
+    /* Light: text-content (--color-content) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23050817' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--input-icon-offset) center;
+    background-size: var(--input-icon-size);
+  }
+
+  .dark select:not([multiple]) {
+    /* Dark: text-content (--color-content = white) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
+  }
+
+  [dir="rtl"] select:not([multiple]) {
+    background-position: left var(--input-icon-offset) center;
+  }
+
+  select[multiple] {
+    background-image: none;
+  }
+
+  /* ==========================================================================
     Date Input
     ========================================================================== */
 
