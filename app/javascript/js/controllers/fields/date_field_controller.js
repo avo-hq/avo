@@ -138,6 +138,7 @@ export default class extends Controller {
       },
       altInput: true,
       onChange: this.onChange.bind(this),
+      onClose: this.onClose.bind(this),
       noCalendar: false,
       ...this.pickerOptionsValue,
     }
@@ -221,6 +222,17 @@ export default class extends Controller {
     }
 
     this.updateRealInput(value)
+  }
+
+  onClose(selectedDates, dateStr, instance) {
+    if (instance.config.allowInput && instance.altInput.value) {
+      const value = instance.altInput.value
+      if (value) {
+        instance.setDate(value, true, instance.config.altFormat)
+      } else {
+        this.updateRealInput('')
+      }
+    }
   }
 
   // Value should be a string
