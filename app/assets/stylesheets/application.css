@@ -214,11 +214,6 @@
       @apply ms-0 col-start-2;
     }
   }
-
-  /* TODO: to confirm that this is not needed as we use the styles from input.css */
-  /* select {
-    @apply text-foreground bg-background border-tertiary;
-  } */
 }
 
 .loading-spinner {
