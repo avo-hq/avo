@@ -28,15 +28,36 @@
     <% panel.with_header do %>
       <%= render ui.panel_header(
         title:,
-        url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil,
-        target: :_blank,
         description:
       ) do |header| %>
         <% header.with_title_slot do %>
-          <% if reloadable %>
-            <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
-              <%= helpers.svg "heroicons/outline/arrow-path", class: "ms-2 text-2xl h-6 " %>
-            <% end %>
+          <% if reloadable? %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              icon: "tabler/outline/refresh",
+              as: :icon,
+              title: t('avo.reload'),
+              classes: "cursor-pointer",
+              data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" }
+            ) %>
+          <% end %>
+
+          <% if linkable? %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              icon: "tabler/outline/external-link",
+              as: :icon,
+              url: field.frame_url(add_turbo_frame: false),
+              target: :_blank,
+              title: t('avo.open_in_new_tab')
+            ) %>
+          <% end %>
+
+          <% if Rails.env.development? %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              as: :icon,
+              title: t('avo.open_in_your_editor'),
+              url: helpers.editor_file_path(@resource),
+              icon: "tabler/outline/code"
+            ) %>
           <% end %>
         <% end %>
 
@@ -46,17 +67,6 @@
               <%= render_control control %>
             <% end %>
           </div>
-        <% end %>
-
-        <% if Rails.env.development? %>
-          <% header.with_discreet_information do %>
-            <%= render Avo::DiscreetInformationComponent.new(
-              as: :icon,
-              title: "Open in your editor",
-              url: helpers.editor_file_path(@resource),
-              icon: "tabler/outline/code"
-            ) %>
-          <% end %>
         <% end %>
       <% end %>
     <% end %>

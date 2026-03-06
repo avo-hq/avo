@@ -101,6 +101,8 @@ pt-BR:
       other: "%{count} %{item}"
       zero: sem %{item}
     oops_nothing_found: Oops! Nada encontrado...
+    open_in_new_tab: Abrir em uma nova aba
+    open_in_your_editor: Abrir no seu editor
     order:
       higher: Mover registro um para cima
       lower: Mover registro um para baixo
@@ -111,6 +113,7 @@ pt-BR:
     per_page: Por página
     prev_page: Página anterior
     records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
+    reload: Recarregar
     remove_selection: Remover seleção
     reset: resetar
     reset_filters: Limpar filtros

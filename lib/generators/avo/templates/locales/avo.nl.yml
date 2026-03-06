@@ -99,6 +99,8 @@ nl:
       other: "%{count} %{item}"
       zero: geen %{item}
     oops_nothing_found: Oeps! Niets gevonden...
+    open_in_new_tab: Openen in een nieuw tabblad
+    open_in_your_editor: Openen in uw editor
     order:
       higher: Verplaats record omhoog
       lower: Verplaats record omlaag
@@ -109,6 +111,7 @@ nl:
     per_page: Per pagina
     prev_page: Vorige pagina
     records_selected_from_all_pages_html: Alle geselecteerde records van alle pagina's
+    reload: Vernieuwen
     remove_selection: Selectie verwijderen
     reset: resetten
     reset_filters: Filters resetten

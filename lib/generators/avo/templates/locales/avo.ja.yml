@@ -101,6 +101,8 @@ ja:
       other: "%{count}の%{item}"
       zero: "%{item}がありません"
     oops_nothing_found: おっと！ 何も見つかりませんでした...
+    open_in_new_tab: 新しいタブで開く
+    open_in_your_editor: エディターで開く
     order:
       higher: レコードを上に移動
       lower: レコードを下に移動
@@ -111,6 +113,7 @@ ja:
     per_page: ページあたり
     prev_page: 前のページ
     records_selected_from_all_pages_html: 全ページから選択された全レコード
+    reload: リロード
     remove_selection: 選択を解除
     reset: リセット
     reset_filters: フィルターをリセット

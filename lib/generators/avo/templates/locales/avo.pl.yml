@@ -101,6 +101,8 @@ pl:
       other: "%{count} %{item}"
       zero: brak %{item}
     oops_nothing_found: Ups! Nic nie znaleziono...
+    open_in_new_tab: Otwórz w nowej karcie
+    open_in_your_editor: Otwórz w swoim edytorze
     order:
       higher: Przenieś rekord wyżej
       lower: Przenieś rekord niżej
@@ -111,6 +113,7 @@ pl:
     per_page: Na stronie
     prev_page: Poprzednia strona
     records_selected_from_all_pages_html: Wybrane rekordy z wszystkich stron
+    reload: Odśwież
     remove_selection: Usuń zaznaczenie
     reset: Resetuj
     reset_filters: Resetuj filtry
