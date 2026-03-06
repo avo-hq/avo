@@ -64,11 +64,11 @@
 }
 
 .sidebar-section__header {
-  @apply flex w-full text-start p-2 pb-1 gap-2 rounded-lg text-content-secondary text-base font-medium leading-6 cursor-pointer border-none bg-transparent;
+  @apply flex items-center w-full text-start p-2 pb-1 gap-2 rounded-lg text-content-secondary text-base font-medium leading-6 cursor-pointer border-none bg-transparent;
 }
 
 .sidebar-section__header-inner {
-  @apply flex gap-2;
+  @apply flex items-center gap-2;
 }
 
 .sidebar-section__header:focus-visible {
