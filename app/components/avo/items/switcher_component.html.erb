@@ -8,7 +8,7 @@
   ) do |card| %>
     <% card.with_body do %>
       <%= render ui.description_list do %>
-        <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: item, view: @view, form: @form, field_component_extra_args: @field_component_extra_args %>
+        <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: item, view: @view, form: @form, field_component_extra_args: @field_component_extra_args, reflection: @reflection %>
       <% end %>
     <% end %>
   <% end %>
@@ -23,7 +23,7 @@
 <% elsif item.is_row? %>
   <%= render Avo::RowComponent.new(divider: item.divider) do |c| %>
     <% c.with_body do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, reflection: @reflection %>
     <% end %>
   <% end %>
 <% elsif item.is_collaboration? %>
