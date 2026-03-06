@@ -1,8 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['loader']
-
   connect() {
     this.observer = new MutationObserver(() => this.updateMapStyle())
     this.observer.observe(document.documentElement, {
@@ -10,10 +8,7 @@ export default class extends Controller {
       attributeFilter: ['class'],
     })
 
-    this.waitForMap().then(() => {
-      this.updateMapStyle()
-      this.hideLoader()
-    })
+    this.waitForMap().then(() => this.updateMapStyle())
   }
 
   disconnect() {
@@ -22,29 +17,11 @@ export default class extends Controller {
     }
   }
 
-  showLoader() {
-    if (this.hasLoaderTarget) {
-      this.loaderTarget.removeAttribute('hidden')
-    }
-  }
-
-  hideLoader() {
-    if (this.hasLoaderTarget) {
-      this.loaderTarget.setAttribute('hidden', '')
-    }
-  }
-
   waitForMap() {
     return new Promise((resolve) => {
       const check = () => {
-        const instance = this.mapkickInstance
-        if (instance?.map) {
-          const map = instance.map
-          if (map.loaded()) {
-            resolve()
-          } else {
-            map.once('load', () => resolve())
-          }
+        if (this.mapkickInstance?.map) {
+          resolve()
         } else {
           requestAnimationFrame(check)
         }
@@ -81,8 +58,6 @@ export default class extends Controller {
     const currentIsDark = /dark/i.test(styleName)
     if (this.isDark === currentIsDark) return
 
-    this.showLoader()
-
     // Save custom sources and layers added by Mapkick before the style swap
     const snapshot = this.captureMapkickState(map)
 
@@ -91,7 +66,6 @@ export default class extends Controller {
     // Restore sources, layers, and marker images after the new style loads
     map.once('style.load', () => {
       this.restoreMapkickState(map, snapshot)
-      this.hideLoader()
     })
   }
 
