@@ -6,8 +6,7 @@
       data-association-class="<%= @field&.target_resource&.model_class || nil %>"
     >
     <%= field_wrapper(**field_wrapper_args, label_for: @field.polymorphic_form_field_label, help: @field.polymorphic_help || '') do %>
-      <div class="select-wrapper">
-        <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [Avo.resource_manager.get_resource_by_model_class(type.to_s).name, type.to_s] },
+      <%= @form.select @field.type_input_foreign_key, @field.types.map { |type| [Avo.resource_manager.get_resource_by_model_class(type.to_s).name, type.to_s] },
         {
           value: @field.value,
           include_blank: @field.placeholder,
@@ -22,7 +21,6 @@
           disabled: disabled
         }
         %>
-      </div>
       <%
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.
@@ -49,8 +47,7 @@
                 view: view
             %>
             <% else %>
-              <div class="select-wrapper">
-                <%= @form.select @field.id_input_foreign_key,
+              <%= @form.select @field.id_input_foreign_key,
                 options_for_select(
                   @field.values_for_type(type),
                   selected: @field.value.is_a?(type) ? @field.value.to_param : nil,
@@ -65,7 +62,6 @@
                   disabled: disabled
                 }
                 %>
-              </div>
               <%
               # If the select field is disabled, no value will be sent. It's how HTML works.
               # Thus the extra hidden field to actually send the related id to the server.
@@ -106,8 +102,7 @@
         style: @field.get_html(:style, view: view, element: :input)
       %>
     <% else %>
-      <div class="select-wrapper">
-        <%= @form.select @field.id_input_foreign_key,
+      <%= @form.select @field.id_input_foreign_key,
           options_for_select(@field.options, selected: @field.value.to_param, disabled: t("avo.more_records_available")),
           {
             include_blank: @field.placeholder,
@@ -119,7 +114,6 @@
             style: @field.get_html(:style, view: view, element: :input)
           }
         %>
-      </div>
       <%
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.

@@ -1,6 +1,5 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <div class="select-wrapper">
-    <%= @form.select @field.id, options, {
+  <%= @form.select @field.id, options, {
         include_blank: @field.include_blank
       },
       multiple: @field.multiple,
@@ -16,5 +15,4 @@
       autocomplete: @field.autocomplete,
       autofocus: @autofocus
     %>
-  </div>
 <% end %>

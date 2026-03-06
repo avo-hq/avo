@@ -1,6 +1,5 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <div class="select-wrapper">
-    <%= @form.select @field.id, @field.select_options, {
+  <%= @form.select @field.id, @field.select_options, {
         value: @field.value,
         selected: @field.stored_value,
         include_blank: @field.include_blank
@@ -15,5 +14,4 @@
       placeholder: @field.include_blank.present? ? nil : @field.placeholder,
       autocomplete: @field.autocomplete
     %>
-  </div>
 <% end %>
