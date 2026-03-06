@@ -23,12 +23,9 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).to have_text "META KEY"
         expect(meta_element).to have_text "META VALUE"
-        expect(meta_element).to have_css ".flex"
-        expect(meta_element).to have_css ".w-full"
-        expect(meta_element).to have_css ".bg-gray-700"
-        expect(meta_element).to have_css ".shadow-sm"
-        expect(meta_element).to have_css ".overflow-hidden"
-        expect(meta_element).to have_css ".rounded-sm"
+        expect(meta_element).to have_css ".key-value"
+        expect(meta_element).to have_css ".key-value__table"
+        expect(meta_element).to have_css ".key-value__header"
         expect(meta_element).to have_selector '[data-button="add-row"]'
       end
 
@@ -40,15 +37,12 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).not_to have_css ".appearance-none"
-        expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
         find('[data-button="add-row"]').click
 
         expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).to have_css ".appearance-none"
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         find('input[placeholder="Meta key"]').set("Test Key")
@@ -76,15 +70,12 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).not_to have_css ".appearance-none"
-        expect(meta_element).not_to have_css ".bg-white"
         expect(meta_element).not_to have_selector '[data-button="delete-row"]'
 
         find("[data-button='add-row']").click
 
         expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
         expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
-        expect(meta_element).to have_css ".appearance-none"
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         save
@@ -158,12 +149,9 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(meta_element).to have_text "META KEY"
         expect(meta_element).to have_text "META VALUE"
-        expect(meta_element).to have_css ".flex"
-        expect(meta_element).to have_css ".w-full"
-        expect(meta_element).to have_css ".bg-gray-700"
-        expect(meta_element).to have_css ".shadow-sm"
-        expect(meta_element).to have_css ".overflow-hidden"
-        expect(meta_element).to have_css ".rounded-sm"
+        expect(meta_element).to have_css ".key-value"
+        expect(meta_element).to have_css ".key-value__table"
+        expect(meta_element).to have_css ".key-value__header"
 
         expect(meta_element).to have_selector '[data-button="add-row"]'
         expect(meta_element).to have_selector '[data-button="delete-row"]'
@@ -258,7 +246,9 @@ RSpec.describe "KeyValueFields", type: :system do
         values = page.all('input[placeholder="Meta value"]')
 
         keys[2].set("Test Key")
+        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", keys[2].native)
         values[2].set("Test Value")
+        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", values[2].native)
 
         save
 
@@ -339,6 +329,56 @@ RSpec.describe "KeyValueFields", type: :system do
 
         expect(keys[1].value).to eq ""
         expect(values[1].value).to eq "bar"
+      end
+    end
+  end
+
+  describe "with double quotes in keys and values" do
+    let!(:meta_data) { {'key with "quotes"' => 'value with "quotes"', "normal" => "plain"} }
+    let!(:project) { create :project, meta: meta_data }
+
+    context "show" do
+      it "displays the full untruncated keys and values" do
+        visit "/admin/resources/projects/#{project.id}"
+        wait_for_loaded
+
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
+
+        expect(keys[0].value).to eq 'key with "quotes"'
+        expect(values[0].value).to eq 'value with "quotes"'
+
+        expect(keys[1].value).to eq "normal"
+        expect(values[1].value).to eq "plain"
+      end
+    end
+
+    context "edit" do
+      it "displays and round-trips keys and values with double quotes" do
+        visit "/admin/resources/projects/#{project.id}/edit"
+        wait_for_loaded
+
+        keys = page.all('input[placeholder="Meta key"]')
+        values = page.all('input[placeholder="Meta value"]')
+
+        expect(keys[0].value).to eq 'key with "quotes"'
+        expect(values[0].value).to eq 'value with "quotes"'
+
+        expect(keys[1].value).to eq "normal"
+        expect(values[1].value).to eq "plain"
+
+        save
+
+        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
+
+        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
+        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
+
+        expect(keys[0].value).to eq 'key with "quotes"'
+        expect(values[0].value).to eq 'value with "quotes"'
+
+        expect(keys[1].value).to eq "normal"
+        expect(values[1].value).to eq "plain"
       end
     end
   end

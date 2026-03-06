@@ -61,6 +61,7 @@ module Avo
     attr_accessor :model_generator_hook
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
+    attr_accessor :default_editor_url
 
     def initialize
       @root_path = "/avo"
@@ -118,7 +119,7 @@ module Avo
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
-      @click_row_to_view_record = false
+      @click_row_to_view_record = true
       @alert_dismiss_time = 5000
       @is_admin_method = :is_admin?
       @is_developer_method = :is_developer?
@@ -136,6 +137,7 @@ module Avo
       @model_generator_hook = true
       @send_metadata = true
       @use_stacked_fields = false
+      @default_editor_url = "cursor://file/%{path}"
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)

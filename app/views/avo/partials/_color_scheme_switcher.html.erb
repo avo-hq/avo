@@ -1,35 +1,36 @@
 <div class="color-scheme-switcher"
-     data-controller="color-scheme-switcher toggle"
-     data-toggle-exemption-containers-value='["[data-controller*=\"color-scheme-switcher\"]"]'>
-  <button type="button"
-          data-color-scheme-switcher-target="button"
-          data-action="click->color-scheme-switcher#setTheme"
-          data-theme="brand"
-          class="color-scheme-switcher__button"
-          title="Brand theme">
-    <span class="color-scheme-switcher__text">Brand</span>
-    <span class="sr-only">Brand</span>
-  </button>
-  <button type="button"
-          data-color-scheme-switcher-target="button"
-          data-action="click->color-scheme-switcher#setTheme"
-          data-theme="slate"
-          class="color-scheme-switcher__button"
-          title="Slate theme">
-    <span class="color-scheme-switcher__text">Slate</span>
-    <span class="sr-only">Slate</span>
-  </button>
-  <button type="button"
-          data-color-scheme-switcher-target="button"
-          data-action="click->color-scheme-switcher#setTheme"
-          data-theme="stone"
-          class="color-scheme-switcher__button"
-          title="Stone theme">
-    <span class="color-scheme-switcher__text">Stone</span>
-    <span class="sr-only">Stone</span>
-  </button>
+     data-controller="color-scheme-switcher">
+  <div class="color-scheme-switcher__theme-wrapper"
+       data-controller="toggle">
+    <button type="button"
+            data-color-scheme-switcher-target="themeTrigger"
+            data-action="click->toggle#togglePanel"
+            class="color-scheme-switcher__button color-scheme-switcher__button--theme"
+            title="Neutral theme">
+      <span class="color-scheme-switcher__text" data-color-scheme-switcher-target="themeLabel">Brand</span>
+    </button>
 
-  <div class="color-scheme-switcher__accent-wrapper">
+    <div class="color-scheme-switcher__theme-panel"
+         hidden
+         data-toggle-target="panel"
+         data-color-scheme-switcher-target="themePanel">
+      <div class="color-scheme-switcher__theme-options">
+        <% %w[brand slate stone gray zinc neutral taupe mauve mist olive].each do |theme| %>
+          <button type="button"
+                  data-action="click->color-scheme-switcher#setTheme"
+                  data-theme="<%= theme %>"
+                  data-color-scheme-switcher-target="themeOption"
+                  class="color-scheme-switcher__theme-option">
+            <span class="color-scheme-switcher__theme-preview color-scheme-switcher__theme-preview--<%= theme %>"></span>
+            <span class="color-scheme-switcher__theme-option-label"><%= theme.capitalize %></span>
+          </button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="color-scheme-switcher__accent-wrapper"
+       data-controller="toggle">
     <button type="button"
             data-color-scheme-switcher-target="button"
             data-action="click->toggle#togglePanel"
@@ -61,6 +62,7 @@
           <button type="button"
                   data-action="click->color-scheme-switcher#setAccent"
                   data-accent="<%= accent %>"
+                  data-color-scheme-switcher-target="accentOption"
                   data-tippy="tooltip"
                   title="<%= accent.capitalize %>"
                   class="color-scheme-switcher__accent-option">

@@ -12,6 +12,6 @@
   </div>
 <% else %>
   <div class="rounded-sm bg-white shadow-panel">
-    <%= helpers.empty_state by_association: params[:related_name].present?, view_type: :map %>
+    <%= helpers.empty_state by_association: params[:related_name].present? %>
   </div>
 <% end %>

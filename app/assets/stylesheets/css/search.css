@@ -8,7 +8,7 @@
   .aa-DetachedSearchButton:focus,
   .aa-DetachedSearchButton {
     border: none !important;
-    @apply text-gray-500 cursor-pointer;
+    @apply text-content-secondary cursor-pointer;
 
     .aa-DetachedSearchButtonPlaceholder {
       @apply max-sm:hidden;
@@ -22,7 +22,7 @@
   }
 
   .aa-DetachedSearchButton {
-    @apply rounded-sm border-gray-300 h-[34px];
+    @apply rounded-sm border-[var(--color-avo-neutral-300)] h-[34px];
   }
 }
 
@@ -32,7 +32,7 @@
 
 .aa-DetachedFormContainer,
 .aa-DetachedContainer .aa-Panel {
-  @apply bg-gray-50 border-b-0;
+  @apply bg-secondary border-b-0;
 }
 
 .aa-Form {
@@ -53,12 +53,12 @@
 }
 
 button.aa-DetachedCancelButton {
-  border: 1px solid #757D8A !important;
-  @apply bg-white;
+  border: 1px solid var(--color-avo-neutral-400) !important;
+  @apply bg-primary;
 }
 
 .aa-Input {
-  @apply focus:ring-green-600;
+  @apply focus:ring-accent;
 }
 
 .aa-DetachedContainer {
@@ -71,17 +71,17 @@ button.aa-DetachedCancelButton {
       @apply space-y-2;
 
       .aa-Item {
-        @apply bg-white rounded-sm px-3 py-4 shadow font-medium;
+        @apply bg-primary rounded-sm px-3 py-4 shadow font-medium;
 
         .aa-ItemDescription {
-          @apply text-gray-500 text-sm font-normal mt-1;
+          @apply text-content-secondary text-sm font-normal mt-1;
         }
 
         &[aria-selected=true]{
-          @apply bg-primary-500 text-white;
+          @apply bg-accent text-accent-foreground;
 
           .aa-ItemDescription {
-            @apply text-white;
+            @apply text-accent-foreground;
           }
         }
       }
@@ -92,7 +92,7 @@ button.aa-DetachedCancelButton {
 /* Overlay used during resource search */
 .avo-search-overlay {
   /* Very subtle blur + dim layer; hidden by default */
-  @apply hidden absolute inset-0 z-10 bg-gray-50/30 backdrop-blur-[1px] items-center justify-center pointer-events-none;
+  @apply hidden absolute inset-0 z-10 bg-secondary/30 backdrop-blur-[1px] items-center justify-center pointer-events-none;
 }
 
 .avo-search-overlay.is-active {

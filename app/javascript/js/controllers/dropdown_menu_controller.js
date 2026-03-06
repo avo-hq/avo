@@ -1,35 +1,38 @@
 import { Controller } from '@hotwired/stimulus'
+import { useClickOutside } from 'stimulus-use'
 
 export default class extends Controller {
   static targets = ['menu']
+
+  static values = {
+    // One may want to have elements that are exempt from triggering the click outside event
+    exemptionContainers: Array,
+    logger: Boolean,
+  }
+
+  get exemptionContainerTargets() {
+    return this.exemptionContainersValue.map((selector) => document.querySelector(selector)).filter(Boolean)
+  }
 
   get isOpen() {
     return this.menuTarget.hasAttribute('open')
   }
 
-  connect() {
+  clickOutside(e) {
     if (this.hasMenuTarget) {
-      // Listen to clicks on the dialog itself (backdrop)
-      this.menuTarget.addEventListener('click', (event) => {
-        // If clicked directly on the dialog (not its children), it's the backdrop
-        if (event.target === this.menuTarget) {
-          this.menuTarget.close()
-        }
-      })
+      const isInExemptionContainer = this.hasExemptionContainersValue && this.exemptionContainerTargets.some((container) => container.contains(e.target))
 
-      this.menuTarget.addEventListener('close', () => {
+      if (!isInExemptionContainer && this.isOpen) {
         this.menuTarget.close()
-      })
+      }
     }
   }
 
-  toggle(event) {
-    if (event) {
-      event.stopPropagation()
-      event.preventDefault()
-      event.stopImmediatePropagation()
-    }
+  connect() {
+    useClickOutside(this)
+  }
 
+  toggle() {
     if (this.isOpen) {
       this.menuTarget.close()
     } else {

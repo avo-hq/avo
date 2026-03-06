@@ -1,0 +1,71 @@
+<div class="p-8 space-y-8 bg-white">
+  <div class="text-lg font-semibold text-content mb-6">Range Input — Size variants</div>
+
+  <div class="grid grid-cols-3 gap-6">
+    <%# Header row: sizes %>
+    <div class="text-sm font-semibold text-content">Small (sm)</div>
+    <div class="text-sm font-semibold text-content">Medium (md)</div>
+    <div class="text-sm font-semibold text-content">Large (lg)</div>
+
+    <%# Row 1: Normal %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Normal</div>
+      <%= tag.input type: "range",
+        min: 0,
+        max: 100,
+        value: 50,
+        class: "w-full input--size-sm"
+      %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Normal</div>
+      <%= tag.input type: "range",
+        min: 0,
+        max: 100,
+        value: 50,
+        class: "w-full input--size-md"
+      %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Normal</div>
+      <%= tag.input type: "range",
+        min: 0,
+        max: 100,
+        value: 50,
+        class: "w-full input--size-lg"
+      %>
+    </div>
+
+    <%# Row 2: Disabled %>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <%= tag.input type: "range",
+        min: 0,
+        max: 100,
+        value: 50,
+        disabled: true,
+        class: "w-full input--size-sm"
+      %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <%= tag.input type: "range",
+        min: 0,
+        max: 100,
+        value: 50,
+        disabled: true,
+        class: "w-full input--size-md"
+      %>
+    </div>
+    <div>
+      <div class="text-xs font-medium text-content-secondary mb-2">Disabled</div>
+      <%= tag.input type: "range",
+        min: 0,
+        max: 100,
+        value: 50,
+        disabled: true,
+        class: "w-full input--size-lg"
+      %>
+    </div>
+  </div>
+</div>

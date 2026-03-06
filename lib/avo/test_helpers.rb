@@ -186,6 +186,22 @@ module Avo
       sleep 0.2
     end
 
+    def set_picker_dates(input, *dates)
+      page.execute_script(
+        "arguments[0]._flatpickr.setDate(arguments[1], true)",
+        input.native,
+        (dates.length == 1) ? dates.first : dates
+      )
+    end
+
+    def set_picker_time(input, hour:, minute: 0, second: 0)
+      page.execute_script(
+        "arguments[0]._flatpickr.setDate(arguments[1], true)",
+        input.native,
+        "#{hour}:#{minute}:#{second}"
+      )
+    end
+
     def set_picker_hour(value)
       find(".flatpickr-hour").set(value)
     end
@@ -196,6 +212,12 @@ module Avo
 
     def set_picker_second(value)
       find(".flatpickr-second").set(value)
+    end
+
+    def set_picker_text_input(value)
+      element = find("input.form-control[type='text']")
+      # Set value without firing input/change events
+      page.execute_script("arguments[0].value = arguments[1]", element.native, value)
     end
 
     def open_picker

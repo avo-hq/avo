@@ -101,6 +101,7 @@ export default class extends Controller {
       this.mainAreaTarget.offsetHeight // eslint-disable-line no-unused-expressions
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
+    Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
   }
 
   // private

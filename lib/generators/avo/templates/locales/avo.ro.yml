@@ -63,10 +63,10 @@ ro:
         try_adjusting_search: Încercați să ajustați termenii de căutare sau verificați dacă sunt greșeli de tipar
       go_to: Mergi la
       keyboard_hints:
+        close: Închide
+        navigate: Navighează
         press: Apasă
-        to_close: pentru a închide
-        to_navigate: pentru a naviga
-        to_select: pentru a selecta
+        select: Selectează
       results:
         count_of_total: "%{count} din %{total}"
       show_all_results_for: Arată toate rezultatele pentru
@@ -120,6 +120,7 @@ ro:
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată
     resources: Resurse
+    reupload_file: Reupload %{item}
     run: Rulează
     save: Salvează
     search:
@@ -130,6 +131,7 @@ ro:
     select_item: Selectează record
     show_content: Arată conținutul
     sign_out: Delogare
+    skip_to_content: Sari la conținut
     sort_asc: Sortare crescătoare
     sort_desc: Sortare descrescătoare
     sort_reset: Resetare sortare

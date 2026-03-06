@@ -59,10 +59,10 @@ de:
         try_adjusting_search: Versuchen Sie, Ihre Suchbegriffe anzupassen oder auf Tippfehler zu überprüfen
       go_to: Gehe zu
       keyboard_hints:
+        close: Schließen
+        navigate: Navigieren
         press: Drücken Sie
-        to_close: um zu schließen
-        to_navigate: um zu navigieren
-        to_select: um auszuwählen
+        select: Auswählen
       results:
         count_of_total: "%{count} von %{total}"
       show_all_results_for: Alle Ergebnisse für anzeigen
@@ -116,6 +116,7 @@ de:
     resource_destroyed: Eintrag gelöscht
     resource_updated: Eintrag aktualisiert
     resources: Ressourcen
+    reupload_file: Reupload %{item}
     run: Ausführen
     save: Speichern
     search:
@@ -126,6 +127,7 @@ de:
     select_item: Eintrag auswählen
     show_content: Inhalt anzeigen
     sign_out: Abmelden
+    skip_to_content: Zum Inhalt springen
     sort_asc: Aufsteigend sortieren
     sort_desc: Absteigend sortieren
     sort_reset: Sortierung zurücksetzen

@@ -33,6 +33,10 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
     end
   end
 
+  def initials
+    name.split(" ").map(&:first).join("").first(2).upcase
+  end
+
   def sign_out_method
     :delete
   end

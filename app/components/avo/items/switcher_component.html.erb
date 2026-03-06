@@ -8,7 +8,7 @@
   ) do |card| %>
     <% card.with_body do %>
       <%= render ui.description_list do %>
-        <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: item, view: @view, form: @form, field_component_extra_args: @field_component_extra_args %>
+        <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: item, view: @view, form: @form, field_component_extra_args: @field_component_extra_args, reflection: @reflection %>
       <% end %>
     <% end %>
   <% end %>
@@ -23,7 +23,7 @@
 <% elsif item.is_row? %>
   <%= render Avo::RowComponent.new(divider: item.divider) do |c| %>
     <% c.with_body do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form %>
+      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, reflection: @reflection %>
     <% end %>
   <% end %>
 <% elsif item.is_collaboration? %>
@@ -48,7 +48,7 @@
       <% end %>
     <% end %>
 
-    <% if @resource.get_external_link.present? || @resource.discreet_information.items.any? %>
+    <% if @resource.get_external_link.present? || @resource.discreet_information.items.any? || Rails.env.development? %>
       <% header.with_discreet_information do %>
         <% if @resource.get_external_link.present? %>
           <%= render Avo::DiscreetInformationComponent.new(
@@ -57,6 +57,15 @@
             target: :_blank,
             title: helpers.t("avo.visit_record_on_external_path"),
             icon: "tabler/outline/external-link"
+          ) %>
+        <% end %>
+
+        <% if Rails.env.development? %>
+          <%= render Avo::DiscreetInformationComponent.new(
+            as: :icon,
+            title: "Open in your editor",
+            url: helpers.editor_file_path(@resource),
+            icon: "tabler/outline/code"
           ) %>
         <% end %>
 

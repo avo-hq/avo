@@ -7,7 +7,6 @@ module Avo
 
     before_action :set_resource_name
     before_action :set_resource
-    before_action :set_applied_filters, only: :index
     before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
@@ -31,6 +30,7 @@ module Avo
       end
       add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
 
+      set_applied_filters
       set_index_params
       set_filters
       set_actions
@@ -76,6 +76,7 @@ module Avo
       if request.headers["X-Search-Request"] == "resource-search-controller"
         respond_to do |format|
           format.turbo_stream do
+            has_resources = @resources.present?
             common_args = {
               resources: @resources,
               resource: @resource,
@@ -94,7 +95,9 @@ module Avo
                   turbo_frame: @turbo_frame,
                   index_params: @index_params
                 )
-              end
+              end,
+              # used to show/hide the filters button and bar
+              has_resources ? turbo_stream.remove_css_class("body", "index-missing-resources") : turbo_stream.add_css_class("body", "index-missing-resources")
             ]
           end
         end

@@ -10,7 +10,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
-          expect(page).to have_css "form[action='/users/sign_out']", text: "Sign out"
+          expect(page).to have_css "form[action='/users/sign_out']", text: "Sign out", visible: :all
         end
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
-          expect(page).to have_css "form[action='/accounts/sign_out']", text: "Sign out"
+          expect(page).to have_css "form[action='/accounts/sign_out']", text: "Sign out", visible: :all
         end
       end
     end
@@ -69,7 +69,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
-          expect(page).to have_css "form[action='/custom/sign_out']", text: "Sign out"
+          expect(page).to have_css "form[action='/custom/sign_out']", text: "Sign out", visible: :all
         end
       end
     end

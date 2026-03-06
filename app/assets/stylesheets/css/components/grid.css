@@ -1,0 +1,61 @@
+/* Grid Card Component - Based on Figma Design System */
+/* BEM Methodology: .grid-card (block), .grid-card__element (elements) */
+
+.grid {
+  @apply w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 mt-8;
+}
+
+.grid-card {
+  @apply flex flex-col flex-1 shrink-0 basis-0 items-start border rounded-xl p-2 gap-2 min-w-52 bg-primary border-tertiary;
+
+  box-shadow: var(--box-shadow-grid-card);
+}
+
+.grid-card__image {
+  @apply relative w-full overflow-hidden rounded-lg h-40 bg-secondary;
+}
+
+.grid-card input[type="checkbox"] {
+  @apply hidden;
+}
+
+.grid-card input[type="checkbox"]:checked,
+.grid-card:hover input[type="checkbox"] {
+  @apply block z-10 absolute top-1 start-1;
+
+  /* Override mx-2 from item selector so checkbox aligns to card edge */
+  margin: 0 !important;
+}
+
+.grid-card__actions-row {
+  @apply flex items-center justify-end w-full gap-2 self-stretch;
+}
+
+.grid-card__badge {
+  @apply flex-1 shrink-0 basis-0 flex;
+}
+
+.grid-card__action {
+  @apply border-none bg-transparent p-1.5;
+  box-shadow: none;
+}
+
+.grid-card__action:hover {
+  @apply bg-transparent;
+}
+
+.grid-card__content {
+  @apply flex flex-col items-start w-full px-2 pb-2;
+}
+
+.grid-card__title {
+  @apply text-content text-base font-medium self-stretch leading-6;
+}
+
+.grid-card__title a {
+  color: inherit;
+}
+
+.grid-card__description {
+  @apply text-content-secondary text-xs font-normal self-stretch leading-4;
+}

@@ -61,10 +61,10 @@ pl:
         try_adjusting_search: Spróbuj dostosować swoje hasła wyszukiwania lub sprawdź błędy typograficzne
       go_to: Idź do
       keyboard_hints:
+        close: Zamknij
+        navigate: Nawiguj
         press: Naciśnij
-        to_close: aby zamknąć
-        to_navigate: aby nawigować
-        to_select: aby wybrać
+        select: Wybierz
       results:
         count_of_total: "%{count} z %{total}"
       show_all_results_for: Pokaż wszystkie wyniki dla
@@ -118,6 +118,7 @@ pl:
     resource_destroyed: Rekord usunięty
     resource_updated: Rekord zaktualizowany
     resources: Zasoby
+    reupload_file: Reupload %{item}
     run: Uruchom
     save: Zapisz
     search:
@@ -128,6 +129,7 @@ pl:
     select_item: Wybierz element
     show_content: Pokaż zawartość
     sign_out: Wyloguj się
+    skip_to_content: Przejdź do treści
     sort_asc: Sortuj rosnąco
     sort_desc: Sortuj malejąco
     sort_reset: Resetuj sortowanie

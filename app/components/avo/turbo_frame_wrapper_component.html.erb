@@ -1,8 +1,8 @@
 <% if @name.present? %>
-  <turbo-frame id="<%= @name %>">
+  <%= turbo_frame_tag @name, class: @class do %>
     <%= flash_content %>
     <%= content %>
-  </turbo-frame>
+  <% end %>
 <% else %>
   <%= flash_content %>
   <%= content %>

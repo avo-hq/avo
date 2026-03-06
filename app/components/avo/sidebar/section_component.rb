@@ -2,8 +2,6 @@
 
 class Avo::Sidebar::SectionComponent < Avo::Sidebar::BaseItemComponent
   def icon
-    return nil if item.icon.nil?
-
-    item.icon
+    item.icon if item.icon.present?
   end
 end

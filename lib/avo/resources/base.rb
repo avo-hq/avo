@@ -54,6 +54,7 @@ module Avo
 
       class_attribute :id, default: :id
       class_attribute :title # TODO: extract this to HasTitle concern
+      class_attribute :icon
       class_attribute :search, default: {}
       class_attribute :includes, default: []
       class_attribute :attachments, default: []
@@ -440,6 +441,25 @@ module Avo
           @record.send title
         when Proc
           Avo::ExecutionContext.new(target: title, resource: self, record: @record).handle
+        end
+      end
+
+      def record_icon
+        fetch_record_icon.to_s
+      end
+
+      def fetch_record_icon
+        return icon if @record.nil?
+
+        # Get the icon from the record if icon is not set
+        return @record.try(:icon) if icon.nil?
+
+        # If the icon is a symbol, get the value from the record else execute the block/string
+        case icon
+        when Symbol
+          @record.send icon
+        when Proc
+          Avo::ExecutionContext.new(target: icon, resource: self, record: @record).handle
         end
       end
 

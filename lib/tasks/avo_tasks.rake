@@ -139,5 +139,5 @@ task "avo:yarn_install" do
   # tailwind.preset.js needs this dependencies in order to be required
   # Ensure that versions remain updated and synchronized with those specified in package.json.
   puts "[Avo->] Adding yarn dependencies"
-  `yarn add tailwindcss@^4.0.0 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
+  `yarn add tailwindcss@^4.0.0 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
 end

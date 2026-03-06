@@ -3,6 +3,9 @@
 class Avo::UI::DropdownComponent < Avo::BaseComponent
   prop :classes
   prop :data, default: {}.freeze
+  prop :wrapper_data, default: {}.freeze
+  prop :open, default: false
+  prop :dropdown_menu_classes, default: ""
 
   renders_one :trigger
   renders_one :items
@@ -17,7 +20,7 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
     return {} if items.blank?
 
     {
-      controller: "dropdown-menu"
-    }
+      controller: "dropdown-menu",
+    }.merge(@wrapper_data)
   end
 end

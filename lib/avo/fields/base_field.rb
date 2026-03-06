@@ -48,6 +48,7 @@ module Avo
       attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
+      attr_reader :size
       attr_reader :for_presentation_only
       attr_reader :for_attribute
 
@@ -104,6 +105,7 @@ module Avo
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]
         @stacked = args[:stacked]
+        @size = args[:size] || :md
         @for_presentation_only = args[:for_presentation_only] || false
         @resource = args[:resource]
         @action = args[:action]
@@ -315,12 +317,12 @@ module Avo
         true
       end
 
-      def visible_in_reflection?
+      def visible_in_reflection?(reflection = nil)
         true
       end
 
-      def hidden_in_reflection?
-        !visible_in_reflection?
+      def hidden_in_reflection?(reflection = nil)
+        !visible_in_reflection?(reflection)
       end
 
       def options_for_filter

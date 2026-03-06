@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentPanel']
+  static targets = ['button', 'accentPanel', 'themePanel', 'themeLabel', 'themeOption']
 
   connect() {
     // Read from cookies (cookie is source of truth)
@@ -18,6 +18,8 @@ export default class extends Controller {
     this.applyScheme()
     this.applyTheme()
     this.applyAccent()
+    this.updateThemeLabel()
+    this.updateActiveThemeOption()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -50,11 +52,18 @@ export default class extends Controller {
     event.preventDefault()
     const { theme } = event.currentTarget.dataset
 
-    if (!theme || !['brand', 'slate', 'stone'].includes(theme)) return
+    if (!theme || !['brand', 'slate', 'stone', 'gray', 'zinc', 'neutral', 'taupe', 'mauve', 'mist', 'olive'].includes(theme)) return
 
     this.currentThemeValue = theme
     this.saveTheme()
     this.applyTheme()
+    this.updateThemeLabel()
+    this.updateActiveThemeOption()
+
+    // Close the dropdown
+    if (this.hasThemePanelTarget) {
+      this.themePanelTarget.setAttribute('hidden', true)
+    }
   }
 
   setAccent(event) {
@@ -123,13 +132,31 @@ export default class extends Controller {
 
   applyTheme() {
     // Remove all theme classes
-    document.documentElement.classList.remove('theme-slate', 'theme-stone')
+    document.documentElement.classList.remove('theme-slate', 'theme-stone', 'theme-gray', 'theme-zinc', 'theme-neutral', 'theme-taupe', 'theme-mauve', 'theme-mist', 'theme-olive')
 
     // Add the selected theme class (brand means no theme class)
     const theme = this.currentThemeValue || 'brand'
     if (theme !== 'brand') {
       document.documentElement.classList.add(`theme-${theme}`)
     }
+  }
+
+  updateActiveThemeOption() {
+    if (!this.hasThemeOptionTarget) return
+
+    const activeTheme = this.currentThemeValue || 'brand'
+
+    this.themeOptionTargets.forEach((option) => {
+      const { theme } = option.dataset
+
+      if (!theme) return
+
+      if (theme === activeTheme) {
+        option.classList.add('color-scheme-switcher__theme-option--active')
+      } else {
+        option.classList.remove('color-scheme-switcher__theme-option--active')
+      }
+    })
   }
 
   applyAccent() {
@@ -144,5 +171,12 @@ export default class extends Controller {
     if (accent !== 'neutral') {
       document.documentElement.classList.add(`accent-${accent}`)
     }
+  }
+
+  updateThemeLabel() {
+    if (!this.hasThemeLabelTarget) return
+
+    const theme = this.currentThemeValue || 'brand'
+    this.themeLabelTarget.textContent = theme.charAt(0).toUpperCase() + theme.slice(1)
   }
 }

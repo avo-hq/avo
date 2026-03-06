@@ -61,10 +61,10 @@ tr:
         try_adjusting_search: Arama terimlerinizi ayarlamayı veya yazım hatalarını kontrol etmeyi deneyin
       go_to: Git
       keyboard_hints:
+        close: Kapat
+        navigate: Gezin
         press: Bas
-        to_close: kapatmak için
-        to_navigate: navigasyon için
-        to_select: seçmek için
+        select: Seç
       results:
         count_of_total: "%{count} / %{total}"
       show_all_results_for: Tüm sonuçları göster
@@ -118,6 +118,7 @@ tr:
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi
     resources: Kaynaklar
+    reupload_file: Reupload %{item}
     run: Başlat
     save: Kaydet
     search:
@@ -128,6 +129,7 @@ tr:
     select_item: Öğe seç
     show_content: İçeriği göster
     sign_out: Çıkış yap
+    skip_to_content: İçeriğe atla
     sort_asc: Artan sırala
     sort_desc: Azalan sırala
     sort_reset: Sıralamayı sıfırla

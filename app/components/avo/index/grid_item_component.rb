@@ -54,7 +54,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def render_title
     return if @card[:title].blank?
 
-    content_tag :div, class: "grid font-semibold leading-tight text-lg mb-2 #{html(:title, :classes)}", style: html(:title, :style) do
+    content_tag :div, class: "grid-card__title #{html(:title, :classes)}", style: html(:title, :style) do
       link_to @card[:title], resource_view_path
     end
   end
@@ -62,7 +62,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def render_body
     return if @card[:body].blank?
 
-    content_tag :div, class: "text-sm break-words text-gray-500 #{html(:body, :classes)}", style: html(:body, :style) do
+    content_tag :div, class: "grid-card__description #{html(:body, :classes)}", style: html(:body, :style) do
       @card[:body]
     end
   end
@@ -72,7 +72,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
 
     # Wrap BadgeComponent in positioned container to maintain absolute positioning
     content_tag :div,
-      class: class_names("absolute block inset-auto top-0 end-0 mt-2 me-2 z-10", html(:badge, :classes)),
+      class: class_names("grid-card__badge", html(:badge, :classes)),
       title: @card[:badge][:title],
       style: html(:badge, :style),
       data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do

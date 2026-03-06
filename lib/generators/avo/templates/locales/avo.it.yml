@@ -59,10 +59,10 @@ it:
         try_adjusting_search: Prova a modificare i termini di ricerca o controlla eventuali errori di battitura
       go_to: Vai a
       keyboard_hints:
+        close: Chiudi
+        navigate: Naviga
         press: Premi
-        to_close: per chiudere
-        to_navigate: per navigare
-        to_select: per selezionare
+        select: Seleziona
       results:
         count_of_total: "%{count} di %{total}"
       show_all_results_for: Mostra tutti i risultati per
@@ -116,6 +116,7 @@ it:
     resource_destroyed: Record distrutto
     resource_updated: Record aggiornato
     resources: Risorse
+    reupload_file: Reupload %{item}
     run: Esegui
     save: Salva
     search:
@@ -126,6 +127,7 @@ it:
     select_item: Seleziona elemento
     show_content: Mostra contenuto
     sign_out: Esci
+    skip_to_content: Vai al contenuto
     sort_asc: Ordina in ordine crescente
     sort_desc: Ordina in ordine decrescente
     sort_reset: Reimposta ordinamento

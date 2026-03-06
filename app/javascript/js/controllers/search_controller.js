@@ -117,6 +117,10 @@ export default class extends Controller {
   }
 
   disconnect() {
+    if (this.isGlobalSearch) {
+      Mousetrap.unbind(['command+k', 'ctrl+k'])
+    }
+
     // Don't leave open autocompletes around when disconnected. Otherwise it will still
     // be visible when navigating back to this page.
     if (this.destroyMethod) {
@@ -231,7 +235,7 @@ export default class extends Controller {
     const url = URI()
 
     return url.segment([window.Avo.configuration.root_path, ...this.searchSegments()])
-      .search(this.searchParams(encodeURIComponent(query)))
+      .search(this.searchParams(query))
       .toString()
   }
 

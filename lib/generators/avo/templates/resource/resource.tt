@@ -37,6 +37,11 @@ class Avo::Resources::<%= resource_class %> < <%= parent_resource %><% if option
 
   # self.find_record_method = -> { query.find Base64.decode64(id) }
 <% else %>
+<% if icon_for_resource -%>
+  self.icon = "<%= icon_for_resource %>"
+<% else -%>
+  # self.icon = "tabler/outline/users"
+<% end -%>
   # self.avatar = {
   #   source: :avatar
   # }
