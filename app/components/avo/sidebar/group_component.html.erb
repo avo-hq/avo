@@ -9,10 +9,9 @@
         aria-expanded="<%= !collapsed %>"
       >
         <div class="sidebar-group__header-inner">
-          <%= helpers.svg icon, class: "sidebar-group__icon sidebar-icon" if icon.present? %>
           <span><%= item.name %></span>
         </div>
-        <span class="sidebar-group__icon sidebar-icon <%= 'sidebar-icon--collapsed' if collapsed %>"
+        <span class="sidebar-icon <%= 'sidebar-icon--collapsed' if collapsed %>"
           data-menu-target="svg"
         >
           <%= helpers.svg 'heroicons/outline/chevron-down', class: 'h-4' %>
@@ -21,7 +20,6 @@
     <% else %>
        <div class="sidebar-group__header">
           <div class="sidebar-group__header-inner">
-            <%= helpers.svg icon, class: "sidebar-group__icon sidebar-icon" if icon.present? %>
             <span><%= item.name %></span>
           </div>
        </div>
