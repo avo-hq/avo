@@ -20,6 +20,7 @@ export default class extends Controller {
     this.applyAccent()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
+    this.updateActiveAccentOption()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
