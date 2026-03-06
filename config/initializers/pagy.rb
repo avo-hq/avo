@@ -25,14 +25,10 @@ extra_locales = [
 
 Pagy::I18n.send(:build, *extra_locales)
 
-# Override prev/next labels for all locales with tabler/outline/arrow-up.
-# Prev = rotated -90deg (pointing left), Next = rotated 90deg (pointing right).
-arrow_up_path = Avo::Icons.root.join("assets", "svgs", "tabler", "outline", "arrow-up.svg")
-arrow_up_svg = File.read(arrow_up_path).gsub(/\s+/, " ").strip
-
-PAGY_ARROW_SVG = arrow_up_svg.freeze
+arrow_left_svg = File.read(Avo::Icons.root.join("assets", "svgs", "tabler", "outline", "arrow-narrow-left.svg")).gsub(/\s+/, " ").strip
+arrow_right_svg = File.read(Avo::Icons.root.join("assets", "svgs", "tabler", "outline", "arrow-narrow-right.svg")).gsub(/\s+/, " ").strip
 
 Pagy::I18n::DATA.each_value do |(data, _)|
-  data["pagy.prev"] = PAGY_ARROW_SVG
-  data["pagy.next"] = PAGY_ARROW_SVG
+  data["pagy.prev"] = arrow_left_svg
+  data["pagy.next"] = arrow_right_svg
 end
