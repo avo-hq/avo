@@ -17,7 +17,7 @@ RSpec.describe "Reload button", type: :system do
         expect(page).to have_content("Initial review body")
 
         within(has_many_field_show_reviews_frame) do
-          find("button[data-controller='panel-refresh']").click
+          find("[data-controller='panel-refresh']").click
         end
 
         expect(page).to have_content("Updated review body")
