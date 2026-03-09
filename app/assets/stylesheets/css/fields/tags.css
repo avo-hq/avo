@@ -6,6 +6,16 @@ tags.tagify {
   --tags-border-color: var(--color-tertiary);
   --tags-hover-border-color: var(--color-tertiary);
   --tags-focus-border-color: var(--color-primary);
+
+  padding-block: var(--input-py);
+  align-items: center;
+}
+
+/* Align the inner editable area with the design system size tokens */
+tags.tagify .tagify__input {
+  margin: 0;
+  padding-block: 0;
+  line-height: var(--input-leading);
 }
 
 tags.tagify.tagify--focus {

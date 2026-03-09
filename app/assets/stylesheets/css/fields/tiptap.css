@@ -22,7 +22,7 @@
 }
 
 .tiptap__field {
-  @apply w-full mb-4 border border-gray-200 rounded-sm;
+  @apply w-full mb-4 rounded-lg border border-tertiary;
 }
 
 .tiptap__editor {
@@ -30,11 +30,12 @@
 }
 
 .tiptap__toolbar {
-  @apply flex items-center justify-between px-3 py-2 border-b bg-gray-50;
+  @apply flex items-center justify-between px-3 py-2 rounded-t-lg border border-tertiary bg-secondary;
 }
 
 .tiptap__toolbar-area {
-  @apply flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse;
+  @apply flex flex-wrap items-center sm:divide-x sm:rtl:divide-x-reverse divide-tertiary;
+  --tw-divide-opacity: 1;
 }
 
 .tiptap__button-group {
@@ -54,27 +55,28 @@
 }
 
 .tiptap__button {
-  @apply p-1 text-gray-500 rounded-sm cursor-pointer;
+  @apply p-1 rounded-sm cursor-pointer;
 
   &:hover:enabled {
-    @apply bg-gray-100;
+    background-color: var(--color-tertiary);
   }
 
   &:active:enabled {
-    @apply bg-gray-200;
+    @apply bg-tertiary;
   }
 
   &:disabled {
-    @apply text-gray-200 cursor-default;
+    @apply cursor-default text-content-secondary;
   }
 
   svg {
     @apply block h-6;
+    stroke: var(--color-content);
   }
 }
 
 .tiptap__button--selected {
-  @apply bg-gray-900/10;
+  @apply bg-tertiary;
 }
 
 /* LINK STYLES */
@@ -84,8 +86,8 @@
 }
 
 .tiptap__link-field {
-  &:placeholder {
-    @apply italic text-gray-400;
+  &::placeholder {
+    @apply italic text-content-secondary;
   }
 
   &:focus::placeholder {
@@ -94,13 +96,13 @@
 }
 
 .tiptap__link-field {
-  @apply text-sm me-2 py-1 border border-gray-200 rounded-sm;
+  @apply text-sm me-2 py-1 rounded-lg border border-tertiary bg-primary text-content;
 }
 
 /* SHOW STYLES */
 
 .tiptap__content {
-  @apply py-2 max-w-4xl;
+  @apply py-2 max-w-4xl text-content;
 
   >*+* {
     @apply mt-4;

@@ -26,9 +26,21 @@
   @apply list-decimal;
 }
 
+trix-editor {
+  @apply border border-tertiary rounded-lg;
+
+  &:empty::before {
+    color: var(--color-content-secondary) !important;
+  }
+}
+
 trix-toolbar {
   .trix-button-row {
     @apply flex-wrap gap-x-5;
+  }
+
+  .trix-button-group {
+    @apply border border-tertiary;
   }
 
   .trix-button-group:not(:first-child) {
@@ -77,10 +89,6 @@ trix-toolbar {
 
     .trix-button--icon::before {
       filter: invert(1);
-    }
-
-    .trix-button-group-spacer {
-      background-color: var(--color-tertiary);
     }
 
     .trix-dialog {

@@ -6,9 +6,15 @@
 @import 'codemirror/theme/material-darker.css';
 
 .CodeMirror {
+  @apply border border-tertiary;
   height: var(--height) !important;
   min-height: auto;
   padding: 0;
+}
+
+/* Code field (standalone CodeMirror, not inside EasyMDE) */
+[data-controller="code-field"] .CodeMirror {
+  @apply border border-tertiary rounded-lg;
 }
 
 /* overlay CodeMirror fullscreen & Preview on small screens */
@@ -16,27 +22,19 @@
   z-index: 50;
 }
 
-/* Dark mode overrides for CodeMirror (code field) */
-.dark .CodeMirror {
-  background-color: var(--color-primary);
-  color: var(--color-content);
+/* Placeholder matching input component style */
+.EasyMDEContainer .CodeMirror .CodeMirror-placeholder,
+[data-controller="code-field"] .CodeMirror .CodeMirror-placeholder {
+  @apply text-content-secondary opacity-100;
 }
 
-.dark .CodeMirror-gutters {
-  background-color: var(--color-secondary);
-  border-color: var(--color-tertiary);
+/* EasyMDE border matching input component style */
+.editor-toolbar {
+  @apply border border-tertiary rounded-t-lg;
 }
 
-.dark .CodeMirror-cursor {
-  border-left-color: var(--color-content);
-}
-
-.dark .CodeMirror-selected {
-  background-color: var(--color-tertiary) !important;
-}
-
-.dark .CodeMirror-linenumber {
-  color: var(--color-content-secondary);
+.EasyMDEContainer .CodeMirror {
+  @apply border border-tertiary rounded-b-lg;
 }
 
 /* Dark mode overrides for EasyMDE toolbar (tiny_description field) */
