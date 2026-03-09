@@ -2,18 +2,16 @@ require "spec_helper"
 require "open3"
 require "rbconfig"
 
-RSpec.describe "requiring avo" do
+RSpec.describe "requiring avo/asset_manager" do
   it "loads without ActionView being preloaded" do
     script = <<~RUBY
       require "bundler/setup"
-      require "rails"
-
       if defined?(ActionView)
         warn "ActionView should not be defined before requiring avo"
         exit 1
       end
 
-      require "avo"
+      require "avo/asset_manager"
       puts "loaded"
     RUBY
 
@@ -30,7 +28,7 @@ RSpec.describe "requiring avo" do
     )
 
     expect(status).to be_success, <<~MESSAGE
-      expected `require "avo"` to succeed without ActionView preloaded
+      expected `require "avo/asset_manager"` to succeed without ActionView preloaded
       stdout:
       #{stdout}
       stderr:
