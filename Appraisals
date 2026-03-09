@@ -21,6 +21,15 @@
         # https://stackoverflow.com/questions/79360526/uninitialized-constant-activesupportloggerthreadsafelevellogger-nameerror
         gem "concurrent-ruby", "1.3.4"
       end
+
+      # This ensures we run tests with both pagy < 43 and pagy >= 43
+      # For rails 8, we need to use pagy >= 43.0.0
+      # For rails 6.1 and 7.1, we use pagy < 43.0.0
+      if rails_version == "8.0"
+        gem "pagy", ">= 43.0.0"
+      else
+        gem "pagy", "< 43.0.0"
+      end
     end
   end
 end
