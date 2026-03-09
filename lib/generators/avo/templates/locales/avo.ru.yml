@@ -101,6 +101,8 @@ ru:
       other: "%{count} %{item}"
       zero: нет %{item}
     oops_nothing_found: Ой! Ничего не найдено...
+    open_in_new_tab: Открыть в новой вкладке
+    open_in_your_editor: Открыть в вашем редакторе
     order:
       higher: Переместить запись вверх
       lower: Переместить запись вниз
@@ -111,6 +113,7 @@ ru:
     per_page: На странице
     prev_page: Предыдущая страница
     records_selected_from_all_pages_html: Все записи выбраны со всех страниц
+    reload: Обновить
     remove_selection: Убрать выбор
     reset: сбросить
     reset_filters: Сбросить фильтры

@@ -19,7 +19,7 @@
 }
 
 .header__title {
-  @apply font-medium leading-6 overflow-ellipsis w-full text-xl text-content;
+  @apply flex gap-2 font-medium leading-6 overflow-ellipsis w-full text-xl text-content;
 }
 
 .header__description {

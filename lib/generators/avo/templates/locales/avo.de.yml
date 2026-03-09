@@ -99,6 +99,8 @@ de:
       other: "%{count} %{item}"
       zero: keine %{item}
     oops_nothing_found: Oops! Nichts gefunden...
+    open_in_new_tab: In neuem Tab öffnen
+    open_in_your_editor: In Ihrem Editor öffnen
     order:
       higher: Eintrag nach oben verschieben
       lower: Eintrag nach unten verschieben
@@ -109,6 +111,7 @@ de:
     per_page: Pro Seite
     prev_page: Vorherige Seite
     records_selected_from_all_pages_html: Alle Einträge von allen Seiten ausgewählt
+    reload: Neu laden
     remove_selection: Auswahl aufheben
     reset: zurücksetzen
     reset_filters: Filter zurücksetzen

@@ -8,8 +8,11 @@
         data-menu-target="trigger"
         aria-expanded="<%= !collapsed %>"
       >
-        <span><%= item.name %></span>
-        <span class="sidebar-section__icon sidebar-icon mt-1 <%= 'sidebar-icon--collapsed' if collapsed %>"
+        <div class="sidebar-section__header-inner">
+          <%= helpers.svg icon, class: "sidebar-section__icon sidebar-icon" if icon.present? %>
+          <span><%= item.name %></span>
+        </div>
+        <span class="sidebar-section__icon sidebar-icon <%= 'sidebar-icon--collapsed' if collapsed %>"
           data-menu-target="svg"
         >
           <%= helpers.svg 'heroicons/outline/chevron-down' %>
@@ -17,7 +20,7 @@
       </button>
     <% else %>
       <div class="sidebar-section__header">
-        <%= helpers.svg icon, class: "sidebar-section__icon sidebar-icon  mt-1" if icon.present? %>
+        <%= helpers.svg icon, class: "sidebar-section__icon sidebar-icon" if icon.present? %>
         <span><%= item.name %></span>
       </div>
     <% end %>

@@ -99,6 +99,8 @@ zh-TW:
       other: "%{count} 個 %{item}"
       zero: 沒有 %{item}
     oops_nothing_found: 哎呀！什麼都沒找到...
+    open_in_new_tab: 在新分頁中開啟
+    open_in_your_editor: 在您的編輯器中打開
     order:
       higher: 將記錄上移
       lower: 將記錄下移
@@ -109,6 +111,7 @@ zh-TW:
     per_page: 每頁顯示
     prev_page: 上一頁
     records_selected_from_all_pages_html: 所有頁面中選中的記錄
+    reload: 重新載入
     remove_selection: 清除選擇
     reset: 重置
     reset_filters: 重置篩選器

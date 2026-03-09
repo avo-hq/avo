@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentPanel', 'themePanel', 'themeLabel', 'themeOption']
+  static targets = ['button', 'accentPanel', 'accentOption', 'themePanel', 'themeLabel', 'themeOption']
 
   connect() {
     // Read from cookies (cookie is source of truth)
@@ -20,6 +20,7 @@ export default class extends Controller {
     this.applyAccent()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
+    this.updateActiveAccentOption()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -66,6 +67,19 @@ export default class extends Controller {
     }
   }
 
+  previewTheme(event) {
+    const { theme } = event.currentTarget.dataset
+    if (!theme) return
+
+    this.applyThemeClass(theme)
+    this.updateActiveThemeOptionFor(theme)
+  }
+
+  revertTheme() {
+    this.applyTheme()
+    this.updateActiveThemeOption()
+  }
+
   setAccent(event) {
     event.preventDefault()
     const { accent } = event.currentTarget.dataset
@@ -80,6 +94,19 @@ export default class extends Controller {
     if (this.hasAccentPanelTarget) {
       this.accentPanelTarget.setAttribute('hidden', true)
     }
+  }
+
+  previewAccent(event) {
+    const { accent } = event.currentTarget.dataset
+    if (!accent) return
+
+    this.applyAccentClass(accent)
+    this.updateActiveAccentOptionFor(accent)
+  }
+
+  revertAccent() {
+    this.applyAccent()
+    this.updateActiveAccentOption()
   }
 
   saveScheme() {
@@ -131,52 +158,69 @@ export default class extends Controller {
   }
 
   applyTheme() {
-    // Remove all theme classes
+    this.applyThemeClass(this.currentThemeValue || 'brand')
+  }
+
+  applyThemeClass(theme) {
     document.documentElement.classList.remove('theme-slate', 'theme-stone', 'theme-gray', 'theme-zinc', 'theme-neutral', 'theme-taupe', 'theme-mauve', 'theme-mist', 'theme-olive')
 
-    // Add the selected theme class (brand means no theme class)
-    const theme = this.currentThemeValue || 'brand'
     if (theme !== 'brand') {
       document.documentElement.classList.add(`theme-${theme}`)
     }
   }
 
   updateActiveThemeOption() {
-    if (!this.hasThemeOptionTarget) return
+    this.updateActiveThemeOptionFor(this.currentThemeValue || 'brand')
+  }
 
-    const activeTheme = this.currentThemeValue || 'brand'
+  updateActiveThemeOptionFor(activeTheme) {
+    if (!this.hasThemeOptionTarget) return
 
     this.themeOptionTargets.forEach((option) => {
       const { theme } = option.dataset
-
       if (!theme) return
 
-      if (theme === activeTheme) {
-        option.classList.add('color-scheme-switcher__theme-option--active')
-      } else {
-        option.classList.remove('color-scheme-switcher__theme-option--active')
-      }
+      option.classList.toggle('color-scheme-switcher__theme-option--active', theme === activeTheme)
     })
   }
 
   applyAccent() {
-    // Remove all accent classes from body
+    this.applyAccentClass(this.currentAccentValue || 'neutral')
+  }
+
+  applyAccentClass(accent) {
     const accentColors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
     accentColors.forEach((color) => {
       document.documentElement.classList.remove(`accent-${color}`)
     })
 
-    // Add the selected accent class (neutral means no accent class)
-    const accent = this.currentAccentValue || 'neutral'
     if (accent !== 'neutral') {
       document.documentElement.classList.add(`accent-${accent}`)
     }
   }
 
+  updateActiveAccentOption() {
+    this.updateActiveAccentOptionFor(this.currentAccentValue || 'neutral')
+  }
+
+  updateActiveAccentOptionFor(activeAccent) {
+    if (!this.hasAccentOptionTarget) return
+
+    this.accentOptionTargets.forEach((option) => {
+      const { accent } = option.dataset
+      if (!accent) return
+
+      option.classList.toggle('color-scheme-switcher__accent-option--active', accent === activeAccent)
+    })
+  }
+
   updateThemeLabel() {
+    this.updateThemeLabelText(this.currentThemeValue || 'brand')
+  }
+
+  updateThemeLabelText(theme) {
     if (!this.hasThemeLabelTarget) return
 
-    const theme = this.currentThemeValue || 'brand'
     this.themeLabelTarget.textContent = theme.charAt(0).toUpperCase() + theme.slice(1)
   }
 }

@@ -101,6 +101,8 @@ nb:
       other: "%{count} %{item}"
       zero: ingen %{item}
     oops_nothing_found: Oops! Ingen ting funnet...
+    open_in_new_tab: Åpne i ny fane
+    open_in_your_editor: Åpne i redigeringsprogrammet ditt
     order:
       higher: Flytt elementet høyere
       lower: Flytt elementet lavere
@@ -111,6 +113,7 @@ nb:
     per_page: Per side
     prev_page: Forrige side
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
+    reload: Last inn på nytt
     remove_selection: Fjern valg
     reset: nullstille
     reset_filters: Nullstill filter

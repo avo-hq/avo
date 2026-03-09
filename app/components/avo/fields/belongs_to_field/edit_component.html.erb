@@ -20,7 +20,7 @@
         },
         disabled: disabled
       }
-    %>
+      %>
       <%
         # If the select field is disabled, no value will be sent. It's how HTML works.
         # Thus the extra hidden field to actually send the related id to the server.
@@ -61,7 +61,7 @@
                 data: @field.get_html(:data, view: view, element: :input),
                 disabled: disabled
               }
-            %>
+              %>
               <%
               # If the select field is disabled, no value will be sent. It's how HTML works.
               # Thus the extra hidden field to actually send the related id to the server.

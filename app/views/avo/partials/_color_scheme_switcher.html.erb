@@ -13,11 +13,12 @@
     <div class="color-scheme-switcher__theme-panel"
          hidden
          data-toggle-target="panel"
-         data-color-scheme-switcher-target="themePanel">
+         data-color-scheme-switcher-target="themePanel"
+         data-action="mouseleave->color-scheme-switcher#revertTheme">
       <div class="color-scheme-switcher__theme-options">
         <% %w[brand slate stone gray zinc neutral taupe mauve mist olive].each do |theme| %>
           <button type="button"
-                  data-action="click->color-scheme-switcher#setTheme"
+                  data-action="click->color-scheme-switcher#setTheme mouseenter->color-scheme-switcher#previewTheme"
                   data-theme="<%= theme %>"
                   data-color-scheme-switcher-target="themeOption"
                   class="color-scheme-switcher__theme-option">
@@ -49,7 +50,8 @@
     <div class="color-scheme-switcher__accent-panel"
          hidden
          data-toggle-target="panel"
-         data-color-scheme-switcher-target="accentPanel">
+         data-color-scheme-switcher-target="accentPanel"
+         data-action="mouseleave->color-scheme-switcher#revertAccent">
       <div class="color-scheme-switcher__accent-options">
         <% (['neutral'] + accent_colors).each do |accent| %>
           <%
@@ -60,7 +62,7 @@
             end
           %>
           <button type="button"
-                  data-action="click->color-scheme-switcher#setAccent"
+                  data-action="click->color-scheme-switcher#setAccent mouseenter->color-scheme-switcher#previewAccent"
                   data-accent="<%= accent %>"
                   data-color-scheme-switcher-target="accentOption"
                   data-tippy="tooltip"
