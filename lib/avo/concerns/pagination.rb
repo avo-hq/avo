@@ -17,9 +17,7 @@ module Avo
         end
 
         unless defined? PAGINATION_DEFAULTS
-          default_size = if ::Gem::Version.new(::Pagy::VERSION) >= ::Gem::Version.new("43.0")
-            4
-          elsif ::Gem::Version.new(::Pagy::VERSION) >= ::Gem::Version.new("9.0")
+          default_size = if ::Gem::Version.new(::Pagy::VERSION) >= ::Gem::Version.new("9.0")
             9
           else
             [1, 2, 2, 1]
@@ -116,7 +114,12 @@ module Avo
 
       def pagination_slots
         value = pagination_hash[:size]
-        value.is_a?(Array) ? value.sum : value
+        return value unless value.is_a?(Array)
+
+        # Pagy 43+ uses :slots (Integer), while older Pagy allowed Array :size.
+        # Preserve legacy visual density (including first/last + gaps) for common
+        # old-style array values like [1,2,2,1] by mapping to a wider slot count.
+        value.sum + 3
       end
 
       def pagination_hash
