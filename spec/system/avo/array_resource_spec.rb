@@ -19,7 +19,7 @@ RSpec.feature "ArrayResource", type: :system do
 
       all('button[data-action="alert#close"]').each(&:click)
 
-      within("nav.pagy.nav") do
+      within("nav.pagy.series-nav") do
         click_link("2")
       end
 
