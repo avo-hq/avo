@@ -29,7 +29,7 @@ class PaginatorComponentPreview < Lookbook::Preview
     count = 110
 
     pagy_opts = {count: count, page: page}
-    pagy_opts[::Pagy::VERSION >= ::Gem::Version.new("9.0") ? :limit : :items] = per_page
+    pagy_opts[(::Gem::Version.new("9.0") <= ::Pagy::VERSION) ? :limit : :items] = per_page
     pagy = Pagy.new(**pagy_opts)
 
     resource = Avo::Resources::User.new

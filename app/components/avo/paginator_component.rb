@@ -29,7 +29,7 @@ class Avo::PaginatorComponent < Avo::BaseComponent
   def render?
     return false if @discreet_pagination && @pagy.pages <= 1
 
-    if ::Pagy::VERSION >= ::Gem::Version.new("9.0")
+    if ::Gem::Version.new("9.0") <= ::Pagy::VERSION
       @pagy.limit > 0
     else
       @pagy.items > 0
@@ -54,6 +54,6 @@ class Avo::PaginatorComponent < Avo::BaseComponent
 
   def per_page_option_label(option)
     num = helpers.content_tag(:span, option, class: "pagination__per-page-option-num")
-    "#{num} #{t('avo.per_page').downcase}".html_safe
+    "#{num} #{t("avo.per_page").downcase}".html_safe
   end
 end
