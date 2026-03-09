@@ -1,6 +1,6 @@
 module Avo
   class MediaLibraryController < ApplicationController
-    include Avo::Concerns::PagyCompatibility
+    include Pagy::Method
     before_action :authorize_access!
     before_action -> { @container_size = "large" }, only: [:show]
 
