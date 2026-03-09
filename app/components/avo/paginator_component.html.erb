@@ -31,7 +31,15 @@
   <%# Right: info + navigation grouped pill %>
   <div class="pagination__controls pagy-gem-version-<%= helpers.pagy_major_version %>">
     <% if @resource.pagination_type.default? %>
-      <div class="me-4 text-sm text-slate-600"><%== @pagy.info_tag %></div>
+      <div class="pagination__info">
+        <span class="pagination__info-number">
+          <%= "#{@pagy.from}-#{@pagy.to}" %>
+        </span>
+        &nbsp; of &nbsp;
+        <span>
+          <%= "#{@pagy.count}" %>
+        </span>
+      </div>
     <% end %>
 
     <% if @pagy.pages > 1 %>
