@@ -51,7 +51,7 @@
 /* === Controls pill (right) === */
 
 .pagination__controls {
-  @apply flex w-fit shrink-0 items-center gap-3 rounded-lg border border-tertiary bg-primary overflow-hidden ps-3 pe-2 py-0.5;
+  @apply flex w-fit shrink-0 items-center gap-3 rounded-lg border border-tertiary bg-primary overflow-hidden ps-3 pe-2 py-0.5 overflow-visible;
 }
 
 /* Info text with right-border divider */
