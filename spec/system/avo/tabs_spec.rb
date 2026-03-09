@@ -186,11 +186,15 @@ RSpec.describe "Tabs", type: :system do
     visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
-    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
+    within("#has_and_belongs_to_many_field_show_projects nav.pagy.series-nav") do
+      expect(page).to have_css('a[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
+    end
     expect(page).to have_css(".pagination__info-number", text: "1-8")
 
     find('a[data-turbo-frame="has_and_belongs_to_many_field_show_projects"]', text: "2").click
-    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    within("#has_and_belongs_to_many_field_show_projects nav.pagy.series-nav") do
+      expect(page).to have_css('a[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    end
     expect(page).to have_css(".pagination__info-number", text: "9-9")
 
     find('a[aria-label="View project"]').click
@@ -200,7 +204,9 @@ RSpec.describe "Tabs", type: :system do
     wait_for_loaded
 
     scroll_to find('a[data-tabs-tab-name-param="Projects"]')
-    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    within("#has_and_belongs_to_many_field_show_projects nav.pagy.series-nav") do
+      expect(page).to have_css('a[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    end
     expect(page).to have_css(".pagination__info-number", text: "9-9")
 
     Avo.configuration.persistence = {driver: nil}
