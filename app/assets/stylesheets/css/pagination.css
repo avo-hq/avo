@@ -72,48 +72,42 @@
   @apply flex items-center;
 }
 
-/* === Pagy v8+ nav === */
-.pagy-gem-version-8-or-more {
-  .pagy.nav,
-  .pagy.series-nav {
-    @apply flex items-center gap-0.5;
+/* === Pagy nav === */
+.pagy.series-nav {
+  @apply flex items-center gap-0.5;
 
-    a.gap,
-    a[role="separator"] {
-      @apply px-2 text-sm text-content-secondary;
+  a[role="separator"] {
+    @apply px-2 text-sm text-content-secondary;
+  }
+
+  & a:not([role="separator"]) {
+    @apply inline-flex items-center justify-center h-8 min-w-8 px-3 py-2 rounded-lg border border-transparent
+      text-sm font-medium leading-[14px] text-content no-underline transition-colors;
+
+    &:hover:not([aria-current="page"]):not([aria-disabled="true"]) {
+      @apply bg-secondary;
     }
 
-    & a:not(.gap):not([role="separator"]) {
-      @apply inline-flex items-center justify-center h-8 min-w-8 px-3 py-2 rounded-lg border border-transparent
-        text-sm font-medium leading-[14px] text-content no-underline transition-colors;
-
-      &:hover:not(.current):not([aria-current="page"]):not([aria-disabled="true"]) {
-        @apply bg-secondary;
-      }
-
-      &:active:not(.current):not([aria-current="page"]):not([aria-disabled="true"]) {
-        @apply bg-tertiary;
-      }
-
-      &[aria-disabled="true"]:not(.current):not([aria-current="page"]) {
-        @apply opacity-60 cursor-default pointer-events-none;
-      }
-
-      &.current,
-      &[aria-current="page"] {
-        @apply bg-secondary text-content cursor-default font-medium;
-      }
+    &:active:not([aria-current="page"]):not([aria-disabled="true"]) {
+      @apply bg-tertiary;
     }
 
-    /* Prev/next in Pagy v8+ are first/last anchors in nav */
-    & a:not(.gap):not([role="separator"]):first-child,
-    & a:not(.gap):not([role="separator"]):last-child {
-      @apply min-w-0 p-2;
+    &[aria-disabled="true"]:not([aria-current="page"]) {
+      @apply opacity-60 cursor-default pointer-events-none;
     }
 
-    & a:not(.gap):not([role="separator"]):first-child svg,
-    & a:not(.gap):not([role="separator"]):last-child svg {
-      @apply size-3.5;
+    &[aria-current="page"] {
+      @apply bg-secondary text-content cursor-default font-medium;
     }
+  }
+
+  & a:not([role="separator"]):first-child,
+  & a:not([role="separator"]):last-child {
+    @apply min-w-0 p-2;
+  }
+
+  & a:not([role="separator"]):first-child svg,
+  & a:not([role="separator"]):last-child svg {
+    @apply size-3.5;
   }
 }
