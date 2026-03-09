@@ -9,7 +9,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :path, kind: :positional
   prop :size, default: :md
   prop :style, default: :outline
-  prop :color, default: :gray
+  prop :color
   prop :icon do |value|
     value&.to_sym
   end
