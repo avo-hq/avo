@@ -12,10 +12,12 @@ RSpec.feature "Pagination", type: :system do
       wait_for_loaded
 
       within("nav.pagy.nav, nav.pagy.series-nav") do
-        expect(page).to have_css(".current, [aria-current='page']", text: "14")
         expect(page).to have_css("a", text: "1")
+        expect(page).to have_css("a", text: "12")
         expect(page).to have_css("a", text: "13")
+        expect(page).to have_css(".current, [aria-current='page']", text: "14")
         expect(page).to have_css("a", text: "15")
+        expect(page).to have_css("a", text: "16")
         expect(page).to have_css("a", text: last_page.to_s)
         expect(page).to have_css("a.gap, a[role='separator']")
       end
