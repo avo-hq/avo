@@ -5,8 +5,8 @@ if defined?(Pagy::I18n)
   end
 
   icon_translations = {
-    "pagy.previous" => File.read(Avo::Icons.root.join("assets", "svgs", "tabler", "outline", "arrow-narrow-left.svg")).gsub(/\s+/, " ").strip,
-    "pagy.next" => File.read(Avo::Icons.root.join("assets", "svgs", "tabler", "outline", "arrow-narrow-right.svg")).gsub(/\s+/, " ").strip
+    "pagy.previous" => File.read(Avo::Icons.root.join("assets", "svgs", "tabler", "outline", "arrow-left.svg")).gsub(/\s+/, " ").strip,
+    "pagy.next" => File.read(Avo::Icons.root.join("assets", "svgs", "tabler", "outline", "arrow-right.svg")).gsub(/\s+/, " ").strip
   }.freeze
 
   unless Pagy::I18n.singleton_class.instance_variable_defined?(:@avo_pagy_icon_patch_applied)
