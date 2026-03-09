@@ -6,6 +6,8 @@ tags.tagify {
   --tags-border-color: var(--color-tertiary);
   --tags-hover-border-color: var(--color-tertiary);
   --tags-focus-border-color: var(--color-primary);
+  --placeholder-color: var(--color-content-secondary);
+  --placeholder-color-focus: var(--color-content-secondary);
 }
 
 tags.tagify.tagify--focus {
@@ -18,6 +20,14 @@ tags.tagify.tagify--focus {
   --tagify-dd-bg-color: var(--color-primary);
 }
 
+.tagify__dropdown__item {
+  width: calc(100% - 2px) !important;
+}
+
 .tagify__dropdown__item.tagify__dropdown__item--active {
   @apply bg-secondary text-content;
+}
+
+.tagify__tag > div {
+  @apply !py-1;
 }

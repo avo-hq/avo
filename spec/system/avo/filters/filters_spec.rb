@@ -345,8 +345,10 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_css "[data-turbo-frame][aria-label='Next']"
         expect(page).to have_css "[data-turbo-frame][aria-label='Previous']"
 
-        expect(find(".current")).to have_text "1"
-        expect(find(".current")).not_to have_text "2"
+        within("nav.pagy.series-nav") do
+          expect(find("[aria-current='page']")).to have_text "1"
+          expect(find("[aria-current='page']")).not_to have_text "2"
+        end
       end
     end
   end

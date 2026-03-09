@@ -111,8 +111,8 @@ RSpec.describe "SelectAll", type: :system do
 
           visit url
 
-          within("nav.pagy.nav") do
-            expect(page).to have_css(".current", text: "1")
+          within("nav.pagy.series-nav") do
+            expect(page).to have_css("[aria-current='page']", text: "1")
             expect(page).to have_css("a", text: "2")
           end
 
@@ -125,15 +125,15 @@ RSpec.describe "SelectAll", type: :system do
           Avo::Resources::Fish.pagination = -> do
             {
               type: :countless,
-              size: []
+              slots: 0
             }
           end
 
           visit url
 
-          within("nav.pagy.nav") do
-            expect(page).not_to have_css(".current", text: "1")
-            expect(page).not_to have_css("a[data-turbo-frame]", text: "2")
+          within("nav.pagy.series-nav") do
+            expect(page).not_to have_css("[aria-current='page']", text: "1")
+            expect(page).not_to have_css("a", text: "2")
           end
 
           check_select_all
