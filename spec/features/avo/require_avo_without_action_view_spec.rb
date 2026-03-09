@@ -5,6 +5,9 @@ require "rbconfig"
 RSpec.describe "requiring avo" do
   it "loads without ActionView being preloaded" do
     script = <<~RUBY
+      require "bundler/setup"
+      require "rails"
+
       if defined?(ActionView)
         warn "ActionView should not be defined before requiring avo"
         exit 1
@@ -18,6 +21,7 @@ RSpec.describe "requiring avo" do
     lib_path = File.join(root, "lib")
 
     stdout, stderr, status = Open3.capture3(
+      {"BUNDLE_GEMFILE" => ENV.fetch("BUNDLE_GEMFILE", File.join(root, "Gemfile"))},
       RbConfig.ruby,
       "-I#{lib_path}",
       "-e",
