@@ -15,3 +15,65 @@
 .CodeMirror-fullscreen, .editor-preview-active-side {
   z-index: 50;
 }
+
+/* Dark mode overrides for CodeMirror (code field) */
+.dark .CodeMirror {
+  background-color: var(--color-primary);
+  color: var(--color-content);
+}
+
+.dark .CodeMirror-gutters {
+  background-color: var(--color-secondary);
+  border-color: var(--color-tertiary);
+}
+
+.dark .CodeMirror-cursor {
+  border-left-color: var(--color-content);
+}
+
+.dark .CodeMirror-selected {
+  background-color: var(--color-tertiary) !important;
+}
+
+.dark .CodeMirror-linenumber {
+  color: var(--color-content-secondary);
+}
+
+/* Dark mode overrides for EasyMDE toolbar (tiny_description field) */
+.dark .editor-toolbar {
+  background-color: var(--color-secondary);
+  border-color: var(--color-tertiary);
+}
+
+.dark .editor-toolbar a,
+.dark .editor-toolbar button {
+  color: var(--color-content) !important;
+  background: transparent;
+}
+
+.dark .editor-toolbar a:hover,
+.dark .editor-toolbar a.active,
+.dark .editor-toolbar button:hover,
+.dark .editor-toolbar button.active {
+  background-color: var(--color-tertiary) !important;
+  border-color: var(--color-tertiary) !important;
+}
+
+.dark .editor-toolbar i.separator {
+  border-color: var(--color-tertiary);
+}
+
+.dark .editor-statusbar {
+  color: var(--color-content-secondary);
+}
+
+.dark .editor-preview {
+  background-color: var(--color-primary);
+  color: var(--color-content);
+}
+
+.dark .editor-preview-side {
+  background-color: var(--color-primary);
+  color: var(--color-content);
+  border-color: var(--color-tertiary);
+}
