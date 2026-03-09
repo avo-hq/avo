@@ -1,12 +1,78 @@
+.pagy-gem-version-7 {
+  .pagy-nav,
+  .pagy-nav-js,
+  .pagy-combo-nav-js {
+    @apply relative z-0 flex;
+  }
+
+  .pagy-nav.pagination,
+  .pagy-nav-js.pagination,
+  .pagy-combo-nav-js.pagination {
+    @apply space-x-2;
+  }
+
+  .pagy-nav .page a{
+    @apply block;
+  }
+
+  .pagy-nav .page a,
+  .pagy-nav .page.active a,
+  .pagy-nav .page.prev.disabled a,
+  .pagy-nav .page.next.disabled a,
+  .pagy-nav-js .page a,
+  .pagy-combo-nav-js .page a,
+  .pagy-combo-nav-js .pagy-combo-input a {
+    @apply rounded-sm px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
+
+    &:hover{
+      @apply bg-gray-200;
+    }
+
+    &:active{
+      @apply bg-gray-200;
+    }
+  }
+
+  .pagy-nav .page.prev.disabled a,
+  .pagy-nav-js .page.prev.disabled a,
+  .pagy-combo-nav-js .page.prev.disabled a,
+  .pagy-nav .page.next.disabled a,
+  .pagy-nav-js .page.next.disabled a,
+  .pagy-combo-nav-js .page.next.disabled a {
+    @apply text-gray-300 cursor-default;
+
+    &:hover {
+      @apply text-gray-300 bg-white;
+    }
+
+    &:active {
+      @apply text-gray-300 bg-white;
+    }
+  }
+
+  .pagy-nav .page.active a,
+  .pagy-nav-js .page.active a {
+    @apply text-white cursor-default bg-gray-500 border-gray-500;
+
+    &:hover {
+      @apply text-white bg-gray-500;
+    }
+
+    &:active {
+      @apply bg-gray-500 text-white;
+    }
+  }
+}
+
 .pagy-gem-version-8-or-more {
-  .pagy.series-nav {
+  .pagy.nav {
     @apply relative z-0 flex space-x-2 max-sm:flex-wrap max-sm:gap-2 max-sm:justify-center;
 
-    a[role="separator"] {
+    a.gap {
       @apply text-gray-500;
     }
 
-    & a:not([role="separator"]) {
+    & a:not(.gap) {
       @apply block rounded-sm px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
 
       &:hover{
@@ -17,7 +83,7 @@
         @apply bg-gray-200;
       }
 
-      &[aria-current="page"] {
+      &.current {
         @apply text-white cursor-default bg-gray-500 border-gray-500;
 
         &:hover {
@@ -29,7 +95,7 @@
         }
       }
 
-      &[aria-disabled="true"]:not([aria-current="page"]) {
+      &[aria-disabled="true"]:not(.current) {
         @apply bg-gray-100 text-gray-300 cursor-default;
       }
     }
