@@ -6,6 +6,8 @@ tags.tagify {
   --tags-border-color: var(--color-tertiary);
   --tags-hover-border-color: var(--color-tertiary);
   --tags-focus-border-color: var(--color-primary);
+  --placeholder-color: var(--color-content-secondary);
+  --placeholder-color-focus: var(--color-content-secondary);
 }
 
 tags.tagify.tagify--focus {
