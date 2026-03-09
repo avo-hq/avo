@@ -1,6 +1,6 @@
 module Avo
   module ApplicationHelper
-    include ::Pagy::Frontend
+    include(::Pagy::Frontend) if defined?(::Pagy::Frontend)
     include Avo::ResourcesHelper
 
     def render_license_warning(title: "", message: "", icon: "exclamation")
@@ -141,6 +141,22 @@ module Avo
       return "8-or-more" if version >= 8
 
       version
+    end
+
+    def avo_pagy_info(pagy)
+      if pagy.respond_to?(:info_tag)
+        pagy.info_tag
+      else
+        pagy_info(pagy)
+      end
+    end
+
+    def avo_pagy_nav(pagy, **args)
+      if pagy.respond_to?(:series_nav)
+        pagy.series_nav(**args)
+      else
+        pagy_nav(pagy, **args)
+      end
     end
 
     def container_is_full_width?

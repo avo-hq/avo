@@ -564,6 +564,7 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
+      Pagy::I18n.locale = @pagy_locale if defined?(Pagy::I18n) && Pagy::I18n.respond_to?(:locale=)
     end
 
     def pagy_query

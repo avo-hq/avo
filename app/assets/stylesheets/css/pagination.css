@@ -65,14 +65,16 @@
 }
 
 .pagy-gem-version-8-or-more {
-  .pagy.nav {
+  .pagy.nav,
+  .pagy.series-nav {
     @apply relative z-0 flex space-x-2 max-sm:flex-wrap max-sm:gap-2 max-sm:justify-center;
 
-    a.gap {
+    a.gap,
+    a[role="separator"] {
       @apply text-gray-500;
     }
 
-    & a:not(.gap) {
+    & a:not(.gap):not([role="separator"]) {
       @apply block rounded px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
 
       &:hover{
@@ -83,7 +85,8 @@
         @apply bg-gray-200;
       }
 
-      &.current {
+      &.current,
+      &[aria-current="page"] {
         @apply text-white cursor-default bg-gray-500 border-gray-500;
 
         &:hover {
@@ -95,7 +98,7 @@
         }
       }
 
-      &[aria-disabled="true"]:not(.current) {
+      &[aria-disabled="true"]:not(.current):not([aria-current="page"]) {
         @apply bg-gray-100 text-gray-300 cursor-default;
       }
     }

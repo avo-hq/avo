@@ -1,6 +1,6 @@
 module Avo
   class MediaLibraryController < ApplicationController
-    include Pagy::Backend
+    include Avo::Concerns::PagyCompatibility
     before_action :authorize_access!
 
     def index
