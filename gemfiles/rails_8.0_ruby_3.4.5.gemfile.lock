@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (4.0.57.alpha)
+    avo (4.0.58.alpha)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -15,7 +15,7 @@ PATH
       avo-icons (>= 0.1.1)
       docile
       meta-tags
-      pagy (>= 7.0.0, < 43)
+      pagy (>= 43.0)
       prop_initializer (>= 0.2.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)

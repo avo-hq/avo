@@ -1,6 +1,5 @@
 module Avo
   module ApplicationHelper
-    include ::Pagy::Frontend
     include Avo::ResourcesHelper
 
     def ui = Avo::UIInstance
