@@ -136,11 +136,13 @@
   @import "./css/components/avatar.css";
   @import "./css/components/breadcrumbs.css";
   @import "./css/components/button.css";
+  @import "./css/components/grid.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
   @import "./css/components/tooltip.css";
   @import "./css/components/modal.css";
   @import "./css/css-animations.css";
+  @import "./css/sidebar.css";
 
   html,
   body {
@@ -211,10 +213,6 @@
     dd {
       @apply ms-0 col-start-2;
     }
-  }
-
-  select {
-    @apply text-foreground bg-background border-tertiary;
   }
 }
 

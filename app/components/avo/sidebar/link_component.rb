@@ -13,7 +13,9 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   end
   prop :data, default: {}.freeze
   prop :icon
+  prop :reserve_icon_space, default: false
   prop :args, kind: :**, default: {}.freeze
+  prop :items
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
@@ -36,7 +38,33 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     end
   end
 
-  def classes
-    "px-4 pe-0 flex-1 flex mx-6 leading-none py-2 text-content rounded-sm font-medium hover:bg-gray-100 gap-1"
+  def parent_link_active?
+    return false if @path.blank?
+    helpers.is_active_link?(@path, @active)
+  end
+
+  def link_icon
+    @icon
+  end
+
+  def active_item_index
+    return @active_item_index if defined?(@active_item_index)
+
+    @active_item_index = @items&.index do |item|
+      item.path.present? && helpers.is_active_link?(item.path, @active)
+    end
+  end
+
+  def subitem_bar_class(index)
+    active_idx = active_item_index
+    return "" if active_idx.nil?
+
+    if index == active_idx
+      "sidebar-subitem--bar-active"
+    elsif index < active_idx
+      "sidebar-subitem--bar-pass"
+    else
+      ""
+    end
   end
 end

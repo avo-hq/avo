@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['svg', 'items', 'self']
+  static targets = ['svg', 'items', 'self', 'trigger']
 
   collapsed = true
 
@@ -58,11 +58,13 @@ export default class extends Controller {
 
   markCollapsed() {
     this.svgTarget.classList.add('rotate-90')
+    if (this.hasTriggerTarget) this.triggerTarget.setAttribute('aria-expanded', 'false')
     this.leave(this.itemsTarget)
   }
 
   markExpanded() {
     this.svgTarget.classList.remove('rotate-90')
+    if (this.hasTriggerTarget) this.triggerTarget.setAttribute('aria-expanded', 'true')
     this.enter(this.itemsTarget)
   }
 

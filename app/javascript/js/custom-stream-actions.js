@@ -5,20 +5,13 @@ import { saveAs } from 'file-saver'
 // TODO: move these to the avo_filters gem
 
 StreamActions.close_filters_dropdown = function () {
-  const el = document.querySelector('.filters-dropdown-selector')
+  const el = document.querySelector('.filters-dropdown-selector[open]')
   if (el) el.close()
 }
 
 // Uses Turbo to refresh the page
 StreamActions.turbo_reload = function () {
   window.Turbo.visit(window.location.href, { action: 'replace' })
-}
-
-StreamActions.open_filter = function () {
-  const id = this.getAttribute('unique-id')
-  setTimeout(() => {
-    document.querySelector(`[data-filter-id="${id}"] .pill`).click()
-  }, 150)
 }
 // END TODO: move these to the avo_filters gem
 

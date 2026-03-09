@@ -1,36 +1,39 @@
-<%= tag.div class: "pb-2 space-y-1", data: do %>
+<%= tag.div class: "sidebar-group", data: data do %>
   <% if item.name.present? %>
     <% if collapsable %>
-      <div
-        class="flex justify-between cursor-pointer px-10 pe-2 pt-2 pb-0 text-gray-400"
+      <button
+        type="button"
+        class="sidebar-group__header justify-between"
         data-action="click->menu#triggerCollapse"
-        data-menu-key-param="<%= key %>"
+        data-menu-target="trigger"
+        aria-expanded="<%= !collapsed %>"
       >
-        <div class="flex items-center text-xs uppercase font-semibold leading-none">
-          <%= item.name %>
+        <div class="sidebar-group__header-inner">
+          <span><%= item.name %></span>
         </div>
-        <div class="<%= 'rotate-90' if collapsed %>"
+        <span class="sidebar-icon <%= 'sidebar-icon--collapsed' if collapsed %>"
           data-menu-target="svg"
-          >
-          <%= helpers.svg 'heroicons/outline/chevron-down', class: "h-4 me-0.5" %>
-        </div>
-      </div>
+        >
+          <%= helpers.svg 'heroicons/outline/chevron-down', class: 'h-4' %>
+        </span>
+      </button>
     <% else %>
-      <div class="flex justify-between px-10 pe-2 pt-2 pb-0 text-gray-400">
-        <div class="flex items-center text-xs uppercase font-semibold leading-none">
-          <%= item.name %>
-        </div>
-      </div>
+       <div class="sidebar-group__header">
+          <div class="sidebar-group__header-inner">
+            <span><%= item.name %></span>
+          </div>
+       </div>
     <% end %>
   <% end %>
 
-  <%= content_tag :div, class: class_names("w-full space-y-1"),
+  <%= content_tag :div,
     hidden: collapsed,
+    class: "sidebar-group__items",
     data: {
       menu_target: :items,
     } do %>
     <% @items.each do |item| %>
-      <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
+      <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item, group_has_icons: group_has_any_icon? %>
     <% end %>
   <% end %>
 <% end %>

@@ -46,7 +46,7 @@
           <div class="hidden lg:flex"><%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %></div>
 
           <div class="flex lg:hidden">
-            <%= render Avo::SidebarComponent.new sidebar_open: false, for_mobile: true %>
+            <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open, for_mobile: true %>
           </div>
 
           <main id="main-content" class="main-content-area" tabindex="-1">

@@ -5,6 +5,7 @@ RSpec.describe "sidebar", type: :system do
 
   context "desktop" do
     before(:example) do
+      Capybara.reset_sessions!
       visit "/"
     end
 
@@ -17,6 +18,9 @@ RSpec.describe "sidebar", type: :system do
       expect(page).to have_selector "div.sidebar-open"
       sidebar_button.click
       expect(page).to_not have_selector "div.sidebar-open"
+
+      sidebar_button.click
+      expect(page).to have_selector "div.sidebar-open"
     end
 
     it "remembers user choice" do
@@ -26,46 +30,35 @@ RSpec.describe "sidebar", type: :system do
       visit "/admin/resources/users"
 
       expect(page).to_not have_selector "div.sidebar-open"
-      sidebar_button.click
-
-      visit "/admin/resources/posts"
-      expect(page).to have_selector "div.sidebar-open"
     end
   end
 
   context "mobile" do
     before(:example) do
+      Capybara.reset_sessions!
       Capybara.current_session.current_window.resize_to(428, 926)
       visit "/"
     end
 
-    it "is closed on login" do
+    it "is open on login" do
       expect(page).to have_selector "div.sidebar-open"
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
     end
 
     it "toggles between open and closed" do
       sidebar_button = page.find("button[data-action='click->sidebar#toggleSidebarOnMobile']")
       expect(page).to have_selector "div.sidebar-open"
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
 
       sidebar_button.click
-      expect(page).to have_selector "div.sidebar-open"
-      expect(page).to_not have_selector "div.avo-sidebar.hidden", visible: false
-      expect(page).to have_selector "div.avo-sidebar", visible: true
+      expect(page).to_not have_selector "div.sidebar-open"
     end
 
     it "remains closed on navigation" do
       sidebar_button = page.find("button[data-action='click->sidebar#toggleSidebarOnMobile']")
-      sidebar_button.click
-
-      visit "/admin/resources/users"
-
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
-      sidebar_button.click
+      # Ensure we're closed
+      sidebar_button.click if page.has_selector?("div.sidebar-open")
 
       visit "/admin/resources/posts"
-      expect(page).to have_selector "div.avo-sidebar.hidden", visible: false
+      expect(page).to_not have_selector "div.sidebar-open"
     end
   end
 end

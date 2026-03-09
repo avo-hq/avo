@@ -71,7 +71,7 @@
 }
 
 .container-small {
-  @apply lg:px-0 lg:max-w-196 lg:mx-auto;
+  @apply lg:px-0 lg:w-256 lg:mx-auto;
 }
 
 .container-full-width {
@@ -84,15 +84,10 @@
 
 /* Default hidden state - LTR: sidebar slides in from left */
 .avo-sidebar {
-  @apply fixed z-60 top-0 flex-1 border-e border-gray-200 lg:border-none bg-none mt-(--top-navbar-height) h-[calc(100dvh-var(--top-navbar-height))] bg-application lg:bg-transparent w-(--sidebar-width);
+  @apply fixed z-60 top-0 flex-1 border-e border-tertiary lg:border-none mt-(--top-navbar-height) h-[calc(100dvh-var(--top-navbar-height))] bg-background w-(--sidebar-width);
 
   transform: translateX(-100%);
   transition: transform 0.1s ease;
-
-  .active:hover,
-  .active {
-    @apply bg-primary-100 text-primary-500;
-  }
 }
 
 /* RTL: sidebar slides in from right when hidden */

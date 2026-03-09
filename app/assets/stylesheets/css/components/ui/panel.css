@@ -20,7 +20,7 @@
 }
 
 .panel__sidebar {
-  @apply w-60 top-0 end-0 flex shrink-0;
+  @apply w-84 top-0 end-0 flex shrink-0;
 }
 
 .panel__cover-photo {

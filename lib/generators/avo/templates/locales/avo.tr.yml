@@ -101,6 +101,8 @@ tr:
       other: "%{count} %{item}"
       zero: sıfır %{item}
     oops_nothing_found: Hata! Hiçbir şey bulunamadı
+    open_in_new_tab: Yeni bir sekmede aç
+    open_in_your_editor: Editörünüzde açın
     order:
       higher: Kaydı yüksekten sırala
       lower: Kaydı düşükten sırala
@@ -111,6 +113,7 @@ tr:
     per_page: Sayfa başına
     prev_page: Önceki sayfa
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
+    reload: Yeniden yükle
     remove_selection: Seçimi sil
     reset: sıfırlama
     reset_filters: Filtreleri sıfırla

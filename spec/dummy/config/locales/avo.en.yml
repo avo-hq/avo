@@ -76,6 +76,9 @@ en:
     no_item_found: No record found
     no_options_available: No options available
     no_related_item_found: No related record found
+    reload: Reload
+    open_in_new_tab: Open in a new tab
+    open_in_your_editor: Open in your editor
     not_authorized: You are not authorized to perform this action.
     number_of_items:
       one: one %{item}

@@ -220,7 +220,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @dynamic_filters_component_id ||= "dynamic_filters_component_id_#{SecureRandom.hex(3)}"
   end
 
-  def reloadable
+  def reloadable?
     field&.reloadable?
   end
 

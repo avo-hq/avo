@@ -20,9 +20,7 @@ class Avo::ProfileItemComponent < Avo::BaseComponent
     @title || @label
   end
 
-  private
-
-  def button_classes
-    "flex-1 flex items-center justify-center bg-white text-start cursor-pointer text-gray-800 font-semibold hover:bg-primary-100 block px-4 py-1 w-full py-3 text-center rounded-sm w-full"
+  def menu_item_classes
+    "sidebar-profile__menu-item #{classes}".strip
   end
 end

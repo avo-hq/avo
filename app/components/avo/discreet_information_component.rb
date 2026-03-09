@@ -10,6 +10,7 @@ class Avo::DiscreetInformationComponent < Avo::BaseComponent
   prop :target
   prop :title
   prop :data
+  prop :classes
 
   def as_icon?
     @as == :icon

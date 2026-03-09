@@ -11,15 +11,14 @@
       <% end %>
 
       <div class="header__text">
-        <p class="header__title">
+        <div class="header__title">
           <% if @url.present? %>
             <%= link_to @title, @url, target: @target %>
           <% else %>
             <%= @title %>
           <% end %>
-        </p>
-
-        <%= title_slot %>
+          <%= title_slot %>
+        </div>
 
         <% if @description.present? %>
           <p class="header__description"><%= @description %></p>

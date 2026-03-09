@@ -103,6 +103,8 @@ ro:
       other: "%{count} %{item}"
       zero: 0 %{item}
     oops_nothing_found: Oups! Nu am găsit rezultate...
+    open_in_new_tab: Deschide într-o filă nouă
+    open_in_your_editor: Deschideți în editorul dvs.
     order:
       higher: Mutați înregistrarea mai sus
       lower: Mutați înregistrarea mai jos
@@ -113,6 +115,7 @@ ro:
     per_page: Pe pagină
     prev_page: Pagina anterioara
     records_selected_from_all_pages_html: Toate selectate din toate paginile
+    reload: Reîncarcă
     remove_selection: Șterge selecția
     reset: resetare
     reset_filters: Resetați filtrele
