@@ -17,7 +17,7 @@ RSpec.feature "ArrayResource", type: :system do
       expect(page).to have_text("John Doe")
       expect(page).to have_text("Ethan Williams")
 
-      within("nav.pagy.series-nav") do
+      within("nav.pagy.nav, nav.pagy.series-nav") do
         click_link("2")
       end
 
