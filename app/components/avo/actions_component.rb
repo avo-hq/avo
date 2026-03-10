@@ -8,9 +8,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :icon_class
   prop :size, default: :md
   prop :title
-  prop :color do |value|
-    value || :neutral
-  end
+  prop :color
   prop :include, default: [].freeze do |include|
     Array(include).to_set
   end

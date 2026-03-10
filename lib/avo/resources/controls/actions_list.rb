@@ -9,7 +9,7 @@ module Avo
         def initialize(**args)
           super
 
-          @color = args[:color] || :neutral
+          @color = args[:color]
           @exclude = args[:exclude] || []
           @include = args[:include] || []
           @style = args[:style] || :outline

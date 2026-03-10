@@ -13,7 +13,7 @@
       'data-action': 'keypress->text-filter#tryToSubmit'
     %>
     <div class="flex justify-end">
-      <%= a_button class: 'mt-4', color: :gray, data: { action: "text-filter#changeFilter" }, size: :xs do %>
+      <%= a_button class: 'mt-4', style: :primary, data: { action: "text-filter#changeFilter" }, size: :xs do %>
         <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>

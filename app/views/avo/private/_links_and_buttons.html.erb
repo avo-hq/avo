@@ -33,7 +33,7 @@
                   %>
                   <% if entity == :link %>
                     <div>
-                      <%= send a_button_or_link, '#', **args do %>
+                      <%= send a_button_or_link, 'javascript:void(0);', **args do %>
                         <%= entity.to_s.humanize.capitalize %> <%= state %>
                       <% end %>
                     </div>

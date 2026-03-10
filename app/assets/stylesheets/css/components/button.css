@@ -148,18 +148,18 @@
       --btn-color-accent: var(--color-avo-neutral-800);
       --btn-color-accent-content: var(--color-avo-neutral-950);
       --btn-color-accent-foreground: var(--color-white);
+    }
 
-      &&.button--color-neutral {
-        --btn-color-accent: var(--color-avo-neutral-50);
-        --btn-color-accent-content: var(--color-avo-neutral-100);
-        --btn-color-accent-foreground: var(--color-avo-neutral-950);
-      }
+    .button--style-outline {
+      --btn-color-accent: var(--color-avo-neutral-50);
+      --btn-color-accent-content: var(--color-avo-neutral-100);
+      --btn-color-accent-foreground: var(--color-avo-neutral-950);
+    }
 
-      &&.button--color-gray {
-        /* --color-accent: var(--color-gray-500); */
-        /* --btn-color-accent-content: var(--color-gray-400); */
-        /* --color-accent-foreground: var(--color-white); */
-      }
+    .button.button--color-neutral {
+      --btn-color-accent: var(--color-avo-neutral-50);
+      --btn-color-accent-content: var(--color-avo-neutral-100);
+      --btn-color-accent-foreground: var(--color-avo-neutral-950);
     }
   }
 
@@ -168,13 +168,22 @@
     @apply text-(--btn-color-accent-foreground) border-(--btn-color-accent-content);
     background: linear-gradient(180deg, var(--btn-color-accent-content) 0%, var(--btn-color-accent) 100%);
 
+    &:not([class*="button--color-"]) {
+      background: linear-gradient(180deg, var(--color-white) 0%, var(--color-white) 100%);
+
+      &.button--hover,
+      &:hover {
+        background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 96%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 96%, var(--color-black)) 100%);
+      }
+    }
+
     box-shadow:
       0 -0.5px 0 0.1px var(--btn-color-accent-content) inset,
       0 0.8px 0 0.1px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
 
     &.button--hover,
     &:hover {
-      @apply bg-accent/90 text-(--btn-color-accent-foreground);
+      @apply text-(--btn-color-accent-foreground);
 
       background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 90%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 90%, var(--color-black)) 100%), var(--color-primary);
       box-shadow: 0 -0.5px 0 0.1px var(--btn-color-accent-content) inset, 0 0.8px 0 0.1px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
@@ -199,13 +208,29 @@
   .button--style-outline {
     @apply text-(--btn-text-color);
 
-    --btn-color-accent: var(--color-avo-neutral-800);
-    --btn-color-accent-content: var(--color-avo-neutral-950);
-    --btn-color-accent-foreground: var(--color-white);
+    /* Special override to make it look more neutral when standlone */
+    &:not([class*="button--color-"]) {
+      @apply text-content border-content-secondary/50;
+
+      --btn-box-shadow-color: color-mix(in oklab, var(--color-content), transparent 65%);
+
+      &.button--hover,
+      &:hover {
+        --btn-box-shadow-color: color-mix(in oklab, var(--color-content), transparent 55%);
+        @apply text-content bg-tertiary;
+      }
+
+      &.button--disabled,
+      &:disabled,
+      &[disabled],
+      &[data-disabled='true'] {
+        @apply text-content-secondary border-content-secondary;
+      }
+    }
 
     --btn-box-shadow-color: color-mix(in oklab, var(--btn-color-accent), transparent 65%);
 
-    border: var(--spacing-px, 1px) solid var(--btn-color-accent);
+    border-color: var(--btn-color-accent);
     background: var(--color-primary);
     box-shadow: 0 -1.5px 0 0 var(--btn-box-shadow-color) inset, 0 0.8px 0 0px var(--color-primary) inset;
 

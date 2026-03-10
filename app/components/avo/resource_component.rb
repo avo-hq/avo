@@ -234,7 +234,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_link attach_path,
       icon: "heroicons/outline/link",
-      color: :primary,
       style: :text,
       data: {
         turbo_frame: Avo::MODAL_FRAME_ID,
