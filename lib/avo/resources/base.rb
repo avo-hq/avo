@@ -275,7 +275,7 @@ module Avo
       def initialize(record: nil, view: nil, user: nil, params: nil)
         @view = Avo::ViewInquirer.new(view) if view.present?
         @user = user if user.present?
-        @params = params if params.present?
+        @params = params.presence || {}
 
         if record.present?
           @record = record
