@@ -29,11 +29,7 @@ class Avo::PaginatorComponent < Avo::BaseComponent
   def render?
     return false if @discreet_pagination && @pagy.pages <= 1
 
-    if ::Pagy::VERSION >= ::Gem::Version.new("9.0")
-      @pagy.limit > 0
-    else
-      @pagy.items > 0
-    end
+    @pagy.limit > 0
   end
 
   def per_page_options

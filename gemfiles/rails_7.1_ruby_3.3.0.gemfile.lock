@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (4.0.58.alpha)
+    avo (4.0.61.alpha)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -15,7 +15,7 @@ PATH
       avo-icons (>= 0.1.1)
       docile
       meta-tags
-      pagy (>= 7.0.0, < 43)
+      pagy (>= 43.0)
       prop_initializer (>= 0.2.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
@@ -503,7 +503,10 @@ GEM
     openssl (3.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    pagy (9.3.5)
+    pagy (43.3.1)
+      json
+      uri
+      yaml
     parallel (1.27.0)
     parser (3.3.9.0)
       ast (~> 2.4.1)
@@ -751,7 +754,7 @@ GEM
     tilt (2.6.1)
     timeout (0.4.3)
     tty-which (0.5.0)
-    turbo-rails (2.0.16)
+    turbo-rails (2.0.23)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
     turbo_power (0.7.0)
@@ -790,6 +793,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yaml (0.4.0)
     yard (0.9.37)
     yard-solargraph (0.1.0)
       yard (~> 0.9)
