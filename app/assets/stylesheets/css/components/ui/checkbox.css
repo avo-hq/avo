@@ -1,14 +1,14 @@
 @layer base {
-  input[type=radio],
+  /* input[type=radio], */
   input[type=checkbox] {
-    @apply appearance-none size-4 cursor-pointer rounded-sm border-1 border-tertiary bg-primary;
+    @apply appearance-none size-4 cursor-pointer rounded-sm border border-tertiary bg-primary;
 
     box-shadow: var(--box-shadow);
   }
 
-  input[type=radio] {
+  /* input[type=radio] {
     @apply rounded-full;
-  }
+  } */
 
   input[type=checkbox]:checked {
     @apply bg-no-repeat bg-center bg-size-[70%];
@@ -20,21 +20,21 @@
     background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211%22%20height%3D%222%22%20viewBox%3D%220%200%2011%202%22%20fill%3D%22white%22%3E%3Cpath%20d%3D%22M10%200C10.3682%200%2010.6667%200.298477%2010.6667%200.666667C10.6667%201.03486%2010.3682%201.33333%2010%201.33333H0.666667C0.298477%201.33333%200%201.03486%200%200.666667C0%200.298477%200.298477%200%200.666667%200H10Z%22%20fill%3D%22white%22%2F%3E%3C%2Fsvg%3E);
   }
 
-  input[type=radio]:checked,
+  /* input[type=radio]:checked, */
   input[type=checkbox]:checked,
   input[type=checkbox]:indeterminate {
     @apply bg-accent-content border-accent-content;
   }
 
-  input[type=radio]:focus-visible,
+  /* input[type=radio]:focus-visible, */
   input[type=radio]:hover:not(:disabled),
   input[type=checkbox]:focus-visible,
   input[type=checkbox]:hover:not(:disabled) {
     @apply outline-2 outline-offset-2 outline-accent-content;
   }
 
-  input[type=radio]:checked:focus-visible,
-  input[type=radio]:checked:hover:not(:disabled),
+  /* input[type=radio]:checked:focus-visible,
+  input[type=radio]:checked:hover:not(:disabled), */
   input[type=checkbox]:checked:focus-visible,
   input[type=checkbox]:checked:hover:not(:disabled),
   input[type=checkbox]:indeterminate:focus-visible,
@@ -42,7 +42,8 @@
     @apply bg-accent-content border-accent-content;
   }
 
-  input[type=radio]:disabled,
+  /* input[type=radio]:disabled, */
+
   input[type=checkbox]:disabled {
     @apply cursor-not-allowed opacity-60;
   }
