@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_02_133623) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -119,6 +119,41 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_133623) do
     t.index ["uuid"], name: "index_events_on_uuid", unique: true
   end
 
+  create_table "field_type_playgrounds", force: :cascade do |t|
+    t.string "name"
+    t.string "text_value"
+    t.text "textarea_value"
+    t.text "code_value"
+    t.boolean "boolean_value", default: false, null: false
+    t.integer "number_value"
+    t.date "date_value"
+    t.time "time_value"
+    t.datetime "date_time_value"
+    t.string "country_value"
+    t.string "hidden_token"
+    t.string "password_value"
+    t.string "select_value"
+    t.string "multi_select_values", default: [], array: true
+    t.string "radio_value"
+    t.string "badge_value"
+    t.string "status_value"
+    t.integer "stars_value", default: 0, null: false
+    t.integer "progress_value", default: 0, null: false
+    t.string "tags_values", default: [], array: true
+    t.json "boolean_group_values", default: {}
+    t.json "key_value_data", default: {}
+    t.string "external_image_url"
+    t.string "gravatar_email"
+    t.text "easy_mde_content"
+    t.text "tiptap_content"
+    t.float "latitude"
+    t.float "longitude"
+    t.json "area_coordinates"
+    t.string "array_values", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "fish", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -174,9 +209,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_02_133623) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price_cents", default: 0, null: false
-    t.string "price_currency", default: "'USD'::character varying", null: false
-    t.integer "rating", default: 0, null: false
+    t.string "price_currency", default: "USD", null: false
     t.string "sizes", default: [], array: true
+    t.integer "rating", default: 0, null: false
     t.index ["rating"], name: "index_products_on_rating"
     t.check_constraint "rating >= 0 AND rating <= 5", name: "rating_range_check"
   end
