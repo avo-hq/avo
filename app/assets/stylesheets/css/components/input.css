@@ -92,6 +92,10 @@
     @apply cursor-not-allowed;
   }
 
+  .field-wrapper[data-field-type="trix"] .field-wrapper__content-wrapper {
+    @apply cursor-auto;
+  }
+
   select:disabled,
   textarea:disabled,
   .textarea-field:disabled,
