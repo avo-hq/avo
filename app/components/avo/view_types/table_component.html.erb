@@ -13,11 +13,11 @@
     <div class="card__wrapper mac-styled-scrollbar overflow-auto">
       <% if @pagy.pages > 1 %>
         <div
-          class="absolute z-30 ms-10 hidden w-[calc(100%-2.5rem)] pt-px"
+          class="absolute z-30 ms-10 hidden w-[calc(100%-4rem)] mt-0.5 "
           data-item-select-all-target="selectAllOverlay"
         >
-          <div class="mt-0.5 flex h-9 items-center bg-white">
-            <div class="mt-1.5" data-item-select-all-target="unselectedMessage">
+          <div class="flex items-center ps-2 bg-secondary w-full">
+            <div data-item-select-all-target="unselectedMessage">
               <%= selected_page_label %>
 
               <%= a_link request.url,
@@ -29,7 +29,7 @@
               <% end %>
             </div>
 
-            <div class="mt-1.5 hidden" data-item-select-all-target="selectedMessage">
+            <div class="hidden w-full " data-item-select-all-target="selectedMessage">
               <%= selected_all_label %>
 
               <%= a_link request.url,
@@ -56,8 +56,8 @@
           <% end %>
         <% end %>
       </table>
-    </div>
 
-    <div class="card__footer w-full p-2"><%= render paginator_component %></div>
+      </div>
+    <div class="card__footer"><%= render paginator_component %></div>
   </div>
 </turbo-frame>

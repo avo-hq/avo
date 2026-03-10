@@ -1,103 +1,139 @@
-.pagy-gem-version-7 {
-  .pagy-nav,
-  .pagy-nav-js,
-  .pagy-combo-nav-js {
-    @apply relative z-0 flex;
-  }
+/* Pagination Component
+   BEM: .pagination (block)
+        .pagination__per-page (elements)
+        .pagination__controls, .pagination__info, .pagination__nav (elements) */
 
-  .pagy-nav.pagination,
-  .pagy-nav-js.pagination,
-  .pagy-combo-nav-js.pagination {
-    @apply space-x-2;
-  }
+.pagination {
+  @apply flex w-full flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-end sm:gap-0;
+}
 
-  .pagy-nav .page a{
-    @apply block;
-  }
+/* === Per-page selector (left) === */
 
-  .pagy-nav .page a,
-  .pagy-nav .page.active a,
-  .pagy-nav .page.prev.disabled a,
-  .pagy-nav .page.next.disabled a,
-  .pagy-nav-js .page a,
-  .pagy-combo-nav-js .page a,
-  .pagy-combo-nav-js .pagy-combo-input a {
-    @apply rounded-sm px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
+.pagination__per-page {
+  --pagination-per-page-width: 10rem; /* w-48 equivalent; use 165px for exact Figma match */
+  @apply flex items-center;
+}
 
-    &:hover{
-      @apply bg-gray-200;
-    }
+.pagination__per-page-input {
+  width: var(--pagination-per-page-width);
+  min-width: var(--pagination-per-page-width);
+  @apply py-1 px-2 bg-primary border border-tertiary rounded-lg overflow-hidden text-ellipsis whitespace-nowrap text-content cursor-pointer text-sm leading-5 font-normal inline-flex items-center gap-1;
+}
 
-    &:active{
-      @apply bg-gray-200;
-    }
-  }
+/* Dropdown menu matches trigger width */
+.pagination__per-page .dropdown-popover {
+  width: var(--pagination-per-page-width);
+  min-width: var(--pagination-per-page-width);
+}
 
-  .pagy-nav .page.prev.disabled a,
-  .pagy-nav-js .page.prev.disabled a,
-  .pagy-combo-nav-js .page.prev.disabled a,
-  .pagy-nav .page.next.disabled a,
-  .pagy-nav-js .page.next.disabled a,
-  .pagy-combo-nav-js .page.next.disabled a {
-    @apply text-gray-300 cursor-default;
+.pagination__per-page-value {
+  @apply flex-1 text-start font-normal;
+}
 
-    &:hover {
-      @apply text-gray-300 bg-white;
-    }
+.pagination__per-page-icon {
+  @apply shrink-0 inline-flex items-center justify-center size-4 text-content-secondary;
 
-    &:active {
-      @apply text-gray-300 bg-white;
-    }
-  }
-
-  .pagy-nav .page.active a,
-  .pagy-nav-js .page.active a {
-    @apply text-white cursor-default bg-gray-500 border-gray-500;
-
-    &:hover {
-      @apply text-white bg-gray-500;
-    }
-
-    &:active {
-      @apply bg-gray-500 text-white;
-    }
+  & svg {
+    @apply size-4;
   }
 }
 
-.pagy-gem-version-8-or-more {
-  .pagy.nav {
-    @apply relative z-0 flex space-x-2 max-sm:flex-wrap max-sm:gap-2 max-sm:justify-center;
+/* Per-page option: number bold (700), "per page" normal (400) */
+.pagination__per-page-option-num {
+  @apply font-bold;
+}
 
-    a.gap {
-      @apply text-gray-500;
+.pagination__per-page .dropdown-menu__item {
+  @apply font-normal;
+}
+
+/* === Controls pill (right) === */
+
+.pagination__controls {
+  @apply flex w-fit shrink-0 items-center gap-3 rounded-lg border border-tertiary bg-primary overflow-hidden ps-3 pe-2 overflow-visible;
+}
+
+/* Info text with right-border divider */
+.pagination__info {
+  @apply flex items-center py-1 pe-3 border-e border-tertiary whitespace-nowrap overflow-hidden text-ellipsis text-sm text-content leading-5 font-normal;
+
+  &:last-child {
+    @apply border-e-0 pe-1;
+  }
+}
+
+.pagination__info-number {
+  @apply font-bold;
+}
+
+/* Nav buttons wrapper */
+.pagination__nav {
+  @apply flex items-center;
+}
+
+/* === Pagy nav === */
+.pagy.series-nav {
+  @apply flex items-center gap-0.5;
+
+  a[role="separator"] {
+    @apply px-2 text-sm text-content-secondary;
+  }
+
+  & a:not([role="separator"]) {
+    @apply inline-flex items-center justify-center min-w-8 px-3 py-0.5 rounded-lg border border-transparent
+      text-sm font-medium leading-tight text-content no-underline transition-colors;
+
+    &:hover:not([aria-current="page"]):not([aria-disabled="true"]) {
+      @apply bg-secondary;
     }
 
-    & a:not(.gap) {
-      @apply block rounded-sm px-3 py-1 text-sm text-gray-500 font-semibold bg-white shadow-md border border-gray-300;
-
-      &:hover{
-        @apply bg-gray-200;
-      }
-
-      &:active{
-        @apply bg-gray-200;
-      }
-
-      &.current {
-        @apply text-white cursor-default bg-gray-500 border-gray-500;
-
-        &:hover {
-          @apply text-white bg-gray-500;
-        }
-
-        &:active {
-          @apply bg-gray-500 text-white;
-        }
-      }
-
-      &[aria-disabled="true"]:not(.current) {
-        @apply bg-gray-100 text-gray-300 cursor-default;
-      }
+    &:active:not([aria-current="page"]):not([aria-disabled="true"]) {
+      @apply bg-tertiary;
     }
+
+    &[aria-disabled="true"]:not([aria-current="page"]) {
+      @apply opacity-40 cursor-not-allowed pointer-events-none;
+    }
+
+    &[aria-current="page"] {
+      @apply bg-secondary text-content cursor-default font-medium;
+    }
+  }
+
+  /* Compact previous/next controls */
+  & a:not([role="separator"]):first-child,
+  & a:not([role="separator"]):last-child {
+    @apply min-w-0 px-2 py-1;
+  }
+}
+
+/* Avo paginator only: hide prev/next text and paint data-uri icons */
+.pagination__nav .pagy.series-nav {
+  & a:not([role="separator"]):first-child,
+  & a:not([role="separator"]):last-child {
+    font-size: 0;
+    line-height: 0;
+  }
+
+  & a:not([role="separator"]):first-child::before,
+  & a:not([role="separator"]):last-child::before {
+    content: "";
+    @apply block size-3.5 bg-current;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+  }
+
+  & a:not([role="separator"]):first-child::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M5 12l14 0'/%3E%3Cpath d='M5 12l6 6'/%3E%3Cpath d='M5 12l6 -6'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M5 12l14 0'/%3E%3Cpath d='M5 12l6 6'/%3E%3Cpath d='M5 12l6 -6'/%3E%3C/svg%3E");
+  }
+
+  & a:not([role="separator"]):last-child::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M5 12l14 0'/%3E%3Cpath d='M13 18l6 -6'/%3E%3Cpath d='M13 6l6 6'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M5 12l14 0'/%3E%3Cpath d='M13 18l6 -6'/%3E%3Cpath d='M13 6l6 6'/%3E%3C/svg%3E");
   }
 }

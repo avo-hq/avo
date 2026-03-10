@@ -7,8 +7,8 @@
     <%= helpers.svg 'heroicons/solid/minus-circle', class: 'h-4' %>
   <% elsif @status == 'loading' %>
     <div class="spinner">
-      <div class="double-bounce1 bg-gray-600"></div>
-      <div class="double-bounce2 bg-gray-800"></div>
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
     </div>
   <% end %>
   <span class="ms-1"><%= @label %></span>

@@ -7,7 +7,7 @@
 
         <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
           icon: is_active_view ? view_info&.[](:active_icon) : view_info&.[](:icon),
-          color: :primary,
+          style: :primary,
           class: is_active_view ? "button--active" : "",
           title: t('avo.switch_to_view', view_type: type),
           data: {

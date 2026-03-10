@@ -45,7 +45,7 @@
 
 @theme {
   --color-table-row-selected: var(--color-secondary);
-  --color-table-row-hover: color-mix(in oklab, var(--color-secondary), var(--color-primary) 5%);
+  --color-table-row-hover: color-mix(in oklab, var(--color-secondary), var(--color-content) 2%)
 }
 
 .shift-pressed {

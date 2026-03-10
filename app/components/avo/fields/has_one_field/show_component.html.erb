@@ -7,7 +7,7 @@
     <% panel.with_controls do %>
       <% if can_attach? %>
         <%= a_link attach_path,
-          icon: 'heroicons/outline/link',
+          icon: 'tabler/outline/link',
           color: :primary,
           style: :text,
           data: {
@@ -20,11 +20,11 @@
 
       <% if can_see_the_create_button? %>
         <%= a_link create_path,
-          icon: 'heroicons/outline/plus',
+          icon: 'tabler/outline/plus',
           'data-target': 'create',
           'data-turbo-frame': '_top',
           style: :primary,
-          color: :primary do %>
+          color: :accent do %>
           <%= t('avo.create_new_item', item: @field.name.humanize(capitalize: false) ) %>
         <% end %>
       <% end %>

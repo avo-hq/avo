@@ -8,9 +8,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :icon_class
   prop :size, default: :md
   prop :title
-  prop :color do |value|
-    value || :primary
-  end
+  prop :color
   prop :include, default: [].freeze do |include|
     Array(include).to_set
   end
@@ -22,7 +20,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
       label || I18n.t("avo.actions")
     end
   end
-  prop :style, default: :outline
+  prop :style, default: :primary
   prop :actions, default: [].freeze
   prop :exclude, default: [].freeze do |exclude|
     Array(exclude).to_set

@@ -177,7 +177,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     add_stimulus_attributes_for(@resource, data_attributes, "saveButton")
 
-    a_button color: :primary,
+    a_button color: :accent,
       style: :primary,
       loading: true,
       type: :submit,
@@ -191,7 +191,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless can_see_the_edit_button?
 
     a_link edit_path,
-      color: :primary,
+      color: :accent,
       style: :primary,
       title: control.title,
       data: {tippy: control.title ? :tooltip : nil},
@@ -218,9 +218,9 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless can_see_the_create_button?
 
     a_link create_path,
-      color: :primary,
+      color: :accent,
       style: :primary,
-      icon: "heroicons/outline/plus",
+      icon: "tabler/outline/plus",
       data: {
         target: :create
       } do
@@ -232,8 +232,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless can_attach?
 
     a_link attach_path,
-      icon: "heroicons/outline/link",
-      color: :primary,
+      icon: "tabler/outline/link",
       style: :text,
       data: {
         turbo_frame: Avo::MODAL_FRAME_ID,

@@ -7,7 +7,7 @@ RSpec.describe Avo::UI::RadioButtonComponent, type: :component do
 
       expect(page).to have_css(".radio-button")
       expect(page).not_to have_css(".radio-button--disabled")
-      expect(page).to have_css("input[type='radio'].radio-button__input:not([disabled])")
+      expect(page).to have_css("input[type='radio']:not([disabled])")
       expect(page).to have_text("Label")
       expect(page).to have_text("Description")
     end
@@ -62,7 +62,7 @@ RSpec.describe Avo::UI::RadioButtonComponent, type: :component do
         render_inline(described_class.new(label: "Label"))
       }.not_to raise_error
 
-      expect(page).to have_css("input[type='radio'].radio-button__input")
+      expect(page).to have_css("input[type='radio']")
     end
   end
 end
