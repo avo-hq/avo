@@ -24,7 +24,8 @@ Product.delete_all
 Project.delete_all
 User.delete_all
 City.delete_all
-["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish"].each do |table_name|
+Playground.delete_all
+["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish", "playgrounds"].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE #{table_name} RESTART IDENTITY CASCADE")
 end
 
@@ -445,4 +446,52 @@ Event.create(
   name: "M3 release celebration",
   event_time: DateTime.new(2023, 11, 11, 11, 11, 11),
   body: "We're celebrating the release of the new M3 chip!"
+)
+
+Playground.create!(
+  name: "All fields playground",
+  text_value: "Short text example",
+  textarea_value: "Longer text area content",
+  code_value: "def greet\n  'Hello from Avo'\nend",
+  boolean_value: true,
+  number_value: 42,
+  date_value: Date.current,
+  time_value: Time.zone.now.change(sec: 0),
+  date_time_value: Time.zone.now.change(sec: 0),
+  country_value: "US",
+  hidden_token: SecureRandom.hex(4),
+  password_value: "super-secret",
+  select_value: "review",
+  multi_select_values: %w[feature_flags automation],
+  radio_value: "high",
+  badge_value: "published",
+  status_value: "processing",
+  stars_value: 4,
+  progress_value: 72,
+  tags_values: %w[avo rails showcase],
+  boolean_group_values: {
+    email_alerts: true,
+    sms_alerts: false,
+    weekly_digest: true
+  },
+  key_value_data: {
+    env: "development",
+    visibility: "public"
+  },
+  external_image_url: "https://picsum.photos/400/240",
+  gravatar_email: "avo@avohq.io",
+  easy_mde_content: "## EasyMDE content",
+  tiptap_content: "<p>Tiptap content</p>",
+  latitude: 37.7749,
+  longitude: -122.4194,
+  area_coordinates: [
+    [
+      [-122.423, 37.778],
+      [-122.415, 37.778],
+      [-122.415, 37.772],
+      [-122.423, 37.772],
+      [-122.423, 37.778]
+    ]
+  ],
+  array_values: ["alpha", "beta", "gamma"]
 )
