@@ -16,7 +16,7 @@ RSpec.describe "DiscreetPagination", type: :feature do
           wait_for_loaded
 
           expect(current_path).to eql "/admin/resources/courses/#{course_with_one_page_of_links.id}/links"
-          expect(page).not_to have_text "Displaying #{per_page} items"
+          expect(page).not_to have_css ".pagination"
         end
       end
 
@@ -26,7 +26,7 @@ RSpec.describe "DiscreetPagination", type: :feature do
           wait_for_loaded
 
           expect(current_path).to eql "/admin/resources/courses/#{course_with_two_pages_of_links.id}/links"
-          expect(page).to have_text "Displaying items 1-#{per_page} of #{per_page * 2} in total"
+          expect(page).to have_css ".pagination__info-number", text: "1-#{per_page}"
         end
       end
     end
@@ -43,7 +43,7 @@ RSpec.describe "DiscreetPagination", type: :feature do
           wait_for_loaded
 
           expect(current_path).to eql "/admin/resources/people/#{person_with_one_page_of_spouses.id}/spouses"
-          expect(page).to have_text "Displaying #{per_page} items"
+          expect(page).to have_css ".pagination"
         end
       end
 
@@ -53,7 +53,7 @@ RSpec.describe "DiscreetPagination", type: :feature do
           wait_for_loaded
 
           expect(current_path).to eql "/admin/resources/people/#{person_with_two_pages_of_spouses.id}/spouses"
-          expect(page).to have_text "Displaying items 1-#{per_page} of #{per_page * 2} in total"
+          expect(page).to have_css ".pagination__info-number", text: "1-#{per_page}"
         end
       end
     end

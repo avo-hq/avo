@@ -3,13 +3,13 @@
 # A button/link can have the following settings:
 # style: primary/outline/text
 # size: :sm, :md, :lg
-# color: :gray, :red, :green, :blue, or any other tailwind color
+# color: nil, :primary, :accent, :gray, :red, :green, :blue, or any other tailwind color
 # icon: "heroicons/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
   prop :path, kind: :positional
   prop :size, default: :md
   prop :style, default: :outline
-  prop :color, default: :gray
+  prop :color
   prop :icon do |value|
     value&.to_sym
   end
