@@ -78,7 +78,7 @@
 /* Card footer - full width so pagination can span edge to edge */
 .card__footer {
   @apply w-full;
-    .pagination {
+    &:has(.pagination) {
       @apply p-1 pt-0;
     }
 }
