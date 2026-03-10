@@ -24,7 +24,7 @@ h5 {
 
     &:active,
     &:hover {
-      color: color-mix(in oklab, var(--color-info-content), var(--color-content) 10%);
+      color: color-mix(in oklab, var(--color-info-content), var(--color-content) 30%);
     }
 
     &:focus-visible {
