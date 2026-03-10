@@ -1,4 +1,4 @@
-class CreateFieldTypePlaygrounds < ActiveRecord::Migration[8.0]
+class CreateFieldTypePlaygrounds < ActiveRecord::Migration[6.1]
   def change
     create_table :field_type_playgrounds do |t|
       t.string :name
