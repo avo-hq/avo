@@ -1,6 +1,5 @@
 module Avo
   module ApplicationHelper
-    include ::Pagy::Frontend
     include Avo::ResourcesHelper
 
     def ui = Avo::UIInstance
@@ -120,15 +119,6 @@ module Avo
 
     def possibly_rails_authentication?
       defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
-    end
-
-    def pagy_major_version
-      return nil unless defined?(Pagy::VERSION)
-      version = Pagy::VERSION&.split(".")&.first&.to_i
-
-      return "8-or-more" if version >= 8
-
-      version
     end
 
     def container_is_full_width?

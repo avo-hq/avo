@@ -15,14 +15,17 @@
 
   /* semantic - Mode 1 */
   --color-success: var(--color-green-500);
-  --color-success-content: var(--color-green-700);
+  --color-success-content: var(--color-green-600);
+  --color-success-foreground: var(--color-green-400);
   --color-info: var(--color-blue-400);
-  --color-info-content: var(--color-blue-700);
+  --color-info-content: var(--color-blue-600);
   --color-info-foreground: var(--color-blue-500);
   --color-warning: var(--color-yellow-500);
-  --color-warning-content: var(--color-yellow-700);
+  --color-warning-content: var(--color-yellow-600);
+  --color-warning-foreground: var(--color-yellow-400);
   --color-danger: var(--color-red-500);
-  --color-danger-content: var(--color-red-700);
+  --color-danger-content: var(--color-red-600);
+  --color-danger-foreground: var(--color-red-400);
 
   --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
 

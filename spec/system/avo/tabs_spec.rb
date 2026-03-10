@@ -186,12 +186,16 @@ RSpec.describe "Tabs", type: :system do
     visit avo.resources_user_path user
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
-    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
-    expect(page).to have_text "Displaying items 1-8 of 9 in total"
+    within("#has_and_belongs_to_many_field_show_projects nav.pagy.series-nav") do
+      expect(page).to have_css('a[role="link"][aria-disabled="true"][aria-current="page"]', text: "1")
+    end
+    expect(page).to have_css(".pagination__info-number", text: "1-8")
 
     find('a[data-turbo-frame="has_and_belongs_to_many_field_show_projects"]', text: "2").click
-    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
-    expect(page).to have_text "Displaying items 9-9 of 9 in total"
+    within("#has_and_belongs_to_many_field_show_projects nav.pagy.series-nav") do
+      expect(page).to have_css('a[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    end
+    expect(page).to have_css(".pagination__info-number", text: "9-9")
 
     find('a[aria-label="View project"]').click
     wait_for_loaded
@@ -200,8 +204,10 @@ RSpec.describe "Tabs", type: :system do
     wait_for_loaded
 
     scroll_to find('a[data-tabs-tab-name-param="Projects"]')
-    expect(page).to have_css('a.current[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
-    expect(page).to have_text "Displaying items 9-9 of 9 in total"
+    within("#has_and_belongs_to_many_field_show_projects nav.pagy.series-nav") do
+      expect(page).to have_css('a[role="link"][aria-disabled="true"][aria-current="page"]', text: "2")
+    end
+    expect(page).to have_css(".pagination__info-number", text: "9-9")
 
     Avo.configuration.persistence = {driver: nil}
   end
@@ -213,12 +219,12 @@ RSpec.describe "Tabs", type: :system do
 
     find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
     within("#has_and_belongs_to_many_field_show_projects") do
-      expect(page).to have_text "Displaying items 1-8 of 9 in total"
-      find("select#per_page.appearance-none").select("24")
+      expect(page).to have_css(".pagination__info-number", text: "1-8")
+      find("button.pagination__per-page-input").click
     end
+    find("a.dropdown-menu__item[href*='per_page=24']").click
 
-    expect(page).to have_text "Displaying 9 items"
-    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+    expect(page).to have_css("button.pagination__per-page-input .pagination__per-page-value", text: "24 per page")
 
     find_all('a[aria-label="View project"]')[0].click
     wait_for_loaded
@@ -227,8 +233,7 @@ RSpec.describe "Tabs", type: :system do
     wait_for_loaded
 
     scroll_to find('a[data-tabs-tab-name-param="Projects"]')
-    expect(page).to have_text "Displaying 9 items"
-    expect(find("select#per_page.appearance-none").find("option[selected]").text).to eq("24")
+    expect(page).to have_css("button.pagination__per-page-input .pagination__per-page-value", text: "24 per page")
 
     Avo.configuration.persistence = {driver: nil}
   end
