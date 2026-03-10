@@ -21,46 +21,29 @@ import { castBoolean } from '../../helpers/cast_boolean'
 export default class extends Controller {
   static targets = ['element']
 
-  get isDark() {
-    return document.documentElement.classList.contains('dark')
-  }
-
-  get resolvedTheme() {
-    return this.isDark ? 'material-darker' : (this.elementTarget.dataset.theme || 'default')
-  }
-
   connect() {
     const options = {
       readOnly: castBoolean(this.elementTarget.dataset.readOnly),
       mode: this.elementTarget.dataset.language,
-      theme: this.resolvedTheme,
+      theme: this.elementTarget.dataset.theme,
       tabSize: this.elementTarget.dataset.tabSize,
       indentWithTabs: castBoolean(this.elementTarget.dataset.indentWithTabs),
       lineWrapping: castBoolean(this.elementTarget.dataset.lineWrapping),
       lineNumbers: true,
-      extraKeys: {
-        Esc: (cm) => cm.getInputField().blur(),
-      },
     }
 
     const vm = this
 
     setTimeout(() => {
-      vm.cm = CodeMirror.fromTextArea(vm.elementTarget, options)
-      vm.cm.on('change', (cm) => {
+      CodeMirror.fromTextArea(this.elementTarget, options).on('change', (cm) => {
+        // Add this innerText change and dispatch an event to allow stimulus to pick up the input event.
         vm.elementTarget.innerText = cm.getValue()
         vm.elementTarget.dispatchEvent(new Event('input'))
       })
     }, 1)
-
-    this.observer = new MutationObserver(() => {
-      if (vm.cm) vm.cm.setOption('theme', vm.resolvedTheme)
-    })
-    this.observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
   }
 
   disconnect() {
-    if (this.observer) this.observer.disconnect()
     this.element.querySelector('.CodeMirror').CodeMirror.toTextArea()
   }
 }

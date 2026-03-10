@@ -30,7 +30,7 @@ trix-editor {
   @apply border border-tertiary rounded-lg;
 
   &:empty::before {
-    color: var(--color-content-secondary) !important;
+    @apply !text-content-secondary;
   }
 }
 
@@ -51,39 +51,34 @@ trix-toolbar {
 /* Hack to remove border from trix when rendered from ActionText */
 .trix-content {
   & .trix-content {
-    border: none;
+    @apply border-none;
   }
 }
 
 /* Dark mode overrides for Trix */
 .dark {
   trix-editor {
-    background-color: var(--color-primary);
-    color: var(--color-content);
-    border-color: var(--color-tertiary);
+    @apply bg-primary text-content border-tertiary;
   }
 
   .trix-content pre {
-    background-color: var(--color-tertiary);
-    color: var(--color-content);
+    @apply bg-tertiary text-content;
   }
 
   trix-toolbar {
     .trix-button-group {
-      background-color: var(--color-secondary);
-      border-color: var(--color-tertiary);
+      @apply bg-secondary border-tertiary;
     }
 
     .trix-button {
-      color: var(--color-content);
-      border-color: var(--color-tertiary);
+      @apply text-content border-tertiary;
 
       &:not(:disabled):hover {
-        background-color: var(--color-tertiary);
+        @apply bg-tertiary;
       }
 
       &.trix-active {
-        background-color: var(--color-tertiary);
+        @apply bg-tertiary;
       }
     }
 
@@ -92,27 +87,22 @@ trix-toolbar {
     }
 
     .trix-dialog {
-      background-color: var(--color-secondary);
-      border-color: var(--color-tertiary);
-      box-shadow: none;
+      @apply bg-secondary border-tertiary shadow-none;
     }
 
     .trix-input--dialog {
-      background-color: var(--color-primary);
-      color: var(--color-content);
-      border-color: var(--color-tertiary);
+      @apply bg-primary text-content border-tertiary;
 
       &::placeholder {
-        color: var(--color-content-secondary);
+        @apply text-content-secondary;
       }
     }
 
     .trix-button--dialog {
-      color: var(--color-content);
-      border-color: var(--color-tertiary);
+      @apply text-content border-tertiary;
 
       &:hover {
-        background-color: var(--color-tertiary);
+        @apply bg-tertiary;
       }
     }
   }
