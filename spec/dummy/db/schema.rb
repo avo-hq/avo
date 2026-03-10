@@ -119,7 +119,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
     t.index ["uuid"], name: "index_events_on_uuid", unique: true
   end
 
-  create_table "field_type_playgrounds", force: :cascade do |t|
+  create_table "playgrounds", force: :cascade do |t|
     t.string "name"
     t.string "text_value"
     t.text "textarea_value"

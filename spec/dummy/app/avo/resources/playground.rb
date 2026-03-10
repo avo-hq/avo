@@ -1,4 +1,4 @@
-class Avo::Resources::FieldTypePlayground < Avo::BaseResource
+class Avo::Resources::Playground < Avo::BaseResource
   self.title = :name
   self.description = "Showcase of non-relational Avo fields in a single resource."
   self.includes = []
@@ -28,20 +28,20 @@ class Avo::Resources::FieldTypePlayground < Avo::BaseResource
     field :country_value, as: :country, include_blank: "No country"
 
     field :choice_heading, as: :heading, name: "Choice and status fields"
-    field :select_value, as: :select, options: FieldTypePlayground::SELECT_OPTIONS
-    field :multi_select_values, as: :select, multiple: true, options: FieldTypePlayground::MULTI_SELECT_OPTIONS
-    field :radio_value, as: :radio, options: FieldTypePlayground::RADIO_OPTIONS
-    field :badge_value, as: :badge, options: FieldTypePlayground::BADGE_OPTIONS
+    field :select_value, as: :select, options: Playground::SELECT_OPTIONS
+    field :multi_select_values, as: :select, multiple: true, options: Playground::MULTI_SELECT_OPTIONS
+    field :radio_value, as: :radio, options: Playground::RADIO_OPTIONS
+    field :badge_value, as: :badge, options: Playground::BADGE_OPTIONS
     field :status_value,
       as: :status,
-      loading_when: FieldTypePlayground::STATUS_LOADING,
-      failed_when: FieldTypePlayground::STATUS_FAILED,
-      success_when: FieldTypePlayground::STATUS_SUCCESS,
-      neutral_when: FieldTypePlayground::STATUS_NEUTRAL
+      loading_when: Playground::STATUS_LOADING,
+      failed_when: Playground::STATUS_FAILED,
+      success_when: Playground::STATUS_SUCCESS,
+      neutral_when: Playground::STATUS_NEUTRAL
     field :stars_value, as: :stars, max: 5
     field :progress_value, as: :progress_bar, max: 100, value_suffix: "%", display_value: true
-    field :tags_values, as: :tags, suggestions: FieldTypePlayground::TAG_SUGGESTIONS
-    field :boolean_group_values, as: :boolean_group, options: FieldTypePlayground::BOOLEAN_GROUP_OPTIONS
+    field :tags_values, as: :tags, suggestions: Playground::TAG_SUGGESTIONS
+    field :boolean_group_values, as: :boolean_group, options: Playground::BOOLEAN_GROUP_OPTIONS
 
     field :structured_heading, as: :heading, name: "Structured and media fields"
     field :key_value_data, as: :key_value

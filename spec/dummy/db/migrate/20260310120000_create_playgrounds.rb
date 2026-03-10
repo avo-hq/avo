@@ -1,6 +1,6 @@
-class CreateFieldTypePlaygrounds < ActiveRecord::Migration[6.1]
+class CreatePlaygrounds < ActiveRecord::Migration[6.1]
   def change
-    create_table :field_type_playgrounds do |t|
+    create_table :playgrounds do |t|
       t.string :name
       t.string :text_value
       t.text :textarea_value

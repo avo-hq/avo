@@ -1,4 +1,4 @@
-class FieldTypePlayground < ApplicationRecord
+class Playground < ApplicationRecord
   SELECT_OPTIONS = {
     "Draft" => "draft",
     "Review" => "review",

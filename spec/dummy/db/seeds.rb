@@ -24,8 +24,8 @@ Product.delete_all
 Project.delete_all
 User.delete_all
 City.delete_all
-FieldTypePlayground.delete_all
-["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish", "field_type_playgrounds"].each do |table_name|
+Playground.delete_all
+["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish", "playgrounds"].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE #{table_name} RESTART IDENTITY CASCADE")
 end
 
@@ -448,7 +448,7 @@ Event.create(
   body: "We're celebrating the release of the new M3 chip!"
 )
 
-FieldTypePlayground.create!(
+Playground.create!(
   name: "All fields playground",
   text_value: "Short text example",
   textarea_value: "Longer text area content",
