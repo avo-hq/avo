@@ -37,6 +37,12 @@
   @apply border border-tertiary rounded-b-lg;
 }
 
+/* Dark mode overrides for standalone CodeMirror (code field).
+   material-darker sets border: none + a hardcoded background on gutters — override both. */
+.dark [data-controller="code-field"] .CodeMirror-gutters {
+  @apply border border-tertiary bg-secondary;
+}
+
 /* Dark mode overrides for EasyMDE toolbar (tiny_description field) */
 .dark .editor-toolbar {
   background-color: var(--color-secondary);
