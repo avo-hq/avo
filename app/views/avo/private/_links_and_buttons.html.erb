@@ -2,7 +2,7 @@
   entities = [:link, :button]
   sizes = [:lg, :md, :sm]
   styles = [:primary, :outline, :text]
-  colors = [nil, :neutral, :accent, :blue, :gray, :red, :orange, :green, :teal, :cyan, :sky, :indigo, :violet, :purple, :fuchsia, :pink, :rose]
+  colors = [nil, :primary, :accent, :blue, :gray, :red, :orange, :green, :teal, :cyan, :sky, :indigo, :violet, :purple, :fuchsia, :pink, :rose]
   states = [:regular, :hover, :disabled, :active]
 %>
 <div class="px-6 space-y-4">
@@ -14,7 +14,6 @@
         <div class="flex flex-col space-y-1">
           <% styles.each do |style| %>
             <% colors.each do |color| %>
-              <%#= color %>
               <%# next if style == :primary && color != :primary %>
               <div class="flex space-x-1 rtl:space-x-reverse">
                 <% states.each do |state| %>
@@ -48,6 +47,10 @@
                     </div>
                   <% end %>
                 <% end %>
+
+                <div class="flex self-center ml-2">
+                  <%= color %>
+                </div>
               </div>
             <% end %>
           <% end %>

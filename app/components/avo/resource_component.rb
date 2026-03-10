@@ -112,7 +112,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     a_link via_belongs_to ? "javascript:void(0);" : back_path,
       style: :text,
-      color: :gray,
       title: control.title,
       data: {
         tippy: control.title ? :tooltip : nil,
@@ -221,7 +220,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     a_link create_path,
       color: :accent,
       style: :primary,
-      icon: "heroicons/outline/plus",
+      icon: "tabler/outline/plus",
       data: {
         target: :create
       } do
@@ -233,7 +232,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless can_attach?
 
     a_link attach_path,
-      icon: "heroicons/outline/link",
+      icon: "tabler/outline/link",
       style: :text,
       data: {
         turbo_frame: Avo::MODAL_FRAME_ID,

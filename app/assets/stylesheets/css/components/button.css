@@ -22,7 +22,7 @@
     --btn-color-accent-content: var(--color-avo-neutral-100);
     --btn-color-accent-foreground: var(--color-avo-neutral-950);
 
-    &&.button--color-neutral {
+    &&.button--color-primary {
       --btn-color-accent: var(--color-avo-neutral-800);
       --btn-color-accent-content: var(--color-avo-neutral-950);
       --btn-color-accent-foreground: var(--color-white);
@@ -144,10 +144,13 @@
   }
 
   .dark {
-    .button {
-      --btn-color-accent: var(--color-avo-neutral-800);
-      --btn-color-accent-content: var(--color-avo-neutral-950);
-      --btn-color-accent-foreground: var(--color-white);
+    .button--style-primary {
+      &:not([class*="button--color-"]) {
+        --btn-color-accent: var(--color-avo-neutral-800);
+        --btn-color-accent-content: var(--color-avo-neutral-950);
+        --btn-color-accent-foreground: var(--color-white);
+        background: linear-gradient(180deg, var(--btn-color-accent-content) 0%, var(--btn-color-accent) 100%);
+      }
     }
 
     .button--style-outline {
@@ -156,7 +159,14 @@
       --btn-color-accent-foreground: var(--color-avo-neutral-950);
     }
 
-    .button.button--color-neutral {
+    .button--style-text {
+      &:not([class*="button--color-"]) {
+
+      --btn-text-color: var(--color-avo-neutral-50);
+      }
+    }
+
+    .button.button--color-primary {
       --btn-color-accent: var(--color-avo-neutral-50);
       --btn-color-accent-content: var(--color-avo-neutral-100);
       --btn-color-accent-foreground: var(--color-avo-neutral-950);
@@ -260,11 +270,13 @@
 
   /* Tertiary style (outline buttons) */
   .button--style-text {
-    --btn-color-accent: var(--color-avo-neutral-800);
-    --btn-color-accent-content: var(--color-avo-neutral-950);
-    --btn-color-accent-foreground: var(--color-white);
-
     @apply bg-transparent text-(--btn-text-color) border border-transparent;
+
+    &:not([class*="button--color-"]) {
+      --btn-color-accent: var(--color-avo-neutral-800);
+      --btn-color-accent-content: var(--color-avo-neutral-950);
+      --btn-color-accent-foreground: var(--color-white);
+    }
 
     &.button--hover,
     &:hover {
