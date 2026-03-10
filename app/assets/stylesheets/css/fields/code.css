@@ -7,7 +7,7 @@
 }
 
 .CodeMirror-gutters {
-  @apply bg-secondary border-r border-tertiary;
+  @apply bg-secondary border-e border-tertiary;
 }
 
 .CodeMirror-linenumber {
@@ -15,7 +15,7 @@
 }
 
 .CodeMirror-cursor {
-  @apply border-l-content;
+  @apply border-s-content;
 }
 
 .CodeMirror-selected {
