@@ -4,8 +4,7 @@
     @apply relative accent-accent-content;
 
     &:after {
-      @apply absolute rounded-full size-3 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
-      content: "";
+      @apply absolute rounded-full size-3 top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 content-[''];
     }
   }
 
