@@ -94,6 +94,7 @@
   @import "./../../../node_modules/flatpickr/dist/flatpickr.css";
   @import "./../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css";
   @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
+  /* @import "./css/components/ui/checkbox.css"; */
 
   @import "./css/fonts.css";
   @import "./css/button-group.css";
@@ -129,7 +130,7 @@
   @import "./css/components/ui/file_upload_input.css";
   @import "./css/components/ui/file_upload_item.css";
   @import "./css/components/ui/dropdown.css";
-  @import "./css/components/ui/radio_button.css";
+  @import "./css/components/ui/radio.css";
   @import "./css/components/input.css";
 
   @import "./css/components/field-wrapper.css";

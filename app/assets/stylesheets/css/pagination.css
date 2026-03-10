@@ -4,7 +4,7 @@
         .pagination__controls, .pagination__info, .pagination__nav (elements) */
 
 .pagination {
-  @apply pt-1 flex w-full flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-end sm:gap-0;
+  @apply flex w-full flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-end sm:gap-0;
 }
 
 /* === Per-page selector (left) === */
@@ -17,8 +17,7 @@
 .pagination__per-page-input {
   width: var(--pagination-per-page-width);
   min-width: var(--pagination-per-page-width);
-  @apply py-2 px-2 bg-primary border border-tertiary rounded-lg overflow-hidden text-ellipsis whitespace-nowrap text-content cursor-pointer text-sm leading-5 font-normal inline-flex items-center gap-1;
-    /* focus:outline-none focus:ring-2 focus:ring-inset focus:ring-content; */
+  @apply py-1 px-2 bg-primary border border-tertiary rounded-lg overflow-hidden text-ellipsis whitespace-nowrap text-content cursor-pointer text-sm leading-5 font-normal inline-flex items-center gap-1;
 }
 
 /* Dropdown menu matches trigger width */
@@ -51,7 +50,7 @@
 /* === Controls pill (right) === */
 
 .pagination__controls {
-  @apply flex w-fit shrink-0 items-center gap-3 rounded-lg border border-tertiary bg-primary overflow-hidden ps-3 pe-2 py-0.5 overflow-visible;
+  @apply flex w-fit shrink-0 items-center gap-3 rounded-lg border border-tertiary bg-primary overflow-hidden ps-3 pe-2 overflow-visible;
 }
 
 /* Info text with right-border divider */
@@ -81,8 +80,8 @@
   }
 
   & a:not([role="separator"]) {
-    @apply inline-flex items-center justify-center h-8 min-w-8 px-3 py-2 rounded-lg border border-transparent
-      text-sm font-medium leading-[14px] text-content no-underline transition-colors;
+    @apply inline-flex items-center justify-center min-w-8 px-3 py-0.5 rounded-lg border border-transparent
+      text-sm font-medium leading-tight text-content no-underline transition-colors;
 
     &:hover:not([aria-current="page"]):not([aria-disabled="true"]) {
       @apply bg-secondary;
@@ -93,7 +92,7 @@
     }
 
     &[aria-disabled="true"]:not([aria-current="page"]) {
-      @apply opacity-60 cursor-default pointer-events-none;
+      @apply opacity-40 cursor-not-allowed pointer-events-none;
     }
 
     &[aria-current="page"] {
@@ -104,7 +103,7 @@
   /* Compact previous/next controls */
   & a:not([role="separator"]):first-child,
   & a:not([role="separator"]):last-child {
-    @apply min-w-0 p-2;
+    @apply min-w-0 px-2 py-1;
   }
 }
 
