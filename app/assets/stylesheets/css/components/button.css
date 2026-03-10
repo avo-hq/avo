@@ -275,14 +275,6 @@
     &:active {
       @apply bg-secondary;
     }
-/*
-    &.button--focus-visible,
-    &:focus-visible {
-      @apply outline-none;
-      box-shadow:
-        0 0 0 2px rgba(23, 23, 23, 1),
-        0 0 0 4px rgba(255, 255, 255, 1);
-    } */
 
     &.button--disabled,
     &:disabled,
