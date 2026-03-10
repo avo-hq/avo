@@ -23,7 +23,7 @@
 }
 
 .key-value__header-cell {
-  @apply px-3 py-2;
+  @apply px-3;
 }
 
 .key-value__header-cell--key {

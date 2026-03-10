@@ -6,12 +6,78 @@
 @import 'codemirror/theme/material-darker.css';
 
 .CodeMirror {
+  @apply border border-tertiary;
   height: var(--height) !important;
   min-height: auto;
   padding: 0;
 }
 
+/* Code field (standalone CodeMirror, not inside EasyMDE) */
+[data-controller="code-field"] .CodeMirror {
+  @apply border border-tertiary rounded-lg;
+}
+
 /* overlay CodeMirror fullscreen & Preview on small screens */
 .CodeMirror-fullscreen, .editor-preview-active-side {
   z-index: 50;
+}
+
+/* Placeholder matching input component style */
+.EasyMDEContainer .CodeMirror .CodeMirror-placeholder,
+[data-controller="code-field"] .CodeMirror .CodeMirror-placeholder {
+  @apply text-content-secondary opacity-100;
+}
+
+/* EasyMDE border matching input component style */
+.editor-toolbar {
+  @apply border border-tertiary rounded-t-lg;
+}
+
+.EasyMDEContainer .CodeMirror {
+  @apply border border-tertiary rounded-b-lg;
+}
+
+/* Dark mode overrides for standalone CodeMirror (code field).
+   material-darker sets border: none + a hardcoded background on gutters — override both. */
+.dark [data-controller="code-field"] .CodeMirror-gutters {
+  @apply border border-tertiary bg-secondary;
+}
+
+/* Dark mode overrides for EasyMDE toolbar (tiny_description field) */
+.dark .editor-toolbar {
+  background-color: var(--color-secondary);
+  border-color: var(--color-tertiary);
+}
+
+.dark .editor-toolbar a,
+.dark .editor-toolbar button {
+  color: var(--color-content) !important;
+  background: transparent;
+}
+
+.dark .editor-toolbar a:hover,
+.dark .editor-toolbar a.active,
+.dark .editor-toolbar button:hover,
+.dark .editor-toolbar button.active {
+  background-color: var(--color-tertiary) !important;
+  border-color: var(--color-tertiary) !important;
+}
+
+.dark .editor-toolbar i.separator {
+  border-color: var(--color-tertiary);
+}
+
+.dark .editor-statusbar {
+  color: var(--color-content-secondary);
+}
+
+.dark .editor-preview {
+  background-color: var(--color-primary);
+  color: var(--color-content);
+}
+
+.dark .editor-preview-side {
+  background-color: var(--color-primary);
+  color: var(--color-content);
+  border-color: var(--color-tertiary);
 }

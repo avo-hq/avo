@@ -30,7 +30,7 @@
   }
 
   tags.tagify {
-    @apply overflow-visible whitespace-normal p-2 text-clip;
+    @apply overflow-visible whitespace-normal px-2 text-clip;
   }
 
   textarea,

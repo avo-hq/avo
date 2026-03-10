@@ -26,9 +26,21 @@
   @apply list-decimal;
 }
 
+trix-editor {
+  @apply border border-tertiary rounded-lg;
+
+  &:empty::before {
+    color: var(--color-content-secondary) !important;
+  }
+}
+
 trix-toolbar {
   .trix-button-row {
     @apply flex-wrap gap-x-5;
+  }
+
+  .trix-button-group {
+    @apply border border-tertiary;
   }
 
   .trix-button-group:not(:first-child) {
@@ -40,5 +52,68 @@ trix-toolbar {
 .trix-content {
   & .trix-content {
     border: none;
+  }
+}
+
+/* Dark mode overrides for Trix */
+.dark {
+  trix-editor {
+    background-color: var(--color-primary);
+    color: var(--color-content);
+    border-color: var(--color-tertiary);
+  }
+
+  .trix-content pre {
+    background-color: var(--color-tertiary);
+    color: var(--color-content);
+  }
+
+  trix-toolbar {
+    .trix-button-group {
+      background-color: var(--color-secondary);
+      border-color: var(--color-tertiary);
+    }
+
+    .trix-button {
+      color: var(--color-content);
+      border-color: var(--color-tertiary);
+
+      &:not(:disabled):hover {
+        background-color: var(--color-tertiary);
+      }
+
+      &.trix-active {
+        background-color: var(--color-tertiary);
+      }
+    }
+
+    .trix-button--icon::before {
+      filter: invert(1);
+    }
+
+    .trix-dialog {
+      background-color: var(--color-secondary);
+      border-color: var(--color-tertiary);
+      box-shadow: none;
+    }
+
+    .trix-input--dialog {
+      background-color: var(--color-primary);
+      color: var(--color-content);
+      border-color: var(--color-tertiary);
+
+      &::placeholder {
+        color: var(--color-content-secondary);
+      }
+    }
+
+    .trix-button--dialog {
+      color: var(--color-content);
+      border-color: var(--color-tertiary);
+
+      &:hover {
+        background-color: var(--color-tertiary);
+      }
+    }
   }
 }
