@@ -1,45 +1,51 @@
-<div
-  class="
-    aborder-t aborder-slate-200 flex flex-col items-center justify-between space-y-2 rounded-2xl sm:flex-row
-    sm:space-y-0
-  "
->
-  <div class="flex-2 sm:flex sm:items-center sm:justify-between">
-    <div>
-      <div class="flex items-center text-sm leading-5 text-slate-600">
-        <div data-controller="per-page">
-          <div class="flex items-center">
-            <%= content_tag :label, name: t('avo.per_page').downcase do %>
-              <%= select_tag 'per_page',
-                options_for_select(per_page_options, @index_params[:per_page]),
-                class: 'appearance-none inline-flex bg-white-100 disabled:bg-white-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-hidden focus:border-slate-400 w-16 me-1 text-sm',
-                data: {
-                  'turbo-frame': @turbo_frame,
-                  'per-page-target': 'selector',
-                  action: 'change->per-page#reload'
-                } %>
-
-              <%= t('avo.per_page').downcase %>
-            <% end %>
-          </div>
-
-          <% per_page_options.each do |option| %>
-            <%= link_to "Change to #{option} items per page", change_items_per_page_url(option), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': @turbo_frame %>
+<div class="pagination">
+  <%# Left: per-page selector %>
+  <div class="pagination__per-page">
+    <%= render ui.dropdown(classes: "start-0 end-auto") do |component| %>
+      <% component.with_trigger do %>
+        <button
+          type="button"
+          class="pagination__per-page-input"
+          data-action="<%= component.action %>"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+        >
+          <span class="pagination__per-page-value"><%== current_per_page_label %></span>
+          <span class="pagination__per-page-icon" aria-hidden="true">
+            <%= helpers.svg "tabler/outline/chevron-down" %>
+          </span>
+        </button>
+      <% end %>
+      <% component.with_items do %>
+        <% per_page_options.each do |option| %>
+          <%= link_to change_items_per_page_url(option),
+            class: "dropdown-menu__item",
+            data: { turbo_frame: @turbo_frame } do %>
+            <%== per_page_option_label(option) %>
           <% end %>
-        </div>
-      </div>
-    </div>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
 
-  <div class="flex">
-    <div class="flex-2 space-y-2 text-center sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:text-start <%= "pagy-gem-version-#{helpers.pagy_major_version}" %>">
-      <% if @resource.pagination_type.default? %>
-        <div class="me-4 text-sm text-slate-600"><%== @pagy.info_tag %></div>
-      <% end %>
+  <%# Right: info + navigation grouped pill %>
+  <div class="pagination__controls">
+    <% if @resource.pagination_type.default? %>
+      <div class="pagination__info">
+        <span class="pagination__info-number">
+          <%= "#{@pagy.from}-#{@pagy.to}" %>
+        </span>
+        &nbsp; of &nbsp;
+        <span>
+          <%= "#{@pagy.count}" %>
+        </span>
+      </div>
+    <% end %>
 
-      <% if @pagy.pages > 1 %>
+    <% if @pagy.pages > 1 %>
+      <div class="pagination__nav">
         <%== @pagy.series_nav(anchor_string: "data-turbo-frame=\"#{@turbo_frame}\"") %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
 </div>

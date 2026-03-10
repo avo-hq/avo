@@ -28,7 +28,7 @@
       <% end %>
     </div>
     <div class="flex justify-end">
-      <%= a_button class: 'mt-4', color: :primary, data: { action: "date-time-filter#changeFilter" }, size: :xs do %>
+      <%= a_button class: 'mt-4', style: :primary, data: { action: "date-time-filter#changeFilter" }, size: :xs do %>
         <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>

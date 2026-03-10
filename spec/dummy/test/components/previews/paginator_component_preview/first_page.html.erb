@@ -1,0 +1,41 @@
+<div class="p-8 bg-primary space-y-8">
+  <h3 class="text-lg font-semibold text-content">Pagination — First page (prev disabled)</h3>
+
+  <div class="pagination">
+    <div class="pagination__per-page">
+      <%= render Avo::UI::DropdownComponent.new(classes: "start-0 end-auto") do |component| %>
+        <% component.with_trigger do %>
+          <button type="button" class="pagination__per-page-input" data-action="<%= component.action %>">
+            <span class="pagination__per-page-value"><span class="pagination__per-page-option-num">24</span> per page</span>
+            <span class="pagination__per-page-icon" aria-hidden="true">
+              <%= svg "tabler/outline/chevron-down" %>
+            </span>
+          </button>
+        <% end %>
+        <% component.with_items do %>
+          <%= link_to "#", class: "dropdown-menu__item" do %><span class="pagination__per-page-option-num">12</span> per page<% end %>
+          <%= link_to "#", class: "dropdown-menu__item" do %><span class="pagination__per-page-option-num">24</span> per page<% end %>
+          <%= link_to "#", class: "dropdown-menu__item" do %><span class="pagination__per-page-option-num">48</span> per page<% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="pagination__controls pagy-gem-version-8-or-more">
+      <div class="pagination__info">
+        <span class="pagination__info-number">1–24</span>
+        &nbsp; of &nbsp;
+        <span>43</span>
+      </div>
+
+      <div class="pagination__nav">
+        <nav class="pagy nav">
+          <a href="#" aria-disabled="true"><span class="inline-block -rotate-90" aria-hidden="true"><%= svg "tabler/outline/arrow-up", class: "size-3.5" %></span></a>
+          <a href="#" class="current" aria-current="page">1</a>
+          <a href="#">2</a>
+          <a href="#">3</a>
+          <a href="#"><span class="inline-block rotate-90" aria-hidden="true"><%= svg "tabler/outline/arrow-up", class: "size-3.5" %></span></a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
