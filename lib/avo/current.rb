@@ -1,5 +1,9 @@
 require "active_support/current_attributes"
-require "active_support/code_generator"
+begin
+  require "active_support/code_generator"
+rescue LoadError
+  # ActiveSupport 6.1 does not have this file.
+end
 class Avo::Current < ActiveSupport::CurrentAttributes
   attribute :app
   attribute :license
