@@ -58,6 +58,9 @@ tr:
       empty_state:
         no_results_for_query: '"%{query}" ile eşleşen hiçbir şey bulamadık'
         no_results_found: Sonuç bulunamadı
+        start_typing: Aramaya başlamak için yazmaya başlayın
+        start_typing_with_resource_list: "%{resources} üzerinde arama yapabilirsiniz"
+        start_typing_with_resources: "%{resources} %{other_resources} üzerinde arama yapabilirsiniz"
         try_adjusting_search: Arama terimlerinizi ayarlamayı veya yazım hatalarını kontrol etmeyi deneyin
       go_to: Git
       keyboard_hints:

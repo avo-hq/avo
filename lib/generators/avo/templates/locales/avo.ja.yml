@@ -58,6 +58,9 @@ ja:
       empty_state:
         no_results_for_query: '"%{query}" に一致するものが見つかりませんでした'
         no_results_found: 結果が見つかりませんでした
+        start_typing: 検索を開始するには入力してください
+        start_typing_with_resource_list: "%{resources}で検索できます"
+        start_typing_with_resources: "%{resources} %{other_resources}で検索できます"
         try_adjusting_search: 検索用語を調整するか、タイプミスを確認してください
       go_to: 移動する
       keyboard_hints:

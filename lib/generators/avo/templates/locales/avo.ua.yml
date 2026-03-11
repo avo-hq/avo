@@ -58,6 +58,9 @@ ua:
       empty_state:
         no_results_for_query: We couldn't find anything matching "%{query}"
         no_results_found: No results found
+        start_typing: Почніть вводити текст для пошуку
+        start_typing_with_resource_list: Ви можете шукати на %{resources}
+        start_typing_with_resources: Ви можете шукати на %{resources} %{other_resources}
         try_adjusting_search: Try adjusting your search terms or checking for typos
       go_to: Go to
       keyboard_hints:

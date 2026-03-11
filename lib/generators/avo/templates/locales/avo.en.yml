@@ -56,6 +56,9 @@ en:
       empty_state:
         no_results_for_query: We couldn't find anything matching "%{query}"
         no_results_found: No results found
+        start_typing: Start typing to search
+        start_typing_with_resource_list: You can search on %{resources}
+        start_typing_with_resources: You can search on %{resources} %{other_resources}
         try_adjusting_search: Try adjusting your search terms or check for typos
       go_to: Go to
       keyboard_hints:

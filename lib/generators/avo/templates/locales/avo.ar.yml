@@ -66,6 +66,9 @@ ar:
       empty_state:
         no_results_for_query: لم نتمكن من العثور على أي شيء يتطابق مع "%{query}"
         no_results_found: لم يتم العثور على نتائج
+        start_typing: ابدأ الكتابة للبحث
+        start_typing_with_resource_list: يمكنك البحث عن %{resources}
+        start_typing_with_resources: يمكنك البحث عن %{resources} %{other_resources}
         try_adjusting_search: حاول تعديل مصطلحات البحث الخاصة بك أو تحقق من الأخطاء المطبعية
       go_to: اذهب إلى
       keyboard_hints:

@@ -58,6 +58,9 @@ fr:
       empty_state:
         no_results_for_query: Nous n'avons trouvé aucun élément correspondant à "%{query}"
         no_results_found: Aucun résultat trouvé
+        start_typing: Commencez à taper pour rechercher
+        start_typing_with_resource_list: Vous pouvez rechercher sur %{resources}
+        start_typing_with_resources: Vous pouvez rechercher sur %{resources} %{other_resources}
         try_adjusting_search: Essayez d'ajuster vos termes de recherche ou vérifiez les fautes de frappe
       go_to: Aller à
       keyboard_hints:
