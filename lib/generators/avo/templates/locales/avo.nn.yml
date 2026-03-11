@@ -59,8 +59,8 @@ nn:
         no_results_for_query: Vi kunne ikke finne noe som matcher "%{query}"
         no_results_found: Ingen resultat funnet
         start_typing: Byrja å skriva for å søkja
-        start_typing_with_resource_list: Du kan søkja på %{%{resources}}
-        start_typing_with_resources: Du kan søkja på %{%{resources}} %{%{other_resources}}
+        start_typing_with_resource_list: Du kan søkja på %{resources}
+        start_typing_with_resources: Du kan søkja på %{resources} %{other_resources}
         try_adjusting_search: Prøv å justere søkevilkårene dine eller sjekk for skrivefeil
       go_to: Gå til
       keyboard_hints:

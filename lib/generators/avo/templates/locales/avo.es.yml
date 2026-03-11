@@ -59,8 +59,8 @@ es:
         no_results_for_query: No pudimos encontrar nada que coincida con "%{query}"
         no_results_found: No se encontraron resultados
         start_typing: Comience a escribir para buscar
-        start_typing_with_resource_list: Puedes buscar en %{%{resources}}
-        start_typing_with_resources: Puedes buscar en %{%{resources}} %{%{other_resources}}
+        start_typing_with_resource_list: Puedes buscar en %{resources}
+        start_typing_with_resources: Puedes buscar en %{resources} %{other_resources}
         try_adjusting_search: Intenta ajustar tus términos de búsqueda o verifica si hay errores tipográficos
       go_to: Ir a
       keyboard_hints:
