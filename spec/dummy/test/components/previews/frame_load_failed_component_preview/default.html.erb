@@ -1,0 +1,11 @@
+<div style="padding: 2rem;">
+  <div>
+    <div class="mb-2 font-semibold">Interactive</div>
+    <%= render Avo::FrameLoadFailedComponent.new(frame: frame, src: src) %>
+
+    <div class="mt-4 mb-2 font-semibold">Without dev note</div>
+    <%= render Avo::FrameLoadFailedComponent.new(
+      frame: "comments"
+    ) %>
+  </div>
+</div>
