@@ -56,6 +56,9 @@ zh-TW:
       empty_state:
         no_results_for_query: 我們找不到任何與 "%{query}" 匹配的內容
         no_results_found: 未找到結果
+        start_typing: 開始輸入以搜尋
+        start_typing_with_resource_list: 您可以在 %{resources} 上搜尋
+        start_typing_with_resources: 您可以在 %{resources} %{other_resources} 上搜尋
         try_adjusting_search: 嘗試調整您的搜索條件或檢查拼寫錯誤
       go_to: 前往
       keyboard_hints:

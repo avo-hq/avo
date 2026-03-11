@@ -56,6 +56,9 @@ de:
       empty_state:
         no_results_for_query: Wir konnten nichts finden, das "%{query}" entspricht
         no_results_found: Keine Ergebnisse gefunden
+        start_typing: Beginnen Sie mit der Eingabe, um zu suchen
+        start_typing_with_resource_list: Sie können auf %{resources} suchen
+        start_typing_with_resources: Sie können auf %{resources} %{other_resources} suchen
         try_adjusting_search: Versuchen Sie, Ihre Suchbegriffe anzupassen oder auf Tippfehler zu überprüfen
       go_to: Gehe zu
       keyboard_hints:

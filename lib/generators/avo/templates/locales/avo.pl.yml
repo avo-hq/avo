@@ -58,6 +58,9 @@ pl:
       empty_state:
         no_results_for_query: Nie mogliśmy znaleźć niczego pasującego do "%{query}"
         no_results_found: Nie znaleziono wyników
+        start_typing: Zacznij pisać, aby wyszukać
+        start_typing_with_resource_list: Możesz wyszukać na %{resources}
+        start_typing_with_resources: Możesz wyszukać na %{resources} %{other_resources}
         try_adjusting_search: Spróbuj dostosować swoje hasła wyszukiwania lub sprawdź błędy typograficzne
       go_to: Idź do
       keyboard_hints:
