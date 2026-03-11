@@ -27,10 +27,10 @@
 }
 
 trix-editor {
-  @apply border border-tertiary rounded-lg;
+  @apply border border-tertiary rounded-lg bg-primary text-content;
 
   &:empty::before {
-    color: var(--color-content-secondary) !important;
+    @apply !text-content-secondary;
   }
 }
 
@@ -51,69 +51,54 @@ trix-toolbar {
 /* Hack to remove border from trix when rendered from ActionText */
 .trix-content {
   & .trix-content {
-    border: none;
+    @apply border-none;
   }
 }
 
-/* Dark mode overrides for Trix */
-.dark {
-  trix-editor {
-    background-color: var(--color-primary);
-    color: var(--color-content);
-    border-color: var(--color-tertiary);
+/* Theme-token based Trix styling */
+.trix-content pre {
+  @apply bg-tertiary text-content;
+}
+
+trix-toolbar {
+  .trix-button-group {
+    @apply bg-secondary border-tertiary;
   }
 
-  .trix-content pre {
-    background-color: var(--color-tertiary);
-    color: var(--color-content);
-  }
+  .trix-button {
+    @apply text-content border-tertiary;
 
-  trix-toolbar {
-    .trix-button-group {
-      background-color: var(--color-secondary);
-      border-color: var(--color-tertiary);
+    &:not(:disabled):hover {
+      @apply bg-tertiary;
     }
 
-    .trix-button {
-      color: var(--color-content);
-      border-color: var(--color-tertiary);
-
-      &:not(:disabled):hover {
-        background-color: var(--color-tertiary);
-      }
-
-      &.trix-active {
-        background-color: var(--color-tertiary);
-      }
-    }
-
-    .trix-button--icon::before {
-      filter: invert(1);
-    }
-
-    .trix-dialog {
-      background-color: var(--color-secondary);
-      border-color: var(--color-tertiary);
-      box-shadow: none;
-    }
-
-    .trix-input--dialog {
-      background-color: var(--color-primary);
-      color: var(--color-content);
-      border-color: var(--color-tertiary);
-
-      &::placeholder {
-        color: var(--color-content-secondary);
-      }
-    }
-
-    .trix-button--dialog {
-      color: var(--color-content);
-      border-color: var(--color-tertiary);
-
-      &:hover {
-        background-color: var(--color-tertiary);
-      }
+    &.trix-active {
+      @apply bg-tertiary;
     }
   }
+
+  .trix-dialog {
+    @apply bg-secondary border-tertiary shadow-none;
+  }
+
+  .trix-input--dialog {
+    @apply bg-primary text-content border-tertiary;
+
+    &::placeholder {
+      @apply text-content-secondary;
+    }
+  }
+
+  .trix-button--dialog {
+    @apply text-content border-tertiary;
+
+    &:hover {
+      @apply bg-tertiary;
+    }
+  }
+}
+
+/* Trix toolbar icons are image-based and need inversion only in dark mode. */
+.dark trix-toolbar .trix-button--icon::before {
+  filter: invert(1);
 }
