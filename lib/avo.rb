@@ -192,4 +192,4 @@ def 🥑
   Avo
 end
 
-loader.eager_load
+loader.eager_load if defined?(Rails)
