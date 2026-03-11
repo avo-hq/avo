@@ -1,3 +1,5 @@
+require "prop_initializer"
+require "action_view/helpers/tag_helper"
 class Avo::DiscreetInformation
   extend PropInitializer::Properties
   include ActionView::Helpers::TagHelper
