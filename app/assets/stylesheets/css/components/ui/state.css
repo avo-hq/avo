@@ -1,0 +1,129 @@
+/* State Component - BEM: .state (block), .state__* (elements), .state--* (modifiers) */
+
+/* Empty State Component */
+
+.state {
+  @apply mx-auto flex w-full max-w-[298px] flex-col items-center justify-center gap-3 rounded-lg bg-background p-6 text-center;
+}
+
+.state__illustration {
+  @apply relative h-[140px] w-[234px] flex items-center justify-center;
+}
+
+.state__card {
+  @apply absolute flex h-[43px] w-[174px] items-center gap-[6px] rounded-[9px] border border-secondary p-[9px];
+
+  background: linear-gradient(194deg, var(--color-primary) 27%, var(--color-background) 65%);
+  box-shadow: var(--box-shadow-card);
+}
+
+.state__card--top {
+  @apply start-0 top-0;
+}
+
+.state__card--middle {
+  @apply start-[58px] top-[34px];
+}
+
+.state__card--bottom {
+  @apply start-[19px] top-[78px];
+}
+
+.state__badge {
+  @apply flex size-[22px] shrink-0 items-center justify-center rounded-full text-[9px] font-medium leading-none text-content;
+
+  background: color-mix(in oklab, var(--color-tertiary) 88%, var(--color-primary));
+}
+
+.state__body {
+  @apply flex min-w-0 flex-1 flex-col gap-[3px];
+}
+
+.state__line {
+  @apply block h-1.5 rounded-full;
+
+  background: color-mix(in oklab, var(--color-tertiary) 78%, var(--color-primary));
+}
+
+.state__line--title {
+  @apply opacity-75;
+}
+
+.state__line--large {
+  @apply w-[55px];
+}
+
+.state__line--medium {
+  @apply w-[51px];
+}
+
+.state__line--small {
+  @apply w-[43px];
+}
+
+.state__line--content {
+  @apply w-full;
+}
+
+.state__message {
+  @apply text-base font-normal leading-6 text-content-secondary;
+}
+
+/*  Frame Load Failed Component */
+.state--frame-load-failed {
+  @apply max-w-[383px] gap-1;
+}
+
+.state__document {
+  @apply absolute flex h-[114px] w-[81px] flex-col rounded-[9px] border border-secondary p-[3px];
+
+  background: linear-gradient(235deg, var(--color-primary) 27%, var(--color-background) 65%);
+}
+
+.state__document--start {
+  @apply start-[16px] rotate-[-21deg];
+}
+
+.state__document--center {
+  @apply start-[63px] z-10;
+}
+
+.state__document--end {
+  @apply start-[95px] rotate-[21deg] z-0;
+}
+
+.state__document-body {
+  @apply flex h-full w-full items-center rounded-[9px] p-[10px];
+
+  box-shadow: var(--box-shadow-card);
+}
+
+.state__document-lines {
+  @apply flex h-full w-full flex-col justify-between
+}
+
+.state__document-line {
+  @apply block h-[5px] w-full rounded-full;
+
+  background: color-mix(in oklab, var(--color-tertiary) 78%, var(--color-primary));
+}
+
+.state__document-line--short {
+  @apply w-[38px];
+}
+
+.state__magnifier {
+  @apply absolute start-[30%] top-[30%] z-20 bg-none;
+}
+
+.state__magnifier-icon {
+  @apply size-24 text-content-secondary opacity-20;
+}
+
+.state__note {
+  @apply text-center text-sm font-normal leading-5 text-content;
+}
+
+.state__link {
+  color: color-mix(in oklab, var(--color-info-content), var(--color-content) 10%);
+}

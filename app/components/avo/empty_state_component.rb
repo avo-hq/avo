@@ -3,9 +3,19 @@
 class Avo::EmptyStateComponent < Avo::BaseComponent
   prop :message
   prop :by_association, default: false
+  prop :show_illustration, default: true
+  prop :classes
 
   def text
     @message || locale_message
+  end
+
+  def cards
+    [
+      {number: 1, position: :top, title: :large},
+      {number: 2, position: :middle, title: :large},
+      {number: 3, position: :bottom, title: :large}
+    ]
   end
 
   private
