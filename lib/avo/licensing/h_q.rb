@@ -1,3 +1,5 @@
+require "active_support/core_ext/integer/time"
+
 module Avo
   module Licensing
     class HQ
@@ -21,7 +23,7 @@ module Avo
           # This list of attributes will make sure that the cached response is invalidated when any of them changes.
           attributes_to_digest = [
             Avo.configuration.license_key,
-            Avo.configuration.license,
+            Avo.configuration.license
           ].join("-")
 
           Digest::MD5.hexdigest(attributes_to_digest).yield_self { |h| "#{h[0, 2]}#{h[-2, 2]}" }

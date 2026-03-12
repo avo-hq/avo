@@ -11,7 +11,7 @@ PATH
       docile
       meta-tags
       pagy (>= 7.0.0, < 43)
-      prop_initializer (>= 0.2.0)
+      prop_initializer (>= 0.3.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
@@ -454,7 +454,7 @@ GEM
     prettier_print (1.2.1)
     prettyprint (0.2.0)
     prism (1.6.0)
-    prop_initializer (0.2.0)
+    prop_initializer (0.3.0)
       zeitwerk (>= 2.6.18)
     psych (5.2.6)
       date
