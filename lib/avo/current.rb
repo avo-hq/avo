@@ -1,3 +1,8 @@
+begin
+  require "active_support/isolated_execution_state"
+rescue LoadError
+  # Older ActiveSupport versions may not expose this file directly.
+end
 require "active_support/current_attributes"
 begin
   require "active_support/code_generator"
