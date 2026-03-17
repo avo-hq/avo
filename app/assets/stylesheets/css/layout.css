@@ -112,12 +112,22 @@ html[dir="rtl"] .avo-sidebar {
   transform: translateX(100%);
 }
 
-/* When sidebar is open, show it (same for both LTR and RTL) */
-.sidebar-open .avo-sidebar {
+/* Desktop: show sidebar when sidebar-open class is present (lg+ only) */
+@media (min-width: theme(--breakpoint-lg)) {
+  .sidebar-open .avo-sidebar {
+    transform: translateX(0);
+  }
+
+  html[dir="rtl"] .sidebar-open .avo-sidebar {
+    transform: translateX(0);
+  }
+}
+
+/* Mobile: show sidebar only when explicitly toggled open */
+.sidebar-mobile-open .avo-sidebar {
   transform: translateX(0);
 }
 
-/* RTL: ensure sidebar is visible when open (higher specificity) */
-html[dir="rtl"] .sidebar-open .avo-sidebar {
+html[dir="rtl"] .sidebar-mobile-open .avo-sidebar {
   transform: translateX(0);
 }
