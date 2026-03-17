@@ -334,10 +334,16 @@ module Avo
     def sanitize_return_to(value)
       return if value.blank?
 
-      # Rails built-in: keeps only internal/safe URLs and rejects `javascript:` etc.
-      url_from(value.to_s)
-    rescue URI::InvalidURIError
+      url_from_compat(value.to_s)
+    rescue URI::Error
       nil
+    end
+
+    def url_from_compat(return_to)
+      return url_from(return_to) if respond_to?(:url_from, true)
+      return unless respond_to?(:_url_host_allowed?, true)
+
+      _url_host_allowed?(return_to) ? return_to : nil
     end
   end
 end
