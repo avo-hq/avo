@@ -3,6 +3,7 @@ require "timeout"
 
 RSpec.describe "OpenFieldAttachment", type: :system do
   include ActionView::RecordIdentifier
+
   let!(:user) { create :user }
 
   context "with PDF attachment" do
@@ -54,11 +55,9 @@ RSpec.describe "OpenFieldAttachment", type: :system do
           end).to be(true)
         ensure
           new_windows.each do |window|
-            begin
-              window.close if page.windows.include?(window)
-            rescue Ferrum::BrowserError, Capybara::WindowError
-              # CI can auto-dispose PDF popup targets before explicit close.
-            end
+            window.close if page.windows.include?(window)
+          rescue Ferrum::BrowserError, Capybara::WindowError
+            # CI can auto-dispose PDF popup targets before explicit close.
           end
         end
       end
