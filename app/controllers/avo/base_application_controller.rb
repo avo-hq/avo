@@ -340,8 +340,7 @@ module Avo
     end
 
     def url_from_compat(return_to)
-      return url_from(return_to) if respond_to?(:url_from, true)
-      return unless respond_to?(:_url_host_allowed?, true)
+      return url_from(return_to) if respond_to?(:url_from)
 
       _url_host_allowed?(return_to) ? return_to : nil
     end
