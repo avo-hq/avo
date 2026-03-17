@@ -168,7 +168,7 @@ module Avo
     def d(value)
       Avo::Services::EncryptionService.decrypt(message: value, purpose: :return_to, serializer: Marshal)
     rescue
-      value
+      nil
     end
 
     private

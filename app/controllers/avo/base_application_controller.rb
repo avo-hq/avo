@@ -327,22 +327,8 @@ module Avo
     def decode_params
       if params[:return_to].present?
         params[:raw_return_to] = params[:return_to]
-        params[:return_to] = sanitize_return_to(d(params[:return_to]))
+        params[:return_to] = d(params[:return_to])
       end
-    end
-
-    def sanitize_return_to(value)
-      return if value.blank?
-
-      url_from_compat(value.to_s)
-    rescue URI::Error
-      nil
-    end
-
-    def url_from_compat(return_to)
-      return url_from(return_to) if respond_to?(:url_from)
-
-      _url_host_allowed?(return_to) ? return_to : nil
     end
   end
 end
