@@ -56,6 +56,7 @@
 /* Add dark mode variant */
 @custom-variant light (&:where(.light, .light *));
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant theme-brand (&:where(.theme-brand, .theme-brand *));
 @custom-variant theme-slate (&:where(.theme-slate, .theme-slate *));
 @custom-variant theme-stone (&:where(.theme-stone, .theme-stone *));
 @custom-variant theme-gray (&:where(.theme-gray, .theme-gray *));
@@ -76,6 +77,10 @@
 @custom-variant kanban-dragging (&:where(.kanban-dragging *));
 @custom-variant floating-controls (&:where(.floating-controls *));
 @custom-variant shift-pressed (&:where(.shift-pressed *));
+
+@custom-variant resource-index-view (&:where(.resource-index-view *));
+@custom-variant resource-show-view (&:where(.resource-show-view *));
+@custom-variant resource-edit-view (&:where(.resource-edit-view *));
 
 /* Used to determine if the filters buttons is displayed. */
 @custom-variant index-missing-resources (&:where(.index-missing-resources *));
@@ -112,6 +117,7 @@
 
   @import "./css/fields/status.css";
   @import "./css/fields/code.css";
+  @import "./css/fields/easy-mde.css";
   @import "./css/fields/progress.css";
   @import "./css/fields/key_value.css";
   @import "./css/fields/trix.css";

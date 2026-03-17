@@ -1,22 +1,28 @@
-/* Modal Component - Based on Figma Design System */
+/* Modal Component — composes .card for the content shell */
 
-/* CSS Variables for height sizes matching width sizes */
+/* Height size variables */
 .modal {
-  --modal-height-sm: 24rem; /* 384px - matches w-sm */
-  --modal-height-md: 28rem; /* 448px - matches w-md */
-  --modal-height-lg: 32rem; /* 512px - matches w-lg */
-  --modal-height-xl: 36rem; /* 576px - matches w-xl */
-  --modal-height-2xl: 42rem; /* 672px - matches w-2xl */
-  --modal-height-3xl: 48rem; /* 768px - matches w-3xl */
-  --modal-height-4xl: 56rem; /* 896px - matches w-4xl */
+  --modal-height-sm: 24rem;
+  --modal-height-md: 28rem;
+  --modal-height-lg: 32rem;
+  --modal-height-xl: 36rem;
+  --modal-height-2xl: 42rem;
+  --modal-height-3xl: 48rem;
+  --modal-height-4xl: 56rem;
 }
 
 .modal {
-  @apply fixed inset-0 w-full z-100 flex justify-center items-center;
+  @apply fixed inset-0 w-full z-150 flex justify-center items-center;
 }
 
 .modal__overlay {
-  @apply absolute w-full h-full bg-gray-800/25 flex justify-center items-center;
+  @apply absolute w-full h-full flex justify-center items-center;
+
+  background-color: color-mix(in oklch, var(--color-avo-neutral-950) 25%, transparent);
+
+  .dark & {
+    background-color: color-mix(in oklch, var(--color-avo-neutral-950) 60%, transparent);
+  }
 }
 
 .modal__card-container {
@@ -24,39 +30,42 @@
 }
 
 .modal__card {
-  @apply flex flex-col items-start relative size-full rounded-xl shadow-[0px_32px_64px_0px_rgba(0,0,0,0.04)] shrink-0;
+  @apply relative size-full shrink-0;
+
+  box-shadow: var(--shadow-modal);
 }
 
-.modal__content {
-  @apply bg-primary border border-tertiary border-solid flex flex-col items-start overflow-clip relative rounded-[11px] shrink-0 size-full;
+/* Modal-specific card overrides */
+.modal__card > .card {
+  @apply size-full;
 }
 
-.modal__header {
-  @apply border-b border-tertiary border-solid flex flex-col gap-0 items-start p-4 relative shrink-0 w-full;
+.modal__card > .card > .card__wrapper {
+  @apply size-full flex flex-col;
+}
+
+.modal__card .card__header {
+  @apply py-3 px-4;
+}
+
+.modal__card .card__body {
+  @apply flex flex-col flex-1 gap-4 items-start pt-0 px-0 min-h-64;
 }
 
 .modal__title {
-  @apply line-clamp-1 font-medium leading-6 relative shrink-0 text-xl text-content;
-}
-
-.modal__description {
-  @apply line-clamp-1 font-normal leading-5 overflow-ellipsis overflow-hidden relative shrink-0 text-sm text-content-secondary;
+  @apply font-medium;
 }
 
 .modal__close-button {
-  @apply relative shrink-0 size-5 cursor-pointer hover:opacity-70 transition-opacity;
+  @apply shrink-0 size-5 cursor-pointer text-content-secondary hover:text-content transition-colors;
 }
 
 .modal__width-selector {
-  @apply relative shrink-0 size-5 cursor-pointer hover:opacity-70 transition-opacity;
+  @apply shrink-0 size-5 cursor-pointer text-content-secondary hover:text-content transition-colors;
 }
 
 .modal__height-selector {
-  @apply relative shrink-0 size-5 cursor-pointer hover:opacity-70 transition-opacity;
-}
-
-.modal__body {
-  @apply flex flex-col flex-1 justify-between gap-4 items-start pb-4 pt-0 px-0 relative shrink-0 w-full min-h-64;
+  @apply shrink-0 size-5 cursor-pointer text-content-secondary hover:text-content transition-colors;
 }
 
 .modal__body-content {
@@ -64,7 +73,7 @@
 }
 
 .modal__controls {
-  @apply flex items-center justify-between px-4 py-0 relative shrink-0 w-full;
+  @apply flex items-center justify-between py-2 px-3 w-full;
 }
 
 .modal--width-sm {

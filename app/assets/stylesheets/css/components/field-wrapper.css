@@ -1,9 +1,9 @@
 .field-wrapper {
-  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-2 min-h-15 w-full grow-0 text-ellipsis overflow-auto;
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 min-h-12 w-full grow-0 text-ellipsis overflow-auto;
 }
 
 .field-wrapper__label {
-  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-60 pt-3;
+  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-60 pt-2;
 }
 
 .field-wrapper__help {

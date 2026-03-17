@@ -8,7 +8,7 @@
     data-action-confirmation-value="<%= @action.confirmation? %>"
     data-action-resource-name-value="<%= @resource.model_key %>"
     data-resource-id="<%= params[:id] %>"
-    class="hidden text-slate-800"
+    class="hidden text-content"
   >
     <%= form_with scope: 'fields',
       url: @action.link_arguments(resource: @resource).first,
@@ -21,7 +21,7 @@
         **@action.class.form_data_attributes,
       } do |form|
     %>
-    <%= render Avo::ModalComponent.new(close_modal_on_backdrop_click: @action.close_modal_on_backdrop_click) do |c| %>
+    <%= render Avo::ModalComponent.new(close_modal_on_backdrop_click: @action.close_modal_on_backdrop_click, description: @action.get_description) do |c| %>
       <% c.with_heading do %>
         <%= @action.action_name %>
         <% if Rails.env.development? %>
@@ -39,26 +39,27 @@
       <%= form.hidden_field :avo_index_query, 'data-action-target': 'indexQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
       <% if @fields.present? %>
-        <% @fields.each_with_index do |field, index| %>
-          <%= render field
-            .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
-            .component_for_view(@view)
-            .new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == 0)
-          %>
-        <% end %>
+        <div class="description-list border-t border-b border-tertiary">
+          <% @fields.each_with_index do |field, index| %>
+            <%= render field
+              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
+              .component_for_view(@view)
+              .new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == 0)
+            %>
+          <% end %>
+        </div>
       <% end %>
 
       <% c.with_controls do %>
         <%= a_button type: :button,
           data: { action: 'click->modal#close' },
-          size: :sm,
-          color: :gray do %>
+          size: :md do %>
           <%= @action.cancel_button_label %>
         <% end %>
         <%= a_button type: :submit,
-            color: :green,
+            color: :primary,
             style: :primary,
-            size: :sm,
+            size: :md,
             data: {
               target: :submit_action,
             },

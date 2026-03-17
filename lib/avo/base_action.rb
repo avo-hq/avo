@@ -9,6 +9,7 @@ module Avo
     end
 
     class_attribute :name, default: nil
+    class_attribute :description, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
     class_attribute :cancel_button_label
@@ -147,6 +148,17 @@ module Avo
 
     # Blank method
     def fields
+    end
+
+    def get_description
+      Avo::ExecutionContext.new(
+        target: self.class.description,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments,
+        query: @query
+      ).handle
     end
 
     def get_message

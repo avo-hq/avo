@@ -1,0 +1,3 @@
+.EasyMDEContainer .CodeMirror {
+  @apply resource-show-view:rounded-lg border border-tertiary resource-edit-view:rounded-b-lg resource-edit-view:border-t-0;
+}

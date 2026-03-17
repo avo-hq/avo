@@ -1,6 +1,6 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <div class="flex items-center">
-    <div class="space-y-2">
+    <div class="space-y-2 py-2">
       <% @field.options.each do |id, label| %>
         <label class="block">
           <%= @form.check_box @field.id,

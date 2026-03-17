@@ -13,9 +13,14 @@
 
 .key-value__header,
 .key-value__row {
-  @apply grid items-center;
+  @apply grid items-center min-h-10;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) var(--key-value-actions-width);
   column-gap: 0;
+}
+
+.key-value[data-editable="false"] .key-value__header,
+.key-value[data-editable="false"] .key-value__row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .key-value__header {

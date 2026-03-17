@@ -3,14 +3,13 @@
     <%= @form.hidden_field @field.id,
       value: @field.value,
       data: { stars_field_target: "valueInput" } %>
-    
-    <div class="rating-group flex items-center gap-1 mb-3" 
+    <div class="rating-group flex items-center gap-1"
       data-component="avo/fields/common/stars_component"
       data-stars-field-target="starsContainer"
       data-max="<%= @field.max %>"
       data-current-value="<%= @field.value || 0 %>">
       <% (1..@field.max).each do |rating_value| %>
-        <%= helpers.svg('heroicons/solid/star', 
+        <%= helpers.svg('heroicons/solid/star',
           class: class_names("star inline-block me-0.5", filled: rating_value <= (@value || 0)),
           data: {
             star_value: rating_value,
