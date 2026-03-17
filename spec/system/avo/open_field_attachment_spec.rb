@@ -54,7 +54,11 @@ RSpec.describe "OpenFieldAttachment", type: :system do
           end).to be(true)
         ensure
           new_windows.each do |window|
-            window.close if page.windows.include?(window)
+            begin
+              window.close if page.windows.include?(window)
+            rescue Ferrum::BrowserError, Capybara::WindowError
+              # CI can auto-dispose PDF popup targets before explicit close.
+            end
           end
         end
       end
