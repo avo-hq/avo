@@ -547,7 +547,7 @@ module Avo
 
       extra_args = {}
       if params[:return_to].present?
-        extra_args[:return_to] = params[:raw_return_to].presence || e(params[:return_to])
+        extra_args[:return_to] = e(params[:return_to])
       end
 
       if @resource.class.send(action) == :index
