@@ -142,9 +142,9 @@ module Avo
           "resource-index-view"
         when :show
           "resource-show-view"
-        when :edit
+        when :edit, :update
           "resource-edit-view"
-        when :new
+        when :new, :create
           "resource-new-view"
         end
       end
