@@ -19,7 +19,7 @@ export default class extends Controller {
   }
 
   handleKeydown(event) {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && this.closeModalOnBackdropClickValue) {
       this.closeModal()
     }
   }
