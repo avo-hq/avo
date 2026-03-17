@@ -63,6 +63,9 @@ export default class extends Controller {
       })
     }
     this.rememberScrollPosition()
+
+    const isOpen = this.mainAreaTarget.classList.contains('sidebar-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   rememberScrollPosition() {
@@ -80,6 +83,16 @@ export default class extends Controller {
     scrollSidebarMenuItemIntoView()
   }
 
+  get toggleButtons() {
+    return document.querySelectorAll('[data-sidebar-toggle-icon]')
+  }
+
+  setToggleButtonsState(state) {
+    this.toggleButtons.forEach((button) => {
+      button.dataset.sidebarState = state
+    })
+  }
+
   toggleSidebar() {
     if (this.sidebarTarget.classList.contains('hidden')) {
       this.sidebarTarget.classList.remove('hidden')
@@ -87,6 +100,9 @@ export default class extends Controller {
     this.mainAreaTarget.classList.toggle('sidebar-open')
 
     Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
+
+    const isOpen = this.mainAreaTarget.classList.contains('sidebar-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   toggleSidebarOnMobile() {
@@ -102,6 +118,9 @@ export default class extends Controller {
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
     Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
+
+    const isOpen = this.mainAreaTarget.classList.contains('sidebar-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   // private

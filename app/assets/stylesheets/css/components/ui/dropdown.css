@@ -50,6 +50,7 @@
   }
 }
 
+.dropdown-menu__item--active,
 .dropdown-menu__item:hover,
 .dropdown-menu__list > :is(a, button):hover {
   @apply bg-secondary;
