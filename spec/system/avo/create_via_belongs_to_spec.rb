@@ -15,7 +15,7 @@ RSpec.describe "Create Via Belongs to", type: :system do
         click_on "Create new user"
 
         expect do
-          within(".modal__body") do
+          within(".card__body") do
             fill_in "user_email", with: "#{SecureRandom.hex(12)}@gmail.com"
             fill_in "user_first_name", with: "FirstName"
             fill_in "user_last_name", with: "LastName"
@@ -45,7 +45,7 @@ RSpec.describe "Create Via Belongs to", type: :system do
         click_on "Create new post"
 
         expect do
-          within(".modal__body") do
+          within(".card__body") do
             fill_in "post_name", with: "Test post"
             click_on "Save"
             sleep 0.2
@@ -69,7 +69,7 @@ RSpec.describe "Create Via Belongs to", type: :system do
       click_on "Create new user"
 
       expect do
-        within(".modal__body") do
+        within(".card__body") do
           fill_in "user_email", with: "#{SecureRandom.hex(12)}@gmail.com"
           fill_in "user_first_name", with: "FirstName"
           fill_in "user_last_name", with: "LastName"
@@ -118,7 +118,7 @@ RSpec.describe "Create Via Belongs to", type: :system do
       click_on "Create new post"
 
       expect do
-        within(".modal__body") do
+        within(".card__body") do
           fill_in "post_name", with: "Test post"
           click_on "Save"
           sleep 0.2
@@ -163,7 +163,7 @@ RSpec.describe "Create Via Belongs to", type: :system do
       click_on "Create new course"
 
       expect do
-        within(".modal__body") do
+        within(".card__body") do
           fill_in "course_name", with: "Test course"
           click_on "Save"
           sleep 0.2
