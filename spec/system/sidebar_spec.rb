@@ -40,25 +40,26 @@ RSpec.describe "sidebar", type: :system do
       visit "/"
     end
 
-    it "is open on login" do
-      expect(page).to have_selector "div.sidebar-open"
+    it "is closed on login" do
+      expect(page).to_not have_selector "div.sidebar-mobile-open"
     end
 
     it "toggles between open and closed" do
       sidebar_button = page.find("button[data-action='click->sidebar#toggleSidebarOnMobile']")
-      expect(page).to have_selector "div.sidebar-open"
+      expect(page).to_not have_selector "div.sidebar-mobile-open"
 
       sidebar_button.click
-      expect(page).to_not have_selector "div.sidebar-open"
+      expect(page).to have_selector "div.sidebar-mobile-open"
+
+      sidebar_button.click
+      expect(page).to_not have_selector "div.sidebar-mobile-open"
     end
 
     it "remains closed on navigation" do
-      sidebar_button = page.find("button[data-action='click->sidebar#toggleSidebarOnMobile']")
-      # Ensure we're closed
-      sidebar_button.click if page.has_selector?("div.sidebar-open")
+      expect(page).to_not have_selector "div.sidebar-mobile-open"
 
       visit "/admin/resources/posts"
-      expect(page).to_not have_selector "div.sidebar-open"
+      expect(page).to_not have_selector "div.sidebar-mobile-open"
     end
   end
 end

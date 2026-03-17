@@ -79,7 +79,24 @@
 }
 
 .top-navbar {
-  @apply z-100 fixed w-full flex shrink-0 items-center px-4 lg:px-0 space-x-4 rtl:space-x-reverse lg:space-x-0;
+  @apply z-100 fixed w-full flex shrink-0 items-center px-4 lg:px-2 space-x-4 rtl:space-x-reverse lg:space-x-0;
+}
+
+/* Sidebar toggle: choose icon via navbar variables; visibility driven by data attribute */
+.sidebar-toggle-icon {
+  @apply inline-flex;
+}
+
+.sidebar-toggle-icon--closed {
+  @apply hidden;
+}
+
+button[data-sidebar-state='closed'] .sidebar-toggle-icon--open {
+  @apply hidden;
+}
+
+button[data-sidebar-state='closed'] .sidebar-toggle-icon--closed {
+  @apply inline-flex;
 }
 
 /* Default hidden state - LTR: sidebar slides in from left */
@@ -95,12 +112,24 @@ html[dir="rtl"] .avo-sidebar {
   transform: translateX(100%);
 }
 
-/* When sidebar is open, show it (same for both LTR and RTL) */
-.sidebar-open .avo-sidebar {
-  transform: translateX(0);
+/* Desktop: show sidebar when sidebar-open class is present (lg+ only) */
+@media (min-width: theme(--breakpoint-lg)) {
+  .sidebar-open .avo-sidebar {
+    transform: translateX(0);
+  }
+
+  html[dir="rtl"] .sidebar-open .avo-sidebar {
+    transform: translateX(0);
+  }
 }
 
-/* RTL: ensure sidebar is visible when open (higher specificity) */
-html[dir="rtl"] .sidebar-open .avo-sidebar {
-  transform: translateX(0);
+/* Mobile: show sidebar only when explicitly toggled open */
+@media (width < theme(--breakpoint-lg)) {
+  .sidebar-mobile-open .avo-sidebar {
+    transform: translateX(0);
+  }
+
+  html[dir="rtl"] .sidebar-mobile-open .avo-sidebar {
+    transform: translateX(0);
+  }
 }

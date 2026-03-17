@@ -63,6 +63,12 @@ export default class extends Controller {
       })
     }
     this.rememberScrollPosition()
+
+    const isMobile = window.innerWidth < 1024
+    const isOpen = isMobile
+      ? this.mainAreaTarget.classList.contains('sidebar-mobile-open')
+      : this.mainAreaTarget.classList.contains('sidebar-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   rememberScrollPosition() {
@@ -80,6 +86,16 @@ export default class extends Controller {
     scrollSidebarMenuItemIntoView()
   }
 
+  get toggleButtons() {
+    return document.querySelectorAll('[data-sidebar-toggle-icon]')
+  }
+
+  setToggleButtonsState(state) {
+    this.toggleButtons.forEach((button) => {
+      button.dataset.sidebarState = state
+    })
+  }
+
   toggleSidebar() {
     if (this.sidebarTarget.classList.contains('hidden')) {
       this.sidebarTarget.classList.remove('hidden')
@@ -87,21 +103,26 @@ export default class extends Controller {
     this.mainAreaTarget.classList.toggle('sidebar-open')
 
     Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
+
+    const isOpen = this.mainAreaTarget.classList.contains('sidebar-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   toggleSidebarOnMobile() {
     if (this.mobileSidebarTarget.classList.contains('hidden')) {
-      this.mainAreaTarget.classList.remove('sidebar-open')
+      this.mainAreaTarget.classList.remove('sidebar-mobile-open')
       this.mobileSidebarTarget.classList.remove('hidden')
 
       // we force a reflow here because we remove then
-      // immediately add the sidebar-open class
+      // immediately add the sidebar-mobile-open class
       // which doesn't give the browser enough time to apply the
       // transition.
       this.mainAreaTarget.offsetHeight // eslint-disable-line no-unused-expressions
     }
-    this.mainAreaTarget.classList.toggle('sidebar-open')
-    Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
+    this.mainAreaTarget.classList.toggle('sidebar-mobile-open')
+
+    const isOpen = this.mainAreaTarget.classList.contains('sidebar-mobile-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   // private

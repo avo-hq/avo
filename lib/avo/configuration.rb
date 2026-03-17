@@ -27,7 +27,6 @@ module Avo
     attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
-    attr_accessor :display_breadcrumbs
     attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
@@ -62,6 +61,7 @@ module Avo
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
     attr_accessor :default_editor_url
+    attr_accessor :sidebar_toggle_visible
 
     def initialize
       @root_path = "/avo"
@@ -97,7 +97,6 @@ module Avo
       @initial_breadcrumbs = proc {
         add_breadcrumb title: I18n.t("avo.home").humanize, path: avo.root_path, icon: "tabler/outline/home"
       }
-      @display_breadcrumbs = true
       @hide_layout_when_printing = false
       @home_path = nil
       @search_debounce = 300
@@ -138,6 +137,7 @@ module Avo
       @send_metadata = true
       @use_stacked_fields = false
       @default_editor_url = "cursor://file/%{path}"
+      @sidebar_toggle_visible = true
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
