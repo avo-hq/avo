@@ -106,9 +106,12 @@ RSpec.describe "App", type: :system do
 
     it "keeps valid internal return_to paths" do
       project = projects.first
+      encryption_helper = Class.new do
+        include Avo::ApplicationHelper
+      end.new
       return_to = "/admin/resources/projects/new"
 
-      visit "/admin/resources/projects/#{project.id}?return_to=#{CGI.escape(return_to)}"
+      visit "/admin/resources/projects/#{project.id}?return_to=#{encryption_helper.e(return_to)}"
 
       go_back_link = find("div[data-target='panel-tools'] a", text: "Go back")
       expect(go_back_link[:href]).to end_with(return_to)
