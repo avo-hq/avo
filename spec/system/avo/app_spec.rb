@@ -1,4 +1,5 @@
 require "rails_helper"
+require "cgi"
 
 RSpec.describe "App", type: :system do
   let!(:user) { create :user }
@@ -82,6 +83,39 @@ RSpec.describe "App", type: :system do
     it "xss in turbo frames 2" do
       visit '/admin/resources/projects?per_page=1&turbo_frame=has_many_field_show_test_xgc2pf><script>alert("XSS")<%2Fscript>p9sk5'
       expect { accept_alert }.to raise_error(Capybara::ModalNotFound)
+    end
+
+    it "sanitizes unsafe return_to values" do
+      project = projects.first
+      payload = CGI.escape("javascript:alert('Reflected XSS')")
+
+      visit "/admin/resources/projects/#{project.id}?return_to=#{payload}"
+
+      go_back_link = find("div[data-target='panel-tools'] a", text: "Go back")
+      expect(go_back_link[:href]).to end_with("/admin/resources/projects")
+      expect(go_back_link[:href]).not_to start_with("javascript:")
+
+      expect {
+        accept_alert do
+          click_on "Go back"
+        end
+      }.to raise_error(Capybara::ModalNotFound)
+
+      expect(page).to have_current_path "/admin/resources/projects"
+    end
+
+    it "keeps valid internal return_to paths" do
+      project = projects.first
+      return_to = "/admin/resources/projects/new"
+
+      visit "/admin/resources/projects/#{project.id}?return_to=#{CGI.escape(return_to)}"
+
+      go_back_link = find("div[data-target='panel-tools'] a", text: "Go back")
+      expect(go_back_link[:href]).to end_with(return_to)
+
+      click_on "Go back"
+
+      expect(page).to have_current_path return_to
     end
   end
 end

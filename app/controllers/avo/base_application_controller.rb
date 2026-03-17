@@ -327,8 +327,17 @@ module Avo
     def decode_params
       if params[:return_to].present?
         params[:raw_return_to] = params[:return_to]
-        params[:return_to] = d(params[:return_to])
+        params[:return_to] = sanitize_return_to(d(params[:return_to]))
       end
+    end
+
+    def sanitize_return_to(value)
+      return if value.blank?
+
+      # Rails built-in: keeps only internal/safe URLs and rejects `javascript:` etc.
+      url_from(value.to_s)
+    rescue URI::InvalidURIError
+      nil
     end
   end
 end
