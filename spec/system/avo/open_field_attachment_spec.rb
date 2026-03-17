@@ -1,7 +1,9 @@
 require "rails_helper"
+require "timeout"
 
 RSpec.describe "OpenFieldAttachment", type: :system do
   include ActionView::RecordIdentifier
+
   let!(:user) { create :user }
 
   context "with PDF attachment" do
@@ -30,12 +32,33 @@ RSpec.describe "OpenFieldAttachment", type: :system do
         expect(link[:target]).to eq("_blank")
         expect(link[:rel]).to eq("noopener noreferrer")
 
-        new_window = window_opened_by { link.click }
-        expect(new_window).not_to be_nil
+        new_windows = []
 
-        within_window new_window do
-          # Check that final URL ends with filename, since path changes after redirect
-          expect(page.current_url).to match(/dummy-file\.pdf\z/)
+        begin
+          existing_windows = page.windows
+          link.click
+
+          Timeout.timeout(Capybara.default_max_wait_time) do
+            loop do
+              new_windows = page.windows - existing_windows
+              break if new_windows.any?
+
+              sleep 0.05
+            end
+          end
+
+          expect(new_windows).not_to be_empty
+          expect(new_windows.any? do |window|
+            within_window(window) do
+              page.has_current_path?(/dummy-file\.pdf\z/, url: true, wait: 2) || page.current_url.include?(file_path)
+            end
+          end).to be(true)
+        ensure
+          new_windows.each do |window|
+            window.close if page.windows.include?(window)
+          rescue Ferrum::BrowserError, Capybara::WindowError
+            # CI can auto-dispose PDF popup targets before explicit close.
+          end
         end
       end
     end

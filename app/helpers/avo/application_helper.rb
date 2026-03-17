@@ -161,14 +161,16 @@ module Avo
 
     # encode & encrypt params
     def e(value)
-      Avo::Services::EncryptionService.encrypt(message: value, purpose: :return_to, serializer: Marshal)
+      encrypted = Avo::Services::EncryptionService.encrypt(message: value, purpose: :return_to, serializer: Marshal)
+      Base64.urlsafe_encode64(encrypted, padding: false)
     end
 
     # decrypt & decode params
     def d(value)
-      Avo::Services::EncryptionService.decrypt(message: value, purpose: :return_to, serializer: Marshal)
+      decoded = Base64.urlsafe_decode64(value.to_s)
+      Avo::Services::EncryptionService.decrypt(message: decoded, purpose: :return_to, serializer: Marshal)
     rescue
-      value
+      nil
     end
 
     private

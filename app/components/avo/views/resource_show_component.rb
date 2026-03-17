@@ -57,7 +57,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
     # When coming from a turbo frame, we don't want to return to that exact frame
     # for example when editing a has_one field we want to return to the parent frame
     # not the frame of the has_one field.
-    args[:return_to] = request.url unless request.url.include?("turbo_frame=")
+    args[:return_to] = e(request.fullpath) unless request.url.include?("turbo_frame=")
 
     helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
   end
