@@ -27,7 +27,6 @@ module Avo
     attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
-    attr_accessor :display_breadcrumbs
     attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
@@ -98,7 +97,6 @@ module Avo
       @initial_breadcrumbs = proc {
         add_breadcrumb title: I18n.t("avo.home").humanize, path: avo.root_path, icon: "tabler/outline/home"
       }
-      @display_breadcrumbs = true
       @hide_layout_when_printing = false
       @home_path = nil
       @search_debounce = 300
