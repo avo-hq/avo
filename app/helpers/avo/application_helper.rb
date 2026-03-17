@@ -144,10 +144,12 @@ module Avo
           "resource-show-view"
         when :edit
           "resource-edit-view"
+        when :new
+          "resource-new-view"
         end
       end
 
-      [os_class, view_class]
+      [os_class, view_class, *Array.wrap(Avo.configuration.body_classes)]
     end
 
     # Check if the current locale is RTL (Right-to-Left)

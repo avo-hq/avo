@@ -81,6 +81,7 @@
 @custom-variant resource-index-view (&:where(.resource-index-view *));
 @custom-variant resource-show-view (&:where(.resource-show-view *));
 @custom-variant resource-edit-view (&:where(.resource-edit-view *));
+@custom-variant resource-new-view (&:where(.resource-new-view *));
 
 /* Used to determine if the filters buttons is displayed. */
 @custom-variant index-missing-resources (&:where(.index-missing-resources *));

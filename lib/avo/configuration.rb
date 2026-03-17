@@ -61,6 +61,7 @@ module Avo
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
     attr_accessor :default_editor_url
+    attr_writer :body_classes
     attr_accessor :sidebar_toggle_visible
 
     def initialize
@@ -138,6 +139,7 @@ module Avo
       @use_stacked_fields = false
       @default_editor_url = "cursor://file/%{path}"
       @sidebar_toggle_visible = true
+      @body_classes = []
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
@@ -294,6 +296,10 @@ module Avo
 
     def explicit_authorization
       Avo::ExecutionContext.new(target: @explicit_authorization).handle
+    end
+
+    def body_classes
+      Avo::ExecutionContext.new(target: @body_classes).handle
     end
 
     def persistence
