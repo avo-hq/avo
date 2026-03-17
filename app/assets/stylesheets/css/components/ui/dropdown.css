@@ -2,24 +2,12 @@
   @apply relative inline-flex;
 }
 
-/* Closed state - hidden by default */
 .dropdown-popover {
-  @apply absolute z-10 rounded-lg bg-primary top-full end-0 bottom-auto start-auto mt-2;
-  box-shadow: var(--box-shadow-card);
-}
-
-/* Backdrop - transparent for dropdown (no overlay) */
-.dropdown-popover::backdrop {
-  background-color: transparent;
-}
-
-/* Backdrop remains transparent when open */
-.dropdown-popover:open::backdrop {
-  background-color: transparent;
+  @apply absolute top-full end-0 bottom-auto start-auto mt-2;
 }
 
 .dropdown-menu {
-  @apply flex flex-col w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
+  @apply flex flex-col w-full rounded-lg border border-tertiary bg-primary p-0.5;
 }
 
 .dropdown-menu--scrollable {
@@ -35,10 +23,11 @@
    ========================================================================== */
 
 .dropdown-menu__group {
-  @apply flex flex-col items-start self-stretch py-1;
+  @apply flex flex-col items-start self-stretch p-0.5;
 }
+
 .dropdown-menu__list {
-  @apply flex flex-col items-start self-stretch px-1;
+  @apply flex flex-col items-start self-stretch;
 }
 
 .dropdown-menu__item,
@@ -64,4 +53,3 @@
 .dropdown-menu__list > :is(a, button) svg {
   @apply shrink-0 size-4 text-content;
 }
-

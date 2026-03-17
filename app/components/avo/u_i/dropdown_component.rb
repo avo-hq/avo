@@ -5,7 +5,6 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
   prop :data, default: {}.freeze
   prop :wrapper_data, default: {}.freeze
   prop :open, default: false
-  prop :dropdown_menu_classes, default: ""
 
   renders_one :trigger
   renders_one :items

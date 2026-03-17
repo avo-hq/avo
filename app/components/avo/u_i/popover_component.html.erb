@@ -1,0 +1,21 @@
+<%= tag.dialog class: class_names("popover-dialog", @classes),
+  open: @open,
+  data: @data do %>
+  <% if header? %>
+    <div class="popover__header">
+      <%= header %>
+    </div>
+  <% end %>
+
+  <% if body_content.present? %>
+    <div class="popover__body">
+      <%= body_content %>
+    </div>
+  <% end %>
+
+  <% if footer? %>
+    <div class="popover__footer">
+      <%= footer %>
+    </div>
+  <% end %>
+<% end %>

@@ -2,13 +2,22 @@
   <%= trigger %>
 
   <% if items.present? %>
-    <%= render Avo::UI::DropdownMenuComponent.new(
-      data: {dropdown_menu_target: "menu"}.merge(@data),
-      classes: @classes,
-      dropdown_menu_classes: @dropdown_menu_classes,
-      open: @open
+    <%= render Avo::UI::PopoverComponent.new(
+      classes: class_names(
+        "dropdown-popover",
+        "css-animate-dialog-slide-down",
+        @classes
+      ),
+      open: @open,
+      data: {dropdown_menu_target: "menu"}.merge(@data)
     ) do %>
-      <%= items %>
+      <div class="dropdown-menu">
+        <div class="dropdown-menu__group">
+          <div class="dropdown-menu__list">
+            <%= items %>
+          </div>
+        </div>
+      </div>
     <% end %>
   <% end %>
 <% end %>

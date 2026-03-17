@@ -11,6 +11,16 @@ RSpec.describe Avo::UI::DropdownComponent, type: :component do
       expect(page).to have_css('[data-controller="dropdown-menu"]')
     end
 
+    it "renders the popover dialog shell" do
+      render_inline(described_class.new) do |component|
+        component.with_trigger { "Trigger" }
+        component.with_items { "Item" }
+      end
+
+      expect(page).to have_css("dialog.dropdown-popover")
+      expect(page).to have_css('[data-dropdown-menu-target="menu"]')
+    end
+
     it "renders the trigger slot" do
       render_inline(described_class.new) do |component|
         component.with_trigger do

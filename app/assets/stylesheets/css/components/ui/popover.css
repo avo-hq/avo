@@ -1,0 +1,14 @@
+.popover-dialog {
+  @apply z-10 rounded-lg bg-primary;
+  box-shadow: var(--box-shadow-popover);
+}
+
+.popover-dialog:has(.popover__header),
+.popover-dialog:has(.popover__footer) {
+  @apply p-0.5 bg-secondary border border-tertiary;
+}
+
+.popover__header,
+.popover__footer {
+  @apply w-full px-2 py-1.5 rounded-md;
+}

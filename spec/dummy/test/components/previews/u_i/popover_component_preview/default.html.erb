@@ -1,0 +1,33 @@
+<div class="flex w-full justify-center rounded-xl border border-dashed border-tertiary bg-secondary/30 p-6">
+  <div class="flex flex-wrap items-start gap-8">
+    <%= render Avo::UI::PopoverComponent.new(classes: "relative m-0", open: true) do |component| %>
+      <% component.with_body do %>
+        <div class="flex h-40 w-56 items-center justify-center rounded-md border border-dashed border-tertiary text-sm text-content-secondary bg-primary">
+          Body only
+        </div>
+      <% end %>
+    <% end %>
+
+    <%= render Avo::UI::PopoverComponent.new(classes: "relative m-0", open: true) do |component| %>
+      <% component.with_header do %>
+        <%= button_tag type: "button", class: "flex gap-1 text-content-secondary" do %>
+          <%= svg("tabler/outline/plus") %>
+          Header item
+        <% end %>
+      <% end %>
+
+      <% component.with_body do %>
+        <div class="flex h-32 w-56 items-center justify-center rounded-md border border-dashed border-tertiary text-sm text-content-secondary">
+          Body content
+        </div>
+      <% end %>
+
+      <% component.with_footer do %>
+        <%= button_tag type: "button", class: "flex gap-1 text-content-secondary" do %>
+          <%= svg("tabler/outline/external-link") %>
+          Footer item
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
