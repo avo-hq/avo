@@ -124,10 +124,12 @@ html[dir="rtl"] .avo-sidebar {
 }
 
 /* Mobile: show sidebar only when explicitly toggled open */
-.sidebar-mobile-open .avo-sidebar {
-  transform: translateX(0);
-}
+@media (width < theme(--breakpoint-lg)) {
+  .sidebar-mobile-open .avo-sidebar {
+    transform: translateX(0);
+  }
 
-html[dir="rtl"] .sidebar-mobile-open .avo-sidebar {
-  transform: translateX(0);
+  html[dir="rtl"] .sidebar-mobile-open .avo-sidebar {
+    transform: translateX(0);
+  }
 }
