@@ -48,6 +48,8 @@ Avo.configure do |config|
     instant_click: true
   }
 
+  config.sidebar_toggle_visible = false
+
   ## == Branding ==
   config.branding = {
     colors: {

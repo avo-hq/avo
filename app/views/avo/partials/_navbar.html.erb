@@ -23,21 +23,23 @@
         </span>
       <% end %>
 
-      <%= a_button class: '!hidden lg:!inline-flex',
-                   size: :sm,
-                   style: :text,
-                   data: {
-                     action: 'click->sidebar#toggleSidebar',
-                     sidebar_toggle_icon: true,
-                     sidebar_state: 'open'
-                   },
-                   aria: { label: "Toggle sidebar" } do %>
-        <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
-          <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
-        </span>
-        <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
-          <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
-        </span>
+      <% if Avo.configuration.sidebar_toggle_visible %>
+        <%= a_button class: '!hidden lg:!inline-flex',
+                     size: :sm,
+                     style: :text,
+                     data: {
+                       action: 'click->sidebar#toggleSidebar',
+                       sidebar_toggle_icon: true,
+                       sidebar_state: 'open'
+                     },
+                     aria: { label: "Toggle sidebar" } do %>
+          <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
+            <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
+          </span>
+          <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
+            <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
+          </span>
+        <% end %>
       <% end %>
     </div>
     <%= render partial: "avo/partials/logo" %>
