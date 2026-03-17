@@ -2,6 +2,7 @@
   # Icons shown when sidebar is open (collapse) vs closed (expand). Change these to customize.
   sidebar_open_icon = 'layout-sidebar-left-collapse'
   sidebar_closed_icon = 'layout-sidebar-left-expand'
+  sidebar_state = @sidebar_open ? 'open' : 'closed'
 %>
 <%= content_tag :nav, class: class_names("top-navbar", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
   <div class="flex items-center space-x-2 rtl:space-x-reverse w-auto lg:w-64 shrink-0 h-full py-2">
@@ -12,7 +13,7 @@
                    data: {
                      action: 'click->sidebar#toggleSidebarOnMobile',
                      sidebar_toggle_icon: true,
-                     sidebar_state: 'open'
+                     sidebar_state: sidebar_state
                    },
                    aria: { label: "Toggle sidebar" } do %>
         <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
@@ -30,7 +31,7 @@
                      data: {
                        action: 'click->sidebar#toggleSidebar',
                        sidebar_toggle_icon: true,
-                       sidebar_state: 'open'
+                       sidebar_state: sidebar_state
                      },
                      aria: { label: "Toggle sidebar" } do %>
           <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
