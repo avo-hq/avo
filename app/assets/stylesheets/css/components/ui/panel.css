@@ -11,7 +11,7 @@
 }
 
 .panel__content {
-  --sidebar-width: 21rem;
+  --panel-sidebar-width: 21rem;
   @apply relative grid gap-4 w-full;
   grid-template-areas: "body";
   grid-template-columns: minmax(0, 1fr);
@@ -20,7 +20,7 @@
 .panel--has-sidebar .panel__content {
   @media (min-width: 768px) {
     grid-template-areas: "body sidebar";
-    grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+    grid-template-columns: minmax(0, 1fr) var(--panel-sidebar-width);
   }
 }
 
