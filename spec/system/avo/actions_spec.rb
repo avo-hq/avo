@@ -197,6 +197,21 @@ RSpec.describe "Actions", type: :system do
       click_on "Cancel"
       expect(page).not_to have_selector '[data-controller~="modal"]'
     end
+
+    it "does not close the modal on Escape when backdrop closing is disabled" do
+      Avo::Actions::ExportCsv.close_modal_on_backdrop_click = false
+
+      visit "/admin/resources/projects"
+
+      click_on "Actions"
+      click_on "Export CSV"
+      find("body").native.send_keys(:escape)
+
+      expect(page).to have_selector '[data-controller~="modal"]'
+
+      click_on "Cancel"
+      expect(page).not_to have_selector '[data-controller~="modal"]'
+    end
   end
 
   describe "redirects when no confirmation" do

@@ -84,4 +84,23 @@ RSpec.describe Avo::ApplicationHelper do
       end
     end
   end
+
+  describe "#body_classes" do
+    before do
+      allow(helper).to receive(:request).and_return(double(user_agent: "Mozilla/5.0"))
+      allow(helper).to receive(:controller).and_return(double(class: double(superclass: Avo::ResourcesController)))
+    end
+
+    it "maps update to resource-edit-view" do
+      allow(helper).to receive(:action_name).and_return("update")
+
+      expect(helper.body_classes).to include("resource-edit-view")
+    end
+
+    it "maps create to resource-new-view" do
+      allow(helper).to receive(:action_name).and_return("create")
+
+      expect(helper.body_classes).to include("resource-new-view")
+    end
+  end
 end

@@ -9,14 +9,6 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :avatar_url, as: :avatar, name: "Avatar"
     field :name, as: :text, required: true
 
-    field :content_heading, as: :heading, name: "Content fields"
-    field :text_value, as: :text
-    field :textarea_value, as: :textarea, rows: 4
-    field :code_value, as: :code, language: "ruby", theme: "dracula", line_wrapping: true
-    field :easy_mde_content, as: :easy_mde, height: "240px"
-    field :tiptap_content, as: :tiptap
-    field :trix_content, as: :trix
-
     field :form_heading, as: :heading, name: "Form and scalar fields"
     field :hidden_token, as: :hidden
     field :password_value, as: :password, revealable: true
@@ -56,5 +48,13 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :geo_heading, as: :heading, name: "Geo fields"
     field :location_coordinates, as: :location, stored_as: [:latitude, :longitude]
     field :area_coordinates, as: :area, geometry: :polygon
+
+    field :content_heading, as: :heading, name: "Content fields"
+    field :text_value, as: :text
+    field :textarea_value, as: :textarea, rows: 4
+    field :code_value, as: :code, language: "ruby", theme: "dracula", line_wrapping: true
+    field :easy_mde_content, as: :easy_mde, height: "240px"
+    field :tiptap_content, as: :tiptap
+    field :trix_content, as: :trix
   end
 end

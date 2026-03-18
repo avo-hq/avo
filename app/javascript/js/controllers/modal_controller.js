@@ -10,6 +10,18 @@ export default class extends Controller {
 
   connect() {
     document.body.classList.add('modal-open')
+    this.handleKeydown = this.handleKeydown.bind(this)
+    document.addEventListener('keydown', this.handleKeydown)
+  }
+
+  disconnect() {
+    document.removeEventListener('keydown', this.handleKeydown)
+  }
+
+  handleKeydown(event) {
+    if (event.key === 'Escape' && this.closeModalOnBackdropClickValue) {
+      this.closeModal()
+    }
   }
 
   close(event) {

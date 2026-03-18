@@ -49,10 +49,6 @@
   @apply border border-tertiary rounded-t-lg;
 }
 
-.EasyMDEContainer .CodeMirror {
-  @apply border border-tertiary rounded-b-lg;
-}
-
 /* Dark mode EasyMDE overrides (tiny_description field) */
 .dark .editor-toolbar {
   @apply bg-secondary border-tertiary;

@@ -133,8 +133,23 @@ module Avo
       end
     end
 
-    def os_class
-      request.user_agent.to_s.include?("Mac") ? "os-mac" : "os-pc"
+    def body_classes
+      os_class = request.user_agent.to_s.include?("Mac") ? "os-mac" : "os-pc"
+
+      view_class = if controller.class.superclass.to_s == "Avo::ResourcesController"
+        case action_name.to_sym
+        when :index
+          "resource-index-view"
+        when :show
+          "resource-show-view"
+        when :edit, :update
+          "resource-edit-view"
+        when :new, :create
+          "resource-new-view"
+        end
+      end
+
+      [os_class, view_class, *Array.wrap(Avo.configuration.body_classes)]
     end
 
     # Check if the current locale is RTL (Right-to-Left)
