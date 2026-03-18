@@ -1,5 +1,5 @@
 class CspReportsController < ActionController::Base
-  skip_forgery_protection
+  skip_before_action :verify_authenticity_token, only: :create
 
   def create
     payload = request.raw_post.presence || "{}"
