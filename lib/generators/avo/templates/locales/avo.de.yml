@@ -6,6 +6,7 @@ de:
     add_filter: Filter hinzufügen
     and_x_other_resources: und %{count} weitere Ressourcen
     applied: angewendet
+    apply_filters: Apply filters
     are_you_sure: Sind Sie sicher?
     are_you_sure_detach_item: Sind Sie sicher, dass Sie dieses %{item} abhängen möchten?
     are_you_sure_you_want_to_run_this_option: Sind Sie sicher, dass Sie diese Aktion ausführen möchten?
@@ -117,9 +118,8 @@ de:
     reload: Neu laden
     remove_selection: Auswahl aufheben
     reset: zurücksetzen
-    reset_filters: Filter zurücksetzen
     reset_all: Reset all
-    apply_filters: Apply filters
+    reset_filters: Filter zurücksetzen
     resource_created: Eintrag erstellt
     resource_destroyed: Eintrag gelöscht
     resource_updated: Eintrag aktualisiert

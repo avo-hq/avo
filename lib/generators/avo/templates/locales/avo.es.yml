@@ -8,6 +8,7 @@ es:
     applied:
       one: aplicado
       other: aplicados
+    apply_filters: Apply filters
     are_you_sure: "¿Estás seguro?"
     are_you_sure_detach_item: "¿Estás seguro de que quieres separar este/a %{item}?"
     are_you_sure_you_want_to_run_this_option: "¿Estás seguro de que quieres ejectuar esta acción?"
@@ -119,9 +120,8 @@ es:
     reload: Recargar
     remove_selection: Quitar la selección
     reset: restablecer
-    reset_filters: Reiniciar filtros
     reset_all: Reset all
-    apply_filters: Apply filters
+    reset_filters: Reiniciar filtros
     resource_created: Recurso creado
     resource_destroyed: Recurso eliminado
     resource_updated: Recurso actualizado

@@ -6,6 +6,7 @@ zh-TW:
     add_filter: 新增篩選器
     and_x_other_resources: 和 %{count} 個其他資源
     applied: 已應用
+    apply_filters: Apply filters
     are_you_sure: 您確定嗎？
     are_you_sure_detach_item: 您確定要分離此 %{item} 嗎？
     are_you_sure_you_want_to_run_this_option: 您確定要執行此操作嗎？
@@ -117,9 +118,8 @@ zh-TW:
     reload: 重新載入
     remove_selection: 清除選擇
     reset: 重置
-    reset_filters: 重置篩選器
     reset_all: Reset all
-    apply_filters: Apply filters
+    reset_filters: 重置篩選器
     resource_created: 記錄已建立
     resource_destroyed: 記錄已刪除
     resource_updated: 記錄已更新

@@ -6,6 +6,7 @@ en:
     add_filter: Add filter
     and_x_other_resources: and %{count} other resources
     applied: applied
+    apply_filters: Apply filters
     are_you_sure: Are you sure?
     are_you_sure_detach_item: Are you sure you want to detach this %{item}.
     are_you_sure_you_want_to_run_this_option: Are you sure you want to run this action?
@@ -117,9 +118,8 @@ en:
     reload: Reload
     remove_selection: Remove selection
     reset: reset
-    reset_filters: Reset filters
     reset_all: Reset all
-    apply_filters: Apply filters
+    reset_filters: Reset filters
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated

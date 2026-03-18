@@ -6,6 +6,7 @@ nl:
     add_filter: Filter toevoegen
     and_x_other_resources: en %{count} andere bronnen
     applied: toegepast
+    apply_filters: Apply filters
     are_you_sure: Weet u het zeker?
     are_you_sure_detach_item: Weet u zeker dat u dit %{item} wilt loskoppelen?
     are_you_sure_you_want_to_run_this_option: Weet u zeker dat u deze actie wilt uitvoeren?
@@ -117,9 +118,8 @@ nl:
     reload: Vernieuwen
     remove_selection: Selectie verwijderen
     reset: resetten
-    reset_filters: Filters resetten
     reset_all: Reset all
-    apply_filters: Apply filters
+    reset_filters: Filters resetten
     resource_created: Record aangemaakt
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt
