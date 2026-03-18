@@ -21,13 +21,11 @@
     </div>
   <% end %>
 
-  <p class="state__message">Oops, can't load <%= @frame %> frame!</p>
+  <p class="state__message"><%= t 'avo.failed_to_load' %>: <strong><%= @frame %></strong></p>
 
   <% if Rails.env.development? && @src.present? %>
     <p class="state__note">
-      This is not an issue with Avo. Use
-      <%= link_to "this page", @src, target: "_blank", rel: "noopener", class: "state__link" %>
-      to learn more.
+      Follow <%= link_to "this link", @src, target: "_blank", rel: "noopener", class: "state__link" %> for more details about the issue and how to fix it.
     </p>
   <% end %>
 <% end %>
