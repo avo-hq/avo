@@ -3,23 +3,24 @@
 class Avo::UI::DropdownComponent < Avo::BaseComponent
   prop :classes
   prop :data, default: {}.freeze
-  prop :wrapper_data, default: {}.freeze
-  prop :open, default: false
+
+  prop :trigger_class
+  prop :trigger_attrs, default: {}.freeze
 
   renders_one :trigger
   renders_one :items
 
-  # this is used to trigger the dropdown menu from trigger element
-  # data: {action: component.action} => click->dropdown-menu#toggle
-  def action
-    @action ||= "click->dropdown-menu#toggle"
+  def unique_id
+    @unique_id ||= "dropdown-#{SecureRandom.hex(4)}"
   end
 
-  def data
+  def popover_target
+    "#{unique_id}-menu"
+  end
+
+  def wrapper_data
     return {} if items.blank?
 
-    {
-      controller: "dropdown-menu",
-    }.merge(@wrapper_data)
+    @data
   end
 end

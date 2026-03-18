@@ -21,7 +21,7 @@
 }
 
 /* Dropdown menu matches trigger width */
-.pagination__per-page .dropdown-popover {
+.pagination__per-page .popover-anchor {
   width: var(--pagination-per-page-width);
   min-width: var(--pagination-per-page-width);
 }

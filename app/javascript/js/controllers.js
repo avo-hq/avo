@@ -39,6 +39,7 @@ import RecordSelectorController from './controllers/record_selector_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
+import ResourceFiltersController from './controllers/resource_filters_controller'
 import ResourceSearchController from './controllers/resource_search_controller'
 import ResourceShowController from './controllers/resource_show_controller'
 import SearchController from './controllers/search_controller'
@@ -55,7 +56,6 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
-import DropdownController from './controllers/dropdown_menu_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
@@ -91,6 +91,7 @@ application.register('preview', PreviewController)
 application.register('record-selector', RecordSelectorController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
+application.register('resource-filters', ResourceFiltersController)
 application.register('resource-search', ResourceSearchController)
 application.register('resource-show', ResourceShowController)
 application.register('select-filter', SelectFilterController)
@@ -103,7 +104,6 @@ application.register('tabs', TabsController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
-application.register('dropdown-menu', DropdownController)
 application.register('trix-body', TrixBodyController)
 application.register('search', SearchController)
 

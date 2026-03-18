@@ -3,9 +3,22 @@
   box-shadow: var(--box-shadow-popover);
 }
 
+.popover-anchor {
+  position: fixed;
+  inset: unset;
+  margin: 0;
+  top: calc(anchor(bottom) + 0.25rem);
+  inset-inline-start: anchor(start);
+  position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+}
+
 .popover-dialog:has(.popover__header),
 .popover-dialog:has(.popover__footer) {
   @apply p-0.5 bg-secondary border border-tertiary;
+}
+
+.popover__body {
+  @apply rounded-lg overflow-hidden;
 }
 
 .popover__header,

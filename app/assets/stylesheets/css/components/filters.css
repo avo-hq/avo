@@ -1,0 +1,43 @@
+.filters-panel-trigger {
+  anchor-name: --filters-panel-anchor;
+}
+
+.filters-panel {
+  @apply z-40 w-[285px] max-w-[calc(100vw-2rem)] overflow-hidden max-h-[70vh] overflow-y-auto;
+}
+
+.filters-panel__header {
+  @apply flex items-center justify-between gap-3;
+}
+
+.filters-panel__title {
+  @apply text-sm font-medium leading-5 text-content;
+}
+
+.filters-panel__reset {
+  @apply text-tiny leading-3.5 font-medium text-content-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.filters-panel__reset:not(:disabled) {
+  @apply hover:text-content;
+}
+
+.filters-panel__body {
+  @apply bg-primary;
+}
+
+.filters-panel__section {
+  @apply px-2 py-2.5 flex flex-col gap-1.5;
+}
+
+.filters-panel__section:not(:last-child) {
+  @apply border-b border-secondary;
+}
+
+.filters-panel__section__title {
+  @apply text-sm font-medium leading-5 text-foreground;
+}
+
+.filters-panel__apply {
+  @apply w-full text-center text-sm font-medium leading-5 text-content-secondary hover:text-content cursor-pointer;
+}

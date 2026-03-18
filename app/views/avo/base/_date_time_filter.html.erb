@@ -27,11 +27,6 @@
         <%= svg "avo/times", class: "h-4" %>
       <% end %>
     </div>
-    <div class="flex justify-end">
-      <%= a_button class: 'mt-4', style: :primary, data: { action: "date-time-filter#changeFilter" }, size: :xs do %>
-        <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
-      <% end %>
-    </div>
     <%= link_to 'url_redirect', request.url, data: { 'date-time-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 <% end %>

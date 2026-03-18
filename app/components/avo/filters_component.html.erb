@@ -1,34 +1,63 @@
-<div data-controller="toggle" data-toggle-exemption-containers-value='[".flatpickr-calendar"]' data-component-name="<%= self.class.to_s.underscore %>">
-  <div class="relative w-full flex justify-between">
-    <%= a_button class: 'focus:outline-hidden',
-      style: :primary,
-      icon: "avo/filter",
-      title: t('avo.click_to_reveal_filters'),
-      'data-button': 'resource-filters',
-      'data-action': 'click->toggle#togglePanel',
-      'data-tippy': 'tooltip' do %>
-      <%= t 'avo.filters' %>
-      <% if @applied_filters.present? %>
-        <span class="ms-1">(<%= "#{@applied_filters.count} #{t('avo.applied', count: @applied_filters.count)}" %>)</span>
-      <% end %>
+<div
+  data-controller="resource-filters"
+  data-component-name="<%= self.class.to_s.underscore %>"
+>
+  <%= a_button class: "focus:outline-hidden filters-panel-trigger",
+    style: :primary,
+    icon: "avo/filter",
+    title: t('avo.click_to_reveal_filters'),
+    'data-button': 'resource-filters',
+    'data-tippy': 'tooltip',
+    popovertarget: "filters-panel-#{@resource.model_key}" do %>
+    <%= t 'avo.filters' %>
+    <% if @applied_filters.present? %>
+      <span>(<%= "#{@applied_filters.count} #{t('avo.applied', count: @applied_filters.count)}" %>)</span>
     <% end %>
-    <%= tag.div class: 'absolute block inset-auto sm:end-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded-sm divide-y divide-gray-300 css-animate-slide-down',
-      data: {toggle_target: 'panel'},
-      hidden: params[:keep_filters_panel_open] != '1' do %>
-      <% @filters.each do |filter| %>
-        <%= render partial: filter.class.template, locals: {filter: filter} %>
-      <% end %>
-      <div class="p-4 border-tertiary border-t">
+  <% end %>
+
+  <%= render Avo::UI::PopoverComponent.new(
+    id: "filters-panel-#{@resource.model_key}",
+    classes: "filters-panel popover-anchor mac-styled-scrollbar css-animate-dialog-slide-down",
+    anchor: "filters-panel-anchor"
+  ) do |component| %>
+    <% component.with_header do %>
+      <div class="filters-panel__header">
+        <div class="filters-panel__title"><%= t("avo.filters") %></div>
         <% if @applied_filters.present? %>
-          <%= a_link reset_path, data: {turbo_frame: params[:turbo_frame]}, color: :gray, size: :sm, class: 'w-full justify-center' do %>
-            <%= t('avo.reset_filters') %>
-          <% end %>
+          <%= link_to t("avo.reset_all", default: "Reset all"),
+            reset_path,
+            class: "filters-panel__reset",
+            data: {turbo_frame: params[:turbo_frame]} %>
         <% else %>
-          <%= a_button class: 'w-full justify-center', disabled: true do %>
-            <%= t('avo.reset_filters') %>
-          <% end %>
+          <%= button_tag t("avo.reset_all", default: "Reset all"),
+            type: :button,
+            class: "filters-panel__reset",
+            disabled: true %>
         <% end %>
       </div>
     <% end %>
-  </div>
+
+    <% component.with_body do %>
+      <div class="filters-panel__body">
+        <% @filters.each do |filter| %>
+          <%= render partial: filter.class.template, locals: {filter: filter} %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% component.with_footer do %>
+      <button
+        type="button"
+        class="filters-panel__apply"
+        data-action="resource-filters#applyFilters"
+      >
+        <%= t("avo.apply_filters", default: "Apply Filters") %>
+      </button>
+    <% end %>
+  <% end %>
+
+  <%= link_to "url_redirect",
+    request.url,
+    data: {"resource-filters-target": "urlRedirect", turbo_frame: params[:turbo_frame]},
+    class: "hidden" %>
 </div>

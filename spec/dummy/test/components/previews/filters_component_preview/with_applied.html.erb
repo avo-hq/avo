@@ -1,0 +1,83 @@
+<div class="relative inline-flex">
+  <%= a_button style: :primary,
+    icon: "avo/filter",
+    title: t("avo.click_to_reveal_filters"),
+    class: "cursor-default" do %>
+    <%= t("avo.filters") %>
+    <span class="ms-1">(<%= "#{2} #{t('avo.applied', count: 2)}" %>)</span>
+  <% end %>
+
+  <%= render Avo::UI::PopoverComponent.new(
+    classes: "filters-panel",
+    open: true
+  ) do |popover| %>
+    <% popover.with_header do %>
+      <div class="filters-panel__header">
+        <div class="filters-panel__title"><%= t("avo.filters") %></div>
+        <%= link_to t("avo.reset_all", default: "Reset all"), "#", class: "filters-panel__reset" %>
+      </div>
+    <% end %>
+
+    <% popover.with_body do %>
+      <div class="filters-panel__body">
+        <div class="filters-panel__section">
+          <div class="filters-panel__section__title">User names</div>
+          <div class="filters-panel__section__body">
+            <input type="text" class="<%= input_classes('w-full mb-0') %>" placeholder="Search by name" value="John" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="filters-panel__section">
+          <div class="filters-panel__section__title">Is Active</div>
+          <div class="filters-panel__section__body">
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center text-foreground text-sm">
+                <input type="checkbox" class="me-2 h-4 w-4" checked>
+                Active
+              </label>
+              <label class="flex items-center text-foreground text-sm">
+                <input type="checkbox" class="me-2 h-4 w-4">
+                Inactive
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="filters-panel__section">
+          <div class="filters-panel__section__title">Birthday</div>
+          <div class="filters-panel__section__body">
+            <input type="text" class="<%= input_classes('w-full mb-0') %>" placeholder="Filter by birthday" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="filters-panel__section">
+          <div class="filters-panel__section__title">Published status</div>
+          <div class="filters-panel__section__body">
+            <select class="<%= input_classes('w-full mb-0') %>">
+              <option value="">Published or unpublished</option>
+              <option value="published">Published</option>
+              <option value="unpublished">Unpublished</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filters-panel__section">
+          <div class="filters-panel__section__title">Status</div>
+          <div class="filters-panel__section__body">
+            <select multiple class="<%= input_classes('w-full mb-0') %>">
+              <option value="draft">draft</option>
+              <option value="published">published</option>
+              <option value="archived">archived</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% popover.with_footer do %>
+      <button type="button" class="filters-panel__apply">
+        <%= t("avo.apply_filters", default: "Apply Filters") %>
+      </button>
+    <% end %>
+  <% end %>
+</div>

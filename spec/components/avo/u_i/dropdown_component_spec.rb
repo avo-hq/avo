@@ -2,23 +2,22 @@ require "rails_helper"
 
 RSpec.describe Avo::UI::DropdownComponent, type: :component do
   describe "rendering" do
-    it "renders the wrapper with the dropdown-menu controller" do
+    it "renders the wrapper with anchor-name style" do
       render_inline(described_class.new) do |component|
         component.with_trigger { "Trigger" }
         component.with_items { "Item" }
       end
 
-      expect(page).to have_css('[data-controller="dropdown-menu"]')
+      expect(page).to have_css(".dropdown[style*='anchor-name']")
     end
 
-    it "renders the popover dialog shell" do
+    it "renders the popover shell" do
       render_inline(described_class.new) do |component|
         component.with_trigger { "Trigger" }
         component.with_items { "Item" }
       end
 
-      expect(page).to have_css("dialog.dropdown-popover")
-      expect(page).to have_css('[data-dropdown-menu-target="menu"]')
+      expect(page).to have_css(".popover-anchor[popover]")
     end
 
     it "renders the trigger slot" do

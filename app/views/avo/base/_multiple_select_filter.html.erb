@@ -11,11 +11,6 @@
       'data-filter-class': filter.class.to_s,
       'data-multiple-select-filter-target': 'selector'
     %>
-    <div class="flex justify-end">
-      <%= a_button class: 'mt-4', style: :primary, size: :xs, data: { action: "multiple-select-filter#changeFilter" } do %>
-        <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
-      <% end %>
-    </div>
     <%= link_to 'url_redirect', request.url, data: { 'multiple-select-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 </div>

@@ -1,15 +1,23 @@
-<%= content_tag :div, class: class_names("dropdown"), data: do %>
-  <%= trigger %>
+<%= content_tag :div, class: class_names("dropdown"), style: "anchor-name: --#{unique_id}", data: wrapper_data do %>
+  <%= tag.button(
+    type: "button",
+    popovertarget: popover_target,
+    class: @trigger_class.presence || "dropdown__trigger",
+    **@trigger_attrs
+  ) do %>
+    <%= trigger %>
+  <% end %>
 
   <% if items.present? %>
     <%= render Avo::UI::PopoverComponent.new(
+      id: popover_target,
       classes: class_names(
-        "dropdown-popover",
+        "popover-anchor",
         "css-animate-dialog-slide-down",
         @classes
       ),
-      open: @open,
-      data: {dropdown_menu_target: "menu"}.merge(@data)
+      anchor: unique_id,
+      data: @data
     ) do %>
       <div class="dropdown-menu">
         <div class="dropdown-menu__group">

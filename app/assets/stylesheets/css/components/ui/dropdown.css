@@ -2,8 +2,8 @@
   @apply relative inline-flex;
 }
 
-.dropdown-popover {
-  @apply absolute top-full end-0 bottom-auto start-auto mt-2;
+.dropdown__trigger {
+  @apply inline-flex items-center justify-center rounded-md cursor-pointer;
 }
 
 .dropdown-menu {

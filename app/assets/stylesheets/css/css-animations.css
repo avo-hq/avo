@@ -1,6 +1,6 @@
 /* Actions Dropdown Animations */
 
-.css-animate-dialog-slide-down[open],
+.css-animate-dialog-slide-down:popover-open,
 .css-animate-slide-down {
   opacity: 1;
   transform: translateY(0);

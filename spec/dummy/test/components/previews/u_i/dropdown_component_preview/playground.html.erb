@@ -2,10 +2,7 @@
   <div class="flex flex-col gap-6">
     <%= render Avo::UI::DropdownComponent.new do |component| %>
       <% component.with_trigger do %>
-        <%= render Avo::UI::IconButtonComponent.new(
-          data: {action: component.action},
-          icon: "tabler/outline/dots-vertical"
-        ) %>
+        <%= svg("tabler/outline/dots-vertical") %>
       <% end %>
 
       <% if as_links %>

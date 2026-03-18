@@ -84,7 +84,7 @@ RSpec.describe "SelectAll", type: :system do
         open_filters_menu
         expect(page).to have_text "Name filter"
         fill_in "avo_filters_name_filter", with: "Spec Salmon"
-        click_on "Filter by name"
+        click_on "Apply Filters"
         wait_for_loaded
 
         check_select_all

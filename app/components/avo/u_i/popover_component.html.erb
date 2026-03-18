@@ -1,5 +1,7 @@
-<%= tag.dialog class: class_names("popover-dialog", @classes),
-  open: @open,
+<%= tag.div class: class_names("popover-dialog", @classes),
+  popover: "auto",
+  id: @id,
+  style: computed_style,
   data: @data do %>
   <% if header? %>
     <div class="popover__header">
