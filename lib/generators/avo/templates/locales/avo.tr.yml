@@ -120,6 +120,8 @@ tr:
     remove_selection: Seçimi sil
     reset: sıfırlama
     reset_filters: Filtreleri sıfırla
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Kayıt oluşturuldu
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi

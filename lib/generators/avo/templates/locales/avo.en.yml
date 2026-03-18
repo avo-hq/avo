@@ -118,6 +118,8 @@ en:
     remove_selection: Remove selection
     reset: reset
     reset_filters: Reset filters
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated

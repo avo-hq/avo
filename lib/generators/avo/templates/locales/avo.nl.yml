@@ -118,6 +118,8 @@ nl:
     remove_selection: Selectie verwijderen
     reset: resetten
     reset_filters: Filters resetten
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Record aangemaakt
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt

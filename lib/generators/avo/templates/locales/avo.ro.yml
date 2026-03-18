@@ -122,6 +122,8 @@ ro:
     remove_selection: Șterge selecția
     reset: resetare
     reset_filters: Resetați filtrele
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată

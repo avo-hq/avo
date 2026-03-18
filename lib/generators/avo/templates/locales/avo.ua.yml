@@ -120,6 +120,8 @@ ua:
     remove_selection: Видалити вибір
     reset: Скинути
     reset_filters: Скинути фільтри
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Запис створено
     resource_destroyed: Запис видалено
     resource_updated: Запис оновлено

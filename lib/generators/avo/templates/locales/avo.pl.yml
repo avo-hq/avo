@@ -120,6 +120,8 @@ pl:
     remove_selection: Usuń zaznaczenie
     reset: Resetuj
     reset_filters: Resetuj filtry
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Rekord utworzony
     resource_destroyed: Rekord usunięty
     resource_updated: Rekord zaktualizowany

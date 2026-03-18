@@ -120,6 +120,8 @@ ru:
     remove_selection: Убрать выбор
     reset: сбросить
     reset_filters: Сбросить фильтры
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Запись создана
     resource_destroyed: Запись удалена
     resource_updated: Запись обновлена

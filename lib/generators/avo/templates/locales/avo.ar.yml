@@ -128,6 +128,8 @@ ar:
     remove_selection: إزالة التحديد
     reset: اعاده تعيين
     reset_filters: إعادة تعيين الفلاتر
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: تم إنشاء السجل
     resource_destroyed: تم حذف السجل
     resource_updated: تم تحديث السجل

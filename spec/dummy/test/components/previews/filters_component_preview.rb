@@ -12,7 +12,7 @@ class FiltersComponentPreview < ViewComponent::Preview
   def default(applied: false)
     render_with_template(
       template: "filters_component_preview/default",
-      locals: { applied: applied }
+      locals: {applied: applied}
     )
   end
 

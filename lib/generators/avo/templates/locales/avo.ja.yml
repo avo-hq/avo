@@ -120,6 +120,8 @@ ja:
     remove_selection: 選択を解除
     reset: リセット
     reset_filters: フィルターをリセット
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: レコードが作成されました
     resource_destroyed: レコードが破棄されました
     resource_updated: レコードが更新されました

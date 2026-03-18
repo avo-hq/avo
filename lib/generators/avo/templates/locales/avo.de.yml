@@ -118,6 +118,8 @@ de:
     remove_selection: Auswahl aufheben
     reset: zurücksetzen
     reset_filters: Filter zurücksetzen
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Eintrag erstellt
     resource_destroyed: Eintrag gelöscht
     resource_updated: Eintrag aktualisiert

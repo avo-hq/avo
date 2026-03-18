@@ -120,6 +120,8 @@ pt-BR:
     remove_selection: Remover seleção
     reset: resetar
     reset_filters: Limpar filtros
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Recurso criado
     resource_destroyed: Recurso destruído
     resource_updated: Recurso atualizado

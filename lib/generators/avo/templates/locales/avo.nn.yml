@@ -120,6 +120,8 @@ nn:
     remove_selection: Fjern val
     reset: nullstille
     reset_filters: Nullstill filter
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Ressurs generert
     resource_destroyed: Ressurs sletta
     resource_updated: Ressurs oppdatert

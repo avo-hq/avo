@@ -120,6 +120,8 @@ es:
     remove_selection: Quitar la selección
     reset: restablecer
     reset_filters: Reiniciar filtros
+    reset_all: Reset all
+    apply_filters: Apply filters
     resource_created: Recurso creado
     resource_destroyed: Recurso eliminado
     resource_updated: Recurso actualizado
