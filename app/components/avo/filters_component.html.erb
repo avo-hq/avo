@@ -24,12 +24,12 @@
       <div class="filters-panel__header">
         <div class="filters-panel__title"><%= t("avo.filters") %></div>
         <% if @applied_filters.present? %>
-          <%= link_to t("avo.reset_all", default: "Reset all"),
+          <%= link_to t("avo.reset_filters"),
             reset_path,
             class: "filters-panel__reset",
             data: {turbo_frame: params[:turbo_frame]} %>
         <% else %>
-          <%= button_tag t("avo.reset_all", default: "Reset all"),
+          <%= button_tag t("avo.reset_filters"),
             type: :button,
             class: "filters-panel__reset",
             disabled: true %>

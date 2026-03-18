@@ -6,7 +6,7 @@ zh:
     add_filter: 添加筛选器
     and_x_other_resources: 和 %{count} 个其他资源
     applied: 已应用
-    apply_filters: Apply filters
+    apply_filters: 应用筛选器
     are_you_sure: 您确定吗？
     are_you_sure_detach_item: 您确定要分离此 %{item} 吗？
     are_you_sure_you_want_to_run_this_option: 您确定要执行此操作吗？
@@ -118,7 +118,6 @@ zh:
     reload: 重新加载
     remove_selection: 清除选择
     reset: 重置
-    reset_all: Reset all
     reset_filters: 重置筛选器
     resource_created: 记录已创建
     resource_destroyed: 记录已删除

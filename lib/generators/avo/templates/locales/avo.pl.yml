@@ -6,7 +6,7 @@ pl:
     add_filter: Dodaj filtr
     and_x_other_resources: i %{count} innych zasobów
     applied: zastosowane
-    apply_filters: Apply filters
+    apply_filters: Zastosuj filtry
     are_you_sure: Czy na pewno?
     are_you_sure_detach_item: Czy na pewno chcesz odłączyć ten %{item}?
     are_you_sure_you_want_to_run_this_option: Czy na pewno chcesz uruchomić tę akcję?
@@ -120,7 +120,6 @@ pl:
     reload: Odśwież
     remove_selection: Usuń zaznaczenie
     reset: Resetuj
-    reset_all: Reset all
     reset_filters: Resetuj filtry
     resource_created: Rekord utworzony
     resource_destroyed: Rekord usunięty

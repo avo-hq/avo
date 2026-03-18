@@ -17,10 +17,4 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
   def popover_target
     "#{unique_id}-menu"
   end
-
-  def wrapper_data
-    return {} if items.blank?
-
-    @data
-  end
 end

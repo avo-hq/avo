@@ -8,7 +8,7 @@ ja:
     applied:
       one: applied
       other: applied
-    apply_filters: Apply filters
+    apply_filters: フィルターを適用
     are_you_sure: 本当によろしいですか？
     are_you_sure_detach_item: この%{item}をデタッチしてもよろしいですか？
     are_you_sure_you_want_to_run_this_option: このアクションを実行してもよろしいですか？
@@ -120,7 +120,6 @@ ja:
     reload: リロード
     remove_selection: 選択を解除
     reset: リセット
-    reset_all: Reset all
     reset_filters: フィルターをリセット
     resource_created: レコードが作成されました
     resource_destroyed: レコードが破棄されました

@@ -6,7 +6,7 @@ ru:
     add_filter: Добавить фильтр
     and_x_other_resources: и %{count} других ресурсов
     applied: применено
-    apply_filters: Apply filters
+    apply_filters: Применить фильтры
     are_you_sure: Вы уверены?
     are_you_sure_detach_item: Вы уверены, что хотите отсоединить этот %{item}?
     are_you_sure_you_want_to_run_this_option: Вы уверены, что хотите выполнить это действие?
@@ -120,7 +120,6 @@ ru:
     reload: Обновить
     remove_selection: Убрать выбор
     reset: сбросить
-    reset_all: Reset all
     reset_filters: Сбросить фильтры
     resource_created: Запись создана
     resource_destroyed: Запись удалена

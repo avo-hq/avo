@@ -1,18 +1,22 @@
+<% picker_id = "date-picker-#{filter.name.parameterize}" %>
+
 <%= content_tag :div, data: {
     controller: "date-time-filter",
     filter_name: filter.name,
     date_time_filter_class_value: filter.class.to_s,
-    date_time_filter_keep_filters_panel_open_value: @resource.keep_filters_panel_open,
     date_time_filter_picker_options_value: filter.picker_options(@applied_filters[filter.class.to_s])
   } do %>
   <%= filter_wrapper name: filter.name do %>
     <div class="flex relative">
       <div class="self-center w-full" data-slot="value">
         <%= text_field_tag :value, "",
-          class: input_classes('w-full mb-0 !pe-9'),
+          class: input_classes('w-full mb-0 !pe-9 cursor-pointer'),
           placeholder: filter.class.empty_message,
+          readonly: true,
+          style: "anchor-name: --#{picker_id}",
           data: {
             date_time_filter_target: "input",
+            action: "click->date-time-filter#openCalendar",
           } %>
       </div>
       <%= content_tag :button,
@@ -27,6 +31,16 @@
         <%= svg "avo/times", class: "h-4" %>
       <% end %>
     </div>
-    <%= link_to 'url_redirect', request.url, data: { 'date-time-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
+
+    <div
+      id="<%= picker_id %>"
+      popover="auto"
+      class="date-picker-popover"
+      style="position-anchor: --<%= picker_id %>; position: fixed; inset: unset; top: calc(anchor(bottom) + 0.25rem); inset-inline-start: anchor(start); position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;"
+      data-date-time-filter-target="calendarContainer"
+    >
+      <div data-date-time-filter-target="calendar"></div>
+    </div>
+
   <% end %>
 <% end %>

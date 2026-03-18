@@ -16,7 +16,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_unchecked_field "Unfeatured"
       expect(page).to have_text "Featured post"
       expect(page).to have_text "Unfeatured post"
-      expect(page).to have_button("Reset all", disabled: true)
+      expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
     end
 
     it "changes the query" do
@@ -32,7 +32,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_checked_field "Featured"
       expect(page).to have_unchecked_field "Unfeatured"
       expect(current_url).to include "encoded_filters="
-      expect(page).to have_link("Reset all")
+      expect(page).to have_link(I18n.t("avo.reset_filters"))
     end
 
     it "changes the query back also with reset" do
@@ -46,7 +46,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_text "Featured post"
       expect(page).not_to have_text "Unfeatured post"
       expect(current_url).to include "encoded_filters="
-      expect(page).to have_link("Reset all")
+      expect(page).to have_link(I18n.t("avo.reset_filters"))
 
       uncheck "Featured"
       wait_for_loaded
@@ -56,7 +56,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_text "Unfeatured post"
       expect(page).to have_unchecked_field "Featured"
       expect(page).to have_unchecked_field "Unfeatured"
-      expect(page).to have_link("Reset all")
+      expect(page).to have_link(I18n.t("avo.reset_filters"))
 
       check "Featured"
       wait_for_loaded
@@ -69,9 +69,9 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_text "Unfeatured post"
       expect(page).to have_checked_field "Featured"
       expect(page).to have_checked_field "Unfeatured"
-      expect(page).to have_link("Reset all")
+      expect(page).to have_link(I18n.t("avo.reset_filters"))
 
-      click_on "Reset all"
+      click_on I18n.t("avo.reset_filters")
       wait_for_loaded
       open_filters_menu
 
@@ -80,7 +80,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_unchecked_field "Featured"
       expect(page).to have_unchecked_field "Unfeatured"
       expect(current_url).not_to include "encoded_filters="
-      expect(page).to have_button("Reset all", disabled: true)
+      expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
     end
   end
 
@@ -104,7 +104,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_checked_field "Has Members"
       expect(page).not_to have_text "Without Members"
       expect(page).to have_text "With Members"
-      expect(page).to have_button("Reset all", disabled: true)
+      expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
     end
 
     it "changes the query and reset" do
@@ -119,9 +119,9 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_unchecked_field "Has Members"
       expect(page).to have_text "Without Members"
       expect(page).to have_text "With Members"
-      expect(page).to have_link("Reset all")
+      expect(page).to have_link(I18n.t("avo.reset_filters"))
 
-      click_on "Reset all"
+      click_on I18n.t("avo.reset_filters")
       wait_for_loaded
 
       open_filters_menu
@@ -130,7 +130,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_checked_field "Has Members"
       expect(page).not_to have_text "Without Members"
       expect(page).to have_text "With Members"
-      expect(page).to have_button("Reset all", disabled: true)
+      expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
     end
   end
 
@@ -149,7 +149,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_select "published status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
-        expect(page).to have_button("Reset all", disabled: true)
+        expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
       end
 
       it "changes the query" do
@@ -164,7 +164,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).not_to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).to include "encoded_filters="
-        expect(page).to have_link("Reset all")
+        expect(page).to have_link(I18n.t("avo.reset_filters"))
       end
 
       it "changes the query back also with reset" do
@@ -179,7 +179,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).not_to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).to include "encoded_filters="
-        expect(page).to have_link("Reset all")
+        expect(page).to have_link(I18n.t("avo.reset_filters"))
 
         select "Published or unpublished", from: "avo_filters_published_status"
         wait_for_loaded
@@ -189,7 +189,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).not_to include "encoded_filters="
-        expect(page).to have_button("Reset all", disabled: true)
+        expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
 
         select "Unpublished", from: "avo_filters_published_status"
         wait_for_loaded
@@ -199,9 +199,9 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).to include "encoded_filters="
-        expect(page).to have_link("Reset all")
+        expect(page).to have_link(I18n.t("avo.reset_filters"))
 
-        click_on "Reset all"
+        click_on I18n.t("avo.reset_filters")
         wait_for_loaded
         open_filters_menu
 
@@ -209,7 +209,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
-        expect(page).to have_button("Reset all", disabled: true)
+        expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
       end
     end
   end
@@ -228,7 +228,7 @@ RSpec.describe "Filters", type: :system do
 
         expect(page).to have_text "Status"
         expect(page).to have_select "avo_filters_status", selected: [], options: ["draft", "published", "archived"]
-        expect(page).to have_button("Reset all", disabled: true)
+        expect(page).to have_button(I18n.t("avo.reset_filters"), disabled: true)
       end
 
       it "changes the query" do
@@ -238,7 +238,7 @@ RSpec.describe "Filters", type: :system do
         select "draft", from: "avo_filters_status"
         unselect "published", from: "avo_filters_status"
         unselect "archived", from: "avo_filters_status"
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
         wait_for_loaded
 
         expect(page).to have_text(/1-1\s+of\s+1/)
@@ -247,7 +247,7 @@ RSpec.describe "Filters", type: :system do
 
         expect(page).to have_select "avo_filters_status", selected: ["draft"], options: ["draft", "published", "archived"]
         expect(current_url).to include "encoded_filters="
-        expect(page).to have_link("Reset all")
+        expect(page).to have_link(I18n.t("avo.reset_filters"))
       end
 
       it "allows multiple selections" do
@@ -257,7 +257,7 @@ RSpec.describe "Filters", type: :system do
         select "draft", from: "avo_filters_status"
         select "published", from: "avo_filters_status"
         unselect "archived", from: "avo_filters_status"
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
         wait_for_loaded
 
         expect(page).to have_text(/1-2\s+of\s+2/)
@@ -294,15 +294,15 @@ RSpec.describe "Filters", type: :system do
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "With Members"
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
         wait_for_loaded
         expect(page).to have_text(/1-1\s+of\s+1/)
 
         open_filters_menu
         expect(page).to have_text "With Members"
-        expect(page).to have_link("Reset all")
+        expect(page).to have_link(I18n.t("avo.reset_filters"))
 
-        click_on "Reset all"
+        click_on I18n.t("avo.reset_filters")
         wait_for_loaded
         expect(page).to have_text(/1-3\s+of\s+3/)
       end
@@ -313,15 +313,15 @@ RSpec.describe "Filters", type: :system do
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "音楽 ✓"
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
         wait_for_loaded
         expect(page).to have_text(/1-1\s+of\s+1/)
 
         open_filters_menu
         expect(page).to have_text "音楽 ✓"
-        expect(page).to have_link("Reset all")
+        expect(page).to have_link(I18n.t("avo.reset_filters"))
 
-        click_on "Reset all"
+        click_on I18n.t("avo.reset_filters")
         wait_for_loaded
         expect(page).to have_text(/1-3\s+of\s+3/)
       end
@@ -374,10 +374,10 @@ RSpec.describe "Filters", type: :system do
 
         open_filters_menu
 
-        expect(page).to have_button "Apply Filters"
+        expect(page).to have_button I18n.t("avo.apply_filters")
         set_picker_dates text_input, "#{current_year}-#{current_month}-15", "#{current_year}-#{current_month}-17"
 
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
 
         expect(page).to have_text user_15.first_name
         expect(page).to have_text user_17.first_name
@@ -459,11 +459,11 @@ RSpec.describe "Filters", type: :system do
 
         open_filters_menu
 
-        expect(page).to have_button "Apply Filters"
+        expect(page).to have_button I18n.t("avo.apply_filters")
 
         set_picker_time text_input, hour: 16, minute: 15, second: 18
 
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
 
         expect(page).not_to have_text course_16_10.name
         expect(page).to have_text course_16_15.name

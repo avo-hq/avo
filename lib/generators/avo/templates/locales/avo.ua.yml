@@ -6,7 +6,7 @@ ua:
     add_filter: Додати фільтр
     and_x_other_resources: і ще %{count} інших ресурсів
     applied: застосовано
-    apply_filters: Apply filters
+    apply_filters: Застосувати фільтри
     are_you_sure: Ви впевнені?
     are_you_sure_detach_item: Ви впевнені, що хочете відкріпити цей %{item}?
     are_you_sure_you_want_to_run_this_option: Ви впевнені, що хочете виконати цю дію?
@@ -120,7 +120,6 @@ ua:
     reload: Перезавантажити
     remove_selection: Видалити вибір
     reset: Скинути
-    reset_all: Reset all
     reset_filters: Скинути фільтри
     resource_created: Запис створено
     resource_destroyed: Запис видалено

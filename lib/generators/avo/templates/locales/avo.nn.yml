@@ -8,7 +8,7 @@ nn:
     applied:
       one: applied
       other: applied
-    apply_filters: Apply filters
+    apply_filters: Bruk filter
     are_you_sure: Er du sikker?
     are_you_sure_detach_item: Er du sikker på at du vil koble frå %{item}.
     are_you_sure_you_want_to_run_this_option: Er du sikker?
@@ -120,7 +120,6 @@ nn:
     reload: Last inn på nytt
     remove_selection: Fjern val
     reset: nullstille
-    reset_all: Reset all
     reset_filters: Nullstill filter
     resource_created: Ressurs generert
     resource_destroyed: Ressurs sletta

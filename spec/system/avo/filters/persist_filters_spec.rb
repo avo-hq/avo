@@ -29,7 +29,7 @@ RSpec.describe "Persist Filters", type: :system do
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "With Members"
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
         wait_for_loaded
         expect(page).to have_text(/1-1\s+of\s+1/)
 
@@ -38,9 +38,9 @@ RSpec.describe "Persist Filters", type: :system do
 
         open_filters_menu
         expect(page).to have_text "With Members"
-        expect(page).to have_link("Reset all")
+        expect(page).to have_link(I18n.t("avo.reset_filters"))
 
-        click_on "Reset all"
+        click_on I18n.t("avo.reset_filters")
         wait_for_loaded
         expect(page).to have_text(/1-2\s+of\s+2/)
 
@@ -56,7 +56,7 @@ RSpec.describe "Persist Filters", type: :system do
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "With Members"
-        click_on "Apply Filters"
+        click_on I18n.t("avo.apply_filters")
         wait_for_loaded
         expect(page).to have_text(/1-1\s+of\s+1/)
 

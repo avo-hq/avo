@@ -18,9 +18,9 @@
         <div class="filters-panel__title"><%= t("avo.filters") %></div>
 
         <% if applied %>
-          <%= link_to t("avo.reset_all", default: "Reset all"), "#", class: "filters-panel__reset" %>
+          <%= link_to t("avo.reset_filters"), "#", class: "filters-panel__reset" %>
         <% else %>
-          <%= button_tag t("avo.reset_all", default: "Reset all"),
+          <%= button_tag t("avo.reset_filters"),
             type: :button,
             class: "filters-panel__reset",
             disabled: true %>

@@ -12,7 +12,7 @@ ar:
       other: applied
       two: applied
       zero: applied
-    apply_filters: Apply filters
+    apply_filters: تطبيق الفلاتر
     are_you_sure: هل أنت متأكد؟
     are_you_sure_detach_item: هل أنت متأكد أنك تريد فصل هذا الـ%{item}؟
     are_you_sure_you_want_to_run_this_option: هل أنت متأكد أنك تريد تشغيل هذا الخيار؟
@@ -128,7 +128,6 @@ ar:
     reload: إعادة تحميل
     remove_selection: إزالة التحديد
     reset: اعاده تعيين
-    reset_all: Reset all
     reset_filters: إعادة تعيين الفلاتر
     resource_created: تم إنشاء السجل
     resource_destroyed: تم حذف السجل

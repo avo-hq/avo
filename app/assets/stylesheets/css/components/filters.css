@@ -41,3 +41,8 @@
 .filters-panel__apply {
   @apply w-full text-center text-sm font-medium leading-5 text-content-secondary hover:text-content cursor-pointer;
 }
+
+.date-picker-popover {
+  @apply p-1 rounded-lg bg-primary border border-tertiary m-0;
+  box-shadow: var(--box-shadow-popover);
+}

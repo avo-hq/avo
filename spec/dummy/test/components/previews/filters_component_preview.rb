@@ -8,7 +8,7 @@ class FiltersComponentPreview < ViewComponent::Preview
 
   # Design-only: filters panel with all filter types as static placeholders
   #
-  # @param applied toggle "false" "Show with applied state (Reset all link, pre-filled values)"
+  # @param applied toggle "false" "Show with applied state (Reset filters link, pre-filled values)"
   def default(applied: false)
     render_with_template(
       template: "filters_component_preview/default",

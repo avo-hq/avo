@@ -8,7 +8,7 @@ fr:
     applied:
       one: appliqué
       other: appliqués
-    apply_filters: Apply filters
+    apply_filters: Appliquer les filtres
     are_you_sure: Êtes-vous sûr ?
     are_you_sure_detach_item: Êtes-vous sûr de vouloir détacher %{item}.
     are_you_sure_you_want_to_run_this_option: Etes-vous sûr de vouloir exécuter cette action ?
@@ -120,7 +120,6 @@ fr:
     reload: Recharger
     remove_selection: Supprimer la sélection
     reset: réinitialiser
-    reset_all: Reset all
     reset_filters: Réinitialiser les filtres
     resource_created: Ressource créee
     resource_destroyed: Ressource détruite

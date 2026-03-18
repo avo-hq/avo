@@ -49,7 +49,7 @@ RSpec.feature "FiltersPanelOpen", type: :system do
 
       open_filters_menu
       fill_in "avo_filters_user_names_filter", with: "Test"
-      click_on "Apply Filters"
+      click_on I18n.t("avo.apply_filters")
       wait_for_loaded
 
       expect(page).not_to have_text "User names filter"

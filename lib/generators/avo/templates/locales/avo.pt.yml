@@ -8,7 +8,7 @@ pt:
     applied:
       one: aplicado
       other: aplicados
-    apply_filters: Apply filters
+    apply_filters: Aplicar filtros
     are_you_sure: Tem a certeza?
     are_you_sure_detach_item: Tem a certeza que deseja separar este %{item}.
     are_you_sure_you_want_to_run_this_option: Tem a certeza que deseja executar esta ação?
@@ -120,7 +120,6 @@ pt:
     reload: Recarregar
     remove_selection: Remover seleção
     reset: restaurar
-    reset_all: Reset all
     reset_filters: Limpar filtros
     resource_created: Recurso criado
     resource_destroyed: Recurso destruído
