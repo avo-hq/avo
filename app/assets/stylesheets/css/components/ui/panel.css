@@ -18,6 +18,10 @@
 }
 
 .panel--has-sidebar .panel__content {
+  grid-template-areas:
+    "body"
+    "sidebar";
+
   @media (min-width: 768px) {
     grid-template-areas: "body sidebar";
     grid-template-columns: minmax(0, 1fr) var(--panel-sidebar-width);
