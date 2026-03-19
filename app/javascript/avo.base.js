@@ -2,7 +2,8 @@
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'chartkick/chart.js/chart.esm'
-import 'mapkick/bundle'
+import Mapkick from 'mapkick'
+import mapboxgl from 'mapbox-gl'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import * as Mousetrap from 'mousetrap'
@@ -15,6 +16,8 @@ import './js/active-storage'
 import './js/controllers'
 import './js/custom-confirm'
 import './js/custom-stream-actions'
+
+Mapkick.use(mapboxgl)
 
 window.Avo.localStorage = new LocalStorageService()
 
