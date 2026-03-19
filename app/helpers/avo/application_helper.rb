@@ -121,18 +121,6 @@ module Avo
       defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
     end
 
-    def container_is_full_width?
-      if @container_full_width.present?
-        @container_full_width
-      elsif Avo.configuration.full_width_container
-        true
-      elsif Avo.configuration.full_width_index_view && action_name.to_sym == :index && controller.class.superclass.to_s == "Avo::ResourcesController"
-        true
-      else
-        false
-      end
-    end
-
     def body_classes
       os_class = request.user_agent.to_s.include?("Mac") ? "os-mac" : "os-pc"
 
@@ -163,16 +151,10 @@ module Avo
     end
 
     def container_classes
-      return "container-full-width" if container_is_full_width?
+      return "container-#{container_width_css_suffix(@container_size.to_sym)}" if @container_size.present?
 
-      # Run overrides if present
-      return "container-#{@container_size}" if @container_size.present? && @container_size.in?(%w[large small])
-
-      # On show and form views, use the small container
-      return "container-small" if @view.show? || @view.form?
-
-      # The rest will fallback to the lage container
-      "container-large"
+      width = Avo.configuration.container_width[@view.to_sym]
+      "container-#{container_width_css_suffix(width)}"
     end
 
     # encode & encrypt params
@@ -204,6 +186,10 @@ module Avo
     end
 
     private
+
+    def container_width_css_suffix(width)
+      width == :full ? "full-width" : width.to_s
+    end
 
     def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)
       if as.present?
