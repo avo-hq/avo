@@ -38,6 +38,11 @@
   @apply relative w-full;
 }
 
+.field-wrapper__input:has(textarea),
+.field-wrapper__input:has(input[type="text"]) {
+  @apply py-1;
+}
+
 /* ==========================================================================
    Loading Spinner
    ========================================================================== */
