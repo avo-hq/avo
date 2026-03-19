@@ -3,7 +3,7 @@
 }
 
 .field-wrapper__label {
-  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-60 pt-2;
+  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-52 pt-2;
 }
 
 .field-wrapper__help {
