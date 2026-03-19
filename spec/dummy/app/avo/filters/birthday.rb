@@ -2,7 +2,6 @@
 
 class Avo::Filters::Birthday < Avo::Filters::DateTimeFilter
   self.name = "Birthday"
-  self.button_label = "Apply birthday filter"
   self.empty_message = "Filter by birthday"
   self.type = :date
 

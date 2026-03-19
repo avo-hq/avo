@@ -9,7 +9,6 @@ module Avo
       class_attribute :name, default: "Filter"
       class_attribute :template, default: "avo/base/select_filter"
       class_attribute :visible
-      class_attribute :button_label
 
       attr_reader :arguments
 
@@ -91,10 +90,6 @@ module Avo
 
       def name
         Avo::ExecutionContext.new(target: self.class.name, arguments: @arguments).handle
-      end
-
-      def button_label
-        Avo::ExecutionContext.new(target: self.class.button_label, arguments: @arguments).handle
       end
     end
   end

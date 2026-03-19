@@ -2,7 +2,6 @@
 
 class Avo::Filters::StartingAt < Avo::Filters::DateTimeFilter
   self.name = "The starting at filter"
-  self.button_label = "Filter by start time"
   self.empty_message = "Search by start time"
   self.type = :time
   self.mode = :single

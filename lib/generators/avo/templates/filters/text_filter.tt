@@ -1,6 +1,5 @@
 class Avo::Filters::<%= class_name.camelize %> < Avo::Filters::TextFilter
   self.name = "<%= name.underscore.humanize %>"
-  self.button_label = 'Filter by <%= class_name.underscore.humanize.downcase.gsub(' filter', '') %>'
   # self.visible = -> do
   #   true
   # end
