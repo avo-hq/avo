@@ -3,7 +3,6 @@
 class Avo::EmptyStateComponent < Avo::BaseComponent
   prop :message
   prop :by_association, default: false
-  prop :show_illustration, default: true
   prop :classes
 
   def text

@@ -2,11 +2,5 @@
   <div>
     <div class="mb-2 font-semibold">Interactive</div>
     <%= render Avo::EmptyStateComponent.new(message: message) %>
-
-    <div class="mt-4 mb-2 font-semibold">Without illustration</div>
-    <%= render Avo::EmptyStateComponent.new(
-      message: "No record found",
-      show_illustration: false
-    ) %>
   </div>
 </div>

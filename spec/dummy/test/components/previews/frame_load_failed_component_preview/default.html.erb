@@ -1,11 +1,61 @@
 <div style="padding: 2rem;">
   <div>
     <div class="mb-2 font-semibold">Interactive</div>
-    <%= render Avo::FrameLoadFailedComponent.new(frame: frame, src: src) %>
+    <div class="state state--frame-load-failed">
+      <div class="state__illustration" aria-hidden="true">
+        <% %i[start center end].each do |position| %>
+          <div class="state__document state__document--<%= position %>">
+            <div class="state__document-body">
+              <div class="state__document-lines">
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line state__document-line--short"></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="state__magnifier">
+          <%= svg "tabler/outline/zoom", class: "state__magnifier-icon" %>
+        </div>
+      </div>
+
+      <p class="state__message">Oops, can't load <%= frame %> frame!</p>
+
+      <% if src.present? %>
+        <p class="state__note">
+          This is not an issue with Avo. Use
+          <%= link_to "this page", src, target: "_blank", rel: "noopener", class: "state__link" %>
+          to learn more.
+        </p>
+      <% end %>
+    </div>
 
     <div class="mt-4 mb-2 font-semibold">Without dev note</div>
-    <%= render Avo::FrameLoadFailedComponent.new(
-      frame: "comments"
-    ) %>
+    <div class="state state--frame-load-failed">
+      <div class="state__illustration" aria-hidden="true">
+        <% %i[start center end].each do |position| %>
+          <div class="state__document state__document--<%= position %>">
+            <div class="state__document-body">
+              <div class="state__document-lines">
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line state__document-line--short"></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="state__magnifier">
+          <%= svg "tabler/outline/zoom", class: "state__magnifier-icon" %>
+        </div>
+      </div>
+
+      <p class="state__message">Oops, can't load comments frame!</p>
+    </div>
   </div>
 </div>

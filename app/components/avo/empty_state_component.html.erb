@@ -1,18 +1,16 @@
 <%= content_tag :div, class: class_names("state", @classes) do %>
-  <% if @show_illustration %>
-    <div class="state__illustration" aria-hidden="true">
-      <% cards.each do |card| %>
-        <div class="<%= class_names("state__card", "state__card--#{card[:position]}") %>">
-          <div class="state__badge"><%= card[:number] %></div>
+  <div class="state__illustration" aria-hidden="true">
+    <% cards.each do |card| %>
+      <div class="<%= class_names("state__card", "state__card--#{card[:position]}") %>">
+        <div class="state__badge"><%= card[:number] %></div>
 
-          <div class="state__body">
-            <div class="<%= class_names("state__line", "state__line--title", "state__line--#{card[:title]}") %>"></div>
-            <div class="state__line state__line--content"></div>
-          </div>
+        <div class="state__body">
+          <div class="<%= class_names("state__line", "state__line--title", "state__line--#{card[:title]}") %>"></div>
+          <div class="state__line state__line--content"></div>
         </div>
-      <% end %>
-    </div>
-  <% end %>
+      </div>
+    <% end %>
+  </div>
 
   <p class="state__message"><%= text %></p>
 <% end %>

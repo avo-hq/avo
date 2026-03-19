@@ -3,15 +3,15 @@
 /* Empty State Component */
 
 .state {
-  @apply mx-auto flex w-full max-w-[298px] flex-col items-center justify-center gap-3 rounded-lg bg-background p-6 text-center;
+  @apply mx-auto flex w-full max-w-72 flex-col items-center justify-center gap-3 rounded-lg bg-background p-6 text-center;
 }
 
 .state__illustration {
-  @apply relative h-[140px] w-[234px] flex items-center justify-center;
+  @apply relative h-36 w-60 flex items-center justify-center;
 }
 
 .state__card {
-  @apply absolute flex h-[43px] w-[174px] items-center gap-[6px] rounded-[9px] border border-secondary p-[9px];
+  @apply absolute flex h-11 w-44 items-center gap-1.5 rounded-lg border border-secondary p-2.5;
 
   background: linear-gradient(194deg, var(--color-primary) 27%, var(--color-background) 65%);
   box-shadow: var(--box-shadow-card);
@@ -22,11 +22,11 @@
 }
 
 .state__card--middle {
-  @apply start-[58px] top-[34px];
+  @apply start-14 top-8;
 }
 
 .state__card--bottom {
-  @apply start-[19px] top-[78px];
+  @apply start-5 top-20;
 }
 
 .state__badge {
@@ -50,15 +50,15 @@
 }
 
 .state__line--large {
-  @apply w-[55px];
+  @apply w-14;
 }
 
 .state__line--medium {
-  @apply w-[51px];
+  @apply w-12;
 }
 
 .state__line--small {
-  @apply w-[43px];
+  @apply w-11;
 }
 
 .state__line--content {
@@ -71,29 +71,29 @@
 
 /*  Frame Load Failed Component */
 .state--frame-load-failed {
-  @apply max-w-[383px] gap-1;
+  @apply max-w-96 gap-1;
 }
 
 .state__document {
-  @apply absolute flex h-[114px] w-[81px] flex-col rounded-[9px] border border-secondary p-[3px];
+  @apply absolute flex h-28 w-20 flex-col rounded-lg border border-secondary p-[3px];
 
   background: linear-gradient(235deg, var(--color-primary) 27%, var(--color-background) 65%);
 }
 
 .state__document--start {
-  @apply start-[16px] rotate-[-21deg];
+  @apply start-4 rotate-[-21deg];
 }
 
 .state__document--center {
-  @apply start-[63px] z-10;
+  @apply start-16 z-10;
 }
 
 .state__document--end {
-  @apply start-[95px] rotate-[21deg] z-0;
+  @apply start-24 rotate-[21deg] z-0;
 }
 
 .state__document-body {
-  @apply flex h-full w-full items-center rounded-[9px] p-[10px];
+  @apply flex h-full w-full items-center rounded-lg p-2.5;
 
   box-shadow: var(--box-shadow-card);
 }
@@ -109,7 +109,7 @@
 }
 
 .state__document-line--short {
-  @apply w-[38px];
+  @apply w-10;
 }
 
 .state__magnifier {

@@ -4,8 +4,35 @@
 %>
 
 <%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
-  <%= render Avo::FrameLoadFailedComponent.new(
-    frame: frame,
-    src: src_url,
-  ) %>
+  <div class="state state--frame-load-failed">
+    <div class="state__illustration" aria-hidden="true">
+      <% %i[start center end].each do |position| %>
+        <div class="state__document state__document--<%= position %>">
+          <div class="state__document-body">
+            <div class="state__document-lines">
+              <span class="state__document-line"></span>
+              <span class="state__document-line"></span>
+              <span class="state__document-line"></span>
+              <span class="state__document-line"></span>
+              <span class="state__document-line state__document-line--short"></span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="state__magnifier">
+        <%= svg "tabler/outline/zoom", class: "state__magnifier-icon" %>
+      </div>
+    </div>
+
+    <p class="state__message">Oops, can't load <%= frame %> frame!</p>
+
+    <% if Rails.env.development? && src_url.present? %>
+      <p class="state__note">
+        This is not an issue with Avo. Use
+        <%= link_to "this page", src_url, target: "_blank", rel: "noopener", class: "state__link" %>
+        to learn more.
+      </p>
+    <% end %>
+  </div>
 <% end %>
