@@ -1,5 +1,5 @@
 .field-wrapper {
-  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 min-h-12 w-full grow-0 text-ellipsis overflow-auto;
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-stretch py-1 min-h-12 w-full grow-0 text-ellipsis overflow-hidden;
 }
 
 .field-wrapper__label {
@@ -27,11 +27,11 @@
 }
 
 .field-wrapper__content {
-  @apply flex-1 flex flex-row px-4;
+  @apply flex-1 flex flex-row px-4 overflow-auto self-stretch [scrollbar-width:none];
 }
 
 .field-wrapper__content-wrapper {
-  @apply relative w-full md:w-8/12;
+  @apply relative w-full md:w-8/12 flex items-center;
 }
 
 .field-wrapper__input {
