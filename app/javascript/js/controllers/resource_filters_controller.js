@@ -7,10 +7,28 @@ const FILTER_CONTROLLER_IDENTIFIERS = [
 ]
 
 export default class extends BaseFilterController {
+  static values = {
+    keepFiltersPanelOpen: Boolean,
+  }
+
   connect() {
-    if (new URLSearchParams(window.location.search).get('keep_filters_panel_open') === '1') {
-      this.element.querySelector('[popover]')?.showPopover()
+    const urlHasKeepOpen = new URLSearchParams(window.location.search).get('keep_filters_panel_open') === '1'
+    const resourceWantsKeepOpen = this.keepFiltersPanelOpenValue
+    const popover = this.element.querySelector('[popover]')
+
+    if (!popover) return
+
+    if (urlHasKeepOpen && resourceWantsKeepOpen) {
+      // Suppress the slide-down transition so the panel appears instantly
+      // (avoids the flicker on full-page navigations with keep_filters_panel_open)
+      popover.style.transition = 'none'
+      popover.showPopover()
+      this.rafId = requestAnimationFrame(() => { popover.style.transition = '' })
     }
+  }
+
+  disconnect() {
+    cancelAnimationFrame(this.rafId)
   }
 
   applyFilters(event) {

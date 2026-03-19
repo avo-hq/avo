@@ -1,5 +1,6 @@
 <div
   data-controller="resource-filters"
+  data-resource-filters-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
   data-component-name="<%= self.class.to_s.underscore %>"
 >
   <%= a_button class: "focus:outline-hidden filters-panel-trigger",

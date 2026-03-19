@@ -92,6 +92,7 @@
   @import "./../../../node_modules/tippy.js/dist/tippy.css";
   @import "./../../../node_modules/tippy.js/themes/light.css";
   @import "./../../../node_modules/flatpickr/dist/flatpickr.css";
+  @import "./css/vendor/flatpickr.css";
   @import "./../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css";
   @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
   /* @import "./css/components/ui/checkbox.css"; */

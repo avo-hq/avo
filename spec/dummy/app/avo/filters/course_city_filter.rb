@@ -12,7 +12,7 @@ class Avo::Filters::CourseCityFilter < Avo::Filters::BooleanFilter
 
   def react
     # Check if the user selected a country
-    if applied_filters["Avo::Filters::CourseCountryFilter"].present? && applied_filters["CourseCityFilter"].blank?
+    if applied_filters["Avo::Filters::CourseCountryFilter"].present? && applied_filters["Avo::Filters::CourseCityFilter"].blank?
       # Get the selected countries, get their cities, and select the first one.
       selected_countries = applied_filters["Avo::Filters::CourseCountryFilter"].select do |name, selected|
         selected

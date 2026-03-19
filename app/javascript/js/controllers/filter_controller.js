@@ -102,6 +102,8 @@ export default class extends Controller {
     if (this.keepFiltersPanelOpenValue) {
       // eslint-disable-next-line camelcase
       query.keep_filters_panel_open = 1
+    } else {
+      delete query.keep_filters_panel_open
     }
 
     // force to go to the first page if the filters changed
