@@ -10,7 +10,7 @@
     <div class="flex relative">
       <div class="self-center w-full" data-slot="value">
         <%= text_field_tag :value, "",
-          class: input_classes("w-full mb-0 !pe-9 cursor-pointer#{" text-#{filter.class.color}-500" if filter.class.color}"),
+          class: input_classes("w-full mb-0 !pe-9 cursor-pointer"),
           placeholder: filter.class.empty_message,
           readonly: true,
           style: "anchor-name: --#{picker_id}",

@@ -3,7 +3,6 @@ module Avo
     class BaseFilter
       PARAM_KEY = :encoded_filters unless const_defined?(:PARAM_KEY)
 
-      class_attribute :color
       class_attribute :component, default: "boolean-filter"
       class_attribute :default, default: nil
       class_attribute :empty_message
