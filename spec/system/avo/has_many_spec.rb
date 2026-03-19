@@ -135,10 +135,10 @@ RSpec.feature "HasManyField", type: :system do
 
       expect {
         accept_custom_alert do
-          within("[data-resource-id='#{post.to_param}']") do
-            find("[data-action='click->dropdown-menu#toggle']").click
+          within("[data-record-id='#{post.to_param}']") do
+            find("button[popovertarget]").click if has_css?("button[popovertarget]", wait: 0)
+            find("a[data-control='destroy'], button[data-control='destroy']").click
           end
-          find("a[data-control='destroy'][data-resource-id='#{post.to_param}']").click
         end
       }.to change(Post, :count).by(-1)
 
@@ -153,10 +153,10 @@ RSpec.feature "HasManyField", type: :system do
 
       expect {
         accept_custom_alert do
-          within("[data-resource-id='#{post.to_param}']") do
-            find("[data-action='click->dropdown-menu#toggle']").click
+          within("[data-record-id='#{post.to_param}']") do
+            find("button[popovertarget]").click if has_css?("button[popovertarget]", wait: 0)
+            find("a[data-control='detach'], button[data-control='detach']").click
           end
-          find("a[data-control='detach'][data-resource-id='#{post.to_param}']").click
         end
       }.to change(user.posts, :count).by(-1)
 

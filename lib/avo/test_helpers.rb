@@ -186,18 +186,30 @@ module Avo
       sleep 0.2
     end
 
+    # Resolves the element that has the Flatpickr instance attached.
+    # Date-time filters attach Flatpickr to the calendar div, not the input.
+    def flatpickr_element_for(input)
+      if input["data-date-time-filter-target"] == "input"
+        input.find(:xpath, "./ancestor::*[contains(@data-controller, 'date-time-filter')][1]//*[@data-date-time-filter-target='calendar']", visible: false)
+      else
+        input
+      end
+    end
+
     def set_picker_dates(input, *dates)
+      element = flatpickr_element_for(input)
       page.execute_script(
         "arguments[0]._flatpickr.setDate(arguments[1], true)",
-        input.native,
+        element.native,
         (dates.length == 1) ? dates.first : dates
       )
     end
 
     def set_picker_time(input, hour:, minute: 0, second: 0)
+      element = flatpickr_element_for(input)
       page.execute_script(
         "arguments[0]._flatpickr.setDate(arguments[1], true)",
-        input.native,
+        element.native,
         "#{hour}:#{minute}:#{second}"
       )
     end
