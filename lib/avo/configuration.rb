@@ -71,17 +71,13 @@ module Avo
         create: :small,
         update: :small
       }.freeze
-    end
 
-    unless defined?(VALID_CONTAINER_WIDTHS)
       VALID_CONTAINER_WIDTHS = %i[full large small].freeze
-    end
 
-    unless defined?(CONTAINER_WIDTH_GROUPS)
       CONTAINER_WIDTH_GROUPS = {
-        forms: %i[new edit create update],
+        forms:   %i[new edit create update],
         display: %i[index show],
-        single: %i[show new edit create update]
+        single:  %i[show new edit create update]
       }.freeze
     end
 
@@ -93,6 +89,10 @@ module Avo
         raise ArgumentError, "Invalid container width: #{value}. Must be one of #{VALID_CONTAINER_WIDTHS}" unless VALID_CONTAINER_WIDTHS.include?(value)
         @container_width = CONTAINER_WIDTH_DEFAULTS.transform_values { value }
       when Hash
+        valid_keys = CONTAINER_WIDTH_DEFAULTS.keys + CONTAINER_WIDTH_GROUPS.keys
+        invalid_keys = value.keys.reject { |k| valid_keys.include?(k) }
+        raise ArgumentError, "Invalid container width keys: #{invalid_keys}. Valid keys: #{valid_keys}" if invalid_keys.any?
+
         invalid_values = value.values.reject { |v| VALID_CONTAINER_WIDTHS.include?(v) }
         raise ArgumentError, "Invalid container widths: #{invalid_values}" if invalid_values.any?
 

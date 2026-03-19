@@ -3,8 +3,6 @@ require "rails_helper"
 RSpec.describe Avo::Configuration, "#container_width" do
   let(:config) { described_class.new }
 
-  after { config.instance_variable_set(:@container_width, nil) }
-
   describe "defaults" do
     it "returns the built-in defaults when never set" do
       expect(config.container_width).to eq({
@@ -25,6 +23,16 @@ RSpec.describe Avo::Configuration, "#container_width" do
         index: :full, show: :full, new: :full,
         edit: :full, create: :full, update: :full
       })
+    end
+
+    it "applies :large to all views" do
+      config.container_width = :large
+      expect(config.container_width.values.uniq).to eq([:large])
+    end
+
+    it "applies :small to all views" do
+      config.container_width = :small
+      expect(config.container_width.values.uniq).to eq([:small])
     end
 
     it "raises ArgumentError for an invalid symbol" do
@@ -92,6 +100,12 @@ RSpec.describe Avo::Configuration, "#container_width" do
   describe "invalid hash value" do
     it "raises ArgumentError" do
       expect { config.container_width = { index: :huge } }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe "invalid hash key" do
+    it "raises ArgumentError for an unrecognised view key" do
+      expect { config.container_width = { idnex: :full } }.to raise_error(ArgumentError)
     end
   end
 end
