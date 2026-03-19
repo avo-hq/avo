@@ -271,7 +271,7 @@ class Avo::Resources::User < Avo::BaseResource
       test_tab
       test_field("Inside tabs")
       first_tabs_group_fields
-      tab "Created at" do
+      tab title: "Created at" do
         card do
           field :created_at, as: :date_time
         end
@@ -305,7 +305,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def birthday_tab
-    tab -> { "Birthday" }, description: "hey you", hide_on: :show do
+    tab title: -> { "Birthday" }, description: "hey you", hide_on: :show do
       card do
         field :birthday,
           as: :date,
@@ -321,7 +321,7 @@ class Avo::Resources::User < Avo::BaseResource
   def test_tab
     return unless ENV["testing_methods"]
 
-    tab "test_tab" do
+    tab title: "test_tab" do
       panel do
         card do
           test_field("Inside tabs -> tab -> panel")

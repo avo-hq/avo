@@ -36,55 +36,55 @@ class Avo::Resources::Fish < Avo::BaseResource
     tool Avo::ResourceTools::NestedFishReviews, only_on: :new
     tool Avo::ResourceTools::FishInformation, show_on: :forms
     tabs visible: true do
-      tab "big useless tab here" do
+      tab title: "big useless tab here" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "another big useless tab here 2" do
+      tab title: "another big useless tab here 2" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "big tab here 3" do
+      tab title: "big tab here 3" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "big tab here 3.5" do
+      tab title: "big tab here 3.5" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "tab here 4" do
+      tab title: "tab here 4" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "tab" do
+      tab title: "tab" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "big useless tab here 6" do
+      tab title: "big useless tab here 6" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "big useless tab here 7" do
+      tab title: "big useless tab here 7" do
         card do
           field :id, as: :id
         end
       end
 
-      tab "big tab 8" do
+      tab title: "big tab 8" do
         card do
           field :id, as: :id
         end

@@ -64,7 +64,7 @@ class Avo::Resources::Items::Holder
     end
   end
 
-  def tab(title, **args, &block)
+  def tab(title:, **args, &block)
     add_item Avo::Resources::Items::Tab::Builder.parse_block(title: title, parent: @parent, **args, &block)
   end
 

@@ -25,7 +25,7 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
           resource.record.name == "RSpec TabsPanelAndSidebarVisibility"
         }
 
-        tab "Hidden tab inside tabs" do
+        tab title: "Hidden tab inside tabs" do
           field :hidden_field_inside_tabs_inside_tab, as: :text, visible: -> {
             resource.record.name == "RSpec TabsPanelAndSidebarVisibility"
           }
@@ -37,7 +37,7 @@ RSpec.describe "TabsPanelsAndSidebarVisibility", type: :feature do
           end
         end
 
-        tab "Conditional hidden tab inside tabs", visible: -> { resource.record.name == "RSpec TabsPanelAndSidebarVisibility" } do
+        tab title: "Conditional hidden tab inside tabs", visible: -> { resource.record.name == "RSpec TabsPanelAndSidebarVisibility" } do
           field :hidden_field_inside_tabs_inside_conditional_tab, as: :text
         end
       end
