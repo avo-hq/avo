@@ -50,7 +50,7 @@ RSpec.describe Avo::Configuration, "#container_width" do
 
   describe "hash input — individual view key" do
     it "overrides only the specified view; rest keep defaults" do
-      config.container_width = { index: :full }
+      config.container_width = {index: :full}
       expect(config.container_width[:index]).to eq(:full)
       expect(config.container_width[:show]).to eq(:small)
     end
@@ -58,7 +58,7 @@ RSpec.describe Avo::Configuration, "#container_width" do
 
   describe "hash input — group alias :forms" do
     it "expands to new, edit, create, update; index and show keep defaults" do
-      config.container_width = { forms: :full }
+      config.container_width = {forms: :full}
       expect(config.container_width[:new]).to eq(:full)
       expect(config.container_width[:edit]).to eq(:full)
       expect(config.container_width[:create]).to eq(:full)
@@ -70,7 +70,7 @@ RSpec.describe Avo::Configuration, "#container_width" do
 
   describe "hash input — group alias :display" do
     it "expands to index and show; forms keep defaults" do
-      config.container_width = { display: :full }
+      config.container_width = {display: :full}
       expect(config.container_width[:index]).to eq(:full)
       expect(config.container_width[:show]).to eq(:full)
       expect(config.container_width[:new]).to eq(:small)
@@ -79,7 +79,7 @@ RSpec.describe Avo::Configuration, "#container_width" do
 
   describe "hash input — group alias :single" do
     it "expands to show, new, edit, create, update; index keeps default" do
-      config.container_width = { single: :full }
+      config.container_width = {single: :full}
       expect(config.container_width[:show]).to eq(:full)
       expect(config.container_width[:new]).to eq(:full)
       expect(config.container_width[:edit]).to eq(:full)
@@ -91,7 +91,7 @@ RSpec.describe Avo::Configuration, "#container_width" do
 
   describe "specific key wins over group alias" do
     it "specific key overrides group alias for the same view regardless of hash order" do
-      config.container_width = { single: :full, show: :small }
+      config.container_width = {single: :full, show: :small}
       expect(config.container_width[:show]).to eq(:small)
       expect(config.container_width[:new]).to eq(:full)
     end
@@ -99,13 +99,13 @@ RSpec.describe Avo::Configuration, "#container_width" do
 
   describe "invalid hash value" do
     it "raises ArgumentError" do
-      expect { config.container_width = { index: :huge } }.to raise_error(ArgumentError)
+      expect { config.container_width = {index: :huge} }.to raise_error(ArgumentError)
     end
   end
 
   describe "invalid hash key" do
     it "raises ArgumentError for an unrecognised view key" do
-      expect { config.container_width = { idnex: :full } }.to raise_error(ArgumentError)
+      expect { config.container_width = {idnex: :full} }.to raise_error(ArgumentError)
     end
   end
 end

@@ -75,9 +75,9 @@ module Avo
       VALID_CONTAINER_WIDTHS = %i[full large small].freeze
 
       CONTAINER_WIDTH_GROUPS = {
-        forms:   %i[new edit create update],
+        forms: %i[new edit create update],
         display: %i[index show],
-        single:  %i[show new edit create update]
+        single: %i[show new edit create update]
       }.freeze
     end
 

@@ -188,7 +188,7 @@ module Avo
     private
 
     def container_width_css_suffix(width)
-      width == :full ? "full-width" : width.to_s
+      (width == :full) ? "full-width" : width.to_s
     end
 
     def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)
