@@ -6,7 +6,7 @@ class BreadcrumbElementComponentPreview < ViewComponent::Preview
   #
   # @param text text "Page"
   # @param url text "https://example.com/page"
-  # @param icon text "heroicons/outline/home"
+  # @param icon text "tabler/outline/home"
   # @param separator text ">"
   # @param current toggle "false"
   def default(
@@ -49,7 +49,7 @@ class BreadcrumbElementComponentPreview < ViewComponent::Preview
     render Avo::BreadcrumbElementComponent.new(
       text: "Dashboard",
       url: "https://example.com/dashboard",
-      icon: "heroicons/outline/home"
+      icon: "tabler/outline/home"
     )
   end
 
@@ -84,7 +84,7 @@ class BreadcrumbElementComponentPreview < ViewComponent::Preview
   def current_with_icon
     render Avo::BreadcrumbElementComponent.new(
       text: "Current Page",
-      icon: "heroicons/outline/document",
+      icon: "tabler/outline/file",
       current: true
     )
   end

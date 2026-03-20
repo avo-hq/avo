@@ -117,7 +117,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         tippy: control.title ? :tooltip : nil,
         action: via_belongs_to ? "click->modal#close" : nil
       }.compact,
-      icon: "heroicons/outline/arrow-left" do
+      icon: "tabler/outline/arrow-left" do
       control.label
     end
   end
@@ -181,7 +181,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :primary,
       loading: true,
       type: :submit,
-      icon: "avo/save",
+      icon: "tabler/outline/device-floppy",
       data: data_attributes do
       control.label
     end

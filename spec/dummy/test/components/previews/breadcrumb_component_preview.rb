@@ -84,10 +84,10 @@ class BreadcrumbComponentPreview < ViewComponent::Preview
   # Breadcrumb with icons
   def with_icons
     items = [
-      {text: "Home", url: "https://example.com/home", icon: "heroicons/outline/home"},
-      {text: "Dashboard", url: "https://example.com/dashboard", icon: "heroicons/outline/chart-bar"},
+      {text: "Home", url: "https://example.com/home", icon: "tabler/outline/home"},
+      {text: "Dashboard", url: "https://example.com/dashboard", icon: "tabler/filled/chart-pie-4"},
       {text: "Settings", url: "https://example.com/settings", icon: "heroicons/outline/cog"},
-      {text: "Profile", current: true, icon: "heroicons/outline/user"}
+      {text: "Profile", current: true, icon: "tabler/outline/user"}
     ]
 
     render Avo::BreadcrumbsComponent.new(items: items)

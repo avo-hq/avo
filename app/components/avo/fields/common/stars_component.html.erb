@@ -1,7 +1,7 @@
 <div class="rating-group" data-component="<%= component_name %>"> 
   <% (1..@max).each do |rating_value| %>
     <%= helpers.svg(
-      'heroicons/solid/star',
+      'tabler/filled/star',
       class: class_names("star inline-block me-0.5", filled: rating_value <= (@value || 0))
     ) %>
   <% end %>

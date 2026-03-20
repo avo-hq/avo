@@ -1,5 +1,5 @@
 <div class="relative flex flex-col w-full max @container/details">
-  <%= link_to helpers.svg('heroicons/outline/x-mark', class: "size-6"), helpers.avo.media_library_index_path,
+  <%= link_to helpers.svg('tabler/outline/x', class: "size-6"), helpers.avo.media_library_index_path,
     class: "absolute z-10 inset-auto end-0 top-0 mt-2 me-2 block bg-white p-1 rounded-lg text-slate-600 hover:text-slate-900",
     title: t('avo.close'),
     data: {
@@ -15,7 +15,7 @@
         <%= video_tag(helpers.main_app.url_for(@blob), controls: true, preload: false, class: 'w-full') %>
       <% else %>
         <div class="relative h-full flex flex-col justify-center items-center w-full bg-slate-100">
-          <%= helpers.svg "heroicons/outline/document-text", class: 'h-10 text-gray-600 mb-2' %>
+          <%= helpers.svg "tabler/outline/file-text", class: 'h-10 text-gray-600 mb-2' %>
         </div>
       <% end %>
       <div class="flex justify-center w-full text-sm gap-4">
