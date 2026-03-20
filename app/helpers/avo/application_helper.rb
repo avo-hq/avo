@@ -153,7 +153,7 @@ module Avo
     def container_classes
       return "container-#{container_width_css_suffix(@container_size.to_sym)}" if @container_size.present?
 
-      width = Avo.configuration.container_width[@view.to_sym]
+      width = Avo.configuration.container_width.fetch(@view&.to_sym, :large)
       "container-#{container_width_css_suffix(width)}"
     end
 
