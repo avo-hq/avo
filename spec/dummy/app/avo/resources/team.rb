@@ -51,7 +51,6 @@ class Avo::Resources::Team < Avo::BaseResource
           rows: 5,
           readonly: false,
           hide_on: :index,
-          format_using: -> { value.to_s.truncate 30 },
           default: "This is a wonderful team!",
           filterable: true,
           nullable: true,
