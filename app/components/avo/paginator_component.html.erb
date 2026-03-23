@@ -33,18 +33,18 @@
     <% if @resource.pagination_type.default? %>
       <div class="pagination__info">
         <span class="pagination__info-number">
-          <%= "#{@pagy.from}-#{@pagy.to}" %>
+          <%= "#{helpers.number_with_delimiter(@pagy.from)}-#{helpers.number_with_delimiter(@pagy.to)}" %>
         </span>
         &nbsp; of &nbsp;
         <span>
-          <%= "#{@pagy.count}" %>
+          <%= helpers.number_with_delimiter(@pagy.count) %>
         </span>
       </div>
     <% end %>
 
     <% if @pagy.pages > 1 %>
       <div class="pagination__nav">
-        <%== @pagy.series_nav(anchor_string: "data-turbo-frame=\"#{@turbo_frame}\"") %>
+        <%== formatted_series_nav %>
       </div>
     <% end %>
   </div>

@@ -52,4 +52,10 @@ class Avo::PaginatorComponent < Avo::BaseComponent
     num = helpers.content_tag(:span, option, class: "pagination__per-page-option-num")
     "#{num} #{t("avo.per_page").downcase}".html_safe
   end
+
+  def formatted_series_nav
+    @pagy.series_nav(anchor_string: "data-turbo-frame=\"#{@turbo_frame}\"")
+      .gsub(/>(\d{4,})</) { |m| m.sub($1, helpers.number_with_delimiter($1.to_i)) }
+      .html_safe
+  end
 end

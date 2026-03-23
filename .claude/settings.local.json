@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(read icon:*)",
+      "Bash(gem list:*)",
+      "Bash(bundle exec:*)",
+      "Bash(curl:*)",
+      "mcp__claude_ai_Linear__get_issue",
+      "mcp__claude_ai_Linear__list_comments",
+      "mcp__claude_ai_Linear__extract_images",
+      "WebFetch(domain:blog.superails.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:boringrails.com)",
+      "WebFetch(domain:app.hey.com)"
+    ]
+  }
+}
