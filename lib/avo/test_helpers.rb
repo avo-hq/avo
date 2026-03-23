@@ -328,6 +328,17 @@ module Avo
       end
     end
 
+    # Force-enable the submit button (bypass the required fields check).
+    # For tests that verify server-side validation errors.
+    def enable_submit_button
+      submit_button = find('[data-form-target="submitButton"]', wait: 5)
+
+      page.execute_script(
+        "arguments[0].disabled = false; arguments[0].removeAttribute('disabled');",
+        submit_button.native
+      )
+    end
+
     def accept_custom_alert(&block)
       block.call
       find('#turbo-confirm button[value="confirm"]').click
