@@ -72,6 +72,8 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
       **@data
     }
 
+    attributes[:required] = true if @field.is_required? && on_edit?
+
     # Fetch the data attributes off the html option
     wrapper_data_attributes = @field.get_html :data, view: @view, element: :wrapper
     if wrapper_data_attributes.present?

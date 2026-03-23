@@ -181,7 +181,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless can_see_the_save_button?
 
     data_attributes = {
-      turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
+      turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil,
+      form_target: "submitButton"
     }
 
     add_stimulus_attributes_for(@resource, data_attributes, "saveButton")
