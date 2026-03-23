@@ -26,7 +26,7 @@ class Avo::Resources::Person < Avo::BaseResource
       description: "Default behaviour with link_to_child_resource disabled"
 
     tabs do
-      tab "Employment" do
+      tab title: "Employment" do
         panel do
           card title: "Software Engineer" do
             field :company, stacked: true, width: 50 do
@@ -53,7 +53,7 @@ class Avo::Resources::Person < Avo::BaseResource
         end
       end
 
-      tab "Address", lazy_load: true do
+      tab title: "Address", lazy_load: true do
         panel(title: "Address") do
           card do
             field :street_address, stacked: true, width: 50 do
@@ -81,7 +81,7 @@ class Avo::Resources::Person < Avo::BaseResource
         end
       end
 
-      tab "Preferences" do
+      tab title: "Preferences" do
         panel do
           card do
             field :preferred_language do

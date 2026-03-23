@@ -295,19 +295,19 @@ RSpec.describe "Tabs", type: :system do
       Avo::Resources::User.with_temporary_items do
         field :name
         tabs do
-          tab "其他store", lazy_load: true do
+          tab title: "其他store", lazy_load: true do
             field :tab_1 do
               "tab_1"
             end
           end
 
-          tab "store 🧭", lazy_load: true do
+          tab title: "store 🧭", lazy_load: true do
             field :tab_2 do
               "tab_2"
             end
           end
 
-          tab "📖 store", lazy_load: true do
+          tab title: "📖 store", lazy_load: true do
             field :tab_3 do
               "tab_3"
             end
