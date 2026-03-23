@@ -27,7 +27,7 @@ RSpec.feature "ContainerWidth", type: :feature do
 
   describe "symbol :full — applies to all views" do
     before { Avo.configuration.container_width = :full }
-    after  { Avo.configuration.container_width = nil }
+    after { Avo.configuration.container_width = nil }
 
     context "index" do
       let(:url) { "/admin/resources/users" }
@@ -47,8 +47,8 @@ RSpec.feature "ContainerWidth", type: :feature do
   end
 
   describe "hash { index: :full } — only index is full" do
-    before { Avo.configuration.container_width = { index: :full } }
-    after  { Avo.configuration.container_width = nil }
+    before { Avo.configuration.container_width = {index: :full} }
+    after { Avo.configuration.container_width = nil }
 
     context "index" do
       let(:url) { "/admin/resources/users" }
@@ -64,8 +64,8 @@ RSpec.feature "ContainerWidth", type: :feature do
   end
 
   describe "group alias { single: :full } — everything but index is full" do
-    before { Avo.configuration.container_width = { single: :full } }
-    after  { Avo.configuration.container_width = nil }
+    before { Avo.configuration.container_width = {single: :full} }
+    after { Avo.configuration.container_width = nil }
 
     context "index" do
       let(:url) { "/admin/resources/users" }

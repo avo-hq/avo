@@ -71,7 +71,7 @@
 }
 
 .container-small {
-  @apply lg:px-0 xl:w-240 lg:mx-auto;
+  @apply xl:px-0 xl:w-240 xl:mx-auto;
 }
 
 .container-full-width {
