@@ -96,6 +96,7 @@ RSpec.describe "Tags", type: :system do
         add_tag(field: :tags, tag: "two")
         add_tag(field: :tags, tag: "five")
 
+        enable_submit_button
         save
 
         expect(page).to have_text("Name can't be blank")
@@ -213,6 +214,7 @@ RSpec.describe "Tags", type: :system do
       type(:down, :return)
 
       sleep 0.3
+      enable_submit_button
       save
 
       expect(page).to have_text "Name can't be blank"

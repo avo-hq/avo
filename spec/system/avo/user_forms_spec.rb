@@ -38,6 +38,7 @@ RSpec.describe "UserForms", type: :system do
   it "displays valdation errors", skip_js_error_detect: true do
     visit "/admin/resources/users/new"
 
+    enable_submit_button
     save
 
     expect(page).to have_text("First name can't be blank")
@@ -49,6 +50,7 @@ RSpec.describe "UserForms", type: :system do
   it "submits the form on enter", skip_js_error_detect: true do
     visit "/admin/resources/users/new"
 
+    enable_submit_button
     find("[data-field-id='first_name'] [data-slot='value'] input").native.send_keys(:return)
 
     expect(page).to have_text("First name can't be blank")
@@ -66,6 +68,7 @@ RSpec.describe "UserForms", type: :system do
     fill_in "user_password", with: "secret_password"
     fill_in "user_password_confirmation", with: "secret_password"
 
+    enable_submit_button
     save
 
     expect(page).to have_text("John")

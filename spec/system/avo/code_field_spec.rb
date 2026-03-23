@@ -104,6 +104,8 @@ RSpec.describe "CodeField", type: :system do
       visit "/admin/resources/cities/new"
       wait_for_loaded
 
+      fill_in "city_name", with: "Test City"
+
       within find_field_element("metadata") do
         fill_in_editor_field(JSON.pretty_generate(metadata))
       end

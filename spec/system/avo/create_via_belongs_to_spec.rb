@@ -28,6 +28,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
 
         expect(page).to have_select('fish_user_id', selected: User.last.name)
 
+        enable_submit_button
         click_on "Save"
         sleep 0.2
 
@@ -86,6 +87,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       expect(page).to have_select('fish_user_id', selected: User.last.name)
 
       expect do
+        enable_submit_button
         click_on "Save"
         sleep 0.2
       end.to change(Fish, :count).by(1)

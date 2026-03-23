@@ -17,6 +17,7 @@ RSpec.describe "DisplayPersistedAttachment", type: :system do
       fill_in "Name", with: ""
       attach_file Rails.root.join("db", "seed_files", "dummy-image.jpg"), id: "post_cover_photo"
 
+      enable_submit_button
       click_button "Save"
       wait_for_loaded
 
@@ -40,6 +41,7 @@ RSpec.describe "DisplayPersistedAttachment", type: :system do
       fill_in "Name", with: ""
       attach_file Rails.root.join("db", "seed_files", "dummy-audio.mp3"), id: "post_audio"
 
+      enable_submit_button
       click_button "Save"
       wait_for_loaded
 

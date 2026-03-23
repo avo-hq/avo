@@ -11,6 +11,7 @@ RSpec.feature "for_attribute option", type: :system do
 
       fill_in "fish_secondary_field_for_name", with: "Cool fish name"
 
+      enable_submit_button
       save
 
       expect(page).to have_text "Fish was successfully updated."
