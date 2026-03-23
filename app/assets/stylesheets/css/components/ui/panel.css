@@ -11,7 +11,9 @@
 }
 
 .panel__content {
-  @apply relative flex flex-col md:flex-row gap-4 w-full;
+  --panel-sidebar-width: calc(var(--spacing) * 84);
+  @apply relative grid gap-4 w-full;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .panel__card,
@@ -20,7 +22,27 @@
 }
 
 .panel__sidebar {
-  @apply w-84 top-0 end-0 flex shrink-0;
+  @apply w-full top-0 end-0 flex;
+}
+
+.panel--has-sidebar .panel__content {
+  grid-template-areas:
+    "body"
+    "sidebar";
+
+  @media (width >= 48rem) {
+    grid-template-areas: "body sidebar";
+    grid-template-columns: minmax(0, 1fr) var(--panel-sidebar-width);
+  }
+
+  .panel__card,
+  .panel__body {
+    grid-area: body;
+  }
+
+  .panel__sidebar {
+    grid-area: sidebar;
+  }
 }
 
 .panel__cover-photo {

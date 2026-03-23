@@ -103,4 +103,12 @@ RSpec.describe Avo::ApplicationHelper do
       expect(helper.body_classes).to include("resource-new-view")
     end
   end
+
+  describe "#container_classes" do
+    it "falls back to large for unrecognized views" do
+      helper.instance_variable_set(:@view, "preview")
+
+      expect(helper.container_classes).to eq("container-large")
+    end
+  end
 end

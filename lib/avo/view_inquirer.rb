@@ -10,6 +10,7 @@ module Avo
 
       @display = in? DISPLAY_VIEWS
       @form = in? FORM_VIEWS
+      @single = in? [*FORM_VIEWS, :show].compact.uniq
     end
 
     def display?
@@ -18,6 +19,10 @@ module Avo
 
     def form?
       @form
+    end
+
+    def single?
+      @single
     end
 
     # To avoid breaking changes we allow the comparison with symbols

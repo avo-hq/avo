@@ -1,98 +1,81 @@
 require "rails_helper"
 
-RSpec.feature "FullWidthContainer", type: :feature do
+RSpec.feature "ContainerWidth", type: :feature do
   let(:user) { create :user }
-  let(:contained_large_classes) { "container-large" }
-  let(:contained_small_classes) { "container-small" }
-  let(:is_contained_large) { is_expected.to include contained_large_classes }
-  let(:is_contained_small) { is_expected.to include contained_small_classes }
-  let(:is_not_contained) { is_expected.not_to include contained_large_classes }
+
   subject do
     visit url
     page.body
   end
 
-  describe "full_width_container = true" do
-    before do
-      Avo.configuration.full_width_container = true
+  describe "default (no container_width set)" do
+    context "index" do
+      let(:url) { "/admin/resources/users" }
+      it { is_expected.to include "container-large" }
     end
 
-    describe "full_width_index_view = true" do
-      before do
-        Avo.configuration.full_width_index_view = true
-      end
-
-      context ".index" do
-        let(:url) { "/admin/resources/users" }
-
-        it { is_not_contained }
-      end
-
-      context ".show" do
-        let(:url) { "/admin/resources/users/#{user.slug}" }
-
-        it { is_not_contained }
-      end
+    context "show" do
+      let(:url) { "/admin/resources/users/#{user.slug}" }
+      it { is_expected.to include "container-small" }
     end
 
-    describe "full_width_index_view = false" do
-      before do
-        Avo.configuration.full_width_index_view = false
-      end
-
-      context ".index" do
-        let(:url) { "/admin/resources/users" }
-
-        it { is_not_contained }
-      end
-
-      context ".show" do
-        let(:url) { "/admin/resources/users/#{user.slug}" }
-
-        it { is_not_contained }
-      end
+    context "edit" do
+      let(:url) { "/admin/resources/users/#{user.slug}/edit" }
+      it { is_expected.to include "container-small" }
     end
   end
 
-  describe "full_width_container = false" do
-    before do
-      Avo.configuration.full_width_container = false
+  describe "symbol :full — applies to all views" do
+    before { Avo.configuration.container_width = :full }
+    after { Avo.configuration.container_width = nil }
+
+    context "index" do
+      let(:url) { "/admin/resources/users" }
+      it { is_expected.to include "container-full-width" }
+      it { is_expected.not_to include "container-large" }
     end
 
-    describe "full_width_index_view = false" do
-      before do
-        Avo.configuration.full_width_index_view = false
-      end
-
-      context ".index" do
-        let(:url) { "/admin/resources/users" }
-
-        it { is_contained_large }
-      end
-
-      context ".show" do
-        let(:url) { "/admin/resources/users/#{user.slug}" }
-
-        it { is_contained_small }
-      end
+    context "show" do
+      let(:url) { "/admin/resources/users/#{user.slug}" }
+      it { is_expected.to include "container-full-width" }
     end
 
-    describe "full_width_index_view = true" do
-      before do
-        Avo.configuration.full_width_index_view = true
-      end
+    context "edit" do
+      let(:url) { "/admin/resources/users/#{user.slug}/edit" }
+      it { is_expected.to include "container-full-width" }
+    end
+  end
 
-      context ".index" do
-        let(:url) { "/admin/resources/users" }
+  describe "hash { index: :full } — only index is full" do
+    before { Avo.configuration.container_width = {index: :full} }
+    after { Avo.configuration.container_width = nil }
 
-        it { is_not_contained }
-      end
+    context "index" do
+      let(:url) { "/admin/resources/users" }
+      it { is_expected.to include "container-full-width" }
+      it { is_expected.not_to include "container-large" }
+    end
 
-      context ".show" do
-        let(:url) { "/admin/resources/users/#{user.slug}" }
+    context "show" do
+      let(:url) { "/admin/resources/users/#{user.slug}" }
+      it { is_expected.to include "container-small" }
+      it { is_expected.not_to include "container-full-width" }
+    end
+  end
 
-        it { is_contained_small }
-      end
+  describe "group alias { single: :full } — everything but index is full" do
+    before { Avo.configuration.container_width = {single: :full} }
+    after { Avo.configuration.container_width = nil }
+
+    context "index" do
+      let(:url) { "/admin/resources/users" }
+      it { is_expected.to include "container-large" }
+      it { is_expected.not_to include "container-full-width" }
+    end
+
+    context "show" do
+      let(:url) { "/admin/resources/users/#{user.slug}" }
+      it { is_expected.to include "container-full-width" }
     end
   end
 end
