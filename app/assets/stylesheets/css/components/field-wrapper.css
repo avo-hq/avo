@@ -1,9 +1,9 @@
 .field-wrapper {
-  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 min-h-12 w-full grow-0 text-ellipsis overflow-auto;
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 w-full grow-0 text-ellipsis overflow-auto;
 }
 
 .field-wrapper__label {
-  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-52 pt-2;
+  @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-52 min-h-10;
 }
 
 .field-wrapper__help {
@@ -11,7 +11,7 @@
 }
 
 .field-wrapper__label-help {
-  @apply text-content-secondary text-xs leading-none font-normal pb-3;
+  @apply text-content-secondary text-xs leading-none font-normal;
 }
 
 .field-wrapper__error {
@@ -27,7 +27,7 @@
 }
 
 .field-wrapper__content {
-  @apply flex-1 flex flex-row px-4;
+  @apply flex-1 flex flex-row px-4 py-1;
 }
 
 .field-wrapper__content-wrapper {
