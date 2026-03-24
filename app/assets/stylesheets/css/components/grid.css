@@ -59,3 +59,19 @@
 .grid-card__description {
   @apply text-content-secondary text-xs font-normal self-stretch leading-4;
 }
+
+@keyframes icon-float {
+  0%, 100% { translate: 0 0; }
+  50%       { translate: 0 -5px; }
+}
+
+.grid-card__icon {
+  @apply absolute size-4 pointer-events-none;
+}
+
+.grid-card__icon--float {
+  animation-name: icon-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+}
