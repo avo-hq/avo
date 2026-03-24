@@ -1,4 +1,4 @@
-<%= tag.div class: class_names("modal", @class, {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}), data: {
+<%= tag.div class: class_names("modal", @class, {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}), tabindex: -1, data: {
   controller: "#{ctrl} modal-size",
   "#{ctrl}-target": "modal",
   "#{ctrl}-close-modal-on-backdrop-click-value": close_modal_on_backdrop_click,
@@ -54,6 +54,7 @@
                       class="modal__close-button"
                       data-action="click-><%= ctrl %>#closeModal"
                       aria-label="<%= t('avo.close') %>"
+                      tabindex="-1"
                     >
                       <%= helpers.svg "heroicons/outline/x-mark", class: "size-5" %>
                     </button>

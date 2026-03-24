@@ -6,49 +6,28 @@ import 'mapkick/bundle'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import { Turbo } from '@hotwired/turbo-rails'
+import { install } from '@github/hotkey'
 import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
-import { eventTargetIsTypingField } from './js/keyboard_context'
+import { installGlobalHotkeys } from './js/global_hotkeys'
 
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-confirm'
 import './js/custom-stream-actions'
 
+function installHotkeys(root = document) {
+  root.querySelectorAll('[data-hotkey]').forEach((el) => {
+    install(el)
+  })
+}
+
 window.Avo.localStorage = new LocalStorageService()
 
 window.Turbolinks = Turbo
 
-let scrollTop = null
-let rPressCount = 0
-let rPressTimer = null
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'r' && !eventTargetIsTypingField(event)) {
-    rPressCount += 1
-    clearTimeout(rPressTimer)
-    rPressTimer = setTimeout(() => { rPressCount = 0 }, 500)
-
-    if (rPressCount >= 3) {
-      rPressCount = 0
-      scrollTop = document.scrollingElement.scrollTop
-      window.StreamActions.turbo_reload()
-    }
-  }
-})
-
-// Add the shift-pressed class to the body when the shift key is pressed
-document.addEventListener('keydown', (event) => {
-  if (event.shiftKey) {
-    document.body.classList.add('shift-pressed')
-  }
-})
-// Remove the shift-pressed class from the body when the shift key is released
-document.addEventListener('keyup', (event) => {
-  if (!event.shiftKey) {
-    document.body.classList.remove('shift-pressed')
-  }
-})
+installGlobalHotkeys()
 
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
@@ -88,16 +67,12 @@ document.addEventListener('turbo:before-stream-render', () => {
   }, 1)
 })
 
+document.addEventListener('turbo:frame-render', (e) => installHotkeys(e.target))
+
 document.addEventListener('turbo:load', () => {
+  installHotkeys()
   initTippy()
 
-  // Restore scroll position after r r r turbo reload
-  if (scrollTop) {
-    setTimeout(() => {
-      document.scrollingElement.scrollTo(0, scrollTop)
-      scrollTop = 0
-    }, 50)
-  }
   setTimeout(() => {
     document.body.classList.remove('turbo-loading')
   }, 1)

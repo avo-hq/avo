@@ -1,8 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
-import { eventTargetIsTypingField } from '../keyboard_context'
-
 // Detect whether an element is in view inside a parent element.
 // Original here: https://gist.github.com/jjmu15/8646226
 function isInViewport(element, parentElement) {
@@ -74,7 +72,7 @@ export default class extends Controller {
 
     this.handleToggleShortcut = (event) => {
       if (event.repeat || event.defaultPrevented) return
-      if (eventTargetIsTypingField(event)) return
+      if (event.target?.closest('input, textarea, select, [contenteditable]')) return
       if (!(event.metaKey || event.ctrlKey) || event.altKey || event.key !== '\\') return
 
       event.preventDefault()

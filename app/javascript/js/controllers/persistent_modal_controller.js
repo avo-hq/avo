@@ -37,6 +37,7 @@ export default class extends BaseModalController {
   openModal() {
     this.modalTarget.removeAttribute('hidden')
     this.addModalOpen()
+    this.modalTarget.focus()
   }
 
   toggleModal() {

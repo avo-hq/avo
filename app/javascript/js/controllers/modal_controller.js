@@ -10,6 +10,7 @@ export default class extends BaseModalController {
   connect() {
     this.connectModal()
     this.addModalOpen()
+    this.modalTarget.focus()
   }
 
   disconnect() {

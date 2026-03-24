@@ -25,14 +25,14 @@ export default class extends Controller {
   // -- shared actions -------------------------------------------------------
 
   handleKeydown(event) {
-    if (event.key === 'Escape' && this.isOpen() && this.closeModalOnBackdropClickValue) {
+    if (event.key === 'Escape' && this.isOpen()) {
       this.closeModal()
     }
   }
 
   /** Backdrop click action — wired via data-action="click->…#close" */
   close(event) {
-    if (event.target === this.backdropTarget && !this.closeModalOnBackdropClickValue) return
+    if (event.target === this.backdropTarget) return
 
     this.closeModal()
   }
