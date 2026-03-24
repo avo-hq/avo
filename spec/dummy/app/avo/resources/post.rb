@@ -29,6 +29,10 @@ class Avo::Resources::Post < Avo::BaseResource
     main_app.post_path(record)
   }
 
+  self.cover = {
+    source: :cover
+  }
+
   self.discreet_information = [
     :timestamps,
     {
@@ -84,10 +88,10 @@ class Avo::Resources::Post < Avo::BaseResource
       end
       sidebar do
         card title: "Post meta" do
-          field :is_featured, as: :boolean, visible: -> do
+          field :is_featured, name: "Featured", as: :boolean, visible: -> do
             Avo::Current.context[:user].is_admin?
           end
-          field :is_published, as: :boolean do
+          field :is_published, name: "Published", as: :boolean do
             record.published_at.present?
           end
         end

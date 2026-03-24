@@ -106,8 +106,7 @@ Avo.configure do |config|
   # config.timezone = 'UTC'
   # config.currency = 'USD'
   # config.hide_layout_when_printing = false
-  # config.full_width_container = false
-  # config.full_width_index_view = false
+  # config.container_width = :large # :full, :large, or :small. Hash for per-view: { index: :full, single: :small }
   # config.use_stacked_fields = false
   # config.search_debounce = 300
   # config.view_component_path = "app/components"

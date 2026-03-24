@@ -36,7 +36,7 @@ Avo.configure do |config|
 
   ## == Customization ==
   config.id_links_to_resource = true
-  config.full_width_container = false
+  # config.container_width = :small
   config.use_stacked_fields = false
   config.buttons_on_form_footers = false
   config.resource_default_view = :show

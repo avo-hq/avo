@@ -1,3 +1,17 @@
-<div class="absolute bg-gray-50 size-full content-center">
-  <%= image_tag Avo.configuration.branding.placeholder, class: "relative h-20 text-gray-400 mx-auto", loading: :lazy %>
+<div
+  class="absolute bg-secondary dark:bg-tertiary size-full content-center"
+  data-controller="grid-cover-empty-state"
+  data-action="mousemove->grid-cover-empty-state#mousemove mouseleave->grid-cover-empty-state#mouseleave"
+>
+  <%# Decorative icons — purely visual, hidden from screen readers %>
+  <% icon_items.each do |icon| %>
+    <span
+      aria-hidden="true"
+      class="grid-card__icon grid-card__icon--float"
+      data-grid-cover-empty-state-target="icon"
+      style="<%= icon[:v_edge] %>: <%= icon[:v_px] %>px; <%= icon[:h_edge] %>: <%= icon[:h_px] %>px; rotate: <%= icon[:rotation] %>deg; animation-duration: <%= icon[:duration] %>s; animation-delay: <%= icon[:delay] %>s; color: color-mix(in srgb, var(--color-content) <%= icon[:intensity] %>%, transparent);"
+    ><%= helpers.svg icon[:path], class: "size-4" %></span>
+  <% end %>
+
+  <span data-grid-cover-empty-state-target="icon" data-repulsion-scale="0.125" class="grid-card__avocado"><%= svg Avo.configuration.branding.placeholder, class: "mx-auto h-20 text-content-secondary" %></span>
 </div>

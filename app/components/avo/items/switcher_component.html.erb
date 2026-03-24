@@ -30,12 +30,10 @@
   <%= render Avo::Collaborate::TimelineComponent.new(resource: @resource) %>
 <% elsif item.is_header? %>
   <% if @resource.cover.present? && @resource.cover.visible_in_current_view? %>
-    <div class="mb-6">
-      <%= render Avo::CoverComponent.new cover: @resource.cover %>
-    </div>
+    <%= render Avo::CoverComponent.new cover: @resource.cover %>
   <% end %>
 
-  <%= render ui.panel_header(title:, description: @resource.description, index:, class: "!-mb-8") do |header| %>
+  <%= render ui.panel_header(title:, description: @resource.description, index:) do |header| %>
     <% header.with_controls do %>
       <% controls.each do |control| %>
         <%= render_control control %>

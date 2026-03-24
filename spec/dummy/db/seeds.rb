@@ -48,8 +48,8 @@ end
 User.create(
   first_name: "Avo",
   last_name: "Cado",
-  email: "avo@avohq.io",
-  password: ENV["AVO_ADMIN_PASSWORD"] || :secret,
+  email: "hi@avohq.io",
+  password: ENV["AVO_ADMIN_PASSWORD"] || :secreto,
   birthday: "2020-03-28",
   roles: {
     admin: true,

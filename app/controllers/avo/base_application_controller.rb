@@ -247,8 +247,9 @@ module Avo
       end
     end
 
-    def mark_container_as_full_width
-      @container_full_width = true
+    def mark_container_width(width)
+      raise ArgumentError, "Invalid container width: #{width}. Must be one of #{Avo::Configuration::VALID_CONTAINER_WIDTHS}" unless Avo::Configuration::VALID_CONTAINER_WIDTHS.include?(width.to_sym)
+      @container_size = width.to_s
     end
 
     def add_initial_breadcrumbs

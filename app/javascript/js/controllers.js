@@ -19,6 +19,7 @@ import DropdownController from './controllers/dropdown_menu_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
+import GridCoverEmptyStateController from './controllers/grid_cover_empty_state_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import HotkeyController from './controllers/hotkey_controller'
 import HotkeyTriggerController from './controllers/hotkey_trigger_controller'
@@ -77,6 +78,7 @@ application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
 application.register('filter', FilterController)
 application.register('form', FormController)
+application.register('grid-cover-empty-state', GridCoverEmptyStateController)
 application.register('hidden-input', HiddenInputController)
 application.register('hotkey', HotkeyController)
 application.register('hotkey-trigger', HotkeyTriggerController)

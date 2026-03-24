@@ -23,8 +23,6 @@ module Avo
     attr_accessor :authenticate
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
-    attr_accessor :full_width_container
-    attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
     attr_accessor :hide_layout_when_printing
@@ -64,6 +62,58 @@ module Avo
     attr_writer :body_classes
     attr_accessor :sidebar_toggle_visible
 
+    unless defined?(CONTAINER_WIDTH_DEFAULTS)
+      CONTAINER_WIDTH_DEFAULTS = {
+        index: :large,
+        show: :small,
+        new: :small,
+        edit: :small,
+        create: :small,
+        update: :small
+      }.freeze
+
+      VALID_CONTAINER_WIDTHS = %i[full large small].freeze
+
+      CONTAINER_WIDTH_GROUPS = {
+        forms: %i[new edit create update],
+        display: %i[index show],
+        single: %i[show new edit create update]
+      }.freeze
+    end
+
+    def container_width=(value)
+      case value
+      when NilClass
+        @container_width = nil
+      when Symbol
+        raise ArgumentError, "Invalid container width: #{value}. Must be one of #{VALID_CONTAINER_WIDTHS}" unless VALID_CONTAINER_WIDTHS.include?(value)
+        @container_width = CONTAINER_WIDTH_DEFAULTS.transform_values { value }
+      when Hash
+        valid_keys = CONTAINER_WIDTH_DEFAULTS.keys + CONTAINER_WIDTH_GROUPS.keys
+        invalid_keys = value.keys.reject { |k| valid_keys.include?(k) }
+        raise ArgumentError, "Invalid container width keys: #{invalid_keys}. Valid keys: #{valid_keys}" if invalid_keys.any?
+
+        invalid_values = value.values.reject { |v| VALID_CONTAINER_WIDTHS.include?(v) }
+        raise ArgumentError, "Invalid container widths: #{invalid_values}" if invalid_values.any?
+
+        # Expand group aliases first
+        expanded_aliases = value
+          .select { |k, _| CONTAINER_WIDTH_GROUPS.key?(k) }
+          .each_with_object({}) do |(alias_key, width), result|
+            CONTAINER_WIDTH_GROUPS[alias_key].each { |view| result[view] = width }
+          end
+
+        # Specific keys win over group aliases
+        specific_keys = value.reject { |k, _| CONTAINER_WIDTH_GROUPS.key?(k) }
+
+        @container_width = CONTAINER_WIDTH_DEFAULTS.merge(expanded_aliases).merge(specific_keys)
+      end
+    end
+
+    def container_width
+      @container_width || CONTAINER_WIDTH_DEFAULTS
+    end
+
     def initialize
       @root_path = "/avo"
       @app_name = ::Rails.application.class.to_s.split("::").first.underscore.humanize(keep_id_suffix: true)
@@ -88,8 +138,6 @@ module Avo
         destroy: "destroy?"
       }
       @id_links_to_resource = false
-      @full_width_container = false
-      @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
       @persistence = {
         driver: nil
