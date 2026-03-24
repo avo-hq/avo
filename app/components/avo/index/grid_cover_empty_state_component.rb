@@ -30,58 +30,58 @@ class Avo::Index::GridCoverEmptyStateComponent < Avo::BaseComponent
   LAYOUTS = [
     # Layout 1 — scattered, original feel
     [
-      {v_edge: "top",    v_px: 12, h_edge: "inset-inline-start", h_px: 16, rotation:  12},
-      {v_edge: "top",    v_px: 16, h_edge: "inset-inline-end",   h_px: 20, rotation: -12},
-      {v_edge: "top",    v_px: 72, h_edge: "inset-inline-start", h_px: 12, rotation:   0},
-      {v_edge: "bottom", v_px: 12, h_edge: "inset-inline-start", h_px: 32, rotation:   6},
-      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-start", h_px: 72, rotation:  -6},
-      {v_edge: "bottom", v_px: 16, h_edge: "inset-inline-end",   h_px: 20, rotation:  12},
-      {v_edge: "top",    v_px: 12, h_edge: "inset-inline-end",   h_px: 40, rotation:  -6},
-      {v_edge: "bottom", v_px: 12, h_edge: "inset-inline-end",   h_px: 48, rotation:   6}
+      {v_edge: "top",    v_px: 28, h_edge: "inset-inline-start", h_px: 28, rotation:  12},
+      {v_edge: "top",    v_px: 32, h_edge: "inset-inline-end",   h_px: 32, rotation: -12},
+      {v_edge: "top",    v_px: 72, h_edge: "inset-inline-start", h_px: 24, rotation:   0},
+      {v_edge: "bottom", v_px: 28, h_edge: "inset-inline-start", h_px: 44, rotation:   6},
+      {v_edge: "top",    v_px: 40, h_edge: "inset-inline-start", h_px: 72, rotation:  -6},
+      {v_edge: "bottom", v_px: 32, h_edge: "inset-inline-end",   h_px: 32, rotation:  12},
+      {v_edge: "top",    v_px: 28, h_edge: "inset-inline-end",   h_px: 52, rotation:  -6},
+      {v_edge: "bottom", v_px: 28, h_edge: "inset-inline-end",   h_px: 60, rotation:   6}
     ],
     # Layout 2 — corners and mid-edges
     [
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-start", h_px:  8, rotation:  -8},
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-end",   h_px:  8, rotation:   8},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-start", h_px:  8, rotation:   8},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-end",   h_px:  8, rotation:  -8},
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-start", h_px: 56, rotation:   0},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-start", h_px: 56, rotation:   0},
-      {v_edge: "top",    v_px: 48, h_edge: "inset-inline-start", h_px:  8, rotation:  12},
-      {v_edge: "top",    v_px: 48, h_edge: "inset-inline-end",   h_px:  8, rotation: -12}
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-start", h_px: 20, rotation:  -8},
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-end",   h_px: 20, rotation:   8},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-start", h_px: 20, rotation:   8},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-end",   h_px: 20, rotation:  -8},
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-start", h_px: 68, rotation:   0},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-start", h_px: 68, rotation:   0},
+      {v_edge: "top",    v_px: 60, h_edge: "inset-inline-start", h_px: 20, rotation:  12},
+      {v_edge: "top",    v_px: 60, h_edge: "inset-inline-end",   h_px: 20, rotation: -12}
     ],
     # Layout 3 — diagonal scatter
     [
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-start", h_px: 24, rotation:  15},
-      {v_edge: "top",    v_px: 32, h_edge: "inset-inline-end",   h_px: 12, rotation: -10},
-      {v_edge: "top",    v_px: 56, h_edge: "inset-inline-start", h_px: 16, rotation:   5},
-      {v_edge: "bottom", v_px: 56, h_edge: "inset-inline-end",   h_px: 16, rotation:  -5},
-      {v_edge: "bottom", v_px: 32, h_edge: "inset-inline-start", h_px: 12, rotation:  10},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-end",   h_px: 24, rotation: -15},
-      {v_edge: "top",    v_px: 20, h_edge: "inset-inline-start", h_px: 72, rotation:   8},
-      {v_edge: "bottom", v_px: 20, h_edge: "inset-inline-end",   h_px: 48, rotation:  -8}
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-start", h_px: 36, rotation:  15},
+      {v_edge: "top",    v_px: 48, h_edge: "inset-inline-end",   h_px: 24, rotation: -10},
+      {v_edge: "top",    v_px: 66, h_edge: "inset-inline-start", h_px: 28, rotation:   5},
+      {v_edge: "bottom", v_px: 66, h_edge: "inset-inline-end",   h_px: 28, rotation:  -5},
+      {v_edge: "bottom", v_px: 48, h_edge: "inset-inline-start", h_px: 24, rotation:  10},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-end",   h_px: 36, rotation: -15},
+      {v_edge: "top",    v_px: 36, h_edge: "inset-inline-start", h_px: 72, rotation:   8},
+      {v_edge: "bottom", v_px: 36, h_edge: "inset-inline-end",   h_px: 60, rotation:  -8}
     ],
     # Layout 4 — even frame
     [
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-start", h_px: 32, rotation:  12},
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-end",   h_px: 32, rotation: -12},
-      {v_edge: "top",    v_px: 48, h_edge: "inset-inline-start", h_px:  8, rotation:   0},
-      {v_edge: "top",    v_px: 48, h_edge: "inset-inline-end",   h_px:  8, rotation:   0},
-      {v_edge: "bottom", v_px: 48, h_edge: "inset-inline-start", h_px:  8, rotation:   6},
-      {v_edge: "bottom", v_px: 48, h_edge: "inset-inline-end",   h_px:  8, rotation:  -6},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-start", h_px: 32, rotation: -12},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-end",   h_px: 32, rotation:  12}
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-start", h_px: 44, rotation:  12},
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-end",   h_px: 44, rotation: -12},
+      {v_edge: "top",    v_px: 60, h_edge: "inset-inline-start", h_px: 20, rotation:   0},
+      {v_edge: "top",    v_px: 60, h_edge: "inset-inline-end",   h_px: 20, rotation:   0},
+      {v_edge: "bottom", v_px: 60, h_edge: "inset-inline-start", h_px: 20, rotation:   6},
+      {v_edge: "bottom", v_px: 60, h_edge: "inset-inline-end",   h_px: 20, rotation:  -6},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-start", h_px: 44, rotation: -12},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-end",   h_px: 44, rotation:  12}
     ],
     # Layout 5 — asymmetric cluster
     [
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-start", h_px:  8, rotation:   8},
-      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-start", h_px: 40, rotation:  -8},
-      {v_edge: "top",    v_px:  8, h_edge: "inset-inline-end",   h_px: 24, rotation:  12},
-      {v_edge: "top",    v_px: 56, h_edge: "inset-inline-end",   h_px:  8, rotation:  -5},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-start", h_px: 24, rotation: -12},
-      {v_edge: "bottom", v_px: 40, h_edge: "inset-inline-start", h_px:  8, rotation:   8},
-      {v_edge: "bottom", v_px:  8, h_edge: "inset-inline-end",   h_px:  8, rotation:  10},
-      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-end",   h_px: 40, rotation: -10}
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-start", h_px: 20, rotation:   8},
+      {v_edge: "top",    v_px: 40, h_edge: "inset-inline-start", h_px: 52, rotation:  -8},
+      {v_edge: "top",    v_px: 24, h_edge: "inset-inline-end",   h_px: 36, rotation:  12},
+      {v_edge: "top",    v_px: 66, h_edge: "inset-inline-end",   h_px: 20, rotation:  -5},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-start", h_px: 36, rotation: -12},
+      {v_edge: "bottom", v_px: 52, h_edge: "inset-inline-start", h_px: 20, rotation:   8},
+      {v_edge: "bottom", v_px: 24, h_edge: "inset-inline-end",   h_px: 20, rotation:  10},
+      {v_edge: "bottom", v_px: 40, h_edge: "inset-inline-end",   h_px: 52, rotation: -10}
     ]
   ].freeze
 
