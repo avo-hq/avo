@@ -75,3 +75,11 @@
   animation-iteration-count: infinite;
   animation-fill-mode: none;
 }
+
+.grid-card__icon--circle {
+  top: 50%;
+  inset-inline-start: 50%;
+  margin-top: -8px;
+  margin-inline-start: -8px;
+  transform: rotate(var(--icon-angle, 0deg)) translateY(-54px) rotate(calc(-1 * var(--icon-angle, 0deg) + var(--icon-tilt, 0deg)));
+}
