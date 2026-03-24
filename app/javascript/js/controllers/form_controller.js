@@ -17,6 +17,8 @@ export default class extends Controller {
   }
 
   submit() {
+    // return if event.key is undefined preventing the form submit on autocomplete event
+    if (!event.key) return
     if (!this.allRequiredFieldsFilled()) return
 
     this.element.requestSubmit()
