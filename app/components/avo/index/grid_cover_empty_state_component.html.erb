@@ -1,29 +1,12 @@
 <div class="absolute bg-secondary dark:bg-tertiary size-full content-center">
-  <%# Decorative icons arranged in a circle — purely visual, hidden from screen readers %>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:0deg;--icon-tilt:12deg;animation-duration:3.8s;animation-delay:0s;color:color-mix(in srgb,var(--color-content) 15%,transparent)">
-    <%= helpers.svg "tabler/outline/star", class: "size-4" %>
-  </span>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:45deg;--icon-tilt:-12deg;animation-duration:4.2s;animation-delay:0.4s;color:color-mix(in srgb,var(--color-content) 18%,transparent)">
-    <%= helpers.svg "tabler/outline/bolt", class: "size-4" %>
-  </span>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:90deg;--icon-tilt:0deg;animation-duration:3.5s;animation-delay:0.8s;color:color-mix(in srgb,var(--color-content) 13%,transparent)">
-    <%= helpers.svg "tabler/outline/clock", class: "size-4" %>
-  </span>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:135deg;--icon-tilt:6deg;animation-duration:4.6s;animation-delay:1.2s;color:color-mix(in srgb,var(--color-content) 20%,transparent)">
-    <%= helpers.svg "tabler/outline/heart", class: "size-4" %>
-  </span>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:180deg;--icon-tilt:-6deg;animation-duration:3.2s;animation-delay:1.6s;color:color-mix(in srgb,var(--color-content) 16%,transparent)">
-    <%= helpers.svg "tabler/outline/leaf", class: "size-4" %>
-  </span>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:225deg;--icon-tilt:12deg;animation-duration:4.8s;animation-delay:2.0s;color:color-mix(in srgb,var(--color-content) 14%,transparent)">
-    <%= helpers.svg "tabler/outline/sparkles", class: "size-4" %>
-  </span>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:270deg;--icon-tilt:-6deg;animation-duration:3.6s;animation-delay:2.4s;color:color-mix(in srgb,var(--color-content) 19%,transparent)">
-    <%= helpers.svg "tabler/outline/rocket", class: "size-4" %>
-  </span>
-  <span aria-hidden="true" class="grid-card__icon grid-card__icon--float grid-card__icon--circle" style="--icon-angle:315deg;--icon-tilt:6deg;animation-duration:4.4s;animation-delay:2.8s;color:color-mix(in srgb,var(--color-content) 17%,transparent)">
-    <%= helpers.svg "tabler/outline/diamond", class: "size-4" %>
-  </span>
+  <%# Decorative icons — purely visual, hidden from screen readers %>
+  <% icon_items.each do |icon| %>
+    <span
+      aria-hidden="true"
+      class="grid-card__icon grid-card__icon--float"
+      style="<%= icon[:v_edge] %>: <%= icon[:v_px] %>px; <%= icon[:h_edge] %>: <%= icon[:h_px] %>px; rotate: <%= icon[:rotation] %>deg; animation-duration: <%= icon[:duration] %>s; animation-delay: <%= icon[:delay] %>s; color: color-mix(in srgb, var(--color-content) <%= icon[:intensity] %>%, transparent);"
+    ><%= helpers.svg icon[:path], class: "size-4" %></span>
+  <% end %>
 
   <%= svg Avo.configuration.branding.placeholder, class: "relative mx-auto h-20 text-content-secondary" %>
 </div>
