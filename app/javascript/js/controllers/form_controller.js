@@ -34,7 +34,9 @@ export default class extends Controller {
   }
 
   isFieldFilled(wrapper) {
-   const input = wrapper.querySelector(
+    // Find the real Rails form input (example name format: "fish[name]")
+    // check visible inputs, fall back to hidden inputs for complex fields (trix, stars, etc.)
+    const input = wrapper.querySelector(
       'select[name*="["], input[name*="["]:not([type="hidden"]), textarea[name*="["]'
     ) || wrapper.querySelector('input[type="hidden"][name*="["]')
 

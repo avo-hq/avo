@@ -72,6 +72,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
       **@data
     }
 
+    # Mark required fields on edit/new views so the form controller can validate presence
     attributes[:required] = true if @field.is_required? && on_edit?
 
     # Fetch the data attributes off the html option
