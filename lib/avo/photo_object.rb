@@ -21,6 +21,7 @@ class Avo::PhotoObject
 
     if options[:source].is_a?(Symbol)
       return unless record.present?
+      return if record.new_record?
 
       record.send(options[:source])
     elsif options[:source].respond_to?(:call)
