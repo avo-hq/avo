@@ -82,6 +82,6 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   def build_link_data(data, hotkey)
     return data if hotkey.blank?
 
-    hotkey_data("keydown.#{hotkey}@window->hotkey-trigger#click", **data)
+    hotkey_data("keydown.#{hotkey.to_s.first}@window->hotkey-trigger#click", **data)
   end
 end

@@ -7,7 +7,7 @@
     <% end %>
     <span><%= @label %></span>
     <% if @hotkey.present? %>
-      <kbd class="search-input__shortcut ms-auto"><%= @hotkey.upcase %></kbd>
+      <kbd class="search-input__shortcut ms-auto"><%= @hotkey.to_s.first.upcase %></kbd>
     <% end %>
     <% if @target == :_blank %>
       <%= helpers.svg("tabler/outline/external-link", class: "sidebar-link__external-icon sidebar-icon") %>
@@ -30,7 +30,7 @@
         <%= link_caller.send link_method, item.path, class: "sidebar-subitem #{subitem_bar_class(index)}", active: @active, target: item.target, data: subitem_data(item), disabled: @disabled, "aria-disabled": @disabled, **item.args do %>
           <span><%= item.try(:label).presence || item.try(:name).presence %></span>
           <% if item.try(:hotkey).present? %>
-            <kbd class="search-input__shortcut ms-auto"><%= item.hotkey.upcase %></kbd>
+            <kbd class="search-input__shortcut ms-auto"><%= item.hotkey.to_s.first.upcase %></kbd>
           <% end %>
         <% end %>
       <% else %>
