@@ -1,6 +1,6 @@
-<turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative flex w-full flex-col">
+<turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative flex w-full flex-col @container">
   <%= content_tag :div,
-    class:"grid-wrapper",
+    class: "grid-wrapper",
     data: {
       component_name: self.class.to_s.underscore,
       selected_resources_name: @resource.model_key,

@@ -14,9 +14,11 @@ import CopyToClipboardController from './controllers/copy_to_clipboard_controlle
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
+import DropdownController from './controllers/dropdown_menu_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
+import GridCoverEmptyStateController from './controllers/grid_cover_empty_state_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
@@ -55,7 +57,6 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
-import DropdownController from './controllers/dropdown_menu_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
@@ -72,6 +73,7 @@ application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
 application.register('filter', FilterController)
 application.register('form', FormController)
+application.register('grid-cover-empty-state', GridCoverEmptyStateController)
 application.register('hidden-input', HiddenInputController)
 application.register('input-autofocus', InputAutofocusController)
 application.register('item-select-all', ItemSelectAllController)

@@ -158,7 +158,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_render_scopes?
-    defined?(Avo::Advanced)
+    defined?(Avo::Advanced) && @scopes.present?
   end
 
   def back_path
