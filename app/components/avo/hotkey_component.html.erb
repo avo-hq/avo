@@ -1,49 +1,29 @@
-<%= tag.div(
-      class: "hotkey",
-      data: {hotkey_target: "panel"},
-      hidden: true
-    ) do %>
-  <div class="hotkey__backdrop" data-action="click->hotkey#close"></div>
+<%= render Avo::ModalComponent.new(
+  class: "hotkey",
+  title: "Keyboard shortcuts",
+  width: :xl,
+  hidden: true,
+  behavior: :persistent
+) do %>
+  <div class="hotkey__grid">
+    <% sections.each do |section| %>
+      <section class="hotkey__section" aria-labelledby="<%= section[:id] %>">
+        <h3 class="hotkey__section-title" id="<%= section[:id] %>">
+          <%= section[:title] %>
+        </h3>
 
-  <div class="hotkey__frame">
-    <div class="card">
-      <div class="card__wrapper">
-        <div class="card__header hotkey__modal-header">
-          <h2 class="card__title">Keyboard shortcuts</h2>
-          <%= tag.button type: :button, class: "hotkey__close", data: {action: "click->hotkey#close"}, aria: {label: "Close shortcuts panel"} do %>
-            <%= helpers.svg "tabler/outline/x", class: "size-5" %>
+        <ul class="hotkey__section-body">
+          <% section[:shortcuts].each do |shortcut| %>
+            <li class="hotkey__row">
+              <span class="hotkey__action"><%= shortcut[:action] %></span>
+
+              <%= tag.span class: "hotkey__keys", **(shortcut[:keys_aria_label].present? ? {aria: {label: shortcut[:keys_aria_label]}} : {}) do %>
+                <%= render_shortcut_keys(shortcut) %>
+              <% end %>
+            </li>
           <% end %>
-        </div>
-
-        <div class="card__body hotkey__modal-body">
-          <div class="hotkey__grid">
-            <% sections.each do |section| %>
-              <section class="hotkey__section" aria-labelledby="<%= section[:id] %>">
-                <div class="card card--compact-header">
-                  <div class="card__wrapper">
-                    <div class="card__header">
-                      <h3 class="card__title hotkey__section-title" id="<%= section[:id] %>">
-                        <%= section[:title] %>
-                      </h3>
-                    </div>
-
-                    <ul class="card__body hotkey__section-body">
-                      <% section[:shortcuts].each do |shortcut| %>
-                        <li class="hotkey__row">
-                          <span class="hotkey__action"><%= shortcut[:action] %></span>
-                          <%= tag.span class: "hotkey__keys", **(shortcut[:keys_aria_label].present? ? {aria: {label: shortcut[:keys_aria_label]}} : {}) do %>
-                            <%= render_shortcut_keys(shortcut) %>
-                          <% end %>
-                        </li>
-                      <% end %>
-                    </ul>
-                  </div>
-                </div>
-              </section>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
+        </ul>
+      </section>
+    <% end %>
   </div>
 <% end %>

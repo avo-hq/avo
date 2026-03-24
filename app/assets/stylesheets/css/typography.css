@@ -18,13 +18,23 @@ h5 {
   @apply text-lg;
 }
 
+kbd {
+  @apply inline-flex min-w-5 items-center justify-center rounded-sm border border-secondary bg-secondary px-1 text-xs font-semibold;
+
+  box-shadow: var(--box-shadow-search-input-shortcut);
+}
+
 @layer base {
   a {
     color: var(--color-info-content);
 
     &:active,
     &:hover {
-      color: color-mix(in oklab, var(--color-info-content), var(--color-content) 30%);
+      color: color-mix(
+        in oklab,
+        var(--color-info-content),
+        var(--color-content) 30%
+      );
     }
 
     &:focus-visible {

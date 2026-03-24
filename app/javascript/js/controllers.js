@@ -1,7 +1,6 @@
 import { application } from './application'
 
 import ActionController from './controllers/action_controller'
-import ConfirmDialogController from './controllers/confirm_dialog_controller'
 import ActionsOverflowController from './controllers/actions_overflow_controller'
 import ActionsPickerController from './controllers/actions_picker_controller'
 import AttachmentsController from './controllers/attachments_controller'
@@ -11,10 +10,12 @@ import CardFiltersController from './controllers/card_filters_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import ColorSchemeSwitcherController from './controllers/color_scheme_switcher_controller'
+import ConfirmDialogController from './controllers/confirm_dialog_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
+import DropdownController from './controllers/dropdown_menu_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
@@ -36,6 +37,7 @@ import MultipleSelectFilterController from './controllers/multiple_select_filter
 import NestedFormController from './controllers/nested_form_controller'
 import PanelRefreshController from './controllers/fields/panel_refresh_controller'
 import PerPageController from './controllers/per_page_controller'
+import PersistentModalController from './controllers/persistent_modal_controller'
 import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
 import RecordSelectorController from './controllers/record_selector_controller'
@@ -58,7 +60,6 @@ import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
-import DropdownController from './controllers/dropdown_menu_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
@@ -89,6 +90,7 @@ application.register('media-library', MediaLibraryController)
 application.register('menu', MenuController)
 application.register('modal', ModalController)
 application.register('modal-size', ModalSizeController)
+application.register('persistent-modal', PersistentModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('avo-nested-form', NestedFormController)
 application.register('panel-refresh', PanelRefreshController)

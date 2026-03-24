@@ -1,68 +1,40 @@
-.hotkey {
-  @apply fixed inset-0 z-150 flex items-center justify-center overflow-y-auto p-4 sm:p-6;
-}
-
-.hotkey__backdrop {
-  @apply absolute inset-0 bg-black/50;
-}
-
-.hotkey__frame {
-  @apply relative z-10 flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col sm:max-h-[70dvh];
-
-  box-shadow: var(--shadow-modal);
-}
-
-.hotkey__frame .card {
-  @apply max-h-full overflow-hidden;
-}
-
-.hotkey__frame .card__wrapper {
-  @apply flex max-h-full min-h-0 flex-col;
-}
-
-/* Modal shell — extends shared card header/body */
-.hotkey__modal-header {
-  @apply flex-row items-center justify-between gap-4 border-b border-tertiary;
-}
-
-.hotkey__modal-body {
-  @apply min-h-0 grow gap-0 overflow-y-auto p-0;
-}
-
 .hotkey__grid {
-  @apply grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 sm:gap-8;
+  @apply p-6;
+
+  columns: 1;
+  column-gap: theme(spacing.8);
+
+  @media (min-width: theme(screens.sm)) {
+    columns: 2;
+  }
 }
 
 .hotkey__section {
-  @apply min-w-0;
+  @apply min-w-0 mb-10;
+
+  break-inside: avoid;
 }
 
 .hotkey__section-title {
-  @apply text-content-secondary uppercase tracking-wide;
+  @apply text-xs text-content-secondary uppercase tracking-wide mb-4 font-bold;
 }
 
 .hotkey__section-body {
-  @apply m-0 w-full list-none gap-0 p-0;
+  @apply m-0 w-full list-none flex flex-col gap-2 p-0;
 }
 
 .hotkey__row {
-  @apply flex w-full items-start justify-between gap-4 border-b border-tertiary px-4 py-3 last:border-b-0;
+  @apply flex w-full items-start justify-between gap-4 border-b border-tertiary last:border-b-0 leading-6;
 }
 
 .hotkey__action {
-  @apply min-w-0 flex-1 text-base leading-6 text-content;
+  /* @apply min-w-0 flex-1 text-base leading-6 text-content; */
+  /* @apply text-base leading-6 text-content font-bold; */
+  @apply text-sm;
 }
 
 .hotkey__keys {
   @apply flex shrink-0 flex-wrap items-center justify-end gap-x-1.5 gap-y-1.5 pt-0.5;
-}
-
-.hotkey__close {
-  @apply flex items-center justify-center size-8 rounded-md text-content-secondary hover:text-content hover:bg-secondary transition cursor-pointer;
-}
-
-.hotkey__close:hover {
-  @apply rotate-90;
 }
 
 .hotkey__or {
@@ -73,10 +45,6 @@
   @apply inline-flex items-center gap-1.5;
 }
 
-.hotkey__key {
-  @apply inline-flex h-8 min-w-8 items-center justify-center rounded-md border border-tertiary px-2.5 font-mono text-base font-medium leading-6 text-content-secondary shadow-sm bg-background;
-}
-
 .hotkey__key-separator {
-  @apply text-base font-medium leading-6 text-content-secondary;
+  @apply font-medium text-content-secondary;
 }

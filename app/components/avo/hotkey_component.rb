@@ -9,9 +9,9 @@ class Avo::HotkeyComponent < Avo::BaseComponent
           shortcut(action: "Show keyboard shortcuts", keys: ["?"]),
           shortcut(action: "Focus resource search", keys: {mac: ["Cmd", "K"], other: ["Ctrl", "K"]}),
           shortcut(action: "Toggle sidebar", keys: {mac: ["Cmd", "\\"], other: ["Ctrl", "\\"]}),
-          shortcut(action: "Close dialog", keys: ["Esc"]),
+          shortcut(action: "Close modal", keys: ["Esc"]),
           shortcut(
-            action: "Navigate options in the confirmation dialog",
+            action: "Navigate options in the modal",
             any_of: [["↑"], ["↓"]],
             keys_aria_label: "Up arrow or down arrow"
           ),
@@ -19,12 +19,23 @@ class Avo::HotkeyComponent < Avo::BaseComponent
         ]
       ),
       build_section(
-        "Records",
+        "Edit view",
         [
-          shortcut(action: "Save form", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
-          shortcut(action: "Create new record (index view)", keys: ["C"]),
-          shortcut(action: "Edit record (show view)", keys: ["E"]),
-          shortcut(action: "Delete record (show view)", keys: ["D"])
+          shortcut(action: "Submit form", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
+          shortcut(action: "Unfocus field", keys: ["Esc"])
+        ]
+      ),
+      build_section(
+        "Show view",
+        [
+          shortcut(action: "Delete record", keys: ["D"]),
+          shortcut(action: "Edit record", keys: ["E"])
+        ]
+      ),
+      build_section(
+        "Index view",
+        [
+          shortcut(action: "Create new record", keys: ["C"])
         ]
       )
     ]
@@ -91,13 +102,13 @@ class Avo::HotkeyComponent < Avo::BaseComponent
     keys.flat_map.with_index do |key, index|
       [
         (tag.span("+", class: "hotkey__key-separator") if leading_separator || index.positive?),
-        tag.kbd(key, class: "hotkey__key")
+        tag.kbd(key)
       ].compact
     end
   end
 
   def platform_modifier_key
-    tag.kbd class: "hotkey__key" do
+    tag.kbd do
       helpers.safe_join([
         tag.abbr("⌘", title: "Command", class: "no-underline os-pc:hidden"),
         tag.abbr("CTRL", title: "CTRL", class: "no-underline os-mac:hidden")

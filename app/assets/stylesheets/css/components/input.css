@@ -290,12 +290,6 @@
     padding-inline-end: var(--input-icon-offset);
   }
 
-  .search-input__shortcut {
-    @apply text-xs font-semibold py-px px-1 border border-secondary rounded-sm bg-secondary min-w-5 flex items-center justify-center;
-
-    line-height: var(--input-leading);
-    box-shadow: var(--box-shadow-search-input-shortcut);
-  }
 
   /* ==========================================================================
     Range Input
