@@ -1,8 +1,8 @@
 ---
-name: Blank issue
-about: Create a general issue
+name: Avo 4 beta feedback
+about: Share something you've discovered in the Avo 4 beta (bug, feedback, suggestions, etc.)
 title: ''
-labels: ''
+labels: Avo 4, Beta
 assignees: ''
 ---
 
@@ -37,7 +37,8 @@ assignees: ''
   - code samples
   - stack traces
   - console logs
-  - screen recordings -->
+  - screen recordings
+  - etc. -->
 
 ### Screenshots or screen recordings
 <!-- These are the best way to help explain your problem. -->
