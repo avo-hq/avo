@@ -20,6 +20,8 @@ class Avo::PhotoObject
     return unless options.fetch(:source, nil).present?
 
     if options[:source].is_a?(Symbol)
+      return unless record.present?
+
       record.send(options[:source])
     elsif options[:source].respond_to?(:call)
       Avo::ExecutionContext.new(target: options[:source], record:, resource: @resource, view:).handle

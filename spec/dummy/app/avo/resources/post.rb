@@ -29,6 +29,10 @@ class Avo::Resources::Post < Avo::BaseResource
     main_app.post_path(record)
   }
 
+  self.cover = {
+    source: :cover
+  }
+
   self.discreet_information = [
     :timestamps,
     {

@@ -223,6 +223,15 @@
       @apply ms-0 col-start-2;
     }
   }
+
+  .panel-spacer {
+    @apply relative flex flex-col gap-y-12;
+
+    &>[data-component="avo/ui/panel_header_component"],
+    [data-component="avo/cover_component"] {
+      @apply -mb-8; /* Offset from the regular panel spacing */
+    }
+  }
 }
 
 .loading-spinner {
