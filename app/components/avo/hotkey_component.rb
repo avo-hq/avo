@@ -4,29 +4,27 @@ class Avo::HotkeyComponent < Avo::BaseComponent
   def sections
     @sections ||= [
       build_section(
-        :navigation,
+        "Navigation",
         [
-          shortcut(action_key: :"hotkey.navigation.show", default_action: "Show keyboard shortcuts", keys: ["?"]),
-          shortcut(action_key: :"hotkey.navigation.search", default_action: "Focus resource search", keys: {mac: ["Cmd", "K"], other: ["Ctrl", "K"]}),
-          shortcut(action_key: :"hotkey.navigation.sidebar", default_action: "Toggle sidebar", keys: {mac: ["Cmd", "\\"], other: ["Ctrl", "\\"]}),
-          shortcut(action_key: :"hotkey.navigation.close", default_action: "Close dialog", keys: ["Esc"]),
+          shortcut(action: "Show keyboard shortcuts", keys: ["?"]),
+          shortcut(action: "Focus resource search", keys: {mac: ["Cmd", "K"], other: ["Ctrl", "K"]}),
+          shortcut(action: "Toggle sidebar", keys: {mac: ["Cmd", "\\"], other: ["Ctrl", "\\"]}),
+          shortcut(action: "Close dialog", keys: ["Esc"]),
           shortcut(
-            action_key: :"hotkey.navigation.confirm_dialog",
-            default_action: "Navigate options in the confirmation dialog",
+            action: "Navigate options in the confirmation dialog",
             any_of: [["↑"], ["↓"]],
-            keys_aria_label_key: :"hotkey.navigation.confirm_dialog_keys",
-            default_keys_aria_label: "Up arrow or down arrow"
+            keys_aria_label: "Up arrow or down arrow"
           ),
-          shortcut(action_key: :"hotkey.navigation.back", default_action: "Go back", keys: ["B"])
+          shortcut(action: "Go back", keys: ["B"])
         ]
       ),
       build_section(
-        :records,
+        "Records",
         [
-          shortcut(action_key: :"hotkey.records.save", default_action: "Save form", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
-          shortcut(action_key: :"hotkey.records.create", default_action: "Create new record (index view)", keys: ["C"]),
-          shortcut(action_key: :"hotkey.records.edit", default_action: "Edit record (show view)", keys: ["E"]),
-          shortcut(action_key: :"hotkey.records.delete", default_action: "Delete record (show view)", keys: ["D"])
+          shortcut(action: "Save form", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
+          shortcut(action: "Create new record (index view)", keys: ["C"]),
+          shortcut(action: "Edit record (show view)", keys: ["E"]),
+          shortcut(action: "Delete record (show view)", keys: ["D"])
         ]
       )
     ]
@@ -42,22 +40,20 @@ class Avo::HotkeyComponent < Avo::BaseComponent
 
   private
 
-  def build_section(section_name, shortcuts)
-    title = t("avo.hotkey.sections.#{section_name}", default: section_name.to_s.humanize)
-
+  def build_section(title, shortcuts)
     {
-      id: "hotkey-group-#{section_name}",
+      id: "hotkey-group-#{title.parameterize.underscore}",
       title: title,
       shortcuts: shortcuts
     }
   end
 
-  def shortcut(action_key:, default_action:, keys: nil, any_of: nil, keys_aria_label_key: nil, default_keys_aria_label: nil)
+  def shortcut(action:, keys: nil, any_of: nil, keys_aria_label: nil)
     {
-      action: t("avo.#{action_key}", default: default_action),
+      action: action,
       keys: keys,
       any_of: any_of,
-      keys_aria_label: keys_aria_label_key.present? ? t("avo.#{keys_aria_label_key}", default: default_keys_aria_label) : nil
+      keys_aria_label: keys_aria_label
     }
   end
 

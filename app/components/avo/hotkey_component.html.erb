@@ -9,8 +9,8 @@
     <div class="card">
       <div class="card__wrapper">
         <div class="card__header hotkey__modal-header">
-          <h2 class="card__title"><%= t("avo.hotkey.title", default: "Keyboard shortcuts") %></h2>
-          <%= tag.button type: :button, class: "hotkey__close", data: {action: "click->hotkey#close"}, aria: {label: t("avo.hotkey.close", default: "Close shortcuts panel")} do %>
+          <h2 class="card__title">Keyboard shortcuts</h2>
+          <%= tag.button type: :button, class: "hotkey__close", data: {action: "click->hotkey#close"}, aria: {label: "Close shortcuts panel"} do %>
             <%= helpers.svg "tabler/outline/x", class: "size-5" %>
           <% end %>
         </div>
