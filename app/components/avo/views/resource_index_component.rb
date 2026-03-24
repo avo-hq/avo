@@ -158,7 +158,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_render_scopes?
-    defined?(Avo::Advanced)
+    defined?(Avo::Advanced) && @scopes.present?
   end
 
   def back_path
@@ -195,7 +195,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def header_visible?
-    search_query_present? || filters_present? || has_many_view_types? || has_dynamic_filters?
+    search_query_present? || filters_present? || has_many_view_types? || has_dynamic_filters? || show_search_input || can_render_scopes?
   end
 
   def has_dynamic_filters?

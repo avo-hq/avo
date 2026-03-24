@@ -2,7 +2,34 @@
 /* BEM Methodology: .grid-card (block), .grid-card__element (elements) */
 
 .grid-wrapper {
-  @apply w-full grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 mt-8;
+  /*
+   * Fluid column count from the *container* (cqw), not the viewport.
+   * Nearest `container-type` ancestor: e.g. `@container` on the grid turbo-frame.
+   * `--grid-max-cols`: cap columns as if the row were evenly split (incl. gaps).
+   * `--grid-min-col`: floor track width so cards never shrink below `min-w-52`.
+   */
+  --grid-max-cols: 12;
+  --grid-min-col: 13rem; /* 52 * 0.25rem, matches .grid-card min-w-52 */
+  --grid-gap: 1rem; /* gap-4 */
+
+  @apply w-full gap-4;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      min(
+        100%,
+        max(
+          var(--grid-min-col),
+          calc(
+            (100cqw - (var(--grid-max-cols) - 1) * var(--grid-gap)) /
+              var(--grid-max-cols)
+          )
+        )
+      ),
+      1fr
+    )
+  );
 }
 
 .grid-card {
@@ -58,4 +85,36 @@
 
 .grid-card__description {
   @apply text-content-secondary text-xs font-normal self-stretch leading-4;
+}
+
+@keyframes icon-float {
+  0%, 100% { translate: 0 0; }
+  50%       { translate: 0 -5px; }
+}
+
+.grid-card__icon {
+  @apply absolute size-4 pointer-events-none;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+  transition: transform 0.5s ease-out;
+}
+
+.grid-card__icon--repelling {
+  transition: transform 0.08s ease-out;
+}
+
+.grid-card__avocado {
+  @apply block;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+  transition: transform 0.5s ease-out;
+
+  &.grid-card__icon--repelling {
+    transition: transform 0.08s ease-out;
+  }
+}
+
+.grid-card__icon--float {
+  animation-name: icon-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
 }

@@ -19,6 +19,7 @@
     "@algolia/autocomplete-js": "^1.0.0-alpha.46",
     "@algolia/autocomplete-theme-classic": "^1.0.0-alpha.46",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@herb-tools/formatter": "^0.9.2",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.20",
     "@rails/activestorage": "^6.1.710",
