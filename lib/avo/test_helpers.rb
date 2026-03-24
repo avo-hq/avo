@@ -331,11 +331,9 @@ module Avo
     # Force-enable the submit button (bypass the required fields check).
     # For tests that verify server-side validation errors.
     def enable_submit_button
-      submit_button = find('[data-form-target="submitButton"]', wait: 5)
-
       page.execute_script(
-        "arguments[0].disabled = false; arguments[0].removeAttribute('disabled');",
-        submit_button.native
+        "document.querySelectorAll('[data-form-target=\"submitButton\"]').forEach(btn => btn.disabled = false);" \
+        "document.querySelectorAll('[data-controller~=\"form\"]').forEach(el => { const c = window.Stimulus && window.Stimulus.getControllerForElementAndIdentifier(el, 'form'); if (c) c.checkRequiredFields = () => {}; });"
       )
     end
 
