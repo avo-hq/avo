@@ -20,7 +20,7 @@
             <div>
               <div class="sidebar__nav-list">
                 <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
-                  <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: helpers.avo_dashboards.dashboard_path(dashboard) %>
+                  <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: helpers.avo_dashboards.dashboard_path(dashboard), hotkey: dashboard.try(:hotkey).presence %>
                 <% end %>
               </div>
             </div>
@@ -28,7 +28,7 @@
 
           <div class="sidebar__nav-list">
             <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
-              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon %>
+              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon, hotkey: resource.try(:hotkey).presence %>
             <% end %>
           </div>
 

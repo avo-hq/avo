@@ -1,6 +1,7 @@
 import { application } from './application'
 
 import ActionController from './controllers/action_controller'
+import ConfirmDialogController from './controllers/confirm_dialog_controller'
 import ActionsOverflowController from './controllers/actions_overflow_controller'
 import ActionsPickerController from './controllers/actions_picker_controller'
 import AttachmentsController from './controllers/attachments_controller'
@@ -18,6 +19,8 @@ import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
+import HotkeyController from './controllers/hotkey_controller'
+import HotkeyTriggerController from './controllers/hotkey_trigger_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
@@ -60,6 +63,7 @@ import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
 application.register('action', ActionController)
+application.register('confirm-dialog', ConfirmDialogController)
 application.register('actions-overflow', ActionsOverflowController)
 application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
@@ -73,6 +77,8 @@ application.register('date-time-filter', DateTimeFilterController)
 application.register('filter', FilterController)
 application.register('form', FormController)
 application.register('hidden-input', HiddenInputController)
+application.register('hotkey', HotkeyController)
+application.register('hotkey-trigger', HotkeyTriggerController)
 application.register('input-autofocus', InputAutofocusController)
 application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)

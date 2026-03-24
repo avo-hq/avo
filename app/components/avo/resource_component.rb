@@ -113,10 +113,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
     a_link via_belongs_to ? "javascript:void(0);" : back_path,
       style: :text,
       title: control.title,
-      data: {
-        tippy: control.title ? :tooltip : nil,
-        action: via_belongs_to ? "click->modal#close" : nil
-      }.compact,
+      data: hotkey_data(
+        "keydown.b@window->hotkey-trigger#click",
+        action: ("click->modal#close" if via_belongs_to),
+        tippy: control.title ? :tooltip : nil
+      ),
       icon: "heroicons/outline/arrow-left" do
       control.label
     end
@@ -156,14 +157,15 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon: "tabler/outline/trash",
       title: control.title,
       aria_label: control.title,
-      data: {
+      data: hotkey_data(
+        "keydown.d@window->hotkey-trigger#click",
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record_param,
-      } do
+        "resource-id": @resource.record_param
+      ) do
       control.label
     end
   end
@@ -171,9 +173,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_save_button(control)
     return unless can_see_the_save_button?
 
-    data_attributes = {
+    data_attributes = hotkey_data(
+      "keydown.meta+enter@window->hotkey-trigger#click keydown.ctrl+enter@window->hotkey-trigger#click",
       turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
-    }
+    )
 
     add_stimulus_attributes_for(@resource, data_attributes, "saveButton")
 
@@ -194,7 +197,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :accent,
       style: :primary,
       title: control.title,
-      data: {tippy: control.title ? :tooltip : nil},
+      data: hotkey_data(
+        "keydown.e@window->hotkey-trigger#click",
+        tippy: control.title ? :tooltip : nil
+      ),
       icon: "tabler/outline/edit" do
       control.label
     end
@@ -221,9 +227,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       color: :accent,
       style: :primary,
       icon: "tabler/outline/plus",
-      data: {
+      data: hotkey_data(
+        "keydown.c@window->hotkey-trigger#click",
         target: :create
-      } do
+      ) do
       control.label
     end
   end

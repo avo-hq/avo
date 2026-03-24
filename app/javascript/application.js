@@ -5,11 +5,11 @@ import 'chartkick/chart.js/chart.esm'
 import 'mapkick/bundle'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
-import * as Mousetrap from 'mousetrap'
 import { Turbo } from '@hotwired/turbo-rails'
 import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
+import { eventTargetIsTypingField } from './js/keyboard_context'
 
 import './js/active-storage'
 import './js/controllers'
@@ -21,11 +21,20 @@ window.Avo.localStorage = new LocalStorageService()
 window.Turbolinks = Turbo
 
 let scrollTop = null
-Mousetrap.bind('r r r', () => {
-  // Capture scroll position
-  scrollTop = document.scrollingElement.scrollTop
+let rPressCount = 0
+let rPressTimer = null
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'r' && !eventTargetIsTypingField(event)) {
+    rPressCount += 1
+    clearTimeout(rPressTimer)
+    rPressTimer = setTimeout(() => { rPressCount = 0 }, 500)
 
-  window.StreamActions.turbo_reload()
+    if (rPressCount >= 3) {
+      rPressCount = 0
+      scrollTop = document.scrollingElement.scrollTop
+      window.StreamActions.turbo_reload()
+    }
+  }
 })
 
 // Add the shift-pressed class to the body when the shift key is pressed

@@ -1,0 +1,12 @@
+---
+description: Avoid assumptions and ask clarifying questions when needed
+alwaysApply: true
+---
+
+# Ask Before Assuming
+
+- Respond directly to what the user asked.
+- Do not assume unstated intent, requirements, or context.
+- If a needed detail is missing or ambiguous, ask a clarifying question before proceeding.
+- Do not present guesses as facts.
+- Keep explanations grounded in the code or information actually verified.

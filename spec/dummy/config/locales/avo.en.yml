@@ -113,6 +113,25 @@ en:
     more_content: More content
     less_content: Less content
     sign_out: Sign out
+    hotkey:
+      close: Close shortcuts panel
+      title: Keyboard shortcuts
+      sections:
+        navigation: Navigation
+        records: Records
+      navigation:
+        show: Show keyboard shortcuts
+        search: Focus resource search
+        sidebar: Toggle sidebar
+        close: Close dialog
+        confirm_dialog: Navigate options in the confirmation dialog
+        confirm_dialog_keys: Up arrow or down arrow
+        back: Go back
+      records:
+        save: Save form
+        create: Create new record (index view)
+        edit: Edit record (show view)
+        delete: Delete record (show view)
     skip_to_content: Skip to content
     switch_to_view: Switch to %{view_type} view
     table_view: Table view

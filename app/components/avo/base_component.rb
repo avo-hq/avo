@@ -15,6 +15,16 @@ class Avo::BaseComponent < ViewComponent::Base
 
   def component_name = self.class.name.to_s.underscore
 
+  def hotkey_data(action, **data)
+    merged_actions = [data.delete(:action), action].compact.join(" ").presence
+    merged_controllers = [data.delete(:controller), "hotkey-trigger"].compact.join(" ").presence
+
+    data.merge(
+      controller: merged_controllers,
+      action: merged_actions
+    ).compact
+  end
+
   private
 
   # Use the @parent_resource to fetch the field using the @reflection name.

@@ -1,6 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
+import { eventTargetIsTypingField } from '../keyboard_context'
+
 // Detect whether an element is in view inside a parent element.
 // Original here: https://gist.github.com/jjmu15/8646226
 function isInViewport(element, parentElement) {
@@ -69,6 +71,20 @@ export default class extends Controller {
       ? this.mainAreaTarget.classList.contains('sidebar-mobile-open')
       : this.mainAreaTarget.classList.contains('sidebar-open')
     this.setToggleButtonsState(isOpen ? 'open' : 'closed')
+
+    this.handleToggleShortcut = (event) => {
+      if (event.repeat || event.defaultPrevented) return
+      if (eventTargetIsTypingField(event)) return
+      if (!(event.metaKey || event.ctrlKey) || event.altKey || event.key !== '\\') return
+
+      event.preventDefault()
+      this.toggleSidebarForViewport()
+    }
+    document.addEventListener('keydown', this.handleToggleShortcut)
+  }
+
+  disconnect() {
+    document.removeEventListener('keydown', this.handleToggleShortcut)
   }
 
   rememberScrollPosition() {
@@ -94,6 +110,14 @@ export default class extends Controller {
     this.toggleButtons.forEach((button) => {
       button.dataset.sidebarState = state
     })
+  }
+
+  toggleSidebarForViewport() {
+    if (window.innerWidth < 1024) {
+      this.toggleSidebarOnMobile()
+    } else {
+      this.toggleSidebar()
+    }
   }
 
   toggleSidebar() {

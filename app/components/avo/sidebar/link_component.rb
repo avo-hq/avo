@@ -16,6 +16,15 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   prop :reserve_icon_space, default: false
   prop :args, kind: :**, default: {}.freeze
   prop :items
+  prop :hotkey, default: nil
+
+  def link_data
+    build_link_data(@data, @hotkey)
+  end
+
+  def subitem_data(item)
+    build_link_data(item.data, item.hotkey)
+  end
 
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
@@ -66,5 +75,13 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     else
       ""
     end
+  end
+
+  private
+
+  def build_link_data(data, hotkey)
+    return data if hotkey.blank?
+
+    hotkey_data("keydown.#{hotkey}@window->hotkey-trigger#click", **data)
   end
 end
