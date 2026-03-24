@@ -7,7 +7,7 @@
 }
 
 .hotkey__frame {
-  @apply relative z-10 flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col sm:max-h-3xl;
+  @apply relative z-10 flex max-h-[calc(100dvh-2rem)] w-full max-w-3xl flex-col sm:max-h-[70dvh];
 
   box-shadow: var(--shadow-modal);
 }
