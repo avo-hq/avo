@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Avo::HotkeyComponent < Avo::BaseComponent
+class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
   def sections
     @sections ||= [
       build_section(

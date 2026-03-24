@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Hotkey", type: :system do
+RSpec.describe "Keyboard shortcuts", type: :system do
   def dispatch_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false)
     page.execute_script(<<~JS)
       const eventOptions = {

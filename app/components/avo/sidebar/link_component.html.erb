@@ -9,7 +9,7 @@
     <span><%= @label %></span>
 
     <% if @hotkey.present? %>
-      <kbd class=""><%= @hotkey.to_s.first.upcase %></kbd>
+      <kbd class="ms-auto"><%= @hotkey.to_s.first.upcase %></kbd>
     <% end %>
 
     <% if @target == :_blank %>

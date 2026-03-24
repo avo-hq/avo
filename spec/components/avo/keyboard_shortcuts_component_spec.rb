@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Avo::HotkeyComponent, type: :component do
-  it "renders the keyboard shortcuts modal content" do
+RSpec.describe Avo::KeyboardShortcutsComponent, type: :component do
+  it "renders the keyboard shortcuts modal" do
     render_inline(described_class.new)
 
     expect(page).to have_css(".hotkey", visible: :all)
