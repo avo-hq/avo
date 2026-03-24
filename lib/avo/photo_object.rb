@@ -23,7 +23,15 @@ class Avo::PhotoObject
       return unless record.present?
       return if record.new_record?
 
-      record.send(options[:source])
+      value = record.send(options[:source])
+
+      # On edit view, prefer the persisted attachment to avoid rendering
+      # temporary/unpersisted direct-upload values after a failed update.
+      if value.instance_of?(ActiveStorage::Attached::One) && view.edit?
+        value = @resource.find_record(record.to_param).send(options[:source])
+      end
+
+      value
     elsif options[:source].respond_to?(:call)
       Avo::ExecutionContext.new(target: options[:source], record:, resource: @resource, view:).handle
     end
