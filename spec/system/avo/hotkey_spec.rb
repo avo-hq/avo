@@ -81,6 +81,26 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_current_path("/admin/resources/projects")
   end
 
+  it "keeps row navigation in bounds after turbo-replacing table rows" do
+    target_project = create(:project, name: "Keyboard navigator target")
+    create_list(:project, 3)
+
+    visit "/admin/resources/projects"
+
+    3.times { dispatch_keydown("ArrowDown") }
+    expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+    write_in_search(target_project.name)
+
+    expect(page).to have_selector("[data-component-name='avo/index/table_row_component'][data-resource-id='#{target_project.to_param}']")
+    expect(page).to have_css("tr[data-visit-path]", count: 1)
+
+    dispatch_keydown("ArrowUp")
+
+    focused_row = find("tr.table-row.is-keyboard-focused")
+    expect(focused_row["data-resource-id"]).to eq(target_project.to_param)
+  end
+
   it "opens the edit page using the edit hotkey" do
     project = create(:project)
 
