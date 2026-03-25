@@ -23,7 +23,8 @@
           action: component.action,
           actions_dropdown_button: @resource.model_key,
           tippy: "tooltip",
-          tippy_content: @title
+          tippy_content: @title,
+          **(@hotkey.present? ? {hotkey: @hotkey} : {})
         } do %>
         <%= @label %>
       <% end %>

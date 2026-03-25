@@ -35,7 +35,13 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
       build_section(
         "Index view",
         [
-          shortcut(action: "Create new record", keys: ["C"])
+          shortcut(action: "Create new record", keys: ["C"]),
+          shortcut(action: "Open actions", keys: ["A"]),
+          shortcut(
+            action: "Navigate actions",
+            any_of: [["↑"], ["↓"]],
+            keys_aria_label: "Up arrow or down arrow"
+          )
         ]
       )
     ]
