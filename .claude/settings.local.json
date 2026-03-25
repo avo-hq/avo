@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(read icon:*)",
-      "Bash(gem list:*)"
-    ]
-  }
-}
