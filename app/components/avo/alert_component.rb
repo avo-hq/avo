@@ -8,10 +8,10 @@ class Avo::AlertComponent < Avo::BaseComponent
   prop :timeout
 
   def icon
-    return "heroicons/solid/exclamation-circle" if is_error?
-    return "heroicons/solid/exclamation" if is_warning?
-    return "heroicons/solid/exclamation-circle" if is_info?
-    return "heroicons/solid/check-circle" if is_success?
+    return "tabler/filled/alert-circle" if is_error?
+    return "tabler/filled/alert-triangle" if is_warning?
+    return "tabler/filled/alert-circle" if is_info?
+    return "tabler/filled/circle-check" if is_success?
 
     "check-circle"
   end

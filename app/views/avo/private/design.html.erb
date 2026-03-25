@@ -1,19 +1,19 @@
 <div class="flex flex-col">
   <%= render ui.panel(title: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.') do |panel| %>
     <% panel.with_controls do %>
-      <%= a_link('/admin', icon: "heroicons/outline/arrow-left", color: :green, style: :primary, is_link: true) do %>
+      <%= a_link('/admin', icon: "tabler/outline/arrow-left", color: :green, style: :primary, is_link: true) do %>
         Primary
       <% end %>
 
-      <%= a_link('/admin', icon: "heroicons/outline/arrow-left", style: :outline, is_link: true) do %>
+      <%= a_link('/admin', icon: "tabler/outline/arrow-left", style: :outline, is_link: true) do %>
         Outline
       <% end %>
 
-      <%= a_link('/admin', icon: "heroicons/outline/arrow-left", style: :outline, color: :red, is_link: true) do %>
+      <%= a_link('/admin', icon: "tabler/outline/arrow-left", style: :outline, color: :red, is_link: true) do %>
         Red
       <% end %>
 
-      <%= a_link('/admin', icon: "heroicons/outline/arrow-left", style: :text, color: :orange, is_link: true) do %>
+      <%= a_link('/admin', icon: "tabler/outline/arrow-left", style: :text, color: :orange, is_link: true) do %>
         Text
       <% end %>
 

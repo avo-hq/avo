@@ -13,7 +13,7 @@ class Avo::Resources::Product < Avo::BaseResource
           color: (record.status == :new) ? "green" : "orange",
           style: (record.status == :new) ? "solid" : "subtle",
           title: (record.status == :new) ? "New product here" : "Updated product here",
-          icon: (record.status == :new) ? "heroicons/outline/arrow-trending-up" : ""
+          icon: (record.status == :new) ? "tabler/outline/trending-up" : ""
         }
       }
     end,
@@ -35,7 +35,7 @@ class Avo::Resources::Product < Avo::BaseResource
   self.discreet_information = [
     {
       tooltip: -> { sanitize("Product is <strong>#{record.status}</strong>", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/#{(record.status == :new) ? "arrow-trending-up" : "arrow-trending-down"}" }
+      icon: -> { (record.status == :new) ? "tabler/outline/trending-up" : "tabler/outline/trending-down" }
     },
     :timestamps
   ]

@@ -1,10 +1,10 @@
 <div class=" <%= class_names("flex shrink-0 items-center", "text-red-600": @status == 'failed', "text-green-600": @status == 'success', "text-gray-600": @status == 'neutral') %>">
   <% if @status == 'success' %>
-    <%= helpers.svg 'heroicons/solid/check-circle', class: 'h-4' %>
+    <%= helpers.svg 'tabler/filled/circle-check', class: 'h-4' %>
   <% elsif @status == 'failed' %>
-    <%= helpers.svg 'heroicons/solid/x-circle', class: 'h-4' %>
+    <%= helpers.svg 'tabler/filled/circle-x', class: 'h-4' %>
   <% elsif @status == 'neutral' %>
-    <%= helpers.svg 'heroicons/solid/minus-circle', class: 'h-4' %>
+    <%= helpers.svg 'avo/circle-minus', class: 'h-4' %>
   <% elsif @status == 'loading' %>
     <div class="spinner">
       <div class="double-bounce1"></div>

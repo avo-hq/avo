@@ -22,7 +22,7 @@ class Avo::Resources::Project < Avo::BaseResource
       text: "label",
       as: :badge,
       title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/arrow-top-right-on-square" },
+      icon: -> { "tabler/outline/external-link" },
       url: -> { main_app.root_url },
       target: :_blank
     },
@@ -91,7 +91,7 @@ class Avo::Resources::Project < Avo::BaseResource
       # style: :solid,
       icon: -> {
         {
-          "Discovery" => "tabler/outline/zoom",
+          "Discovery" => "tabler/outline/zoom-scan",
           "Idea" => "tabler/outline/bulb",
           "Drafting" => "tabler/outline/file-text",
           "Done" => "tabler/outline/circle-check",

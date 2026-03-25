@@ -1,12 +1,12 @@
 <%
-  icon = "avo/selector"
+  icon = "tabler/outline/selector"
 
   if params[:sort_by] == field.id.to_s
     case params[:sort_direction]
       when 'asc'
-        icon = "avo/sort-ascending"
+        icon = "tabler/outline/sort-ascending"
       when 'desc'
-        icon = "avo/sort-descending"
+        icon = "tabler/outline/sort-descending"
       end
   end
 %>
