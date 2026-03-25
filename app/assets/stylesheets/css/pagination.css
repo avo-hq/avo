@@ -4,14 +4,14 @@
         .pagination__controls, .pagination__info, .pagination__nav (elements) */
 
 .pagination {
-  @apply flex w-full flex-col items-stretch justify-between gap-2 sm:flex-row sm:items-end sm:gap-0;
+  @apply flex w-full flex-col items-stretch justify-between gap-2 sm:flex-row sm:flex-wrap sm:items-end sm:gap-0;
 }
 
 /* === Per-page selector (left) === */
 
 .pagination__per-page {
   --pagination-per-page-width: 10rem; /* w-48 equivalent; use 165px for exact Figma match */
-  @apply flex items-center;
+  @apply flex shrink-0 items-center;
 }
 
 .pagination__per-page-input {
@@ -49,13 +49,19 @@
 
 /* === Controls pill (right) === */
 
+.pagination__controls-wrap {
+  @apply flex w-full min-w-0 sm:flex-[1_1_28rem] sm:min-w-[22rem] sm:justify-end;
+}
+
 .pagination__controls {
-  @apply flex w-fit shrink-0 items-center gap-3 rounded-lg border border-tertiary bg-primary overflow-hidden ps-3 pe-2 overflow-visible;
+  @apply flex w-full min-w-0 max-w-full items-center gap-3 rounded-lg border border-tertiary bg-primary ps-3 pe-2 overflow-x-auto overflow-y-hidden overscroll-x-contain touch-pan-x sm:w-fit;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
 }
 
 /* Info text with right-border divider */
 .pagination__info {
-  @apply flex items-center py-1 pe-3 border-e border-tertiary whitespace-nowrap overflow-hidden text-ellipsis text-sm text-content leading-5 font-normal;
+  @apply shrink-0 flex items-center py-1 pe-3 border-e border-tertiary whitespace-nowrap text-sm text-content leading-5 font-normal;
 
   &:last-child {
     @apply border-e-0 pe-1;
@@ -68,12 +74,12 @@
 
 /* Nav buttons wrapper */
 .pagination__nav {
-  @apply flex items-center;
+  @apply shrink-0 flex items-center;
 }
 
 /* === Pagy nav === */
 .pagy.series-nav {
-  @apply flex items-center gap-0.5;
+  @apply flex min-w-max items-center gap-0.5 whitespace-nowrap;
 
   a[role="separator"] {
     @apply px-2 text-sm text-content-secondary;

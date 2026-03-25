@@ -29,23 +29,29 @@
   </div>
 
   <%# Right: info + navigation grouped pill %>
-  <div class="pagination__controls">
-    <% if @resource.pagination_type.default? %>
-      <div class="pagination__info">
-        <span class="pagination__info-number">
-          <%= "#{@pagy.from}-#{@pagy.to}" %>
-        </span>
-        &nbsp; of &nbsp;
-        <span>
-          <%= "#{@pagy.count}" %>
-        </span>
-      </div>
-    <% end %>
+  <div class="pagination__controls-wrap">
+    <div class="pagination__controls">
+      <% if @resource.pagination_type.default? %>
+        <div class="pagination__info">
+          <span class="pagination__info-number">
+            <%= "#{formatted_number(@pagy.from)}-#{formatted_number(@pagy.to)}" %>
+          </span>
+          &nbsp; of &nbsp;
+          <% if @pagy.count >= 10_000 %>
+            <span title="<%= formatted_count %>" data-tippy="tooltip">
+              <%= number_to_social(@pagy.count, start_at: 10_000) %>
+            </span>
+          <% else %>
+            <span><%= formatted_count %></span>
+          <% end %>
+        </div>
+      <% end %>
 
-    <% if @pagy.pages > 1 %>
-      <div class="pagination__nav">
-        <%== @pagy.series_nav(anchor_string: "data-turbo-frame=\"#{@turbo_frame}\"") %>
-      </div>
-    <% end %>
+      <% if @pagy.pages > 1 %>
+        <div class="pagination__nav">
+          <%== formatted_series_nav %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

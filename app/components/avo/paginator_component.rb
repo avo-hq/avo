@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::PaginatorComponent < Avo::BaseComponent
+  NUMBER_DELIMITER = "."
+
   prop :resource
   prop :parent_record
   prop :parent_resource
@@ -51,5 +53,21 @@ class Avo::PaginatorComponent < Avo::BaseComponent
   def per_page_option_label(option)
     num = helpers.content_tag(:span, option, class: "pagination__per-page-option-num")
     "#{num} #{t("avo.per_page").downcase}".html_safe
+  end
+
+  def formatted_count
+    formatted_number(@pagy.count)
+  end
+
+  def formatted_series_nav
+    @pagy.series_nav(anchor_string: %(data-turbo-frame="#{@turbo_frame}"))
+      .gsub(/>(\d{4,})</) { |match| match.sub($1, formatted_number($1)) }
+      .html_safe
+  end
+
+  private
+
+  def formatted_number(number)
+    helpers.number_with_delimiter(number, delimiter: NUMBER_DELIMITER)
   end
 end
