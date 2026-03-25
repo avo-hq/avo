@@ -69,6 +69,20 @@ export default class extends Controller {
       ? this.mainAreaTarget.classList.contains('sidebar-mobile-open')
       : this.mainAreaTarget.classList.contains('sidebar-open')
     this.setToggleButtonsState(isOpen ? 'open' : 'closed')
+
+    this.handleToggleShortcut = (event) => {
+      if (event.repeat || event.defaultPrevented) return
+      if (event.target?.closest('input, textarea, select, [contenteditable]')) return
+      if (!(event.metaKey || event.ctrlKey) || event.altKey || event.key !== '\\') return
+
+      event.preventDefault()
+      this.toggleSidebarForViewport()
+    }
+    document.addEventListener('keydown', this.handleToggleShortcut)
+  }
+
+  disconnect() {
+    document.removeEventListener('keydown', this.handleToggleShortcut)
   }
 
   rememberScrollPosition() {
@@ -94,6 +108,14 @@ export default class extends Controller {
     this.toggleButtons.forEach((button) => {
       button.dataset.sidebarState = state
     })
+  }
+
+  toggleSidebarForViewport() {
+    if (window.innerWidth < 1024) {
+      this.toggleSidebarOnMobile()
+    } else {
+      this.toggleSidebar()
+    }
   }
 
   toggleSidebar() {

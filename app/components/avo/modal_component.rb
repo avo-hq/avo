@@ -12,6 +12,14 @@ class Avo::ModalComponent < Avo::BaseComponent
   prop :title
   prop :description
   prop :show_close_button, default: true
+  prop :behavior, default: :ephemeral # :ephemeral removes from DOM on close, :persistent toggles hidden attribute
+  prop :class, default: ""
+  prop :data, default: {}.freeze
+  prop :hidden, default: false
+
+  def stimulus_controller
+    (@behavior == :persistent) ? "persistent-modal" : "modal"
+  end
 
   def height_classes
     "max-h-[calc(100dvh-5rem)] min-h-1/4"
@@ -20,4 +28,6 @@ class Avo::ModalComponent < Avo::BaseComponent
   def has_header?
     @title.present? || @description.present? || heading? || @show_close_button
   end
+
+  def ctrl = stimulus_controller
 end

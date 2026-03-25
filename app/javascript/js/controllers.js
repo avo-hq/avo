@@ -10,6 +10,7 @@ import CardFiltersController from './controllers/card_filters_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import ColorSchemeSwitcherController from './controllers/color_scheme_switcher_controller'
+import ConfirmDialogController from './controllers/confirm_dialog_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
@@ -35,6 +36,7 @@ import MultipleSelectFilterController from './controllers/multiple_select_filter
 import NestedFormController from './controllers/nested_form_controller'
 import PanelRefreshController from './controllers/fields/panel_refresh_controller'
 import PerPageController from './controllers/per_page_controller'
+import PersistentModalController from './controllers/persistent_modal_controller'
 import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
 import RecordSelectorController from './controllers/record_selector_controller'
@@ -61,6 +63,7 @@ import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
 
 application.register('action', ActionController)
+application.register('confirm-dialog', ConfirmDialogController)
 application.register('actions-overflow', ActionsOverflowController)
 application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
@@ -85,6 +88,7 @@ application.register('media-library', MediaLibraryController)
 application.register('menu', MenuController)
 application.register('modal', ModalController)
 application.register('modal-size', ModalSizeController)
+application.register('persistent-modal', PersistentModalController)
 application.register('multiple-select-filter', MultipleSelectFilterController)
 application.register('avo-nested-form', NestedFormController)
 application.register('panel-refresh', PanelRefreshController)

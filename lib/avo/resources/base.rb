@@ -70,6 +70,7 @@ module Avo
       class_attribute :grid_view
       class_attribute :confirm_on_save, default: false
       class_attribute :visible_on_sidebar, default: true
+      class_attribute :hotkey, default: nil
       class_attribute :index_query, default: -> {
         query
       }

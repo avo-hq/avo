@@ -1,0 +1,29 @@
+<%= render Avo::ModalComponent.new(
+  class: "hotkey",
+  title: "Keyboard shortcuts",
+  width: :xl,
+  hidden: true,
+  behavior: :persistent
+) do %>
+  <div class="hotkey__grid">
+    <% sections.each do |section| %>
+      <section class="hotkey__section" aria-labelledby="<%= section[:id] %>">
+        <h3 class="hotkey__section-title" id="<%= section[:id] %>">
+          <%= section[:title] %>
+        </h3>
+
+        <ul class="hotkey__section-body">
+          <% section[:shortcuts].each do |shortcut| %>
+            <li class="hotkey__row">
+              <span class="hotkey__action"><%= shortcut[:action] %></span>
+
+              <%= tag.span class: "hotkey__keys", **(shortcut[:keys_aria_label].present? ? {aria: {label: shortcut[:keys_aria_label]}} : {}) do %>
+                <%= render_shortcut_keys(shortcut) %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+<% end %>

@@ -50,7 +50,7 @@
       @apply overflow-y-auto h-full flex-1 flex flex-col px-2;
     }
     .avo-container {
-      @apply  flex flex-1 flex-col justify-between;
+      @apply flex flex-1 flex-col justify-between;
     }
   }
 
@@ -60,7 +60,6 @@
       @media (min-width: theme(--breakpoint-lg)) {
         margin-inline-start: calc(var(--sidebar-width) + var(--spacing));
         width: var(--content-width);
-
       }
     }
   }
@@ -91,11 +90,11 @@
   @apply hidden;
 }
 
-button[data-sidebar-state='closed'] .sidebar-toggle-icon--open {
+button[data-sidebar-state="closed"] .sidebar-toggle-icon--open {
   @apply hidden;
 }
 
-button[data-sidebar-state='closed'] .sidebar-toggle-icon--closed {
+button[data-sidebar-state="closed"] .sidebar-toggle-icon--closed {
   @apply inline-flex;
 }
 

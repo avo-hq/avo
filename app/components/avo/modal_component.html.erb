@@ -1,25 +1,40 @@
-<div class="<%= class_names("modal", {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}) %>"
-  data-controller="modal modal-size"
-  data-modal-target="modal"
-  data-modal-close-modal-on-backdrop-click-value="<%= close_modal_on_backdrop_click %>"
-  data-modal-size-current-width-value="<%= @width %>"
-  data-modal-size-current-height-value="<%= @height %>"
->
-  <div aria-expanded="true" class="modal__overlay" data-modal-target="backdrop" data-action="click->modal#close"></div>
-  <div aria-expanded="true" role="dialog" aria-modal="true" class="modal__card-container" data-modal-size-target="container">
+<%= tag.div class: class_names("modal", @class, {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}), tabindex: -1, data: {
+  controller: "#{ctrl} modal-size",
+  "#{ctrl}-target": "modal",
+  "#{ctrl}-close-modal-on-backdrop-click-value": close_modal_on_backdrop_click,
+  "modal-size-current-width-value": @width,
+  "modal-size-current-height-value": @height,
+  **@data
+}, **(@hidden ? { hidden: true } : {}) do %>
+  <%= tag.div(
+    aria: { expanded: true },
+    class: "modal__overlay",
+    data: {
+      "#{ctrl}-target": "backdrop",
+      action: "click->#{ctrl}#close"
+    }
+  ) %>
+  <div
+    aria-expanded="true"
+    role="dialog"
+    aria-modal="true"
+    class="modal__card-container"
+    data-modal-size-target="container"
+  >
     <div class="modal__card">
       <div class="card">
         <div class="card__wrapper">
           <% if has_header? %>
             <div class="card__header">
-              <div class="flex gap-4 items-start w-full">
-                <div class="flex grow items-center min-w-0">
-                  <div class="flex flex-col gap-0.5 items-start">
+              <div class="flex w-full items-start gap-4">
+                <div class="flex min-w-0 grow items-center">
+                  <div class="flex flex-col items-start gap-0.5">
                     <% if @title.present? || heading? %>
                       <p class="modal__title">
                         <%= @title.presence || heading %>
                       </p>
                     <% end %>
+
                     <% if @description.present? %>
                       <p class="card__description">
                         <%= @description %>
@@ -27,13 +42,20 @@
                     <% end %>
                   </div>
                 </div>
+
                 <div class="flex items-center gap-2">
                   <% if false && Rails.env.development? %>
                     <%= render partial: "avo/modal/size_selector", locals: { type: 'width', width: @width, height: @height } %>
                     <%= render partial: "avo/modal/size_selector", locals: { type: 'height', width: @width, height: @height } %>
                   <% end %>
+
                   <% if @show_close_button %>
-                    <button class="modal__close-button" data-action="click->modal#closeModal" aria-label="<%= t('avo.close') %>">
+                    <button
+                      class="modal__close-button"
+                      data-action="click-><%= ctrl %>#closeModal"
+                      aria-label="<%= t('avo.close') %>"
+                      tabindex="-1"
+                    >
                       <%= helpers.svg "tabler/outline/x", class: "size-5" %>
                     </button>
                   <% end %>
@@ -41,6 +63,7 @@
               </div>
             </div>
           <% end %>
+
           <div class="card__body <%= @body_class %>">
             <% if content? %>
               <div class="modal__body-content overflow-auto">
@@ -48,6 +71,7 @@
               </div>
             <% end %>
           </div>
+
           <% if controls? %>
             <div class="card__footer modal__controls">
               <%= controls %>
@@ -57,4 +81,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>

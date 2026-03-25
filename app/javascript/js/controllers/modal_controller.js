@@ -1,39 +1,31 @@
-import { Controller } from '@hotwired/stimulus'
+import BaseModalController from './base_modal_controller'
 
-// Connects to data-controller="modal"
-export default class extends Controller {
-  static targets = ['modal', 'backdrop']
-
-  static values = {
-    closeModalOnBackdropClick: true,
-  }
-
+/**
+ * Inject / destroy strategy.
+ *
+ * The modal is added to the DOM (usually via Turbo) when it should appear
+ * and removed entirely when it is closed.
+ */
+export default class extends BaseModalController {
   connect() {
-    document.body.classList.add('modal-open')
-    this.handleKeydown = this.handleKeydown.bind(this)
-    document.addEventListener('keydown', this.handleKeydown)
+    this.connectModal()
+    this.addModalOpen()
+    this.modalTarget.focus()
   }
 
   disconnect() {
-    document.removeEventListener('keydown', this.handleKeydown)
+    this.disconnectModal()
   }
 
-  handleKeydown(event) {
-    if (event.key === 'Escape' && this.closeModalOnBackdropClickValue) {
-      this.closeModal()
-    }
+  // -- strategy implementation ----------------------------------------------
+
+  isOpen() {
+    return true // if the element is in the DOM it's open
   }
 
-  close(event) {
-    if (event.target === this.backdropTarget && !this.closeModalOnBackdropClickValue) return
-
-    this.closeModal()
-  }
-
-  // May be invoked by the other controllers
   closeModal() {
     this.modalTarget.remove()
-
-    document.dispatchEvent(new Event('modal-controller:close'))
+    this.removeModalOpen()
+    this.dispatchClose()
   }
 }
