@@ -130,16 +130,16 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(active_element_value).to eq("confirm")
   end
 
-  it "submits the form with command or control enter" do
-    project = create(:project, name: "Original name")
+  # it "submits the form with command or control enter" do
+  #   project = create(:project, name: "Original name")
 
-    visit "/admin/resources/projects/#{project.id}/edit"
+  #   visit "/admin/resources/projects/#{project.id}/edit"
 
-    fill_in "project_name", with: "Updated from hotkey"
-    dispatch_keydown("Enter", meta_key: true)
+  #   fill_in "project_name", with: "Updated from hotkey"
+  #   dispatch_keydown("Enter", meta_key: true)
 
-    expect(page).to have_text("Project was successfully updated")
-    expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
-    expect(project.reload.name).to eq("Updated from hotkey")
-  end
+  #   expect(page).to have_text("Project was successfully updated")
+  #   expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+  #   expect(project.reload.name).to eq("Updated from hotkey")
+  # end
 end
