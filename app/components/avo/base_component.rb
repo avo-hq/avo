@@ -16,20 +16,44 @@ class Avo::BaseComponent < ViewComponent::Base
   def component_name = self.class.name.to_s.underscore
 
   # Renders a <kbd> badge for a hotkey string.
-  # Skips modifier combos like "Meta+Enter" — only renders simple keys.
+  # Supports modifier tokens rendered in a friendly OS-aware way.
   def hotkey_badge(hotkey, **html_options)
-    keys = hotkey.to_s.split
+    # `@github/hotkey` uses:
+    # - `+` for modifier combos (e.g. "Mod+Enter")
+    # - spaces for sequences/alternatives (e.g. "g n" or "Meta+Enter Control+Enter")
+    #
+    # Render key parts for the badge, mapping supported modifiers to OS-aware glyphs.
+    keys = hotkey.to_s.split(/[+\s]+/).reject(&:blank?)
+
     first_key = keys.first
     return if first_key.blank?
 
     content_tag(:span, **html_options) do
       # Render multiple keys (e.g. "g n") inside a wrapper so any provided
       # classes (like `ms-auto`) are applied once.
-      safe_join(keys.map { |key| tag.kbd(key.upcase) }, " ")
+      safe_join(keys.map { |key| render_hotkey_badge_key(key) }, " ")
     end
   end
 
   private
+
+  def render_hotkey_badge_key(key)
+    token = key.to_s.strip
+
+    case token.downcase
+    when "mod"
+      tag.kbd do
+        helpers.safe_join([
+          tag.abbr("⌘", title: "Command", class: "no-underline os-pc:hidden"),
+          tag.abbr("CTRL", title: "CTRL", class: "no-underline os-mac:hidden")
+        ])
+      end
+    when "enter", "return"
+      tag.kbd("↵")
+    else
+      tag.kbd(token.upcase)
+    end
+  end
 
   # Use the @parent_resource to fetch the field using the @reflection name.
   def field
