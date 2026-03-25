@@ -3,10 +3,10 @@
     id: @id,
     placeholder: @placeholder,
     class: class_names(
+      @classes,
       "search-input__input",
       "search-input__input--with-shortcut": @shortcut == :slash,
-      "search-input__input--with-two-key-shortcut": @shortcut == :cmd_k,
-      @classes
+      "search-input__input--with-two-key-shortcut": @shortcut == :cmd_k
     ),
     disabled: @disabled,
     autocomplete: "off",

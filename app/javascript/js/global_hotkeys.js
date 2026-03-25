@@ -32,13 +32,12 @@ const DIRECT_HOTKEYS = [
   },
   {
     // "/" → focus the resource search input on index pages.
-    match: (e) =>
-      e.key === '/' &&
-      !e.shiftKey &&
-      !e.metaKey &&
-      !e.ctrlKey &&
-      !e.altKey &&
-      !!findResourceSearchInput(),
+    match: (e) => e.key === '/'
+      && !e.shiftKey
+      && !e.metaKey
+      && !e.ctrlKey
+      && !e.altKey
+      && !!findResourceSearchInput(),
     handle: () => {
       const input = findResourceSearchInput()
       if (input) input.focus()
