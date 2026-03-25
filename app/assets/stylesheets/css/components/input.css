@@ -275,6 +275,24 @@
     );
   }
 
+  /* Two-key shortcut: ⌘K (Mac) */
+  .search-input__input.search-input__input--with-two-key-shortcut {
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) * 2 +
+      var(--input-icon-gap) * 3
+    );
+  }
+
+  /* Two-key shortcut: Ctrl+K (PC — wider because "CTRL" is wider than "⌘") */
+  body.os-pc .search-input__input.search-input__input--with-two-key-shortcut {
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) * 3 +
+      var(--input-icon-gap) * 4
+    );
+  }
+
   /* Suffix (shortcut) */
   .search-input__suffix {
     @apply absolute inset-y-0 end-0 flex items-center text-content-secondary pointer-events-none z-10 gap-1;

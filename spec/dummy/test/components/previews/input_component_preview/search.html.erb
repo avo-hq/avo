@@ -13,7 +13,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_sm",
         placeholder: "Search",
-        with_shortcut: true,
+        shortcut: :cmd_k,
         classes: "w-full input--size-sm"
       ) %>
     </div>
@@ -22,7 +22,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_md",
         placeholder: "Search",
-        with_shortcut: true,
+        shortcut: :cmd_k,
         classes: "w-full input--size-md"
       ) %>
     </div>
@@ -31,7 +31,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_lg",
         placeholder: "Search",
-        with_shortcut: true,
+        shortcut: :cmd_k,
         classes: "w-full input--size-lg"
       ) %>
     </div>
@@ -42,7 +42,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_sm_no",
         placeholder: "Search",
-        with_shortcut: false,
+        shortcut: nil,
         classes: "w-full input--size-sm"
       ) %>
     </div>
@@ -51,7 +51,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_md_no",
         placeholder: "Search",
-        with_shortcut: false,
+        shortcut: nil,
         classes: "w-full input--size-md"
       ) %>
     </div>
@@ -60,7 +60,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_lg_no",
         placeholder: "Search",
-        with_shortcut: false,
+        shortcut: nil,
         classes: "w-full input--size-lg"
       ) %>
     </div>
@@ -71,7 +71,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_sm_disabled",
         placeholder: "Search",
-        with_shortcut: true,
+        shortcut: :cmd_k,
         disabled: true,
         classes: "w-full input--size-sm",
         value: "Disabled value"
@@ -82,7 +82,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_md_disabled",
         placeholder: "Search",
-        with_shortcut: true,
+        shortcut: :cmd_k,
         disabled: true,
         classes: "w-full input--size-md",
         value: "Disabled value"
@@ -93,7 +93,7 @@
       <%= render Avo::UI::SearchInputComponent.new(
         name: "q_lg_disabled",
         placeholder: "Search",
-        with_shortcut: true,
+        shortcut: :cmd_k,
         disabled: true,
         classes: "w-full input--size-lg",
         value: "Disabled value Disabled value Disabled value Disabled value Disabled value"

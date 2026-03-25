@@ -86,6 +86,7 @@
                       value: params[:q],
                       id: nil,
                       placeholder: t('avo.search.placeholder'),
+                      shortcut: :slash,
                       data: {
                         action: "input->resource-search#search keydown->resource-search#blurOnEscape",
                         "resource-search-target": "input"

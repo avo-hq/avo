@@ -6,6 +6,7 @@ class Avo::UI::SearchInputComponent < Avo::BaseComponent
   prop :value
   prop :placeholder
   prop :disabled, default: false
+  prop :shortcut, default: nil  # :slash or :cmd_k
   prop :classes
   prop :data, default: -> { {} }
 end
