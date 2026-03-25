@@ -32,7 +32,21 @@ const DIRECT_HOTKEYS = [
 const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 
 export function installGlobalHotkeys() {
+  // When a hotkey fires on a DOM element that contains a <kbd>, mark it cold
+  // before letting the click proceed. preventDefault + requestAnimationFrame
+  // gives the browser one frame to paint the cold state before navigation starts.
+  document.addEventListener('hotkey-fire', (event) => {
+    const kbd = event.target.querySelector('kbd')
+    if (!kbd) return
+
+    event.preventDefault()
+    kbd.classList.add('kbd--called')
+    requestAnimationFrame(() => event.target.click())
+  })
+
   document.addEventListener('turbo:load', () => {
+    document.querySelectorAll('kbd.kbd--called').forEach((kbd) => kbd.classList.remove('kbd--called'))
+
     if (window.reloadScrollTop) {
       setTimeout(() => {
         document.querySelector('.scrollable-wrapper')?.scrollTo(0, window.reloadScrollTop)

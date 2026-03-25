@@ -15,6 +15,15 @@ class Avo::BaseComponent < ViewComponent::Base
 
   def component_name = self.class.name.to_s.underscore
 
+  # Renders a <kbd> badge for a hotkey string.
+  # Skips modifier combos like "Meta+Enter" — only renders simple keys.
+  def hotkey_badge(hotkey, **html_options)
+    first_key = hotkey.to_s.split.first
+    return if first_key.blank? || first_key.include?("+")
+
+    tag.kbd(first_key.upcase, **html_options)
+  end
+
   private
 
   # Use the @parent_resource to fetch the field using the @reflection name.
