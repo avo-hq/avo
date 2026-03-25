@@ -35,6 +35,28 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     JS
   end
 
+  def dispatch_document_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false, alt_key: false)
+    page.evaluate_script(<<~JS)
+      const event = new KeyboardEvent("keydown", {
+        key: #{key.to_json},
+        code: #{code.to_json},
+        shiftKey: #{shift_key},
+        ctrlKey: #{ctrl_key},
+        metaKey: #{meta_key},
+        altKey: #{alt_key},
+        bubbles: true,
+        cancelable: true
+      })
+
+      const dispatchResult = document.dispatchEvent(event)
+
+      {
+        defaultPrevented: event.defaultPrevented,
+        dispatchResult: dispatchResult
+      }
+    JS
+  end
+
   it "opens the keyboard shortcuts panel and closes it with escape" do
     visit "/admin/resources/projects"
 
@@ -99,6 +121,17 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     focused_row = find("tr.table-row.is-keyboard-focused")
     expect(focused_row["data-resource-id"]).to eq(target_project.to_param)
+  end
+
+  it "does not swallow slash on pages without search input" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    result = dispatch_document_keydown("/", code: "Slash")
+
+    expect(result["defaultPrevented"]).to be(false)
+    expect(result["dispatchResult"]).to be(true)
   end
 
   it "opens the edit page using the edit hotkey" do
