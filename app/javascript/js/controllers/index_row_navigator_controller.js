@@ -6,11 +6,11 @@ export default class extends Controller {
   connect() {
     this.currentIndex = -1
     this.handleKeydown = this.handleKeydown.bind(this)
-    this.element.addEventListener("keydown", this.handleKeydown)
+    document.addEventListener("keydown", this.handleKeydown)
   }
 
   disconnect() {
-    this.element.removeEventListener("keydown", this.handleKeydown)
+    document.removeEventListener("keydown", this.handleKeydown)
   }
 
   handleKeydown(event) {

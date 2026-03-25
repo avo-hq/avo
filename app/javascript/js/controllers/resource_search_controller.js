@@ -19,6 +19,10 @@ export default class extends Controller {
     this.#removeSpinner()
   }
 
+  blurOnEscape(event) {
+    if (event.key === 'Escape') this.inputTarget.blur()
+  }
+
   search() {
     this.debouncedSearch()
   }
