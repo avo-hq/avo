@@ -66,7 +66,7 @@ export function installGlobalHotkeys() {
 
   document.addEventListener('keydown', (event) => {
     if (event.defaultPrevented || event.repeat) return
-    if (event.target?.closest(TYPING_SELECTOR)) return
+    if (event.target instanceof Element && event.target.closest(TYPING_SELECTOR)) return
 
     const entry = DIRECT_HOTKEYS.find(({ match }) => match(event))
     if (entry) {
