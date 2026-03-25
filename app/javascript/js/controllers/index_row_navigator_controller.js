@@ -45,11 +45,7 @@ export default class extends Controller {
     }
 
     rows.forEach((r, i) => r.classList.toggle("is-keyboard-focused", i === this.currentIndex))
-
-    const scroller = document.querySelector(".scrollable-wrapper")
-    const savedScrollLeft = scroller?.scrollLeft
-    rows[this.currentIndex].scrollIntoView({ block: "nearest", inline: "nearest" })
-    if (scroller != null) scroller.scrollLeft = savedScrollLeft
+    rows[this.currentIndex].scrollIntoView({ block: "nearest" })
   }
 
   clearFocus(rows) {
