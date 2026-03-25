@@ -18,10 +18,15 @@ class Avo::BaseComponent < ViewComponent::Base
   # Renders a <kbd> badge for a hotkey string.
   # Skips modifier combos like "Meta+Enter" — only renders simple keys.
   def hotkey_badge(hotkey, **html_options)
-    first_key = hotkey.to_s.split.first
-    return if first_key.blank? || first_key.include?("+")
+    keys = hotkey.to_s.split
+    first_key = keys.first
+    return if first_key.blank?
 
-    tag.kbd(first_key.upcase, **html_options)
+    content_tag(:span, **html_options) do
+      # Render multiple keys (e.g. "g n") inside a wrapper so any provided
+      # classes (like `ms-auto`) are applied once.
+      safe_join(keys.map { |key| tag.kbd(key.upcase) }, " ")
+    end
   end
 
   private
