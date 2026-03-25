@@ -38,10 +38,11 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
           shortcut(action: "Create new record", keys: ["C"]),
           shortcut(action: "Open actions", keys: ["A"]),
           shortcut(
-            action: "Navigate actions",
+            action: "Navigate rows / actions",
             any_of: [["↑"], ["↓"]],
             keys_aria_label: "Up arrow or down arrow"
-          )
+          ),
+          shortcut(action: "Open record", keys: ["↵"])
         ]
       )
     ]
