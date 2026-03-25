@@ -4,8 +4,9 @@
     component_name: self.class.to_s.underscore,
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
+    controller: (@reflection.blank? ? "index-row-navigator" : nil),
     **@resource.stimulus_data_attributes
-  } do %>
+  }.compact do %>
 
   <%= render_cards_component %>
 
