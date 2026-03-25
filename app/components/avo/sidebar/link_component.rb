@@ -82,6 +82,6 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   def build_link_data(data, hotkey)
     return data if hotkey.blank?
 
-    data.merge(hotkey: hotkey.to_s.first)
+    data.merge(hotkey: hotkey)
   end
 end
