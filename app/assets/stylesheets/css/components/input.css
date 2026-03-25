@@ -266,21 +266,12 @@
     );
   }
 
-  /* Default (Mac): ⌘ + K — narrower */
+  /* Single-key shortcut: "/" */
   .search-input__input.search-input__input--with-shortcut {
     padding-inline-end: calc(
       var(--input-icon-offset) +
-      var(--input-icon-size) * 2 +
-      var(--input-icon-gap) * 3
-    );
-  }
-
-  /* PC: CTRL + K — wider */
-  body.os-pc .search-input__input.search-input__input--with-shortcut {
-    padding-inline-end: calc(
-      var(--input-icon-offset) +
-      var(--input-icon-size) * 3 +
-      var(--input-icon-gap) * 4
+      var(--input-icon-size) +
+      var(--input-icon-gap) * 2
     );
   }
 
