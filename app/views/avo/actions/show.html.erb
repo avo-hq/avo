@@ -52,7 +52,7 @@
 
       <% c.with_controls do %>
         <%= a_button type: :button,
-          data: { action: 'click->modal#close' },
+          data: { action: 'click->modal#close', hotkey: "Escape" },
           size: :md do %>
           <%= @action.cancel_button_label %>
         <% end %>
@@ -62,6 +62,7 @@
             size: :md,
             data: {
               target: :submit_action,
+              hotkey: "Mod+Enter",
             },
             autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
           <%= @action.confirm_button_label %>

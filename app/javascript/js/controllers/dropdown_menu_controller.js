@@ -54,6 +54,7 @@ export default class extends Controller {
   open() {
     this.menuTarget.show()
     this.element.addEventListener('keydown', this.boundHandleKeydown)
+    this.dispatch('open', { bubbles: true })
     requestAnimationFrame(() => {
       const items = this.focusableItems
       if (items.length > 0) items[0].focus()

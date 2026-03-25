@@ -29,7 +29,15 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         "Show view",
         [
           shortcut(action: "Delete record", keys: ["D"]),
-          shortcut(action: "Edit record", keys: ["E"])
+          shortcut(action: "Edit record", keys: ["E"]),
+          shortcut(action: "Open actions", keys: ["A"])
+        ]
+      ),
+      build_section(
+        "Action",
+        [
+          shortcut(action: "Run action", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
+          shortcut(action: "Cancel action", keys: ["Esc"])
         ]
       ),
       build_section(
@@ -43,7 +51,12 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
             any_of: [["↑"], ["↓"]],
             keys_aria_label: "Up arrow or down arrow"
           ),
-          shortcut(action: "Open record", keys: ["↵"])
+          shortcut(action: "Open record", keys: ["↵"]),
+          shortcut(action: "Select / deselect row", keys: ["Space"]),
+          shortcut(action: "Deselect rows", keys: ["Esc"]),
+          shortcut(action: "Table view", keys: ["V", "T"]),
+          shortcut(action: "Grid view", keys: ["V", "G"]),
+          shortcut(action: "Map view", keys: ["V", "M"])
         ]
       )
     ]

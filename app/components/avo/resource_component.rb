@@ -126,7 +126,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_actions_list(actions_list)
     return unless can_see_the_actions_button?
 
-    hotkey = "a" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+    hotkey = "a" if @reflection.nil?
 
     render Avo::ActionsComponent.new(
       actions: @actions,

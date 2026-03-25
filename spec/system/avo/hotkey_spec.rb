@@ -84,6 +84,19 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_css(".hotkey[hidden]", visible: false)
   end
 
+  it "applies kbd--called animation feedback when a hotkey fires" do
+    visit "/admin/resources/projects"
+
+    # Prevent the click from navigating so the kbd element stays in the DOM
+    page.execute_script(<<~JS)
+      document.querySelector('[data-hotkey="u"]').addEventListener('click', (e) => e.preventDefault())
+    JS
+
+    dispatch_keydown("u")
+
+    expect(page).to have_css('[data-hotkey="u"] kbd.kbd--called')
+  end
+
   it "navigates to resources using sidebar hotkeys" do
     visit "/admin/resources/projects"
 
