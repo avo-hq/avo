@@ -11,7 +11,13 @@ import { install } from '@github/hotkey'
 
 // Use @github/hotkey for sequences and standard combos.
 const ELEMENT_HOTKEYS = [
-  { hotkey: 'r r r', handle: () => window.StreamActions.turbo_reload() },
+  {
+    hotkey: 'r r r',
+    handle: () => {
+      window.reloadScrollTop = document.querySelector('.scrollable-wrapper')?.scrollTop
+      window.StreamActions.turbo_reload()
+    },
+  },
 ]
 
 // Use direct listeners for keys where event.key varies across browsers/layouts.
@@ -26,12 +32,22 @@ const DIRECT_HOTKEYS = [
 const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 
 export function installGlobalHotkeys() {
+  document.addEventListener('turbo:load', () => {
+    if (window.reloadScrollTop) {
+      setTimeout(() => {
+        document.querySelector('.scrollable-wrapper')?.scrollTo(0, window.reloadScrollTop)
+        window.reloadScrollTop = null
+      }, 50)
+    }
+  })
+
   ELEMENT_HOTKEYS.forEach(({ hotkey, handle }) => {
     const el = document.createElement('span')
-    el.setAttribute('data-hotkey', hotkey)
-    el.addEventListener('click', handle)
-    document.head.appendChild(el)
-    install(el)
+    el.addEventListener('hotkey-fire', (event) => {
+      event.preventDefault()
+      handle()
+    })
+    install(el, hotkey)
   })
 
   document.addEventListener('keydown', (event) => {
