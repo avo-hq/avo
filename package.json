@@ -52,7 +52,7 @@
     "codemirror": "5.59.1",
     "core-js": "^3.48.0",
     "css-loader": "^6.11.0",
-    "dompurify": "^3.3.2",
+    "dompurify": "^3.3.3",
     "easymde": "^2.20.0",
     "el-transition": "^0.0.7",
     "esbuild": "^0.25.12",
@@ -82,7 +82,7 @@
     "tailwindcss": "^3.4.19",
     "tailwindcss-stimulus-components": "^3.0.4",
     "tippy.js": "^6.3.7",
-    "trix": "^2.1.16",
+    "trix": "^2.1.17",
     "turbo_power": "^0.6.2",
     "urijs": "^1.19.11"
   },
