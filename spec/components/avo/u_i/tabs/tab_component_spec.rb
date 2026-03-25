@@ -165,7 +165,7 @@ RSpec.describe Avo::UI::Tabs::TabComponent, type: :component do
         render_component(
           label: "Scope Tab",
           active: true,
-          icon: "heroicons/outline/filter",
+          icon: "tabler/outline/filter",
           href: "/filter/published",
           id: "scope-published",
           data: {testid: "published-scope"}

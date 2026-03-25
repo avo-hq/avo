@@ -136,7 +136,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
     a_button size: :sm,
       color: :primary,
-      icon: "avo/filter",
+      icon: "tabler/outline/filter",
       data: {
         controller: "avo-filters",
         action: "click->avo-filters#toggleFiltersArea",

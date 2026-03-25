@@ -9,7 +9,7 @@
       data-max="<%= @field.max %>"
       data-current-value="<%= @field.value || 0 %>">
       <% (1..@field.max).each do |rating_value| %>
-        <%= helpers.svg('heroicons/solid/star',
+        <%= helpers.svg('tabler/filled/star',
           class: class_names("star inline-block me-0.5", filled: rating_value <= (@value || 0)),
           data: {
             star_value: rating_value,

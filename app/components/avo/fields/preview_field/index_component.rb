@@ -4,7 +4,7 @@ class Avo::Fields::PreviewField::IndexComponent < Avo::Fields::IndexComponent
   def render_preview
     link_to resource_view_path, title: t("avo.view_item", item: @resource.name).humanize do
       helpers.svg(
-        "heroicons/outline/magnifying-glass-circle",
+        "tabler/outline/zoom-scan",
         class: "block h-6 text-gray-600",
         data: {
           controller: "preview",

@@ -4,7 +4,7 @@
 # style: primary/outline/text
 # size: :sm, :md, :lg
 # color: nil, :primary, :accent, :gray, :red, :green, :blue, or any other tailwind color
-# icon: "heroicons/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
+# icon: "tabler/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
   prop :path, kind: :positional
   prop :size, default: :md

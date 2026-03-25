@@ -79,11 +79,11 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def actions
-    action Avo::Actions::ToggleInactive, icon: "heroicons/outline/globe"
+    action Avo::Actions::ToggleInactive, icon: "tabler/outline/world"
     action Avo::Actions::ToggleAdmin
     divider label: "Other actions"
     action Avo::Actions::Sub::DummyAction
-    action Avo::Actions::DownloadFile, icon: "heroicons/outline/arrow-left"
+    action Avo::Actions::DownloadFile, icon: "tabler/outline/arrow-left"
     action Avo::Actions::Test::Query
     divider
     action Avo::Actions::Test::NoConfirmationPostsRedirect
