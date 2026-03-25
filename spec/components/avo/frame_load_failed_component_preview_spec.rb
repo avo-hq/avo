@@ -8,7 +8,8 @@ RSpec.describe FrameLoadFailedComponentPreview, type: :component do
     })
 
     expect(page).to have_css(".state--frame-load-failed")
-    expect(page).to have_text("Oops, can't load filter frame!")
+    expect(page).to have_text("Failed to load:")
+    expect(page).to have_text("filter")
     # Dev note with link is only shown when Rails.env.development? — test env skips it
   end
 end

@@ -30,13 +30,13 @@
 }
 
 .state__badge {
-  @apply flex size-[22px] shrink-0 items-center justify-center rounded-full text-[9px] font-medium leading-none text-content;
+  @apply flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium leading-none text-content;
 
   background: color-mix(in oklab, var(--color-tertiary) 88%, var(--color-primary));
 }
 
 .state__body {
-  @apply flex min-w-0 flex-1 flex-col gap-[3px];
+  @apply flex min-w-0 flex-1 flex-col gap-1;
 }
 
 .state__line {
@@ -75,7 +75,7 @@
 }
 
 .state__document {
-  @apply absolute flex h-28 w-20 flex-col rounded-lg border border-secondary p-[3px];
+  @apply absolute flex h-28 w-20 flex-col rounded-lg border border-secondary p-0.5;
 
   background: linear-gradient(235deg, var(--color-primary) 27%, var(--color-background) 65%);
 }
@@ -103,7 +103,7 @@
 }
 
 .state__document-line {
-  @apply block h-[5px] w-full rounded-full;
+  @apply block h-1 w-full rounded-full;
 
   background: color-mix(in oklab, var(--color-tertiary) 78%, var(--color-primary));
 }

@@ -1,6 +1,10 @@
 <%
-  src_url = params[:src].present? && !params[:src].starts_with?('http://') ? CGI.escapeHTML(params[:src]) : nil
-  frame = params[:turbo_frame].to_s.humanize.downcase if params[:turbo_frame].present?
+  src_url = params[:src].present? && !params[:src].starts_with?("http://") ? CGI.escapeHTML(params[:src]) : nil
+  frame_label = if params[:turbo_frame].present?
+    params[:turbo_frame].to_s.humanize.downcase
+  else
+    "this frame"
+  end
 %>
 
 <%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
@@ -25,13 +29,16 @@
       </div>
     </div>
 
-    <p class="state__message">Oops, can't load <%= frame %> frame!</p>
+    <p class="state__message text-center font-normal">
+      Failed to load:
+      <span class="font-bold"><%= frame_label %></span>
+    </p>
 
     <% if Rails.env.development? && src_url.present? %>
-      <p class="state__note">
-        This is not an issue with Avo. Use
-        <%= link_to "this page", src_url, target: "_blank", rel: "noopener", class: "state__link" %>
-        to learn more.
+      <p class="state__note text-center font-normal">
+        Follow
+        <%= link_to "this link", src_url, target: "_blank", rel: "noopener", class: "state__link font-normal" %>
+        for more details about the issue and how to fix it.
       </p>
     <% end %>
   </div>
