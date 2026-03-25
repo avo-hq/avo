@@ -20,7 +20,7 @@ class Avo::BaseComponent < ViewComponent::Base
   def hotkey_badge(hotkey, **html_options)
     keys = hotkey.to_s.split
     first_key = keys.first
-    return if first_key.blank? || first_key.include?("+")
+    return if first_key.blank?
 
     content_tag(:span, **html_options) do
       # Render multiple keys (e.g. "g n") inside a wrapper so any provided
