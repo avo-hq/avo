@@ -45,7 +45,7 @@ export default class extends Controller {
     }
 
     rows.forEach((r, i) => r.classList.toggle("is-keyboard-focused", i === this.currentIndex))
-    rows[this.currentIndex].scrollIntoView({ block: "nearest" })
+    rows[this.currentIndex].scrollIntoView({ block: "nearest", inline: "nearest" })
   }
 
   clearFocus(rows) {
