@@ -1,5 +1,16 @@
-<div class="relative flex-1 flex flex-col items-center justify-center space-y-2 py-6 border border-dashed border-content-secondary rounded-lg">
-  <div class="text-content-secondary text-center">
-    <%= text %>
+<%= content_tag :div, class: class_names("state", @classes) do %>
+  <div class="state__illustration" aria-hidden="true">
+    <% cards.each do |card| %>
+      <div class="<%= class_names("state__card", "state__card--#{card[:position]}") %>">
+        <div class="state__badge"><%= card[:number] %></div>
+
+        <div class="state__body">
+          <div class="<%= class_names("state__line", "state__line--title", "state__line--#{card[:title]}") %>"></div>
+          <div class="state__line state__line--content"></div>
+        </div>
+      </div>
+    <% end %>
   </div>
-</div>
+
+  <p class="state__message"><%= text %></p>
+<% end %>
