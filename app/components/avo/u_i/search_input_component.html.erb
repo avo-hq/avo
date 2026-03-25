@@ -4,7 +4,7 @@
     placeholder: @placeholder,
     class: class_names(
       "search-input__input",
-      {"search-input__input--with-shortcut": @with_shortcut || @shortcut.present?},
+      "search-input__input--with-shortcut",
       @classes
     ),
     disabled: @disabled,
@@ -16,17 +16,7 @@
     <%= helpers.svg "tabler/outline/search" %>
   </span>
 
-  <% if @shortcut == :slash %>
-    <span class="search-input__suffix" aria-hidden="true">
-      <kbd>/</kbd>
-    </span>
-  <% elsif @with_shortcut %>
-    <span class="search-input__suffix" aria-hidden="true">
-      <kbd>
-        <abbr title="Command" class="no-underline os-pc:hidden">⌘</abbr>
-        <abbr title="CTRL" class="no-underline os-mac:hidden">CTRL</abbr>
-      </kbd>
-      <kbd>K</kbd>
-    </span>
-  <% end %>
+  <span class="search-input__suffix" aria-hidden="true">
+    <kbd>/</kbd>
+  </span>
 <% end %>

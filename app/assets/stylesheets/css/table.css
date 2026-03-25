@@ -60,5 +60,5 @@
 }
 
 .table-row.is-keyboard-focused {
-  @apply ring-2 ring-inset ring-[var(--color-accent)] bg-secondary;
+  background: var(--color-table-row-hover);
 }

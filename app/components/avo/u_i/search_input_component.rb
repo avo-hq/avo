@@ -6,7 +6,6 @@ class Avo::UI::SearchInputComponent < Avo::BaseComponent
   prop :value
   prop :placeholder
   prop :disabled, default: false
-  prop :with_shortcut, default: false
   prop :classes
   prop :data, default: -> { {} }
 end

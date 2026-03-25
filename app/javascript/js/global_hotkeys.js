@@ -27,6 +27,14 @@ const DIRECT_HOTKEYS = [
     match: (e) => e.key === '?' || (e.shiftKey && e.code === 'Slash'),
     handle: () => document.dispatchEvent(new Event('persistent-modal:toggle')),
   },
+  {
+    // "/" → focus the resource search input on index pages.
+    match: (e) => e.key === '/' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey,
+    handle: () => {
+      const input = document.querySelector('[data-resource-search-target="input"]')
+      if (input) input.focus()
+    },
+  },
 ]
 
 const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
