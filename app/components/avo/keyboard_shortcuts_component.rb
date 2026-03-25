@@ -35,6 +35,7 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
       build_section(
         "Index view",
         [
+          shortcut(action: "Focus search", keys: ["/"]),
           shortcut(action: "Create new record", keys: ["C"]),
           shortcut(action: "Open actions", keys: ["A"]),
           shortcut(
