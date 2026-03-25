@@ -154,7 +154,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
-    hotkey = "d" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+    hotkey = "d" if hotkey_available_for_show_controls?
 
     a_link destroy_path,
       style: :text,
@@ -198,7 +198,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_edit_button(control)
     return unless can_see_the_edit_button?
 
-    hotkey = "e" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+    hotkey = "e" if hotkey_available_for_show_controls?
 
     a_link edit_path,
       color: :accent,
@@ -256,6 +256,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       } do
       control.label
     end
+  end
+
+  def hotkey_available_for_show_controls?
+    @reflection.nil? && @view&.show?
   end
 
   def render_link_to(link)
