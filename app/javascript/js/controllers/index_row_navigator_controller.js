@@ -38,8 +38,11 @@ export default class extends Controller {
 
     // ArrowDown / ArrowUp
     event.preventDefault()
-    const direction = event.key === "ArrowDown" ? 1 : -1
-    this.currentIndex = (this.currentIndex + direction + rows.length) % rows.length
+    if (event.key === "ArrowDown") {
+      this.currentIndex = this.currentIndex < rows.length - 1 ? this.currentIndex + 1 : 0
+    } else {
+      this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : rows.length - 1
+    }
 
     rows.forEach((r, i) => r.classList.toggle("is-keyboard-focused", i === this.currentIndex))
     rows[this.currentIndex].scrollIntoView({ block: "nearest" })
