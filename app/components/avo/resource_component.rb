@@ -126,6 +126,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_actions_list(actions_list)
     return unless can_see_the_actions_button?
 
+    hotkey = "a" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+
     render Avo::ActionsComponent.new(
       actions: @actions,
       resource: @resource,
@@ -139,7 +141,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon: actions_list.icon,
       icon_class: actions_list.icon_class,
       title: actions_list.title,
-      as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
+      as_row_control: instance_of?(Avo::Index::ResourceControlsComponent),
+      hotkey: hotkey
     )
   end
 
@@ -151,6 +154,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
+    hotkey = "d" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+
     a_link destroy_path,
       style: :text,
       color: :red,
@@ -158,7 +163,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: control.title,
       aria_label: control.title,
       data: {
-        hotkey: "d",
+        hotkey:,
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,
         target: "control:destroy",
@@ -193,12 +198,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_edit_button(control)
     return unless can_see_the_edit_button?
 
+    hotkey = "e" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+
     a_link edit_path,
       color: :accent,
       style: :primary,
       title: control.title,
       data: {
-        hotkey: "e",
+        hotkey:,
         tippy: control.title ? :tooltip : nil
       }.compact,
       icon: "tabler/outline/edit" do
@@ -223,12 +230,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_create_button(control)
     return unless can_see_the_create_button?
 
+    hotkey = "c" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+
     a_link create_path,
       color: :accent,
       style: :primary,
       icon: "tabler/outline/plus",
       data: {
-        hotkey: "c",
+        hotkey:,
         target: :create
       } do
       control.label
