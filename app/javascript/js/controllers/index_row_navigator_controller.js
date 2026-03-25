@@ -20,6 +20,7 @@ export default class extends Controller {
 
     const rows = Array.from(this.element.querySelectorAll("tr[data-visit-path]"))
     if (!rows.length) return
+    this.currentIndex = this.normalizeCurrentIndex(rows.length)
 
     if (event.key === "Escape") {
       if (this.currentIndex === -1) return
@@ -46,6 +47,13 @@ export default class extends Controller {
 
     rows.forEach((r, i) => r.classList.toggle("is-keyboard-focused", i === this.currentIndex))
     rows[this.currentIndex].scrollIntoView({ block: "nearest" })
+  }
+
+  normalizeCurrentIndex(rowsLength) {
+    if (this.currentIndex < -1) return -1
+    if (this.currentIndex >= rowsLength) return rowsLength - 1
+
+    return this.currentIndex
   }
 
   clearFocus(rows) {

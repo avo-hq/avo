@@ -9,6 +9,9 @@
 
 import { install } from '@github/hotkey'
 
+const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
+const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INPUT_SELECTOR)
+
 // Use @github/hotkey for sequences and standard combos.
 const ELEMENT_HOTKEYS = [
   {
@@ -29,9 +32,15 @@ const DIRECT_HOTKEYS = [
   },
   {
     // "/" → focus the resource search input on index pages.
-    match: (e) => e.key === '/' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey,
+    match: (e) =>
+      e.key === '/' &&
+      !e.shiftKey &&
+      !e.metaKey &&
+      !e.ctrlKey &&
+      !e.altKey &&
+      !!findResourceSearchInput(),
     handle: () => {
-      const input = document.querySelector('[data-resource-search-target="input"]')
+      const input = findResourceSearchInput()
       if (input) input.focus()
     },
   },
