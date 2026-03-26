@@ -58,3 +58,7 @@
 .selected-row {
   background: var(--color-table-row-hover);
 }
+
+.table-row.is-keyboard-focused {
+  background: color-mix(in oklab, var(--color-background), var(--color-accent) 10%);
+}

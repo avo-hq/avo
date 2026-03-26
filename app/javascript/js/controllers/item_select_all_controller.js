@@ -45,6 +45,16 @@ export default class extends Controller {
     this.selectedResourcesObserver.stop()
   }
 
+  deselectAll() {
+    this.itemCheckboxTargets.forEach((checkbox) => checkbox.checked && checkbox.click())
+    this.checkboxTarget.checked = false
+
+    if (this.selectAllEnabled()) {
+      this.selectAllOverlay(false)
+      this.resetUnselected()
+    }
+  }
+
   toggle(event) {
     const checked = !!event.target.checked
     this.itemCheckboxTargets.forEach((checkbox) => checkbox.checked !== checked && checkbox.click())

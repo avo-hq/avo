@@ -50,6 +50,8 @@ class Avo::BaseComponent < ViewComponent::Base
       end
     when "enter", "return"
       tag.kbd("↵")
+    when "escape"
+      tag.kbd("Esc")
     else
       tag.kbd(token.upcase)
     end

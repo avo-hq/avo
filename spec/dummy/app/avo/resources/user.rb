@@ -1,5 +1,5 @@
 class Avo::Resources::User < Avo::BaseResource
-  self.hotkey = "u"
+  self.hotkey = "r u"
   self.icon = "tabler/outline/users"
   self.title = -> {
     record.name

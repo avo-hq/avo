@@ -10,7 +10,7 @@ import { install } from '@github/hotkey'
 import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
-import { installGlobalHotkeys } from './js/global_hotkeys'
+import { attachHotkeyFeedback, installGlobalHotkeys } from './js/global_hotkeys'
 
 import './js/active-storage'
 import './js/controllers'
@@ -20,6 +20,7 @@ import './js/custom-stream-actions'
 function installHotkeys(root = document) {
   root.querySelectorAll('[data-hotkey]').forEach((el) => {
     install(el)
+    attachHotkeyFeedback(el)
   })
 }
 

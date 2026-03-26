@@ -5,7 +5,7 @@
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
     **@resource.stimulus_data_attributes
-  } do %>
+  }.tap { |d| d[:controller] = "#{d[:controller]} index-row-navigator" if @reflection.blank? } do %>
 
   <%= render_cards_component %>
 
@@ -86,8 +86,9 @@
                       value: params[:q],
                       id: nil,
                       placeholder: t('avo.search.placeholder'),
+                      shortcut: :slash,
                       data: {
-                        action: "input->resource-search#search",
+                        action: "input->resource-search#search keydown->resource-search#blurOnEscape",
                         "resource-search-target": "input"
                       }) %>
                   <% end %>

@@ -25,10 +25,12 @@ kbd {
   border: 1px solid currentColor;
   background-color: color-mix(in srgb, currentColor 8%, transparent); */
   box-shadow: var(--box-shadow-search-input-shortcut);
+  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
 }
 
 kbd.kbd--called {
-  opacity: 0.4;
+  transform: scale(0.75) translateY(2px);
+  box-shadow: none;
 }
 
 @layer base {

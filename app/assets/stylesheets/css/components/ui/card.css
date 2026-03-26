@@ -29,6 +29,8 @@
   @apply flex flex-col items-start self-stretch w-full;
   /* offset 1px from the wrapper to match the design */
   padding: calc(var(--spacing) - 1px);
+  /* prevent scrollIntoView from shifting the table horizontally by the padding amount */
+  scroll-padding-inline: calc(var(--spacing) );
 }
 
 /* for pagination we need the padding to be 4px */
