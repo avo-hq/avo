@@ -1,0 +1,82 @@
+.alert {
+  @apply relative flex w-full max-w-md items-start gap-1 rounded-lg border p-3 pointer-events-auto opacity-0 -translate-x-2;
+
+  background: var(--alert-background);
+  border-color: var(--alert-border);
+  box-shadow: var(--box-shadow);
+  will-change: opacity, transform;
+
+  --alert-color: var(--color-foreground);
+  --alert-background: var(--color-background);
+  --alert-border: var(--color-tertiary);
+
+  --alert-close-hover-background: color-mix(in oklab, var(--alert-border) 15%, transparent);
+}
+
+.alert__icon-wrapper {
+  @apply flex shrink-0 items-center justify-center p-1;
+}
+
+.alert__icon {
+  @apply size-3.5;
+
+  color: var(--alert-color);
+}
+
+.alert__body {
+  @apply flex min-w-0 flex-1 flex-col gap-0.5 self-stretch;
+}
+
+.alert__title {
+  @apply w-full text-sm leading-5 font-medium;
+
+  color: var(--alert-color);
+}
+
+.alert__message {
+  @apply w-full text-xs leading-4 font-normal;
+
+  color: var(--alert-color);
+}
+
+.alert__close {
+  @apply flex shrink-0 cursor-pointer items-center justify-center rounded-lg border border-transparent p-1.5 transition-colors duration-150 focus:outline-none;
+
+  color: var(--alert-color);
+
+  &:hover {
+    background: var(--alert-close-hover-background);
+  }
+
+  &:focus-visible {
+    box-shadow: var(--box-shadow-focus);
+  }
+}
+
+.alert__close-icon {
+  @apply size-3.5;
+}
+
+.alert--success {
+  --alert-color: var(--color-success-content);
+  --alert-background: color-mix(in oklab, var(--color-success) 15%, var(--color-primary));
+  --alert-border: var(--color-success-foreground);
+}
+
+.alert--info {
+  --alert-color: var(--color-info-content);
+  --alert-background: color-mix(in oklab, var(--color-info) 15%, var(--color-primary));
+  --alert-border: var(--color-info-foreground);
+}
+
+.alert--warning {
+  --alert-color: var(--color-warning-content);
+  --alert-background: color-mix(in oklab, var(--color-warning) 15%, var(--color-primary));
+  --alert-border: var(--color-warning-foreground);
+}
+
+.alert--danger {
+  --alert-color: var(--color-danger-content);
+  --alert-background: color-mix(in oklab, var(--color-danger) 15%, var(--color-primary));
+  --alert-border: var(--color-danger-foreground);
+}

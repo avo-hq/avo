@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Lookbook::Engine, at: "/lookbook" if Rails.env.development?
+
   root to: redirect(Avo.configuration.root_path)
   devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -43,6 +43,7 @@ module Avo3Dummy
     # ---
 
     config.action_view.form_with_generates_remote_forms = false
+    config.view_component.preview_paths = [Rails.root.join("test/components/previews")]
 
     # Rails.autoloaders.log!
   end
