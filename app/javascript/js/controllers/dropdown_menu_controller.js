@@ -58,7 +58,12 @@ export default class extends Controller {
     this.dispatch('open', { bubbles: true })
     requestAnimationFrame(() => {
       const items = this.focusableItems
-      if (items.length > 0) items[0].focus()
+      if (items.length === 0) return
+
+      const activeItem = items.find((el) =>
+        [...el.classList].some((cls) => cls.endsWith('--active')) || el.getAttribute('aria-selected') === 'true',
+      )
+      ;(activeItem || items[0]).focus()
     })
   }
 
