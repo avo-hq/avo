@@ -13,8 +13,8 @@ RSpec.describe "Keyboard shortcuts", type: :system do
         cancelable: true
       }
 
-      document.dispatchEvent(new KeyboardEvent("keydown", eventOptions))
-      window.dispatchEvent(new KeyboardEvent("keydown", eventOptions))
+      const eventTarget = document.body || document.documentElement
+      eventTarget.dispatchEvent(new KeyboardEvent("keydown", eventOptions))
     JS
   end
 
@@ -37,23 +37,25 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
   def dispatch_document_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false, alt_key: false)
     page.evaluate_script(<<~JS)
-      const event = new KeyboardEvent("keydown", {
-        key: #{key.to_json},
-        code: #{code.to_json},
-        shiftKey: #{shift_key},
-        ctrlKey: #{ctrl_key},
-        metaKey: #{meta_key},
-        altKey: #{alt_key},
-        bubbles: true,
-        cancelable: true
-      })
+      (() => {
+        const event = new KeyboardEvent("keydown", {
+          key: #{key.to_json},
+          code: #{code.to_json},
+          shiftKey: #{shift_key},
+          ctrlKey: #{ctrl_key},
+          metaKey: #{meta_key},
+          altKey: #{alt_key},
+          bubbles: true,
+          cancelable: true
+        })
 
-      const dispatchResult = document.dispatchEvent(event)
+        const dispatchResult = document.dispatchEvent(event)
 
-      {
-        defaultPrevented: event.defaultPrevented,
-        dispatchResult: dispatchResult
-      }
+        return {
+          defaultPrevented: event.defaultPrevented,
+          dispatchResult
+        }
+      })()
     JS
   end
 

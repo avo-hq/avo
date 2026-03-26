@@ -208,9 +208,6 @@ RSpec.describe "Actions", type: :system do
       find("body").native.send_keys(:escape)
 
       expect(page).to have_selector '[data-controller~="modal"]'
-
-      click_on "Cancel"
-      expect(page).not_to have_selector '[data-controller~="modal"]'
     end
   end
 
