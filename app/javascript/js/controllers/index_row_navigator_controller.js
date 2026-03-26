@@ -11,22 +11,25 @@
  * - Row-level hotkeys: when a row is focused, any hotkey defined on that
  *   row's controls (e.g., data-hotkey="i") will trigger that action
  *
- * WHY ROW HOTKEYS ARE HANDLED MANUALLY:
- * We don't rely on @github/hotkey library for row hotkeys because:
- * 1. The library only scans data-hotkey attributes on page load
- * 2. Dynamically adding/removing attributes doesn't trigger re-registration
- * 3. Managing multiple elements with the same hotkey is error-prone
+ * WHY ROW HOTKEYS ARE HANDLED SEPARATELY:
+ * The @github/hotkey library scans for data-hotkey attributes on page load
+ * and registers handlers for ALL matching elements. If we leave data-hotkey
+ * on row controls, the library will register all of them, and pressing a key
+ * will trigger the LAST-REGISTERED element (bug). If we later change which
+ * elements have the attribute, the library doesn't re-scan, so our changes
+ * have no effect.
  *
- * SOLUTION: The controller intercepts ALL keydown events and, when a row
- * is focused, looks for a matching [data-hotkey] element in that row and
- * clicks it directly. This ensures only the focused row's hotkeys work,
- * preventing the "last-registered hotkey wins" problem.
+ * SOLUTION:
+ * 1. Remove data-hotkey from all row controls early (before hotkey library scans)
+ * 2. Store the original values in data-hotkey-original
+ * 3. When a row is focused, add data-hotkey back to ONLY that row's controls
+ * 4. When the user presses a hotkey, our controller handles it and prevents
+ *    other listeners via stopImmediatePropagation
  *
  * KEY DESIGN DECISIONS:
  * - currentIndex = -1 when no row is focused (safe default)
- * - Row hotkeys only work when currentIndex !== -1
- * - We query [data-hotkey] directly instead of storing state to stay
- *   in sync with the HTML (simpler, no sync bugs)
+ * - We remove/add data-hotkey dynamically so the library sees the current state
+ * - stopImmediatePropagation prevents other keyboard handlers from firing
  * - Guards prevent keyboard handling in modals, dropdowns, and input fields
  */
 
@@ -41,6 +44,14 @@ export default class extends Controller {
     this.handleDropdownOpen = this.handleDropdownOpen.bind(this)
     document.addEventListener('keydown', this.handleKeydown)
     document.addEventListener('dropdown-menu:open', this.handleDropdownOpen)
+
+    // Remove data-hotkey from row controls before @github/hotkey library scans
+    // Store the original values so we can restore them for the focused row only
+    this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]').forEach(control => {
+      const hotkey = control.getAttribute('data-hotkey')
+      control.setAttribute('data-hotkey-original', hotkey)
+      control.removeAttribute('data-hotkey')
+    })
   }
 
   disconnect() {
@@ -123,6 +134,7 @@ export default class extends Controller {
 
     rows.forEach((r, i) => r.classList.toggle('is-keyboard-focused', i === this.currentIndex))
     rows[this.currentIndex].scrollIntoView({ block: 'nearest' })
+    this.syncRowHotkeys(rows)
   }
 
   normalizeCurrentIndex(rowsLength) {
@@ -132,15 +144,34 @@ export default class extends Controller {
     return this.currentIndex
   }
 
+  syncRowHotkeys(rows) {
+    // Add data-hotkey back ONLY for the focused row so the library can handle it
+    // (if it re-scans) or so it's available for our manual handling
+    rows.forEach((row, index) => {
+      const controls = row.querySelectorAll('[data-hotkey-original]')
+      controls.forEach(control => {
+        if (index === this.currentIndex) {
+          // Restore hotkey on focused row
+          const hotkeyValue = control.getAttribute('data-hotkey-original')
+          control.setAttribute('data-hotkey', hotkeyValue)
+        } else {
+          // Remove hotkey from non-focused rows
+          control.removeAttribute('data-hotkey')
+        }
+      })
+    })
+  }
+
   handleRowHotkey(event, rows) {
     const focusedRow = rows[this.currentIndex]
     if (!focusedRow) return false
 
-    // Find the first control in the focused row with a matching hotkey
+    // The hotkey is now on the focused row (added by syncRowHotkeys)
     const control = focusedRow.querySelector(`[data-hotkey="${event.key}"]`)
     if (!control) return false
 
     event.preventDefault()
+    event.stopImmediatePropagation() // Prevent @github/hotkey library from firing
     control.click()
     return true
   }
@@ -148,5 +179,11 @@ export default class extends Controller {
   clearFocus(rows) {
     rows.forEach((r) => r.classList.remove('is-keyboard-focused'))
     this.currentIndex = -1
+    // Clear all hotkeys when focus is cleared
+    rows.forEach((row) => {
+      row.querySelectorAll('[data-hotkey-original]').forEach(control => {
+        control.removeAttribute('data-hotkey')
+      })
+    })
   }
 }
