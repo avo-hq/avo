@@ -9,6 +9,14 @@ export default class extends Controller {
     this.handleDropdownOpen = this.handleDropdownOpen.bind(this)
     document.addEventListener('keydown', this.handleKeydown)
     document.addEventListener('dropdown-menu:open', this.handleDropdownOpen)
+
+    // Store original hotkey values and remove them from the DOM
+    // They'll be dynamically added back to the focused row only
+    this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]').forEach(control => {
+      const hotkey = control.getAttribute('data-hotkey')
+      control.setAttribute('data-hotkey-original', hotkey)
+      control.removeAttribute('data-hotkey')
+    })
   }
 
   disconnect() {
@@ -85,6 +93,7 @@ export default class extends Controller {
 
     rows.forEach((r, i) => r.classList.toggle('is-keyboard-focused', i === this.currentIndex))
     rows[this.currentIndex].scrollIntoView({ block: 'nearest' })
+    this.syncRowHotkeys(rows)
   }
 
   normalizeCurrentIndex(rowsLength) {
@@ -94,8 +103,31 @@ export default class extends Controller {
     return this.currentIndex
   }
 
+  syncRowHotkeys(rows) {
+    // Remove data-hotkey from all row controls except the focused row
+    rows.forEach((row, index) => {
+      const controls = row.querySelectorAll('[data-hotkey-original]')
+      controls.forEach(control => {
+        if (index === this.currentIndex) {
+          // Restore hotkey on focused row
+          const hotkeyValue = control.getAttribute('data-hotkey-original')
+          control.setAttribute('data-hotkey', hotkeyValue)
+        } else {
+          // Remove hotkey from non-focused rows
+          control.removeAttribute('data-hotkey')
+        }
+      })
+    })
+  }
+
   clearFocus(rows) {
     rows.forEach((r) => r.classList.remove('is-keyboard-focused'))
     this.currentIndex = -1
+    // Remove all hotkeys when focus is cleared
+    rows.forEach((row) => {
+      row.querySelectorAll('[data-hotkey-original]').forEach(control => {
+        control.removeAttribute('data-hotkey')
+      })
+    })
   }
 }
