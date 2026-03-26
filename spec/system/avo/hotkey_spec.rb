@@ -13,8 +13,8 @@ RSpec.describe "Keyboard shortcuts", type: :system do
         cancelable: true
       }
 
-      document.dispatchEvent(new KeyboardEvent("keydown", eventOptions))
-      window.dispatchEvent(new KeyboardEvent("keydown", eventOptions))
+      const target = document.activeElement || document.body
+      target.dispatchEvent(new KeyboardEvent("keydown", eventOptions))
     JS
   end
 
@@ -37,23 +37,25 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
   def dispatch_document_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false, alt_key: false)
     page.evaluate_script(<<~JS)
-      const event = new KeyboardEvent("keydown", {
-        key: #{key.to_json},
-        code: #{code.to_json},
-        shiftKey: #{shift_key},
-        ctrlKey: #{ctrl_key},
-        metaKey: #{meta_key},
-        altKey: #{alt_key},
-        bubbles: true,
-        cancelable: true
-      })
+      (() => {
+        const event = new KeyboardEvent("keydown", {
+          key: #{key.to_json},
+          code: #{code.to_json},
+          shiftKey: #{shift_key},
+          ctrlKey: #{ctrl_key},
+          metaKey: #{meta_key},
+          altKey: #{alt_key},
+          bubbles: true,
+          cancelable: true
+        })
 
-      const dispatchResult = document.dispatchEvent(event)
+        const dispatchResult = document.dispatchEvent(event)
 
-      {
-        defaultPrevented: event.defaultPrevented,
-        dispatchResult: dispatchResult
-      }
+        return {
+          defaultPrevented: event.defaultPrevented,
+          dispatchResult: dispatchResult
+        }
+      })()
     JS
   end
 
@@ -87,20 +89,26 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   it "applies kbd--called animation feedback when a hotkey fires" do
     visit "/admin/resources/projects"
 
-    # Prevent the click from navigating so the kbd element stays in the DOM
+    users_link = find('a[href="/admin/resources/users"][data-hotkey]', visible: :all)
+    users_hotkey = users_link["data-hotkey"]
+
+    # Prevent navigation so the kbd element remains in the DOM.
     page.execute_script(<<~JS)
-      document.querySelector('[data-hotkey="u"]').addEventListener('click', (e) => e.preventDefault())
+      document.querySelectorAll('a[href="/admin/resources/users"][data-hotkey]').forEach((link) => {
+        link.addEventListener('click', (e) => e.preventDefault())
+      })
     JS
 
-    dispatch_keydown("u")
+    users_hotkey.split.each { |key| dispatch_keydown(key) }
 
-    expect(page).to have_css('[data-hotkey="u"] kbd.kbd--called')
+    expect(page).to have_css(%(a[href="/admin/resources/users"][data-hotkey="#{users_hotkey}"] kbd.kbd--called))
   end
 
   it "navigates to resources using sidebar hotkeys" do
     visit "/admin/resources/projects"
 
-    dispatch_keydown("u")
+    users_hotkey = find('a[href="/admin/resources/users"][data-hotkey]', visible: :all)["data-hotkey"]
+    users_hotkey.split.each { |key| dispatch_keydown(key) }
 
     expect(page).to have_current_path("/admin/resources/users")
   end
@@ -120,7 +128,8 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     target_project = create(:project, name: "Keyboard navigator target")
     create_list(:project, 3)
 
-    visit "/admin/resources/projects"
+    visit "/admin/resources/projects?view_type=table"
+    expect(page).to have_css("tr[data-visit-path]")
 
     3.times { dispatch_keydown("ArrowDown") }
     expect(page).to have_css("tr.table-row.is-keyboard-focused")
