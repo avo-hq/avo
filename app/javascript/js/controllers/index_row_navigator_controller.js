@@ -1,3 +1,35 @@
+/**
+ * Index Row Navigator Controller
+ *
+ * Enables keyboard-driven navigation and actions on table rows.
+ *
+ * FEATURES:
+ * - Arrow keys (↑↓) to cycle through rows with visual focus indicator
+ * - Enter key to navigate to the focused row's detail page
+ * - Space bar to toggle row selection checkbox
+ * - Escape to clear focus (or deselect all if no row is focused)
+ * - Row-level hotkeys: when a row is focused, any hotkey defined on that
+ *   row's controls (e.g., data-hotkey="i") will trigger that action
+ *
+ * WHY ROW HOTKEYS ARE HANDLED MANUALLY:
+ * We don't rely on @github/hotkey library for row hotkeys because:
+ * 1. The library only scans data-hotkey attributes on page load
+ * 2. Dynamically adding/removing attributes doesn't trigger re-registration
+ * 3. Managing multiple elements with the same hotkey is error-prone
+ *
+ * SOLUTION: The controller intercepts ALL keydown events and, when a row
+ * is focused, looks for a matching [data-hotkey] element in that row and
+ * clicks it directly. This ensures only the focused row's hotkeys work,
+ * preventing the "last-registered hotkey wins" problem.
+ *
+ * KEY DESIGN DECISIONS:
+ * - currentIndex = -1 when no row is focused (safe default)
+ * - Row hotkeys only work when currentIndex !== -1
+ * - We query [data-hotkey] directly instead of storing state to stay
+ *   in sync with the HTML (simpler, no sync bugs)
+ * - Guards prevent keyboard handling in modals, dropdowns, and input fields
+ */
+
 import { Controller } from '@hotwired/stimulus'
 
 const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
@@ -9,14 +41,6 @@ export default class extends Controller {
     this.handleDropdownOpen = this.handleDropdownOpen.bind(this)
     document.addEventListener('keydown', this.handleKeydown)
     document.addEventListener('dropdown-menu:open', this.handleDropdownOpen)
-
-    // Store original hotkey values and remove them from the DOM
-    // They'll be dynamically added back to the focused row only
-    this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]').forEach(control => {
-      const hotkey = control.getAttribute('data-hotkey')
-      control.setAttribute('data-hotkey-original', hotkey)
-      control.removeAttribute('data-hotkey')
-    })
   }
 
   disconnect() {
@@ -34,11 +58,17 @@ export default class extends Controller {
     if (document.body.classList.contains('modal-open')) return
     if (document.body.classList.contains('dropdown-open')) return
     if (event.target.closest(TYPING_SELECTOR)) return
-    if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape', ' '].includes(event.key)) return
     if (event.repeat && (event.key === 'Enter' || event.key === 'Escape' || event.key === ' ')) return
 
     const rows = Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
     if (!rows.length) return
+
+    // Check for row hotkeys when a row is focused
+    if (this.currentIndex !== -1 && this.handleRowHotkey(event, rows)) return
+
+    // Only handle navigation keys below
+    if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape', ' '].includes(event.key)) return
+
     this.currentIndex = this.normalizeCurrentIndex(rows.length)
 
     if (event.key === 'Escape') {
@@ -93,7 +123,6 @@ export default class extends Controller {
 
     rows.forEach((r, i) => r.classList.toggle('is-keyboard-focused', i === this.currentIndex))
     rows[this.currentIndex].scrollIntoView({ block: 'nearest' })
-    this.syncRowHotkeys(rows)
   }
 
   normalizeCurrentIndex(rowsLength) {
@@ -103,31 +132,21 @@ export default class extends Controller {
     return this.currentIndex
   }
 
-  syncRowHotkeys(rows) {
-    // Remove data-hotkey from all row controls except the focused row
-    rows.forEach((row, index) => {
-      const controls = row.querySelectorAll('[data-hotkey-original]')
-      controls.forEach(control => {
-        if (index === this.currentIndex) {
-          // Restore hotkey on focused row
-          const hotkeyValue = control.getAttribute('data-hotkey-original')
-          control.setAttribute('data-hotkey', hotkeyValue)
-        } else {
-          // Remove hotkey from non-focused rows
-          control.removeAttribute('data-hotkey')
-        }
-      })
-    })
+  handleRowHotkey(event, rows) {
+    const focusedRow = rows[this.currentIndex]
+    if (!focusedRow) return false
+
+    // Find the first control in the focused row with a matching hotkey
+    const control = focusedRow.querySelector(`[data-hotkey="${event.key}"]`)
+    if (!control) return false
+
+    event.preventDefault()
+    control.click()
+    return true
   }
 
   clearFocus(rows) {
     rows.forEach((r) => r.classList.remove('is-keyboard-focused'))
     this.currentIndex = -1
-    // Remove all hotkeys when focus is cleared
-    rows.forEach((row) => {
-      row.querySelectorAll('[data-hotkey-original]').forEach(control => {
-        control.removeAttribute('data-hotkey')
-      })
-    })
   }
 }
