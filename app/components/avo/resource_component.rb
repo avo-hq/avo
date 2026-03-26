@@ -161,7 +161,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # Row hotkeys: detect if we're rendering in a row control and use data-hotkey-original
     # so the index-row-navigator controller can manage the hotkey visibility.
     # Same as edit button: prevents @github/hotkey from registering all row buttons at once.
-    is_row_control = @item.present?
+    is_row_control = row_controls_context?
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
     data_attrs = {hotkey_attr => "d"}
 
@@ -208,14 +208,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless can_see_the_edit_button?
 
     # Row hotkeys are handled by index-row-navigator controller:
-    # - @item is set when rendering in row controls (via SwitcherComponent)
-    # - Use data-hotkey-original for rows (controller moves it to data-hotkey when row is focused)
+    # - Use data-hotkey-original for index row controls (controller moves it to data-hotkey when row is focused)
     # - Use data-hotkey directly for show page buttons (always available)
     # This prevents the @github/hotkey library from registering all row buttons at once,
     # which would cause the "last-registered wins" problem.
-    is_row_control = @item.present?
+    is_row_control = row_controls_context?
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
-    data_attrs = is_row_control ? {hotkey_attr => "e"} : {hotkey: "e"}
+    data_attrs = {hotkey_attr => "e"}
 
     a_link edit_path,
       color: :accent,
@@ -275,8 +274,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
-  def hotkey_available_for_show_controls?
-    @reflection.nil? && @view&.show? && @item.nil?
+  def row_controls_context?
+    is_a?(Avo::Index::ResourceControlsComponent)
   end
 
   def render_link_to(link)
