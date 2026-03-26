@@ -24,6 +24,7 @@ export default class extends Controller {
   handleKeydown(event) {
     if (event.defaultPrevented) return
     if (document.body.classList.contains('modal-open')) return
+    if (document.body.classList.contains('dropdown-open')) return
     if (event.target.closest(TYPING_SELECTOR)) return
     if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape', ' '].includes(event.key)) return
     if (event.repeat && (event.key === 'Enter' || event.key === 'Escape' || event.key === ' ')) return

@@ -54,6 +54,7 @@ export default class extends Controller {
   open() {
     this.menuTarget.show()
     this.element.addEventListener('keydown', this.boundHandleKeydown)
+    document.body.classList.add('dropdown-open')
     this.dispatch('open', { bubbles: true })
     requestAnimationFrame(() => {
       const items = this.focusableItems
@@ -64,6 +65,7 @@ export default class extends Controller {
   close() {
     this.menuTarget.close()
     this.element.removeEventListener('keydown', this.boundHandleKeydown)
+    document.body.classList.remove('dropdown-open')
   }
 
   handleKeydown(event) {
