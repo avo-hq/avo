@@ -1,35 +1,26 @@
 /**
  * Index Row Navigator Controller
  *
- * Enables keyboard-driven navigation and actions on table rows.
+ * Enables keyboard-driven navigation and hotkeys on table rows.
  *
  * FEATURES:
  * - Arrow keys (↑↓) to cycle through rows with visual focus indicator
  * - Enter key to navigate to the focused row's detail page
  * - Space bar to toggle row selection checkbox
  * - Escape to clear focus (or deselect all if no row is focused)
- * - Row-level hotkeys: when a row is focused, any hotkey defined on that
- *   row's controls (e.g., data-hotkey="i") will trigger that action
+ * - Row hotkeys: when a row is focused, hotkeys work for that row's controls
  *
- * WHY ROW HOTKEYS ARE HANDLED SEPARATELY:
- * The @github/hotkey library scans for data-hotkey attributes on page load
- * and registers handlers for ALL matching elements. If we leave data-hotkey
- * on row controls, the library will register all of them, and pressing a key
- * will trigger the LAST-REGISTERED element (bug). If we later change which
- * elements have the attribute, the library doesn't re-scan, so our changes
- * have no effect.
- *
- * SOLUTION:
- * 1. Remove data-hotkey from all row controls early (before hotkey library scans)
- * 2. Store the original values in data-hotkey-original
- * 3. When a row is focused, add data-hotkey back to ONLY that row's controls
- * 4. When the user presses a hotkey, our controller handles it and prevents
- *    other listeners via stopImmediatePropagation
+ * ROW HOTKEY HANDLING:
+ * The @github/hotkey library scans data-hotkey attributes on page load.
+ * To avoid the "last-registered wins" problem with multiple row controls
+ * sharing the same hotkey, we:
+ * 1. Remove data-hotkey from all row controls before the library scans
+ * 2. Store original values in data-hotkey-original
+ * 3. When a row is focused, add data-hotkey back ONLY to that row
+ * 4. When a hotkey fires, prevent other handlers via stopImmediatePropagation
  *
  * KEY DESIGN DECISIONS:
  * - currentIndex = -1 when no row is focused (safe default)
- * - We remove/add data-hotkey dynamically so the library sees the current state
- * - stopImmediatePropagation prevents other keyboard handlers from firing
  * - Guards prevent keyboard handling in modals, dropdowns, and input fields
  */
 
@@ -47,7 +38,8 @@ export default class extends Controller {
 
     // Remove data-hotkey from row controls before @github/hotkey library scans
     // Store the original values so we can restore them for the focused row only
-    this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]').forEach(control => {
+    const controls = this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]')
+    controls.forEach((control) => {
       const hotkey = control.getAttribute('data-hotkey')
       control.setAttribute('data-hotkey-original', hotkey)
       control.removeAttribute('data-hotkey')
@@ -75,7 +67,11 @@ export default class extends Controller {
     if (!rows.length) return
 
     // Check for row hotkeys when a row is focused
-    if (this.currentIndex !== -1 && this.handleRowHotkey(event, rows)) return
+    if (this.currentIndex !== -1) {
+      if (this.handleRowHotkey(event, rows)) {
+        return
+      }
+    }
 
     // Only handle navigation keys below
     if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape', ' '].includes(event.key)) return
@@ -145,11 +141,10 @@ export default class extends Controller {
   }
 
   syncRowHotkeys(rows) {
-    // Add data-hotkey back ONLY for the focused row so the library can handle it
-    // (if it re-scans) or so it's available for our manual handling
+    // Add data-hotkey back ONLY for the focused row
     rows.forEach((row, index) => {
       const controls = row.querySelectorAll('[data-hotkey-original]')
-      controls.forEach(control => {
+      controls.forEach((control) => {
         if (index === this.currentIndex) {
           // Restore hotkey on focused row
           const hotkeyValue = control.getAttribute('data-hotkey-original')
@@ -173,6 +168,7 @@ export default class extends Controller {
     event.preventDefault()
     event.stopImmediatePropagation() // Prevent @github/hotkey library from firing
     control.click()
+
     return true
   }
 
@@ -181,7 +177,7 @@ export default class extends Controller {
     this.currentIndex = -1
     // Clear all hotkeys when focus is cleared
     rows.forEach((row) => {
-      row.querySelectorAll('[data-hotkey-original]').forEach(control => {
+      row.querySelectorAll('[data-hotkey-original]').forEach((control) => {
         control.removeAttribute('data-hotkey')
       })
     })
