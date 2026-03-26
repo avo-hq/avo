@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentPanel', 'accentOption', 'themePanel', 'themeLabel', 'themeOption']
+  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
 
   connect() {
     // Read from cookies (cookie is source of truth)
@@ -60,11 +60,6 @@ export default class extends Controller {
     this.applyTheme()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
-
-    // Close the dropdown
-    if (this.hasThemePanelTarget) {
-      this.themePanelTarget.setAttribute('hidden', true)
-    }
   }
 
   previewTheme(event) {
@@ -89,11 +84,6 @@ export default class extends Controller {
     this.currentAccentValue = accent
     this.saveAccent()
     this.applyAccent()
-
-    // Close the dropdown
-    if (this.hasAccentPanelTarget) {
-      this.accentPanelTarget.setAttribute('hidden', true)
-    }
   }
 
   previewAccent(event) {

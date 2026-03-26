@@ -43,24 +43,20 @@
 }
 
 /* Theme (neutrals) dropdown */
-.color-scheme-switcher__theme-wrapper {
-  @apply relative;
-}
-
 .color-scheme-switcher__button--theme {
   @apply gap-1;
 }
 
-.color-scheme-switcher__theme-panel {
-  @apply absolute top-full mt-2 start-0 z-40;
-  @apply rounded-lg bg-white dark:bg-neutral-800;
-  @apply border border-neutral-200 dark:border-neutral-700;
-  @apply shadow-lg p-2 min-w-[160px];
-  animation: css-animate-slide-down 0.15s ease-out;
+.color-scheme-switcher__theme-popover {
+  @apply start-0 end-auto min-w-[160px];
+}
+
+.color-scheme-switcher__accent-popover {
+  @apply min-w-[160px];
 }
 
 .color-scheme-switcher__theme-options {
-  @apply flex flex-col gap-0.5;
+  @apply flex flex-col gap-0.5 self-stretch;
 }
 
 .color-scheme-switcher__theme-option {
@@ -126,20 +122,9 @@
 }
 
 /* Accent color dropdown */
-.color-scheme-switcher__accent-wrapper {
-  @apply relative;
-}
-
-.color-scheme-switcher__accent-panel {
-  @apply absolute top-full mt-2 end-0 z-40;
-  @apply rounded-lg bg-white dark:bg-neutral-800;
-  @apply border border-neutral-200 dark:border-neutral-700;
-  @apply shadow-lg p-2 min-w-[160px];
-  animation: css-animate-slide-down 0.15s ease-out;
-}
 
 .color-scheme-switcher__accent-options {
-  @apply grid grid-cols-3 gap-2;
+  @apply grid grid-cols-3 gap-2 self-stretch;
 }
 
 .color-scheme-switcher__accent-option {
