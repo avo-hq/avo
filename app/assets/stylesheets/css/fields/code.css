@@ -38,10 +38,9 @@
   @apply border border-tertiary rounded-lg;
 }
 
-/* Overlay CodeMirror fullscreen and side preview */
-.CodeMirror-fullscreen,
-.editor-preview-active-side {
-  z-index: 50;
+/* Lift the main stacking context above the navbar (z-index: 100) when CodeMirror is fullscreen */
+.main-content-area:has(.CodeMirror-fullscreen) {
+  z-index: 101;
 }
 
 /* EasyMDE shell */
