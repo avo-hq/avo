@@ -87,19 +87,23 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   it "applies kbd--called animation feedback when a hotkey fires" do
     visit "/admin/resources/projects"
 
+    expect(page).to have_css('[data-hotkey="r u"]')
+
     # Prevent the click from navigating so the kbd element stays in the DOM
     page.execute_script(<<~JS)
-      document.querySelector('[data-hotkey="u"]').addEventListener('click', (e) => e.preventDefault())
+      document.querySelector('[data-hotkey="r u"]').addEventListener('click', (e) => e.preventDefault())
     JS
 
+    dispatch_keydown("r")
     dispatch_keydown("u")
 
-    expect(page).to have_css('[data-hotkey="u"] kbd.kbd--called')
+    expect(page).to have_css('[data-hotkey="r u"] kbd.kbd--called')
   end
 
   it "navigates to resources using sidebar hotkeys" do
     visit "/admin/resources/projects"
 
+    dispatch_keydown("r")
     dispatch_keydown("u")
 
     expect(page).to have_current_path("/admin/resources/users")
@@ -111,6 +115,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     search_input = find("[data-resource-search-target='input']")
 
     search_input.click
+    search_input.send_keys("r")
     search_input.send_keys("u")
 
     expect(page).to have_current_path("/admin/resources/projects")
