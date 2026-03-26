@@ -3,11 +3,11 @@
   <% unless keep_open? %>
     data-alert-dismiss-after-value="<%= timeout %>"
   <% end %>
-  data-alert-remove-delay-value="0"
-  data-alert-show-class="transition duration-300 ease-out opacity-100 translate-x-0"
-  data-alert-hide-class="transition duration-300 ease-in opacity-0 translate-x-2"
+  data-alert-remove-delay-value="300"
+  data-alert-show-class="ease-out opacity-100 translate-x-0"
+  data-alert-hide-class="ease-in opacity-0 translate-x-10"
   class="<%= class_names(
-    "alert",
+    "alert transition duration-300",
     "hidden": is_empty?,
     "alert--#{variant}": !is_empty?,
   ) %>"
