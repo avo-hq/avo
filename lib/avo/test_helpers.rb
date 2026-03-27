@@ -255,7 +255,7 @@ module Avo
     end
 
     def toggle_collapsable(section)
-      find("[data-action='click->menu#triggerCollapse'][data-menu-key-param*='main_menu.#{section.underscore}'] svg").click
+      find("[data-controller='menu'][data-menu-key-param*='main_menu.#{section.underscore}'] [data-action='click->menu#triggerCollapse'] svg").click
     end
 
     # Example usage:
