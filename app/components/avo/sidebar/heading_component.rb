@@ -6,4 +6,6 @@ class Avo::Sidebar::HeadingComponent < Avo::BaseComponent
   prop :collapsable, default: false
   prop :collapsed, default: false
   prop :key
+
+  def render? = @title.present?
 end

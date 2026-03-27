@@ -1,26 +1,24 @@
-<% if @title.present? %>
-  <% if @collapsable %>
-    <button
-      type="button"
-      class="<%= class_names("sidebar-section__header justify-between", "cursor-pointer": @collapsable) %>"
-      data-action="click->menu#triggerCollapse"
-      data-menu-target="trigger"
-      aria-expanded="<%= !@collapsed %>"
-    >
-      <div class="sidebar-section__header-inner">
-        <%= helpers.svg @icon, class: "sidebar-section__icon sidebar-icon" if @icon.present? %>
-        <span><%= @title %></span>
-      </div>
-      <span class="sidebar-section__icon sidebar-icon <%= 'sidebar-icon--collapsed' if @collapsed %>"
-        data-menu-target="svg"
-      >
-        <%= helpers.svg 'tabler/outline/chevron-down' %>
-      </span>
-    </button>
-  <% else %>
-    <div class="sidebar-section__header">
+<% if @collapsable %>
+  <button
+    type="button"
+    class="<%= class_names("sidebar-section__header justify-between", "cursor-pointer": @collapsable) %>"
+    data-action="click->menu#triggerCollapse"
+    data-menu-target="trigger"
+    aria-expanded="<%= !@collapsed %>"
+  >
+    <div class="sidebar-section__header-inner">
       <%= helpers.svg @icon, class: "sidebar-section__icon sidebar-icon" if @icon.present? %>
       <span><%= @title %></span>
     </div>
-  <% end %>
+    <span class="sidebar-section__icon sidebar-icon <%= 'sidebar-icon--collapsed' if @collapsed %>"
+      data-menu-target="svg"
+    >
+      <%= helpers.svg 'tabler/outline/chevron-down' %>
+    </span>
+  </button>
+<% else %>
+  <div class="sidebar-section__header">
+    <%= helpers.svg @icon, class: "sidebar-section__icon sidebar-icon" if @icon.present? %>
+    <span><%= @title %></span>
+  </div>
 <% end %>
