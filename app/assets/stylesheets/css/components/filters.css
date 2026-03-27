@@ -1,0 +1,35 @@
+.filters__bar {
+  @apply relative w-full flex justify-between;
+}
+
+.filters__count {
+  @apply ms-1;
+}
+
+.filters__panel {
+  @apply absolute block inset-auto sm:end-0 top-full min-w-[300px] mt-2 z-40;
+}
+
+.filters-header {
+  @apply flex w-full items-center justify-between py-1.5 px-2 font-medium;
+}
+
+.filters-header__title {
+  @apply text-sm leading-5;
+}
+
+.filters-reset {
+  @apply text-xs font-medium leading-3.5;
+}
+
+.filters-reset--active {
+  @apply text-content-secondary;
+}
+
+.filters-reset--active:hover {
+  @apply text-content transition-colors;
+}
+
+.filters-reset--disabled {
+  @apply text-content-secondary/60 cursor-not-allowed;
+}
