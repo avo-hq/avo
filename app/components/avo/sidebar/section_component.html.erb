@@ -1,30 +1,11 @@
 <%= tag.div class: "sidebar-section", data: data do %>
-  <% if item.name.present? %>
-    <% if collapsable %>
-      <button
-        type="button"
-        class="sidebar-section__header justify-between"
-        data-action="click->menu#triggerCollapse"
-        data-menu-target="trigger"
-        aria-expanded="<%= !collapsed %>"
-      >
-        <div class="sidebar-section__header-inner">
-          <%= helpers.svg icon, class: "sidebar-section__icon sidebar-icon" if icon.present? %>
-          <span><%= item.name %></span>
-        </div>
-        <span class="sidebar-section__icon sidebar-icon <%= 'sidebar-icon--collapsed' if collapsed %>"
-          data-menu-target="svg"
-        >
-          <%= helpers.svg 'tabler/outline/chevron-down' %>
-        </span>
-      </button>
-    <% else %>
-      <div class="sidebar-section__header">
-        <%= helpers.svg icon, class: "sidebar-section__icon sidebar-icon" if icon.present? %>
-        <span><%= item.name %></span>
-      </div>
-    <% end %>
-  <% end %>
+  <%= render Avo::Sidebar::HeadingComponent.new(
+    title: item.name,
+    icon: icon,
+    collapsable: collapsable,
+    collapsed: collapsed,
+    key: key
+  ) %>
 
   <%= content_tag :div,
     hidden: collapsed,
