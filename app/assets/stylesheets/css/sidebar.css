@@ -46,10 +46,6 @@
   @apply flex flex-col px-3 w-full;
 }
 
-.sidebar__nav-list {
-  @apply w-full space-y-1;
-}
-
 .sidebar__footer {
   @apply shrink-0;
 }
@@ -60,11 +56,11 @@
 /* ================================================ */
 
 .sidebar-section {
-  @apply pt-4;
+  @apply not-first:mt-4;
 }
 
 .sidebar-section__header {
-  @apply flex items-center w-full text-start p-2 pb-1 gap-2 rounded-lg text-content-secondary text-base font-medium leading-6 cursor-pointer border-none bg-transparent;
+  @apply flex items-center w-full text-start p-2 pb-1 gap-2 rounded-lg text-content-secondary text-base font-medium leading-6 border-none bg-transparent;
 }
 
 .sidebar-section__header-inner {
