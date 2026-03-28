@@ -1,5 +1,6 @@
 require "zeitwerk"
 require "net/http"
+require "active_support/inflector"
 require_relative "avo/version"
 require_relative "avo/engine" if defined?(Rails)
 
@@ -191,4 +192,4 @@ def 🥑
   Avo
 end
 
-loader.eager_load
+loader.eager_load if defined?(Rails)
