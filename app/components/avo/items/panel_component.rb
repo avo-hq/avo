@@ -47,9 +47,11 @@ class Avo::Items::PanelComponent < Avo::ResourceComponent
   def card_background_warning_message
     # Keep the message deterministic for specs.
     docs_url = "https://docs.avohq.io/4.0/resource-cards.html"
+    docs_message = ""
+    # docs_message = "See the <a href=\"#{docs_url}\" target=\"_blank\" rel=\"noopener\" class=\"underline underline-offset-2\">resource cards</a> docs."
     code_classes = "inline-flex items-center align-middle rounded bg-orange-500/10 px-1 py-px font-mono text-[0.85em] font-semibold leading-none text-orange-950 dark:bg-orange-500/15 dark:text-orange-50"
     disable_snippet = "<code class=\"#{code_classes}\">panel dev_warnings: false do ... end</code>"
 
-    "Some fields are declared directly inside a <code class=\"#{code_classes}\">panel</code> without a <code class=\"#{code_classes}\">card do ... end</code> wrapper. Wrap them in a <code class=\"#{code_classes}\">card</code> to get the expected card background and spacing. If this is intentional and you want to avoid this warning please use #{disable_snippet}. See the <a href=\"#{docs_url}\" target=\"_blank\" rel=\"noopener\" class=\"underline underline-offset-2\">resource cards</a> docs."
+    "Some fields are declared directly inside a <code class=\"#{code_classes}\">panel</code> without a <code class=\"#{code_classes}\">card do ... end</code> wrapper. Wrap them in a <code class=\"#{code_classes}\">card</code> to get the expected card background and spacing. If this is intentional and you want to avoid this warning please use #{disable_snippet}. #{docs_message}"
   end
 end
