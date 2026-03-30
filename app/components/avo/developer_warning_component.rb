@@ -24,4 +24,3 @@ class Avo::DeveloperWarningComponent < Avo::BaseComponent
     }
   end
 end
-
