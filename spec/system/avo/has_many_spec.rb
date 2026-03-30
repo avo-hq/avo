@@ -135,8 +135,8 @@ RSpec.feature "HasManyField", type: :system do
 
       expect {
         accept_custom_alert do
-          within("[data-resource-id='#{post.to_param}']") do
-            find("[data-action='click->dropdown-menu#toggle']").click
+          within("[data-record-id='#{post.to_param}']") do
+            find(".popover-menu__trigger").click
           end
           find("a[data-control='destroy'][data-resource-id='#{post.to_param}']").click
         end
@@ -153,8 +153,8 @@ RSpec.feature "HasManyField", type: :system do
 
       expect {
         accept_custom_alert do
-          within("[data-resource-id='#{post.to_param}']") do
-            find("[data-action='click->dropdown-menu#toggle']").click
+          within("[data-record-id='#{post.to_param}']") do
+            find(".popover-menu__trigger").click
           end
           find("a[data-control='detach'][data-resource-id='#{post.to_param}']").click
         end
