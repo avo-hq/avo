@@ -12,7 +12,7 @@
     "alert--#{variant}": !is_empty?,
   ) %>"
 >
-  <div class="alert__icon-wrapper">
+  <div class="alert__icon-container alert__icon-container--status">
     <%= helpers.svg icon, class: "alert__icon" %>
   </div>
 
@@ -26,10 +26,10 @@
 
   <button
     type="button"
-    data-action="alert#close"
-    class="alert__close"
+    class="button-icon alert__icon-container alert__icon-container--close"
     aria-label="Close alert"
+    data-action="alert#close"
   >
-    <%= helpers.svg "tabler/outline/x", class: "alert__close-icon" %>
+    <%= helpers.svg "tabler/outline/x", class: "alert__icon" %>
   </button>
 </div>
