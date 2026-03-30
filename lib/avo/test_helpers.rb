@@ -373,9 +373,7 @@ module Avo
         if list.present?
           sleep 0.1
           click_on list
-          within("[data-dropdown-list='#{list}']", visible: :all) do
-            find("a[data-action-name='#{action_name}']").click
-          end
+          find("a[data-action-name='#{action_name}']", visible: :all).click
         else
           click_link(action_name)
         end
