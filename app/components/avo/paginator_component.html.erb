@@ -1,20 +1,12 @@
 <div class="pagination">
   <%# Left: per-page selector %>
   <div class="pagination__per-page">
-    <%= render ui.dropdown(classes: "start-0 end-auto") do |component| %>
+    <%= render Avo::UI::PopoverComponent.new(trigger_classes: "pagination__per-page-input") do |component| %>
       <% component.with_trigger do %>
-        <button
-          type="button"
-          class="pagination__per-page-input"
-          data-action="<%= component.action %>"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-        >
-          <span class="pagination__per-page-value"><%== current_per_page_label %></span>
-          <span class="pagination__per-page-icon" aria-hidden="true">
-            <%= helpers.svg "tabler/outline/chevron-down" %>
-          </span>
-        </button>
+        <span class="pagination__per-page-value"><%== current_per_page_label %></span>
+        <span class="pagination__per-page-icon" aria-hidden="true">
+          <%= helpers.svg "tabler/outline/chevron-down" %>
+        </span>
       <% end %>
       <% component.with_items do %>
         <% per_page_options.each do |option| %>

@@ -16,6 +16,7 @@ import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
 import DropdownController from './controllers/dropdown_menu_controller'
+import PopoverMenuController from './controllers/popover_menu_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
@@ -112,6 +113,7 @@ application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
 application.register('dropdown-menu', DropdownController)
+application.register('popover-menu', PopoverMenuController)
 application.register('trix-body', TrixBodyController)
 application.register('search', SearchController)
 

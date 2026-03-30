@@ -1,7 +1,7 @@
 <div
   class="actions-dropdown relative flex w-full flex-col sm:w-auto"
   data-component-name="<%= self.class.to_s.underscore %>"
-  data-controller="toggle actions-picker"
+  data-controller="actions-picker"
   data-actions-picker-enabled-class="text-content hover:bg-secondary"
   data-actions-picker-disabled-class="cursor-wait text-content/60"
   data-resource-name="<%= @resource.class.to_s %>"
@@ -9,25 +9,25 @@
     data-record-id="<%= @resource.record_param %>"
   <% end %>
 >
-
-  <%= render ui.dropdown(classes: "z-100", data: { dropdown_list: @label }) do |component| %>
+  <%= render Avo::UI::PopoverComponent.new(
+    trigger_classes: class_names(
+      "button",
+      "button--size-#{@size}",
+      "button--style-#{@style}",
+      "focus:outline-hidden",
+      { "button--color-#{@color}": @color.present? }
+    ),
+    trigger_data: {
+      actions_dropdown_button: @resource.model_key,
+      tippy: "tooltip",
+      tippy_content: @title,
+      **(@hotkey.present? ? (@as_row_control ? { hotkey_original: @hotkey } : { hotkey: @hotkey }) : {}),
+    }
+  ) do |component| %>
     <% component.with_trigger do %>
-      <%= a_button style: @style,
-        type: :button,
-        color: @color,
-        size: @size,
-        class: "focus:outline-hidden",
-        icon: @icon,
-        icon_class: @icon_class,
-        data: {
-          action: component.action,
-          actions_dropdown_button: @resource.model_key,
-          tippy: "tooltip",
-          tippy_content: @title,
-          **(@hotkey.present? ? (@as_row_control ? {hotkey_original: @hotkey} : {hotkey: @hotkey}) : {})
-        } do %>
-        <%= @label %>
-      <% end %>
+      <%= helpers.svg @icon, class: class_names("button__icon", @icon_class) if @icon.present? %>
+      <%= @label %>
+      <%= hotkey_badge(@hotkey) if @hotkey.present? && !@as_row_control %>
     <% end %>
     <% component.with_items do %>
       <% @actions.each do |action| %>

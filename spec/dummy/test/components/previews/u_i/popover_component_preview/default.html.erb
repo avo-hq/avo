@@ -1,0 +1,14 @@
+<div class="flex justify-center items-center m-96 mt-0 w-96 h-96 border-2 border-gray-200 rounded-md">
+  <%= render Avo::UI::PopoverComponent.new do |component| %>
+    <% component.with_trigger do %>
+      <span class="pagination__per-page-value">25 per page</span>
+      <span class="pagination__per-page-icon" aria-hidden="true"><%= svg "tabler/outline/chevron-down" %></span>
+    <% end %>
+    <% component.with_items do %>
+      <%= link_to "#", class: "dropdown-menu__item" do %>10 per page per page per page per page<% end %>
+      <%= link_to "#", class: "dropdown-menu__item dropdown-menu__item--active" do %>25 per page per page per page per page<% end %>
+      <%= link_to "#", class: "dropdown-menu__item" do %>50 per page per page per page per page<% end %>
+      <%= link_to "#", class: "dropdown-menu__item" do %>100 per page per page per page per page<% end %>
+    <% end %>
+  <% end %>
+</div>
