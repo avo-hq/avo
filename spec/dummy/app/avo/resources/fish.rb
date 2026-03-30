@@ -20,21 +20,6 @@ class Avo::Resources::Fish < Avo::BaseResource
   }
 
   def fields
-    field :id, as: :id
-    field :id, as: :number, only_on: :forms, readonly: -> { !view.new? }
-    field :name, as: :text, required: -> { view.new? }, help: "help text"
-    field :size, as: :radio, options: {small: "Small", medium: "Medium", large: "Large"}
-    field :secondary_field_for_name,
-      as: :text,
-      for_attribute: :name,
-      only_on: :edit,
-      help: "secondary field for name using for_attribute option"
-    field :reviews, as: :has_many
-    field :user, as: :belongs_to
-    field :type, as: :text, hide_on: :forms
-
-    tool Avo::ResourceTools::NestedFishReviews, only_on: :new
-    tool Avo::ResourceTools::FishInformation, show_on: :forms
     tabs visible: true do
       tab title: "big useless tab here" do
         card do
@@ -43,48 +28,6 @@ class Avo::Resources::Fish < Avo::BaseResource
       end
 
       tab title: "another big useless tab here 2" do
-        card do
-          field :id, as: :id
-        end
-      end
-
-      tab title: "big tab here 3" do
-        card do
-          field :id, as: :id
-        end
-      end
-
-      tab title: "big tab here 3.5" do
-        card do
-          field :id, as: :id
-        end
-      end
-
-      tab title: "tab here 4" do
-        card do
-          field :id, as: :id
-        end
-      end
-
-      tab title: "tab" do
-        card do
-          field :id, as: :id
-        end
-      end
-
-      tab title: "big useless tab here 6" do
-        card do
-          field :id, as: :id
-        end
-      end
-
-      tab title: "big useless tab here 7" do
-        card do
-          field :id, as: :id
-        end
-      end
-
-      tab title: "big tab 8" do
         card do
           field :id, as: :id
         end

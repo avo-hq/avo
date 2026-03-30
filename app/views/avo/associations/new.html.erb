@@ -22,7 +22,7 @@
                 resource: @resource,
                 label_for: @field.id,
                 label: @field.name.singularize.downcase do %>
-                <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
+                <%= render Avo::Pro::SearchableAssociations::NativeSelectComponent.new form: form,
                   classes: input_classes("w-full"),
                   field: @field,
                   model_key: @field.target_resource&.model_key,
