@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "rails", "~> 8.0"
+gem "rails", "~> 6.1"
 gem "activestorage"
 gem "jsbundling-rails"
 gem "cssbundling-rails"
@@ -34,7 +34,7 @@ gem "prefixed_ids"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "csv"
-gem "view_component", "4.0.0"
+gem "view_component", "3.23.2"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
 gem "avo-money_field"
@@ -42,6 +42,8 @@ gem "avo-record_link_field"
 gem "pluggy", path: "../pluggy"
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "psych", "< 4"
+gem "concurrent-ruby", "1.3.4"
+gem "mutex_m"
 
 group :development do
   gem "standard", require: false

@@ -34,15 +34,12 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.1.4'
-          - '3.3.0'
+          - '3.3'
+          - '3.4'
         rails:
           - '6.1'
           - '7.1'
           - '8.0'
-        exclude:
-          - ruby: '3.1.4'
-            rails: '8.0'
     runs-on: ubuntu-latest
 
     env:
@@ -61,21 +58,12 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        # bundler-cache: true
+        bundler-cache: true
         bundler: default
         ruby-version: ${{ matrix.ruby }}
 
-    - uses: actions/cache@v4
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-test-gems-${{ hashFiles('**/Gemfile.lock') }}
-
-    - name: Bundle install
+    - name: Prepare database
       run: |
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
         bin/rails db:create
         bin/rails db:migrate
 
