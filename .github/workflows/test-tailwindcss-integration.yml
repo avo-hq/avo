@@ -30,6 +30,9 @@ jobs:
 
     - name: Add Avo
       run: |
+        # ruby/setup-ruby with bundler-cache runs Bundler in a frozen/deployment-like mode.
+        # This step intentionally changes the Gemfile.lock, so we must unfreeze Bundler here.
+        bundle config set frozen false
         bundle add "avo" --git='https://github.com/avo-hq/avo.git' --ref="${{ github.sha }}"
         bundle install
         bin/rails generate avo:install
