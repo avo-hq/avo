@@ -14,10 +14,6 @@ on:
       - 2.x
       - 4-dev
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.spec_group.name }}
-  cancel-in-progress: true
-
 env:
   RAILS_ENV: test
   PGHOST: localhost
@@ -32,6 +28,9 @@ env:
 
 jobs:
   system:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.spec_group.name }}
+      cancel-in-progress: true
     strategy:
       matrix:
         ruby:
