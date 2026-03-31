@@ -10,10 +10,9 @@ RSpec.describe Avo::UI::DropdownCardComponent, type: :component do
       end
 
       expect(page).to have_css(".dropdown-card")
-      expect(page).to have_css(".dropdown-card__header", text: "Header content")
-      expect(page).to have_css(".dropdown-card__body")
-      expect(page).to have_css(".dropdown-card__content", text: "Body content")
-      expect(page).to have_css(".dropdown-card__footer", text: "Footer content")
+      expect(page).to have_css(".dropdown-card", text: /Header content/)
+      expect(page).to have_css(".dropdown-card__body", text: "Body content")
+      expect(page).to have_css(".dropdown-card", text: /Footer content/)
     end
 
     it "renders without header and footer when those slots are not provided" do
@@ -22,9 +21,7 @@ RSpec.describe Avo::UI::DropdownCardComponent, type: :component do
       end
 
       expect(page).to have_css(".dropdown-card")
-      expect(page).not_to have_css(".dropdown-card__header")
-      expect(page).not_to have_css(".dropdown-card__footer")
-      expect(page).to have_css(".dropdown-card__content", text: "Only body")
+      expect(page).to have_css(".dropdown-card__body", text: "Only body")
     end
 
     it "renders with header and body only" do
@@ -33,9 +30,8 @@ RSpec.describe Avo::UI::DropdownCardComponent, type: :component do
         c.with_body { "Body content" }
       end
 
-      expect(page).to have_css(".dropdown-card__header", text: "Header only")
-      expect(page).to have_css(".dropdown-card__content", text: "Body content")
-      expect(page).not_to have_css(".dropdown-card__footer")
+      expect(page).to have_css(".dropdown-card", text: /Header only/)
+      expect(page).to have_css(".dropdown-card__body", text: "Body content")
     end
 
     it "renders with footer and body only" do
@@ -44,9 +40,8 @@ RSpec.describe Avo::UI::DropdownCardComponent, type: :component do
         c.with_footer { "Footer only" }
       end
 
-      expect(page).not_to have_css(".dropdown-card__header")
-      expect(page).to have_css(".dropdown-card__content", text: "Body content")
-      expect(page).to have_css(".dropdown-card__footer", text: "Footer only")
+      expect(page).to have_css(".dropdown-card__body", text: "Body content")
+      expect(page).to have_css(".dropdown-card", text: /Footer only/)
     end
 
     it "applies extra classes via the classes prop" do

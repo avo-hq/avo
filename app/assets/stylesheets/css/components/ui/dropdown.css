@@ -56,7 +56,7 @@
     @apply text-content-secondary gap-1.5;
 
     &.dropdown-menu__item--disabled {
-      @apply opacity-60 pointer-events-none;
+      @apply opacity-60;
     }
   }
 
@@ -75,11 +75,7 @@
 
 .dropdown-menu__item:focus-visible,
 .dropdown-menu__list > :is(a, button):focus-visible {
-  @apply ring-2 ring-inset ring-content bg-primary outline-none;
-
-  &.menu__item--action {
-    @apply ring-info-foreground;
-  }
+  @apply ring-2 ring-inset ring-info-foreground bg-primary outline-none;
 }
 
 .dropdown-menu__icon,

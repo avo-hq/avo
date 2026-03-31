@@ -1,8 +1,8 @@
 .dropdown-card {
-  @apply flex w-full flex-col items-stretch overflow-hidden rounded-lg border border-tertiary bg-secondary p-0.5;
+  @apply overflow-hidden rounded-lg border border-tertiary bg-secondary p-0.5;
   box-shadow: var(--box-shadow-dropdown-card);
 }
 
 .dropdown-card__body {
-  @apply w-full min-w-0 overflow-hidden rounded-lg border border-tertiary bg-primary;
+  @apply overflow-hidden rounded-lg border border-tertiary bg-primary;
 }
