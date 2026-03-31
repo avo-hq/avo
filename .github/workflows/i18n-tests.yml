@@ -66,7 +66,7 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec spec/system/i18n_spec.rb
+      run: bundle exec rspec spec/system/avo/i18n_spec.rb
 
     - uses: actions/upload-artifact@v4
       with:

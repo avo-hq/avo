@@ -15,7 +15,7 @@ on:
       - 4-dev
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.spec_group.name }}
   cancel-in-progress: true
 
 env:

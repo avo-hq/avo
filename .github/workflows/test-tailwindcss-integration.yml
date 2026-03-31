@@ -4,11 +4,11 @@ on:
   pull_request:
     branches:
       - main
-      - 4-dev
+      # - 4-dev
   push:
     branches:
       - main
-      - 4-dev
+      # - 4-dev
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
