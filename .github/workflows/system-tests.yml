@@ -40,6 +40,15 @@ jobs:
         rails:
           - '7.1'
           - '8.0'
+        spec_group:
+          - name: group_1
+            rspec_path: spec/system/avo/group_1
+          - name: group_2
+            rspec_path: spec/system/avo/group_2
+          - name: group_3
+            rspec_path: spec/system/avo/group_3
+          - name: group_4
+            rspec_path: spec/system/avo/group_4
     runs-on: ubuntu-latest
 
     env:
@@ -98,17 +107,17 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec spec/system/ --tag=~i18n
+      run: bundle exec rspec ${{ matrix.spec_group.rspec_path }} --tag=~i18n
 
     - uses: actions/upload-artifact@v4
       with:
-        name: coverage_system_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+        name: coverage_system_${{ matrix.rails }}_ruby_${{ matrix.ruby }}_${{ matrix.spec_group.name }}
         path: coverage/.resultset.json
 
     - uses: actions/upload-artifact@v4
       if: always() && steps.run_tests.outcome == 'failure'
       with:
-        name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+        name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}_${{ matrix.spec_group.name }}
         path: |
           ./spec/dummy/tmp/screenshots
           ./spec/examples.txt
