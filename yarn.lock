@@ -4930,9 +4930,9 @@ picocolors@^1.1.1:
   integrity sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
-  integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.2.tgz#5a942915e26b372dc0f0e6753149a16e6b1c5601"
+  integrity sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==
 
 pify@^2.3.0:
   version "2.3.0"
@@ -6354,10 +6354,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-trix@^2.1.17:
-  version "2.1.17"
-  resolved "https://registry.yarnpkg.com/trix/-/trix-2.1.17.tgz#a47c4ee1925a7abb26aee5c094ec7ef9fe49575a"
-  integrity sha512-nkHg7VgIItGVx1CFA645dDlAoCgah+9gv80Yc+97aS8jkZmO5K4MxkSqmU9t/C8upqZB8uhfJs90epoDfYz/6Q==
+trix@^2.1.18:
+  version "2.1.18"
+  resolved "https://registry.yarnpkg.com/trix/-/trix-2.1.18.tgz#d87a5be64c10ecdab64f5af47f941b5318c08225"
+  integrity sha512-DWOdTsz3n9PO3YBc1R6pGh9MG1cXys/2+rouc/qsISncjc2MBew2UOW8nXh3NjUOjobKsXCIPR6LB02abg2EYg==
   dependencies:
     dompurify "^3.2.5"
 
