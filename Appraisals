@@ -1,4 +1,4 @@
-["3.1.4", "3.3.0"].each do |ruby_version|
+["3.3.0", "3.4.0"].each do |ruby_version|
   ["6.1", "7.1", "8.0"].each do |rails_version|
     # Rails 8 require ruby >= 3.2.0
     next if ruby_version == "3.1.4" && rails_version == "8.0"
@@ -9,10 +9,6 @@
       gem "activestorage", "~> #{rails_version}"
       gem "activestorage"
       gem "acts-as-taggable-on"
-
-      if Gem::Version.new(ruby_version) < Gem::Version.new("3.2.0")
-        gem "zeitwerk", "2.6.18"
-      end
 
       if rails_version == "8.0" && ruby_version == "3.3.0"
         gem "view_component", "4.0.0"
