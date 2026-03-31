@@ -21,7 +21,7 @@ RSpec.describe "Alert Backtrace", type: :system do
 
     expect(page).to have_text "raised"
     expect(page).to have_text "Backtrace:"
-    
+
     if RUBY_VERSION >= "3.4.0"
       expect(page).to have_text "/dummy/app/models/course.rb:25:in 'block in <class:Course>"
     else
