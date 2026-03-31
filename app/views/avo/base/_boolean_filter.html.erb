@@ -6,19 +6,18 @@
   <%= filter_wrapper name: filter.name do %>
     <div class="flex items-center">
       <% if filter.options.empty? %>
-        <div class="text-sm text-gray-600"><%= filter.class.empty_message %></div>
+        <div class="filters-section__empty-state"><%= filter.class.empty_message %></div>
       <% else %>
-        <div class="space-y-2">
+        <div class="filters-boolean-options">
           <% filter.options.each do |value, label| %>
-            <label class="flex items-center text-gray-700 text-sm">
+            <label class="filters-boolean-option">
               <%= check_box_tag filter.id, value, filter.selected_value(value.to_s, @applied_filters),
-                class: 'me-2 text-lg h-4 w-4',
-                id: "avo_filters_#{filter.id.parameterize.underscore}",
+                id: "avo_filters_#{filter.id.parameterize.underscore}_#{value}",
                 'data-filter-class': filter.class,
                 'data-boolean-filter-target': 'option',
                 'data-action': 'input->boolean-filter#changeFilter'
               %>
-              <%= label %>
+              <span><%= label %></span>
             </label>
           <% end %>
         </div>

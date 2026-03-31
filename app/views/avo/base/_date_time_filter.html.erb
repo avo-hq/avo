@@ -6,8 +6,8 @@
     date_time_filter_picker_options_value: filter.picker_options(@applied_filters[filter.class.to_s])
   } do %>
   <%= filter_wrapper name: filter.name do %>
-    <div class="flex relative">
-      <div class="self-center w-full" data-slot="value">
+    <div class="filters-date-input">
+      <div class="w-full" data-slot="value">
         <%= text_field_tag :value, "",
           class: input_classes('w-full mb-0 !pe-9'),
           placeholder: filter.class.empty_message,
@@ -16,7 +16,7 @@
           } %>
       </div>
       <%= content_tag :button,
-        class: "absolute end-0 self-center me-4 uppercase font-semibold text-xs",
+        class: "filters-date-input__action",
         id: :reset,
         type: :button,
         title: t("avo.reset").capitalize,
@@ -24,11 +24,11 @@
           action: "click->date-time-filter#clear",
           tippy: :tooltip
         } do %>
-        <%= svg "tabler/outline/x", class: "h-4" %>
+        <%= svg "tabler/outline/x", class: "filters-date-input__action-icon" %>
       <% end %>
     </div>
     <div class="flex justify-end">
-      <%= a_button class: 'mt-4', style: :primary, data: { action: "date-time-filter#changeFilter" }, size: :xs do %>
+      <%= a_button style: :primary, data: { action: "date-time-filter#changeFilter" }, size: :md do %>
         <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>
