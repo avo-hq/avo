@@ -50,7 +50,7 @@
     "chart.js": "^3.9.1",
     "chartkick": "^4.2.0",
     "codemirror": "5.59.1",
-    "core-js": "^3.48.0",
+    "core-js": "^3.49.0",
     "css-loader": "^6.11.0",
     "dompurify": "^3.3.3",
     "easymde": "^2.20.0",
@@ -89,7 +89,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/eslint-parser": "^7.28.6",
-    "@babel/preset-env": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
     "@prettier/plugin-ruby": "^2.1.0",
     "esbuild-visualizer": "^0.3.1",
     "eslint": "^9.39.4",
