@@ -1,24 +1,9 @@
-<%= content_tag :div, class: class_names(
-  "dropdown-card",
-  @classes
-) do %>
-  <% if header? %>
-    <div class="dropdown-card__header">
-      <%= header %>
-    </div>
-  <% end %>
+<%= content_tag :div, class: class_names("dropdown-card", @classes) do %>
+  <%= header %>
 
-  <% if body? %>
-    <div class="dropdown-card__body">
-      <div class="dropdown-card__content">
-        <%= body %>
-      </div>
-    </div>
-  <% end %>
+  <div class="dropdown-card__body">
+    <%= body %>
+  </div>
 
-  <% if footer? %>
-    <div class="dropdown-card__footer">
-      <%= footer %>
-    </div>
-  <% end %>
+  <%= footer %>
 <% end %>

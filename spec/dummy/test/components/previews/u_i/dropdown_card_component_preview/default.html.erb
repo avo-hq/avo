@@ -1,21 +1,26 @@
 <%
   preview_action = ->(label) do
-    content_tag(:button, class: "flex min-w-0 flex-1 cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 text-start") do
-      concat svg("tabler/outline/plus", class: "shrink-0 size-4 text-content-secondary")
-      concat content_tag(:span, label, class: "min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-5 font-medium text-content-secondary")
+    # Use a real focusable control so Tab / :focus-visible work in Lookbook (divs are skipped).
+    button_tag type: "button", class: "dropdown-menu__item menu__item--action" do
+      safe_join [
+        svg("tabler/outline/plus", class: "dropdown-menu__icon menu__item__icon--action"),
+        content_tag(:span, label)
+      ]
     end
   end
 
   preview_body = ->(text) do
-    content_tag(:div, text, class: "flex flex-1 items-center justify-center text-xs font-medium text-content-secondary min-h-64")
+    content_tag(:div, class: "flex min-h-64 items-center justify-center") do
+      text
+    end
   end
 %>
 
-<div class="w-full max-w-4xl rounded-xl border border-dashed border-gray-300 bg-gray-50 p-6">
-  <div class="grid gap-4 md:grid-cols-3">
+<div class="w-full max-w-6xl">
+  <div class="grid w-full grid-cols-[repeat(auto-fit,minmax(min(100%,247px),1fr))] gap-4">
 
     <%# Header + body + footer %>
-    <div class="w-[247px]">
+    <div class="min-w-0 w-full">
       <%= render Avo::UI::DropdownCardComponent.new do |c| %>
         <% c.with_header { preview_action.("Header item") } %>
         <% c.with_body { preview_body.("With Header and Footer") } %>
@@ -24,7 +29,7 @@
     </div>
 
     <%# Header + body only %>
-    <div class="w-[247px]">
+    <div class="min-w-0 w-full">
       <%= render Avo::UI::DropdownCardComponent.new do |c| %>
         <% c.with_header { preview_action.("Header item") } %>
         <% c.with_body { preview_body.("Header only") } %>
@@ -32,7 +37,7 @@
     </div>
 
     <%# Footer + body only %>
-    <div class="w-[247px]">
+    <div class="min-w-0 w-full">
       <%= render Avo::UI::DropdownCardComponent.new do |c| %>
         <% c.with_body { preview_body.("Footer only") } %>
         <% c.with_footer { preview_action.("Footer item") } %>
@@ -40,7 +45,7 @@
     </div>
 
     <%# Body only %>
-    <div class="w-[247px]">
+    <div class="min-w-0 w-full">
       <%= render Avo::UI::DropdownCardComponent.new do |c| %>
         <% c.with_body { preview_body.("No header or footer") } %>
       <% end %>
