@@ -1,4 +1,4 @@
-name: Feature Tests
+name: Tests
 
 on:
   pull_request:
@@ -32,7 +32,7 @@ env:
   COVERAGE: true
 
 jobs:
-  feature_specs:
+  feature:
     strategy:
       matrix:
         ruby:

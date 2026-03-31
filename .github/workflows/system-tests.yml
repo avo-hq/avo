@@ -1,4 +1,4 @@
-name: System Tests
+name: Tests
 
 on:
   pull_request:
@@ -31,7 +31,7 @@ env:
   COVERAGE: true
 
 jobs:
-  system_specs:
+  system:
     strategy:
       matrix:
         ruby:
