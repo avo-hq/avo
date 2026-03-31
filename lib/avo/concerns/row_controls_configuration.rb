@@ -45,7 +45,7 @@ module Avo
         class_names(
           "text-end whitespace-nowrap px-3",
           "w-px": render_row_controls_on_the_left?,
-          "*:opacity-0 group-hover:*:opacity-100": row_controls_configurations[:show_on_hover],
+          "bg-transparent before:opacity-0 group-hover:before:opacity-100 *:opacity-0 group-hover:*:opacity-100": row_controls_configurations[:show_on_hover],
           "#{float_classes}": row_controls_configurations[:float]
         )
       end
