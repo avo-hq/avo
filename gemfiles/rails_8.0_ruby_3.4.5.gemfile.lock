@@ -12,7 +12,7 @@ PATH
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
-      avo-icons (>= 0.1.1)
+      avo-icons (>= 0.1.2)
       docile
       meta-tags
       pagy (>= 43.0)
@@ -125,7 +125,7 @@ GEM
       rake
       thor (>= 0.14.0)
     ast (2.4.3)
-    avo-icons (0.1.1)
+    avo-icons (0.1.2)
       inline_svg
     avo-money_field (0.0.5)
       money-rails (~> 1.12)
