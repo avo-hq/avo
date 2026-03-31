@@ -2,7 +2,8 @@
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'chartkick/chart.js/chart.esm'
-import 'mapkick/bundle'
+import Mapkick from 'mapkick'
+import mapboxgl from 'mapbox-gl'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
 import { Turbo } from '@hotwired/turbo-rails'
@@ -23,6 +24,8 @@ function installHotkeys(root = document) {
     attachHotkeyFeedback(el)
   })
 }
+
+Mapkick.use(mapboxgl)
 
 window.Avo.localStorage = new LocalStorageService()
 

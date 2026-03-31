@@ -56,7 +56,7 @@ module Avo
         end
 
         def default_attribute_value(name)
-          (name == :data) ? {} : ""
+          (name == :data) ? {} : nil
         end
 
         def add_action_data_attributes(attributes, name, element)

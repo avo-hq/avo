@@ -93,6 +93,10 @@ module Avo
               define_method(:to_param) do
                 id
               end
+
+              class << self
+                def class_name = class_name
+              end
             end
           )
 
