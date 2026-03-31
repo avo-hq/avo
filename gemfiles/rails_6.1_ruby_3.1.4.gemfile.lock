@@ -688,7 +688,7 @@ GEM
       yard (>= 0.8)
     yard-solargraph (0.1.0)
       yard (~> 0.9)
-    zeitwerk (2.7.3)
+    zeitwerk (2.6.18)
 
 PLATFORMS
   arm64-darwin-23
@@ -778,7 +778,7 @@ DEPENDENCIES
   view_component (= 3.23.2)
   web-console (>= 3.3.0)
   webmock
-  zeitwerk
+  zeitwerk (= 2.6.18)
 
 BUNDLED WITH
    2.5.9

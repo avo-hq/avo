@@ -10,6 +10,10 @@
       gem "activestorage"
       gem "acts-as-taggable-on"
 
+      if Gem::Version.new(ruby_version) < Gem::Version.new("3.2.0")
+        gem "zeitwerk", "2.6.18"
+      end
+
       if rails_version == "8.0" && ruby_version == "3.3.0"
         gem "view_component", "4.0.0"
       else
