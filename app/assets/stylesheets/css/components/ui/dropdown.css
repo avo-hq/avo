@@ -32,6 +32,9 @@
 
 /* ==========================================================================
    List & Items
+
+   .menu__item--action is a modifier for action-type items (e.g. "+ Menu item").
+   It pairs with .dropdown-menu__item and only overrides what differs from the default style.
    ========================================================================== */
 
 .dropdown-menu__group {
@@ -48,21 +51,47 @@
   &.dropdown-menu__item--disabled {
     @apply text-content-secondary cursor-not-allowed !bg-transparent;
   }
+
+  &.menu__item--action {
+    @apply text-content-secondary gap-1.5;
+
+    &.dropdown-menu__item--disabled {
+      @apply opacity-60 pointer-events-none;
+    }
+  }
+
+  &:hover {
+    @apply bg-secondary text-content;
+  }
 }
 
-.dropdown-menu__item--active,
-.dropdown-menu__item:hover,
 .dropdown-menu__list > :is(a, button):hover {
   @apply bg-secondary;
+}
+
+.dropdown-menu__item--active {
+  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
 }
 
 .dropdown-menu__item:focus-visible,
 .dropdown-menu__list > :is(a, button):focus-visible {
   @apply ring-2 ring-inset ring-content bg-primary outline-none;
+
+  &.menu__item--action {
+    @apply ring-info-foreground;
+  }
 }
 
 .dropdown-menu__icon,
 .dropdown-menu__list > :is(a, button) svg {
-  @apply shrink-0 size-4 text-content;
-}
+  @apply shrink-0 size-4 text-inherit;
 
+  &.menu__item__icon--action {
+    @apply p-0.5 box-content rounded-sm bg-secondary;
+
+    .dropdown-menu__item--active &,
+    .dropdown-menu__item:hover & {
+      @apply bg-inherit;
+    }
+  }
+}

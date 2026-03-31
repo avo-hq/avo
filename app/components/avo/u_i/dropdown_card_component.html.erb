@@ -3,22 +3,16 @@
   @classes
 ) do %>
   <% if header? %>
-    <div class="dropdown-card__header">
-      <%= header %>
-    </div>
+    <%= header %>
   <% end %>
 
   <% if body? %>
     <div class="dropdown-card__body">
-      <div class="dropdown-card__content">
-        <%= body %>
-      </div>
+      <%= body %>
     </div>
   <% end %>
 
   <% if footer? %>
-    <div class="dropdown-card__footer">
-      <%= footer %>
-    </div>
+    <%= footer %>
   <% end %>
 <% end %>
