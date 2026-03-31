@@ -35,6 +35,7 @@ jobs:
       matrix:
         ruby:
           - '3.3.0'
+          - '3.4.0'
         rails:
           - '8.0'
     runs-on: ubuntu-latest
