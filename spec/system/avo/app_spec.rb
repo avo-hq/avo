@@ -91,7 +91,7 @@ RSpec.describe "App", type: :system do
 
       visit "/admin/resources/projects/#{project.id}?return_to=#{payload}"
 
-      go_back_link = find("div[data-target='panel-tools'] a", text: "Go back")
+      go_back_link = find("div.header__controls a", text: "Go back")
       expect(go_back_link[:href]).to end_with("/admin/resources/projects")
       expect(go_back_link[:href]).not_to start_with("javascript:")
 
@@ -113,7 +113,7 @@ RSpec.describe "App", type: :system do
 
       visit "/admin/resources/projects/#{project.id}?return_to=#{encryption_helper.e(return_to)}"
 
-      go_back_link = find("div[data-target='panel-tools'] a", text: "Go back")
+      go_back_link = find("div.header__controls a", text: "Go back")
       expect(go_back_link[:href]).to end_with(return_to)
 
       click_on "Go back"
