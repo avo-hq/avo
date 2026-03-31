@@ -38,7 +38,6 @@ jobs:
           - '3.3'
           - '3.4'
         rails:
-          - '6.1'
           - '7.1'
           - '8.0'
     runs-on: ubuntu-latest
