@@ -817,6 +817,7 @@ DEPENDENCIES
   annotate
   appraisal
   avo!
+  avo-icons (~> 0.1.2)
   avo-money_field
   avo-record_link_field
   aws-sdk-s3
