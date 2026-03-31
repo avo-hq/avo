@@ -7,7 +7,7 @@ PATH
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
-      avo-icons (>= 0.1.1)
+      avo-icons (>= 0.1.2)
       docile
       meta-tags
       pagy (>= 43.0)
@@ -177,7 +177,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (4.0.1)
+    bigdecimal (4.1.0)
     bindex (0.8.1)
     bootsnap (1.18.6)
       msgpack (~> 1.2)
