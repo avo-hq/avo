@@ -20,6 +20,8 @@
         # Fix `<module:LoggerThreadSafeLevel>': uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger (NameError)
         # https://stackoverflow.com/questions/79360526/uninitialized-constant-activesupportloggerthreadsafelevellogger-nameerror
         gem "concurrent-ruby", "1.3.4"
+        # Ruby 3.4: mutex_m is no longer a default gem, but Rails 6.1/ActiveSupport requires it.
+        gem "mutex_m"
       end
     end
   end
