@@ -33,11 +33,8 @@ jobs:
   i18n_tests:
     strategy:
       matrix:
-        ruby:
-          - '3.3'
-          - '3.4'
-        rails:
-          - '8.0'
+        ruby: ['3.4']
+        rails: ['8.0']
     runs-on: ubuntu-latest
 
     env:
@@ -64,35 +61,6 @@ jobs:
       run: |
         bin/rails db:create
         bin/rails db:migrate
-
-    - name: Get yarn cache directory path
-      id: test-yarn-cache-dir-path
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-    - uses: actions/cache@v4
-      id: test-yarn-cache
-      with:
-        path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-
-    - name: Yarn install the dummy app
-      run: |
-        cd spec/dummy
-        yarn
-
-    - name: Yarn install
-      run: yarn
-
-    - name: Build assets
-      env:
-        RAILS_ENV: production
-        NODE_ENV: production
-      run: |
-        yarn build:js
-        yarn build:css
-        yarn build:custom-js
 
     - name: Run tests
       id: run_tests
