@@ -12,7 +12,7 @@ RSpec.describe Avo::AlertComponent, type: :component do
     expect(page).to have_css(".alert__icon")
     expect(page).to have_css(".alert__title", text: "Your account has been successfully created.")
     expect(page).to have_css(".alert__message", text: "Message")
-    expect(page).to have_css("button.alert__close[aria-label='Close alert'][data-action='alert#close']")
+    expect(page).to have_css("button.alert__icon-container--close[aria-label='Close alert'][data-action='alert#close']")
   end
 
   it "maps error alerts to the danger variant" do
