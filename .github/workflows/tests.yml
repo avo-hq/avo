@@ -343,3 +343,73 @@ jobs:
       with:
         name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
         path: ./spec/dummy/tmp/screenshots
+
+  # ----------------------------------------------------------------------------
+  # Accessibility tests
+  # ----------------------------------------------------------------------------
+  accessibility:
+    name: accessibility (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    strategy:
+      matrix:
+        ruby:
+          - '3.3'
+        rails:
+          - '8.0'
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_VERSION: ${{matrix.rails}}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:10.8
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        bundler: default
+        ruby-version: ${{ matrix.ruby }}
+
+    - name: Get yarn cache directory path
+      id: test-yarn-cache-dir-path
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+    - uses: actions/cache@v4
+      id: test-yarn-cache
+      with:
+        path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Yarn install the dummy app
+      run: |
+        cd spec/dummy
+        yarn
+
+    - name: Yarn install
+      run: yarn
+
+    - name: Build assets
+      env:
+        RAILS_ENV: production
+        NODE_ENV: production
+      run: |
+        yarn build
+
+    - name: Run tests
+      id: run_tests
+      run: bundle exec rspec spec/a11y
+
+    - uses: actions/upload-artifact@v4
+      if: always() && steps.run_tests.outcome == 'failure'
+      with:
+        name: rspec_failed_screenshots_a11y_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+        path: ./spec/dummy/tmp/screenshots
