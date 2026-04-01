@@ -1,74 +1,66 @@
 class Avo::Configuration::Branding
-  def initialize(colors: nil, chart_colors: nil, logo: nil, logomark: nil, placeholder: nil, favicon: nil)
-    @colors = colors || {}
-    @chart_colors = chart_colors
-    @logo = logo
-    @logomark = logomark
-    @placeholder = placeholder
-    @favicon = favicon
+  attr_accessor :mode, # :static | :dynamic
+    :default_scheme, # :auto | :light | :dark
+    :neutral, # Symbol | Hash (static mode only)
+    :accent, # Symbol | Hash (static mode only)
+    :persistence, # :localstorage | :database
+    :logo,
+    :logo_dark,
+    :logomark,
+    :logomark_dark,
+    :favicon,
+    :favicon_dark,
+    :chart_colors,
+    :placeholder
 
-    @default_colors = {
-      :background => "#FAFAFA",
-      100 => "206 231 248",
-      400 => "57 158 229",
-      500 => "8 134 222",
-      600 => "6 107 178"
-    }
-    @default_chart_colors = ["#0B8AE2", "#34C683", "#FFBE4F", "#FF7676", "#2AB1EE", "#34C6A8", "#EC8CFF", "#80FF91", "#FFFC38", "#1BDBE8"]
-    @default_logo = "avo/logo.png"
-    @default_logomark = "avo/logomark.png"
-    @default_placeholder = "avo/placeholder.svg"
-    @default_favicon = "avo/favicon.ico"
+  # Stored blocks for database persistence
+  attr_reader :load_settings_block, :save_settings_block
+
+  def initialize
+    @mode = :static
+    @default_scheme = :auto
+    @persistence = :localstorage
+    @logo = "avo/logo.png"
+    @logomark = "avo/logomark.png"
+    @favicon = "avo/favicon.ico"
+    @chart_colors = %w[#0B8AE2 #34C683 #FFBE4F #FF7676 #2AB1EE #34C6A8 #EC8CFF #80FF91 #FFFC38 #1BDBE8]
+    @placeholder = "avo/placeholder.svg"
   end
 
-  def css_colors
-    rgb_colors.map do |color, value|
-      if color == :background
-        "--avo-color-application-background: #{value};"
-      else
-        "--avo-color-primary-#{color}: #{value};"
-      end
-    end.join("\n")
+  def load_settings(&block) = @load_settings_block = block
+  def save_settings(&block) = @save_settings_block = block
+
+  def static? = mode == :static
+  def dynamic? = mode == :dynamic
+  def database_persistence? = persistence == :database
+
+  # Returns CSS class name for named symbol neutrals
+  def neutral_css_class = neutral.is_a?(Symbol) ? "theme-#{neutral}" : nil
+
+  # Returns inline :root CSS vars string for custom hash neutrals
+  # Handles flat hash { 25 => value } or { light: {...}, dark: {...} }
+  def neutral_css_vars(scheme: :light)
+    return nil unless neutral.is_a?(Hash)
+
+    scale = neutral.key?(:light) ? neutral[scheme] : neutral
+    scale.map { |shade, value| "--color-avo-neutral-#{shade}: #{value};" }.join("\n")
   end
 
-  def logo
-    @logo || @default_logo
+  # Returns CSS class name for named symbol accent
+  def accent_css_class = accent.is_a?(Symbol) ? "accent-#{accent}" : nil
+
+  # Returns inline CSS vars for custom hash accent
+  def accent_css_vars(scheme: :light)
+    return nil unless accent.is_a?(Hash)
+
+    tokens = accent.key?(:light) ? accent[scheme] : accent
+    [
+      "--color-accent: #{tokens[:color]};",
+      "--color-accent-content: #{tokens[:content]};",
+      "--color-accent-foreground: #{tokens[:foreground]};"
+    ].join("\n")
   end
 
-  def logomark
-    @logomark || @default_logomark
-  end
-
-  def placeholder
-    @placeholder || @default_placeholder
-  end
-
-  def chart_colors
-    @chart_colors || @default_chart_colors
-  end
-
-  def favicon
-    @favicon || @default_favicon
-  end
-
-  private
-
-  def colors
-    @default_colors.merge(@colors) || @default_colors
-  end
-
-  def rgb_colors
-    colors.map do |key, value|
-      rgb_value = is_hex?(value) ? hex_to_rgb(value) : value
-      [key, rgb_value]
-    end.to_h
-  end
-
-  def is_hex?(value)
-    value.include? "#"
-  end
-
-  def hex_to_rgb(value)
-    value.to_s.match(/^#(..)(..)(..)$/).captures.map(&:hex).join(" ")
-  end
+  # Future: effective_mode for license gating
+  def effective_mode = mode
 end

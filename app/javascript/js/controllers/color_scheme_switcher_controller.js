@@ -4,6 +4,11 @@ import Cookies from 'js-cookie'
 export default class extends Controller {
   static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
 
+  static values = {
+    mode: { type: String, default: 'static' },
+    persistence: { type: String, default: 'localstorage' },
+  }
+
   connect() {
     // Read from cookies (cookie is source of truth)
     const cookieScheme = Cookies.get('color_scheme')
@@ -105,6 +110,7 @@ export default class extends Controller {
     } else {
       Cookies.set('color_scheme', this.currentSchemeValue)
     }
+    this.persistToDatabase()
   }
 
   saveTheme() {
@@ -113,6 +119,7 @@ export default class extends Controller {
     } else {
       Cookies.set('theme', this.currentThemeValue)
     }
+    this.persistToDatabase()
   }
 
   saveAccent() {
@@ -121,6 +128,28 @@ export default class extends Controller {
     } else {
       Cookies.set('accent_color', this.currentAccentValue)
     }
+    this.persistToDatabase()
+  }
+
+  persistToDatabase() {
+    if (this.persistenceValue !== 'database') return
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    }
+    if (csrfToken) headers['X-CSRF-Token'] = csrfToken
+
+    fetch(`${window.Avo.configuration.root_path}/theme_settings`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({
+        color_scheme: this.currentSchemeValue,
+        neutral: this.currentThemeValue,
+        accent: this.currentAccentValue,
+      }),
+    })
   }
 
   applyScheme() {

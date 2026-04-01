@@ -1,75 +1,82 @@
+<% branding = Avo.configuration.branding %>
 <div class="color-scheme-switcher"
-     data-controller="color-scheme-switcher">
-  <%= render Avo::UI::DropdownComponent.new(
-    classes: "color-scheme-switcher__theme-popover"
-  ) do |component| %>
-    <% component.with_trigger do %>
-      <button type="button"
-              data-action="<%= component.action %>"
-              class="color-scheme-switcher__button color-scheme-switcher__button--theme"
-              title="Neutral theme">
-        <span class="color-scheme-switcher__text" data-color-scheme-switcher-target="themeLabel">Brand</span>
-      </button>
-    <% end %>
-    <% component.with_items do %>
-      <div class="color-scheme-switcher__theme-options"
-           data-action="mouseleave->color-scheme-switcher#revertTheme">
-        <% %w[brand slate stone gray zinc neutral taupe mauve mist olive].each do |theme| %>
-          <button type="button"
-                  data-action="click->color-scheme-switcher#setTheme click->dropdown-menu#close mouseenter->color-scheme-switcher#previewTheme"
-                  data-theme="<%= theme %>"
-                  data-color-scheme-switcher-target="themeOption"
-                  class="color-scheme-switcher__theme-option">
-            <span class="color-scheme-switcher__theme-preview color-scheme-switcher__theme-preview--<%= theme %>"></span>
-            <span class="color-scheme-switcher__theme-option-label"><%= theme.capitalize %></span>
-          </button>
-        <% end %>
-      </div>
-    <% end %>
-  <% end %>
-
-  <%= render Avo::UI::DropdownComponent.new(
-    classes: "color-scheme-switcher__accent-popover"
-  ) do |component| %>
-    <% component.with_trigger do %>
-      <button type="button"
-              data-color-scheme-switcher-target="button"
-              data-action="<%= component.action %>"
-              class="color-scheme-switcher__button color-scheme-switcher__button--accent"
-              title="Accent color">
-        <%= svg "tabler/outline/color-swatch", class: "color-scheme-switcher__icon" %>
-        <span class="color-scheme-switcher__accent-badge">
-          <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--neutral"></span>
-          <% accent_colors.each do |accent| %>
-            <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--<%= accent %> bg-<%= accent %>-500"></span>
+     data-controller="color-scheme-switcher"
+     data-color-scheme-switcher-mode-value="<%= branding.effective_mode %>"
+     data-color-scheme-switcher-persistence-value="<%= branding.persistence %>">
+  <div <%= "hidden" if branding.static? %>>
+    <%= render Avo::UI::DropdownComponent.new(
+      classes: "color-scheme-switcher__theme-popover"
+    ) do |component| %>
+      <% component.with_trigger do %>
+        <button type="button"
+                data-action="<%= component.action %>"
+                class="color-scheme-switcher__button color-scheme-switcher__button--theme"
+                title="Neutral theme">
+          <span class="color-scheme-switcher__text" data-color-scheme-switcher-target="themeLabel">Brand</span>
+        </button>
+      <% end %>
+      <% component.with_items do %>
+        <div class="color-scheme-switcher__theme-options"
+             data-action="mouseleave->color-scheme-switcher#revertTheme">
+          <% %w[brand slate stone gray zinc neutral taupe mauve mist olive].each do |theme| %>
+            <button type="button"
+                    data-action="click->color-scheme-switcher#setTheme click->dropdown-menu#close mouseenter->color-scheme-switcher#previewTheme"
+                    data-theme="<%= theme %>"
+                    data-color-scheme-switcher-target="themeOption"
+                    class="color-scheme-switcher__theme-option">
+              <span class="color-scheme-switcher__theme-preview color-scheme-switcher__theme-preview--<%= theme %>"></span>
+              <span class="color-scheme-switcher__theme-option-label"><%= theme.capitalize %></span>
+            </button>
           <% end %>
-        </span>
-        <span class="sr-only">Accent color</span>
-      </button>
+        </div>
+      <% end %>
     <% end %>
-    <% component.with_items do %>
-      <div class="color-scheme-switcher__accent-options"
-           data-action="mouseleave->color-scheme-switcher#revertAccent">
-        <% (['neutral'] + accent_colors).each do |accent| %>
-          <%
-            preview_class = if accent == "neutral"
-              "color-scheme-switcher__accent-preview color-scheme-switcher__accent-preview--neutral"
-            else
-              "color-scheme-switcher__accent-preview bg-#{accent}-500"
-            end
-          %>
-          <button type="button"
-                  data-action="click->color-scheme-switcher#setAccent click->dropdown-menu#close mouseenter->color-scheme-switcher#previewAccent"
-                  data-accent="<%= accent %>"
-                  data-color-scheme-switcher-target="accentOption"
-                  class="color-scheme-switcher__accent-option">
-            <span class="<%= preview_class %>"></span>
-            <span class="sr-only"><%= accent.capitalize %></span>
-          </button>
-        <% end %>
-      </div>
+  </div>
+
+  <div <%= "hidden" if branding.static? %>>
+    <%= render Avo::UI::DropdownComponent.new(
+      classes: "color-scheme-switcher__accent-popover"
+    ) do |component| %>
+      <% component.with_trigger do %>
+        <button type="button"
+                data-color-scheme-switcher-target="button"
+                data-action="<%= component.action %>"
+                class="color-scheme-switcher__button color-scheme-switcher__button--accent"
+                title="Accent color">
+          <%= svg "tabler/outline/color-swatch", class: "color-scheme-switcher__icon" %>
+          <span class="color-scheme-switcher__accent-badge">
+            <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--neutral"></span>
+            <% accent_colors.each do |accent| %>
+              <span class="color-scheme-switcher__accent-badge-preview color-scheme-switcher__accent-badge-preview--<%= accent %> bg-<%= accent %>-500"></span>
+            <% end %>
+          </span>
+          <span class="sr-only">Accent color</span>
+        </button>
+      <% end %>
+      <% component.with_items do %>
+        <div class="color-scheme-switcher__accent-options"
+             data-action="mouseleave->color-scheme-switcher#revertAccent">
+          <% (['neutral'] + accent_colors).each do |accent| %>
+            <%
+              preview_class = if accent == "neutral"
+                "color-scheme-switcher__accent-preview color-scheme-switcher__accent-preview--neutral"
+              else
+                "color-scheme-switcher__accent-preview bg-#{accent}-500"
+              end
+            %>
+            <button type="button"
+                    data-action="click->color-scheme-switcher#setAccent click->dropdown-menu#close mouseenter->color-scheme-switcher#previewAccent"
+                    data-accent="<%= accent %>"
+                    data-color-scheme-switcher-target="accentOption"
+                    class="color-scheme-switcher__accent-option">
+              <span class="<%= preview_class %>"></span>
+              <span class="sr-only"><%= accent.capitalize %></span>
+            </button>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 
   <button type="button"
           data-color-scheme-switcher-target="button"

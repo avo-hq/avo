@@ -57,28 +57,9 @@ Avo.configure do |config|
   config.sidebar_toggle_visible = true
 
   ## == Branding ==
-  config.branding = {
-    colors: {
-      # background: "#FFFCF9", # basecamp
-      # background: "#F6F6F7", # original
-      # background: "#FBF7F0", # hotwire
-      # background: "248 246 242", # cookpad
-      # BLUE
-      100 => "#CEE7F8",
-      400 => "#399EE5",
-      500 => "#0886DE",
-      600 => "#066BB2"
-      # # ORANGE
-      # 100 => "#FFECCC",
-      # 400 => "#FFB435",
-      # 500 => "#FFA102",
-      # 600 => "#CC8102",
-    },
-    # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
-    logo: "avo/logo.png",
-    logomark: "avo/logomark.png"
-    # placeholder: "/avo/placeholder.svg",
-  }
+  config.branding.logo = "avo/logo.png"
+  config.branding.logomark = "avo/logomark.png"
+  config.branding.mode = :static
 
   # Uncomment to test out manual resource loading.
   # config.resources = [

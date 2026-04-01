@@ -1,7 +1,12 @@
-<script>
-  // On page load, apply color scheme, theme, and accent from cookies to avoid FOUC
+<% if Avo.configuration.branding.database_persistence? && Avo::Current.theme_settings.present? %>
+  <script nonce="<%= content_security_policy_nonce %>">
+    window.__avoThemeSettings__ = <%= Avo::Current.theme_settings.to_json.html_safe %>;
+  </script>
+<% end %>
+
+<script nonce="<%= content_security_policy_nonce %>">
+  // On page load, apply color scheme, theme, and accent to avoid FOUC
   (function() {
-    // Read cookies
     function getCookie(name) {
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
@@ -9,9 +14,21 @@
       return null;
     }
 
-    const colorScheme = getCookie('color_scheme') || 'auto';
-    const theme = getCookie('theme') || 'brand';
-    const accent = getCookie('accent_color') || 'neutral';
+    const branding = document.querySelector('meta[name="avo-branding"]')?.dataset || {};
+    const isStatic = branding.mode === 'static';
+    const dbSettings = window.__avoThemeSettings__ || null;
+
+    const colorScheme = dbSettings?.color_scheme
+      || getCookie('color_scheme')
+      || branding.defaultScheme || 'auto';
+
+    const theme = isStatic && branding.lockedNeutral
+      ? branding.lockedNeutral
+      : (dbSettings?.neutral || getCookie('theme') || 'brand');
+
+    const accent = isStatic && branding.lockedAccent
+      ? branding.lockedAccent
+      : (dbSettings?.accent || getCookie('accent_color') || 'neutral');
 
     // Apply color scheme
     const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
