@@ -508,7 +508,7 @@ module Avo
       end
 
       respond_to do |format|
-        format.html { redirect_to after_create_path, notice: create_success_message }
+        format.html { redirect_to after_create_path, flash: {success: create_success_message} }
       end
     end
 
