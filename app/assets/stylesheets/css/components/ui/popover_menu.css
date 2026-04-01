@@ -6,7 +6,7 @@
    position-anchor:auto uses the implicit anchor from popovertarget/id — no inline anchor-name needed.
    flip-block flips the keyword (bottom→top), not a resolved pixel value — correct near viewport bottom. */
 .popover-menu__panel {
-  @apply m-0 p-0 border-0 rounded-lg bg-primary;
+  @apply m-0 p-0 border-0 rounded-lg bg-primary mt-1;
   position-anchor: auto;
   position-area: bottom span-right;
   position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
