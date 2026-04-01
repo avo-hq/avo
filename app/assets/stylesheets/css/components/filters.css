@@ -1,35 +1,98 @@
 .filters__bar {
-  @apply relative w-full flex justify-between;
+  @apply relative flex w-full justify-between;
 }
 
 .filters__count {
-  @apply ms-1;
+  @apply ms-1 text-content-secondary;
 }
 
 .filters__panel {
-  @apply absolute block inset-auto sm:end-0 top-full min-w-[300px] mt-2 z-40;
+  @apply absolute top-full z-40 mt-2 w-72 inset-auto sm:end-0 flex flex-col max-h-[45vh];
+
+  .dropdown-card {
+    @apply flex flex-col overflow-hidden min-h-0;
+  }
+
+  .dropdown-card__body {
+    @apply overflow-y-auto;
+  }
 }
 
-.filters-header {
-  @apply flex w-full items-center justify-between py-1.5 px-2 font-medium;
+.filters-card__header {
+  @apply flex w-full items-center justify-between px-2 py-1.5 font-medium;
 }
 
-.filters-header__title {
-  @apply text-sm leading-5;
+.filters-card__title {
+  @apply text-sm text-content;
 }
 
-.filters-reset {
-  @apply text-xs font-medium leading-3.5;
+.filters-card__reset {
+  @apply text-[10px] leading-3.5 font-medium transition-colors text-content-secondary;
+
+  &:hover {
+    @apply text-content;
+  }
 }
 
-.filters-reset--active {
-  @apply text-content-secondary;
+.filters-card__reset--disabled {
+  @apply text-content-secondary cursor-not-allowed;
+  &:hover {
+    @apply text-content-secondary;
+  }
 }
 
-.filters-reset--active:hover {
-  @apply text-content transition-colors;
+.filters-card__content {
+  @apply p-1 overflow-hidden;
 }
 
-.filters-reset--disabled {
-  @apply text-content-secondary/60 cursor-not-allowed;
+.filters-section {
+  @apply flex flex-col gap-1.5 px-2 py-2.5;
+}
+
+.filters-section__title {
+  @apply text-sm font-medium text-foreground;
+}
+
+.filters-section__body {
+  @apply flex flex-col gap-1.5;
+}
+
+.filters-section__empty-state {
+  @apply text-xs leading-5 text-content-secondary;
+}
+
+.filters-boolean-options {
+  @apply flex flex-col items-start gap-0.5;
+}
+
+.filters-boolean-option {
+  @apply inline-flex items-center gap-1.5 text-sm text-foreground;
+}
+
+.filters-boolean-option input[type="checkbox"] {
+  @apply shrink-0;
+}
+
+.filters-date-input {
+  @apply relative flex items-center;
+}
+
+.filters-date-input__action {
+  @apply absolute inset-y-0 end-0 flex items-center pe-2.5 text-content-secondary;
+}
+
+.filters-date-input__action-icon {
+  @apply size-4;
+}
+
+select.filters-multi-select {
+  @apply bg-none p-1;
+}
+
+select.filters-multi-select option {
+  @apply rounded-md px-2 py-1 text-sm text-foreground;
+}
+
+.filters-section .button {
+  @apply whitespace-normal justify-start text-start leading-5;
 }
