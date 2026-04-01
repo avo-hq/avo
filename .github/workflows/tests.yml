@@ -251,8 +251,7 @@ jobs:
 
     - name: Prepare database
       run: |
-        bin/rails db:create
-        bin/rails db:migrate
+        bin/rails db:create db:migrate
 
     - name: Get yarn cache directory path
       id: test-yarn-cache-dir-path
@@ -376,6 +375,10 @@ jobs:
         bundler-cache: true
         bundler: default
         ruby-version: ${{ matrix.ruby }}
+
+    - name: Prepare database
+      run: |
+        bin/rails db:create db:migrate
 
     - name: Get yarn cache directory path
       id: test-yarn-cache-dir-path
