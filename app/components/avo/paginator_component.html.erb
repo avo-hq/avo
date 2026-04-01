@@ -1,7 +1,7 @@
 <div class="pagination">
   <%# Left: per-page selector %>
   <div class="pagination__per-page">
-    <%= render Avo::UI::DropdownComponent.new(popover_mode: true) do |component| %>
+    <%= render ui.dropdown(popover_mode: true) do |component| %>
       <% component.with_trigger do %>
         <button
           type="button"
