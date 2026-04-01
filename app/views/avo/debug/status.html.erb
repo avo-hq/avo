@@ -1,5 +1,7 @@
-<% if defined?(Avo::Licensing::StatusComponent) %>
-  <%= render Avo::Licensing::StatusComponent.new %>
-<% else %>
-  <%= render Avo::Debug::StatusComponent.new %>
-<% end %>
+<%= ap Avo::Services::TelemetryService.telemetry_info[:avo_metadata][:dashboards] -%>
+<%= ap Avo::Services::TelemetryService.telemetry_info[:avo_metadata] -%>
+<%# if defined?(Avo::Licensing::StatusComponent) %>
+  <%#= render Avo::Licensing::StatusComponent.new %>
+<%# else %>
+  <%#= render Avo::Debug::StatusComponent.new %>
+<%# end %>
