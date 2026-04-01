@@ -69,8 +69,7 @@ jobs:
 
       - name: Prepare database
         run: |
-          bin/rails db:create
-          bin/rails db:migrate
+          bundle exec rake parallel:create parallel:migrate
 
       - name: Get yarn cache directory path
         id: test-yarn-cache-dir-path
@@ -103,7 +102,8 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        run: bundle exec rspec spec/features
+        run: |
+          bundle exec parallel_rspec spec/features
 
       - uses: actions/upload-artifact@v4
         with:

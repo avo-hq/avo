@@ -13,7 +13,7 @@ development:
 
 test:
   <<: *default
-  database: <%= ENV.fetch("DATABASE_NAME", "avo_dummy_test") %>
+  database: <%= "#{ENV.fetch("DATABASE_NAME", "avo_dummy_test")}#{ENV["TEST_ENV_NUMBER"]}" %>
 
 production:
   <<: *default

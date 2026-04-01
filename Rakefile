@@ -4,6 +4,12 @@ rescue LoadError
   puts "You must `gem install bundler` and `bundle install` to run rake tasks"
 end
 
+begin
+  require "parallel_tests/tasks"
+rescue LoadError
+  # parallel_tests is an optional dev/test dependency
+end
+
 require "rdoc/task"
 
 RDoc::Task.new(:rdoc) do |rdoc|

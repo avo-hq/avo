@@ -199,6 +199,7 @@ require "support/factory_bot"
 require "support/database_cleaner"
 require "support/js_error_detector"
 require "support/devise"
+require "support/parallel_fs_lock"
 require "support/shared_contexts"
 require "support/timezone"
 
