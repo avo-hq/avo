@@ -1,0 +1,72 @@
+.alert {
+  @apply relative grid w-full max-w-md min-w-0 items-start gap-1 rounded-lg border p-3 pointer-events-auto opacity-0 translate-x-10;
+
+  grid-template-columns: auto 1fr auto;
+  background: var(--alert-background);
+  border-color: var(--alert-border);
+  will-change: opacity, transform;
+
+  --alert-color: var(--color-foreground);
+  --alert-title-color: color-mix(in oklab, var(--color-content) 20%, var(--alert-color));
+  --alert-message-color: color-mix(in oklab, var(--color-content) 10%, var(--alert-color));
+  --alert-background: var(--color-background);
+  --alert-border: var(--color-tertiary);
+}
+
+.alert__icon-container {
+  @apply flex shrink-0 items-start justify-center p-1;
+
+  color: var(--alert-title-color);
+}
+
+.alert__icon-container--status {
+  @apply col-start-1 self-stretch;
+}
+
+.alert__icon {
+  @apply size-3.5;
+}
+
+.alert__body {
+  @apply col-start-2 flex min-w-0 flex-col items-start justify-center gap-0.5 self-stretch;
+}
+
+.alert__title {
+  @apply w-full text-sm leading-5 font-medium;
+
+  color: var(--alert-title-color);
+}
+
+.alert__message {
+  @apply w-full text-xs leading-4 font-normal;
+
+  color: var(--alert-message-color);
+}
+
+.alert__icon-container--close {
+  @apply col-start-3 self-start;
+}
+
+.alert--success {
+  --alert-color: var(--color-success-content);
+  --alert-background: color-mix(in oklab, var(--color-success) 15%, var(--color-primary));
+  --alert-border: var(--color-success-foreground);
+}
+
+.alert--info {
+  --alert-color: var(--color-info-content);
+  --alert-background: color-mix(in oklab, var(--color-info) 15%, var(--color-primary));
+  --alert-border: var(--color-info-foreground);
+}
+
+.alert--warning {
+  --alert-color: var(--color-warning-content);
+  --alert-background: color-mix(in oklab, var(--color-warning) 15%, var(--color-primary));
+  --alert-border: var(--color-warning-foreground);
+}
+
+.alert--danger {
+  --alert-color: var(--color-danger-content);
+  --alert-background: color-mix(in oklab, var(--color-danger) 15%, var(--color-primary));
+  --alert-border: var(--color-danger-foreground);
+}

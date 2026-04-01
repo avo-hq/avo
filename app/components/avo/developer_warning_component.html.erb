@@ -1,0 +1,15 @@
+<div
+  class="<%= classes %>"
+  data-tippy="tooltip"
+  title="This warning is present only on development"
+>
+  <div class="flex items-center min-h-6">
+    <%= helpers.svg icon, class: "h-6 text-orange-600 dark:text-orange-300" %>
+  </div>
+
+  <div class="flex-1 text-sm leading-5 font-semibold space-y-3">
+    <div>
+      <%= sanitize @message.to_s, sanitize_options %>
+    </div>
+  </div>
+</div>

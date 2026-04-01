@@ -508,7 +508,7 @@ module Avo
       end
 
       respond_to do |format|
-        format.html { redirect_to after_create_path, notice: create_success_message }
+        format.html { redirect_to after_create_path, flash: {success: create_success_message} }
       end
     end
 
@@ -546,7 +546,7 @@ module Avo
 
     def update_success_action
       respond_to do |format|
-        format.html { redirect_to after_update_path, notice: update_success_message }
+        format.html { redirect_to after_update_path, flash: {success: update_success_message} }
       end
     end
 
@@ -619,7 +619,9 @@ module Avo
       return nil if @resource.class.send(action).blank?
 
       extra_args = {}
-      extra_args[:return_to] = params[:return_to] if params[:return_to].present?
+      if params[:return_to].present?
+        extra_args[:return_to] = e(params[:return_to])
+      end
 
       if @resource.class.send(action) == :index
         resources_path(resource: @resource, **extra_args)
