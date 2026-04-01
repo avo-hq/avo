@@ -19,7 +19,7 @@
 }
 
 .filters-card__header {
-  @apply flex w-full items-center justify-between px-2 py-1.5 font-medium;
+  @apply flex w-full items-center justify-between px-3 py-1.5 font-medium;
 }
 
 .filters-card__title {
