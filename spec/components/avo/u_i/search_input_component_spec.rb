@@ -32,15 +32,22 @@ RSpec.describe Avo::UI::SearchInputComponent, type: :component do
       expect(page).to have_css(".search-input__prefix svg")
     end
 
-    it "renders shortcut suffix when with_shortcut is true" do
-      render_inline(described_class.new(name: "q", with_shortcut: true))
+    it "renders shortcut suffix when shortcut is :cmd_k" do
+      render_inline(described_class.new(name: "q", shortcut: :cmd_k))
 
       expect(page).to have_css(".search-input__suffix")
       expect(page).to have_css("kbd", count: 2)
     end
 
-    it "does not render shortcut suffix when with_shortcut is false" do
-      render_inline(described_class.new(name: "q", with_shortcut: false))
+    it "renders shortcut suffix when shortcut is :slash" do
+      render_inline(described_class.new(name: "q", shortcut: :slash))
+
+      expect(page).to have_css(".search-input__suffix")
+      expect(page).to have_css("kbd", count: 1)
+    end
+
+    it "does not render shortcut suffix when shortcut is nil" do
+      render_inline(described_class.new(name: "q"))
 
       expect(page).not_to have_css(".search-input__suffix")
     end
