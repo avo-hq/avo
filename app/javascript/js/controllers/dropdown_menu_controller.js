@@ -18,25 +18,81 @@ export default class extends Controller {
     return this.menuTarget.hasAttribute('open')
   }
 
+  get focusableItems() {
+    return [...this.menuTarget.querySelectorAll('a, button')].filter(
+      (el) => !el.closest('[hidden]') && el.dataset.disabled !== 'true',
+    )
+  }
+
   clickOutside(e) {
     if (this.hasMenuTarget) {
       const isInExemptionContainer = this.hasExemptionContainersValue && this.exemptionContainerTargets.some((container) => container.contains(e.target))
 
       if (!isInExemptionContainer && this.isOpen) {
-        this.menuTarget.close()
+        this.close()
       }
     }
   }
 
   connect() {
     useClickOutside(this)
+    this.boundHandleKeydown = this.handleKeydown.bind(this)
+  }
+
+  disconnect() {
+    this.element.removeEventListener('keydown', this.boundHandleKeydown)
   }
 
   toggle() {
     if (this.isOpen) {
-      this.menuTarget.close()
+      this.close()
     } else {
-      this.menuTarget.show()
+      this.open()
+    }
+  }
+
+  open() {
+    this.menuTarget.show()
+    this.element.addEventListener('keydown', this.boundHandleKeydown)
+    document.body.classList.add('dropdown-open')
+    this.dispatch('open', { bubbles: true })
+    requestAnimationFrame(() => {
+      const items = this.focusableItems
+      if (items.length === 0) return
+
+      const activeItem = items.find((el) =>
+        [...el.classList].some((cls) => cls.endsWith('--active')) || el.getAttribute('aria-selected') === 'true',
+      )
+      ;(activeItem || items[0]).focus()
+    })
+  }
+
+  close() {
+    this.menuTarget.close()
+    this.element.removeEventListener('keydown', this.boundHandleKeydown)
+    document.body.classList.remove('dropdown-open')
+  }
+
+  handleKeydown(event) {
+    const items = this.focusableItems
+    if (items.length === 0) return
+
+    const currentIndex = items.indexOf(document.activeElement)
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault()
+        items[currentIndex < items.length - 1 ? currentIndex + 1 : 0].focus()
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        items[currentIndex > 0 ? currentIndex - 1 : items.length - 1].focus()
+        break
+      case 'Escape':
+        event.preventDefault()
+        this.close()
+        break
+      default:
     }
   }
 }

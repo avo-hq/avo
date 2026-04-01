@@ -23,6 +23,10 @@ class Avo::Resources::Items::ItemGroup
     post_initialize if respond_to?(:post_initialize)
   end
 
+  def dev_warnings?
+    @args.fetch(:dev_warnings, true) != false
+  end
+
   class Builder
     include Avo::Concerns::BorrowItemsHolder
 

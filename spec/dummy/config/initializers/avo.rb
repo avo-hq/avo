@@ -48,6 +48,12 @@ Avo.configure do |config|
     instant_click: true
   }
 
+  # config.resource_row_controls_config = {
+  #   placement: :right,
+  #   float: true,
+  #   show_on_hover: true
+  # }
+
   config.sidebar_toggle_visible = true
 
   ## == Branding ==

@@ -1,4 +1,6 @@
 class Avo::Resources::Project < Avo::BaseResource
+  self.hotkey = "p r"
+
   self.title = :name
   self.description = "This is the app's projects"
 

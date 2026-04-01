@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.3.0'
+          - '3.3'
         rails:
           - '8.0'
     runs-on: ubuntu-latest

@@ -1,0 +1,50 @@
+.hotkey__grid {
+  @apply p-6;
+
+  columns: 1;
+  column-gap: theme(spacing.8);
+
+  @media (min-width: theme(screens.sm)) {
+    columns: 2;
+  }
+}
+
+.hotkey__section {
+  @apply min-w-0 mb-10;
+
+  break-inside: avoid;
+}
+
+.hotkey__section-title {
+  @apply text-xs text-content-secondary uppercase tracking-wide mb-4 font-bold;
+}
+
+.hotkey__section-body {
+  @apply m-0 w-full list-none flex flex-col gap-2 p-0;
+}
+
+.hotkey__row {
+  @apply flex w-full items-start justify-between gap-4 border-b border-tertiary last:border-b-0 leading-6;
+}
+
+.hotkey__action {
+  /* @apply min-w-0 flex-1 text-base leading-6 text-content; */
+  /* @apply text-base leading-6 text-content font-bold; */
+  @apply text-sm;
+}
+
+.hotkey__keys {
+  @apply flex shrink-0 flex-wrap items-center justify-end gap-x-1.5 gap-y-1.5 pt-0.5;
+}
+
+.hotkey__or {
+  @apply px-1 text-base font-medium leading-6 text-content-secondary;
+}
+
+.hotkey__combo {
+  @apply inline-flex items-center gap-1.5;
+}
+
+.hotkey__key-separator {
+  @apply font-medium text-content-secondary;
+}

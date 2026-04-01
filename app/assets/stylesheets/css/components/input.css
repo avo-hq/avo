@@ -266,8 +266,17 @@
     );
   }
 
-  /* Default (Mac): ⌘ + K — narrower */
+  /* Single-key shortcut: "/" */
   .search-input__input.search-input__input--with-shortcut {
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) +
+      var(--input-icon-gap) * 2
+    );
+  }
+
+  /* Two-key shortcut: ⌘K (Mac) */
+  .search-input__input.search-input__input--with-two-key-shortcut {
     padding-inline-end: calc(
       var(--input-icon-offset) +
       var(--input-icon-size) * 2 +
@@ -275,8 +284,8 @@
     );
   }
 
-  /* PC: CTRL + K — wider */
-  body.os-pc .search-input__input.search-input__input--with-shortcut {
+  /* Two-key shortcut: Ctrl+K (PC — wider because "CTRL" is wider than "⌘") */
+  body.os-pc .search-input__input.search-input__input--with-two-key-shortcut {
     padding-inline-end: calc(
       var(--input-icon-offset) +
       var(--input-icon-size) * 3 +
@@ -290,12 +299,6 @@
     padding-inline-end: var(--input-icon-offset);
   }
 
-  .search-input__shortcut {
-    @apply text-xs font-semibold py-px px-1 border border-secondary rounded-sm bg-secondary min-w-5 flex items-center justify-center;
-
-    line-height: var(--input-leading);
-    box-shadow: var(--box-shadow-search-input-shortcut);
-  }
 
   /* ==========================================================================
     Range Input

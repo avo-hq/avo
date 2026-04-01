@@ -212,6 +212,57 @@ We use [appraisal](https://github.com/thoughtbot/appraisal) to run tests against
 
 Please read the [RELEASE.MD](./RELEASE.MD) for release schedules.
 
+# Keyboard Shortcuts
+
+Avo uses [`@github/hotkey`](https://github.com/github/hotkey) for keyboard shortcuts. There are two ways to register one.
+
+## Element hotkeys — shortcut triggers a click on an element
+
+Add `data-hotkey` to any element. When the key is pressed, the library clicks that element. Rails converts the `hotkey:` data key automatically.
+
+```ruby
+# Single key
+a_link edit_path, data: { hotkey: "e" }
+
+# Multiple alternatives (space-separated)
+a_button type: :submit, data: { hotkey: "Meta+Enter Control+Enter" }
+
+# Sequence (press each key in order)
+a_link new_path, data: { hotkey: "g n" }
+```
+
+The library handles typing-field awareness automatically — hotkeys won't fire when the user is typing in an input, textarea, or contenteditable.
+
+Hotkeys are installed on `turbo:load` and `turbo:frame-render` in `application.js`, so they work across Turbo navigations.
+
+## Global hotkeys — shortcut triggers a custom action (no element)
+
+For shortcuts that don't map to a clickable element (e.g. toggling a modal, reloading the page), add an entry to the appropriate registry in `app/javascript/js/global_hotkeys.js`.
+
+### Standard key or sequence → use `ELEMENT_HOTKEYS`
+
+```js
+const ELEMENT_HOTKEYS = [
+  { hotkey: 'r r r', handle: () => window.StreamActions.turbo_reload() },
+  { hotkey: 'g h',   handle: () => Turbo.visit('/') },
+]
+```
+
+Values follow `@github/hotkey` syntax: space-separated keys for sequences, `+` for modifier combos (`Meta+Enter`, `Control+k`).
+
+### Keys needing cross-browser normalization → use `DIRECT_HOTKEYS`
+
+Some keys (e.g. `?` / `Shift+/`) report different `event.key` values across keyboard layouts and browsers. Use a custom match function instead:
+
+```js
+const DIRECT_HOTKEYS = [
+  {
+    match: (e) => e.key === '?' || (e.shiftKey && e.code === 'Slash'),
+    handle: () => document.dispatchEvent(new Event('persistent-modal:toggle')),
+  },
+]
+```
+
 # Custom JS
 
 To test the custom Stimulus integration, we need to have some JS content injected into the dummy app. We also need not to have that content present in every Avo installation. That's why we ejected the `_head.html.erb` partial that loads the `avo_custom.js` file from the engine's `build` directory. The build directory is not committed to git, so we're all good on that. To have that file built and watched, we use a `cjs` (short for `custom-js`) process in the `Procfile.dev` (used only in development).

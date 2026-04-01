@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Avo::Resources::City < Avo::BaseResource
+  self.hotkey = "r c"
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
   }

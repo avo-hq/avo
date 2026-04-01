@@ -114,8 +114,9 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       title: control.title,
       data: {
-        tippy: control.title ? :tooltip : nil,
-        action: via_belongs_to ? "click->modal#close" : nil
+        hotkey: "b",
+        action: ("click->modal#close" if via_belongs_to),
+        tippy: control.title ? :tooltip : nil
       }.compact,
       icon: "tabler/outline/arrow-left" do
       control.label
@@ -124,6 +125,12 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def render_actions_list(actions_list)
     return unless can_see_the_actions_button?
+
+    # Actions button hotkey "a" only on index pages (non-nested).
+    # Pass as_row_control so the template can use hotkey_original for row controls,
+    # allowing the index-row-navigator controller to manage hotkey visibility.
+    as_row_control = @item.present?
+    hotkey = "a" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
 
     render Avo::ActionsComponent.new(
       actions: @actions,
@@ -138,7 +145,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon: actions_list.icon,
       icon_class: actions_list.icon_class,
       title: actions_list.title,
-      as_row_control: instance_of?(Avo::Index::ResourceControlsComponent)
+      as_row_control:,
+      hotkey: hotkey
     )
   end
 
@@ -150,6 +158,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
+    # Row hotkeys: detect if we're rendering in a row control and use data-hotkey-original
+    # so the index-row-navigator controller can manage the hotkey visibility.
+    # Same as edit button: prevents @github/hotkey from registering all row buttons at once.
+    is_row_control = row_controls_context?
+    hotkey_attr = is_row_control ? :hotkey_original : :hotkey
+    data_attrs = {hotkey_attr => "d"}
+
     a_link destroy_path,
       style: :text,
       color: :red,
@@ -157,12 +172,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: control.title,
       aria_label: control.title,
       data: {
+        **data_attrs,
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
-        "resource-id": @resource.record_param,
+        "resource-id": @resource.record_param
       } do
       control.label
     end
@@ -172,8 +188,9 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return unless can_see_the_save_button?
 
     data_attributes = {
+      hotkey: "Mod+Enter",
       turbo_confirm: @resource.confirm_on_save ? t("avo.are_you_sure") : nil
-    }
+    }.compact
 
     add_stimulus_attributes_for(@resource, data_attributes, "saveButton")
 
@@ -190,11 +207,23 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_edit_button(control)
     return unless can_see_the_edit_button?
 
+    # Row hotkeys are handled by index-row-navigator controller:
+    # - Use data-hotkey-original for index row controls (controller moves it to data-hotkey when row is focused)
+    # - Use data-hotkey directly for show page buttons (always available)
+    # This prevents the @github/hotkey library from registering all row buttons at once,
+    # which would cause the "last-registered wins" problem.
+    is_row_control = row_controls_context?
+    hotkey_attr = is_row_control ? :hotkey_original : :hotkey
+    data_attrs = {hotkey_attr => "e"}
+
     a_link edit_path,
       color: :accent,
       style: :primary,
       title: control.title,
-      data: {tippy: control.title ? :tooltip : nil},
+      data: {
+        **data_attrs,
+        tippy: control.title ? :tooltip : nil
+      }.compact,
       icon: "tabler/outline/edit" do
       control.label
     end
@@ -217,11 +246,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_create_button(control)
     return unless can_see_the_create_button?
 
+    hotkey = "c" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+
     a_link create_path,
       color: :accent,
       style: :primary,
       icon: "tabler/outline/plus",
       data: {
+        hotkey:,
         target: :create
       } do
       control.label
@@ -240,6 +272,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
       } do
       control.label
     end
+  end
+
+  def row_controls_context?
+    is_a?(Avo::Index::ResourceControlsComponent)
   end
 
   def render_link_to(link)

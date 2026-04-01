@@ -1,4 +1,4 @@
-<dialog id="turbo-confirm" class="mx-auto my-auto w-72">
+<dialog id="turbo-confirm" class="mx-auto my-auto w-72" data-controller="confirm-dialog" data-action="keydown->confirm-dialog#navigate">
   <form method="dialog">
     <div class="card relative">
       <button value="cancel" class="absolute top-3 inset-e-2.5 text-content-secondary bg-transparent hover:bg-tertiary hover:text-content rounded-lg text-sm size-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal" tabindex="3">
@@ -16,10 +16,10 @@
             </p>
           </div>
           <div class="flex flex-col gap-2 w-full p-4 pt-0 mt-6">
-            <button value="confirm" class="text-danger border border-danger hover:bg-danger/10 focus:ring-4 focus:outline-hidden focus:ring-danger/30 font-medium rounded-lg text-sm px-4 py-2 text-center cursor-pointer" tabindex="1" autofocus>
+            <button value="confirm" class="text-danger border border-danger hover:bg-danger/10 focus:ring-4 focus:outline-hidden focus:ring-danger/30 font-medium rounded-lg text-sm px-4 py-2 text-center cursor-pointer" tabindex="1" autofocus data-confirm-dialog-target="option">
               <%= t "avo.yes_confirm" %>
             </button>
-            <button value="cancel" class="px-4 py-2 text-sm font-medium text-content focus:outline-hidden bg-primary rounded-lg border border-tertiary hover:bg-secondary hover:text-content focus:z-10 focus:ring-4 focus:ring-tertiary cursor-pointer" tabindex="2">
+            <button value="cancel" class="px-4 py-2 text-sm font-medium text-content focus:outline-hidden bg-primary rounded-lg border border-tertiary hover:bg-secondary hover:text-content focus:z-10 focus:ring-4 focus:ring-tertiary cursor-pointer" tabindex="2" data-confirm-dialog-target="option">
               <%= t "avo.no_cancel" %>
             </button>
           </div>

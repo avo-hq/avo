@@ -619,7 +619,9 @@ module Avo
       return nil if @resource.class.send(action).blank?
 
       extra_args = {}
-      extra_args[:return_to] = params[:return_to] if params[:return_to].present?
+      if params[:return_to].present?
+        extra_args[:return_to] = e(params[:return_to])
+      end
 
       if @resource.class.send(action) == :index
         resources_path(resource: @resource, **extra_args)

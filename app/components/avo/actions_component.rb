@@ -28,6 +28,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :resource
   prop :view
   prop :host_component
+  prop :hotkey
 
   delegate_missing_to :@host_component
 

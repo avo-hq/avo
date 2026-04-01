@@ -1,8 +1,8 @@
-@layer base {
+@layer components {
   .resource-controls {
     .resource-control,
-    button,
-    a {
+    button:not(.button),
+    a:not(.button) {
       @apply text-content-secondary;
 
       &:hover {

@@ -151,6 +151,11 @@
       --btn-color-accent-content: var(--color-rose-600);
       --btn-color-accent-foreground: var(--color-white);
     }
+
+    /* The kbd element is taller than the button text, so we need to offset it */
+    &>span >kbd {
+      @apply -my-1;
+    }
   }
 
   .dark {

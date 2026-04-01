@@ -27,7 +27,7 @@
     <% end %>
   <% end %>
 <% elsif item.is_collaboration? %>
-  <%= render Avo::Collaborate::TimelineComponent.new(resource: @resource) %>
+  <%= render Avo::Collaboration::TimelineComponent.new(resource: @resource) %>
 <% elsif item.is_header? %>
   <% if @resource.cover.present? && @resource.cover.visible_in_current_view? %>
     <%= render Avo::CoverComponent.new cover: @resource.cover %>

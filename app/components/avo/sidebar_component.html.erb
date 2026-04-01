@@ -17,23 +17,27 @@
           <%= render custom_sidebar_component %>
         <% else %>
           <% if dashboards.present? %>
-            <div>
-              <div class="sidebar__nav-list">
-                <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
-                  <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: helpers.avo_dashboards.dashboard_path(dashboard) %>
-                <% end %>
-              </div>
+            <div class="sidebar-section">
+              <%= render Avo::Sidebar::HeadingComponent.new title: t('avo.dashboards'), icon: "tabler/outline/layout-dashboard" %>
+
+              <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
+                <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: helpers.avo_dashboards.dashboard_path(dashboard), hotkey: dashboard.try(:hotkey).presence %>
+              <% end %>
             </div>
           <% end %>
 
-          <div class="sidebar__nav-list">
+          <div class="sidebar-section">
+            <%= render Avo::Sidebar::HeadingComponent.new title: t('avo.resources'), icon: "tabler/outline/topology-star-3" %>
+
             <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
-              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon %>
+              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon, hotkey: resource.try(:hotkey).presence %>
             <% end %>
           </div>
 
           <% if tools.present? %>
-            <div class="sidebar__nav-list">
+            <div class="sidebar-section">
+              <%= render Avo::Sidebar::HeadingComponent.new title: t('avo.tools'), icon: "tabler/outline/tool" %>
+
               <% tools.each do |partial| %>
                 <%= render partial: "/avo/sidebar/items/#{partial}" %>
               <% end %>
@@ -41,7 +45,9 @@
           <% end %>
 
           <% if pages.present? %>
-            <div class="sidebar__nav-list">
+            <div class="sidebar-section">
+              <%= render Avo::Sidebar::HeadingComponent.new title: t('avo.pages'), icon: "tabler/outline/forms" %>
+
               <% pages.each do |page| %>
                 <%= render Avo::Sidebar::LinkComponent.new label: page.get_navigation_label, path: page.path %>
               <% end %>
@@ -49,7 +55,7 @@
           <% end %>
 
           <% if Avo::MediaLibrary.configuration.visible? %>
-            <%= render Avo::Sidebar::LinkComponent.new label: 'Media Library', path: helpers.avo.media_library_index_path, active: :exclusive %>
+            <%= render Avo::Sidebar::LinkComponent.new label: 'Media Library', path: helpers.avo.media_library_index_path, active: :exclusive, icon: "tabler/outline/photo-star" %>
           <% end %>
         <% end %>
 

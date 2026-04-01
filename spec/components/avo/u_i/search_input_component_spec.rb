@@ -36,7 +36,7 @@ RSpec.describe Avo::UI::SearchInputComponent, type: :component do
       render_inline(described_class.new(name: "q", with_shortcut: true))
 
       expect(page).to have_css(".search-input__suffix")
-      expect(page).to have_css(".search-input__shortcut", count: 2)
+      expect(page).to have_css("kbd", count: 2)
     end
 
     it "does not render shortcut suffix when with_shortcut is false" do

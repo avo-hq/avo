@@ -2,44 +2,36 @@
 import 'core-js/stable'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'chartkick/chart.js/chart.esm'
-import 'mapkick/bundle'
+import Mapkick from 'mapkick'
+import mapboxgl from 'mapbox-gl'
 import 'regenerator-runtime/runtime'
 import * as ActiveStorage from '@rails/activestorage'
-import * as Mousetrap from 'mousetrap'
 import { Turbo } from '@hotwired/turbo-rails'
+import { install } from '@github/hotkey'
 import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
+import { attachHotkeyFeedback, installGlobalHotkeys } from './js/global_hotkeys'
 
 import './js/active-storage'
 import './js/controllers'
 import './js/custom-confirm'
 import './js/custom-stream-actions'
 
+function installHotkeys(root = document) {
+  root.querySelectorAll('[data-hotkey]').forEach((el) => {
+    install(el)
+    attachHotkeyFeedback(el)
+  })
+}
+
+Mapkick.use(mapboxgl)
+
 window.Avo.localStorage = new LocalStorageService()
 
 window.Turbolinks = Turbo
 
-let scrollTop = null
-Mousetrap.bind('r r r', () => {
-  // Capture scroll position
-  scrollTop = document.scrollingElement.scrollTop
-
-  window.StreamActions.turbo_reload()
-})
-
-// Add the shift-pressed class to the body when the shift key is pressed
-document.addEventListener('keydown', (event) => {
-  if (event.shiftKey) {
-    document.body.classList.add('shift-pressed')
-  }
-})
-// Remove the shift-pressed class from the body when the shift key is released
-document.addEventListener('keyup', (event) => {
-  if (!event.shiftKey) {
-    document.body.classList.remove('shift-pressed')
-  }
-})
+installGlobalHotkeys()
 
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
@@ -79,16 +71,12 @@ document.addEventListener('turbo:before-stream-render', () => {
   }, 1)
 })
 
+document.addEventListener('turbo:frame-render', (e) => installHotkeys(e.target))
+
 document.addEventListener('turbo:load', () => {
+  installHotkeys()
   initTippy()
 
-  // Restore scroll position after r r r turbo reload
-  if (scrollTop) {
-    setTimeout(() => {
-      document.scrollingElement.scrollTo(0, scrollTop)
-      scrollTop = 0
-    }, 50)
-  }
   setTimeout(() => {
     document.body.classList.remove('turbo-loading')
   }, 1)
