@@ -12,7 +12,7 @@
           <% filter.options.each do |value, label| %>
             <label class="filters-boolean-option">
               <%= check_box_tag filter.id, value, filter.selected_value(value.to_s, @applied_filters),
-                id: "avo_filters_#{filter.id.parameterize.underscore}_#{value}",
+                id: "avo_filters_#{filter.id.parameterize.underscore}",
                 'data-filter-class': filter.class,
                 'data-boolean-filter-target': 'option',
                 'data-action': 'input->boolean-filter#changeFilter'
