@@ -329,11 +329,6 @@ jobs:
         bundler: default
         ruby-version: ${{ matrix.ruby }}
 
-    - name: Prepare database
-      run: |
-        bin/rails db:create
-        bin/rails db:migrate
-
     - name: Run tests
       id: run_tests
       run: bundle exec rspec spec/system/avo/i18n_spec.rb
