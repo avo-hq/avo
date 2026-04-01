@@ -138,6 +138,9 @@ jobs:
           - name: group_2
             display: Group 2
             rspec_paths: spec/system/avo/group_2
+          - name: group_3
+            display: Group 3
+            rspec_paths: spec/system/avo/group_3
     runs-on: ubuntu-latest
 
     env:
