@@ -5,6 +5,7 @@ on:
 
 jobs:
   danger:
+    name: danger/danger
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
