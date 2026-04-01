@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get "hey", to: "home#index"
   get "pagy_outside_avo", to: "pagy_outside_avo#index"
+  post "csp-violation-report-endpoint", to: "csp_reports#create"
 
   resources :posts
 

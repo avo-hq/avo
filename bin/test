@@ -3,11 +3,14 @@
 export RAILS_ENV="test"
 export NODE_ENV="test"
 
+# Prepare parallel test DBs (safe to run repeatedly)
+bundle exec rake parallel:create parallel:migrate
+
 # Run unit tests
 if [[ -z "$1" ]] || [[ "$1" == "unit" ]]; then
-  bundle exec rspec ./spec --tag type:feature
-  bundle exec rspec ./spec --tag type:controller
-  bundle exec rspec ./spec --tag type:component
+  SPEC_OPTS="--tag type:feature" bundle exec parallel_rspec ./spec
+  SPEC_OPTS="--tag type:controller" bundle exec parallel_rspec ./spec
+  SPEC_OPTS="--tag type:component" bundle exec parallel_rspec ./spec
 fi;
 
 # Run system tests
@@ -15,10 +18,10 @@ if [[ -z "$1" ]] || [[ "$1" == "system" ]]; then
   yarn build:js
   yarn build:custom-js
   yarn build:css
-  bundle exec rspec ./spec --tag type:system
+  SPEC_OPTS="--tag type:system" bundle exec parallel_rspec ./spec
 fi;
 
 # Run open-ended test paths
 if [[ "$@" ]] && [[ "$1" != "unit" ]] && [[ "$1" != "system" ]]; then
-  bundle exec rspec $@
+  bundle exec parallel_rspec $@
 fi;

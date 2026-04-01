@@ -14,7 +14,11 @@ module TestHelpers
       include_context "has_admin_user"
 
       before do
-        sign_in admin
+        if respond_to?(:login_as)
+          login_as admin, scope: :user
+        else
+          sign_in admin
+        end
       end
     end
   end

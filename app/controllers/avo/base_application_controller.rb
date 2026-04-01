@@ -327,7 +327,6 @@ module Avo
 
     def decode_params
       if params[:return_to].present?
-        params[:raw_return_to] = params[:return_to]
         params[:return_to] = d(params[:return_to])
       end
     end

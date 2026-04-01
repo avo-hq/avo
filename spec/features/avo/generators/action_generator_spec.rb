@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "action generator", type: :feature do
+RSpec.feature "action generator", type: :feature, acquire_lock: :generator do
   it "generates the files" do
     file = Rails.root.join("app", "avo", "actions", "remove_user.rb").to_s
 

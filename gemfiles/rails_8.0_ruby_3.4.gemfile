@@ -34,7 +34,7 @@ gem "prefixed_ids"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "csv"
-gem "view_component", "4.0.0"
+gem "view_component", "3.23.2"
 gem "aws-sdk-s3", require: false
 gem "net-smtp", require: false
 gem "avo-money_field"
@@ -68,6 +68,7 @@ group :test do
   gem "rspec-rails", "~> 6.0", ">= 6.0.3"
   gem "rspec-retry", "~> 0.6.2"
   gem "rails-controller-testing"
+  gem "parallel_tests"
   gem "capybara"
   gem "cuprite"
   gem "fuubar"
