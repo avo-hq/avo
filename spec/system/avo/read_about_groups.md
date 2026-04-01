@@ -16,7 +16,7 @@ To avoid splitting “feature areas” across shards, we keep the main feature s
 Run one shard locally from `gems/avo/`:
 
 ```bash
-bundle exec rake parallel:drop parallel:create parallel:migrate && bundle exec parallel_rspec spec/system/avo/group_1 spec/system/avo/group_2 --tag=~i18n
+bundle exec rake parallel:drop parallel:create parallel:migrate && bundle exec parallel_rspec spec/system/avo/group_1 spec/system/avo/group_2
 ```
 
 Adding new system specs:

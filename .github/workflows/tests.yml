@@ -196,7 +196,7 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        run: bundle exec parallel_rspec ${{ matrix.spec_group.rspec_paths }} --tag=~i18n
+        run: bundle exec parallel_rspec ${{ matrix.spec_group.rspec_paths }}
 
       - uses: actions/upload-artifact@v4
         with:
