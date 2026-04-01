@@ -134,16 +134,10 @@ jobs:
         spec_group:
           - name: group_1
             display: Group 1
-            rspec_path: spec/system/avo/group_1
+            rspec_paths: spec/system/avo/group_1
           - name: group_2
             display: Group 2
-            rspec_path: spec/system/avo/group_2
-          - name: group_3
-            display: Group 3
-            rspec_path: spec/system/avo/group_3
-          - name: group_4
-            display: Group 4
-            rspec_path: spec/system/avo/group_4
+            rspec_paths: spec/system/avo/group_2
     runs-on: ubuntu-latest
 
     env:
@@ -169,8 +163,7 @@ jobs:
 
       - name: Prepare database
         run: |
-          bin/rails db:create
-          bin/rails db:migrate
+          bundle exec rake parallel:create parallel:migrate
 
       - name: Get yarn cache directory path
         id: test-yarn-cache-dir-path
@@ -203,7 +196,7 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        run: bundle exec rspec ${{ matrix.spec_group.rspec_path }} --tag=~i18n
+        run: bundle exec parallel_rspec ${{ matrix.spec_group.rspec_paths }} --tag=~i18n
 
       - uses: actions/upload-artifact@v4
         with:

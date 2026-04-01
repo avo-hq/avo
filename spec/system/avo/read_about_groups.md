@@ -1,12 +1,10 @@
 # System spec groups (CI sharding)
 
-We split system specs into 4 `spec_group`s to reduce wall-clock CI time by running them in parallel.
+We split system specs into CI `spec_group`s to reduce wall-clock CI time by running them in parallel.
 
 Each group is a directory under `spec/system/avo/`:
 - `group_1/`
 - `group_2/`
-- `group_3/`
-- `group_4/`
 
 The distribution was balanced by **approximate example count** (we counted `it "..."` per file and assigned files to keep groups even).
 
@@ -18,7 +16,7 @@ To avoid splitting “feature areas” across shards, we keep the main feature s
 Run one shard locally from `gems/avo/`:
 
 ```bash
-bundle exec rspec spec/system/avo/group_1 --tag=~i18n
+bundle exec rake parallel:drop parallel:create parallel:migrate && bundle exec parallel_rspec spec/system/avo/group_1 spec/system/avo/group_2 --tag=~i18n
 ```
 
 Adding new system specs:
