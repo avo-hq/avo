@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "cards generator", type: :feature do
+RSpec.feature "cards generator", type: :feature, acquire_lock: :generator do
   describe "partial" do
     it "generates the files" do
       files = [

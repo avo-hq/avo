@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "locales generator", type: :feature do
+RSpec.feature "locales generator", type: :feature, acquire_lock: :generator do
   it "generates the files" do
     # Define locales to backup
     backup_locales = %w[en pt]
