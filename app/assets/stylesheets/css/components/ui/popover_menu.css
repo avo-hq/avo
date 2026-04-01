@@ -2,10 +2,6 @@
   @apply inline-flex;
 }
 
-.popover-menu__trigger {
-  @apply inline-flex;
-}
-
 /* UA default for [popover]: position:fixed; inset:0; margin:auto; border:solid; padding:.25em
    position-anchor:auto uses the implicit anchor from popovertarget/id — no inline anchor-name needed.
    flip-block flips the keyword (bottom→top), not a resolved pixel value — correct near viewport bottom. */
