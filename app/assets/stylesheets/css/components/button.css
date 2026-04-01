@@ -1,4 +1,14 @@
 @layer base {
+  .button-icon {
+    @apply inline-flex cursor-pointer;
+
+    &:focus-visible {
+      @apply outline-none rounded-lg;
+
+      box-shadow: var(--box-shadow-focus);
+    }
+  }
+
   .button {
     @apply inline-flex justify-center grow-0 items-center font-medium leading-none fill-current whitespace-nowrap transition-transform duration-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 gap-1.5 border border-transparent rounded-lg;
 
@@ -13,7 +23,7 @@
     &:focus-visible {
       @apply outline-none rounded-lg;
 
-      box-shadow: 0 0 0 1px var(--color-primary), 0 0 0 3px var(--color-info-foreground);
+      box-shadow: var(--box-shadow-focus);
     }
 
 

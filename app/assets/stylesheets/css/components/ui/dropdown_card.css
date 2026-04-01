@@ -1,0 +1,8 @@
+.dropdown-card {
+  @apply overflow-hidden rounded-lg border border-tertiary bg-secondary p-0.5;
+  box-shadow: var(--box-shadow-dropdown-card);
+}
+
+.dropdown-card__body {
+  @apply overflow-hidden rounded-lg border border-tertiary bg-primary;
+}

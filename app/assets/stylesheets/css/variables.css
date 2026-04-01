@@ -27,9 +27,9 @@
   --color-danger-content: var(--color-red-600);
   --color-danger-foreground: var(--color-red-400);
 
-  --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
-
+  --shadow-content: 0px 8px 16px 0px rgba(0, 0, 0, 0.08);
   --box-shadow-card: 0px 8px 16px 0px rgba(0, 0, 0, 0.04);
+  --box-shadow-dropdown-card: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
   --box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
   --box-shadow-grid-card: 0 -1.5px 0 1px var(--color-secondary) inset, 0 0.8px 0 1.3px var(--color-primary) inset;
 
