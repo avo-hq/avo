@@ -6,52 +6,58 @@ class Avo::AlertComponent < Avo::BaseComponent
   prop :type, kind: :positional
   prop :message, kind: :positional
   prop :timeout
+  prop :description
 
   def icon
-    return "tabler/filled/alert-circle" if is_error?
-    return "tabler/filled/alert-triangle" if is_warning?
-    return "tabler/filled/alert-circle" if is_info?
-    return "tabler/filled/circle-check" if is_success?
-
-    "check-circle"
+    case variant
+    when :danger
+      "tabler/outline/circle-x"
+    when :warning
+      "tabler/outline/exclamation-circle"
+    when :info
+      "tabler/outline/info-circle"
+    when :success
+      "tabler/outline/circle-check"
+    else
+      "tabler/outline/circle"
+    end
   end
 
-  def classes
-    return "hidden" if is_empty?
+  def variant
+    @variant ||= begin
+      return :danger if is_error?
+      return :success if is_success?
+      return :warning if is_warning?
+      return :info if is_info?
 
-    result = "max-w-lg w-full shadow-lg px-4 py-3 rounded-sm relative border text-white pointer-events-auto"
-
-    result += if is_error?
-      " bg-red-400 border-red-600"
-    elsif is_success?
-      " bg-green-500 border-green-600"
-    elsif is_warning?
-      " bg-orange-400 border-orange-600"
-    else
-      " bg-blue-400 border-blue-600"
+      :default
     end
-
-    result
   end
 
   def is_error?
-    @type.to_sym == :error || @type.to_sym == :alert
+    normalized_type == :error || normalized_type == :alert
   end
 
   def is_success?
-    @type.to_sym == :success
+    normalized_type == :success
   end
 
   def is_info?
-    @type.to_sym == :notice || @type.to_sym == :info
+    normalized_type == :notice || normalized_type == :info
   end
 
   def is_warning?
-    @type.to_sym == :warning
+    normalized_type == :warning
   end
 
   def is_empty?
     @message.nil?
+  end
+
+  private
+
+  def normalized_type
+    @normalized_type ||= @type.to_sym
   end
 
   def timeout
