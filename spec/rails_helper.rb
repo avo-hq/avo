@@ -76,7 +76,7 @@ end
 Capybara.save_path = if Rails::VERSION::MAJOR == 6 && Rails::VERSION::MINOR == 1
   DownloadHelpers::PATH
 else
-  "tmp/screenshots"
+  "tmp/screenshots#{ENV.fetch("TEST_ENV_NUMBER", "")}"
 end
 
 Capybara.default_max_wait_time = 5
@@ -199,6 +199,7 @@ require "support/factory_bot"
 require "support/database_cleaner"
 require "support/js_error_detector"
 require "support/devise"
+require "support/parallel_fs_lock"
 require "support/shared_contexts"
 require "support/timezone"
 

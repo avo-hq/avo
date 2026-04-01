@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "dashboard generator", type: :feature do
+RSpec.feature "dashboard generator", type: :feature, acquire_lock: :generator do
   it "generates the files" do
     file = Rails.root.join("app", "avo", "dashboards", "cats.rb").to_s
 

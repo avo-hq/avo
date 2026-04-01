@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "resource generator", type: :feature do
+RSpec.feature "resource generator", type: :feature, acquire_lock: :generator do
   it "generates the files" do
     files = [
       Rails.root.join("app", "avo", "resources", "kangaroo.rb").to_s,
