@@ -5,7 +5,12 @@ rescue LoadError
 end
 
 begin
-  require "parallel_tests/tasks"
+  # Only load `parallel_tests` rake tasks when we actually invoke them.
+  # Loading them for regular Rails rake tasks (eg `bin/rails db:create`) can break
+  # in CI because parallel_tests inspects database config before the Rails app is initialized.
+  if ARGV.any? { |arg| arg.start_with?("parallel:") }
+    require "parallel_tests/tasks"
+  end
 rescue LoadError
   # parallel_tests is an optional dev/test dependency
 end

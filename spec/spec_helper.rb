@@ -6,6 +6,10 @@ if ENV["COVERAGE"]
     add_filter "/spec/support/"
     add_filter "/spec/rails_helper"
     add_filter "/spec/spec_helper"
+    # Generator feature specs create/delete files under the dummy app during the run.
+    # Those files are not part of the gem itself and can disappear before SimpleCov formats,
+    # which causes intermittent "No such file or directory" coverage failures in CI.
+    add_filter "/spec/dummy/app/"
     enable_coverage(:branch)
   end
 
