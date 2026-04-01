@@ -1,7 +1,5 @@
 module Avo
   class AssetManager
-    include ActionView::Helpers::AssetTagHelper
-
     attr_reader :stimulus_controllers
 
     def initialize

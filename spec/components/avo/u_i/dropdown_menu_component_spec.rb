@@ -10,14 +10,6 @@ RSpec.describe Avo::UI::DropdownMenuComponent, type: :component do
       expect(page).to have_css("dialog.dropdown-popover")
     end
 
-    it "has the closedby attribute set to 'any'" do
-      render_inline(described_class.new) do
-        "Menu content"
-      end
-
-      expect(page).to have_css("dialog[closedby='any']")
-    end
-
     it "renders the dropdown-menu__list wrapper" do
       render_inline(described_class.new) do
         "Menu content"

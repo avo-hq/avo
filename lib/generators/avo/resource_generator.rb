@@ -356,7 +356,7 @@ module Generators
           plan: "tabler/outline/list",
           address: "tabler/outline/map-pin",
           location: "tabler/outline/map-pin",
-          country: "tabler/outline/world",
+          country: "tabler/outline/world-map",
           city: "tabler/outline/building-community",
           account: "tabler/outline/user-circle",
         }.freeze

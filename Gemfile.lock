@@ -7,11 +7,11 @@ PATH
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
-      avo-icons (>= 0.1.1)
+      avo-icons (>= 0.1.2)
       docile
       meta-tags
       pagy (>= 43.0)
-      prop_initializer (>= 0.2.0)
+      prop_initializer (>= 0.3.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
       view_component (>= 3.7.0)
@@ -177,7 +177,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (4.0.1)
+    bigdecimal (4.1.0)
     bindex (0.8.1)
     bootsnap (1.18.6)
       msgpack (~> 1.2)
@@ -515,7 +515,7 @@ GEM
     prettyprint (0.2.0)
     prism (1.4.0)
     process_executer (1.3.0)
-    prop_initializer (0.2.0)
+    prop_initializer (0.3.0)
       zeitwerk (>= 2.6.18)
     propshaft (1.1.0)
       actionpack (>= 7.0.0)

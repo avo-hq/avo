@@ -79,7 +79,7 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def actions
-    action Avo::Actions::ToggleInactive, icon: "tabler/outline/world"
+    action Avo::Actions::ToggleInactive, icon: "tabler/outline/world-map"
     action Avo::Actions::ToggleAdmin
     divider label: "Other actions"
     action Avo::Actions::Sub::DummyAction
