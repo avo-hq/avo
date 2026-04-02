@@ -40,10 +40,10 @@ jobs:
         bin/rails generate avo:install
         bundle exec rake avo:build-assets
 
-    - name: Add the TailwindCSS integration
+    - name: Add tailwindcss-rails and custom tool
       run: |
-        yarn init --yes
-        bin/rails generate avo:tailwindcss:install
+        bundle add tailwindcss-rails
+        bundle install
         bin/rails generate avo:tool custom_tool
 
     - name: Add custom CSS

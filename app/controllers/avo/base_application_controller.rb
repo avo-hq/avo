@@ -296,14 +296,8 @@ module Avo
     end
 
     def set_stylesheet_assets_path
-      # TODO: handle this differently maybe?
-      # We'll definitely have to change it on TW4
-      # Prefer the user's tailwind config if it exists, otherwise use the default one from Avo
-      @stylesheet_assets_path = if Rails.root.join("config", "avo", "tailwind.config.js").exist?
-        "avo.tailwind"
-      else
-        "avo/application"
-      end
+      @stylesheet_assets_path = "avo/application"
+      @custom_stylesheet_path = "avo.tailwind" if Avo::TailwindBuilder.custom_build_exists?
     end
 
     def choose_layout
