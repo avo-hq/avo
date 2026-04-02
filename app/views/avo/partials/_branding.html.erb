@@ -10,9 +10,9 @@
 <meta
   name="avo-branding"
   data-mode="<%= b.effective_mode %>"
-  data-locked-neutral="<%= b.neutral_css_class %>"
-  data-locked-accent="<%= b.accent_css_class %>"
-  data-default-scheme="<%= b.default_scheme %>"
+  data-locked-neutral="<%= b.neutral_css_class if b.neutral_locked? %>"
+  data-locked-accent="<%= b.accent_css_class if b.accent_locked? %>"
+  data-locked-scheme="<%= b.scheme if b.scheme_locked? %>"
 >
 
 <%= favicon_link_tag b.favicon %>

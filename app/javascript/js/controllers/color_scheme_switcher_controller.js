@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
+  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption', 'resetButton']
 
   static values = {
     mode: { type: String, default: 'static' },
@@ -10,22 +10,21 @@ export default class extends Controller {
   }
 
   connect() {
-    // Read from cookies (cookie is source of truth)
-    const cookieScheme = Cookies.get('color_scheme')
-    const cookieTheme = Cookies.get('theme')
-    const cookieAccent = Cookies.get('accent_color')
+    const branding = document.querySelector('meta[name="avo-branding"]')?.dataset || {}
+    this.lockedNeutral = this.modeValue === 'static' && branding.lockedNeutral ? branding.lockedNeutral : null
+    this.lockedAccent = this.modeValue === 'static' && branding.lockedAccent ? branding.lockedAccent : null
+    this.lockedScheme = branding.lockedScheme || null
 
-    // Use cookie value if it exists, otherwise use default
-    this.currentSchemeValue = cookieScheme || 'auto'
-    this.currentThemeValue = cookieTheme || 'brand'
-    this.currentAccentValue = cookieAccent || 'neutral'
+    // Read current state from server-rendered <html> classes
+    this.currentSchemeValue = this.readCurrentScheme()
+    this.currentThemeValue = this.readCurrentNeutral()
+    this.currentAccentValue = this.readCurrentAccent()
 
-    this.applyScheme()
-    this.applyTheme()
-    this.applyAccent()
+    // Sync UI controls to match current state (no re-apply needed — classes are already on <html>)
     this.updateThemeLabel()
     this.updateActiveThemeOption()
     this.updateActiveAccentOption()
+    this.updateResetButton()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -37,6 +36,31 @@ export default class extends Controller {
     this.mediaQuery.addEventListener('change', this.mediaQueryListener)
   }
 
+  readCurrentScheme() {
+    const root = document.documentElement
+    if (root.classList.contains('scheme-dark')) return 'dark'
+    if (root.classList.contains('scheme-light')) return 'light'
+    return 'auto'
+  }
+
+  readCurrentNeutral() {
+    const root = document.documentElement
+    const neutrals = ['slate', 'stone', 'gray', 'zinc', 'neutral', 'taupe', 'mauve', 'mist', 'olive']
+    for (const name of neutrals) {
+      if (root.classList.contains(`theme-neutral-${name}`)) return name
+    }
+    return 'brand'
+  }
+
+  readCurrentAccent() {
+    const root = document.documentElement
+    const accents = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
+    for (const name of accents) {
+      if (root.classList.contains(`theme-accent-${name}`)) return name
+    }
+    return 'neutral'
+  }
+
   disconnect() {
     if (this.mediaQuery && this.mediaQueryListener) {
       this.mediaQuery.removeEventListener('change', this.mediaQueryListener)
@@ -45,6 +69,8 @@ export default class extends Controller {
 
   setScheme(event) {
     event.preventDefault()
+    if (this.lockedScheme) return
+
     const { scheme } = event.currentTarget.dataset
 
     if (!scheme || !['auto', 'light', 'dark'].includes(scheme)) return
@@ -52,10 +78,13 @@ export default class extends Controller {
     this.currentSchemeValue = scheme
     this.saveScheme()
     this.applyScheme()
+    this.updateResetButton()
   }
 
   setTheme(event) {
     event.preventDefault()
+    if (this.lockedNeutral) return
+
     const { theme } = event.currentTarget.dataset
 
     if (!theme || !['brand', 'slate', 'stone', 'gray', 'zinc', 'neutral', 'taupe', 'mauve', 'mist', 'olive'].includes(theme)) return
@@ -65,6 +94,7 @@ export default class extends Controller {
     this.applyTheme()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
+    this.updateResetButton()
   }
 
   previewTheme(event) {
@@ -82,6 +112,8 @@ export default class extends Controller {
 
   setAccent(event) {
     event.preventDefault()
+    if (this.lockedAccent) return
+
     const { accent } = event.currentTarget.dataset
 
     if (!accent) return
@@ -89,6 +121,7 @@ export default class extends Controller {
     this.currentAccentValue = accent
     this.saveAccent()
     this.applyAccent()
+    this.updateResetButton()
   }
 
   previewAccent(event) {
@@ -102,6 +135,37 @@ export default class extends Controller {
   revertAccent() {
     this.applyAccent()
     this.updateActiveAccentOption()
+  }
+
+  resetSettings() {
+    Cookies.remove('color_scheme')
+    Cookies.remove('theme')
+    Cookies.remove('accent_color')
+
+    this.currentSchemeValue = 'auto'
+    this.currentThemeValue = 'brand'
+    this.currentAccentValue = 'neutral'
+
+    this.applyScheme()
+    this.applyTheme()
+    this.applyAccent()
+    this.updateThemeLabel()
+    this.updateActiveThemeOption()
+    this.updateActiveAccentOption()
+    this.updateResetButton()
+    this.persistToDatabase()
+  }
+
+  hasCustomSettings() {
+    return this.currentSchemeValue !== 'auto'
+      || this.currentThemeValue !== 'brand'
+      || this.currentAccentValue !== 'neutral'
+  }
+
+  updateResetButton() {
+    if (!this.hasResetButtonTarget) return
+
+    this.resetButtonTarget.hidden = !this.hasCustomSettings()
   }
 
   saveScheme() {
@@ -181,10 +245,10 @@ export default class extends Controller {
   }
 
   applyThemeClass(theme) {
-    document.documentElement.classList.remove('theme-slate', 'theme-stone', 'theme-gray', 'theme-zinc', 'theme-neutral', 'theme-taupe', 'theme-mauve', 'theme-mist', 'theme-olive')
+    document.documentElement.classList.remove('theme-neutral-slate', 'theme-neutral-stone', 'theme-neutral-gray', 'theme-neutral-zinc', 'theme-neutral-neutral', 'theme-neutral-taupe', 'theme-neutral-mauve', 'theme-neutral-mist', 'theme-neutral-olive')
 
     if (theme !== 'brand') {
-      document.documentElement.classList.add(`theme-${theme}`)
+      document.documentElement.classList.add(`theme-neutral-${theme}`)
     }
   }
 
@@ -210,11 +274,11 @@ export default class extends Controller {
   applyAccentClass(accent) {
     const accentColors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
     accentColors.forEach((color) => {
-      document.documentElement.classList.remove(`accent-${color}`)
+      document.documentElement.classList.remove(`theme-accent-${color}`)
     })
 
     if (accent !== 'neutral') {
-      document.documentElement.classList.add(`accent-${accent}`)
+      document.documentElement.classList.add(`theme-accent-${accent}`)
     }
   }
 

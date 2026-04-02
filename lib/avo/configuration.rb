@@ -246,6 +246,10 @@ module Avo
       @branding ||= Avo::Configuration::Branding.new
     end
 
+    def branding=(options = {})
+      @branding = Avo::Configuration::Branding.new(options)
+    end
+
     def app_name
       Avo::ExecutionContext.new(target: @app_name).handle
     end

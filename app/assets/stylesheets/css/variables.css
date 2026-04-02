@@ -71,7 +71,7 @@
   --color-accent-foreground: var(--color-avo-neutral-950);
 }
 
-.theme-slate {
+.theme-neutral-slate {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-slate-50);
   --color-avo-neutral-100: var(--color-slate-100);
@@ -85,7 +85,7 @@
   --color-avo-neutral-900: var(--color-slate-900);
   --color-avo-neutral-950: var(--color-slate-950);
 }
-.theme-stone {
+.theme-neutral-stone {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-stone-50);
   --color-avo-neutral-100: var(--color-stone-100);
@@ -99,7 +99,7 @@
   --color-avo-neutral-900: var(--color-stone-900);
   --color-avo-neutral-950: var(--color-stone-950);
 }
-.theme-taupe {
+.theme-neutral-taupe {
   --color-avo-neutral-25: oklch(98.5% 0.004 70);
   --color-avo-neutral-50: var(--color-taupe-50);
   --color-avo-neutral-100: var(--color-taupe-100);
@@ -113,7 +113,7 @@
   --color-avo-neutral-900: var(--color-taupe-900);
   --color-avo-neutral-950: var(--color-taupe-950);
 }
-.theme-mauve {
+.theme-neutral-mauve {
   --color-avo-neutral-25: oklch(98.5% 0.005 310);
   --color-avo-neutral-50: var(--color-mauve-50);
   --color-avo-neutral-100: var(--color-mauve-100);
@@ -127,7 +127,7 @@
   --color-avo-neutral-900: var(--color-mauve-900);
   --color-avo-neutral-950: var(--color-mauve-950);
 }
-.theme-mist {
+.theme-neutral-mist {
   --color-avo-neutral-25: oklch(98.5% 0.004 240);
   --color-avo-neutral-50: var(--color-mist-50);
   --color-avo-neutral-100: var(--color-mist-100);
@@ -141,7 +141,7 @@
   --color-avo-neutral-900: var(--color-mist-900);
   --color-avo-neutral-950: var(--color-mist-950);
 }
-.theme-gray {
+.theme-neutral-gray {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-gray-50);
   --color-avo-neutral-100: var(--color-gray-100);
@@ -155,7 +155,7 @@
   --color-avo-neutral-900: var(--color-gray-900);
   --color-avo-neutral-950: var(--color-gray-950);
 }
-.theme-zinc {
+.theme-neutral-zinc {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-zinc-50);
   --color-avo-neutral-100: var(--color-zinc-100);
@@ -169,7 +169,7 @@
   --color-avo-neutral-900: var(--color-zinc-900);
   --color-avo-neutral-950: var(--color-zinc-950);
 }
-.theme-neutral {
+.theme-neutral-neutral {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-neutral-50);
   --color-avo-neutral-100: var(--color-neutral-100);
@@ -183,7 +183,7 @@
   --color-avo-neutral-900: var(--color-neutral-900);
   --color-avo-neutral-950: var(--color-neutral-950);
 }
-.theme-olive {
+.theme-neutral-olive {
   --color-avo-neutral-25: oklch(98.5% 0.005 140);
   --color-avo-neutral-50: var(--color-olive-50);
   --color-avo-neutral-100: var(--color-olive-100);
@@ -198,119 +198,119 @@
   --color-avo-neutral-950: var(--color-olive-950);
 }
 
-.accent-red {
+.theme-accent-red {
   /* themes - Red */
   --color-accent: var(--color-red-500);
   --color-accent-content: var(--color-red-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-orange {
+.theme-accent-orange {
   /* themes - Orange */
   --color-accent: var(--color-orange-500);
   --color-accent-content: var(--color-orange-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-amber {
+.theme-accent-amber {
   /* themes - Amber */
   --color-accent: var(--color-amber-500);
   --color-accent-content: var(--color-amber-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-yellow {
+.theme-accent-yellow {
   /* themes - Yellow */
   --color-accent: var(--color-yellow-500);
   --color-accent-content: var(--color-yellow-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-lime {
+.theme-accent-lime {
   /* themes - Lime */
   --color-accent: var(--color-lime-500);
   --color-accent-content: var(--color-lime-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-green {
+.theme-accent-green {
   /* themes - Green */
   --color-accent: var(--color-green-500);
   --color-accent-content: var(--color-green-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-emerald {
+.theme-accent-emerald {
   /* themes - Emerald */
   --color-accent: var(--color-emerald-500);
   --color-accent-content: var(--color-emerald-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-teal {
+.theme-accent-teal {
   /* themes - Teal */
   --color-accent: var(--color-teal-500);
   --color-accent-content: var(--color-teal-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-cyan {
+.theme-accent-cyan {
   /* themes - Cyan */
   --color-accent: var(--color-cyan-500);
   --color-accent-content: var(--color-cyan-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-sky {
+.theme-accent-sky {
   /* themes - Sky */
   --color-accent: var(--color-sky-500);
   --color-accent-content: var(--color-sky-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-blue {
+.theme-accent-blue {
   /* themes - Blue */
   --color-accent: var(--color-blue-500);
   --color-accent-content: var(--color-blue-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-indigo {
+.theme-accent-indigo {
   /* themes - Indigo */
   --color-accent: var(--color-indigo-500);
   --color-accent-content: var(--color-indigo-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-violet {
+.theme-accent-violet {
   /* themes - Violet */
   --color-accent: var(--color-violet-500);
   --color-accent-content: var(--color-violet-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-purple {
+.theme-accent-purple {
   /* themes - Purple */
   --color-accent: var(--color-purple-500);
   --color-accent-content: var(--color-purple-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-fuchsia {
+.theme-accent-fuchsia {
   /* themes - Fuchsia */
   --color-accent: var(--color-fuchsia-500);
   --color-accent-content: var(--color-fuchsia-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-pink {
+.theme-accent-pink {
   /* themes - Pink */
   --color-accent: var(--color-pink-500);
   --color-accent-content: var(--color-pink-600);
   --color-accent-foreground: var(--color-white);
 }
 
-.accent-rose {
+.theme-accent-rose {
   /* themes - Rose */
   --color-accent: var(--color-rose-500);
   --color-accent-content: var(--color-rose-600);

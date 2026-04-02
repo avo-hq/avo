@@ -57,9 +57,30 @@ Avo.configure do |config|
   config.sidebar_toggle_visible = true
 
   ## == Branding ==
-  config.branding.logo = "avo/logo.png"
-  config.branding.logomark = "avo/logomark.png"
-  config.branding.mode = :static
+  config.branding = {
+    logo: "avo/logo.png",
+    logomark: "avo/logomark.png",
+    mode: :static,
+    mode: :dynamic,
+    scheme: :auto,
+    neutral: :olive,
+    accent: :blue
+  }
+
+  # on static mode:
+  #   - if the scheme is set, we force the scheme and not show the scheme switcher
+  #   - if the scheme is not set, we show the scheme switcher and default to auto. the user may choos eit and we save it in the cookies
+  #   - if the neutral is set, we force the neutral and not show the neutral switcher
+  #   - if the accent is set, we force the accent and not show the accent switcher
+  #   - if neutral and accent aren't set, we show the neutral and accent switchers and default to neutral and blue. the user may choose either and we save it in the cookies
+  # on dynamic mode:
+  #   - we show the scheme switcher
+  #   - we store the scheme in the database
+  #   - we store the neutral and accent in the database
+  #   - we store the mode in the database
+  #   - we store the logo in the database
+  #   - we store the logomark in the database
+  #   - we store the favicon in the database
 
   # Uncomment to test out manual resource loading.
   # config.resources = [

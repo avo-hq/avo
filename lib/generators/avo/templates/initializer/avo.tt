@@ -120,18 +120,15 @@ Avo.configure do |config|
 
   ## == Branding ==
   # config.branding = {
-  #   colors: {
-  #     background: "248 246 242",
-  #     100 => "#CEE7F8",
-  #     400 => "#399EE5",
-  #     500 => "#0886DE",
-  #     600 => "#066BB2",
-  #   },
-  #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
+  #   mode: :static,
+  #   neutral: :slate,
+  #   accent: :blue,
+  #   scheme: :auto,
   #   logo: "avo/logo.png",
   #   logomark: "avo/logomark.png",
+  #   favicon: "avo/favicon.ico",
   #   placeholder: "avo/placeholder.svg",
-  #   favicon: "avo/favicon.ico"
+  #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
   # }
 
   ## == Breadcrumbs ==

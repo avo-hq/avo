@@ -218,5 +218,45 @@ module Avo
     def accent_colors
       %w[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose]
     end
+
+    def html_theme_classes
+      branding = Avo.configuration.branding
+      classes = []
+
+      # Resolve neutral
+      neutral = if branding.static? && branding.neutral
+        branding.neutral.to_s
+      elsif branding.database_persistence? && Avo::Current.theme_settings&.dig(:neutral).present?
+        Avo::Current.theme_settings[:neutral]
+      end
+
+      classes << "theme-neutral-#{neutral}" if neutral.present?
+
+      # Resolve accent
+      accent = if branding.static? && branding.accent
+        branding.accent.to_s
+      elsif branding.database_persistence? && Avo::Current.theme_settings&.dig(:accent).present?
+        Avo::Current.theme_settings[:accent]
+      end
+
+      classes << "theme-accent-#{accent}" if accent.present?
+
+      # Resolve color scheme
+      scheme = if branding.database_persistence? && Avo::Current.theme_settings&.dig(:color_scheme).present?
+        Avo::Current.theme_settings[:color_scheme]
+      else
+        branding.scheme.to_s
+      end
+
+      if scheme == "dark"
+        classes << "dark" << "scheme-dark"
+      elsif scheme == "light"
+        classes << "scheme-light"
+      else
+        classes << "scheme-auto"
+      end
+
+      classes
+    end
   end
 end

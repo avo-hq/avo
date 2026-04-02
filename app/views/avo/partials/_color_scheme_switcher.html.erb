@@ -1,9 +1,13 @@
 <% branding = Avo.configuration.branding %>
+<% show_neutral_picker = !branding.neutral_locked? %>
+<% show_accent_picker = !branding.accent_locked? %>
+<% show_scheme_picker = !branding.scheme_locked? %>
+<% return unless show_neutral_picker || show_accent_picker || show_scheme_picker %>
 <div class="color-scheme-switcher"
      data-controller="color-scheme-switcher"
      data-color-scheme-switcher-mode-value="<%= branding.effective_mode %>"
      data-color-scheme-switcher-persistence-value="<%= branding.persistence %>">
-  <div <%= "hidden" if branding.static? %>>
+  <% if show_neutral_picker %>
     <%= render Avo::UI::DropdownComponent.new(
       classes: "color-scheme-switcher__theme-popover"
     ) do |component| %>
@@ -31,9 +35,9 @@
         </div>
       <% end %>
     <% end %>
-  </div>
+  <% end %>
 
-  <div <%= "hidden" if branding.static? %>>
+  <% if show_accent_picker %>
     <%= render Avo::UI::DropdownComponent.new(
       classes: "color-scheme-switcher__accent-popover"
     ) do |component| %>
@@ -76,33 +80,46 @@
         </div>
       <% end %>
     <% end %>
-  </div>
+  <% end %>
+
+  <% if show_scheme_picker %>
+    <button type="button"
+            data-color-scheme-switcher-target="button"
+            data-action="click->color-scheme-switcher#setScheme"
+            data-scheme="auto"
+            class="color-scheme-switcher__button"
+            title="Auto (system preference)">
+      <%= svg "tabler/outline/device-desktop", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only">Auto</span>
+    </button>
+    <button type="button"
+            data-color-scheme-switcher-target="button"
+            data-action="click->color-scheme-switcher#setScheme"
+            data-scheme="light"
+            class="color-scheme-switcher__button"
+            title="Light mode">
+      <%= svg "tabler/outline/sun", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only">Light</span>
+    </button>
+    <button type="button"
+            data-color-scheme-switcher-target="button"
+            data-action="click->color-scheme-switcher#setScheme"
+            data-scheme="dark"
+            class="color-scheme-switcher__button"
+            title="Dark mode">
+      <%= svg "tabler/outline/moon", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only">Dark</span>
+    </button>
+  <% end %>
 
   <button type="button"
-          data-color-scheme-switcher-target="button"
-          data-action="click->color-scheme-switcher#setScheme"
-          data-scheme="auto"
+          hidden
+          data-color-scheme-switcher-target="resetButton"
+          data-action="click->color-scheme-switcher#resetSettings"
           class="color-scheme-switcher__button"
-          title="Auto (system preference)">
-    <%= svg "tabler/outline/device-desktop", class: "color-scheme-switcher__icon" %>
-    <span class="sr-only">Auto</span>
-  </button>
-  <button type="button"
-          data-color-scheme-switcher-target="button"
-          data-action="click->color-scheme-switcher#setScheme"
-          data-scheme="light"
-          class="color-scheme-switcher__button"
-          title="Light mode">
-    <%= svg "tabler/outline/sun", class: "color-scheme-switcher__icon" %>
-    <span class="sr-only">Light</span>
-  </button>
-  <button type="button"
-          data-color-scheme-switcher-target="button"
-          data-action="click->color-scheme-switcher#setScheme"
-          data-scheme="dark"
-          class="color-scheme-switcher__button"
-          title="Dark mode">
-    <%= svg "tabler/outline/moon", class: "color-scheme-switcher__icon" %>
-    <span class="sr-only">Dark</span>
+          title="Reset to defaults">
+    <%= svg "tabler/outline/refresh", class: "color-scheme-switcher__icon" %>
+    <span class="sr-only">Reset</span>
   </button>
 </div>
+

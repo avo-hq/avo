@@ -1,66 +1,54 @@
-<% if Avo.configuration.branding.database_persistence? && Avo::Current.theme_settings.present? %>
-  <script nonce="<%= content_security_policy_nonce %>">
-    window.__avoThemeSettings__ = <%= Avo::Current.theme_settings.to_json.html_safe %>;
-  </script>
-<% end %>
-
 <script nonce="<%= content_security_policy_nonce %>">
-  // On page load, apply color scheme, theme, and accent to avoid FOUC
+  // Apply color scheme and theme classes before paint to avoid FOUC.
+  // Static mode and database-persisted settings are already server-rendered
+  // on <html>. This script handles localStorage overrides and "auto" dark mode.
   (function() {
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-      return null;
-    }
+    var root = document.documentElement;
 
-    const branding = document.querySelector('meta[name="avo-branding"]')?.dataset || {};
-    const isStatic = branding.mode === 'static';
-    const dbSettings = window.__avoThemeSettings__ || null;
+    <% branding = Avo.configuration.branding %>
 
-    const colorScheme = dbSettings?.color_scheme
-      || getCookie('color_scheme')
-      || branding.defaultScheme || 'auto';
+    <% unless branding.static? %>
+      <% unless branding.database_persistence? %>
+        // Dynamic + localStorage: apply user preferences from cookies
+        function getCookie(name) {
+          var value = '; ' + document.cookie;
+          var parts = value.split('; ' + name + '=');
+          if (parts.length === 2) return parts.pop().split(';').shift();
+          return null;
+        }
 
-    const theme = isStatic && branding.lockedNeutral
-      ? branding.lockedNeutral
-      : (dbSettings?.neutral || getCookie('theme') || 'brand');
+        var theme = getCookie('theme');
+        if (theme && theme !== 'brand') {
+          root.classList.remove(<%= %w[slate stone gray zinc neutral taupe mauve mist olive].map { |n| "'theme-neutral-#{n}'" }.join(", ") %>);
+          root.classList.add('theme-neutral-' + theme);
+        }
 
-    const accent = isStatic && branding.lockedAccent
-      ? branding.lockedAccent
-      : (dbSettings?.accent || getCookie('accent_color') || 'neutral');
+        var accent = getCookie('accent_color');
+        if (accent && accent !== 'neutral') {
+          <%= accent_colors.map { |c| "root.classList.remove('theme-accent-#{c}');" }.join("\n          ") %>
+          root.classList.add('theme-accent-' + accent);
+        }
 
-    // Apply color scheme
-    const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+        var scheme = getCookie('color_scheme');
+        if (scheme) {
+          root.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
+          root.classList.add('scheme-' + scheme);
+          if (scheme === 'dark') {
+            root.classList.add('dark');
+          } else if (scheme === 'light') {
+            root.classList.remove('dark');
+          }
+        }
+      <% end %>
+    <% end %>
 
-    // Apply scheme selection classes
-    document.documentElement.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
-    if (colorScheme === 'light') {
-      document.documentElement.classList.add('scheme-light');
-    } else if (colorScheme === 'dark') {
-      document.documentElement.classList.add('scheme-dark');
-    } else {
-      document.documentElement.classList.add('scheme-auto');
-    }
-
-    // Apply theme class
-    document.documentElement.classList.remove('theme-slate', 'theme-stone', 'theme-gray', 'theme-zinc', 'theme-neutral', 'theme-taupe', 'theme-mauve', 'theme-mist', 'theme-olive');
-    if (theme && theme !== 'brand') {
-      document.documentElement.classList.add('theme-' + theme);
-    }
-
-    // Apply accent class
-    const accentColors = <%= accent_colors.inspect.html_safe %>;
-    accentColors.forEach((color) => {
-      document.documentElement.classList.remove('accent-' + color);
-    });
-    if (accent && accent !== 'neutral') {
-      document.documentElement.classList.add('accent-' + accent);
+    // Handle "auto" scheme — always needs JS for media query detection
+    if (root.classList.contains('scheme-auto')) {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
     }
   })();
 </script>
