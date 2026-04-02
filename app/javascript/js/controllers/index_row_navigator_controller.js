@@ -31,6 +31,7 @@ const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 export default class extends Controller {
   connect() {
     this.currentIndex = -1
+    this.hotkeysEnabled = window.Avo?.configuration?.hotkeys?.enabled !== false
     this.handleKeydown = this.handleKeydown.bind(this)
     this.handleDropdownOpen = this.handleDropdownOpen.bind(this)
     document.addEventListener('keydown', this.handleKeydown)
@@ -38,12 +39,14 @@ export default class extends Controller {
 
     // Remove data-hotkey from row controls before @github/hotkey library scans
     // Store the original values so we can restore them for the focused row only
-    const controls = this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]')
-    controls.forEach((control) => {
-      const hotkey = control.getAttribute('data-hotkey')
-      control.setAttribute('data-hotkey-original', hotkey)
-      control.removeAttribute('data-hotkey')
-    })
+    if (this.hotkeysEnabled) {
+      const controls = this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]')
+      controls.forEach((control) => {
+        const hotkey = control.getAttribute('data-hotkey')
+        control.setAttribute('data-hotkey-original', hotkey)
+        control.removeAttribute('data-hotkey')
+      })
+    }
   }
 
   disconnect() {
@@ -66,8 +69,8 @@ export default class extends Controller {
     const rows = Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
     if (!rows.length) return
 
-    // Check for row hotkeys when a row is focused
-    if (this.currentIndex !== -1) {
+    // Check for row hotkeys when a row is focused (only when hotkeys are enabled)
+    if (this.hotkeysEnabled && this.currentIndex !== -1) {
       if (this.handleRowHotkey(event, rows)) {
         return
       }
@@ -130,7 +133,7 @@ export default class extends Controller {
 
     rows.forEach((r, i) => r.classList.toggle('is-keyboard-focused', i === this.currentIndex))
     rows[this.currentIndex].scrollIntoView({ block: 'nearest' })
-    this.syncRowHotkeys(rows)
+    if (this.hotkeysEnabled) this.syncRowHotkeys(rows)
   }
 
   normalizeCurrentIndex(rowsLength) {

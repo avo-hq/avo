@@ -18,6 +18,8 @@ class Avo::BaseComponent < ViewComponent::Base
   # Renders a <kbd> badge for a hotkey string.
   # Supports modifier tokens rendered in a friendly OS-aware way.
   def hotkey_badge(hotkey, **html_options)
+    return unless Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges]
+
     # `@github/hotkey` uses:
     # - `+` for modifier combos (e.g. "Mod+Enter")
     # - spaces for sequences/alternatives (e.g. "g n" or "Meta+Enter Control+Enter")
@@ -27,6 +29,8 @@ class Avo::BaseComponent < ViewComponent::Base
 
     first_key = keys.first
     return if first_key.blank?
+
+    html_options[:class] = class_names("hotkey-badge", html_options[:class])
 
     content_tag(:span, **html_options) do
       # Render multiple keys (e.g. "g n") inside a wrapper so any provided

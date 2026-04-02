@@ -11,6 +11,7 @@ module Avo
     attr_writer :exclude_from_status
     attr_writer :persistence
     attr_writer :resource_row_controls_config
+    attr_writer :hotkeys
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -178,6 +179,7 @@ module Avo
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
+      @hotkeys = {}
       @global_search = {
         enabled: true,
         navigation_section: true
@@ -198,8 +200,19 @@ module Avo
       }.freeze
     end
 
+    unless defined?(HOTKEYS_DEFAULTS)
+      HOTKEYS_DEFAULTS = {
+        enabled: true,
+        show_key_badges: true
+      }.freeze
+    end
+
     def resource_row_controls_config
       RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS.merge @resource_row_controls_config
+    end
+
+    def hotkeys
+      HOTKEYS_DEFAULTS.merge @hotkeys
     end
 
     # Authorization is enabled when:

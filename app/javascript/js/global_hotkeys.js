@@ -43,6 +43,24 @@ const DIRECT_HOTKEYS = [
       if (input) input.focus()
     },
   },
+  {
+    // Shift+K → toggle kbd badge visibility (only when developer config allows badges)
+    match: (e) => e.shiftKey && e.key === 'K'
+      && window.Avo?.configuration?.hotkeys?.showKeyBadges !== false,
+    handle: () => {
+      document.body.classList.toggle('hotkeys-hide-badges')
+      const hidden = document.body.classList.contains('hotkeys-hide-badges')
+      try {
+        if (hidden) {
+          localStorage.setItem('avo:hotkeys:hide_badges', '1')
+        } else {
+          localStorage.removeItem('avo:hotkeys:hide_badges')
+        }
+      } catch (e) {
+        // localStorage unavailable (private browsing) — toggle works for current session only
+      }
+    },
+  },
 ]
 
 const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
@@ -79,6 +97,8 @@ export function attachHotkeyFeedback(el) {
 }
 
 export function installGlobalHotkeys() {
+  if (window.Avo?.configuration?.hotkeys?.enabled === false) return
+
   document.addEventListener('turbo:load', () => {
     document.querySelectorAll('kbd.kbd--called').forEach((kbd) => kbd.classList.remove('kbd--called'))
 
