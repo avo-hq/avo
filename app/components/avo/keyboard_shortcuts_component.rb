@@ -15,7 +15,8 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
             any_of: [["↑"], ["↓"]],
             keys_aria_label: "Up arrow or down arrow"
           ),
-          shortcut(action: "Go back", keys: ["B"])
+          shortcut(action: "Go back", keys: ["B"]),
+          shortcut(action: "Toggle keyboard shortcut badges", keys: ["Shift", "K"])
         ]
       ),
       build_section(
