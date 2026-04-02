@@ -56,10 +56,10 @@ Avo.configure do |config|
 
   config.sidebar_toggle_visible = true
 
-  config.hotkeys = {
-    enabled: false,
-    show_key_badges: true
-  }
+  # config.hotkeys = {
+  #   enabled: true,
+  #   # show_key_badges: true
+  # }
 
   ## == Branding ==
   config.branding = {
