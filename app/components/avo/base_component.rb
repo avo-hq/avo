@@ -30,6 +30,8 @@ class Avo::BaseComponent < ViewComponent::Base
     first_key = keys.first
     return if first_key.blank?
 
+    html_options[:class] = class_names("hotkey-badge", html_options[:class])
+
     content_tag(:span, **html_options) do
       # Render multiple keys (e.g. "g n") inside a wrapper so any provided
       # classes (like `ms-auto`) are applied once.

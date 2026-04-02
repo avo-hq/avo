@@ -33,12 +33,8 @@ kbd.kbd--called {
   box-shadow: none;
 }
 
-.hotkeys-hide-badges kbd {
+.hotkeys-hide-badges .hotkey-badge kbd {
   display: none;
-}
-
-.hotkeys-hide-badges .hotkey kbd {
-  display: revert;
 }
 
 @layer base {
