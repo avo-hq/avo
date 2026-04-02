@@ -11,6 +11,10 @@
   <% end %>
   Avo.configuration.modal_frame_id = '<%= ::Avo::MODAL_FRAME_ID %>'
   Avo.configuration.stimulus_controllers = []
+  Avo.configuration.hotkeys = {
+    enabled: <%= Avo.configuration.hotkeys[:enabled] %>,
+    showKeyBadges: <%= Avo.configuration.hotkeys[:show_key_badges] %>
+  }
   Avo.configuration.media_library = {
     enabled: <%= Avo::MediaLibrary.configuration.enabled? %>,
     visible: <%= Avo::MediaLibrary.configuration.visible? %>

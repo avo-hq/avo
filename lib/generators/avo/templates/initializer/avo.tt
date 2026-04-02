@@ -100,6 +100,12 @@ Avo.configure do |config|
   #   file_logger
   # }
 
+  ## == Keyboard shortcuts ==
+  # config.hotkeys = {
+  #   enabled: true,          # Master switch: set to false to disable all keyboard shortcuts
+  #   show_key_badges: true   # Set to false to hide inline kbd badge elements from the UI
+  # }
+
   ## == Customization ==
   config.click_row_to_view_record = true
   # config.app_name = 'Avocadelicious'

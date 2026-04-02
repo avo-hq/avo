@@ -33,6 +33,10 @@ kbd.kbd--called {
   box-shadow: none;
 }
 
+.hotkeys-hide-badges .hotkey-badge kbd {
+  display: none;
+}
+
 @layer base {
   a {
     color: var(--color-info-content);
