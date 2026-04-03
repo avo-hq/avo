@@ -42,8 +42,6 @@ jobs:
 
     - name: Add tailwindcss-rails and custom tool
       run: |
-        bundle add tailwindcss-rails
-        bundle install
         bin/rails generate avo:tool custom_tool
 
     - name: Add custom CSS
