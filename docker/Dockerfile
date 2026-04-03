@@ -56,7 +56,6 @@ COPY . /avo
 COPY ./pluggy /pluggy
 
 # Build assets
-RUN bundle exec rails avo:sym_link
 RUN yarn build
 
 RUN bundle exec rails build
