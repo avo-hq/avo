@@ -86,7 +86,12 @@ module Avo
       lines = []
       # Input lives under tmp/avo/; without `source("../../")` Tailwind v4 only scans near this file, so
       # classes in app/views/**/*.erb (and the rest of the app) are never detected.
-      lines << %(@import "tailwindcss" source("../../");)
+      lines << %(@layer theme, base, components, utilities;)
+
+      lines << %(@import "tailwindcss/theme.css" layer(theme);)
+      lines << %(@import "tailwindcss/utilities.css" layer(utilities);)
+      lines << %(@source "../../";)
+      
       collect_host_avo_stylesheets.each do |path|
         lines << %(@import "#{path}";)
       end
