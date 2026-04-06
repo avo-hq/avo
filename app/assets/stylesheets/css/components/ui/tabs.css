@@ -46,14 +46,61 @@
      ============================================ */
   .tabs__item--group.tabs__item--active:hover,
   .tabs__item--group.tabs__item--active {
-    background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+    background: color-mix(
+      in oklab,
+      var(--color-secondary),
+      var(--color-content) 5%
+    );
   }
 
   .tabs__item-wrapper--group {
     @apply flex items-center justify-center;
   }
 
-/* ============================================
+  /* ============================================
+     SWITCHER VARIANT
+     ============================================ */
+  .tabs--switcher {
+    @apply inline-flex items-center gap-0.5 p-0.5 rounded-md border;
+    background: color-mix(
+      in oklab,
+      var(--color-secondary),
+      var(--color-content) 3%
+    );
+    border-color: color-mix(
+      in oklab,
+      var(--color-tertiary),
+      var(--color-content) 5%
+    );
+  }
+
+  .tabs__item--switcher {
+    @apply relative mx-0 px-2.5 py-1 rounded-md text-xs font-medium text-content-secondary transition-colors duration-150;
+  }
+
+  .tabs__item--switcher:hover:not(.tabs__item--disabled):not(.tabs__item--active):not(:has(input:checked)) {
+    @apply bg-transparent text-content;
+  }
+
+  .tabs__item--switcher.tabs__item--active,
+  .tabs__item--switcher:has(input:checked) {
+    @apply bg-primary shadow-sm text-content;
+  }
+
+  .tabs__item--switcher.tabs__item--active:hover,
+  .tabs__item--switcher:has(input:checked):hover {
+    background: color-mix(
+      in oklab,
+      var(--color-primary),
+      var(--color-content) 2%
+    );
+  }
+
+  .tabs__item-wrapper--switcher {
+    @apply py-0;
+  }
+
+  /* ============================================
     SCOPE VARIANT
     ============================================ */
   /* Full-width border on tabs container */
