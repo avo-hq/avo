@@ -121,7 +121,7 @@ group :development do
   # Required by lookbook for livereload
   gem "listen", ">= 3.5.1"
   gem "actioncable"
-  gem "debug", platforms: [:mri, :mingw, :x64_mingw]
+  gem "debug", platforms: [:mri, :windows]
 
   gem "ruby-lsp-rspec", require: false
 
@@ -209,4 +209,4 @@ end
 # PLATFORM SPECIFIC
 # =============================================================================
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "tzinfo-data", platforms: [:windows, :jruby]
