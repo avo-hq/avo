@@ -1,5 +1,5 @@
 <div class="media-library-details__section media-library-details__section--form">
-  <%= form_with model: @blob, url: avo.media_library_path(@blob), method: :patch, class: "media-library-details__form all-fields-stacked" do |f| %>
+  <%= form_with model: @blob, url: avo.media_library_path(@blob), method: :patch, class: "media-library-details__form all-fields-stacked description-list" do |f| %>
     <%= avo_edit_field :filename,
       as: :text,
       stacked: true,
