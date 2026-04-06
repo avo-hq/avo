@@ -1,34 +1,68 @@
-<div class="p-6">
-  <dl>
-    <dt>Filename:</dt>
-    <dd><%= @blob.filename %></dd>
-    <dt>Key:</dt>
-    <dd><%= @blob.key %></dd>
-    <dt>Content type:</dt>
-    <dd><%= @blob.content_type %></dd>
-    <dt>Size:</dt>
-    <dd><%= number_to_human_size(@blob.byte_size) %></dd>
-    <dt>Service name:</dt>
-    <dd><%= @blob.service_name %></dd>
-    <dt>Created at:</dt>
-    <dd><%= @blob.created_at %></dd>
+<div class="media-library-details__section media-library-details__section--information">
+  <div class="flex flex-col">
+    <div class="field-wrapper field-wrapper--stacked">
+      <div class="field-wrapper__label">Key</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper"><%= @blob.key %></div>
+      </div>
+    </div>
+
+    <div class="field-wrapper field-wrapper--stacked">
+      <div class="field-wrapper__label">Content type</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper"><%= @blob.content_type %></div>
+      </div>
+    </div>
+
+    <div class="field-wrapper field-wrapper--stacked">
+      <div class="field-wrapper__label">Size</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper"><%= number_to_human_size(@blob.byte_size) %></div>
+      </div>
+    </div>
+
+    <div class="field-wrapper field-wrapper--stacked">
+      <div class="field-wrapper__label">Service name</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper"><%= @blob.service_name %></div>
+      </div>
+    </div>
+
+    <div class="field-wrapper field-wrapper--stacked">
+      <div class="field-wrapper__label">Created at</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper"><%= l(@blob.created_at, format: :long) %></div>
+      </div>
+    </div>
     <% if @blob.attachments.present? %>
-      <dt>Attached to:</dt>
-      <dd>
-        <% @blob.attachments.each do |attachment| %>
-          <%= link_to record_title(attachment.record), record_path(attachment.record) %>
-        <% end %>
-      </dd>
+      <div class="field-wrapper field-wrapper--stacked">
+        <div class="field-wrapper__label">Attached to</div>
+        <div class="field-wrapper__content">
+          <div class="field-wrapper__content-wrapper media-library-details__attachments">
+            <% @blob.attachments.each do |attachment| %>
+              <%= link_to record_title(attachment.record), record_path(attachment.record), class: "media-library-details__detail-link" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
-    <dt>Type:</dt>
-    <dd><%= @blob.filename %></dd>
-    <dt>Metadata:</dt>
-    <dd class="block">
-      <% @blob.metadata.each do |key, value| %>
-        <div class="block">
-          <code><%= key %>: <%= value %></code>
+    <div class="field-wrapper field-wrapper--stacked">
+      <div class="field-wrapper__label">Type</div>
+      <div class="field-wrapper__content">
+        <div class="field-wrapper__content-wrapper"><%= @blob.content_type.to_s.split("/").first || @blob.filename.extension_without_delimiter.presence || "Unknown" %></div>
+      </div>
+    </div>
+    <div class="field-wrapper field-wrapper--stacked">
+      <div class="field-wrapper__label">Metadata</div>
+      <% if @blob.metadata.present? %>
+        <div class="field-wrapper__content">
+          <div class="field-wrapper__content-wrapper media-library-details__metadata">
+            <% @blob.metadata.each do |key, value| %>
+              <code class="media-library-details__metadata-entry"><%= key %>: <%= value %></code>
+            <% end %>
+          </div>
         </div>
       <% end %>
-    </dd>
-  </dl>
+    </div>
+  </div>
 </div>

@@ -1,32 +1,68 @@
-<div class="relative flex flex-col w-full max @container/details">
-  <%= link_to helpers.svg('tabler/outline/x', class: "size-6"), helpers.avo.media_library_index_path,
-    class: "absolute z-10 inset-auto end-0 top-0 mt-2 me-2 block bg-white p-1 rounded-lg text-slate-600 hover:text-slate-900",
-    title: t('avo.close'),
-    data: {
-      tippy: :tooltip,
-    } %>
-  <div class="flex flex-1 flex-row w-full">
-    <div class="flex flex-col justify-center w-1/2 @3xl/details:w-2/3 p-4 gap-2">
-      <% if @blob.image? %>
-        <%= image_tag helpers.main_app.url_for(@blob), class: "max-w-full rounded-lg max-h-xl", loading: :lazy %>
-      <% elsif @blob.audio? %>
-        <%= audio_tag(helpers.main_app.url_for(@blob), controls: true, preload: false, class: 'w-full') %>
-      <% elsif @blob.video? %>
-        <%= video_tag(helpers.main_app.url_for(@blob), controls: true, preload: false, class: 'w-full') %>
-      <% else %>
-        <div class="relative h-full flex flex-col justify-center items-center w-full bg-slate-100">
-          <%= helpers.svg "tabler/outline/file-text", class: 'h-10 text-gray-600 mb-2' %>
-        </div>
+<div class="media-library-details @container/details">
+  <div class="media-library-details__body">
+    <section class="media-library-details__main">
+      <%= link_to helpers.avo.media_library_index_path,
+        class: "media-library-details__close media-library-details__close--main",
+        title: t("avo.close"),
+        data: {
+          tippy: :tooltip
+        } do %>
+        <%= helpers.svg "tabler/outline/x", class: "size-5" %>
       <% end %>
-      <div class="flex justify-center w-full text-sm gap-4">
-        <%= link_to "Download", helpers.main_app.url_for(@blob), download: true %>
-        <%= link_to "Copy URL to clipboard", helpers.main_app.url_for(@blob), data: {controller: "copy-to-clipboard", text: helpers.main_app.url_for(@blob), action: "click->copy-to-clipboard#copy"} %>
-        <%= link_to "Delete", helpers.avo.media_library_path(@blob), class: "text-red-500", data: {turbo_confirm: "Are you sure you want to destroy this attachment?", turbo_method: :delete} %>
+      <div class="media-library-details__preview-shell">
+        <div class="media-library-details__preview-frame">
+          <% if @blob.image? %>
+            <%= image_tag helpers.main_app.url_for(@blob.variant(resize_to_limit: [1400, 1400])), class: "media-library-details__preview-image", loading: :lazy %>
+          <% elsif @blob.audio? %>
+            <%= audio_tag helpers.main_app.url_for(@blob), controls: true, preload: false, class: "media-library-details__preview-audio" %>
+          <% elsif @blob.video? %>
+            <%= video_tag helpers.main_app.url_for(@blob), controls: true, preload: false, class: "media-library-details__preview-video" %>
+          <% else %>
+            <div class="media-library-details__preview-placeholder">
+              <%= helpers.svg "tabler/outline/file-text", class: "media-library-details__preview-placeholder-icon" %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="media-library-details__actions">
+          <%= render Avo::ButtonComponent.new(helpers.main_app.url_for(@blob), is_link: true, style: :text, download: true) do %>
+            Download
+          <% end %>
+          <%= a_button style: :text,
+            type: :button,
+            data: {
+              controller: "copy-to-clipboard",
+              text: helpers.main_app.url_for(@blob),
+              action: "click->copy-to-clipboard#copy"
+            } do %>
+            Copy URL to clipboard
+          <% end %>
+          <%= a_button style: :text,
+            color: :red,
+            url: helpers.avo.media_library_path(@blob),
+            method: :delete,
+            data: {
+              turbo_confirm: "Are you sure you want to destroy this attachment?"
+            } do %>
+            Delete
+          <% end %>
+        </div>
       </div>
-    </div>
-    <div class="flex flex-col w-1/2 @3xl/details:w-1/3 border-s border-gray-200">
-      <%= render partial: "avo/media_library/information", locals: {blob: @blob} %>
-      <%= render partial: "avo/media_library/form", locals: {blob: @blob} %>
-    </div>
+    </section>
+
+    <aside class="media-library-details__sidebar">
+      <%= link_to helpers.avo.media_library_index_path,
+        class: "media-library-details__close media-library-details__close--sidebar",
+        title: t("avo.close"),
+        data: {
+          tippy: :tooltip
+        } do %>
+        <%= helpers.svg "tabler/outline/x", class: "size-5" %>
+      <% end %>
+      <div class="media-library-details__sidebar-panel">
+        <%= render partial: "avo/media_library/information", locals: {blob: @blob} %>
+        <%= render partial: "avo/media_library/form", locals: {blob: @blob} %>
+      </div>
+    </aside>
   </div>
 </div>

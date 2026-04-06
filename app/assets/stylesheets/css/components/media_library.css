@@ -1,0 +1,194 @@
+/* Media Library Component */
+/* BEM: .media-library (block), .media-library__* (elements) */
+/* BEM: .media-library-item (block), .media-library-item__* (elements) */
+
+/* === List === */
+
+.media-library__uploading-container {
+  @apply m-2 flex flex-wrap gap-2;
+
+  &:empty {
+    @apply m-0;
+  }
+}
+
+.media-library__stack {
+  @apply @container/index;
+}
+
+.media-library__grid {
+  @apply min-h-0 min-w-0 auto-rows-max pt-4;
+}
+
+.media-library__details-frame {
+  @apply relative bg-white w-full block;
+
+  &:empty {
+    @apply hidden;
+  }
+}
+
+/* === Grid Item === */
+
+.media-library__grid .grid-card__image {
+  @apply flex flex-col h-full aspect-video overflow-hidden rounded-lg justify-center items-center;
+}
+
+.media-library__grid .grid-card__title--truncate {
+  @apply truncate self-stretch;
+}
+
+.media-library__item-thumbnail-placeholder {
+  @apply relative h-full flex flex-col justify-center items-center w-full bg-content-secondary;
+}
+
+.media-library__item-thumbnail-placeholder-icon {
+  @apply h-10 text-content mb-2;
+}
+
+.media-library__item-select-badge {
+  @apply absolute bg-blue-500 opacity-0 inset-auto start-0 top-0 text-white rounded-ss-xl rounded-ee-xl -ms-px -mt-px p-2;
+
+  .grid-card:hover & {
+    @apply opacity-100;
+  }
+
+  .grid-card[data-selected="true"] & {
+    @apply opacity-100;
+  }
+}
+
+.media-library__item-select-badge-border {
+  @apply border border-white;
+}
+
+.media-library__item-select-icon {
+  @apply opacity-0 size-4;
+
+  .grid-card[data-selected="true"] & {
+    @apply opacity-100;
+  }
+}
+
+/* === Media Library Details === */
+
+.media-library-details {
+  @apply relative flex w-full flex-col p-4;
+}
+
+.media-library-details__body {
+  @apply flex flex-col gap-6;
+}
+
+.media-library-details__main {
+  @apply relative min-w-0 flex-1;
+}
+
+.media-library-details__preview-shell {
+  @apply flex flex-col gap-4;
+}
+
+.media-library-details__preview-frame {
+  @apply flex min-h-96 items-center justify-center overflow-hidden rounded-lg bg-primary;
+}
+
+.media-library-details__preview-image {
+  @apply max-h-[36rem] w-auto max-w-full rounded-xl object-contain;
+}
+
+.media-library-details__preview-audio,
+.media-library-details__preview-video {
+  @apply w-full max-w-3xl rounded-xl;
+}
+
+.media-library-details__preview-placeholder {
+  @apply flex min-h-80 w-full flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-tertiary bg-background p-6;
+}
+
+.media-library-details__preview-placeholder-icon {
+  @apply size-10 text-content-secondary;
+}
+
+.media-library-details__actions {
+  @apply flex w-full flex-wrap items-center justify-center gap-3;
+}
+
+.media-library-details__sidebar {
+  @apply relative w-full;
+}
+
+.media-library-details__close {
+  @apply absolute top-0 end-0 z-10 inline-flex size-8 items-center justify-center rounded-lg text-content-secondary transition hover:text-content;
+
+  &:hover {
+    @apply rotate-90;
+  }
+}
+
+.media-library-details__close--sidebar {
+  @apply hidden;
+}
+
+.media-library-details__close--main {
+  @apply inline-flex;
+}
+
+.media-library-details__sidebar-panel {
+  @apply overflow-hidden rounded-lg bg-background gap-3 flex flex-col;
+}
+
+.media-library-details__section {
+  @apply pt-3;
+}
+
+.media-library-details__section--form {
+  @apply border-t border-tertiary;
+}
+
+
+.media-library-details__attachments {
+  @apply flex flex-wrap gap-x-2 gap-y-1;
+}
+
+.media-library-details__detail-link {
+  @apply text-info-content transition hover:text-info-content;
+}
+
+.media-library-details__metadata {
+  @apply flex flex-col gap-1;
+}
+
+.media-library-details__metadata-entry {
+  @apply inline-flex overflow-hidden rounded bg-secondary px-2 py-1 font-mono text-xs text-content-secondary;
+}
+
+.media-library-details__form {
+  @apply flex w-full flex-col;
+}
+
+
+.media-library-details__form-actions {
+  @apply p-4 mt-6;
+}
+
+@media (width >= 48rem) {
+  .media-library-details {
+    @apply gap-6 p-6;
+  }
+
+  .media-library-details__body {
+    @apply flex-row items-start;
+  }
+
+  .media-library-details__sidebar {
+    width: 22rem;
+  }
+
+  .media-library-details__close--main {
+    @apply hidden;
+  }
+
+  .media-library-details__close--sidebar {
+    @apply inline-flex;
+  }
+}

@@ -1,4 +1,4 @@
-<%= render ui.panel(title: t("avo.media_library.title")) do |panel| %>
+<%= render ui.panel(title: @blob.filename.to_s) do |panel| %>
   <%= panel.with_body do %>
     <%= render ui.card do |card| %>
       <% card.with_body do %>
