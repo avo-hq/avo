@@ -13,7 +13,7 @@
       'data-multiple-select-filter-target': 'selector'
     %>
     <div class="flex justify-end">
-      <%= a_button style: :primary, size: :md, data: { action: "multiple-select-filter#changeFilter" } do %>
+      <%= a_button style: :primary, size: :sm, data: { action: "multiple-select-filter#changeFilter" } do %>
         <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>
