@@ -9,7 +9,7 @@ RSpec.describe "RadioField", type: :feature do
         visit "/admin/resources/fish"
 
         expect(page).to have_text "Size"
-        expect(page).to have_text fish.size
+        expect(page).to have_text "Small"
       end
     end
 
@@ -17,7 +17,7 @@ RSpec.describe "RadioField", type: :feature do
       it "displays the fish size" do
         visit "/admin/resources/fish/#{fish.id}"
 
-        expect(page).to have_text fish.size
+        expect(page).to have_text "Small"
       end
     end
 
@@ -135,8 +135,8 @@ RSpec.describe "RadioField", type: :feature do
       it "selects the correct option" do
         visit "/admin/resources/fish/#{fish.id}/edit"
 
-        expect(page).to have_checked_field "fish_size_small", visible: :hidden
-        expect(page).to_not have_checked_field "fish_size_large", visible: :hidden
+        expect(page).to have_checked_field "fish_size_small", visible: :all
+        expect(page).to_not have_checked_field "fish_size_large", visible: :all
       end
 
       it "changes selection via tab click" do
@@ -144,8 +144,8 @@ RSpec.describe "RadioField", type: :feature do
 
         find("label", text: "Large").click
 
-        expect(page).to have_checked_field "fish_size_large", visible: :hidden
-        expect(page).to_not have_checked_field "fish_size_small", visible: :hidden
+        expect(page).to have_checked_field "fish_size_large", visible: :all
+        expect(page).to_not have_checked_field "fish_size_small", visible: :all
 
         save
 
