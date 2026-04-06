@@ -4,6 +4,12 @@ module Avo
   class ChartsController < BaseController
     def distribution_chart
       @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
+        .transform_keys do |key|
+        next key unless key.is_a?(ActiveRecord::Base)
+
+        res = Avo.resource_manager.get_resource_by_model_class(key.class)
+        res ? res.new(record: key).record_title : (key.try(:name) || key.to_param)
+      end
 
       @field_id = params[:field_id]
 
