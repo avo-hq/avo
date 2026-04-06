@@ -3,11 +3,11 @@
   <% if @authorized %>
     <%= content_tag :div, class: "-mx-2" do %>
       <%= content_tag :div, class: "px-6 py-4" do %>
-        <div class="text-md font-semibold uppercase text-gray-800">Previewing <%= @resource.record_title %></div>
+        <div class="text-md font-semibold uppercase text-content">Previewing <%= @resource.record_title %></div>
       <% end %>
 
       <% if @preview_fields.present? %>
-        <div class="mt-0 divide-y divide-gray-200 border-t border-gray-200">
+        <div class="description-list">
           <% @preview_fields.each_with_index do |field, index| %>
             <%= render field
               .hydrate(

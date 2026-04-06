@@ -1,6 +1,13 @@
 require "rails_helper"
 
 RSpec.describe "Keyboard shortcuts", type: :system do
+  around do |example|
+    original = Avo.configuration.hotkeys
+    Avo.configuration.hotkeys = {enabled: true, show_key_badges: true}
+    example.run
+    Avo.configuration.hotkeys = original
+  end
+
   def dispatch_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false)
     page.execute_script(<<~JS)
       const eventOptions = {
@@ -84,6 +91,19 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     expect(search_input.value).to include("?")
     expect(page).to have_css(".hotkey[hidden]", visible: false)
+  end
+
+  it "hides only badge kbd elements when toggling badge visibility" do
+    visit "/admin/resources/projects"
+
+    expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd')
+    expect(page).to have_css(".search-input__suffix kbd", count: 1)
+
+    dispatch_keydown("K", shift_key: true)
+
+    expect(page).to have_css("body.hotkeys-hide-badges")
+    expect(page).to have_no_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: true)
+    expect(page).to have_css(".search-input__suffix kbd", count: 1, visible: true)
   end
 
   it "applies kbd--called animation feedback when a hotkey fires" do
@@ -215,4 +235,83 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   #   expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
   #   expect(project.reload.name).to eq("Updated from hotkey")
   # end
+
+  context "when hotkeys are disabled via config" do
+    around do |example|
+      original = Avo.configuration.hotkeys
+      Avo.configuration.hotkeys = {enabled: false}
+      example.run
+      Avo.configuration.hotkeys = original
+    end
+
+    it "does not open the keyboard shortcuts panel" do
+      visit "/admin/resources/projects"
+
+      expect(page).not_to have_css(".hotkey", visible: :all)
+
+      dispatch_keydown("?", code: "Slash", shift_key: true)
+
+      expect(page).not_to have_css(".hotkey", visible: true)
+    end
+
+    it "does not navigate using sidebar hotkeys" do
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("r")
+      dispatch_keydown("u")
+
+      expect(page).to have_current_path("/admin/resources/projects")
+    end
+
+    it "preserves arrow-key row navigation" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("ArrowDown")
+
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "does not fire row-specific hotkeys" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      dispatch_keydown("e")
+
+      expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+    end
+  end
+
+  context "when show_key_badges is false" do
+    around do |example|
+      original = Avo.configuration.hotkeys
+      Avo.configuration.hotkeys = {enabled: true, show_key_badges: false}
+      example.run
+      Avo.configuration.hotkeys = original
+    end
+
+    it "does not render inline kbd badges but hotkeys still work" do
+      visit "/admin/resources/projects"
+
+      expect(page).not_to have_css('[data-hotkey="r u"] kbd')
+
+      dispatch_keydown("r")
+      dispatch_keydown("u")
+
+      expect(page).to have_current_path("/admin/resources/users")
+    end
+
+    it "still renders the keyboard shortcuts modal" do
+      visit "/admin/resources/projects"
+
+      expect(page).to have_css(".hotkey[hidden]", visible: false)
+
+      dispatch_keydown("?", code: "Slash", shift_key: true)
+
+      expect(page).to have_css(".hotkey", visible: true)
+      expect(page).to have_text("Keyboard shortcuts")
+    end
+  end
 end

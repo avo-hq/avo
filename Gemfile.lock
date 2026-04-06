@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (4.0.0.beta.7)
+    avo (4.0.0.beta.8)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -804,6 +804,7 @@ GEM
 PLATFORMS
   arm64-darwin-23
   arm64-darwin-24
+  arm64-darwin-25
   x86_64-linux
 
 DEPENDENCIES
