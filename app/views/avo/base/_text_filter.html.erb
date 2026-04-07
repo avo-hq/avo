@@ -10,13 +10,14 @@
       placeholder: filter.class.empty_message,
       'data-filter-class': filter.class.to_s,
       'data-text-filter-target': 'text',
-      'data-action': 'keypress->text-filter#tryToSubmit'
-    %>
+      'data-action': 'keypress->text-filter#tryToSubmit' %>
+
     <div class="flex justify-end">
-      <%= a_button style: :primary, data: { action: "text-filter#changeFilter" }, size: :md do %>
+      <%= a_button style: :primary, data: { action: "text-filter#changeFilter" }, size: :sm do %>
         <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>
+
     <%= link_to 'url_redirect', request.url, data: { 'text-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 </div>

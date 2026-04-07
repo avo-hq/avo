@@ -15,6 +15,7 @@
             date_time_filter_target: "input",
           } %>
       </div>
+
       <%= content_tag :button,
         class: "filters-date-input__action",
         id: :reset,
@@ -27,11 +28,13 @@
         <%= svg "tabler/outline/x", class: "filters-date-input__action-icon" %>
       <% end %>
     </div>
+
     <div class="flex justify-end">
-      <%= a_button style: :primary, data: { action: "date-time-filter#changeFilter" }, size: :md do %>
+      <%= a_button style: :primary, data: { action: "date-time-filter#changeFilter" }, size: :sm do %>
         <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>
+
     <%= link_to 'url_redirect', request.url, data: { 'date-time-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 <% end %>

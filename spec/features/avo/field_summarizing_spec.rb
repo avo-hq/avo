@@ -43,6 +43,34 @@ RSpec.feature "Field Summarizing", type: :system do
       expect(page).not_to have_css 'th[data-table-header-field-id="description"] div svg'
     end
 
+    context "when summarizing a belongs_to field" do
+      let(:user1) { create :user, first_name: "Alice", last_name: "Smith" }
+      let(:user2) { create :user, first_name: "Bob", last_name: "Jones" }
+
+      before do
+        create_list :project, 3, user: user1
+        create_list :project, 1, user: user2
+      end
+
+      it "renders the display name instead of the object inspect string" do
+        visit avo.resources_projects_path
+
+        expect(page).to have_css "turbo-frame[id='summary-frame-user']", visible: false
+
+        find("#summary-header-user").click
+
+        expect(page).to have_css "turbo-frame[id='summary-frame-user']", visible: true
+
+        wait_for_turbo_frame_id("summary-frame-user")
+
+        within "#user-summary" do
+          expect(page).to have_content "ALICE SMITH"
+          expect(page).to have_content "BOB JONES"
+          expect(page).not_to have_content "#<"
+        end
+      end
+    end
+
     context "when summarizing on association pages" do
       let(:user) { create :user }
       let!(:project) { create :project, status: :closed, users: [user] }

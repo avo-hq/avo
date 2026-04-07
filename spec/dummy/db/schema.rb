@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_06_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -229,6 +229,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.integer "progress"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
   create_table "projects_users", force: :cascade do |t|
@@ -359,6 +361,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_10_120000) do
   add_foreign_key "locations", "teams"
   add_foreign_key "people", "people"
   add_foreign_key "people", "users"
+  add_foreign_key "projects", "users"
   add_foreign_key "reviews", "users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "team_memberships", "teams"

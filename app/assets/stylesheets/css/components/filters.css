@@ -7,7 +7,7 @@
 }
 
 .filters__panel {
-  @apply absolute top-full z-40 mt-2 w-72 inset-auto sm:end-0 flex flex-col max-h-[45vh];
+  @apply absolute top-full z-40 mt-2 w-72 inset-auto sm:end-0 flex flex-col;
 
   .dropdown-card {
     @apply flex flex-col overflow-hidden min-h-0;
@@ -19,7 +19,7 @@
 }
 
 .filters-card__header {
-  @apply flex w-full items-center justify-between px-2 py-1.5 font-medium;
+  @apply flex w-full items-center justify-between px-3 py-1.5 font-medium;
 }
 
 .filters-card__title {
@@ -94,5 +94,5 @@ select.filters-multi-select option {
 }
 
 .filters-section .button {
-  @apply whitespace-normal justify-start text-start leading-5;
+  @apply whitespace-normal text-start;
 }
