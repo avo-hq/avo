@@ -84,6 +84,7 @@
 @custom-variant hover (&:hover);
 
 @import "./css/components/ui/checkbox.css";
+@import "./css/components/tooltip.css";
 
 @layer components {
   @import "./css/fonts.css";
@@ -135,7 +136,6 @@
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
   @import "./css/components/hotkey.css";
-  @import "./css/components/tooltip.css";
   @import "./css/components/modal.css";
   @import "./css/css-animations.css";
   @import "./css/sidebar.css";
