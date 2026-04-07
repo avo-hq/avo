@@ -1,5 +1,3 @@
-@import './../../../../../node_modules/trix/dist/trix.css';
-
 .trix-content.hidden {
   display: block !important;
   overflow: hidden;

@@ -85,16 +85,7 @@
 
 @import "./css/components/ui/checkbox.css";
 
-@import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
-@import "./css/fields/trix.css";
-
 @layer components {
-  @import "./../../../node_modules/easymde/dist/easymde.min.css";
-  @import "./../../../node_modules/tippy.js/dist/tippy.css";
-  @import "./../../../node_modules/tippy.js/themes/light.css";
-  @import "./../../../node_modules/flatpickr/dist/flatpickr.css";
-  @import "./../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css";
-
   @import "./css/fonts.css";
   @import "./css/button-group.css";
   @import "./css/typography.css";
@@ -114,6 +105,7 @@
   @import "./css/fields/easy-mde.css";
   @import "./css/fields/progress.css";
   @import "./css/fields/key_value.css";
+  @import "./css/fields/trix.css";
   @import "./css/fields/tags.css";
   @import "./css/fields/tiptap.css";
   @import "./css/fields/stars.css";
