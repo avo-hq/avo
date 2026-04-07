@@ -164,5 +164,37 @@ RSpec.feature "Field Summarizing", type: :system do
         expect(page).not_to have_css "#chart-status"
       end
     end
+
+    context "when summarizing users inside a project" do
+      let!(:project) { create :project }
+
+      before do
+        active_user1 = create :user, active: true
+        active_user2 = create :user, active: true
+        inactive_user = create :user, active: false
+        _unassociated = create :user, active: true
+
+        project.users << [active_user1, active_user2, inactive_user]
+      end
+
+      it "only shows values from users associated with the project" do
+        visit avo.resources_project_path(project)
+
+        users_frame = find("turbo-frame#has_and_belongs_to_many_field_show_users")
+        scroll_to users_frame
+        wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_users")
+
+        find("#summary-header-active").click
+
+        wait_for_turbo_frame_id("summary-frame-active")
+
+        within "#active-summary" do
+          expect(page).to have_content "2" # 2 active users in project
+          expect(page).to have_content "1" # 1 inactive user in project
+          # unassociated active user must not be counted
+          expect(page).not_to have_content "3"
+        end
+      end
+    end
   end
 end
