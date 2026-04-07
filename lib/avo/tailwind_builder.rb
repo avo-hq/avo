@@ -7,6 +7,10 @@ module Avo
       new.build
     end
 
+    def self.watch
+      new.watch
+    end
+
     def self.tailwindcss_available?
       require "tailwindcss/ruby"
       true
@@ -29,6 +33,15 @@ module Avo
       success = run_tailwindcss("--minify")
       log_build_failure unless success
       success
+    end
+
+    def watch
+      return true unless self.class.tailwindcss_available?
+
+      ensure_node_modules
+      run_engine_css_prebuilds
+      generate_input_file
+      run_tailwindcss("--watch")
     end
 
     private

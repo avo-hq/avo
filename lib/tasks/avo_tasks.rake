@@ -1,14 +1,13 @@
 desc "Runs the update command for all Avo gems."
-task "avo:update" do
-  gems = Gem::Specification.map { |gem| gem.name }
+task "avo:update" => :environment do
+  plugins = Avo.plugin_manager.plugins
+    .map { |plugin| plugin.name.to_s }
+    .uniq
+    .sort
 
-  @license ||= if gems.include?("avo-advanced")
-    system "bundle update avo avo-advanced"
-  elsif gems.include?("avo-pro")
-    system "bundle update avo avo-pro"
-  elsif gems.include?("avo")
-    system "bundle update avo"
-  end
+  cmd = ["bundle", "update", *plugins].join(" ")
+  puts "[Avo->] Running `#{cmd}`"
+  system cmd
 end
 
 desc "Builds Avo (just assets for now)"
@@ -108,5 +107,18 @@ task "avo:tailwindcss:build" => :environment do
   puts "[Avo->] Building Avo Tailwind CSS extension (avo.tailwind)..."
   unless Avo::TailwindBuilder.build
     abort "[Avo->] avo:tailwindcss:build failed"
+  end
+end
+
+desc "Watch Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo.tailwind.css)"
+task "avo:tailwindcss:watch" => :environment do
+  unless Avo::TailwindBuilder.tailwindcss_available?
+    puts "[Avo->] tailwindcss-ruby not found; skipping avo:tailwindcss:watch"
+    next
+  end
+
+  puts "[Avo->] Watching Avo Tailwind CSS extension (avo.tailwind)..."
+  unless Avo::TailwindBuilder.watch
+    abort "[Avo->] avo:tailwindcss:watch failed"
   end
 end
