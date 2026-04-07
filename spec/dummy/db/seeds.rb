@@ -210,6 +210,8 @@ puts "Assigining users and comments to projects"
 
 # assign users to projects
 projects.each do |project|
+  project.update!(user: users.sample)
+
   users.sample(11).each do |user|
     project.users << user
   end
