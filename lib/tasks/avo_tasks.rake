@@ -98,10 +98,10 @@ task "avo:yarn_install" do
   `yarn add tailwindcss@^4.0.0 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
 end
 
-desc "Build Avo custom Tailwind CSS"
+desc "Build Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo.tailwind.css)"
 task "avo:tailwindcss:build" => :environment do
   unless Avo::TailwindBuilder.tailwindcss_available?
-    puts "[Avo->] tailwindcss-rails not found; skipping avo:tailwindcss:build"
+    puts "[Avo->] tailwindcss-ruby not found; skipping avo:tailwindcss:build"
     next
   end
 
@@ -109,14 +109,4 @@ task "avo:tailwindcss:build" => :environment do
   unless Avo::TailwindBuilder.build
     abort "[Avo->] avo:tailwindcss:build failed"
   end
-end
-
-desc "Watch and rebuild Avo custom Tailwind CSS on changes"
-task "avo:tailwindcss:watch" => :environment do
-  unless Avo::TailwindBuilder.tailwindcss_available?
-    abort "[Avo->] tailwindcss-rails not found; add tailwindcss-rails to your Gemfile to use avo:tailwindcss:watch"
-  end
-
-  puts "[Avo->] Watching Avo Tailwind CSS extension..."
-  Avo::TailwindBuilder.watch
 end

@@ -296,8 +296,11 @@ module Avo
     end
 
     def set_stylesheet_assets_path
-      @stylesheet_assets_path = "avo/application"
-      @custom_stylesheet_path = "avo.tailwind" if Avo::TailwindBuilder.custom_build_exists?
+      @stylesheet_assets_path = if Avo::TailwindBuilder.custom_build_exists?
+        "avo.tailwind"
+      else
+        "avo/application"
+      end
     end
 
     def choose_layout

@@ -1,13 +1,10 @@
 require "fileutils"
+require "pathname"
 
 module Avo
   class TailwindBuilder
     def self.build
       new.build
-    end
-
-    def self.watch
-      new.watch
     end
 
     def self.tailwindcss_available?
@@ -23,50 +20,47 @@ module Avo
       Rails.root.join("app", "assets", "builds", "avo.tailwind.css").exist?
     end
 
-    def self.procfile_has_avo_tailwind_watcher?
-      path = Rails.root.join("Procfile.dev")
-      return false unless path.exist?
-
-      File.read(path).include?("avo:tailwindcss")
-    end
-
     def build
       return true unless self.class.tailwindcss_available?
 
+      ensure_node_modules
+      run_engine_css_prebuilds
       generate_input_file
       success = run_tailwindcss("--minify")
       log_build_failure unless success
       success
     end
 
-    def watch
-      return unless self.class.tailwindcss_available?
+    private
 
-      generate_input_file
-      signature = host_avo_stylesheets_signature
+    def run_engine_css_prebuilds
+      roots = [Avo::Engine.root] + Avo.plugin_manager.engines.map { |e| e[:klass]&.root }.compact
 
-      pid = spawn_tailwindcss("--minify", "--watch")
+      roots.uniq.each do |root|
+        next unless root.directory?
 
-      begin
-        loop do
-          _, status = Process.waitpid2(pid, Process::WNOHANG)
-          break if status
+        prebuild = root.join("bin", "prebuild_css")
+        next unless prebuild.exist?
 
-          new_signature = host_avo_stylesheets_signature
-          if new_signature != signature
-            signature = new_signature
-            generate_input_file
-          end
-
-          sleep 1
+        Dir.chdir(root) do
+          Kernel.system("ruby", prebuild.to_s)
         end
-      rescue Interrupt
-        Process.kill("TERM", pid)
-        raise
       end
     end
 
-    private
+    def ensure_node_modules
+      engine_root = Avo::Engine.root
+      package_json = engine_root.join("package.json")
+      node_modules = engine_root.join("node_modules")
+
+      return unless package_json.exist?
+      return if node_modules.directory?
+
+      # Avo's stylesheet imports include CSS from npm packages. When running from source (or in some
+      # packaging setups), `node_modules/` may not exist yet, so Tailwind's CSS resolver fails.
+      success = Dir.chdir(engine_root) { Kernel.system("yarn", "install", "--frozen-lockfile") }
+      warn "[Avo] `yarn install` failed; Tailwind build may fail." unless success
+    end
 
     def tmp_input_dir
       Rails.root.join("tmp", "avo")
@@ -84,19 +78,52 @@ module Avo
       FileUtils.mkdir_p(tmp_input_dir)
 
       lines = []
-      # Input lives under tmp/avo/; without `source("../../")` Tailwind v4 only scans near this file, so
+      # Input lives under tmp/avo/; without `@source "../../"` Tailwind v4 only scans near this file, so
       # classes in app/views/**/*.erb (and the rest of the app) are never detected.
-      lines << %(@layer theme, base, components, utilities;)
-
-      lines << %(@import "tailwindcss/theme.css" layer(theme);)
-      lines << %(@import "tailwindcss/utilities.css" layer(utilities);)
+      lines << %(@import "tailwindcss";)
       lines << %(@source "../../";)
-      
+
+      append_plugin_engine_tailwind_sources(lines)
       collect_host_avo_stylesheets.each do |path|
         lines << %(@import "#{path}";)
       end
 
       File.write(input_path, lines.join("\n") + "\n")
+    end
+
+    def append_plugin_engine_tailwind_sources(lines)
+      # Include Avo itself (the core engine) in Tailwind's scan paths.
+      lines << %(@source "#{relative_to_tmp(Avo::Engine.root)}";)
+      append_engine_stylesheets(lines, Avo::Engine.root)
+
+      Avo.plugin_manager.engines.each do |entry|
+        root = entry[:klass].root
+        next unless root&.directory?
+
+        lines << %(@source "#{relative_to_tmp(root)}";)
+        append_engine_stylesheets(lines, root)
+      end
+    end
+
+    def append_engine_stylesheets(lines, engine_root)
+      stylesheets_root = engine_root.join("app", "assets", "stylesheets")
+      return unless stylesheets_root.directory?
+
+      # Some engines ship `app/assets/stylesheets/application.css` directly (no namespace folder).
+      root_application = stylesheets_root.join("application.css")
+      lines << %(@import "#{relative_to_tmp(root_application)}";) if root_application.exist?
+
+      # Most engines namespace their assets under `app/assets/stylesheets/<namespace>/application.css`.
+      Dir.children(stylesheets_root).sort.each do |entry|
+        next if entry.start_with?(".")
+
+        namespaced_application = stylesheets_root.join(entry, "application.css")
+        lines << %(@import "#{relative_to_tmp(namespaced_application)}";) if namespaced_application.exist?
+      end
+    end
+
+    def relative_to_tmp(absolute)
+      Pathname.new(absolute).expand_path.relative_path_from(tmp_input_dir.expand_path).to_s.tr("\\", "/")
     end
 
     def collect_host_avo_stylesheets
@@ -107,11 +134,7 @@ module Avo
         .glob(base.join("**", "*.css"))
         .select { |path| File.file?(path) }
         .sort
-        .map { |path| Pathname.new(path).relative_path_from(tmp_input_dir).to_s.tr("\\", "/") }
-    end
-
-    def host_avo_stylesheets_signature
-      collect_host_avo_stylesheets.join("\n")
+        .map { |path| relative_to_tmp(path) }
     end
 
     def run_tailwindcss(*args)
@@ -127,20 +150,6 @@ module Avo
           *args
         )
       end
-    end
-
-    def spawn_tailwindcss(*args)
-      require "tailwindcss/ruby"
-
-      FileUtils.mkdir_p(output_path.dirname)
-
-      Process.spawn(
-        Tailwindcss::Ruby.executable,
-        "-i", input_path.to_s,
-        "-o", output_path.to_s,
-        *args,
-        chdir: Rails.root.to_s
-      )
     end
 
     def log_build_failure

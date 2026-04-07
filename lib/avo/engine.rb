@@ -55,10 +55,6 @@ module Avo
         rescue StandardError => e
           Rails.logger.warn "Avo: Failed to auto-build Tailwind CSS: #{e.message}"
         end
-
-        unless Avo::TailwindBuilder.procfile_has_avo_tailwind_watcher?
-          Rails.logger.info "Avo: For live Tailwind CSS reload in development, add to Procfile.dev: avo_css: bin/rails avo:tailwindcss:watch"
-        end
       end
     end
 

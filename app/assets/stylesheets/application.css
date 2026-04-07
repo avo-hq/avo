@@ -1,16 +1,6 @@
 /* @layer base, components, utilities; */
 @import "tailwindcss";
 
-/* TODO: Figure out a way to add those dynamically */
-@source "../../../tmp/avo/packages/avo-advanced";
-@source "../../../tmp/avo/packages/avo-dashboards";
-@source "../../../tmp/avo/packages/avo-dynamic_filters";
-@source "../../../tmp/avo/packages/avo-kanban";
-@source "../../../tmp/avo/packages/avo-menu";
-@source "../../../tmp/avo/packages/avo-pro";
-@source "../../../tmp/avo/packages/avo-forms";
-
-/* @config "../../../tailwind.config.js"; */
 
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */

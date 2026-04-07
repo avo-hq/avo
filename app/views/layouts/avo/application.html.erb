@@ -18,9 +18,6 @@
     <%= render partial: "avo/partials/pre_head" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
     <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", as: "style" %>
-    <% if @custom_stylesheet_path %>
-      <%= stylesheet_link_tag @custom_stylesheet_path, "data-turbo-track": "reload", as: "style" %>
-    <% end %>
 
     <%= javascript_include_tag "avo/application", "data-turbo-track": "reload", defer: true %>
 
