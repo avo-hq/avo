@@ -51,10 +51,13 @@ class Project < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     ["budget", "country", "created_at", "description", "id", "meta", "name", "progress", "stage", "started_at", "status", "updated_at", "user_id", "users_required"]
+<<<<<<< HEAD
   end
 
   def self.ransackable_associations(auth_object = nil)
     ["comments", "files_attachments", "files_blobs", "reviews", "user", "users"]
+=======
+>>>>>>> 4-dev
   end
 
   # Used to test tags on select mode with {value:,label:}
