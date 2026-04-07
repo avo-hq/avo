@@ -137,6 +137,12 @@ class Avo::Resources::Project < Avo::BaseResource
     field :files_attachments, as: :has_many
   end
 
+  def scopes
+    scope Avo::Scopes::ProjectDone
+    scope Avo::Scopes::ProjectOnHold
+    scope Avo::Scopes::ProjectCancelled
+  end
+
   def actions
     action Avo::Actions::ExportCsv
   end

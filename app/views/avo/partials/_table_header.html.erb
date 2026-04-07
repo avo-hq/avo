@@ -82,6 +82,19 @@
         <% end %>
 
         <% if field.summarizable %>
+          <% summary_params = {
+            resource_name: field.resource.model_class,
+            field_id: field.id,
+            via_record_id: @parent_record&.to_param,
+            via_resource_class: @parent_resource&.class&.to_s,
+            association_name: @field&.attribute_id,
+            encoded_filters: @current_encoded_filters,
+            scope: params[:scope],
+            q: params[:q]
+          }.compact %>
+          <% if defined?(Avo::DynamicFilters) %>
+            <% summary_params[Avo::DynamicFilters.configuration.param_key] = params[Avo::DynamicFilters.configuration.param_key] %>
+          <% end %>
           <div
             id="summary-header-<%= field.id %>"
             class="cursor-pointer <%= text_classes %>"
@@ -92,15 +105,7 @@
           <turbo-frame
             id="summary-frame-<%= field.id %>"
             loading="lazy"
-            src="<%= distribution_chart_path(
-              {
-                resource_name: field.resource.model_class,
-                field_id: field.id,
-                via_record_id: @parent_record&.to_param,
-                via_resource_class: @parent_resource&.class&.to_s,
-                association_name: @field&.attribute_id
-              }.compact
-            ) %>"
+            src="<%= distribution_chart_path(summary_params) %>"
             class="
               absolute inset-auto top-0 z-40 mt-6 w-full overflow-hidden rounded-sm border border-gray-50
               bg-white p-4 shadow-modal sm:w-[400px]

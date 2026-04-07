@@ -30,6 +30,7 @@ Avo.configure do |config|
   end
   config.locale = :en
   # config.raise_error_on_missing_policy = true
+  config.authorization_client = nil
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
   # Shouldn't impact on community only if custom authorization service was configured.
   config.explicit_authorization = true
