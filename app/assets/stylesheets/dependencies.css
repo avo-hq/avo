@@ -5,4 +5,5 @@
 @import "./../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css";
 @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
 @import "./../../../node_modules/trix/dist/trix.css";
+@import "./../../../node_modules/codemirror/lib/codemirror.css";
 
