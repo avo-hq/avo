@@ -1,4 +1,17 @@
-<%= render ui.panel(title: t("avo.media_library.title")) do |panel| %>
+<%= render ui.panel(title: @blob.filename.to_s) do |panel| %>
+  <%= panel.with_controls do %>
+    <%= a_link avo.media_library_index_path,
+      icon: "tabler/outline/arrow-left",
+      style: :text,
+      title: t("avo.go_back"),
+      data: {
+        hotkey: "b",
+        tippy: :tooltip
+      } do %>
+      <%= t("avo.go_back") %>
+    <% end %>
+  <% end %>
+
   <%= panel.with_body do %>
     <%= render ui.card do |card| %>
       <% card.with_body do %>
