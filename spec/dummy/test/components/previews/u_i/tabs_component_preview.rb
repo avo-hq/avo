@@ -7,7 +7,7 @@ class UI::TabsComponentPreview < ViewComponent::Preview
   # @param tab_count number "Number of tabs"
   # @param active_tab number "Index of active tab (0-based)"
   # @param show_icons toggle "Show icons on tabs"
-  # @param variant select "Tab variant" { choices: [scope, group], default: scope }
+  # @param variant select "Tab variant" { choices: [scope, group, switcher], default: scope }
   def playground(
     tab_count: 5,
     active_tab: 0,
