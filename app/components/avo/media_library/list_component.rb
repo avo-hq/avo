@@ -18,8 +18,8 @@ module Avo
       def controller = Avo::Current.view_context.controller
 
       def query
+        # ignore blobs who are just a variant to avoid "n+1" blob creation
         ActiveStorage::Blob.includes(:attachments)
-          # ignore blobs who are just a variant to avoid "n+1" blob creation
           .where.not(id: ActiveStorage::Attachment.where(record_type: "ActiveStorage::VariantRecord").select(:blob_id))
           .order(created_at: :desc)
       end
