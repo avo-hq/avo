@@ -9,6 +9,7 @@
         } do %>
         <%= helpers.svg "tabler/outline/x", class: "size-5" %>
       <% end %>
+
       <div class="media-library-details__preview-shell">
         <div class="media-library-details__preview-frame">
           <% if @blob.image? %>
@@ -28,6 +29,7 @@
           <%= render Avo::ButtonComponent.new(helpers.main_app.url_for(@blob), is_link: true, style: :text, download: true) do %>
             Download
           <% end %>
+
           <%= a_button style: :text,
             type: :button,
             data: {
@@ -37,6 +39,7 @@
             } do %>
             Copy URL to clipboard
           <% end %>
+
           <%= a_button style: :text,
             color: :red,
             url: helpers.avo.media_library_path(@blob),
@@ -51,14 +54,6 @@
     </section>
 
     <aside class="media-library-details__sidebar">
-      <%= link_to helpers.avo.media_library_index_path,
-        class: "media-library-details__close media-library-details__close--sidebar",
-        title: t("avo.close"),
-        data: {
-          tippy: :tooltip
-        } do %>
-        <%= helpers.svg "tabler/outline/x", class: "size-5" %>
-      <% end %>
       <div class="media-library-details__sidebar-panel">
         <%= render partial: "avo/media_library/information", locals: {blob: @blob} %>
         <%= render partial: "avo/media_library/form", locals: {blob: @blob} %>

@@ -1,4 +1,4 @@
-<%= render ui.panel(title: t("avo.media_library.title"),
+<%= render ui.panel(title: @attaching ? nil : t("avo.media_library.title"),
   data: {
     controller: 'media-library',
     media_library_controller_selector_value: params[:controller_selector],
@@ -50,10 +50,11 @@
 
     <div class="pagination">
       <div class="pagination__per-page"></div>
+
       <div class="pagination__controls-wrap pt-4">
         <div class="pagination__controls">
           <div class="pagination__info">
-            <span class="pagination__info-number"><%= "#{formatted_number(@pagy.from)}-#{formatted_number(@pagy.to)}" %></span>
+            <span class="pagination__info-number"><%= formatted_number(@pagy.from) %>-<%= formatted_number(@pagy.to) %></span>
             &nbsp; of &nbsp;
             <% if @pagy.count >= 10_000 %>
               <span title="<%= formatted_count %>" data-tippy="tooltip">
@@ -63,6 +64,7 @@
               <span><%= formatted_count %></span>
             <% end %>
           </div>
+
           <% if @pagy.pages > 1 %>
             <div class="pagination__nav">
               <%== formatted_series_nav %>
