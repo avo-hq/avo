@@ -70,6 +70,4 @@ Rails.application.configure do
       ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.create_unlogged_tables = true
     end
   end
-
-  config.enable_reloading = true
 end

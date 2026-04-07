@@ -30,15 +30,15 @@ RSpec.describe "RadioField", type: :feature do
           {name: "pluggy_radio", class: Pluggy::Fields::RadioField}
         )
 
-        expect(page).to have_checked_field "fish_size_small"
-        expect(page).to_not have_checked_field "fish_size_medium"
-        expect(page).to_not have_checked_field "fish_size_large"
+        expect(page).to have_checked_field "fish_size_small", visible: :all
+        expect(page).to_not have_checked_field "fish_size_medium", visible: :all
+        expect(page).to_not have_checked_field "fish_size_large", visible: :all
 
-        find("#fish_size_large").click
+        find("#fish_size_large", visible: :all).click
 
-        expect(page).to_not have_checked_field "fish_size_small"
-        expect(page).to_not have_checked_field "fish_size_medium"
-        expect(page).to have_checked_field "fish_size_large"
+        expect(page).to_not have_checked_field "fish_size_small", visible: :all
+        expect(page).to_not have_checked_field "fish_size_medium", visible: :all
+        expect(page).to have_checked_field "fish_size_large", visible: :all
 
         save
 
@@ -56,9 +56,9 @@ RSpec.describe "RadioField", type: :feature do
       it "does not check radio buttons" do
         visit "/admin/resources/fish/#{fish.id}/edit"
 
-        expect(page).to_not have_checked_field "fish_size_small"
-        expect(page).to_not have_checked_field "fish_size_medium"
-        expect(page).to_not have_checked_field "fish_size_large"
+        expect(page).to_not have_checked_field "fish_size_small", visible: :all
+        expect(page).to_not have_checked_field "fish_size_medium", visible: :all
+        expect(page).to_not have_checked_field "fish_size_large", visible: :all
       end
     end
   end
