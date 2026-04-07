@@ -12,7 +12,7 @@ module Avo
           key
         end
 
-        key.nil? ? I18n.t("avo.empty", default: "Empty") : key
+        key.presence || "—"
       end
 
       @field_id = params[:field_id]
