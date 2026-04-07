@@ -2,20 +2,20 @@
   <div class="grid grid-cols-12 items-center">
     <ul class="col-span-5" id="<%= @field_id %>-summary">
       <% @values_summary.each_with_index do |(key, value), index| %>
-        <li class="grid grid-cols-6 gap-3 items-center font-semibold text-sm text-gray-600 uppercase">
-          <div class="flex items-center space-x-1 rtl:space-x-reverse col-span-5 truncate">
-            <span class="<%= "inline-block w-[0.75rem] h-[0.75rem] rounded-full bg-[#{chart_color(index)}]" %>"></span>
-            <span>
-              <%= key %>
-            </span>
+        <li class="grid grid-cols-6 items-center gap-3 text-sm font-semibold text-(--color-content-secondary) uppercase">
+          <div class="col-span-5 flex items-center space-x-1 truncate rtl:space-x-reverse">
+            <%= tag.div class: class_names("inline-block size-3 rounded-full", "bg-[#{chart_color(index)}]") %>
+            <span><%= key %></span>
           </div>
+
           <div class="col-span-1 text-end">
             <%= value %>
           </div>
         </li>
       <% end %>
     </ul>
-    <div class="col-start-7 col-span-6">
+
+    <div class="col-span-6 col-start-7">
       <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
     </div>
   </div>
