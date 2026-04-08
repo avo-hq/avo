@@ -116,7 +116,7 @@ GEM
       csv
       parser
       prism
-    addressable (2.8.9)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     amazing_print (2.0.0)
     annotate (3.2.0)
