@@ -18,6 +18,10 @@ module Avo
       false
     end
 
+    def self.enabled?
+      Avo.configuration.tailwindcss_integration_enabled && tailwindcss_available?
+    end
+
     def self.custom_build_exists?
       return false unless defined?(Rails)
 
@@ -25,7 +29,7 @@ module Avo
     end
 
     def build
-      return true unless self.class.tailwindcss_available?
+      return true unless self.class.enabled?
 
       ensure_node_modules
       run_engine_css_prebuilds
@@ -36,7 +40,7 @@ module Avo
     end
 
     def watch
-      return true unless self.class.tailwindcss_available?
+      return true unless self.class.enabled?
 
       ensure_node_modules
       run_engine_css_prebuilds
@@ -93,13 +97,13 @@ module Avo
       lines = []
       # Input lives under tmp/avo/; without `@source "../../"` Tailwind v4 only scans near this file, so
       # classes in app/views/**/*.erb (and the rest of the app) are never detected.
-      lines << %(@import "tailwindcss";)
-      lines << %(@source "../../";)
 
       append_plugin_engine_tailwind_sources(lines)
       collect_host_avo_stylesheets.each do |path|
         lines << %(@import "#{path}";)
       end
+
+      lines << %(@source "../../";)
 
       File.write(input_path, lines.join("\n") + "\n")
     end

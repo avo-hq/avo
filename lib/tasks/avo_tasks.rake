@@ -99,8 +99,8 @@ end
 
 desc "Build Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo.tailwind.css)"
 task "avo:tailwindcss:build" => :environment do
-  unless Avo::TailwindBuilder.tailwindcss_available?
-    puts "[Avo->] tailwindcss-ruby not found; skipping avo:tailwindcss:build"
+  unless Avo::TailwindBuilder.enabled?
+    puts "[Avo->] tailwindcss integration disabled or tailwindcss-ruby not found; skipping avo:tailwindcss:build"
     next
   end
 
@@ -112,8 +112,8 @@ end
 
 desc "Watch Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo.tailwind.css)"
 task "avo:tailwindcss:watch" => :environment do
-  unless Avo::TailwindBuilder.tailwindcss_available?
-    puts "[Avo->] tailwindcss-ruby not found; skipping avo:tailwindcss:watch"
+  unless Avo::TailwindBuilder.enabled?
+    puts "[Avo->] tailwindcss integration disabled or tailwindcss-ruby not found; skipping avo:tailwindcss:watch"
     next
   end
 

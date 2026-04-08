@@ -37,7 +37,7 @@ module Avo
         end
       end
 
-      if Avo::TailwindBuilder.tailwindcss_available? && Rake::Task.task_defined?("assets:precompile")
+      if Avo::TailwindBuilder.enabled? && Rake::Task.task_defined?("assets:precompile")
         Rake::Task["assets:precompile"].enhance(["avo:tailwindcss:build"])
       end
     end
@@ -46,7 +46,7 @@ module Avo
       next unless Rails.env.development?
 
       Rails.application.config.after_initialize do
-        next unless Avo::TailwindBuilder.tailwindcss_available?
+        next unless Avo::TailwindBuilder.enabled?
 
         begin
           unless Avo::TailwindBuilder.build
