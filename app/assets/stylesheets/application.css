@@ -1,6 +1,18 @@
 /* @layer base, components, utilities; */
 @import "tailwindcss";
 
+/* TODO: Figure out a way to add those dynamically */
+/* Find a long term solution for this. */
+/* Basically this is a hack to make sure that we dont have specificity issues with the packages stylesheets. */
+/* However if we do this the packages builds are kinda irrelevant. */
+/* And we also need to release a new version of avo anytime that a package stylesheet changes. */
+@source "../../../tmp/avo/packages/avo-advanced";
+@source "../../../tmp/avo/packages/avo-dashboards";
+@source "../../../tmp/avo/packages/avo-dynamic_filters";
+@source "../../../tmp/avo/packages/avo-kanban";
+@source "../../../tmp/avo/packages/avo-menu";
+@source "../../../tmp/avo/packages/avo-pro";
+@source "../../../tmp/avo/packages/avo-forms";
 
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */

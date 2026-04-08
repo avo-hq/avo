@@ -75,6 +75,47 @@ task "avo:gem_paths" do
   puts result
 end
 
+desc "Symlinks all Avo gems to tmp/avo/packages"
+task "avo:sym_link" do
+  puts "Running avo:sym_link"
+  base_path = Rails.root.join("tmp", "avo", "build-assets").to_s.gsub("/spec/dummy", "")
+
+  remove_directory_if_exists base_path
+
+  packages_path = "#{base_path}/packages"
+
+  if Dir.exist?(packages_path)
+    `rm -rf #{packages_path}/*`
+  else
+    `mkdir -p #{packages_path}`
+    `touch #{packages_path}/.keep`
+  end
+
+  gem_paths = `bundle list --paths 2>/dev/null`.split("\n")
+  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
+    path = gem_paths.find { |gem_path| gem_path.include?("/#{gem}-") }
+
+    # If path is nil we check if package is defined outside of root (on release process it is)
+    if path.nil?
+      next if !Dir.exist?("../#{gem}")
+
+      path = File.expand_path("../#{gem}")
+    end
+
+    puts "[Avo->] Linking #{gem} to #{path}"
+    symlink_path path, "#{packages_path}/#{gem}"
+  end
+
+  application_css_path = Avo::Engine.root.join("app", "assets", "stylesheets", "application.css")
+  raise "[Avo->] Failed to find #{application_css_path}." unless File.exist?(application_css_path.to_s)
+
+  dest_css_path = "#{base_path}/application.css"
+  remove_file_if_exists dest_css_path
+
+  puts "[Avo->] Linking application.css to #{application_css_path}"
+  symlink_path application_css_path, dest_css_path
+end
+
 def remove_file_if_exists(path)
   `rm #{path}` if File.exist?(path) || File.symlink?(path)
 end
