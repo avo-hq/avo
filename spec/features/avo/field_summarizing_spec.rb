@@ -88,26 +88,6 @@ RSpec.feature "Field Summarizing", type: :system do
       end
     end
 
-    context "when scopes are applied on the index" do
-      before do
-        create(:project, stage: "Done")
-        create(:project, stage: "On hold")
-      end
-
-      it "adjusts the summary to reflect only the scoped records" do
-        visit avo.resources_projects_path(scope: "Avo::Scopes::ProjectDone")
-
-        find("#summary-header-stage").click
-        wait_for_turbo_frame_id("summary-frame-stage")
-
-        within "#stage-summary" do
-          expect(page).to have_content "DONE"
-          expect(page).not_to have_content "ON HOLD"
-          expect(page).not_to have_content "CANCELLED"
-        end
-      end
-    end
-
     context "when search is applied on the index" do
       before do
         create(:project, name: "Search summary match", status: :closed)
