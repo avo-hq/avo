@@ -29,7 +29,7 @@ jobs:
       with:
         bundler-cache: true
         bundler: default
-        ruby-version: 3.4.8
+        ruby-version: 3.3.0
 
     - name: Add Avo
       run: |
