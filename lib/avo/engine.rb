@@ -52,7 +52,7 @@ module Avo
           unless Avo::TailwindBuilder.build
             Rails.logger.warn "Avo: Custom Tailwind CSS auto-build failed (run bin/rails avo:tailwindcss:build for details)."
           end
-        rescue StandardError => e
+        rescue => e
           Rails.logger.warn "Avo: Failed to auto-build Tailwind CSS: #{e.message}"
         end
       end
