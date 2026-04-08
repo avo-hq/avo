@@ -150,7 +150,7 @@ module Avo
         .map { |path| relative_to_tmp(path) }
     end
 
-    def run_tailwindcss(*)
+    def run_tailwindcss(*tailwind_args)
       require "tailwindcss/ruby"
 
       FileUtils.mkdir_p(output_path.dirname)
@@ -160,7 +160,7 @@ module Avo
           Tailwindcss::Ruby.executable,
           "-i", input_path.to_s,
           "-o", output_path.to_s,
-          *
+          *tailwind_args
         )
       end
     end
