@@ -7,7 +7,7 @@
     class: class_names(
       @classes,
       "tabs__item",
-      "tabs__item--group": @variant == :group,
+      "tabs__item--#{@variant}": @variant.in?([:group, :switcher]),
       "tabs__item--disabled": @disabled,
       "#{ACTIVE_CLASS}": @active
     ),

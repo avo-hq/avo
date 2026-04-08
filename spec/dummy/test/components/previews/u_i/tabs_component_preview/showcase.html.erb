@@ -22,4 +22,27 @@
       <% end %>
     </div>
   </div>
+
+  <div>
+    <h3 class="text-lg font-semibold mb-4">Switcher Tabs (Segmented Control)</h3>
+    <div class="p-6 border-2 border-dashed border-gray-300 rounded-lg space-y-6">
+      <%= render Avo::UI::Tabs::TabsComponent.new(variant: :switcher) do %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Overview", active: true) %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Settings") %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Analytics") %>
+      <% end %>
+
+      <%= render Avo::UI::Tabs::TabsComponent.new(variant: :switcher) do %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Overview", icon: "tabler/outline/home", active: true) %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Settings", icon: "heroicons/outline/cog") %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Analytics", icon: "tabler/filled/chart-pie-4") %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Files", icon: "tabler/outline/folder") %>
+      <% end %>
+
+      <%= render Avo::UI::Tabs::TabsComponent.new(variant: :switcher) do %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Monthly", active: true) %>
+        <%= render Avo::UI::Tabs::TabComponent.new(variant: :switcher, label: "Yearly") %>
+      <% end %>
+    </div>
+  </div>
 </div>

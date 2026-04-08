@@ -9,11 +9,11 @@ gemspec
 # =============================================================================
 # RAILS & CORE DEPENDENCIES
 # =============================================================================
-gem "rails", ">= 8.0.0"
+gem "rails", ">= 8.1.0"
 # gem "rails", github: "rails/rails", branch: "main"
 
 # ActiveStorage for file uploads
-gem "activestorage", ">= 8.0.0"
+gem "activestorage", ">= 8.1.0"
 
 # Asset pipeline
 gem "jsbundling-rails"
@@ -66,7 +66,7 @@ gem "zeitwerk"
 gem "iso"
 gem "addressable"
 gem "acts_as_list"
-gem "acts-as-taggable-on", "~> 12.0"
+gem "acts-as-taggable-on", ">= 12.0"
 gem "bundler-integrity", "~> 1.0"
 gem "countries"
 gem "image_processing", "~> 1.12"
@@ -74,7 +74,7 @@ gem "prefixed_ids"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "csv"
-gem "view_component", "4.0.0"
+gem "view_component", ">= 4.6.0"
 
 # =============================================================================
 # AWS & CLOUD SERVICES
@@ -121,7 +121,7 @@ group :development do
   # Required by lookbook for livereload
   gem "listen", ">= 3.5.1"
   gem "actioncable"
-  gem "debug", platforms: [:mri, :mingw, :x64_mingw]
+  gem "debug", platforms: [:mri, :windows]
 
   gem "ruby-lsp-rspec", require: false
 
@@ -185,7 +185,7 @@ group :development, :test do
   gem "factory_bot_rails"
 
   # Code quality & linting
-  gem "i18n-tasks", "~> 1.0.12"
+  gem "i18n-tasks", ">= 1.0.12"
   gem "erb-formatter", require: false
   gem "erb_lint", require: false
 
@@ -209,4 +209,4 @@ end
 # PLATFORM SPECIFIC
 # =============================================================================
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "tzinfo-data", platforms: [:windows, :jruby]

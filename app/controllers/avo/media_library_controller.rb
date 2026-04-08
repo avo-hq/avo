@@ -37,6 +37,8 @@ module Avo
     def update
       @blob = ActiveStorage::Blob.find(params[:id])
       @blob.update!(blob_params)
+
+      redirect_to avo.media_library_path(@blob)
     end
 
     def attach

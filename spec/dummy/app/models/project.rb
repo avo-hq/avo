@@ -44,12 +44,13 @@ class Project < ApplicationRecord
 
   has_many :comments, as: :commentable
   has_many :reviews, as: :reviewable
+  belongs_to :user, optional: true
   has_and_belongs_to_many :users, inverse_of: :projects
 
   default_scope { order(name: :asc) }
 
   def self.ransackable_attributes(auth_object = nil)
-    ["budget", "country", "created_at", "description", "id", "meta", "name", "progress", "stage", "started_at", "status", "updated_at", "users_required"]
+    ["budget", "country", "created_at", "description", "id", "meta", "name", "progress", "stage", "started_at", "status", "updated_at", "user_id", "users_required"]
   end
 
   # Used to test tags on select mode with {value:,label:}
