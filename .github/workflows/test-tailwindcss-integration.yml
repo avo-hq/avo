@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         repository: avo-hq/avo_tailwindcss_test_repo
-        branch: avo-1147/tailwindcss-integration
+        ref: avo-1147/tailwindcss-integration
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -49,9 +49,6 @@ jobs:
       run: |
         # Classes from the host app views must be picked up by Avo's Tailwind v4 build.
         echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
-
-        # Keep the host app tailwindcss:build task happy during assets:precompile.
-        cp ./app/assets/stylesheets/application.css ./app/assets/stylesheets/application.tailwind.css
 
         # Host app stylesheets under app/assets/stylesheets/avo/*.css must also be included.
         mkdir -p ./app/assets/stylesheets/avo
