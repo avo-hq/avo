@@ -69,7 +69,7 @@ jobs:
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
-            compiled_file = File.join(File.dirname(__FILE__), "app", "assets", "builds", "avo.tailwind.css")
+            compiled_file = File.join(File.dirname(__FILE__), "app", "assets", "builds", "avo", "application.css")
 
             if File.exist?(compiled_file)
               File.read(compiled_file)
