@@ -25,7 +25,6 @@ module Avo
     def build
       return true unless self.class.enabled?
 
-      ensure_node_modules
       run_engine_css_prebuilds
       generate_input_file
       success = run_tailwindcss("--minify")
@@ -36,7 +35,6 @@ module Avo
     def watch
       return true unless self.class.enabled?
 
-      ensure_node_modules
       run_engine_css_prebuilds
       generate_input_file
       run_tailwindcss("--watch")
@@ -57,20 +55,6 @@ module Avo
           Kernel.system("ruby", prebuild.to_s)
         end
       end
-    end
-
-    def ensure_node_modules
-      engine_root = Avo::Engine.root
-      package_json = engine_root.join("package.json")
-      node_modules = engine_root.join("node_modules")
-
-      return unless package_json.exist?
-      return if node_modules.directory?
-
-      # Avo's stylesheet imports include CSS from npm packages. When running from source (or in some
-      # packaging setups), `node_modules/` may not exist yet, so Tailwind's CSS resolver fails.
-      success = Dir.chdir(engine_root) { Kernel.system("yarn", "install", "--frozen-lockfile") }
-      warn "[Avo] `yarn install` failed; Tailwind build may fail." unless success
     end
 
     def tmp_input_dir
