@@ -20,4 +20,8 @@ class Avo::FiltersComponent < Avo::BaseComponent
       helpers.resources_path(resource: @resource, encoded_filters: nil, reset_filter: true, keep_query_params: true)
     end
   end
+
+  def applied_filters_count
+    @applied_filters_count ||= Avo::Filters::BasicFilters.to_be_applied(resource: @resource, applied_filters: @applied_filters).count { |_, value| value.present? }
+  end
 end
