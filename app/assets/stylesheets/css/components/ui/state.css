@@ -66,12 +66,12 @@
 }
 
 .state__message {
-  @apply text-base font-normal leading-6 text-content-secondary;
+  @apply text-base font-normal leading-6 text-content-secondary break-words whitespace-normal ;
 }
 
 /*  Frame Load Failed Component */
 .state--frame-load-failed {
-  @apply max-w-96 gap-1;
+  @apply max-w-96 gap-1 min-w-0;
 }
 
 .state__document {
@@ -121,7 +121,7 @@
 }
 
 .state__note {
-  @apply text-center text-sm font-normal leading-5 text-content;
+  @apply text-center text-sm font-normal leading-5 text-content break-words whitespace-normal;
 }
 
 .state__link {
