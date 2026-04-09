@@ -66,7 +66,7 @@
 }
 
 .state__message {
-  @apply text-base font-normal leading-6 text-content-secondary break-words whitespace-normal ;
+  @apply text-base font-normal leading-6 text-content-secondary;
 }
 
 /*  Frame Load Failed Component */
