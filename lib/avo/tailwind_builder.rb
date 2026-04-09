@@ -73,8 +73,10 @@ module Avo
       FileUtils.mkdir_p(tmp_input_dir)
 
       lines = []
-      # Input lives under tmp/avo/; without `@source "../../"` Tailwind v4 only scans near this file, so
-      # classes in app/views/**/*.erb (and the rest of the app) are never detected.
+
+      # Include Avo itself (the core engine) in Tailwind's scan paths.
+      lines << %(@source "#{relative_to_tmp(Avo::Engine.root)}";)
+      append_engine_stylesheets(lines, Avo::Engine.root)
 
       append_plugin_engine_tailwind_sources(lines)
       collect_host_avo_stylesheets.each do |path|
@@ -87,10 +89,6 @@ module Avo
     end
 
     def append_plugin_engine_tailwind_sources(lines)
-      # Include Avo itself (the core engine) in Tailwind's scan paths.
-      lines << %(@source "#{relative_to_tmp(Avo::Engine.root)}";)
-      append_engine_stylesheets(lines, Avo::Engine.root)
-
       Avo.plugin_manager.engines.each do |entry|
         root = entry[:klass].root
         next unless root&.directory?
