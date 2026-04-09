@@ -7,10 +7,11 @@
   "private": true,
   "scripts": {
     "js:visualize": "yarn build:js -- --metafile=js_bundle_metadata.json && esbuild-visualizer --metadata=js_bundle_metadata.json --filename=js_bundle_stats.html",
-    "build": "yarn build:js && yarn build:css",
+    "build": "yarn build:js && yarn build:dependencies-css && yarn build:css",
     "prod:build": "yarn build",
     "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
     "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
+    "build:dependencies-css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/dependencies.css -o ./app/assets/builds/avo/dependencies.css --postcss",
     "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/avo/application.css --postcss",
     "export": "yarn export:heroicons && yarn export:tailwind-safelist",
     "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js"
