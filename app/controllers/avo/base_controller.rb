@@ -426,17 +426,7 @@ module Avo
 
     # Get the default state of the filters and override with the user applied filters
     def filters_to_be_applied
-      filter_defaults = {}
-
-      @resource.get_filters.each do |filter|
-        filter = filter[:class].new arguments: filter[:arguments]
-
-        unless filter.default.nil?
-          filter_defaults[filter.class.to_s] = filter.default
-        end
-      end
-
-      filter_defaults.merge(@applied_filters)
+      Avo::Filters::BasicFilters.to_be_applied(resource: @resource, applied_filters: @applied_filters)
     end
 
     def set_edit_title_and_breadcrumbs

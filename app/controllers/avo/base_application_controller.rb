@@ -25,7 +25,6 @@ module Avo
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
-    before_action :set_stylesheet_assets_path
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -293,17 +292,6 @@ module Avo
       end
     rescue => exception
       Avo.logger.debug "Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
-    end
-
-    def set_stylesheet_assets_path
-      # TODO: handle this differently maybe?
-      # We'll definitely have to change it on TW4
-      # Prefer the user's tailwind config if it exists, otherwise use the default one from Avo
-      @stylesheet_assets_path = if Rails.root.join("config", "avo", "tailwind.config.js").exist?
-        "avo.tailwind"
-      else
-        "avo/application"
-      end
     end
 
     def choose_layout

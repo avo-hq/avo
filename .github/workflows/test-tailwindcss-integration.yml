@@ -22,13 +22,14 @@ jobs:
     - uses: actions/checkout@v4
       with:
         repository: avo-hq/avo_tailwindcss_test_repo
+        ref: avo-1147/tailwindcss-integration
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
         bundler: default
-        ruby-version: 3.3.0
+        ruby-version: 3.4.8
 
     - name: Add Avo
       run: |
@@ -40,15 +41,22 @@ jobs:
         bin/rails generate avo:install
         bundle exec rake avo:build-assets
 
-    - name: Add the TailwindCSS integration
+    - name: Add custom tool
       run: |
-        yarn init --yes
-        bin/rails generate avo:tailwindcss:install
         bin/rails generate avo:tool custom_tool
 
-    - name: Add custom CSS
+    - name: Add Tailwind test inputs
       run: |
+        # Classes from the host app views must be picked up by Avo's Tailwind v4 build.
         echo '<div class="aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500 text-white text-2xl font-bold">Test<br>DIV</div>' >> ./app/views/avo/tools/custom_tool.html.erb
+
+        # Host app stylesheets under app/assets/stylesheets/avo/*.css must also be included.
+        mkdir -p ./app/assets/stylesheets/avo
+        cat <<'EOF' > ./app/assets/stylesheets/avo/integration_test.css
+        .ci-avo-host-stylesheet {
+          color: rebeccapurple;
+        }
+        EOF
 
     - name: Compile assets
       run: |
@@ -61,22 +69,16 @@ jobs:
         contents: |
           #!/usr/bin/env ruby
           def get_compiled_file_contents
-            asset_name = 'avo.tailwind'
-            compiled_assets_path = File.join(File.dirname(__FILE__), 'public', 'assets').to_s
+            compiled_file = File.join(File.dirname(__FILE__), "app", "assets", "builds", "avo", "application.css")
 
-            # Find the compiled file with a matching name
-            compiled_file = Dir[File.join(compiled_assets_path, "#{asset_name}-*")].first
-
-            # Read the contents of the file, if it exists
-            if compiled_file
+            if File.exist?(compiled_file)
               File.read(compiled_file)
             else
-              # Handle the case where the file is not found
-              raise "Compiled file for '#{asset_name}' not found."
+              raise "Compiled file '#{compiled_file}' not found."
             end
           end
 
-          # Classes that are available in custom_tool.html.erb and most likely not available in the base Avo bundle
+          # Classes present in custom_tool.html.erb and unlikely to be present in the base Avo bundle.
           test_classes = %w(aspect-video break-before-avoid float-end order-9 col-end-13 box-decoration-slice bg-gradient-to-r from-indigo-600 to-pink-500)
 
           contents = get_compiled_file_contents
@@ -86,6 +88,9 @@ jobs:
             raise "Failed to find the custom classes." unless contents.include?(class_name)
             puts "[Avo->] Found #{class_name}."
           end
+
+          raise "Failed to find host Avo stylesheet marker class." unless contents.include?("ci-avo-host-stylesheet")
+          puts "[Avo->] Found ci-avo-host-stylesheet."
         write-mode: append
 
     - name: Run test
