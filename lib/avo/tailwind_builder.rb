@@ -22,12 +22,6 @@ module Avo
       Avo.configuration.tailwindcss_integration_enabled && tailwindcss_available?
     end
 
-    def self.custom_build_exists?
-      return false unless defined?(Rails)
-
-      Rails.root.join("app", "assets", "builds", "avo.tailwind.css").exist?
-    end
-
     def build
       return true unless self.class.enabled?
 
@@ -88,7 +82,7 @@ module Avo
     end
 
     def output_path
-      Rails.root.join("app", "assets", "builds", "avo.tailwind.css")
+      Rails.root.join("app", "assets", "builds", "avo", "application.css")
     end
 
     def generate_input_file

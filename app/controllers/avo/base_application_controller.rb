@@ -25,7 +25,6 @@ module Avo
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
-    before_action :set_stylesheet_assets_path
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -293,14 +292,6 @@ module Avo
       end
     rescue => exception
       Avo.logger.debug "Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
-    end
-
-    def set_stylesheet_assets_path
-      @stylesheet_assets_path = if Avo::TailwindBuilder.custom_build_exists?
-        "avo.tailwind"
-      else
-        "avo/application"
-      end
     end
 
     def choose_layout
