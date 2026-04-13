@@ -1,0 +1,48 @@
+<% content_for :head do %>
+  <% set_meta_tags title: @page_title %>
+<% end %>
+
+<%= render ui.panel(class: "w-full") do |panel| %>
+  <% panel.with_header do %>
+    <%= render ui.panel_header(
+      title: "#{@field_id.to_s.humanize} summary",
+      description: "#{@resource.plural_name.humanize} — #{@values_summary.values.sum} records"
+    ) do |header| %>
+      <% header.with_controls do %>
+        <%= a_link @back_path,
+          style: :text,
+          title: t("avo.go_back"),
+          icon: "tabler/outline/arrow-left",
+          data: { hotkey: "b", tippy: :tooltip } do %>
+          <%= t("avo.go_back") %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% panel.with_body do %>
+    <div class="distribution-chart__body">
+      <%= pie_chart @values_summary, id: "chart-full-#{@field_id}", legend: false, height: "360px", colors: Avo.configuration.branding.chart_colors %>
+    </div>
+  <% end %>
+
+  <% panel.with_sidebar do %>
+    <div class="distribution-chart__sidebar">
+      <h2 class="distribution-chart__title">
+        Breakdown
+      </h2>
+
+      <div class="distribution-chart__grid" id="<%= @field_id %>-full-summary">
+        <% total = @values_summary.values.sum.to_f %>
+        <% @values_summary.each_with_index do |(key, value), index| %>
+          <%= tag.div class: class_names("distribution-chart__color", "bg-[#{chart_color(index)}]") %>
+          <span class="distribution-chart__key"><%= key %></span>
+          <span class="distribution-chart__value"><%= value %></span>
+          <span class="distribution-chart__percentage">
+            <%= total > 0 ? number_to_percentage((value / total) * 100, precision: 1) : "0%" %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

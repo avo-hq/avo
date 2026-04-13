@@ -29,7 +29,7 @@ RSpec.feature "Field Summarizing", type: :system do
         expect(page).to have_content "LOADING\n4"
       end
 
-      find('th[data-table-header-field-id="status"] div svg').click
+      find("#summary-header-status").click
 
       expect(page).not_to have_css "#status-summary"
       expect(page).not_to have_css "#chart-status"
@@ -138,10 +138,46 @@ RSpec.feature "Field Summarizing", type: :system do
           expect(page).to_not have_content "LOADING\n4"
         end
 
-        find('th[data-table-header-field-id="status"] div svg').click
+        find("#summary-header-status").click
 
         expect(page).not_to have_css "#status-summary"
         expect(page).not_to have_css "#chart-status"
+      end
+    end
+
+    describe "full summary page" do
+      it "has a 'View full summary' link in the modal that navigates to a dedicated page" do
+        visit avo.resources_projects_path
+
+        find("#summary-header-status").click
+        wait_for_turbo_frame_id("summary-frame-status")
+
+        expect(page).to have_link "View full summary"
+
+        click_link "View full summary"
+
+        expect(page).to have_current_path(%r{/Project/status/distribution_chart/full})
+        expect(page).to have_content "Status summary"
+        expect(page).to have_content "rejected"
+        expect(page).to have_content "loading"
+        expect(page).to have_content "closed"
+        expect(page).to have_css "#chart-full-status"
+      end
+
+      it "is directly accessible via URL" do
+        visit avo.distribution_chart_full_path(resource_name: "Project", field_id: "status")
+
+        expect(page).to have_content "Status summary"
+        expect(page).to have_css "#chart-full-status"
+      end
+
+      it "respects applied filters" do
+        encoded_filters = Base64.encode64({"Avo::Filters::ProjectStatusFilter" => {"loading" => true}}.to_json)
+
+        visit avo.distribution_chart_full_path(resource_name: "Project", field_id: "status", encoded_filters: encoded_filters)
+
+        expect(page).not_to have_content "rejected"
+        expect(page).to have_content "loading"
       end
     end
 

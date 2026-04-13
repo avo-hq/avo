@@ -19,4 +19,13 @@
       <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
     </div>
   </div>
+
+  <div class="mt-3 border-t border-tertiary pt-3 text-center">
+    <%= a_link distribution_chart_full_path(request.query_parameters.merge(resource_name: params[:resource_name], field_id: params[:field_id])),
+      style: :text,
+      icon: "tabler/outline/external-link",
+      data: { turbo_frame: "_top" } do %>
+      View full summary
+    <% end %>
+  </div>
 </turbo-frame>

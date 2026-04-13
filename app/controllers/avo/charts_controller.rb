@@ -3,6 +3,37 @@ require_dependency "avo/base_controller"
 module Avo
   class ChartsController < BaseController
     def distribution_chart
+      compute_summary_data
+
+      render "avo/partials/distribution_chart", layout: "avo/blank"
+    end
+
+    def distribution_chart_full
+      compute_summary_data
+
+      @page_title = "#{@resource.plural_name.humanize} — #{@field_id.to_s.humanize} summary"
+
+      index_params = {
+        encoded_filters: params[:encoded_filters],
+        scope: params[:scope],
+        q: params[:q]
+      }
+      if defined?(Avo::DynamicFilters)
+        dynamic_filters_key = Avo::DynamicFilters.configuration.param_key
+        index_params[dynamic_filters_key] = params[dynamic_filters_key]&.to_unsafe_h
+      end
+      index_params.compact!
+      @back_path = resources_path(resource: @resource, **index_params)
+
+      add_breadcrumb title: @resource.plural_name.humanize, path: @back_path, initials: @resource.class.initials
+      add_breadcrumb title: "#{@field_id.to_s.humanize} summary"
+
+      render "avo/partials/distribution_chart_full"
+    end
+
+    private
+
+    def compute_summary_data
       @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
         .transform_keys do |key|
         key = if key.is_a?(ActiveRecord::Base)
@@ -16,11 +47,7 @@ module Avo
       end
 
       @field_id = params[:field_id]
-
-      render "avo/partials/distribution_chart", layout: "avo/blank"
     end
-
-    private
 
     def is_associated_summary
       params[:via_record_id].present? &&
