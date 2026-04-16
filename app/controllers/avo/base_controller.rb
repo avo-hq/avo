@@ -708,9 +708,46 @@ module Avo
       @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
 
-    # If we don't get a query object predefined from a child controller like associations, just spin one up
+    # If we don't get a query object predefined from a child controller like associations, just spin one up.
+    # `base_index_query` is association-aware so the charts controller can reuse the same starting point.
     def set_query
-      @query ||= @resource.class.query_scope
+      @query ||= base_index_query
+    end
+
+    # Returns the starting ActiveRecord relation for an index-style query,
+    # association-aware based on request params. Used by both the regular
+    # index view and the summarizable distribution chart so the two paths
+    # share one source of truth.
+    def base_index_query
+      if associated_summary?
+        build_association_scope_from_params
+      else
+        @resource.class.query_scope
+      end
+    end
+
+    def associated_summary?
+      params[:via_record_id].present? &&
+        params[:via_resource_class].present? &&
+        (params[:association_name].present? || params[:related_name].present?)
+    end
+
+    def build_association_scope_from_params
+      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
+      @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
+      @parent_resource = parent_resource_class.new(
+        record: @parent_record,
+        view: Avo::ViewInquirer.new("show")
+      )
+      @parent_resource.detect_fields
+
+      association_query_scope(
+        parent_resource: @parent_resource,
+        parent_record: @parent_record,
+        association_name: params[:association_name] || params[:related_name],
+        authorization: @resource.authorization(user: _current_user),
+        resource: @resource
+      )
     end
 
     def apply_index_filters
