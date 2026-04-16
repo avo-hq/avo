@@ -2,15 +2,17 @@
 @import "tailwindcss";
 
 /* TODO: Figure out a way to add those dynamically */
-@source "../../../tmp/avo/packages/avo-advanced";
-@source "../../../tmp/avo/packages/avo-dashboards";
-@source "../../../tmp/avo/packages/avo-dynamic_filters";
-@source "../../../tmp/avo/packages/avo-kanban";
-@source "../../../tmp/avo/packages/avo-menu";
-@source "../../../tmp/avo/packages/avo-pro";
-@source "../../../tmp/avo/packages/avo-forms";
-
-/* @config "../../../tailwind.config.js"; */
+/* Find a long term solution for this. */
+/* Basically this is a hack to make sure that we dont have specificity issues with the packages stylesheets. */
+/* However if we do this the packages builds are kinda irrelevant. */
+/* And we also need to release a new version of avo anytime that a package stylesheet changes. */
+@source "../../../tmp/avo/build-assets/packages/avo-advanced";
+@source "../../../tmp/avo/build-assets/packages/avo-dashboards";
+@source "../../../tmp/avo/build-assets/packages/avo-dynamic_filters";
+@source "../../../tmp/avo/build-assets/packages/avo-kanban";
+@source "../../../tmp/avo/build-assets/packages/avo-menu";
+@source "../../../tmp/avo/build-assets/packages/avo-pro";
+@source "../../../tmp/avo/build-assets/packages/avo-forms";
 
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
@@ -94,16 +96,9 @@
 @custom-variant hover (&:hover);
 
 @import "./css/components/ui/checkbox.css";
+@import "./css/components/tooltip.css";
 
 @layer components {
-  @import "./../../../node_modules/easymde/dist/easymde.min.css";
-  @import "./../../../node_modules/tippy.js/dist/tippy.css";
-  @import "./../../../node_modules/tippy.js/themes/light.css";
-  @import "./../../../node_modules/flatpickr/dist/flatpickr.css";
-  @import "./../../../node_modules/@algolia/autocomplete-theme-classic/dist/theme.css";
-  @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
-  /* @import "./css/components/ui/checkbox.css"; */
-
   @import "./css/fonts.css";
   @import "./css/button-group.css";
   @import "./css/typography.css";
@@ -155,7 +150,6 @@
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
   @import "./css/components/hotkey.css";
-  @import "./css/components/tooltip.css";
   @import "./css/components/modal.css";
   @import "./css/components/filters.css";
   @import "./css/css-animations.css";

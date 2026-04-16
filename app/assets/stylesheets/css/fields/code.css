@@ -1,5 +1,3 @@
-@import 'codemirror/lib/codemirror.css';
-
 /* Base CodeMirror surface */
 .CodeMirror {
   @apply border border-tertiary rounded-b-lg bg-primary text-content p-0 min-h-auto;

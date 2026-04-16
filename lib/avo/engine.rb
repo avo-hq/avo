@@ -29,12 +29,31 @@ module Avo
     isolate_namespace Avo
 
     rake_tasks do
-      # Ensure Avo tasks are loaded
       load File.expand_path("../tasks/avo_tasks.rake", __dir__)
 
       if ENV["BUILD_AVO_ASSETS"] == "true"
         if Rake::Task.task_defined?("assets:precompile")
           Rake::Task["assets:precompile"].enhance(["avo:build"])
+        end
+      end
+
+      if Avo::TailwindBuilder.enabled? && Rake::Task.task_defined?("assets:precompile")
+        Rake::Task["assets:precompile"].enhance(["avo:tailwindcss:build"])
+      end
+    end
+
+    initializer "avo.tailwindcss", after: :load_config_initializers do
+      next unless Rails.env.development?
+
+      Rails.application.config.after_initialize do
+        next unless Avo::TailwindBuilder.enabled?
+
+        begin
+          unless Avo::TailwindBuilder.build
+            Rails.logger.warn "Avo: Custom Tailwind CSS auto-build failed (run bin/rails avo:tailwindcss:build for details)."
+          end
+        rescue => e
+          Rails.logger.warn "Avo: Failed to auto-build Tailwind CSS: #{e.message}"
         end
       end
     end
