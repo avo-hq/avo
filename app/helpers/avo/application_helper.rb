@@ -1,6 +1,7 @@
 module Avo
   module ApplicationHelper
     include Avo::ResourcesHelper
+    include Avo::SummaryChartHelper
 
     def ui = Avo::UIInstance
 

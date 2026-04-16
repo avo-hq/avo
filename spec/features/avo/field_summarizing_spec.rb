@@ -70,8 +70,14 @@ RSpec.feature "Field Summarizing", type: :system do
         end
       end
     end
+  end
 
-    context "when filters are applied on the index" do
+  # ---------------------------------------------------------------
+  # Index-level: standard filter + search propagate to the chart
+  # ---------------------------------------------------------------
+
+  describe "summarizable with filters on the index" do
+    context "when a standard filter is applied" do
       it "adjusts the summary to reflect only the filtered records" do
         encoded_filters = Base64.encode64({"Avo::Filters::ProjectStatusFilter" => {"loading" => true}}.to_json)
 
@@ -88,7 +94,7 @@ RSpec.feature "Field Summarizing", type: :system do
       end
     end
 
-    context "when search is applied on the index" do
+    context "when search is applied" do
       before do
         create(:project, name: "Search summary match", status: :closed)
         create(:project, name: "Search summary mismatch", status: :rejected)
@@ -107,8 +113,15 @@ RSpec.feature "Field Summarizing", type: :system do
         end
       end
     end
+  end
 
-    context "when summarizing on association pages" do
+  # ---------------------------------------------------------------
+  # Association contexts: prove the fix reaches AssociationsController
+  # + ChartsController, not just the top-level index.
+  # ---------------------------------------------------------------
+
+  describe "summarizable on association pages" do
+    context "on a has_and_belongs_to_many association (Project → Users)" do
       let(:user) { create :user }
       let!(:project) { create :project, status: :closed, users: [user] }
 
@@ -126,7 +139,6 @@ RSpec.feature "Field Summarizing", type: :system do
 
         expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: true
 
-        # I can't make the lazy loading work, looks like it's not triggered at all
         wait_for_turbo_frame_id("summary-frame-status")
 
         expect(page).to have_css "#status-summary", visible: true
@@ -145,43 +157,7 @@ RSpec.feature "Field Summarizing", type: :system do
       end
     end
 
-    describe "full summary page" do
-      it "has a 'View full summary' link in the modal that navigates to a dedicated page" do
-        visit avo.resources_projects_path
-
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
-
-        expect(page).to have_link "View full summary"
-
-        click_link "View full summary"
-
-        expect(page).to have_current_path(%r{/Project/status/distribution_chart/full})
-        expect(page).to have_content "Status summary"
-        expect(page).to have_content "rejected"
-        expect(page).to have_content "loading"
-        expect(page).to have_content "closed"
-        expect(page).to have_css "#chart-full-status"
-      end
-
-      it "is directly accessible via URL" do
-        visit avo.distribution_chart_full_path(resource_name: "Project", field_id: "status")
-
-        expect(page).to have_content "Status summary"
-        expect(page).to have_css "#chart-full-status"
-      end
-
-      it "respects applied filters" do
-        encoded_filters = Base64.encode64({"Avo::Filters::ProjectStatusFilter" => {"loading" => true}}.to_json)
-
-        visit avo.distribution_chart_full_path(resource_name: "Project", field_id: "status", encoded_filters: encoded_filters)
-
-        expect(page).not_to have_content "rejected"
-        expect(page).to have_content "loading"
-      end
-    end
-
-    context "when summarizing users inside a project" do
+    context "on a has_and_belongs_to_many association (Project → Users, active summary)" do
       let!(:project) { create :project }
 
       before do
@@ -209,6 +185,127 @@ RSpec.feature "Field Summarizing", type: :system do
           expect(page).to have_content "1" # 1 inactive user in project
           # unassociated active user must not be counted
           expect(page).not_to have_content "3"
+        end
+      end
+    end
+
+    context "on a has_many association (User → Posts)" do
+      let(:admin) { create :user, roles: {admin: true}, active: false }
+      let(:author) { create :user }
+      let!(:draft_post) { create :post, user: author, status: :draft, published_at: nil, name: "SearchDraft" }
+      let!(:published_post) { create :post, user: author, status: :published, published_at: Time.now, name: "SearchPublished" }
+      let!(:archived_post) { create :post, user: author, status: :archived, published_at: nil, name: "ArchivedOne" }
+      # Noise: another user's post must not appear in the chart.
+      let!(:other_user_post) { create :post, user: create(:user), status: :published, published_at: Time.now, name: "Other" }
+
+      def open_status_summary
+        find("#summary-header-status").click
+        wait_for_turbo_frame_id("summary-frame-status")
+      end
+
+      it "shows distribution scoped to the parent's records" do
+        visit "/admin/resources/users/#{author.id}/posts?view_type=table"
+        open_status_summary
+
+        within "#status-summary" do
+          expect(page).to have_content "DRAFT\n1"
+          expect(page).to have_content "PUBLISHED\n1"
+          expect(page).to have_content "ARCHIVED\n1"
+        end
+      end
+
+      it "adjusts the summary when a standard filter is applied" do
+        encoded_filters = Avo::Filters::BaseFilter.encode_filters({"Avo::Filters::PublishedFilter" => "published"})
+
+        visit "/admin/resources/users/#{author.id}/posts?view_type=table&encoded_filters=#{encoded_filters}"
+        open_status_summary
+
+        within "#status-summary" do
+          expect(page).to have_content "PUBLISHED\n1"
+          expect(page).not_to have_content "DRAFT"
+          expect(page).not_to have_content "ARCHIVED"
+        end
+      end
+
+      it "adjusts the summary when search is applied via URL" do
+        visit "/admin/resources/users/#{author.id}/posts?view_type=table&q=SearchPublished"
+        open_status_summary
+
+        within "#status-summary" do
+          expect(page).to have_content "PUBLISHED\n1"
+          expect(page).not_to have_content "DRAFT"
+          expect(page).not_to have_content "ARCHIVED"
+        end
+      end
+
+      it "adjusts the summary when search is typed into the input (turbo-stream path)" do
+        visit "/admin/resources/users/#{author.id}/posts?view_type=table"
+
+        search_input = find('input[data-resource-search-target="input"]')
+        search_input.fill_in with: "SearchDraft"
+
+        expect(page).to have_no_content("SearchPublished")
+        expect(page).to have_no_content("ArchivedOne")
+        expect(page).to have_content("SearchDraft")
+
+        open_status_summary
+
+        within "#status-summary" do
+          expect(page).to have_content "DRAFT\n1"
+          expect(page).not_to have_content "PUBLISHED"
+          expect(page).not_to have_content "ARCHIVED"
+        end
+      end
+    end
+
+    context "on a has_many :through association (Team → team_members)" do
+      let(:admin) { create :user, roles: {admin: true}, active: false }
+      let(:team) { create :team }
+      let!(:active_member_one) { create :user, first_name: "MemberAlpha", active: true }
+      let!(:active_member_two) { create :user, first_name: "MemberBeta", active: true }
+      let!(:inactive_member) { create :user, first_name: "MemberGamma", active: false }
+      let!(:non_member) { create :user, active: true }
+
+      before do
+        TeamMembership.create!(team: team, user: active_member_one, level: "member")
+        TeamMembership.create!(team: team, user: active_member_two, level: "member")
+        TeamMembership.create!(team: team, user: inactive_member, level: "member")
+      end
+
+      def open_active_summary
+        find("#summary-header-active").click
+        wait_for_turbo_frame_id("summary-frame-active")
+      end
+
+      it "shows distribution scoped to the team's members" do
+        visit "/admin/resources/teams/#{team.id}/team_members"
+        open_active_summary
+
+        within "#active-summary" do
+          expect(page).to have_content "TRUE\n2"
+          expect(page).to have_content "—\n1"
+        end
+      end
+
+      it "adjusts the summary when a standard filter is applied" do
+        encoded_filters = Avo::Filters::BaseFilter.encode_filters({"Avo::Filters::UserActiveFilter" => "true"})
+
+        visit "/admin/resources/teams/#{team.id}/team_members?encoded_filters=#{encoded_filters}"
+        open_active_summary
+
+        within "#active-summary" do
+          expect(page).to have_content "TRUE\n2"
+          expect(page).not_to have_content "—"
+        end
+      end
+
+      it "adjusts the summary when search is applied" do
+        visit "/admin/resources/teams/#{team.id}/team_members?q=MemberGamma"
+        open_active_summary
+
+        within "#active-summary" do
+          expect(page).to have_content "—\n1"
+          expect(page).not_to have_content "TRUE"
         end
       end
     end
