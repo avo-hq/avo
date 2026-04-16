@@ -90,20 +90,7 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
-      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
-      if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
-
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
-
-        # The path is nil because it's not easy to compute the association link (course->course_links = /links)
-        add_breadcrumb title: @resource.plural_name.humanize, path: nil, initials: @resource.class.initials
-      else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
-      end
+      add_via_breadcrumbs
 
       add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials
       add_breadcrumb title: I18n.t("avo.details").upcase_first, path: nil
@@ -723,6 +710,21 @@ module Avo
         build_association_scope_from_params
       else
         @resource.class.query_scope
+      end
+    end
+
+    def add_via_breadcrumbs
+      if params[:via_resource_class].present? && params[:via_record_id].present?
+        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
+        via_record = via_resource.find_record params[:via_record_id], params: params
+        via_resource = via_resource.new record: via_record
+
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+
+        add_breadcrumb title: @resource.plural_name.humanize, path: nil, initials: @resource.class.initials
+      else
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
     end
 

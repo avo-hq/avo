@@ -23,9 +23,14 @@ module Avo
         index_params[dynamic_filters_key] = params[dynamic_filters_key]&.to_unsafe_h
       end
       index_params.compact!
-      @back_path = resources_path(resource: @resource, **index_params)
 
-      add_breadcrumb title: @resource.plural_name.humanize, path: @back_path, initials: @resource.class.initials
+      @back_path = if associated_summary?
+        resource_path(record: @parent_record, resource: @parent_resource)
+      else
+        resources_path(resource: @resource, **index_params)
+      end
+
+      add_via_breadcrumbs
       add_breadcrumb title: "#{@field_id.to_s.humanize} summary"
 
       render "avo/partials/distribution_chart_full"
@@ -48,8 +53,6 @@ module Avo
 
       @field_id = params[:field_id]
     end
-
-    private
 
     # The distribution chart runs the SAME pipeline as the regular index view:
     # starting relation → search → sort → standard filters → scopes → dynamic filters.
