@@ -8,7 +8,7 @@
 
   --alert-color: var(--color-foreground);
   --alert-title-color: color-mix(in oklab, var(--color-content) 20%, var(--alert-color));
-  --alert-message-color: color-mix(in oklab, var(--color-content) 10%, var(--alert-color));
+  --alert-message-color: var(--alert-title-color);
   --alert-background: var(--color-background);
   --alert-border: var(--color-tertiary);
 }
