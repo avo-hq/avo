@@ -52,7 +52,7 @@
 
       <% c.with_controls do %>
         <%= a_button type: :button,
-          data: { action: 'click->modal#close', hotkey: "Escape" },
+          data: { action: 'click->modal#close', **(@action.close_modal_on_backdrop_click ? { hotkey: "Escape" } : {}) },
           size: :md do %>
           <%= @action.cancel_button_label %>
         <% end %>

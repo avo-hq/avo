@@ -87,8 +87,13 @@ def check_rtl_compliance(file_path, file_content)
 
     # Check for space-x without rtl:space-x-reverse companion
     if line.match?(/\bspace-x-\d+/) && !line.match?(/rtl:space-x-reverse/)
+      # Look at surrounding lines (multi-line class attributes from formatters)
+      context_range = [index - 3, 0].max..[index + 3, lines.length - 1].min
+      nearby_lines = lines[context_range].join(" ")
+      has_rtl_nearby = nearby_lines.match?(/rtl:space-x-reverse/)
+
       # Only warn if this looks like a class attribute (not in CSS/JS logic)
-      if line.match?(/class[=:]|className/) || file_path.end_with?(".erb")
+      if !has_rtl_nearby && (line.match?(/class[=:]|className/) || file_path.end_with?(".erb"))
         violations << {
           file: file_path,
           line: line_number,

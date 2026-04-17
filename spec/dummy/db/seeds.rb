@@ -25,7 +25,7 @@ Project.delete_all
 User.delete_all
 City.delete_all
 Playground.delete_all
-["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish", "playgrounds"].each do |table_name|
+["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "locations", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish", "playgrounds"].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE #{table_name} RESTART IDENTITY CASCADE")
 end
 

@@ -1,7 +1,7 @@
 <div
   class="actions-dropdown relative flex w-full flex-col sm:w-auto"
   data-component-name="<%= self.class.to_s.underscore %>"
-  data-controller="toggle actions-picker"
+  data-controller="actions-picker"
   data-actions-picker-enabled-class="text-content hover:bg-secondary"
   data-actions-picker-disabled-class="cursor-wait text-content/60"
   data-resource-name="<%= @resource.class.to_s %>"
@@ -10,7 +10,7 @@
   <% end %>
 >
 
-  <%= render ui.dropdown(classes: "z-100", data: { dropdown_list: @label }) do |component| %>
+  <%= render ui.dropdown(popover_mode: true) do |component| %>
     <% component.with_trigger do %>
       <%= a_button style: @style,
         type: :button,
@@ -19,8 +19,8 @@
         class: "focus:outline-hidden",
         icon: @icon,
         icon_class: @icon_class,
+        popovertarget: component.popover_id,
         data: {
-          action: component.action,
           actions_dropdown_button: @resource.model_key,
           tippy: "tooltip",
           tippy_content: @title,

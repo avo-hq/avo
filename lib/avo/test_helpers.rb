@@ -343,6 +343,18 @@ module Avo
       find('#turbo-confirm button[value="confirm"]').click
     end
 
+    # Clicks a row control action (destroy, detach, edit, etc.) for a given record.
+    # Works for both grid view (actions behind a popover trigger) and table view (flat inline actions).
+    def click_row_action(record, control:)
+      row = find("[data-record-id='#{record.to_param}']")
+
+      if row.has_css?(".grid-card__action", wait: 0)
+        row.find(".grid-card__action").click
+      end
+
+      find("a[data-control='#{control}'][data-resource-id='#{record.to_param}']").click
+    end
+
     private
 
     # Returns the name of the wrapper element for the given field id and type
@@ -373,9 +385,7 @@ module Avo
         if list.present?
           sleep 0.1
           click_on list
-          within("[data-dropdown-list='#{list}']", visible: :all) do
-            find("a[data-action-name='#{action_name}']").click
-          end
+          find("a[data-action-name='#{action_name}']", visible: :all).click
         else
           click_link(action_name)
         end
