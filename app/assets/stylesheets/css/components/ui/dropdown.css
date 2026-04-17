@@ -50,6 +50,10 @@
 
   &.dropdown-menu__item--disabled {
     @apply text-content-secondary cursor-not-allowed !bg-transparent;
+
+    &:hover {
+      @apply !text-content-secondary !bg-transparent;
+    }
   }
 
   &.menu__item--action {
