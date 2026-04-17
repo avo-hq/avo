@@ -11,7 +11,23 @@
 }
 
 .distribution-chart__grid {
-  @apply grid gap-x-3 gap-y-1 items-center text-base text-content grid-cols-[auto_1fr_auto_auto];
+  @apply flex flex-col text-base text-content;
+}
+
+.distribution-chart__row {
+  @apply grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-3 rounded-md bg-transparent border-none px-2 py-1 cursor-pointer text-start text-content transition-opacity;
+
+  &:hover {
+    @apply bg-secondary;
+  }
+}
+
+.distribution-chart__row--inactive {
+  @apply opacity-50;
+
+  .distribution-chart__key {
+    @apply line-through;
+  }
 }
 
 .distribution-chart__color {
