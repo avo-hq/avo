@@ -14,7 +14,14 @@
 }
 
 .popover-menu__panel--summary {
+  margin-block-end: 1rem;
   position-area: bottom center;
+}
+
+.popover-menu__panel--summary > .dropdown-menu {
+  max-height: 70dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .popover-menu__panel::backdrop {
