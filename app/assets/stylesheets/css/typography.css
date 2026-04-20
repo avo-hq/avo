@@ -19,11 +19,8 @@ h5 {
 }
 
 kbd {
-  @apply inline-flex min-w-5 items-center justify-center rounded-sm border border-secondary bg-secondary px-1 text-xs font-semibold text-content-secondary;
+  @apply inline-flex min-w-5 items-center justify-center rounded-sm border border-tertiary bg-tertiary px-1 py-px text-[10px] leading-[14px] font-medium text-content-secondary;
 
-  /* color: currentColor;
-  border: 1px solid currentColor;
-  background-color: color-mix(in srgb, currentColor 8%, transparent); */
   box-shadow: var(--box-shadow-search-input-shortcut);
   transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
 }

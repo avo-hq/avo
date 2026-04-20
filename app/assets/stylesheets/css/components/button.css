@@ -355,4 +355,8 @@
   .button__spinner {
     @apply absolute inset-0 flex items-center justify-center;
   }
+
+  .hotkey-badge {
+    @apply -mt-0.5;
+  }
 }
