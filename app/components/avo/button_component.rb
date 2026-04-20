@@ -82,4 +82,3 @@ class Avo::ButtonComponent < Avo::BaseComponent
     concat hotkey_badge(@args.dig(:data, :hotkey)) if @args.dig(:data, :hotkey) && @args.dig(:data, :show_hotkey_badge) != false
   end
 end
-#
