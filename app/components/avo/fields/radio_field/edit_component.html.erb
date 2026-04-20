@@ -4,7 +4,7 @@
       <% @field.options.each do |key, value| %>
         <div class="tabs__item-wrapper tabs__item-wrapper--switcher">
           <label class="tabs__item tabs__item--switcher">
-            <%= form.radio_button @field.id, key, checked: (@field.value.to_s == key.to_s), class: "hidden" %>
+            <%= form.radio_button @field.id, key, checked: @field.option_checked?(key, value), class: "hidden" %>
             <span class="tabs__item-label"><%= value %></span>
           </label>
         </div>
@@ -14,7 +14,7 @@
     <div class="flex flex-col gap-2">
       <% @field.options.each do |key, value| %>
         <div class="flex items-center gap-1">
-          <%= form.radio_button @field.id, key, checked: (@field.value.to_s == key.to_s) %>
+          <%= form.radio_button @field.id, key, checked: @field.option_checked?(key, value) %>
           <%= form.label @field.id, value, value: key %>
         </div>
       <% end %>

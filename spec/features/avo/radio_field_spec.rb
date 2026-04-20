@@ -31,20 +31,20 @@ RSpec.describe "RadioField", type: :feature do
         )
 
         expect(page).to have_checked_field "fish_size_small", visible: :all
-        expect(page).to_not have_checked_field "fish_size_medium", visible: :all
-        expect(page).to_not have_checked_field "fish_size_large", visible: :all
+        expect(page).to_not have_checked_field "fish_size_medium_one", visible: :all
+        expect(page).to_not have_checked_field "fish_size_large_two", visible: :all
 
-        find("#fish_size_large", visible: :all).click
+        find("#fish_size_large_two", visible: :all).click
 
         expect(page).to_not have_checked_field "fish_size_small", visible: :all
-        expect(page).to_not have_checked_field "fish_size_medium", visible: :all
-        expect(page).to have_checked_field "fish_size_large", visible: :all
+        expect(page).to_not have_checked_field "fish_size_medium_one", visible: :all
+        expect(page).to have_checked_field "fish_size_large_two", visible: :all
 
         save
 
         fish.reload
 
-        expect(fish.size).to eq "large"
+        expect(fish.size).to eq "large two"
       end
     end
   end
@@ -57,7 +57,69 @@ RSpec.describe "RadioField", type: :feature do
         visit "/admin/resources/fish/#{fish.id}/edit"
 
         expect(page).to_not have_checked_field "fish_size_small", visible: :all
+        expect(page).to_not have_checked_field "fish_size_medium_one", visible: :all
+        expect(page).to_not have_checked_field "fish_size_large_two", visible: :all
+      end
+    end
+  end
+
+  describe "default option on new view" do
+    context "when default matches an option key" do
+      before(:all) do
+        Avo::Resources::Fish.with_temporary_items do
+          field :id, as: :id
+          field :name, as: :text
+          field :size, as: :radio, options: {small: "Small", medium: "Medium", large: "Large"}, default: :medium
+        end
+      end
+
+      after(:all) { Avo::Resources::Fish.restore_items_from_backup }
+
+      it "checks the matching radio" do
+        visit "/admin/resources/fish/new"
+
+        expect(page).to_not have_checked_field "fish_size_small", visible: :all
+        expect(page).to have_checked_field "fish_size_medium", visible: :all
+        expect(page).to_not have_checked_field "fish_size_large", visible: :all
+      end
+    end
+
+    context "when default matches an option value (select-style options)" do
+      before(:all) do
+        Avo::Resources::Fish.with_temporary_items do
+          field :id, as: :id
+          field :name, as: :text
+          field :size, as: :radio, options: {small: "Small", medium: "Medium", large: "Large"}, default: "Large"
+        end
+      end
+
+      after(:all) { Avo::Resources::Fish.restore_items_from_backup }
+
+      it "checks the radio whose value matches the default" do
+        visit "/admin/resources/fish/new"
+
+        expect(page).to_not have_checked_field "fish_size_small", visible: :all
         expect(page).to_not have_checked_field "fish_size_medium", visible: :all
+        expect(page).to have_checked_field "fish_size_large", visible: :all
+      end
+    end
+
+    context "when default matches a key and display_as is :tabs" do
+      before(:all) do
+        Avo::Resources::Fish.with_temporary_items do
+          field :id, as: :id
+          field :name, as: :text
+          field :size, as: :radio, options: {small: "Small", medium: "Medium", large: "Large"}, default: :medium, display_as: :tabs
+        end
+      end
+
+      after(:all) { Avo::Resources::Fish.restore_items_from_backup }
+
+      it "checks the matching tab" do
+        visit "/admin/resources/fish/new"
+
+        expect(page).to_not have_checked_field "fish_size_small", visible: :all
+        expect(page).to have_checked_field "fish_size_medium", visible: :all
         expect(page).to_not have_checked_field "fish_size_large", visible: :all
       end
     end
