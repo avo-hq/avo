@@ -22,7 +22,7 @@ kbd {
   @apply inline-flex min-w-5 items-center justify-center rounded-sm border border-tertiary bg-tertiary px-1 py-px text-[10px] leading-[14px] font-medium text-content-secondary;
 
   box-shadow: var(--box-shadow-search-input-shortcut);
-  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
+  transition: transform 0.08s ease-out;
 }
 
 kbd.kbd--called {
