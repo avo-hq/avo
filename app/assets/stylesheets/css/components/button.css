@@ -10,7 +10,7 @@
   }
 
   .button {
-    @apply inline-flex justify-center grow-0 items-center font-medium leading-none fill-current whitespace-nowrap transition-transform duration-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 gap-1.5 border border-transparent rounded-lg;
+    @apply inline-flex justify-center grow-0 items-center font-medium leading-[14px] fill-current whitespace-nowrap transition-transform duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 gap-1.5 border border-transparent rounded-lg;
 
     --btn-text-color: color-mix(in oklab, var(--btn-color-accent), var(--color-content) 20%);
 
@@ -203,15 +203,15 @@
     }
 
     box-shadow:
-      0 -0.5px 0 0.1px var(--btn-color-accent-content) inset,
-      0 0.8px 0 0.1px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
+      0 -1.4px 0 0.1px var(--btn-color-accent-content) inset,
+      0 0.8px 0 0.4px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
 
     &.button--hover,
     &:hover {
       @apply text-(--btn-color-accent-foreground);
 
       background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 90%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 90%, var(--color-black)) 100%), var(--color-primary);
-      box-shadow: 0 -0.5px 0 0.1px var(--btn-color-accent-content) inset, 0 0.8px 0 0.1px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
+      box-shadow: 0 -1.4px 0 0.1px var(--btn-color-accent-content) inset, 0 0.8px 0 0.4px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
     }
 
     &.button--active,
@@ -257,7 +257,7 @@
 
     border-color: var(--btn-color-accent);
     background: var(--color-primary);
-    box-shadow: 0 -1.5px 0 0 var(--btn-box-shadow-color) inset, 0 0.8px 0 0px var(--color-primary) inset;
+    box-shadow: 0 -1.4px 0 0.1px var(--btn-box-shadow-color) inset, 0 0.8px 0 0.4px var(--color-primary) inset;
 
     &.button--hover,
     &:hover {
@@ -313,19 +313,19 @@
 
   /* Size variants */
   .button--size-xs {
-    @apply text-xs px-2 py-1.5;
+    @apply text-xs px-2 py-1 gap-1 min-w-6;
   }
 
   .button--size-sm {
-    @apply text-xs px-2 py-1.5;
+    @apply text-xs px-2 py-1 gap-1 min-w-6;
   }
 
   .button--size-md {
-    @apply text-sm px-3 py-2;
+    @apply text-sm px-3 py-2 gap-[5px] min-w-8;
   }
 
   .button--size-lg {
-    @apply text-sm px-3 py-3;
+    @apply text-sm p-3 gap-1.5 min-w-10;
   }
 
   /* Icon button sizes */
