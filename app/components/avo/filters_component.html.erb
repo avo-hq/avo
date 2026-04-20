@@ -8,7 +8,7 @@
       'data-action': 'click->toggle#togglePanel',
       'data-tippy': 'tooltip' do %>
       <%= t 'avo.filters' %>
-      <% if applied_filters_count.present? %>
+      <% if applied_filters_count.positive? %>
         <span class="filters__count">(<%= applied_filters_count %> <%= t('avo.applied', count: applied_filters_count) %>)</span>
       <% end %>
     <% end %>

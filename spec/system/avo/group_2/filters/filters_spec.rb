@@ -7,6 +7,13 @@ RSpec.describe "Filters", type: :system do
 
     let(:url) { "/admin/resources/posts?view_type=table" }
 
+    it "does not display the applied count label when no filters are applied" do
+      visit url
+
+      expect(page).not_to have_css(".filters__count")
+      expect(page).not_to have_text("(0 applied)")
+    end
+
     it "displays the filter" do
       visit url
       open_filters_menu
