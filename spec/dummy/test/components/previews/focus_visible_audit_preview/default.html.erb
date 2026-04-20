@@ -1,0 +1,608 @@
+<div class="p-6 bg-primary text-content space-y-6">
+  <div class="space-y-1">
+    <h1 class="text-xl font-semibold">Focus-visible audit</h1>
+    <p class="text-sm text-content-secondary">
+      Tab from the first field to the last. Every focusable item should show the
+      same ring — a 2px <code>var(--color-info)</code> outline with a 1px offset,
+      applied globally via <code>:focus-visible</code> and
+      <code>var(--focus-outline)</code>. The "Focus CSS" column below still
+      documents the original per-component rule for reference; annotations will
+      be stripped once the rollout is verified.
+    </p>
+  </div>
+
+  <div class="rounded-lg border border-tertiary bg-secondary/30 p-4 text-sm space-y-2">
+    <div class="font-semibold">Testing modes (Chrome DevTools → Rendering)</div>
+    <ul class="list-disc ps-5 space-y-1 text-content-secondary">
+      <li><kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> → <em>Show Rendering</em></li>
+      <li>Emulate <strong>prefers-color-scheme</strong> → <code>dark</code> to verify dark mode</li>
+      <li>Emulate <strong>forced-colors</strong> → <code>active</code> to verify Windows HCM (ring should use system <code>Highlight</code>)</li>
+      <li>Emulate <strong>prefers-contrast</strong> → <code>more</code> to verify the 3px <code>currentColor</code> variant</li>
+      <li>Keyboard tab through from row 1. Mouse-click rows — no ring should appear</li>
+      <li>Zoom browser to 200% — ring stays visible and proportionate</li>
+    </ul>
+  </div>
+
+  <style>
+    .fv-audit code { @apply text-xs; }
+    .fv-audit pre {
+      @apply text-xs leading-snug text-content-secondary whitespace-pre-wrap break-words;
+    }
+    .fv-audit pre .sel { @apply text-content font-medium; }
+  </style>
+
+  <table class="fv-audit w-full text-sm border border-tertiary rounded-lg overflow-hidden">
+    <thead class="bg-secondary text-content-secondary">
+      <tr>
+        <th class="w-8 px-3 py-2 text-start">#</th>
+        <th class="w-56 px-3 py-2 text-start">Name</th>
+        <th class="w-64 px-3 py-2 text-start">Element / Component</th>
+        <th class="w-32 px-3 py-2 text-start">Category</th>
+        <th class="px-3 py-2 text-start">Focus CSS</th>
+      </tr>
+    </thead>
+    <tbody class="[&_td]:px-3 [&_td]:py-3 [&_td]:border-t [&_td]:border-tertiary [&_td]:align-middle">
+
+      <%# ========================================= Native HTML %>
+      <tr>
+        <td>1</td>
+        <td>Text input</td>
+        <td><input type="text" placeholder="text" autocomplete="off"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ components/input.css:121</span></pre></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Email input</td>
+        <td><input type="email" placeholder="email" autocomplete="off"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>URL input</td>
+        <td><input type="url" placeholder="url" autocomplete="off"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Password input</td>
+        <td><input type="password" placeholder="password" autocomplete="off"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Number input</td>
+        <td><input type="number" placeholder="0"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Search input</td>
+        <td><input type="search" placeholder="search"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Date input</td>
+        <td><input type="date"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Datetime-local input</td>
+        <td><input type="datetime-local"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Time input</td>
+        <td><input type="time"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Color input</td>
+        <td><input type="color"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td>Range input</td>
+        <td><input type="range"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=checkbox|radio]):focus-visible</span>
+  outline: none;
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ components/input.css:121; range also gets rounded-lg so the ring follows the corners</span></pre></td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>File input</td>
+        <td><input type="file"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>Textarea</td>
+        <td><textarea rows="2" placeholder="textarea"></textarea></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">textarea:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ components/input.css:119</span></pre></td>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td>Select</td>
+        <td>
+          <select>
+            <option>Option one</option>
+            <option>Option two</option>
+          </select>
+        </td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">select:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ components/input.css:118</span></pre></td>
+      </tr>
+      <tr>
+        <td>15a</td>
+        <td>Checkbox — no label</td>
+        <td><input type="checkbox"></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input[type=checkbox]:focus-visible</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ global rule — ring on the tiny checkbox itself</span></pre></td>
+      </tr>
+      <tr>
+        <td>15b</td>
+        <td>Checkbox — nested in &lt;label&gt; (ring wraps)</td>
+        <td>
+          <label class="inline-flex items-center gap-2 cursor-pointer">
+            <input type="checkbox">
+            <span>Accept the terms</span>
+          </label>
+        </td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">label:has(&gt; input[type=checkbox]:focus-visible)</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ checkbox.css — ring moved from the tiny box
+   onto the whole label + checkbox area</span></pre></td>
+      </tr>
+      <tr>
+        <td>16a</td>
+        <td>Radio — sibling labels (for="")</td>
+        <td>
+          <input type="radio" name="audit-radio" id="audit-radio-a" checked>
+          <label for="audit-radio-a" class="me-3">A</label>
+          <input type="radio" name="audit-radio" id="audit-radio-b">
+          <label for="audit-radio-b">B</label>
+        </td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">input[type=radio]:focus-visible</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ global rule — ring on the tiny radio circle.
+   Sibling-label pattern doesn't trigger the wrap rule.</span></pre></td>
+      </tr>
+      <tr>
+        <td>16b</td>
+        <td>Radio — nested in &lt;label&gt; (ring wraps)</td>
+        <td>
+          <div class="inline-flex flex-col gap-1">
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="audit-radio-nested" checked>
+              <span>Option A</span>
+            </label>
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="radio" name="audit-radio-nested">
+              <span>Option B</span>
+            </label>
+          </div>
+        </td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">label:has(&gt; input[type=radio]:focus-visible)</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ radio.css — ring moved from the tiny radio
+   onto the whole label + radio area</span></pre></td>
+      </tr>
+      <tr class="bg-warning/5">
+        <td>17</td>
+        <td>Native button</td>
+        <td><button type="button">Native button</button></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">(no custom rule)</span>
+<span class="text-content-secondary">↳ browser default outline</span></pre></td>
+      </tr>
+      <tr class="bg-warning/5">
+        <td>18</td>
+        <td>Anchor link</td>
+        <td><a href="#focus-audit">A plain link</a></td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">(no global rule)</span>
+<span class="text-content-secondary">↳ typography.css:53 only scopes inside .typography; otherwise browser default</span></pre></td>
+      </tr>
+
+      <%# ========================================= Avo input sizes %>
+      <tr>
+        <td>19</td>
+        <td>Input — size sm</td>
+        <td><input type="text" class="input--size-sm" placeholder="size sm"></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ inherits from components/input.css:121</span></pre></td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>Input — size md</td>
+        <td><input type="text" class="input--size-md" placeholder="size md"></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td>Input — size lg</td>
+        <td><input type="text" class="input--size-lg" placeholder="size lg"></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr class="bg-warning/5">
+        <td>22</td>
+        <td>Input — error state</td>
+        <td><input type="text" class="input-field--error" value="error"></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ overrides --box-shadow-error; error state disappears on focus</span></pre></td>
+      </tr>
+      <tr class="bg-warning/5">
+        <td>23</td>
+        <td>Input — success state</td>
+        <td><input type="text" class="input-field--success" value="success"></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ overrides --box-shadow-success; success state disappears on focus</span></pre></td>
+      </tr>
+
+      <%# ========================================= Avo buttons %>
+      <tr>
+        <td>24</td>
+        <td>ButtonComponent — primary</td>
+        <td><%= render Avo::ButtonComponent.new(style: :primary, color: :primary) { "Primary" } %></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.button:focus-visible</span>
+  outline: none; border-radius: lg;
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ components/button.css:23</span></pre></td>
+      </tr>
+      <tr>
+        <td>25</td>
+        <td>ButtonComponent — outline</td>
+        <td><%= render Avo::ButtonComponent.new(style: :outline) { "Outline" } %></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.button:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>26</td>
+        <td>ButtonComponent — text</td>
+        <td><%= render Avo::ButtonComponent.new(style: :text) { "Text" } %></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.button:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>27</td>
+        <td>ButtonComponent — icon only</td>
+        <td><%= render Avo::ButtonComponent.new(style: :outline, icon: "tabler/outline/arrow-up") %></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.button:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr>
+        <td>28</td>
+        <td>ButtonComponent — as link</td>
+        <td><%= render Avo::ButtonComponent.new("#focus-audit", style: :outline, is_link: true) { "Link-style button" } %></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.button:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);</pre></td>
+      </tr>
+      <tr class="bg-warning/5">
+        <td>29</td>
+        <td>UI::IconButtonComponent</td>
+        <td><%= render Avo::UI::IconButtonComponent.new(icon: "tabler/outline/pencil") %></td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">(no custom rule)</span>
+<span class="text-content-secondary">↳ browser default outline — component has no :focus-visible</span></pre></td>
+      </tr>
+      <tr>
+        <td>29b</td>
+        <td>.button-icon (alert close)</td>
+        <td>
+          <button type="button" class="button-icon alert__icon-container alert__icon-container--close" aria-label="Close alert">
+            <%= svg "tabler/outline/x", class: "alert__icon" %>
+          </button>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.button-icon</span>
+  inline-flex cursor-pointer;
+<span class="text-content-secondary">↳ button.css:2 — no base radius today; focus ring will be square.
+   Only used in alert_component.html.erb close button.</span></pre></td>
+      </tr>
+
+      <%# ========================================= Sidebar %>
+      <tr>
+        <td>30</td>
+        <td>.sidebar-link</td>
+        <td>
+          <a href="#focus-audit" class="sidebar-link">
+            <span class="sidebar-link__label">Sidebar link</span>
+          </a>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.sidebar-link:focus-visible</span>
+  outline: none; z-index: 10;
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ sidebar.css:18</span></pre></td>
+      </tr>
+      <tr>
+        <td>31</td>
+        <td>.sidebar-link.active</td>
+        <td>
+          <a href="#focus-audit" class="sidebar-link active">
+            <span class="sidebar-link__label">Sidebar link (active)</span>
+          </a>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.sidebar-link.active:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ sidebar.css:19 + 129</span></pre></td>
+      </tr>
+      <tr>
+        <td>32</td>
+        <td>.sidebar-group__header</td>
+        <td>
+          <button type="button" class="sidebar-group__header">
+            <span class="sidebar-group__header-inner">Sidebar group header</span>
+          </button>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.sidebar-group__header:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ sidebar.css:17 + 97</span></pre></td>
+      </tr>
+      <tr>
+        <td>33</td>
+        <td>.sidebar-subitem</td>
+        <td>
+          <a href="#focus-audit" class="sidebar-subitem">
+            <span class="sidebar-subitem__label">Sidebar subitem</span>
+          </a>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.sidebar-subitem:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ sidebar.css:20 + 169</span></pre></td>
+      </tr>
+      <tr>
+        <td>34</td>
+        <td>.sidebar-section__header</td>
+        <td>
+          <button type="button" class="sidebar-section__header">Sidebar section header</button>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.sidebar-section__header:focus-visible</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ sidebar.css:70</span></pre></td>
+      </tr>
+
+      <%# ========================================= Dropdown / tabs %>
+      <tr class="bg-warning/5">
+        <td>35</td>
+        <td>.dropdown-menu__item</td>
+        <td>
+          <div class="dropdown-menu__list inline-flex gap-2">
+            <a href="#focus-audit" class="dropdown-menu__item">Dropdown item (link)</a>
+            <button type="button" class="dropdown-menu__item">Dropdown item (button)</button>
+          </div>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.dropdown-menu__item:focus-visible</span>
+  ring-2 ring-inset ring-info-foreground
+  bg-primary; outline: none;
+<span class="text-content-secondary">↳ components/ui/dropdown.css:76 — uses ring, not box-shadow-focus</span></pre></td>
+      </tr>
+      <tr class="bg-warning/5">
+        <td>36</td>
+        <td>.tabs__item</td>
+        <td>
+          <nav class="inline-flex gap-2">
+            <a href="#focus-audit" class="tabs__item">Tab one</a>
+            <a href="#focus-audit" class="tabs__item">Tab two</a>
+          </nav>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.tabs__item:focus-visible</span>
+  ring-2 ring-content + ring-offset-2;
+  bg-primary; outline: none;
+<span class="text-content-secondary">↳ components/ui/tabs.css:35 — uses ring, not box-shadow-focus</span></pre></td>
+      </tr>
+
+      <%# ========================================= File upload %>
+      <tr>
+        <td>37</td>
+        <td>UI::FileUploadInputComponent</td>
+        <td>
+          <%= render Avo::UI::FileUploadInputComponent.new(
+                id: "audit-file-upload",
+                title: "Click to upload",
+                subtitle: "or drag and drop",
+                description: "Any file"
+              ) do %>
+            <input type="file" id="audit-file-upload" class="file-upload-input__native-input">
+          <% end %>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">.file-upload-input:has(.file-upload-input__native-input:focus-within)</span>
+  box-shadow: var(--box-shadow-focus);
+<span class="text-content-secondary">↳ components/ui/file_upload_input.css:80 — wrapper relays native input focus</span></pre></td>
+      </tr>
+
+      <%# ========================================= Color scheme switcher %>
+      <tr>
+        <td>38</td>
+        <td>Color scheme — scheme button</td>
+        <td>
+          <div class="color-scheme-switcher inline-flex">
+            <button type="button" class="color-scheme-switcher__button" title="Auto">
+              <%= svg "tabler/outline/device-desktop", class: "color-scheme-switcher__icon" %>
+            </button>
+            <button type="button" class="color-scheme-switcher__button" title="Light">
+              <%= svg "tabler/outline/sun", class: "color-scheme-switcher__icon" %>
+            </button>
+            <button type="button" class="color-scheme-switcher__button" title="Dark">
+              <%= svg "tabler/outline/moon", class: "color-scheme-switcher__icon" %>
+            </button>
+          </div>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">:focus-visible</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ uses global rule — component no longer has focus:ring override</span></pre></td>
+      </tr>
+      <tr>
+        <td>39</td>
+        <td>Color scheme — theme option</td>
+        <td>
+          <button type="button" class="color-scheme-switcher__theme-option">
+            <span class="color-scheme-switcher__theme-preview color-scheme-switcher__theme-preview--slate"></span>
+            <span class="color-scheme-switcher__theme-option-label">Slate</span>
+          </button>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">:focus-visible</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ uses global rule</span></pre></td>
+      </tr>
+      <tr>
+        <td>40</td>
+        <td>Color scheme — accent option</td>
+        <td>
+          <button type="button" class="color-scheme-switcher__accent-option">
+            <span class="color-scheme-switcher__accent-preview bg-blue-500"></span>
+            <span class="sr-only">Blue</span>
+          </button>
+        </td>
+        <td>Avo component</td>
+        <td><pre><span class="sel">:focus-visible</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ uses global rule</span></pre></td>
+      </tr>
+
+      <%# ========================================= Native — details / tabindex %>
+      <tr>
+        <td>41</td>
+        <td>&lt;details&gt; / &lt;summary&gt;</td>
+        <td>
+          <details>
+            <summary class="cursor-pointer inline-block">Click to expand</summary>
+            <div class="pt-2 text-sm text-content-secondary">Hidden content revealed here.</div>
+          </details>
+        </td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">summary:focus-visible</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ uses global rule — native summary is focusable</span></pre></td>
+      </tr>
+      <tr>
+        <td>42</td>
+        <td>Custom focusable <code>[tabindex="0"]</code></td>
+        <td>
+          <div tabindex="0" class="inline-flex items-center px-3 py-1.5 rounded-md border border-tertiary text-sm cursor-pointer">
+            Focusable div
+          </div>
+        </td>
+        <td>Native HTML</td>
+        <td><pre><span class="sel">[tabindex]:focus-visible</span>
+  outline: var(--focus-outline);
+<span class="text-content-secondary">↳ uses global rule — any element with a tabindex receives the ring</span></pre></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <%# ========================================= Surface matrix %>
+  <div class="space-y-3">
+    <h2 class="text-lg font-semibold">Surface matrix</h2>
+    <p class="text-sm text-content-secondary">
+      Same focusables rendered on four surfaces. Tab through each column and verify the
+      info-colored ring reads clearly against each background. Toggle dark mode (DevTools
+      → Rendering → <code>prefers-color-scheme: dark</code>) and repeat.
+    </p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <% [
+          { label: "Primary",        bg: "bg-primary",    border: "border border-tertiary", text: nil },
+          { label: "Secondary",      bg: "bg-secondary",  border: nil,                     text: nil },
+          { label: "Tertiary",       bg: "bg-tertiary",   border: nil,                     text: nil },
+          { label: "Blue-500 fill",  bg: "bg-blue-500",   border: nil,                     text: "text-white" }
+        ].each do |s| %>
+        <div class="<%= [s[:bg], s[:border], s[:text]].compact.join(" ") %> rounded-lg p-4 space-y-3">
+          <div class="text-xs font-semibold"><%= s[:label] %></div>
+          <%= render Avo::ButtonComponent.new(style: :primary) { "Button" } %>
+          <input type="text" class="input-field w-full" placeholder="Input">
+          <div><a href="#focus-audit">Link text</a></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# ========================================= Inset validation %>
+  <div class="space-y-3">
+    <h2 class="text-lg font-semibold">Inset ring — validation</h2>
+    <p class="text-sm text-content-secondary">
+      Focusable inside an <code>overflow: hidden</code> wrapper. With the outward default
+      the ring would be clipped; the inset offset keeps it fully visible.
+    </p>
+    <div class="rounded-lg border border-tertiary overflow-hidden max-w-sm">
+      <button type="button" class="w-full text-start px-3 py-2 bg-primary hover:bg-secondary" style="outline-offset: var(--focus-outline-offset-inset);">
+        Clipped-parent item (inset offset applied inline)
+      </button>
+    </div>
+  </div>
+
+  <div class="space-y-2 text-sm">
+    <div class="font-semibold">Legend</div>
+    <div class="flex items-center gap-2">
+      <span class="inline-block size-3 rounded bg-warning/40 border border-warning"></span>
+      <span class="text-content-secondary">
+        Historical marker (pre-refactor). Row documented a component that used an ad-hoc
+        <code>focus:ring-*</code>, <code>outline</code>, or custom <code>box-shadow</code>
+        instead of the unified token. All such rows now route through the global
+        <code>:focus-visible</code> rule in <code>focus.css</code>.
+      </span>
+    </div>
+  </div>
+</div>

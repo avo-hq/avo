@@ -1,0 +1,47 @@
+/* ==========================================================================
+   Focus ring — unified :focus-visible system
+   Single source of truth. Component overrides use plain selectors
+   (specificity 0,1,0) and win automatically. Never use !important.
+   ========================================================================== */
+
+@layer base {
+  :focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  /* Suppress any stray focus ring on mouse/touch interaction */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* When a checkbox/radio is nested inside a <label>, move the keyboard focus
+     ring from the tiny input onto the whole label + input area. */
+  label:has(> input[type=checkbox]:focus-visible),
+  label:has(> input[type=radio]:focus-visible) {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+    border-radius: 0.375rem; /* rounded-md */
+  }
+
+  label > input[type=checkbox]:focus-visible,
+  label > input[type=radio]:focus-visible {
+    outline: none;
+  }
+
+  /* User-opted-in higher contrast (macOS, GNOME, KDE) */
+  @media (prefers-contrast: more) {
+    :focus-visible {
+      outline-width: 3px;
+      outline-color: currentColor;
+    }
+  }
+
+  /* Forced-colors mode (Windows HCM) — wins in HCM */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+}

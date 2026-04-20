@@ -46,7 +46,7 @@
 
 .dropdown-menu__item,
 .dropdown-menu__list > :is(a, button) {
-  @apply flex items-center w-full justify-start focus:outline-none gap-2 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent overflow-hidden text-ellipsis whitespace-nowrap text-content font-medium text-sm cursor-pointer leading-5;
+  @apply flex items-center w-full justify-start gap-2 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent overflow-hidden text-ellipsis whitespace-nowrap text-content font-medium text-sm cursor-pointer leading-5;
 
   &.dropdown-menu__item--disabled {
     @apply text-content-secondary cursor-not-allowed !bg-transparent;
@@ -79,7 +79,7 @@
 
 .dropdown-menu__item:focus-visible,
 .dropdown-menu__list > :is(a, button):focus-visible {
-  @apply ring-2 ring-inset ring-info-foreground bg-primary outline-none;
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .dropdown-menu__icon,

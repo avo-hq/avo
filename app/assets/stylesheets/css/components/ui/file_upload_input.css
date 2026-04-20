@@ -76,9 +76,11 @@
    State: Focus (via focus-within for native input focus)
    ========================================================================== */
 
-/* Native input is inside the wrapper div; use :focus-within since the div receives no focus, the input does */
-.file-upload-input:has(.file-upload-input__native-input:focus-within) {
-  box-shadow: var(--box-shadow-focus);
+/* Native input is inside the wrapper div; use :has(:focus-visible) so the ring
+   only shows on keyboard focus, not mouse click on the visible drop zone. */
+.file-upload-input:has(.file-upload-input__native-input:focus-visible) {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
 }
 
 /* ==========================================================================

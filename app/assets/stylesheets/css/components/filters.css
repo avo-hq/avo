@@ -78,7 +78,7 @@
 }
 
 .filters-date-input__action {
-  @apply absolute inset-y-0 end-0 flex items-center pe-2.5 text-content-secondary;
+  @apply absolute inset-y-0 end-0 flex items-center pe-2.5 text-content-secondary rounded-md;
 }
 
 .filters-date-input__action-icon {

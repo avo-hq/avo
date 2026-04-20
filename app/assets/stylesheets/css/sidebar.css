@@ -7,7 +7,7 @@
 }
 
 .sidebar-icon {
-  @apply size-4;
+  @apply inline-flex items-center justify-center size-4;
 }
 
 .sidebar-icon--collapsed {
@@ -18,8 +18,8 @@
 .sidebar-link:focus-visible,
 .sidebar-link.active:focus-visible,
 .sidebar-subitem:focus-visible {
-  @apply outline-none relative z-10;
-  box-shadow: var(--box-shadow-focus);
+  @apply relative z-10;
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .sidebar-link[disabled],
@@ -69,7 +69,7 @@
 
 .sidebar-section__header:focus-visible {
   @apply bg-primary relative z-10;
-  box-shadow: var(--box-shadow-focus);
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .sidebar-section__items {
@@ -91,7 +91,7 @@
 }
 
 .sidebar-group__header {
-  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
+  @apply flex items-center w-full text-start px-2 py-1 gap-2 rounded-lg text-content-secondary text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
 }
 
 .sidebar-group__header:focus-visible {
@@ -248,7 +248,7 @@
 }
 
 .sidebar-profile__action-trigger {
-  @apply flex items-center cursor-pointer text-content-secondary;
+  @apply flex items-center cursor-pointer text-content-secondary rounded-md;
 }
 
 .sidebar-profile__action-trigger:hover {

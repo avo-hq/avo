@@ -26,18 +26,12 @@
     @apply bg-accent-content border-accent-content;
   }
 
-  /* input[type=radio]:focus-visible, */
   input[type=radio]:hover:not(:disabled),
-  input[type=checkbox]:focus-visible,
   input[type=checkbox]:hover:not(:disabled) {
     @apply outline-2 outline-offset-2 outline-accent-content;
   }
 
-  /* input[type=radio]:checked:focus-visible,
-  input[type=radio]:checked:hover:not(:disabled), */
-  input[type=checkbox]:checked:focus-visible,
   input[type=checkbox]:checked:hover:not(:disabled),
-  input[type=checkbox]:indeterminate:focus-visible,
   input[type=checkbox]:indeterminate:hover:not(:disabled) {
     @apply bg-accent-content border-accent-content;
   }

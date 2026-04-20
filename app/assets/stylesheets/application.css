@@ -125,6 +125,7 @@
 
   /* UI 4 */
   @import "./css/variables.css";
+  @import "./css/focus.css";
   @import "./css/components/ui/card.css";
   @import "./css/components/ui/panel.css";
   @import "./css/components/ui/panel_header.css";

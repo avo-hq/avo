@@ -1,12 +1,6 @@
 @layer base {
   .button-icon {
-    @apply inline-flex cursor-pointer;
-
-    &:focus-visible {
-      @apply outline-none rounded-lg;
-
-      box-shadow: var(--box-shadow-focus);
-    }
+    @apply inline-flex cursor-pointer rounded-md;
   }
 
   .button {
@@ -17,13 +11,6 @@
     /* Base styles for all button types */
     &:active:not(:disabled) {
       @apply translate-y-px;
-    }
-
-    &.button--focus-visible,
-    &:focus-visible {
-      @apply outline-none rounded-lg;
-
-      box-shadow: var(--box-shadow-focus);
     }
 
 

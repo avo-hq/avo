@@ -51,7 +51,7 @@ kbd.kbd--called {
     }
 
     &:focus-visible {
-      @apply outline-2 outline-offset-2 rounded-xs outline-content;
+      @apply rounded-xs;
     }
   }
 }

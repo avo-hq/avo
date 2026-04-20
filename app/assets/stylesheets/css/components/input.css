@@ -111,19 +111,6 @@
     @apply text-content-secondary;
   }
 
-  /* ==========================================================================
-    States: Focus
-    ========================================================================== */
-
-  select:focus-visible,
-  textarea:focus-visible,
-  .textarea-field:focus-visible,
-  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus-visible,
-  .input-field:focus-visible
-  {
-    @apply outline-none;
-    box-shadow: var(--box-shadow-focus);
-  }
 }
 
 @layer component {
@@ -305,7 +292,7 @@
     ========================================================================== */
 
   input[type="range"] {
-    @apply accent-accent ;
+    @apply accent-accent rounded-lg;
   }
 
   /* Thumb (WebKit + Firefox) */

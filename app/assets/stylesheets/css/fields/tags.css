@@ -20,10 +20,6 @@ tags.tagify .tagify__input {
   line-height: var(--input-leading);
 }
 
-tags.tagify.tagify--focus {
-  box-shadow: var(--box-shadow-focus);
-}
-
 .tagify__dropdown {
   --tagify-dd-color-primary: var(--color-tertiary);
   --tagify-dd-text-color: var(--color-content);

@@ -2,21 +2,21 @@
 @layer base {
   input[type="radio"] {
     @apply relative accent-accent-content;
+    border-radius: 50%;
 
     &:after {
       @apply absolute rounded-full size-3 top-1/2 start-1/2 -translate-x-1/2 -translate-y-1/2 content-[''];
     }
   }
 
-  input[type=radio]:hover{
-    @apply outline-none;
+  /* Ensure the focus outline traces a circular path even if the browser
+     doesn't apply border-radius to the native radio's painted shape. */
+  input[type=radio]:focus-visible {
+    border-radius: 50%;
   }
 
-  input[type=radio]:focus-visible {
+  input[type=radio]:hover{
     @apply outline-none;
-    &:after {
-      @apply ring ring-offset-2 ring-accent-content rounded-full !outline-none;
-    }
   }
 }
 

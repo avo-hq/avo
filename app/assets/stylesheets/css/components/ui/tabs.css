@@ -32,10 +32,6 @@
     @apply bg-secondary;
   }
 
-  .tabs__item:focus-visible {
-    @apply bg-primary outline-none ring-offset-2 ring-offset-primary ring-2 ring-content;
-  }
-
   /* Wrapper */
   .tabs__item-wrapper {
     @apply inline-block py-2;

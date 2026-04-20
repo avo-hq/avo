@@ -4,7 +4,7 @@
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
@@ -63,13 +63,19 @@
   @apply flex items-center gap-2 w-full px-2 py-1.5;
   @apply rounded-md transition-all duration-150;
   @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
   @apply text-neutral-700 dark:text-neutral-300 text-xs font-medium;
 }
 
 .color-scheme-switcher__theme-option--active {
   @apply bg-neutral-100 dark:bg-neutral-700;
+}
+
+/* Inset focus ring — options live inside a dropdown popover with overflow:hidden,
+   so an outward ring would get clipped at the popover edges. */
+.color-scheme-switcher__theme-option:focus-visible,
+.color-scheme-switcher__accent-option:focus-visible {
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .color-scheme-switcher__theme-preview {
@@ -131,7 +137,6 @@
   @apply flex items-center justify-center p-1;
   @apply rounded-md transition-all duration-150;
   @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
