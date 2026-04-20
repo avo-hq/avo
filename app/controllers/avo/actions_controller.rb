@@ -110,9 +110,13 @@ module Avo
     end
 
     def action_class
-      Avo::BaseAction.descendants.find do |action|
-        action.to_s == params[:action_id]
+      registered_action = @resource.get_actions.find do |action|
+        action[:class].to_s == params[:action_id]
       end
+
+      raise Avo::NotAuthorizedError.new if registered_action.nil?
+
+      registered_action[:class]
     end
 
     def respond
