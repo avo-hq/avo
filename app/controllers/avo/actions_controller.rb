@@ -124,7 +124,7 @@ module Avo
           raise Avo::ActionNotRegisteredError.new(params[:action_id], @resource.class)
         end
 
-        flash[:alert] = "Something went wrong."
+        flash[:alert] = I18n.t("avo.failed")
         redirect_to request.referer || resources_path(resource: @resource)
         return
       end
