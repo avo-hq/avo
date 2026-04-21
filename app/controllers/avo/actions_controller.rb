@@ -89,12 +89,15 @@ module Avo
 
     def action_params
       @action_params ||= params.permit(
-        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, fields: {}
+        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, :resource_view, fields: {}
       )
     end
 
     def set_action
-      @action = action_class.new(
+      selected_action_class = action_class
+      return if performed? || selected_action_class.nil?
+
+      @action = selected_action_class.new(
         record: @record,
         resource: @resource,
         user: _current_user,
@@ -110,11 +113,21 @@ module Avo
     end
 
     def action_class
+      @resource.hydrate(view: action_params[:resource_view].presence, user: _current_user, params: params)
+
       registered_action = @resource.get_actions.find do |action|
         action[:class].to_s == params[:action_id]
       end
 
-      raise Avo::NotAuthorizedError.new if registered_action.nil?
+      if registered_action.nil?
+        if Rails.env.development?
+          raise Avo::ActionNotRegisteredError.new(params[:action_id], @resource.class)
+        end
+
+        flash[:alert] = I18n.t("avo.failed")
+        redirect_to request.referer || resources_path(resource: @resource)
+        return
+      end
 
       registered_action[:class]
     end

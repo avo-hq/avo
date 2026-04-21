@@ -11,7 +11,7 @@
     class="hidden text-slate-800"
   >
     <%= form_with scope: 'fields',
-      url: @action.link_arguments(resource: @resource).first,
+      url: @action.link_arguments(resource: @resource, resource_view: params[:resource_view]).first,
       local: true,
       html: {
         novalidate: true,
@@ -33,6 +33,7 @@
       <%= form.hidden_field :avo_selected_all, 'data-action-target': 'selectedAll' %>
       <%= form.hidden_field :avo_index_query, 'data-action-target': 'indexQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
+      <%= hidden_field_tag :resource_view, params[:resource_view] %>
       <% if @fields.present? %>
         <div class="mt-4 -mx-6">
           <% @fields.each_with_index do |field, index| %>

@@ -31,6 +31,12 @@ module Avo
 
   class NotAuthorizedError < StandardError; end
 
+  class ActionNotRegisteredError < StandardError
+    def initialize(action_id, resource_class)
+      super("Action '#{action_id}' is not registered on resource '#{resource_class}'.")
+    end
+  end
+
   class NoPolicyError < StandardError; end
 
   class MissingGemError < StandardError; end
