@@ -1,6 +1,7 @@
 Avo::Resources::ResourceManager.fetch_resources.map do |resource|
   resources resource.route_key do
     get :search, on: :collection
+    get :association_search, on: :collection
 
     member do
       get :preview

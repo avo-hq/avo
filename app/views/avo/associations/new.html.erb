@@ -22,14 +22,11 @@
                 resource: @resource,
                 label_for: @field.id,
                 label: @field.name.singularize.downcase do %>
-                <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: form,
-                  classes: input_classes("w-full"),
-                  field: @field,
-                  model_key: @field.target_resource&.model_key,
-                  foreign_key: 'related_id',
-                  resource: @resource,
-                  view: Avo::ViewInquirer.new(:new)
-                %>
+                <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
+                      form: form,
+                      field: @field,
+                      foreign_key: 'related_id'
+                    ) %>
               <% end %>
             <% else %>
               <%= avo_edit_field :related_id,
