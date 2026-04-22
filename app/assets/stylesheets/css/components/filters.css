@@ -3,7 +3,7 @@
 }
 
 .filters__count {
-  @apply inline-flex items-center justify-center ms-1 rounded-sm dark:bg-accent/30 bg-accent/10 text-accent-content font-medium text-xs leading-none w-4 py-px px-0.5;
+  @apply inline-flex items-center justify-center ms-1 rounded-sm dark:bg-accent/30 bg-accent/10 text-accent-content font-medium text-xs leading-none min-w-4 py-px px-1;
 }
 
 .filters__panel {
