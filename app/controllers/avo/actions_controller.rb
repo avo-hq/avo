@@ -115,9 +115,7 @@ module Avo
     def action_class
       @resource.hydrate(view: action_params[:resource_view].presence, user: _current_user, params: params)
 
-      registered_action = @resource.get_actions.find do |action|
-        action[:class].to_s == params[:action_id]
-      end
+      registered_action = @resource.find_action(params[:action_id])
 
       if registered_action.nil?
         if Rails.env.development?
