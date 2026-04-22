@@ -40,14 +40,15 @@
   @apply mt-(--top-navbar-height);
 
   .main-content-area {
-    @apply w-(--content-width) ms-1 flex flex-1 flex-col z-50 fixed rounded-2xl bg-primary shadow-content py-4 px-1 lg:px-4 h-full;
+    @apply w-(--content-width) ms-1 flex flex-1 flex-col z-50 fixed rounded-2xl bg-primary shadow-content py-2 lg:py-4 px-2 lg:px-4 h-full;
 
     transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
 
     height: calc(100dvh - var(--spacing) - var(--top-navbar-height));
 
     .scrollable-wrapper {
-      @apply overflow-y-auto h-full flex-1 flex flex-col px-2;
+      @apply overflow-y-auto h-full flex-1 flex flex-col;
+      @apply px-0.5; /* add some space for the view type toggle buttons to not be cut off by the overflow. this might be needed to be handled differently with a wrapper inside the scrolling area */
       @apply pt-1; /* add some space for the button focus ring to not be cut off by the overflow */
     }
     .avo-container {

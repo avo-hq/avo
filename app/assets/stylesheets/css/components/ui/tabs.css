@@ -28,12 +28,12 @@
       linear-gradient(var(--color-primary), var(--color-primary)),
       radial-gradient(
         farthest-side at 0 50%,
-        color-mix(var(--color-foreground), transparent 80%),
+        color-mix(in oklab, var(--color-foreground), transparent 80%),
         rgb(0 0 0 / 0)
       ),
       radial-gradient(
         farthest-side at 100% 50%,
-        color-mix(var(--color-foreground), transparent 80%),
+        color-mix(in oklab, var(--color-foreground), transparent 80%),
         rgb(0 0 0 / 0)
       );
     background-position: 0 0, 100% 0, 0 0, 100% 0;
