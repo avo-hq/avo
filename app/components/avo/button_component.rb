@@ -78,7 +78,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
 
   def render_content
     concat helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
-    concat content if content.present?
+    concat content if content.present? && @style != :icon
     concat hotkey_badge(@args.dig(:data, :hotkey)) if @args.dig(:data, :hotkey) && @args.dig(:data, :show_hotkey_badge) != false
   end
 end

@@ -58,7 +58,6 @@
       class: class_names("relative text-start px-2 py-2 whitespace-nowrap rounded-s", field.table_header_class),
       data: {
         control: "resource-field-th",
-        controller: "toggle",
         table_header_field_id: field.id,
         table_header_field_type: field.type,
       } do %>
@@ -82,34 +81,34 @@
         <% end %>
 
         <% if field.summarizable %>
-          <div
-            id="summary-header-<%= field.id %>"
-            class="cursor-pointer <%= text_classes %>"
-            data-action="click->toggle#togglePanel"
-          >
-            <%= svg 'tabler/filled/chart-pie-4', class: 'h-3 ms-1' %>
+          <% summary_popover_id = "summary-popover-#{field.id}" %>
+          <div class="popover-menu">
+            <button
+              type="button"
+              class="cursor-pointer <%= text_classes %>"
+              popovertarget="<%= summary_popover_id %>"
+            >
+              <%= svg 'tabler/filled/chart-pie-4', class: 'h-3 ms-1' %>
+            </button>
+            <turbo-frame
+              id="<%= summary_popover_id %>"
+              popover="auto"
+              loading="lazy"
+              src="<%= distribution_chart_path(
+                {
+                  resource_name: field.resource.model_class,
+                  field_id: field.id,
+                  via_record_id: @parent_record&.to_param,
+                  via_resource_class: @parent_resource&.class&.to_s,
+                  association_name: @field&.attribute_id
+                }.compact
+              ) %>"
+              class="popover-menu__panel popover-menu__panel--summary"
+              data-controller="popover-menu"
+            >
+              <%= render Avo::LoadingComponent.new %>
+            </turbo-frame>
           </div>
-          <turbo-frame
-            id="summary-frame-<%= field.id %>"
-            loading="lazy"
-            src="<%= distribution_chart_path(
-              {
-                resource_name: field.resource.model_class,
-                field_id: field.id,
-                via_record_id: @parent_record&.to_param,
-                via_resource_class: @parent_resource&.class&.to_s,
-                association_name: @field&.attribute_id
-              }.compact
-            ) %>"
-            class="
-              absolute inset-auto top-0 z-40 mt-6 w-full overflow-hidden rounded-sm border border-tertiary
-              bg-primary p-4 shadow-modal sm:w-[400px]
-            "
-            data-toggle-target="panel"
-            hidden
-          >
-            <%= render Avo::LoadingComponent.new %>
-          </turbo-frame>
         <% end %>
       <% end %>
     <% end %>
