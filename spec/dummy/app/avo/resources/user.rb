@@ -25,9 +25,7 @@ class Avo::Resources::User < Avo::BaseResource
 
   self.discreet_information = [
     :id,
-    :timestamps,
-    :created_at,
-    :updated_at
+    :timestamps
   ]
 
   self.includes = [:posts, :post]

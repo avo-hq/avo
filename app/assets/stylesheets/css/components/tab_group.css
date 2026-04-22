@@ -6,8 +6,13 @@
      about it. Uses width + negative margin-inline (RTL-safe) instead of
      left/right. */
   .tab-group {
-    @apply relative border border-dashed border-tertiary rounded-2xl p-2;
-    width: calc(100% + --spacing(4));
-    margin-inline: calc((--spacing(2)) * -1);
+    @apply relative border border-dashed border-tertiary rounded-2xl;
+    --tab-group-modifier: 8;
+    --tab-group-padding: calc(var(--tab-group-modifier) - (var(--tab-group-modifier)/2));
+
+    width: calc(100% + calc(var(--spacing) * var(--tab-group-modifier)));
+    margin-inline: calc(var(--spacing) * var(--tab-group-padding) * -1);
+    padding: calc(var(--spacing) * var(--tab-group-padding));
+
   }
 }
