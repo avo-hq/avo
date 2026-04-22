@@ -6,7 +6,43 @@
 
   /* Container */
   .tabs {
-    @apply flex flex-wrap;
+    @apply flex flex-nowrap overflow-x-auto sm:flex-wrap sm:overflow-visible;
+    scrollbar-width: none;
+
+    /* Scroll shadows (Lea Verou's background-attachment: local technique).
+       Two solid-color "cover" blocks scroll with the content (local) and sit
+       on top of two radial "shadow" gradients that stay fixed (scroll). When
+       scrolled to an edge, the cover completely hides the shadow on that
+       side; as the user scrolls away, the cover moves with the content and
+       the shadow below is revealed. Covers are hard-edged (no fade through
+       `transparent`, which in CSS is rgba(0,0,0,0) and bleeds dark pixels). */
+    background-image:
+      linear-gradient(var(--color-background), var(--color-background)),
+      linear-gradient(var(--color-background), var(--color-background)),
+      radial-gradient(
+        farthest-side at 0 50%,
+        rgb(0 0 0 / 0.18),
+        rgb(0 0 0 / 0)
+      ),
+      radial-gradient(
+        farthest-side at 100% 50%,
+        rgb(0 0 0 / 0.18),
+        rgb(0 0 0 / 0)
+      );
+    background-position: 0 0, 100% 0, 0 0, 100% 0;
+    background-repeat: no-repeat;
+    background-size: 1rem 100%, 1rem 100%, 0.75rem 100%, 0.75rem 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+
+  @media (min-width: 640px) {
+    .tabs {
+      background: none;
+    }
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
   }
 
   /* Base Item */

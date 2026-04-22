@@ -40,7 +40,7 @@
   @apply mt-(--top-navbar-height);
 
   .main-content-area {
-    @apply w-(--content-width) ms-1 flex flex-1 flex-col z-50 fixed rounded-2xl bg-primary shadow-content p-4 h-full;
+    @apply w-(--content-width) ms-1 flex flex-1 flex-col z-50 fixed rounded-2xl bg-primary shadow-content py-4 px-1 lg:px-4 h-full;
 
     transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
 
