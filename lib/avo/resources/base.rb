@@ -406,7 +406,7 @@ module Avo
           .uniq { |action| action[:class].to_s }
           .find { |action| action[:class].to_s == action_id.to_s }
       end
-      
+
       def hydrate(...)
         super
 
