@@ -56,6 +56,7 @@ import SignOutController from './controllers/sign_out_controller'
 import StarsFieldController from './controllers/fields/stars_field_controller'
 import TableRowController from './controllers/table_row_controller'
 import TabsController from './controllers/tabs_controller'
+import TabsOverflowController from './controllers/tabs_overflow_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
@@ -109,6 +110,7 @@ application.register('sidebar', SidebarController)
 application.register('sign-out', SignOutController)
 application.register('table-row', TableRowController)
 application.register('tabs', TabsController)
+application.register('tabs-overflow', TabsOverflowController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)

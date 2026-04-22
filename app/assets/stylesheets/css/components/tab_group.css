@@ -1,0 +1,13 @@
+/* Tab Group Component */
+@layer components {
+  /* Dashed border wraps both the tabs list and the active tab's content.
+     The element extends 5px past each side of its container so the border
+     sits outside the panel padding without requiring the parent to know
+     about it. Uses width + negative margin-inline (RTL-safe) instead of
+     left/right. */
+  .tab-group {
+    @apply relative border border-dashed border-tertiary rounded-2xl p-2;
+    width: calc(100% + --spacing(4));
+    margin-inline: calc((--spacing(2)) * -1);
+  }
+}
