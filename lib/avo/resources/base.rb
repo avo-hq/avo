@@ -393,6 +393,14 @@ module Avo
         end
       end
 
+      def find_action(action_id)
+        actions = get_actions + Array(safe_call(:get_actions_from_custom_controls))
+
+        actions
+          .uniq { |action| action[:class].to_s }
+          .find { |action| action[:class].to_s == action_id.to_s }
+      end
+
       def hydrate(...)
         super
 
