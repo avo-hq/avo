@@ -41,6 +41,10 @@ class Avo::Resources::Items::Tab
     "#{parent.turbo_frame_id} #{id}".parameterize
   end
 
+  def get_items
+    items_with_standalone_fields_wrapped_in_cards
+  end
+
   class Builder
     include Avo::Concerns::BorrowItemsHolder
 

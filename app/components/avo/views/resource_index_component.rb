@@ -128,13 +128,9 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def render_dynamic_filters_button
-    return unless Avo.avo_dynamic_filters_installed?
-    return unless @resource.has_filters?
-    return unless has_resources?
-    return if field&.hide_filter_button
-    return if Avo::DynamicFilters.configuration.always_expanded
+    return unless show_dynamic_filters_button?
 
-    a_button size: :sm,
+    a_button size: :md,
       color: :primary,
       icon: "tabler/outline/filter",
       data: {
@@ -245,5 +241,13 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def has_resources?
     @resources.present?
+  end
+
+  def show_dynamic_filters_button?
+    Avo.avo_dynamic_filters_installed? &&
+      @resource.has_filters? &&
+      has_resources? &&
+      !field&.hide_filter_button &&
+      !Avo::DynamicFilters.configuration.always_expanded
   end
 end

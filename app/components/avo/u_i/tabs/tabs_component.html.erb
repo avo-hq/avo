@@ -2,6 +2,7 @@
   class: class_names("tabs", "tabs--#{@variant}": @variant == :switcher),
   role: :tablist,
   id: @id,
-  "aria-label": @aria_label do %>
+  "aria-label": @aria_label,
+  data: { controller: "tabs-overflow" } do %>
   <%= content %>
 <% end %>

@@ -171,42 +171,32 @@ module Avo
         end
       end
 
+      # Default renderable items for any HasItems container. Subclasses that
+      # need to auto-wrap (Tab, Panel, Sidebar, Resource) override this.
+      # Card, Row, TabGroup fall through to the raw visible_items.
       def get_items
-        # Each group is built only by standalone items or items that have their own panel, keeping the items order
+        visible_items
+      end
+
+      # Groups consecutive "standalone" fields (fields that don't bring their
+      # own panel — text, select, date, etc.) into cards, so containers like
+      # Panel/Sidebar/Tab render a nice card background around them even when
+      # the user forgot to write `card do ... end` themselves. Fields that
+      # have their own panel (has_many, has_and_belongs_to_many, has_one,
+      # belongs_to) and explicit panels/cards pass through untouched and
+      # break the run, so you get separate cards around each group.
+      def items_with_standalone_fields_wrapped_in_cards
         grouped_items = visible_items.slice_when do |prev, curr|
-          # Slice when the item type changes from standalone to panel or vice-versa
           is_standalone?(prev) != is_standalone?(curr)
         end.to_a.map do |group|
           {elements: group, is_standalone: is_standalone?(group.first)}
         end
 
-        # Add the header automatically as first item if the user didn't define one
-        # This is to ensure that the header is always present
-        if items.none? { |item| item.is_header? }
-          header = Avo::Resources::Items::Header.new
-          hydrate_item header
-          grouped_items.unshift({elements: [header], is_standalone: false})
-        end
-
-        # For each standalone group, wrap items in a panel and card
-        # If the resource has at least one panel defined, we compute nothing, user took control of the panels
-        if items.none? { |item| item.is_panel? }
-          grouped_items.select { |group| group[:is_standalone] }.each do |group|
-            calculated_panel = Avo::Resources::Items::Panel.new
-            hydrate_item calculated_panel
-
-            # Create a card
-            card = Avo::Resources::Items::Card.new
-            hydrate_item card
-
-            # Add the items to the card
-            card.items_holder.items = group[:elements]
-
-            # Add the card to the main panel
-            calculated_panel.items_holder.items = [card]
-
-            group[:elements] = calculated_panel
-          end
+        grouped_items.select { |group| group[:is_standalone] }.each do |group|
+          card = Avo::Resources::Items::Card.new
+          hydrate_item card
+          card.items_holder.items = group[:elements]
+          group[:elements] = card
         end
 
         grouped_items.flat_map { |group| group[:elements] }
