@@ -25,11 +25,7 @@
 }
 
 .header__description {
-  @apply font-normal leading-5 overflow-ellipsis w-full text-content-secondary;
-  font-size: 14px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  @apply font-normal text-sm leading-5 w-full text-content-secondary grow;
 }
 
 .header__controls {
