@@ -16,8 +16,9 @@
     <%= render partial: "avo/partials/javascript" %>
     <%= render partial: "avo/partials/branding" %>
     <%= render partial: "avo/partials/pre_head" %>
+    <%= stylesheet_link_tag "avo/dependencies", "data-turbo-track": "reload", as: "style" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
-    <%= stylesheet_link_tag @stylesheet_assets_path, "data-turbo-track": "reload", as: "style" %>
+    <%= stylesheet_link_tag "avo/application", "data-turbo-track": "reload", as: "style" %>
 
     <%= javascript_include_tag "avo/application", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
 

@@ -40,7 +40,7 @@ gem "net-smtp", require: false
 gem "avo-money_field"
 gem "avo-record_link_field"
 gem "pluggy", path: "../pluggy"
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "tzinfo-data", platforms: [:windows, :jruby]
 gem "psych", "< 4"
 
 group :development do
@@ -60,7 +60,7 @@ group :development do
   gem "web-console", ">= 3.3.0"
   gem "listen", ">= 3.5.1"
   gem "actioncable"
-  gem "debug", platforms: [:mri, :mingw, :x64_mingw]
+  gem "debug", platforms: [:mri, :windows]
   gem "ruby-lsp-rspec", require: false
 end
 
@@ -92,7 +92,7 @@ group :development, :test do
   gem "danger", require: false
   gem "faker", require: false
   gem "factory_bot_rails"
-  gem "i18n-tasks", "~> 1.0.12"
+  gem "i18n-tasks", ">= 1.0.12"
   gem "erb-formatter", require: false
   gem "erb_lint", require: false
   gem "solargraph", require: false

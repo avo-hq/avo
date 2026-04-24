@@ -79,6 +79,10 @@
   @apply text-content text-base font-medium self-stretch leading-6;
 }
 
+.grid-card__title--truncate {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap text-content-secondary text-xs font-normal leading-4;
+}
+
 .grid-card__title a {
   color: inherit;
 }

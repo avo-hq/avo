@@ -1,5 +1,5 @@
 <div data-controller="toggle" data-toggle-exemption-containers-value='[".flatpickr-calendar"]' data-component-name="<%= self.class.to_s.underscore %>">
-  <div class="relative w-full flex justify-between">
+  <div class="filters__bar">
     <%= a_button class: 'focus:outline-hidden',
       style: :primary,
       icon: "tabler/outline/filter",
@@ -8,27 +8,36 @@
       'data-action': 'click->toggle#togglePanel',
       'data-tippy': 'tooltip' do %>
       <%= t 'avo.filters' %>
-      <% if @applied_filters.present? %>
-        <span class="ms-1">(<%= "#{@applied_filters.count} #{t('avo.applied', count: @applied_filters.count)}" %>)</span>
+      <% if applied_filters_count.positive? %>
+        <span class="filters__count"><%= applied_filters_count %></span>
       <% end %>
     <% end %>
-    <%= tag.div class: 'absolute block inset-auto sm:end-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded-sm divide-y divide-gray-300 css-animate-slide-down',
+    <%= tag.div class: 'filters__panel css-animate-slide-down',
       data: {toggle_target: 'panel'},
       hidden: params[:keep_filters_panel_open] != '1' do %>
-      <% @filters.each do |filter| %>
-        <%= render partial: filter.class.template, locals: {filter: filter} %>
-      <% end %>
-      <div class="p-4 border-tertiary border-t">
-        <% if @applied_filters.present? %>
-          <%= a_link reset_path, data: {turbo_frame: params[:turbo_frame]}, color: :gray, size: :sm, class: 'w-full justify-center' do %>
-            <%= t('avo.reset_filters') %>
-          <% end %>
-        <% else %>
-          <%= a_button class: 'w-full justify-center', disabled: true do %>
-            <%= t('avo.reset_filters') %>
-          <% end %>
+      <%= render Avo::UI::DropdownCardComponent.new do |card| %>
+        <% card.with_header do %>
+          <div class="filters-card__header">
+            <span class="filters-card__title"><%= t('avo.filters') %></span>
+            <% if @applied_filters.present? %>
+              <%= link_to t('avo.reset_filters'), reset_path, data: {turbo_frame: params[:turbo_frame]}, class: 'filters-card__reset filters-card__reset--active' %>
+            <% else %>
+              <span class="filters-card__reset filters-card__reset--disabled">
+                <%= t('avo.reset_filters') %>
+              </span>
+            <% end %>
+          </div>
         <% end %>
-      </div>
+        <% card.with_body do %>
+          <div class="filters-card__content">
+            <div class="divide-y divide-secondary">
+              <% @filters.each do |filter| %>
+                <%= render partial: filter.class.template, locals: {filter: filter} %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 </div>

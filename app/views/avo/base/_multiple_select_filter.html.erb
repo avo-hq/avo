@@ -5,17 +5,19 @@
 >
   <%= filter_wrapper name: filter.name do %>
     <%= select_tag filter.id, options_for_select(filter.options.invert, filter.selected_value(@applied_filters)),
-      class: input_classes('w-full mb-0'),
+      class: input_classes('filters-multi-select w-full'),
       multiple: true,
+      size: filter.options.size.clamp(2, 4),
       id: "avo_filters_#{filter.id.parameterize.underscore}",
       'data-filter-class': filter.class.to_s,
-      'data-multiple-select-filter-target': 'selector'
-    %>
+      'data-multiple-select-filter-target': 'selector' %>
+
     <div class="flex justify-end">
-      <%= a_button class: 'mt-4', style: :primary, size: :xs, data: { action: "multiple-select-filter#changeFilter" } do %>
+      <%= a_button style: :primary, size: :sm, data: { action: "multiple-select-filter#changeFilter" } do %>
         <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
       <% end %>
     </div>
+
     <%= link_to 'url_redirect', request.url, data: { 'multiple-select-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, style: 'hidden', class: 'hidden' %>
   <% end %>
 </div>

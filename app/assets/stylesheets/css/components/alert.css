@@ -8,7 +8,7 @@
 
   --alert-color: var(--color-foreground);
   --alert-title-color: color-mix(in oklab, var(--color-content) 20%, var(--alert-color));
-  --alert-message-color: color-mix(in oklab, var(--color-content) 10%, var(--alert-color));
+  --alert-message-color: var(--alert-title-color);
   --alert-background: var(--color-background);
   --alert-border: var(--color-tertiary);
 }
@@ -69,4 +69,18 @@
   --alert-color: var(--color-danger-content);
   --alert-background: color-mix(in oklab, var(--color-danger) 15%, var(--color-primary));
   --alert-border: var(--color-danger-foreground);
+}
+
+.alert__title code,
+.alert__message code {
+  @apply rounded px-1 py-px font-mono text-xs;
+
+  background: color-mix(in oklab, var(--alert-color) 15%, transparent);
+  color: var(--alert-color);
+}
+
+.alert__message a {
+  @apply underline underline-offset-2;
+
+  color: var(--alert-color);
 }

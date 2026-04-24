@@ -1,14 +1,36 @@
-<%= content_tag :div, class: class_names("dropdown"), data: do %>
-  <%= trigger %>
+<% if @popover_mode %>
+  <div class="popover-menu">
+    <%= trigger %>
 
-  <% if items.present? %>
-    <%= render Avo::UI::DropdownMenuComponent.new(
-      data: {dropdown_menu_target: "menu"}.merge(@data),
-      classes: @classes,
-      dropdown_menu_classes: @dropdown_menu_classes,
-      open: @open
-    ) do %>
-      <%= items %>
+    <% if items.present? %>
+      <%= content_tag :div,
+        popover: "auto",
+        id: popover_id,
+        class: class_names("popover-menu__panel", @classes),
+        data: {controller: "popover-menu"} do %>
+        <div class="dropdown-menu">
+          <div class="dropdown-menu__group">
+            <div class="dropdown-menu__list">
+              <%= items %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <%= content_tag :div, class: class_names("dropdown"), data: do %>
+    <%= trigger %>
+
+    <% if items.present? %>
+      <%= render Avo::UI::DropdownMenuComponent.new(
+        data: {dropdown_menu_target: "menu"}.merge(@data),
+        classes: @classes,
+        dropdown_menu_classes: @dropdown_menu_classes,
+        open: @open
+      ) do %>
+        <%= items %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

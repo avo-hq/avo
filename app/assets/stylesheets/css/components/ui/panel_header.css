@@ -1,13 +1,15 @@
+/* Main breaking point: md */
+
 .header {
   @apply flex flex-col gap-2 items-start justify-center pe-0 py-0;
 }
 
 .header__main {
-  @apply flex flex-col sm:flex-row gap-4 items-center w-full;
+  @apply flex flex-col md:flex-row gap-4 items-center w-full;
 }
 
 .header__content {
-  @apply flex gap-3 items-center grow shrink basis-0;
+  @apply w-full flex gap-3 items-center grow shrink basis-0;
 }
 
 .header__avatar {
@@ -23,15 +25,11 @@
 }
 
 .header__description {
-  @apply font-normal leading-5 overflow-ellipsis w-full text-content-secondary;
-  font-size: 14px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  @apply font-normal text-sm leading-5 w-full text-content-secondary grow;
 }
 
 .header__controls {
-  @apply flex gap-3 items-center cursor-pointer shrink-0 flex-wrap;
+  @apply w-full md:w-auto flex gap-3 items-center cursor-pointer shrink-0 flex-wrap justify-center md:justify-end;
 }
 
 .header__discreet-information {

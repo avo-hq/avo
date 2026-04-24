@@ -11,14 +11,9 @@ RSpec.feature "Field Summarizing", type: :system do
     it "provides the ability to see the distribution of values, toggleable" do
       visit avo.resources_projects_path
 
-      expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: false
+      find('button[popovertarget="summary-popover-status"]').click
 
-      find("#summary-header-status").click
-
-      expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: true
-
-      # I can't make the lazy loading work, looks like it's not triggered at all
-      wait_for_turbo_frame_id("summary-frame-status")
+      wait_for_turbo_frame_id("summary-popover-status")
 
       expect(page).to have_css "#status-summary", visible: true
       expect(page).to have_css "#chart-status", visible: true
@@ -29,7 +24,7 @@ RSpec.feature "Field Summarizing", type: :system do
         expect(page).to have_content "LOADING\n4"
       end
 
-      find('th[data-table-header-field-id="status"] div svg').click
+      find('button[popovertarget="summary-popover-status"]').click
 
       expect(page).not_to have_css "#status-summary"
       expect(page).not_to have_css "#chart-status"
@@ -38,9 +33,33 @@ RSpec.feature "Field Summarizing", type: :system do
     it "doesn't show up for fields without option" do
       visit avo.resources_projects_path
 
-      expect(page).to have_css 'th[data-table-header-field-id="status"] div svg'
-      expect(page).not_to have_css 'th[data-table-header-field-id="progress"] div svg'
-      expect(page).not_to have_css 'th[data-table-header-field-id="description"] div svg'
+      expect(page).to have_css 'button[popovertarget="summary-popover-status"]'
+      expect(page).not_to have_css 'button[popovertarget="summary-popover-progress"]'
+      expect(page).not_to have_css 'button[popovertarget="summary-popover-description"]'
+    end
+
+    context "when summarizing a belongs_to field" do
+      let(:user1) { create :user, first_name: "Alice", last_name: "Smith" }
+      let(:user2) { create :user, first_name: "Bob", last_name: "Jones" }
+
+      before do
+        create_list :project, 3, user: user1
+        create_list :project, 1, user: user2
+      end
+
+      it "renders the display name instead of the object inspect string" do
+        visit avo.resources_projects_path
+
+        find('button[popovertarget="summary-popover-user"]').click
+
+        wait_for_turbo_frame_id("summary-popover-user")
+
+        within "#user-summary" do
+          expect(page).to have_content "ALICE SMITH"
+          expect(page).to have_content "BOB JONES"
+          expect(page).not_to have_content "#<"
+        end
+      end
     end
 
     context "when summarizing on association pages" do
@@ -55,14 +74,9 @@ RSpec.feature "Field Summarizing", type: :system do
 
         wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_projects")
 
-        expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: false
+        find('button[popovertarget="summary-popover-status"]').click
 
-        find("#summary-header-status").click
-
-        expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: true
-
-        # I can't make the lazy loading work, looks like it's not triggered at all
-        wait_for_turbo_frame_id("summary-frame-status")
+        wait_for_turbo_frame_id("summary-popover-status")
 
         expect(page).to have_css "#status-summary", visible: true
         expect(page).to have_css "#chart-status", visible: true
@@ -73,7 +87,7 @@ RSpec.feature "Field Summarizing", type: :system do
           expect(page).to_not have_content "LOADING\n4"
         end
 
-        find('th[data-table-header-field-id="status"] div svg').click
+        find('button[popovertarget="summary-popover-status"]').click
 
         expect(page).not_to have_css "#status-summary"
         expect(page).not_to have_css "#chart-status"

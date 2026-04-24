@@ -2,6 +2,8 @@ require "zeitwerk"
 require "net/http"
 require "active_support/inflector"
 require_relative "avo/version"
+require_relative "avo/tailwind_builder"
+require_relative "avo/configuration"
 require_relative "avo/engine" if defined?(Rails)
 
 loader = Zeitwerk::Loader.for_gem
@@ -29,6 +31,12 @@ module Avo
   class LicenseInvalidError < StandardError; end
 
   class NotAuthorizedError < StandardError; end
+
+  class ActionNotRegisteredError < StandardError
+    def initialize(action_id, resource_class)
+      super("Action '#{action_id}' is not registered on resource '#{resource_class}'.")
+    end
+  end
 
   class NoPolicyError < StandardError; end
 

@@ -55,6 +55,7 @@ class Avo::Resources::Project < Avo::BaseResource
 
   def fields
     field :id, as: :id, link_to_record: true
+    field :user, as: :belongs_to, summarizable: true
     field :status,
       as: :status,
       failed_when: ["closed", :rejected, :failed, "user_reject"],
@@ -141,6 +142,11 @@ class Avo::Resources::Project < Avo::BaseResource
   end
 
   def filters
+    filter Avo::Filters::ProjectUserFilter
+    filter Avo::Filters::ProjectStatusFilter
+    filter Avo::Filters::ProjectStageFilter
+    filter Avo::Filters::ProjectCountryFilter
+    filter Avo::Filters::ProjectUsersRequiredFilter
     # filter PeopleFilter
     # filter People2Filter
     # filter FeaturedFilter

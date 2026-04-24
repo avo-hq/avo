@@ -29,20 +29,22 @@ class Avo::Resources::Items::Holder
       as = args.fetch(:as, nil)
 
       alert_type = :error
-      message = "There's an invalid field configuration for this resource. <br/> <code class='px-1 py-px rounded-sm bg-red-600'>field :#{field_name}, as: :#{as}</code>"
+      message = "Invalid field configuration"
+      description = "Check your resource file for: <code>field :#{field_name}, as: :#{as}</code>"
 
       if as == :markdown
         alert_type = :warning
-        message = "In Avo 3.16.2 we renamed the <code>:markdown</code> field to <code>:easy_mde</code>. <br/><br/>You may continue to use that one or the new and improved one with Active Storage support. <br/><br/> Read more about it in the <a href=\"https://docs.avohq.io/3.0/fields/markdown.html\" target=\"_blank\">docs</a>."
+        message = "Deprecated field type :markdown"
+        description = "In Avo 3.16.2 we renamed <code>:markdown</code> to <code>:easy_mde</code>. You may continue to use that one or the new and improved one with Active Storage support. Read more about it in the <a href=\"https://docs.avohq.io/3.0/fields/markdown.html\" target=\"_blank\">docs</a>."
       end
 
-      # End execution ehre and add the field to the invalid_fileds payload so we know to wanr the developer about that.
-      # @todo: Make sure this warning is still active
+      # End execution here and add the field to the invalid_fields payload so we know to warn the developer about that.
       return add_invalid_field({
         name: field_name,
         as:,
         alert_type:,
-        message:
+        message:,
+        description:
       })
     end
 

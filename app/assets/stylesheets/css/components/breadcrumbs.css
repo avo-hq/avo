@@ -12,6 +12,10 @@
 
 .breadcrumb-element {
   @apply inline-flex items-center gap-2 font-medium leading-6 text-sm rounded-lg px-2 py-0.5 text-content-secondary;
+
+  &:first-child {
+    @apply ps-0;
+  }
 }
 
 .breadcrumb-element__icon {

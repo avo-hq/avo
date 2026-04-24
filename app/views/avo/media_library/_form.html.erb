@@ -1,6 +1,16 @@
-<%# TODO: fix this view%>
-<%= form_with model: @blob, url: avo.media_library_path(@blob), method: :patch, class: "pb-6 description-list w-full" do |f| %>
-  <%= avo_edit_field :filename,
+<div class="media-library-details__section media-library-details__section--form">
+  <%= form_with model: blob,
+    url: avo.media_library_path(blob),
+    method: :patch,
+    class: "media-library-details__form all-fields-stacked description-list",
+    html: {
+      novalidate: true,
+      data: {
+        controller: "form avo-reactive-fields",
+        action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
+      }
+    } do |f| %>
+    <%= avo_edit_field :filename,
       as: :text,
       stacked: true,
       form: f,
@@ -9,47 +19,50 @@
         full_width: true,
         stacked: true
       } %>
-  <%= f.fields_for :metadata do |meta_form| %>
-    <%= avo_edit_field :title,
-      as: :text,
-      value: @blob.metadata[:title],
-      form: meta_form,
-      component_options: {
-        full_width: true,
-        stacked: true
-      },
-      required: true
-    %>
-    <%= avo_edit_field :alt,
-      as: :text,
-      value: @blob.metadata[:alt],
-      stacked: true,
-      component_options: {
-        full_width: true,
-        stacked: true
-      },
-      form: meta_form
-    %>
-    <%= avo_edit_field :description,
-      as: :textarea,
-      value: @blob.metadata[:description],
-      stacked: true,
-      component_options: {
-        full_width: true,
-        stacked: true
-      },
-      form: meta_form
-    %>
-  <% end %>
 
-  <div class="w-full flex justify-end pe-6">
-    <%= a_button type: :submit,
-      icon: "tabler/outline/device-floppy",
-      size: :sm,
-      style: :outline,
-      data: {
-      } do %>
-      Update
+    <%= f.fields_for :metadata do |meta_form| %>
+      <%= avo_edit_field :title,
+        as: :text,
+        value: blob.metadata[:title],
+        form: meta_form,
+        component_options: {
+          full_width: true,
+          stacked: true
+        },
+        required: true %>
+
+      <%= avo_edit_field :alt,
+        as: :text,
+        value: blob.metadata[:alt],
+        stacked: true,
+        component_options: {
+          full_width: true,
+          stacked: true
+        },
+        form: meta_form %>
+
+      <%= avo_edit_field :description,
+        as: :textarea,
+        value: blob.metadata[:description],
+        stacked: true,
+        component_options: {
+          full_width: true,
+          stacked: true
+        },
+        form: meta_form %>
     <% end %>
-  </div>
-<% end %>
+
+    <div class="media-library-details__form-actions">
+      <%= a_button type: :submit,
+        icon: "tabler/outline/arrow-up",
+        size: :lg,
+        style: :primary,
+        data: {
+          hotkey: "Mod+Enter"
+        },
+        class: "w-full" do %>
+        Update
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -16,6 +16,7 @@ import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
 import DropdownController from './controllers/dropdown_menu_controller'
+import PopoverMenuController from './controllers/popover_menu_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
@@ -55,6 +56,7 @@ import SignOutController from './controllers/sign_out_controller'
 import StarsFieldController from './controllers/fields/stars_field_controller'
 import TableRowController from './controllers/table_row_controller'
 import TabsController from './controllers/tabs_controller'
+import TabsOverflowController from './controllers/tabs_overflow_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
 import TippyController from './controllers/tippy_controller'
@@ -108,10 +110,12 @@ application.register('sidebar', SidebarController)
 application.register('sign-out', SignOutController)
 application.register('table-row', TableRowController)
 application.register('tabs', TabsController)
+application.register('tabs-overflow', TabsOverflowController)
 application.register('text-filter', TextFilterController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
 application.register('dropdown-menu', DropdownController)
+application.register('popover-menu', PopoverMenuController)
 application.register('trix-body', TrixBodyController)
 application.register('search', SearchController)
 

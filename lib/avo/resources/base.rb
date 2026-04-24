@@ -304,6 +304,40 @@ module Avo
         self
       end
 
+      # Renderable items for the resource view. Injects a header if none is
+      # defined and, when the user hasn't taken control by declaring at least
+      # one panel, wraps standalone field groups in a Panel + Card so they
+      # render with the expected chrome at the top level.
+      def get_items
+        grouped_items = visible_items.slice_when do |prev, curr|
+          is_standalone?(prev) != is_standalone?(curr)
+        end.to_a.map do |group|
+          {elements: group, is_standalone: is_standalone?(group.first)}
+        end
+
+        if items.none? { |item| item.is_header? }
+          header = Avo::Resources::Items::Header.new
+          hydrate_item header
+          grouped_items.unshift({elements: [header], is_standalone: false})
+        end
+
+        if items.none? { |item| item.is_panel? }
+          grouped_items.select { |group| group[:is_standalone] }.each do |group|
+            calculated_panel = Avo::Resources::Items::Panel.new
+            hydrate_item calculated_panel
+
+            card = Avo::Resources::Items::Card.new
+            hydrate_item card
+            card.items_holder.items = group[:elements]
+            calculated_panel.items_holder.items = [card]
+
+            group[:elements] = calculated_panel
+          end
+        end
+
+        grouped_items.flat_map { |group| group[:elements] }
+      end
+
       unless defined? VIEW_METHODS_MAPPING
         VIEW_METHODS_MAPPING = {
           index: [:index, :display],
@@ -391,6 +425,14 @@ module Avo
 
           klass[:arguments]
         end
+      end
+
+      def find_action(action_id)
+        actions = get_actions + Array(safe_call(:get_actions_from_custom_controls))
+
+        actions
+          .uniq { |action| action[:class].to_s }
+          .find { |action| action[:class].to_s == action_id.to_s }
       end
 
       def hydrate(...)

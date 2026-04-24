@@ -1,4 +1,4 @@
-<%= render ui.panel(title: t("avo.media_library.title"),
+<%= render ui.panel(title: @attaching ? nil : t("avo.media_library.title"),
   data: {
     controller: 'media-library',
     media_library_controller_selector_value: params[:controller_selector],
@@ -17,50 +17,60 @@
 
   <% panel.with_body do %>
     <% if !@attaching %>
-      <%= content_tag :div, class: "p-4 pb-0",
+      <%= content_tag :div,
         data: {
           controller: 'media-library-attach',
           media_library_attach_direct_uploads_url_value: helpers.main_app.rails_direct_uploads_url,
         } do %>
         <%= content_tag :div,
-          class: 'dropzone relative py-6 text-center border-dashed border-2 border-gray-300 rounded-lg justify-center items-center flex flex-col text-gray-400 hover:border-primary-500 cursor-pointer',
           data: {
             media_library_attach_target: 'dropzone',
             action: 'click->media-library-attach#triggerFileBrowser',
           } do %>
-          <%= helpers.svg 'tabler/outline/cloud-upload', class: 'size-6 text-gray-400' %> Upload a file
-          <small>Click to browse or drag and drop</small>
+          <%= render Avo::UI::FileUploadInputComponent.new(
+            id: "media-library-file-upload",
+          ) %>
         <% end %>
 
-        <%= content_tag :div, "", class: "m-2 flex flex-wrap gap-2 empty:m-0", data: {
+        <%= content_tag :div, "", class: "media-library__uploading-container", data: {
           media_library_attach_target: 'uploadingContainer',
           turbo_permanent: true,
         } %>
       <% end %>
     <% end %>
 
-    <div class="@container/index grid min-h-24 grow-0 gap-x-4" style="grid-template-areas: 'stack';">
-      <div
-        class="
-          grid min-h-0 min-w-0 auto-rows-max grid-cols-1 gap-4 p-4 @sm/index:grid-cols-2 @lg/index:grid-cols-3
-          @3xl/index:grid-cols-4 @5xl/index:grid-cols-6
-        "
-        style="grid-area: stack;"
-      >
+    <div class="media-library__stack">
+      <div class="media-library__grid grid-wrapper pt-4">
         <%= render Avo::MediaLibrary::ListItemComponent.with_collection(@blobs, attaching: @attaching, multiple: @attaching) %>
       </div>
 
       <%# TODO: fix the extra margin %>
-      <%= helpers.turbo_frame_tag ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID, class: 'relative empty:hidden bg-white inset-0 w-full h-full block empty:-ms-4 max-h-full', style: 'grid-area: stack;' %>
+      <%= helpers.turbo_frame_tag ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID, class: "media-library__details-frame" %>
     </div>
 
-    <div class="mt-4 flex w-full flex-1">
-      <div class="w-full flex-2 space-y-2 text-center sm:flex sm:items-center sm:justify-between sm:space-y-0 sm:text-start">
-        <div class="me-4 text-sm text-slate-600"><%== @pagy.info_tag %></div>
+    <div class="pagination">
+      <div class="pagination__per-page"></div>
 
-        <% if @pagy.pages > 1 %>
-          <%== @pagy.series_nav %>
-        <% end %>
+      <div class="pagination__controls-wrap pt-4">
+        <div class="pagination__controls">
+          <div class="pagination__info">
+            <span class="pagination__info-number"><%= formatted_number(@pagy.from) %>-<%= formatted_number(@pagy.to) %></span>
+            &nbsp; of &nbsp;
+            <% if @pagy.count >= 10_000 %>
+              <span title="<%= formatted_count %>" data-tippy="tooltip">
+                <%= number_to_social(@pagy.count, start_at: 10_000) %>
+              </span>
+            <% else %>
+              <span><%= formatted_count %></span>
+            <% end %>
+          </div>
+
+          <% if @pagy.pages > 1 %>
+            <div class="pagination__nav">
+              <%== formatted_series_nav %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   <% end %>

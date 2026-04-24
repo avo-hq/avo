@@ -1,14 +1,13 @@
 desc "Runs the update command for all Avo gems."
-task "avo:update" do
-  gems = Gem::Specification.map { |gem| gem.name }
+task "avo:update" => :environment do
+  plugins = Avo.plugin_manager.plugins
+    .map { |plugin| plugin.name.to_s }
+    .uniq
+    .sort
 
-  @license ||= if gems.include?("avo-advanced")
-    system "bundle update avo avo-advanced"
-  elsif gems.include?("avo-pro")
-    system "bundle update avo avo-pro"
-  elsif gems.include?("avo")
-    system "bundle update avo"
-  end
+  cmd = ["bundle", "update", *plugins].join(" ")
+  puts "[Avo->] Running `#{cmd}`"
+  system cmd
 end
 
 desc "Builds Avo (just assets for now)"
@@ -31,9 +30,6 @@ task "avo:build-assets" do
     Dir.chdir(path) do
       puts "Running `yarn install`"
       system "yarn"
-
-      puts "Running `bundle exec rails avo:sym_link`"
-      system "bundle exec rails avo:sym_link"
 
       puts "Running `yarn build`"
       system "yarn build"
@@ -140,4 +136,30 @@ task "avo:yarn_install" do
   # Ensure that versions remain updated and synchronized with those specified in package.json.
   puts "[Avo->] Adding yarn dependencies"
   `yarn add tailwindcss@^4.0.0 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
+end
+
+desc "Build Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo/application.css)"
+task "avo:tailwindcss:build" => :environment do
+  unless Avo::TailwindBuilder.enabled?
+    puts "[Avo->] tailwindcss integration disabled or tailwindcss-ruby not found; skipping avo:tailwindcss:build"
+    next
+  end
+
+  puts "[Avo->] Building Avo Tailwind CSS extension (avo/application)..."
+  unless Avo::TailwindBuilder.build
+    abort "[Avo->] avo:tailwindcss:build failed"
+  end
+end
+
+desc "Watch Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo/application.css)"
+task "avo:tailwindcss:watch" => :environment do
+  unless Avo::TailwindBuilder.enabled?
+    puts "[Avo->] tailwindcss integration disabled or tailwindcss-ruby not found; skipping avo:tailwindcss:watch"
+    next
+  end
+
+  puts "[Avo->] Watching Avo Tailwind CSS extension (avo/application)..."
+  unless Avo::TailwindBuilder.watch
+    abort "[Avo->] avo:tailwindcss:watch failed"
+  end
 end
