@@ -25,7 +25,8 @@ RSpec.describe "ThemeSettings", type: :request do
       let(:saved_settings) { {} }
 
       before do
-        block = proc { |settings:, **| saved_settings.merge!(settings) }
+        captured = saved_settings
+        block = proc { captured.merge!(settings) }
         allow(Avo.configuration.branding).to receive(:save_settings_block).and_return(block)
       end
 

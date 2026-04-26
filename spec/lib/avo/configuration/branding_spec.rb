@@ -6,21 +6,21 @@ RSpec.describe Avo::Configuration::Branding do
   let(:options) { {} }
 
   describe "defaults" do
-    it "defaults to static mode" do
-      expect(branding.mode).to eq(:static)
-    end
-
     it "defaults to auto scheme" do
       expect(branding.scheme).to eq(:auto)
     end
 
-    it "defaults to localstorage persistence" do
-      expect(branding.persistence).to eq(:localstorage)
+    it "defaults to cookie persistence" do
+      expect(branding.persistence).to eq(:cookie)
     end
 
     it "defaults neutral and accent to nil" do
       expect(branding.neutral).to be_nil
       expect(branding.accent).to be_nil
+    end
+
+    it "defaults lock to an empty array" do
+      expect(branding.lock).to eq([])
     end
 
     it "provides default logo and logomark" do
@@ -34,24 +34,8 @@ RSpec.describe Avo::Configuration::Branding do
     end
   end
 
-  describe "#static? / #dynamic?" do
-    it "is static by default" do
-      expect(branding).to be_static
-      expect(branding).not_to be_dynamic
-    end
-
-    context "when mode is :dynamic" do
-      let(:options) { {mode: :dynamic} }
-
-      it "is dynamic" do
-        expect(branding).to be_dynamic
-        expect(branding).not_to be_static
-      end
-    end
-  end
-
   describe "#database_persistence?" do
-    it "is false by default (localstorage)" do
+    it "is false by default (cookie)" do
       expect(branding).not_to be_database_persistence
     end
 
@@ -60,20 +44,6 @@ RSpec.describe Avo::Configuration::Branding do
 
       it "is true" do
         expect(branding).to be_database_persistence
-      end
-    end
-  end
-
-  describe "#effective_mode" do
-    it "returns the current mode" do
-      expect(branding.effective_mode).to eq(:static)
-    end
-
-    context "when mode is :dynamic" do
-      let(:options) { {mode: :dynamic} }
-
-      it "returns :dynamic" do
-        expect(branding.effective_mode).to eq(:dynamic)
       end
     end
   end
@@ -181,8 +151,8 @@ RSpec.describe Avo::Configuration::Branding do
   end
 
   describe "locking behavior" do
-    context "in static mode with values explicitly set" do
-      let(:options) { {mode: :static, scheme: :dark, neutral: :slate, accent: :blue} }
+    context "when all three are listed in lock:" do
+      let(:options) { {lock: [:scheme, :neutral, :accent]} }
 
       it "locks all three" do
         expect(branding).to be_scheme_locked
@@ -191,9 +161,7 @@ RSpec.describe Avo::Configuration::Branding do
       end
     end
 
-    context "in static mode without values set" do
-      let(:options) { {mode: :static} }
-
+    context "when lock: is omitted" do
       it "does not lock any" do
         expect(branding).not_to be_scheme_locked
         expect(branding).not_to be_neutral_locked
@@ -201,10 +169,20 @@ RSpec.describe Avo::Configuration::Branding do
       end
     end
 
-    context "in dynamic mode with values explicitly set" do
-      let(:options) { {mode: :dynamic, scheme: :dark, neutral: :slate, accent: :blue} }
+    context "when only a subset is locked" do
+      let(:options) { {lock: [:neutral]} }
 
-      it "does not lock any (values are defaults)" do
+      it "locks only that one" do
+        expect(branding).to be_neutral_locked
+        expect(branding).not_to be_scheme_locked
+        expect(branding).not_to be_accent_locked
+      end
+    end
+
+    context "when values are set but not listed in lock:" do
+      let(:options) { {scheme: :dark, neutral: :slate, accent: :blue} }
+
+      it "treats them as defaults, not locks" do
         expect(branding).not_to be_scheme_locked
         expect(branding).not_to be_neutral_locked
         expect(branding).not_to be_accent_locked

@@ -7,14 +7,6 @@
   <% end %>
 <% end %>
 
-<meta
-  name="avo-branding"
-  data-mode="<%= b.effective_mode %>"
-  data-locked-neutral="<%= b.neutral_css_class if b.neutral_locked? %>"
-  data-locked-accent="<%= b.accent_css_class if b.accent_locked? %>"
-  data-locked-scheme="<%= b.scheme if b.scheme_locked? %>"
->
-
 <%= favicon_link_tag b.favicon %>
 
 <% if b.favicon_dark.present? %>

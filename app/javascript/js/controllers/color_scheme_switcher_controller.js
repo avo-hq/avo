@@ -2,18 +2,13 @@ import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption', 'resetButton']
-
-  static values = {
-    mode: { type: String, default: 'static' },
-    persistence: { type: String, default: 'localstorage' },
-  }
+  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
 
   connect() {
-    const branding = document.querySelector('meta[name="avo-branding"]')?.dataset || {}
-    this.lockedNeutral = this.modeValue === 'static' && branding.lockedNeutral ? branding.lockedNeutral : null
-    this.lockedAccent = this.modeValue === 'static' && branding.lockedAccent ? branding.lockedAccent : null
-    this.lockedScheme = branding.lockedScheme || null
+    this.branding = window.Avo?.configuration?.branding || {}
+    this.lockedNeutral = this.branding.neutralLocked ? this.branding.neutral : null
+    this.lockedAccent = this.branding.accentLocked ? this.branding.accent : null
+    this.lockedScheme = this.branding.schemeLocked ? this.branding.scheme : null
 
     // Read current state from server-rendered <html> classes
     this.currentSchemeValue = this.readCurrentScheme()
@@ -24,7 +19,6 @@ export default class extends Controller {
     this.updateThemeLabel()
     this.updateActiveThemeOption()
     this.updateActiveAccentOption()
-    this.updateResetButton()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -44,21 +38,13 @@ export default class extends Controller {
   }
 
   readCurrentNeutral() {
-    const root = document.documentElement
-    const neutrals = ['slate', 'stone', 'gray', 'zinc', 'neutral', 'taupe', 'mauve', 'mist', 'olive']
-    for (const name of neutrals) {
-      if (root.classList.contains(`theme-neutral-${name}`)) return name
-    }
-    return 'brand'
+    const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('neutral-theme-'))
+    return match ? match.replace('neutral-theme-', '') : 'brand'
   }
 
   readCurrentAccent() {
-    const root = document.documentElement
-    const accents = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
-    for (const name of accents) {
-      if (root.classList.contains(`theme-accent-${name}`)) return name
-    }
-    return 'neutral'
+    const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('theme-accent-'))
+    return match ? match.replace('theme-accent-', '') : 'neutral'
   }
 
   disconnect() {
@@ -78,7 +64,6 @@ export default class extends Controller {
     this.currentSchemeValue = scheme
     this.saveScheme()
     this.applyScheme()
-    this.updateResetButton()
   }
 
   setTheme(event) {
@@ -86,15 +71,15 @@ export default class extends Controller {
     if (this.lockedNeutral) return
 
     const { theme } = event.currentTarget.dataset
+    const allowedThemes = ['brand', ...(this.branding.neutrals || [])]
 
-    if (!theme || !['brand', 'slate', 'stone', 'gray', 'zinc', 'neutral', 'taupe', 'mauve', 'mist', 'olive'].includes(theme)) return
+    if (!theme || !allowedThemes.includes(theme)) return
 
     this.currentThemeValue = theme
     this.saveTheme()
     this.applyTheme()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
-    this.updateResetButton()
   }
 
   previewTheme(event) {
@@ -121,7 +106,6 @@ export default class extends Controller {
     this.currentAccentValue = accent
     this.saveAccent()
     this.applyAccent()
-    this.updateResetButton()
   }
 
   previewAccent(event) {
@@ -137,66 +121,33 @@ export default class extends Controller {
     this.updateActiveAccentOption()
   }
 
-  resetSettings() {
-    Cookies.remove('color_scheme')
-    Cookies.remove('theme')
-    Cookies.remove('accent_color')
-
-    this.currentSchemeValue = 'auto'
-    this.currentThemeValue = 'brand'
-    this.currentAccentValue = 'neutral'
-
-    this.applyScheme()
-    this.applyTheme()
-    this.applyAccent()
-    this.updateThemeLabel()
-    this.updateActiveThemeOption()
-    this.updateActiveAccentOption()
-    this.updateResetButton()
-    this.persistToDatabase()
-  }
-
-  hasCustomSettings() {
-    return this.currentSchemeValue !== 'auto'
-      || this.currentThemeValue !== 'brand'
-      || this.currentAccentValue !== 'neutral'
-  }
-
-  updateResetButton() {
-    if (!this.hasResetButtonTarget) return
-
-    this.resetButtonTarget.hidden = !this.hasCustomSettings()
-  }
-
   saveScheme() {
-    if (this.currentSchemeValue === 'auto') {
-      Cookies.remove('color_scheme')
-    } else {
-      Cookies.set('color_scheme', this.currentSchemeValue)
-    }
+    this.saveCookie('color_scheme', this.currentSchemeValue, 'auto')
     this.persistToDatabase()
   }
 
   saveTheme() {
-    if (this.currentThemeValue === 'brand') {
-      Cookies.remove('theme')
-    } else {
-      Cookies.set('theme', this.currentThemeValue)
-    }
+    this.saveCookie('theme', this.currentThemeValue, 'brand')
     this.persistToDatabase()
   }
 
   saveAccent() {
-    if (this.currentAccentValue === 'neutral') {
-      Cookies.remove('accent_color')
-    } else {
-      Cookies.set('accent_color', this.currentAccentValue)
-    }
+    this.saveCookie('accent_color', this.currentAccentValue, 'neutral')
     this.persistToDatabase()
   }
 
+  saveCookie(name, value, defaultValue) {
+    if (this.branding.persistence === 'database') return
+
+    if (value === defaultValue) {
+      Cookies.remove(name)
+    } else {
+      Cookies.set(name, value)
+    }
+  }
+
   persistToDatabase() {
-    if (this.persistenceValue !== 'database') return
+    if (this.branding.persistence !== 'database') return
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
     const headers = {
@@ -245,10 +196,13 @@ export default class extends Controller {
   }
 
   applyThemeClass(theme) {
-    document.documentElement.classList.remove('theme-neutral-slate', 'theme-neutral-stone', 'theme-neutral-gray', 'theme-neutral-zinc', 'theme-neutral-neutral', 'theme-neutral-taupe', 'theme-neutral-mauve', 'theme-neutral-mist', 'theme-neutral-olive')
+    const root = document.documentElement
+    Array.from(root.classList).forEach((cls) => {
+      if (cls.startsWith('neutral-theme-')) root.classList.remove(cls)
+    })
 
     if (theme !== 'brand') {
-      document.documentElement.classList.add(`theme-neutral-${theme}`)
+      root.classList.add(`neutral-theme-${theme}`)
     }
   }
 
@@ -272,13 +226,13 @@ export default class extends Controller {
   }
 
   applyAccentClass(accent) {
-    const accentColors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
-    accentColors.forEach((color) => {
-      document.documentElement.classList.remove(`theme-accent-${color}`)
+    const root = document.documentElement
+    Array.from(root.classList).forEach((cls) => {
+      if (cls.startsWith('theme-accent-')) root.classList.remove(cls)
     })
 
     if (accent !== 'neutral') {
-      document.documentElement.classList.add(`theme-accent-${accent}`)
+      root.classList.add(`theme-accent-${accent}`)
     }
   }
 

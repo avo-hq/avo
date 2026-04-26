@@ -1,37 +1,36 @@
 /* Color Scheme Switcher Component - Based on Design System */
 .color-scheme-switcher {
-  @apply inline-flex items-center gap-1 p-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700;
+  @apply inline-flex items-center gap-1 p-1 rounded-lg bg-secondary border border-tertiary;
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-content-secondary hover:bg-tertiary focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
 /* Scheme buttons - active states using scheme selection classes */
 .color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-light .color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-white text-primary-600 shadow-sm;
-  @apply dark:bg-transparent dark:text-neutral-400 dark:shadow-none;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-dark .color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-auto .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__icon {
@@ -62,18 +61,18 @@
 .color-scheme-switcher__theme-option {
   @apply flex items-center gap-2 w-full px-2 py-1.5;
   @apply rounded-md transition-all duration-150;
-  @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
+  @apply hover:bg-tertiary;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
-  @apply text-neutral-700 dark:text-neutral-300 text-xs font-medium;
+  @apply text-content text-xs font-medium;
 }
 
 .color-scheme-switcher__theme-option--active {
-  @apply bg-neutral-100 dark:bg-neutral-700;
+  @apply bg-tertiary;
 }
 
 .color-scheme-switcher__theme-preview {
-  @apply size-4 rounded-full border border-neutral-200 dark:border-neutral-600 shadow-sm;
+  @apply size-4 rounded-full border border-tertiary shadow-sm;
 }
 
 /* Theme preview swatches - show a representative mid-tone for each neutral */
@@ -130,22 +129,22 @@
 .color-scheme-switcher__accent-option {
   @apply flex items-center justify-center p-1;
   @apply rounded-md transition-all duration-150;
-  @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
+  @apply hover:bg-tertiary;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
 .color-scheme-switcher__accent-option--active {
-  @apply bg-neutral-100 dark:bg-neutral-700 ring-2 ring-primary-400 ring-offset-1;
+  @apply bg-tertiary ring-2 ring-primary-400 ring-offset-1;
 }
 
 .color-scheme-switcher__accent-preview {
-  @apply size-6 rounded-full border-2 border-white dark:border-neutral-600 shadow-sm;
+  @apply size-6 rounded-full border-2 border-primary shadow-sm;
 }
 
 .color-scheme-switcher__accent-preview--neutral {
-  @apply bg-neutral-400 dark:bg-neutral-500;
-  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+  @apply bg-content-secondary;
+  background-image: linear-gradient(135deg, transparent 45%, var(--color-primary) 45%, var(--color-primary) 55%, transparent 55%);
 }
 
 /* Accent button with badge */
@@ -160,13 +159,13 @@
 }
 
 .color-scheme-switcher__accent-badge-preview {
-  @apply size-2 rounded-full border border-white dark:border-neutral-800 shadow-sm;
+  @apply size-2 rounded-full border border-primary shadow-sm;
   @apply hidden;
 }
 
 .color-scheme-switcher__accent-badge-preview--neutral {
-  @apply bg-neutral-400 dark:bg-neutral-500;
-  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+  @apply bg-content-secondary;
+  background-image: linear-gradient(135deg, transparent 45%, var(--color-primary) 45%, var(--color-primary) 55%, transparent 55%);
 }
 
 /* Show accent badge based on body accent class */

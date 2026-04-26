@@ -71,7 +71,7 @@
   --color-accent-foreground: var(--color-avo-neutral-950);
 }
 
-.theme-neutral-slate {
+.neutral-theme-slate {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-slate-50);
   --color-avo-neutral-100: var(--color-slate-100);
@@ -85,7 +85,7 @@
   --color-avo-neutral-900: var(--color-slate-900);
   --color-avo-neutral-950: var(--color-slate-950);
 }
-.theme-neutral-stone {
+.neutral-theme-stone {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-stone-50);
   --color-avo-neutral-100: var(--color-stone-100);
@@ -99,7 +99,7 @@
   --color-avo-neutral-900: var(--color-stone-900);
   --color-avo-neutral-950: var(--color-stone-950);
 }
-.theme-neutral-taupe {
+.neutral-theme-taupe {
   --color-avo-neutral-25: oklch(98.5% 0.004 70);
   --color-avo-neutral-50: var(--color-taupe-50);
   --color-avo-neutral-100: var(--color-taupe-100);
@@ -113,7 +113,7 @@
   --color-avo-neutral-900: var(--color-taupe-900);
   --color-avo-neutral-950: var(--color-taupe-950);
 }
-.theme-neutral-mauve {
+.neutral-theme-mauve {
   --color-avo-neutral-25: oklch(98.5% 0.005 310);
   --color-avo-neutral-50: var(--color-mauve-50);
   --color-avo-neutral-100: var(--color-mauve-100);
@@ -127,7 +127,7 @@
   --color-avo-neutral-900: var(--color-mauve-900);
   --color-avo-neutral-950: var(--color-mauve-950);
 }
-.theme-neutral-mist {
+.neutral-theme-mist {
   --color-avo-neutral-25: oklch(98.5% 0.004 240);
   --color-avo-neutral-50: var(--color-mist-50);
   --color-avo-neutral-100: var(--color-mist-100);
@@ -141,7 +141,7 @@
   --color-avo-neutral-900: var(--color-mist-900);
   --color-avo-neutral-950: var(--color-mist-950);
 }
-.theme-neutral-gray {
+.neutral-theme-gray {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-gray-50);
   --color-avo-neutral-100: var(--color-gray-100);
@@ -155,7 +155,7 @@
   --color-avo-neutral-900: var(--color-gray-900);
   --color-avo-neutral-950: var(--color-gray-950);
 }
-.theme-neutral-zinc {
+.neutral-theme-zinc {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-zinc-50);
   --color-avo-neutral-100: var(--color-zinc-100);
@@ -169,7 +169,7 @@
   --color-avo-neutral-900: var(--color-zinc-900);
   --color-avo-neutral-950: var(--color-zinc-950);
 }
-.theme-neutral-neutral {
+.neutral-theme-neutral {
   --color-avo-neutral-25: oklch(98.51% 0.0000 89.88);
   --color-avo-neutral-50: var(--color-neutral-50);
   --color-avo-neutral-100: var(--color-neutral-100);
@@ -183,7 +183,7 @@
   --color-avo-neutral-900: var(--color-neutral-900);
   --color-avo-neutral-950: var(--color-neutral-950);
 }
-.theme-neutral-olive {
+.neutral-theme-olive {
   --color-avo-neutral-25: oklch(98.5% 0.005 140);
   --color-avo-neutral-50: var(--color-olive-50);
   --color-avo-neutral-100: var(--color-olive-100);

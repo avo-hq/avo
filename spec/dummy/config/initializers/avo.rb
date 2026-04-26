@@ -65,12 +65,19 @@ Avo.configure do |config|
   config.branding = {
     logo: "avo/logo.png",
     logomark: "avo/logomark.png",
-    mode: :static,
-    mode: :dynamic,
-    scheme: :auto,
+    persistence: :database,
+    scheme: :dark,
     neutral: :olive,
-    accent: :blue
+    accent: :blue,
+    # lock: [],
+    load_settings: -> { current_user&.theme_settings&.symbolize_keys || {} },
+    save_settings: -> { current_user&.update(theme_settings: settings) }
   }
+
+  # `lock:` accepts any subset of [:scheme, :neutral, :accent].
+  # - A key in `lock:` hides its switcher and forces the configured value.
+  # - Anything not in `lock:` is exposed as a switcher, with the configured value as default.
+  # - `persistence:` (`:cookie` | `:database`) controls where unlocked user picks are stored.
 
   # on static mode:
   #   - if the scheme is set, we force the scheme and not show the scheme switcher

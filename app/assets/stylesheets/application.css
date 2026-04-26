@@ -60,16 +60,16 @@
 /* Add dark mode variant */
 @custom-variant light (&:where(.light, .light *));
 @custom-variant dark (&:where(.dark, .dark *));
-@custom-variant theme-neutral-brand (&:where(.theme-neutral-brand, .theme-neutral-brand *));
-@custom-variant theme-neutral-slate (&:where(.theme-neutral-slate, .theme-neutral-slate *));
-@custom-variant theme-neutral-stone (&:where(.theme-neutral-stone, .theme-neutral-stone *));
-@custom-variant theme-neutral-gray (&:where(.theme-neutral-gray, .theme-neutral-gray *));
-@custom-variant theme-neutral-zinc (&:where(.theme-neutral-zinc, .theme-neutral-zinc *));
-@custom-variant theme-neutral-neutral (&:where(.theme-neutral-neutral, .theme-neutral-neutral *));
-@custom-variant theme-neutral-taupe (&:where(.theme-neutral-taupe, .theme-neutral-taupe *));
-@custom-variant theme-neutral-mauve (&:where(.theme-neutral-mauve, .theme-neutral-mauve *));
-@custom-variant theme-neutral-mist (&:where(.theme-neutral-mist, .theme-neutral-mist *));
-@custom-variant theme-neutral-olive (&:where(.theme-neutral-olive, .theme-neutral-olive *));
+@custom-variant neutral-theme-brand (&:where(.neutral-theme-brand, .neutral-theme-brand *));
+@custom-variant neutral-theme-slate (&:where(.neutral-theme-slate, .neutral-theme-slate *));
+@custom-variant neutral-theme-stone (&:where(.neutral-theme-stone, .neutral-theme-stone *));
+@custom-variant neutral-theme-gray (&:where(.neutral-theme-gray, .neutral-theme-gray *));
+@custom-variant neutral-theme-zinc (&:where(.neutral-theme-zinc, .neutral-theme-zinc *));
+@custom-variant neutral-theme-neutral (&:where(.neutral-theme-neutral, .neutral-theme-neutral *));
+@custom-variant neutral-theme-taupe (&:where(.neutral-theme-taupe, .neutral-theme-taupe *));
+@custom-variant neutral-theme-mauve (&:where(.neutral-theme-mauve, .neutral-theme-mauve *));
+@custom-variant neutral-theme-mist (&:where(.neutral-theme-mist, .neutral-theme-mist *));
+@custom-variant neutral-theme-olive (&:where(.neutral-theme-olive, .neutral-theme-olive *));
 
 @custom-variant os-mac (&:where(.os-mac, .os-mac *));
 @custom-variant os-pc (&:where(.os-pc, .os-pc *));

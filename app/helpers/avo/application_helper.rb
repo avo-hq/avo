@@ -215,48 +215,36 @@ module Avo
       avo_field(id, type, **args, view: view, &block)
     end
 
-    def accent_colors
-      %w[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose]
-    end
-
     def html_theme_classes
-      branding = Avo.configuration.branding
       classes = []
+      classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
+      classes << "theme-accent-#{current_accent}" if current_accent != "neutral"
 
-      # Resolve neutral
-      neutral = if branding.static? && branding.neutral
-        branding.neutral.to_s
-      elsif branding.database_persistence? && Avo::Current.theme_settings&.dig(:neutral).present?
-        Avo::Current.theme_settings[:neutral]
-      end
-
-      classes << "theme-neutral-#{neutral}" if neutral.present?
-
-      # Resolve accent
-      accent = if branding.static? && branding.accent
-        branding.accent.to_s
-      elsif branding.database_persistence? && Avo::Current.theme_settings&.dig(:accent).present?
-        Avo::Current.theme_settings[:accent]
-      end
-
-      classes << "theme-accent-#{accent}" if accent.present?
-
-      # Resolve color scheme
-      scheme = if branding.database_persistence? && Avo::Current.theme_settings&.dig(:color_scheme).present?
-        Avo::Current.theme_settings[:color_scheme]
-      else
-        branding.scheme.to_s
-      end
-
-      if scheme == "dark"
-        classes << "dark" << "scheme-dark"
-      elsif scheme == "light"
-        classes << "scheme-light"
-      else
-        classes << "scheme-auto"
+      case current_scheme
+      when "dark"  then classes << "dark" << "scheme-dark"
+      when "light" then classes << "scheme-light"
+      else              classes << "scheme-auto"
       end
 
       classes
+    end
+
+    def current_neutral
+      branding = Avo.configuration.branding
+      value = branding.database_persistence? ? Avo::Current.theme_settings&.dig(:neutral) : cookies[:theme]
+      value.presence || branding.neutral&.to_s || "brand"
+    end
+
+    def current_accent
+      branding = Avo.configuration.branding
+      value = branding.database_persistence? ? Avo::Current.theme_settings&.dig(:accent) : cookies[:accent_color]
+      value.presence || branding.accent&.to_s || "neutral"
+    end
+
+    def current_scheme
+      branding = Avo.configuration.branding
+      value = branding.database_persistence? ? Avo::Current.theme_settings&.dig(:color_scheme) : cookies[:color_scheme]
+      value.presence || branding.scheme.to_s
     end
   end
 end
