@@ -215,8 +215,36 @@ module Avo
       avo_field(id, type, **args, view: view, &block)
     end
 
-    def accent_colors
-      %w[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose]
+    def html_theme_classes
+      classes = []
+      classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
+      classes << "theme-accent-#{current_accent}" if current_accent != "neutral"
+
+      case current_scheme
+      when "dark"  then classes << "dark" << "scheme-dark"
+      when "light" then classes << "scheme-light"
+      else              classes << "scheme-auto"
+      end
+
+      classes
+    end
+
+    def current_neutral
+      branding = Avo.configuration.branding
+      value = branding.database_persistence? ? Avo::Current.theme_settings&.dig(:neutral) : cookies[:theme]
+      value.presence || branding.neutral&.to_s || "brand"
+    end
+
+    def current_accent
+      branding = Avo.configuration.branding
+      value = branding.database_persistence? ? Avo::Current.theme_settings&.dig(:accent) : cookies[:accent_color]
+      value.presence || branding.accent&.to_s || "neutral"
+    end
+
+    def current_scheme
+      branding = Avo.configuration.branding
+      value = branding.database_persistence? ? Avo::Current.theme_settings&.dig(:color_scheme) : cookies[:color_scheme]
+      value.presence || branding.scheme.to_s
     end
   end
 end

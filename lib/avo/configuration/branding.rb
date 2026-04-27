@@ -1,74 +1,91 @@
 class Avo::Configuration::Branding
-  def initialize(colors: nil, chart_colors: nil, logo: nil, logomark: nil, placeholder: nil, favicon: nil)
-    @colors = colors || {}
-    @chart_colors = chart_colors
-    @logo = logo
-    @logomark = logomark
-    @placeholder = placeholder
-    @favicon = favicon
+  attr_reader :scheme, # :auto | :light | :dark
+    :neutral, # Symbol | Hash
+    :accent, # Symbol | Hash
+    :neutrals, # Array[String] — available neutral theme names
+    :accents, # Array[String] — available accent color names
+    :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent]
+    :persistence, # :cookie | :database
+    :logo,
+    :logo_dark,
+    :logomark,
+    :logomark_dark,
+    :favicon,
+    :favicon_dark,
+    :chart_colors,
+    :placeholder,
+    :load_settings_block,
+    :save_settings_block
 
-    @default_colors = {
-      :background => "#FAFAFA",
-      100 => "206 231 248",
-      400 => "57 158 229",
-      500 => "8 134 222",
-      600 => "6 107 178"
-    }
-    @default_chart_colors = ["#0B8AE2", "#34C683", "#FFBE4F", "#FF7676", "#2AB1EE", "#34C6A8", "#EC8CFF", "#80FF91", "#FFFC38", "#1BDBE8"]
-    @default_logo = "avo/logo.png"
-    @default_logomark = "avo/logomark.png"
-    @default_placeholder = "avo/placeholder.svg"
-    @default_favicon = "avo/favicon.ico"
+  DEFAULT_NEUTRALS = %w[slate stone gray zinc neutral taupe mauve mist olive].freeze
+  DEFAULT_ACCENTS = %w[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
+  LOCKABLE = %i[scheme neutral accent].freeze
+
+  DEFAULTS = {
+    scheme: :auto,
+    persistence: :cookie,
+    logo: "avo/logo.png",
+    logomark: "avo/logomark.png",
+    favicon: "avo/favicon.ico",
+    chart_colors: %w[#0B8AE2 #34C683 #FFBE4F #FF7676 #2AB1EE #34C6A8 #EC8CFF #80FF91 #FFFC38 #1BDBE8],
+    placeholder: "avo/placeholder.svg",
+    neutrals: DEFAULT_NEUTRALS,
+    accents: DEFAULT_ACCENTS,
+    lock: []
+  }.freeze
+
+  def initialize(options = {})
+    config = DEFAULTS.merge(options)
+
+    @scheme = config[:scheme]
+    @neutral = config[:neutral]
+    @accent = config[:accent]
+    @neutrals = Array(config[:neutrals]).map(&:to_s).freeze
+    @accents = Array(config[:accents]).map(&:to_s).freeze
+    @lock = Array(config[:lock]).map(&:to_sym).freeze
+    @persistence = config[:persistence]
+    @logo = config[:logo]
+    @logo_dark = config[:logo_dark]
+    @logomark = config[:logomark]
+    @logomark_dark = config[:logomark_dark]
+    @favicon = config[:favicon]
+    @favicon_dark = config[:favicon_dark]
+    @chart_colors = config[:chart_colors]
+    @placeholder = config[:placeholder]
+    @load_settings_block = config[:load_settings]
+    @save_settings_block = config[:save_settings]
   end
 
-  def css_colors
-    rgb_colors.map do |color, value|
-      if color == :background
-        "--avo-color-application-background: #{value};"
-      else
-        "--avo-color-primary-#{color}: #{value};"
-      end
-    end.join("\n")
+  def database_persistence? = persistence == :database
+
+  def scheme_locked? = @lock.include?(:scheme)
+  def neutral_locked? = @lock.include?(:neutral)
+  def accent_locked? = @lock.include?(:accent)
+
+  # Returns the neutral name for the data attribute
+  def neutral_css_class = neutral.is_a?(Symbol) ? neutral.to_s : nil
+
+  # Returns inline :root CSS vars string for custom hash neutrals
+  # Handles flat hash { 25 => value } or { light: {...}, dark: {...} }
+  def neutral_css_vars(scheme: :light)
+    return nil unless neutral.is_a?(Hash)
+
+    scale = neutral.key?(:light) ? neutral[scheme] : neutral
+    scale.map { |shade, value| "--color-avo-neutral-#{shade}: #{value};" }.join("\n")
   end
 
-  def logo
-    @logo || @default_logo
-  end
+  # Returns the accent name for the data attribute
+  def accent_css_class = accent.is_a?(Symbol) ? accent.to_s : nil
 
-  def logomark
-    @logomark || @default_logomark
-  end
+  # Returns inline CSS vars for custom hash accent
+  def accent_css_vars(scheme: :light)
+    return nil unless accent.is_a?(Hash)
 
-  def placeholder
-    @placeholder || @default_placeholder
-  end
-
-  def chart_colors
-    @chart_colors || @default_chart_colors
-  end
-
-  def favicon
-    @favicon || @default_favicon
-  end
-
-  private
-
-  def colors
-    @default_colors.merge(@colors) || @default_colors
-  end
-
-  def rgb_colors
-    colors.map do |key, value|
-      rgb_value = is_hex?(value) ? hex_to_rgb(value) : value
-      [key, rgb_value]
-    end.to_h
-  end
-
-  def is_hex?(value)
-    value.include? "#"
-  end
-
-  def hex_to_rgb(value)
-    value.to_s.match(/^#(..)(..)(..)$/).captures.map(&:hex).join(" ")
+    tokens = accent.key?(:light) ? accent[scheme] : accent
+    [
+      "--color-accent: #{tokens[:color]};",
+      "--color-accent-content: #{tokens[:content]};",
+      "--color-accent-foreground: #{tokens[:foreground]};"
+    ].join("\n")
   end
 end

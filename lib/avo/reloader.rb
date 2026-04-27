@@ -11,7 +11,7 @@ class Avo::Reloader
 
     # reload all files declared in each directory
     directories.keys.each do |dir|
-      Dir.glob("#{dir}/**/*.rb".to_s).each do |file|
+      Dir.glob("#{dir}/**/*.rb").each do |file|
         if File.exist? file
           load file
         end

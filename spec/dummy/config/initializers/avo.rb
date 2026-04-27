@@ -63,27 +63,36 @@ Avo.configure do |config|
 
   ## == Branding ==
   config.branding = {
-    colors: {
-      # background: "#FFFCF9", # basecamp
-      # background: "#F6F6F7", # original
-      # background: "#FBF7F0", # hotwire
-      # background: "248 246 242", # cookpad
-      # BLUE
-      100 => "#CEE7F8",
-      400 => "#399EE5",
-      500 => "#0886DE",
-      600 => "#066BB2"
-      # # ORANGE
-      # 100 => "#FFECCC",
-      # 400 => "#FFB435",
-      # 500 => "#FFA102",
-      # 600 => "#CC8102",
-    },
-    # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
     logo: "avo/logo.png",
-    logomark: "avo/logomark.png"
-    # placeholder: "/avo/placeholder.svg",
+    logomark: "avo/logomark.png",
+    persistence: :database,
+    scheme: :dark,
+    neutral: :olive,
+    accent: :blue,
+    # lock: [],
+    load_settings: -> { current_user&.theme_settings&.symbolize_keys || {} },
+    save_settings: -> { current_user&.update(theme_settings: settings) }
   }
+
+  # `lock:` accepts any subset of [:scheme, :neutral, :accent].
+  # - A key in `lock:` hides its switcher and forces the configured value.
+  # - Anything not in `lock:` is exposed as a switcher, with the configured value as default.
+  # - `persistence:` (`:cookie` | `:database`) controls where unlocked user picks are stored.
+
+  # on static mode:
+  #   - if the scheme is set, we force the scheme and not show the scheme switcher
+  #   - if the scheme is not set, we show the scheme switcher and default to auto. the user may choos eit and we save it in the cookies
+  #   - if the neutral is set, we force the neutral and not show the neutral switcher
+  #   - if the accent is set, we force the accent and not show the accent switcher
+  #   - if neutral and accent aren't set, we show the neutral and accent switchers and default to neutral and blue. the user may choose either and we save it in the cookies
+  # on dynamic mode:
+  #   - we show the scheme switcher
+  #   - we store the scheme in the database
+  #   - we store the neutral and accent in the database
+  #   - we store the mode in the database
+  #   - we store the logo in the database
+  #   - we store the logomark in the database
+  #   - we store the favicon in the database
 
   # Uncomment to test out manual resource loading.
   # config.resources = [

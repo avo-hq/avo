@@ -5,19 +5,17 @@ export default class extends Controller {
   static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
 
   connect() {
-    // Read from cookies (cookie is source of truth)
-    const cookieScheme = Cookies.get('color_scheme')
-    const cookieTheme = Cookies.get('theme')
-    const cookieAccent = Cookies.get('accent_color')
+    this.branding = window.Avo?.configuration?.branding || {}
+    this.lockedNeutral = this.branding.neutralLocked ? this.branding.neutral : null
+    this.lockedAccent = this.branding.accentLocked ? this.branding.accent : null
+    this.lockedScheme = this.branding.schemeLocked ? this.branding.scheme : null
 
-    // Use cookie value if it exists, otherwise use default
-    this.currentSchemeValue = cookieScheme || 'auto'
-    this.currentThemeValue = cookieTheme || 'brand'
-    this.currentAccentValue = cookieAccent || 'neutral'
+    // Read current state from server-rendered <html> classes
+    this.currentSchemeValue = this.readCurrentScheme()
+    this.currentThemeValue = this.readCurrentNeutral()
+    this.currentAccentValue = this.readCurrentAccent()
 
-    this.applyScheme()
-    this.applyTheme()
-    this.applyAccent()
+    // Sync UI controls to match current state (no re-apply needed — classes are already on <html>)
     this.updateThemeLabel()
     this.updateActiveThemeOption()
     this.updateActiveAccentOption()
@@ -32,6 +30,23 @@ export default class extends Controller {
     this.mediaQuery.addEventListener('change', this.mediaQueryListener)
   }
 
+  readCurrentScheme() {
+    const root = document.documentElement
+    if (root.classList.contains('scheme-dark')) return 'dark'
+    if (root.classList.contains('scheme-light')) return 'light'
+    return 'auto'
+  }
+
+  readCurrentNeutral() {
+    const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('neutral-theme-'))
+    return match ? match.replace('neutral-theme-', '') : 'brand'
+  }
+
+  readCurrentAccent() {
+    const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('theme-accent-'))
+    return match ? match.replace('theme-accent-', '') : 'neutral'
+  }
+
   disconnect() {
     if (this.mediaQuery && this.mediaQueryListener) {
       this.mediaQuery.removeEventListener('change', this.mediaQueryListener)
@@ -40,6 +55,8 @@ export default class extends Controller {
 
   setScheme(event) {
     event.preventDefault()
+    if (this.lockedScheme) return
+
     const { scheme } = event.currentTarget.dataset
 
     if (!scheme || !['auto', 'light', 'dark'].includes(scheme)) return
@@ -51,9 +68,12 @@ export default class extends Controller {
 
   setTheme(event) {
     event.preventDefault()
-    const { theme } = event.currentTarget.dataset
+    if (this.lockedNeutral) return
 
-    if (!theme || !['brand', 'slate', 'stone', 'gray', 'zinc', 'neutral', 'taupe', 'mauve', 'mist', 'olive'].includes(theme)) return
+    const { theme } = event.currentTarget.dataset
+    const allowedThemes = ['brand', ...(this.branding.neutrals || [])]
+
+    if (!theme || !allowedThemes.includes(theme)) return
 
     this.currentThemeValue = theme
     this.saveTheme()
@@ -77,6 +97,8 @@ export default class extends Controller {
 
   setAccent(event) {
     event.preventDefault()
+    if (this.lockedAccent) return
+
     const { accent } = event.currentTarget.dataset
 
     if (!accent) return
@@ -100,27 +122,49 @@ export default class extends Controller {
   }
 
   saveScheme() {
-    if (this.currentSchemeValue === 'auto') {
-      Cookies.remove('color_scheme')
-    } else {
-      Cookies.set('color_scheme', this.currentSchemeValue)
-    }
+    this.saveCookie('color_scheme', this.currentSchemeValue, 'auto')
+    this.persistToDatabase()
   }
 
   saveTheme() {
-    if (this.currentThemeValue === 'brand') {
-      Cookies.remove('theme')
-    } else {
-      Cookies.set('theme', this.currentThemeValue)
-    }
+    this.saveCookie('theme', this.currentThemeValue, 'brand')
+    this.persistToDatabase()
   }
 
   saveAccent() {
-    if (this.currentAccentValue === 'neutral') {
-      Cookies.remove('accent_color')
+    this.saveCookie('accent_color', this.currentAccentValue, 'neutral')
+    this.persistToDatabase()
+  }
+
+  saveCookie(name, value, defaultValue) {
+    if (this.branding.persistence === 'database') return
+
+    if (value === defaultValue) {
+      Cookies.remove(name)
     } else {
-      Cookies.set('accent_color', this.currentAccentValue)
+      Cookies.set(name, value)
     }
+  }
+
+  persistToDatabase() {
+    if (this.branding.persistence !== 'database') return
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    }
+    if (csrfToken) headers['X-CSRF-Token'] = csrfToken
+
+    fetch(`${window.Avo.configuration.root_path}/theme_settings`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({
+        color_scheme: this.currentSchemeValue,
+        neutral: this.currentThemeValue,
+        accent: this.currentAccentValue,
+      }),
+    })
   }
 
   applyScheme() {
@@ -152,10 +196,13 @@ export default class extends Controller {
   }
 
   applyThemeClass(theme) {
-    document.documentElement.classList.remove('theme-slate', 'theme-stone', 'theme-gray', 'theme-zinc', 'theme-neutral', 'theme-taupe', 'theme-mauve', 'theme-mist', 'theme-olive')
+    const root = document.documentElement
+    Array.from(root.classList).forEach((cls) => {
+      if (cls.startsWith('neutral-theme-')) root.classList.remove(cls)
+    })
 
     if (theme !== 'brand') {
-      document.documentElement.classList.add(`theme-${theme}`)
+      root.classList.add(`neutral-theme-${theme}`)
     }
   }
 
@@ -179,13 +226,13 @@ export default class extends Controller {
   }
 
   applyAccentClass(accent) {
-    const accentColors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose']
-    accentColors.forEach((color) => {
-      document.documentElement.classList.remove(`accent-${color}`)
+    const root = document.documentElement
+    Array.from(root.classList).forEach((cls) => {
+      if (cls.startsWith('theme-accent-')) root.classList.remove(cls)
     })
 
     if (accent !== 'neutral') {
-      document.documentElement.classList.add(`accent-${accent}`)
+      root.classList.add(`theme-accent-${accent}`)
     }
   }
 

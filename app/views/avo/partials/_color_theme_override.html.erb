@@ -1,49 +1,60 @@
-<script>
-  // On page load, apply color scheme, theme, and accent from cookies to avoid FOUC
+<script nonce="<%= content_security_policy_nonce %>">
+  // Apply color scheme and theme classes before paint to avoid FOUC.
+  // Database-persisted and locked settings are already server-rendered
+  // on <html>. This script handles cookie overrides and "auto" dark mode.
   (function() {
-    // Read cookies
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-      return null;
+    var root = document.documentElement;
+    var branding = window.Avo && window.Avo.configuration && window.Avo.configuration.branding || {};
+
+    if (branding.persistence !== 'database') {
+      function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+      }
+
+      if (!branding.neutralLocked) {
+        var theme = getCookie('theme');
+        if (theme && theme !== 'brand') {
+          Array.from(root.classList).forEach(function(cls) {
+            if (cls.indexOf('neutral-theme-') === 0) root.classList.remove(cls);
+          });
+          root.classList.add('neutral-theme-' + theme);
+        }
+      }
+
+      if (!branding.accentLocked) {
+        var accent = getCookie('accent_color');
+        if (accent && accent !== 'neutral') {
+          Array.from(root.classList).forEach(function(cls) {
+            if (cls.indexOf('theme-accent-') === 0) root.classList.remove(cls);
+          });
+          root.classList.add('theme-accent-' + accent);
+        }
+      }
+
+      if (!branding.schemeLocked) {
+        var scheme = getCookie('color_scheme');
+        if (scheme) {
+          root.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
+          root.classList.add('scheme-' + scheme);
+          if (scheme === 'dark') {
+            root.classList.add('dark');
+          } else if (scheme === 'light') {
+            root.classList.remove('dark');
+          }
+        }
+      }
     }
 
-    const colorScheme = getCookie('color_scheme') || 'auto';
-    const theme = getCookie('theme') || 'brand';
-    const accent = getCookie('accent_color') || 'neutral';
-
-    // Apply color scheme
-    const isDark = colorScheme === 'dark' || (colorScheme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    // Apply scheme selection classes
-    document.documentElement.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
-    if (colorScheme === 'light') {
-      document.documentElement.classList.add('scheme-light');
-    } else if (colorScheme === 'dark') {
-      document.documentElement.classList.add('scheme-dark');
-    } else {
-      document.documentElement.classList.add('scheme-auto');
-    }
-
-    // Apply theme class
-    document.documentElement.classList.remove('theme-slate', 'theme-stone', 'theme-gray', 'theme-zinc', 'theme-neutral', 'theme-taupe', 'theme-mauve', 'theme-mist', 'theme-olive');
-    if (theme && theme !== 'brand') {
-      document.documentElement.classList.add('theme-' + theme);
-    }
-
-    // Apply accent class
-    const accentColors = <%= accent_colors.inspect.html_safe %>;
-    accentColors.forEach((color) => {
-      document.documentElement.classList.remove('accent-' + color);
-    });
-    if (accent && accent !== 'neutral') {
-      document.documentElement.classList.add('accent-' + accent);
+    // Handle "auto" scheme — always needs JS for media query detection
+    if (root.classList.contains('scheme-auto')) {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
     }
   })();
 </script>
