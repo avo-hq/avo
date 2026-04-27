@@ -67,7 +67,7 @@
     "mapbox-gl": "1.13.3",
     "mapkick": "^0.2.6",
     "mousetrap": "^1.6.5",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.10",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.3.4",
