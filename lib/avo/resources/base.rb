@@ -99,6 +99,7 @@ module Avo
       class_attribute :default_sort_column, default: :created_at
       class_attribute :default_sort_direction, default: :desc
       class_attribute :external_link, default: nil
+      class_attribute :duplicate_config, default: {}
 
       class_attribute :abstract, default: false
 
