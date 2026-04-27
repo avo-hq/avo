@@ -622,16 +622,16 @@ module Avo
 
               reflection = @record.class.reflect_on_association(@params[:via_relation]) if @params[:via_relation].present?
 
-              if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
+              if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class]) && @params[:via_record_id].present?
                 # set the value to the actual record
                 via_resource = Avo.resource_manager.get_resource_by_model_class(@params[:via_relation_class])
-                value = via_resource.find_record(@params[:via_record_id])
-              elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
+                value = via_resource.find_record(@params[:via_record_id]) if via_resource.present?
+              elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s && @params[:via_record_id].present?
                 resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
-                record = resource.find_record @params[:via_record_id], params: params
+                record = resource.find_record @params[:via_record_id], params: params if resource.present?
                 id_param = reflection.options[:primary_key] || :id
 
-                value = record.send(id_param)
+                value = record.send(id_param) if record.present?
               end
             end
 
