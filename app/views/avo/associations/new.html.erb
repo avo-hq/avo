@@ -20,12 +20,13 @@
                 form:,
                 index: 0,
                 resource: @resource,
-                label_for: @field.id,
-                label: @field.name.singularize.downcase do %>
+                label_for: 'related_id',
+                label: @field.name.singularize do %>
                 <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
                       form: form,
                       field: @field,
-                      foreign_key: 'related_id'
+                      foreign_key: 'related_id',
+                      reset_on_submit: true
                     ) %>
               <% end %>
             <% else %>

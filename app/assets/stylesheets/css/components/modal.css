@@ -48,7 +48,7 @@
   @apply py-3 px-4;
 }
 
-.modal__card .card__body {
+.modal__card > .card > .card__wrapper > .card__body {
   @apply flex flex-col flex-1 gap-4 items-start pt-0 px-0 min-h-64;
 }
 
