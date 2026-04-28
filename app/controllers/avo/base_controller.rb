@@ -35,33 +35,7 @@ module Avo
       set_filters
       set_actions
       set_query
-
-      # Eager load the associations
-      if @resource.includes.present?
-        @query = @query.includes(*@resource.includes)
-      end
-
-      # Apply the search query if configured on the resource
-      apply_search
-
-      # Eager load attachments
-      if @resource.attachments.present?
-        @resource.attachments.each do |attachment|
-          @query = @query.send(:"with_attached_#{attachment}")
-        end
-      end
-
-      apply_sorting if @index_params[:sort_by]
-
-      # Apply filters to the current query
-      filters_to_be_applied.each do |filter_class, filter_value|
-        @query = filter_class.safe_constantize.new(
-          arguments: @resource.get_filter_arguments(filter_class)
-        ).apply_query request, @query, filter_value
-      end
-
-      safe_call :set_and_apply_scopes
-      safe_call :apply_dynamic_filters
+      build_index_query
       apply_pagination
 
       # Create resources for each record
@@ -418,8 +392,11 @@ module Avo
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
+      fetched_filters = fetch_filters
+      @current_encoded_filters = fetched_filters unless fetched_filters.is_a?(ActionController::Parameters)
+
       # Return if there are no filters or if the filters are actually ActionController::Parameters (used by dynamic filters)
-      return @applied_filters = {} if (fetched_filters = fetch_filters).blank? || fetched_filters.is_a?(ActionController::Parameters)
+      return @applied_filters = {} if fetched_filters.blank? || fetched_filters.is_a?(ActionController::Parameters)
 
       @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
 
@@ -663,6 +640,32 @@ module Avo
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
     end
 
+    def build_index_query
+      # Eager load the associations
+      if @resource.includes.present?
+        @query = @query.includes(*@resource.includes)
+      end
+
+      # Apply the search query if configured on the resource
+      apply_search
+
+      # Eager load attachments
+      if @resource.attachments.present?
+        @resource.attachments.each do |attachment|
+          @query = @query.send(:"with_attached_#{attachment}")
+        end
+      end
+
+      apply_sorting if @index_params[:sort_by]
+
+      # Apply filters to the current query
+      apply_index_filters
+      safe_call :set_and_apply_scopes
+      safe_call :apply_dynamic_filters
+
+      @query
+    end
+
     def apply_sorting
       sort_by = @index_params[:sort_by].to_sym
       if sort_by != :created_at
@@ -705,9 +708,75 @@ module Avo
       @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
 
-    # If we don't get a query object predefined from a child controller like associations, just spin one up
+    # If we don't get a query object predefined from a child controller like associations, just spin one up.
+    # `base_index_query` is association-aware so the charts controller can reuse the same starting point.
     def set_query
-      @query ||= @resource.class.query_scope
+      @query ||= base_index_query
+    end
+
+    # Returns the starting ActiveRecord relation for an index-style query,
+    # association-aware based on request params. Used by both the regular
+    # index view and the summarizable distribution chart so the two paths
+    # share one source of truth.
+    def base_index_query
+      if associated_summary?
+        build_association_scope_from_params
+      else
+        @resource.class.query_scope
+      end
+    end
+
+    def associated_summary?
+      params[:via_record_id].present? &&
+        params[:via_resource_class].present? &&
+        (params[:association_name].present? || params[:related_name].present?)
+    end
+
+    def build_association_scope_from_params
+      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
+      @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
+      @parent_resource = parent_resource_class.new(
+        record: @parent_record,
+        view: Avo::ViewInquirer.new("show")
+      )
+      @parent_resource.detect_fields
+
+      association_query_scope(
+        parent_resource: @parent_resource,
+        parent_record: @parent_record,
+        association_name: params[:association_name] || params[:related_name],
+        authorization: @resource.authorization(user: _current_user),
+        resource: @resource
+      )
+    end
+
+    def apply_index_filters
+      filters_to_be_applied.each do |filter_class, filter_value|
+        @query = filter_class.safe_constantize.new(
+          arguments: @resource.get_filter_arguments(filter_class)
+        ).apply_query request, @query, filter_value
+      end
+    end
+
+    def association_query_scope(parent_resource:, parent_record:, association_name:, authorization:, resource:, field_association_name: association_name)
+      valid_association_name = BaseResource.valid_association_name(parent_record, association_name)
+      association_field = find_association_field(resource: parent_resource, association: field_association_name)
+
+      query = authorization.apply_policy(
+        parent_record.send(valid_association_name)
+      )
+
+      if association_field&.scope.present?
+        query = Avo::ExecutionContext.new(
+          target: association_field.scope,
+          query: query,
+          parent: parent_record,
+          resource: resource,
+          parent_resource: parent_resource
+        ).handle
+      end
+
+      query
     end
 
     def apply_search

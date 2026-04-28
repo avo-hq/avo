@@ -22,44 +22,15 @@ module Avo
 
     private
 
-    def is_associated_summary
-      params[:via_record_id].present? &&
-        params[:via_resource_class].present? &&
-        params[:association_name].present?
-    end
-
+    # The distribution chart runs the SAME pipeline as the regular index view:
+    # starting relation → search → sort → standard filters → scopes → dynamic filters.
+    # This is why filters, scopes, search, and dynamic filters stay in sync between
+    # the table and the summary popover.
     def summary_query
-      is_associated_summary ? association_scope : resource.query_scope
-    end
-
-    def association_scope
-      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
-      parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
-
-      parent_resource = parent_resource_class.new(
-        record: parent_record,
-        # Explicitly hardcoding the view to 'show' as association summaries are processed solely within this context
-        view: Avo::ViewInquirer.new("show")
-      )
-
-      parent_resource.detect_fields
-
-      association_name = BaseResource.valid_association_name(parent_record, params[:association_name])
-
-      parent_field = find_association_field(resource: parent_resource, association: association_name)
-
-      association_query = parent_resource.authorization.apply_policy parent_record.send(association_name)
-
-      if parent_field.scope.present?
-        association_query = Avo::ExecutionContext.new(
-          target: parent_field.scope,
-          query: association_query,
-          parent: parent_record,
-          parent_resource: parent_resource
-        ).handle
-      end
-
-      association_query
+      set_applied_filters
+      set_index_params
+      @query = base_index_query
+      build_index_query
     end
   end
 end
