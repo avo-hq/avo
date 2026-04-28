@@ -34,6 +34,15 @@ module Avo
       def display_as_tabs?
         @display_as == :tabs
       end
+
+      # Returns true when the field's value matches an option's key or value.
+      # Supports both `{stored_value: "Label"}` and `{"Label": stored_value}` styles
+      # so `default:` can be specified using either side of the options hash.
+      def option_checked?(key, option_value)
+        return false if value.nil?
+
+        value.to_s == key.to_s || value.to_s == option_value.to_s
+      end
     end
   end
 end

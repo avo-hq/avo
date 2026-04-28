@@ -136,6 +136,7 @@
   @import "./css/components/ui/file_upload_item.css";
   @import "./css/components/ui/dropdown.css";
   @import "./css/components/ui/dropdown_card.css";
+  @import "./css/components/ui/popover_menu.css";
   @import "./css/components/ui/radio.css";
   @import "./css/components/input.css";
 
@@ -151,6 +152,7 @@
   @import "./css/components/hotkey.css";
   @import "./css/components/modal.css";
   @import "./css/components/filters.css";
+  @import "./css/components/tab_group.css";
   @import "./css/css-animations.css";
   @import "./css/sidebar.css";
 

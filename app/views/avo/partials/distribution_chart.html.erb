@@ -1,22 +1,24 @@
-<turbo-frame id="summary-frame-<%= @field_id %>">
-  <div class="grid grid-cols-12 items-center">
-    <ul class="col-span-5" id="<%= @field_id %>-summary">
-      <% @values_summary.each_with_index do |(key, value), index| %>
-        <li class="grid grid-cols-6 items-center gap-3 text-sm font-semibold text-(--color-content-secondary) uppercase">
-          <div class="col-span-5 flex items-center space-x-1 truncate rtl:space-x-reverse">
-            <%= tag.div class: class_names("inline-block size-3 rounded-full", "bg-[#{chart_color(index)}]") %>
-            <span><%= key %></span>
-          </div>
+<turbo-frame id="summary-popover-<%= @field_id %>">
+  <div class="dropdown-menu p-4 sm:w-[400px]">
+    <div class="grid grid-cols-12 items-center">
+      <ul class="col-span-5" id="<%= @field_id %>-summary">
+        <% @values_summary.each_with_index do |(key, value), index| %>
+          <li class="grid grid-cols-6 items-center gap-3 text-sm font-semibold text-(--color-content-secondary) uppercase">
+            <div class="col-span-5 flex items-center space-x-1 truncate rtl:space-x-reverse">
+              <%= tag.div class: class_names("inline-block size-3 rounded-full", "bg-[#{chart_color(index)}]") %>
+              <span><%= key %></span>
+            </div>
 
-          <div class="col-span-1 text-end">
-            <%= value %>
-          </div>
-        </li>
-      <% end %>
-    </ul>
+            <div class="col-span-1 text-end">
+              <%= value %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
 
-    <div class="col-span-6 col-start-7">
-      <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
+      <div class="col-span-6 col-start-7">
+        <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
+      </div>
     </div>
   </div>
 </turbo-frame>

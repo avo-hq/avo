@@ -29,6 +29,12 @@
     </div>
   <% end %>
 
+  <% if pre_bodies? %>
+    <% pre_bodies.each do |pre_body| %>
+      <div class="panel__pre-body"><%= pre_body %></div>
+    <% end %>
+  <% end %>
+
   <div class="panel__content">
     <div class="panel__body">
       <% if card? %>

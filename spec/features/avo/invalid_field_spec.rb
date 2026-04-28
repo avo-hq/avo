@@ -8,7 +8,7 @@ RSpec.feature "InvalidField", type: :feature do
     it "shows an alert" do
       visit "/admin/resources/teams/#{team.id}"
 
-      expect(page.body).to include "There's an invalid field configuration for this resource."
+      expect(page.body).to include "Invalid field configuration"
       expect(page.body).to include "field :invalid, as: :invalid_field"
     end
   end
@@ -17,7 +17,7 @@ RSpec.feature "InvalidField", type: :feature do
     it "shows an alert" do
       visit "/admin/resources/posts/#{post.to_param}"
 
-      expect(page.body).not_to include "There's an invalid field configuration for this resource."
+      expect(page.body).not_to include "Invalid field configuration"
       expect(page.body).not_to include "field :invalid, as: invalid_field"
     end
   end

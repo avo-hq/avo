@@ -11,14 +11,9 @@ RSpec.feature "Field Summarizing", type: :system do
     it "provides the ability to see the distribution of values, toggleable" do
       visit avo.resources_projects_path
 
-      expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: false
+      find('button[popovertarget="summary-popover-status"]').click
 
-      find("#summary-header-status").click
-
-      expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: true
-
-      # I can't make the lazy loading work, looks like it's not triggered at all
-      wait_for_turbo_frame_id("summary-frame-status")
+      wait_for_turbo_frame_id("summary-popover-status")
 
       expect(page).to have_css "#status-summary", visible: true
       expect(page).to have_css "#chart-status", visible: true
@@ -29,7 +24,7 @@ RSpec.feature "Field Summarizing", type: :system do
         expect(page).to have_content "LOADING\n4"
       end
 
-      find('th[data-table-header-field-id="status"] div svg').click
+      find('button[popovertarget="summary-popover-status"]').click
 
       expect(page).not_to have_css "#status-summary"
       expect(page).not_to have_css "#chart-status"
@@ -38,9 +33,9 @@ RSpec.feature "Field Summarizing", type: :system do
     it "doesn't show up for fields without option" do
       visit avo.resources_projects_path
 
-      expect(page).to have_css 'th[data-table-header-field-id="status"] div svg'
-      expect(page).not_to have_css 'th[data-table-header-field-id="progress"] div svg'
-      expect(page).not_to have_css 'th[data-table-header-field-id="description"] div svg'
+      expect(page).to have_css 'button[popovertarget="summary-popover-status"]'
+      expect(page).not_to have_css 'button[popovertarget="summary-popover-progress"]'
+      expect(page).not_to have_css 'button[popovertarget="summary-popover-description"]'
     end
 
     context "when summarizing a belongs_to field" do
@@ -55,13 +50,9 @@ RSpec.feature "Field Summarizing", type: :system do
       it "renders the display name instead of the object inspect string" do
         visit avo.resources_projects_path
 
-        expect(page).to have_css "turbo-frame[id='summary-frame-user']", visible: false
+        find('button[popovertarget="summary-popover-user"]').click
 
-        find("#summary-header-user").click
-
-        expect(page).to have_css "turbo-frame[id='summary-frame-user']", visible: true
-
-        wait_for_turbo_frame_id("summary-frame-user")
+        wait_for_turbo_frame_id("summary-popover-user")
 
         within "#user-summary" do
           expect(page).to have_content "ALICE SMITH"
@@ -83,8 +74,8 @@ RSpec.feature "Field Summarizing", type: :system do
 
         visit avo.resources_projects_path(encoded_filters: encoded_filters)
 
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
 
         within "#status-summary" do
           expect(page).not_to have_content "REJECTED"
@@ -103,8 +94,8 @@ RSpec.feature "Field Summarizing", type: :system do
       it "adjusts the summary to reflect only the searched records" do
         visit avo.resources_projects_path(q: "Search summary match")
 
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
 
         within "#status-summary" do
           expect(page).to have_content "CLOSED"
@@ -133,13 +124,9 @@ RSpec.feature "Field Summarizing", type: :system do
 
         wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_projects")
 
-        expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: false
+        find('button[popovertarget="summary-popover-status"]').click
 
-        find("#summary-header-status").click
-
-        expect(page).to have_css "turbo-frame[id='summary-frame-status']", visible: true
-
-        wait_for_turbo_frame_id("summary-frame-status")
+        wait_for_turbo_frame_id("summary-popover-status")
 
         expect(page).to have_css "#status-summary", visible: true
         expect(page).to have_css "#chart-status", visible: true
@@ -150,7 +137,7 @@ RSpec.feature "Field Summarizing", type: :system do
           expect(page).to_not have_content "LOADING\n4"
         end
 
-        find('th[data-table-header-field-id="status"] div svg').click
+        find('button[popovertarget="summary-popover-status"]').click
 
         expect(page).not_to have_css "#status-summary"
         expect(page).not_to have_css "#chart-status"
@@ -176,9 +163,9 @@ RSpec.feature "Field Summarizing", type: :system do
         scroll_to users_frame
         wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_users")
 
-        find("#summary-header-active").click
+        find('button[popovertarget="summary-popover-active"]').click
 
-        wait_for_turbo_frame_id("summary-frame-active")
+        wait_for_turbo_frame_id("summary-popover-active")
 
         within "#active-summary" do
           expect(page).to have_content "2" # 2 active users in project
@@ -199,8 +186,8 @@ RSpec.feature "Field Summarizing", type: :system do
       let!(:other_user_post) { create :post, user: create(:user), status: :published, published_at: Time.now, name: "Other" }
 
       def open_status_summary
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
       end
 
       it "shows distribution scoped to the parent's records" do
@@ -273,8 +260,8 @@ RSpec.feature "Field Summarizing", type: :system do
       end
 
       def open_active_summary
-        find("#summary-header-active").click
-        wait_for_turbo_frame_id("summary-frame-active")
+        find('button[popovertarget="summary-popover-active"]').click
+        wait_for_turbo_frame_id("summary-popover-active")
       end
 
       it "shows distribution scoped to the team's members" do
