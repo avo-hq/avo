@@ -47,7 +47,6 @@ import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceSearchController from './controllers/resource_search_controller'
 import ResourceShowController from './controllers/resource_show_controller'
-import SearchController from './controllers/search_controller'
 import SelectController from './controllers/select_controller'
 import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
@@ -117,7 +116,6 @@ application.register('toggle', ToggleController)
 application.register('dropdown-menu', DropdownController)
 application.register('popover-menu', PopoverMenuController)
 application.register('trix-body', TrixBodyController)
-application.register('search', SearchController)
 
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)
