@@ -27,7 +27,7 @@
 }
 
 .aa-SourceHeader {
-  @apply text-xs font-semibold;
+  @apply text-xs font-semibold text-content-secondary;
 }
 
 .aa-DetachedFormContainer,
@@ -54,7 +54,7 @@
 
 button.aa-DetachedCancelButton {
   border: 1px solid var(--color-avo-neutral-400) !important;
-  @apply bg-primary;
+  @apply bg-primary text-content;
 }
 
 .aa-Input {
@@ -71,7 +71,7 @@ button.aa-DetachedCancelButton {
       @apply space-y-2;
 
       .aa-Item {
-        @apply bg-primary rounded-sm px-3 py-4 shadow font-medium;
+        @apply bg-primary text-content rounded-sm px-3 py-4 shadow font-medium;
 
         .aa-ItemDescription {
           @apply text-content-secondary text-sm font-normal mt-1;
@@ -87,6 +87,13 @@ button.aa-DetachedCancelButton {
       }
     }
   }
+}
+
+/* Dark mode: items should appear elevated (lighter) relative to the panel background.
+   bg-primary (neutral-950) is darker than the panel's bg-secondary (neutral-800),
+   so we override to bg-tertiary (neutral-700) which is lighter than the container. */
+.dark .aa-Item:not([aria-selected=true]) {
+  @apply bg-tertiary;
 }
 
 /* Overlay used during resource search */
