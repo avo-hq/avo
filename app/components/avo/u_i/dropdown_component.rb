@@ -6,6 +6,7 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
   prop :wrapper_data, default: {}.freeze
   prop :open, default: false
   prop :dropdown_menu_classes, default: ""
+  prop :popover_mode, default: false
 
   renders_one :trigger
   renders_one :items
@@ -14,6 +15,10 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
   # data: {action: component.action} => click->dropdown-menu#toggle
   def action
     @action ||= "click->dropdown-menu#toggle"
+  end
+
+  def popover_id
+    @popover_id ||= "popover-#{SecureRandom.hex(3)}"
   end
 
   def data

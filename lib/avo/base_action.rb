@@ -71,6 +71,7 @@ module Avo
             **{
               action_id: to_param,
               arguments: encode_arguments(arguments),
+              resource_view: resource.view,
               view_type: resource.view_type,
               **args
             }.compact

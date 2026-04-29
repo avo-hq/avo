@@ -4,9 +4,46 @@
      BASE STYLES (Common to both variants)
      ============================================ */
 
-  /* Container */
+  /* Container - wraps by default; the `tabs-overflow` Stimulus controller
+     adds the `tabs--scrollable` modifier when wrapping is detected. */
   .tabs {
     @apply flex flex-wrap;
+  }
+
+  /* Scrollable modifier - single-row, horizontally scrollable with edge
+     shadows. Toggled on by the `tabs-overflow` controller. */
+  .tabs--scrollable {
+    @apply flex-nowrap overflow-x-auto;
+    scrollbar-width: none;
+
+    /* Scroll shadows (Lea Verou's background-attachment: local technique).
+       Two solid-color "cover" blocks scroll with the content (local) and sit
+       on top of two radial "shadow" gradients that stay fixed (scroll). When
+       scrolled to an edge, the cover completely hides the shadow on that
+       side; as the user scrolls away, the cover moves with the content and
+       the shadow below is revealed. Covers are hard-edged (no fade through
+       `transparent`, which in CSS is rgba(0,0,0,0) and bleeds dark pixels). */
+    background-image:
+      linear-gradient(var(--color-primary), var(--color-primary)),
+      linear-gradient(var(--color-primary), var(--color-primary)),
+      radial-gradient(
+        farthest-side at 0 50%,
+        color-mix(in oklab, var(--color-foreground), transparent 80%),
+        rgb(0 0 0 / 0)
+      ),
+      radial-gradient(
+        farthest-side at 100% 50%,
+        color-mix(in oklab, var(--color-foreground), transparent 80%),
+        rgb(0 0 0 / 0)
+      );
+    background-position: 0 0, 100% 0, 0 0, 100% 0;
+    background-repeat: no-repeat;
+    background-size: 1rem 100%, 1rem 100%, 0.75rem 100%, 0.75rem 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+
+  .tabs--scrollable::-webkit-scrollbar {
+    display: none;
   }
 
   /* Base Item */

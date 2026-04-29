@@ -32,7 +32,7 @@ export default class extends Controller {
 
   /** Backdrop click action — wired via data-action="click->…#close" */
   close(event) {
-    if (event.target === this.backdropTarget) return
+    if (event.target === this.backdropTarget && !this.closeModalOnBackdropClickValue) return
 
     this.closeModal()
   }

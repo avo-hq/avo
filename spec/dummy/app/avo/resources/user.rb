@@ -23,6 +23,11 @@ class Avo::Resources::User < Avo::BaseResource
     query.order(last_name: :asc)
   end
 
+  self.discreet_information = [
+    :id,
+    :timestamps
+  ]
+
   self.includes = [:posts, :post]
   self.attachments = [:cv]
   self.devise_password_optional = true

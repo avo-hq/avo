@@ -205,6 +205,8 @@ RSpec.describe "Actions", type: :system do
 
       click_on "Actions"
       click_on "Export CSV"
+      expect(page).to have_selector '[data-controller~="modal"]'
+
       find("body").native.send_keys(:escape)
 
       expect(page).to have_selector '[data-controller~="modal"]'

@@ -230,7 +230,7 @@ module Avo
     end
 
     # Click on the action from the panel (index and show above the table)
-    # Pass list: nil to run an action outside of the list
+    # Pass list: nil to run a standalone action (found by data-action-name / action name, not link text)
     # Pass list: "List name" if list is not the default "Actions"
     # Example usage:
     #   open_panel_action(action_name: "Dummy action")
@@ -241,7 +241,7 @@ module Avo
     end
 
     # Open the action from the record_id row
-    # Pass list: nil to run an action outside of the list
+    # Pass list: nil to run a standalone row action (matched by action name, not visible label)
     # Pass list: "List name" if list is not the default "Actions"
     # Example usage:
     #   open_row_action(action_name: "Dummy action")
@@ -343,6 +343,18 @@ module Avo
       find('#turbo-confirm button[value="confirm"]').click
     end
 
+    # Clicks a row control action (destroy, detach, edit, etc.) for a given record.
+    # Works for both grid view (actions behind a popover trigger) and table view (flat inline actions).
+    def click_row_action(record, control:)
+      row = find("[data-record-id='#{record.to_param}']")
+
+      if row.has_css?(".grid-card__action", wait: 0)
+        row.find(".grid-card__action").click
+      end
+
+      find("a[data-control='#{control}'][data-resource-id='#{record.to_param}']").click
+    end
+
     private
 
     # Returns the name of the wrapper element for the given field id and type
@@ -365,19 +377,33 @@ module Avo
       find('[data-sidebar-target="sidebar"]')
     end
 
-    # Opens an action. If a list is provided, it will click on the list first
-    # and then find the specified action name within the panel.
-    # If no list is present, it will directly click on the action link.
+    # Opens an action. If a list is provided, it will click the list trigger (Actions, etc.),
+    # then finds the action link inside the native popover panel referenced by popovertarget.
+    # If no list is present, it will directly click the action anchor (matched by
+    # data-action-name, i.e. the action's name), not the visible label — row controls
+    # often override the label while keeping the same action name.
     def open_action(action_name:, list:, context:, &block)
+      list_popover_id = nil
+
       within(context) do
         if list.present?
           sleep 0.1
-          click_on list
-          within("[data-dropdown-list='#{list}']", visible: :all) do
-            find("a[data-action-name='#{action_name}']").click
-          end
+          list_trigger = find(:link_or_button, text: list)
+          list_popover_id = list_trigger["popovertarget"].presence
+          list_trigger.click
         else
-          click_link(action_name)
+          # Prefer visible matches only: the same action can appear again inside closed popovers/lists.
+          find("a[data-action-name='#{action_name}']", match: :first).click
+        end
+      end
+
+      if list.present? && list_popover_id.present?
+        within(page.find(:id, list_popover_id)) do
+          find("a[data-action-name='#{action_name}']", visible: :all, match: :first).click
+        end
+      elsif list.present?
+        within(context) do
+          find("a[data-action-name='#{action_name}']", visible: :all, match: :first).click
         end
       end
 

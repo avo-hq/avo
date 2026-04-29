@@ -15,6 +15,7 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   renders_one :controls
   renders_one :cover
   renders_one :sidebar
+  renders_many :pre_bodies
   renders_one :body
   renders_one :card, "Avo::UI::CardComponent" # wraps content into a card automatically
   renders_one :footer

@@ -20,8 +20,8 @@
   @apply py-1 px-2 bg-primary border border-tertiary rounded-lg overflow-hidden text-ellipsis whitespace-nowrap text-content cursor-pointer text-sm leading-5 font-normal inline-flex items-center gap-1;
 }
 
-/* Dropdown menu matches trigger width */
-.pagination__per-page .dropdown-popover {
+/* Popover panel matches trigger width */
+.pagination__per-page .popover-menu__panel {
   width: var(--pagination-per-page-width);
   min-width: var(--pagination-per-page-width);
 }

@@ -16,13 +16,13 @@
   <% end %>
   <div class="grid-card__actions-row">
     <%= render_badge %>
-    <%= render Avo::UI::DropdownComponent.new do |component| %>
+    <%= render Avo::UI::DropdownComponent.new(popover_mode: true) do |component| %>
       <% component.with_trigger do %>
         <%= render Avo::ButtonComponent.new(
           icon: "tabler/outline/dots-vertical",
           size: :lg,
           class: "grid-card__action",
-          data: {action: component.action}
+          popovertarget: component.popover_id
         ) %>
       <% end %>
       <% component.with_items do %>
