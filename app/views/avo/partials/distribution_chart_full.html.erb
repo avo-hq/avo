@@ -2,11 +2,11 @@
   <% set_meta_tags title: @page_title %>
 <% end %>
 
-<%= render ui.panel(class: "w-full") do |panel| %>
+<%= render ui.panel(class: "w-full distribution-chart__panel") do |panel| %>
   <%= panel.with_header do %>
     <%= render ui.panel_header(
-      title: "#{@field_id.to_s.humanize} summary",
-      description: "#{@resource.plural_name.humanize} — #{@values_summary.values.sum} records"
+      title: "#{@resource.plural_name.humanize} summary",
+      description: "Distribution by \"#{@field_id.to_s.humanize.downcase}\""
     ) do |header| %>
       <% header.with_controls do %>
         <%= a_link @back_path,
@@ -20,36 +20,39 @@
     <% end %>
   <% end %>
 
-  <% panel.with_body do %>
+  <% panel.with_card do %>
     <div class="distribution-chart__body">
       <%= pie_chart @values_summary, id: "chart-full-#{@field_id}", legend: false, height: "360px", colors: Avo.configuration.branding.chart_colors %>
     </div>
   <% end %>
 
   <%= panel.with_sidebar do %>
-    <div class="distribution-chart__sidebar"
-      data-controller="distribution-chart"
-      data-distribution-chart-chart-id-value="chart-full-<%= @field_id %>">
-      <h2 class="distribution-chart__title">
-        Breakdown
-      </h2>
-
+    <%= render ui.card(
+      title: "Breakdown",
+      class: "w-full self-start distribution-chart__sidecard",
+      data: {
+        controller: "distribution-chart",
+        distribution_chart_chart_id_value: "chart-full-#{@field_id}"
+      }
+    ) do %>
       <div class="distribution-chart__grid" id="<%= @field_id %>-full-summary">
         <% total = @values_summary.values.sum.to_f %>
-        <%= @values_summary.each_with_index do |(key, value), index| %>
+        <% @values_summary.each_with_index do |(key, value), index| %>
           <button type="button"
             class="distribution-chart__row"
             data-action="click->distribution-chart#toggleSlice mouseenter->distribution-chart#highlightSlice mouseleave->distribution-chart#clearHighlight"
             data-distribution-chart-index-param="<%= index %>">
             <%= tag.span class: class_names("distribution-chart__color", "bg-[#{chart_color(index)}]") %>
             <span class="distribution-chart__key"><%= key %></span>
-            <span class="distribution-chart__value"><%= value %></span>
+            <span class="distribution-chart__value">
+              <%= pluralize(value, @resource.singular_name.downcase, plural: @resource.plural_name.downcase) %>
+            </span>
             <span class="distribution-chart__percentage">
               <%= total > 0 ? number_to_percentage((value / total) * 100, precision: 1) : "0%" %>
             </span>
           </button>
         <% end %>
       </div>
-    </div>
+    <% end %>
   <% end %>
 <% end %>

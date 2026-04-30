@@ -1,21 +1,29 @@
 .distribution-chart__body {
-  @apply flex items-center justify-center p-8;
+  @apply flex items-center justify-center p-8 w-full;
 }
 
-.distribution-chart__sidebar {
-  @apply p-8;
+.distribution-chart__panel .panel__content {
+  @apply gap-16 mx-auto w-full max-w-5xl;
 }
 
-.distribution-chart__title {
-  @apply mb-4 text-sm font-semibold uppercase tracking-wide text-content-secondary;
+@media (width >= 48rem) {
+  .distribution-chart__panel .panel__content {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  /* Cap to match the chart card's outer height (pie + header offset). */
+  .distribution-chart__sidecard .card__body {
+    max-height: calc(360px + 1rem + 2px);
+    overflow-y: auto;
+  }
 }
 
 .distribution-chart__grid {
-  @apply flex flex-col text-base text-content;
+  @apply grid grid-cols-[auto_1fr_auto_auto] gap-x-3 p-4;
 }
 
 .distribution-chart__row {
-  @apply grid grid-cols-[auto_1fr_auto_auto] items-center gap-x-3 rounded-md bg-transparent border-none px-2 py-1 cursor-pointer text-start text-content transition-opacity;
+  @apply grid grid-cols-subgrid col-span-full items-center rounded-md bg-transparent border-none px-2 py-1 cursor-pointer text-start text-sm font-semibold lowercase text-content-secondary transition-opacity;
 
   &:hover {
     @apply bg-secondary;
@@ -43,5 +51,9 @@
 }
 
 .distribution-chart__percentage {
-  @apply text-content-secondary whitespace-nowrap text-end;
+  @apply opacity-60 whitespace-nowrap text-end;
+}
+
+.distribution-chart__footer {
+  @apply flex items-center justify-center px-4 py-2 text-sm;
 }

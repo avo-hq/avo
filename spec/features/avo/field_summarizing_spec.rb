@@ -24,7 +24,7 @@ RSpec.feature "Field Summarizing", type: :system do
         expect(page).to have_content "LOADING\n4"
       end
 
-      find("#summary-header-status").click
+      find('button[popovertarget="summary-popover-status"]').click
 
       expect(page).not_to have_css "#status-summary"
       expect(page).not_to have_css "#chart-status"
@@ -74,8 +74,8 @@ RSpec.feature "Field Summarizing", type: :system do
 
         visit avo.resources_projects_path(encoded_filters: encoded_filters)
 
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
 
         within "#status-summary" do
           expect(page).not_to have_content "REJECTED"
@@ -94,8 +94,8 @@ RSpec.feature "Field Summarizing", type: :system do
       it "adjusts the summary to reflect only the searched records" do
         visit avo.resources_projects_path(q: "Search summary match")
 
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
 
         within "#status-summary" do
           expect(page).to have_content "CLOSED"
@@ -163,9 +163,9 @@ RSpec.feature "Field Summarizing", type: :system do
         scroll_to users_frame
         wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_users")
 
-        find("#summary-header-active").click
+        find('button[popovertarget="summary-popover-active"]').click
 
-        wait_for_turbo_frame_id("summary-frame-active")
+        wait_for_turbo_frame_id("summary-popover-active")
 
         within "#active-summary" do
           expect(page).to have_content "2" # 2 active users in project
@@ -186,8 +186,8 @@ RSpec.feature "Field Summarizing", type: :system do
       let!(:other_user_post) { create :post, user: create(:user), status: :published, published_at: Time.now, name: "Other" }
 
       def open_status_summary
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
       end
 
       it "shows distribution scoped to the parent's records" do
@@ -260,8 +260,8 @@ RSpec.feature "Field Summarizing", type: :system do
       end
 
       def open_active_summary
-        find("#summary-header-active").click
-        wait_for_turbo_frame_id("summary-frame-active")
+        find('button[popovertarget="summary-popover-active"]').click
+        wait_for_turbo_frame_id("summary-popover-active")
       end
 
       it "shows distribution scoped to the team's members" do
@@ -270,7 +270,7 @@ RSpec.feature "Field Summarizing", type: :system do
 
         within "#active-summary" do
           expect(page).to have_content "TRUE\n2"
-          expect(page).to have_content "—\n1"
+          expect(page).to have_content "FALSE\n1"
         end
       end
 
@@ -282,7 +282,7 @@ RSpec.feature "Field Summarizing", type: :system do
 
         within "#active-summary" do
           expect(page).to have_content "TRUE\n2"
-          expect(page).not_to have_content "—"
+          expect(page).not_to have_content "FALSE"
         end
       end
 
@@ -291,7 +291,7 @@ RSpec.feature "Field Summarizing", type: :system do
         open_active_summary
 
         within "#active-summary" do
-          expect(page).to have_content "—\n1"
+          expect(page).to have_content "FALSE\n1"
           expect(page).not_to have_content "TRUE"
         end
       end
@@ -304,8 +304,8 @@ RSpec.feature "Field Summarizing", type: :system do
 
   describe "full page summary" do
     def open_status_summary
-      find("#summary-header-status").click
-      wait_for_turbo_frame_id("summary-frame-status")
+      find('button[popovertarget="summary-popover-status"]').click
+      wait_for_turbo_frame_id("summary-popover-status")
     end
 
     def click_view_full_summary
@@ -408,8 +408,8 @@ RSpec.feature "Field Summarizing", type: :system do
       end
 
       def open_active_summary
-        find("#summary-header-active").click
-        wait_for_turbo_frame_id("summary-frame-active")
+        find('button[popovertarget="summary-popover-active"]').click
+        wait_for_turbo_frame_id("summary-popover-active")
       end
 
       it "renders the full page scoped to the association" do
@@ -424,7 +424,7 @@ RSpec.feature "Field Summarizing", type: :system do
 
         within "#active-full-summary" do
           expect(page).to have_content "true\n2"
-          expect(page).to have_content "—\n1"
+          expect(page).to have_content "false\n1"
         end
       end
 
@@ -499,8 +499,8 @@ RSpec.feature "Field Summarizing", type: :system do
         it "navigates back to the parent show page" do
           visit "/admin/resources/users/#{author.id}/posts?view_type=table"
 
-          find("#summary-header-status").click
-          wait_for_turbo_frame_id("summary-frame-status")
+          find('button[popovertarget="summary-popover-status"]').click
+          wait_for_turbo_frame_id("summary-popover-status")
           click_view_full_summary
           click_link "Go back"
           wait_for_loaded
@@ -517,8 +517,8 @@ RSpec.feature "Field Summarizing", type: :system do
       let!(:archived_post) { create :post, user: author, status: :archived, published_at: nil, name: "FilteredArchived" }
 
       def open_status_summary_on_posts
-        find("#summary-header-status").click
-        wait_for_turbo_frame_id("summary-frame-status")
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
       end
 
       it "preserves filters in the full page data" do

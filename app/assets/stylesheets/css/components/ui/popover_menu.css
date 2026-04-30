@@ -13,15 +13,12 @@
   box-shadow: var(--box-shadow-card);
 }
 
-.popover-menu__panel--summary {
-  margin-block-end: 1rem;
-  position-area: bottom center;
-}
-
-.popover-menu__panel--summary > .dropdown-menu {
-  max-height: 70dvh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+/* When the panel hosts a dropdown card, the card provides the
+   visual chrome — drop the panel's own background and shadow so we
+   don't render two stacked cards. */
+.popover-menu__panel:has(> .dropdown-card) {
+  @apply bg-transparent;
+  box-shadow: none;
 }
 
 .popover-menu__panel::backdrop {

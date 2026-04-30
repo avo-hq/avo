@@ -2,6 +2,8 @@ require_dependency "avo/base_controller"
 
 module Avo
   class ChartsController < BaseController
+    before_action :validate_summarizable_field
+
     def distribution_chart
       compute_summary_data
 
@@ -38,6 +40,14 @@ module Avo
 
     private
 
+    # Field IDs aren't unique (forms vs. index variants), so match on summarizable too.
+    def validate_summarizable_field
+      @field = @resource.get_field_definitions.find do |f|
+        f.id.to_s == params[:field_id].to_s && f.summarizable
+      end
+      head :not_found and return unless @field
+    end
+
     def compute_summary_data
       @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
         .transform_keys do |key|
@@ -48,7 +58,7 @@ module Avo
           key
         end
 
-        key.presence || "—"
+        (key.nil? || key == "") ? "—" : key
       end
 
       @field_id = params[:field_id]
