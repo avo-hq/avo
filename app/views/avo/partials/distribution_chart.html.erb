@@ -1,24 +1,42 @@
+<% chart_height = "200px" %>
 <turbo-frame id="summary-popover-<%= @field_id %>">
-  <div class="dropdown-menu p-4 sm:w-[400px]">
-    <div class="grid grid-cols-12 items-center">
-      <ul class="col-span-5" id="<%= @field_id %>-summary">
-        <% @values_summary.each_with_index do |(key, value), index| %>
-          <li class="grid grid-cols-6 items-center gap-3 text-sm font-semibold text-(--color-content-secondary) uppercase">
-            <div class="col-span-5 flex items-center space-x-1 truncate rtl:space-x-reverse">
-              <%= tag.div class: class_names("inline-block size-3 rounded-full", "bg-[#{chart_color(index)}]") %>
-              <span><%= key %></span>
-            </div>
+  <%= render Avo::UI::DropdownCardComponent.new(classes: "sm:w-[400px]") do |card| %>
+    <% card.with_body do %>
+      <div class="grid grid-cols-12 items-center p-4">
+        <ul class="col-span-5 overflow-y-auto pe-4" style="max-height: <%= chart_height %>" id="<%= @field_id %>-summary">
+          <% @values_summary.each_with_index do |(key, value), index| %>
+            <li class="grid grid-cols-6 items-center gap-3 text-sm font-semibold text-(--color-content-secondary) uppercase">
+              <div class="col-span-5 flex items-center space-x-1 truncate rtl:space-x-reverse">
+                <%= tag.div class: class_names("inline-block size-3 rounded-full", "bg-[#{chart_color(index)}]") %>
+                <span><%= key %></span>
+              </div>
 
-            <div class="col-span-1 text-end">
-              <%= value %>
-            </div>
-          </li>
-        <% end %>
-      </ul>
+              <div class="col-span-1 text-end">
+                <%= value %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
 
-      <div class="col-span-6 col-start-7">
-        <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: "200px", colors: Avo.configuration.branding.chart_colors %>
+        <div class="col-span-6 col-start-7">
+          <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: chart_height, colors: Avo.configuration.branding.chart_colors %>
+        </div>
       </div>
-    </div>
-  </div>
+    <% end %>
+
+    <% card.with_footer do %>
+      <div class="distribution-chart__footer">
+        <%= a_link distribution_chart_full_path(
+          resource_name: params[:resource_name],
+          field_id: params[:field_id],
+          **request.query_parameters.except(:resource_name, :field_id)
+        ),
+          style: :text,
+          icon: "tabler/outline/external-link",
+          data: { turbo_frame: "_top" } do %>
+          View full summary
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
 </turbo-frame>

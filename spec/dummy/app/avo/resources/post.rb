@@ -76,7 +76,7 @@ class Avo::Resources::Post < Avo::BaseResource
         field :audio, as: :file, is_audio: true, accept: "audio/*"
 
         field :user, as: :belongs_to, placeholder: "—"
-        field :status, as: :select, enum: ::Post.statuses, display_value: false
+        field :status, as: :select, enum: ::Post.statuses, display_value: false, summarizable: true
         field :slug, as: :text
         field :tags, as: :tags,
           acts_as_taggable_on: :tags,
