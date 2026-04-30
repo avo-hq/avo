@@ -29,8 +29,17 @@ module Avo
     def summary_query
       set_applied_filters
       set_index_params
-      @query = base_index_query
+      set_query
       build_index_query
+    end
+
+    def set_query
+      return super unless association_summary?
+
+      @query ||= build_association_scope_from_params(
+        resource: @resource,
+        authorization: @resource.authorization(user: _current_user)
+      )
     end
   end
 end
