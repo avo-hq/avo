@@ -3,6 +3,7 @@ require_dependency "avo/application_controller"
 module Avo
   class BaseController < ApplicationController
     include Avo::Concerns::FiltersSessionHandler
+    include Avo::Concerns::AssociationQueryScope
     include Avo::Concerns::SafeCall
 
     before_action :set_resource_name
@@ -709,45 +710,8 @@ module Avo
     end
 
     # If we don't get a query object predefined from a child controller like associations, just spin one up.
-    # `base_index_query` is association-aware so the charts controller can reuse the same starting point.
     def set_query
-      @query ||= base_index_query
-    end
-
-    # Returns the starting ActiveRecord relation for an index-style query,
-    # association-aware based on request params. Used by both the regular
-    # index view and the summarizable distribution chart so the two paths
-    # share one source of truth.
-    def base_index_query
-      if associated_summary?
-        build_association_scope_from_params
-      else
-        @resource.class.query_scope
-      end
-    end
-
-    def associated_summary?
-      params[:via_record_id].present? &&
-        params[:via_resource_class].present? &&
-        (params[:association_name].present? || params[:related_name].present?)
-    end
-
-    def build_association_scope_from_params
-      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
-      @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
-      @parent_resource = parent_resource_class.new(
-        record: @parent_record,
-        view: Avo::ViewInquirer.new("show")
-      )
-      @parent_resource.detect_fields
-
-      association_query_scope(
-        parent_resource: @parent_resource,
-        parent_record: @parent_record,
-        association_name: params[:association_name] || params[:related_name],
-        authorization: @resource.authorization(user: _current_user),
-        resource: @resource
-      )
+      @query ||= @resource.class.query_scope
     end
 
     def apply_index_filters
@@ -756,27 +720,6 @@ module Avo
           arguments: @resource.get_filter_arguments(filter_class)
         ).apply_query request, @query, filter_value
       end
-    end
-
-    def association_query_scope(parent_resource:, parent_record:, association_name:, authorization:, resource:, field_association_name: association_name)
-      valid_association_name = BaseResource.valid_association_name(parent_record, association_name)
-      association_field = find_association_field(resource: parent_resource, association: field_association_name)
-
-      query = authorization.apply_policy(
-        parent_record.send(valid_association_name)
-      )
-
-      if association_field&.scope.present?
-        query = Avo::ExecutionContext.new(
-          target: association_field.scope,
-          query: query,
-          parent: parent_record,
-          resource: resource,
-          parent_resource: parent_resource
-        ).handle
-      end
-
-      query
     end
 
     def apply_search
