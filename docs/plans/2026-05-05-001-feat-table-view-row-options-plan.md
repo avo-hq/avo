@@ -1,7 +1,7 @@
 ---
 title: "feat: self.table_view row_options resource API"
 type: feat
-status: active
+status: completed
 date: 2026-05-05
 origin: docs/brainstorms/2026-05-04-resource-table-view-row-options-requirements.md
 ---
