@@ -121,19 +121,19 @@ RSpec.describe Avo::TableRowOptions do
 
     describe "Avo-wins on reserved keys" do
       it "drops user-provided record_id and warns" do
-        expect(Rails.logger).to receive(:warn).with(/record_id/)
+        expect(Avo.logger).to receive(:warn).with(/record_id/)
         result = merge(user_options: {data: {record_id: "spoof"}})
         expect(result[:data][:record_id]).to eq("42")
       end
 
       it "drops user-provided index" do
-        allow(Rails.logger).to receive(:warn)
+        allow(Avo.logger).to receive(:warn)
         result = merge(user_options: {data: {index: 999}})
         expect(result[:data][:index]).to eq(0)
       end
 
       it "drops user-provided component_name" do
-        allow(Rails.logger).to receive(:warn)
+        allow(Avo.logger).to receive(:warn)
         result = merge(user_options: {data: {component_name: "spoof"}})
         expect(result[:data][:component_name]).to eq("avo/index/table_row_component")
       end
@@ -230,13 +230,13 @@ RSpec.describe Avo::TableRowOptions do
     before { allow(Rails.env).to receive(:production?).and_return(true) }
 
     it "logs and falls back to avo_attributes when id is set" do
-      expect(Rails.logger).to receive(:error).with(/id/)
+      expect(Avo.logger).to receive(:error).with(/id/)
       result = merge(user_options: {id: "spoof"})
       expect(result).to eq(avo_attributes)
     end
 
     it "logs and falls back when an event handler is set" do
-      expect(Rails.logger).to receive(:error)
+      expect(Avo.logger).to receive(:error)
       result = merge(user_options: {onclick: "alert(1)"})
       expect(result).to eq(avo_attributes)
     end
@@ -277,7 +277,7 @@ RSpec.describe Avo::TableRowOptions do
       before { allow(Rails.env).to receive(:production?).and_return(true) }
 
       it "catches exceptions and returns avo_attributes" do
-        expect(Rails.logger).to receive(:error)
+        expect(Avo.logger).to receive(:error)
         result = merge(user_options: {class: -> { record.nonexistent_method }})
         expect(result).to eq(avo_attributes)
       end

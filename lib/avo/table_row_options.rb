@@ -58,7 +58,7 @@ module Avo
     rescue => error
       raise unless Rails.env.production?
 
-      Rails.logger.error(format_error(error))
+      Avo.logger.error(format_error(error))
       @avo_attributes
     end
 
@@ -195,7 +195,7 @@ module Avo
     def warn_reserved_data_key(key)
       return unless Rails.env.development? || Rails.env.test?
 
-      Rails.logger.warn(
+      Avo.logger.warn(
         "[Avo::TableRowOptions] data[#{key.inspect}] is a reserved Avo key and was ignored. " \
         "Reserved keys: #{RESERVED_DATA_KEYS.inspect}."
       )
@@ -214,7 +214,7 @@ module Avo
     end
 
     def format_error(error)
-      "[Avo::TableRowOptions] #{error.class}: #{error.message}\n  " +
+      "[Avo::TableRowOptions ->] #{error.class}: #{error.message}\n  " +
         Array(error.backtrace).first(3).join("\n  ")
     end
   end
