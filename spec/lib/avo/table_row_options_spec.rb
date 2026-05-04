@@ -283,5 +283,4 @@ RSpec.describe Avo::TableRowOptions do
       end
     end
   end
-
 end
