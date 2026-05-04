@@ -13,9 +13,7 @@ module Avo
   # See docs/brainstorms/2026-05-04-resource-table-view-row-options-requirements.md
   # and docs/plans/2026-05-05-001-feat-table-view-row-options-plan.md.
   class TableRowOptions
-    unless defined?(INSTRUMENTATION_NAME)
-      INSTRUMENTATION_NAME = "avo.row_options.evaluate"
-
+    unless defined?(RESERVED_DATA_KEYS)
       # Data attribute keys Avo owns and reserves on <tr>. User attempts to set
       # these (other than the token-list keys below) are dropped with a warning.
       RESERVED_DATA_KEYS = %i[
@@ -56,12 +54,7 @@ module Avo
     end
 
     def merge
-      ActiveSupport::Notifications.instrument(
-        INSTRUMENTATION_NAME,
-        resource: @resource.class.to_s,
-        view: @view,
-        record_id: @record.respond_to?(:to_param) ? @record.to_param : nil
-      ) { do_merge }
+      do_merge
     rescue => error
       raise unless Rails.env.production?
 

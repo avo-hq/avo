@@ -284,22 +284,4 @@ RSpec.describe Avo::TableRowOptions do
     end
   end
 
-  describe "instrumentation" do
-    it "instruments the evaluation under avo.row_options.evaluate" do
-      events = []
-      subscriber = ActiveSupport::Notifications.subscribe("avo.row_options.evaluate") do |*args|
-        events << ActiveSupport::Notifications::Event.new(*args)
-      end
-
-      merge(user_options: {class: "x"})
-
-      ActiveSupport::Notifications.unsubscribe(subscriber)
-      expect(events.size).to eq(1)
-      expect(events.first.payload).to include(
-        view: :index,
-        record_id: "42",
-        resource: "Avo::Resources::FakeMessage"
-      )
-    end
-  end
 end
