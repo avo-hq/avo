@@ -169,6 +169,9 @@ module Avo
       result
     end
 
+    # Pass-through branch of the merge contract: any HTML attribute that isn't
+    # `class` or `data` (style, title, aria-*, etc.). Coerces the value, then
+    # sets it on `result` or deletes the key when the block returned nil/false.
     def apply_passthrough!(result, key, value)
       coerced = coerce_attribute_value!(key, value)
       if coerced.nil?
