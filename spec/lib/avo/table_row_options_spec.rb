@@ -143,6 +143,16 @@ RSpec.describe Avo::TableRowOptions do
       result = merge(user_options: {data: -> { {role: record.role} }})
       expect(result[:data][:role]).to eq("agent")
     end
+
+    it "leaves Avo's data unchanged when the data block returns nil" do
+      result = merge(user_options: {data: -> {}})
+      expect(result[:data]).to eq(avo_attributes[:data])
+    end
+
+    it "leaves Avo's data unchanged when the data block returns false" do
+      result = merge(user_options: {data: -> { false }})
+      expect(result[:data]).to eq(avo_attributes[:data])
+    end
   end
 
   describe "passthrough HTML attributes" do

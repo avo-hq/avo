@@ -145,8 +145,10 @@ module Avo
     end
 
     def merge_data(avo_data, user_value)
+      return avo_data if user_value.nil? || user_value == false
+
       unless user_value.is_a?(Hash)
-        raise ArgumentError, "row_options[:data] must resolve to a Hash; got #{user_value.class}"
+        raise ArgumentError, "row_options[:data] must resolve to a Hash, nil, or false; got #{user_value.class}"
       end
 
       result = avo_data.dup
