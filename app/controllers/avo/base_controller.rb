@@ -13,7 +13,6 @@ module Avo
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
-
     # Don't run base authorizations for associations
     before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
@@ -73,11 +72,7 @@ module Avo
                 )
               end,
               # used to show/hide the filters button and bar
-              if has_resources
-                turbo_stream.remove_css_class("body", "index-missing-resources")
-              else
-                turbo_stream.add_css_class("body", "index-missing-resources")
-              end
+              has_resources ? turbo_stream.remove_css_class("body", "index-missing-resources") : turbo_stream.add_css_class("body", "index-missing-resources")
             ]
           end
         end
@@ -98,10 +93,7 @@ module Avo
 
       add_via_breadcrumbs
 
-      add_breadcrumb title: @resource.record_title,
-        path: nil,
-        avatar: @resource.avatar,
-        initials: @resource.initials
+      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials
       add_breadcrumb title: I18n.t("avo.details").upcase_first, path: nil
 
       set_component_for __method__
@@ -117,32 +109,16 @@ module Avo
       @page_title = @resource.default_panel_name.to_s
 
       if is_associated_record?
-        via_resource =
-          Avo.resource_manager.get_resource_by_model_class(
-            params[:via_relation_class]
-          )
-        via_record =
-          via_resource.find_record params[:via_record_id], params: params
+        via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
+        via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb title: via_resource.plural_name,
-          path: resources_path(resource: via_resource),
-          initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title,
-          path:
-            resource_path(
-              record: via_record,
-              resource: via_resource
-            ),
-          avatar: via_resource.avatar,
-          initials: via_resource.initials
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
-        add_breadcrumb title: @resource.plural_name.humanize,
-          initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize,
-          path: resources_path(resource: @resource),
-          initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
 
       add_breadcrumb title: t("avo.new").humanize
@@ -443,8 +419,7 @@ module Avo
     end
 
     def set_edit_title_and_breadcrumbs
-      @resource =
-        @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
+      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
       @page_title = @resource.default_panel_name.to_s
 
       last_crumb_args = {}
@@ -520,9 +495,7 @@ module Avo
           Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
         end
 
-        return(
-          resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
-        )
+        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
@@ -530,12 +503,7 @@ module Avo
 
     def update_success_action
       respond_to do |format|
-        format.html do
-          redirect_to after_update_path,
-            flash: {
-              success: update_success_message
-            }
-        end
+        format.html { redirect_to after_update_path, flash: {success: update_success_message} }
       end
     end
 
@@ -641,9 +609,7 @@ module Avo
       default_component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component"
 
       # Search for the custom component by key and by class name:
-      custom_component =
-        @resource.custom_components.dig(:"resource_#{view}_component") ||
-        @resource.custom_components.dig(default_component)
+      custom_component = @resource.custom_components.dig(:"resource_#{view}_component") || @resource.custom_components.dig(default_component)
 
       # If the component is not set, use the default one
       return @component = default_component.constantize if custom_component.nil?
@@ -660,8 +626,7 @@ module Avo
 
     def apply_pagination
       # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
-      @pagy, @records =
-        @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
+      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
     end
 
     def build_index_query
@@ -713,8 +678,7 @@ module Avo
 
     # Sanitize sort_direction param
     def sanitized_sort_direction
-      @sanitized_sort_direction ||=
-        @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
+      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
     end
 
     def reload_frame_turbo_streams
@@ -730,8 +694,7 @@ module Avo
       # If the request includes the 'per_page' parameter, save its value to the cookies
       cookies[:per_page] = params[:per_page] if params[:per_page].present?
 
-      @index_params[:per_page] =
-        cookies[:per_page] || Avo.configuration.per_page
+      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
 
     # If we don't get a query object predefined from a child controller like associations, just spin one up.
@@ -822,8 +785,8 @@ module Avo
     def apply_index_filters
       filters_to_be_applied.each do |filter_class, filter_value|
         @query = filter_class.safe_constantize.new(
-            arguments: @resource.get_filter_arguments(filter_class)
-          ).apply_query request, @query, filter_value
+          arguments: @resource.get_filter_arguments(filter_class)
+        ).apply_query request, @query, filter_value
       end
     end
 
