@@ -109,7 +109,7 @@ module Generators
         end
 
         def model_class
-          @model_class ||= class_from_args || singular_name
+          @model_class ||= class_from_args.presence || class_name
         end
 
         def model
