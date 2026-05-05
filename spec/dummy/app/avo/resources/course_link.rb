@@ -1,6 +1,6 @@
-class Avo::Resources::Course::Link < Avo::BaseResource
+class Avo::Resources::CourseLink < Avo::BaseResource
   self.title = :link
-  # self
+  self.model_class = Course::Link
   self.includes = [:course]
   self.search = {
     query: -> {
