@@ -3,7 +3,7 @@
 }
 
 .distribution-chart__panel .panel__content {
-  @apply gap-16 mx-auto w-full max-w-5xl;
+  @apply gap-2 mx-auto w-full max-w-5xl;
 }
 
 @media (width >= 48rem) {
