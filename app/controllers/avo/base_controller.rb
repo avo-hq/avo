@@ -1,19 +1,27 @@
-require_dependency "avo/application_controller"
+require_dependency 'avo/application_controller'
 
 module Avo
   class BaseController < ApplicationController
     include Avo::Concerns::FiltersSessionHandler
+    include Avo::Concerns::AssociationQueryScope
     include Avo::Concerns::SafeCall
 
     before_action :set_resource_name
     before_action :set_resource
-    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
-    before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
+    before_action :set_record, only: %i[show edit destroy update preview]
+    before_action :set_record_to_fill, only: %i[new edit create update]
     before_action :detect_fields
-    before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
-    before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
+    before_action :set_edit_title_and_breadcrumbs, only: %i[edit update]
+    before_action :fill_record,
+                  if: -> {
+                    action_name.in?(%w[create update]) ||
+                      params['react_on'].present?
+                  }
+
     # Don't run base authorizations for associations
-    before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
+    before_action :authorize_base_action,
+                  except: %i[preview search],
+                  if: -> { controller_name != 'associations' }
     before_action :set_pagy_locale, only: :index
 
     before_action :set_modal_params
@@ -25,10 +33,20 @@ module Avo
       if @reflection.present? && !turbo_frame_request?
         # A good rule of thumb is that the resource name entry (Users) gets just the initials
         # The record name gets initials and avatar
-        add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials
-        add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar
+        add_breadcrumb title: @record.class.to_s.pluralize,
+                       path: resources_path(resource: @parent_resource),
+                       initials: @parent_resource.class.initials
+        add_breadcrumb title: @parent_resource.record_title,
+                       path:
+                         resource_path(
+                           record: @record,
+                           resource: @parent_resource
+                         ),
+                       initials: @parent_resource.initials,
+                       avatar: @parent_resource.avatar
       end
-      add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+      add_breadcrumb title: @resource.plural_name.humanize,
+                     initials: @resource.class.initials
 
       set_applied_filters
       set_index_params
@@ -41,13 +59,12 @@ module Avo
       # Create resources for each record
       # Duplicate the @resource before hydration to avoid @resource keeping last record.
       @resource.hydrate(params: params)
-      @resources = @records.map do |record|
-        @resource.dup.hydrate(record: record)
-      end
+      @resources =
+        @records.map { |record| @resource.dup.hydrate(record: record) }
 
       set_component_for __method__
 
-      if request.headers["X-Search-Request"] == "resource-search-controller"
+      if request.headers['X-Search-Request'] == 'resource-search-controller'
         respond_to do |format|
           format.turbo_stream do
             has_resources = @resources.present?
@@ -63,16 +80,31 @@ module Avo
             }
 
             render turbo_stream: [
-              turbo_stream.replace("#{@resource.model_key}_body_content") do
-                Avo::Current.view_context.render Avo::ResourceListingComponent.new(
-                  **common_args,
-                  turbo_frame: @turbo_frame,
-                  index_params: @index_params
-                )
-              end,
-              # used to show/hide the filters button and bar
-              has_resources ? turbo_stream.remove_css_class("body", "index-missing-resources") : turbo_stream.add_css_class("body", "index-missing-resources")
-            ]
+                     turbo_stream.replace(
+                       "#{@resource.model_key}_body_content"
+                     ) do
+                       Avo::Current
+                         .view_context.render Avo::ResourceListingComponent.new(
+                                                          **common_args,
+                                                          turbo_frame:
+                                                            @turbo_frame,
+                                                          index_params:
+                                                            @index_params
+                                                        )
+                     end,
+                     # used to show/hide the filters button and bar
+                     if has_resources
+                       turbo_stream.remove_css_class(
+                         'body',
+                         'index-missing-resources'
+                       )
+                     else
+                       turbo_stream.add_css_class(
+                         'body',
+                         'index-missing-resources'
+                       )
+                     end
+                   ]
           end
         end
       end
@@ -92,8 +124,11 @@ module Avo
 
       add_via_breadcrumbs
 
-      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials
-      add_breadcrumb title: I18n.t("avo.details").upcase_first, path: nil
+      add_breadcrumb title: @resource.record_title,
+                     path: nil,
+                     avatar: @resource.avatar,
+                     initials: @resource.initials
+      add_breadcrumb title: I18n.t('avo.details').upcase_first, path: nil
 
       set_component_for __method__
     end
@@ -108,19 +143,35 @@ module Avo
       @page_title = @resource.default_panel_name.to_s
 
       if is_associated_record?
-        via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
+        via_resource =
+          Avo.resource_manager.get_resource_by_model_class(
+            params[:via_relation_class]
+          )
+        via_record =
+          via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+        add_breadcrumb title: via_resource.plural_name,
+                       path: resources_path(resource: via_resource),
+                       initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title,
+                       path:
+                         resource_path(
+                           record: via_record,
+                           resource: via_resource
+                         ),
+                       avatar: via_resource.avatar,
+                       initials: via_resource.initials
 
-        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize,
+                       initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize,
+                       path: resources_path(resource: @resource),
+                       initials: @resource.class.initials
       end
 
-      add_breadcrumb title: t("avo.new").humanize
+      add_breadcrumb title: t('avo.new').humanize
 
       set_component_for __method__, fallback_view: :edit
 
@@ -130,29 +181,48 @@ module Avo
 
     def create
       # This means that the record has been created through another parent record and we need to attach it somehow.
-      if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
-        @reflection = @record.class.reflect_on_association(params[:via_relation])
+      if params[:via_record_id].present? &&
+           params[:via_belongs_to_resource_class].nil?
+        @reflection =
+          @record.class.reflect_on_association(params[:via_relation])
+
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
-        if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
-          related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
-          @related_record = related_resource.find_record params[:via_record_id], params: params
+        if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) ||
+             @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
+          related_resource =
+            Avo.resource_manager.get_resource_by_model_class params[
+                                                               :via_relation_class
+                                                             ]
+          @related_record =
+            related_resource.find_record params[:via_record_id], params: params
 
           @record.send(:"#{@reflection.foreign_key}=", @related_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
-        if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
+        if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) ||
+             @reflection.is_a?(
+               ActiveRecord::Reflection::HasAndBelongsToManyReflection
+             )
           # find the record
-          via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-          @related_record = via_resource.find_record params[:via_record_id], params: params
-          association_name = BaseResource.valid_association_name(@record, params[:via_relation])
+          via_resource =
+            Avo.resource_manager.get_resource_by_model_class(
+              params[:via_relation_class]
+            )
+          @related_record =
+            via_resource.find_record params[:via_record_id], params: params
+          association_name =
+            BaseResource.valid_association_name(@record, params[:via_relation])
 
-          if params[:via_association_type] == "has_one"
+          if params[:via_association_type] == 'has_one'
             # On has_one scenarios we should switch the @record and @related_record
-            @related_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
+            @related_record.send(
+              :"#{@reflection.parent_reflection.inverse_of.name}=",
+              @record
+            )
           else
             @record.send(association_name) << @related_record
           end
@@ -161,19 +231,24 @@ module Avo
 
       # record gets instantiated and filled in the fill_record method
       saved = save_record
-      @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
+      @resource.hydrate(
+        record: @record,
+        view: Avo::ViewInquirer.new(:new),
+        user: _current_user
+      )
 
-      add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
-      add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: @resource.plural_name.humanize,
+                     path: resources_path(resource: @resource),
+                     initials: @resource.class.initials
+      add_breadcrumb title: t('avo.new').humanize,
+                     path: nil,
+                     avatar: @resource.avatar,
+                     initials: @resource.initials
       set_actions
 
       set_component_for :edit
 
-      if saved
-        create_success_action
-      else
-        create_fail_action
-      end
+      saved ? create_success_action : create_fail_action
     end
 
     def edit
@@ -188,31 +263,37 @@ module Avo
     def update
       # record gets instantiated and filled in the fill_record method
       saved = save_record
-      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
+      @resource =
+        @resource.hydrate(
+          record: @record,
+          view: Avo::ViewInquirer.new(:edit),
+          user: _current_user
+        )
       set_actions
 
       set_component_for :edit
 
-      if saved
-        update_success_action
-      else
-        update_fail_action
-      end
+      saved ? update_success_action : update_fail_action
     end
 
     def destroy
-      if destroy_model
-        destroy_success_action
-      else
-        destroy_fail_action
-      end
+      destroy_model ? destroy_success_action : destroy_fail_action
     end
 
     def preview
-      @authorized = @authorization.set_record(@record || @resource.model_class).authorize_action :preview, raise_exception: false
+      @authorized =
+        @authorization.set_record(
+          @record || @resource.model_class
+        ).authorize_action :preview,
+                                                    raise_exception: false
 
       if @authorized
-        @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:show), user: _current_user, params: params)
+        @resource.hydrate(
+          record: @record,
+          view: Avo::ViewInquirer.new(:show),
+          user: _current_user,
+          params: params
+        )
 
         @preview_fields = @resource.get_preview_fields
       end
@@ -236,13 +317,15 @@ module Avo
     def unprocessable_status
       # :unprocessable_content was added in Rails 7.1
       # Use it when available, fall back to :unprocessable_entity for older versions
-      (Rails.version.to_f >= 7.1) ? :unprocessable_content : :unprocessable_entity
+      if (Rails.version.to_f >= 7.1)
+        :unprocessable_content
+      else
+        :unprocessable_entity
+      end
     end
 
     def save_record
-      perform_action_and_record_errors do
-        save_record_action
-      end
+      perform_action_and_record_errors { save_record_action }
     end
 
     def save_record_action
@@ -250,9 +333,7 @@ module Avo
     end
 
     def destroy_model
-      perform_action_and_record_errors do
-        destroy_record_action
-      end
+      perform_action_and_record_errors { destroy_record_action }
     end
 
     def destroy_record_action
@@ -267,7 +348,7 @@ module Avo
 
         # Do nothing as the record errors are already being displayed
         # On associations controller add errors from join record to record
-        if controller_name == "associations"
+        if controller_name == 'associations'
           @record.errors.add(:base, error.message)
         end
       rescue => exception
@@ -294,7 +375,9 @@ module Avo
     def model_params
       request_params = params.require(model_param_key).permit(permitted_params)
 
-      if @resource.devise_password_optional && request_params[:password].blank? && request_params[:password_confirmation].blank?
+      if @resource.devise_password_optional &&
+           request_params[:password].blank? &&
+           request_params[:password_confirmation].blank?
         request_params.delete(:password_confirmation)
         request_params.delete(:password)
       end
@@ -303,7 +386,8 @@ module Avo
     end
 
     def permitted_params
-      @resource.get_field_definitions
+      @resource
+        .get_field_definitions
         .select(&:updatable)
         .map(&:to_permitted_param)
         .concat(extra_params)
@@ -318,14 +402,11 @@ module Avo
     def cast_nullable(params)
       fields = @resource.get_field_definitions
 
-      nullable_fields = fields
-        .filter do |field|
-          field.nullable
-        end
-        .map do |field|
-          [field.id, field.null_values]
-        end
-        .to_h
+      nullable_fields =
+        fields
+          .filter { |field| field.nullable }
+          .map { |field| [field.id, field.null_values] }
+          .to_h
 
       params.each do |key, value|
         nullable_values = nullable_fields[key.to_sym]
@@ -351,41 +432,57 @@ module Avo
 
     def set_sorting_params
       @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
-      @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
+      @index_params[:sort_direction] =
+        params[:sort_direction] || @resource.default_sort_direction
     end
 
     def set_filters
-      @filters = @resource
-        .get_filters
-        .map do |filter|
-          filter[:class].new arguments: filter[:arguments]
-        end
-        .select do |filter|
-          filter.visible_in_view(resource: @resource, parent_resource: @parent_resource)
-        end
+      @filters =
+        @resource
+          .get_filters
+          .map { |filter| filter[:class].new arguments: filter[:arguments] }
+          .select do |filter|
+            filter.visible_in_view(
+              resource: @resource,
+              parent_resource: @parent_resource
+            )
+          end
     end
 
     def set_actions
-      @actions = @resource
-        .get_actions
-        .map do |action_bag|
-          action_bag.delete(:class).new(record: @record, resource: @resource, view: @view, **action_bag)
-        end
-        .select do |action|
-          action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
-        end
+      @actions =
+        @resource
+          .get_actions
+          .map do |action_bag|
+            action_bag
+              .delete(:class)
+              .new(
+                record: @record,
+                resource: @resource,
+                view: @view,
+                **action_bag
+              )
+          end
+          .select do |action|
+            action.is_a?(DividerComponent) ||
+              action.visible_in_view(parent_resource: @parent_resource)
+          end
     end
 
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
       fetched_filters = fetch_filters
-      @current_encoded_filters = fetched_filters unless fetched_filters.is_a?(ActionController::Parameters)
+      @current_encoded_filters = fetched_filters unless fetched_filters.is_a?(
+        ActionController::Parameters
+      )
 
       # Return if there are no filters or if the filters are actually ActionController::Parameters (used by dynamic filters)
-      return @applied_filters = {} if fetched_filters.blank? || fetched_filters.is_a?(ActionController::Parameters)
+      return @applied_filters = {} if fetched_filters.blank? ||
+        fetched_filters.is_a?(ActionController::Parameters)
 
-      @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
+      @applied_filters =
+        Avo::Filters::BaseFilter.decode_filters(fetched_filters)
 
       # Some filters react to others and will have to be merged into this
       @applied_filters = @applied_filters.merge reactive_filters
@@ -395,7 +492,8 @@ module Avo
       filter_reactions = {}
 
       # Go through all filters
-      @resource.get_filters
+      @resource
+        .get_filters
         .select do |filter|
           filter[:class].instance_methods(false).include? :react
         end
@@ -413,34 +511,65 @@ module Avo
 
     # Get the default state of the filters and override with the user applied filters
     def filters_to_be_applied
-      Avo::Filters::BasicFilters.to_be_applied(resource: @resource, applied_filters: @applied_filters)
+      Avo::Filters::BasicFilters.to_be_applied(
+        resource: @resource,
+        applied_filters: @applied_filters
+      )
     end
 
     def set_edit_title_and_breadcrumbs
-      @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
+      @resource =
+        @resource.hydrate(
+          record: @record,
+          view: Avo::ViewInquirer.new(:edit),
+          user: _current_user
+        )
       @page_title = @resource.default_panel_name.to_s
 
       last_crumb_args = {}
+
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
+        via_resource =
+          Avo.resource_manager.get_resource(params[:via_resource_class])
+        via_record =
+          via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+        add_breadcrumb title: via_resource.plural_name,
+                       path: resources_path(resource: @resource),
+                       initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title,
+                       path:
+                         resource_path(
+                           record: via_record,
+                           resource: via_resource
+                         ),
+                       avatar: via_resource.avatar,
+                       initials: via_resource.initials
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
-        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize,
+                       initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize,
+                       path: resources_path(resource: @resource),
+                       initials: @resource.class.initials
       end
 
-      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials
-      add_breadcrumb title: t("avo.edit").humanize
+      add_breadcrumb title: @resource.record_title,
+                     path:
+                       resource_path(
+                         record: @resource.record,
+                         resource: @resource,
+                         **last_crumb_args
+                       ),
+                     avatar: @resource.avatar,
+                     initials: @resource.initials
+      add_breadcrumb title: t('avo.edit').humanize
     end
 
     def create_success_action
@@ -448,21 +577,26 @@ module Avo
         respond_to do |format|
           format.turbo_stream do
             render turbo_stream: [
-              turbo_stream.remove(Avo::MODAL_FRAME_ID),
-              turbo_stream.avo_update_belongs_to(
-                relation_name: params[:via_relation],
-                target_record_id: @record.to_param,
-                target_resource_label: @resource.record_title,
-                target_resource_class: @record.class.name
-              )
-            ]
+                     turbo_stream.remove(Avo::MODAL_FRAME_ID),
+                     turbo_stream.avo_update_belongs_to(
+                       relation_name: params[:via_relation],
+                       target_record_id: @record.to_param,
+                       target_resource_label: @resource.record_title,
+                       target_resource_class: @record.class.name
+                     )
+                   ]
           end
         end
         return
       end
 
       respond_to do |format|
-        format.html { redirect_to after_create_path, flash: {success: create_success_message} }
+        format.html do
+          redirect_to after_create_path,
+                      flash: {
+                        success: create_success_message
+                      }
+        end
       end
     end
 
@@ -471,36 +605,50 @@ module Avo
 
       respond_to do |format|
         format.html { render :new, status: unprocessable_status }
-        format.turbo_stream { render "create_fail_action" }
+        format.turbo_stream { render 'create_fail_action' }
       end
     end
 
     def create_success_message
-      "#{@resource.name} #{t("avo.was_successfully_created")}."
+      "#{@resource.name} #{t('avo.was_successfully_created')}."
     end
 
     def create_fail_message
-      t "avo.you_missed_something_check_form"
+      t 'avo.you_missed_something_check_form'
     end
 
     def after_create_path
       # If this is an associated record return to the association show page
       if is_associated_record?
-        parent_resource = if params[:via_resource_class].present?
-          Avo.resource_manager.get_resource(params[:via_resource_class])
-        else
-          Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-        end
+        parent_resource =
+          if params[:via_resource_class].present?
+            Avo.resource_manager.get_resource(params[:via_resource_class])
+          else
+            Avo.resource_manager.get_resource_by_model_class(
+              params[:via_relation_class]
+            )
+          end
 
-        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
+        return(
+          resource_view_path(
+            resource: parent_resource,
+            resource_id: params[:via_record_id]
+          )
+        )
       end
 
-      redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
+      redirect_path_from_resource_option(:after_create_path) ||
+        resource_view_response_path
     end
 
     def update_success_action
       respond_to do |format|
-        format.html { redirect_to after_update_path, flash: {success: update_success_message} }
+        format.html do
+          redirect_to after_update_path,
+                      flash: {
+                        success: update_success_message
+                      }
+        end
       end
     end
 
@@ -509,16 +657,16 @@ module Avo
 
       respond_to do |format|
         format.html { render :edit, status: unprocessable_status }
-        format.turbo_stream { render "update_fail_action" }
+        format.turbo_stream { render 'update_fail_action' }
       end
     end
 
     def update_success_message
-      "#{@resource.name} #{t("avo.was_successfully_updated")}."
+      "#{@resource.name} #{t('avo.was_successfully_updated')}."
     end
 
     def update_fail_message
-      t "avo.you_missed_something_check_form"
+      t 'avo.you_missed_something_check_form'
     end
 
     def after_update_path
@@ -526,7 +674,8 @@ module Avo
       return params[:return_to] if params[:return_to].present?
       return params[:referrer] if params[:referrer].present?
 
-      redirect_path_from_resource_option(:after_update_path) || resource_view_response_path
+      redirect_path_from_resource_option(:after_update_path) ||
+        resource_view_response_path
     end
 
     # Requires a different/special name, otherwise, in some places, this can be called instead helpers.resource_view_path
@@ -552,21 +701,28 @@ module Avo
       flash[:error] = destroy_fail_message
 
       respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.avo_flash_alerts }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.avo_flash_alerts
+        end
       end
     end
 
     def destroy_success_message
-      t("avo.resource_destroyed", attachment_class: @attachment_class)
+      t('avo.resource_destroyed', attachment_class: @attachment_class)
     end
 
     def destroy_fail_message
       errors = @record.errors.full_messages
-      errors.present? ? errors.join(". ") : t("avo.failed")
+      errors.present? ? errors.join('. ') : t('avo.failed')
     end
 
     def after_destroy_path
-      params[:referrer] || resources_path(resource: @resource, turbo_frame: params[:turbo_frame], view_type: params[:view_type])
+      params[:referrer] ||
+        resources_path(
+          resource: @resource,
+          turbo_frame: params[:turbo_frame],
+          view_type: params[:view_type]
+        )
     end
 
     def redirect_path_from_resource_option(action = :after_update_path)
@@ -579,8 +735,13 @@ module Avo
 
       if @resource.class.send(action) == :index
         resources_path(resource: @resource, **extra_args)
-      elsif @resource.class.send(action) == :edit || Avo.configuration.resource_default_view.edit?
-        edit_resource_path(resource: @resource, record: @resource.record, **extra_args)
+      elsif @resource.class.send(action) == :edit ||
+            Avo.configuration.resource_default_view.edit?
+        edit_resource_path(
+          resource: @resource,
+          record: @resource.record,
+          **extra_args
+        )
       else
         resource_path(record: @record, resource: @resource, **extra_args)
       end
@@ -592,8 +753,9 @@ module Avo
 
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
-      @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
-      Pagy::I18n.locale = @pagy_locale if defined?(Pagy::I18n) && Pagy::I18n.respond_to?(:locale=)
+      @pagy_locale = locale.to_s || Avo.configuration.default_locale || 'en'
+      Pagy::I18n.locale = @pagy_locale if defined?(Pagy::I18n) &&
+        Pagy::I18n.respond_to?(:locale=)
     end
 
     def pagy_query
@@ -603,11 +765,13 @@ module Avo
     # Set the view component for the current view
     # It will try to use the custom component if it's set, otherwise it will use the default one
     def set_component_for(view, fallback_view: nil)
-      default_component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component"
+      default_component =
+        "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component"
 
       # Search for the custom component by key and by class name:
-      custom_component = @resource.custom_components.dig(:"resource_#{view}_component") ||
-        @resource.custom_components.dig(default_component)
+      custom_component =
+        @resource.custom_components.dig(:"resource_#{view}_component") ||
+          @resource.custom_components.dig(default_component)
 
       # If the component is not set, use the default one
       return @component = default_component.constantize if custom_component.nil?
@@ -618,13 +782,18 @@ module Avo
       # If the component is not found, raise an error
       if @component.nil?
         raise "The component '#{custom_component}' was not found.\n" \
-        "That component was fetched from 'self.components' option inside '#{@resource.class}' resource."
+                "That component was fetched from 'self.components' option inside '#{@resource.class}' resource."
       end
     end
 
     def apply_pagination
       # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
-      @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
+      @pagy, @records =
+        @resource.apply_pagination(
+          index_params: @index_params,
+          query: pagy_query,
+          trim_extra: @related_resource.blank?
+        )
     end
 
     def build_index_query
@@ -655,28 +824,35 @@ module Avo
 
     def apply_sorting
       sort_by = @index_params[:sort_by].to_sym
-      if sort_by != :created_at
-        @query = @query.unscope(:order)
-      end
+      @query = @query.unscope(:order) if sort_by != :created_at
 
       # Verify that sort_by param actually is bonded to a field.
       field = @resource.get_field(sort_by)
 
       # Check if the sortable field option is a proc and if there is a need to do a custom sort
-      @query = if field.present? && field.sortable.is_a?(Proc)
-        Avo::ExecutionContext.new(target: field.sortable, query: @query, direction: sanitized_sort_direction).handle
-      # Sanitize sort_by param by checking if have bounded field.
-      elsif (field.present? || sort_by == :created_at) && sanitized_sort_direction
-        @query.order("#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}")
-      # Transform Model to ActiveRecord::Relation because Avo expects one.
-      else
-        @query.where("1=1")
-      end
+      @query =
+        if field.present? && field.sortable.is_a?(Proc)
+          Avo::ExecutionContext.new(
+            target: field.sortable,
+            query: @query,
+            direction: sanitized_sort_direction
+          ).handle
+          # Sanitize sort_by param by checking if have bounded field.
+        elsif (field.present? || sort_by == :created_at) &&
+              sanitized_sort_direction
+          @query.order(
+            "#{@resource.model_class.table_name}.#{sort_by} #{sanitized_sort_direction}"
+          )
+          # Transform Model to ActiveRecord::Relation because Avo expects one.
+        else
+          @query.where('1=1')
+        end
     end
 
     # Sanitize sort_direction param
     def sanitized_sort_direction
-      @sanitized_sort_direction ||= @index_params[:sort_direction].presence_in(["asc", :asc, "desc", :desc])
+      @sanitized_sort_direction ||=
+        @index_params[:sort_direction].presence_in(['asc', :asc, 'desc', :desc])
     end
 
     def reload_frame_turbo_streams
@@ -692,7 +868,8 @@ module Avo
       # If the request includes the 'per_page' parameter, save its value to the cookies
       cookies[:per_page] = params[:per_page] if params[:per_page].present?
 
-      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
+      @index_params[:per_page] =
+        cookies[:per_page] || Avo.configuration.per_page
     end
 
     # If we don't get a query object predefined from a child controller like associations, just spin one up.
@@ -715,32 +892,52 @@ module Avo
 
     def add_via_breadcrumbs
       if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
+        via_resource =
+          Avo.resource_manager.get_resource(params[:via_resource_class])
+        via_record =
+          via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+        add_breadcrumb title: via_resource.plural_name,
+                       path: resources_path(resource: via_resource),
+                       initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title,
+                       path:
+                         resource_path(
+                           record: via_record,
+                           resource: via_resource
+                         ),
+                       avatar: via_resource.avatar,
+                       initials: via_resource.initials
 
-        add_breadcrumb title: @resource.plural_name.humanize, path: nil, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize,
+                       path: nil,
+                       initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name.humanize,
+                       path: resources_path(resource: @resource),
+                       initials: @resource.class.initials
       end
     end
 
     def associated_summary?
-      params[:via_record_id].present? &&
-        params[:via_resource_class].present? &&
+      params[:via_record_id].present? && params[:via_resource_class].present? &&
         (params[:association_name].present? || params[:related_name].present?)
     end
 
     def build_association_scope_from_params
-      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
-      @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
-      @parent_resource = parent_resource_class.new(
-        record: @parent_record,
-        view: Avo::ViewInquirer.new("show")
-      )
+      parent_resource_class =
+        Avo.resource_manager.get_resource(params[:via_resource_class])
+      @parent_record =
+        parent_resource_class.find_record(
+          params[:via_record_id],
+          params: params
+        )
+      @parent_resource =
+        parent_resource_class.new(
+          record: @parent_record,
+          view: Avo::ViewInquirer.new('show')
+        )
       @parent_resource.detect_fields
 
       association_query_scope(
@@ -754,58 +951,81 @@ module Avo
 
     def apply_index_filters
       filters_to_be_applied.each do |filter_class, filter_value|
-        @query = filter_class.safe_constantize.new(
-          arguments: @resource.get_filter_arguments(filter_class)
-        ).apply_query request, @query, filter_value
+        @query =
+          filter_class.safe_constantize.new(
+            arguments: @resource.get_filter_arguments(filter_class)
+          ).apply_query request,
+                                                         @query,
+                                                         filter_value
       end
     end
 
-    def association_query_scope(parent_resource:, parent_record:, association_name:, authorization:, resource:, field_association_name: association_name)
-      valid_association_name = BaseResource.valid_association_name(parent_record, association_name)
-      association_field = find_association_field(resource: parent_resource, association: field_association_name)
+    def association_query_scope(
+      parent_resource:,
+      parent_record:,
+      association_name:,
+      authorization:,
+      resource:,
+      field_association_name: association_name
+    )
+      valid_association_name =
+        BaseResource.valid_association_name(parent_record, association_name)
+      association_field =
+        find_association_field(
+          resource: parent_resource,
+          association: field_association_name
+        )
 
-      query = authorization.apply_policy(
-        parent_record.send(valid_association_name)
-      )
+      query =
+        authorization.apply_policy(parent_record.send(valid_association_name))
 
       if association_field&.scope.present?
-        query = Avo::ExecutionContext.new(
-          target: association_field.scope,
-          query: query,
-          parent: parent_record,
-          resource: resource,
-          parent_resource: parent_resource
-        ).handle
+        query =
+          Avo::ExecutionContext.new(
+            target: association_field.scope,
+            query: query,
+            parent: parent_record,
+            resource: resource,
+            parent_resource: parent_resource
+          ).handle
       end
 
       query
     end
 
+    def apply_index_filters
+      filters_to_be_applied.each do |filter_class, filter_value|
+        @query =
+          filter_class.safe_constantize.new(
+            arguments: @resource.get_filter_arguments(filter_class)
+          ).apply_query request,
+                                                         @query,
+                                                         filter_value
+      end
+    end
+
     def apply_search
       return if @resource.class.search_query.nil? || params[:q].nil?
 
-      @query = Avo::ExecutionContext.new(
-        target: @resource.class.search_query,
-        params: params,
-        q: params[:q].strip,
-        query: @query
-      ).handle
+      @query =
+        Avo::ExecutionContext.new(
+          target: @resource.class.search_query,
+          params: params,
+          q: params[:q].strip,
+          query: @query
+        ).handle
     end
 
     def choose_layout
-      if params[:modal_layout].present?
-        "avo/modal"
-      else
-        "avo/application"
-      end
+      params[:modal_layout].present? ? 'avo/modal' : 'avo/application'
     end
 
     def set_modal_params
       return unless params[:modal_layout].present?
 
-      @modal_width = params[:modal_width] || "4xl"
-      @modal_height = params[:modal_height] || "4xl"
-      @wrapper_class = params[:wrapper_class] || ""
+      @modal_width = params[:modal_width] || '4xl'
+      @modal_height = params[:modal_height] || '4xl'
+      @wrapper_class = params[:wrapper_class] || ''
     end
   end
 end

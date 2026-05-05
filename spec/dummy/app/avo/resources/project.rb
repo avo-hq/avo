@@ -15,6 +15,12 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
+  self.table_view = {
+    row_options: {
+      class: -> { "bg-green-100" if record.stage == "Done" }
+    }
+  }
+
   self.discreet_information = [
     :id,
     :timestamps,
