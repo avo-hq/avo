@@ -35,7 +35,7 @@
           <div data-polymorphic-type="<%= type %>">
             <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data), label: Avo.resource_manager.get_resource_by_model_class(type.to_s).name) do %>
               <% if @field.is_searchable? %>
-                <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
+                <%= render Avo::Pro::Search::Dropdown::ContainerComponent.new(
                       form: @form,
                       field: @field,
                       target_resource: Avo.resource_manager.get_resource_by_model_class(type.to_s),
@@ -87,7 +87,7 @@
 <% else %>
   <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data)) do %>
     <% if @field.is_searchable? %>
-      <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(form: @form, field: @field) %>
+      <%= render Avo::Pro::Search::Dropdown::ContainerComponent.new(form: @form, field: @field) %>
     <% else %>
       <%= @form.select @field.id_input_foreign_key,
         options_for_select(@field.options, selected: @field.value.to_param, disabled: t("avo.more_records_available")),

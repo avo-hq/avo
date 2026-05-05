@@ -22,7 +22,7 @@
                 resource: @resource,
                 label_for: 'related_id',
                 label: @field.name.singularize do %>
-                <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
+                <%= render Avo::Pro::Search::Dropdown::ContainerComponent.new(
                       form: form,
                       field: @field,
                       foreign_key: 'related_id',
