@@ -70,7 +70,7 @@
                 <% if !disabled && create_href.present? %>
                   <%= link_to t("avo.create_new_item", item: type.model_name.human.downcase),
                     create_href,
-                    class: "text-sm",
+                    class: "block text-sm mt-1",
                     data: {
                       turbo_frame: Avo::MODAL_FRAME_ID,
                       turbo_prefetch: false
@@ -112,7 +112,7 @@
       <% if !disabled && create_path.present? %>
         <%= link_to t("avo.create_new_item", item: @field.name.downcase),
           create_path(**modal_args),
-          class: "text-sm",
+          class: "block text-sm mt-1",
           data: {
             turbo_frame: Avo::MODAL_FRAME_ID,
             turbo_prefetch: false
