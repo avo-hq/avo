@@ -4,7 +4,7 @@
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 rounded-md text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 

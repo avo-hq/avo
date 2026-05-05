@@ -50,7 +50,11 @@ kbd.kbd--called {
       );
     }
 
-    &:focus-visible {
+    /* Plain inline-text anchors have no border-radius of their own, so the
+       focus ring would render with 0px corners. Give it a small radius — but
+       skip anchors that are styled as buttons / sidebar items / dropdown items
+       / tabs (those carry their own larger radius and would be squashed here). */
+    &:not(.button, .sidebar-link, .sidebar-subitem, .dropdown-menu__item, .tabs__item):focus-visible {
       @apply rounded-xs;
     }
   }

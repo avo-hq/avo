@@ -8,6 +8,7 @@
   :focus-visible {
     outline: var(--focus-outline);
     outline-offset: var(--focus-outline-offset);
+    transition: none;
   }
 
   /* Suppress any stray focus ring on mouse/touch interaction */

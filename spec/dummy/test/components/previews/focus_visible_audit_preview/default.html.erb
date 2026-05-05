@@ -54,22 +54,6 @@
 <span class="text-content-secondary">↳ components/input.css:121</span></pre></td>
       </tr>
       <tr>
-        <td>2</td>
-        <td>Email input</td>
-        <td><input type="email" placeholder="email" autocomplete="off"></td>
-        <td>Native HTML</td>
-        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
-  box-shadow: var(--box-shadow-focus);</pre></td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>URL input</td>
-        <td><input type="url" placeholder="url" autocomplete="off"></td>
-        <td>Native HTML</td>
-        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
-  box-shadow: var(--box-shadow-focus);</pre></td>
-      </tr>
-      <tr>
         <td>4</td>
         <td>Password input</td>
         <td><input type="password" placeholder="password" autocomplete="off"></td>
@@ -113,14 +97,6 @@
         <td>9</td>
         <td>Time input</td>
         <td><input type="time"></td>
-        <td>Native HTML</td>
-        <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
-  box-shadow: var(--box-shadow-focus);</pre></td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td>Color input</td>
-        <td><input type="color"></td>
         <td>Native HTML</td>
         <td><pre><span class="sel">input:not([type=range|checkbox|radio]):focus-visible</span>
   box-shadow: var(--box-shadow-focus);</pre></td>
@@ -191,21 +167,6 @@
    onto the whole label + checkbox area</span></pre></td>
       </tr>
       <tr>
-        <td>16a</td>
-        <td>Radio — sibling labels (for="")</td>
-        <td>
-          <input type="radio" name="audit-radio" id="audit-radio-a" checked>
-          <label for="audit-radio-a" class="me-3">A</label>
-          <input type="radio" name="audit-radio" id="audit-radio-b">
-          <label for="audit-radio-b">B</label>
-        </td>
-        <td>Native HTML</td>
-        <td><pre><span class="sel">input[type=radio]:focus-visible</span>
-  outline: var(--focus-outline);
-<span class="text-content-secondary">↳ global rule — ring on the tiny radio circle.
-   Sibling-label pattern doesn't trigger the wrap rule.</span></pre></td>
-      </tr>
-      <tr>
         <td>16b</td>
         <td>Radio — nested in &lt;label&gt; (ring wraps)</td>
         <td>
@@ -225,14 +186,6 @@
   outline: var(--focus-outline);
 <span class="text-content-secondary">↳ radio.css — ring moved from the tiny radio
    onto the whole label + radio area</span></pre></td>
-      </tr>
-      <tr class="bg-warning/5">
-        <td>17</td>
-        <td>Native button</td>
-        <td><button type="button">Native button</button></td>
-        <td>Native HTML</td>
-        <td><pre><span class="sel">(no custom rule)</span>
-<span class="text-content-secondary">↳ browser default outline</span></pre></td>
       </tr>
       <tr class="bg-warning/5">
         <td>18</td>
@@ -523,21 +476,7 @@
 <span class="text-content-secondary">↳ uses global rule</span></pre></td>
       </tr>
 
-      <%# ========================================= Native — details / tabindex %>
-      <tr>
-        <td>41</td>
-        <td>&lt;details&gt; / &lt;summary&gt;</td>
-        <td>
-          <details>
-            <summary class="cursor-pointer inline-block">Click to expand</summary>
-            <div class="pt-2 text-sm text-content-secondary">Hidden content revealed here.</div>
-          </details>
-        </td>
-        <td>Native HTML</td>
-        <td><pre><span class="sel">summary:focus-visible</span>
-  outline: var(--focus-outline);
-<span class="text-content-secondary">↳ uses global rule — native summary is focusable</span></pre></td>
-      </tr>
+      <%# ========================================= Native — tabindex %>
       <tr>
         <td>42</td>
         <td>Custom focusable <code>[tabindex="0"]</code></td>
