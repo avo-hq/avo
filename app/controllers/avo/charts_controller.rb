@@ -14,6 +14,7 @@ module Avo
       compute_summary_data
 
       @page_title = "#{@resource.plural_name.humanize} — #{@field_id.to_s.humanize} summary"
+      @container_size = :small
 
       index_params = {
         encoded_filters: params[:encoded_filters],

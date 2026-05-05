@@ -949,17 +949,6 @@ module Avo
       )
     end
 
-    def apply_index_filters
-      filters_to_be_applied.each do |filter_class, filter_value|
-        @query =
-          filter_class.safe_constantize.new(
-            arguments: @resource.get_filter_arguments(filter_class)
-          ).apply_query request,
-            @query,
-            filter_value
-      end
-    end
-
     def association_query_scope(
       parent_resource:,
       parent_record:,

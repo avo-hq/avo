@@ -2,21 +2,17 @@
   <% set_meta_tags title: @page_title %>
 <% end %>
 
-<%= render ui.panel(class: "w-full distribution-chart__panel") do |panel| %>
-  <%= panel.with_header do %>
-    <%= render ui.panel_header(
-      title: "#{@resource.plural_name.humanize} summary",
-      description: "Distribution by \"#{@field_id.to_s.humanize.downcase}\""
-    ) do |header| %>
-      <% header.with_controls do %>
-        <%= a_link @back_path,
-          style: :text,
-          title: t("avo.go_back"),
-          icon: "tabler/outline/arrow-left",
-          data: { hotkey: "b", tippy: :tooltip } do %>
-          <%= t("avo.go_back") %>
-        <% end %>
-      <% end %>
+<%= render ui.panel(
+  title: "#{@resource.plural_name.humanize} summary",
+  description: "Distribution by \"#{@field_id.to_s.humanize.downcase}\""
+) do |panel| %>
+  <% panel.with_controls do %>
+    <%= a_link @back_path,
+      style: :text,
+      title: t("avo.go_back"),
+      icon: "tabler/outline/arrow-left",
+      data: { hotkey: "b", tippy: :tooltip } do %>
+      <%= t("avo.go_back") %>
     <% end %>
   <% end %>
 

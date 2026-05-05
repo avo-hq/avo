@@ -2,15 +2,7 @@
   @apply flex items-center justify-center p-8 w-full;
 }
 
-.distribution-chart__panel .panel__content {
-  @apply gap-2 mx-auto w-full max-w-5xl;
-}
-
 @media (width >= 48rem) {
-  .distribution-chart__panel .panel__content {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
-
   /* Cap to match the chart card's outer height (pie + header offset). */
   .distribution-chart__sidecard .card__body {
     max-height: calc(360px + 1rem + 2px);
