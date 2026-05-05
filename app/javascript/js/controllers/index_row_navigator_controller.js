@@ -40,7 +40,7 @@ export default class extends Controller {
     // Remove data-hotkey from row controls before @github/hotkey library scans
     // Store the original values so we can restore them for the focused row only
     if (this.hotkeysEnabled) {
-      const controls = this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]')
+      const controls = this.element.querySelectorAll('tr.has-row-link [data-hotkey]')
       controls.forEach((control) => {
         const hotkey = control.getAttribute('data-hotkey')
         control.setAttribute('data-hotkey-original', hotkey)
@@ -55,7 +55,7 @@ export default class extends Controller {
   }
 
   handleDropdownOpen() {
-    const rows = Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
+    const rows = Array.from(this.element.querySelectorAll('tr.has-row-link'))
     if (rows.length) this.clearFocus(rows)
   }
 
@@ -66,7 +66,7 @@ export default class extends Controller {
     if (event.target.closest(TYPING_SELECTOR)) return
     if (event.repeat && (event.key === 'Enter' || event.key === 'Escape' || event.key === ' ')) return
 
-    const rows = Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
+    const rows = Array.from(this.element.querySelectorAll('tr.has-row-link'))
     if (!rows.length) return
 
     // Check for row hotkeys when a row is focused (only when hotkeys are enabled)
@@ -109,7 +109,8 @@ export default class extends Controller {
       if (this.currentIndex === -1) return
       event.preventDefault()
       const row = rows[this.currentIndex]
-      if (row?.dataset.visitPath) window.Turbo.visit(row.dataset.visitPath)
+      const href = row?.querySelector('a.row-link')?.href
+      if (href) window.Turbo.visit(href)
 
       return
     }

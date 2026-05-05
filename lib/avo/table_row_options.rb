@@ -18,7 +18,7 @@ module Avo
       # these (other than the token-list keys below) are dropped with a warning.
       RESERVED_DATA_KEYS = %i[
         index component_name resource_name record_id resource_id
-        visit_path reorder_target
+        reorder_target
       ].freeze
 
       # Data attribute keys whose values are space-separated Stimulus token lists.

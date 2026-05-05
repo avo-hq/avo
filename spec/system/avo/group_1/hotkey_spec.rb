@@ -155,7 +155,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     write_in_search(target_project.name)
 
     expect(page).to have_selector("[data-component-name='avo/index/table_row_component'][data-resource-id='#{target_project.to_param}']")
-    expect(page).to have_css("tr[data-visit-path]", count: 1)
+    expect(page).to have_css("tr.has-row-link", count: 1)
 
     dispatch_keydown("ArrowUp")
 

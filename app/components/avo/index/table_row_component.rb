@@ -87,7 +87,6 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
       resource_name: @resource.class.to_s,
       record_id: @resource.record_param
     }
-    data[:visit_path] = row_visit_path if click_row_to_view_record
     data.merge!(item_selector_data_attributes(@resource))
     data.merge!(try(:drag_reorder_item_data_attributes) || {})
     data
