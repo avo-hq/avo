@@ -87,7 +87,8 @@
   & select,
   & textarea,
   & [role="button"],
-  & [role="link"] {
+  & [role="link"],
+  & [data-tippy] {
     @apply relative z-10;
   }
 }
