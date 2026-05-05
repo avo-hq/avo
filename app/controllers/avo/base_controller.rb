@@ -133,7 +133,6 @@ module Avo
       # This means that the record has been created through another parent record and we need to attach it somehow.
       if params[:via_record_id].present? && params[:via_belongs_to_resource_class].nil?
         @reflection = @record.class.reflect_on_association(params[:via_relation])
-
         # Figure out what kind of association does the record have with the parent record
 
         # Fills in the required info for belongs_to and has_many
@@ -423,7 +422,6 @@ module Avo
       @page_title = @resource.default_panel_name.to_s
 
       last_crumb_args = {}
-
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_record_id].present?
         via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
@@ -609,7 +607,8 @@ module Avo
       default_component = "Avo::Views::Resource#{(fallback_view || view).to_s.classify}Component"
 
       # Search for the custom component by key and by class name:
-      custom_component = @resource.custom_components.dig(:"resource_#{view}_component") || @resource.custom_components.dig(default_component)
+      custom_component = @resource.custom_components.dig(:"resource_#{view}_component") ||
+        @resource.custom_components.dig(default_component)
 
       # If the component is not set, use the default one
       return @component = default_component.constantize if custom_component.nil?
