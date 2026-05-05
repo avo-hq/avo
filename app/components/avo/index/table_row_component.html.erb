@@ -1,8 +1,17 @@
 <%# hover:z-[21] removed from tr class to solve flickering actions component on row controls and z-20 changed to z-21 %>
 
+<%
+  # The row-link anchor is nested inside the first existing <td> so it doesn't
+  # add a column. It's `position: absolute; inset: 0` against the <tr>, so its
+  # host cell doesn't matter visually. We claim the link at the first available
+  # host and clear the flag so subsequent cells don't render it twice.
+  render_row_link = click_row_to_view_record
+%>
+
 <%= content_tag :tr, **merged_tr_attributes do %>
   <% if @resource.record_selector %>
     <td class="item-selector-cell w-10">
+      <% if render_row_link %><%= row_link_anchor %><% render_row_link = false %><% end %>
       <div class="flex h-full justify-center">
         <%= render Avo::RowSelectorComponent.new floating: false, index: @index, checked: @row_selector_checked %>
       </div>
@@ -11,6 +20,7 @@
 
   <% if @resource.render_row_controls_on_the_left? %>
     <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
+      <% if render_row_link %><%= row_link_anchor %><% render_row_link = false %><% end %>
       <div class="flex h-full grow-0 items-center justify-end"><%= render resource_controls_component %></div>
     </td>
   <% end %>
@@ -34,6 +44,7 @@
 
   <% if @resource.render_row_controls_on_the_right? %>
     <td class="<%= @resource.row_controls_classes %>" data-control="resource-controls">
+      <% if render_row_link %><%= row_link_anchor %><% render_row_link = false %><% end %>
       <div class="flex h-full grow-0 items-center justify-end"><%= render resource_controls_component %></div>
     </td>
   <% end %>

@@ -31,6 +31,25 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
     Avo.configuration.click_row_to_view_record && can_view?
   end
 
+  def row_visit_path
+    helpers.resource_show_path(
+      resource: @resource,
+      parent_resource: @parent_resource,
+      parent_record: @parent_record,
+      parent_or_child_resource: parent_or_child_resource
+    )
+  end
+
+  def row_link_anchor
+    helpers.tag.a(
+      "",
+      href: row_visit_path,
+      class: "row-link",
+      tabindex: "-1",
+      "aria-hidden": "true"
+    )
+  end
+
   # The render context for `row_options` blocks. Derived from `@reflection`
   # rather than passed as a prop, matching the precedent in
   # `Avo::Views::ResourceIndexComponent` and `Avo::ResourceComponent`.
@@ -56,7 +75,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
   def default_tr_attributes
     {
       id: "#{self.class.to_s.underscore}_#{@resource.record_param}",
-      class: class_names("table-row group z-21", {"cursor-pointer": click_row_to_view_record}),
+      class: class_names("table-row group z-21", {"cursor-pointer relative has-row-link": click_row_to_view_record}),
       data: default_tr_data
     }
   end
@@ -68,21 +87,8 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
       resource_name: @resource.class.to_s,
       record_id: @resource.record_param
     }
-    data.merge!(click_to_view_data_attributes) if click_row_to_view_record
-    data.merge!(item_selector_data_attributes(@resource, controller: class_names("table-row": click_row_to_view_record)))
+    data.merge!(item_selector_data_attributes(@resource))
     data.merge!(try(:drag_reorder_item_data_attributes) || {})
     data
-  end
-
-  def click_to_view_data_attributes
-    {
-      visit_path: helpers.resource_show_path(
-        resource: @resource,
-        parent_resource: @parent_resource,
-        parent_record: @parent_record,
-        parent_or_child_resource: parent_or_child_resource
-      ),
-      action: "click->table-row#visitRecord keydown.enter->table-row#visitRecord keydown.space->table-row#visitRecord mouseenter->table-row#mouseEntered mouseleave->table-row#mouseLeft"
-    }
   end
 end

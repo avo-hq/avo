@@ -62,3 +62,32 @@
 .table-row.is-keyboard-focused {
   background: color-mix(in oklab, var(--color-background), var(--color-accent) 10%);
 }
+
+/*
+ * Row-level link overlay (click-row-to-view-record).
+ *
+ * The anchor is nested inside the first existing <td> to avoid claiming a new
+ * column. With the row at `position: relative`, the anchor's `position:
+ * absolute; inset: 0` covers the entire <tr> regardless of which cell it
+ * lives in. Native anchor → Turbo prefetch on hover, native cmd/ctrl-click.
+ *
+ * Cells stay static so the overlay paints on top of them and receives clicks
+ * on text/padding. Only interactive descendants are lifted above the overlay
+ * so they intercept clicks before the row link does.
+ */
+.has-row-link {
+  & a.row-link {
+    @apply absolute inset-0 z-0;
+  }
+
+  & a:not(.row-link),
+  & button,
+  & input,
+  & label,
+  & select,
+  & textarea,
+  & [role="button"],
+  & [role="link"] {
+    @apply relative z-10;
+  }
+}
