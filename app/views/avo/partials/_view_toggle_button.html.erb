@@ -8,8 +8,16 @@
         <% view_info = Avo.view_type_manager.find(type) %>
         <% is_active_view = view_type.to_s == type.to_s %>
         <% hotkey = view_type_hotkeys[type.to_sym] %>
+        <%
+          # Build the URL by reusing the current request path and merging the
+          # view_type into the existing query params. This avoids `url_for(params)`
+          # picking the wrong per-resource route when multiple resources share
+          # the same controller/action.
+          query_params = request.query_parameters.merge(view_type: type.to_s)
+          toggle_url = "#{request.path}?#{query_params.to_query}"
+        %>
 
-        <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
+        <%= a_link toggle_url,
           icon: is_active_view ? view_info&.[](:active_icon) : view_info&.[](:icon),
           style: :primary,
           class: is_active_view ? "button--active" : "",

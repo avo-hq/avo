@@ -1,7 +1,7 @@
-class Avo::Resources::CourseLink < Avo::BaseResource
+class Avo::Resources::Course::Link < Avo::BaseResource
   self.title = :link
+  # self
   self.includes = [:course]
-  self.model_class = Course::Link
   self.search = {
     query: -> {
       TestBuddy.hi("params[:q]: '#{params[:q]}', q: '#{q}'") if Rails.env.test?
@@ -29,5 +29,9 @@ class Avo::Resources::CourseLink < Avo::BaseResource
         }
       }
     }
+  end
+
+  def actions
+    action Avo::Actions::CheckLinkHealth
   end
 end

@@ -30,8 +30,8 @@ module Generators
       def create
         return if override_controller?
 
-        template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
-        invoke "avo:controller", [resource_name], options
+        template "resource/resource.tt", "app/avo/resources/#{file_path}.rb"
+        invoke "avo:controller", [class_name], options
       end
 
       no_tasks do
@@ -71,7 +71,7 @@ module Generators
         end
 
         def resource_class
-          class_name.remove(":").to_s
+          class_name
         end
 
         def controller_class
@@ -99,12 +99,12 @@ module Generators
         end
 
         def class_from_args
-          @class_from_args ||= options["model-class"]&.camelize || (class_name if class_name.include?("::"))
+          @class_from_args ||= options["model-class"]&.camelize
         end
 
         def model_class_from_args
-          if class_from_args.present? || class_name.include?("::")
-            "\n  self.model_class = ::#{class_from_args || class_name}"
+          if class_from_args.present?
+            "\n  self.model_class = ::#{class_from_args}"
           end
         end
 
