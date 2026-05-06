@@ -28,9 +28,9 @@
         var accent = getCookie('accent_color');
         if (accent && accent !== 'neutral') {
           Array.from(root.classList).forEach(function(cls) {
-            if (cls.indexOf('theme-accent-') === 0) root.classList.remove(cls);
+            if (cls.indexOf('accent-theme-') === 0) root.classList.remove(cls);
           });
-          root.classList.add('theme-accent-' + accent);
+          root.classList.add('accent-theme-' + accent);
         }
       }
 

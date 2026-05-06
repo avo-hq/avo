@@ -219,7 +219,7 @@ module Avo
     def html_theme_classes
       classes = []
       classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
-      classes << "theme-accent-#{current_accent}" if current_accent != "neutral"
+      classes << "accent-theme-#{current_accent}" if current_accent != "neutral"
 
       case current_scheme
       when "dark"  then classes << "dark" << "scheme-dark"

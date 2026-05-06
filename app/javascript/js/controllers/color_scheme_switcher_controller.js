@@ -44,8 +44,8 @@ export default class extends Controller {
   }
 
   readCurrentAccent() {
-    const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('theme-accent-'))
-    return match ? match.replace('theme-accent-', '') : 'neutral'
+    const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('accent-theme-'))
+    return match ? match.replace('accent-theme-', '') : 'neutral'
   }
 
   disconnect() {
@@ -257,11 +257,11 @@ export default class extends Controller {
   applyAccentClass(accent) {
     const root = document.documentElement
     Array.from(root.classList).forEach((cls) => {
-      if (cls.startsWith('theme-accent-')) root.classList.remove(cls)
+      if (cls.startsWith('accent-theme-')) root.classList.remove(cls)
     })
 
     if (accent !== 'neutral') {
-      root.classList.add(`theme-accent-${accent}`)
+      root.classList.add(`accent-theme-${accent}`)
     }
   }
 
