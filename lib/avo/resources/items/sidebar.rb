@@ -20,6 +20,10 @@ class Avo::Resources::Items::Sidebar
     post_initialize if respond_to?(:post_initialize)
   end
 
+  def get_items
+    items_with_standalone_fields_wrapped_in_cards
+  end
+
   class Builder
     include Avo::Concerns::BorrowItemsHolder
     include Avo::Concerns::HasFieldDiscovery

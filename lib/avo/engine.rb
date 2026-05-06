@@ -44,7 +44,7 @@ module Avo
 
     initializer "avo.tailwindcss", after: :load_config_initializers do
       next unless Rails.env.development?
-      next if defined?(Rails::Console)
+      next unless defined?(Rails::Server)
 
       Rails.application.config.after_initialize do
         next unless Avo::TailwindBuilder.enabled?

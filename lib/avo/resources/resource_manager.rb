@@ -68,6 +68,8 @@ module Avo
 
       def check_bad_resources
         resources.each do |resource|
+          next if resource.is_abstract?
+
           has_model = resource.model_class.present?
 
           unless has_model

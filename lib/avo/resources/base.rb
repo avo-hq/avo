@@ -68,6 +68,7 @@ module Avo
       class_attribute :filters_loader
       class_attribute :view_types
       class_attribute :grid_view
+      class_attribute :table_view
       class_attribute :confirm_on_save, default: false
       class_attribute :visible_on_sidebar, default: true
       class_attribute :hotkey, default: nil
@@ -174,15 +175,34 @@ module Avo
         end
 
         def class_name
-          @class_name ||= to_s.demodulize
+          @class_name ||= to_s.delete_prefix("Avo::Resources::")
         end
 
+        # Last segment only — used for display, translation keys, and initials
+        def demodulized_class_name
+          class_name.demodulize
+        end
+
+        # Slash-separated URL slug: "accounts/invoices", "users"
+        def route_path
+          parts = class_name.split("::")
+          parts.map!(&:underscore)
+          parts[-1] = parts[-1].pluralize
+          parts.join("/")
+        end
+
+        # Underscore-joined Rails resource identifier: "accounts_invoices", "users"
         def route_key
-          class_name.underscore.pluralize
+          route_path.tr("/", "_")
         end
 
         def singular_route_key
           route_key.singularize
+        end
+
+        # Same as route_path — resolves to the correct namespaced controller inside isolate_namespace
+        def controller_path
+          route_path
         end
 
         def translation_key
@@ -191,7 +211,7 @@ module Avo
         alias_method :translation_key=, :custom_translation_key=
 
         def name
-          name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+          name_from_translation_key(count: 1, default: demodulized_class_name.underscore.humanize)
         end
         alias_method :singular_name, :name
 
@@ -304,6 +324,40 @@ module Avo
         self
       end
 
+      # Renderable items for the resource view. Injects a header if none is
+      # defined and, when the user hasn't taken control by declaring at least
+      # one panel, wraps standalone field groups in a Panel + Card so they
+      # render with the expected chrome at the top level.
+      def get_items
+        grouped_items = visible_items.slice_when do |prev, curr|
+          is_standalone?(prev) != is_standalone?(curr)
+        end.to_a.map do |group|
+          {elements: group, is_standalone: is_standalone?(group.first)}
+        end
+
+        if items.none? { |item| item.is_header? }
+          header = Avo::Resources::Items::Header.new
+          hydrate_item header
+          grouped_items.unshift({elements: [header], is_standalone: false})
+        end
+
+        if items.none? { |item| item.is_panel? }
+          grouped_items.select { |group| group[:is_standalone] }.each do |group|
+            calculated_panel = Avo::Resources::Items::Panel.new
+            hydrate_item calculated_panel
+
+            card = Avo::Resources::Items::Card.new
+            hydrate_item card
+            card.items_holder.items = group[:elements]
+            calculated_panel.items_holder.items = [card]
+
+            group[:elements] = calculated_panel
+          end
+        end
+
+        grouped_items.flat_map { |group| group[:elements] }
+      end
+
       unless defined? VIEW_METHODS_MAPPING
         VIEW_METHODS_MAPPING = {
           index: [:index, :display],
@@ -391,6 +445,14 @@ module Avo
 
           klass[:arguments]
         end
+      end
+
+      def find_action(action_id)
+        actions = get_actions + Array(safe_call(:get_actions_from_custom_controls))
+
+        actions
+          .uniq { |action| action[:class].to_s }
+          .find { |action| action[:class].to_s == action_id.to_s }
       end
 
       def hydrate(...)
@@ -539,13 +601,14 @@ module Avo
       def file_hash
         content_to_be_hashed = ""
 
-        resource_path = Rails.root.join("app", "avo", "resources", "#{file_name}.rb").to_s
+        file_base = self.class.class_name.underscore
+        resource_path = Rails.root.join("app", "avo", "resources", "#{file_base}.rb").to_s
         if File.file? resource_path
           content_to_be_hashed += File.read(resource_path)
         end
 
         # policy file hash
-        policy_path = Rails.root.join("app", "policies", "#{file_name.gsub("_resource", "")}_policy.rb").to_s
+        policy_path = Rails.root.join("app", "policies", "#{file_base.gsub("_resource", "")}_policy.rb").to_s
         if File.file? policy_path
           content_to_be_hashed += File.read(policy_path)
         end
@@ -580,16 +643,16 @@ module Avo
 
               reflection = @record.class.reflect_on_association(@params[:via_relation]) if @params[:via_relation].present?
 
-              if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class])
+              if field.polymorphic_as.present? && field.types.map(&:to_s).include?(@params[:via_relation_class]) && @params[:via_record_id].present?
                 # set the value to the actual record
                 via_resource = Avo.resource_manager.get_resource_by_model_class(@params[:via_relation_class])
-                value = via_resource.find_record(@params[:via_record_id])
-              elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s
+                value = via_resource.find_record(@params[:via_record_id]) if via_resource.present?
+              elsif reflection.present? && reflection.foreign_key.present? && field.id.to_s == @params[:via_relation].to_s && @params[:via_record_id].present?
                 resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
-                record = resource.find_record @params[:via_record_id], params: params
+                record = resource.find_record @params[:via_record_id], params: params if resource.present?
                 id_param = reflection.options[:primary_key] || :id
 
-                value = record.send(id_param)
+                value = record.send(id_param) if record.present?
               end
             end
 

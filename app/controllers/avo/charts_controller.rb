@@ -2,7 +2,54 @@ require_dependency "avo/base_controller"
 
 module Avo
   class ChartsController < BaseController
+    before_action :validate_summarizable_field
+
     def distribution_chart
+      compute_summary_data
+
+      render "avo/partials/distribution_chart", layout: "avo/blank"
+    end
+
+    def distribution_chart_full
+      compute_summary_data
+
+      @page_title = "#{@resource.plural_name.humanize} — #{@field_id.to_s.humanize} summary"
+      @container_size = :small
+
+      index_params = {
+        encoded_filters: params[:encoded_filters],
+        scope: params[:scope],
+        q: params[:q]
+      }
+      if defined?(Avo::DynamicFilters)
+        dynamic_filters_key = Avo::DynamicFilters.configuration.param_key
+        index_params[dynamic_filters_key] = params[dynamic_filters_key]&.to_unsafe_h
+      end
+      index_params.compact!
+
+      @back_path = if associated_summary?
+        resource_path(record: @parent_record, resource: @parent_resource)
+      else
+        resources_path(resource: @resource, **index_params)
+      end
+
+      add_via_breadcrumbs
+      add_breadcrumb title: "#{@field_id.to_s.humanize} summary"
+
+      render "avo/partials/distribution_chart_full"
+    end
+
+    private
+
+    # Field IDs aren't unique (forms vs. index variants), so match on summarizable too.
+    def validate_summarizable_field
+      @field = @resource.get_field_definitions.find do |f|
+        f.id.to_s == params[:field_id].to_s && f.summarizable
+      end
+      head :not_found and return unless @field
+    end
+
+    def compute_summary_data
       @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
         .transform_keys do |key|
         key = if key.is_a?(ActiveRecord::Base)
@@ -12,54 +59,21 @@ module Avo
           key
         end
 
-        key.presence || "—"
+        (key.nil? || key == "") ? "—" : key
       end
 
       @field_id = params[:field_id]
-
-      render "avo/partials/distribution_chart", layout: "avo/blank"
     end
 
-    private
-
-    def is_associated_summary
-      params[:via_record_id].present? &&
-        params[:via_resource_class].present? &&
-        params[:association_name].present?
-    end
-
+    # The distribution chart runs the SAME pipeline as the regular index view:
+    # starting relation → search → sort → standard filters → scopes → dynamic filters.
+    # This is why filters, scopes, search, and dynamic filters stay in sync between
+    # the table and the summary popover.
     def summary_query
-      is_associated_summary ? association_scope : resource.query_scope
-    end
-
-    def association_scope
-      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
-      parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
-
-      parent_resource = parent_resource_class.new(
-        record: parent_record,
-        # Explicitly hardcoding the view to 'show' as association summaries are processed solely within this context
-        view: Avo::ViewInquirer.new("show")
-      )
-
-      parent_resource.detect_fields
-
-      association_name = BaseResource.valid_association_name(parent_record, params[:association_name])
-
-      parent_field = find_association_field(resource: parent_resource, association: association_name)
-
-      association_query = parent_resource.authorization.apply_policy parent_record.send(association_name)
-
-      if parent_field.scope.present?
-        association_query = Avo::ExecutionContext.new(
-          target: parent_field.scope,
-          query: association_query,
-          parent: parent_record,
-          parent_resource: parent_resource
-        ).handle
-      end
-
-      association_query
+      set_applied_filters
+      set_index_params
+      @query = base_index_query
+      build_index_query
     end
   end
 end
