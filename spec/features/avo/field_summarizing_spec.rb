@@ -34,8 +34,12 @@ RSpec.feature "Field Summarizing", type: :system do
       visit avo.resources_projects_path
 
       expect(page).to have_css 'button[popovertarget="summary-popover-status"]'
-      expect(page).not_to have_css 'button[popovertarget="summary-popover-progress"]'
-      expect(page).not_to have_css 'button[popovertarget="summary-popover-description"]'
+      expect(
+        page
+      ).not_to have_css 'button[popovertarget="summary-popover-progress"]'
+      expect(
+        page
+      ).not_to have_css 'button[popovertarget="summary-popover-description"]'
     end
 
     context "when summarizing a belongs_to field" do
@@ -70,7 +74,14 @@ RSpec.feature "Field Summarizing", type: :system do
   describe "summarizable with filters on the index" do
     context "when a standard filter is applied" do
       it "adjusts the summary to reflect only the filtered records" do
-        encoded_filters = Base64.encode64({"Avo::Filters::ProjectStatusFilter" => {"loading" => true}}.to_json)
+        encoded_filters =
+          Base64.encode64(
+            {
+              "Avo::Filters::ProjectStatusFilter" => {
+                "loading" => true
+              }
+            }.to_json
+          )
 
         visit avo.resources_projects_path(encoded_filters: encoded_filters)
 
@@ -159,7 +170,8 @@ RSpec.feature "Field Summarizing", type: :system do
       it "only shows values from users associated with the project" do
         visit avo.resources_project_path(project)
 
-        users_frame = find("turbo-frame#has_and_belongs_to_many_field_show_users")
+        users_frame =
+          find("turbo-frame#has_and_belongs_to_many_field_show_users")
         scroll_to users_frame
         wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_users")
 
@@ -170,6 +182,7 @@ RSpec.feature "Field Summarizing", type: :system do
         within "#active-summary" do
           expect(page).to have_content "2" # 2 active users in project
           expect(page).to have_content "1" # 1 inactive user in project
+
           # unassociated active user must not be counted
           expect(page).not_to have_content "3"
         end
@@ -179,11 +192,36 @@ RSpec.feature "Field Summarizing", type: :system do
     context "on a has_many association (User → Posts)" do
       let(:admin) { create :user, roles: {admin: true}, active: false }
       let(:author) { create :user }
-      let!(:draft_post) { create :post, user: author, status: :draft, published_at: nil, name: "SearchDraft" }
-      let!(:published_post) { create :post, user: author, status: :published, published_at: Time.now, name: "SearchPublished" }
-      let!(:archived_post) { create :post, user: author, status: :archived, published_at: nil, name: "ArchivedOne" }
+      let!(:draft_post) do
+        create :post,
+          user: author,
+          status: :draft,
+          published_at: nil,
+          name: "SearchDraft"
+      end
+      let!(:published_post) do
+        create :post,
+          user: author,
+          status: :published,
+          published_at: Time.now,
+          name: "SearchPublished"
+      end
+      let!(:archived_post) do
+        create :post,
+          user: author,
+          status: :archived,
+          published_at: nil,
+          name: "ArchivedOne"
+      end
+
       # Noise: another user's post must not appear in the chart.
-      let!(:other_user_post) { create :post, user: create(:user), status: :published, published_at: Time.now, name: "Other" }
+      let!(:other_user_post) do
+        create :post,
+          user: create(:user),
+          status: :published,
+          published_at: Time.now,
+          name: "Other"
+      end
 
       def open_status_summary
         find('button[popovertarget="summary-popover-status"]').click
@@ -202,7 +240,10 @@ RSpec.feature "Field Summarizing", type: :system do
       end
 
       it "adjusts the summary when a standard filter is applied" do
-        encoded_filters = Avo::Filters::BaseFilter.encode_filters({"Avo::Filters::PublishedFilter" => "published"})
+        encoded_filters =
+          Avo::Filters::BaseFilter.encode_filters(
+            {"Avo::Filters::PublishedFilter" => "published"}
+          )
 
         visit "/admin/resources/users/#{author.id}/posts?view_type=table&encoded_filters=#{encoded_filters}"
         open_status_summary
@@ -248,15 +289,33 @@ RSpec.feature "Field Summarizing", type: :system do
     context "on a has_many :through association (Team → team_members)" do
       let(:admin) { create :user, roles: {admin: true}, active: false }
       let(:team) { create :team }
-      let!(:active_member_one) { create :user, first_name: "MemberAlpha", active: true }
-      let!(:active_member_two) { create :user, first_name: "MemberBeta", active: true }
-      let!(:inactive_member) { create :user, first_name: "MemberGamma", active: false }
+      let!(:active_member_one) do
+        create :user, first_name: "MemberAlpha", active: true
+      end
+      let!(:active_member_two) do
+        create :user, first_name: "MemberBeta", active: true
+      end
+      let!(:inactive_member) do
+        create :user, first_name: "MemberGamma", active: false
+      end
       let!(:non_member) { create :user, active: true }
 
       before do
-        TeamMembership.create!(team: team, user: active_member_one, level: "member")
-        TeamMembership.create!(team: team, user: active_member_two, level: "member")
-        TeamMembership.create!(team: team, user: inactive_member, level: "member")
+        TeamMembership.create!(
+          team: team,
+          user: active_member_one,
+          level: "member"
+        )
+        TeamMembership.create!(
+          team: team,
+          user: active_member_two,
+          level: "member"
+        )
+        TeamMembership.create!(
+          team: team,
+          user: inactive_member,
+          level: "member"
+        )
       end
 
       def open_active_summary
@@ -270,19 +329,22 @@ RSpec.feature "Field Summarizing", type: :system do
 
         within "#active-summary" do
           expect(page).to have_content "TRUE\n2"
-          expect(page).to have_content "—\n1"
+          expect(page).to have_content "FALSE\n1"
         end
       end
 
       it "adjusts the summary when a standard filter is applied" do
-        encoded_filters = Avo::Filters::BaseFilter.encode_filters({"Avo::Filters::UserActiveFilter" => "true"})
+        encoded_filters =
+          Avo::Filters::BaseFilter.encode_filters(
+            {"Avo::Filters::UserActiveFilter" => "true"}
+          )
 
         visit "/admin/resources/teams/#{team.id}/team_members?encoded_filters=#{encoded_filters}"
         open_active_summary
 
         within "#active-summary" do
           expect(page).to have_content "TRUE\n2"
-          expect(page).not_to have_content "—"
+          expect(page).not_to have_content "FALSE"
         end
       end
 
@@ -291,8 +353,320 @@ RSpec.feature "Field Summarizing", type: :system do
         open_active_summary
 
         within "#active-summary" do
-          expect(page).to have_content "—\n1"
+          expect(page).to have_content "FALSE\n1"
           expect(page).not_to have_content "TRUE"
+        end
+      end
+    end
+  end
+
+  # ---------------------------------------------------------------
+  # Full page summary: distribution_chart_full
+  # ---------------------------------------------------------------
+
+  describe "full page summary" do
+    def open_status_summary
+      find('button[popovertarget="summary-popover-status"]').click
+      wait_for_turbo_frame_id("summary-popover-status")
+    end
+
+    def click_view_full_summary
+      click_on "View full summary"
+      wait_for_loaded
+    end
+
+    context "from top-level index" do
+      it "renders the full page with correct data" do
+        visit avo.resources_projects_path
+
+        open_status_summary
+        click_view_full_summary
+
+        expect(page).to have_css "#chart-full-status"
+        within "#status-full-summary" do
+          expect(page).to have_content "rejected"
+          expect(page).to have_content "closed"
+          expect(page).to have_content "loading"
+        end
+      end
+
+      it "shows the back button pointing to the resource index" do
+        visit avo.resources_projects_path
+
+        open_status_summary
+        click_view_full_summary
+
+        back_link = find_link("Go back")
+        expect(back_link[:href]).to end_with("/admin/resources/projects")
+      end
+
+      it "shows breadcrumbs with resource name" do
+        visit avo.resources_projects_path
+
+        open_status_summary
+        click_view_full_summary
+
+        within ".breadcrumbs" do
+          expect(page).to have_content "Projects"
+          expect(page).to have_content "Status summary"
+        end
+      end
+
+      it "preserves filters in the full page data" do
+        encoded_filters =
+          Base64.encode64(
+            {
+              "Avo::Filters::ProjectStatusFilter" => {
+                "loading" => true
+              }
+            }.to_json
+          )
+
+        visit avo.resources_projects_path(encoded_filters: encoded_filters)
+
+        open_status_summary
+        click_view_full_summary
+
+        within "#status-full-summary" do
+          expect(page).to have_content "loading"
+          expect(page).not_to have_content "rejected"
+          expect(page).not_to have_content "closed"
+        end
+      end
+
+      it "preserves filters in the back button URL" do
+        encoded_filters =
+          Base64.encode64(
+            {
+              "Avo::Filters::ProjectStatusFilter" => {
+                "loading" => true
+              }
+            }.to_json
+          )
+
+        visit avo.resources_projects_path(encoded_filters: encoded_filters)
+
+        open_status_summary
+        click_view_full_summary
+
+        back_link = find_link("Go back")
+        expect(back_link[:href]).to include("encoded_filters=")
+      end
+
+      context "with search" do
+        before do
+          create(:project, name: "FullPageSearchHit", status: :closed)
+          create(:project, name: "FullPageSearchMiss", status: :rejected)
+        end
+
+        it "preserves search in the full page data" do
+          visit avo.resources_projects_path(q: "FullPageSearchHit")
+
+          open_status_summary
+          click_view_full_summary
+
+          within "#status-full-summary" do
+            expect(page).to have_content "closed"
+            expect(page).not_to have_content "rejected"
+          end
+        end
+      end
+    end
+
+    context "from association page (Project → Users)" do
+      let!(:project) { create :project }
+
+      before do
+        create :user, active: true, projects: [project]
+        create :user, active: true, projects: [project]
+        create :user, active: false, projects: [project]
+        create :user, active: true # unassociated noise
+      end
+
+      def open_active_summary
+        find('button[popovertarget="summary-popover-active"]').click
+        wait_for_turbo_frame_id("summary-popover-active")
+      end
+
+      it "renders the full page scoped to the association" do
+        visit avo.resources_project_path(project)
+
+        users_frame =
+          find("turbo-frame#has_and_belongs_to_many_field_show_users")
+        scroll_to users_frame
+        wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_users")
+
+        open_active_summary
+        click_view_full_summary
+
+        within "#active-full-summary" do
+          expect(page).to have_content "true\n2"
+          expect(page).to have_content "false\n1"
+        end
+      end
+
+      it "shows the back button pointing to the parent show page" do
+        visit avo.resources_project_path(project)
+
+        users_frame =
+          find("turbo-frame#has_and_belongs_to_many_field_show_users")
+        scroll_to users_frame
+        wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_users")
+
+        open_active_summary
+        click_view_full_summary
+
+        back_link = find_link("Go back")
+        expect(back_link[:href]).to end_with(
+          "/admin/resources/projects/#{project.id}"
+        )
+      end
+
+      it "shows breadcrumbs with parent resource context" do
+        visit avo.resources_project_path(project)
+
+        users_frame =
+          find("turbo-frame#has_and_belongs_to_many_field_show_users")
+        scroll_to users_frame
+        wait_for_turbo_frame_id("has_and_belongs_to_many_field_show_users")
+
+        open_active_summary
+        click_view_full_summary
+
+        within ".breadcrumbs" do
+          expect(page).to have_content "Projects"
+          expect(page).to have_content project.name
+          expect(page).to have_content "Users"
+          expect(page).to have_content "Active summary"
+        end
+      end
+    end
+
+    context "back button navigation preserves state" do
+      it "navigates back to the index with filters applied" do
+        encoded_filters =
+          Base64.encode64(
+            {
+              "Avo::Filters::ProjectStatusFilter" => {
+                "loading" => true
+              }
+            }.to_json
+          )
+
+        visit avo.resources_projects_path(encoded_filters: encoded_filters)
+
+        open_status_summary
+        click_view_full_summary
+        click_link "Go back"
+        wait_for_loaded
+
+        expect(current_url).to include("encoded_filters=")
+        expect(page).to have_content "loading"
+        expect(page).not_to have_content "rejected"
+      end
+
+      it "navigates back to the index with search applied" do
+        create(:project, name: "BackSearchHit", status: :closed)
+
+        visit avo.resources_projects_path(q: "BackSearchHit")
+
+        open_status_summary
+        click_view_full_summary
+        click_link "Go back"
+        wait_for_loaded
+
+        expect(current_url).to include("q=BackSearchHit")
+        expect(page).to have_content "BackSearchHit"
+      end
+
+      context "from association page" do
+        let(:author) { create :user }
+        let!(:draft_post) do
+          create :post,
+            user: author,
+            status: :draft,
+            published_at: nil,
+            name: "BackNavDraft"
+        end
+        let!(:published_post) do
+          create :post,
+            user: author,
+            status: :published,
+            published_at: Time.now,
+            name: "BackNavPublished"
+        end
+
+        it "navigates back to the parent show page" do
+          visit "/admin/resources/users/#{author.id}/posts?view_type=table"
+
+          find('button[popovertarget="summary-popover-status"]').click
+          wait_for_turbo_frame_id("summary-popover-status")
+          click_view_full_summary
+          click_link "Go back"
+          wait_for_loaded
+
+          expect(current_path).to include("/admin/resources/users/")
+        end
+      end
+    end
+
+    context "from association page with filters (User → Posts)" do
+      let(:author) { create :user }
+      let!(:draft_post) do
+        create :post,
+          user: author,
+          status: :draft,
+          published_at: nil,
+          name: "FilteredDraft"
+      end
+      let!(:published_post) do
+        create :post,
+          user: author,
+          status: :published,
+          published_at: Time.now,
+          name: "FilteredPublished"
+      end
+      let!(:archived_post) do
+        create :post,
+          user: author,
+          status: :archived,
+          published_at: nil,
+          name: "FilteredArchived"
+      end
+
+      def open_status_summary_on_posts
+        find('button[popovertarget="summary-popover-status"]').click
+        wait_for_turbo_frame_id("summary-popover-status")
+      end
+
+      it "preserves filters in the full page data" do
+        encoded_filters =
+          Avo::Filters::BaseFilter.encode_filters(
+            {"Avo::Filters::PublishedFilter" => "published"}
+          )
+
+        visit "/admin/resources/users/#{author.id}/posts?view_type=table&encoded_filters=#{encoded_filters}"
+
+        open_status_summary_on_posts
+        click_view_full_summary
+
+        within "#status-full-summary" do
+          expect(page).to have_content "published"
+          expect(page).not_to have_content "draft"
+          expect(page).not_to have_content "archived"
+        end
+      end
+
+      it "preserves search in the full page data" do
+        visit "/admin/resources/users/#{author.id}/posts?view_type=table&q=FilteredDraft"
+
+        open_status_summary_on_posts
+        click_view_full_summary
+
+        within "#status-full-summary" do
+          expect(page).to have_content "draft"
+          expect(page).not_to have_content "published"
+          expect(page).not_to have_content "archived"
         end
       end
     end

@@ -14,11 +14,11 @@ module Avo
         (params[:resource_name].present? ? Avo.resource_manager.get_resource_by_name(params[:resource_name])&.to_s : nil)
 
       summary_params = {
-        resource_name: field.resource.model_class,
+        resource_name: field.resource.route_key,
         field_id: field.id,
         via_record_id: via_record_id,
         via_resource_class: via_resource_class,
-        association_name: @field&.attribute_id || params[:association_name] || params[:related_name],
+        association_name: @field&.attribute_id || params[:related_name],
         encoded_filters: @current_encoded_filters,
         scope: params[:scope],
         q: params[:q]
