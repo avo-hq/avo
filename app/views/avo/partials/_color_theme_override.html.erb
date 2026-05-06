@@ -26,7 +26,7 @@
 
       if (!branding.accentLocked) {
         var accent = getCookie('accent_color');
-        if (accent && accent !== 'neutral') {
+        if (accent && accent !== 'brand') {
           Array.from(root.classList).forEach(function(cls) {
             if (cls.indexOf('accent-theme-') === 0) root.classList.remove(cls);
           });

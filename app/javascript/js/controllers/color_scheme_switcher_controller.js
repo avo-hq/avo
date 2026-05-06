@@ -45,7 +45,7 @@ export default class extends Controller {
 
   readCurrentAccent() {
     const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('accent-theme-'))
-    return match ? match.replace('accent-theme-', '') : 'neutral'
+    return match ? match.replace('accent-theme-', '') : 'brand'
   }
 
   disconnect() {
@@ -72,7 +72,7 @@ export default class extends Controller {
     if (this.lockedNeutral) return
 
     const { theme } = event.currentTarget.dataset
-    const allowedThemes = ['brand', ...(this.branding.neutrals || [])]
+    const allowedThemes = this.branding.neutrals || []
 
     if (!theme || !allowedThemes.includes(theme)) return
 
@@ -101,8 +101,9 @@ export default class extends Controller {
     if (this.lockedAccent) return
 
     const { accent } = event.currentTarget.dataset
+    const allowedAccents = this.branding.accents || []
 
-    if (!accent) return
+    if (!accent || !allowedAccents.includes(accent)) return
 
     this.currentAccentValue = accent
     this.persistPreferences('accent')
@@ -161,7 +162,7 @@ export default class extends Controller {
 
   brandingDefaultAccent() {
     const a = this.branding.accent
-    return a != null && a !== '' ? String(a) : 'neutral'
+    return a != null && a !== '' ? String(a) : 'brand'
   }
 
   setPreferenceCookie(name, value, defaultValue) {
@@ -251,7 +252,7 @@ export default class extends Controller {
   }
 
   applyAccent() {
-    this.applyAccentClass(this.currentAccentValue || 'neutral')
+    this.applyAccentClass(this.currentAccentValue || 'brand')
   }
 
   applyAccentClass(accent) {
@@ -260,13 +261,13 @@ export default class extends Controller {
       if (cls.startsWith('accent-theme-')) root.classList.remove(cls)
     })
 
-    if (accent !== 'neutral') {
+    if (accent !== 'brand') {
       root.classList.add(`accent-theme-${accent}`)
     }
   }
 
   updateActiveAccentOption() {
-    this.updateActiveAccentOptionFor(this.currentAccentValue || 'neutral')
+    this.updateActiveAccentOptionFor(this.currentAccentValue || 'brand')
   }
 
   updateActiveAccentOptionFor(activeAccent) {

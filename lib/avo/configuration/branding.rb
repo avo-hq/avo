@@ -17,8 +17,8 @@ class Avo::Configuration::Branding
     :load_settings_block,
     :save_settings_block
 
-  DEFAULT_NEUTRALS = %w[slate stone gray zinc neutral taupe mauve mist olive].freeze
-  DEFAULT_ACCENTS = %w[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
+  DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
+  DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
   LOCKABLE = %i[scheme neutral accent].freeze
 
   DEFAULTS = {

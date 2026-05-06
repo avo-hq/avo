@@ -219,7 +219,7 @@ module Avo
     def html_theme_classes
       classes = []
       classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
-      classes << "accent-theme-#{current_accent}" if current_accent != "neutral"
+      classes << "accent-theme-#{current_accent}" if current_accent != "brand"
 
       case current_scheme
       when "dark" then classes << "dark" << "scheme-dark"
@@ -239,7 +239,7 @@ module Avo
     def current_accent
       branding = Avo.configuration.branding
       value = branding.database_persistence? ? Avo::Current.theme_settings&.dig(:accent) : cookies[:accent_color]
-      value.presence || branding.accent&.to_s || "neutral"
+      value.presence || branding.accent&.to_s || "brand"
     end
 
     def current_scheme
