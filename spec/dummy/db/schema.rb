@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_24_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_05_120100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,31 +50,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_120000) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "avo_configuration_audits", force: :cascade do |t|
-    t.bigint "changed_by_id"
-    t.string "changed_by_type"
-    t.string "configurable_id", null: false
-    t.string "configurable_type", null: false
-    t.datetime "created_at", null: false
-    t.string "key", null: false
-    t.jsonb "new_value"
-    t.jsonb "old_value"
-    t.index ["changed_by_type", "changed_by_id"], name: "index_avo_config_audits_on_changed_by"
-    t.index ["configurable_type", "configurable_id", "key"], name: "index_avo_config_audits_on_configurable_and_key"
-  end
-
-  create_table "avo_configurations", force: :cascade do |t|
-    t.string "configurable_id", null: false
-    t.string "configurable_type", null: false
-    t.datetime "created_at", null: false
-    t.string "key", null: false
-    t.boolean "locked", default: false, null: false
-    t.datetime "updated_at", null: false
-    t.jsonb "value", default: {}
-    t.string "value_type"
-    t.index ["configurable_type", "configurable_id", "key"], name: "index_avo_configurations_uniqueness", unique: true
   end
 
   create_table "cities", force: :cascade do |t|
@@ -152,6 +127,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_120000) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.index ["user_id"], name: "index_fish_on_user_id"
+  end
+
+  create_table "galaxy_planet_satellites", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.bigint "planet_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["planet_id"], name: "index_galaxy_planet_satellites_on_planet_id"
+  end
+
+  create_table "galaxy_planets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -384,6 +373,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_120000) do
   add_foreign_key "courses_locations", "users"
   add_foreign_key "events", "locations"
   add_foreign_key "fish", "users"
+  add_foreign_key "galaxy_planet_satellites", "galaxy_planets", column: "planet_id"
   add_foreign_key "locations", "stores"
   add_foreign_key "locations", "teams"
   add_foreign_key "people", "people"

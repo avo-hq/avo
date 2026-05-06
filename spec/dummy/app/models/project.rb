@@ -53,6 +53,10 @@ class Project < ApplicationRecord
     ["budget", "country", "created_at", "description", "id", "meta", "name", "progress", "stage", "started_at", "status", "updated_at", "user_id", "users_required"]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    ["comments", "files_attachments", "files_blobs", "reviews", "user", "users"]
+  end
+
   # Used to test tags on select mode with {value:,label:}
   def dummy_field=(value)
     TestBuddy.hi("dummy_field value is '#{value}'")

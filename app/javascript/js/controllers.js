@@ -15,6 +15,7 @@ import CopyToClipboardController from './controllers/copy_to_clipboard_controlle
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
+import DistributionChartController from './controllers/distribution_chart_controller'
 import DropdownController from './controllers/dropdown_menu_controller'
 import PopoverMenuController from './controllers/popover_menu_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
@@ -77,6 +78,7 @@ application.register('color-scheme-switcher', ColorSchemeSwitcherController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
+application.register('distribution-chart', DistributionChartController)
 application.register('filter', FilterController)
 application.register('form', FormController)
 application.register('grid-cover-empty-state', GridCoverEmptyStateController)

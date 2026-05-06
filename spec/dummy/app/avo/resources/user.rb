@@ -100,6 +100,7 @@ class Avo::Resources::User < Avo::BaseResource
 
   def filters
     filter Avo::Filters::UserNamesFilter
+    filter Avo::Filters::UserActiveFilter
     filter Avo::Filters::IsAdmin
     filter Avo::Filters::Birthday
     filter Avo::Filters::DummyMultipleSelectFilter
@@ -127,7 +128,7 @@ class Avo::Resources::User < Avo::BaseResource
         field :last_name, placeholder: "Doe", filterable: true
       end
       field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true, label_help: "The email of the user"
-      field :active, as: :boolean, name: "Is active", only_on: :index
+      field :active, as: :boolean, name: "Is active", only_on: :index, summarizable: true
       field :cv, as: :file, name: "CV"
       field :is_admin, as: :boolean, name: "Is admin", only_on: :index
       field :roles, as: :boolean_group, label_help: "The roles of the user", options: -> do
@@ -278,9 +279,7 @@ class Avo::Resources::User < Avo::BaseResource
       test_field("Inside tabs")
       first_tabs_group_fields
       tab title: "Created at" do
-        card do
-          field :created_at, as: :date_time
-        end
+        field :created_at, as: :date_time
       end
     end
   end
