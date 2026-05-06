@@ -65,18 +65,16 @@ Avo.configure do |config|
   ## == Branding ==
   config.branding = {
     logo: "avo/logo.png",
+    logo_dark: "avo/logo-dark.png",
     logomark: "avo/logomark.png",
-    # scheme: :dark,
-    # neutral: :olive,
-    # accent: :blue,
-    # lock: [:neutral],
-    persistence: :database,
-    # persistence: :cookie
-    #
-    # Database persistence: Avo::ThemeSettingsController PATCHes JSON with only the key the user
-    # changed (e.g. `{ "color_scheme": "dark" }`). `save_settings` must merge `settings` into your
-    # stored hash — do not assign `settings` as the full document or you will wipe other keys.
-    # Keys match `params` / `Avo::Current.theme_settings`: :color_scheme, :neutral, :accent.
+    logomark_dark: "avo/logomark-dark.png",
+    favicon: "avo/favicon.ico",
+    favicon_dark: "avo/favicon-dark.ico",
+    # scheme: :dark, # :auto, :light, :dark
+    # neutral: :olive, # :brand, :slate, :stone or any other tailwind color name
+    # accent: :blue, # :neutral, :red, :orange, or any other tailwind color name
+    # lock: [:neutral], # [:scheme, :neutral, :accent]
+    persistence: :database, # :database or :cookie
     load_settings: -> { current_user&.theme_settings&.symbolize_keys || {} },
     save_settings: -> {
       user = current_user

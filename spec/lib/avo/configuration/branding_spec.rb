@@ -28,6 +28,11 @@ RSpec.describe Avo::Configuration::Branding do
       expect(branding.logomark).to eq("avo/logomark.png")
     end
 
+    it "provides default favicons" do
+      expect(branding.favicon).to eq("avo/favicon.ico")
+      expect(branding.favicon_dark).to eq("avo/favicon-dark.ico")
+    end
+
     it "has no load/save blocks by default" do
       expect(branding.load_settings_block).to be_nil
       expect(branding.save_settings_block).to be_nil

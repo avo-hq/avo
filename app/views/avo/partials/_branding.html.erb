@@ -7,8 +7,13 @@
   <% end %>
 <% end %>
 
-<%= favicon_link_tag b.favicon %>
-
 <% if b.favicon_dark.present? %>
-  <%= favicon_link_tag b.favicon_dark, media: "(prefers-color-scheme: dark)" %>
+  <%= favicon_link_tag b.favicon,
+    data: {
+      controller: "theme-favicon",
+      theme_favicon_light_url_value: asset_path(b.favicon),
+      theme_favicon_dark_url_value: asset_path(b.favicon_dark)
+    } %>
+<% else %>
+  <%= favicon_link_tag b.favicon %>
 <% end %>

@@ -135,6 +135,7 @@ Avo.configure do |config|
   #   logo: "avo/logo.png",
   #   logomark: "avo/logomark.png",
   #   favicon: "avo/favicon.ico",
+  #   favicon_dark: "avo/favicon-dark.ico",
   #   placeholder: "avo/placeholder.svg",
   #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
   # }

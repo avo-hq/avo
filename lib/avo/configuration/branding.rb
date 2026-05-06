@@ -27,6 +27,7 @@ class Avo::Configuration::Branding
     logo: "avo/logo.png",
     logomark: "avo/logomark.png",
     favicon: "avo/favicon.ico",
+    favicon_dark: "avo/favicon-dark.ico",
     chart_colors: %w[#0B8AE2 #34C683 #FFBE4F #FF7676 #2AB1EE #34C6A8 #EC8CFF #80FF91 #FFFC38 #1BDBE8],
     placeholder: "avo/placeholder.svg",
     neutrals: DEFAULT_NEUTRALS,

@@ -1,19 +1,35 @@
 <% branding = Avo.configuration.branding %>
 
 <%= link_to avo.root_path, class: "logo-placeholder h-full w-full block justify-start" do %>
-  <picture class="hidden h-full object-contain sm:block">
+  <span class="relative hidden h-full sm:block">
+    <%= image_tag branding.logo,
+      alt: "Avo logo",
+      class: class_names(
+        "h-full w-auto object-contain",
+        "dark:hidden" => branding.logo_dark.present?
+      ),
+      title: "Avo" %>
     <% if branding.logo_dark.present? %>
-      <source srcset="<%= asset_path branding.logo_dark %>" media="(prefers-color-scheme: dark)">
+      <%= image_tag branding.logo_dark,
+        class: "h-full w-auto object-contain hidden dark:block",
+        alt: "Avo logo",
+        title: "Avo" %>
     <% end %>
+  </span>
 
-    <%= image_tag branding.logo, class: "object-contain h-full", title: "Avo" %>
-  </picture>
-
-  <picture class="h-full object-contain sm:hidden">
+  <span class="relative h-full block sm:hidden">
+    <%= image_tag branding.logomark,
+      class: class_names(
+        "h-full w-auto object-contain",
+        "dark:hidden" => branding.logomark_dark.present?
+      ),
+      alt: "Avo logomark",
+      title: "Avo" %>
     <% if branding.logomark_dark.present? %>
-      <source srcset="<%= asset_path branding.logomark_dark %>" media="(prefers-color-scheme: dark)">
+      <%= image_tag branding.logomark_dark,
+        class: "h-full w-auto object-contain hidden dark:block",
+        alt: "Avo logomark",
+        title: "Avo" %>
     <% end %>
-
-    <%= image_tag branding.logomark, class: "object-contain h-full", title: "Avo" %>
-  </picture>
+  </span>
 <% end %>
