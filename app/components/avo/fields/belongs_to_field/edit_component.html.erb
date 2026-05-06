@@ -35,18 +35,12 @@
           <div data-polymorphic-type="<%= type %>">
             <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data), label: Avo.resource_manager.get_resource_by_model_class(type.to_s).name) do %>
               <% if @field.is_searchable? %>
-                <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: @form,
-                  disabled: disabled,
-                  field: @field,
-                  foreign_key: @field.id_input_foreign_key,
-                  model_key: model_keys[type.to_s],
-                  polymorphic_record: polymorphic_record,
-                  resource: @resource,
-                  style: @field.get_html(:style, view: view, element: :input),
-                  type: type,
-                  classes: classes("w-full"),
-                  view: view
-              %>
+                <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
+                      form: @form,
+                      field: @field,
+                      target_resource: Avo.resource_manager.get_resource_by_model_class(type.to_s),
+                      polymorphic_type: type
+                    ) %>
               <% else %>
                 <%= @form.select @field.id_input_foreign_key,
                 options_for_select(
@@ -76,7 +70,7 @@
                 <% if !disabled && create_href.present? %>
                   <%= link_to t("avo.create_new_item", item: type.model_name.human.downcase),
                     create_href,
-                    class: "text-sm",
+                    class: "block text-sm mt-1",
                     data: {
                       turbo_frame: Avo::MODAL_FRAME_ID,
                       turbo_prefetch: false
@@ -93,16 +87,7 @@
 <% else %>
   <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data)) do %>
     <% if @field.is_searchable? %>
-      <%= render Avo::Pro::SearchableAssociations::AutocompleteComponent.new form: @form,
-        field: @field,
-        model_key: @field.target_resource&.model_key,
-        foreign_key: @field.id_input_foreign_key,
-        resource: @resource,
-        disabled: disabled,
-        classes: classes("w-full"),
-        view: view,
-        style: @field.get_html(:style, view: view, element: :input)
-      %>
+      <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(form: @form, field: @field) %>
     <% else %>
       <%= @form.select @field.id_input_foreign_key,
         options_for_select(@field.options, selected: @field.value.to_param, disabled: t("avo.more_records_available")),
@@ -127,7 +112,7 @@
       <% if !disabled && create_path.present? %>
         <%= link_to t("avo.create_new_item", item: @field.name.downcase),
           create_path(**modal_args),
-          class: "text-sm",
+          class: "block text-sm mt-1",
           data: {
             turbo_frame: Avo::MODAL_FRAME_ID,
             turbo_prefetch: false
