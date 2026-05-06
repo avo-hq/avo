@@ -30,14 +30,46 @@
   @apply text-xs font-semibold text-content-secondary;
 }
 
+.dark .aa-SourceHeader {
+  @apply text-content-secondary/80;
+}
+
 .aa-DetachedFormContainer,
 .aa-DetachedContainer .aa-Panel {
-  @apply bg-secondary border-b-0;
+  @apply bg-primary border-b-0;
+}
+
+.aa-DetachedContainer {
+  @apply bg-primary/60 backdrop-blur-sm;
+
+  .aa-Panel {
+    @apply bg-primary rounded-md border border-[var(--color-avo-neutral-200)] shadow-lg;
+  }
+
+  .aa-DetachedFormContainer {
+    @apply bg-primary rounded-t-md border-b border-[var(--color-avo-neutral-200)];
+  }
+}
+
+.dark .aa-DetachedContainer {
+  @apply bg-primary/70 backdrop-blur-sm;
+
+  .aa-Panel {
+    @apply bg-secondary border-[var(--color-avo-neutral-700)] shadow-2xl;
+    background-color: var(--color-avo-neutral-800) !important;
+  }
+
+  .aa-DetachedFormContainer {
+    @apply bg-secondary border-b border-[var(--color-avo-neutral-700)];
+    background-color: var(--color-avo-neutral-800) !important;
+  }
 }
 
 .aa-Form {
+  @apply rounded-sm border border-[var(--color-avo-neutral-300)] bg-primary transition-colors duration-150;
+
   &:focus-within {
-    @apply ring-0;
+    @apply ring-0 border-accent;
   }
 
   input {
@@ -52,18 +84,60 @@
   }
 }
 
+.dark .aa-Form {
+  @apply bg-secondary border-[var(--color-avo-neutral-700)];
+  background-color: var(--color-avo-neutral-900) !important;
+
+  &:focus-within {
+    @apply border-accent;
+  }
+}
+
+.dark .aa-Input {
+  @apply placeholder:text-content-secondary;
+  color: var(--color-avo-neutral-100) !important;
+  background-color: transparent !important;
+}
+
+.dark .aa-InputWrapperPrefix,
+.dark .aa-InputWrapperSuffix {
+  @apply text-content-secondary;
+}
+
+.dark .aa-DetachedContainer .aa-PanelLayout,
+.dark .aa-DetachedContainer .aa-Source,
+.dark .aa-DetachedContainer .aa-List {
+  background-color: var(--color-avo-neutral-800) !important;
+}
+
+.dark .aa-SourceHeader {
+  @apply text-content-secondary/90;
+  background-color: var(--color-avo-neutral-800) !important;
+}
+
 button.aa-DetachedCancelButton {
   border: 1px solid var(--color-avo-neutral-400) !important;
-  @apply bg-primary text-content;
+  @apply bg-primary text-content rounded-sm transition-colors duration-150 hover:bg-secondary;
+}
+
+.dark button.aa-DetachedCancelButton {
+  border-color: var(--color-avo-neutral-700) !important;
+  color: var(--color-avo-neutral-100) !important;
+  @apply bg-secondary hover:bg-tertiary;
 }
 
 .aa-Input {
   @apply focus:ring-accent;
+  color: var(--color-avo-neutral-900);
+}
+
+.aa-Input::placeholder {
+  color: var(--color-avo-neutral-500);
 }
 
 .aa-DetachedContainer {
   .aa-PanelLayout {
-    @apply pt-0 space-y-3;
+    @apply pt-0 pb-2 space-y-3;
   }
 
   .aa-Source {
@@ -71,14 +145,18 @@ button.aa-DetachedCancelButton {
       @apply space-y-2;
 
       .aa-Item {
-        @apply bg-primary text-content rounded-sm px-3 py-4 shadow font-medium;
+        @apply bg-primary text-content rounded-sm px-3 py-4 shadow-sm font-medium border border-transparent transition-all duration-150;
+
+        &:hover {
+          @apply bg-secondary shadow border-[var(--color-avo-neutral-300)];
+        }
 
         .aa-ItemDescription {
           @apply text-content-secondary text-sm font-normal mt-1;
         }
 
         &[aria-selected=true]{
-          @apply bg-accent text-accent-foreground;
+          @apply bg-accent text-accent-foreground border-accent shadow;
 
           .aa-ItemDescription {
             @apply text-accent-foreground;
@@ -93,7 +171,34 @@ button.aa-DetachedCancelButton {
    bg-primary (neutral-950) is darker than the panel's bg-secondary (neutral-800),
    so we override to bg-tertiary (neutral-700) which is lighter than the container. */
 .dark .aa-Item:not([aria-selected=true]) {
-  @apply bg-tertiary;
+  @apply bg-tertiary border-[var(--color-avo-neutral-700)] shadow-sm;
+  background-color: var(--color-avo-neutral-800) !important;
+
+  &:hover {
+    @apply border-[var(--color-avo-neutral-600)] shadow;
+    background-color: var(--color-avo-neutral-700) !important;
+  }
+}
+
+/* No results / empty state row */
+.aa-SourceNoResults,
+.aa-NoResults,
+.aa-NoResults .aa-Item,
+.aa-Item[aria-disabled='true'] {
+  @apply bg-secondary text-content-secondary border border-[var(--color-avo-neutral-300)] shadow-none rounded-sm px-3 py-3;
+}
+
+.dark .aa-SourceNoResults,
+.dark .aa-NoResults,
+.dark .aa-NoResults .aa-Item,
+.dark .aa-Item[aria-disabled='true'] {
+  color: var(--color-avo-neutral-100) !important;
+}
+
+.dark .aa-SourceNoResults *,
+.dark .aa-NoResults *,
+.dark .aa-Item[aria-disabled='true'] * {
+  color: var(--color-avo-neutral-100) !important;
 }
 
 /* Overlay used during resource search */
