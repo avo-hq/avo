@@ -60,7 +60,9 @@ class Avo::Configuration::Branding
   def database_persistence? = persistence == :database
 
   def scheme_locked? = @lock.include?(:scheme)
+
   def neutral_locked? = @lock.include?(:neutral)
+
   def accent_locked? = @lock.include?(:accent)
 
   # Returns the neutral name for the data attribute

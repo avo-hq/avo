@@ -222,9 +222,9 @@ module Avo
       classes << "accent-theme-#{current_accent}" if current_accent != "neutral"
 
       case current_scheme
-      when "dark"  then classes << "dark" << "scheme-dark"
+      when "dark" then classes << "dark" << "scheme-dark"
       when "light" then classes << "scheme-light"
-      else              classes << "scheme-auto"
+      else classes << "scheme-auto"
       end
 
       classes
