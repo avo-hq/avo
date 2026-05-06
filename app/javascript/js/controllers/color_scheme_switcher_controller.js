@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import { patch } from '@rails/request.js'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
@@ -62,7 +63,7 @@ export default class extends Controller {
     if (!scheme || !['auto', 'light', 'dark'].includes(scheme)) return
 
     this.currentSchemeValue = scheme
-    this.saveScheme()
+    this.persistPreferences('scheme')
     this.applyScheme()
   }
 
@@ -76,7 +77,7 @@ export default class extends Controller {
     if (!theme || !allowedThemes.includes(theme)) return
 
     this.currentThemeValue = theme
-    this.saveTheme()
+    this.persistPreferences('theme')
     this.applyTheme()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
@@ -104,7 +105,7 @@ export default class extends Controller {
     if (!accent) return
 
     this.currentAccentValue = accent
-    this.saveAccent()
+    this.persistPreferences('accent')
     this.applyAccent()
   }
 
@@ -121,24 +122,49 @@ export default class extends Controller {
     this.updateActiveAccentOption()
   }
 
-  saveScheme() {
-    this.saveCookie('color_scheme', this.currentSchemeValue, 'auto')
-    this.persistToDatabase()
+  persistPreferences(dimension) {
+    if (this.branding.persistence === 'database') {
+      this.patchThemeSettings(dimension)
+      return
+    }
+
+    this.writePreferenceCookie(dimension)
   }
 
-  saveTheme() {
-    this.saveCookie('theme', this.currentThemeValue, 'brand')
-    this.persistToDatabase()
+  writePreferenceCookie(dimension) {
+    switch (dimension) {
+      case 'scheme':
+        this.setPreferenceCookie('color_scheme', this.currentSchemeValue, this.brandingDefaultScheme())
+        break
+      case 'theme':
+        this.setPreferenceCookie('theme', this.currentThemeValue, this.brandingDefaultNeutral())
+        break
+      case 'accent':
+        this.setPreferenceCookie('accent_color', this.currentAccentValue, this.brandingDefaultAccent())
+        break
+      default:
+        break
+    }
   }
 
-  saveAccent() {
-    this.saveCookie('accent_color', this.currentAccentValue, 'neutral')
-    this.persistToDatabase()
+  // Match ApplicationHelper#current_* fallbacks so we only drop cookies when the value
+  // equals the configured branding default (not hardcoded :auto / :brand / :neutral).
+  brandingDefaultScheme() {
+    const s = this.branding.scheme
+    return s != null && s !== '' ? String(s) : 'auto'
   }
 
-  saveCookie(name, value, defaultValue) {
-    if (this.branding.persistence === 'database') return
+  brandingDefaultNeutral() {
+    const n = this.branding.neutral
+    return n != null && n !== '' ? String(n) : 'brand'
+  }
 
+  brandingDefaultAccent() {
+    const a = this.branding.accent
+    return a != null && a !== '' ? String(a) : 'neutral'
+  }
+
+  setPreferenceCookie(name, value, defaultValue) {
     if (value === defaultValue) {
       Cookies.remove(name)
     } else {
@@ -146,25 +172,28 @@ export default class extends Controller {
     }
   }
 
-  persistToDatabase() {
-    if (this.branding.persistence !== 'database') return
+  patchThemeSettings(dimension) {
+    const body = this.themeSettingsPayload(dimension)
+    if (!body) return
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    }
-    if (csrfToken) headers['X-CSRF-Token'] = csrfToken
-
-    fetch(`${window.Avo.configuration.root_path}/theme_settings`, {
-      method: 'PATCH',
-      headers,
-      body: JSON.stringify({
-        color_scheme: this.currentSchemeValue,
-        neutral: this.currentThemeValue,
-        accent: this.currentAccentValue,
-      }),
+    patch(`${window.Avo.configuration.root_path}/theme_settings`, {
+      responseKind: 'json',
+      contentType: 'application/json',
+      body,
     })
+  }
+
+  themeSettingsPayload(dimension) {
+    switch (dimension) {
+      case 'scheme':
+        return { color_scheme: this.currentSchemeValue }
+      case 'theme':
+        return { neutral: this.currentThemeValue }
+      case 'accent':
+        return { accent: this.currentAccentValue }
+      default:
+        return null
+    }
   }
 
   applyScheme() {

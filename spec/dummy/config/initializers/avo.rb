@@ -66,13 +66,26 @@ Avo.configure do |config|
   config.branding = {
     logo: "avo/logo.png",
     logomark: "avo/logomark.png",
+    # scheme: :dark,
+    # neutral: :olive,
+    # accent: :blue,
+    # lock: [:neutral],
     persistence: :database,
-    scheme: :dark,
-    neutral: :olive,
-    accent: :blue,
-    # lock: [],
+    # persistence: :cookie
+    #
+    # Database persistence: Avo::ThemeSettingsController PATCHes JSON with only the key the user
+    # changed (e.g. `{ "color_scheme": "dark" }`). `save_settings` must merge `settings` into your
+    # stored hash — do not assign `settings` as the full document or you will wipe other keys.
+    # Keys match `params` / `Avo::Current.theme_settings`: :color_scheme, :neutral, :accent.
     load_settings: -> { current_user&.theme_settings&.symbolize_keys || {} },
-    save_settings: -> { current_user&.update(theme_settings: settings) }
+    save_settings: -> {
+      user = current_user
+      next unless user
+
+      user.update!(
+        theme_settings: user.theme_settings.symbolize_keys.merge(settings.symbolize_keys)
+      )
+    }
   }
 
   # `lock:` accepts any subset of [:scheme, :neutral, :accent].
@@ -94,6 +107,9 @@ Avo.configure do |config|
   #   - we store the logo in the database
   #   - we store the logomark in the database
   #   - we store the favicon in the database
+  # on dynamic mode (:database):
+  #   - PATCH /theme_settings sends a partial JSON body (only scheme, neutral, or accent changed).
+  #   - merge `settings` in `save_settings`; load the full hash in `load_settings`.
 
   # Uncomment to test out manual resource loading.
   # config.resources = [

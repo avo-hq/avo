@@ -42,6 +42,13 @@ RSpec.describe "ThemeSettings", type: :request do
 
         expect(response).to have_http_status(:ok)
       end
+
+      it "passes only the attributes sent in a JSON body (partial update)" do
+        patch "/admin/theme_settings", params: {color_scheme: "dark"}, as: :json
+
+        expect(response).to have_http_status(:ok)
+        expect(saved_settings).to eq({color_scheme: "dark"})
+      end
     end
   end
 end
