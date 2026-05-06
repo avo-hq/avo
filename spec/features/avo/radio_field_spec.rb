@@ -219,7 +219,7 @@ RSpec.describe "RadioField", type: :feature do
 
   describe "on actions" do
     it "display options" do
-      visit avo.resources_actions_show_path(resource_name: "users", action_id: "Avo::Actions::Sub::DummyAction")
+      visit avo.resources_users_actions_show_path(action_id: "Avo::Actions::Sub::DummyAction")
 
       expect(page).to have_text("Small Option")
       expect(page).to have_text("Medium Option")

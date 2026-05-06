@@ -15,6 +15,12 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
+  self.table_view = {
+    row_options: {
+      class: -> { "bg-green-100" if record.stage == "Done" }
+    }
+  }
+
   self.discreet_information = [
     :id,
     :timestamps,
@@ -135,6 +141,12 @@ class Avo::Resources::Project < Avo::BaseResource
     field :even_reviews, as: :has_many, for_attribute: :reviews, scope: -> { query.where("reviews.id % 2 = ?", "0") }
     field :reviews, as: :has_many
     field :files_attachments, as: :has_many
+  end
+
+  def scopes
+    scope Avo::Scopes::ProjectDone
+    scope Avo::Scopes::ProjectOnHold
+    scope Avo::Scopes::ProjectCancelled
   end
 
   def actions

@@ -94,15 +94,7 @@
               id="<%= summary_popover_id %>"
               popover="auto"
               loading="lazy"
-              src="<%= distribution_chart_path(
-                {
-                  resource_name: field.resource.model_class,
-                  field_id: field.id,
-                  via_record_id: @parent_record&.to_param,
-                  via_resource_class: @parent_resource&.class&.to_s,
-                  association_name: @field&.attribute_id
-                }.compact
-              ) %>"
+              src="<%= distribution_chart_path(summary_chart_params_for(field)) %>"
               class="popover-menu__panel popover-menu__panel--summary"
               data-controller="popover-menu"
             >

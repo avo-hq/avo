@@ -31,23 +31,14 @@ module Avo
       @query = if @field.type == "array"
         @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block, record: @parent_record).handle || @parent_record.try(@field.id))
       else
-        @related_authorization.apply_policy(
-          @parent_record.send(
-            BaseResource.valid_association_name(@parent_record, association_from_params)
-          )
-        )
-      end
-
-      @association_field = find_association_field(resource: @parent_resource, association: params[:related_name])
-
-      if @association_field.present? && @association_field.scope.present?
-        @query = Avo::ExecutionContext.new(
-          target: @association_field.scope,
-          query: @query,
-          parent: @parent_record,
+        association_query_scope(
+          parent_resource: @parent_resource,
+          parent_record: @parent_record,
+          association_name: association_from_params,
+          authorization: @related_authorization,
           resource: @resource,
-          parent_resource: @parent_resource
-        ).handle
+          field_association_name: params[:related_name]
+        )
       end
 
       super

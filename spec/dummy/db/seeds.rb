@@ -15,6 +15,8 @@ Review.delete_all
 Fish.delete_all
 Course.delete_all
 Course::Link.delete_all
+Galaxy::Planet::Satellite.delete_all
+Galaxy::Planet.delete_all
 TeamMembership.delete_all
 Team.delete_all
 Comment.delete_all
@@ -25,7 +27,7 @@ Project.delete_all
 User.delete_all
 City.delete_all
 Playground.delete_all
-["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "locations", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "fish", "playgrounds"].each do |table_name|
+["active_storage_blobs", "active_storage_attachments", "posts", "projects", "projects_users", "team_memberships", "locations", "teams", "users", "comments", "people", "reviews", "courses", "course_links", "galaxy_planet_satellites", "galaxy_planets", "fish", "playgrounds"].each do |table_name|
   ActiveRecord::Base.connection.execute("TRUNCATE #{table_name} RESTART IDENTITY CASCADE")
 end
 
@@ -227,6 +229,26 @@ puts "Creating courses"
 courses = FactoryBot.create_list(:course, 150)
 courses.each do |course|
   FactoryBot.create_list(:course_link, 3, course: course)
+end
+
+puts "Creating planets and satellites"
+
+planets_with_moons = {
+  "Mercury" => [],
+  "Venus" => [],
+  "Earth" => ["Moon"],
+  "Mars" => ["Phobos", "Deimos"],
+  "Jupiter" => ["Io", "Europa", "Ganymede", "Callisto"],
+  "Saturn" => ["Titan", "Enceladus", "Mimas", "Rhea", "Iapetus"],
+  "Uranus" => ["Titania", "Oberon", "Miranda", "Ariel", "Umbriel"],
+  "Neptune" => ["Triton", "Nereid", "Proteus"]
+}
+
+planets_with_moons.each do |planet_name, moon_names|
+  planet = Galaxy::Planet.create!(name: planet_name)
+  moon_names.each do |moon_name|
+    Galaxy::Planet::Satellite.create!(name: moon_name, planet: planet)
+  end
 end
 
 puts "Creating products"

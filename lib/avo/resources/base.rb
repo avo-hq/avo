@@ -68,6 +68,7 @@ module Avo
       class_attribute :filters_loader
       class_attribute :view_types
       class_attribute :grid_view
+      class_attribute :table_view
       class_attribute :confirm_on_save, default: false
       class_attribute :visible_on_sidebar, default: true
       class_attribute :hotkey, default: nil
@@ -174,15 +175,34 @@ module Avo
         end
 
         def class_name
-          @class_name ||= to_s.demodulize
+          @class_name ||= to_s.delete_prefix("Avo::Resources::")
         end
 
+        # Last segment only — used for display, translation keys, and initials
+        def demodulized_class_name
+          class_name.demodulize
+        end
+
+        # Slash-separated URL slug: "accounts/invoices", "users"
+        def route_path
+          parts = class_name.split("::")
+          parts.map!(&:underscore)
+          parts[-1] = parts[-1].pluralize
+          parts.join("/")
+        end
+
+        # Underscore-joined Rails resource identifier: "accounts_invoices", "users"
         def route_key
-          class_name.underscore.pluralize
+          route_path.tr("/", "_")
         end
 
         def singular_route_key
           route_key.singularize
+        end
+
+        # Same as route_path — resolves to the correct namespaced controller inside isolate_namespace
+        def controller_path
+          route_path
         end
 
         def translation_key
@@ -191,7 +211,7 @@ module Avo
         alias_method :translation_key=, :custom_translation_key=
 
         def name
-          name_from_translation_key(count: 1, default: class_name.underscore.humanize)
+          name_from_translation_key(count: 1, default: demodulized_class_name.underscore.humanize)
         end
         alias_method :singular_name, :name
 
@@ -581,13 +601,14 @@ module Avo
       def file_hash
         content_to_be_hashed = ""
 
-        resource_path = Rails.root.join("app", "avo", "resources", "#{file_name}.rb").to_s
+        file_base = self.class.class_name.underscore
+        resource_path = Rails.root.join("app", "avo", "resources", "#{file_base}.rb").to_s
         if File.file? resource_path
           content_to_be_hashed += File.read(resource_path)
         end
 
         # policy file hash
-        policy_path = Rails.root.join("app", "policies", "#{file_name.gsub("_resource", "")}_policy.rb").to_s
+        policy_path = Rails.root.join("app", "policies", "#{file_base.gsub("_resource", "")}_policy.rb").to_s
         if File.file? policy_path
           content_to_be_hashed += File.read(policy_path)
         end
