@@ -64,7 +64,7 @@ Avo is a very custom Admin Panel Framework, Content Management System, and Inter
   - **Mobile interface** - Check your data on the go from any mobile device.
   - **Tabbed interface** - Conditionally show the data you need
   - **Menu builder** - Group and surface information as you need to
-  - **Branding** - Make it look
+  - **Appearance** - Make it look
 
 ## Some of the things we're going to focus on next
 

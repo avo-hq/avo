@@ -1,16 +1,16 @@
-<% branding = Avo.configuration.branding %>
+<% appearance = Avo.configuration.appearance %>
 
 <%= link_to avo.root_path, class: "logo-placeholder h-full w-full block justify-start" do %>
   <span class="relative hidden h-full sm:block">
-    <%= image_tag branding.logo,
+    <%= image_tag appearance.logo,
       alt: "Avo logo",
       class: class_names(
         "h-full w-auto object-contain",
-        "dark:hidden" => branding.logo_dark.present?
+        "dark:hidden" => appearance.logo_dark.present?
       ),
       title: "Avo" %>
-    <% if branding.logo_dark.present? %>
-      <%= image_tag branding.logo_dark,
+    <% if appearance.logo_dark.present? %>
+      <%= image_tag appearance.logo_dark,
         class: "h-full w-auto object-contain hidden dark:block",
         alt: "Avo logo",
         title: "Avo" %>
@@ -18,15 +18,15 @@
   </span>
 
   <span class="relative h-full block sm:hidden">
-    <%= image_tag branding.logomark,
+    <%= image_tag appearance.logomark,
       class: class_names(
         "h-full w-auto object-contain",
-        "dark:hidden" => branding.logomark_dark.present?
+        "dark:hidden" => appearance.logomark_dark.present?
       ),
       alt: "Avo logomark",
       title: "Avo" %>
-    <% if branding.logomark_dark.present? %>
-      <%= image_tag branding.logomark_dark,
+    <% if appearance.logomark_dark.present? %>
+      <%= image_tag appearance.logomark_dark,
         class: "h-full w-auto object-contain hidden dark:block",
         alt: "Avo logomark",
         title: "Avo" %>

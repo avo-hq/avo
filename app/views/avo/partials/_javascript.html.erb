@@ -1,4 +1,4 @@
-<% b = Avo.configuration.branding %>
+<% b = Avo.configuration.appearance %>
 <%= javascript_tag nonce: true do %>
   window.Avo = window.Avo || { configuration: {} }
   Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
@@ -20,7 +20,7 @@
     enabled: <%= Avo::MediaLibrary.configuration.enabled? %>,
     visible: <%= Avo::MediaLibrary.configuration.visible? %>
   }
-  Avo.configuration.branding = {
+  Avo.configuration.appearance = {
     persistence: '<%= b.persistence %>',
     scheme: '<%= b.scheme %>',
     neutral: '<%= b.neutral_css_class %>',

@@ -35,7 +35,7 @@ Avo::Engine.routes.draw do
   if Rails.env.development? || Rails.env.staging? || Rails.env.test?
     scope "/avo_private", as: "avo_private" do
       get "/design", to: "private#design"
-      get "/branding", to: "private#branding"
+      get "/appearance", to: "private#appearance"
     end
 
     mount Lookbook::Engine, at: "/lookbook" if defined?(Lookbook)

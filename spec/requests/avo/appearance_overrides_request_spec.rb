@@ -1,13 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "Brand overrides", type: :request do
+RSpec.describe "Appearance overrides", type: :request do
   let(:admin_user) { create :user, roles: {admin: true} }
 
   before { login_as admin_user }
 
   context "when neither neutral_colors nor accent_colors is configured" do
     before do
-      allow(Avo.configuration.branding).to receive(:brand_css_overrides).and_return(nil)
+      allow(Avo.configuration.appearance).to receive(:brand_css_overrides).and_return(nil)
     end
 
     it "renders no brand-override style declarations" do
@@ -34,7 +34,7 @@ RSpec.describe "Brand overrides", type: :request do
     end
 
     before do
-      allow(Avo.configuration.branding).to receive(:brand_css_overrides).and_return(overrides_css)
+      allow(Avo.configuration.appearance).to receive(:brand_css_overrides).and_return(overrides_css)
     end
 
     it "emits the inline style tag with the override declarations" do
@@ -46,7 +46,7 @@ RSpec.describe "Brand overrides", type: :request do
       expect(response.body).to match(%r{<style\b[^>]*>.*--color-avo-neutral-25.*</style>}m)
     end
 
-    it "preserves the favicon link tag emitted by the branding partial" do
+    it "preserves the favicon link tag emitted by the appearance partial" do
       get "/admin/failed_to_load"
 
       expect(response.body).to include('rel="icon"')

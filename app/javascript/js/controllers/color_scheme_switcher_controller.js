@@ -6,10 +6,10 @@ export default class extends Controller {
   static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
 
   connect() {
-    this.branding = window.Avo?.configuration?.branding || {}
-    this.lockedNeutral = this.branding.neutralLocked ? this.branding.neutral : null
-    this.lockedAccent = this.branding.accentLocked ? this.branding.accent : null
-    this.lockedScheme = this.branding.schemeLocked ? this.branding.scheme : null
+    this.appearance = window.Avo?.configuration?.appearance || {}
+    this.lockedNeutral = this.appearance.neutralLocked ? this.appearance.neutral : null
+    this.lockedAccent = this.appearance.accentLocked ? this.appearance.accent : null
+    this.lockedScheme = this.appearance.schemeLocked ? this.appearance.scheme : null
 
     // Read current state from server-rendered <html> classes
     this.currentSchemeValue = this.readCurrentScheme()
@@ -72,7 +72,7 @@ export default class extends Controller {
     if (this.lockedNeutral) return
 
     const { theme } = event.currentTarget.dataset
-    const allowedThemes = this.branding.neutrals || []
+    const allowedThemes = this.appearance.neutrals || []
 
     if (!theme || !allowedThemes.includes(theme)) return
 
@@ -101,7 +101,7 @@ export default class extends Controller {
     if (this.lockedAccent) return
 
     const { accent } = event.currentTarget.dataset
-    const allowedAccents = this.branding.accents || []
+    const allowedAccents = this.appearance.accents || []
 
     if (!accent || !allowedAccents.includes(accent)) return
 
@@ -124,7 +124,7 @@ export default class extends Controller {
   }
 
   persistPreferences(dimension) {
-    if (this.branding.persistence === 'database') {
+    if (this.appearance.persistence === 'database') {
       this.patchThemeSettings(dimension)
       return
     }
@@ -135,13 +135,13 @@ export default class extends Controller {
   writePreferenceCookie(dimension) {
     switch (dimension) {
       case 'scheme':
-        this.setPreferenceCookie('color_scheme', this.currentSchemeValue, this.brandingDefaultScheme())
+        this.setPreferenceCookie('color_scheme', this.currentSchemeValue, this.appearanceDefaultScheme())
         break
       case 'theme':
-        this.setPreferenceCookie('theme', this.currentThemeValue, this.brandingDefaultNeutral())
+        this.setPreferenceCookie('theme', this.currentThemeValue, this.appearanceDefaultNeutral())
         break
       case 'accent':
-        this.setPreferenceCookie('accent_color', this.currentAccentValue, this.brandingDefaultAccent())
+        this.setPreferenceCookie('accent_color', this.currentAccentValue, this.appearanceDefaultAccent())
         break
       default:
         break
@@ -149,19 +149,19 @@ export default class extends Controller {
   }
 
   // Match ApplicationHelper#current_* fallbacks so we only drop cookies when the value
-  // equals the configured branding default (not hardcoded :auto / :brand / :neutral).
-  brandingDefaultScheme() {
-    const s = this.branding.scheme
+  // equals the configured default (not hardcoded :auto / :brand / :neutral).
+  appearanceDefaultScheme() {
+    const s = this.appearance.scheme
     return s != null && s !== '' ? String(s) : 'auto'
   }
 
-  brandingDefaultNeutral() {
-    const n = this.branding.neutral
+  appearanceDefaultNeutral() {
+    const n = this.appearance.neutral
     return n != null && n !== '' ? String(n) : 'brand'
   }
 
-  brandingDefaultAccent() {
-    const a = this.branding.accent
+  appearanceDefaultAccent() {
+    const a = this.appearance.accent
     return a != null && a !== '' ? String(a) : 'brand'
   }
 

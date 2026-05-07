@@ -58,7 +58,7 @@
      literal values, not `var(...)` references — so user-selected
      `.neutral-theme-*` / `.accent-theme-*` classes never override them and
      the brand swatches stay stable while another theme is hovered or active.
-     Avo::Configuration::Branding#brand_css_overrides re-emits these in
+     Avo::Configuration::Appearance#brand_css_overrides re-emits these in
      `@layer base` when the developer configures `neutral_colors:` /
      `accent_colors:`, so a configured install shows its actual brand colors. */
   --color-brand-neutral-400: oklch(62.68% 0.0000 89.88);

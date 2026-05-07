@@ -1,7 +1,6 @@
 module Avo
   class Configuration
     attr_writer :app_name
-    # branding is a lazy accessor — see #branding method below
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
@@ -257,12 +256,12 @@ module Avo
       @root_path
     end
 
-    def branding
-      @branding ||= Avo::Configuration::Branding.new
+    def appearance
+      @appearance ||= Avo::Configuration::Appearance.new
     end
 
-    def branding=(options = {})
-      @branding = Avo::Configuration::Branding.new(options)
+    def appearance=(options = {})
+      @appearance = Avo::Configuration::Appearance.new(options)
     end
 
     def app_name

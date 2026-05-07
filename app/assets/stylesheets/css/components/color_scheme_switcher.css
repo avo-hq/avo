@@ -78,7 +78,7 @@
 /* Theme preview swatches - show a representative mid-tone for each neutral */
 .color-scheme-switcher__theme-preview--brand {
   /* `--color-brand-neutral-400` is set in variables.css (default) and re-emitted
-     by Branding#brand_css_overrides when configured. It isn't touched by
+     by Appearance#brand_css_overrides when configured. It isn't touched by
      `.neutral-theme-*` classes, so the swatch stays stable on hover/select. */
   background: var(--color-brand-neutral-400);
 }
@@ -147,7 +147,7 @@
 
 .color-scheme-switcher__accent-preview--brand {
   /* `--color-brand-accent` is set in variables.css (default) and re-emitted
-     by Branding#brand_css_overrides when configured. It isn't touched by
+     by Appearance#brand_css_overrides when configured. It isn't touched by
      `.accent-theme-*` classes, so the swatch stays stable on hover/select. */
   background: var(--color-brand-accent);
 }

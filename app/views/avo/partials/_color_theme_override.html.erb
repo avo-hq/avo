@@ -4,9 +4,9 @@
   // on <html>. This script handles cookie overrides and "auto" dark mode.
   (function() {
     var root = document.documentElement;
-    var branding = window.Avo && window.Avo.configuration && window.Avo.configuration.branding || {};
+    var appearance = window.Avo && window.Avo.configuration && window.Avo.configuration.appearance || {};
 
-    if (branding.persistence !== 'database') {
+    if (appearance.persistence !== 'database') {
       function getCookie(name) {
         var value = '; ' + document.cookie;
         var parts = value.split('; ' + name + '=');
@@ -14,7 +14,7 @@
         return null;
       }
 
-      if (!branding.neutralLocked) {
+      if (!appearance.neutralLocked) {
         var theme = getCookie('theme');
         if (theme && theme !== 'brand') {
           Array.from(root.classList).forEach(function(cls) {
@@ -24,7 +24,7 @@
         }
       }
 
-      if (!branding.accentLocked) {
+      if (!appearance.accentLocked) {
         var accent = getCookie('accent_color');
         if (accent && accent !== 'brand') {
           Array.from(root.classList).forEach(function(cls) {
@@ -34,7 +34,7 @@
         }
       }
 
-      if (!branding.schemeLocked) {
+      if (!appearance.schemeLocked) {
         var scheme = getCookie('color_scheme');
         if (scheme) {
           root.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');

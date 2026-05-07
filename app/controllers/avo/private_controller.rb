@@ -8,7 +8,7 @@ module Avo
       @page_title = "Design [Private]"
     end
 
-    def branding
+    def appearance
       @page_title = "Color Tokens [Private]"
 
       @light_foundations = [

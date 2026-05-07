@@ -1,59 +1,59 @@
 require "rails_helper"
 
-RSpec.describe Avo::Configuration::Branding do
-  subject(:branding) { described_class.new(options) }
+RSpec.describe Avo::Configuration::Appearance do
+  subject(:appearance) { described_class.new(options) }
 
   let(:options) { {} }
 
   describe "defaults" do
     it "defaults to auto scheme" do
-      expect(branding.scheme).to eq(:auto)
+      expect(appearance.scheme).to eq(:auto)
     end
 
     it "defaults to cookie persistence" do
-      expect(branding.persistence).to eq(:cookie)
+      expect(appearance.persistence).to eq(:cookie)
     end
 
     it "defaults neutral and accent to nil" do
-      expect(branding.neutral).to be_nil
-      expect(branding.accent).to be_nil
+      expect(appearance.neutral).to be_nil
+      expect(appearance.accent).to be_nil
     end
 
     it "defaults neutral_colors and accent_colors to nil" do
-      expect(branding.neutral_colors).to be_nil
-      expect(branding.accent_colors).to be_nil
+      expect(appearance.neutral_colors).to be_nil
+      expect(appearance.accent_colors).to be_nil
     end
 
     it "defaults lock to an empty array" do
-      expect(branding.lock).to eq([])
+      expect(appearance.lock).to eq([])
     end
 
     it "provides default logo and logomark" do
-      expect(branding.logo).to eq("avo/logo.png")
-      expect(branding.logomark).to eq("avo/logomark.png")
+      expect(appearance.logo).to eq("avo/logo.png")
+      expect(appearance.logomark).to eq("avo/logomark.png")
     end
 
     it "provides default favicons" do
-      expect(branding.favicon).to eq("avo/favicon.ico")
-      expect(branding.favicon_dark).to eq("avo/favicon-dark.ico")
+      expect(appearance.favicon).to eq("avo/favicon.ico")
+      expect(appearance.favicon_dark).to eq("avo/favicon-dark.ico")
     end
 
     it "has no load/save blocks by default" do
-      expect(branding.load_settings_block).to be_nil
-      expect(branding.save_settings_block).to be_nil
+      expect(appearance.load_settings_block).to be_nil
+      expect(appearance.save_settings_block).to be_nil
     end
   end
 
   describe "#database_persistence?" do
     it "is false by default (cookie)" do
-      expect(branding).not_to be_database_persistence
+      expect(appearance).not_to be_database_persistence
     end
 
     context "when persistence is :database" do
       let(:options) { {persistence: :database} }
 
       it "is true" do
-        expect(branding).to be_database_persistence
+        expect(appearance).to be_database_persistence
       end
     end
   end
@@ -67,11 +67,11 @@ RSpec.describe Avo::Configuration::Branding do
     end
 
     it "stores a load_settings block" do
-      expect(branding.load_settings_block).to be_a(Proc)
+      expect(appearance.load_settings_block).to be_a(Proc)
     end
 
     it "stores a save_settings block" do
-      expect(branding.save_settings_block).to be_a(Proc)
+      expect(appearance.save_settings_block).to be_a(Proc)
     end
   end
 
@@ -81,7 +81,7 @@ RSpec.describe Avo::Configuration::Branding do
     end
 
     it "returns nil when neutral is nil" do
-      expect(branding.neutral_css_class).to be_nil
+      expect(appearance.neutral_css_class).to be_nil
     end
   end
 
@@ -91,29 +91,29 @@ RSpec.describe Avo::Configuration::Branding do
     end
 
     it "returns nil when accent is nil" do
-      expect(branding.accent_css_class).to be_nil
+      expect(appearance.accent_css_class).to be_nil
     end
   end
 
   describe "selection validation" do
     it "raises a migration-hint error when neutral is a Hash" do
       expect { described_class.new(neutral: {25 => "oklch(0.99 0.01 240)"}) }
-        .to raise_error(ArgumentError, /branding\.neutral accepts a Symbol.*neutral_colors:/m)
+        .to raise_error(ArgumentError, /appearance\.neutral accepts a Symbol.*neutral_colors:/m)
     end
 
     it "raises a migration-hint error when accent is a Hash" do
       expect { described_class.new(accent: {color: "oklch(0.6 0.2 260)"}) }
-        .to raise_error(ArgumentError, /branding\.accent accepts a Symbol.*accent_colors:/m)
+        .to raise_error(ArgumentError, /appearance\.accent accepts a Symbol.*accent_colors:/m)
     end
 
     it "raises when neutral is an unsupported type" do
       expect { described_class.new(neutral: 42) }
-        .to raise_error(ArgumentError, /branding\.neutral must be a Symbol/)
+        .to raise_error(ArgumentError, /appearance\.neutral must be a Symbol/)
     end
 
     it "raises when neutral is a String (Symbol-only contract)" do
       expect { described_class.new(neutral: "slate") }
-        .to raise_error(ArgumentError, /branding\.neutral must be a Symbol/)
+        .to raise_error(ArgumentError, /appearance\.neutral must be a Symbol/)
     end
   end
 
@@ -122,17 +122,17 @@ RSpec.describe Avo::Configuration::Branding do
       let(:options) { {lock: [:scheme, :neutral, :accent]} }
 
       it "locks all three" do
-        expect(branding).to be_scheme_locked
-        expect(branding).to be_neutral_locked
-        expect(branding).to be_accent_locked
+        expect(appearance).to be_scheme_locked
+        expect(appearance).to be_neutral_locked
+        expect(appearance).to be_accent_locked
       end
     end
 
     context "when lock: is omitted" do
       it "does not lock any" do
-        expect(branding).not_to be_scheme_locked
-        expect(branding).not_to be_neutral_locked
-        expect(branding).not_to be_accent_locked
+        expect(appearance).not_to be_scheme_locked
+        expect(appearance).not_to be_neutral_locked
+        expect(appearance).not_to be_accent_locked
       end
     end
 
@@ -140,9 +140,9 @@ RSpec.describe Avo::Configuration::Branding do
       let(:options) { {lock: [:neutral]} }
 
       it "locks only that one" do
-        expect(branding).to be_neutral_locked
-        expect(branding).not_to be_scheme_locked
-        expect(branding).not_to be_accent_locked
+        expect(appearance).to be_neutral_locked
+        expect(appearance).not_to be_scheme_locked
+        expect(appearance).not_to be_accent_locked
       end
     end
 
@@ -150,9 +150,9 @@ RSpec.describe Avo::Configuration::Branding do
       let(:options) { {scheme: :dark, neutral: :slate, accent: :blue} }
 
       it "treats them as defaults, not locks" do
-        expect(branding).not_to be_scheme_locked
-        expect(branding).not_to be_neutral_locked
-        expect(branding).not_to be_accent_locked
+        expect(appearance).not_to be_scheme_locked
+        expect(appearance).not_to be_neutral_locked
+        expect(appearance).not_to be_accent_locked
       end
     end
   end
@@ -176,11 +176,11 @@ RSpec.describe Avo::Configuration::Branding do
       let(:options) { {neutral_colors: complete_neutral, accent_colors: complete_accent} }
 
       it "exposes neutral_colors verbatim" do
-        expect(branding.neutral_colors).to eq(complete_neutral)
+        expect(appearance.neutral_colors).to eq(complete_neutral)
       end
 
       it "exposes accent_colors verbatim" do
-        expect(branding.accent_colors).to eq(complete_accent)
+        expect(appearance.accent_colors).to eq(complete_accent)
       end
     end
 
@@ -234,14 +234,14 @@ RSpec.describe Avo::Configuration::Branding do
 
     describe "#brand_css_overrides" do
       it "returns nil when neither key is configured" do
-        expect(branding.brand_css_overrides).to be_nil
+        expect(appearance.brand_css_overrides).to be_nil
       end
 
       context "when only neutral_colors is configured" do
         let(:options) { {neutral_colors: complete_neutral} }
 
         it "emits :root and .dark blocks with all 12 neutral shades inside @layer base" do
-          css = branding.brand_css_overrides
+          css = appearance.brand_css_overrides
 
           expect(css).to start_with("@layer base {")
           expect(css.strip).to end_with("}")
@@ -254,14 +254,14 @@ RSpec.describe Avo::Configuration::Branding do
         end
 
         it "emits the brand-scoped --color-brand-neutral-400 alias for the picker swatch" do
-          css = branding.brand_css_overrides
+          css = appearance.brand_css_overrides
 
           expect(css).to include("--color-brand-neutral-400: oklch(0.99 0.01 240);")
           expect(css).to include("--color-brand-neutral-400: oklch(0.15 0.01 240);")
         end
 
         it "does not emit accent declarations" do
-          css = branding.brand_css_overrides
+          css = appearance.brand_css_overrides
 
           expect(css).not_to include("--color-accent")
           expect(css).not_to include("--color-brand-accent")
@@ -272,7 +272,7 @@ RSpec.describe Avo::Configuration::Branding do
         let(:options) { {accent_colors: complete_accent} }
 
         it "emits all three accent tokens for both schemes" do
-          css = branding.brand_css_overrides
+          css = appearance.brand_css_overrides
 
           expect(css).to include("--color-accent: oklch(0.6 0.2 260);")
           expect(css).to include("--color-accent-content: oklch(0.5 0.2 260);")
@@ -282,14 +282,14 @@ RSpec.describe Avo::Configuration::Branding do
         end
 
         it "emits the brand-scoped --color-brand-accent alias for the picker swatch" do
-          css = branding.brand_css_overrides
+          css = appearance.brand_css_overrides
 
           expect(css).to include("--color-brand-accent: oklch(0.6 0.2 260);")
           expect(css).to include("--color-brand-accent: oklch(0.7 0.2 260);")
         end
 
         it "does not emit neutral declarations" do
-          css = branding.brand_css_overrides
+          css = appearance.brand_css_overrides
 
           expect(css).not_to include("--color-avo-neutral-")
           expect(css).not_to include("--color-brand-neutral-")
@@ -300,7 +300,7 @@ RSpec.describe Avo::Configuration::Branding do
         let(:options) { {neutral_colors: complete_neutral, accent_colors: complete_accent} }
 
         it "emits both palettes inside a single :root and a single .dark block" do
-          css = branding.brand_css_overrides
+          css = appearance.brand_css_overrides
 
           expect(css.scan(":root {").size).to eq(1)
           expect(css.scan(".dark {").size).to eq(1)

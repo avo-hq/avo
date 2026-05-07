@@ -10,7 +10,7 @@ RSpec.describe "ThemeSettings", type: :request do
   describe "PATCH /admin/theme_settings" do
     context "when no save_settings block is configured" do
       before do
-        allow(Avo.configuration.branding).to receive(:save_settings_block).and_return(nil)
+        allow(Avo.configuration.appearance).to receive(:save_settings_block).and_return(nil)
       end
 
       it "returns unprocessable_entity" do
@@ -27,7 +27,7 @@ RSpec.describe "ThemeSettings", type: :request do
       before do
         captured = saved_settings
         block = proc { captured.merge!(settings) }
-        allow(Avo.configuration.branding).to receive(:save_settings_block).and_return(block)
+        allow(Avo.configuration.appearance).to receive(:save_settings_block).and_return(block)
       end
 
       it "calls the save block and returns ok" do

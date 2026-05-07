@@ -25,12 +25,12 @@ module Avo
     end
 
     def load_theme_settings
-      branding = Avo.configuration.branding
+      appearance = Avo.configuration.appearance
 
-      return unless branding.database_persistence? && branding.load_settings_block.present?
+      return unless appearance.database_persistence? && appearance.load_settings_block.present?
 
       Avo::Current.theme_settings = Avo::ExecutionContext.new(
-        target: branding.load_settings_block,
+        target: appearance.load_settings_block,
         current_user: _current_user
       ).handle
     end

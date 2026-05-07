@@ -1,4 +1,4 @@
-class Avo::Configuration::Branding
+class Avo::Configuration::Appearance
   attr_reader :scheme, # :auto | :light | :dark
     :neutral, # Symbol — default theme selection (e.g. :slate, :brand)
     :accent,  # Symbol — default accent selection (e.g. :blue, :brand)
@@ -149,11 +149,11 @@ class Avo::Configuration::Branding
     return if value.nil? || value.is_a?(Symbol)
 
     if value.is_a?(Hash)
-      raise ArgumentError, "branding.#{name} accepts a Symbol (default theme selection). " \
+      raise ArgumentError, "appearance.#{name} accepts a Symbol (default theme selection). " \
         "To override brand colors, use `#{name}_colors:` instead."
     end
 
-    raise ArgumentError, "branding.#{name} must be a Symbol, got #{value.class}"
+    raise ArgumentError, "appearance.#{name} must be a Symbol, got #{value.class}"
   end
 
   def validate_color_palette!(name, palette, required_keys, missing_label)

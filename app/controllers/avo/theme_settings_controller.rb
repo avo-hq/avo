@@ -1,16 +1,16 @@
 module Avo
   class ThemeSettingsController < ApplicationController
     def update
-      branding = Avo.configuration.branding
+      appearance = Avo.configuration.appearance
 
-      if branding.save_settings_block.blank?
+      if appearance.save_settings_block.blank?
         return render json: {ok: false, error: "No save_settings block configured"}, status: :unprocessable_entity
       end
 
       settings = params.permit(:color_scheme, :neutral, :accent).to_h.symbolize_keys
 
       Avo::ExecutionContext.new(
-        target: branding.save_settings_block,
+        target: appearance.save_settings_block,
         settings: settings,
         current_user: _current_user
       ).handle

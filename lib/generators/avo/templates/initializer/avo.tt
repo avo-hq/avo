@@ -126,14 +126,16 @@ Avo.configure do |config|
   # config.exclude_from_status = []
   # config.model_generator_hook = true
 
-  ## == Branding ==
-  # config.branding = {
+  ## == Appearance ==
+  # config.appearance = {
   #   mode: :static,
-  #   neutral: :slate,
-  #   accent: :blue,
+  #   neutral: :brand,
+  #   accent: :brand,
   #   scheme: :auto,
   #   logo: "avo/logo.png",
+  #   logo_dark: "avo/logo-dark.png",
   #   logomark: "avo/logomark.png",
+  #   logomark_dark: "avo/logomark-dark.png",
   #   favicon: "avo/favicon.ico",
   #   favicon_dark: "avo/favicon-dark.ico",
   #   placeholder: "avo/placeholder.svg",

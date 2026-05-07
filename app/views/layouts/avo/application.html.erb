@@ -13,7 +13,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= render partial: "avo/partials/javascript" %>
-    <%= render partial: "avo/partials/branding" %>
+    <%= render partial: "avo/partials/appearance" %>
     <%= render partial: "avo/partials/pre_head" %>
     <%= stylesheet_link_tag "avo/dependencies", "data-turbo-track": "reload", as: "style" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
@@ -28,9 +28,9 @@
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
     <%= render partial: "avo/partials/color_theme_override" %>
-    <%# brand_overrides MUST render after the application stylesheet so its inline %>
+    <%# appearance_overrides MUST render after the application stylesheet so its inline %>
     <%# :root / .dark declarations win on equal-specificity cascade. %>
-    <%= render partial: "avo/partials/brand_overrides" %>
+    <%= render partial: "avo/partials/appearance_overrides" %>
     <%= content_for :head %>
   </head>
 

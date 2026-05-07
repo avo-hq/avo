@@ -62,8 +62,8 @@ Avo.configure do |config|
   #   # show_key_badges: true
   # }
 
-  ## == Branding ==
-  config.branding = {
+  ## == Appearance ==
+  config.appearance = {
     logo: "avo/logo.png",
     logo_dark: "avo/logo-dark.png",
     logomark: "avo/logomark.png",
