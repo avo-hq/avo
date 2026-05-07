@@ -1,12 +1,5 @@
 <% b = Avo.configuration.branding %>
 
-<% if b.neutral.is_a?(Hash) || b.accent.is_a?(Hash) %>
-  <%= content_tag(:style, nonce: content_security_policy_nonce) do %>
-    :root { <%= b.neutral_css_vars(scheme: :light) %> <%= b.accent_css_vars(scheme: :light) %> } .dark {
-    <%= b.neutral_css_vars(scheme: :dark) %> <%= b.accent_css_vars(scheme: :dark) %> }
-  <% end %>
-<% end %>
-
 <% if b.favicon_dark.present? %>
   <%= favicon_link_tag b.favicon,
     data: {

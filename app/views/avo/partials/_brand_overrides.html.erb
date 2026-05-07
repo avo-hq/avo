@@ -1,0 +1,3 @@
+<% if (overrides = Avo.configuration.branding.brand_css_overrides) %>
+  <%= content_tag :style, overrides.html_safe, nonce: content_security_policy_nonce %>
+<% end %>

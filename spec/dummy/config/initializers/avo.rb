@@ -74,6 +74,49 @@ Avo.configure do |config|
     # neutral: :olive, # :brand, :slate, :stone or any other tailwind color name
     # accent: :blue, # :neutral, :red, :orange, or any other tailwind color name
     # lock: [:neutral], # [:scheme, :neutral, :accent]
+    # neutrals: %w[brand mist olive],
+    # accents: %w[brand red orange pink rose],
+    # Override the brand neutral and accent palettes. Both keys are independent —
+    # set one, the other, both, or neither.
+    # All 12 shades are required for `neutral_colors`; all three tokens for `accent_colors`.
+    # Both `light:` and `dark:` schemes are required for either key.
+    # Values are passed through verbatim — any string a CSS custom property
+    # accepts works (`oklch(...)`, `#hex`, `rgb(...)`, `hsl(...)`, `var(...)`).
+    # Comment this block out to see Avo's defaults instead.
+    # neutral_colors: {
+    #   light: {
+    #     25 => "oklch(98.5% 0.005 60)",
+    #     50 => "oklch(97%   0.008 60)",
+    #     100 => "oklch(93%   0.012 60)",
+    #     200 => "oklch(86%   0.015 60)",
+    #     300 => "oklch(76%   0.015 60)",
+    #     400 => "oklch(63%   0.014 60)",
+    #     500 => "oklch(53%   0.013 60)",
+    #     600 => "oklch(48%   0.012 60)",
+    #     700 => "oklch(43%   0.011 60)",
+    #     800 => "oklch(39%   0.010 60)",
+    #     900 => "oklch(28%   0.008 60)",
+    #     950 => "oklch(20%   0.005 60)"
+    #   },
+    #   dark: {
+    #     25 => "oklch(98.5% 0.005 60)",
+    #     50 => "oklch(97%   0.008 60)",
+    #     100 => "oklch(93%   0.012 60)",
+    #     200 => "oklch(86%   0.015 60)",
+    #     300 => "oklch(76%   0.015 60)",
+    #     400 => "oklch(63%   0.014 60)",
+    #     500 => "oklch(53%   0.013 60)",
+    #     600 => "oklch(48%   0.012 60)",
+    #     700 => "oklch(43%   0.011 60)",
+    #     800 => "oklch(39%   0.010 60)",
+    #     900 => "oklch(28%   0.008 60)",
+    #     950 => "oklch(20%   0.005 60)"
+    #   }
+    # },
+    # accent_colors: {
+    #   light: {color: "oklch(55% 0.2 280)", content: "oklch(45% 0.2 280)", foreground: "oklch(99% 0 0)"},
+    #   dark: {color: "oklch(70% 0.2 280)", content: "oklch(80% 0.15 280)", foreground: "oklch(15% 0.05 280)"}
+    # },
     persistence: :database, # :database or :cookie
     load_settings: -> { current_user&.theme_settings&.symbolize_keys || {} },
     save_settings: -> {

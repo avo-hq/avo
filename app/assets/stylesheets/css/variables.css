@@ -52,6 +52,17 @@
   --color-accent: var(--color-avo-neutral-800);
   --color-accent-content: var(--color-avo-neutral-950);
   --color-accent-foreground: var(--color-white);
+
+  /* Brand-scoped picker swatch defaults. These are read by the "Brand"
+     entries in the picker (color_scheme_switcher.css). They are deliberately
+     literal values, not `var(...)` references — so user-selected
+     `.neutral-theme-*` / `.accent-theme-*` classes never override them and
+     the brand swatches stay stable while another theme is hovered or active.
+     Avo::Configuration::Branding#brand_css_overrides re-emits these in
+     `@layer base` when the developer configures `neutral_colors:` /
+     `accent_colors:`, so a configured install shows its actual brand colors. */
+  --color-brand-neutral-400: oklch(62.68% 0.0000 89.88);
+  --color-brand-accent: oklch(39.04% 0.0000 89.88);
 }
 
 /* Dark theme */
@@ -69,6 +80,11 @@
   --color-accent: var(--color-avo-neutral-50);
   --color-accent-content: var(--color-avo-neutral-100);
   --color-accent-foreground: var(--color-avo-neutral-950);
+
+  /* Brand-scoped picker swatch default for dark mode — same rationale as in
+     :root, but using the dark default accent (neutral-50) so the swatch reads
+     correctly under the dark scheme. */
+  --color-brand-accent: oklch(97.31% 0.0000 89.88);
 }
 
 .neutral-theme-slate {

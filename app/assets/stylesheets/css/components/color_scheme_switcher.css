@@ -77,7 +77,10 @@
 
 /* Theme preview swatches - show a representative mid-tone for each neutral */
 .color-scheme-switcher__theme-preview--brand {
-  background: oklch(62.68% 0.0000 89.88);
+  /* `--color-brand-neutral-400` is set in variables.css (default) and re-emitted
+     by Branding#brand_css_overrides when configured. It isn't touched by
+     `.neutral-theme-*` classes, so the swatch stays stable on hover/select. */
+  background: var(--color-brand-neutral-400);
 }
 
 .color-scheme-switcher__theme-preview--slate {
@@ -143,8 +146,10 @@
 }
 
 .color-scheme-switcher__accent-preview--brand {
-  @apply bg-content-secondary;
-  background-image: linear-gradient(135deg, transparent 45%, var(--color-primary) 45%, var(--color-primary) 55%, transparent 55%);
+  /* `--color-brand-accent` is set in variables.css (default) and re-emitted
+     by Branding#brand_css_overrides when configured. It isn't touched by
+     `.accent-theme-*` classes, so the swatch stays stable on hover/select. */
+  background: var(--color-brand-accent);
 }
 
 /* Accent button with badge */
@@ -164,8 +169,9 @@
 }
 
 .color-scheme-switcher__accent-badge-preview--brand {
-  @apply bg-content-secondary;
-  background-image: linear-gradient(135deg, transparent 45%, var(--color-primary) 45%, var(--color-primary) 55%, transparent 55%);
+  /* Same brand-scoped alias as the popover swatch — keeps the navbar trigger
+     badge stable regardless of hover/active accent. */
+  background: var(--color-brand-accent);
 }
 
 /* Show accent badge based on body accent class */
