@@ -19,4 +19,15 @@
     enabled: <%= Avo::MediaLibrary.configuration.enabled? %>,
     visible: <%= Avo::MediaLibrary.configuration.visible? %>
   }
+  Avo.configuration.appearance = {
+    persistence: '<%= Avo.configuration.appearance.persistence %>',
+    scheme: '<%= Avo.configuration.appearance.scheme %>',
+    neutral: '<%= Avo.configuration.appearance.neutral_css_class %>',
+    accent: '<%= Avo.configuration.appearance.accent_css_class %>',
+    schemeLocked: <%= Avo.configuration.appearance.scheme_locked? %>,
+    neutralLocked: <%= Avo.configuration.appearance.neutral_locked? %>,
+    accentLocked: <%= Avo.configuration.appearance.accent_locked? %>,
+    neutrals: <%== Avo.configuration.appearance.neutrals.as_json %>,
+    accents: <%== Avo.configuration.appearance.accents.as_json %>
+  }
 <% end %>

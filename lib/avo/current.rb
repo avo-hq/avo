@@ -25,6 +25,8 @@ class Avo::Current < ActiveSupport::CurrentAttributes
   attribute :tenant_id
   attribute :tenant
 
+  attribute :appearance_settings, default: {}
+
   # Protect from error #<RuntimeError: Missing rack.input> when request is ActionDispatch::Request.empty
   def params
     request.params

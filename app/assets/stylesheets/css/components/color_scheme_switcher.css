@@ -1,37 +1,36 @@
 /* Color Scheme Switcher Component - Based on Design System */
 .color-scheme-switcher {
-  @apply inline-flex items-center gap-1 p-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700;
+  @apply inline-flex items-center gap-1 p-1 rounded-lg bg-secondary border border-tertiary;
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-content-secondary hover:bg-tertiary focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
 /* Scheme buttons - active states using scheme selection classes */
 .color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-light .color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-white text-primary-600 shadow-sm;
-  @apply dark:bg-transparent dark:text-neutral-400 dark:shadow-none;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-dark .color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-auto .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__icon {
@@ -62,23 +61,26 @@
 .color-scheme-switcher__theme-option {
   @apply flex items-center gap-2 w-full px-2 py-1.5;
   @apply rounded-md transition-all duration-150;
-  @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
+  @apply hover:bg-tertiary;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
-  @apply text-neutral-700 dark:text-neutral-300 text-xs font-medium;
+  @apply text-content text-xs font-medium;
 }
 
 .color-scheme-switcher__theme-option--active {
-  @apply bg-neutral-100 dark:bg-neutral-700;
+  @apply bg-tertiary;
 }
 
 .color-scheme-switcher__theme-preview {
-  @apply size-4 rounded-full border border-neutral-200 dark:border-neutral-600 shadow-sm;
+  @apply size-4 rounded-full border border-tertiary shadow-sm;
 }
 
 /* Theme preview swatches - show a representative mid-tone for each neutral */
 .color-scheme-switcher__theme-preview--brand {
-  background: oklch(62.68% 0.0000 89.88);
+  /* `--color-brand-neutral-400` is set in variables.css (default) and re-emitted
+     by Appearance#brand_css_overrides when configured. It isn't touched by
+     `.neutral-theme-*` classes, so the swatch stays stable on hover/select. */
+  background: var(--color-brand-neutral-400);
 }
 
 .color-scheme-switcher__theme-preview--slate {
@@ -130,22 +132,24 @@
 .color-scheme-switcher__accent-option {
   @apply flex items-center justify-center p-1;
   @apply rounded-md transition-all duration-150;
-  @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
+  @apply hover:bg-tertiary;
   @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
 .color-scheme-switcher__accent-option--active {
-  @apply bg-neutral-100 dark:bg-neutral-700 ring-2 ring-primary-400 ring-offset-1;
+  @apply bg-tertiary ring-2 ring-primary-400 ring-offset-1;
 }
 
 .color-scheme-switcher__accent-preview {
-  @apply size-6 rounded-full border-2 border-white dark:border-neutral-600 shadow-sm;
+  @apply size-6 rounded-full border-2 border-primary shadow-sm;
 }
 
-.color-scheme-switcher__accent-preview--neutral {
-  @apply bg-neutral-400 dark:bg-neutral-500;
-  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+.color-scheme-switcher__accent-preview--brand {
+  /* `--color-brand-accent` is set in variables.css (default) and re-emitted
+     by Appearance#brand_css_overrides when configured. It isn't touched by
+     `.accent-theme-*` classes, so the swatch stays stable on hover/select. */
+  background: var(--color-brand-accent);
 }
 
 /* Accent button with badge */
@@ -160,52 +164,53 @@
 }
 
 .color-scheme-switcher__accent-badge-preview {
-  @apply size-2 rounded-full border border-white dark:border-neutral-800 shadow-sm;
+  @apply size-2 rounded-full border border-primary shadow-sm;
   @apply hidden;
 }
 
-.color-scheme-switcher__accent-badge-preview--neutral {
-  @apply bg-neutral-400 dark:bg-neutral-500;
-  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+.color-scheme-switcher__accent-badge-preview--brand {
+  /* Same brand-scoped alias as the popover swatch — keeps the navbar trigger
+     badge stable regardless of hover/active accent. */
+  background: var(--color-brand-accent);
 }
 
 /* Show accent badge based on body accent class */
-.accent-red .color-scheme-switcher__accent-badge,
-.accent-orange .color-scheme-switcher__accent-badge,
-.accent-amber .color-scheme-switcher__accent-badge,
-.accent-yellow .color-scheme-switcher__accent-badge,
-.accent-lime .color-scheme-switcher__accent-badge,
-.accent-green .color-scheme-switcher__accent-badge,
-.accent-emerald .color-scheme-switcher__accent-badge,
-.accent-teal .color-scheme-switcher__accent-badge,
-.accent-cyan .color-scheme-switcher__accent-badge,
-.accent-sky .color-scheme-switcher__accent-badge,
-.accent-blue .color-scheme-switcher__accent-badge,
-.accent-indigo .color-scheme-switcher__accent-badge,
-.accent-violet .color-scheme-switcher__accent-badge,
-.accent-purple .color-scheme-switcher__accent-badge,
-.accent-fuchsia .color-scheme-switcher__accent-badge,
-.accent-pink .color-scheme-switcher__accent-badge,
-.accent-rose .color-scheme-switcher__accent-badge {
+.accent-theme-red .color-scheme-switcher__accent-badge,
+.accent-theme-orange .color-scheme-switcher__accent-badge,
+.accent-theme-amber .color-scheme-switcher__accent-badge,
+.accent-theme-yellow .color-scheme-switcher__accent-badge,
+.accent-theme-lime .color-scheme-switcher__accent-badge,
+.accent-theme-green .color-scheme-switcher__accent-badge,
+.accent-theme-emerald .color-scheme-switcher__accent-badge,
+.accent-theme-teal .color-scheme-switcher__accent-badge,
+.accent-theme-cyan .color-scheme-switcher__accent-badge,
+.accent-theme-sky .color-scheme-switcher__accent-badge,
+.accent-theme-blue .color-scheme-switcher__accent-badge,
+.accent-theme-indigo .color-scheme-switcher__accent-badge,
+.accent-theme-violet .color-scheme-switcher__accent-badge,
+.accent-theme-purple .color-scheme-switcher__accent-badge,
+.accent-theme-fuchsia .color-scheme-switcher__accent-badge,
+.accent-theme-pink .color-scheme-switcher__accent-badge,
+.accent-theme-rose .color-scheme-switcher__accent-badge {
   @apply inline-block;
 }
 
-.accent-red .color-scheme-switcher__accent-badge-preview--red,
-.accent-orange .color-scheme-switcher__accent-badge-preview--orange,
-.accent-amber .color-scheme-switcher__accent-badge-preview--amber,
-.accent-yellow .color-scheme-switcher__accent-badge-preview--yellow,
-.accent-lime .color-scheme-switcher__accent-badge-preview--lime,
-.accent-green .color-scheme-switcher__accent-badge-preview--green,
-.accent-emerald .color-scheme-switcher__accent-badge-preview--emerald,
-.accent-teal .color-scheme-switcher__accent-badge-preview--teal,
-.accent-cyan .color-scheme-switcher__accent-badge-preview--cyan,
-.accent-sky .color-scheme-switcher__accent-badge-preview--sky,
-.accent-blue .color-scheme-switcher__accent-badge-preview--blue,
-.accent-indigo .color-scheme-switcher__accent-badge-preview--indigo,
-.accent-violet .color-scheme-switcher__accent-badge-preview--violet,
-.accent-purple .color-scheme-switcher__accent-badge-preview--purple,
-.accent-fuchsia .color-scheme-switcher__accent-badge-preview--fuchsia,
-.accent-pink .color-scheme-switcher__accent-badge-preview--pink,
-.accent-rose .color-scheme-switcher__accent-badge-preview--rose {
+.accent-theme-red .color-scheme-switcher__accent-badge-preview--red,
+.accent-theme-orange .color-scheme-switcher__accent-badge-preview--orange,
+.accent-theme-amber .color-scheme-switcher__accent-badge-preview--amber,
+.accent-theme-yellow .color-scheme-switcher__accent-badge-preview--yellow,
+.accent-theme-lime .color-scheme-switcher__accent-badge-preview--lime,
+.accent-theme-green .color-scheme-switcher__accent-badge-preview--green,
+.accent-theme-emerald .color-scheme-switcher__accent-badge-preview--emerald,
+.accent-theme-teal .color-scheme-switcher__accent-badge-preview--teal,
+.accent-theme-cyan .color-scheme-switcher__accent-badge-preview--cyan,
+.accent-theme-sky .color-scheme-switcher__accent-badge-preview--sky,
+.accent-theme-blue .color-scheme-switcher__accent-badge-preview--blue,
+.accent-theme-indigo .color-scheme-switcher__accent-badge-preview--indigo,
+.accent-theme-violet .color-scheme-switcher__accent-badge-preview--violet,
+.accent-theme-purple .color-scheme-switcher__accent-badge-preview--purple,
+.accent-theme-fuchsia .color-scheme-switcher__accent-badge-preview--fuchsia,
+.accent-theme-pink .color-scheme-switcher__accent-badge-preview--pink,
+.accent-theme-rose .color-scheme-switcher__accent-badge-preview--rose {
   @apply inline-block;
 }

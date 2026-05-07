@@ -60,16 +60,16 @@
 /* Add dark mode variant */
 @custom-variant light (&:where(.light, .light *));
 @custom-variant dark (&:where(.dark, .dark *));
-@custom-variant theme-brand (&:where(.theme-brand, .theme-brand *));
-@custom-variant theme-slate (&:where(.theme-slate, .theme-slate *));
-@custom-variant theme-stone (&:where(.theme-stone, .theme-stone *));
-@custom-variant theme-gray (&:where(.theme-gray, .theme-gray *));
-@custom-variant theme-zinc (&:where(.theme-zinc, .theme-zinc *));
-@custom-variant theme-neutral (&:where(.theme-neutral, .theme-neutral *));
-@custom-variant theme-taupe (&:where(.theme-taupe, .theme-taupe *));
-@custom-variant theme-mauve (&:where(.theme-mauve, .theme-mauve *));
-@custom-variant theme-mist (&:where(.theme-mist, .theme-mist *));
-@custom-variant theme-olive (&:where(.theme-olive, .theme-olive *));
+@custom-variant neutral-theme-brand (&:where(.neutral-theme-brand, .neutral-theme-brand *));
+@custom-variant neutral-theme-slate (&:where(.neutral-theme-slate, .neutral-theme-slate *));
+@custom-variant neutral-theme-stone (&:where(.neutral-theme-stone, .neutral-theme-stone *));
+@custom-variant neutral-theme-gray (&:where(.neutral-theme-gray, .neutral-theme-gray *));
+@custom-variant neutral-theme-zinc (&:where(.neutral-theme-zinc, .neutral-theme-zinc *));
+@custom-variant neutral-theme-neutral (&:where(.neutral-theme-neutral, .neutral-theme-neutral *));
+@custom-variant neutral-theme-taupe (&:where(.neutral-theme-taupe, .neutral-theme-taupe *));
+@custom-variant neutral-theme-mauve (&:where(.neutral-theme-mauve, .neutral-theme-mauve *));
+@custom-variant neutral-theme-mist (&:where(.neutral-theme-mist, .neutral-theme-mist *));
+@custom-variant neutral-theme-olive (&:where(.neutral-theme-olive, .neutral-theme-olive *));
 
 @custom-variant os-mac (&:where(.os-mac, .os-mac *));
 @custom-variant os-pc (&:where(.os-pc, .os-pc *));

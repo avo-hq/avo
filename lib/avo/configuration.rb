@@ -1,7 +1,6 @@
 module Avo
   class Configuration
     attr_writer :app_name
-    attr_writer :branding
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
@@ -257,8 +256,12 @@ module Avo
       @root_path
     end
 
-    def branding
-      Avo::Configuration::Branding.new(**@branding || {})
+    def appearance
+      @appearance ||= Avo::Configuration::Appearance.new
+    end
+
+    def appearance=(options = {})
+      @appearance = Avo::Configuration::Appearance.new(options)
     end
 
     def app_name

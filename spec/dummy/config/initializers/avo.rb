@@ -62,29 +62,96 @@ Avo.configure do |config|
   #   # show_key_badges: true
   # }
 
-  ## == Branding ==
-  config.branding = {
-    colors: {
-      # background: "#FFFCF9", # basecamp
-      # background: "#F6F6F7", # original
-      # background: "#FBF7F0", # hotwire
-      # background: "248 246 242", # cookpad
-      # BLUE
-      100 => "#CEE7F8",
-      400 => "#399EE5",
-      500 => "#0886DE",
-      600 => "#066BB2"
-      # # ORANGE
-      # 100 => "#FFECCC",
-      # 400 => "#FFB435",
-      # 500 => "#FFA102",
-      # 600 => "#CC8102",
-    },
-    # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
+  ## == Appearance ==
+  config.appearance = {
     logo: "avo/logo.png",
-    logomark: "avo/logomark.png"
-    # placeholder: "/avo/placeholder.svg",
+    logo_dark: "avo/logo-dark.png",
+    logomark: "avo/logomark.png",
+    logomark_dark: "avo/logomark-dark.png",
+    favicon: "avo/favicon.ico",
+    favicon_dark: "avo/favicon-dark.ico",
+    # scheme: :dark, # :auto, :light, :dark
+    # neutral: :olive, # :brand, :slate, :stone or any other tailwind color name
+    # accent: :blue, # :neutral, :red, :orange, or any other tailwind color name
+    # lock: [:neutral], # [:scheme, :neutral, :accent]
+    # neutrals: %w[brand mist olive],
+    # accents: %w[brand red orange pink rose],
+    # Override the brand neutral and accent palettes. Both keys are independent —
+    # set one, the other, both, or neither.
+    # All 12 shades are required for `neutral_colors`; all three tokens for `accent_colors`.
+    # Both `light:` and `dark:` schemes are required for either key.
+    # Values are passed through verbatim — any string a CSS custom property
+    # accepts works (`oklch(...)`, `#hex`, `rgb(...)`, `hsl(...)`, `var(...)`).
+    # Comment this block out to see Avo's defaults instead.
+    # neutral_colors: {
+    #   light: {
+    #     25 => "oklch(98.5% 0.005 60)",
+    #     50 => "oklch(97%   0.008 60)",
+    #     100 => "oklch(93%   0.012 60)",
+    #     200 => "oklch(86%   0.015 60)",
+    #     300 => "oklch(76%   0.015 60)",
+    #     400 => "oklch(63%   0.014 60)",
+    #     500 => "oklch(53%   0.013 60)",
+    #     600 => "oklch(48%   0.012 60)",
+    #     700 => "oklch(43%   0.011 60)",
+    #     800 => "oklch(39%   0.010 60)",
+    #     900 => "oklch(28%   0.008 60)",
+    #     950 => "oklch(20%   0.005 60)"
+    #   },
+    #   dark: {
+    #     25 => "oklch(98.5% 0.005 60)",
+    #     50 => "oklch(97%   0.008 60)",
+    #     100 => "oklch(93%   0.012 60)",
+    #     200 => "oklch(86%   0.015 60)",
+    #     300 => "oklch(76%   0.015 60)",
+    #     400 => "oklch(63%   0.014 60)",
+    #     500 => "oklch(53%   0.013 60)",
+    #     600 => "oklch(48%   0.012 60)",
+    #     700 => "oklch(43%   0.011 60)",
+    #     800 => "oklch(39%   0.010 60)",
+    #     900 => "oklch(28%   0.008 60)",
+    #     950 => "oklch(20%   0.005 60)"
+    #   }
+    # },
+    # accent_colors: {
+    #   light: {color: "oklch(55% 0.2 280)", content: "oklch(45% 0.2 280)", foreground: "oklch(99% 0 0)"},
+    #   dark: {color: "oklch(70% 0.2 280)", content: "oklch(80% 0.15 280)", foreground: "oklch(15% 0.05 280)"}
+    # },
+    persistence: :database, # :database or :cookie
+    load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
+    save_settings: -> {
+      next unless current_user
+
+      current_user.update!(
+        avo_preferences: current_user.avo_preferences.to_h.deep_merge(
+          "appearance" => settings.stringify_keys
+        )
+      )
+    }
   }
+
+  # `lock:` accepts any subset of [:scheme, :neutral, :accent].
+  # - A key in `lock:` hides its switcher and forces the configured value.
+  # - Anything not in `lock:` is exposed as a switcher, with the configured value as default.
+  # - `persistence:` (`:cookie` | `:database`) controls where unlocked user picks are stored.
+
+  # on static mode:
+  #   - if the scheme is set, we force the scheme and not show the scheme switcher
+  #   - if the scheme is not set, we show the scheme switcher and default to auto. the user may choos eit and we save it in the cookies
+  #   - if the neutral is set, we force the neutral and not show the neutral switcher
+  #   - if the accent is set, we force the accent and not show the accent switcher
+  #   - if neutral and accent aren't set, we show the neutral and accent switchers and default to neutral and blue. the user may choose either and we save it in the cookies
+  # on dynamic mode:
+  #   - we show the scheme switcher
+  #   - we store the scheme in the database
+  #   - we store the neutral and accent in the database
+  #   - we store the mode in the database
+  #   - we store the logo in the database
+  #   - we store the logomark in the database
+  #   - we store the favicon in the database
+  # on dynamic mode (:database):
+  #   - PATCH /appearance_settings sends a partial JSON body (only scheme, neutral, or accent changed).
+  #   - merge `settings` in `save_settings`; load the full hash in `load_settings`.
 
   # Uncomment to test out manual resource loading.
   # config.resources = [

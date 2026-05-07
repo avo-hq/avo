@@ -1,0 +1,479 @@
+<style>
+  .color-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .color-swatch {
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+
+  .color-swatch:hover {
+    transform: translateY(-2px);
+  }
+
+  .swatch-color {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-secondary);
+  }
+
+  .swatch-info {
+    padding: 1rem;
+    background: var(--color-secondary);
+    font-size: 0.85rem;
+  }
+
+  .swatch-label {
+    font-weight: 600;
+    color: var(--color-content);
+    margin-bottom: 0.25rem;
+    word-break: break-word;
+    font-size: 0.85rem;
+  }
+
+  .swatch-value {
+    color: var(--color-content-secondary);
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    word-break: break-all;
+  }
+
+  .swatch-desc {
+    color: var(--color-content-secondary);
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .neutral-scale {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .neutral-swatch {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .neutral-swatch:hover {
+    transform: translateY(-2px);
+  }
+
+  .neutral-color {
+    height: 60px;
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid var(--color-secondary);
+    border-bottom: none;
+  }
+
+  .neutral-info {
+    padding: 0.75rem;
+    background: var(--color-secondary);
+    border-radius: 0 0 4px 4px;
+    border: 1px solid var(--color-secondary);
+    border-top: none;
+    text-align: center;
+  }
+
+  .neutral-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--color-content);
+  }
+
+  .neutral-value {
+    font-size: 0.7rem;
+    color: var(--color-content-secondary);
+    font-family: 'Courier New', monospace;
+  }
+
+  .accent-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .accent-card {
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+    box-shadow: var(--box-shadow);
+  }
+
+  .accent-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .accent-swatch-color {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 0.5rem;
+    color: white;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    font-size: 0.75rem;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .accent-swatch-info {
+    padding: 0.75rem;
+    background: var(--color-secondary);
+    font-size: 0.75rem;
+  }
+
+  .accent-name {
+    font-weight: 600;
+    color: var(--color-content);
+    text-transform: capitalize;
+    margin-bottom: 0.25rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.85rem;
+    color: var(--color-content-secondary);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .section-header {
+    font-size: 1rem;
+    margin: 1.5rem 0 1rem 0;
+    font-weight: 600;
+    color: var(--color-content);
+  }
+
+  .copy-indicator {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-content);
+    color: var(--color-primary);
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+  }
+
+  .copy-indicator.show {
+    opacity: 1;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-secondary);
+  }
+
+  .tab-button {
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-content-secondary);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .tab-button:hover {
+    color: var(--color-content);
+  }
+
+  .tab-button.active {
+    color: var(--color-content);
+    border-bottom-color: var(--color-content);
+  }
+
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .accent-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .accent-group-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-content-secondary);
+  }
+
+  .accent-group-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+</style>
+
+<div class="flex flex-col">
+  <%= render ui.panel(title: 'Color Tokens', description: 'Avo design system color variables for Light and Dark modes. Click any swatch to copy the CSS variable name.') do |panel| %>
+    <% panel.with_body do %>
+      <div class="flex flex-col gap-6">
+        <!-- Foundations Section -->
+        <div>
+          <h3 class="section-header">Foundations</h3>
+          <p class="section-subtitle">Base colors used for layout and structure</p>
+
+          <div class="tabs" id="foundations-tabs">
+            <button class="tab-button active" data-tab="foundations-light">☀️ Light Mode</button>
+            <button class="tab-button" data-tab="foundations-dark">🌙 Dark Mode</button>
+          </div>
+
+          <div id="foundations-light" class="tab-content active">
+            <div class="color-group">
+              <% @light_foundations.each do |color| %>
+                <div class="color-swatch" onclick="copyToClipboard('<%= color[:name] %>')">
+                  <div class="swatch-color" style="background-color: <%= color[:value] %>"></div>
+                  <div class="swatch-info">
+                    <div class="swatch-label"><%= color[:name] %></div>
+                    <div class="swatch-value"><%= color[:value] %></div>
+                    <% if color[:desc] %>
+                      <div class="swatch-desc"><%= color[:desc] %></div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div id="foundations-dark" class="tab-content">
+            <div class="color-group">
+              <% @dark_foundations.each do |color| %>
+                <div class="color-swatch" onclick="copyToClipboard('<%= color[:name] %>')">
+                  <div class="swatch-color" style="background-color: <%= color[:value] %>"></div>
+                  <div class="swatch-info">
+                    <div class="swatch-label"><%= color[:name] %></div>
+                    <div class="swatch-value"><%= color[:value] %></div>
+                    <% if color[:desc] %>
+                      <div class="swatch-desc"><%= color[:desc] %></div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <h4 class="section-header" style="font-size: 0.95rem;">Neutral Scale</h4>
+          <div class="neutral-scale">
+            <% @neutral_scale.each do |item| %>
+              <div class="neutral-swatch" onclick="copyToClipboard('--color-avo-neutral-<%= item[:name] %>')">
+                <div class="neutral-color" style="background-color: <%= item[:oklch] %>"></div>
+                <div class="neutral-info">
+                  <div class="neutral-label"><%= item[:name] %></div>
+                  <div class="neutral-value">--color-avo-neutral-<%= item[:name] %></div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <h4 class="section-header" style="font-size: 0.95rem;">Accent Variables by Color</h4>
+          <p class="section-subtitle">Each accent shows its three variables: 500 (main), 600 (content), and foreground (text)</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+            <% @accent_options.each do |color| %>
+              <div class="accent-group">
+                <div style="font-size: 0.9rem; font-weight: 600; color: var(--color-content); text-transform: capitalize;">
+                  <%= color[:name] %>
+                </div>
+                <div class="accent-group-swatches">
+                  <div class="neutral-swatch" onclick="copyToClipboard('--color-<%= color[:name] %>-500')">
+                    <div class="neutral-color" style="background-color: var(--color-<%= color[:name] %>-500)"></div>
+                    <div class="neutral-info">
+                      <div class="neutral-label">500</div>
+                      <div class="neutral-value">--color-<%= color[:name] %>-500</div>
+                    </div>
+                  </div>
+
+                  <div class="neutral-swatch" onclick="copyToClipboard('--color-<%= color[:name] %>-600')">
+                    <div class="neutral-color" style="background-color: var(--color-<%= color[:name] %>-600)"></div>
+                    <div class="neutral-info">
+                      <div class="neutral-label">600</div>
+                      <div class="neutral-value">--color-<%= color[:name] %>-600</div>
+                    </div>
+                  </div>
+
+                  <div class="neutral-swatch" onclick="copyToClipboard('--color-white')">
+                    <div class="neutral-color" style="background-color: var(--color-white)"></div>
+                    <div class="neutral-info">
+                      <div class="neutral-label">fg</div>
+                      <div class="neutral-value">--color-white</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Accents Section -->
+        <div>
+          <h3 class="section-header">Accents</h3>
+          <p class="section-subtitle">Brand colors used for emphasis and accent elements</p>
+
+          <div class="tabs" id="accents-tabs">
+            <button class="tab-button active" data-tab="accents-default">◼️ Default</button>
+            <button class="tab-button" data-tab="accents-light">☀️ Light Mode</button>
+            <button class="tab-button" data-tab="accents-dark">🌙 Dark Mode</button>
+            <button class="tab-button" data-tab="accents-options">🎨 All Colors</button>
+          </div>
+
+          <div id="accents-default" class="tab-content active">
+            <div class="accent-group">
+              <div class="accent-group-label">Light Mode</div>
+              <div class="accent-cards">
+                <% @light_accents.each do |color| %>
+                  <div class="accent-card" onclick="copyToClipboard('<%= color[:name] %>')">
+                    <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
+                      <%= color[:name].sub('--color-', '') %>
+                    </div>
+                    <div class="accent-swatch-info">
+                      <div class="accent-name"><%= color[:name] %></div>
+                      <% if color[:desc] %>
+                        <div class="swatch-value" style="font-size: 0.75rem;"><%= color[:desc] %></div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="accent-group-label" style="margin-top: 1rem;">Dark Mode</div>
+              <div class="accent-cards">
+                <% @dark_accents.each do |color| %>
+                  <div class="accent-card" onclick="copyToClipboard('<%= color[:name] %>')">
+                    <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
+                      <%= color[:name].sub('--color-', '') %>
+                    </div>
+                    <div class="accent-swatch-info">
+                      <div class="accent-name"><%= color[:name] %></div>
+                      <% if color[:desc] %>
+                        <div class="swatch-value" style="font-size: 0.75rem;"><%= color[:desc] %></div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div id="accents-light" class="tab-content">
+            <div class="accent-cards">
+              <% @light_accents.each do |color| %>
+                <div class="accent-card" onclick="copyToClipboard('<%= color[:name] %>')">
+                  <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
+                    <%= color[:name].sub('--color-', '') %>
+                  </div>
+                  <div class="accent-swatch-info">
+                    <div class="accent-name"><%= color[:name] %></div>
+                    <% if color[:desc] %>
+                      <div class="swatch-value" style="font-size: 0.75rem;"><%= color[:desc] %></div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div id="accents-dark" class="tab-content">
+            <div class="accent-cards">
+              <% @dark_accents.each do |color| %>
+                <div class="accent-card" onclick="copyToClipboard('<%= color[:name] %>')">
+                  <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
+                    <%= color[:name].sub('--color-', '') %>
+                  </div>
+                  <div class="accent-swatch-info">
+                    <div class="accent-name"><%= color[:name] %></div>
+                    <% if color[:desc] %>
+                      <div class="swatch-value" style="font-size: 0.75rem;"><%= color[:desc] %></div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div id="accents-options" class="tab-content">
+            <div class="accent-cards">
+              <% @accent_options.each do |color| %>
+                <div class="accent-card" onclick="copyToClipboard('--color-<%= color[:name] %>-500')">
+                  <div class="accent-swatch-color" style="background-color: var(--color-<%= color[:name] %>-500)">
+                    <%= color[:name] %>
+                  </div>
+                  <div class="accent-swatch-info">
+                    <div class="accent-name"><%= color[:name] %></div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="copy-indicator" id="copyIndicator">Copied to clipboard!</div>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+      const tabId = this.dataset.tab;
+      const tabGroup = this.closest('.tabs');
+      const tabContainer = tabGroup.parentElement;
+
+      // Hide all tabs in this group
+      tabContainer.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Deactivate all buttons in this group
+      tabGroup.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Show selected tab and activate button
+      document.getElementById(tabId).classList.add('active');
+      this.classList.add('active');
+    });
+  });
+
+  // Copy to clipboard
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const indicator = document.getElementById('copyIndicator');
+      indicator.classList.add('show');
+      setTimeout(() => indicator.classList.remove('show'), 2000);
+    });
+  }
+</script>

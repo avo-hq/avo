@@ -115,7 +115,7 @@ module Avo
     end
 
     def chart_color(index)
-      Avo.configuration.branding.chart_colors[index % Avo.configuration.branding.chart_colors.length]
+      Avo.configuration.appearance.chart_colors[index % Avo.configuration.appearance.chart_colors.length]
     end
 
     def possibly_rails_authentication?
@@ -216,8 +216,33 @@ module Avo
       avo_field(id, type, **args, view: view, &block)
     end
 
-    def accent_colors
-      %w[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose]
+    def html_theme_classes
+      classes = []
+      classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
+      classes << "accent-theme-#{current_accent}" if current_accent != "brand"
+
+      case current_scheme
+      when "dark" then classes << "dark" << "scheme-dark"
+      when "light" then classes << "scheme-light"
+      else classes << "scheme-auto"
+      end
+
+      classes
+    end
+
+    def current_neutral
+      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:neutral) : cookies[:theme]
+      value.presence || Avo.configuration.appearance.neutral&.to_s || "brand"
+    end
+
+    def current_accent
+      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:accent) : cookies[:accent_color]
+      value.presence || Avo.configuration.appearance.accent&.to_s || "brand"
+    end
+
+    def current_scheme
+      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:color_scheme) : cookies[:color_scheme]
+      value.presence || Avo.configuration.appearance.scheme.to_s
     end
   end
 end

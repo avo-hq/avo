@@ -126,20 +126,25 @@ Avo.configure do |config|
   # config.exclude_from_status = []
   # config.model_generator_hook = true
 
-  ## == Branding ==
-  # config.branding = {
-  #   colors: {
-  #     background: "248 246 242",
-  #     100 => "#CEE7F8",
-  #     400 => "#399EE5",
-  #     500 => "#0886DE",
-  #     600 => "#066BB2",
-  #   },
-  #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
+  ## == Appearance ==
+  # config.appearance = {
   #   logo: "avo/logo.png",
+  #   logo_dark: "avo/logo-dark.png",
   #   logomark: "avo/logomark.png",
+  #   logomark_dark: "avo/logomark-dark.png",
+  #   favicon: "avo/favicon.ico",
+  #   favicon_dark: "avo/favicon-dark.ico",
+  #   lock: [:scheme, :neutrals, :accent]
+  #   neutrals: [:brand, :neutral, :slate, :olive],
+  #   accents: [:brand, :red, :blue, :sky, :purple],
+  #   mode: :static,
+  #   neutral: :brand,
+  #   accent: :brand,
+  #   scheme: :auto,
+  #   persistence: :database,
   #   placeholder: "avo/placeholder.svg",
-  #   favicon: "avo/favicon.ico"
+  #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
+  #   load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
   # }
 
   ## == Breadcrumbs ==

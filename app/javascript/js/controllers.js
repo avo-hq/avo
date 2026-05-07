@@ -9,7 +9,7 @@ import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardFiltersController from './controllers/card_filters_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
-import ColorSchemeSwitcherController from './controllers/color_scheme_switcher_controller'
+import AppearanceController from './controllers/appearance_controller'
 import ConfirmDialogController from './controllers/confirm_dialog_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
@@ -60,6 +60,7 @@ import TabsController from './controllers/tabs_controller'
 import TabsOverflowController from './controllers/tabs_overflow_controller'
 import TagsFieldController from './controllers/fields/tags_field_controller'
 import TextFilterController from './controllers/text_filter_controller'
+import ThemeFaviconController from './controllers/theme_favicon_controller'
 import TippyController from './controllers/tippy_controller'
 import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
@@ -74,7 +75,7 @@ application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('card-filters', CardFiltersController)
 application.register('clear-input', ClearInputController)
-application.register('color-scheme-switcher', ColorSchemeSwitcherController)
+application.register('appearance', AppearanceController)
 application.register('copy-to-clipboard', CopyToClipboardController)
 application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
@@ -114,6 +115,7 @@ application.register('table-row', TableRowController)
 application.register('tabs', TabsController)
 application.register('tabs-overflow', TabsOverflowController)
 application.register('text-filter', TextFilterController)
+application.register('theme-favicon', ThemeFaviconController)
 application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
 application.register('dropdown-menu', DropdownController)
