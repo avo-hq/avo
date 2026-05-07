@@ -1,12 +1,10 @@
-<% b = Avo.configuration.appearance %>
-
-<% if b.favicon_dark.present? %>
-  <%= favicon_link_tag b.favicon,
+<% if Avo.configuration.appearance.favicon_dark.present? %>
+  <%= favicon_link_tag Avo.configuration.appearance.favicon,
     data: {
       controller: "theme-favicon",
-      theme_favicon_light_url_value: asset_path(b.favicon),
-      theme_favicon_dark_url_value: asset_path(b.favicon_dark)
+      theme_favicon_light_url_value: asset_path(Avo.configuration.appearance.favicon),
+      theme_favicon_dark_url_value: asset_path(Avo.configuration.appearance.favicon_dark)
     } %>
 <% else %>
-  <%= favicon_link_tag b.favicon %>
+  <%= favicon_link_tag Avo.configuration.appearance.favicon %>
 <% end %>

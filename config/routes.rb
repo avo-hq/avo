@@ -9,7 +9,7 @@ Avo::Engine.routes.draw do
 
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
-  patch "theme_settings", to: "theme_settings#update"
+  patch "appearance_settings", to: "appearance_settings#update"
 
   scope "avo_api", as: "avo_api" do
     # Only used for searchable fields

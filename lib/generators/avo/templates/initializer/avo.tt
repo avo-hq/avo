@@ -128,18 +128,23 @@ Avo.configure do |config|
 
   ## == Appearance ==
   # config.appearance = {
-  #   mode: :static,
-  #   neutral: :brand,
-  #   accent: :brand,
-  #   scheme: :auto,
   #   logo: "avo/logo.png",
   #   logo_dark: "avo/logo-dark.png",
   #   logomark: "avo/logomark.png",
   #   logomark_dark: "avo/logomark-dark.png",
   #   favicon: "avo/favicon.ico",
   #   favicon_dark: "avo/favicon-dark.ico",
+  #   lock: [:scheme, :neutrals, :accent]
+  #   neutrals: [:brand, :neutral, :slate, :olive],
+  #   accents: [:brand, :red, :blue, :sky, :purple],
+  #   mode: :static,
+  #   neutral: :brand,
+  #   accent: :brand,
+  #   scheme: :auto,
+  #   persistence: :database,
   #   placeholder: "avo/placeholder.svg",
   #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
+  #   load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
   # }
 
   ## == Breadcrumbs ==

@@ -118,13 +118,14 @@ Avo.configure do |config|
     #   dark: {color: "oklch(70% 0.2 280)", content: "oklch(80% 0.15 280)", foreground: "oklch(15% 0.05 280)"}
     # },
     persistence: :database, # :database or :cookie
-    load_settings: -> { current_user&.theme_settings&.symbolize_keys || {} },
+    load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
     save_settings: -> {
-      user = current_user
-      next unless user
+      next unless current_user
 
-      user.update!(
-        theme_settings: user.theme_settings.symbolize_keys.merge(settings.symbolize_keys)
+      current_user.update!(
+        avo_preferences: current_user.avo_preferences.to_h.deep_merge(
+          "appearance" => settings.stringify_keys
+        )
       )
     }
   }
@@ -149,7 +150,7 @@ Avo.configure do |config|
   #   - we store the logomark in the database
   #   - we store the favicon in the database
   # on dynamic mode (:database):
-  #   - PATCH /theme_settings sends a partial JSON body (only scheme, neutral, or accent changed).
+  #   - PATCH /appearance_settings sends a partial JSON body (only scheme, neutral, or accent changed).
   #   - merge `settings` in `save_settings`; load the full hash in `load_settings`.
 
   # Uncomment to test out manual resource loading.

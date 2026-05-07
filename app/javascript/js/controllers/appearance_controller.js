@@ -125,7 +125,7 @@ export default class extends Controller {
 
   persistPreferences(dimension) {
     if (this.appearance.persistence === 'database') {
-      this.patchThemeSettings(dimension)
+      this.patchAppearanceSettings(dimension)
       return
     }
 
@@ -173,18 +173,18 @@ export default class extends Controller {
     }
   }
 
-  patchThemeSettings(dimension) {
-    const body = this.themeSettingsPayload(dimension)
+  patchAppearanceSettings(dimension) {
+    const body = this.appearanceSettingsPayload(dimension)
     if (!body) return
 
-    patch(`${window.Avo.configuration.root_path}/theme_settings`, {
+    patch(`${window.Avo.configuration.root_path}/appearance_settings`, {
       responseKind: 'json',
       contentType: 'application/json',
       body,
     })
   }
 
-  themeSettingsPayload(dimension) {
+  appearanceSettingsPayload(dimension) {
     switch (dimension) {
       case 'scheme':
         return { color_scheme: this.currentSchemeValue }

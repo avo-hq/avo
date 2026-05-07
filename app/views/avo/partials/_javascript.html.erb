@@ -1,4 +1,3 @@
-<% b = Avo.configuration.appearance %>
 <%= javascript_tag nonce: true do %>
   window.Avo = window.Avo || { configuration: {} }
   Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
@@ -21,14 +20,14 @@
     visible: <%= Avo::MediaLibrary.configuration.visible? %>
   }
   Avo.configuration.appearance = {
-    persistence: '<%= b.persistence %>',
-    scheme: '<%= b.scheme %>',
-    neutral: '<%= b.neutral_css_class %>',
-    accent: '<%= b.accent_css_class %>',
-    schemeLocked: <%= b.scheme_locked? %>,
-    neutralLocked: <%= b.neutral_locked? %>,
-    accentLocked: <%= b.accent_locked? %>,
-    neutrals: <%== b.neutrals.as_json %>,
-    accents: <%== b.accents.as_json %>
+    persistence: '<%= Avo.configuration.appearance.persistence %>',
+    scheme: '<%= Avo.configuration.appearance.scheme %>',
+    neutral: '<%= Avo.configuration.appearance.neutral_css_class %>',
+    accent: '<%= Avo.configuration.appearance.accent_css_class %>',
+    schemeLocked: <%= Avo.configuration.appearance.scheme_locked? %>,
+    neutralLocked: <%= Avo.configuration.appearance.neutral_locked? %>,
+    accentLocked: <%= Avo.configuration.appearance.accent_locked? %>,
+    neutrals: <%== Avo.configuration.appearance.neutrals.as_json %>,
+    accents: <%== Avo.configuration.appearance.accents.as_json %>
   }
 <% end %>

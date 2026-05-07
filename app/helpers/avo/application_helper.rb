@@ -231,21 +231,18 @@ module Avo
     end
 
     def current_neutral
-      appearance = Avo.configuration.appearance
-      value = appearance.database_persistence? ? Avo::Current.theme_settings&.dig(:neutral) : cookies[:theme]
-      value.presence || appearance.neutral&.to_s || "brand"
+      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:neutral) : cookies[:theme]
+      value.presence || Avo.configuration.appearance.neutral&.to_s || "brand"
     end
 
     def current_accent
-      appearance = Avo.configuration.appearance
-      value = appearance.database_persistence? ? Avo::Current.theme_settings&.dig(:accent) : cookies[:accent_color]
-      value.presence || appearance.accent&.to_s || "brand"
+      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:accent) : cookies[:accent_color]
+      value.presence || Avo.configuration.appearance.accent&.to_s || "brand"
     end
 
     def current_scheme
-      appearance = Avo.configuration.appearance
-      value = appearance.database_persistence? ? Avo::Current.theme_settings&.dig(:color_scheme) : cookies[:color_scheme]
-      value.presence || appearance.scheme.to_s
+      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:color_scheme) : cookies[:color_scheme]
+      value.presence || Avo.configuration.appearance.scheme.to_s
     end
   end
 end

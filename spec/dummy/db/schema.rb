@@ -347,7 +347,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_05_120100) do
     t.json "roles"
     t.string "slug"
     t.bigint "team_id"
-    t.json "theme_settings", default: {}, null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
