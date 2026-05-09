@@ -701,8 +701,9 @@ GEM
     unicode-emoji (4.2.0)
     uri (1.1.1)
     useragent (0.16.11)
-    view_component (4.0.0)
-      activesupport (>= 7.1.0, < 8.1)
+    view_component (4.9.0)
+      actionview (>= 7.1.0)
+      activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
     virtus (2.0.0)
       axiom-types (~> 0.1)
@@ -817,7 +818,7 @@ DEPENDENCIES
   standard
   test-prof
   tzinfo-data
-  view_component (= 4.0.0)
+  view_component (= 4.9.0)
   web-console (>= 3.3.0)
   webmock
   zeitwerk
