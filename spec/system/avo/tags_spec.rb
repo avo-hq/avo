@@ -170,7 +170,7 @@ RSpec.describe "Tags", type: :system do
 
       expect(page).to have_text "FL #{users[0].first_name} #{users[0].last_name}"
       expect(page).to have_text "FL #{users[1].first_name} #{users[1].last_name}"
-
+    ensure
       Avo::Resources::Course.restore_items_from_backup
     end
   end
@@ -181,6 +181,10 @@ RSpec.describe "Tags", type: :system do
     let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
     let(:tags_input) { field_value_slot.find("span[contenteditable]") }
 
+    # Intentionally no `ensure` to restore items: the next test
+    # (`keep correct tags on validations error and edit`) inherits the
+    # `fetch_values_from` / `format_using` setup from this one's leaked
+    # `temporary_items`. That test's `ensure` performs the cleanup for both.
     it "fetches the labels" do
       Avo::Resources::Course.with_temporary_items do
         field :name
@@ -230,7 +234,7 @@ RSpec.describe "Tags", type: :system do
       save
 
       expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
-
+    ensure
       Avo::Resources::Course.restore_items_from_backup
     end
   end
@@ -260,7 +264,7 @@ RSpec.describe "Tags", type: :system do
       projects.each do |project|
         expect(page).to have_text(project.stage)
       end
-
+    ensure
       Avo::Resources::Project.restore_items_from_backup
     end
 
@@ -284,7 +288,7 @@ RSpec.describe "Tags", type: :system do
       expect(page).not_to have_text("a_c2")
 
       expect(page).to have_text(projects.first.stage)
-
+    ensure
       Avo::Resources::Project.restore_items_from_backup
     end
 
@@ -318,7 +322,7 @@ RSpec.describe "Tags", type: :system do
       wait_for_path_to_be(path: avo.resources_project_path(projects.first))
 
       expect(page).to have_text(projects.first.stage)
-
+    ensure
       Avo::Resources::Project.restore_items_from_backup
     end
   end
