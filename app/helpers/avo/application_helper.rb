@@ -115,7 +115,8 @@ module Avo
     end
 
     def chart_color(index)
-      Avo.configuration.appearance.chart_colors[index % Avo.configuration.appearance.chart_colors.length]
+      colors = Avo.configuration.appearance.chart_colors
+      colors[index % colors.length]
     end
 
     def possibly_rails_authentication?
@@ -231,18 +232,27 @@ module Avo
     end
 
     def current_neutral
-      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:neutral) : cookies[:theme]
-      value.presence || Avo.configuration.appearance.neutral&.to_s || "brand"
+      appearance = Avo.configuration.appearance
+      return appearance.neutral&.to_s || "brand" if appearance.neutral_locked?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:neutral) : cookies[:theme]
+      value.presence || appearance.neutral&.to_s || "brand"
     end
 
     def current_accent
-      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:accent) : cookies[:accent_color]
-      value.presence || Avo.configuration.appearance.accent&.to_s || "brand"
+      appearance = Avo.configuration.appearance
+      return appearance.accent&.to_s || "brand" if appearance.accent_locked?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:accent) : cookies[:accent_color]
+      value.presence || appearance.accent&.to_s || "brand"
     end
 
     def current_scheme
-      value = Avo.configuration.appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:color_scheme) : cookies[:color_scheme]
-      value.presence || Avo.configuration.appearance.scheme.to_s
+      appearance = Avo.configuration.appearance
+      return appearance.scheme.to_s if appearance.scheme_locked?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:color_scheme) : cookies[:color_scheme]
+      value.presence || appearance.scheme.to_s
     end
   end
 end

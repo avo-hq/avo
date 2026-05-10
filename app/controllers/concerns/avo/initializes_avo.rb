@@ -25,10 +25,12 @@ module Avo
     end
 
     def load_appearance_settings
-      return unless Avo.configuration.appearance.database_persistence? && Avo.configuration.appearance.load_settings_block.present?
+      appearance = Avo.configuration.appearance
+
+      return unless appearance.database_persistence? && appearance.load_settings_block.present?
 
       Avo::Current.appearance_settings = Avo::ExecutionContext.new(
-        target: Avo.configuration.appearance.load_settings_block,
+        target: appearance.load_settings_block,
         current_user: _current_user
       ).handle
     end
