@@ -134,7 +134,7 @@ Avo.configure do |config|
   #   logomark_dark: "avo/logomark-dark.png",
   #   favicon: "avo/favicon.ico",
   #   favicon_dark: "avo/favicon-dark.ico",
-  #   lock: [:scheme, :neutrals, :accent]
+  #   lock: [:scheme, :neutral, :accent]
   #   neutrals: [:brand, :neutral, :slate, :olive],
   #   accents: [:brand, :red, :blue, :sky, :purple],
   #   mode: :static,
