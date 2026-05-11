@@ -20,35 +20,40 @@ class Avo::Configuration::Appearance
     :load_settings_block,
     :save_settings_block
 
-  LAYOUTS = [:inline, :dropdown].freeze
+  # Guarded so the file is safe to be loaded more than once (Zeitwerk + the
+   # gem's own require_relative chain can both touch this file). Re-assigning
+   # frozen constants would otherwise emit "already initialized" warnings.
+  unless defined?(LAYOUTS)
+    LAYOUTS = [:inline, :dropdown].freeze
 
-  DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
-  DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
-  LOCKABLE = %i[scheme neutral accent].freeze
+    DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
+    DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
+    LOCKABLE = %i[scheme neutral accent].freeze
 
-  NEUTRAL_SHADES = [25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].freeze
-  ACCENT_TOKENS = [:color, :content, :foreground].freeze
-  ACCENT_TOKEN_VAR_NAMES = {
-    color: "--color-accent",
-    content: "--color-accent-content",
-    foreground: "--color-accent-foreground"
-  }.freeze
-  SCHEMES = [:light, :dark].freeze
+    NEUTRAL_SHADES = [25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].freeze
+    ACCENT_TOKENS = [:color, :content, :foreground].freeze
+    ACCENT_TOKEN_VAR_NAMES = {
+      color: "--color-accent",
+      content: "--color-accent-content",
+      foreground: "--color-accent-foreground"
+    }.freeze
+    SCHEMES = [:light, :dark].freeze
 
-  DEFAULTS = {
-    scheme: :auto,
-    persistence: :cookie,
-    logo: "avo/logo.png",
-    logomark: "avo/logomark.png",
-    favicon: "avo/favicon.ico",
-    favicon_dark: "avo/favicon-dark.ico",
-    chart_colors: %w[#0B8AE2 #34C683 #FFBE4F #FF7676 #2AB1EE #34C6A8 #EC8CFF #80FF91 #FFFC38 #1BDBE8],
-    placeholder: "avo/placeholder.svg",
-    neutrals: DEFAULT_NEUTRALS,
-    accents: DEFAULT_ACCENTS,
-    lock: [],
-    layout: :inline
-  }.freeze
+    DEFAULTS = {
+      scheme: :auto,
+      persistence: :cookie,
+      logo: "avo/logo.png",
+      logomark: "avo/logomark.png",
+      favicon: "avo/favicon.ico",
+      favicon_dark: "avo/favicon-dark.ico",
+      chart_colors: %w[#0B8AE2 #34C683 #FFBE4F #FF7676 #2AB1EE #34C6A8 #EC8CFF #80FF91 #FFFC38 #1BDBE8],
+      placeholder: "avo/placeholder.svg",
+      neutrals: DEFAULT_NEUTRALS,
+      accents: DEFAULT_ACCENTS,
+      lock: [],
+      layout: :inline
+    }.freeze
+  end
 
   def initialize(options = {})
     config = DEFAULTS.merge(options)
