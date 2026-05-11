@@ -17,7 +17,11 @@ class Avo::Resources::Project < Avo::BaseResource
 
   self.table_view = {
     row_options: {
-      class: -> { "bg-green-100" if record.stage == "Done" }
+      style: -> {
+        if record.stage == "Done"
+          "background-color: var(--color-green-50)"
+        end
+      }
     }
   }
 

@@ -37,6 +37,10 @@ function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'basic',
     allowHTML: true,
+    // Hover-only. Default 'mouseenter focus' fires when something else (e.g. a
+    // dropdown menu auto-focusing its active item on open) puts focus on the
+    // trigger — which would surface the tooltip without user intent.
+    trigger: 'mouseenter',
     content(reference) {
       const title = reference.getAttribute('title')
       reference.removeAttribute('title')

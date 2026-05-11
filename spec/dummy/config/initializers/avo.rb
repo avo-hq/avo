@@ -64,7 +64,7 @@ Avo.configure do |config|
 
   ## == Appearance ==
   config.appearance = {
-    layout: :dropdown, # :inline (default, with mobile auto-collapse) or :dropdown (always compact)
+    layout: :inline, # :inline (default, with mobile auto-collapse) or :dropdown (always compact)
     logo: "avo/logo.png",
     logo_dark: "avo/logo-dark.png",
     logomark: "avo/logomark.png",
