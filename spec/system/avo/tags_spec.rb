@@ -181,10 +181,6 @@ RSpec.describe "Tags", type: :system do
     let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
     let(:tags_input) { field_value_slot.find("span[contenteditable]") }
 
-    # Intentionally no `ensure` to restore items: the next test
-    # (`keep correct tags on validations error and edit`) inherits the
-    # `fetch_values_from` / `format_using` setup from this one's leaked
-    # `temporary_items`. That test's `ensure` performs the cleanup for both.
     it "fetches the labels" do
       Avo::Resources::Course.with_temporary_items do
         field :name
