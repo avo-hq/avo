@@ -83,9 +83,26 @@ module Avo
         lines << %(@import "#{path}";)
       end
 
-      lines << %(@source "../../";)
+      append_host_tailwind_sources(lines)
 
       File.write(input_path, lines.join("\n") + "\n")
+    end
+
+    def append_host_tailwind_sources(lines)
+      resolved_host_content_source_paths.each do |path|
+        lines << %(@source "#{relative_to_tmp(path)}";)
+      end
+    end
+
+    def resolved_host_content_source_paths
+      Avo.configuration.tailwindcss_content_sources.filter_map do |raw|
+        path = Pathname.new(raw)
+        path = Rails.root.join(path) unless path.absolute?
+        path = path.expand_path
+        next unless path.directory?
+
+        path
+      end.uniq
     end
 
     def append_plugin_engine_tailwind_sources(lines)
