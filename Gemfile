@@ -74,7 +74,7 @@ gem "prefixed_ids"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "csv"
-gem "view_component", "4.0.0"
+gem "view_component", "4.9.0"
 
 # =============================================================================
 # AWS & CLOUD SERVICES
