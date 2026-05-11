@@ -5,6 +5,19 @@ nn:
     actions: Handlingar
     add_filter: Legg til filter
     and_x_other_resources: og %{count} andre ressursar
+    appearance:
+      accent_picker: Aksentfarge
+      accents: Aksent
+      auto: Auto
+      auto_tooltip: Auto (systempreferanse)
+      dark: Mørk
+      dark_tooltip: Mørkmodus
+      light: Lys
+      light_tooltip: Lysmodus
+      neutrals: Tema
+      neutrals_picker: Nøytrale tema
+      schemes: Utseende
+      title: Utseende
     applied:
       one: applied
       other: applied

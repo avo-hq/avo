@@ -16,8 +16,11 @@ class Avo::Configuration::Appearance
     :favicon_dark,
     :chart_colors,
     :placeholder,
+    :layout, # :inline | :dropdown — navbar switcher layout (auto-collapses to dropdown below lg:)
     :load_settings_block,
     :save_settings_block
+
+  LAYOUTS = [:inline, :dropdown].freeze
 
   DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
   DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
@@ -43,7 +46,8 @@ class Avo::Configuration::Appearance
     placeholder: "avo/placeholder.svg",
     neutrals: DEFAULT_NEUTRALS,
     accents: DEFAULT_ACCENTS,
-    lock: []
+    lock: [],
+    layout: :inline
   }.freeze
 
   def initialize(options = {})
@@ -66,9 +70,11 @@ class Avo::Configuration::Appearance
     @favicon_dark = config[:favicon_dark]
     @chart_colors = config[:chart_colors]
     @placeholder = config[:placeholder]
+    @layout = config[:layout]
     @load_settings_block = config[:load_settings]
     @save_settings_block = config[:save_settings]
 
+    validate_layout!(@layout)
     validate_selection!("neutral", @neutral)
     validate_selection!("accent", @accent)
     validate_color_palette!("neutral_colors", @neutral_colors, NEUTRAL_SHADES, "shades") if @neutral_colors
@@ -143,6 +149,12 @@ class Avo::Configuration::Appearance
     end
 
     declarations
+  end
+
+  def validate_layout!(value)
+    return if LAYOUTS.include?(value)
+
+    raise ArgumentError, "appearance.layout must be one of #{LAYOUTS.inspect}, got #{value.inspect}"
   end
 
   def validate_selection!(name, value)

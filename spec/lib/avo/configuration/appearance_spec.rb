@@ -42,6 +42,26 @@ RSpec.describe Avo::Configuration::Appearance do
       expect(appearance.load_settings_block).to be_nil
       expect(appearance.save_settings_block).to be_nil
     end
+
+    it "defaults layout to :inline" do
+      expect(appearance.layout).to eq(:inline)
+    end
+  end
+
+  describe "layout" do
+    it "accepts :dropdown" do
+      expect(described_class.new(layout: :dropdown).layout).to eq(:dropdown)
+    end
+
+    it "raises when layout is not :inline or :dropdown" do
+      expect { described_class.new(layout: :sidebar) }
+        .to raise_error(ArgumentError, /appearance\.layout must be one of \[:inline, :dropdown\]/)
+    end
+
+    it "raises when layout is a String (Symbol-only contract)" do
+      expect { described_class.new(layout: "inline") }
+        .to raise_error(ArgumentError, /appearance\.layout must be one of/)
+    end
   end
 
   describe "#database_persistence?" do

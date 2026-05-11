@@ -1,10 +1,106 @@
 /* Color Scheme Switcher Component - Based on Design System */
 .color-scheme-switcher {
-  @apply inline-flex items-center gap-1 p-1 rounded-lg bg-secondary border border-tertiary;
+  @apply inline-flex items-center;
+}
+
+/* Inline pill — three sections sit in a single rounded container */
+.color-scheme-switcher--inline {
+  @apply gap-1 p-1 rounded-lg bg-secondary border border-tertiary;
+}
+
+/* Compact — a single icon trigger that opens a unified panel */
+.color-scheme-switcher--compact {
+  @apply gap-0;
+}
+
+.color-scheme-switcher__compact-trigger {
+  @apply inline-flex items-center gap-1 h-8 ps-2 pe-1.5 rounded-lg transition-all duration-150;
+  @apply text-content-secondary bg-secondary border border-tertiary hover:bg-tertiary;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
+  @apply cursor-pointer;
+}
+
+.color-scheme-switcher__chevron {
+  @apply size-3 opacity-60;
+}
+
+/* Unified panel — wraps DropdownCardComponent. Width is fixed; the card's
+   own body provides the chrome (rounded border, surface). The inner body
+   handles padding, layout, and scrollable overflow. */
+.color-scheme-switcher__panel {
+  @apply w-64 lg:w-80;
+}
+
+.color-scheme-switcher__panel .dropdown-card__body {
+  @apply flex flex-col gap-2 p-2;
+  @apply max-h-[calc(100dvh-6rem)] overflow-y-auto;
+}
+
+.color-scheme-switcher__section {
+  @apply flex flex-col gap-1;
+}
+
+.color-scheme-switcher__section + .color-scheme-switcher__section {
+  @apply pt-2 border-t border-tertiary;
+}
+
+.color-scheme-switcher__section-label {
+  @apply text-[0.6875rem] font-semibold uppercase tracking-wide text-content-secondary px-1;
+}
+
+/* Compact panel overrides: 2-col theme grid + 6-col accent grid for density.
+   Cells stay ~32px tall — comfortable to tap without dominating the panel. */
+.color-scheme-switcher__panel .color-scheme-switcher__theme-options {
+  @apply grid grid-cols-2 lg:grid-cols-3 gap-1;
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__theme-option {
+  @apply min-h-8 px-2 py-1.5 gap-2;
+}
+
+/* Brand spans the full row on desktop (3-col grid) so it reads as the primary
+   choice; on mobile (2-col grid) it stays one cell to keep two themes per row.
+   Offset the content so the swatch lands above column 2 — anchoring Brand to
+   the second theme cell directly below it.
+   ps math: (brand_width - 2*gap) / 3 + 1*gap = start of col 2 within the
+   parent grid (relative to the brand button's left edge). */
+.color-scheme-switcher__panel .color-scheme-switcher__theme-option--brand {
+  @apply lg:col-span-3;
+  @apply lg:ps-[calc((100%-0.5rem)/3+0.7rem+1px)];
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__accent-options {
+  @apply grid-cols-6 gap-1;
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__accent-option {
+  @apply min-h-8;
+}
+
+/* Scheme buttons row inside the unified panel */
+.color-scheme-switcher__scheme-row {
+  @apply flex items-stretch gap-1 p-1 rounded-md bg-secondary;
+}
+
+.color-scheme-switcher__scheme-button {
+  @apply flex-1 inline-flex flex-col items-center justify-center gap-1 px-2 py-1.5 rounded-md;
+  @apply text-content-secondary hover:bg-tertiary transition-all duration-150;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
+  @apply border-0 bg-transparent cursor-pointer;
+}
+
+.scheme-light .color-scheme-switcher__scheme-button[data-scheme="light"],
+.scheme-dark .color-scheme-switcher__scheme-button[data-scheme="dark"],
+.scheme-auto .color-scheme-switcher__scheme-button[data-scheme="auto"] {
+  @apply bg-primary text-content shadow-sm;
+}
+
+.color-scheme-switcher__scheme-label {
+  @apply text-xs font-medium leading-none;
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-content-secondary hover:bg-tertiary focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-content-secondary hover:bg-tertiary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
@@ -54,6 +150,13 @@
   @apply min-w-[160px];
 }
 
+/* Add a small inset so the option/swatch buttons aren't flush with the
+   dropdown-card body's edge. */
+.color-scheme-switcher__theme-popover .dropdown-card__body,
+.color-scheme-switcher__accent-popover .dropdown-card__body {
+  @apply p-1;
+}
+
 .color-scheme-switcher__theme-options {
   @apply flex flex-col gap-0.5 self-stretch;
 }
@@ -62,7 +165,7 @@
   @apply flex items-center gap-2 w-full px-2 py-1.5;
   @apply rounded-md transition-all duration-150;
   @apply hover:bg-tertiary;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
   @apply text-content text-xs font-medium;
 }
@@ -72,7 +175,7 @@
 }
 
 .color-scheme-switcher__theme-preview {
-  @apply size-4 rounded-full border border-tertiary shadow-sm;
+  @apply size-4 shrink-0 rounded-full border border-tertiary shadow-sm;
 }
 
 /* Theme preview swatches - show a representative mid-tone for each neutral */
@@ -133,7 +236,7 @@
   @apply flex items-center justify-center p-1;
   @apply rounded-md transition-all duration-150;
   @apply hover:bg-tertiary;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
 }
 

@@ -5,6 +5,19 @@ nl:
     actions: Acties
     add_filter: Filter toevoegen
     and_x_other_resources: en %{count} andere bronnen
+    appearance:
+      accent_picker: Accentkleur
+      accents: Accent
+      auto: Automatisch
+      auto_tooltip: Automatisch (systeemvoorkeur)
+      dark: Donker
+      dark_tooltip: Donkermodus
+      light: Licht
+      light_tooltip: Lichtmodus
+      neutrals: Thema
+      neutrals_picker: Neutrale thema
+      schemes: Uiterlijk
+      title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?
     are_you_sure_detach_item: Weet u zeker dat u dit %{item} wilt loskoppelen?
