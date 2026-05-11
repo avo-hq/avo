@@ -25,7 +25,16 @@ class Avo::Current < ActiveSupport::CurrentAttributes
   attribute :tenant_id
   attribute :tenant
 
-  attribute :appearance_settings, default: {}
+  attribute :appearance_settings
+
+  # Rails 7.1 CurrentAttributes#attribute is only `def attribute(*names)` — no `default:` keyword.
+  # `attribute :x, default: {}` is passed as a second positional `{ default: {} }`, so `names.map(&:to_sym)` raises.
+  resets { self.appearance_settings = {} }
+
+  def initialize
+    super
+    self.appearance_settings = {}
+  end
 
   # Protect from error #<RuntimeError: Missing rack.input> when request is ActionDispatch::Request.empty
   def params
