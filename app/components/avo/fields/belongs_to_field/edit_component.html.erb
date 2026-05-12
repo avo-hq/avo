@@ -38,7 +38,6 @@
                 <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
                       form: @form,
                       field: @field,
-                      target_resource: Avo.resource_manager.get_resource_by_model_class(type.to_s),
                       polymorphic_type: type
                     ) %>
               <% else %>
