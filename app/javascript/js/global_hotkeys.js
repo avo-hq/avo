@@ -12,6 +12,16 @@ import { install } from '@github/hotkey'
 const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
 const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INPUT_SELECTOR)
 
+// Find any mounted appearance Stimulus controller and call `method` on it.
+// Multiple appearance switchers can be on the page (inline + dropdown fallback);
+// either works since they share state via DOM classes + cookies/database.
+function callAppearance(method) {
+  const el = document.querySelector('[data-controller~="appearance"]')
+  if (!el) return
+  const controller = window.Stimulus?.getControllerForElementAndIdentifier(el, 'appearance')
+  controller?.[method]?.()
+}
+
 // Use @github/hotkey for sequences and standard combos.
 const ELEMENT_HOTKEYS = [
   {
@@ -42,6 +52,21 @@ const DIRECT_HOTKEYS = [
       const input = findResourceSearchInput()
       if (input) input.focus()
     },
+  },
+  {
+    // Shift+M → cycle appearance scheme (auto → light → dark → …)
+    match: (e) => e.shiftKey && e.key === 'M',
+    handle: () => callAppearance('cycleScheme'),
+  },
+  {
+    // Shift+N → cycle neutral theme (brand → slate → stone → …)
+    match: (e) => e.shiftKey && e.key === 'N',
+    handle: () => callAppearance('cycleNeutral'),
+  },
+  {
+    // Shift+A → cycle accent color (brand → red → orange → …)
+    match: (e) => e.shiftKey && e.key === 'A',
+    handle: () => callAppearance('cycleAccent'),
   },
   {
     // Shift+K → toggle kbd badge visibility (only when developer config allows badges)

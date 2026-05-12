@@ -123,6 +123,41 @@ export default class extends Controller {
     this.updateActiveAccentOption()
   }
 
+  // Cycle to the next value in a list. Wraps to the first when at the end.
+  // Used by the global keyboard shortcuts (see global_hotkeys.js).
+  cycleScheme() {
+    if (this.lockedScheme) return
+    this.currentSchemeValue = this.nextValue(['auto', 'light', 'dark'], this.currentSchemeValue)
+    this.persistPreferences('scheme')
+    this.applyScheme()
+  }
+
+  cycleNeutral() {
+    if (this.lockedNeutral) return
+    const allowed = this.appearance.neutrals || []
+    if (allowed.length === 0) return
+    this.currentThemeValue = this.nextValue(allowed, this.currentThemeValue || 'brand')
+    this.persistPreferences('theme')
+    this.applyTheme()
+    this.updateThemeLabel()
+    this.updateActiveThemeOption()
+  }
+
+  cycleAccent() {
+    if (this.lockedAccent) return
+    const allowed = this.appearance.accents || []
+    if (allowed.length === 0) return
+    this.currentAccentValue = this.nextValue(allowed, this.currentAccentValue || 'brand')
+    this.persistPreferences('accent')
+    this.applyAccent()
+    this.updateActiveAccentOption()
+  }
+
+  nextValue(list, current) {
+    const idx = list.indexOf(current)
+    return list[(idx + 1) % list.length]
+  }
+
   persistPreferences(dimension) {
     if (this.appearance.persistence === 'database') {
       this.patchAppearanceSettings(dimension)
