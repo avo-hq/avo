@@ -120,7 +120,7 @@ module Avo
 
     def tailwindcss_content_sources
       if @tailwindcss_content_sources.nil?
-        [Rails.root.join("app")]
+        [Rails.root]
       else
         Array(@tailwindcss_content_sources)
       end
