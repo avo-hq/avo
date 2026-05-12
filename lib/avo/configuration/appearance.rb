@@ -21,8 +21,8 @@ class Avo::Configuration::Appearance
     :save_settings_block
 
   # Guarded so the file is safe to be loaded more than once (Zeitwerk + the
-   # gem's own require_relative chain can both touch this file). Re-assigning
-   # frozen constants would otherwise emit "already initialized" warnings.
+  # gem's own require_relative chain can both touch this file). Re-assigning
+  # frozen constants would otherwise emit "already initialized" warnings.
   unless defined?(LAYOUTS)
     LAYOUTS = [:inline, :dropdown].freeze
 
