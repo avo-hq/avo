@@ -1,9 +1,11 @@
 <%= content_tag :div, class: class_names("dropdown-card", @classes) do %>
   <%= header %>
 
-  <div class="dropdown-card__body">
-    <%= body %>
-  </div>
+  <% if body? %>
+    <div class="dropdown-card__body">
+      <%= body %>
+    </div>
+  <% end %>
 
   <%= footer %>
 <% end %>
