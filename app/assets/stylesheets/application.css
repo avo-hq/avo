@@ -98,6 +98,13 @@
 @import "./css/components/ui/checkbox.css";
 @import "./css/components/tooltip.css";
 
+/* variables.css uses explicit @layer theme { .dark } and @layer components
+   { .neutral-theme-*, .accent-theme-* } blocks internally. Importing it OUTSIDE
+   any @layer wrapper preserves those layer assignments — wrapping it would
+   nest them into sublayers like `components.theme` and break the cascade
+   between brand override (base) and the defaults / user picks. */
+@import "./css/variables.css";
+
 @layer components {
   @import "./css/fonts.css";
   @import "./css/button-group.css";
@@ -124,7 +131,6 @@
   @import "./css/fields/stars.css";
 
   /* UI 4 */
-  @import "./css/variables.css";
   @import "./css/components/ui/card.css";
   @import "./css/components/ui/panel.css";
   @import "./css/components/ui/panel_header.css";

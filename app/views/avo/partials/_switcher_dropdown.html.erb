@@ -19,7 +19,8 @@
             <div class="color-scheme-switcher__section">
               <div class="color-scheme-switcher__section-label"><%= t("avo.appearance.neutrals") %></div>
               <div class="color-scheme-switcher__theme-options"
-                   data-action="mouseleave->appearance#revertTheme">
+                   data-action="mouseleave->appearance#revertTheme"
+                   data-leftover="<%= appearance.neutrals.size % 3 %>">
                 <% appearance.neutrals.each do |theme| %>
                   <button type="button"
                           data-action="click->appearance#setTheme mouseenter->appearance#previewTheme"

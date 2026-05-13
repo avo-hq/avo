@@ -58,15 +58,29 @@
   @apply min-h-8 px-2 py-1.5 gap-2;
 }
 
-/* Brand spans the full row on desktop (3-col grid) so it reads as the primary
-   choice; on mobile (2-col grid) it stays one cell to keep two themes per row.
-   Offset the content so the swatch lands above column 2 — anchoring Brand to
-   the second theme cell directly below it.
-   ps math: (brand_width - 2*gap) / 3 + 1*gap = start of col 2 within the
-   parent grid (relative to the brand button's left edge). */
-.color-scheme-switcher__panel .color-scheme-switcher__theme-option--brand {
+/* Desktop 3-col grid: when the neutral count doesn't divide evenly into 3,
+   stretch the leftover items so the top row still fills the full width.
+   `data-leftover` is `n % 3`, computed server-side.
+
+   leftover=1 (counts 4, 7, 10, 13 …): first item spans all 3 columns; the
+   rest auto-flow into a 3xN grid below.
+       [ B B B ]
+       [ S T G ]
+       [ Z N M ]
+
+   leftover=2 (counts 5, 8, 11, 14 …): first item spans 2 columns, second
+   takes the remaining column; the rest auto-flow below.
+       [ B B  S ]
+       [ T G  Z ]
+       [ N M  O ]
+
+   leftover=0 (3, 6, 9 …): no special treatment — clean N/3-row 3-col grid. */
+.color-scheme-switcher__panel .color-scheme-switcher__theme-options[data-leftover="1"] > :nth-child(1) {
   @apply lg:col-span-3;
-  @apply lg:ps-[calc((100%-0.5rem)/3+0.7rem+1px)];
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__theme-options[data-leftover="2"] > :nth-child(1) {
+  @apply lg:col-span-2;
 }
 
 .color-scheme-switcher__panel .color-scheme-switcher__accent-options {

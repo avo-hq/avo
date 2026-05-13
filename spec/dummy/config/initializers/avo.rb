@@ -119,7 +119,11 @@ Avo.configure do |config|
     #   dark: {color: "oklch(70% 0.2 280)", content: "oklch(80% 0.15 280)", foreground: "oklch(15% 0.05 280)"}
     # },
     persistence: :database, # :database or :cookie
-    load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
+    load_settings: -> {
+      current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {
+        accent:, neutral:, scheme:
+      }
+    },
     save_settings: -> {
       next unless current_user
 
