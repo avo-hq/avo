@@ -128,3 +128,5 @@ Please read the [RELEASE.MD](./RELEASE.MD)
  - [`marksmith`](https://github.com/avo-hq/marksmith) - GitHub-style markdown editor for Ruby and Rails
  - [`prop_initializer`](https://github.com/avo-hq/prop_initializer) - A flexible tool for defining properties on Ruby classes.
  - [`stimulus-confetti`](https://github.com/avo-hq/stimulus-confetti) - The easiest way to add confetti to your StimulusJS app
+ - [`db_config`](https://github.com/avo-hq/db_config) - Database-backed configuration store for Rails with automatic type conversion, default values, and high-performance eager loading.
+ - [`jsonq`](https://github.com/avo-hq/jsonq) - Friendly JSON column queries for ActiveRecord
