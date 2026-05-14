@@ -82,5 +82,7 @@ RSpec.feature Avo::SearchController, type: :controller do
     3.times do |index|
       expect(json["course links"]["results"][index]["_id"]).to eq course_with_five_links.links[index].to_param
     end
+  ensure
+    Avo::Resources::Course.restore_items_from_backup
   end
 end

@@ -184,7 +184,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         expect(page).to have_css('[data-component-name="avo/filters_component"]')
         expect(page).to have_css('[data-search-target="autocomplete"]')
-
+      ensure
         Avo::Resources::Store.restore_items_from_backup
       end
     end
@@ -199,7 +199,7 @@ RSpec.feature "HasManyField", type: :feature do
 
         expect(page).not_to have_css('[data-component-name="avo/filters_component"]')
         expect(page).not_to have_css('[data-search-target="autocomplete"]')
-
+      ensure
         Avo::Resources::Store.restore_items_from_backup
       end
     end
