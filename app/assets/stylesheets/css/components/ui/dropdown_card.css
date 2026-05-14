@@ -1,6 +1,8 @@
 .dropdown-card {
-  @apply overflow-hidden rounded-lg border border-tertiary bg-secondary p-0.5;
-  box-shadow: var(--box-shadow-dropdown-card);
+  /* this is a temporary fix to get the dropdown card to work - there is a tichet open (AVO-1234) to fix this */
+  @apply overflow-hidden rounded-lg bg-secondary p-0.5;
+  /* box-shadow: var(--box-shadow-dropdown-card); */
+  border: solid 1px var(--color-tertiary);
 }
 
 .dropdown-card__body {
