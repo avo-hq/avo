@@ -65,6 +65,7 @@ module Avo
     attr_writer :body_classes
     attr_accessor :sidebar_toggle_visible
     attr_accessor :tailwindcss_integration_enabled
+    attr_accessor :mount_lookbook
 
     unless defined?(CONTAINER_WIDTH_DEFAULTS)
       CONTAINER_WIDTH_DEFAULTS = {
@@ -202,6 +203,7 @@ module Avo
       @sidebar_toggle_visible = true
       @body_classes = []
       @tailwindcss_integration_enabled = true
+      @mount_lookbook = false
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)

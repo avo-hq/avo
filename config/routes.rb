@@ -35,6 +35,8 @@ Avo::Engine.routes.draw do
       get "/design", to: "private#design"
     end
 
-    mount Lookbook::Engine, at: "/lookbook" if defined?(Lookbook)
+    if Avo.configuration.mount_lookbook
+      mount Lookbook::Engine, at: "/lookbook" if defined?(Lookbook)
+    end
   end
 end
