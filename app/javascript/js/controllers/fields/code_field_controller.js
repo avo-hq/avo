@@ -26,7 +26,7 @@ export default class extends Controller {
   }
 
   get resolvedTheme() {
-    return this.isDark ? 'material-darker' : (this.elementTarget.dataset.theme || 'default')
+    return this.isDark ? 'monokai' : (this.elementTarget.dataset.theme || 'default')
   }
 
   connect() {
