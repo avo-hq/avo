@@ -120,8 +120,11 @@ Avo.configure do |config|
     # },
     persistence: :database, # :database or :cookie
     load_settings: -> {
+      appearance = Avo.configuration.appearance
       current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {
-        accent:, neutral:, scheme:
+        color_scheme: appearance.scheme.to_s,
+        neutral: appearance.neutral&.to_s,
+        accent: appearance.accent&.to_s
       }
     },
     save_settings: -> {

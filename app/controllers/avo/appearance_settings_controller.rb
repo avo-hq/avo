@@ -7,7 +7,8 @@ module Avo
         return render json: {ok: false, error: "No save_settings block configured"}, status: :unprocessable_entity
       end
 
-      settings = params.permit(:color_scheme, :neutral, :accent).to_h.symbolize_keys
+      payload = params.key?(:appearance_setting) ? params.require(:appearance_setting) : params
+      settings = payload.permit(:color_scheme, :neutral, :accent).to_h.symbolize_keys
 
       Avo::ExecutionContext.new(
         target: appearance.save_settings_block,
