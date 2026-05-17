@@ -42,6 +42,14 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         ]
       ),
       build_section(
+        "Appearance",
+        [
+          shortcut(action: "Cycle color scheme (auto / light / dark)", keys: ["Shift", "M"]),
+          shortcut(action: "Cycle neutral theme", keys: ["Shift", "N"]),
+          shortcut(action: "Cycle accent color", keys: ["Shift", "A"])
+        ]
+      ),
+      build_section(
         "Index view",
         [
           shortcut(action: "Focus search", keys: ["/"]),

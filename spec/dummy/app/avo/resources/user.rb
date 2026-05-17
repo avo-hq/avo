@@ -163,6 +163,7 @@ class Avo::Resources::User < Avo::BaseResource
       with_options hide_on: :forms do
         field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
         field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+        field :avo_preferences, as: :code, theme: "dracula", language: "json", height: "250px", pretty_generated: true
       end
       field :team_id, as: :hidden, default: 0 # For testing purposes
     end

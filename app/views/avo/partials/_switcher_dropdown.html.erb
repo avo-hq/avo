@@ -1,0 +1,105 @@
+<div class="<%= class_names("color-scheme-switcher color-scheme-switcher--compact", "lg:hidden": appearance.layout == :inline) %>"
+     data-controller="appearance">
+  <%= render Avo::UI::DropdownComponent.new do |component| %>
+    <% component.with_trigger do %>
+      <button type="button"
+              data-action="<%= component.action %>"
+              data-tippy="tooltip"
+              class="color-scheme-switcher__compact-trigger"
+              title="<%= t("avo.appearance.title") %>">
+        <%= svg "tabler/outline/palette", class: "color-scheme-switcher__icon" %>
+        <%= svg "tabler/outline/chevron-down", class: "color-scheme-switcher__chevron" %>
+        <span class="sr-only"><%= t("avo.appearance.title") %></span>
+      </button>
+    <% end %>
+    <% component.with_items do %>
+      <%= render Avo::UI::DropdownCardComponent.new(classes: "color-scheme-switcher__panel") do |card| %>
+        <% card.with_body do %>
+          <% if show_neutral_picker %>
+            <div class="color-scheme-switcher__section">
+              <div class="color-scheme-switcher__section-label"><%= t("avo.appearance.neutrals") %></div>
+              <div class="color-scheme-switcher__theme-options"
+                   data-action="mouseleave->appearance#revertTheme"
+                   data-leftover="<%= appearance.neutrals.size % 3 %>">
+                <% appearance.neutrals.each do |theme| %>
+                  <button type="button"
+                          data-action="click->appearance#setTheme mouseenter->appearance#previewTheme"
+                          data-theme="<%= theme %>"
+                          data-appearance-target="themeOption"
+                          class="<%= class_names("color-scheme-switcher__theme-option", "color-scheme-switcher__theme-option--brand": theme == "brand", "color-scheme-switcher__theme-option--active": theme == active_neutral) %>">
+                    <span class="color-scheme-switcher__theme-preview color-scheme-switcher__theme-preview--<%= theme %>"></span>
+                    <span class="color-scheme-switcher__theme-option-label"><%= t("avo.appearance.neutrals_list.#{theme}", default: theme.capitalize) %></span>
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <% if show_accent_picker %>
+            <div class="color-scheme-switcher__section">
+              <div class="color-scheme-switcher__section-label"><%= t("avo.appearance.accents") %></div>
+              <div class="color-scheme-switcher__accent-options"
+                   data-action="mouseleave->appearance#revertAccent">
+                <% appearance.accents.each do |accent| %>
+                  <%
+                    preview_class = if accent == "brand"
+                      "color-scheme-switcher__accent-preview color-scheme-switcher__accent-preview--brand"
+                    else
+                      "color-scheme-switcher__accent-preview bg-#{accent}-500"
+                    end
+                    accent_label = t("avo.appearance.accents_list.#{accent}", default: accent.capitalize)
+                  %>
+                  <button type="button"
+                          title="<%= accent_label %>"
+                          data-action="click->appearance#setAccent mouseenter->appearance#previewAccent"
+                          data-accent="<%= accent %>"
+                          data-tippy="tooltip"
+                          data-appearance-target="accentOption"
+                          class="<%= class_names("color-scheme-switcher__accent-option", "color-scheme-switcher__accent-option--active": accent == active_accent) %>">
+                    <span class="<%= preview_class %>"></span>
+                    <span class="sr-only"><%= accent_label %></span>
+                  </button>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <% if show_scheme_picker %>
+            <div class="color-scheme-switcher__section">
+              <div class="color-scheme-switcher__section-label"><%= t("avo.appearance.schemes") %></div>
+              <div class="color-scheme-switcher__scheme-row">
+                <button type="button"
+                        data-action="click->appearance#setScheme"
+                        data-scheme="auto"
+                        data-tippy="tooltip"
+                        class="color-scheme-switcher__scheme-button"
+                        title="<%= t("avo.appearance.auto_tooltip") %>">
+                  <%= svg "tabler/outline/device-desktop", class: "color-scheme-switcher__icon" %>
+                  <span class="color-scheme-switcher__scheme-label"><%= t("avo.appearance.auto") %></span>
+                </button>
+                <button type="button"
+                        data-action="click->appearance#setScheme"
+                        data-scheme="light"
+                        data-tippy="tooltip"
+                        class="color-scheme-switcher__scheme-button"
+                        title="<%= t("avo.appearance.light_tooltip") %>">
+                  <%= svg "tabler/outline/sun", class: "color-scheme-switcher__icon" %>
+                  <span class="color-scheme-switcher__scheme-label"><%= t("avo.appearance.light") %></span>
+                </button>
+                <button type="button"
+                        data-action="click->appearance#setScheme"
+                        data-scheme="dark"
+                        data-tippy="tooltip"
+                        class="color-scheme-switcher__scheme-button"
+                        title="<%= t("avo.appearance.dark_tooltip") %>">
+                  <%= svg "tabler/outline/moon", class: "color-scheme-switcher__icon" %>
+                  <span class="color-scheme-switcher__scheme-label"><%= t("avo.appearance.dark") %></span>
+                </button>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

@@ -5,6 +5,19 @@ ru:
     actions: Действия
     add_filter: Добавить фильтр
     and_x_other_resources: и %{count} других ресурсов
+    appearance:
+      accent_picker: Цвет акцента
+      accents: Акцент
+      auto: Авто
+      auto_tooltip: Авто (системные предпочтения)
+      dark: Темный
+      dark_tooltip: Темный режим
+      light: Светлый
+      light_tooltip: Светлый режим
+      neutrals: Тема
+      neutrals_picker: Нейтральная тема
+      schemes: Внешний вид
+      title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?
     are_you_sure_detach_item: Вы уверены, что хотите отсоединить этот %{item}?

@@ -26,12 +26,12 @@ RSpec.describe Avo::ApplicationHelper do
 
   describe "#chart_color" do
     it "returns a color from the list of configured chart_colors" do
-      expect(helper.chart_color(0)).to eq(Avo.configuration.branding.chart_colors[0])
-      expect(helper.chart_color(5)).to eq(Avo.configuration.branding.chart_colors[5])
+      expect(helper.chart_color(0)).to eq(Avo.configuration.appearance.chart_colors[0])
+      expect(helper.chart_color(5)).to eq(Avo.configuration.appearance.chart_colors[5])
     end
 
     it "starts the list of colors again if index is higher than the amount of defined colors" do
-      colors = Avo.configuration.branding.chart_colors
+      colors = Avo.configuration.appearance.chart_colors
       colors_length = colors.length
 
       # Test that index wraps around correctly using modulo
@@ -109,6 +109,121 @@ RSpec.describe Avo::ApplicationHelper do
       helper.instance_variable_set(:@view, "preview")
 
       expect(helper.container_classes).to eq("container-large")
+    end
+  end
+
+  describe "appearance helpers honor lock configuration" do
+    let(:appearance) { Avo.configuration.appearance }
+
+    describe "#current_neutral" do
+      context "when neutral is locked" do
+        before do
+          allow(appearance).to receive(:neutral_locked?).and_return(true)
+          allow(appearance).to receive(:neutral).and_return(:brand)
+        end
+
+        it "ignores the cookie override and returns the configured value" do
+          allow(appearance).to receive(:database_persistence?).and_return(false)
+          allow(helper).to receive(:cookies).and_return({theme: "slate"})
+
+          expect(helper.send(:current_neutral)).to eq("brand")
+        end
+
+        it "ignores the database-persisted value and returns the configured value" do
+          allow(appearance).to receive(:database_persistence?).and_return(true)
+          Avo::Current.appearance_settings = {neutral: "slate"}
+
+          expect(helper.send(:current_neutral)).to eq("brand")
+        end
+      end
+
+      context "when neutral is not locked" do
+        before do
+          allow(appearance).to receive(:neutral_locked?).and_return(false)
+          allow(appearance).to receive(:database_persistence?).and_return(false)
+          allow(appearance).to receive(:neutral).and_return(:brand)
+        end
+
+        it "respects the cookie override" do
+          allow(helper).to receive(:cookies).and_return({theme: "slate"})
+
+          expect(helper.send(:current_neutral)).to eq("slate")
+        end
+      end
+    end
+
+    describe "#current_accent" do
+      context "when accent is locked" do
+        before do
+          allow(appearance).to receive(:accent_locked?).and_return(true)
+          allow(appearance).to receive(:accent).and_return(:brand)
+        end
+
+        it "ignores the cookie override and returns the configured value" do
+          allow(appearance).to receive(:database_persistence?).and_return(false)
+          allow(helper).to receive(:cookies).and_return({accent_color: "blue"})
+
+          expect(helper.send(:current_accent)).to eq("brand")
+        end
+
+        it "ignores the database-persisted value and returns the configured value" do
+          allow(appearance).to receive(:database_persistence?).and_return(true)
+          Avo::Current.appearance_settings = {accent: "blue"}
+
+          expect(helper.send(:current_accent)).to eq("brand")
+        end
+      end
+
+      context "when accent is not locked" do
+        before do
+          allow(appearance).to receive(:accent_locked?).and_return(false)
+          allow(appearance).to receive(:database_persistence?).and_return(false)
+          allow(appearance).to receive(:accent).and_return(:brand)
+        end
+
+        it "respects the cookie override" do
+          allow(helper).to receive(:cookies).and_return({accent_color: "blue"})
+
+          expect(helper.send(:current_accent)).to eq("blue")
+        end
+      end
+    end
+
+    describe "#current_scheme" do
+      context "when scheme is locked" do
+        before do
+          allow(appearance).to receive(:scheme_locked?).and_return(true)
+          allow(appearance).to receive(:scheme).and_return(:light)
+        end
+
+        it "ignores the cookie override and returns the configured value" do
+          allow(appearance).to receive(:database_persistence?).and_return(false)
+          allow(helper).to receive(:cookies).and_return({color_scheme: "dark"})
+
+          expect(helper.send(:current_scheme)).to eq("light")
+        end
+
+        it "ignores the database-persisted value and returns the configured value" do
+          allow(appearance).to receive(:database_persistence?).and_return(true)
+          Avo::Current.appearance_settings = {color_scheme: "dark"}
+
+          expect(helper.send(:current_scheme)).to eq("light")
+        end
+      end
+
+      context "when scheme is not locked" do
+        before do
+          allow(appearance).to receive(:scheme_locked?).and_return(false)
+          allow(appearance).to receive(:database_persistence?).and_return(false)
+          allow(appearance).to receive(:scheme).and_return(:auto)
+        end
+
+        it "respects the cookie override" do
+          allow(helper).to receive(:cookies).and_return({color_scheme: "dark"})
+
+          expect(helper.send(:current_scheme)).to eq("dark")
+        end
+      end
     end
   end
 end

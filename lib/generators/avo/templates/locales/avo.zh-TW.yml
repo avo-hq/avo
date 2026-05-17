@@ -5,6 +5,19 @@ zh-TW:
     actions: 操作
     add_filter: 新增篩選器
     and_x_other_resources: 和 %{count} 個其他資源
+    appearance:
+      accent_picker: 重點顏色
+      accents: 重點色
+      auto: 自動
+      auto_tooltip: 自動（系統偏好）
+      dark: 深色
+      dark_tooltip: 深色模式
+      light: 淺色
+      light_tooltip: 淺色模式
+      neutrals: 主題
+      neutrals_picker: 中性色主題
+      schemes: 外觀
+      title: 外觀
     applied: 已應用
     are_you_sure: 您確定嗎？
     are_you_sure_detach_item: 您確定要分離此 %{item} 嗎？
