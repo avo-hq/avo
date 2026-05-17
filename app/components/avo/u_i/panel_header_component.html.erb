@@ -12,11 +12,13 @@
 
       <div class="header__text">
         <div class="header__title">
-          <% if @url.present? %>
-            <%= link_to @title, @url, target: @target %>
-          <% else %>
-            <%= @title %>
-          <% end %>
+          <div data-slot="text-value">
+            <% if @url.present? %>
+              <%= link_to @title, @url, target: @target %>
+            <% else %>
+              <%= @title %>
+            <% end %>
+          </div>
           <%= title_slot %>
         </div>
 

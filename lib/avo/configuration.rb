@@ -1,7 +1,6 @@
 module Avo
   class Configuration
     attr_writer :app_name
-    attr_writer :branding
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
@@ -12,6 +11,8 @@ module Avo
     attr_writer :persistence
     attr_writer :resource_row_controls_config
     attr_writer :hotkeys
+    # When unset, Tailwind scans Rails.root.join("app"). Each entry is an absolute path or a path relative to Rails.root.
+    attr_writer :tailwindcss_content_sources
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -114,6 +115,14 @@ module Avo
 
     def container_width
       @container_width || CONTAINER_WIDTH_DEFAULTS
+    end
+
+    def tailwindcss_content_sources
+      if @tailwindcss_content_sources.nil?
+        [Rails.root.join("app")]
+      else
+        Array(@tailwindcss_content_sources)
+      end
     end
 
     def initialize
@@ -257,8 +266,12 @@ module Avo
       @root_path
     end
 
-    def branding
-      Avo::Configuration::Branding.new(**@branding || {})
+    def appearance
+      @appearance ||= Avo::Configuration::Appearance.new
+    end
+
+    def appearance=(options = {})
+      @appearance = Avo::Configuration::Appearance.new(options)
     end
 
     def app_name

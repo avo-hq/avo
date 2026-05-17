@@ -1,37 +1,146 @@
 /* Color Scheme Switcher Component - Based on Design System */
 .color-scheme-switcher {
-  @apply inline-flex items-center gap-1 p-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700;
+  @apply inline-flex items-center;
+}
+
+/* Inline pill — three sections sit in a single rounded container */
+.color-scheme-switcher--inline {
+  @apply gap-1 p-1 rounded-lg bg-secondary border border-tertiary;
+}
+
+/* Compact — a single icon trigger that opens a unified panel */
+.color-scheme-switcher--compact {
+  @apply gap-0;
+}
+
+.color-scheme-switcher__compact-trigger {
+  @apply inline-flex items-center gap-1 h-8 ps-2 pe-1.5 rounded-lg transition-all duration-150;
+  @apply text-content-secondary bg-secondary border border-tertiary hover:bg-tertiary;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
+  @apply cursor-pointer;
+}
+
+.color-scheme-switcher__chevron {
+  @apply size-3 opacity-60;
+}
+
+/* Unified panel — wraps DropdownCardComponent. Width is fixed; the card's
+   own body provides the chrome (rounded border, surface). The inner body
+   handles padding, layout, and scrollable overflow. */
+.color-scheme-switcher__panel {
+  @apply w-64 lg:w-80;
+}
+
+.color-scheme-switcher__panel .dropdown-card__body {
+  @apply flex flex-col gap-2 p-2;
+  @apply max-h-[calc(100dvh-6rem)] overflow-y-auto;
+}
+
+.color-scheme-switcher__section {
+  @apply flex flex-col gap-1;
+}
+
+.color-scheme-switcher__section + .color-scheme-switcher__section {
+  @apply pt-2 border-t border-tertiary;
+}
+
+.color-scheme-switcher__section-label {
+  @apply text-[0.6875rem] font-semibold uppercase tracking-wide text-content-secondary px-1;
+}
+
+/* Compact panel overrides: 2-col theme grid + 6-col accent grid for density.
+   Cells stay ~32px tall — comfortable to tap without dominating the panel. */
+.color-scheme-switcher__panel .color-scheme-switcher__theme-options {
+  @apply grid grid-cols-2 lg:grid-cols-3 gap-1;
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__theme-option {
+  @apply min-h-8 px-2 py-1.5 gap-2;
+}
+
+/* Desktop 3-col grid: when the neutral count doesn't divide evenly into 3,
+   stretch the leftover items so the top row still fills the full width.
+   `data-leftover` is `n % 3`, computed server-side.
+
+   leftover=1 (counts 4, 7, 10, 13 …): first item spans all 3 columns; the
+   rest auto-flow into a 3xN grid below.
+       [ B B B ]
+       [ S T G ]
+       [ Z N M ]
+
+   leftover=2 (counts 5, 8, 11, 14 …): first item spans 2 columns, second
+   takes the remaining column; the rest auto-flow below.
+       [ B B  S ]
+       [ T G  Z ]
+       [ N M  O ]
+
+   leftover=0 (3, 6, 9 …): no special treatment — clean N/3-row 3-col grid. */
+.color-scheme-switcher__panel .color-scheme-switcher__theme-options[data-leftover="1"] > :nth-child(1) {
+  @apply lg:col-span-3;
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__theme-options[data-leftover="2"] > :nth-child(1) {
+  @apply lg:col-span-2;
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__accent-options {
+  @apply grid-cols-6 gap-1;
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__accent-option {
+  @apply min-h-8;
+}
+
+/* Scheme buttons row inside the unified panel */
+.color-scheme-switcher__scheme-row {
+  @apply flex items-stretch gap-1 p-1 rounded-md bg-secondary;
+}
+
+.color-scheme-switcher__scheme-button {
+  @apply flex-1 inline-flex flex-col items-center justify-center gap-1 px-2 py-1.5 rounded-md;
+  @apply text-content-secondary hover:bg-tertiary transition-all duration-150;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
+  @apply border-0 bg-transparent cursor-pointer;
+}
+
+.scheme-light .color-scheme-switcher__scheme-button[data-scheme="light"],
+.scheme-dark .color-scheme-switcher__scheme-button[data-scheme="dark"],
+.scheme-auto .color-scheme-switcher__scheme-button[data-scheme="auto"] {
+  @apply bg-primary text-content shadow-sm;
+}
+
+.color-scheme-switcher__scheme-label {
+  @apply text-xs font-medium leading-none;
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-content-secondary hover:bg-tertiary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
 /* Scheme buttons - active states using scheme selection classes */
 .color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-light .color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-white text-primary-600 shadow-sm;
-  @apply dark:bg-transparent dark:text-neutral-400 dark:shadow-none;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-dark .color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-transparent text-neutral-600 dark:text-neutral-400 shadow-none;
+  @apply bg-transparent text-content-secondary shadow-none;
 }
 
 .scheme-auto .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-white dark:bg-neutral-700 text-primary-600 dark:text-primary-400 shadow-sm;
+  @apply bg-primary text-content shadow-sm;
 }
 
 .color-scheme-switcher__icon {
@@ -55,6 +164,13 @@
   @apply min-w-[160px];
 }
 
+/* Add a small inset so the option/swatch buttons aren't flush with the
+   dropdown-card body's edge. */
+.color-scheme-switcher__theme-popover .dropdown-card__body,
+.color-scheme-switcher__accent-popover .dropdown-card__body {
+  @apply p-1;
+}
+
 .color-scheme-switcher__theme-options {
   @apply flex flex-col gap-0.5 self-stretch;
 }
@@ -62,23 +178,26 @@
 .color-scheme-switcher__theme-option {
   @apply flex items-center gap-2 w-full px-2 py-1.5;
   @apply rounded-md transition-all duration-150;
-  @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
+  @apply hover:bg-tertiary;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
-  @apply text-neutral-700 dark:text-neutral-300 text-xs font-medium;
+  @apply text-content text-xs font-medium;
 }
 
 .color-scheme-switcher__theme-option--active {
-  @apply bg-neutral-100 dark:bg-neutral-700;
+  @apply bg-tertiary;
 }
 
 .color-scheme-switcher__theme-preview {
-  @apply size-4 rounded-full border border-neutral-200 dark:border-neutral-600 shadow-sm;
+  @apply size-4 shrink-0 rounded-full border border-tertiary shadow-sm;
 }
 
 /* Theme preview swatches - show a representative mid-tone for each neutral */
 .color-scheme-switcher__theme-preview--brand {
-  background: oklch(62.68% 0.0000 89.88);
+  /* `--color-brand-neutral-400` is set in variables.css (default) and re-emitted
+     by Appearance#brand_css_overrides when configured. It isn't touched by
+     `.neutral-theme-*` classes, so the swatch stays stable on hover/select. */
+  background: var(--color-brand-neutral-400);
 }
 
 .color-scheme-switcher__theme-preview--slate {
@@ -130,22 +249,24 @@
 .color-scheme-switcher__accent-option {
   @apply flex items-center justify-center p-1;
   @apply rounded-md transition-all duration-150;
-  @apply hover:bg-neutral-100 dark:hover:bg-neutral-700;
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-1;
+  @apply hover:bg-tertiary;
+  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
 .color-scheme-switcher__accent-option--active {
-  @apply bg-neutral-100 dark:bg-neutral-700 ring-2 ring-primary-400 ring-offset-1;
+  @apply bg-tertiary ring-2 ring-primary-400 ring-offset-1;
 }
 
 .color-scheme-switcher__accent-preview {
-  @apply size-6 rounded-full border-2 border-white dark:border-neutral-600 shadow-sm;
+  @apply size-6 rounded-full border-2 border-primary shadow-sm;
 }
 
-.color-scheme-switcher__accent-preview--neutral {
-  @apply bg-neutral-400 dark:bg-neutral-500;
-  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+.color-scheme-switcher__accent-preview--brand {
+  /* `--color-brand-accent` is set in variables.css (default) and re-emitted
+     by Appearance#brand_css_overrides when configured. It isn't touched by
+     `.accent-theme-*` classes, so the swatch stays stable on hover/select. */
+  background: var(--color-brand-accent);
 }
 
 /* Accent button with badge */
@@ -160,52 +281,53 @@
 }
 
 .color-scheme-switcher__accent-badge-preview {
-  @apply size-2 rounded-full border border-white dark:border-neutral-800 shadow-sm;
+  @apply size-2 rounded-full border border-primary shadow-sm;
   @apply hidden;
 }
 
-.color-scheme-switcher__accent-badge-preview--neutral {
-  @apply bg-neutral-400 dark:bg-neutral-500;
-  background-image: linear-gradient(135deg, transparent 45%, white 45%, white 55%, transparent 55%);
+.color-scheme-switcher__accent-badge-preview--brand {
+  /* Same brand-scoped alias as the popover swatch — keeps the navbar trigger
+     badge stable regardless of hover/active accent. */
+  background: var(--color-brand-accent);
 }
 
 /* Show accent badge based on body accent class */
-.accent-red .color-scheme-switcher__accent-badge,
-.accent-orange .color-scheme-switcher__accent-badge,
-.accent-amber .color-scheme-switcher__accent-badge,
-.accent-yellow .color-scheme-switcher__accent-badge,
-.accent-lime .color-scheme-switcher__accent-badge,
-.accent-green .color-scheme-switcher__accent-badge,
-.accent-emerald .color-scheme-switcher__accent-badge,
-.accent-teal .color-scheme-switcher__accent-badge,
-.accent-cyan .color-scheme-switcher__accent-badge,
-.accent-sky .color-scheme-switcher__accent-badge,
-.accent-blue .color-scheme-switcher__accent-badge,
-.accent-indigo .color-scheme-switcher__accent-badge,
-.accent-violet .color-scheme-switcher__accent-badge,
-.accent-purple .color-scheme-switcher__accent-badge,
-.accent-fuchsia .color-scheme-switcher__accent-badge,
-.accent-pink .color-scheme-switcher__accent-badge,
-.accent-rose .color-scheme-switcher__accent-badge {
+.accent-theme-red .color-scheme-switcher__accent-badge,
+.accent-theme-orange .color-scheme-switcher__accent-badge,
+.accent-theme-amber .color-scheme-switcher__accent-badge,
+.accent-theme-yellow .color-scheme-switcher__accent-badge,
+.accent-theme-lime .color-scheme-switcher__accent-badge,
+.accent-theme-green .color-scheme-switcher__accent-badge,
+.accent-theme-emerald .color-scheme-switcher__accent-badge,
+.accent-theme-teal .color-scheme-switcher__accent-badge,
+.accent-theme-cyan .color-scheme-switcher__accent-badge,
+.accent-theme-sky .color-scheme-switcher__accent-badge,
+.accent-theme-blue .color-scheme-switcher__accent-badge,
+.accent-theme-indigo .color-scheme-switcher__accent-badge,
+.accent-theme-violet .color-scheme-switcher__accent-badge,
+.accent-theme-purple .color-scheme-switcher__accent-badge,
+.accent-theme-fuchsia .color-scheme-switcher__accent-badge,
+.accent-theme-pink .color-scheme-switcher__accent-badge,
+.accent-theme-rose .color-scheme-switcher__accent-badge {
   @apply inline-block;
 }
 
-.accent-red .color-scheme-switcher__accent-badge-preview--red,
-.accent-orange .color-scheme-switcher__accent-badge-preview--orange,
-.accent-amber .color-scheme-switcher__accent-badge-preview--amber,
-.accent-yellow .color-scheme-switcher__accent-badge-preview--yellow,
-.accent-lime .color-scheme-switcher__accent-badge-preview--lime,
-.accent-green .color-scheme-switcher__accent-badge-preview--green,
-.accent-emerald .color-scheme-switcher__accent-badge-preview--emerald,
-.accent-teal .color-scheme-switcher__accent-badge-preview--teal,
-.accent-cyan .color-scheme-switcher__accent-badge-preview--cyan,
-.accent-sky .color-scheme-switcher__accent-badge-preview--sky,
-.accent-blue .color-scheme-switcher__accent-badge-preview--blue,
-.accent-indigo .color-scheme-switcher__accent-badge-preview--indigo,
-.accent-violet .color-scheme-switcher__accent-badge-preview--violet,
-.accent-purple .color-scheme-switcher__accent-badge-preview--purple,
-.accent-fuchsia .color-scheme-switcher__accent-badge-preview--fuchsia,
-.accent-pink .color-scheme-switcher__accent-badge-preview--pink,
-.accent-rose .color-scheme-switcher__accent-badge-preview--rose {
+.accent-theme-red .color-scheme-switcher__accent-badge-preview--red,
+.accent-theme-orange .color-scheme-switcher__accent-badge-preview--orange,
+.accent-theme-amber .color-scheme-switcher__accent-badge-preview--amber,
+.accent-theme-yellow .color-scheme-switcher__accent-badge-preview--yellow,
+.accent-theme-lime .color-scheme-switcher__accent-badge-preview--lime,
+.accent-theme-green .color-scheme-switcher__accent-badge-preview--green,
+.accent-theme-emerald .color-scheme-switcher__accent-badge-preview--emerald,
+.accent-theme-teal .color-scheme-switcher__accent-badge-preview--teal,
+.accent-theme-cyan .color-scheme-switcher__accent-badge-preview--cyan,
+.accent-theme-sky .color-scheme-switcher__accent-badge-preview--sky,
+.accent-theme-blue .color-scheme-switcher__accent-badge-preview--blue,
+.accent-theme-indigo .color-scheme-switcher__accent-badge-preview--indigo,
+.accent-theme-violet .color-scheme-switcher__accent-badge-preview--violet,
+.accent-theme-purple .color-scheme-switcher__accent-badge-preview--purple,
+.accent-theme-fuchsia .color-scheme-switcher__accent-badge-preview--fuchsia,
+.accent-theme-pink .color-scheme-switcher__accent-badge-preview--pink,
+.accent-theme-rose .color-scheme-switcher__accent-badge-preview--rose {
   @apply inline-block;
 }

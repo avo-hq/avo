@@ -5,6 +5,19 @@ tr:
     actions: Aksiyonlar
     add_filter: Filtre ekle
     and_x_other_resources: ve %{count} diğer kaynak
+    appearance:
+      accent_picker: Vurgu rengi
+      accents: Vurgu
+      auto: Otomatik
+      auto_tooltip: Otomatik (sistem tercihi)
+      dark: Koyu
+      dark_tooltip: Koyu mod
+      light: Açık
+      light_tooltip: Açık mod
+      neutrals: Tema
+      neutrals_picker: Nötr tema
+      schemes: Görünüm
+      title: Görünüm
     applied:
       one: uygulandı
       other: uygulanan

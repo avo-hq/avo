@@ -1,0 +1,77 @@
+name: Run RSpec
+description: >-
+  Runs an RSpec command and, on failure, prints a focused summary
+  (the "Failed examples:" rerun list plus the final tally) to the
+  GitHub job summary and inline log so you don't have to dig through
+  the whole output.
+
+inputs:
+  command:
+    description: >-
+      The full RSpec command to run, e.g.
+      "bundle exec parallel_rspec spec/features".
+    required: true
+  log-file:
+    description: Path where the captured RSpec output is written.
+    required: false
+    default: tmp/rspec.log
+
+runs:
+  using: composite
+  steps:
+    - name: Run RSpec
+      id: rspec
+      shell: bash
+      run: |
+        mkdir -p "$(dirname "${{ inputs.log-file }}")"
+        set -o pipefail
+        ${{ inputs.command }} 2>&1 | tee "${{ inputs.log-file }}"
+
+    - name: Print RSpec failure summary
+      if: failure() && steps.rspec.outcome == 'failure'
+      shell: bash
+      env:
+        LOG_FILE: ${{ inputs.log-file }}
+        RSPEC_COMMAND: ${{ inputs.command }}
+      run: |
+        if [ ! -f "$LOG_FILE" ]; then
+          echo "::warning::No RSpec log captured at $LOG_FILE"
+          exit 0
+        fi
+
+        # Strip ANSI color codes so the summary renders cleanly in markdown.
+        clean_log=$(mktemp)
+        perl -pe 's/\e\[[0-9;]*[A-Za-z]//g' "$LOG_FILE" > "$clean_log"
+
+        # Everything from "Failed examples:" onwards: rerun commands + final tally.
+        summary=$(awk '/^Failed examples:/{flag=1} flag' "$clean_log")
+        if [ -z "$summary" ]; then
+          # No structured failure list (e.g. a load error). Fall back to a tail
+          # so the actual error is still visible.
+          summary=$(tail -n 200 "$clean_log")
+        fi
+
+        # Final tally line, e.g. "42 examples, 3 failures, 1 pending".
+        tally=$(grep -E '^[0-9]+ examples?, [0-9]+ failures?' "$clean_log" | tail -n 1 || true)
+
+        {
+          echo "## RSpec failures"
+          echo ""
+          echo "Command: \`${RSPEC_COMMAND}\`"
+          echo ""
+          if [ -n "$tally" ]; then
+            echo "**${tally}**"
+            echo ""
+          fi
+          echo '```'
+          echo "$summary"
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
+
+        echo "::group::RSpec failure summary"
+        if [ -n "$tally" ]; then
+          echo "$tally"
+          echo ""
+        fi
+        echo "$summary"
+        echo "::endgroup::"

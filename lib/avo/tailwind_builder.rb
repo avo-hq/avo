@@ -75,7 +75,7 @@ module Avo
       lines = []
 
       # Include Avo itself (the core engine) in Tailwind's scan paths.
-      lines << %(@source "#{relative_to_tmp(Avo::Engine.root)}";)
+      lines << %(@source "#{tailwind_path(Avo::Engine.root)}";)
       append_engine_stylesheets(lines, Avo::Engine.root)
 
       append_plugin_engine_tailwind_sources(lines)
@@ -83,9 +83,26 @@ module Avo
         lines << %(@import "#{path}";)
       end
 
-      lines << %(@source "../../";)
+      append_host_tailwind_sources(lines)
 
       File.write(input_path, lines.join("\n") + "\n")
+    end
+
+    def append_host_tailwind_sources(lines)
+      resolved_host_content_source_paths.each do |path|
+        lines << %(@source "#{tailwind_path(path)}";)
+      end
+    end
+
+    def resolved_host_content_source_paths
+      Avo.configuration.tailwindcss_content_sources.filter_map do |raw|
+        path = Pathname.new(raw)
+        path = Rails.root.join(path) unless path.absolute?
+        path = path.expand_path
+        next unless path.directory?
+
+        path
+      end.uniq
     end
 
     def append_plugin_engine_tailwind_sources(lines)
@@ -93,7 +110,7 @@ module Avo
         root = entry[:klass].root
         next unless root&.directory?
 
-        lines << %(@source "#{relative_to_tmp(root)}";)
+        lines << %(@source "#{tailwind_path(root)}";)
         append_engine_stylesheets(lines, root)
       end
     end
@@ -104,19 +121,22 @@ module Avo
 
       # Some engines ship `app/assets/stylesheets/application.css` directly (no namespace folder).
       root_application = stylesheets_root.join("application.css")
-      lines << %(@import "#{relative_to_tmp(root_application)}";) if root_application.exist?
+      lines << %(@import "#{tailwind_path(root_application)}";) if root_application.exist?
 
       # Most engines namespace their assets under `app/assets/stylesheets/<namespace>/application.css`.
       Dir.children(stylesheets_root).sort.each do |entry|
         next if entry.start_with?(".")
 
         namespaced_application = stylesheets_root.join(entry, "application.css")
-        lines << %(@import "#{relative_to_tmp(namespaced_application)}";) if namespaced_application.exist?
+        lines << %(@import "#{tailwind_path(namespaced_application)}";) if namespaced_application.exist?
       end
     end
 
-    def relative_to_tmp(absolute)
-      Pathname.new(absolute).expand_path.relative_path_from(tmp_input_dir.expand_path).to_s.tr("\\", "/")
+    # Always emit absolute paths for @source / @import. Relative paths from tmp/avo are wrong on
+    # Capistrano-style deploys: Rails.root may be releases/... while the input file is opened via
+    # current/... symlinks, so ".." counts differ and resolvers miss gem trees under shared/bundle.
+    def tailwind_path(absolute)
+      Pathname.new(absolute).expand_path.to_s.tr("\\", "/")
     end
 
     def collect_host_avo_stylesheets
@@ -127,7 +147,7 @@ module Avo
         .glob(base.join("**", "*.css"))
         .select { |path| File.file?(path) }
         .sort
-        .map { |path| relative_to_tmp(path) }
+        .map { |path| tailwind_path(path) }
     end
 
     def run_tailwindcss(*tailwind_args)
