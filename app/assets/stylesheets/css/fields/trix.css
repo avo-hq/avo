@@ -25,26 +25,14 @@
 }
 
 trix-editor {
-  @apply border border-tertiary rounded-lg bg-primary text-content;
+  @apply block w-full bg-primary text-content rounded-lg p-3;
+  border: none !important;
 
   &:empty::before {
     @apply !text-content-secondary;
   }
 }
 
-trix-toolbar {
-  .trix-button-row {
-    @apply flex-wrap gap-x-5;
-  }
-
-  .trix-button-group {
-    @apply border border-tertiary;
-  }
-
-  .trix-button-group:not(:first-child) {
-    @apply ms-0;
-  }
-}
 
 /* Hack to remove border from trix when rendered from ActionText */
 .trix-content {
@@ -53,18 +41,41 @@ trix-toolbar {
   }
 }
 
-/* Theme-token based Trix styling */
-.trix-content pre {
-  @apply bg-tertiary text-content;
+/* Theme Trix content with Avo tokens. */
+.trix-content pre,
+trix-editor pre {
+  @apply !bg-tertiary text-content rounded;
+}
+
+.trix-content code,
+trix-editor code {
+  @apply !bg-tertiary text-content rounded px-1 py-0.5 text-sm;
+}
+
+.trix-content pre code,
+trix-editor pre code {
+  @apply !bg-transparent p-0;
 }
 
 trix-toolbar {
+  @apply !block bg-transparent border-0 p-0;
+
+  .trix-button-row {
+    @apply !flex !flex-wrap gap-x-3 gap-y-1 items-center;
+  }
+
   .trix-button-group {
-    @apply bg-secondary border-tertiary;
+    @apply !flex !flex-nowrap border border-tertiary rounded bg-primary overflow-hidden flex-shrink-0;
+    @apply !mb-0;
+  }
+
+  .trix-button-group:not(:first-child) {
+    @apply !ms-0 me-0;
   }
 
   .trix-button {
-    @apply text-content border-tertiary;
+    @apply flex items-center justify-center border-0 border-s border-tertiary first:border-s-0 size-8 text-content;
+    @apply !border-b-0;
 
     &:not(:disabled):hover {
       @apply bg-tertiary;
@@ -97,6 +108,6 @@ trix-toolbar {
 }
 
 /* Trix toolbar icons are image-based and need inversion only in dark mode. */
-.dark trix-toolbar .trix-button--icon::before {
+.dark trix-toolbar .trix-button--icon:not(.trix-active)::before {
   filter: invert(1);
 }
