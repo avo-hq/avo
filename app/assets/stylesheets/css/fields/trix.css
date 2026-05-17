@@ -25,7 +25,8 @@
 }
 
 trix-editor {
-  @apply border border-tertiary rounded-b-lg border-t-0 bg-primary text-content;
+  @apply block w-full bg-primary text-content rounded-lg p-3;
+  border: none !important;
 
   &:empty::before {
     @apply !text-content-secondary;
@@ -57,17 +58,10 @@ trix-editor pre code {
 }
 
 trix-toolbar {
-  @apply !block bg-secondary border border-tertiary border-b-0 rounded-t-lg p-1;
+  @apply !block bg-transparent border-0 p-0;
 
   .trix-button-row {
-    @apply !flex !flex-nowrap !overflow-x-auto gap-1 items-center;
-
-    /* Hide scrollbar */
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    @apply !flex !flex-wrap gap-x-3 gap-y-1 items-center;
   }
 
   .trix-button-group {
