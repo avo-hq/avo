@@ -9,6 +9,8 @@ Avo::Engine.routes.draw do
 
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
+  patch "appearance_settings", to: "appearance_settings#update"
+
   scope "avo_api", as: "avo_api" do
     # Only used for searchable fields
     get "/:resource_name/search", to: "search#show"
@@ -33,6 +35,7 @@ Avo::Engine.routes.draw do
   if Rails.env.development? || Rails.env.staging? || Rails.env.test?
     scope "/avo_private", as: "avo_private" do
       get "/design", to: "private#design"
+      get "/appearance", to: "private#appearance"
     end
 
     mount Lookbook::Engine, at: "/lookbook" if defined?(Lookbook)

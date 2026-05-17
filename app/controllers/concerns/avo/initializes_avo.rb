@@ -9,6 +9,7 @@ module Avo
       safe_call(:before_init_app)
       Avo.init
       Avo::Current.locale = locale
+      load_appearance_settings
 
       # Fire and forget HQ reporting
       request_info = {ip: request.ip, host: request.host, port: request.port}
@@ -21,6 +22,17 @@ module Avo
 
     def context
       instance_eval(&Avo.configuration.context)
+    end
+
+    def load_appearance_settings
+      appearance = Avo.configuration.appearance
+
+      return unless appearance.database_persistence? && appearance.load_settings_block.present?
+
+      Avo::Current.appearance_settings = Avo::ExecutionContext.new(
+        target: appearance.load_settings_block,
+        current_user: _current_user
+      ).handle
     end
   end
 end

@@ -25,7 +25,8 @@ en:
     choose_an_option: Choose an option
     choose_item: Choose %{item}
     clear_value: Clear value
-    click_to_reveal_filters: Click to reveal filters
+    reveal_filters: &reveal_filters Reveal filters
+    click_to_reveal_filters: *reveal_filters
     close_modal: Close modal
     close: Close
     confirm: Confirm

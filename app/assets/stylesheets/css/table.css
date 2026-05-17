@@ -44,8 +44,8 @@
 }
 
 @theme {
-  --color-table-row-selected: var(--color-secondary);
-  --color-table-row-hover: color-mix(in oklab, var(--color-secondary), var(--color-content) 2%)
+  --color-table-row-selected: color-mix(in oklab, var(--color-primary), var(--color-content) 12%);
+  --color-table-row-hover: color-mix(in oklab, var(--color-primary), var(--color-content) 5%);
 }
 
 .shift-pressed {
@@ -60,5 +60,5 @@
 }
 
 .table-row.is-keyboard-focused {
-  background: color-mix(in oklab, var(--color-background), var(--color-accent) 10%);
+  background: color-mix(in oklab, var(--color-primary), var(--color-accent) 10%);
 }

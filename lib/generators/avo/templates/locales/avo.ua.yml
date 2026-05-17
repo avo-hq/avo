@@ -5,6 +5,19 @@ ua:
     actions: Дії
     add_filter: Додати фільтр
     and_x_other_resources: і ще %{count} інших ресурсів
+    appearance:
+      accent_picker: Колір акценту
+      accents: Акцент
+      auto: Авто
+      auto_tooltip: Авто (системні налаштування)
+      dark: Темний
+      dark_tooltip: Темний режим
+      light: Світлий
+      light_tooltip: Світлий режим
+      neutrals: Тема
+      neutrals_picker: Нейтральна тема
+      schemes: Зовнішній вигляд
+      title: Зовнішній вигляд
     applied: застосовано
     are_you_sure: Ви впевнені?
     are_you_sure_detach_item: Ви впевнені, що хочете відкріпити цей %{item}?

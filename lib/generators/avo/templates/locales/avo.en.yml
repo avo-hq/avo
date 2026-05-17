@@ -5,6 +5,19 @@ en:
     actions: Actions
     add_filter: Add filter
     and_x_other_resources: and %{count} other resources
+    appearance:
+      accent_picker: Select accent color
+      accents: Accent
+      auto: Auto
+      auto_tooltip: Auto (system preference)
+      dark: Dark
+      dark_tooltip: Dark mode
+      light: Light
+      light_tooltip: Light mode
+      neutrals: Theme
+      neutrals_picker: Select neutral color
+      schemes: Appearance
+      title: Appearance
     applied: applied
     are_you_sure: Are you sure?
     are_you_sure_detach_item: Are you sure you want to detach this %{item}.

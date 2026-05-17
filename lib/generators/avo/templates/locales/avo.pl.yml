@@ -5,6 +5,19 @@ pl:
     actions: Akcje
     add_filter: Dodaj filtr
     and_x_other_resources: i %{count} innych zasobów
+    appearance:
+      accent_picker: Kolor akcentu
+      accents: Akcent
+      auto: Automatycznie
+      auto_tooltip: Automatycznie (preferencje systemowe)
+      dark: Ciemny
+      dark_tooltip: Tryb ciemny
+      light: Jasny
+      light_tooltip: Tryb jasny
+      neutrals: Motyw
+      neutrals_picker: Motyw neutralny
+      schemes: Wygląd
+      title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?
     are_you_sure_detach_item: Czy na pewno chcesz odłączyć ten %{item}?

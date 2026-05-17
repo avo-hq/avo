@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_05_120100) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,31 +50,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_05_120100) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
-  end
-
-  create_table "avo_configuration_audits", force: :cascade do |t|
-    t.bigint "changed_by_id"
-    t.string "changed_by_type"
-    t.string "configurable_id", null: false
-    t.string "configurable_type", null: false
-    t.datetime "created_at", null: false
-    t.string "key", null: false
-    t.jsonb "new_value"
-    t.jsonb "old_value"
-    t.index ["changed_by_type", "changed_by_id"], name: "index_avo_config_audits_on_changed_by"
-    t.index ["configurable_type", "configurable_id", "key"], name: "index_avo_config_audits_on_configurable_and_key"
-  end
-
-  create_table "avo_configurations", force: :cascade do |t|
-    t.string "configurable_id", null: false
-    t.string "configurable_type", null: false
-    t.datetime "created_at", null: false
-    t.string "key", null: false
-    t.boolean "locked", default: false, null: false
-    t.datetime "updated_at", null: false
-    t.jsonb "value", default: {}
-    t.string "value_type"
-    t.index ["configurable_type", "configurable_id", "key"], name: "index_avo_configurations_uniqueness", unique: true
   end
 
   create_table "cities", force: :cascade do |t|
@@ -372,7 +347,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_05_120100) do
     t.json "roles"
     t.string "slug"
     t.bigint "team_id"
-    t.json "theme_settings", default: {}, null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

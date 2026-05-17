@@ -5,6 +5,19 @@ fr:
     actions: Actions
     add_filter: Ajouter un filtre
     and_x_other_resources: et %{count} autres ressources
+    appearance:
+      accent_picker: Couleur d'accent
+      accents: Accent
+      auto: Automatique
+      auto_tooltip: Automatique (préférence système)
+      dark: Sombre
+      dark_tooltip: Mode sombre
+      light: Clair
+      light_tooltip: Mode clair
+      neutrals: Thème
+      neutrals_picker: Thème neutre
+      schemes: Apparence
+      title: Apparence
     applied:
       one: appliqué
       other: appliqués
