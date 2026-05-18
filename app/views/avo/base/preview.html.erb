@@ -1,26 +1,23 @@
-<%# TODO: update this %>
 <%= turbo_frame_tag params[:turbo_frame] do %>
   <% if @authorized %>
-    <%= content_tag :div, class: "-mx-2" do %>
-      <%= content_tag :div, class: "px-6 py-4" do %>
-        <div class="text-md font-semibold uppercase text-content">Previewing <%= @resource.record_title %></div>
-      <% end %>
-
+    <%= render ui.card(title: "Previewing #{@resource.record_title}") do |card| %>
       <% if @preview_fields.present? %>
-        <div class="description-list">
-          <% @preview_fields.each_with_index do |field, index| %>
-            <%= render field
-              .hydrate(
-                resource: @resource,
-                record: @resource.record,
-                user: @resource.user,
-                view: Avo::ViewInquirer.new(:show)
-              )
-              .component_for_view(:show)
-              .new(field: field, resource: @resource, index: index, stacked: true)
-            %>
+        <% card.with_body do %>
+          <%= render ui.description_list do %>
+            <% @preview_fields.each_with_index do |field, index| %>
+              <%= render field
+                .hydrate(
+                  resource: @resource,
+                  record: @resource.record,
+                  user: @resource.user,
+                  view: Avo::ViewInquirer.new(:show)
+                )
+                .component_for_view(:show)
+                .new(field: field, resource: @resource, index: index, stacked: true, compact: true)
+              %>
+            <% end %>
           <% end %>
-        </div>
+        <% end %>
       <% end %>
     <% end %>
   <% else %>

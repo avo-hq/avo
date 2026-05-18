@@ -35,6 +35,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
       {
         "field-wrapper--stacked": stacked?,
         "field-wrapper--full-width": full_width?,
+        "field-wrapper--compact": @compact,
       })
   end
 

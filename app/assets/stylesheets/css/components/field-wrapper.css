@@ -105,3 +105,20 @@
     @apply w-full;
   }
 }
+
+/* Compact modifier - tighter spacing for previews/popovers */
+.field-wrapper.field-wrapper--compact {
+  @apply py-0.5 gap-y-0;
+
+  .field-wrapper__label {
+    @apply min-h-0 py-1;
+  }
+
+  .field-wrapper__content {
+    @apply py-0;
+  }
+}
+
+.field-wrapper.field-wrapper--compact.field-wrapper--stacked {
+  @apply py-1 gap-y-0.5;
+}

@@ -10,8 +10,9 @@ class Avo::Fields::ShowComponent < Avo::BaseComponent
   attr_reader :stacked
   attr_reader :view
   attr_reader :full_width
+  attr_reader :compact
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, stacked: nil, full_width: nil, **kwargs)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, stacked: nil, full_width: nil, compact: false, **kwargs)
     @field = field
     @index = index
     @resource = resource
@@ -19,6 +20,7 @@ class Avo::Fields::ShowComponent < Avo::BaseComponent
     @kwargs = kwargs
     @view = Avo::ViewInquirer.new("show")
     @full_width = full_width
+    @compact = compact
   end
 
   def wrapper_data
@@ -51,6 +53,7 @@ class Avo::Fields::ShowComponent < Avo::BaseComponent
       resource: resource,
       stacked: stacked,
       full_width: full_width,
+      compact: compact,
       view: view
     }
   end
