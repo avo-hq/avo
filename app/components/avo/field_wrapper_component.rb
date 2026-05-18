@@ -35,7 +35,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
       {
         "field-wrapper--stacked": stacked?,
         "field-wrapper--full-width": full_width?,
-        "field-wrapper--#{@density}": @density && @density != :default,
+        "field-wrapper--density-#{@density}": @density && @density != :default,
       })
   end
 

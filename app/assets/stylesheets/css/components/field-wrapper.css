@@ -106,8 +106,8 @@
   }
 }
 
-/* Compact modifier - tighter spacing for previews/popovers */
-.field-wrapper.field-wrapper--compact {
+/* Density: compact - tighter spacing for previews/popovers */
+.field-wrapper.field-wrapper--density-compact {
   @apply py-0.5 gap-y-0;
 
   .field-wrapper__label {
@@ -119,6 +119,6 @@
   }
 }
 
-.field-wrapper.field-wrapper--compact.field-wrapper--stacked {
+.field-wrapper.field-wrapper--density-compact.field-wrapper--stacked {
   @apply py-1 gap-y-0.5;
 }
