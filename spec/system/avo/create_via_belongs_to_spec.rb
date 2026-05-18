@@ -195,7 +195,7 @@ RSpec.describe 'Create Via Belongs to', type: :system do
       within field_wrapper(:course) do
         expect(page).not_to have_text 'Create new course'
       end
-
+    ensure
       Avo::Resources::CourseLink.restore_items_from_backup
     end
   end

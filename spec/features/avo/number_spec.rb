@@ -103,7 +103,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}"
 
         expect(find_field_element(:users_required)).to have_text("10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects"
 
         expect(find_field_element(:users_required)).to have_text("10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -135,7 +135,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}"
 
         expect(find_field_element(:users_required)).to have_text("10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -149,7 +149,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}/edit"
 
         expect(page).to have_field("project_users_required", with: "10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -163,7 +163,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}/edit"
 
         expect(page).to have_field("project_users_required", with: "10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
