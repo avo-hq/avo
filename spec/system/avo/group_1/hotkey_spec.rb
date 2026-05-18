@@ -302,8 +302,6 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     end
 
     it "sets aria-activedescendant to the focused row id" do
-      project = create(:project)
-
       visit "/admin/resources/projects"
 
       focus_resource_table
