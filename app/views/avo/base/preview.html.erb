@@ -13,7 +13,7 @@
                   view: Avo::ViewInquirer.new(:show)
                 )
                 .component_for_view(:show)
-                .new(field: field, resource: @resource, index: index, stacked: true, compact: true)
+                .new(field: field, resource: @resource, index: index, stacked: true, density: :compact)
               %>
             <% end %>
           <% end %>
