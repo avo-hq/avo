@@ -24,47 +24,35 @@
   height: var(--top-navbar-height);
 }
 
-/* The sidebar width stays the same regardless of the sidebar open state. */
-/* The content width and margin offset changes based on the sidebar open state and the :lg breakpoint. */
-.main {
+/* Layout variables live on the outermost sidebar host so they cascade to both
+   the top-navbar and .main (which are siblings, not parent/child).
+   --content-width is intentionally relative to .main's content box (which is
+   already offset by --sidebar-offset-size via padding), so centering via
+   mx-auto happens inside the area to the right of the sidebar — not the page. */
+[data-controller~="sidebar"] {
   --sidebar-width: --spacing(64);
   --sidebar-offset-size: 0rem;
-  --content-width: calc(100% - var(--sidebar-offset-size) - var(--spacing) * 2);
+  --content-width: calc(100% - var(--spacing) * 2);
+}
 
-  @media (min-width: theme(--breakpoint-lg)) {
-    &.sidebar-open {
-      --sidebar-offset-size: var(--sidebar-width);
-    }
+@media (min-width: theme(--breakpoint-lg)) {
+  [data-controller~="sidebar"][data-sidebar-open-value="true"] {
+    --sidebar-offset-size: var(--sidebar-width);
   }
+}
 
-  @apply mt-(--top-navbar-height);
+.main {
+  padding-top: var(--top-navbar-height);
+  padding-inline-start: var(--sidebar-offset-size);
+  transition: padding 0.1s ease-in-out;
+}
 
-  .main-content-area {
-    @apply w-(--content-width) ms-1 flex flex-1 flex-col z-50 fixed rounded-2xl bg-primary shadow-content py-2 lg:py-4 px-2 lg:px-4 h-full;
+.main-content-area {
+  @apply w-(--content-width) flex flex-col rounded-b-2xl bg-primary py-2 lg:py-4 px-2 lg:px-4;
 
-    transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
-
-    height: calc(100dvh - var(--spacing) - var(--top-navbar-height));
-
-    .scrollable-wrapper {
-      @apply overflow-y-auto h-full flex-1 flex flex-col;
-      @apply px-0.5; /* add some space for the view type toggle buttons to not be cut off by the overflow. this might be needed to be handled differently with a wrapper inside the scrolling area */
-      @apply pt-1; /* add some space for the button focus ring to not be cut off by the overflow */
-    }
-    .avo-container {
-      @apply flex flex-1 flex-col justify-between;
-    }
-  }
-
-  &.sidebar-open {
-    /* Add padding to the main area to allow for the sidebar to expand. */
-    .main-content-area {
-      @media (min-width: theme(--breakpoint-lg)) {
-        margin-inline-start: calc(var(--sidebar-width) + var(--spacing));
-        width: var(--content-width);
-      }
-    }
-  }
+  margin-inline-start: var(--spacing);
+  transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
+  min-height: calc(100dvh - var(--top-navbar-height) - var(--spacing));
 }
 
 .container-large {
@@ -80,7 +68,76 @@
 }
 
 .top-navbar {
-  @apply z-100 fixed w-full flex shrink-0 items-center px-4 lg:px-2 space-x-4 rtl:space-x-reverse lg:space-x-0;
+  @apply z-50 fixed top-0 inset-x-0 w-full flex shrink-0 items-center px-0 space-x-0 bg-transparent pointer-events-none;
+
+  /* Children re-enable pointer events; navbar background stays transparent so the
+     sidebar (which sits on top via a higher z-index) shows through unobstructed. */
+  > * {
+    @apply pointer-events-auto;
+  }
+
+  .breadcrumbs__container {
+    @apply flex-nowrap overflow-x-auto;
+  }
+}
+
+/* Spacer mirroring the sidebar so navbar items start at the content edge.
+   Zero on mobile (no sidebar gutter); mirrors sidebar offset on lg+. */
+.top-navbar__spacer {
+  width: 0;
+  flex-shrink: 0;
+  transition: width 0.1s ease-in-out;
+}
+
+@media (min-width: theme(--breakpoint-lg)) {
+  .top-navbar__spacer {
+    width: calc(var(--sidebar-offset-size) + var(--spacing));
+  }
+}
+
+/* The visible portion of the navbar — sits flush above the content card. */
+.top-navbar__content {
+  @apply relative flex-1 flex items-center justify-between space-x-2 rtl:space-x-reverse sm:space-x-4 px-3 lg:px-4 min-w-0 h-full bg-primary rounded-t-2xl;
+
+  /* Match the content card's right-edge gutter. */
+  margin-inline-end: var(--spacing);
+
+  /* Extend a sliver of white below the navbar so it looks like the content card
+     stretches all the way up to the navbar — even when the page overscrolls and
+     the main container pulls past the top, the strip below stays white instead
+     of revealing the gray body background. */
+  /* &::after {
+    content: "";
+    @apply absolute inset-x-0 top-full h-4 bg-primary pointer-events-none;
+  } */
+}
+
+/* Desktop navbar toggle — only useful when the sidebar is closed (otherwise the
+   sidebar's own header owns the toggle).
+   Reveal is delayed by the sidebar's own slide duration so the toggle only
+   appears AFTER the sidebar has finished sliding off-screen. Hide stays
+   immediate so it disappears before the sidebar slides back in. */
+.top-navbar__sidebar-toggle {
+  @apply hidden lg:inline-flex overflow-hidden;
+
+  opacity: 1;
+  max-width: --spacing(10);
+  margin-inline-end: --spacing(2);
+  transition:
+    opacity 0.1s ease-in-out 0.1s,
+    max-width 0.1s ease-in-out 0.1s,
+    margin 0.1s ease-in-out 0.1s;
+}
+
+[data-sidebar-open-value="true"] .top-navbar__sidebar-toggle {
+  opacity: 0;
+  max-width: 0;
+  margin-inline-end: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.1s ease-in-out 0s,
+    max-width 0.1s ease-in-out 0s,
+    margin 0.1s ease-in-out 0s;
 }
 
 /* Sidebar toggle: choose icon via navbar variables; visibility driven by data attribute */
@@ -100,13 +157,30 @@ button[data-sidebar-state="closed"] .sidebar-toggle-icon--closed {
   @apply inline-flex;
 }
 
-/* Default hidden state - LTR: sidebar slides in from left */
+/* Desktop-only navbar toggle: hidden by default; shown only when the sidebar is
+   closed on desktop, since the sidebar's own toggle slides off-screen with it. */
+.top-navbar__sidebar-toggle {
+  @apply hidden;
+}
+
+@media (min-width: theme(--breakpoint-lg)) {
+  .top-navbar__sidebar-toggle[data-sidebar-state="closed"] {
+    @apply inline-flex;
+  }
+}
+
+/* Default hidden state - LTR: sidebar slides in from left.
+   Sidebar owns the full left column from top to bottom (logo + toggle live in its header). */
 .avo-sidebar {
-  @apply fixed z-60 top-0 flex-1 border-e border-tertiary lg:border-none mt-(--top-navbar-height) h-[calc(100dvh-var(--top-navbar-height))] bg-background lg:bg-transparent w-(--sidebar-width);
+  /* z-index above .top-navbar (z-50) so the sidebar overlays the navbar's transparent spacer area.
+     start-0 anchors the fixed element to the viewport edge regardless of any
+     padding shift on parent .main. */
+  @apply fixed z-100 top-0 start-0 h-dvh flex-1 border-e border-tertiary lg:border-none bg-background lg:bg-transparent w-(--sidebar-width);
 
   transform: translateX(-100%);
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease-in-out;
 }
+
 
 /* RTL: sidebar slides in from right when hidden */
 html[dir="rtl"] .avo-sidebar {
