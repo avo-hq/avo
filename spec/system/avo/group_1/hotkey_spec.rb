@@ -42,6 +42,22 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     JS
   end
 
+  def focus_resource_table
+    page.execute_script(<<~JS)
+      const table = document.querySelector('[data-index-row-navigator-target="table"]')
+      if (table) table.focus({ preventScroll: true })
+    JS
+  end
+
+  def active_descendant_id
+    page.evaluate_script(<<~JS)
+      (() => {
+        const table = document.querySelector('[data-index-row-navigator-target="table"]')
+        return table ? table.getAttribute('aria-activedescendant') : null
+      })()
+    JS
+  end
+
   def dispatch_document_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false, alt_key: false)
     page.evaluate_script(<<~JS)
       (() => {
@@ -149,6 +165,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     visit "/admin/resources/projects"
 
+    focus_resource_table
     3.times { dispatch_keydown("ArrowDown") }
     expect(page).to have_css("tr.table-row.is-keyboard-focused")
 
@@ -157,6 +174,9 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_selector("[data-component-name='avo/index/table_row_component'][data-resource-id='#{target_project.to_param}']")
     expect(page).to have_css("tr[data-visit-path]", count: 1)
 
+    # Search replaces the table via turbo and leaves focus on the search input.
+    # Re-focus the table so arrow navigation resumes on the new rows.
+    focus_resource_table
     dispatch_keydown("ArrowUp")
 
     focused_row = find("tr.table-row.is-keyboard-focused")
@@ -236,6 +256,92 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   #   expect(project.reload.name).to eq("Updated from hotkey")
   # end
 
+  describe "accessible row navigation" do
+    it "does not consume arrow keys when the table is not focused" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      result = dispatch_document_keydown("ArrowDown")
+
+      expect(result["defaultPrevented"]).to be(false)
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "focuses the table with Shift+T without selecting a row" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("T", shift_key: true)
+
+      expect(page.evaluate_script("document.activeElement && document.activeElement.tagName")).to eq("TABLE")
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "focuses the table and moves to the first row when pressing j" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to be_present
+    end
+
+    it "focuses the table and moves to the previous row when pressing k" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("k")
+
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to be_present
+    end
+
+    it "sets aria-activedescendant to the focused row id" do
+      project = create(:project)
+
+      visit "/admin/resources/projects"
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+
+      focused_row = find("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to eq(focused_row["id"])
+    end
+
+    it "clears row focus on Escape but keeps the table focused" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+      dispatch_keydown("Escape")
+
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+      expect(page.evaluate_script("document.activeElement && document.activeElement.tagName")).to eq("TABLE")
+    end
+
+    it "does not trigger j/k while typing in the search field" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      search_input = find("[data-resource-search-target='input']")
+      search_input.click
+      search_input.send_keys("j")
+
+      expect(search_input.value).to include("j")
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+  end
+
   context "when hotkeys are disabled via config" do
     around do |example|
       original = Avo.configuration.hotkeys
@@ -263,11 +369,12 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       expect(page).to have_current_path("/admin/resources/projects")
     end
 
-    it "preserves arrow-key row navigation" do
+    it "preserves arrow-key row navigation once the table is focused" do
       create_list(:project, 3)
 
       visit "/admin/resources/projects"
 
+      focus_resource_table
       dispatch_keydown("ArrowDown")
 
       expect(page).to have_css("tr.table-row.is-keyboard-focused")

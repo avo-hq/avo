@@ -44,7 +44,11 @@
         </div>
       <% end %>
 
-      <table class="w-full border-separate border-spacing-0">
+      <table class="w-full border-separate border-spacing-0"
+        tabindex="0"
+        role="grid"
+        aria-label="<%= @resource.plural_name %>"
+        data-index-row-navigator-target="table">
         <%= render partial: 'avo/partials/table_header', locals: {fields: @header_fields, resource: @resource} %>
 
         <%= content_tag :tbody, class: "card__body table-row-group rounded-lg tr>td:first:rounded-t-lg tr>td:last:rounded-b-lg",
