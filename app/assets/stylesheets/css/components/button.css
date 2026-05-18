@@ -311,6 +311,15 @@
     }
   }
 
+  /* Chained with .button to win the
+     specificity battle against .button--style-outline:hover and friends.
+  */
+  .button.button--bare,
+  .button.button--bare:hover {
+    @apply border-none bg-transparent p-1.5;
+    box-shadow: none;
+  }
+
   /* Size variants */
   .button--size-xs {
     @apply text-xs px-2 py-1 gap-1 min-w-6;

@@ -1,4 +1,4 @@
-<div class="sidebar-profile" data-controller="toggle">
+<div class="sidebar-profile">
   <div class="sidebar-profile__body">
     <div class="sidebar-profile__avatar-wrapper">
     <div class="sidebar-profile__avatar">
@@ -23,28 +23,35 @@
     </div>
   </div>
   <div class="sidebar-profile__actions">
-    <button type="button" class="sidebar-profile__action-trigger" data-control="profile-dots" data-action="click->toggle#togglePanel">
-      <%= helpers.svg "tabler/outline/dots", class: 'sidebar-profile__action-icon sidebar-icon' %>
-    </button>
-    <div class="css-animate-slide-up sidebar-profile__panel" data-toggle-target="panel" hidden>
-      <% if render_custom_profile_menu? %>
-        <%= render custom_profile_component %>
+    <%= render Avo::UI::DropdownComponent.new(popover_mode: true) do |component| %>
+      <% component.with_trigger do %>
+        <%= render Avo::ButtonComponent.new(
+          icon: "tabler/outline/dots",
+          size: :lg,
+          class: "button--bare",
+          popovertarget: component.popover_id
+        ) %>
       <% end %>
-      <%= render "avo/partials/profile_menu_extra" %>
-      <% if can_sign_out_user? %>
-        <%= form_with url: helpers.main_app.send(sign_out_path),
-          method: sign_out_method,
-          data: {
-            controller: :"sign-out",
-            sign_out_confirm_value: t('avo.are_you_sure'),
-            action: "submit->sign-out#handle",
-          },
-          class: 'sidebar-profile__form' do |form| %>
-          <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "sidebar-profile__sign-out" do %>
-            <%= helpers.svg "tabler/outline/logout", class: 'sidebar-profile__sign-out-icon sidebar-icon' %> <%= t('avo.sign_out') %>
+      <% component.with_items do %>
+        <% if render_custom_profile_menu? %>
+          <%= render custom_profile_component %>
+        <% end %>
+        <%= render "avo/partials/profile_menu_extra" %>
+        <% if can_sign_out_user? %>
+          <%= form_with url: helpers.main_app.send(sign_out_path),
+            method: sign_out_method,
+            data: {
+              controller: :"sign-out",
+              sign_out_confirm_value: t('avo.are_you_sure'),
+              action: "submit->sign-out#handle",
+            },
+            class: 'sidebar-profile__form' do |form| %>
+            <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "sidebar-profile__sign-out" do %>
+              <%= helpers.svg "tabler/outline/logout", class: 'sidebar-icon' %> <%= t('avo.sign_out') %>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
-    </div>
+    <% end %>
   </div>
 </div>

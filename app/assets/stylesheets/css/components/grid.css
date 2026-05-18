@@ -62,15 +62,6 @@
   @apply flex-1 shrink-0 basis-0 flex;
 }
 
-.grid-card__action {
-  @apply border-none bg-transparent p-1.5;
-  box-shadow: none;
-}
-
-.grid-card__action:hover {
-  @apply bg-transparent;
-}
-
 .grid-card__content {
   @apply flex flex-col items-start w-full px-2 pb-2;
 }
