@@ -5,7 +5,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   prop :dash_if_blank, default: true
   prop :data, default: {}.freeze
-  prop :compact, default: false
+  prop :density, default: :default
   prop :help
   prop :label_help
   prop :field
@@ -35,6 +35,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
       {
         "field-wrapper--stacked": stacked?,
         "field-wrapper--full-width": full_width?,
+        "field-wrapper--density-#{@density}": @density && @density != :default,
       })
   end
 

@@ -6,4 +6,5 @@
 @import "./../../../node_modules/@yaireo/tagify/dist/tagify.css";
 @import "./../../../node_modules/trix/dist/trix.css";
 @import "./../../../node_modules/codemirror/lib/codemirror.css";
+@import "./../../../node_modules/codemirror/theme/monokai.css";
 
