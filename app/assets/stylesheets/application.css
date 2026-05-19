@@ -156,6 +156,7 @@
   @import "./css/components/distribution_chart.css";
   @import "./css/components/color_scheme_switcher.css";
   @import "./css/components/discreet_information.css";
+  @import "./css/components/header_overflow.css";
   @import "./css/components/hotkey.css";
   @import "./css/components/modal.css";
   @import "./css/components/filters.css";

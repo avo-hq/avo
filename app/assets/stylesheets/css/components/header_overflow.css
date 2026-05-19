@@ -1,0 +1,102 @@
+.header-overflow {
+  @apply flex items-center justify-end gap-2 min-w-0 flex-1;
+}
+
+.header-overflow__row {
+  @apply flex items-center gap-3 min-w-0 flex-nowrap;
+  /* overflow: clip + overflow-clip-margin lets focus rings (and shadows) bleed
+     a few pixels outside the row while still clipping the pre-JS overflow. */
+  overflow: clip;
+  overflow-clip-margin: 4px;
+}
+
+.header-overflow__row > * {
+  @apply whitespace-nowrap shrink-0;
+}
+
+/* Match sidebar links: same custom focus shadow defined in variables.css. */
+.header-overflow__row > a:focus-visible {
+  @apply outline-none relative z-10;
+  box-shadow: var(--box-shadow-focus);
+}
+
+.header-overflow__bullet {
+  @apply font-bold shrink-0 opacity-60 select-none;
+}
+
+/* Bullets are horizontal separators in the row; they're meaningless inside
+   the vertical popover list, where they'd look like stray bullet points. */
+.header-overflow__items .header-overflow__bullet {
+  @apply hidden;
+}
+
+/* The last visible item may be truncated to fill leftover space. */
+.header-overflow__row > .header-overflow__item--truncated {
+  @apply overflow-hidden text-ellipsis min-w-0;
+}
+
+/* Hide the trigger when nothing overflows — there's nothing useful behind it. */
+.header-overflow:not(.header-overflow--has-overflow) .popover-menu {
+  @apply hidden;
+}
+
+/* The shared compact-trigger uses asymmetric `ps-2 pe-1.5` because the
+   appearance variant ends with a small chevron. In our "more" text states
+   there's no chevron, so use symmetric end-padding. Only revert to the
+   tighter `pe-1.5` when the chevron is actually visible (row empty + small
+   screen). */
+.header-overflow__trigger {
+  @apply pe-2;
+}
+
+.header-overflow--row-empty .header-overflow__trigger {
+  @apply pe-1.5 lg:pe-2;
+}
+
+/* The hamburger only appears when the row has nothing visible AND we're on a
+   small screen. Otherwise the "more" label is shown — even at small widths if
+   at least part of a link is still visible in the row. */
+.header-overflow__icon-hamburger,
+.header-overflow__chevron {
+  @apply hidden;
+}
+
+.header-overflow--row-empty .header-overflow__icon-hamburger,
+.header-overflow--row-empty .header-overflow__chevron {
+  @apply inline-flex lg:hidden;
+}
+
+.header-overflow--row-empty .header-overflow__label-more {
+  @apply hidden lg:inline;
+}
+
+.header-overflow__items {
+  @apply max-h-[min(24rem,70vh)] max-w-[min(28rem,80vw)] overflow-y-auto;
+}
+
+/* The dropdown rule sets `display: flex` on items, which prevents
+   `text-overflow: ellipsis` from inserting the "…" on overflow. Switching to
+   block restores the standard text-truncation behavior for our cloned links. */
+.header-overflow__items > :is(a, button) {
+  @apply block;
+}
+
+/* Below SM the row of links is always hidden — every link lives in the
+   popover behind the hamburger trigger. The trigger also moves to the right
+   of the navbar (after the color-scheme switcher) via `order`. */
+@media (width < theme(--breakpoint-sm)) {
+  .header-overflow__row {
+    @apply hidden;
+  }
+  /* Matches the "hide when no overflow" rule's specificity so the override wins. */
+  .header-overflow:not(.header-overflow--has-overflow) .popover-menu {
+    @apply flex;
+  }
+  .header-overflow__icon-hamburger,
+  .header-overflow__chevron {
+    @apply inline-flex;
+  }
+  .header-overflow__label-more {
+    @apply hidden;
+  }
+}
