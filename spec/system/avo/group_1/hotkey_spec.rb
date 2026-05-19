@@ -43,10 +43,13 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   end
 
   def focus_resource_table
-    page.execute_script(<<~JS)
-      const table = document.querySelector('[data-index-row-navigator-target="table"]')
-      if (table) table.focus({ preventScroll: true })
-    JS
+    expect(page).to have_css('[data-index-row-navigator-target="table"]')
+    expect(page).to have_css("tr[data-visit-path]", minimum: 1)
+
+    table = find('[data-index-row-navigator-target="table"]', visible: :all)
+    page.execute_script("arguments[0].focus({ preventScroll: true })", table.native)
+
+    expect(page.evaluate_script("document.activeElement?.tagName")).to eq("TABLE")
   end
 
   def active_descendant_id
@@ -302,11 +305,14 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     end
 
     it "sets aria-activedescendant to the focused row id" do
+      create(:project)
+
       visit "/admin/resources/projects"
 
       focus_resource_table
       dispatch_keydown("ArrowDown")
 
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
       focused_row = find("tr.table-row.is-keyboard-focused")
       expect(active_descendant_id).to eq(focused_row["id"])
     end
@@ -336,6 +342,23 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       search_input.send_keys("j")
 
       expect(search_input.value).to include("j")
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "does not expose the table as a grid on a show view's has-many table" do
+      project = create(:project)
+      create(:comment, commentable: project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      # The associated comments table should NOT advertise itself as a focusable grid,
+      # so global j/k/Shift+T shortcuts find nothing and do nothing.
+      expect(page).to have_no_css('table[role="grid"]')
+      expect(page).to have_no_css('[data-index-row-navigator-target="table"]')
+
+      dispatch_keydown("j")
+      dispatch_keydown("T", shift_key: true)
+
       expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
     end
   end
