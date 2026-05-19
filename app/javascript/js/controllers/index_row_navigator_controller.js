@@ -50,10 +50,6 @@ export default class extends Controller {
     document.addEventListener('dropdown-menu:open', this.handleDropdownOpen)
     document.addEventListener('avo:advance-resource-table', this.handleAdvanceRequest)
 
-    if (this.hasTableTarget) {
-      this.tableTarget.addEventListener('blur', this.handleTableBlur)
-    }
-
     // Remove data-hotkey from row controls before @github/hotkey library scans
     // Store the original values so we can restore them for the focused row only
     if (this.hotkeysEnabled) {
@@ -70,10 +66,16 @@ export default class extends Controller {
     document.removeEventListener('keydown', this.handleKeydown)
     document.removeEventListener('dropdown-menu:open', this.handleDropdownOpen)
     document.removeEventListener('avo:advance-resource-table', this.handleAdvanceRequest)
+  }
 
-    if (this.hasTableTarget) {
-      this.tableTarget.removeEventListener('blur', this.handleTableBlur)
-    }
+  tableTargetConnected(table) {
+    table.addEventListener('blur', this.handleTableBlur)
+    // Turbo frame refreshes swap the <table>; reset stale row index from the old DOM.
+    this.currentIndex = -1
+  }
+
+  tableTargetDisconnected(table) {
+    table.removeEventListener('blur', this.handleTableBlur)
   }
 
   handleDropdownOpen() {

@@ -332,6 +332,29 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       expect(page.evaluate_script("document.activeElement && document.activeElement.tagName")).to eq("TABLE")
     end
 
+    it "clears row focus when blurring the table after a turbo frame refresh" do
+      target_project = create(:project, name: "Blur after turbo target")
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+      write_in_search(target_project.name)
+      expect(page).to have_css("tr[data-visit-path]", count: 1)
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+      find("[data-resource-search-target='input']").click
+
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to be_nil
+    end
+
     it "does not trigger j/k while typing in the search field" do
       create_list(:project, 3)
 
