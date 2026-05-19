@@ -8,6 +8,21 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
     @header_fields, @table_row_components = cache_table_rows
   end
 
+  # ARIA grid affordances and the row-navigator binding are only added on
+  # top-level index pages. On a parent record's show view (where @reflection
+  # is present), the has-many table is not keyboard-navigable as a grid, so
+  # the global Shift+T / j / k shortcuts find no target.
+  def table_attrs
+    return {} if @reflection.present?
+
+    {
+      tabindex: "0",
+      role: "grid",
+      "aria-label": @resource.plural_name,
+      data: {"index-row-navigator-target": "table"}
+    }
+  end
+
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern
     if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
