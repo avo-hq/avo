@@ -149,6 +149,7 @@ ua:
     show_content: Показати вміст
     sign_out: Вийти
     skip_to_content: Перейти до вмісту
+    skip_to_sidebar: Пропустити до бокової панелі
     sort_asc: Rūšiuoti didėjančia tvarka
     sort_desc: Rūšiuoti mažėjančia tvarka
     sort_reset: Atstatyti rūšiavimą

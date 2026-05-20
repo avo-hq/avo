@@ -149,6 +149,7 @@ pt-BR:
     show_content: Mostrar conteúdo
     sign_out: sair
     skip_to_content: Pular para o conteúdo
+    skip_to_sidebar: Pular para a barra lateral
     sort_asc: Ordenar em ordem crescente
     sort_desc: Ordenar em ordem decrescente
     sort_reset: Redefinir ordenação

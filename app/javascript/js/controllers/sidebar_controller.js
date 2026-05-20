@@ -121,12 +121,23 @@ export default class extends Controller {
   toggleSidebar() {
     if (this.sidebarTarget.classList.contains('hidden')) {
       this.sidebarTarget.classList.remove('hidden')
+
+      // The sidebar starts the session as display:none when closed. Removing
+      // `hidden` and toggling `sidebar-open` in the same tick would let the
+      // browser collapse both style changes into one repaint — meaning the
+      // transform: translateX transition would never fire on the very first
+      // open. Force a reflow so the browser commits the post-hidden state
+      // (translateX(-100%) visible) before we flip to translateX(0).
+      this.mainAreaTarget.offsetHeight // eslint-disable-line no-unused-expressions
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
 
     Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
 
     const isOpen = this.mainAreaTarget.classList.contains('sidebar-open')
+    // Keep the controller's openValue in sync so --sidebar-offset-size flips,
+    // which drives the navbar spacer width and .main padding transitions.
+    this.openValue = isOpen
     this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 

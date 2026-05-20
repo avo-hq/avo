@@ -285,11 +285,11 @@
 /* ================================================ */
 
 .sidebar-status {
-  @apply p-4 border-t border-tertiary;
+  @apply p-4 border-t border-(--border-color);
 }
 
 .sidebar-status__link {
-  @apply px-4 py-2 border border-tertiary rounded-sm flex justify-between items-center w-full text-content text-sm;
+  @apply px-4 py-2 border border-(--border-color) rounded-sm flex justify-between items-center w-full text-content text-sm;
 }
 
 .sidebar-status__indicator {

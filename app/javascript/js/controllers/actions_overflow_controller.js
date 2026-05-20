@@ -7,11 +7,30 @@ export default class extends Controller {
     panelList: Boolean,
   }
 
-  // get the table or grid component, if both null, get the panel body (for show page for example)
+  // Table/grid on index pages; main content region on show/edit and other non-list views.
   get parentTarget() {
     return document.querySelector('[data-component-name="avo/view_types/table_component"]')
       || document.querySelector('[data-component-name="avo/view_types/grid_component"]')
-      || document.querySelector('.main-content-area .scrollable-wrapper') // TODO: to be fixed when we get to the row controls
+      || document.querySelector('#main-content')
+  }
+
+  // Parent nodes grow with page content, but overflow should be measured against
+  // the visible viewport — the old .scrollable-wrapper had a fixed height for this.
+  get visibleParentDimensions() {
+    const parent = this.parentTarget
+
+    if (!parent) {
+      return { top: 0, left: 0, right: window.innerWidth, bottom: window.innerHeight }
+    }
+
+    const rect = parent.getBoundingClientRect()
+
+    return {
+      top: rect.top,
+      left: rect.left,
+      right: rect.right,
+      bottom: Math.min(rect.bottom, window.innerHeight),
+    }
   }
 
   // Check if the document is in RTL mode
@@ -28,7 +47,7 @@ export default class extends Controller {
     this.element.style.display = 'block'
     this.childDimensions = this.contentTarget.getBoundingClientRect()
     this.element.style.display = ''
-    this.parentDimensions = this.parentTarget.getBoundingClientRect()
+    this.parentDimensions = this.visibleParentDimensions
 
     this.adjustOverflow()
   }
