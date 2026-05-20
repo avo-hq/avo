@@ -38,24 +38,6 @@
   @apply flex flex-col w-full h-full;
 }
 
-.sidebar__header {
-  @apply flex flex-col shrink-0 px-3 py-2;
-}
-
-.sidebar__header-row {
-  @apply flex items-center justify-between gap-2;
-
-  height: calc(var(--top-navbar-height) - --spacing(4));
-}
-
-/* The global-search wrapper ships with sm:min-w-[16rem] which lives in the
-   utilities layer and would otherwise overflow the sidebar. Force it to 0 so
-   the wrapper shrinks into the header's padded content area. Vertical margin
-   adds breathing room above and below the input. */
-.sidebar__header [data-controller~="global-search"] {
-  @apply w-full !min-w-0 mt-6 my-3;
-}
-
 .sidebar__body {
   @apply flex-1 min-h-0 overflow-y-auto flex flex-col gap-y-4 items-start;
 }

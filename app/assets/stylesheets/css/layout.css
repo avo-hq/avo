@@ -187,6 +187,17 @@
   @apply flex items-center justify-end gap-4 min-w-0 h-full;
 }
 
+/* Links inside the always-dark navbar use primitive neutral tokens so they
+   stay readable in both light and dark mode — matching the search input and
+   sidebar toggle treatment. */
+.top-navbar a {
+  color: var(--color-avo-neutral-300);
+
+  &:hover {
+    color: var(--color-avo-neutral-50);
+  }
+}
+
 /* Sidebar toggle: choose icon via navbar variables; visibility driven by data attribute */
 .sidebar-toggle-icon {
   @apply inline-flex;
