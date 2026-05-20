@@ -35,6 +35,7 @@
   </head>
 
   <body class="<%= class_names("floating-controls bg-background", *body_classes, "all-fields-stacked": Avo.configuration.use_stacked_fields) %>">
+    <a href="#main-sidebar" class="skip-to-content"><%= t("avo.skip_to_sidebar") %></a>
     <a href="#main-content" class="skip-to-content"><%= t("avo.skip_to_content") %></a>
 
     <div
@@ -45,7 +46,7 @@
     >
       <%= render partial: "avo/partials/navbar", locals: {resource: @resource} %>
 
-      <div class="hidden lg:flex"><%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %></div>
+      <div id="main-sidebar" tabindex="-1" class="hidden lg:flex"><%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %></div>
 
       <div class="flex lg:hidden">
         <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open, for_mobile: true %>

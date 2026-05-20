@@ -1,7 +1,8 @@
 .breadcrumbs {
-  @apply sticky z-40 w-full bg-primary -mt-2 mb-4;
+  @apply sticky z-40 w-full bg-primary mb-4;
   /* top: calc(var(--top-navbar-height) + var(--spacing) * 4); */
   top: calc(var(--top-navbar-height) + var(--spacing) * 2);
+  margin-top: calc(var(--spacing) * -2 + 1px);
 
   /* Fake background so the content scrolling underneath the breadcrumbs doesn't look like it's bleeding through */
   &::before {
@@ -11,9 +12,10 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 0.5rem;
+    height: calc(0.5rem);
     transform: translateY(-100%);
     background: var(--color-primary);
+    pointer-events: none;
   }
 }
 
@@ -23,7 +25,6 @@
   content: "";
   position: absolute;
   top: auto;
-  /* bottom: calc(var(--spacing) * 1); */
   bottom: 0;
   left: 0;
   right: 0;
@@ -35,7 +36,6 @@
     color-mix(in oklab, var(--color-primary), transparent 100%)
   );
   pointer-events: none;
-  /* border: 1px solid red; */
 }
 
 .breadcrumbs__container {

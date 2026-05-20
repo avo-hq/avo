@@ -149,6 +149,7 @@ fr:
     show_content: Afficher le contenu
     sign_out: Se déconnecter
     skip_to_content: Passer au contenu
+    skip_to_sidebar: Passer au menu latéral
     sort_asc: Trier par ordre croissant
     sort_desc: Trier par ordre décroissant
     sort_reset: Réinitialiser le tri

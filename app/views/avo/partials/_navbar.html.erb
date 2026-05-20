@@ -5,23 +5,23 @@
 %>
 <%= content_tag :nav, class: class_names("top-navbar", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
   <div class="top-navbar__start">
-    <% if Avo.configuration.sidebar_toggle_visible %>
-      <%= a_button class: 'shrink-0',
-                   size: :sm,
-                   style: :text,
-                   data: {
-                     action: 'click->sidebar#toggleSidebarForViewport',
-                     sidebar_toggle_icon: true,
-                     sidebar_state: sidebar_state
-                   },
-                   aria: { label: "Toggle sidebar" } do %>
-        <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
-          <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
-        </span>
-        <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
-          <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
-        </span>
-      <% end %>
+    <%# Mobile always needs a toggle to reach the overlay sidebar. Desktop toggle
+        is optional and controlled by sidebar_toggle_visible. %>
+    <%= a_button class: class_names('shrink-0', 'lg:hidden': !Avo.configuration.sidebar_toggle_visible),
+                 size: :sm,
+                 style: :text,
+                 data: {
+                   action: 'click->sidebar#toggleSidebarForViewport',
+                   sidebar_toggle_icon: true,
+                   sidebar_state: sidebar_state
+                 },
+                 aria: { label: "Toggle sidebar" } do %>
+      <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
+        <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
+      </span>
+      <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
+        <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
+      </span>
     <% end %>
 
     <div class="top-navbar__logo">
