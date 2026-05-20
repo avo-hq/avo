@@ -89,7 +89,7 @@ RSpec.describe Avo::Concerns::HasFieldDiscovery, type: :system do
     it "renders each field exactly once" do
       wait_for_loaded
 
-      within(".main-content-area") do
+      within(".main-content") do
         within("[data-item-index='2']") do
           # Basic fields
           ## Main Panel
