@@ -148,6 +148,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
       resource: @resource,
       turbo_frame: @turbo_frame,
       parent_record: @parent_record,
+      parent_resource: @parent_resource,
       query: @query,
       loader: @resource.entity_loader(:scope)
     )
