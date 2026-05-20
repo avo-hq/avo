@@ -44,12 +44,17 @@
 [data-controller~="sidebar"] {
   --sidebar-width: --spacing(64);
   --sidebar-offset-size: 0rem;
-  --content-width: calc(100% - var(--spacing) );
+  --content-width: calc(100% - var(--spacing));
 }
 
 @media (min-width: theme(--breakpoint-lg)) {
   [data-controller~="sidebar"][data-sidebar-open-value="true"] {
     --sidebar-offset-size: var(--sidebar-width);
+  }
+}
+[data-controller~="sidebar"][data-sidebar-open-value="false"] {
+  .main-content {
+    @apply ms-0;
   }
 }
 
@@ -60,9 +65,7 @@
 }
 
 .main-content {
-  @apply w-(--content-width) flex flex-col bg-primary py-2 lg:py-4 px-2 lg:px-4 border-s border-(--border-color);
-
-  margin-inline-start: var(--spacing);
+  @apply w-(--content-width) flex flex-col bg-primary py-2 lg:py-4 px-2 lg:px-4 border-s border-(--border-color) ms-1;
   transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
   min-height: calc(100dvh - var(--top-navbar-height) - var(--spacing));
 }
@@ -85,7 +88,7 @@
 }
 
 .top-navbar {
-  @apply z-50 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
+  @apply z-100 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
 
   /* Three-region grid: start | center | end. start/end share remaining space
      equally (1fr each) so the center column (search) stays visually anchored
@@ -215,7 +218,7 @@ button[data-sidebar-toggle-icon] {
    Sidebar starts below the navbar (matching .main's padding-top), so the
    navbar is uninterrupted across the full viewport width. */
 .avo-sidebar {
-  @apply fixed z-40 start-0 flex-1 border-e border-tertiary lg:border-none bg-background lg:bg-transparent w-(--sidebar-width) dark:bg-primary;
+  @apply fixed z-50 start-0 flex-1 border-e border-tertiary lg:border-none bg-background lg:bg-transparent w-(--sidebar-width) dark:bg-primary;
 
 
   top: var(--top-navbar-height);
