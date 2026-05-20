@@ -37,7 +37,7 @@
 }
 
 /* Lift the main stacking context above the navbar (z-index: 100) when CodeMirror is fullscreen */
-.main-content-area:has(.CodeMirror-fullscreen) {
+.main-content:has(.CodeMirror-fullscreen) {
   z-index: 101;
 }
 

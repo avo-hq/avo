@@ -22,13 +22,11 @@ RSpec.describe "Appearance overrides", type: :request do
   context "when overrides are configured" do
     let(:overrides_css) do
       <<~CSS
-        :root {
-          --color-avo-neutral-25: oklch(0.99 0.01 240);
-          --color-accent: oklch(0.6 0.2 260);
-        }
-        .dark {
-          --color-avo-neutral-25: oklch(0.15 0.01 240);
-          --color-accent: oklch(0.7 0.2 260);
+        @layer base {
+          :root {
+            --color-avo-neutral-25: oklch(0.99 0.01 240);
+            --color-accent: oklch(0.6 0.2 260);
+          }
         }
       CSS
     end

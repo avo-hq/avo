@@ -102,7 +102,7 @@
                   <% end %>
 
                   <% unless field&.hide_filter_button %>
-                    <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
+                    <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record, parent_resource: @parent_resource %>
                   <% end %>
 
                   <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>

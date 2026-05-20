@@ -77,7 +77,12 @@ module Avo
       rescue
       end
 
-      route_key = parent_resource&.route_key || parent_record.model_name.route_key
+      route_key = if parent_resource.present?
+        parent_resource.route_key
+      else
+        Avo.resource_manager.get_resource_by_model_class(parent_record.class)&.route_key ||
+          parent_record.model_name.route_key
+      end
 
       avo.send(:"resources_#{route_key}_associations_index_path", record.to_param, **existing_params, **args)
     end

@@ -149,6 +149,7 @@ nn:
     show_content: Vis innhald
     sign_out: Logg ut
     skip_to_content: Hopp til innhald
+    skip_to_sidebar: Hopp til sidefelt
     sort_asc: Sorter stigande
     sort_desc: Sorter synkende
     sort_reset: Nullstill sortering

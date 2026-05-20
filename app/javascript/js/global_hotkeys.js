@@ -12,6 +12,9 @@ import { install } from '@github/hotkey'
 const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
 const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INPUT_SELECTOR)
 
+const RESOURCE_TABLE_SELECTOR = '[data-index-row-navigator-target="table"]'
+const findResourceTable = () => document.querySelector(RESOURCE_TABLE_SELECTOR)
+
 // Find any mounted appearance Stimulus controller and call `method` on it.
 // Multiple appearance switchers can be on the page (inline + dropdown fallback);
 // either works since they share state via DOM classes + cookies/database.
@@ -67,6 +70,27 @@ const DIRECT_HOTKEYS = [
     // Shift+A → cycle accent color (brand → red → orange → …)
     match: (e) => e.shiftKey && e.key === 'A',
     handle: () => callAppearance('cycleAccent'),
+  },
+  {
+    // Shift+T → focus the resource index table; arrow keys then navigate rows.
+    match: (e) => e.shiftKey && e.key === 'T' && !!findResourceTable(),
+    handle: () => findResourceTable()?.focus({ preventScroll: true }),
+  },
+  {
+    // j → focus the resource table AND move to the next row (Gmail/GitHub style)
+    match: (e) => e.key === 'j' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !!findResourceTable(),
+    handle: () => {
+      findResourceTable()?.focus({ preventScroll: true })
+      document.dispatchEvent(new CustomEvent('avo:advance-resource-table', { detail: { direction: 'next' } }))
+    },
+  },
+  {
+    // k → focus the resource table AND move to the previous row
+    match: (e) => e.key === 'k' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !!findResourceTable(),
+    handle: () => {
+      findResourceTable()?.focus({ preventScroll: true })
+      document.dispatchEvent(new CustomEvent('avo:advance-resource-table', { detail: { direction: 'previous' } }))
+    },
   },
   {
     // Shift+K → toggle kbd badge visibility (only when developer config allows badges)

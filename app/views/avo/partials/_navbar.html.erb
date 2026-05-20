@@ -1,49 +1,32 @@
 <%
-  # Icons shown when sidebar is open (collapse) vs closed (expand). Change these to customize.
   sidebar_open_icon = 'layout-sidebar-left-collapse'
   sidebar_closed_icon = 'layout-sidebar-left-expand'
   sidebar_state = @sidebar_open ? 'open' : 'closed'
 %>
 <%= content_tag :nav, class: class_names("top-navbar", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
-  <div class="flex items-center space-x-2 rtl:space-x-reverse w-auto lg:w-64 shrink-0 h-full py-2">
-    <div class="flex items-center gap-0">
-      <%= a_button class: 'lg:hidden',
-                   size: :sm,
-                   style: :text,
-                   data: {
-                     action: 'click->sidebar#toggleSidebarOnMobile',
-                     sidebar_toggle_icon: true,
-                     sidebar_state: sidebar_state
-                   },
-                   aria: { label: "Toggle sidebar" } do %>
-        <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
-          <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
-        </span>
-        <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
-          <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
-        </span>
-      <% end %>
+  <div class="top-navbar__start">
+    <%# Mobile always needs a toggle to reach the overlay sidebar. Desktop toggle
+        is optional and controlled by sidebar_toggle_visible. %>
+    <%= a_button class: class_names('shrink-0', 'lg:hidden': !Avo.configuration.sidebar_toggle_visible),
+                 size: :sm,
+                 style: :text,
+                 data: {
+                   action: 'click->sidebar#toggleSidebarForViewport',
+                   sidebar_toggle_icon: true,
+                   sidebar_state: sidebar_state
+                 },
+                 aria: { label: "Toggle sidebar" } do %>
+      <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
+        <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
+      </span>
+      <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
+        <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
+      </span>
+    <% end %>
 
-      <% if Avo.configuration.sidebar_toggle_visible %>
-        <%= a_button class: '!hidden lg:!inline-flex',
-                     size: :sm,
-                     style: :text,
-                     data: {
-                       action: 'click->sidebar#toggleSidebar',
-                       sidebar_toggle_icon: true,
-                       sidebar_state: sidebar_state
-                     },
-                     aria: { label: "Toggle sidebar" } do %>
-          <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
-            <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
-          </span>
-          <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
-            <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
-          </span>
-        <% end %>
-      <% end %>
+    <div class="top-navbar__logo">
+      <%= render partial: "avo/partials/logo" %>
     </div>
-    <%= render partial: "avo/partials/logo" %>
   </div>
   <div class="flex-1 min-w-0 flex items-center justify-between lg:justify-start space-x-2 rtl:space-x-reverse sm:space-x-8 lg:px-1">
     <%= render Avo::Pro::GlobalSearch::InputComponent.new(resource:) if defined?(Avo::Pro::GlobalSearch::InputComponent) %>
@@ -53,8 +36,3 @@
     </div>
   </div>
 <% end %>
-<!-- This is a hack to fix the issue with the navbar not being accesible because of the .main-content-wrapper padding-->
-<!-- TODO: when implementing the final layout (search covered issue) see if we still need this hack-->
-<%#
-<div class="relative opacity-0 h-16 pointer-events-none"></div>
-%>

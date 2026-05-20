@@ -23,3 +23,16 @@
   @apply text-content;
 }
 
+/* Preview theme: transparent wrapper so the card inside provides all the chrome */
+.tippy-box[data-theme~='preview'] {
+  @apply bg-transparent border-0 shadow-none text-content;
+}
+
+.tippy-box[data-theme~='preview'] .tippy-content {
+  @apply p-0 text-content;
+}
+
+.tippy-box[data-theme~='preview'] .tippy-arrow {
+  @apply hidden;
+}
+

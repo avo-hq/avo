@@ -147,6 +147,7 @@ it:
     show_content: Mostra contenuto
     sign_out: Esci
     skip_to_content: Vai al contenuto
+    skip_to_sidebar: Salta al sidebar
     sort_asc: Ordina in ordine crescente
     sort_desc: Ordina in ordine decrescente
     sort_reset: Reimposta ordinamento

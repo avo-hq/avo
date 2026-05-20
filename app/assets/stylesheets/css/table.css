@@ -62,3 +62,15 @@
 .table-row.is-keyboard-focused {
   background: color-mix(in oklab, var(--color-primary), var(--color-accent) 10%);
 }
+
+table[role="grid"] {
+  @apply outline-none;
+}
+
+/* The table sits inside .card > .card__wrapper.overflow-auto, which clips any
+   box-shadow ring drawn on the <table> itself. Lift the ring to the outer
+   .card so it can sit outside the wrapper, matching the card's own border
+   radius and visible bounds. */
+.card:has(table[role="grid"]:focus-visible) {
+  @apply ring-2 ring-accent ring-offset-2 ring-offset-background;
+}

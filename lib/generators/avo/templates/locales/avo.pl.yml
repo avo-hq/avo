@@ -149,6 +149,7 @@ pl:
     show_content: Pokaż zawartość
     sign_out: Wyloguj się
     skip_to_content: Przejdź do treści
+    skip_to_sidebar: Przejdź do paska bocznego
     sort_asc: Sortuj rosnąco
     sort_desc: Sortuj malejąco
     sort_reset: Resetuj sortowanie
