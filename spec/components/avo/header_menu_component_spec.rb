@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Avo::HeaderMenuComponent, type: :component do
@@ -6,7 +6,7 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
     render_inline(described_class.new, &block)
   end
 
-  it 'wraps the block content inside the row target' do
+  it "wraps the block content inside the row target" do
     render_component do
       "<a href='/docs' class='font-semibold'>Docs</a>".html_safe
     end
@@ -16,20 +16,20 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
     )
     expect(page).to have_css(
       ".header-overflow__row[data-header-overflow-target='row'] a[href='/docs']",
-      text: 'Docs'
+      text: "Docs"
     )
   end
 
-  it 'renders the trigger button with the expected ARIA wiring' do
+  it "renders the trigger button with the expected ARIA wiring" do
     render_component
 
-    trigger = page.find('.header-overflow__trigger')
-    expect(trigger[:type]).to eq('button')
-    expect(trigger['aria-label']).to eq('More links')
-    expect(trigger['aria-haspopup']).to eq('menu')
-    expect(trigger['aria-expanded']).to eq('false')
-    expect(trigger['data-header-overflow-target']).to eq('trigger')
-    expect(trigger['aria-controls']).to eq(trigger['popovertarget']).and(
+    trigger = page.find(".header-overflow__trigger")
+    expect(trigger[:type]).to eq("button")
+    expect(trigger["aria-label"]).to eq("More links")
+    expect(trigger["aria-haspopup"]).to eq("menu")
+    expect(trigger["aria-expanded"]).to eq("false")
+    expect(trigger["data-header-overflow-target"]).to eq("trigger")
+    expect(trigger["aria-controls"]).to eq(trigger["popovertarget"]).and(
       be_present
     )
   end
@@ -39,44 +39,44 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
 
     hamburger =
       page.find(
-        '.header-overflow__trigger .header-overflow__icon-hamburger',
+        ".header-overflow__trigger .header-overflow__icon-hamburger",
         visible: :all
       )
     chevron =
       page.find(
-        '.header-overflow__trigger .header-overflow__chevron',
+        ".header-overflow__trigger .header-overflow__chevron",
         visible: :all
       )
-    expect(hamburger['aria-hidden']).to eq('true')
-    expect(chevron['aria-hidden']).to eq('true')
+    expect(hamburger["aria-hidden"]).to eq("true")
+    expect(chevron["aria-hidden"]).to eq("true")
     expect(page).to have_css(
-      '.header-overflow__trigger .header-overflow__label-more',
-      text: 'more'
+      ".header-overflow__trigger .header-overflow__label-more",
+      text: "more"
     )
   end
 
   it "renders a popover panel whose id matches the trigger's popovertarget" do
     render_component
 
-    popover_id = page.find('.header-overflow__trigger')['popovertarget']
+    popover_id = page.find(".header-overflow__trigger")["popovertarget"]
     expect(page).to have_css(
       "##{popover_id}[popover='auto'].popover-menu__panel",
       visible: :all
     )
   end
 
-  it 'renders the block content into both the row and the overflow target' do
+  it "renders the block content into both the row and the overflow target" do
     render_component do
       "<a href='/docs' class='font-semibold'>Docs</a>".html_safe
     end
 
     expect(page).to have_css(
       ".header-overflow__row a[href='/docs']",
-      text: 'Docs'
+      text: "Docs"
     )
     expect(page).to have_css(
       ".popover-menu__panel .header-overflow__items[data-header-overflow-target='overflow'] a[href='/docs']",
-      text: 'Docs',
+      text: "Docs",
       visible: :all
     )
   end
