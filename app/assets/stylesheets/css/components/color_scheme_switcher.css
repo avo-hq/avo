@@ -3,9 +3,15 @@
   @apply inline-flex items-center;
 }
 
+/* The switcher's trigger surfaces (inline pill + compact trigger) sit on the
+   dark top-navbar in both schemes, so they use primitive neutral tokens that
+   don't flip with light/dark — matching breadcrumbs and the sidebar toggle.
+   The popover panels below stay theme-adaptive because they render on the
+   page surface, not the navbar. */
+
 /* Inline pill — three sections sit in a single rounded container */
 .color-scheme-switcher--inline {
-  @apply gap-1 p-1 rounded-lg bg-secondary border border-tertiary;
+  @apply gap-1 p-1 rounded-lg bg-avo-neutral-800 border border-avo-neutral-700;
 }
 
 /* Compact — a single icon trigger that opens a unified panel */
@@ -15,7 +21,7 @@
 
 .color-scheme-switcher__compact-trigger {
   @apply inline-flex items-center gap-1 h-8 ps-2 pe-1.5 rounded-lg transition-all duration-150;
-  @apply text-content-secondary bg-secondary border border-tertiary hover:bg-tertiary;
+  @apply text-avo-neutral-300 bg-avo-neutral-800 border border-avo-neutral-700 hover:bg-avo-neutral-700 hover:text-avo-neutral-50;
   @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply cursor-pointer;
 }
@@ -114,33 +120,22 @@
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-content-secondary hover:bg-tertiary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 rounded-md transition-all duration-150 text-avo-neutral-300 hover:bg-avo-neutral-700 hover:text-avo-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
-/* Scheme buttons - active states using scheme selection classes */
-.color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-transparent text-content-secondary shadow-none;
-}
-
-.scheme-light .color-scheme-switcher__button[data-scheme="light"] {
-  @apply bg-primary text-content shadow-sm;
-}
-
-.color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-transparent text-content-secondary shadow-none;
-}
-
-.scheme-dark .color-scheme-switcher__button[data-scheme="dark"] {
-  @apply bg-primary text-content shadow-sm;
-}
-
+/* Scheme buttons - idle vs active state. The active "pill" stands out against
+   the neutral-800 inline pill background by going darker (neutral-950). */
+.color-scheme-switcher__button[data-scheme="light"],
+.color-scheme-switcher__button[data-scheme="dark"],
 .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-transparent text-content-secondary shadow-none;
+  @apply bg-transparent text-avo-neutral-300 shadow-none;
 }
 
+.scheme-light .color-scheme-switcher__button[data-scheme="light"],
+.scheme-dark .color-scheme-switcher__button[data-scheme="dark"],
 .scheme-auto .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-primary text-content shadow-sm;
+  @apply bg-avo-neutral-950 text-avo-neutral-50 shadow-sm;
 }
 
 .color-scheme-switcher__icon {

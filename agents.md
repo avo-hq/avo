@@ -12,6 +12,8 @@ Every lookbook preview should have a `default` view with some variations of the 
 
 Don't implement a component if the Figma MCP is not available and fails and alert the developer.
 
+Never write emdashes in copy or docs.
+
 #### CSS
 
 - Use clean CSS and convert the variables to Tailwind CSS `@apply` statements where possible.

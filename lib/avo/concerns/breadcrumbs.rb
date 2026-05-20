@@ -19,6 +19,7 @@ module Avo
 
       class Builder
         extend PropInitializer::Properties
+
         prop :context, reader: :public
         prop :options, reader: :public
 
