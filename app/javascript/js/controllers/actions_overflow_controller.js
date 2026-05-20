@@ -14,6 +14,25 @@ export default class extends Controller {
       || document.querySelector('#main-content')
   }
 
+  // Parent nodes grow with page content, but overflow should be measured against
+  // the visible viewport — the old .scrollable-wrapper had a fixed height for this.
+  get visibleParentDimensions() {
+    const parent = this.parentTarget
+
+    if (!parent) {
+      return { top: 0, left: 0, right: window.innerWidth, bottom: window.innerHeight }
+    }
+
+    const rect = parent.getBoundingClientRect()
+
+    return {
+      top: rect.top,
+      left: rect.left,
+      right: rect.right,
+      bottom: Math.min(rect.bottom, window.innerHeight),
+    }
+  }
+
   // Check if the document is in RTL mode
   get isRTL() {
     return document.documentElement.dir === 'rtl'
@@ -28,7 +47,7 @@ export default class extends Controller {
     this.element.style.display = 'block'
     this.childDimensions = this.contentTarget.getBoundingClientRect()
     this.element.style.display = ''
-    this.parentDimensions = this.parentTarget.getBoundingClientRect()
+    this.parentDimensions = this.visibleParentDimensions
 
     this.adjustOverflow()
   }
