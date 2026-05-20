@@ -4,7 +4,7 @@
    actually scrolls. */
 html,
 body,
-.main-content-area,
+.main-content,
 .scrollable-wrapper {
   scroll-padding-top: calc(var(--top-navbar-height) + var(--spacing) * 2);
   scroll-padding-bottom: calc(var(--spacing) * 2);
