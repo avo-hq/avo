@@ -52,6 +52,7 @@
     --sidebar-offset-size: var(--sidebar-width);
   }
 }
+
 [data-controller~="sidebar"][data-sidebar-open-value="false"] {
   .main-content {
     @apply ms-0;

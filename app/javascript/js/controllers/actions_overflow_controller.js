@@ -7,11 +7,11 @@ export default class extends Controller {
     panelList: Boolean,
   }
 
-  // get the table or grid component, if both null, get the panel body (for show page for example)
+  // Table/grid on index pages; main content region on show/edit and other non-list views.
   get parentTarget() {
     return document.querySelector('[data-component-name="avo/view_types/table_component"]')
       || document.querySelector('[data-component-name="avo/view_types/grid_component"]')
-      || document.querySelector('.main-content-area .scrollable-wrapper') // TODO: to be fixed when we get to the row controls
+      || document.querySelector('#main-content')
   }
 
   // Check if the document is in RTL mode
