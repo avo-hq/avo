@@ -7,6 +7,7 @@ class Avo::FiltersComponent < Avo::BaseComponent
   prop :resource
   prop :applied_filters, default: {}.freeze
   prop :parent_record
+  prop :parent_resource
 
   def render?
     @filters.present?
@@ -15,7 +16,7 @@ class Avo::FiltersComponent < Avo::BaseComponent
   def reset_path
     # If come from a association page
     if @parent_record.present?
-      helpers.related_resources_path(@parent_record, @parent_record, encoded_filters: nil, reset_filter: true, keep_query_params: true)
+      helpers.related_resources_path(@parent_record, @parent_record, parent_resource: @parent_resource, encoded_filters: nil, reset_filter: true, keep_query_params: true)
     else
       helpers.resources_path(resource: @resource, encoded_filters: nil, reset_filter: true, keep_query_params: true)
     end
