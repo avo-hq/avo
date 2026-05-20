@@ -2,8 +2,8 @@ class Avo::Configuration::Appearance
   attr_reader :scheme, # :auto | :light | :dark
     :neutral, # Symbol — default theme selection (e.g. :slate, :brand)
     :accent,  # Symbol — default accent selection (e.g. :blue, :brand)
-    :neutral_colors, # Hash{ light:, dark: } — full 12-shade brand override
-    :accent_colors,  # Hash{ light:, dark: } — three-token brand override
+    :neutral_colors, # Hash{ 25 => ..., 50 => ..., ..., 950 => ... } — full 12-shade brand override (single palette, applied in both light and dark mode)
+    :accent_colors,  # Hash{ color:, content:, foreground: } — three-token brand override (single palette, applied in both light and dark mode)
     :neutrals, # Array[String] — available neutral theme names
     :accents, # Array[String] — available accent color names
     :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent]
@@ -37,7 +37,6 @@ class Avo::Configuration::Appearance
       content: "--color-accent-content",
       foreground: "--color-accent-foreground"
     }.freeze
-    SCHEMES = [:light, :dark].freeze
 
     DEFAULTS = {
       scheme: :auto,
@@ -100,17 +99,25 @@ class Avo::Configuration::Appearance
   # Returns the accent name for the data attribute (nil when accent is unset)
   def accent_css_class = accent&.to_s
 
-  # Returns the full inline CSS string that overrides brand vars at :root and .dark
-  # when neutral_colors / accent_colors are configured. Returns nil when neither is set
-  # so the layout can skip emitting the <style> tag entirely.
+  # Returns the inline CSS string that overrides brand vars at :root when
+  # neutral_colors / accent_colors are configured. Returns nil when neither is
+  # set so the layout can skip emitting the <style> tag entirely.
+  #
+  # Brand palettes are single-toned — one set of values applied in both light
+  # and dark mode (matching how the built-in `.neutral-theme-*` /
+  # `.accent-theme-*` classes work). The override is emitted only in `:root`;
+  # layer ordering does the rest.
   #
   # The output is wrapped in `@layer base` so it sits between Avo's defaults
-  # (`@layer theme`, where the built-in `:root` colors live) and the theme classes
-  # (`@layer components`, where `.neutral-theme-*` / `.accent-theme-*` are defined).
+  # (`@layer theme`, where the built-in `:root` colors and the `.dark`
+  # overrides live) and the theme classes (`@layer components`, where
+  # `.neutral-theme-*` / `.accent-theme-*` are defined).
   # Layer ordering — `theme < base < components` — guarantees:
-  #   * Our override beats Avo's default `:root` palette (we're in a later layer)
-  #   * A user-selected `.accent-theme-orange` still wins over our `:root` (it's
-  #     in a later layer), so the picker keeps working.
+  #   * Our :root override beats Avo's default `:root` palette and `.dark`
+  #     overrides (we're in a later layer), so the brand color applies in
+  #     both light and dark mode.
+  #   * A user-selected `.accent-theme-orange` still wins over our `:root`
+  #     (it's in a later layer), so the picker keeps working.
   # Without an `@layer` wrapper, the unlayered inline style would beat every
   # layered rule regardless of specificity, silently breaking theme selection.
   def brand_css_overrides
@@ -119,10 +126,7 @@ class Avo::Configuration::Appearance
     [
       "@layer base {",
       "  :root {",
-      *brand_declarations_for(:light).map { |line| "  #{line}" },
-      "  }",
-      "  .dark {",
-      *brand_declarations_for(:dark).map { |line| "  #{line}" },
+      *brand_declarations.map { |line| "  #{line}" },
       "  }",
       "}"
     ].join("\n")
@@ -130,27 +134,27 @@ class Avo::Configuration::Appearance
 
   private
 
-  def brand_declarations_for(scheme)
+  def brand_declarations
     declarations = []
 
     if neutral_colors
       NEUTRAL_SHADES.each do |shade|
-        declarations << "  --color-avo-neutral-#{shade}: #{neutral_colors[scheme][shade]};"
+        declarations << "  --color-avo-neutral-#{shade}: #{neutral_colors[shade]};"
       end
       # Brand-scoped alias for the picker swatch. Theme classes (`.neutral-theme-*`)
       # never set this var, so the swatch keeps showing the configured brand
       # neutral even while another theme is hovered or selected.
-      declarations << "  --color-brand-neutral-400: #{neutral_colors[scheme][400]};"
+      declarations << "  --color-brand-neutral-400: #{neutral_colors[400]};"
     end
 
     if accent_colors
       ACCENT_TOKENS.each do |token|
-        declarations << "  #{ACCENT_TOKEN_VAR_NAMES[token]}: #{accent_colors[scheme][token]};"
+        declarations << "  #{ACCENT_TOKEN_VAR_NAMES[token]}: #{accent_colors[token]};"
       end
       # Brand-scoped alias for the picker swatch. Theme classes (`.accent-theme-*`)
       # never set this var, so the swatch keeps showing the configured brand
       # accent even while another accent is hovered or selected.
-      declarations << "  --color-brand-accent: #{accent_colors[scheme][:color]};"
+      declarations << "  --color-brand-accent: #{accent_colors[:color]};"
     end
 
     declarations
@@ -175,24 +179,10 @@ class Avo::Configuration::Appearance
 
   def validate_color_palette!(name, palette, required_keys, missing_label)
     unless palette.is_a?(Hash)
-      raise ArgumentError, "#{name} must be a Hash with :light and :dark keys, got #{palette.class}"
+      raise ArgumentError, "#{name} must be a Hash, got #{palette.class}"
     end
 
-    errors = []
-    SCHEMES.each do |scheme|
-      scheme_hash = palette[scheme]
-      if scheme_hash.nil?
-        errors << "missing scheme :#{scheme}"
-        next
-      end
-      unless scheme_hash.is_a?(Hash)
-        errors << ":#{scheme} must be a Hash, got #{scheme_hash.class}"
-        next
-      end
-      missing = required_keys.select { |key| scheme_hash[key].nil? }
-      errors << ":#{scheme} missing #{missing_label} #{missing.inspect}" if missing.any?
-    end
-
-    raise ArgumentError, "#{name} is invalid: #{errors.join("; ")}" if errors.any?
+    missing = required_keys.select { |key| palette[key].nil? }
+    raise ArgumentError, "#{name} is missing #{missing_label} #{missing.inspect}" if missing.any?
   end
 end

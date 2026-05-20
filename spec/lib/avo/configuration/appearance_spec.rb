@@ -179,17 +179,11 @@ RSpec.describe Avo::Configuration::Appearance do
 
   describe "neutral_colors / accent_colors" do
     let(:complete_neutral) do
-      {
-        light: described_class::NEUTRAL_SHADES.each_with_object({}) { |s, h| h[s] = "oklch(0.99 0.01 240)" },
-        dark: described_class::NEUTRAL_SHADES.each_with_object({}) { |s, h| h[s] = "oklch(0.15 0.01 240)" }
-      }
+      described_class::NEUTRAL_SHADES.each_with_object({}) { |s, h| h[s] = "oklch(0.99 0.01 240)" }
     end
 
     let(:complete_accent) do
-      {
-        light: {color: "oklch(0.6 0.2 260)", content: "oklch(0.5 0.2 260)", foreground: "oklch(1 0 0)"},
-        dark: {color: "oklch(0.7 0.2 260)", content: "oklch(0.8 0.2 260)", foreground: "oklch(0.1 0 0)"}
-      }
+      {color: "oklch(0.6 0.2 260)", content: "oklch(0.5 0.2 260)", foreground: "oklch(1 0 0)"}
     end
 
     describe "accessors" do
@@ -210,45 +204,26 @@ RSpec.describe Avo::Configuration::Appearance do
           .to raise_error(ArgumentError, /neutral_colors must be a Hash/)
       end
 
-      it "raises when :dark is missing entirely" do
-        expect { described_class.new(neutral_colors: {light: complete_neutral[:light]}) }
-          .to raise_error(ArgumentError, /missing scheme :dark/)
-      end
-
       it "raises and names missing shades" do
-        partial = {light: complete_neutral[:light].except(100, 700), dark: complete_neutral[:dark]}
-
-        expect { described_class.new(neutral_colors: partial) }
-          .to raise_error(ArgumentError, /:light missing shades \[100, 700\]/)
+        expect { described_class.new(neutral_colors: complete_neutral.except(100, 700)) }
+          .to raise_error(ArgumentError, /neutral_colors is missing shades \[100, 700\]/)
       end
 
       it "treats nil shade values as missing" do
-        partial = {light: complete_neutral[:light].merge(500 => nil), dark: complete_neutral[:dark]}
-
-        expect { described_class.new(neutral_colors: partial) }
-          .to raise_error(ArgumentError, /:light missing shades \[500\]/)
-      end
-
-      it "raises when a scheme is not a Hash" do
-        expect { described_class.new(neutral_colors: {light: complete_neutral[:light], dark: "nope"}) }
-          .to raise_error(ArgumentError, /:dark must be a Hash/)
+        expect { described_class.new(neutral_colors: complete_neutral.merge(500 => nil)) }
+          .to raise_error(ArgumentError, /neutral_colors is missing shades \[500\]/)
       end
     end
 
     describe "validation of accent_colors" do
-      it "raises when :foreground is missing in :light" do
-        partial = {
-          light: complete_accent[:light].except(:foreground),
-          dark: complete_accent[:dark]
-        }
-
-        expect { described_class.new(accent_colors: partial) }
-          .to raise_error(ArgumentError, /:light missing tokens \[:foreground\]/)
+      it "raises when :foreground is missing" do
+        expect { described_class.new(accent_colors: complete_accent.except(:foreground)) }
+          .to raise_error(ArgumentError, /accent_colors is missing tokens \[:foreground\]/)
       end
 
-      it "raises when :dark is missing entirely" do
-        expect { described_class.new(accent_colors: {light: complete_accent[:light]}) }
-          .to raise_error(ArgumentError, /missing scheme :dark/)
+      it "raises when not a Hash" do
+        expect { described_class.new(accent_colors: "nope") }
+          .to raise_error(ArgumentError, /accent_colors must be a Hash/)
       end
     end
 
@@ -260,16 +235,15 @@ RSpec.describe Avo::Configuration::Appearance do
       context "when only neutral_colors is configured" do
         let(:options) { {neutral_colors: complete_neutral} }
 
-        it "emits :root and .dark blocks with all 12 neutral shades inside @layer base" do
+        it "emits a single :root block with all 12 neutral shades inside @layer base" do
           css = appearance.brand_css_overrides
 
           expect(css).to start_with("@layer base {")
           expect(css.strip).to end_with("}")
-          expect(css).to include(":root {")
-          expect(css).to include(".dark {")
+          expect(css.scan(":root {").size).to eq(1)
+          expect(css).not_to include(".dark {")
           described_class::NEUTRAL_SHADES.each do |shade|
             expect(css).to include("--color-avo-neutral-#{shade}: oklch(0.99 0.01 240);")
-            expect(css).to include("--color-avo-neutral-#{shade}: oklch(0.15 0.01 240);")
           end
         end
 
@@ -277,7 +251,6 @@ RSpec.describe Avo::Configuration::Appearance do
           css = appearance.brand_css_overrides
 
           expect(css).to include("--color-brand-neutral-400: oklch(0.99 0.01 240);")
-          expect(css).to include("--color-brand-neutral-400: oklch(0.15 0.01 240);")
         end
 
         it "does not emit accent declarations" do
@@ -291,21 +264,20 @@ RSpec.describe Avo::Configuration::Appearance do
       context "when only accent_colors is configured" do
         let(:options) { {accent_colors: complete_accent} }
 
-        it "emits all three accent tokens for both schemes" do
+        it "emits all three accent tokens once inside @layer base :root" do
           css = appearance.brand_css_overrides
 
+          expect(css.scan(":root {").size).to eq(1)
+          expect(css).not_to include(".dark {")
           expect(css).to include("--color-accent: oklch(0.6 0.2 260);")
           expect(css).to include("--color-accent-content: oklch(0.5 0.2 260);")
           expect(css).to include("--color-accent-foreground: oklch(1 0 0);")
-          expect(css).to include("--color-accent: oklch(0.7 0.2 260);")
-          expect(css).to include("--color-accent-content: oklch(0.8 0.2 260);")
         end
 
         it "emits the brand-scoped --color-brand-accent alias for the picker swatch" do
           css = appearance.brand_css_overrides
 
           expect(css).to include("--color-brand-accent: oklch(0.6 0.2 260);")
-          expect(css).to include("--color-brand-accent: oklch(0.7 0.2 260);")
         end
 
         it "does not emit neutral declarations" do
@@ -319,11 +291,11 @@ RSpec.describe Avo::Configuration::Appearance do
       context "when both keys are configured" do
         let(:options) { {neutral_colors: complete_neutral, accent_colors: complete_accent} }
 
-        it "emits both palettes inside a single :root and a single .dark block" do
+        it "emits both palettes inside a single :root block (no .dark block)" do
           css = appearance.brand_css_overrides
 
           expect(css.scan(":root {").size).to eq(1)
-          expect(css.scan(".dark {").size).to eq(1)
+          expect(css).not_to include(".dark {")
           expect(css).to include("--color-avo-neutral-25: oklch(0.99 0.01 240);")
           expect(css).to include("--color-accent-foreground: oklch(1 0 0);")
         end
