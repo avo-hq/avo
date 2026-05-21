@@ -12,10 +12,10 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
     end
 
     expect(page).to have_css(
-      ".header-overflow[data-controller='header-overflow']"
+      ".header-menu[data-controller='header-menu']"
     )
     expect(page).to have_css(
-      ".header-overflow__row[data-header-overflow-target='row'] a[href='/docs']",
+      ".header-menu__row[data-header-menu-target='row'] a[href='/docs']",
       text: "Docs"
     )
   end
@@ -23,12 +23,12 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
   it "renders the trigger button with the expected ARIA wiring" do
     render_component
 
-    trigger = page.find(".header-overflow__trigger")
+    trigger = page.find(".header-menu__trigger")
     expect(trigger[:type]).to eq("button")
     expect(trigger["aria-label"]).to eq("More links")
     expect(trigger["aria-haspopup"]).to eq("menu")
     expect(trigger["aria-expanded"]).to eq("false")
-    expect(trigger["data-header-overflow-target"]).to eq("trigger")
+    expect(trigger["data-header-menu-target"]).to eq("trigger")
     expect(trigger["aria-controls"]).to eq(trigger["popovertarget"]).and(
       be_present
     )
@@ -39,18 +39,18 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
 
     hamburger =
       page.find(
-        ".header-overflow__trigger .header-overflow__icon-hamburger",
+        ".header-menu__trigger .header-menu__icon-hamburger",
         visible: :all
       )
     chevron =
       page.find(
-        ".header-overflow__trigger .color-scheme-switcher__chevron",
+        ".header-menu__trigger .color-scheme-switcher__chevron",
         visible: :all
       )
     expect(hamburger["aria-hidden"]).to eq("true")
     expect(chevron["aria-hidden"]).to eq("true")
     expect(page).to have_css(
-      ".header-overflow__trigger .header-overflow__label-more",
+      ".header-menu__trigger .header-menu__label-more",
       text: "more"
     )
   end
@@ -58,7 +58,7 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
   it "renders a popover panel whose id matches the trigger's popovertarget" do
     render_component
 
-    popover_id = page.find(".header-overflow__trigger")["popovertarget"]
+    popover_id = page.find(".header-menu__trigger")["popovertarget"]
     expect(page).to have_css(
       "##{popover_id}[popover='auto'].popover-menu__panel",
       visible: :all
@@ -71,11 +71,11 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
     end
 
     expect(page).to have_css(
-      ".header-overflow__row a[href='/docs']",
+      ".header-menu__row a[href='/docs']",
       text: "Docs"
     )
     expect(page).to have_css(
-      ".popover-menu__panel.header-overflow__popover .dropdown-menu__list a[href='/docs']",
+      ".popover-menu__panel.header-menu__popover .dropdown-menu__list a[href='/docs']",
       text: "Docs",
       visible: :all
     )

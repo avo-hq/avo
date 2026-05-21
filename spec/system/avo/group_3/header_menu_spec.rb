@@ -10,7 +10,7 @@ RSpec.describe "Header menu", type: :system do
     it "falls back to an app_name link pointing at /" do
       visit "/admin/resources/users"
 
-      within ".header-overflow .header-overflow__row" do
+      within ".header-menu .header-menu__row" do
         expect(page).to have_selector(
           "a[href='/'].font-semibold",
           visible: :all
