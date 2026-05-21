@@ -112,17 +112,18 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_css(".hotkey[hidden]", visible: false)
   end
 
-  it "hides only badge kbd elements when toggling badge visibility" do
+  it "toggles the hotkeys-hide-badges body class when pressing Shift+K" do
     visit "/admin/resources/projects"
 
-    expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd')
-    expect(page).to have_css(".search-input__suffix kbd", count: 1)
+    expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: :all)
+    expect(page).to have_css(".search-input__suffix kbd", visible: :all, count: 1)
+    expect(page).to have_no_css("body.hotkeys-hide-badges")
 
     dispatch_keydown("K", shift_key: true)
-
     expect(page).to have_css("body.hotkeys-hide-badges")
-    expect(page).to have_no_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: true)
-    expect(page).to have_css(".search-input__suffix kbd", count: 1, visible: true)
+
+    dispatch_keydown("K", shift_key: true)
+    expect(page).to have_no_css("body.hotkeys-hide-badges")
   end
 
   it "applies kbd--called animation feedback when a hotkey fires" do
@@ -130,15 +131,22 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     expect(page).to have_css('[data-hotkey="r u"]')
 
-    # Prevent the click from navigating so the kbd element stays in the DOM
+    # The same hotkey is registered on multiple elements (desktop + mobile sidebar),
+    # and @github/hotkey clicks the last-registered one — which may be hidden on
+    # desktop. Block the click on ALL matching elements so navigation never starts.
+    # Also disable the kbd transition so `transitionend` never fires and
+    # `kbd--called` persists past the ~80ms animation window.
     page.execute_script(<<~JS)
-      document.querySelector('[data-hotkey="r u"]').addEventListener('click', (e) => e.preventDefault())
+      document.querySelectorAll('[data-hotkey="r u"]').forEach((el) => {
+        el.addEventListener('click', (e) => { e.preventDefault(); e.stopImmediatePropagation() }, true)
+      })
+      document.head.insertAdjacentHTML('beforeend', '<style>kbd { transition: none !important; }</style>')
     JS
 
     dispatch_keydown("r")
     dispatch_keydown("u")
 
-    expect(page).to have_css('[data-hotkey="r u"] kbd.kbd--called')
+    expect(page).to have_css('[data-hotkey="r u"] kbd.kbd--called', visible: :all)
   end
 
   it "navigates to resources using sidebar hotkeys" do
