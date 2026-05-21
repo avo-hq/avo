@@ -29,7 +29,7 @@
           <%= @form.hidden_field @field.type_input_foreign_key %>
         <% end %>
       <% end %>
-      <div data-belongs-to-field-target="container" class="hidden <%= @field.width_class %>"></div>
+      <div data-belongs-to-field-target="container" class="hidden <%= @field.width_class %> <%= 'border-t border-tertiary' if @field.width_option.to_i > 50 %>"></div>
       <% @field.types.each do |type| %>
         <template data-belongs-to-field-target="type" data-type="<%= type %>">
           <div data-polymorphic-type="<%= type %>">
