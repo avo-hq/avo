@@ -27,8 +27,8 @@
       <% component.with_trigger do %>
         <%= render Avo::ButtonComponent.new(
           icon: "tabler/outline/dots",
-          size: :lg,
-          class: "button--bare",
+          size: :md,
+          style: :text,
           popovertarget: component.popover_id
         ) %>
       <% end %>
