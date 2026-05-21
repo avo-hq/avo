@@ -57,13 +57,13 @@ export default class extends Controller {
   }
 
   markCollapsed() {
-    this.svgTarget.classList.add('rotate-90')
+    this.svgTarget.classList.add('sidebar-icon--collapsed')
     if (this.hasTriggerTarget) this.triggerTarget.setAttribute('aria-expanded', 'false')
     this.leave(this.itemsTarget)
   }
 
   markExpanded() {
-    this.svgTarget.classList.remove('rotate-90')
+    this.svgTarget.classList.remove('sidebar-icon--collapsed')
     if (this.hasTriggerTarget) this.triggerTarget.setAttribute('aria-expanded', 'true')
     this.enter(this.itemsTarget)
   }
