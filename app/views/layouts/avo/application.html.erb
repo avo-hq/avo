@@ -53,8 +53,9 @@
       </div>
 
       <main id="main-content" class="main-content" tabindex="-1">
+        <%= render Avo::BreadcrumbsComponent.new(items: avo_breadcrumbs) %>
+
         <div class="main-content__container <%= container_classes %>">
-            <%= render Avo::BreadcrumbsComponent.new(items: avo_breadcrumbs) %>
 
           <%= render partial: "avo/partials/custom_tools_alert" %>
 

@@ -23,14 +23,14 @@ class Avo::Resources::Comment < Avo::BaseResource
       with_options width: 50 do
         field :user, as: :belongs_to, use_resource: Avo::Resources::CompactUser, link_to_record: true
       end
-      field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
-      field :test, stacked: true, width: 33 do
+      field :commentable, width: 50, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]
+      field :test, stacked: true, width: 50 do
         "test1"
       end
-      field :test2, stacked: true, width: 33 do
+      field :test2, stacked: true, width: 50 do
         "test2"
       end
-      field :test2, stacked: true, width: 33 do
+      field :test2, stacked: true, width: 50 do
         "test3"
       end
       # field :test3 do

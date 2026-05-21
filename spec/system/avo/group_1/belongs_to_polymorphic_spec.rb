@@ -124,6 +124,32 @@ RSpec.feature "belongs_to", type: :system do
       end
     end
 
+    describe "edit form rendering" do
+      it "does not nest a description-list inside the polymorphic wrapper" do
+        visit "/admin/resources/comments/new"
+
+        polymorphic_outer = find('[data-controller="belongs-to-field"]')
+        expect(polymorphic_outer[:class].split).to include("w-full", "flex-col")
+
+        inner_wrapper = polymorphic_outer.find(:xpath, "./div[1]")
+        expect(inner_wrapper[:class].split).not_to include("description-list")
+      end
+
+      it "does not add a separator border on the container when the field width pairs side-by-side" do
+        visit "/admin/resources/comments/new"
+
+        container = find('[data-belongs-to-field-target="container"]', visible: :all)
+        expect(container[:class].split).not_to include("border-t")
+      end
+
+      it "adds a separator border on the container when the field width forces stacking onto two lines" do
+        visit "/admin/resources/reviews/new"
+
+        container = find('[data-belongs-to-field-target="container"]', visible: :all)
+        expect(container[:class].split).to include("border-t", "border-tertiary")
+      end
+    end
+
     describe "within a parent model" do
       let!(:project) { create :project }
       let!(:comment) { create :comment, body: "hey there", user: user, commentable: project }

@@ -20,8 +20,8 @@
       <% component.with_trigger do %>
         <%= render Avo::ButtonComponent.new(
           icon: "tabler/outline/dots-vertical",
-          size: :lg,
-          class: "grid-card__action",
+          size: :md,
+          style: :text,
           popovertarget: component.popover_id
         ) %>
       <% end %>
