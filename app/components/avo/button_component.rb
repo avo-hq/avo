@@ -13,6 +13,9 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :icon do |value|
     value&.to_sym
   end
+  prop :end_icon do |value|
+    value&.to_sym
+  end
   prop :icon_class, default: ""
   prop :is_link, default: false
   prop :aria, default: {}.freeze
@@ -79,6 +82,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   def render_content
     concat helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
     concat content if content.present? && @style != :icon
+    concat helpers.svg(@end_icon, class: class_names("button__icon", @icon_class)) if @end_icon.present?
     concat hotkey_badge(@args.dig(:data, :hotkey)) if @args.dig(:data, :hotkey) && @args.dig(:data, :show_hotkey_badge) != false
   end
 end

@@ -1,9 +1,17 @@
 <%
   entities = [:link, :button]
-  sizes = [:lg, :md, :sm]
+  sizes = [:md, :lg, :sm, :xs]
   styles = [:primary, :outline, :text]
   colors = [nil, :primary, :accent, :blue, :gray, :red, :orange, :green, :teal, :cyan, :sky, :indigo, :violet, :purple, :fuchsia, :pink, :rose]
   states = [:regular, :hover, :disabled, :active]
+
+  def design_button_label(entity, size, style, color, state, extra_classes)
+    return "#{entity.to_s.humanize.capitalize} #{state}"
+  end
+
+  def design_button_args(entity, size, style, color, state, extra_classes)
+    return {icon: "tabler/outline/arrow-left", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled}
+  end
 %>
 <div class="px-6 space-y-4">
   <% entities.each do |entity| %>
@@ -28,18 +36,17 @@
                   %>
                   <%
                     a_button_or_link = "a_#{entity}"
-                    args = {icon: "tabler/outline/arrow-left", style: style, color: color, size: size, class: extra_classes, disabled: state == :disabled}
                   %>
                   <% if entity == :link %>
                     <div>
-                      <%= send a_button_or_link, 'javascript:void(0);', **args do %>
-                        <%= entity.to_s.humanize.capitalize %> <%= state %>
+                      <%= send a_button_or_link, 'javascript:void(0);', **design_button_args(entity, size, style, color, state, extra_classes) do %>
+                        <%= design_button_label(entity, size, style, color, state, extra_classes) %>
                       <% end %>
                     </div>
                   <% else %>
                     <div>
-                      <%= send a_button_or_link, **args do %>
-                        <%= entity.to_s.humanize.capitalize %> <%= state %>
+                      <%= send a_button_or_link, **design_button_args(entity, size, style, color, state, extra_classes) do %>
+                        <%= design_button_label(entity, size, style, color, state, extra_classes) %>
                       <% end %>
                     </div>
                     <div>

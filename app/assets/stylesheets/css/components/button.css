@@ -176,8 +176,7 @@
 
     .button--style-text {
       &:not([class*="button--color-"]) {
-
-      --btn-text-color: var(--color-avo-neutral-50);
+        --btn-text-color: var(--color-avo-neutral-50);
       }
     }
 
@@ -190,12 +189,10 @@
 
   /* Primary style */
   .button--style-primary {
-    @apply text-(--btn-color-accent-foreground) border-(--btn-color-accent-content);
+    @apply text-(--btn-color-accent-foreground) border-(--btn-color-accent);
     background: linear-gradient(180deg, var(--btn-color-accent-content) 0%, var(--btn-color-accent) 100%);
 
     &:not([class*="button--color-"]) {
-      background: linear-gradient(180deg, var(--color-white) 0%, var(--color-white) 100%);
-
       &.button--hover,
       &:hover {
         background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 96%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 96%, var(--color-black)) 100%);
@@ -203,8 +200,8 @@
     }
 
     box-shadow:
-      0 -1.4px 0 0.1px var(--btn-color-accent-content) inset,
-      0 0.8px 0 0.4px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
+      inset 0px -1.4px 0px 0.1px var(--btn-color-accent-content),
+      inset 0px 0.8px 0px 0.4px color-mix(in oklch, white 45%, transparent);
 
     &.button--hover,
     &:hover {
@@ -281,6 +278,11 @@
       @apply bg-secondary text-(--btn-color-accent-content);
       box-shadow: none;
     }
+
+    /* Primary color override */
+    &.button--color-primary {
+      @apply border-(--color-avo-neutral-500);
+    }
   }
 
   /* Tertiary style (outline buttons) */
@@ -295,7 +297,8 @@
 
     &.button--hover,
     &:hover {
-      @apply bg-secondary text-(--btn-text-color);
+      background: color-mix(in oklab, var(--btn-color-accent), var(--color-primary) 85%);
+      @apply text-(--btn-text-color);
     }
 
     &.button--active,

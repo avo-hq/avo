@@ -1,9 +1,9 @@
 /* TODO: rename this file to theming or something similar */
 @theme {
-  --color-avo-neutral-25: oklch(98.51% 0 89.88);
-  --color-avo-neutral-50: oklch(97.31% 0 89.88);
-  --color-avo-neutral-100: oklch(92.8% 0 89.88);
-  --color-avo-neutral-200: oklch(86.07% 0 89.88);
+  --color-avo-neutral-25: oklch(99.71% 0 89.88);
+  --color-avo-neutral-50: oklch(98.51% 0 89.88);
+  --color-avo-neutral-100: oklch(97.31% 0 89.88);
+  --color-avo-neutral-200: oklch(92.8% 0 89.88);
   --color-avo-neutral-300: oklch(75.72% 0 89.88);
   --color-avo-neutral-400: oklch(62.68% 0 89.88);
   --color-avo-neutral-500: oklch(53.48% 0 89.88);
@@ -45,11 +45,11 @@
     0 0.8px 0 0.4px var(--color-primary) inset;
 
   /* foundations - Light Mode */
-  --color-background: var(--color-avo-neutral-25);
+  --color-background: var(--color-avo-neutral-50);
   --color-foreground: var(--color-avo-neutral-800);
   --color-primary: var(--color-white);
-  --color-secondary: var(--color-avo-neutral-50);
-  --color-tertiary: var(--color-avo-neutral-100);
+  --color-secondary: var(--color-avo-neutral-100);
+  --color-tertiary: var(--color-avo-neutral-200);
   --color-content: var(--color-avo-neutral-950);
   --color-content-secondary: var(--color-avo-neutral-500);
 
