@@ -52,13 +52,16 @@
       <% c.with_controls do %>
         <%= a_button type: :button,
           data: { action: 'click->modal#close', **(@action.close_modal_on_backdrop_click ? { hotkey: "Escape" } : {}) },
+          style: :text,
+          color: :primary,
           size: :md do %>
           <%= @action.cancel_button_label %>
         <% end %>
         <%= a_button type: :submit,
             color: :primary,
-            style: :primary,
+            style: :outline,
             size: :md,
+            end_icon: "tabler/outline/arrow-right",
             data: {
               target: :submit_action,
               hotkey: "Mod+Enter",

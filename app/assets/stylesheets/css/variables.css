@@ -1,9 +1,9 @@
 /* TODO: rename this file to theming or something similar */
 @theme {
-  --color-avo-neutral-25: oklch(98.51% 0 89.88);
-  --color-avo-neutral-50: oklch(97.31% 0 89.88);
-  --color-avo-neutral-100: oklch(92.8% 0 89.88);
-  --color-avo-neutral-200: oklch(86.07% 0 89.88);
+  --color-avo-neutral-25: oklch(99.71% 0 89.88);
+  --color-avo-neutral-50: oklch(98.51% 0 89.88);
+  --color-avo-neutral-100: oklch(97.31% 0 89.88);
+  --color-avo-neutral-200: oklch(92.8% 0 89.88);
   --color-avo-neutral-300: oklch(75.72% 0 89.88);
   --color-avo-neutral-400: oklch(62.68% 0 89.88);
   --color-avo-neutral-500: oklch(53.48% 0 89.88);
@@ -45,13 +45,16 @@
     0 0.8px 0 0.4px var(--color-primary) inset;
 
   /* foundations - Light Mode */
-  --color-background: var(--color-avo-neutral-25);
+  --color-background: var(--color-avo-neutral-50);
   --color-foreground: var(--color-avo-neutral-800);
   --color-primary: var(--color-white);
-  --color-secondary: var(--color-avo-neutral-50);
-  --color-tertiary: var(--color-avo-neutral-100);
+  --color-secondary: var(--color-avo-neutral-100);
+  --color-tertiary: var(--color-avo-neutral-200);
   --color-content: var(--color-avo-neutral-950);
   --color-content-secondary: var(--color-avo-neutral-500);
+
+  --color-scheme: var(--color-white);
+  --color-scheme-opposite: var(--color-black);
 
   /* themes - Neutral Light */
   --color-accent: var(--color-avo-neutral-800);
@@ -68,6 +71,9 @@
      `accent_colors:`, so a configured install shows its actual brand colors. */
   --color-brand-neutral-400: oklch(62.68% 0 89.88);
   --color-brand-accent: oklch(39.04% 0 89.88);
+
+  /* Semantic variables */
+  --color-sidebar-background: var(--color-background);
 }
 
 /* Dark mode defaults live in @layer theme — same layer as the @theme block
@@ -85,6 +91,9 @@
     --color-content: var(--color-white);
     --color-content-secondary: var(--color-avo-neutral-300);
 
+    --color-scheme: var(--color-black);
+    --color-scheme-opposite: var(--color-white);
+
     /* themes - Neutral Dark */
     --color-accent: var(--color-avo-neutral-50);
     --color-accent-content: var(--color-avo-neutral-100);
@@ -94,6 +103,10 @@
        :root, but using the dark default accent (neutral-50) so the swatch reads
        correctly under the dark scheme. */
     --color-brand-accent: oklch(97.31% 0 89.88);
+
+    /* Semantic variables */
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), var(--color-scheme) 14%);
+
   }
 }
 

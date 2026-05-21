@@ -48,3 +48,9 @@
 .hotkey__key-separator {
   @apply font-medium text-content-secondary;
 }
+
+@media (hover: none) {
+  .hotkey-badge {
+    @apply hidden;
+  }
+}

@@ -96,7 +96,7 @@ RSpec.feature "HasManyField", type: :system do
 
         sleep 0.8
         expect(page).to have_text("Record failed to destroy").twice
-
+      ensure
         Comment.class_eval do
           def destroy
             super

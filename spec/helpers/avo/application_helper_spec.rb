@@ -91,14 +91,22 @@ RSpec.describe Avo::ApplicationHelper do
       allow(helper).to receive(:controller).and_return(double(class: double(superclass: Avo::ResourcesController)))
     end
 
+    # `action_name` is a controller method exposed to views in real requests but
+    # isn't defined on ActionView::Base, so `verify_partial_doubles` rejects
+    # `allow(helper).to receive(:action_name)`. Define it on the helper's
+    # singleton class instead so the stub is real.
+    def stub_action_name(name)
+      helper.define_singleton_method(:action_name) { name }
+    end
+
     it "maps update to resource-edit-view" do
-      allow(helper).to receive(:action_name).and_return("update")
+      stub_action_name("update")
 
       expect(helper.body_classes).to include("resource-edit-view")
     end
 
     it "maps create to resource-new-view" do
-      allow(helper).to receive(:action_name).and_return("create")
+      stub_action_name("create")
 
       expect(helper.body_classes).to include("resource-new-view")
     end

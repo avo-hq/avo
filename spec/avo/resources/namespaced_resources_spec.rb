@@ -3,6 +3,11 @@ require "rails_helper"
 # Define real namespaced resource classes so they're available to all examples.
 # Using a unique namespace (NamespaceTest) avoids polluting the resource
 # manager with conflicting model mappings.
+#
+# These are marked abstract so Avo's resource manager skips them when it
+# enumerates descendants — otherwise the sidebar / route helpers in unrelated
+# specs would try to build routes (e.g. resources_namespace_test_bars_path)
+# that don't exist, since these classes are never registered with the app.
 module Avo
   module Resources
     module NamespaceTest
@@ -13,11 +18,20 @@ module Avo
 end
 
 class ::Avo::Resources::NamespaceTest::Bar < ::Avo::BaseResource
+  abstract_resource!
   self.model_class = "Course::Link"
 end
 
 class ::Avo::Resources::NamespaceTest::Baz::Qux < ::Avo::BaseResource
+  abstract_resource!
   self.model_class = "Course::Link"
+end
+
+# A namespaced resource without an explicit `model_class` — used to verify
+# Avo infers the model from the resource's own namespace ("Course::Link").
+# Nested under the existing Avo::Resources::Course class as a constant.
+class ::Avo::Resources::Course::Link < ::Avo::BaseResource
+  abstract_resource!
 end
 
 RSpec.describe "Namespaced resource conventions" do
