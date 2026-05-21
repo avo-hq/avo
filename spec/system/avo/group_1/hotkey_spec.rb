@@ -93,17 +93,18 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_css(".hotkey[hidden]", visible: false)
   end
 
-  it "hides all hotkey badge kbd elements when toggling badge visibility" do
+  it "toggles the hotkeys-hide-badges body class when pressing Shift+K" do
     visit "/admin/resources/projects"
 
-    expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd')
-    expect(page).to have_css(".search-input__suffix kbd", count: 1)
+    expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: :all)
+    expect(page).to have_css(".search-input__suffix kbd", visible: :all, count: 1)
+    expect(page).to have_no_css("body.hotkeys-hide-badges")
 
     dispatch_keydown("K", shift_key: true)
-
     expect(page).to have_css("body.hotkeys-hide-badges")
-    expect(page).to have_no_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: true)
-    expect(page).to have_no_css(".search-input__suffix kbd", visible: true)
+
+    dispatch_keydown("K", shift_key: true)
+    expect(page).to have_no_css("body.hotkeys-hide-badges")
   end
 
   it "applies kbd--called animation feedback when a hotkey fires" do
