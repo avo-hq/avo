@@ -47,19 +47,19 @@ export default class extends Controller {
 
   update() {
     if (this.items.length === 0) {
-      this.element.classList.remove('header-overflow--has-overflow')
-      this.element.classList.remove('header-overflow--row-empty')
-      this.element.classList.add('header-overflow--empty')
+      this.element.classList.remove('header-menu--has-overflow')
+      this.element.classList.remove('header-menu--row-empty')
+      this.element.classList.add('header-menu--empty')
       return
     }
-    this.element.classList.remove('header-overflow--empty')
+    this.element.classList.remove('header-menu--empty')
 
     // Unhide everything so measurements reflect natural widths.
     this.items.forEach((item) => {
       item.style.display = ''
     })
     if (this.truncatedItem) {
-      this.truncatedItem.classList.remove('header-overflow__item--truncated')
+      this.truncatedItem.classList.remove('header-menu__item--truncated')
       this.truncatedItem.style.maxWidth = ''
       this.truncatedItem = null
     }
@@ -90,7 +90,7 @@ export default class extends Controller {
       if (leftover >= MIN_TRUNCATED_WIDTH) {
         truncatedIndex = firstOverflowIndex
         this.truncatedItem = this.items[truncatedIndex]
-        this.truncatedItem.classList.add('header-overflow__item--truncated')
+        this.truncatedItem.classList.add('header-menu__item--truncated')
         this.truncatedItem.style.maxWidth = `${Math.floor(leftover)}px`
       }
     }
@@ -101,8 +101,8 @@ export default class extends Controller {
     }
 
     const hasOverflow = firstOverflowIndex < this.items.length
-    this.element.classList.toggle('header-overflow--has-overflow', hasOverflow)
+    this.element.classList.toggle('header-menu--has-overflow', hasOverflow)
     const rowHasItems = firstOverflowIndex > 0 || truncatedIndex >= 0
-    this.element.classList.toggle('header-overflow--row-empty', !rowHasItems)
+    this.element.classList.toggle('header-menu--row-empty', !rowHasItems)
   }
 }

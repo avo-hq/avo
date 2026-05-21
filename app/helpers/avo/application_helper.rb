@@ -191,11 +191,11 @@ module Avo
 
     def render_header_menu_items
       items = Avo.configuration.header_menu_items
-      return link_to(Avo.configuration.app_name, "/", class: "font-semibold", target: :_blank) if items.blank?
+      return link_to(Avo.configuration.app_name, "/", class: "text-sm font-medium", target: :_blank) if items.blank?
 
       safe_join(items.map { |item|
         link_to(item.name, item.to_path,
-          class: "font-semibold",
+          class: "text-sm font-medium",
           target: item.target,
           title: item.title,
           data: item.method ? {turbo_method: item.method} : nil)
