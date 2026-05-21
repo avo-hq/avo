@@ -43,24 +43,24 @@ RSpec.describe Avo::Configuration::Appearance do
       expect(appearance.save_settings_block).to be_nil
     end
 
-    it "defaults layout to :inline" do
-      expect(appearance.layout).to eq(:inline)
+    it "defaults picker_layout to :inline" do
+      expect(appearance.picker_layout).to eq(:inline)
     end
   end
 
-  describe "layout" do
+  describe "picker_layout" do
     it "accepts :dropdown" do
-      expect(described_class.new(layout: :dropdown).layout).to eq(:dropdown)
+      expect(described_class.new(picker_layout: :dropdown).picker_layout).to eq(:dropdown)
     end
 
-    it "raises when layout is not :inline or :dropdown" do
-      expect { described_class.new(layout: :sidebar) }
-        .to raise_error(ArgumentError, /appearance\.layout must be one of \[:inline, :dropdown\]/)
+    it "raises when picker_layout is not :inline or :dropdown" do
+      expect { described_class.new(picker_layout: :sidebar) }
+        .to raise_error(ArgumentError, /appearance\.picker_layout must be one of \[:inline, :dropdown\]/)
     end
 
-    it "raises when layout is a String (Symbol-only contract)" do
-      expect { described_class.new(layout: "inline") }
-        .to raise_error(ArgumentError, /appearance\.layout must be one of/)
+    it "raises when picker_layout is a String (Symbol-only contract)" do
+      expect { described_class.new(picker_layout: "inline") }
+        .to raise_error(ArgumentError, /appearance\.picker_layout must be one of/)
     end
   end
 

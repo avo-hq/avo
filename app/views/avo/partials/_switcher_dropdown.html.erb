@@ -1,4 +1,4 @@
-<div class="<%= class_names("color-scheme-switcher color-scheme-switcher--compact", "lg:hidden": appearance.layout == :inline) %>"
+<div class="<%= class_names("color-scheme-switcher color-scheme-switcher--compact", "lg:hidden": appearance.picker_layout == :inline) %>"
      data-controller="appearance">
   <%= render Avo::UI::DropdownComponent.new do |component| %>
     <% component.with_trigger do %>

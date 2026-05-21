@@ -14,7 +14,7 @@
 
 <%# :inline renders BOTH the desktop pill (lg:+) and the compact dropdown trigger (mobile fallback). %>
 <%# :dropdown renders ONLY the compact dropdown trigger at every breakpoint. %>
-<% if appearance.layout == :inline %>
+<% if appearance.picker_layout == :inline %>
   <%= render partial: "avo/partials/switcher_inline", locals: locals %>
 <% end %>
 <%= render partial: "avo/partials/switcher_dropdown", locals: locals %>
