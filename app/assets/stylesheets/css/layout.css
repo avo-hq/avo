@@ -247,8 +247,7 @@ button[data-sidebar-toggle-icon] {
    Sidebar starts below the navbar (matching .main's padding-top), so the
    navbar is uninterrupted across the full viewport width. */
 .avo-sidebar {
-  @apply fixed z-50 start-0 flex-1 border-e border-tertiary lg:border-none bg-background lg:bg-transparent w-(--sidebar-width) dark:bg-primary;
-
+  @apply fixed z-50 start-0 flex-1 border-e border-tertiary lg:border-none bg-sidebar-background w-(--sidebar-width);
 
   top: var(--top-navbar-height);
   height: calc(100dvh - var(--top-navbar-height));

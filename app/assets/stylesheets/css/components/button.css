@@ -169,20 +169,20 @@
     }
 
     .button--style-outline {
-      --btn-color-accent: var(--color-avo-neutral-50);
-      --btn-color-accent-content: var(--color-avo-neutral-100);
+      --btn-color-accent: var(--color-avo-neutral-100);
+      --btn-color-accent-content: var(--color-avo-neutral-200);
       --btn-color-accent-foreground: var(--color-avo-neutral-950);
     }
 
     .button--style-text {
       &:not([class*="button--color-"]) {
-        --btn-text-color: var(--color-avo-neutral-50);
+        --btn-text-color: var(--color-avo-neutral-100);
       }
     }
 
     .button.button--color-primary {
-      --btn-color-accent: var(--color-avo-neutral-50);
-      --btn-color-accent-content: var(--color-avo-neutral-100);
+      --btn-color-accent: var(--color-avo-neutral-100);
+      --btn-color-accent-content: var(--color-avo-neutral-200);
       --btn-color-accent-foreground: var(--color-avo-neutral-950);
     }
   }
