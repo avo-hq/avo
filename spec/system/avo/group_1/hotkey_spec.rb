@@ -131,19 +131,22 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     expect(page).to have_css('[data-hotkey="r u"]')
 
-    # Prevent the click from navigating so the kbd element stays in the DOM.
-    # Disable the kbd transition so `transitionend` never fires and the
-    # `kbd--called` class persists for the assertion (otherwise the ~80ms
-    # transition window races with Capybara polling under CI load).
+    # The same hotkey is registered on multiple elements (desktop + mobile sidebar),
+    # and @github/hotkey clicks the last-registered one — which may be hidden on
+    # desktop. Block the click on ALL matching elements so navigation never starts.
+    # Also disable the kbd transition so `transitionend` never fires and
+    # `kbd--called` persists past the ~80ms animation window.
     page.execute_script(<<~JS)
-      document.querySelector('[data-hotkey="r u"]').addEventListener('click', (e) => e.preventDefault())
+      document.querySelectorAll('[data-hotkey="r u"]').forEach((el) => {
+        el.addEventListener('click', (e) => { e.preventDefault(); e.stopImmediatePropagation() }, true)
+      })
       document.head.insertAdjacentHTML('beforeend', '<style>kbd { transition: none !important; }</style>')
     JS
 
     dispatch_keydown("r")
     dispatch_keydown("u")
 
-    expect(page).to have_css('[data-hotkey="r u"] kbd.kbd--called')
+    expect(page).to have_css('[data-hotkey="r u"] kbd.kbd--called', visible: :all)
   end
 
   it "navigates to resources using sidebar hotkeys" do
