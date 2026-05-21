@@ -16,15 +16,15 @@ class Avo::Configuration::Appearance
     :favicon_dark,
     :chart_colors,
     :placeholder,
-    :layout, # :inline | :dropdown — navbar switcher layout (auto-collapses to dropdown below lg:)
+    :picker_layout, # :inline | :dropdown — navbar switcher layout (auto-collapses to dropdown below lg:)
     :load_settings_block,
     :save_settings_block
 
   # Guarded so the file is safe to be loaded more than once (Zeitwerk + the
   # gem's own require_relative chain can both touch this file). Re-assigning
   # frozen constants would otherwise emit "already initialized" warnings.
-  unless defined?(LAYOUTS)
-    LAYOUTS = [:inline, :dropdown].freeze
+  unless defined?(PICKER_LAYOUTS)
+    PICKER_LAYOUTS = [:inline, :dropdown].freeze
 
     DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
     DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
@@ -50,7 +50,7 @@ class Avo::Configuration::Appearance
       neutrals: DEFAULT_NEUTRALS,
       accents: DEFAULT_ACCENTS,
       lock: [],
-      layout: :inline
+      picker_layout: :inline
     }.freeze
   end
 
@@ -74,11 +74,11 @@ class Avo::Configuration::Appearance
     @favicon_dark = config[:favicon_dark]
     @chart_colors = config[:chart_colors]
     @placeholder = config[:placeholder]
-    @layout = config[:layout]
+    @picker_layout = config[:picker_layout]
     @load_settings_block = config[:load_settings]
     @save_settings_block = config[:save_settings]
 
-    validate_layout!(@layout)
+    validate_picker_layout!(@picker_layout)
     validate_selection!("neutral", @neutral)
     validate_selection!("accent", @accent)
     validate_color_palette!("neutral_colors", @neutral_colors, NEUTRAL_SHADES, "shades") if @neutral_colors
@@ -160,10 +160,10 @@ class Avo::Configuration::Appearance
     declarations
   end
 
-  def validate_layout!(value)
-    return if LAYOUTS.include?(value)
+  def validate_picker_layout!(value)
+    return if PICKER_LAYOUTS.include?(value)
 
-    raise ArgumentError, "appearance.layout must be one of #{LAYOUTS.inspect}, got #{value.inspect}"
+    raise ArgumentError, "appearance.picker_layout must be one of #{PICKER_LAYOUTS.inspect}, got #{value.inspect}"
   end
 
   def validate_selection!(name, value)
