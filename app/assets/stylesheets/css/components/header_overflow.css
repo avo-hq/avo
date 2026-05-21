@@ -49,6 +49,12 @@
   @apply hidden;
 }
 
+/* Zero links: hide the whole wrapper — no row to show, nothing to put behind
+   the hamburger, so it shouldn't appear on any breakpoint. */
+.header-overflow.header-overflow--empty {
+  @apply hidden;
+}
+
 /* The hamburger only appears when the row has nothing visible AND we're on a
    small screen. Otherwise the "more" label is shown — even at small widths if
    at least part of a link is still visible in the row. The chevron is always

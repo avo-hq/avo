@@ -49,8 +49,10 @@ export default class extends Controller {
     if (this.items.length === 0) {
       this.element.classList.remove('header-overflow--has-overflow')
       this.element.classList.remove('header-overflow--row-empty')
+      this.element.classList.add('header-overflow--empty')
       return
     }
+    this.element.classList.remove('header-overflow--empty')
 
     // Unhide everything so measurements reflect natural widths.
     this.items.forEach((item) => {
