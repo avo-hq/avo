@@ -124,6 +124,18 @@ RSpec.feature "belongs_to", type: :system do
       end
     end
 
+    describe "edit form rendering" do
+      it "does not nest a description-list inside the polymorphic wrapper" do
+        visit "/admin/resources/comments/new"
+
+        polymorphic_outer = find('[data-controller="belongs-to-field"]')
+        expect(polymorphic_outer[:class].split).to include("w-full", "flex-col")
+
+        inner_wrapper = polymorphic_outer.find(:xpath, "./div[1]")
+        expect(inner_wrapper[:class].split).not_to include("description-list")
+      end
+    end
+
     describe "within a parent model" do
       let!(:project) { create :project }
       let!(:comment) { create :comment, body: "hey there", user: user, commentable: project }
