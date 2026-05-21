@@ -1,6 +1,11 @@
 /* Card Component - Based on Figma Design System */
 .card {
   @apply flex flex-col items-start self-stretch rounded-xl border border-tertiary bg-secondary;
+
+  /* Contain horizontal overflow so a wide inner scroller (e.g. .card__wrapper
+     wrapping a wide table) can't bleed past the card and push the document
+     wider than the viewport on narrow screens. */
+  overflow-x: clip;
 }
 
 /* Card variants */

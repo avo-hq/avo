@@ -181,6 +181,23 @@
     color: var(--color-avo-neutral-200);
     box-shadow: none;
   }
+
+  /* On mobile, collapse the navbar search to just the input + search icon —
+     hide the keyboard shortcut suffix and drop the reserved end-padding so it
+     stays compact next to the logo. */
+  @media (width < theme(--breakpoint-sm)) {
+    .search-input__suffix {
+      display: none;
+    }
+
+    .search-input__input.search-input__input--with-shortcut,
+    .search-input__input.search-input__input--with-two-key-shortcut {
+      padding-inline-end: calc(
+        var(--input-icon-offset) +
+        var(--input-icon-gap)
+      );
+    }
+  }
 }
 
 .top-navbar__end {
