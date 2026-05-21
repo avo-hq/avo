@@ -22,6 +22,7 @@ import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
 import GridCoverEmptyStateController from './controllers/grid_cover_empty_state_controller'
+import HeaderMenuController from './controllers/header_menu_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
 import IndexRowNavigatorController from './controllers/index_row_navigator_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
@@ -83,6 +84,7 @@ application.register('distribution-chart', DistributionChartController)
 application.register('filter', FilterController)
 application.register('form', FormController)
 application.register('grid-cover-empty-state', GridCoverEmptyStateController)
+application.register('header-menu', HeaderMenuController)
 application.register('hidden-input', HiddenInputController)
 application.register('index-row-navigator', IndexRowNavigatorController)
 application.register('input-autofocus', InputAutofocusController)

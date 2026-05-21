@@ -1,0 +1,90 @@
+.header-menu {
+  @apply flex items-center justify-end gap-2 min-w-0 flex-1;
+}
+
+.header-menu__row {
+  @apply flex items-center gap-5 min-w-0 flex-nowrap;
+  /* overflow: clip + overflow-clip-margin lets focus rings (and shadows) bleed
+     a few pixels outside the row while still clipping the pre-JS overflow. */
+  overflow: clip;
+  overflow-clip-margin: 4px;
+
+  > a {
+    @apply text-sm font-medium;
+  }
+}
+
+.header-menu__row > * {
+  @apply whitespace-nowrap shrink-0;
+}
+
+/* Match sidebar links: same custom focus shadow defined in variables.css. */
+.header-menu__row > a:focus-visible {
+  @apply outline-none relative z-10;
+  box-shadow: var(--box-shadow-focus);
+}
+
+/* The last visible item may be truncated to fill leftover space. */
+.header-menu__row > .header-menu__item--truncated {
+  @apply overflow-hidden text-ellipsis min-w-0;
+}
+
+/* Hide the trigger when nothing overflows — there's nothing useful behind it. */
+.header-menu:not(.header-menu--has-overflow) .popover-menu {
+  @apply hidden;
+}
+
+/* Zero links: hide the whole wrapper — no row to show, nothing to put behind
+   the hamburger, so it shouldn't appear on any breakpoint. */
+.header-menu.header-menu--empty {
+  @apply hidden;
+}
+
+/* The hamburger only appears when the row has nothing visible AND we're on a
+   small screen. Otherwise the "more" label is shown — even at small widths if
+   at least part of a link is still visible in the row. The chevron is always
+   visible on the trigger so the dropdown affordance is obvious. */
+.header-menu__icon-hamburger {
+  @apply hidden;
+}
+
+.header-menu--row-empty .header-menu__icon-hamburger {
+  @apply inline-flex sm:hidden;
+}
+
+.header-menu--row-empty .header-menu__label-more {
+  @apply hidden sm:inline;
+}
+
+.header-menu__popover {
+  @apply max-w-[min(28rem,80vw)];
+}
+
+.header-menu__popover .dropdown-menu__list {
+  @apply max-h-[min(24rem,70vh)] overflow-y-auto;
+}
+
+/* The dropdown rule sets `display: flex` on items, which prevents
+   `text-overflow: ellipsis` from inserting the "…" on overflow. Switching to
+   block restores the standard text-truncation behavior for our cloned links. */
+.header-menu__popover .dropdown-menu__list > :is(a, button) {
+  @apply block;
+}
+
+/* Below SM the row of links is always hidden — every link lives in the
+   popover behind the hamburger trigger. */
+@media (width < theme(--breakpoint-sm)) {
+  .header-menu__row {
+    @apply hidden;
+  }
+  /* Matches the "hide when no overflow" rule's specificity so the override wins. */
+  .header-menu:not(.header-menu--has-overflow) .popover-menu {
+    @apply flex;
+  }
+  .header-menu__icon-hamburger {
+    @apply inline-flex;
+  }
+  .header-menu__label-more {
+    @apply hidden;
+  }
+}

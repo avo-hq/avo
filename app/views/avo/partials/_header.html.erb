@@ -1,1 +1,6 @@
-<%= link_to Avo.configuration.app_name, '/', class: 'font-semibold', target: :_blank %>
+<%= render Avo::HeaderMenuComponent.new do %>
+  <%= render_header_menu_items %>
+
+  <%#= link_to "Docs", "https://docs.avohq.io/4.0/header-menu.html", target: :_blank %>
+  <%#= link_to Avo.configuration.app_name, "/", target: :_blank %>
+<% end %>

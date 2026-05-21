@@ -39,6 +39,7 @@ module Avo
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
+    attr_accessor :header_menu
     attr_accessor :model_resource_mapping
     attr_reader :resource_default_view
     attr_accessor :authorization_client
@@ -167,6 +168,7 @@ module Avo
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @header_menu = nil
       @model_resource_mapping = {}
       @resource_default_view = Avo::ViewInquirer.new("show")
       @authorization_client = :pundit
@@ -390,6 +392,17 @@ module Avo
       raise "'mount_avo_engines' option is now obsolete. \n" \
         "Please refer to the upgrade guide for details on the new mounting point: \n" \
         "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
+    end
+
+    # Returns the Link items produced by evaluating the `header_menu` lambda.
+    # Empty when unset or when avo-menu (which owns the DSL) isn't installed.
+    def header_menu_items
+      return [] if @header_menu.nil?
+      return [] unless Avo.plugin_manager.installed?("avo-menu")
+
+      Avo::Menu::Builder.parse_menu(&@header_menu).items.select do |item|
+        item.is_a?(Avo::Menu::Link)
+      end
     end
   end
 
