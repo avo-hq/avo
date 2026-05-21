@@ -49,14 +49,8 @@
   @apply font-medium text-content-secondary;
 }
 
-@media (width < theme(--breakpoint-xs)), (hover: none) and (pointer: coarse) {
+@media (width < theme(--breakpoint-sm)), (hover: none) {
   .hotkey-badge {
-    @apply hidden;
-  }
-}
-
-@media (width < theme(--breakpoint-sm)), (hover: none) and (pointer: coarse) {
-  .search-input__suffix {
     @apply hidden;
   }
 

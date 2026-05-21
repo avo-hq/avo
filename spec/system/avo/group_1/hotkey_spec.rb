@@ -93,7 +93,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_css(".hotkey[hidden]", visible: false)
   end
 
-  it "hides only badge kbd elements when toggling badge visibility" do
+  it "hides all hotkey badge kbd elements when toggling badge visibility" do
     visit "/admin/resources/projects"
 
     expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd')
@@ -103,7 +103,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     expect(page).to have_css("body.hotkeys-hide-badges")
     expect(page).to have_no_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: true)
-    expect(page).to have_css(".search-input__suffix kbd", count: 1, visible: true)
+    expect(page).to have_no_css(".search-input__suffix kbd", visible: true)
   end
 
   it "applies kbd--called animation feedback when a hotkey fires" do
