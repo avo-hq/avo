@@ -30,7 +30,7 @@ kbd.kbd--called {
   box-shadow: none;
 }
 
-.hotkeys-hide-badges .hotkey-badge kbd {
+.hotkeys-hide-badges .hotkey-badge {
   display: none;
 }
 
