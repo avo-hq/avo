@@ -131,9 +131,13 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     expect(page).to have_css('[data-hotkey="r u"]')
 
-    # Prevent the click from navigating so the kbd element stays in the DOM
+    # Prevent the click from navigating so the kbd element stays in the DOM.
+    # Disable the kbd transition so `transitionend` never fires and the
+    # `kbd--called` class persists for the assertion (otherwise the ~80ms
+    # transition window races with Capybara polling under CI load).
     page.execute_script(<<~JS)
       document.querySelector('[data-hotkey="r u"]').addEventListener('click', (e) => e.preventDefault())
+      document.head.insertAdjacentHTML('beforeend', '<style>kbd { transition: none !important; }</style>')
     JS
 
     dispatch_keydown("r")
