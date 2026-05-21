@@ -191,7 +191,7 @@ module Avo
 
     def render_header_menu_items
       items = Avo.configuration.header_menu_items
-      return if items.blank?
+      return link_to(Avo.configuration.app_name, "/", class: "font-semibold", target: :_blank) if items.blank?
 
       safe_join(items.map { |item|
         link_to(item.name, item.to_path,
