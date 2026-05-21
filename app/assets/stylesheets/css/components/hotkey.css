@@ -49,13 +49,8 @@
   @apply font-medium text-content-secondary;
 }
 
-@media (width < theme(--breakpoint-sm)), (hover: none) {
+@media (hover: none) {
   .hotkey-badge {
     @apply hidden;
-  }
-
-  .search-input__input--with-shortcut,
-  .search-input__input--with-two-key-shortcut {
-    padding-inline-end: calc(var(--input-icon-offset) + var(--input-icon-gap));
   }
 }
