@@ -3,7 +3,7 @@
 }
 
 .header-overflow__row {
-  @apply flex items-center gap-3 min-w-0 flex-nowrap;
+  @apply flex items-center gap-6 min-w-0 flex-nowrap;
   /* overflow: clip + overflow-clip-margin lets focus rings (and shadows) bleed
      a few pixels outside the row while still clipping the pre-JS overflow. */
   overflow: clip;
@@ -20,14 +20,23 @@
   box-shadow: var(--box-shadow-focus);
 }
 
-.header-overflow__bullet {
-  @apply font-bold shrink-0 opacity-60 select-none;
+/* Bullet separator floated into the inter-link gap as a pseudo so it sits
+   outside the link's border-box — the focus ring wraps only the label. */
+.header-overflow__row > a:not(:first-child) {
+  @apply relative;
 }
 
-/* Bullets are horizontal separators in the row; they're meaningless inside
-   the vertical popover list, where they'd look like stray bullet points. */
-.header-overflow__items .header-overflow__bullet {
-  @apply hidden;
+.header-overflow__row > a:not(:first-child)::before {
+  content: "•";
+  @apply absolute flex items-center justify-center font-bold opacity-60 select-none pointer-events-none;
+  /* Zero-width sliver at the gap midpoint (half of gap-6). The glyph
+     overflows and self-centers, so it lands on the gap midpoint regardless
+     of glyph width or document direction. */
+  inset-inline-end: calc(100% + 0.75rem);
+  top: 0;
+  bottom: 0;
+  width: 0;
+  overflow: visible;
 }
 
 /* The last visible item may be truncated to fill leftover space. */
@@ -40,29 +49,15 @@
   @apply hidden;
 }
 
-/* The shared compact-trigger uses asymmetric `ps-2 pe-1.5` because the
-   appearance variant ends with a small chevron. In our "more" text states
-   there's no chevron, so use symmetric end-padding. Only revert to the
-   tighter `pe-1.5` when the chevron is actually visible (row empty + small
-   screen). */
-.header-overflow__trigger {
-  @apply pe-2;
-}
-
-.header-overflow--row-empty .header-overflow__trigger {
-  @apply pe-1.5 lg:pe-2;
-}
-
 /* The hamburger only appears when the row has nothing visible AND we're on a
    small screen. Otherwise the "more" label is shown — even at small widths if
-   at least part of a link is still visible in the row. */
-.header-overflow__icon-hamburger,
-.header-overflow__chevron {
+   at least part of a link is still visible in the row. The chevron is always
+   visible on the trigger so the dropdown affordance is obvious. */
+.header-overflow__icon-hamburger {
   @apply hidden;
 }
 
-.header-overflow--row-empty .header-overflow__icon-hamburger,
-.header-overflow--row-empty .header-overflow__chevron {
+.header-overflow--row-empty .header-overflow__icon-hamburger {
   @apply inline-flex lg:hidden;
 }
 
@@ -70,21 +65,25 @@
   @apply hidden lg:inline;
 }
 
-.header-overflow__items {
-  @apply max-h-[min(24rem,70vh)] max-w-[min(28rem,80vw)] overflow-y-auto;
+.header-overflow__popover {
+  @apply max-w-[min(28rem,80vw)];
+}
+
+.header-overflow__popover .dropdown-menu__list {
+  @apply max-h-[min(24rem,70vh)] overflow-y-auto;
 }
 
 /* The dropdown rule sets `display: flex` on items, which prevents
    `text-overflow: ellipsis` from inserting the "…" on overflow. Switching to
    block restores the standard text-truncation behavior for our cloned links. */
-.header-overflow__items > :is(a, button) {
+.header-overflow__popover .dropdown-menu__list > :is(a, button) {
   @apply block;
 }
 
-/* Below SM the row of links is always hidden — every link lives in the
-   popover behind the hamburger trigger. The trigger also moves to the right
-   of the navbar (after the color-scheme switcher) via `order`. */
-@media (width < theme(--breakpoint-sm)) {
+/* Below LG the row of links is always hidden — every link lives in the
+   popover behind the hamburger trigger. Mirrors the color-scheme switcher,
+   which also pivots from inline to compact at `lg`. */
+@media (width < theme(--breakpoint-lg)) {
   .header-overflow__row {
     @apply hidden;
   }
@@ -92,8 +91,7 @@
   .header-overflow:not(.header-overflow--has-overflow) .popover-menu {
     @apply flex;
   }
-  .header-overflow__icon-hamburger,
-  .header-overflow__chevron {
+  .header-overflow__icon-hamburger {
     @apply inline-flex;
   }
   .header-overflow__label-more {

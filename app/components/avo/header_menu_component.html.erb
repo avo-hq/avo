@@ -3,7 +3,7 @@
     <%= content %>
   </div>
 
-  <%= render Avo::UI::DropdownComponent.new(popover_mode: true) do |dropdown| %>
+  <%= render Avo::UI::DropdownComponent.new(popover_mode: true, classes: "header-overflow__popover") do |dropdown| %>
     <% dropdown.with_trigger do %>
       <button type="button"
               class="color-scheme-switcher__compact-trigger header-overflow__trigger"
@@ -15,13 +15,11 @@
               data-header-overflow-target="trigger">
         <%= helpers.svg "tabler/outline/menu-2", class: "color-scheme-switcher__icon header-overflow__icon-hamburger", aria_hidden: true %>
         <span class="header-overflow__label-more text-xs">more</span>
-        <%= helpers.svg "tabler/outline/chevron-down", class: "color-scheme-switcher__chevron header-overflow__chevron", aria_hidden: true %>
+        <%= helpers.svg "tabler/outline/chevron-down", class: "color-scheme-switcher__chevron", aria_hidden: true %>
       </button>
     <% end %>
     <% dropdown.with_items do %>
-      <div class="dropdown-menu__list header-overflow__items" data-header-overflow-target="overflow">
-        <%= content %>
-      </div>
+      <%= content %>
     <% end %>
   <% end %>
 </div>

@@ -1,23 +1,6 @@
 <%= render Avo::HeaderMenuComponent.new do %>
-  <% items = Avo.configuration.header_menu_items %>
-  <% if items.any? %>
-    <% items.each_with_index do |item, i| %>
-      <% if i > 0 %><span class="header-overflow__bullet" aria-hidden="true">•</span><% end %>
-      <% item_path = item.params.present? ? "#{item.path}?#{item.params.to_query}" : item.path %>
-      <%= link_to item.name, item_path,
-        class: "font-semibold",
-        target: item.target,
-        data: item.method ? { turbo_method: item.method } : nil %>
-    <% end %>
-  <% else %>
-    <%= link_to "Sign out", main_app.destroy_user_session_path, data: { turbo_method: :delete }, class: "font-semibold" %>
+  <%= render_header_menu_items %>
 
-    <%= link_to Avo.configuration.app_name, "/", class: "font-semibold", target: :_blank %>
-    <span class="header-overflow__bullet" aria-hidden="true">•</span>
-    <%= link_to "First Link", "/", class: "font-semibold", target: :_blank %>
-    <span class="header-overflow__bullet" aria-hidden="true">•</span>
-    <%= link_to "Second Link very very very very long  very very very very long very very very very long very very very very long very very very very long very very very very long very very very very long very very very very long very very very very long ", "/", class: "font-semibold", target: :_blank %>
-    <span class="header-overflow__bullet" aria-hidden="true">•</span>
-    <%= link_to "Third Link", "/", class: "font-semibold", target: :_blank %>
-  <% end %>
+  <%#= link_to "Docs", "https://docs.avohq.io/4.0/header-menu.html", class: "font-semibold", target: :_blank %>
+  <%#= link_to Avo.configuration.app_name, "/", class: "font-semibold", target: :_blank %>
 <% end %>

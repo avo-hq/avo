@@ -1,27 +1,15 @@
 import { Controller } from '@hotwired/stimulus'
 
-// Minimum width (px) we'll dedicate to a truncated tail item. Below this,
-// the visible portion shrinks to a useless sliver like "A …" or just "…",
-// which reads as a bug — so we push the item into the dropdown instead.
-// Tuned for typical 14–16px navbar fonts; adjust if your typography differs.
-const MIN_TRUNCATED_WIDTH = 80
+// Minimum slot width (px) for a truncated tail item. Below this the visible
+// portion shrinks to just "…", which reads as a glitch — so we push the
+// item into the dropdown instead.
+const MIN_TRUNCATED_WIDTH = 32
 
 export default class extends Controller {
-  static targets = ['row', 'overflow', 'trigger']
+  static targets = ['row', 'trigger']
 
   connect() {
     this.items = Array.from(this.rowTarget.children)
-
-    // Both the row and the popover are populated server-side with the same
-    // links. The controller only sets `title` for hover-tooltip access to the
-    // full label when an item is truncated in the row or shown with the
-    // dropdown's single-line ellipsis.
-    const setTitle = (item) => {
-      if (item.tagName !== 'A') return
-      if (!item.title) item.title = item.textContent.trim()
-    }
-    this.items.forEach(setTitle)
-    Array.from(this.overflowTarget.children).forEach(setTitle)
 
     this.scheduleUpdate = this.scheduleUpdate.bind(this)
     this.resizeObserver = new ResizeObserver(this.scheduleUpdate)
@@ -105,13 +93,7 @@ export default class extends Controller {
       }
     }
 
-    let hiddenStart = firstOverflowIndex + (truncatedIndex >= 0 ? 1 : 0)
-    // Avoid leaving an orphan bullet between the last visible link and the
-    // first hidden one — if the item just before hiddenStart is a bullet,
-    // hide it too.
-    if (hiddenStart > 0 && this.items[hiddenStart - 1].classList.contains('header-overflow__bullet')) {
-      hiddenStart -= 1
-    }
+    const hiddenStart = firstOverflowIndex + (truncatedIndex >= 0 ? 1 : 0)
     for (let i = hiddenStart; i < this.items.length; i += 1) {
       this.items[i].style.display = 'none'
     }

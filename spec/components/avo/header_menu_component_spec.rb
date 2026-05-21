@@ -44,7 +44,7 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
       )
     chevron =
       page.find(
-        ".header-overflow__trigger .header-overflow__chevron",
+        ".header-overflow__trigger .color-scheme-switcher__chevron",
         visible: :all
       )
     expect(hamburger["aria-hidden"]).to eq("true")
@@ -75,7 +75,7 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
       text: "Docs"
     )
     expect(page).to have_css(
-      ".popover-menu__panel .header-overflow__items[data-header-overflow-target='overflow'] a[href='/docs']",
+      ".popover-menu__panel.header-overflow__popover .dropdown-menu__list a[href='/docs']",
       text: "Docs",
       visible: :all
     )

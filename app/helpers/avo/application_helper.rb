@@ -189,6 +189,19 @@ module Avo
       Avo.configuration.default_editor_url.gsub("%{path}", path)
     end
 
+    def render_header_menu_items
+      items = Avo.configuration.header_menu_items
+      return if items.blank?
+
+      safe_join(items.map { |item|
+        link_to(item.name, item.to_path,
+          class: "font-semibold",
+          target: item.target,
+          title: item.title,
+          data: item.method ? {turbo_method: item.method} : nil)
+      })
+    end
+
     private
 
     def container_width_css_suffix(width)
