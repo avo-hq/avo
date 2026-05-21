@@ -10,12 +10,19 @@ export default class extends Controller {
 
   connect() {
     this.items = Array.from(this.rowTarget.children)
+    this.bindAriaExpanded()
+    this.popoverItems = this.collectPopoverItems()
 
     this.scheduleUpdate = this.scheduleUpdate.bind(this)
     this.resizeObserver = new ResizeObserver(this.scheduleUpdate)
     this.resizeObserver.observe(this.element)
-    this.bindAriaExpanded()
     this.update()
+  }
+
+  collectPopoverItems() {
+    if (!this.popoverElement) return []
+    const list = this.popoverElement.querySelector('.dropdown-menu__list')
+    return list ? Array.from(list.children) : []
   }
 
   disconnect() {
@@ -99,6 +106,15 @@ export default class extends Controller {
     for (let i = hiddenStart; i < this.items.length; i += 1) {
       this.items[i].style.display = 'none'
     }
+
+    // Mirror visibility into the popover so it only carries items the row hides.
+    // When the row itself is hidden via CSS (e.g. below `sm`), every item belongs
+    // in the popover regardless of overflow math.
+    const rowVisible = this.rowTarget.clientWidth > 0
+    const popoverHiddenStart = rowVisible ? hiddenStart : 0
+    this.popoverItems.forEach((item, i) => {
+      item.style.display = i < popoverHiddenStart ? 'none' : ''
+    })
 
     const hasOverflow = firstOverflowIndex < this.items.length
     this.element.classList.toggle('header-menu--has-overflow', hasOverflow)

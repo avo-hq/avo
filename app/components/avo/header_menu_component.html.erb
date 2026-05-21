@@ -8,13 +8,13 @@
       <button type="button"
               class="color-scheme-switcher__compact-trigger header-menu__trigger"
               popovertarget="<%= dropdown.popover_id %>"
-              aria-label="More links"
+              aria-label="<%= t("avo.more") %>"
               aria-haspopup="menu"
               aria-controls="<%= dropdown.popover_id %>"
               aria-expanded="false"
               data-header-menu-target="trigger">
         <%= helpers.svg "tabler/outline/menu-2", class: "color-scheme-switcher__icon header-menu__icon-hamburger", aria_hidden: true %>
-        <span class="header-menu__label-more text-xs">more</span>
+        <span class="header-menu__label-more text-xs"><%= t("avo.more") %></span>
         <%= helpers.svg "tabler/outline/chevron-down", class: "color-scheme-switcher__chevron", aria_hidden: true %>
       </button>
     <% end %>

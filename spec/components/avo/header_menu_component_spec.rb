@@ -25,7 +25,7 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
 
     trigger = page.find(".header-menu__trigger")
     expect(trigger[:type]).to eq("button")
-    expect(trigger["aria-label"]).to eq("More links")
+    expect(trigger["aria-label"]).to eq(I18n.t("avo.more"))
     expect(trigger["aria-haspopup"]).to eq("menu")
     expect(trigger["aria-expanded"]).to eq("false")
     expect(trigger["data-header-menu-target"]).to eq("trigger")
@@ -51,7 +51,7 @@ RSpec.describe Avo::HeaderMenuComponent, type: :component do
     expect(chevron["aria-hidden"]).to eq("true")
     expect(page).to have_css(
       ".header-menu__trigger .header-menu__label-more",
-      text: "more"
+      text: I18n.t("avo.more")
     )
   end
 

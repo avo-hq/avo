@@ -8,6 +8,10 @@
      a few pixels outside the row while still clipping the pre-JS overflow. */
   overflow: clip;
   overflow-clip-margin: 4px;
+
+  > a {
+    @apply text-sm font-medium;
+  }
 }
 
 .header-menu__row > * {
