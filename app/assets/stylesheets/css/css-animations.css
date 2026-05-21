@@ -28,27 +28,3 @@
     display 75ms allow-discrete;
 }
 
-/* Sidebar Profile Dropdown Animation (slides up from bottom) */
-.css-animate-slide-up {
-  opacity: 1;
-  transform: translateY(0);
-
-  transition:
-    opacity 100ms ease-in-out,
-    transform 100ms ease-in-out,
-    display 100ms allow-discrete;
-
-  @starting-style {
-    opacity: 0;
-    transform: translateY(0.75rem);
-  }
-}
-
-.css-animate-slide-up[hidden] {
-  opacity: 0;
-  transform: translateY(0.75rem);
-  transition:
-    opacity 75ms ease-in,
-    transform 75ms ease-in,
-    display 75ms allow-discrete;
-}

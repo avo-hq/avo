@@ -5,6 +5,19 @@ tr:
     actions: Aksiyonlar
     add_filter: Filtre ekle
     and_x_other_resources: ve %{count} diğer kaynak
+    appearance:
+      accent_picker: Vurgu rengi
+      accents: Vurgu
+      auto: Otomatik
+      auto_tooltip: Otomatik (sistem tercihi)
+      dark: Koyu
+      dark_tooltip: Koyu mod
+      light: Açık
+      light_tooltip: Açık mod
+      neutrals: Tema
+      neutrals_picker: Nötr tema
+      schemes: Görünüm
+      title: Görünüm
     applied:
       one: uygulandı
       other: uygulanan
@@ -136,6 +149,7 @@ tr:
     show_content: İçeriği göster
     sign_out: Çıkış yap
     skip_to_content: İçeriğe atla
+    skip_to_sidebar: Kenara atla
     sort_asc: Artan sırala
     sort_desc: Azalan sırala
     sort_reset: Sıralamayı sıfırla

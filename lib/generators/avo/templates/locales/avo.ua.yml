@@ -5,6 +5,19 @@ ua:
     actions: Дії
     add_filter: Додати фільтр
     and_x_other_resources: і ще %{count} інших ресурсів
+    appearance:
+      accent_picker: Колір акценту
+      accents: Акцент
+      auto: Авто
+      auto_tooltip: Авто (системні налаштування)
+      dark: Темний
+      dark_tooltip: Темний режим
+      light: Світлий
+      light_tooltip: Світлий режим
+      neutrals: Тема
+      neutrals_picker: Нейтральна тема
+      schemes: Зовнішній вигляд
+      title: Зовнішній вигляд
     applied: застосовано
     are_you_sure: Ви впевнені?
     are_you_sure_detach_item: Ви впевнені, що хочете відкріпити цей %{item}?
@@ -136,6 +149,7 @@ ua:
     show_content: Показати вміст
     sign_out: Вийти
     skip_to_content: Перейти до вмісту
+    skip_to_sidebar: Пропустити до бокової панелі
     sort_asc: Rūšiuoti didėjančia tvarka
     sort_desc: Rūšiuoti mažėjančia tvarka
     sort_reset: Atstatyti rūšiavimą

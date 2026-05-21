@@ -247,36 +247,19 @@
   @apply flex items-center justify-center gap-1 shrink-0;
 }
 
-.sidebar-profile__action-trigger {
-  @apply flex items-center cursor-pointer text-content-secondary;
-}
-
-.sidebar-profile__action-trigger:hover {
-  @apply text-content;
-}
-
-.sidebar-profile__panel {
-  @apply absolute flex flex-col items-center inset-auto end-0 bottom-0 mb-8 bg-primary rounded-sm min-w-[200px] shadow-2xl z-40;
-}
-
 .sidebar-profile__form {
-  @apply flex-1;
+  @apply flex w-full;
+}
+
+/* Menu rows inherit the dropdown row layout — override text size and,
+   for sign-out, the danger color + hover. */
+.sidebar-profile__menu-item,
+.sidebar-profile__sign-out {
+  @apply !text-base;
 }
 
 .sidebar-profile__sign-out {
-  @apply flex items-center justify-start gap-1 w-full px-4 py-3 rounded-sm cursor-pointer text-danger font-semibold bg-primary hover:bg-danger/10;
-}
-
-.sidebar-profile__sign-out-icon {
-  @apply me-1 shrink-0;
-}
-
-.sidebar-profile__menu-item {
-  @apply flex-1 flex items-center justify-center text-start cursor-pointer font-semibold px-4 py-3 w-full rounded-sm bg-primary text-content hover:bg-tertiary;
-}
-
-.sidebar-profile__menu-item .sidebar-icon {
-  @apply me-1;
+  @apply !text-danger hover:!bg-danger/10 hover:!text-danger;
 }
 
 /* ================================================ */
@@ -285,11 +268,11 @@
 /* ================================================ */
 
 .sidebar-status {
-  @apply p-4 border-t border-tertiary;
+  @apply p-4 border-t border-(--border-color);
 }
 
 .sidebar-status__link {
-  @apply px-4 py-2 border border-tertiary rounded-sm flex justify-between items-center w-full text-content text-sm;
+  @apply px-4 py-2 border border-(--border-color) rounded-sm flex justify-between items-center w-full text-content text-sm;
 }
 
 .sidebar-status__indicator {

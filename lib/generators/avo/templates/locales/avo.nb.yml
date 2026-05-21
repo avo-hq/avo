@@ -5,6 +5,19 @@ nb:
     actions: Handlinger
     add_filter: Legg til filter
     and_x_other_resources: og %{count} andre ressurser
+    appearance:
+      accent_picker: Aksentfarge
+      accents: Aksent
+      auto: Auto
+      auto_tooltip: Auto (systempreferanse)
+      dark: Mørk
+      dark_tooltip: Mørk modus
+      light: Lys
+      light_tooltip: Lys modus
+      neutrals: Tema
+      neutrals_picker: Nøytralt tema
+      schemes: Utseende
+      title: Utseende
     applied:
       one: applied
       other: applied
@@ -136,6 +149,7 @@ nb:
     show_content: Vis innhold
     sign_out: Logg ut
     skip_to_content: Hopp til innhold
+    skip_to_sidebar: Hopp til sidefelt
     sort_asc: Sorter stigende
     sort_desc: Sorter synkende
     sort_reset: Tilbakestill sortering

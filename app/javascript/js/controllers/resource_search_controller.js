@@ -20,7 +20,12 @@ export default class extends Controller {
   }
 
   blurOnEscape(event) {
-    if (event.key === 'Escape') this.inputTarget.blur()
+    if (event.key !== 'Escape') return
+
+    // <input type="search"> clears itself on Escape by default. Suppress that so
+    // a pressed Escape only unfocuses the input and preserves the typed query.
+    event.preventDefault()
+    this.inputTarget.blur()
   }
 
   search() {

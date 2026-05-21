@@ -5,6 +5,19 @@ ar:
     actions: أوامر
     add_filter: إضافة عامل تصفية
     and_x_other_resources: و %{count} موارد أخرى
+    appearance:
+      accent_picker: لون مميز
+      accents: اللون المميز
+      auto: تلقائي
+      auto_tooltip: تلقائي (تفضيل النظام)
+      dark: داكن
+      dark_tooltip: وضع الداكن
+      light: فاتح
+      light_tooltip: وضع الفاتح
+      neutrals: السمة
+      neutrals_picker: سمة الألوان المحايدة
+      schemes: المظهر
+      title: المظهر
     applied:
       few: applied
       many: applied
@@ -144,6 +157,7 @@ ar:
     show_content: عرض المحتوى
     sign_out: تسجيل الخروج
     skip_to_content: انتقل إلى المحتوى
+    skip_to_sidebar: تخطي إلى الشريط الجانبي
     sort_asc: ترتيب تصاعدي
     sort_desc: ترتيب تنازلي
     sort_reset: إعادة تهيئة الترتيب

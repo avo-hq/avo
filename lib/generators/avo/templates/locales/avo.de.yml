@@ -5,6 +5,19 @@ de:
     actions: Aktionen
     add_filter: Filter hinzufügen
     and_x_other_resources: und %{count} weitere Ressourcen
+    appearance:
+      accent_picker: Akzentfarbe
+      accents: Akzent
+      auto: Automatisch
+      auto_tooltip: Automatisch (Systemeinstellung)
+      dark: Dunkel
+      dark_tooltip: Dunkler Modus
+      light: Hell
+      light_tooltip: Heller Modus
+      neutrals: Thema
+      neutrals_picker: Neutrale Themen
+      schemes: Erscheinungsbild
+      title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?
     are_you_sure_detach_item: Sind Sie sicher, dass Sie dieses %{item} abhängen möchten?
@@ -134,6 +147,7 @@ de:
     show_content: Inhalt anzeigen
     sign_out: Abmelden
     skip_to_content: Zum Inhalt springen
+    skip_to_sidebar: Zum Seitenbereich überspringen
     sort_asc: Aufsteigend sortieren
     sort_desc: Absteigend sortieren
     sort_reset: Sortierung zurücksetzen

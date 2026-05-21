@@ -21,7 +21,7 @@ export default class extends Controller {
   }
 
   get resolvedTheme() {
-    return this.isDark ? 'material-darker' : 'default'
+    return this.isDark ? 'monokai' : 'default'
   }
 
   connect() {

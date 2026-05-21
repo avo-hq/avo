@@ -25,7 +25,8 @@ en:
     choose_an_option: Choose an option
     choose_item: Choose %{item}
     clear_value: Clear value
-    click_to_reveal_filters: Click to reveal filters
+    reveal_filters: &reveal_filters Reveal filters
+    click_to_reveal_filters: *reveal_filters
     close_modal: Close modal
     close: Close
     confirm: Confirm
@@ -114,6 +115,7 @@ en:
     less_content: Less content
     sign_out: Sign out
     skip_to_content: Skip to content
+    skip_to_sidebar: Skip to sidebar
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
     tools: Tools

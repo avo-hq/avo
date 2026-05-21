@@ -5,6 +5,19 @@ ro:
     actions: Acțiuni
     add_filter: Adăugați filtru
     and_x_other_resources: plus alte %{count} recorduri
+    appearance:
+      accent_picker: Culoare accent
+      accents: Accent
+      auto: Automat
+      auto_tooltip: Automat (preferința sistemului)
+      dark: Întunecat
+      dark_tooltip: Mod întunecat
+      light: Deschis
+      light_tooltip: Mod deschis
+      neutrals: Temă
+      neutrals_picker: Temă neutre
+      schemes: Aspect
+      title: Aspect
     applied:
       few: aplicate
       one: aplicat
@@ -138,6 +151,7 @@ ro:
     show_content: Arată conținutul
     sign_out: Delogare
     skip_to_content: Sari la conținut
+    skip_to_sidebar: Sari la bara laterală
     sort_asc: Sortare crescătoare
     sort_desc: Sortare descrescătoare
     sort_reset: Resetare sortare

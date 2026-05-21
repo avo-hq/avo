@@ -5,6 +5,19 @@ fr:
     actions: Actions
     add_filter: Ajouter un filtre
     and_x_other_resources: et %{count} autres ressources
+    appearance:
+      accent_picker: Couleur d'accent
+      accents: Accent
+      auto: Automatique
+      auto_tooltip: Automatique (préférence système)
+      dark: Sombre
+      dark_tooltip: Mode sombre
+      light: Clair
+      light_tooltip: Mode clair
+      neutrals: Thème
+      neutrals_picker: Thème neutre
+      schemes: Apparence
+      title: Apparence
     applied:
       one: appliqué
       other: appliqués
@@ -136,6 +149,7 @@ fr:
     show_content: Afficher le contenu
     sign_out: Se déconnecter
     skip_to_content: Passer au contenu
+    skip_to_sidebar: Passer au menu latéral
     sort_asc: Trier par ordre croissant
     sort_desc: Trier par ordre décroissant
     sort_reset: Réinitialiser le tri

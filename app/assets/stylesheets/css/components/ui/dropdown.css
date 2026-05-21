@@ -30,6 +30,22 @@
   box-shadow: var(--box-shadow-card);
 }
 
+/* When the popover hosts a dropdown card, the card provides the visual
+   chrome — drop the surrounding background, border, and shadow so we don't
+   render two stacked cards. Mirrors the popover-menu equivalent. */
+.dropdown-popover:has(.dropdown-card) {
+  @apply bg-transparent;
+  box-shadow: none;
+}
+
+.dropdown-popover:has(.dropdown-card) .dropdown-menu {
+  @apply bg-transparent border-0 rounded-none overflow-visible;
+}
+
+.dropdown-popover:has(.dropdown-card) :is(.dropdown-menu__group, .dropdown-menu__list) {
+  @apply p-0;
+}
+
 /* ==========================================================================
    List & Items
 
@@ -45,7 +61,8 @@
 }
 
 .dropdown-menu__item,
-.dropdown-menu__list > :is(a, button) {
+.dropdown-menu__list a,
+.dropdown-menu__list button {
   @apply flex items-center w-full justify-start focus:outline-none gap-2 px-2 py-1.5 min-h-8 rounded-md border-none bg-transparent overflow-hidden text-ellipsis whitespace-nowrap text-content font-medium text-sm cursor-pointer leading-5;
 
   &.dropdown-menu__item--disabled {

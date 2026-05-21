@@ -2,10 +2,8 @@
 
 <%= content_tag :tr, **merged_tr_attributes do %>
   <% if @resource.record_selector %>
-    <td class="item-selector-cell w-10">
-      <div class="flex h-full justify-center">
-        <%= render Avo::RowSelectorComponent.new floating: false, index: @index, checked: @row_selector_checked %>
-      </div>
+    <td class="item-selector-cell w-10 align-middle text-center">
+      <%= render Avo::RowSelectorComponent.new floating: false, index: @index, checked: @row_selector_checked %>
     </td>
   <% end %>
 

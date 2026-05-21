@@ -1,5 +1,17 @@
-:root {
-  --top-navbar-height: 4rem;
+@theme {
+  --top-navbar-height: 3.5rem;
+
+  --navbar-bg: var(--color-avo-neutral-900);
+  --navbar-notch-radius: 1rem;
+  --navbar-notch-color: var(--navbar-bg);
+
+  --border-color: var(--color-tertiary);
+}
+
+@layer theme {
+  .dark {
+    --border-color: var(--color-background);
+  }
 }
 
 .skip-to-content {
@@ -24,47 +36,44 @@
   height: var(--top-navbar-height);
 }
 
-/* The sidebar width stays the same regardless of the sidebar open state. */
-/* The content width and margin offset changes based on the sidebar open state and the :lg breakpoint. */
-.main {
+/* Layout variables live on the outermost sidebar host so they cascade to both
+   the top-navbar and .main (which are siblings, not parent/child).
+   --content-width is intentionally relative to .main's content box (which is
+   already offset by --sidebar-offset-size via padding), so centering via
+   mx-auto happens inside the area to the right of the sidebar — not the page. */
+[data-controller~="sidebar"] {
   --sidebar-width: --spacing(64);
   --sidebar-offset-size: 0rem;
-  --content-width: calc(100% - var(--sidebar-offset-size) - var(--spacing) * 2);
+  --content-width: calc(100% - var(--spacing));
+}
 
-  @media (min-width: theme(--breakpoint-lg)) {
-    &.sidebar-open {
-      --sidebar-offset-size: var(--sidebar-width);
-    }
+@media (min-width: theme(--breakpoint-lg)) {
+  [data-controller~="sidebar"][data-sidebar-open-value="true"] {
+    --sidebar-offset-size: var(--sidebar-width);
   }
+}
 
-  @apply mt-(--top-navbar-height);
-
-  .main-content-area {
-    @apply w-(--content-width) ms-1 flex flex-1 flex-col z-50 fixed rounded-2xl bg-primary shadow-content py-2 lg:py-4 px-2 lg:px-4 h-full;
-
-    transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
-
-    height: calc(100dvh - var(--spacing) - var(--top-navbar-height));
-
-    .scrollable-wrapper {
-      @apply overflow-y-auto h-full flex-1 flex flex-col;
-      @apply px-0.5; /* add some space for the view type toggle buttons to not be cut off by the overflow. this might be needed to be handled differently with a wrapper inside the scrolling area */
-      @apply pt-1; /* add some space for the button focus ring to not be cut off by the overflow */
-    }
-    .avo-container {
-      @apply flex flex-1 flex-col justify-between;
-    }
+[data-controller~="sidebar"][data-sidebar-open-value="false"] {
+  .main-content {
+    @apply ms-0;
   }
+}
 
-  &.sidebar-open {
-    /* Add padding to the main area to allow for the sidebar to expand. */
-    .main-content-area {
-      @media (min-width: theme(--breakpoint-lg)) {
-        margin-inline-start: calc(var(--sidebar-width) + var(--spacing));
-        width: var(--content-width);
-      }
-    }
-  }
+.main {
+  padding-top: var(--top-navbar-height);
+  padding-inline-start: calc(var(--sidebar-offset-size) - var(--spacing));
+  transition: padding 0.1s ease-in-out;
+}
+
+.main-content {
+  @apply w-(--content-width) flex flex-col bg-primary py-2 lg:py-4 px-2 lg:px-4 border-s border-(--border-color) ms-1;
+  transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
+  min-height: calc(100dvh - var(--top-navbar-height) - var(--spacing));
+}
+
+
+.main-content__container {
+  @apply flex flex-1 flex-col px-2;
 }
 
 .container-large {
@@ -80,7 +89,130 @@
 }
 
 .top-navbar {
-  @apply z-100 fixed w-full flex shrink-0 items-center px-4 lg:px-2 space-x-4 rtl:space-x-reverse lg:space-x-0;
+  @apply z-100 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
+
+  /* Three-region grid: start | center | end. start/end share remaining space
+     equally (1fr each) so the center column (search) stays visually anchored
+     to the navbar's midpoint regardless of breadcrumb length. */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding-inline: 0.75rem;
+
+  background-color: var(--navbar-bg);
+
+  > * {
+    @apply pointer-events-auto;
+  }
+
+  .breadcrumbs__container {
+    @apply flex-nowrap overflow-x-auto;
+  }
+
+  /* Inverted arches at the top corners of the content area — a square just
+     below the navbar painted with the notch color, with a quarter-circle cut
+     out of one bottom corner. The cut reveals the content beneath, so the
+     content looks like it has a rounded top corner without actually applying
+     border-radius to it (which would clip its scroll). */
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    width: var(--navbar-notch-radius);
+    height: var(--navbar-notch-radius);
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: radial-gradient(
+      circle var(--navbar-notch-radius) at 100% 100%,
+      transparent 99%,
+      var(--navbar-notch-color) 100%
+    );
+  }
+
+  &::after {
+    right: 0;
+    background: radial-gradient(
+      circle var(--navbar-notch-radius) at 0% 100%,
+      transparent 99%,
+      var(--navbar-notch-color) 100%
+    );
+  }
+}
+
+.top-navbar__start {
+  @apply flex items-center gap-3 min-w-0 h-full;
+}
+
+.top-navbar__logo {
+  @apply shrink-0;
+
+  height: calc(var(--top-navbar-height) - --spacing(6));
+}
+
+.top-navbar__center {
+  @apply flex items-center justify-center min-w-0;
+
+  /* Search input is rendered against the dark navbar in both light/dark
+     themes, so it uses primitive neutral tokens that are stable across modes
+     — matching the breadcrumbs and sidebar-toggle treatment. */
+  .search-input__input {
+    background-color: var(--color-avo-neutral-800);
+    border-color: var(--color-avo-neutral-700);
+    color: var(--color-avo-neutral-50);
+
+    &::placeholder {
+      color: var(--color-avo-neutral-400);
+    }
+  }
+
+  .search-input__prefix,
+  .search-input__suffix {
+    color: var(--color-avo-neutral-400);
+  }
+
+  .search-input__suffix kbd {
+    background-color: var(--color-avo-neutral-700);
+    border-color: var(--color-avo-neutral-600);
+    color: var(--color-avo-neutral-200);
+    box-shadow: none;
+  }
+
+  /* On mobile, collapse the navbar search to just the input + search icon —
+     hide the keyboard shortcut suffix and drop the reserved end-padding so it
+     stays compact next to the logo. */
+  @media (width < theme(--breakpoint-sm)) {
+    .search-input__suffix {
+      display: none;
+    }
+
+    .search-input__input.search-input__input--with-shortcut,
+    .search-input__input.search-input__input--with-two-key-shortcut {
+      padding-inline-end: calc(
+        var(--input-icon-offset) +
+        var(--input-icon-gap)
+      );
+    }
+  }
+}
+
+.top-navbar__end {
+  @apply flex items-center justify-end gap-4 min-w-0 h-full;
+}
+
+/* Links inside the always-dark navbar use primitive neutral tokens so they
+   stay readable in both light and dark mode — matching the search input and
+   sidebar toggle treatment. */
+.top-navbar a {
+  color: var(--color-avo-neutral-300);
+
+  &:hover {
+    color: var(--color-avo-neutral-50);
+  }
 }
 
 /* Sidebar toggle: choose icon via navbar variables; visibility driven by data attribute */
@@ -100,13 +232,30 @@ button[data-sidebar-state="closed"] .sidebar-toggle-icon--closed {
   @apply inline-flex;
 }
 
-/* Default hidden state - LTR: sidebar slides in from left */
-.avo-sidebar {
-  @apply fixed z-60 top-0 flex-1 border-e border-tertiary lg:border-none mt-(--top-navbar-height) h-[calc(100dvh-var(--top-navbar-height))] bg-background lg:bg-transparent w-(--sidebar-width);
+/* The toggle sits on the dark top-navbar, so it uses primitive neutral tokens
+   that are stable across light/dark — matching the breadcrumbs treatment. */
+button[data-sidebar-toggle-icon] {
+  --btn-text-color: var(--color-avo-neutral-300);
 
-  transform: translateX(-100%);
-  transition: transform 0.1s ease;
+  &:hover {
+    --btn-text-color: var(--color-avo-neutral-50);
+    background-color: var(--color-avo-neutral-800);
+  }
 }
+
+/* Default hidden state - LTR: sidebar slides in from left.
+   Sidebar starts below the navbar (matching .main's padding-top), so the
+   navbar is uninterrupted across the full viewport width. */
+.avo-sidebar {
+  @apply fixed z-50 start-0 flex-1 border-e border-tertiary lg:border-none bg-background lg:bg-transparent w-(--sidebar-width) dark:bg-primary;
+
+
+  top: var(--top-navbar-height);
+  height: calc(100dvh - var(--top-navbar-height));
+  transform: translateX(-100%);
+  transition: transform 0.1s ease-in-out;
+}
+
 
 /* RTL: sidebar slides in from right when hidden */
 html[dir="rtl"] .avo-sidebar {

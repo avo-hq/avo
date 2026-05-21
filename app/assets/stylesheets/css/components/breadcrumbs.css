@@ -1,5 +1,41 @@
 .breadcrumbs {
-  @apply w-full;
+  @apply sticky z-40 w-full bg-primary mb-4;
+  /* top: calc(var(--top-navbar-height) + var(--spacing) * 4); */
+  top: calc(var(--top-navbar-height) + var(--spacing) * 2);
+  margin-top: calc(var(--spacing) * -2 + 1px);
+
+  /* Fake background so the content scrolling underneath the breadcrumbs doesn't look like it's bleeding through */
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(0.5rem);
+    transform: translateY(-100%);
+    background: var(--color-primary);
+    pointer-events: none;
+  }
+}
+
+/* Soft fade strip just below the sticky breadcrumbs — eases the seam between
+   the breadcrumb bar and the content scrolling underneath. */
+.breadcrumbs::after {
+  content: "";
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(100%);
+  height: --spacing(4);
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary),
+    color-mix(in oklab, var(--color-primary), transparent 100%)
+  );
+  pointer-events: none;
 }
 
 .breadcrumbs__container {
@@ -11,10 +47,10 @@
 }
 
 .breadcrumb-element {
-  @apply inline-flex items-center gap-2 font-medium leading-6 text-sm rounded-lg px-2 py-0.5 text-content-secondary;
+  @apply inline-flex items-center gap-2 font-medium leading-6 text-sm rounded-lg  px-1 py-0.5 text-content-secondary;
 
   &:first-child {
-    @apply ps-0;
+    @apply -ms-1;
   }
 }
 
@@ -42,6 +78,10 @@
   }
 
   &:hover {
-    @apply bg-secondary;
+    @apply bg-tertiary;
+
+    .breadcrumb-element__text {
+      @apply text-content;
+    }
   }
 }

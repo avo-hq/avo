@@ -5,7 +5,7 @@ module Avo
     class LocationField < BaseField
       def initialize(id, **args, &block)
         hide_on :index
-        super(id, **args, &block)
+        super
 
         # You can pass it an array of db columns [:latitude, :longitude]
         @stored_as = args[:stored_as]
@@ -14,11 +14,13 @@ module Avo
       def render_map(params)
         return "—" if !value_present?
 
-        render_static_map = params[:action] == "preview" || @args[:static]
-
-        Avo::Current.view_context.send render_static_map ? :static_map : :js_map,
+        Avo::Current.view_context.send static_map?(params) ? :static_map : :js_map,
           [{latitude: value[0], longitude: value[1]}],
-           **default_mapkick_options(render_static_map)
+           **default_mapkick_options(static_map?(params))
+      end
+
+      def static_map?(params)
+        params[:action] == "preview" || @args[:static]
       end
 
       def default_mapkick_options(render_static_map)

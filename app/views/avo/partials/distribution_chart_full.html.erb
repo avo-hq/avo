@@ -18,7 +18,7 @@
 
   <% panel.with_card do %>
     <div class="distribution-chart__body">
-      <%= pie_chart @values_summary, id: "chart-full-#{@field_id}", legend: false, height: "360px", colors: Avo.configuration.branding.chart_colors %>
+      <%= pie_chart @values_summary, id: "chart-full-#{@field_id}", legend: false, height: "360px", colors: Avo.configuration.appearance.chart_colors %>
     </div>
   <% end %>
 

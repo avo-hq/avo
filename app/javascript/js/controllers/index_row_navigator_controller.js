@@ -4,11 +4,18 @@
  * Enables keyboard-driven navigation and hotkeys on table rows.
  *
  * FEATURES:
- * - Arrow keys (↑↓) to cycle through rows with visual focus indicator
+ * - Tab into the table (or press Shift+T) to focus it; then ↑/↓ navigate rows
+ * - j / k focus the table AND advance one row (Gmail/GitHub-style power shortcut)
  * - Enter key to navigate to the focused row's detail page
  * - Space bar to toggle row selection checkbox
- * - Escape to clear focus (or deselect all if no row is focused)
+ * - Escape clears row focus, then blurs the table on a second press
  * - Row hotkeys: when a row is focused, hotkeys work for that row's controls
+ *
+ * FOCUS MODEL:
+ * The <table> is focusable (tabindex=0, role=grid). Arrow keys / Enter / Space
+ * are only handled when document.activeElement is inside the table — this lets
+ * keyboard users scroll the page freely when the table isn't focused.
+ * `aria-activedescendant` on the table points to the currently focused row.
  *
  * ROW HOTKEY HANDLING:
  * The @github/hotkey library scans data-hotkey attributes on page load.
@@ -29,13 +36,19 @@ import { Controller } from '@hotwired/stimulus'
 const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 
 export default class extends Controller {
+  static targets = ['table']
+
   connect() {
     this.currentIndex = -1
     this.hotkeysEnabled = window.Avo?.configuration?.hotkeys?.enabled !== false
     this.handleKeydown = this.handleKeydown.bind(this)
     this.handleDropdownOpen = this.handleDropdownOpen.bind(this)
+    this.handleAdvanceRequest = this.handleAdvanceRequest.bind(this)
+    this.handleTableBlur = this.handleTableBlur.bind(this)
+
     document.addEventListener('keydown', this.handleKeydown)
     document.addEventListener('dropdown-menu:open', this.handleDropdownOpen)
+    document.addEventListener('avo:advance-resource-table', this.handleAdvanceRequest)
 
     // Remove data-hotkey from row controls before @github/hotkey library scans
     // Store the original values so we can restore them for the focused row only
@@ -52,10 +65,37 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener('keydown', this.handleKeydown)
     document.removeEventListener('dropdown-menu:open', this.handleDropdownOpen)
+    document.removeEventListener('avo:advance-resource-table', this.handleAdvanceRequest)
+  }
+
+  tableTargetConnected(table) {
+    table.addEventListener('blur', this.handleTableBlur)
+    // Turbo frame refreshes swap the <table>; reset stale row index from the old DOM.
+    this.currentIndex = -1
+  }
+
+  tableTargetDisconnected(table) {
+    table.removeEventListener('blur', this.handleTableBlur)
   }
 
   handleDropdownOpen() {
-    const rows = Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
+    const rows = this.rows()
+    if (rows.length) this.clearFocus(rows)
+  }
+
+  // Fired by global hotkeys (j / k): focus the table AND advance one row.
+  handleAdvanceRequest(event) {
+    if (!this.hasTableTarget) return
+    const direction = event.detail?.direction === 'previous' ? 'previous' : 'next'
+    const rows = this.rows()
+    if (!rows.length) return
+
+    this.tableTarget.focus({ preventScroll: true })
+    this.moveFocus(rows, direction)
+  }
+
+  handleTableBlur() {
+    const rows = this.rows()
     if (rows.length) this.clearFocus(rows)
   }
 
@@ -66,8 +106,12 @@ export default class extends Controller {
     if (event.target.closest(TYPING_SELECTOR)) return
     if (event.repeat && (event.key === 'Enter' || event.key === 'Escape' || event.key === ' ')) return
 
-    const rows = Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
+    const rows = this.rows()
     if (!rows.length) return
+
+    // All navigation keys require the table to have focus. This frees ↑/↓ for
+    // browser scrolling when the user hasn't engaged the table.
+    if (!this.tableHasFocus()) return
 
     // Check for row hotkeys when a row is focused (only when hotkeys are enabled)
     if (this.hotkeysEnabled && this.currentIndex !== -1) {
@@ -89,7 +133,8 @@ export default class extends Controller {
         return
       }
 
-      // No keyboard-focused row — clear checkbox selection if any
+      // No keyboard-focused row: try clearing checkbox selection first; otherwise
+      // blur the table so the user lands back on the body.
       const selectAllController = this.application.getControllerForElementAndIdentifier(
         this.element.querySelector('[data-controller~="item-select-all"]'),
         'item-select-all',
@@ -99,8 +144,13 @@ export default class extends Controller {
         if (selected.length > 0) {
           event.preventDefault()
           selectAllController.deselectAll()
+
+          return
         }
       }
+
+      event.preventDefault()
+      this.tableTarget.blur()
 
       return
     }
@@ -125,7 +175,11 @@ export default class extends Controller {
 
     // ArrowDown / ArrowUp
     event.preventDefault()
-    if (event.key === 'ArrowDown') {
+    this.moveFocus(rows, event.key === 'ArrowDown' ? 'next' : 'previous')
+  }
+
+  moveFocus(rows, direction) {
+    if (direction === 'next') {
       this.currentIndex = this.currentIndex < rows.length - 1 ? this.currentIndex + 1 : 0
     } else {
       this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : rows.length - 1
@@ -133,7 +187,26 @@ export default class extends Controller {
 
     rows.forEach((r, i) => r.classList.toggle('is-keyboard-focused', i === this.currentIndex))
     rows[this.currentIndex].scrollIntoView({ block: 'nearest' })
+    this.syncActiveDescendant(rows[this.currentIndex])
     if (this.hotkeysEnabled) this.syncRowHotkeys(rows)
+  }
+
+  rows() {
+    return Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
+  }
+
+  tableHasFocus() {
+    if (!this.hasTableTarget) return false
+    return this.tableTarget === document.activeElement || this.tableTarget.contains(document.activeElement)
+  }
+
+  syncActiveDescendant(row) {
+    if (!this.hasTableTarget) return
+    if (row?.id) {
+      this.tableTarget.setAttribute('aria-activedescendant', row.id)
+    } else {
+      this.tableTarget.removeAttribute('aria-activedescendant')
+    }
   }
 
   normalizeCurrentIndex(rowsLength) {
@@ -178,6 +251,7 @@ export default class extends Controller {
   clearFocus(rows) {
     rows.forEach((r) => r.classList.remove('is-keyboard-focused'))
     this.currentIndex = -1
+    if (this.hasTableTarget) this.tableTarget.removeAttribute('aria-activedescendant')
     // Clear all hotkeys when focus is cleared
     rows.forEach((row) => {
       row.querySelectorAll('[data-hotkey-original]').forEach((control) => {

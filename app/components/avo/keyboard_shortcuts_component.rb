@@ -42,19 +42,33 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         ]
       ),
       build_section(
+        "Appearance",
+        [
+          shortcut(action: "Cycle color scheme (auto / light / dark)", keys: ["Shift", "M"]),
+          shortcut(action: "Cycle neutral theme", keys: ["Shift", "N"]),
+          shortcut(action: "Cycle accent color", keys: ["Shift", "A"])
+        ]
+      ),
+      build_section(
         "Index view",
         [
           shortcut(action: "Focus search", keys: ["/"]),
           shortcut(action: "Create new record", keys: ["C"]),
           shortcut(action: "Open actions", keys: ["A"]),
+          shortcut(action: "Focus table", keys: ["Shift", "T"]),
           shortcut(
-            action: "Navigate rows / actions",
+            action: "Focus table and move to next / previous row",
+            any_of: [["J"], ["K"]],
+            keys_aria_label: "J or K"
+          ),
+          shortcut(
+            action: "Navigate rows (when table is focused)",
             any_of: [["↑"], ["↓"]],
             keys_aria_label: "Up arrow or down arrow"
           ),
           shortcut(action: "Open record", keys: ["↵"]),
           shortcut(action: "Select / deselect row", keys: ["Space"]),
-          shortcut(action: "Deselect rows", keys: ["Esc"]),
+          shortcut(action: "Clear row focus / deselect rows", keys: ["Esc"]),
           shortcut(action: "Table view", keys: ["V", "T"]),
           shortcut(action: "Grid view", keys: ["V", "G"]),
           shortcut(action: "Map view", keys: ["V", "M"])

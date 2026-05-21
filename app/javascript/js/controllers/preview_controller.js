@@ -12,7 +12,7 @@ export default class extends Controller {
     this.tippyInstance = tippy(vm.context.element, {
       content: "loading...",
       allowHTML: true,
-      theme: 'basic',
+      theme: 'preview',
       maxWidth: 550,
       async onShow(instance) {
         const response = await fetch(vm.urlValue)

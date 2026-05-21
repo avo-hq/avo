@@ -37,5 +37,5 @@ def expect_sidebar_closed
 end
 
 def toggle_menu
-  find("[data-action='click->sidebar#toggleSidebar']").click
+  find("[data-action='click->sidebar#toggleSidebarForViewport']").click
 end
