@@ -348,8 +348,8 @@ module Avo
     def click_row_action(record, control:)
       row = find("[data-record-id='#{record.to_param}']")
 
-      if row.has_css?(".grid-card__actions-row .button--bare", wait: 0)
-        row.find(".grid-card__actions-row .button--bare").click
+      if row.has_css?(".grid-card__actions-row button[popovertarget]", wait: 0)
+        row.find(".grid-card__actions-row button[popovertarget]").click
       end
 
       find("a[data-control='#{control}'][data-resource-id='#{record.to_param}']").click
