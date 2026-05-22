@@ -11,7 +11,7 @@
   <% elsif as_text? %>
     <div class="discreet-information__text">
       <%= helpers.svg @icon, class: "discreet-information__icon" if @icon.present? %>
-      <%= @text %>
+      <span><%= @text %></span>
     </div>
   <% elsif as_badge? %>
     <div class="discreet-information__badge">
@@ -24,7 +24,7 @@
     <div class="discreet-information__key-value">
       <div class="discreet-information__key"><%= @key %></div>
 
-      <div class="discreet-information__text">
+      <div class="discreet-information__value">
         <%= @value %>
       </div>
     </div>

@@ -7,14 +7,14 @@
 }
 
 .discreet-information__text {
-  @apply inline px-2;
+  @apply inline-flex items-center gap-1;
 }
 
 .discreet-information__badge {
   @apply inline-flex rounded-md items-center font-semibold gap-1 py-1 px-1 bg-linear-to-b from-primary/85 to-primary/85 bg-foreground text-foreground;
 
   .discreet-information__icon {
-    @apply text-foreground me-1 size-3;
+    @apply text-foreground size-3;
   }
 }
 
@@ -23,7 +23,11 @@
 }
 
 .discreet-information__key {
-  @apply rounded-sm py-0.5 px-2 font-normal bg-linear-to-b  to-avo-neutral-200 from-foreground/6 to-black/4 bg-secondary;
+  @apply rounded-sm py-0.5 px-1 font-normal bg-linear-to-b  to-avo-neutral-200 from-foreground/6 to-black/4 bg-secondary;
+}
+
+.discreet-information__value {
+  @apply inline-flex items-center px-1;
 }
 
 .discreet-information--as-key-value,
@@ -39,7 +43,7 @@
   @apply rounded-md;
 
   .discreet-information__text {
-    @apply px-1;
+    @apply px-2;
   }
 }
 

@@ -47,6 +47,22 @@ class Avo::Resources::Project < Avo::BaseResource
       visible: true
     },
     {
+      text: -> { "Simple text (2) #{record.id}" },
+      as: :text,
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "tabler/outline/external-link" },
+      url: -> { main_app.root_url },
+      visible: true
+    },
+    {
+      text: -> { "Simple text (3) #{record.id}" },
+      as: :text,
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "tabler/outline/external-link" },
+      url: -> { main_app.root_url },
+      visible: true
+    },
+    {
       text: "Test",
       as: :badge,
       visible: false
