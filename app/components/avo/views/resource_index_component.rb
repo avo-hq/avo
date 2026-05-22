@@ -127,21 +127,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @resource.authorization.authorize_action("search", raise_exception: false)
   end
 
-  def render_dynamic_filters_button
-    return unless show_dynamic_filters_button?
-
-    a_button size: :md,
-      color: :primary,
-      icon: "tabler/outline/filter",
-      data: {
-        controller: "avo-filters",
-        action: "click->avo-filters#toggleFiltersArea",
-        avo_filters_dynamic_filters_component_id_value: dynamic_filters_component_id
-      } do
-      Avo::DynamicFilters.configuration.button_label
-    end
-  end
-
   def scopes_list
     Avo::Advanced::Scopes::ListComponent.new(
       scopes: @scopes,
@@ -211,12 +196,6 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @resource.available_view_types.count > 1
   end
 
-  # Generate a unique component id for the current component.
-  # This is used to identify the component in the DOM.
-  def dynamic_filters_component_id
-    @dynamic_filters_component_id ||= "dynamic_filters_component_id_#{SecureRandom.hex(3)}"
-  end
-
   def reloadable?
     field&.reloadable?
   end
@@ -242,13 +221,5 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def has_resources?
     @resources.present?
-  end
-
-  def show_dynamic_filters_button?
-    Avo.avo_dynamic_filters_installed? &&
-      @resource.has_filters? &&
-      has_resources? &&
-      !field&.hide_filter_button &&
-      !Avo::DynamicFilters.configuration.always_expanded
   end
 end

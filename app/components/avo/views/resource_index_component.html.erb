@@ -95,12 +95,6 @@
                 </div>
 
                 <div class="flex items-center justify-between space-x-3 rtl:space-x-reverse justify-self-end xs:justify-end">
-                  <% if show_dynamic_filters_button? %>
-                    <div class="index-missing-resources:hidden">
-                      <%= render_dynamic_filters_button %>
-                    </div>
-                  <% end %>
-
                   <% unless field&.hide_filter_button %>
                     <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record, parent_resource: @parent_resource %>
                   <% end %>
@@ -110,7 +104,7 @@
               </div>
 
               <% if has_dynamic_filters? %>
-                <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
+                <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, parent_record: @parent_record, parent_resource: @parent_resource %>
               <% end %>
             </div>
           </div>

@@ -185,13 +185,6 @@ Avo.configure do |config|
   }
 end
 
-if defined?(Avo::DynamicFilters)
-  Avo::DynamicFilters.configure do |config|
-    config.button_label = "Advanced filters"
-    config.always_expanded = true
-  end
-end
-
 if defined?(Avo::MediaLibrary)
   Avo::MediaLibrary.configure do |config|
     config.visible = -> { Avo::Current.user.is_developer? }
