@@ -73,7 +73,7 @@ app_root do
     # If the snapshot is missing or stale, the rake task prints an actionable error
     # pointing at `bin/rails app:db:fast_seed:rebuild`.
     run! "bin/rails app:db:fast_seed"
-    run! "RAILS_ENV=test bin/rails db:schema:load"
+    run! "RAILS_ENV=test bin/rails db:create db:schema:load"
   else
     header "Preparing the database"
     run! "bin/rails db:setup"
