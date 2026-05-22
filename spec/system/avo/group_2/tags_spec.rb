@@ -170,7 +170,7 @@ RSpec.describe "Tags", type: :system do
 
       expect(page).to have_text "FL #{users[0].first_name} #{users[0].last_name}"
       expect(page).to have_text "FL #{users[1].first_name} #{users[1].last_name}"
-
+    ensure
       Avo::Resources::Course.restore_items_from_backup
     end
   end
@@ -181,7 +181,7 @@ RSpec.describe "Tags", type: :system do
     let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
     let(:tags_input) { field_value_slot.find("span[contenteditable]") }
 
-    it "fetches the labels" do
+    before do
       Avo::Resources::Course.with_temporary_items do
         field :name
         field :skills,
@@ -196,7 +196,13 @@ RSpec.describe "Tags", type: :system do
             end
           }
       end
+    end
 
+    after do
+      Avo::Resources::Course.restore_items_from_backup
+    end
+
+    it "fetches the labels" do
       visit avo.resources_courses_path
 
       expect(page).to have_text "#{users[0].first_name} #{users[0].last_name}"
@@ -230,8 +236,6 @@ RSpec.describe "Tags", type: :system do
       save
 
       expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
-
-      Avo::Resources::Course.restore_items_from_backup
     end
   end
 
@@ -260,7 +264,7 @@ RSpec.describe "Tags", type: :system do
       projects.each do |project|
         expect(page).to have_text(project.stage)
       end
-
+    ensure
       Avo::Resources::Project.restore_items_from_backup
     end
 
@@ -284,7 +288,7 @@ RSpec.describe "Tags", type: :system do
       expect(page).not_to have_text("a_c2")
 
       expect(page).to have_text(projects.first.stage)
-
+    ensure
       Avo::Resources::Project.restore_items_from_backup
     end
 
@@ -318,7 +322,7 @@ RSpec.describe "Tags", type: :system do
       wait_for_path_to_be(path: avo.resources_project_path(projects.first))
 
       expect(page).to have_text(projects.first.stage)
-
+    ensure
       Avo::Resources::Project.restore_items_from_backup
     end
   end

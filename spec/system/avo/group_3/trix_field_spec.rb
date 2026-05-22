@@ -93,7 +93,7 @@ RSpec.describe "TrixField", type: :system do
 
           expect(page).not_to have_link("More content", href: "javascript:void(0);")
           expect(page).not_to have_link("Less content", href: "javascript:void(0);")
-
+        ensure
           Avo::Resources::Post.restore_items_from_backup
         end
       end
@@ -142,7 +142,7 @@ RSpec.describe "TrixField", type: :system do
 
         expect(page).to have_selector(".trix-content")
         expect(page).to have_text(body)
-
+      ensure
         Avo::Resources::Post.restore_items_from_backup
       end
     end
@@ -158,7 +158,7 @@ RSpec.describe "TrixField", type: :system do
 
         expect(page).to have_selector(".trix-content")
         expect(page).to have_text(body)
-
+      ensure
         Avo::Resources::Post.restore_items_from_backup
       end
     end
