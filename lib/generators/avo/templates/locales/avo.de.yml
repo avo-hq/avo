@@ -7,7 +7,7 @@ de:
     and_x_other_resources: und %{count} weitere Ressourcen
     applied: angewendet
     are_you_sure: Sind Sie sicher?
-    are_you_sure_detach_item: Sind Sie sicher, dass Sie dieses %{item} abhängen möchten?
+    are_you_sure_detach_item: Möchten Sie diesen Datensatz vom Typ %{item} wirklich abhängen?
     are_you_sure_you_want_to_run_this_option: Sind Sie sicher, dass Sie diese Aktion ausführen möchten?
     attach: Anhängen
     attach_and_attach_another: Anhängen und noch eins anhängen
@@ -26,7 +26,7 @@ de:
     close_modal: Modal schließen
     confirm: Bestätigen
     copy: Kopieren
-    create_new_item: Neues %{item} erstellen
+    create_new_item: "%{item} hinzufügen"
     created_at_timestamp: Erstellt am %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -70,7 +70,7 @@ de:
     more_content: Mehr Inhalt
     more_records_available: Es sind weitere Datensätze verfügbar.
     nested:
-      add_new_item: Neues %{item} hinzufügen
+      add_new_item: "%{item} hinzufügen"
     new: neu
     next_page: Nächste Seite
     no_cancel: Nein, abbrechen
