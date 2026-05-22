@@ -38,13 +38,19 @@ const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 export default class extends Controller {
   static targets = ['table']
 
-  connect() {
-    this.currentIndex = -1
-    this.hotkeysEnabled = window.Avo?.configuration?.hotkeys?.enabled !== false
+  initialize() {
+    // Bind here, not in connect(). Stimulus fires tableTargetConnected() BEFORE
+    // connect(), so binding in connect() would register the unbound prototype
+    // method as the blur listener.
     this.handleKeydown = this.handleKeydown.bind(this)
     this.handleDropdownOpen = this.handleDropdownOpen.bind(this)
     this.handleAdvanceRequest = this.handleAdvanceRequest.bind(this)
     this.handleTableBlur = this.handleTableBlur.bind(this)
+  }
+
+  connect() {
+    this.currentIndex = -1
+    this.hotkeysEnabled = window.Avo?.configuration?.hotkeys?.enabled !== false
 
     document.addEventListener('keydown', this.handleKeydown)
     document.addEventListener('dropdown-menu:open', this.handleDropdownOpen)
