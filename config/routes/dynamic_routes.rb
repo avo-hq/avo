@@ -20,6 +20,7 @@ sorted_resources.each do |resource|
         path: resource.route_path,
         controller: resource.controller_path do
         get :search, on: :collection
+        get :association_search, on: :collection
 
         member do
           get :preview

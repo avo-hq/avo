@@ -85,13 +85,6 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @field.target_resource.to_s == params[:via_resource_class].to_s
   end
 
-  def model_keys
-    @field.types.map do |type|
-      resource = Avo.resource_manager.get_resource_by_model_class(type.to_s)
-      [type.to_s, resource.model_key]
-    end.to_h
-  end
-
   def reload_data
     {
       controller: "reload-belongs-to-field",

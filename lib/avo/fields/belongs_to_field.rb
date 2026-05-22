@@ -73,9 +73,9 @@ module Avo
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
 
-        super(id, **args, &block)
+        super
 
-        @searchable = args[:searchable] == true
+        @searchable = (args[:searchable] == true || args[:searchable].is_a?(Hash)) ? args[:searchable] : false
         @polymorphic_as = args[:polymorphic_as]
         @types = args[:types]
         @relation_method = attribute_id.to_s.parameterize.underscore
@@ -84,7 +84,7 @@ module Avo
         @polymorphic_help = args[:polymorphic_help]
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
-        @can_create = args[:can_create].nil? ? true : args[:can_create]
+        @can_create = args[:can_create].nil? || args[:can_create]
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
         @link_to_child_resource = args[:link_to_child_resource]
       end

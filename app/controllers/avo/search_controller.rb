@@ -166,7 +166,8 @@ module Avo
       highlighted_title = highlight(title&.to_s, CGI.escapeHTML(params[:q] || ""))
 
       record_path = if resource.link_to_child_resource
-        Avo.resource_manager.get_resource_by_model_class(record.class).new(record: record).record_path
+        child_resource = Avo.resource_manager.get_resource_by_model_class(record.class)
+        child_resource ? child_resource.new(record: record).record_path : resource.record_path
       else
         resource.record_path
       end

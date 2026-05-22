@@ -15,7 +15,7 @@
       data: {
         component_name:,
         controller: "resource-search",
-        "resource-search-debounce-value": "500",
+        "resource-search-debounce-value": Avo.configuration.search_debounce.to_s,
         "resource-search-url-value": request.fullpath
       },
     ) do |panel| %>
