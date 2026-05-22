@@ -28,17 +28,23 @@ IDENTIFIER="io.avohq.$WORKSPACE_NAME"
 echo "Setting up Conductor development workspace: $WORKSPACE_NAME"
 echo "App identifier: $IDENTIFIER"
 
-echo "Running bundle install..."
-bundle install
-
-echo "Running yarn install..."
-yarn install
-
-# echo "setting up database..."
+# Persist the per-workspace DB names to spec/dummy/.env FIRST so dotenv-rails
+# loads them on `bin/setup` below (and on every later `bin/dev` / `bin/rails` run).
 DATABASE_NAME="avo_dummy_$CONDUCTOR_WORKSPACE_NAME"
 TEST_DATABASE_NAME="${DATABASE_NAME}_test"
-DATABASE_URL=postgresql://localhost/$DATABASE_NAME bin/rails db:setup
-RAILS_ENV=test DATABASE_URL=postgresql://localhost/$TEST_DATABASE_NAME bin/rails db:setup
+ENV_FILE="$REPO_DIR/spec/dummy/.env"
+mkdir -p "$(dirname "$ENV_FILE")"
+touch "$ENV_FILE"
+# Strip any prior DB-name lines we wrote on a previous setup run.
+sed -i.bak '/^DATABASE_NAME=/d; /^TEST_DATABASE_NAME=/d' "$ENV_FILE" && rm -f "$ENV_FILE.bak"
+printf '\n# Set by conductor-setup -- one DB per workspace.\nDATABASE_NAME=%s\nTEST_DATABASE_NAME=%s\n' \
+    "$DATABASE_NAME" "$TEST_DATABASE_NAME" >> "$ENV_FILE"
+echo "✓ Wrote DATABASE_NAME=$DATABASE_NAME to spec/dummy/.env"
+
+# Hand off to the unified setup. `--fast` restores the dummy DB from the
+# committed snapshot at spec/dummy/db/fast_seed/ (sub-seconds vs ~60-120s for
+# db:setup). No-Docker is the default; pass `--docker` if you want Docker Postgres.
+./bin/setup --fast
 
 # Generate custom icon with ImageMagick if available
 if command -v magick >/dev/null 2>&1; then

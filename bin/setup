@@ -1,0 +1,91 @@
+#!/usr/bin/env ruby
+
+# Usage: bin/setup [options]
+#
+# One-stop setup for the Avo gem. Configures the upstream git remote, installs
+# gems and yarn deps, copies env templates, optionally brings up Docker Postgres,
+# prepares the dummy app's databases, and builds front-end assets.
+#
+# Options:
+#   --fast          Restore the dummy DB from the committed snapshot at
+#                   spec/dummy/db/fast_seed/ (sub-seconds). Skips ~60-120s of
+#                   db:seed work, including ~25 picsum.photos HTTP fetches.
+#   --docker        Use Docker Compose for Postgres. Default is to use your
+#                   local Postgres (no Docker).
+#   -h, --help      Print this message.
+
+require_relative "helpers"
+require "optparse"
+
+options = {fast: false, docker: false}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: bin/setup [--fast] [--docker]"
+  opts.on("--fast", "Restore from the committed fast-seed snapshot instead of running db:seed")
+  opts.on("--docker", "Use Docker Compose for Postgres (default: local Postgres)")
+  opts.on("-h", "--help", "Show this message") do
+    File.foreach(__FILE__)
+      .take_while { |l| l.start_with?("#") || l.strip.empty? }
+      .drop_while { |l| !l.start_with?("# Usage:") }
+      .each { |l| puts l.sub(/\A# ?/, "") }
+    exit
+  end
+end.parse!(into: options)
+
+app_root do
+  use_docker = options[:docker]
+
+  header "Configuring git"
+  target_upstream = "https://github.com/avo-hq/avo.git"
+  current_upstream = `git config --get remote.upstream.url`.chomp
+  if current_upstream.nil? || current_upstream.empty?
+    puts "Adding new remote 'upstream' to #{target_upstream}"
+    run! "git remote add upstream #{target_upstream}"
+  elsif current_upstream != target_upstream
+    puts "Updating existing remote 'upstream' to #{target_upstream}"
+    run! "git remote set-url upstream #{target_upstream}"
+  else
+    puts "Remote 'upstream' already points to #{target_upstream}, no change"
+  end
+
+  header "Installing gems"
+  run! "bundle install"
+
+  header "Installing Yarn packages"
+  run! "yarn"
+  run! "(cd spec/dummy; yarn)"
+
+  unless File.exist?("spec/dummy/.env.test")
+    run! "cp spec/dummy/.env.test.sample spec/dummy/.env.test"
+  end
+
+  if use_docker
+    header "Creating the Docker volume"
+    run! "docker volume create --name=avo-db-data"
+
+    header "Creating and running the Docker image"
+    run! "docker-compose up -d"
+  end
+
+  if options[:fast]
+    header "Preparing the database (fast path)"
+    # Restores from spec/dummy/db/fast_seed/ (committed snapshot).
+    # If the snapshot is missing or stale, the rake task prints an actionable error
+    # pointing at `bin/rails app:db:fast_seed:rebuild`.
+    run! "bin/rails app:db:fast_seed"
+    run! "RAILS_ENV=test bin/rails db:schema:load"
+  else
+    header "Preparing the database"
+    run! "bin/rails db:setup"
+  end
+
+  header "Building assets"
+  run! "yarn build:js"
+  run! "yarn build:custom-js"
+  run! "yarn build:css"
+
+  if use_docker
+    header "Stopping the Docker image"
+    run! "docker-compose stop"
+  end
+end
