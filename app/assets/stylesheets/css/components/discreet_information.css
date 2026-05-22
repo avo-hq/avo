@@ -7,14 +7,14 @@
 }
 
 .discreet-information__text {
-  @apply inline-flex items-center space-x-1;
+  @apply inline-flex items-center gap-1;
 }
 
 .discreet-information__badge {
   @apply inline-flex rounded-md items-center font-semibold gap-1 py-1 px-1 bg-linear-to-b from-primary/85 to-primary/85 bg-foreground text-foreground;
 
   .discreet-information__icon {
-    @apply text-foreground me-1 size-3;
+    @apply text-foreground size-3;
   }
 }
 
@@ -43,7 +43,7 @@
   @apply rounded-md;
 
   .discreet-information__text {
-    @apply px-1;
+    @apply px-2;
   }
 }
 
