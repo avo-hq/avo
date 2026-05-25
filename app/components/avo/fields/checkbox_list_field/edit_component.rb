@@ -49,8 +49,8 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
     {
       controller: "checkbox-list-field",
       action: "input->checkbox-list-field#filter keydown->checkbox-list-field#handleKeydown",
-      checkbox_list_field_hidden_selections_one_value: t("avo.checkbox_list.hidden_selections.one", count: 1),
-      checkbox_list_field_hidden_selections_other_value: t("avo.checkbox_list.hidden_selections.other", count: "%{count}")
+      checkbox_list_field_hidden_selections_one_value: t("avo.checkbox_list.hidden_selections.one"),
+      checkbox_list_field_hidden_selections_other_value: t("avo.checkbox_list.hidden_selections.other")
     }
   end
 
