@@ -25,7 +25,8 @@ export default class extends Controller {
       this.setHidden(row, !isVisible)
 
       if (checkbox) {
-        checkbox.disabled = !isVisible || checkbox.defaultDisabled
+        // Keep checked rows submittable when hidden by search; disabled inputs are omitted from POST.
+        checkbox.disabled = checkbox.defaultDisabled
 
         if (!isVisible && checkbox.checked) hiddenCheckedCount += 1
       }

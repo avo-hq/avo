@@ -114,7 +114,7 @@ RSpec.describe "CheckboxListField", type: :system do
     expect_checked_members alpha
   end
 
-  it "does not submit checked options hidden by inline search" do
+  it "submits checked options hidden by inline search" do
     alpha = create :user, first_name: "Alpha", last_name: "One"
     create :user, first_name: "Beta", last_name: "Two"
     team = create :team, team_members: [alpha]
@@ -128,7 +128,7 @@ RSpec.describe "CheckboxListField", type: :system do
 
     save
 
-    expect(team.reload.team_member_ids).to eq []
+    expect(team.reload.team_member_ids).to eq [alpha.id]
   end
 
   it "shows how many checked options are hidden by the current search" do
