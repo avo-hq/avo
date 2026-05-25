@@ -28,7 +28,10 @@
           name: input_name,
           checked: checked?(builder.value),
           disabled: disabled?,
-          input_classes: @classes,
+          input_classes: class_names(
+            "size-4",
+            @field.get_html(:classes, view: view, element: :input)
+          ),
           input_data: @data,
           input_html_id: input_html_id(builder.value),
           input_style: @style

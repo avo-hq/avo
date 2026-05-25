@@ -4,7 +4,6 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
   def initialize(...)
     super
 
-    @classes = "size-4 #{@field.get_html(:classes, view: view, element: :input)}"
     @data = @field.get_html(:data, view: view, element: :input)
     @style = @field.get_html(:style, view: view, element: :input)
     @form_scope = @form.object_name
@@ -21,7 +20,7 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
   end
 
   def input_html_id(id)
-    "#{sanitize_id(@form_scope)}_#{sanitize_id(@field.id)}_#{sanitize_id(id)}"
+    field_dom_id(id)
   end
 
   def inline_search?
@@ -29,11 +28,11 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
   end
 
   def checkbox_list_id
-    @checkbox_list_id ||= "#{sanitize_id(@form_scope)}_#{sanitize_id(@field.id)}_checkbox_list"
+    @checkbox_list_id ||= field_dom_id(:checkbox_list)
   end
 
   def inline_search_input_id
-    @inline_search_input_id ||= "#{sanitize_id(@form_scope)}_#{sanitize_id(@field.id)}_inline_search"
+    @inline_search_input_id ||= field_dom_id(:inline_search)
   end
 
   def checkbox_list_field_data
@@ -75,6 +74,14 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
 
   def normalize_values(values)
     Array(values).filter_map { |value| @field.normalize_id(value) }
+  end
+
+  def field_dom_id(*parts)
+    ([field_dom_id_prefix] + parts.map { |part| sanitize_id(part) }).join("_")
+  end
+
+  def field_dom_id_prefix
+    @field_dom_id_prefix ||= [@form_scope, @field.id].map { |part| sanitize_id(part) }.join("_")
   end
 
   def sanitize_id(value)
