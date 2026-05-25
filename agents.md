@@ -65,3 +65,29 @@ When toggling the visibility of some html elements, use the `hidden` HTML attrib
 ## Ruby on Rails
 
 Whenever possible use the `partial:` keyword when rendering partials unless needed otherwise.
+
+## Logging in (development & testing)
+
+The dummy app at `spec/dummy` uses Devise for authentication. Avo is mounted at `/admin` and is wrapped in an `authenticate :user, ->(user) { user.is_admin? }` block, so you need an admin user to reach it.
+
+#### Development (browser / `bin/dev`)
+
+1. Seed the database to create the admin user:
+
+   ```sh
+   cd spec/dummy && rails db:seed
+   ```
+
+2. Visit `/users/sign_in` and log in with:
+   - Email: `hi@avohq.io`
+   - Password: `secreto` (override with the `AVO_ADMIN_PASSWORD` env var)
+
+3. The admin panel lives at `/admin`.
+
+#### Testing (RSpec + Capybara/Cuprite)
+
+Do not drive the sign-in form in tests. Use the Devise/Warden test helpers instead:
+
+- System & feature specs: `login_as(admin, scope: :user)` (Warden test mode is enabled in `spec/support/devise.rb`).
+- Controller specs: `sign_in admin` (Devise's `ControllerHelpers`).
+- Get an admin user from the shared context: `include_context "has_admin_user"`, which exposes `admin` via `create(:user, roles: {admin: true})`. The mix-in `TestHelpers::DisableAuthentication` (`spec/support/controller_routes.rb`) wires this up automatically.
