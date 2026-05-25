@@ -35,8 +35,8 @@ ro:
     cancel: Anulează
     checkbox_list:
       hidden_selections:
-        one: 1 opțiune selectată ascunsă de căutare
         few: "%{count} opțiuni selectate ascunse de căutare"
+        one: 1 opțiune selectată ascunsă de căutare
         other: "%{count} de opțiuni selectate ascunse de căutare"
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune
