@@ -12,11 +12,16 @@ en:
       auto_tooltip: Auto (system preference)
       dark: Dark
       dark_tooltip: Dark mode
+      hide: Hide
       light: Light
       light_tooltip: Light mode
       neutrals: Theme
       neutrals_picker: Select neutral color
       schemes: Appearance
+      shortcut_badges: Shortcut badges
+      shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
+      shortcut_badges_show_tooltip: Show keyboard shortcut badges
+      show: Show
       title: Appearance
     applied: applied
     are_you_sure: Are you sure?

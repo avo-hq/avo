@@ -23,29 +23,6 @@
   }
 }
 
-.filters-card__header {
-  @apply flex w-full items-center justify-between px-3 py-1.5 font-medium;
-}
-
-.filters-card__title {
-  @apply text-sm text-content;
-}
-
-.filters-card__reset {
-  @apply text-[10px] leading-3.5 font-medium transition-colors text-content-secondary;
-
-  &:hover {
-    @apply text-content;
-  }
-}
-
-.filters-card__reset--disabled {
-  @apply text-content-secondary cursor-not-allowed;
-  &:hover {
-    @apply text-content-secondary;
-  }
-}
-
 .filters-card__content {
   @apply p-1 overflow-hidden;
 }

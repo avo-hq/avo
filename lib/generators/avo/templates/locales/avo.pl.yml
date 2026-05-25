@@ -12,11 +12,16 @@ pl:
       auto_tooltip: Automatycznie (preferencje systemowe)
       dark: Ciemny
       dark_tooltip: Tryb ciemny
+      hide: Ukryj
       light: Jasny
       light_tooltip: Tryb jasny
       neutrals: Motyw
       neutrals_picker: Motyw neutralny
       schemes: Wygląd
+      shortcut_badges: Ikony skrótów
+      shortcut_badges_hide_tooltip: Ukryj ikony skrótów klawiaturowych
+      shortcut_badges_show_tooltip: Pokaż ikony skrótów klawiaturowych
+      show: Pokaż
       title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?

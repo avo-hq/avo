@@ -115,6 +115,12 @@
   @apply bg-primary text-content shadow-sm;
 }
 
+/* Shortcut badge buttons - active state mirrors body.hotkeys-hide-badges. */
+body:not(.hotkeys-hide-badges) .color-scheme-switcher__scheme-button[data-key-badges="show"],
+body.hotkeys-hide-badges .color-scheme-switcher__scheme-button[data-key-badges="hide"] {
+  @apply bg-primary text-content shadow-sm;
+}
+
 .color-scheme-switcher__scheme-label {
   @apply text-xs font-medium leading-none;
 }

@@ -12,11 +12,16 @@ nl:
       auto_tooltip: Automatisch (systeemvoorkeur)
       dark: Donker
       dark_tooltip: Donkermodus
+      hide: Verbergen
       light: Licht
       light_tooltip: Lichtmodus
       neutrals: Thema
       neutrals_picker: Neutrale thema
       schemes: Uiterlijk
+      shortcut_badges: Sneltoets badges
+      shortcut_badges_hide_tooltip: Verberg sneltoets badges
+      shortcut_badges_show_tooltip: Toon sneltoets badges
+      show: Toon
       title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?

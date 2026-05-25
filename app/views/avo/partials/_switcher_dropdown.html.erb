@@ -98,6 +98,32 @@
               </div>
             </div>
           <% end %>
+
+          <% if show_key_badges_toggle %>
+            <div class="color-scheme-switcher__section">
+              <div class="color-scheme-switcher__section-label"><%= t("avo.appearance.shortcut_badges") %></div>
+              <div class="color-scheme-switcher__scheme-row">
+                <button type="button"
+                        data-action="click->appearance#setKeyBadges"
+                        data-key-badges="show"
+                        data-tippy="tooltip"
+                        class="color-scheme-switcher__scheme-button"
+                        title="<%= t("avo.appearance.shortcut_badges_show_tooltip") %>">
+                  <%= svg "tabler/outline/eye", class: "color-scheme-switcher__icon" %>
+                  <span class="color-scheme-switcher__scheme-label"><%= t("avo.appearance.show") %></span>
+                </button>
+                <button type="button"
+                        data-action="click->appearance#setKeyBadges"
+                        data-key-badges="hide"
+                        data-tippy="tooltip"
+                        class="color-scheme-switcher__scheme-button"
+                        title="<%= t("avo.appearance.shortcut_badges_hide_tooltip") %>">
+                  <%= svg "tabler/outline/eye-off", class: "color-scheme-switcher__icon" %>
+                  <span class="color-scheme-switcher__scheme-label"><%= t("avo.appearance.hide") %></span>
+                </button>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

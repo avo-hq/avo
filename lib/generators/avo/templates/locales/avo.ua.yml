@@ -12,11 +12,16 @@ ua:
       auto_tooltip: Авто (системні налаштування)
       dark: Темний
       dark_tooltip: Темний режим
+      hide: Сховати
       light: Світлий
       light_tooltip: Світлий режим
       neutrals: Тема
       neutrals_picker: Нейтральна тема
       schemes: Зовнішній вигляд
+      shortcut_badges: Значки ярликів
+      shortcut_badges_hide_tooltip: Сховати значки клавіатурних ярликів
+      shortcut_badges_show_tooltip: Показати значки клавіатурних ярликів
+      show: Показати
       title: Зовнішній вигляд
     applied: застосовано
     are_you_sure: Ви впевнені?

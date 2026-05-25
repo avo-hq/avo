@@ -2,12 +2,14 @@
 <% show_neutral_picker = !appearance.neutral_locked? %>
 <% show_accent_picker = !appearance.accent_locked? %>
 <% show_scheme_picker = !appearance.scheme_locked? %>
-<% return unless show_neutral_picker || show_accent_picker || show_scheme_picker %>
+<% show_key_badges_toggle = Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges] %>
+<% return unless show_neutral_picker || show_accent_picker || show_scheme_picker || show_key_badges_toggle %>
 <% locals = {
      appearance: appearance,
      show_neutral_picker: show_neutral_picker,
      show_accent_picker: show_accent_picker,
      show_scheme_picker: show_scheme_picker,
+     show_key_badges_toggle: show_key_badges_toggle,
      active_neutral: current_neutral,
      active_accent: current_accent
    } %>

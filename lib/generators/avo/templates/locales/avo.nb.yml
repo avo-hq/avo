@@ -12,11 +12,16 @@ nb:
       auto_tooltip: Auto (systempreferanse)
       dark: Mørk
       dark_tooltip: Mørk modus
+      hide: Skjul
       light: Lys
       light_tooltip: Lys modus
       neutrals: Tema
       neutrals_picker: Nøytralt tema
       schemes: Utseende
+      shortcut_badges: Snarveisknapper
+      shortcut_badges_hide_tooltip: Skjul snarveisknapper
+      shortcut_badges_show_tooltip: Vis snarveisknapper
+      show: Vis
       title: Utseende
     applied:
       one: applied

@@ -12,11 +12,16 @@ ro:
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
       dark_tooltip: Mod întunecat
+      hide: Ascunde
       light: Deschis
       light_tooltip: Mod deschis
       neutrals: Temă
       neutrals_picker: Temă neutre
       schemes: Aspect
+      shortcut_badges: Insignele scurtăturilor
+      shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură
+      shortcut_badges_show_tooltip: Afișează insignele scurtăturilor de tastatură
+      show: Afișează
       title: Aspect
     applied:
       few: aplicate

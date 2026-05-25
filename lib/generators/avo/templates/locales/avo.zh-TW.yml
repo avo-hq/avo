@@ -12,11 +12,16 @@ zh-TW:
       auto_tooltip: 自動（系統偏好）
       dark: 深色
       dark_tooltip: 深色模式
+      hide: 隱藏
       light: 淺色
       light_tooltip: 淺色模式
       neutrals: 主題
       neutrals_picker: 中性色主題
       schemes: 外觀
+      shortcut_badges: 快捷鍵徽章
+      shortcut_badges_hide_tooltip: 隱藏鍵盤快捷鍵徽章
+      shortcut_badges_show_tooltip: 顯示鍵盤快捷鍵徽章
+      show: 顯示
       title: 外觀
     applied: 已應用
     are_you_sure: 您確定嗎？

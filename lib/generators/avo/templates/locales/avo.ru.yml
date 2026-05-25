@@ -12,11 +12,16 @@ ru:
       auto_tooltip: Авто (системные предпочтения)
       dark: Темный
       dark_tooltip: Темный режим
+      hide: Скрыть
       light: Светлый
       light_tooltip: Светлый режим
       neutrals: Тема
       neutrals_picker: Нейтральная тема
       schemes: Внешний вид
+      shortcut_badges: Значки ярлыков
+      shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
+      shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
+      show: Показать
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?
