@@ -23,9 +23,14 @@ RSpec.describe Avo::Fields::CheckboxListField::EditComponent, type: :component d
 
   def render_component(field:, params: {})
     component = described_class.new(field:, resource:, form:)
-    allow(component).to receive(:params).and_return(ActionController::Parameters.new(params))
 
-    render_inline(component)
+    if params.present?
+      with_request_url("/?#{Rack::Utils.build_nested_query(params)}") do
+        render_inline(component)
+      end
+    else
+      render_inline(component)
+    end
   end
 
   it "labels the checkbox group with the field name" do
