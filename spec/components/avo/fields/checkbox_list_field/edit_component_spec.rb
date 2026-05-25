@@ -28,14 +28,13 @@ RSpec.describe Avo::Fields::CheckboxListField::EditComponent, type: :component d
     render_inline(component)
   end
 
-  it "labels the checkbox group with the field wrapper label" do
+  it "labels the checkbox group with the field name" do
     render_component(field: build_field(options: options))
 
     group = page.find(".checkbox-list")
-    label_id = group["aria-labelledby"]
 
     expect(group["role"]).to eq "group"
-    expect(page).to have_css("label##{label_id}", text: "Team members")
+    expect(group["aria-label"]).to eq "Team members"
   end
 
   it "renders rows unchecked with one hidden empty-array marker" do
@@ -60,6 +59,7 @@ RSpec.describe Avo::Fields::CheckboxListField::EditComponent, type: :component d
     input = page.find("input[type='search']#team_team_member_ids_inline_search")
     group = page.find(".checkbox-list")
 
+    expect(group["aria-label"]).to eq "Team members"
     expect(input["placeholder"]).to eq "Search"
     expect(input["name"]).to be_nil
     expect(input["aria-label"]).to eq "Search Team members"

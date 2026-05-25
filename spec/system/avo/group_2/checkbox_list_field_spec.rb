@@ -105,10 +105,9 @@ RSpec.describe "CheckboxListField", type: :system do
     visit "/admin/resources/teams/#{team.id}/edit"
 
     group = find(".checkbox-list")
-    label_id = group["aria-labelledby"]
 
     expect(group["role"]).to eq "group"
-    expect(page).to have_css("label##{label_id}", text: "Team members")
+    expect(group["aria-label"]).to eq "Team members"
 
     find("label.checkbox-list__row", text: alpha.name).click
 

@@ -1,4 +1,4 @@
-<%= field_wrapper(**field_wrapper_args.merge(label_id: field_label_id)) do %>
+<%= field_wrapper(**field_wrapper_args) do %>
   <%= tag.div class: "checkbox-list-field", data: checkbox_list_field_data do %>
     <% if inline_search? %>
       <%= tag.div class: "checkbox-list__search search-input" do %>
@@ -16,7 +16,7 @@
       <% end %>
     <% end %>
 
-    <%= tag.div id: checkbox_list_id, class: "checkbox-list", role: "group", aria: {labelledby: field_label_id} do %>
+    <%= tag.div id: checkbox_list_id, class: "checkbox-list", role: "group", aria: {label: @field.name} do %>
       <%= @form.collection_check_boxes(@field.id, @options, ->(option) { @field.option_id(option) }, ->(option) { @field.option_title(option) }) do |builder| %>
         <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
           id: @field.normalize_id(builder.value),

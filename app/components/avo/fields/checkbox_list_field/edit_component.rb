@@ -16,10 +16,6 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
     stored_ids.include? @field.normalize_id(id)
   end
 
-  def field_label_id
-    @field_label_id ||= "#{sanitize_id(@form_scope)}_#{sanitize_id(@field.id)}_label"
-  end
-
   def input_name
     @input_name ||= "#{@form_scope}[#{@field.id}][]"
   end

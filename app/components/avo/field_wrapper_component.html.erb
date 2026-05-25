@@ -8,9 +8,7 @@
     data: {slot: "label"} do %>
     <span class="self-center">
     <% if @form.present? %>
-      <%= @form.label label_for, label, id: @label_id %>
-    <% elsif @label_id.present? %>
-      <%= tag.span @field.name, id: @label_id %>
+      <%= @form.label label_for, label %>
     <% else %>
       <%= @field.name %>
     <% end %>
