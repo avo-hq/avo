@@ -38,10 +38,14 @@
         ) %>
       <% end %>
 
-      <% if inline_search? %>
-        <%= tag.div "No matching options", class: "checkbox-list__empty", hidden: true, data: {"checkbox-list-field-target": "empty"} %>
-      <% elsif @options.empty? %>
-        <%= tag.div "No options available", class: "checkbox-list__empty" %>
+      <% if @options.empty? %>
+        <%= tag.div class: "checkbox-list__empty" do %>
+          No options available
+        <% end %>
+      <% elsif inline_search? %>
+        <%= tag.div class: "checkbox-list__empty", hidden: true, data: {"checkbox-list-field-target": "empty"} do %>
+          No matching options
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
