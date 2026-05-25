@@ -251,6 +251,11 @@
   @apply flex w-full;
 }
 
+.sidebar-profile__dropdown {
+  @apply max-w-[60vw] sm:max-w-[40vw];
+  position-area: top span-left;
+}
+
 /* Menu rows inherit the dropdown row layout — override text size and,
    for sign-out, the danger color + hover. */
 .sidebar-profile__menu-item,
