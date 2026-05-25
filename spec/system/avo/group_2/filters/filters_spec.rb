@@ -26,6 +26,18 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_css(".button--disabled", text: "Reset filters")
     end
 
+    it "marks reset filters as disabled when no filters are applied" do
+      visit url
+      open_filters_menu
+
+      reset_link = find("a.button--disabled", text: "Reset filters")
+
+      expect(reset_link["aria-disabled"]).to eq("true")
+      expect(reset_link["tabindex"]).to eq("-1")
+      expect(reset_link["data-disabled"]).to eq("true")
+      expect(reset_link[:href]).to end_with("#")
+    end
+
     it "changes the query" do
       visit url
       open_filters_menu

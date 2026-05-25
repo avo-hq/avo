@@ -29,15 +29,18 @@
           </div>
         <% end %>
         <% card.with_footer do %>
-          <% path = @applied_filters.present? ? reset_path : "javascript:void(0);" %>
-          <%= a_link path,
+          <% reset_disabled = @applied_filters.blank? %>
+          <%= a_link(reset_disabled ? "#" : reset_path,
             style: :text,
             size: :sm,
             title: t('avo.reset_filters'),
-            data: {turbo_frame: params[:turbo_frame]},
-            class: class_names(
-              "w-full",
-              "button--disabled": !@applied_filters.present?) do %>
+            aria: {disabled: reset_disabled},
+            tabindex: (reset_disabled ? -1 : nil),
+            data: {
+              turbo_frame: params[:turbo_frame],
+              **(reset_disabled ? {disabled: true} : {})
+            },
+            class: class_names("w-full", "button--disabled": reset_disabled)) do %>
             <%= t('avo.reset_filters') %>
           <% end %>
         <% end %>

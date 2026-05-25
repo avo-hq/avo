@@ -15,7 +15,7 @@
     --btn-text-color: color-mix(in oklab, var(--btn-color-accent), var(--color-content) 20%);
 
     /* Base styles for all button types */
-    &:active:not(:disabled) {
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)):active {
       @apply translate-y-px;
     }
 
@@ -30,7 +30,7 @@
     &:disabled,
     &[disabled],
     &[data-disabled='true'] {
-      @apply opacity-60;
+      @apply opacity-60 pointer-events-none;
     }
 
     /* Default colors */
@@ -320,9 +320,11 @@
       }
     }
 
-    &.button--active,
-    &:active {
-      @apply bg-secondary;
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--active,
+      &:active {
+        @apply bg-secondary;
+      }
     }
 
     &.button--disabled,
