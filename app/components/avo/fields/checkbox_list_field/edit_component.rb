@@ -24,7 +24,15 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
   end
 
   def inline_search?
-    @inline_search && @options.any?
+    @inline_search && selectable_options.any?
+  end
+
+  def selectable_options
+    @selectable_options ||= @options.select { |option| !@field.option_hint?(option) }
+  end
+
+  def more_records_hint
+    @options.find { |option| @field.option_hint?(option) }
   end
 
   def checkbox_list_id
@@ -40,7 +48,9 @@ class Avo::Fields::CheckboxListField::EditComponent < Avo::Fields::EditComponent
 
     {
       controller: "checkbox-list-field",
-      action: "input->checkbox-list-field#filter keydown->checkbox-list-field#handleKeydown"
+      action: "input->checkbox-list-field#filter keydown->checkbox-list-field#handleKeydown",
+      checkbox_list_field_hidden_selections_one_value: t("avo.checkbox_list.hidden_selections.one", count: 1),
+      checkbox_list_field_hidden_selections_other_value: t("avo.checkbox_list.hidden_selections.other", count: "%{count}")
     }
   end
 

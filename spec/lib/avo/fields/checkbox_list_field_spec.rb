@@ -121,6 +121,17 @@ RSpec.describe Avo::Fields::CheckboxListField, type: :model do
       expect(field.option_description({description: "Details"})).to eq "Details"
       expect(field.option_description({"description" => "Details"})).to eq "Details"
     end
+
+    it "detects hint options and excludes them from selectable options" do
+      options = [
+        {id: 1, title: "Alpha"},
+        {title: "There are more records available.", hint: true}
+      ]
+      field = described_class.new(:addon_ids, options: options).hydrate(resource:, view:)
+
+      expect(field.option_hint?(options.last)).to be true
+      expect(field.selectable_options).to eq [options.first]
+    end
   end
 
   describe "initialization" do

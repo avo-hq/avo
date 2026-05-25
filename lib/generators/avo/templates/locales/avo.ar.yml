@@ -36,6 +36,10 @@ ar:
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
     cancel: إلغاء
+    checkbox_list:
+      hidden_selections:
+        one: 1 خيار محدد مخفي بواسطة البحث
+        other: "%{count} خيارات محددة مخفية بواسطة البحث"
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا
     choose_item: اختر %{item}

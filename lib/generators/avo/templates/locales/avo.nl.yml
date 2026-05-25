@@ -30,6 +30,10 @@ nl:
     attachment_destroyed: Bijlage verwijderd
     attachment_failed: Kon %{attachment_class} niet bijvoegen
     cancel: Annuleren
+    checkbox_list:
+      hidden_selections:
+        one: 1 geselecteerde optie verborgen door zoekopdracht
+        other: "%{count} geselecteerde opties verborgen door zoekopdracht"
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
     choose_item: Kies %{item}

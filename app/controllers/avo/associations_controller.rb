@@ -98,8 +98,10 @@ module Avo
       end
 
       perform_action_and_record_errors do
-        attachment_records.each do |attachment_record|
-          attach_record(association_name, attachment_record)
+        @record.transaction do
+          attachment_records.each do |attachment_record|
+            attach_record(association_name, attachment_record)
+          end
         end
       end
     end
@@ -332,6 +334,10 @@ module Avo
     def checkbox_list_options(query)
       query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
         checkbox_list_option(record)
+      end.tap do |options|
+        if options.size == Avo.configuration.associations_lookup_list_limit
+          options << {title: t("avo.more_records_available"), hint: true}
+        end
       end
     end
 

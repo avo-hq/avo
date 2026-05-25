@@ -50,6 +50,14 @@ module Avo
         option[:description] || option["description"]
       end
 
+      def option_hint?(option)
+        option[:hint] || option["hint"]
+      end
+
+      def selectable_options
+        options.reject { |option| option_hint?(option) }
+      end
+
       def inline_search?
         execute_context(@inline_search) == true
       end

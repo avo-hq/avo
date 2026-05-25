@@ -32,6 +32,10 @@ tr:
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
     cancel: İptal et
+    checkbox_list:
+      hidden_selections:
+        one: 1 seçilen seçenek arama tarafından gizlendi
+        other: "%{count} seçilen seçenek arama tarafından gizlendi"
     choose_a_country: Bir ülke seç
     choose_an_option: Bir seçenek seç
     choose_item: "%{item} seçin"

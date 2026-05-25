@@ -30,6 +30,10 @@ pl:
     attachment_destroyed: Załącznik usunięty
     attachment_failed: Nie udało się dołączyć %{attachment_class}
     cancel: Anuluj
+    checkbox_list:
+      hidden_selections:
+        one: 1 wybrana opcja ukryta przez wyszukiwanie
+        other: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
     choose_a_country: Wybierz kraj
     choose_an_option: Wybierz opcję
     choose_item: Wybierz %{item}

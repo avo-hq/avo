@@ -114,6 +114,47 @@ RSpec.describe "CheckboxListField", type: :system do
     expect_checked_members alpha
   end
 
+  it "does not submit checked options hidden by inline search" do
+    alpha = create :user, first_name: "Alpha", last_name: "One"
+    create :user, first_name: "Beta", last_name: "Two"
+    team = create :team, team_members: [alpha]
+
+    visit "/admin/resources/teams/#{team.id}/edit"
+
+    fill_in "team_team_member_ids_inline_search", with: "nomatch"
+
+    expect(page).to have_css(".checkbox-list__empty", text: "No matching options", visible: true)
+    expect(page).to have_css(".checkbox-list__hidden-selections", text: "1 selected option hidden by search", visible: true)
+
+    save
+
+    expect(team.reload.team_member_ids).to eq []
+  end
+
+  it "shows how many checked options are hidden by the current search" do
+    alpha = create :user, first_name: "Alpha", last_name: "One"
+    create :user, first_name: "Beta", last_name: "Two"
+    gamma = create :user, first_name: "Gamma", last_name: "Three"
+    team = create :team, team_members: [alpha, gamma]
+
+    visit "/admin/resources/teams/#{team.id}/edit"
+
+    fill_in "team_team_member_ids_inline_search", with: "nomatch"
+
+    expect(page).to have_css(".checkbox-list__hidden-selections", text: "2 selected options hidden by search", visible: true)
+
+    search_input = find_field("team_team_member_ids_inline_search")
+    page.execute_script(<<~JS, search_input[:id])
+      const input = document.getElementById(arguments[0])
+      input.value = ""
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    JS
+
+    expect(page).to have_css("label.checkbox-list__row", text: alpha.name, visible: true)
+    expect(page).to have_css("label.checkbox-list__row", text: gamma.name, visible: true)
+    expect(page).not_to have_css(".checkbox-list__hidden-selections", visible: true)
+  end
+
   it "filters options inline and moves through visible rows with arrow keys" do
     alpha = create :user, first_name: "Alpha", last_name: "One"
     beta = create :user, first_name: "Beta", last_name: "Two"

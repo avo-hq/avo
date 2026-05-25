@@ -32,6 +32,10 @@ fr:
     attachment_destroyed: Pièce jointe détruite
     attachment_failed: Échec de l'ajout de %{attachment_class}
     cancel: Annuler
+    checkbox_list:
+      hidden_selections:
+        one: 1 option sélectionnée cachée par la recherche
+        other: "%{count} options sélectionnées cachées par la recherche"
     choose_a_country: Sélectionnez un pays
     choose_an_option: Sélectionnez une option
     choose_item: Choisir %{item}

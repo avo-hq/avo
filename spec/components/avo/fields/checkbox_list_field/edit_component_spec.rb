@@ -81,6 +81,7 @@ RSpec.describe Avo::Fields::CheckboxListField::EditComponent, type: :component d
     expect(page).to have_css("[data-controller='checkbox-list-field']")
     expect(page).to have_css("[data-checkbox-list-field-target='row']", count: 3)
     expect(page).to have_css("[data-checkbox-list-field-target='empty'][hidden]", text: "No matching options", visible: false)
+    expect(page).to have_css("[data-checkbox-list-field-target='hiddenSelections'][hidden]", visible: false)
   end
 
   it "does not render inline search for empty options" do
@@ -166,5 +167,16 @@ RSpec.describe Avo::Fields::CheckboxListField::EditComponent, type: :component d
     expect(field).to receive(:options).once.and_return(options)
 
     render_component(field:)
+  end
+
+  it "renders a more records hint without a checkbox row" do
+    render_component(field: build_field(options: [
+      {id: 1, title: "Alpha"},
+      {title: "There are more records available.", hint: true}
+    ]))
+
+    expect(page).to have_css(".checkbox-list__row", count: 1)
+    expect(page).to have_css(".checkbox-list__hint", text: "There are more records available.")
+    expect(page).not_to have_css("input[type='checkbox'][value='There are more records available.']")
   end
 end

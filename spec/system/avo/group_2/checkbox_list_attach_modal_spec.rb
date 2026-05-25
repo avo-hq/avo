@@ -14,8 +14,8 @@ RSpec.describe "Checkbox list attach modal", type: :system do
     expect(page).to have_css(".checkbox-list__row", text: beta.name)
     expect(page).not_to have_select "fields_related_id"
 
-    check "fields_related_id_#{alpha.id}"
-    check "fields_related_id_#{beta.id}"
+    check "fields_related_id_#{alpha.to_param}"
+    check "fields_related_id_#{beta.to_param}"
 
     expect {
       click_button "Attach"
@@ -36,8 +36,8 @@ RSpec.describe "Checkbox list attach modal", type: :system do
     expect(page).to have_css(".checkbox-list__row", text: beta.name)
     expect(page).not_to have_select "fields_related_id"
 
-    check "fields_related_id_#{alpha.id}"
-    check "fields_related_id_#{beta.id}"
+    check "fields_related_id_#{alpha.to_param}"
+    check "fields_related_id_#{beta.to_param}"
 
     expect {
       click_button "Attach"
@@ -45,5 +45,25 @@ RSpec.describe "Checkbox list attach modal", type: :system do
     }.to change { user.reload.projects.count }.by 2
 
     expect(user.projects).to include alpha, beta
+  end
+
+  context "when associations options exceeds associations_lookup_list_limit" do
+    let!(:first_user) { User.order(:id).first }
+
+    before { Avo.configuration.associations_lookup_list_limit = 1 }
+    after { Avo.configuration.associations_lookup_list_limit = 1000 }
+
+    it "limits checkbox list options and shows a hint" do
+      create :user, first_name: "LimitAlpha", last_name: "One"
+      create :user, first_name: "LimitBeta", last_name: "Two"
+      team = create :team
+
+      visit "/admin/resources/teams/#{team.id}/team_members/new?view=show"
+
+      expect(page).to have_css(".checkbox-list__row", count: 1)
+      expect(page).to have_css(".checkbox-list__row", text: first_user.name)
+      expect(page).to have_css(".checkbox-list__hint", text: "There are more records available.")
+      expect(page).not_to have_select "fields_related_id"
+    end
   end
 end

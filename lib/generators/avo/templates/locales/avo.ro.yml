@@ -33,6 +33,10 @@ ro:
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
     cancel: Anulează
+    checkbox_list:
+      hidden_selections:
+        one: 1 opțiune selectată ascunsă de căutare
+        other: "%{count} opțiuni selectate ascunse de căutare"
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune
     choose_item: Alege %{item}

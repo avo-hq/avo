@@ -31,6 +31,10 @@ en:
     attachment_failed: Failed to attach %{attachment_class}
     cancel: Cancel
     choose_a_country: Choose a country
+    checkbox_list:
+      hidden_selections:
+        one: 1 selected option hidden by search
+        other: "%{count} selected options hidden by search"
     choose_an_option: Choose an option
     choose_item: Choose %{item}
     clear_value: Clear value

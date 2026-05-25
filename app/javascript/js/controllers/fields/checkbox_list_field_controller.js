@@ -4,24 +4,40 @@ import { toggleHidden } from '../../helpers/toggle_hidden'
 const CHECKBOX_SELECTOR = 'input[type="checkbox"]'
 
 export default class extends Controller {
-  static targets = ['input', 'row', 'empty']
+  static targets = ['input', 'row', 'empty', 'hiddenSelections']
+
+  static values = {
+    hiddenSelectionsOne: String,
+    hiddenSelectionsOther: String,
+  }
 
   filter(event) {
     if (event && event.target !== this.inputTarget) return
 
     const query = this.normalize(this.inputTarget.value)
     let visibleCount = 0
+    let hiddenCheckedCount = 0
 
     this.rowTargets.forEach((row) => {
       const isVisible = query.length === 0 || this.normalize(row.dataset.checkboxListFieldSearchText).includes(query)
+      const checkbox = row.querySelector(CHECKBOX_SELECTOR)
 
       this.setHidden(row, !isVisible)
+
+      if (checkbox) {
+        checkbox.disabled = !isVisible || checkbox.defaultDisabled
+
+        if (!isVisible && checkbox.checked) hiddenCheckedCount += 1
+      }
+
       if (isVisible) visibleCount += 1
     })
 
     if (this.hasEmptyTarget) {
       this.setHidden(this.emptyTarget, visibleCount > 0)
     }
+
+    this.updateHiddenSelections(hiddenCheckedCount)
   }
 
   handleKeydown(event) {
@@ -72,6 +88,31 @@ export default class extends Controller {
     if (element.hasAttribute('hidden') !== hidden) {
       toggleHidden(element)
     }
+  }
+
+  updateHiddenSelections(count) {
+    if (!this.hasHiddenSelectionsTarget) return
+
+    if (count === 0) {
+      this.setHidden(this.hiddenSelectionsTarget, true)
+      this.hiddenSelectionsTarget.textContent = ''
+      return
+    }
+
+    this.hiddenSelectionsTarget.textContent = this.hiddenSelectionsLabel(count)
+    this.setHidden(this.hiddenSelectionsTarget, false)
+  }
+
+  hiddenSelectionsLabel(count) {
+    if (count === 1 && this.hasHiddenSelectionsOneValue) {
+      return this.hiddenSelectionsOneValue
+    }
+
+    if (this.hasHiddenSelectionsOtherValue) {
+      return this.hiddenSelectionsOtherValue.replace('%{count}', count)
+    }
+
+    return `${count} selected options hidden by search`
   }
 
   normalize(value) {

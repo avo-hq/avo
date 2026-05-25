@@ -32,6 +32,10 @@ pt:
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
     cancel: Cancelar
+    checkbox_list:
+      hidden_selections:
+        one: 1 opção selecionada oculta pela pesquisa
+        other: "%{count} opções selecionadas ocultas pela pesquisa"
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção
     choose_item: Escolher %{item}

@@ -17,7 +17,7 @@
     <% end %>
 
     <%= tag.div id: checkbox_list_id, class: "checkbox-list", role: "group", aria: {label: @field.name} do %>
-      <%= @form.collection_check_boxes(@field.id, @options, ->(option) { @field.option_id(option) }, ->(option) { @field.option_title(option) }) do |builder| %>
+      <%= @form.collection_check_boxes(@field.id, selectable_options, ->(option) { @field.option_id(option) }, ->(option) { @field.option_title(option) }) do |builder| %>
         <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
           id: @field.normalize_id(builder.value),
           title: builder.text,
@@ -38,13 +38,21 @@
         ) %>
       <% end %>
 
-      <% if @options.empty? %>
+      <% if selectable_options.empty? %>
         <%= tag.div class: "checkbox-list__empty" do %>
           No options available
         <% end %>
       <% elsif inline_search? %>
         <%= tag.div class: "checkbox-list__empty", hidden: true, data: {"checkbox-list-field-target": "empty"} do %>
           No matching options
+        <% end %>
+
+        <%= tag.div class: "checkbox-list__hidden-selections", hidden: true, role: "status", data: {"checkbox-list-field-target": "hiddenSelections"} %>
+      <% end %>
+
+      <% if more_records_hint.present? %>
+        <%= tag.div class: "checkbox-list__hint", role: "status" do %>
+          <%= @field.option_title(more_records_hint) %>
         <% end %>
       <% end %>
     <% end %>
