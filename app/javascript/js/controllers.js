@@ -7,6 +7,7 @@ import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardFiltersController from './controllers/card_filters_controller'
+import CheckboxListFieldController from './controllers/fields/checkbox_list_field_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import AppearanceController from './controllers/appearance_controller'
@@ -127,6 +128,7 @@ application.register('search', SearchController)
 
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)
+application.register('checkbox-list-field', CheckboxListFieldController)
 application.register('code-field', CodeFieldController)
 application.register('date-field', DateFieldController)
 application.register('easy-mde', EasyMdeController)

@@ -12,6 +12,7 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   prop :form
   prop :full_width, default: false
   prop :label
+  prop :label_id
   prop :resource
   prop :stacked
   prop :style, default: ""

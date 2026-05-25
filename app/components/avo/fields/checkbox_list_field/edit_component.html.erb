@@ -1,0 +1,45 @@
+<%= field_wrapper(**field_wrapper_args.merge(label_id: field_label_id)) do %>
+  <%= tag.div class: "checkbox-list-field", data: checkbox_list_field_data do %>
+    <% if inline_search? %>
+      <%= tag.div class: "checkbox-list__search search-input" do %>
+        <%= tag.input(
+          type: "search",
+          id: inline_search_input_id,
+          placeholder: inline_search_label,
+          autocomplete: "off",
+          class: "input-field search-input__input checkbox-list__search-input",
+          data: {"checkbox-list-field-target": "input"},
+          aria: {label: inline_search_aria_label, controls: checkbox_list_id}
+        ) %>
+
+        <span class="search-input__prefix" aria-hidden="true"><%= helpers.svg "tabler/outline/search" %></span>
+      <% end %>
+    <% end %>
+
+    <%= tag.div id: checkbox_list_id, class: "checkbox-list", role: "group", aria: {labelledby: field_label_id} do %>
+      <%= @form.collection_check_boxes(@field.id, @options, ->(option) { @field.option_id(option) }, ->(option) { @field.option_title(option) }) do |builder| %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: @field.normalize_id(builder.value),
+          title: builder.text,
+          image_url: @field.option_image_url(builder.object),
+          image_format: @field.option_image_format(builder.object),
+          image_alt: @field.option_image_alt(builder.object),
+          description: @field.option_description(builder.object),
+          name: input_name,
+          checked: checked?(builder.value),
+          disabled: disabled?,
+          input_classes: @classes,
+          input_data: @data,
+          input_html_id: input_html_id(builder.value),
+          input_style: @style
+        ) %>
+      <% end %>
+
+      <% if inline_search? %>
+        <%= tag.div "No matching options", class: "checkbox-list__empty", hidden: true, data: {"checkbox-list-field-target": "empty"} %>
+      <% elsif @options.empty? %>
+        <%= tag.div "No options available", class: "checkbox-list__empty" %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

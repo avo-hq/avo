@@ -31,6 +31,15 @@
                   view: Avo::ViewInquirer.new(:new)
                 %>
               <% end %>
+            <% elsif @field.try(:attach_using_checkbox_list?) %>
+              <%= avo_edit_field :related_id,
+                as: :checkbox_list,
+                form: form,
+                name: @field.name.singularize,
+                options: @options,
+                inline_search: true,
+                stacked: true,
+                classes: "w-full" %>
             <% else %>
               <%= avo_edit_field :related_id,
                 as: :select,
