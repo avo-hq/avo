@@ -12,11 +12,16 @@ ja:
       auto_tooltip: 自動（システム設定）
       dark: ダーク
       dark_tooltip: ダークモード
+      hide: 非表示
       light: ライト
       light_tooltip: ライトモード
       neutrals: テーマ
       neutrals_picker: ニュートラルテーマ
       schemes: 外観
+      shortcut_badges: ショートカットバッジ
+      shortcut_badges_hide_tooltip: キーボードショートカットバッジを非表示
+      shortcut_badges_show_tooltip: キーボードショートカットバッジを表示
+      show: 表示
       title: 外観
     applied:
       one: applied

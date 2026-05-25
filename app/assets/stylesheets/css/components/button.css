@@ -15,7 +15,7 @@
     --btn-text-color: color-mix(in oklab, var(--btn-color-accent), var(--color-content) 20%);
 
     /* Base styles for all button types */
-    &:active:not(:disabled) {
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)):active {
       @apply translate-y-px;
     }
 
@@ -26,6 +26,12 @@
       box-shadow: var(--box-shadow-focus);
     }
 
+    &.button--disabled,
+    &:disabled,
+    &[disabled],
+    &[data-disabled='true'] {
+      @apply opacity-60 pointer-events-none;
+    }
 
     /* Default colors */
     --btn-color-accent: var(--color-avo-neutral-50);
@@ -193,9 +199,14 @@
     background: linear-gradient(180deg, var(--btn-color-accent-content) 0%, var(--btn-color-accent) 100%);
 
     &:not([class*="button--color-"]) {
-      &.button--hover,
-      &:hover {
-        background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 96%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 96%, var(--color-black)) 100%);
+      /* :where(:not(…)) filters disabled states out of hover without adding
+         specificity, so disabled buttons show no hover feedback while :active
+         and :disabled keep winning as before. */
+      &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+        &.button--hover,
+        &:hover {
+          background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 96%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 96%, var(--color-black)) 100%);
+        }
       }
     }
 
@@ -203,12 +214,14 @@
       inset 0px -1.4px 0px 0.1px var(--btn-color-accent-content),
       inset 0px 0.8px 0px 0.4px color-mix(in oklch, white 45%, transparent);
 
-    &.button--hover,
-    &:hover {
-      @apply text-(--btn-color-accent-foreground);
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--hover,
+      &:hover {
+        @apply text-(--btn-color-accent-foreground);
 
-      background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 90%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 90%, var(--color-black)) 100%), var(--color-primary);
-      box-shadow: 0 -1.4px 0 0.1px var(--btn-color-accent-content) inset, 0 0.8px 0 0.4px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
+        background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 90%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 90%, var(--color-black)) 100%), var(--color-primary);
+        box-shadow: 0 -1.4px 0 0.1px var(--btn-color-accent-content) inset, 0 0.8px 0 0.4px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
+      }
     }
 
     &.button--active,
@@ -221,7 +234,7 @@
     &:disabled,
     &[disabled],
     &[data-disabled='true'] {
-      @apply text-(--btn-color-accent-foreground) border-transparent;
+      @apply text-(--btn-color-accent-foreground) border-transparent ;
       box-shadow: none;
     }
   }
@@ -236,10 +249,12 @@
 
       --btn-box-shadow-color: color-mix(in oklab, var(--color-content), transparent 65%);
 
-      &.button--hover,
-      &:hover {
-        --btn-box-shadow-color: color-mix(in oklab, var(--color-content), transparent 55%);
-        @apply text-content bg-tertiary;
+      &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+        &.button--hover,
+        &:hover {
+          --btn-box-shadow-color: color-mix(in oklab, var(--color-content), transparent 55%);
+          @apply text-content bg-tertiary;
+        }
       }
 
       &.button--disabled,
@@ -256,12 +271,14 @@
     background: var(--color-primary);
     box-shadow: 0 -1.4px 0 0.1px var(--btn-box-shadow-color) inset, 0 0.8px 0 0.4px var(--color-primary) inset;
 
-    &.button--hover,
-    &:hover {
-      @apply text-(--btn-text-color);
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--hover,
+      &:hover {
+        @apply text-(--btn-text-color);
 
-      --btn-box-shadow-color: color-mix(in oklab, var(--btn-color-accent), transparent 55%);
-      background: color-mix(in oklab, var(--btn-color-accent), var(--color-primary) 85%);
+        --btn-box-shadow-color: color-mix(in oklab, var(--btn-color-accent), transparent 55%);
+        background: color-mix(in oklab, var(--btn-color-accent), var(--color-primary) 85%);
+      }
     }
 
     &.button--active:not(:disabled),
@@ -295,15 +312,19 @@
       --btn-color-accent-foreground: var(--color-white);
     }
 
-    &.button--hover,
-    &:hover {
-      background: color-mix(in oklab, var(--btn-color-accent), var(--color-primary) 85%);
-      @apply text-(--btn-text-color);
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--hover,
+      &:hover {
+        background: color-mix(in oklab, var(--btn-color-accent), var(--color-primary) 85%);
+        @apply text-(--btn-text-color);
+      }
     }
 
-    &.button--active,
-    &:active {
-      @apply bg-secondary;
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--active,
+      &:active {
+        @apply bg-secondary;
+      }
     }
 
     &.button--disabled,

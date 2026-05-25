@@ -12,11 +12,16 @@ de:
       auto_tooltip: Automatisch (Systemeinstellung)
       dark: Dunkel
       dark_tooltip: Dunkler Modus
+      hide: Ausblenden
       light: Hell
       light_tooltip: Heller Modus
       neutrals: Thema
       neutrals_picker: Neutrale Themen
       schemes: Erscheinungsbild
+      shortcut_badges: Verknüpfungssymbole
+      shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
+      shortcut_badges_show_tooltip: Tastenkombinationssymbole anzeigen
+      show: Anzeigen
       title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?

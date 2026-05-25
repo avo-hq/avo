@@ -12,11 +12,16 @@ it:
       auto_tooltip: Automatico (preferenza di sistema)
       dark: Scuro
       dark_tooltip: Modalità scura
+      hide: Nascondi
       light: Chiaro
       light_tooltip: Modalità chiara
       neutrals: Tema
       neutrals_picker: Tema neutro
       schemes: Aspetto
+      shortcut_badges: Badge di scorciatoia
+      shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera
+      shortcut_badges_show_tooltip: Mostra i badge delle scorciatoie da tastiera
+      show: Mostra
       title: Aspetto
     applied: applicato
     are_you_sure: Sei sicuro?

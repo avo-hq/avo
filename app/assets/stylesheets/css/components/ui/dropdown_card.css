@@ -9,10 +9,11 @@
   @apply overflow-hidden rounded-lg border border-tertiary bg-primary;
 }
 
+.dropdown-card__footer,
 .dropdown-card__header {
-  @apply flex w-full items-center justify-between px-2 py-1.5;
+  @apply flex w-full items-center px-2 py-1.5;
 }
 
 .dropdown-card__title {
-  @apply text-sm text-content;
+  @apply text-sm text-content font-medium text-content-secondary;
 }

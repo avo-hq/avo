@@ -73,7 +73,9 @@ export default class extends Controller {
     this.handleToggleShortcut = (event) => {
       if (event.repeat || event.defaultPrevented) return
       if (event.target?.closest('input, textarea, select, [contenteditable]')) return
-      if (!(event.metaKey || event.ctrlKey) || event.altKey || event.key !== '\\') return
+      // Shift+\ — use event.code so layout differences (Shift+\ → "|" on US) don't matter.
+      if (!event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return
+      if (event.code !== 'Backslash') return
 
       event.preventDefault()
       this.toggleSidebarForViewport()

@@ -12,11 +12,16 @@ es:
       auto_tooltip: Automático (preferencia del sistema)
       dark: Oscuro
       dark_tooltip: Modo oscuro
+      hide: Ocultar
       light: Claro
       light_tooltip: Modo claro
       neutrals: Tema
       neutrals_picker: Tema neutro
       schemes: Apariencia
+      shortcut_badges: Insignias de atajo
+      shortcut_badges_hide_tooltip: Ocultar insignias de atajo de teclado
+      shortcut_badges_show_tooltip: Mostrar insignias de atajo de teclado
+      show: Mostrar
       title: Apariencia
     applied:
       one: aplicado

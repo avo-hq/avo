@@ -155,7 +155,7 @@
 }
 
 .top-navbar__center {
-  @apply flex items-center justify-center min-w-0;
+  @apply flex items-center justify-center min-w-0 sm:w-80 lg:w-96 xl:w-120;
 
   /* Search input is rendered against the dark navbar in both light/dark
      themes, so it uses primitive neutral tokens that are stable across modes

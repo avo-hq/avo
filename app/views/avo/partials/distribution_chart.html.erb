@@ -25,18 +25,18 @@
     <% end %>
 
     <% card.with_footer do %>
-      <div class="distribution-chart__footer">
-        <%= a_link distribution_chart_full_path(
-          resource_name: params[:resource_name],
-          field_id: params[:field_id],
-          **request.query_parameters.except(:resource_name, :field_id)
-        ),
-          style: :text,
-          icon: "tabler/outline/external-link",
-          data: { turbo_frame: "_top" } do %>
-          View full summary
-        <% end %>
-      </div>
+      <%= a_link distribution_chart_full_path(
+        resource_name: params[:resource_name],
+        field_id: params[:field_id],
+        **request.query_parameters.except(:resource_name, :field_id)
+      ),
+        style: :text,
+        size: :sm,
+        class: "w-full",
+        icon: "tabler/outline/external-link",
+        data: { turbo_frame: "_top" } do %>
+        View full summary
+      <% end %>
     <% end %>
   <% end %>
 </turbo-frame>

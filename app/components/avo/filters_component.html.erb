@@ -1,7 +1,7 @@
 <div data-controller="toggle" data-toggle-exemption-containers-value='[".flatpickr-calendar"]' data-component-name="<%= self.class.to_s.underscore %>">
   <div class="filters__bar">
     <%= a_button class: 'focus:outline-hidden',
-      style: :primary,
+      style: :outline,
       icon: "tabler/outline/filter",
       title: t('avo.click_to_reveal_filters'),
       'data-button': 'resource-filters',
@@ -17,16 +17,7 @@
       hidden: params[:keep_filters_panel_open] != '1' do %>
       <%= render Avo::UI::DropdownCardComponent.new do |card| %>
         <% card.with_header do %>
-          <div class="dropdown-card__header">
-            <span class="dropdown-card__title"><%= t('avo.filters') %></span>
-            <% if @applied_filters.present? %>
-              <%= link_to t('avo.reset_filters'), reset_path, data: {turbo_frame: params[:turbo_frame]}, class: 'filters-card__reset filters-card__reset--active' %>
-            <% else %>
-              <span class="filters-card__reset filters-card__reset--disabled">
-                <%= t('avo.reset_filters') %>
-              </span>
-            <% end %>
-          </div>
+          <span class="dropdown-card__title"><%= t('avo.filters') %></span>
         <% end %>
         <% card.with_body do %>
           <div class="filters-card__content">
@@ -36,6 +27,22 @@
               <% end %>
             </div>
           </div>
+        <% end %>
+        <% card.with_footer do %>
+          <% reset_disabled = @applied_filters.blank? %>
+          <%= a_link(reset_disabled ? "#" : reset_path,
+            style: :text,
+            size: :sm,
+            title: t('avo.reset_filters'),
+            aria: {disabled: reset_disabled},
+            tabindex: (reset_disabled ? -1 : nil),
+            data: {
+              turbo_frame: params[:turbo_frame],
+              **(reset_disabled ? {disabled: true} : {})
+            },
+            class: class_names("w-full", "button--disabled": reset_disabled)) do %>
+            <%= t('avo.reset_filters') %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>

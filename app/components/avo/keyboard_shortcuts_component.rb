@@ -7,8 +7,8 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         "Navigation",
         [
           shortcut(action: "Show keyboard shortcuts", keys: ["?"]),
-          shortcut(action: "Focus resource search", keys: {mac: ["Cmd", "K"], other: ["Ctrl", "K"]}),
-          shortcut(action: "Toggle sidebar", keys: {mac: ["Cmd", "\\"], other: ["Ctrl", "\\"]}),
+          shortcut(action: "Focus Global Search", keys: {mac: ["Cmd", "K"], other: ["Ctrl", "K"]}),
+          shortcut(action: "Toggle sidebar", keys: ["Shift", "\\"]),
           shortcut(action: "Close modal", keys: ["Esc"]),
           shortcut(
             action: "Navigate options in the modal",

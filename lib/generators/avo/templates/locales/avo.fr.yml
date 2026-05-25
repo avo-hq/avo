@@ -12,11 +12,16 @@ fr:
       auto_tooltip: Automatique (préférence système)
       dark: Sombre
       dark_tooltip: Mode sombre
+      hide: Cacher
       light: Clair
       light_tooltip: Mode clair
       neutrals: Thème
       neutrals_picker: Thème neutre
       schemes: Apparence
+      shortcut_badges: Badges de raccourci
+      shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier
+      shortcut_badges_show_tooltip: Afficher les badges de raccourci clavier
+      show: Afficher
       title: Apparence
     applied:
       one: appliqué

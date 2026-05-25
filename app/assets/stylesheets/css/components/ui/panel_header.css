@@ -33,7 +33,7 @@
 }
 
 .header__discreet-information {
-  @apply flex justify-center sm:justify-start gap-x-2.5 gap-y-1 items-start w-full flex-wrap;
+  @apply flex justify-start gap-x-2.5 gap-y-1 items-start w-full flex-wrap;
 }
 
 /* Size variants */

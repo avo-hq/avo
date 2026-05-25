@@ -12,11 +12,16 @@ tr:
       auto_tooltip: Otomatik (sistem tercihi)
       dark: Koyu
       dark_tooltip: Koyu mod
+      hide: Gizle
       light: Açık
       light_tooltip: Açık mod
       neutrals: Tema
       neutrals_picker: Nötr tema
       schemes: Görünüm
+      shortcut_badges: Kısayol rozetleri
+      shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle
+      shortcut_badges_show_tooltip: Klavye kısayolu rozetlerini göster
+      show: Göster
       title: Görünüm
     applied:
       one: uygulandı

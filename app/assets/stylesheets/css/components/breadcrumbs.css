@@ -2,7 +2,7 @@
   @apply sticky z-40 w-full bg-primary mb-4;
   /* top: calc(var(--top-navbar-height) + var(--spacing) * 4); */
   top: calc(var(--top-navbar-height) + var(--spacing) * 2);
-  margin-top: calc(var(--spacing) * -2 + 1px);
+  margin-top: --spacing(-2);
 
   /* Fake background so the content scrolling underneath the breadcrumbs doesn't look like it's bleeding through */
   &::before {
