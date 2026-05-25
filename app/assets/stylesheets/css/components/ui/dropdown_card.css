@@ -8,3 +8,11 @@
 .dropdown-card__body {
   @apply overflow-hidden rounded-lg border border-tertiary bg-primary;
 }
+
+.dropdown-card__header {
+  @apply flex w-full items-center justify-between px-2 py-1.5;
+}
+
+.dropdown-card__title {
+  @apply text-sm text-content;
+}

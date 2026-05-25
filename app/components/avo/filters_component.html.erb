@@ -17,8 +17,8 @@
       hidden: params[:keep_filters_panel_open] != '1' do %>
       <%= render Avo::UI::DropdownCardComponent.new do |card| %>
         <% card.with_header do %>
-          <div class="filters-card__header">
-            <span class="filters-card__title"><%= t('avo.filters') %></span>
+          <div class="dropdown-card__header">
+            <span class="dropdown-card__title"><%= t('avo.filters') %></span>
             <% if @applied_filters.present? %>
               <%= link_to t('avo.reset_filters'), reset_path, data: {turbo_frame: params[:turbo_frame]}, class: 'filters-card__reset filters-card__reset--active' %>
             <% else %>
