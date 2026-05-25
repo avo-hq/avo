@@ -33,6 +33,8 @@ pl:
     checkbox_list:
       hidden_selections:
         one: 1 wybrana opcja ukryta przez wyszukiwanie
+        few: "%{count} wybrane opcje ukryte przez wyszukiwanie"
+        many: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
         other: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
     choose_a_country: Wybierz kraj
     choose_an_option: Wybierz opcję

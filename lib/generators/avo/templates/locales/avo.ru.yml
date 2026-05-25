@@ -33,7 +33,9 @@ ru:
     checkbox_list:
       hidden_selections:
         one: 1 выбранный вариант скрыт по запросу
-        other: "%{count} выбранных варианта скрыты по запросу"
+        few: "%{count} выбранных варианта скрыты по запросу"
+        many: "%{count} выбранных вариантов скрыто по запросу"
+        other: "%{count} выбранных вариантов скрыто по запросу"
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
     choose_item: Выбрать %{item}
