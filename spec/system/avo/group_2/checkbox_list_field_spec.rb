@@ -91,6 +91,7 @@ RSpec.describe "CheckboxListField", type: :system do
 
   it "renders an empty state when no options are available" do
     team = create :team
+    User.update_all(active: false)
 
     visit "/admin/resources/teams/#{team.id}/edit"
 
@@ -167,10 +168,10 @@ RSpec.describe "CheckboxListField", type: :system do
     expect(page).to have_css("label.checkbox-list__row", text: beta.name, count: 1)
     expect(page).not_to have_css("label.checkbox-list__row", text: alpha.name, visible: true)
 
-    find_field("team_team_member_ids_inline_search").send_keys(:arrow_down)
+    find_field("team_team_member_ids_inline_search").send_keys(:down)
     expect(page.evaluate_script("document.activeElement && document.activeElement.id")).to eq checkbox_id(beta)
 
-    find_field(checkbox_id(beta)).send_keys(:space)
+    check checkbox_id(beta)
     save
 
     expect(team.reload.team_member_ids).to eq [beta.id]
