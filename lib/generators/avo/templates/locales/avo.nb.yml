@@ -37,6 +37,10 @@ nb:
     attachment_destroyed: Vedlett slettet
     attachment_failed: Kunne ikke legge ved %{attachment_class}
     cancel: Avbryt
+    checkbox_list:
+      hidden_selections:
+        one: 1 valgt alternativ skjult av søk
+        other: "%{count} valgte alternativer skjult av søk"
     choose_a_country: Velg et land
     choose_an_option: Velg et alternativ
     choose_item: Velge %{item}

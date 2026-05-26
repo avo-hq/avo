@@ -35,6 +35,10 @@ it:
     attachment_destroyed: Allegato distrutto
     attachment_failed: Impossibile allegare %{attachment_class}
     cancel: Annulla
+    checkbox_list:
+      hidden_selections:
+        one: 1 opzione selezionata nascosta dalla ricerca
+        other: "%{count} opzioni selezionate nascoste dalla ricerca"
     choose_a_country: Scegli un paese
     choose_an_option: Scegli un'opzione
     choose_item: Scegli %{item}

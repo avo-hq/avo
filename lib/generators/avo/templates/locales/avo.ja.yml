@@ -37,6 +37,10 @@ ja:
     attachment_destroyed: アタッチは削除されました
     attachment_failed: "%{attachment_class}の添付に失敗しました"
     cancel: キャンセル
+    checkbox_list:
+      hidden_selections:
+        one: 検索によって隠された1つの選択肢
+        other: 検索によって隠された%{count}の選択肢
     choose_a_country: 国を選択
     choose_an_option: オプションを選択
     choose_item: "%{item}を選択"

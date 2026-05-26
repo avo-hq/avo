@@ -35,6 +35,10 @@ ua:
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
     cancel: Скасувати
+    checkbox_list:
+      hidden_selections:
+        one: 1 вибрана опція прихована за пошуком
+        other: "%{count} вибраних опцій приховано за пошуком"
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію
     choose_item: Виберіть %{item}

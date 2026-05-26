@@ -1,0 +1,97 @@
+<div class="flex max-w-xl flex-col gap-6">
+  <section>
+    <h3 class="mb-2 text-sm font-semibold text-content">Default</h3>
+    <div class="checkbox-list-field" data-controller="checkbox-list-field" data-action="input->checkbox-list-field#filter keydown->checkbox-list-field#handleKeydown">
+      <%= render Avo::UI::SearchInputComponent.new(
+        name: "preview_team_member_search",
+        id: "preview_team_member_search",
+        value: nil,
+        placeholder: I18n.t("avo.search.placeholder"),
+        classes: "input-field checkbox-list__search-input",
+        data: {"checkbox-list-field-target": "input"}
+      ) %>
+
+      <div class="checkbox-list" role="group" aria-label="Team members">
+        <input type="hidden" name="team[team_member_ids][]" value="">
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: "1",
+          title: "Ada Lovelace",
+          image_url: "/assets/avo/logomark.png",
+          description: "Mathematician and early computing pioneer",
+          name: "team[team_member_ids][]",
+          checked: true,
+          input_html_id: "preview_team_member_ids_1"
+        ) %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: "2",
+          title: "Grace Hopper",
+          image_url: "/assets/avo/logomark.png",
+          image_format: "rounded",
+          description: "Computer scientist and compiler builder",
+          name: "team[team_member_ids][]",
+          input_html_id: "preview_team_member_ids_2"
+        ) %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: "3",
+          title: "Katherine Johnson",
+          image_url: "/assets/avo/logomark.png",
+          image_format: "square",
+          description: "NASA mathematician",
+          name: "team[team_member_ids][]",
+          checked: true,
+          input_html_id: "preview_team_member_ids_3"
+        ) %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: "4",
+          title: "Margaret Hamilton",
+          name: "team[team_member_ids][]",
+          input_html_id: "preview_team_member_ids_4"
+        ) %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: "5",
+          title: "Mary Jackson",
+          name: "team[team_member_ids][]",
+          input_html_id: "preview_team_member_ids_5"
+        ) %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: "6",
+          title: "Dorothy Vaughan",
+          name: "team[team_member_ids][]",
+          input_html_id: "preview_team_member_ids_6"
+        ) %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: "7",
+          title: "Annie Easley",
+          name: "team[team_member_ids][]",
+          input_html_id: "preview_team_member_ids_7"
+        ) %>
+        <div class="checkbox-list__empty" hidden data-checkbox-list-field-target="empty">No matching options</div>
+        <div class="checkbox-list__hidden-selections" hidden role="status" data-checkbox-list-field-target="hiddenSelections"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="mb-2 text-sm font-semibold text-content">Empty</h3>
+    <div class="checkbox-list" role="group" aria-label="Team members">
+      <input type="hidden" name="team[team_member_ids][]" value="">
+      <div class="checkbox-list__empty">No options available</div>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="mb-2 text-sm font-semibold text-content">Long Titles</h3>
+    <div class="checkbox-list" role="group" aria-label="Team members">
+      <input type="hidden" name="team[team_member_ids][]" value="">
+      <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+        id: "8",
+        title: "A very long option title that wraps onto multiple lines without pushing the checkbox out of alignment",
+        image_url: "/assets/avo/logomark.png",
+        description: "A longer description also wraps naturally below the title while the checkbox and avatar stay aligned at the start.",
+        name: "team[team_member_ids][]",
+        checked: false,
+        input_html_id: "preview_team_member_ids_8"
+      ) %>
+    </div>
+  </section>
+</div>

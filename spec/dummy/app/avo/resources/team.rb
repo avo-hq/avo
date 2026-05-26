@@ -61,6 +61,23 @@ class Avo::Resources::Team < Avo::BaseResource
         field :members_count, as: :number do
           record.team_members.length
         end
+
+        field :team_member_ids,
+          as: :checkbox_list,
+          name: "Team members",
+          inline_search: true,
+          only_on: :forms,
+          options: -> {
+            User.active.order(:id).map do |user|
+              {
+                id: user.id,
+                title: user.name,
+                image_url: user.avatar,
+                image_format: "circle",
+                description: user.email
+              }
+            end
+          }
       end
 
       sidebar do
@@ -90,6 +107,7 @@ class Avo::Resources::Team < Avo::BaseResource
     field :team_members,
       as: :has_many,
       through: :memberships,
+      attach_using: :checkbox_list,
       linkable: true,
       reloadable: true
     field :reviews, as: :has_many,

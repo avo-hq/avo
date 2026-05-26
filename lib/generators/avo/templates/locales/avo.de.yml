@@ -35,6 +35,10 @@ de:
     attachment_destroyed: Anhang gelöscht
     attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
     cancel: Abbrechen
+    checkbox_list:
+      hidden_selections:
+        one: 1 ausgewählte Option durch die Suche ausgeblendet
+        other: "%{count} ausgewählte Optionen durch die Suche ausgeblendet"
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen
     choose_item: "%{item} auswählen"

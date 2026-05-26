@@ -346,7 +346,7 @@ class Avo::Resources::User < Avo::BaseResource
       show_on: :edit,
       translation_key: "avo.field_translations.people"
     field :spouses, as: :has_many # STI has_many resource
-    field :projects, as: :has_and_belongs_to_many
+    field :projects, as: :has_and_belongs_to_many, attach_using: :checkbox_list
     field :team_memberships, as: :has_many
   end
 end

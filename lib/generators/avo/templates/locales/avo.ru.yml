@@ -35,6 +35,12 @@ ru:
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
     cancel: Отмена
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} выбранных варианта скрыты по запросу"
+        many: "%{count} выбранных вариантов скрыто по запросу"
+        one: 1 выбранный вариант скрыт по запросу
+        other: "%{count} выбранных вариантов скрыто по запросу"
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
     choose_item: Выбрать %{item}

@@ -35,6 +35,10 @@ zh-TW:
     attachment_destroyed: 附件已刪除
     attachment_failed: 無法附加 %{attachment_class}
     cancel: 取消
+    checkbox_list:
+      hidden_selections:
+        one: 1 個選項因搜尋而隱藏
+        other: "%{count} 個選項因搜尋而隱藏"
     choose_a_country: 選擇一個國家
     choose_an_option: 選擇一個選項
     choose_item: 選擇 %{item}
