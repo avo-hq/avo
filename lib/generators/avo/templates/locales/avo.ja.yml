@@ -137,6 +137,9 @@ ja:
     pages: ページ
     per_page: ページあたり
     prev_page: 前のページ
+    record:
+      one: レコード
+      other: レコード
     records_selected_from_all_pages_html: 全ページから選択された全レコード
     reload: リロード
     remove_selection: 選択を解除

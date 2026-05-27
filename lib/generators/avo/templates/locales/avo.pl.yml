@@ -139,6 +139,11 @@ pl:
     pages: Strony
     per_page: Na stronie
     prev_page: Poprzednia strona
+    record:
+      few: rekordy
+      many: rekordów
+      one: rekord
+      other: rekordów
     records_selected_from_all_pages_html: Wybrane rekordy z wszystkich stron
     reload: Odśwież
     remove_selection: Usuń zaznaczenie

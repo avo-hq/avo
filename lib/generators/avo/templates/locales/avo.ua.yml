@@ -137,6 +137,11 @@ ua:
     pages: Pages
     per_page: На сторінці
     prev_page: Попередня сторінка
+    record:
+      few: записи
+      many: записів
+      one: запис
+      other: записів
     records_selected_from_all_pages_html: Вибрані всі записи з усіх сторінок
     reload: Перезавантажити
     remove_selection: Видалити вибір

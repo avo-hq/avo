@@ -135,6 +135,9 @@ zh-TW:
     pages: 頁面
     per_page: 每頁顯示
     prev_page: 上一頁
+    record:
+      one: 筆記錄
+      other: 筆記錄
     records_selected_from_all_pages_html: 所有頁面中選中的記錄
     reload: 重新載入
     remove_selection: 清除選擇

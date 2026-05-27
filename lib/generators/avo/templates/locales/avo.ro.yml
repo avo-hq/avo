@@ -140,6 +140,10 @@ ro:
     pages: Pagini
     per_page: Pe pagină
     prev_page: Pagina anterioara
+    record:
+      few: înregistrări
+      one: înregistrare
+      other: înregistrări
     records_selected_from_all_pages_html: Toate selectate din toate paginile
     reload: Reîncarcă
     remove_selection: Șterge selecția
