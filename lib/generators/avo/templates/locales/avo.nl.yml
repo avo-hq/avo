@@ -135,6 +135,9 @@ nl:
     pages: Pagina's
     per_page: Per pagina
     prev_page: Vorige pagina
+    record:
+      one: record
+      other: records
     records_selected_from_all_pages_html: Alle geselecteerde records van alle pagina's
     reload: Vernieuwen
     remove_selection: Selectie verwijderen

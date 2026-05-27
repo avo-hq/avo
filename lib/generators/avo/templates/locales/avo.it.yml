@@ -135,6 +135,9 @@ it:
     pages: Pagine
     per_page: Per pagina
     prev_page: Pagina precedente
+    record:
+      one: record
+      other: record
     records_selected_from_all_pages_html: Tutti i record selezionati da tutte le pagine
     reload: Ricarica
     remove_selection: Rimuovi selezione

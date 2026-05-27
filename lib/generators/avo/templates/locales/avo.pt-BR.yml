@@ -137,6 +137,9 @@ pt-BR:
     pages: Páginas
     per_page: Por página
     prev_page: Página anterior
+    record:
+      one: registro
+      other: registros
     records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
     reload: Recarregar
     remove_selection: Remover seleção

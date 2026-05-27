@@ -149,6 +149,13 @@ ar:
     pages: صفحات
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
+    record:
+      few: سجلات
+      many: سجلات
+      one: سجل
+      other: سجلات
+      two: سجلان
+      zero: سجلات
     records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات
     reload: إعادة تحميل
     remove_selection: إزالة التحديد

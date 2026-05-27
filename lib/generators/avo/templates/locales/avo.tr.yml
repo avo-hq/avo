@@ -137,6 +137,9 @@ tr:
     pages: Sayfalar
     per_page: Sayfa başına
     prev_page: Önceki sayfa
+    record:
+      one: kayıt
+      other: kayıtlar
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
     reload: Yeniden yükle
     remove_selection: Seçimi sil

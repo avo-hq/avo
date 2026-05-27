@@ -137,6 +137,9 @@ fr:
     pages: Pages
     per_page: Par page
     prev_page: Page précédente
+    record:
+      one: enregistrement
+      other: enregistrements
     records_selected_from_all_pages_html: tous les éléments sélectionnés de toutes les pages
     reload: Recharger
     remove_selection: Supprimer la sélection

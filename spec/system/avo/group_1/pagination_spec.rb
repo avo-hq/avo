@@ -23,4 +23,34 @@ RSpec.feature "Pagination", type: :system do
       end
     end
   end
+
+  describe "info copy for single-page results" do
+    it "renders '1 record' when only one record exists" do
+      Post.destroy_all
+      create :post
+
+      visit "/admin/resources/posts?view_type=table"
+      wait_for_loaded
+
+      within(".pagination__info") do
+        expect(page).to have_text("1 record")
+        expect(page).not_to have_text("of")
+        expect(page).not_to have_text("-")
+      end
+    end
+
+    it "renders 'N records' when all records fit on one page" do
+      Post.destroy_all
+      create_list :post, 5
+
+      visit "/admin/resources/posts?view_type=table&per_page=24"
+      wait_for_loaded
+
+      within(".pagination__info") do
+        expect(page).to have_text("5 records")
+        expect(page).not_to have_text("of")
+        expect(page).not_to have_text("-")
+      end
+    end
+  end
 end

@@ -135,6 +135,9 @@ zh:
     pages: 页面
     per_page: 每页显示
     prev_page: 上一页
+    record:
+      one: 条记录
+      other: 条记录
     records_selected_from_all_pages_html: 所有页面中选中的记录
     reload: 重新加载
     remove_selection: 清除选择

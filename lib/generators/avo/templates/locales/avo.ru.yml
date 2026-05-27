@@ -139,6 +139,11 @@ ru:
     pages: Страницы
     per_page: На странице
     prev_page: Предыдущая страница
+    record:
+      few: записи
+      many: записей
+      one: запись
+      other: записей
     records_selected_from_all_pages_html: Все записи выбраны со всех страниц
     reload: Обновить
     remove_selection: Убрать выбор

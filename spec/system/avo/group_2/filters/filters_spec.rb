@@ -260,7 +260,7 @@ RSpec.describe "Filters", type: :system do
         click_on "Filter by Status"
         wait_for_loaded
 
-        expect(page).to have_text(/1-1\s+of\s+1/)
+        expect(page).to have_text("1 record")
 
         open_filters_menu
 
@@ -279,7 +279,7 @@ RSpec.describe "Filters", type: :system do
         click_on "Filter by Status"
         wait_for_loaded
 
-        expect(page).to have_text(/1-2\s+of\s+2/)
+        expect(page).to have_text("2 records")
       end
     end
   end
@@ -309,13 +309,13 @@ RSpec.describe "Filters", type: :system do
 
       it "filters by name" do
         visit url
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "With Members"
         click_on "Filter by name"
         wait_for_loaded
-        expect(page).to have_text(/1-1\s+of\s+1/)
+        expect(page).to have_text("1 record")
 
         open_filters_menu
         expect(page).to have_text "With Members"
@@ -323,18 +323,18 @@ RSpec.describe "Filters", type: :system do
 
         click_on "Reset filters"
         wait_for_loaded
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
       end
 
       it "filters by 音楽 ✓" do
         visit url
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "音楽 ✓"
         click_on "Filter by name"
         wait_for_loaded
-        expect(page).to have_text(/1-1\s+of\s+1/)
+        expect(page).to have_text("1 record")
 
         open_filters_menu
         expect(page).to have_text "音楽 ✓"
@@ -342,7 +342,7 @@ RSpec.describe "Filters", type: :system do
 
         click_on "Reset filters"
         wait_for_loaded
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
       end
     end
   end

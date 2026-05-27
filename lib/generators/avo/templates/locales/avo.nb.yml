@@ -137,6 +137,9 @@ nb:
     pages: Sider
     per_page: Per side
     prev_page: Forrige side
+    record:
+      one: post
+      other: poster
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
     reload: Last inn på nytt
     remove_selection: Fjern valg
