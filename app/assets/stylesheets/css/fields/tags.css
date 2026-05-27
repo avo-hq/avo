@@ -8,6 +8,11 @@ tags.tagify {
   --tags-focus-border-color: var(--color-primary);
   --placeholder-color: var(--color-content-secondary);
   --placeholder-color-focus: var(--color-content-secondary);
+  --tag-text-color: var(--color-content);
+  --tag-text-color--edit: var(--color-content);
+  --tag-remove-btn-color: var(--color-content);
+  --tag-bg: var(--color-secondary);
+  --tag-hover: var(--color-tertiary);
 
   padding-block: var(--input-py);
   align-items: center;

@@ -152,6 +152,37 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
+  describe "placeholder color (AVO-1272)" do
+    let(:field_value_slot) { tags_element(find_field_value_element("user_id")) }
+
+    it "uses the design-system token instead of tagify's hardcoded default" do
+      visit "/admin/resources/users/#{admin.slug}"
+      open_panel_action(action_name: "Toggle inactive")
+
+      # Ensure the tagify element is in the DOM before reading computed styles.
+      expect(field_value_slot).to have_selector("span[contenteditable]")
+
+      tagify_default = "rgba(0, 0, 0, 0.4)"
+
+      expected_color = page.evaluate_script(<<~JS)
+        getComputedStyle(document.documentElement).getPropertyValue('--color-content-secondary').trim()
+      JS
+
+      placeholder_var = page.evaluate_script(<<~JS)
+        getComputedStyle(document.querySelector('[role="dialog"] tags.tagify')).getPropertyValue('--placeholder-color').trim()
+      JS
+
+      pseudo_color = page.evaluate_script(<<~JS)
+        getComputedStyle(document.querySelector('[role="dialog"] tags.tagify .tagify__input'), '::before').getPropertyValue('color').trim()
+      JS
+
+      expect(expected_color).not_to be_empty
+      expect(placeholder_var).not_to eq(tagify_default)
+      expect(pseudo_color).not_to eq(tagify_default)
+      expect(placeholder_var).to eq(expected_color)
+    end
+  end
+
   describe "fetch labels" do
     let!(:users) { create_list :user, 2 }
     let!(:courses) { create_list :course, 2, skills: users.pluck(:id) }
