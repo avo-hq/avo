@@ -1,7 +1,13 @@
 <%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
-  <%= render(Avo::ModalComponent.new(width: @modal_width, height: @modal_height, body_class: "bg-backgrund")) do |c| %>
-    <%= tag.div class: @wrapper_class do %>
-      <%= yield %>
+  <% if params[:via_belongs_to_resource_class].present? %>
+    <%# Belongs-to "Create new" flow: the edit component renders its own modal
+        (title + footer controls) so the form can wrap the modal natively. %>
+    <%= yield %>
+  <% else %>
+    <%= render(Avo::ModalComponent.new(width: @modal_width, height: @modal_height, body_class: "bg-background")) do |c| %>
+      <%= tag.div class: @wrapper_class do %>
+        <%= yield %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
