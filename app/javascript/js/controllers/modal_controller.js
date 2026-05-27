@@ -15,6 +15,7 @@ export default class extends BaseModalController {
 
   disconnect() {
     this.disconnectModal()
+    this.removeModalOpen()
   }
 
   // -- strategy implementation ----------------------------------------------
