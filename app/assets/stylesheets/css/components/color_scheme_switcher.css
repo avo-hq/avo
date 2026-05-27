@@ -115,9 +115,9 @@
   @apply bg-primary text-content shadow-sm;
 }
 
-/* Shortcut badge buttons - active state mirrors body.hotkeys-hide-badges. */
-body:not(.hotkeys-hide-badges) .color-scheme-switcher__scheme-button[data-key-badges="show"],
-body.hotkeys-hide-badges .color-scheme-switcher__scheme-button[data-key-badges="hide"] {
+/* Shortcut badge buttons - active state mirrors :root.hotkeys-hide-badges. */
+:root:not(.hotkeys-hide-badges) .color-scheme-switcher__scheme-button[data-key-badges="show"],
+:root.hotkeys-hide-badges .color-scheme-switcher__scheme-button[data-key-badges="hide"] {
   @apply bg-primary text-content shadow-sm;
 }
 

@@ -327,14 +327,14 @@ export default class extends Controller {
   }
 
   // Mirrors the Shift+K hotkey in global_hotkeys.js. CSS handles the active
-  // state via [data-key-badges] selectors against `body.hotkeys-hide-badges`.
+  // state via [data-key-badges] selectors against `:root.hotkeys-hide-badges`.
   setKeyBadges(event) {
     event.preventDefault()
     const { keyBadges } = event.currentTarget.dataset
     if (keyBadges !== 'show' && keyBadges !== 'hide') return
 
     const hide = keyBadges === 'hide'
-    document.body.classList.toggle('hotkeys-hide-badges', hide)
+    document.documentElement.classList.toggle('hotkeys-hide-badges', hide)
     try {
       if (hide) {
         localStorage.setItem('avo:hotkeys:hide_badges', '1')

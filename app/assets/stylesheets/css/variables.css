@@ -73,7 +73,44 @@
   --color-brand-accent: oklch(39.04% 0 89.88);
 
   /* Semantic variables */
+
+  /* Sidebar background. Dedicated knob so installs can recolor the sidebar
+     independently of the neutral palette. Defaults to the page background in
+     light mode and a subtly tinted surface in dark (see the .dark override). */
   --color-sidebar-background: var(--color-background);
+
+  /* Top navbar background. Dedicated knob so installs can recolor the navbar
+     without touching the neutral palette. Defaults to the page background so
+     the navbar blends with the canvas; resolves per-scheme automatically since
+     --color-background is itself redefined in .dark. Override it (here or in
+     `.dark`) to give the navbar its own color. */
+  --color-navbar-background: var(--color-avo-neutral-900);
+
+  /* Background of the main content panel. Dedicated knob so installs can recolor
+     the content surface independently of the primary surface token. Defaults to
+     --color-primary; resolves per-scheme since --color-primary is redefined in
+     .dark. */
+  --color-main-content-background: var(--color-primary);
+
+  /* Border between the sidebar and the main content panel. Dedicated knob so
+     installs can restyle just this seam without touching the shared
+     --border-color (which also draws the sidebar-status borders). Tracks
+     --border-color by default, so it resolves per-scheme automatically. */
+  --color-main-content-border: var(--border-color);
+}
+
+/* Navbar notch knobs live in a plain :root block, not in @theme:
+   --navbar-notch-enabled is read by a style query (Tailwind tree-shakes @theme
+   vars not referenced via var(), so it would be stripped), and we keep
+   --navbar-notch-radius alongside it so both notch knobs sit together. */
+:root {
+  /* Set to `false` to hide the navbar's inverted corner arches (e.g. when the
+     navbar and content share a background). */
+  --navbar-notch-enabled: true;
+
+  /* Radius of the content panel's rounded top corners (and the matching navbar
+     arches that fill them). Set to `0` to flatten the corners entirely. */
+  --navbar-notch-radius: 1rem;
 }
 
 /* Dark mode defaults live in @layer theme — same layer as the @theme block

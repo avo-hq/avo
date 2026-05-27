@@ -6,6 +6,19 @@
     var root = document.documentElement;
     var appearance = window.Avo && window.Avo.configuration && window.Avo.configuration.appearance || {};
 
+    // Restore the kbd-badge visibility preference (Shift+K) before paint so a
+    // hidden set of badges never flashes in. It's a per-client preference, so it
+    // lives in localStorage rather than a cookie; the class sits on <html> next
+    // to the theme classes, which also lets it persist across Turbo navigations.
+    var hotkeys = window.Avo && window.Avo.configuration && window.Avo.configuration.hotkeys || {};
+    if (hotkeys.showKeyBadges !== false) {
+      try {
+        if (localStorage.getItem('avo:hotkeys:hide_badges') === '1') {
+          root.classList.add('hotkeys-hide-badges');
+        }
+      } catch (e) {}
+    }
+
     if (appearance.persistence !== 'database') {
       function getCookie(name) {
         var value = '; ' + document.cookie;
