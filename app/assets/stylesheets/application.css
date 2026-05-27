@@ -144,6 +144,7 @@
   @import "./css/components/ui/popover_menu.css";
   @import "./css/components/ui/radio.css";
   @import "./css/components/ui/checkbox_list.css";
+  @import "./css/components/ui/count.css";
   @import "./css/components/input.css";
 
   @import "./css/components/field-wrapper.css";

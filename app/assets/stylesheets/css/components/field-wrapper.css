@@ -10,6 +10,12 @@
   @apply text-content-secondary mt-2 text-xs leading-4;
 }
 
+/* Boolean fields render a compact checkbox/toggle, so the help text sits
+   directly beneath it without the extra top margin other inputs need. */
+[data-field-type="boolean"] .field-wrapper__help {
+  @apply mt-0;
+}
+
 .field-wrapper__label-help {
   @apply text-content-secondary text-xs leading-none font-normal;
 }

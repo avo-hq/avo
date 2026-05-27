@@ -1,0 +1,10 @@
+.count {
+  /* Compact pill: accent-tinted background keeps the "this is active" hint,
+     neutral content text guarantees contrast in both schemes.
+     (Using `text-accent` looked fine in light, but in dark mode `--color-accent`
+     resolves to a *light* value — same hue and same value as the translucent
+     bg, killing contrast. Neutral text sidesteps that.)
+     Margin is intentionally omitted — callers add spacing (e.g. `ms-1`) for
+     their own layout. */
+  @apply inline-flex items-center justify-center rounded-sm bg-accent/15 dark:bg-accent/30 text-content font-medium text-xs leading-none min-w-4 py-px px-1 tabular-nums;
+}

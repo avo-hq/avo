@@ -2,15 +2,6 @@
   @apply relative flex w-full justify-between;
 }
 
-.filters__count {
-  /* Compact pill: accent-tinted background keeps the "this filter is active"
-     hint, neutral content text guarantees contrast in both schemes.
-     (Using `text-accent` looked fine in light, but in dark mode `--color-accent`
-     resolves to a *light* value — same hue and same value as the translucent
-     bg, killing contrast. Neutral text sidesteps that.) */
-  @apply inline-flex items-center justify-center ms-1 rounded-sm bg-accent/15 dark:bg-accent/30 text-content font-medium text-xs leading-none min-w-4 py-px px-1 tabular-nums;
-}
-
 .filters__panel {
   @apply absolute top-full z-40 mt-2 w-72 inset-auto sm:end-0 flex flex-col;
 
