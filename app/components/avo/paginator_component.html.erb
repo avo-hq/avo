@@ -32,16 +32,20 @@
     <div class="pagination__controls">
       <% if @resource.pagination_type.default? %>
         <div class="pagination__info">
-          <span class="pagination__info-number">
-            <%= "#{formatted_number(@pagy.from)}-#{formatted_number(@pagy.to)}" %>
-          </span>
-          &nbsp; of &nbsp;
-          <% if @pagy.count >= 10_000 %>
-            <span title="<%= formatted_count %>" data-tippy="tooltip">
-              <%= number_to_social(@pagy.count, start_at: 10_000) %>
-            </span>
+          <% if @pagy.pages <= 1 %>
+            <span><%= formatted_count %> <%= t("avo.record", count: @pagy.count) %></span>
           <% else %>
-            <span><%= formatted_count %></span>
+            <span class="pagination__info-number">
+              <%= formatted_number(@pagy.from) %>-<%= formatted_number(@pagy.to) %>
+            </span>
+            &nbsp; of &nbsp;
+            <% if @pagy.count >= 10_000 %>
+              <span title="<%= formatted_count %>" data-tippy="tooltip">
+                <%= number_to_social(@pagy.count, start_at: 10_000) %>
+              </span>
+            <% else %>
+              <span><%= formatted_count %></span>
+            <% end %>
           <% end %>
         </div>
       <% end %>
