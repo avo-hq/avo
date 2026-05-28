@@ -5,17 +5,17 @@ class Avo::Fields::Common::BooleanCheckComponent < Avo::BaseComponent
     true => {
       name: "checked",
       icon: "tabler/outline/circle-check",
-      color: "text-green-600"
+      color: "text-success-content"
     },
     false => {
       name: "unchecked",
       icon: "tabler/outline/circle-x",
-      color: "text-red-600"
+      color: "text-danger-content"
     },
     nil => {
       name: "indeterminate",
       icon: "tabler/outline/circle-minus",
-      color: "text-gray-400"
+      color: "text-content-secondary"
     }
   }.freeze
 
