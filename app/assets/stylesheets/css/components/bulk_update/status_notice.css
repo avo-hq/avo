@@ -1,0 +1,30 @@
+/* Per-field status notice rendered below each field input in the bulk-update slide-out.
+ *
+ * Three tones (mode-driven):
+ *   --muted     : "all share <value>" (1 distinct value)
+ *   --tertiary  : sample-list (<= threshold distinct values)
+ *   --accent    : count-only (> threshold distinct values; caution-flavored) */
+
+.bulk-update-status-notice {
+  @apply flex items-start gap-2 mt-1 text-xs;
+}
+
+.bulk-update-status-notice__icon {
+  @apply shrink-0 mt-0.5;
+}
+
+.bulk-update-status-notice__body {
+  @apply flex-1 min-w-0 leading-snug;
+}
+
+.bulk-update-status-notice--muted {
+  @apply text-content-secondary;
+}
+
+.bulk-update-status-notice--tertiary {
+  @apply text-tertiary-700;
+}
+
+.bulk-update-status-notice--accent {
+  @apply text-accent-700;
+}

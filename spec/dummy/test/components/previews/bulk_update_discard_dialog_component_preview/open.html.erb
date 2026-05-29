@@ -1,0 +1,33 @@
+<%# Hand-built variant with the `hidden` attribute removed so designers can
+    review the panel without driving the form Stimulus controller. %>
+<div
+  class="bulk-update-discard-dialog"
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="bulk-update-discard-dialog-heading-preview"
+  aria-describedby="bulk-update-discard-dialog-body-preview"
+>
+  <div class="bulk-update-discard-dialog__panel">
+    <div class="bulk-update-discard-dialog__header">
+      <span class="bulk-update-discard-dialog__icon">
+        <%= svg "tabler/outline/alert-octagon", class: "size-6" %>
+      </span>
+      <h2 id="bulk-update-discard-dialog-heading-preview" class="bulk-update-discard-dialog__heading">
+        Discard your changes?
+      </h2>
+    </div>
+
+    <p id="bulk-update-discard-dialog-body-preview" class="bulk-update-discard-dialog__body">
+      You have unsaved edits. Closing now will lose them.
+    </p>
+
+    <div class="bulk-update-discard-dialog__footer">
+      <button type="button" class="bulk-update-discard-dialog__discard">
+        Discard changes
+      </button>
+      <button type="button" class="bulk-update-discard-dialog__keep">
+        Keep editing
+      </button>
+    </div>
+  </div>
+</div>

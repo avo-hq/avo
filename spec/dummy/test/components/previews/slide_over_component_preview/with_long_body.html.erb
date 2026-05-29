@@ -1,0 +1,20 @@
+<%= render Avo::SlideOverComponent.new(width: :lg) do |c| %>
+  <% c.with_heading do %>
+    Long body — body scrolls, footer pins
+  <% end %>
+
+  <% c.with_controls do %>
+    <button type="button" class="text-content-secondary">Cancel</button>
+    <button type="button" class="bg-accent text-white px-3 py-1 rounded">Update</button>
+  <% end %>
+
+  <div class="space-y-4">
+    <% 30.times do |i| %>
+      <p class="text-sm">
+        Filler paragraph <%= i + 1 %>: the slide-over body has overflow-auto so
+        long content scrolls inside the panel; the footer keeps its definite
+        height pinned at the bottom.
+      </p>
+    <% end %>
+  </div>
+<% end %>

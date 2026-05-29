@@ -11,6 +11,15 @@ export default class extends Controller {
     )
   }
 
+  // The bulk-update toolbar button uses a DISTINCT target attribute so the
+  // Actions picker controller's click handler doesn't grab it (the Actions
+  // path is hardcoded to MODAL_FRAME_ID; bulk update routes to SLIDE_OVER_FRAME_ID).
+  get bulkUpdateLinks() {
+    return document.querySelectorAll(
+      'a[data-bulk-update-target="resourceAction"]',
+    )
+  }
+
   get currentIds() {
     try {
       return JSON.parse(this.stateHolderElement.dataset.selectedResources)
@@ -27,6 +36,16 @@ export default class extends Controller {
         this.enableResourceActions()
       } else {
         this.disableResourceActions()
+      }
+    }
+
+    // Bulk update enables at N >= 2 (the N=1 case is better served by the
+    // standard :edit form). Existing Actions threshold (N >= 1) is unchanged.
+    if (this.bulkUpdateLinks.length > 0) {
+      if (value.length >= 2) {
+        this.enableBulkUpdateAction()
+      } else {
+        this.disableBulkUpdateAction()
       }
     }
   }
@@ -89,6 +108,33 @@ export default class extends Controller {
     this.actionLinks.forEach((link) => {
       // Disable only if is on the same resource context
       // Avoiding to disable unrelated actions when selecting items on a has many table
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.add(link.dataset.disabledClasses)
+        link.setAttribute('href', link.getAttribute('data-href'))
+        link.dataset.disabled = true
+      }
+    })
+  }
+
+  // Bulk update parallels resource actions but enables only at N >= 2 (the
+  // N=1 case is better served by the standard :edit form; per-field
+  // "all share X" / "K different values" semantics are meaningless for one
+  // record). The toggle target is `a[data-bulk-update-target="resourceAction"]`,
+  // distinct from the Actions picker's `data-actions-picker-target` selector so
+  // the same link cannot be hijacked by `actions_picker_controller#visitAction`
+  // (which would route the click into the modal frame, wrong for bulk update).
+  enableBulkUpdateAction() {
+    this.bulkUpdateLinks.forEach((link) => {
+      if (link.dataset.resourceName === this.resourceName) {
+        link.classList.remove(link.dataset.disabledClasses)
+        link.setAttribute('data-href', link.getAttribute('href'))
+        link.dataset.disabled = false
+      }
+    })
+  }
+
+  disableBulkUpdateAction() {
+    this.bulkUpdateLinks.forEach((link) => {
       if (link.dataset.resourceName === this.resourceName) {
         link.classList.add(link.dataset.disabledClasses)
         link.setAttribute('href', link.getAttribute('data-href'))

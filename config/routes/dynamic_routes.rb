@@ -14,6 +14,11 @@ sorted_resources.each do |resource|
       scope resource.route_path, as: resource.route_key do
         get "(/:id)/actions/(:action_id)", to: "actions#show", as: "actions_show"
         post "(/:id)/actions/(:action_id)", to: "actions#handle", as: "actions_handle"
+        # Bulk update routes are declared BEFORE `resources` for the same reason
+        # as Actions: `/users/bulk_update` would otherwise be shadowed by the
+        # `:id` show route.
+        get "bulk_update", to: "bulk_update#show", as: "bulk_update_show"
+        post "bulk_update", to: "bulk_update#handle", as: "bulk_update_handle"
       end
 
       resources resource.route_key,

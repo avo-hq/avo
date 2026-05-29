@@ -33,7 +33,7 @@
       <% @field.types.each do |type| %>
         <template data-belongs-to-field-target="type" data-type="<%= type %>">
           <div data-polymorphic-type="<%= type %>">
-            <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data), label: Avo.resource_manager.get_resource_by_model_class(type.to_s).name, class: "!w-full") do %>
+            <%= field_wrapper(**field_wrapper_args(data: reload_data), label: Avo.resource_manager.get_resource_by_model_class(type.to_s).name, class: "!w-full") do %>
               <% if @field.is_searchable? %>
                 <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
                       form: @form,
@@ -44,11 +44,11 @@
                 <%= @form.select @field.id_input_foreign_key,
                 options_for_select(
                   @field.values_for_type(type),
-                  selected: @field.value.is_a?(type) ? @field.value.to_param : nil,
+                  selected: bulk_edit? ? nil : (@field.value.is_a?(type) ? @field.value.to_param : nil),
                   disabled: t("avo.more_records_available")
                 ),
                 {
-                  include_blank: @field.placeholder,
+                  include_blank: bulk_edit? ? t("avo.bulk_update.belongs_to.unchanged") : @field.placeholder,
                 },
                 {
                   class: classes("w-full"),
@@ -84,14 +84,14 @@
     </div>
   </div>
 <% else %>
-  <%= field_wrapper(**field_wrapper_args.merge!(data: reload_data)) do %>
+  <%= field_wrapper(**field_wrapper_args(data: reload_data)) do %>
     <% if @field.is_searchable? %>
       <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(form: @form, field: @field) %>
     <% else %>
       <%= @form.select @field.id_input_foreign_key,
-        options_for_select(@field.options, selected: @field.value.to_param, disabled: t("avo.more_records_available")),
+        options_for_select(@field.options, selected: bulk_edit? ? nil : @field.value.to_param, disabled: t("avo.more_records_available")),
         {
-          include_blank: @field.placeholder,
+          include_blank: bulk_edit? ? t("avo.bulk_update.belongs_to.unchanged") : @field.placeholder,
         },
         {
           class: classes("w-full"),

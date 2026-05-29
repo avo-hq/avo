@@ -69,6 +69,10 @@
     </div>
 
     <%= turbo_frame_tag Avo::MODAL_FRAME_ID %>
+    <%# Empty placeholder frame so bulk-update toolbar links (target=slide_over_frame)
+        have a target on the index page. Filled when the bulk-update controller
+        responds; emptied via `turbo_stream.avo_close_slide_over`. %>
+    <%= turbo_frame_tag Avo::SLIDE_OVER_FRAME_ID %>
     <%= render partial: "avo/partials/alerts" %>
     <%= render partial: "avo/partials/scripts" %>
     <%= render partial: "avo/partials/confirm_dialog" %>

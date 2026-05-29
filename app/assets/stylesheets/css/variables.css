@@ -111,6 +111,14 @@
   /* Radius of the content panel's rounded top corners (and the matching navbar
      arches that fill them). Set to `0` to flatten the corners entirely. */
   --navbar-notch-radius: 1rem;
+
+  /* SlideOver knobs. Definite footer height so the controls row pins (the
+     scrollable body shrinks to fit). Width knobs let installs broaden or
+     narrow the bulk-update slide-out without forking the component. */
+  --slide-over-footer-h: 64px;
+  --slide-over-width-sm: 24rem;
+  --slide-over-width-md: 32rem;
+  --slide-over-width-lg: 40rem;
 }
 
 /* Dark mode defaults live in @layer theme — same layer as the @theme block

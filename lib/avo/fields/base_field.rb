@@ -377,6 +377,9 @@ module Avo
       end
 
       def should_fill_with_default_value?
+        # Bulk-edit view explicitly opts out: fields render blank in the slide-out regardless of defaults.
+        return false if @view.respond_to?(:bulk?) && @view.bulk?
+
         on_create? || in_action?
       end
 

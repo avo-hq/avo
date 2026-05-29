@@ -1,0 +1,56 @@
+<%= turbo_frame_tag Avo::SLIDE_OVER_FRAME_ID do %>
+  <%= tag.div class: class_names("slide-over", @class, "slide-over--width-#{@width}"), tabindex: -1, data: {
+    controller: ctrl,
+    "#{ctrl}-target": "modal",
+    "#{ctrl}-close-modal-on-backdrop-click-value": close_on_backdrop_click,
+    **@data
+  }, **(@hidden ? { hidden: true } : {}) do %>
+    <%= tag.div(
+      class: "slide-over__backdrop",
+      aria: { hidden: true },
+      data: {
+        "#{ctrl}-target": "backdrop",
+        action: "click->#{ctrl}#close"
+      }
+    ) %>
+    <div
+      aria-expanded="true"
+      role="dialog"
+      aria-modal="true"
+      class="slide-over__panel"
+    >
+      <% if has_header? %>
+        <div class="slide-over__header">
+          <% if heading? %>
+            <div class="slide-over__heading">
+              <%= heading %>
+            </div>
+          <% end %>
+
+          <% if @show_close_button %>
+            <button
+              type="button"
+              class="slide-over__close"
+              data-action="click-><%= ctrl %>#closeModal"
+              aria-label="<%= t('avo.close') %>"
+            >
+              <%= helpers.svg "tabler/outline/x", class: "size-5" %>
+            </button>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="slide-over__body <%= @body_class %>">
+        <% if content? %>
+          <%= content %>
+        <% end %>
+      </div>
+
+      <% if controls? %>
+        <div class="slide-over__footer">
+          <%= controls %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

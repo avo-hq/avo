@@ -1,0 +1,23 @@
+<%# Live "what will be changed" surface. Hidden until the form Stimulus
+    controller has at least one dirty key; aria-live="polite" so SRs
+    announce additions without yanking focus. %>
+<div
+  class="bulk-update-change-summary"
+  data-bulk-update-form-target="changeSummary"
+  data-records-count="<%= @records_count %>"
+  aria-live="polite"
+  hidden
+>
+  <span class="bulk-update-change-summary__icon">
+    <%= helpers.svg icon_name, class: "size-5" %>
+  </span>
+  <div class="bulk-update-change-summary__body">
+    <p class="bulk-update-change-summary__title" data-bulk-update-form-target="changeSummaryTitle">
+      <%# Stimulus replaces this with the live "Set <field>=<value> on N records." line. %>
+      <%= t("avo.bulk_update.change_summary.placeholder") %>
+    </p>
+    <p class="bulk-update-change-summary__overflow" data-bulk-update-form-target="changeSummaryOverflow" hidden>
+      <%# "...and N more fields." appended when the live message exceeds two lines. %>
+    </p>
+  </div>
+</div>

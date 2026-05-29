@@ -1,0 +1,20 @@
+<%= render Avo::SlideOverComponent.new(width: :md) do |c| %>
+  <% c.with_heading do %>
+    Bulk update - 4 records
+  <% end %>
+
+  <% c.with_controls do %>
+    <button type="button" class="text-content-secondary">Cancel</button>
+    <button type="button" class="bg-accent text-white px-3 py-1 rounded">Update</button>
+  <% end %>
+
+  <div class="space-y-3">
+    <p class="text-content-secondary text-sm">
+      You're editing 4 records. Fields you leave blank stay unchanged.
+    </p>
+    <div>
+      <%= svg "tabler/outline/info-circle", class: "size-4 inline" %>
+      <span class="text-sm">Default slide-over body content.</span>
+    </div>
+  </div>
+<% end %>

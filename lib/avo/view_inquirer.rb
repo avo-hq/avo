@@ -4,13 +4,18 @@ module Avo
   class ViewInquirer < ActiveSupport::StringInquirer
     DISPLAY_VIEWS = %w[index show].freeze unless defined? DISPLAY_VIEWS
     FORM_VIEWS = %w[new edit create update].freeze unless defined? FORM_VIEWS
+    # Multi-record form views (e.g., bulk update). Treated as form views for the purpose of
+    # `view.form?`, but NOT as `view.single?` (no single underlying record), and `should_fill_with_default_value?`
+    # explicitly returns false for them so fields render blank in the slide-out.
+    MULTI_FORM_VIEWS = %w[bulk_edit].freeze unless defined? MULTI_FORM_VIEWS
 
     def initialize(view)
       super(view.to_s)
 
       @display = in? DISPLAY_VIEWS
-      @form = in? FORM_VIEWS
+      @form = in?(FORM_VIEWS + MULTI_FORM_VIEWS)
       @single = in? [*FORM_VIEWS, :show].compact.uniq
+      @bulk = in? MULTI_FORM_VIEWS
     end
 
     def display?
@@ -23,6 +28,10 @@ module Avo
 
     def single?
       @single
+    end
+
+    def bulk?
+      @bulk
     end
 
     # To avoid breaking changes we allow the comparison with symbols

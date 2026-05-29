@@ -1,0 +1,5 @@
+<%# Minimal payload for the per-row Turbo Stream replace. The host page's
+    index row morphs this in place; host apps that wire this to a real row
+    partial render the full row HTML here. The placeholder keeps the
+    response body small (~per-row bytes) and the controller flow simple. %>
+<span class="bulk-update-row-touched" data-record-id="<%= id %>"></span>

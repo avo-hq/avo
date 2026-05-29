@@ -35,6 +35,12 @@ export default class extends BaseModalController {
   }
 
   openModal() {
+    if (document.body.classList.contains('slide-over-open')) {
+      // eslint-disable-next-line no-console
+      console.warn('Cannot open modal while a slide-over is open')
+      return
+    }
+
     this.modalTarget.removeAttribute('hidden')
     this.addModalOpen()
     this.modalTarget.focus()

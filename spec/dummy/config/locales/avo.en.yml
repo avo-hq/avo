@@ -20,6 +20,67 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_failed: "Failed to attach %{attachment_class}"
     attachment_destroyed: Attachment destroyed
+    bulk_update:
+      banner:
+        no_records_editable: No selected records are editable by you.
+        updating_all_html: Updating <strong>%{count}</strong> of <strong>%{count}</strong> selected records.
+        updating_partial_html: Updating <strong>%{authorized}</strong> of <strong>%{total}</strong> selected records.
+        excluded:
+          one: 1 record was excluded (you don't have permission to edit it).
+          other: "%{count} records were excluded (you don't have permission to edit them)."
+        cap_exceeded:
+          title: Too many records selected for bulk update.
+          body: You selected %{count} records, but the maximum for this resource is %{max}. Narrow the selection and try again.
+        n_too_small:
+          title: Bulk update needs at least two records.
+          body: Only %{count} record is editable in your selection. Open it directly to edit a single record.
+      belongs_to:
+        unchanged: Unchanged
+      boolean:
+        'false': 'False'
+        'true': 'True'
+        unchanged: Unchanged
+      heading: Bulk update
+      heading_with_count_html: Bulk update <span class="text-content-secondary">- %{count} records</span>
+      submit: Update %{count} records
+      submitting: Updating...
+      status_notice:
+        all_share_html: All <strong>%{count}</strong> records have <strong>%{field}</strong> set to <strong>%{value}</strong>.
+        sample_list_html: "%{count} different values: %{values}"
+        count_only_html: "%{count} different values"
+        blank_value: blank
+      change_summary:
+        placeholder: Your changes will appear here.
+        single_field_html: Set <strong>%{field}</strong>=<strong>%{value}</strong> on <strong>%{count}</strong> records.
+        many_fields_html: Set <strong>%{fields}</strong> on <strong>%{count}</strong> records.
+        overflow:
+          one: ...and 1 more field.
+          other: "...and %{count} more fields."
+      failure_list:
+        heading:
+          one: 1 record could not be updated.
+          other: "%{count} records could not be updated."
+        retry: Retry failed
+        reasons:
+          unauthorized_at_write: Not allowed
+          validation: Validation failed
+          concurrent_modification: Record changed elsewhere
+          custom: "%{reason}"
+      discard_dialog:
+        heading: Discard your changes?
+        body: You have unsaved edits. Closing now will lose them.
+        discard: Discard changes
+        keep_editing: Keep editing
+      flash:
+        full_success:
+          one: Updated 1 record.
+          other: Updated %{count} records.
+        full_success_with_off_page:
+          one: "Updated 1 record (%{off_page} on other pages will refresh when navigated)."
+          other: "Updated %{count} records (%{off_page} on other pages will refresh when navigated)."
+        partial: "Updated %{updated} of %{total}; %{failed} failed."
+      toolbar:
+        button: Bulk update
     cancel: Cancel
     choose_a_country: Choose a country
     checkbox_list:

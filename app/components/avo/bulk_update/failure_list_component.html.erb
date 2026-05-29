@@ -1,0 +1,46 @@
+<%# Replacement for the slide-out body on partial failure. Re-renders one
+    row per failed record with a reason chip + user-facing message. The
+    "Retry failed" button submits the form with `avo_resource_ids` collapsed
+    to just the failed subset; the controller re-runs the full filter (no
+    fast-path for retry, by design). %>
+<div class="bulk-update-failure-list bulk-update-failure-list--caution" role="alert">
+  <div class="bulk-update-failure-list__header">
+    <span class="bulk-update-failure-list__heading-icon">
+      <%= helpers.svg heading_icon, class: "size-5" %>
+    </span>
+    <p class="bulk-update-failure-list__heading">
+      <%= t("avo.bulk_update.failure_list.heading", count: @failed.size) %>
+    </p>
+  </div>
+
+  <ul class="bulk-update-failure-list__items">
+    <% @failed.each do |entry| %>
+      <li class="bulk-update-failure-list__item" data-record-id="<%= entry[:id] %>">
+        <span class="bulk-update-failure-list__id">
+          #<%= entry[:id] %>
+        </span>
+        <span class="bulk-update-failure-list__chip bulk-update-failure-list__chip--<%= entry[:reason] %>">
+          <%= helpers.svg reason_icon(entry[:reason]), class: "size-4" %>
+          <%= reason_label(entry[:reason]) %>
+        </span>
+        <% if (msg = truncate_message(entry[:message])) %>
+          <span class="bulk-update-failure-list__message" title="<%= entry[:message] %>">
+            <%= msg %>
+          </span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="bulk-update-failure-list__footer">
+    <button
+      type="button"
+      class="bulk-update-failure-list__retry"
+      data-action="click->bulk-update-form#retryFailed"
+      data-retry-failed-ids="<%= failed_ids_csv %>"
+    >
+      <%= helpers.svg "tabler/outline/refresh", class: "size-4" %>
+      <%= t("avo.bulk_update.failure_list.retry") %>
+    </button>
+  </div>
+</div>

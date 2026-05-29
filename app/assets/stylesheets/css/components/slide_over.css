@@ -1,0 +1,114 @@
+/* SlideOver Component — side-anchored slide-out panel
+ *
+ * Independent from .modal. Uses its own body class (`slide-over-open`) and
+ * its own Turbo frame so it can never collide with the action modal.
+ *
+ * Below 640px the panel rotates into a bottom sheet (full width, max-height
+ * 80vh, slides up from the viewport bottom). prefers-reduced-motion drops the
+ * entry transition.
+ *
+ * Customizable CSS vars live in variables.css (--slide-over-footer-h,
+ * --slide-over-width-{sm,md,lg}); component-local vars stay here. */
+
+.slide-over {
+  @apply fixed inset-0 z-150 flex justify-end items-stretch;
+}
+
+.slide-over__backdrop {
+  @apply absolute inset-0 w-full h-full;
+
+  background-color: color-mix(in oklch, var(--color-avo-neutral-950) 25%, transparent);
+
+  .dark & {
+    background-color: color-mix(in oklch, var(--color-avo-neutral-950) 60%, transparent);
+  }
+}
+
+.slide-over__panel {
+  @apply relative flex flex-col shrink-0 h-full bg-background;
+  @apply shadow-modal;
+
+  width: var(--slide-over-width-md);
+  max-width: 100dvw;
+
+  /* Side-anchored entry: slide in from the end (right in LTR). */
+  transform: translateX(0);
+  transition: transform 200ms ease-out;
+
+  /* Respect user motion preference. */
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.slide-over--width-sm .slide-over__panel {
+  width: var(--slide-over-width-sm);
+}
+
+.slide-over--width-md .slide-over__panel {
+  width: var(--slide-over-width-md);
+}
+
+.slide-over--width-lg .slide-over__panel {
+  width: var(--slide-over-width-lg);
+}
+
+.slide-over__header {
+  @apply flex items-start gap-4 px-4 py-3 border-b border-neutral-200;
+
+  /* Definite header height to keep the body/footer flex layout consistent. */
+}
+
+.slide-over__heading {
+  @apply flex-1 min-w-0 font-medium text-content;
+}
+
+.slide-over__close {
+  @apply shrink-0 size-5 cursor-pointer text-content-secondary hover:text-content transition-colors;
+}
+
+.slide-over__body {
+  @apply flex-1 min-h-0 overflow-auto px-4 py-3;
+}
+
+.slide-over__footer {
+  /* Definite height — pinned footer requires it, per the modal footer ledger. */
+  @apply flex items-center justify-between gap-2 px-4 w-full border-t border-neutral-200 shrink-0;
+
+  height: var(--slide-over-footer-h);
+}
+
+/* Submit-in-flight: disable interactive children. */
+.slide-over--in-flight .slide-over__body,
+.slide-over--in-flight .slide-over__footer {
+  @apply pointer-events-none opacity-75;
+}
+
+/* Bottom-sheet modifier — applied below 640px via the media query below.
+   The modifier class can also be applied explicitly for previews. */
+.slide-over--bottom-sheet {
+  @apply items-end justify-stretch;
+
+  .slide-over__panel {
+    @apply w-full h-auto;
+
+    max-height: 80dvh;
+    border-start-start-radius: 1rem;
+    border-start-end-radius: 1rem;
+  }
+}
+
+/* Narrow viewport: rotate the slide-out into a bottom sheet automatically. */
+@media (max-width: 640px) {
+  .slide-over {
+    @apply items-end justify-stretch;
+  }
+
+  .slide-over__panel {
+    @apply w-full h-auto;
+
+    max-height: 80dvh;
+    border-start-start-radius: 1rem;
+    border-start-end-radius: 1rem;
+  }
+}

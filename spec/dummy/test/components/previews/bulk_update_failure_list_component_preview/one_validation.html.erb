@@ -1,0 +1,5 @@
+<%= render Avo::BulkUpdate::FailureListComponent.new(
+      failed: [
+        { id: 42, reason: :validation, message: "Email 'not-an-email' is invalid" }
+      ]
+    ) %>

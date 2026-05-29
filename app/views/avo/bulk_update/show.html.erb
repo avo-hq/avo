@@ -1,0 +1,107 @@
+<%# Bulk update slide-out (happy path). Wraps the SlideOverComponent in the
+    SLIDE_OVER_FRAME_ID turbo frame so the toolbar link can target it and the
+    `turbo_stream.avo_close_slide_over` helper can clear it on success.
+%>
+<%= turbo_frame_tag Avo::SLIDE_OVER_FRAME_ID do %>
+  <%= form_with scope: "fields",
+        url: avo.send(:"resources_#{@resource.route_key}_bulk_update_handle_path"),
+        method: :post,
+        local: true,
+        html: { novalidate: true },
+        data: {
+          controller: "bulk-update-form",
+          action: "turbo:submit-end->bulk-update-form#onSubmitEnd"
+        } do |form| %>
+
+    <%= render Avo::SlideOverComponent.new(width: :md, body_class: "bulk-update-body") do |c| %>
+      <% c.with_heading do %>
+        <%= t("avo.bulk_update.heading_with_count_html", count: @authorized_count).html_safe %>
+      <% end %>
+
+      <div id="bulk-update-form-body" class="bulk-update-form">
+        <%# K-of-N banner %>
+        <%= render Avo::BulkUpdate::BannerComponent.new(
+              authorized_count: @authorized_count,
+              total_count: @original_count
+            ) %>
+
+        <%# Selection envelope: untrusted input on POST, used for the audit floor / authz re-check. %>
+        <%= form.hidden_field :avo_resource_ids,
+              value: @authorized_records.map(&:id).join(","),
+              data: { "bulk-update-form-target": "resourceIds" } %>
+        <%= form.hidden_field :avo_selected_all,
+              value: bulk_update_params.dig(:fields, :avo_selected_all),
+              data: { "bulk-update-form-target": "selectedAll" } %>
+        <%= form.hidden_field :avo_index_query,
+              value: bulk_update_params.dig(:fields, :avo_index_query),
+              data: { "bulk-update-form-target": "indexQuery" } %>
+        <%# Populated client-side by bulk_update_form_controller#captureCurrentPageIds.
+            The handle path intersects this with `updated_ids` to cap per-row
+            turbo_stream replies to the user's visible page. %>
+        <%= hidden_field_tag :current_page_ids, "",
+              data: { "bulk-update-form-target": "currentPageIds" } %>
+
+        <%# Field stack. Each field hydrated at :bulk_edit, instantiated via
+            component_for_view(:bulk_edit) which Unit 1's view normalization
+            maps to the existing <Field>::EditComponent subclass tree. %>
+        <div class="bulk-update-fields">
+          <% bulk_field_ids.each do |field_id| %>
+            <% field = @resource.get_field_definitions.find { |f| f.id.to_sym == field_id } %>
+            <% next unless field %>
+            <% field.hydrate(resource: @resource, view: @bulk_view, user: _current_user) %>
+            <div class="bulk-update-field">
+              <%= render field.component_for_view(@bulk_view).new(
+                    field: field,
+                    resource: @resource,
+                    form: form,
+                    view: @bulk_view,
+                    index: 0,
+                    full_width: true
+                  ) %>
+              <%= render Avo::BulkUpdate::StatusNoticeComponent.new(
+                    field: field,
+                    notice: @field_notices[field_id]
+                  ) %>
+            </div>
+          <% end %>
+        </div>
+
+        <%# R8 live change summary; rendered only when the resource hasn't
+            opted out via `change_summary: false` (R9). %>
+        <% if @resource.bulk_update_change_summary %>
+          <%= render Avo::BulkUpdate::ChangeSummaryComponent.new(records_count: @authorized_count) %>
+        <% end %>
+
+        <%# R5 "Discard changes?" guard. Initially hidden; opened by the form
+            Stimulus controller when Esc / X / backdrop fires with dirty keys. %>
+        <%= render Avo::BulkUpdate::DiscardDialogComponent.new %>
+      </div>
+
+      <% c.with_controls do %>
+        <%= a_button type: :button,
+              data: { action: "click->slide-over#closeModal" },
+              style: :text,
+              color: :primary,
+              size: :md do %>
+          <%= t("avo.cancel") %>
+        <% end %>
+        <%= a_button type: :submit,
+              color: :primary,
+              style: :outline,
+              size: :md,
+              end_icon: "tabler/outline/arrow-right",
+              data: {
+                "bulk-update-form-target": "submitButton",
+                hotkey: "Mod+Enter"
+              } do %>
+          <span data-bulk-update-form-target="submitLabel">
+            <%= t("avo.bulk_update.submit", count: @authorized_count) %>
+          </span>
+          <span data-bulk-update-form-target="submittingLabel" hidden>
+            <%= t("avo.bulk_update.submitting") %>
+          </span>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

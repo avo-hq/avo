@@ -1,0 +1,5 @@
+<% field = BulkUpdateStatusNoticeComponentPreview::PreviewField.new(id: :stage, name: "Stage") %>
+<%= render Avo::BulkUpdate::StatusNoticeComponent.new(
+      field: field,
+      notice: { mode: :all_share, value: "success", count: 5 }
+    ) %>

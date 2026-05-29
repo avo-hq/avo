@@ -1,0 +1,19 @@
+<%# Force the bottom-sheet modifier via class override so the variant is
+    inspectable in Lookbook without resizing the viewport. %>
+<%= render Avo::SlideOverComponent.new(width: :md, class: "slide-over--bottom-sheet") do |c| %>
+  <% c.with_heading do %>
+    Bottom sheet (narrow viewport)
+  <% end %>
+
+  <% c.with_controls do %>
+    <button type="button" class="text-content-secondary">Cancel</button>
+    <button type="button" class="bg-accent text-white px-3 py-1 rounded">Update</button>
+  <% end %>
+
+  <div class="space-y-3">
+    <p class="text-sm">
+      Below 640px the slide-out rotates into a bottom sheet anchored to the
+      viewport bottom, max-height 80dvh.
+    </p>
+  </div>
+<% end %>

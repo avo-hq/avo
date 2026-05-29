@@ -1,0 +1,17 @@
+<%= render Avo::SlideOverComponent.new(width: :md, close_on_backdrop_click: false) do |c| %>
+  <% c.with_heading do %>
+    Backdrop click disabled
+  <% end %>
+
+  <% c.with_controls do %>
+    <button type="button" class="text-content-secondary">Cancel</button>
+    <button type="button" class="bg-accent text-white px-3 py-1 rounded">Update</button>
+  <% end %>
+
+  <div class="space-y-3">
+    <p class="text-sm">
+      With <code>close_on_backdrop_click: false</code> the panel ignores
+      backdrop clicks. Esc and the close button still dismiss.
+    </p>
+  </div>
+<% end %>

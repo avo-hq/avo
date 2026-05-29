@@ -1,0 +1,31 @@
+<%# Error frame for the bulk-update slide-out: cap-exceeded, n-too-small,
+    or no-records-editable variants. Rendered inside the SLIDE_OVER_FRAME_ID
+    turbo frame so the toolbar link click swaps in the error in place of the
+    expected form.
+%>
+<%= turbo_frame_tag Avo::SLIDE_OVER_FRAME_ID do %>
+  <%= render Avo::SlideOverComponent.new(width: :md) do |c| %>
+    <% c.with_heading do %>
+      <%= t("avo.bulk_update.heading") %>
+    <% end %>
+
+    <div class="bulk-update-error-frame">
+      <%= render Avo::BulkUpdate::BannerComponent.new(
+            variant: @banner_variant,
+            authorized_count: @banner_authorized || 0,
+            total_count: @banner_total || 0,
+            max_records: @banner_max
+          ) %>
+    </div>
+
+    <% c.with_controls do %>
+      <%= a_button type: :button,
+            data: { action: "click->slide-over#closeModal" },
+            style: :text,
+            color: :primary,
+            size: :md do %>
+        <%= t("avo.close") %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

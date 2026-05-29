@@ -16,6 +16,12 @@ module Avo
         template: @view_context.turbo_frame_tag(Avo::MODAL_FRAME_ID)
     end
 
+    def avo_close_slide_over
+      turbo_stream_action_tag :replace,
+        target: Avo::SLIDE_OVER_FRAME_ID,
+        template: @view_context.turbo_frame_tag(Avo::SLIDE_OVER_FRAME_ID)
+    end
+
     def avo_turbo_reload
       turbo_stream_action_tag :turbo_reload
     end

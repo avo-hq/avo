@@ -160,6 +160,9 @@
   @import "./css/components/header_menu.css";
   @import "./css/components/hotkey.css";
   @import "./css/components/modal.css";
+  @import "./css/components/slide_over.css";
+  @import "./css/components/bulk_update/banner.css";
+  @import "./css/components/bulk_update/status_notice.css";
   @import "./css/components/filters.css";
   @import "./css/components/tab_group.css";
   @import "./css/css-animations.css";

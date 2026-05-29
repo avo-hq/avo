@@ -19,8 +19,10 @@ module Avo
 
         # Try and build the component class or fallback to a blank one
         def component_for_view(view = :index)
-          # Use the edit variant for all "update" views
-          view = :edit if view.in? [:new, :create, :update]
+          # Use the edit variant for all "update" views, including bulk_edit
+          # (bulk_edit reuses <Field>::EditComponent; bulk-specific markup branches
+          # are guarded by `view.bulk?` inside the existing edit components).
+          view = :edit if view.in? [:new, :create, :update, :bulk_edit]
 
           custom_components = Avo::ExecutionContext.new(
             target: components,

@@ -26,5 +26,25 @@ RSpec.describe "Avo::ViewInquirer", type: :feature do
       assert view == :new
       assert view == "new"
     end
+
+    it "treats :bulk_edit as a form view that is NOT single and IS bulk" do
+      view = Avo::ViewInquirer.new(:bulk_edit)
+
+      assert view.form?
+      assert view.bulk?
+      assert view.single? == false
+      assert view.display? == false
+      assert view.new? == false
+      assert view.edit? == false
+      assert view == :bulk_edit
+      assert view == "bulk_edit"
+    end
+
+    it "does not flag :new, :edit, :create, :update, :show, or :index as bulk" do
+      %i[new edit create update show index].each do |view_name|
+        view = Avo::ViewInquirer.new(view_name)
+        assert view.bulk? == false, "expected #{view_name} not to be bulk?"
+      end
+    end
   end
 end

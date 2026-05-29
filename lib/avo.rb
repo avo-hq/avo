@@ -23,6 +23,7 @@ module Avo
 
   # Frame IDs
   MODAL_FRAME_ID = :modal_frame
+  SLIDE_OVER_FRAME_ID = :slide_over_frame
   MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID = :media_library_item_details
   ACTIONS_BACKGROUND_FRAME_ID = :actions_background
 

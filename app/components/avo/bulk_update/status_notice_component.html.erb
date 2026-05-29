@@ -1,0 +1,20 @@
+<div class="bulk-update-status-notice <%= tone_class %>" id="<%= notice_id %>">
+  <span class="bulk-update-status-notice__icon">
+    <%= helpers.svg icon_name, class: "size-4" %>
+  </span>
+  <span class="bulk-update-status-notice__body">
+    <% case mode %>
+    <% when :all_share %>
+      <%= t("avo.bulk_update.status_notice.all_share_html",
+            count: total_count,
+            field: field_label,
+            value: all_share_value_label).html_safe %>
+    <% when :sample_list %>
+      <%= t("avo.bulk_update.status_notice.sample_list_html",
+            count: distinct_count,
+            values: sample_value_labels) %>
+    <% when :count_only %>
+      <%= t("avo.bulk_update.status_notice.count_only_html", count: distinct_count) %>
+    <% end %>
+  </span>
+</div>

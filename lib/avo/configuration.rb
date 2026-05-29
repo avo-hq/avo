@@ -37,6 +37,12 @@ module Avo
     attr_accessor :raise_error_on_missing_policy
     attr_accessor :global_search
     attr_accessor :buttons_on_form_footers
+    # Bulk update v1 (sync-only) hard cap on per-submission record count.
+    # Resolution order: resource DSL `bulk_update[:max_records]` > this global > 500.
+    attr_accessor :bulk_update_max_records
+    # Mixed-values sample-listing threshold for status notices. At or below this number of
+    # distinct values, the R7 notice shows the sample list; above it, count-only.
+    attr_accessor :bulk_update_sample_threshold
     attr_accessor :main_menu
     attr_accessor :profile_menu
     attr_accessor :header_menu
@@ -166,6 +172,8 @@ module Avo
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
       @buttons_on_form_footers = false
+      @bulk_update_max_records = 500
+      @bulk_update_sample_threshold = 5
       @main_menu = nil
       @profile_menu = nil
       @header_menu = nil

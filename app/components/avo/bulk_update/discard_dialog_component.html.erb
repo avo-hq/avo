@@ -1,0 +1,48 @@
+<%# In-component "Discard changes?" dialog. Mounts inside the slide-out body
+    and starts hidden; the form Stimulus controller toggles it when Esc / X /
+    backdrop fires with at least one dirty key. role="alertdialog" so SRs
+    announce assertively. %>
+<div
+  class="bulk-update-discard-dialog"
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="bulk-update-discard-dialog-heading"
+  aria-describedby="bulk-update-discard-dialog-body"
+  data-bulk-update-form-target="discardDialog"
+  data-action="keydown->bulk-update-form#discardDialogKeydown"
+  hidden
+>
+  <div class="bulk-update-discard-dialog__panel">
+    <div class="bulk-update-discard-dialog__header">
+      <span class="bulk-update-discard-dialog__icon">
+        <%= helpers.svg icon_name, class: "size-6" %>
+      </span>
+      <h2 id="bulk-update-discard-dialog-heading" class="bulk-update-discard-dialog__heading">
+        <%= t("avo.bulk_update.discard_dialog.heading") %>
+      </h2>
+    </div>
+
+    <p id="bulk-update-discard-dialog-body" class="bulk-update-discard-dialog__body">
+      <%= t("avo.bulk_update.discard_dialog.body") %>
+    </p>
+
+    <div class="bulk-update-discard-dialog__footer">
+      <button
+        type="button"
+        class="bulk-update-discard-dialog__discard"
+        data-action="click->bulk-update-form#confirmDiscard"
+      >
+        <%= t("avo.bulk_update.discard_dialog.discard") %>
+      </button>
+      <button
+        type="button"
+        class="bulk-update-discard-dialog__keep"
+        data-action="click->bulk-update-form#cancelDiscard"
+        data-bulk-update-form-target="discardDialogKeepButton"
+        autofocus
+      >
+        <%= t("avo.bulk_update.discard_dialog.keep_editing") %>
+      </button>
+    </div>
+  </div>
+</div>

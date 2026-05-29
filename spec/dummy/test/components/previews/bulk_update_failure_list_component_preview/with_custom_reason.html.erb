@@ -1,0 +1,7 @@
+<%# Custom reason emitted by a `handle_bulk_update` override. The component
+    falls back to the humanized reason and the generic alert-triangle icon. %>
+<%= render Avo::BulkUpdate::FailureListComponent.new(
+      failed: [
+        { id: 91, reason: :custom_business_rule, message: "Cannot publish past last quarter's deadline." }
+      ]
+    ) %>

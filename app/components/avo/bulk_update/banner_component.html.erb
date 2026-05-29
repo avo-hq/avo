@@ -1,0 +1,36 @@
+<%# Banner for the bulk-update slide-out. aria-live so SRs announce K-of-N
+    state changes when the partial-failure flow mutates the banner in-place. %>
+<div class="bulk-update-banner <%= tone_class %>" role="status" aria-live="polite">
+  <span class="bulk-update-banner__icon">
+    <%= helpers.svg icon_name, class: "size-5" %>
+  </span>
+  <div class="bulk-update-banner__body">
+    <% case variant %>
+    <% when :no_records_editable %>
+      <p class="bulk-update-banner__title"><%= t("avo.bulk_update.banner.no_records_editable") %></p>
+    <% when :cap_exceeded %>
+      <p class="bulk-update-banner__title"><%= t("avo.bulk_update.banner.cap_exceeded.title") %></p>
+      <p class="bulk-update-banner__detail">
+        <%= t("avo.bulk_update.banner.cap_exceeded.body", count: @total_count, max: @max_records) %>
+      </p>
+    <% when :n_too_small %>
+      <p class="bulk-update-banner__title"><%= t("avo.bulk_update.banner.n_too_small.title") %></p>
+      <p class="bulk-update-banner__detail">
+        <%= t("avo.bulk_update.banner.n_too_small.body", count: @authorized_count) %>
+      </p>
+    <% else %>
+      <p class="bulk-update-banner__title">
+        <% if @authorized_count == @total_count %>
+          <%= t("avo.bulk_update.banner.updating_all_html", count: @authorized_count).html_safe %>
+        <% else %>
+          <%= t("avo.bulk_update.banner.updating_partial_html", authorized: @authorized_count, total: @total_count).html_safe %>
+        <% end %>
+      </p>
+      <% if show_exclusion_line? %>
+        <p class="bulk-update-banner__detail">
+          <%= t("avo.bulk_update.banner.excluded", count: excluded_count) %>
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

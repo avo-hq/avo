@@ -15,6 +15,11 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
+  self.bulk_update = {
+    enabled: true,
+    fields: [:name, :status, :stage, :country, :users_required, :started_at, :description]
+  }
+
   self.table_view = {
     row_options: {
       style: -> {

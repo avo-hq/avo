@@ -44,7 +44,31 @@ class Avo::ActionsComponent < Avo::BaseComponent
   end
 
   def render?
-    @actions.present?
+    @actions.present? || bulk_update_button_visible?
+  end
+
+  # The bulk-update button renders next to the Actions picker when the resource
+  # opts in via `self.bulk_update = { enabled: true }` AND the toolbar is on an
+  # index-style listing (the picker only shows on index/show; bulk update is
+  # index-only because N>=2 selection is required).
+  def bulk_update_button_visible?
+    return false unless @resource.respond_to?(:bulk_update_enabled?)
+    return false unless @resource.bulk_update_enabled?
+    # Only on the index toolbar (not row controls or show pages).
+    return false if @as_row_control
+
+    true
+  end
+
+  # Initial href the link points at. The `item_select_all_controller` mutates
+  # this with `fields[avo_resource_ids]` / `fields[avo_selected_all]` /
+  # `fields[avo_index_query]` as the user selects rows. The URL is unsafe to
+  # follow until a selection has been made; the button ships disabled so that
+  # cannot happen.
+  def bulk_update_button_href
+    Avo::Services::URIService.parse(@resource.records_path)
+      .append_paths("bulk_update")
+      .to_s
   end
 
   def filter_actions

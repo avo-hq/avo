@@ -1,0 +1,16 @@
+<%# Replacement for the slide-out body on partial failure. Re-renders the
+    banner (mutated to "Retrying K of original N") + the FailureListComponent
+    with retry affordance. The slide-out itself stays open; the form's
+    submit-in-flight clears via the bulk_update_form_controller. %>
+<div id="bulk-update-form-body">
+  <%= render Avo::BulkUpdate::BannerComponent.new(
+        authorized_count: failed.size,
+        total_count: authorized_count
+      ) %>
+
+  <%= render Avo::BulkUpdate::FailureListComponent.new(
+        failed: failed,
+        resource: resource,
+        current_page_ids: current_page_ids
+      ) %>
+</div>

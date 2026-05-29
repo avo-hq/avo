@@ -1,5 +1,5 @@
 <div
-  class="actions-dropdown relative flex flex-col sm:w-auto"
+  class="actions-dropdown relative flex flex-col sm:w-auto sm:flex-row sm:items-center sm:gap-3"
   data-component-name="<%= self.class.to_s.underscore %>"
   data-controller="actions-picker"
   data-actions-picker-enabled-class="text-content hover:bg-secondary"
@@ -10,29 +10,59 @@
   <% end %>
 >
 
-  <%= render ui.dropdown(popover_mode: true) do |component| %>
-    <% component.with_trigger do %>
-      <%= a_button style: @style,
-        type: :button,
-        color: @color,
-        size: @size,
-        class: "focus:outline-hidden",
-        icon: @icon,
-        icon_class: @icon_class,
-        popovertarget: component.popover_id,
-        data: {
-          actions_dropdown_button: @resource.model_key,
-          tippy: "tooltip",
-          tippy_content: @title,
-          **(@hotkey.present? ? (@as_row_control ? {hotkey_original: @hotkey} : {hotkey: @hotkey}) : {})
-        } do %>
-        <%= @label %>
+  <% if @actions.present? %>
+    <%= render ui.dropdown(popover_mode: true) do |component| %>
+      <% component.with_trigger do %>
+        <%= a_button style: @style,
+          type: :button,
+          color: @color,
+          size: @size,
+          class: "focus:outline-hidden",
+          icon: @icon,
+          icon_class: @icon_class,
+          popovertarget: component.popover_id,
+          data: {
+            actions_dropdown_button: @resource.model_key,
+            tippy: "tooltip",
+            tippy_content: @title,
+            **(@hotkey.present? ? (@as_row_control ? {hotkey_original: @hotkey} : {hotkey: @hotkey}) : {})
+          } do %>
+          <%= @label %>
+        <% end %>
+      <% end %>
+      <% component.with_items do %>
+        <% @actions.each do |action| %>
+          <%= render_item(action) %>
+        <% end %>
       <% end %>
     <% end %>
-    <% component.with_items do %>
-      <% @actions.each do |action| %>
-        <%= render_item(action) %>
-      <% end %>
+  <% end %>
+
+  <%# Bulk update toolbar button.
+      Renders ONLY when the resource opts in via `self.bulk_update = { enabled: true }`.
+      Uses a DISTINCT `data-bulk-update-target` attribute (NOT `data-actions-picker-target`)
+      so `actions_picker_controller#visitAction` cannot hijack the click into the modal frame.
+      `data-turbo-frame` explicitly routes the click into the slide-over frame.
+      Ships disabled; `item_selector_controller#enableBulkUpdateAction` flips it on
+      once N >= 2 rows are selected.
+      `data-resource-name` uses `model_key` (NOT the class.to_s used on the wrapper
+      div) so it matches the resource-name on `item-selector` rows AND the
+      `item-select-all` controller's `this.resourceName` (also `model_key`). %>
+  <% if bulk_update_button_visible? %>
+    <%= link_to bulk_update_button_href,
+      class: "button button--size-#{@size} button--style-outline focus:outline-hidden dropdown-menu__item--disabled",
+      data: {
+        bulk_update_target: "resourceAction",
+        turbo_frame: Avo::SLIDE_OVER_FRAME_ID,
+        resource_name: @resource.model_key,
+        disabled: true,
+        disabled_classes: "dropdown-menu__item--disabled",
+        turbo_prefetch: false,
+        tippy: "tooltip",
+        tippy_content: t("avo.bulk_update.toolbar.button")
+      } do %>
+      <%= helpers.svg "tabler/outline/edit-circle", class: "button__icon" %>
+      <%= t("avo.bulk_update.toolbar.button") %>
     <% end %>
   <% end %>
 </div>

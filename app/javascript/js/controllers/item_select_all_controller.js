@@ -98,7 +98,15 @@ export default class extends Controller {
   }
 
   updateLinks(param) {
-    const actionButtons = document.querySelectorAll(`a[data-actions-picker-target][data-resource-name="${this.resourceName}"]`)
+    // Rewrite both Actions picker links AND the bulk-update toolbar button.
+    // The two use distinct target attributes (so the actions-picker controller
+    // doesn't hijack the bulk-update link's click into the modal frame), but
+    // the URL-rewriting logic is identical: carry the current selection state
+    // into `fields[avo_resource_ids]` / `fields[avo_selected_all]` /
+    // `fields[avo_index_query]` on the query string.
+    const actionButtons = document.querySelectorAll(
+      `a[data-actions-picker-target][data-resource-name="${this.resourceName}"], a[data-bulk-update-target][data-resource-name="${this.resourceName}"]`,
+    )
     actionButtons.forEach((link) => {
       try {
         const url = new URL(link.href)

@@ -51,7 +51,14 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     @label_for || @field.form_field_label
   end
 
-  delegate :show?, :edit?, to: :@view, prefix: :on
+  delegate :show?, :edit?, :form?, to: :@view, prefix: :on
+
+  # Render the edit / input branch for any form-flavored view, including
+  # multi-record views like :bulk_edit. Without this, the wrapper would render
+  # nothing under :bulk_edit (which is `form?` true but `edit?` false).
+  def on_edit_or_form?
+    on_edit? || on_form?
+  end
 
   def help
     Avo::ExecutionContext.new(target: @help || @field.help, record: record, resource: @resource, view: @view).handle

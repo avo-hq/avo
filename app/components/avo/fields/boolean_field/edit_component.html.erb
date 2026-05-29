@@ -1,29 +1,50 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <div class="h-8 flex items-center">
-    <%= content_tag :label,
-      for: "#{@form.object_name}_#{@field.id}",
-      class: class_names(
-        "relative flex items-center",
-        "opacity-50": disabled?,
-        "cursor-pointer": !disabled?
-      ) do %>
-      <%= @form.check_box @field.id,
-        value: @field.value,
-        checked: @field.value,
-        disabled: disabled?,
-        autofocus: @autofocus,
-        data:  @field.get_html(:data, view: view, element: :input),
-        style: @field.get_html(:style, view: view, element: :input),
-        class: class_names(
-          "size-4",
-          @field.get_html(:classes, view: view, element: :input),
-          "sr-only peer": as_toggle?
-        ) %>
-
-      <% if as_toggle? %>
-        <div class="block w-10 h-6 rounded-full bg-gray-300 peer-checked:bg-green-500"></div>
-        <div class="dot absolute start-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 transform peer-checked:translate-x-4"></div>
+  <% if bulk_edit? %>
+    <%# Tri-state for bulk-update: Unchanged (default, sentinel value the server drops), True, False. %>
+    <div role="radiogroup" aria-label="<%= @field.name %>" class="flex items-center gap-4 h-8">
+      <% [
+        [:unchanged, Avo::Fields::BooleanField::EditComponent::BULK_EDIT_UNCHANGED, t("avo.bulk_update.boolean.unchanged"), true],
+        [:true, "true", t("avo.bulk_update.boolean.true"), false],
+        [:false, "false", t("avo.bulk_update.boolean.false"), false]
+      ].each do |state, radio_value, label, default_checked| %>
+        <label for="<%= bulk_edit_radio_id(state) %>" class="flex items-center gap-1 cursor-pointer">
+          <%= @form.radio_button @field.id,
+            radio_value,
+            id: bulk_edit_radio_id(state),
+            checked: default_checked,
+            disabled: disabled?,
+            class: "size-4" %>
+          <span><%= label %></span>
+        </label>
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  <% else %>
+    <div class="h-8 flex items-center">
+      <%= content_tag :label,
+        for: "#{@form.object_name}_#{@field.id}",
+        class: class_names(
+          "relative flex items-center",
+          "opacity-50": disabled?,
+          "cursor-pointer": !disabled?
+        ) do %>
+        <%= @form.check_box @field.id,
+          value: @field.value,
+          checked: @field.value,
+          disabled: disabled?,
+          autofocus: @autofocus,
+          data:  @field.get_html(:data, view: view, element: :input),
+          style: @field.get_html(:style, view: view, element: :input),
+          class: class_names(
+            "size-4",
+            @field.get_html(:classes, view: view, element: :input),
+            "sr-only peer": as_toggle?
+          ) %>
+
+        <% if as_toggle? %>
+          <div class="block w-10 h-6 rounded-full bg-gray-300 peer-checked:bg-green-500"></div>
+          <div class="dot absolute start-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200 transform peer-checked:translate-x-4"></div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>

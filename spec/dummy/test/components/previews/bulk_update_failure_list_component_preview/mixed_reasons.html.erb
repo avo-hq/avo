@@ -1,0 +1,8 @@
+<%= render Avo::BulkUpdate::FailureListComponent.new(
+      failed: [
+        { id: 1, reason: :validation, message: "Stage cannot be 'closed' when status is 'open'" },
+        { id: 2, reason: :validation, message: "Country is not included in the list" },
+        { id: 7, reason: :unauthorized_at_write },
+        { id: 12, reason: :concurrent_modification }
+      ]
+    ) %>

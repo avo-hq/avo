@@ -1,0 +1,36 @@
+/* Banner for the bulk-update slide-out.
+ *
+ * Two tones via modifier:
+ *   --accent   : info / progress (default K-of-N banner)
+ *   --caution  : warning  (cap-exceeded, n-too-small, no-records-editable)
+ *
+ * Sits at the top of the slide-out body. aria-live=polite so SRs announce
+ * mutations (e.g. partial-failure retry collapsing K). */
+
+.bulk-update-banner {
+  @apply flex gap-3 items-start p-3 rounded-md;
+}
+
+.bulk-update-banner--accent {
+  @apply bg-accent-50 text-accent-900;
+}
+
+.bulk-update-banner--caution {
+  @apply bg-tertiary-50 text-tertiary-900;
+}
+
+.bulk-update-banner__icon {
+  @apply shrink-0 mt-0.5;
+}
+
+.bulk-update-banner__body {
+  @apply flex-1 min-w-0;
+}
+
+.bulk-update-banner__title {
+  @apply text-sm font-medium m-0;
+}
+
+.bulk-update-banner__detail {
+  @apply text-sm m-0 mt-1 opacity-90;
+}

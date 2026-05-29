@@ -6,6 +6,8 @@ import ActionsPickerController from './controllers/actions_picker_controller'
 import AttachmentsController from './controllers/attachments_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
+import BulkUpdateFieldController from './controllers/bulk_update_field_controller'
+import BulkUpdateFormController from './controllers/bulk_update_form_controller'
 import CardFiltersController from './controllers/card_filters_controller'
 import CheckboxListFieldController from './controllers/fields/checkbox_list_field_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
@@ -56,6 +58,7 @@ import SelectFilterController from './controllers/select_filter_controller'
 import SelfDestroyController from './controllers/self_destroy_controller'
 import SidebarController from './controllers/sidebar_controller'
 import SignOutController from './controllers/sign_out_controller'
+import SlideOverController from './controllers/slide_over_controller'
 import StarsFieldController from './controllers/fields/stars_field_controller'
 import TableRowController from './controllers/table_row_controller'
 import TabsController from './controllers/tabs_controller'
@@ -75,6 +78,8 @@ application.register('actions-overflow', ActionsOverflowController)
 application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('boolean-filter', BooleanFilterController)
+application.register('bulk-update-field', BulkUpdateFieldController)
+application.register('bulk-update-form', BulkUpdateFormController)
 application.register('card-filters', CardFiltersController)
 application.register('clear-input', ClearInputController)
 application.register('appearance', AppearanceController)
@@ -115,6 +120,7 @@ application.register('select', SelectController)
 application.register('self-destroy', SelfDestroyController)
 application.register('sidebar', SidebarController)
 application.register('sign-out', SignOutController)
+application.register('slide-over', SlideOverController)
 application.register('table-row', TableRowController)
 application.register('tabs', TabsController)
 application.register('tabs-overflow', TabsOverflowController)

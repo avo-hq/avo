@@ -1,0 +1,7 @@
+<%= render Avo::BulkUpdate::FailureListComponent.new(
+      failed: [
+        { id: 1, reason: :validation, message: "Name is too short" },
+        { id: 7, reason: :unauthorized_at_write },
+        { id: 12, reason: :concurrent_modification }
+      ]
+    ) %>
