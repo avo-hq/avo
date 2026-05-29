@@ -3,27 +3,35 @@
   @apply inline-flex items-center;
 }
 
-/* The switcher's trigger surfaces (inline pill + compact trigger) sit on the
-   dark top-navbar in both schemes, so they use primitive neutral tokens that
-   don't flip with light/dark — matching breadcrumbs and the sidebar toggle.
+/* The switcher's trigger surfaces inherit the scoped top navbar palette.
    The popover panels below stay theme-adaptive because they render on the
    page surface, not the navbar. */
 
-/* Inline pill — three sections sit in a single rounded container */
+/* Inline pill: three sections sit in a single rounded container */
 .color-scheme-switcher--inline {
-  @apply gap-1 p-1 rounded-lg bg-avo-neutral-800 border border-avo-neutral-700;
+  @apply gap-1 p-1 rounded-lg border;
+  background-color: var(--top-navbar-control-background);
+  border-color: var(--top-navbar-control-border);
 }
 
-/* Compact — a single icon trigger that opens a unified panel */
+/* Compact: a single icon trigger that opens a unified panel */
 .color-scheme-switcher--compact {
   @apply gap-0;
 }
 
 .color-scheme-switcher__compact-trigger {
   @apply inline-flex items-center gap-1 h-8 ps-2 pe-1.5 rounded-lg transition-all duration-150;
-  @apply text-avo-neutral-300 bg-avo-neutral-800 border border-avo-neutral-700 hover:bg-avo-neutral-700 hover:text-avo-neutral-50;
+  @apply border;
   @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply cursor-pointer;
+  background-color: var(--top-navbar-control-background);
+  border-color: var(--top-navbar-control-border);
+  color: var(--top-navbar-content);
+
+  &:hover {
+    background-color: var(--top-navbar-control-background-hover);
+    color: var(--top-navbar-content-hover);
+  }
 }
 
 .color-scheme-switcher__chevron {
@@ -126,22 +134,31 @@
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 py-0.5 rounded-md transition-all duration-150 text-avo-neutral-300 hover:bg-avo-neutral-700 hover:text-avo-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 py-0.5 rounded-md transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
+  color: var(--top-navbar-content);
+
+  &:hover {
+    background-color: var(--top-navbar-control-background-hover);
+    color: var(--top-navbar-content-hover);
+  }
 }
 
 /* Scheme buttons - idle vs active state. The active "pill" stands out against
-   the neutral-800 inline pill background by going darker (neutral-950). */
+   the inline pill background through the scoped navbar active tokens. */
 .color-scheme-switcher__button[data-scheme="light"],
 .color-scheme-switcher__button[data-scheme="dark"],
 .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-transparent text-avo-neutral-300 shadow-none;
+  @apply bg-transparent shadow-none;
+  color: var(--top-navbar-content);
 }
 
 .scheme-light .color-scheme-switcher__button[data-scheme="light"],
 .scheme-dark .color-scheme-switcher__button[data-scheme="dark"],
 .scheme-auto .color-scheme-switcher__button[data-scheme="auto"] {
-  @apply bg-avo-neutral-950 text-avo-neutral-50 shadow-sm;
+  @apply shadow-sm;
+  background-color: var(--top-navbar-active-background);
+  color: var(--top-navbar-active-content);
 }
 
 .color-scheme-switcher__icon {
