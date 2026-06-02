@@ -40,7 +40,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def render_cover
     return link_to_cover if @card[:cover_url].present?
 
-    link_to resource_view_path, title: @card[:title] do
+    link_to resource_view_path, aria: {label: cover_link_label} do
       render Avo::Index::GridCoverEmptyStateComponent.new
     end
   end
@@ -48,7 +48,11 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def link_to_cover
     classes = "absolute h-full w-full object-cover"
 
-    link_to image_tag(@card[:cover_url], class: classes), resource_view_path, class: classes, title: @card[:title], loading: :lazy, width: "640", height: "480"
+    link_to image_tag(@card[:cover_url], class: classes, alt: ""), resource_view_path, class: classes, aria: {label: cover_link_label}, loading: :lazy, width: "640", height: "480"
+  end
+
+  def cover_link_label
+    "Open record ##{@resource.record_param}"
   end
 
   def render_title
