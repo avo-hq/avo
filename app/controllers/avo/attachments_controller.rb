@@ -7,14 +7,18 @@ module Avo
     before_action :set_record, only: [:destroy, :create]
 
     def create
-      blob = ActiveStorage::Blob.create_and_upload! io: params[:file].to_io, filename: params[:filename]
       association_name = BaseResource.valid_attachment_name(@record, params[:attachment_key])
 
-      # If association name is present attach the blob to it
       if association_name
+        return render_upload_unauthorized unless authorized_to_upload(association_name)
+
+        blob = ActiveStorage::Blob.create_and_upload! io: params[:file].to_io, filename: params[:filename]
         @record.send(association_name).attach blob
-      # If key is present use the blob from the key else raise error
-      elsif params[:key].blank?
+      elsif params[:key].present?
+        return render_upload_unauthorized unless authorized_to_trix_upload?
+
+        blob = ActiveStorage::Blob.create_and_upload! io: params[:file].to_io, filename: params[:filename]
+      else
         raise ActionController::BadRequest.new("Could not find the attachment association for #{params[:attachment_key]} (check the `attachment_key` for this Trix field)")
       end
 
@@ -62,6 +66,18 @@ module Avo
 
     def authorized_to(action)
       @resource.authorization.authorize_action("#{action}_#{params[:attachment_name]}?", record: @record, raise_exception: false)
+    end
+
+    def authorized_to_upload(attachment_name)
+      @resource.authorization.authorize_action("upload_#{attachment_name}?", record: @record, raise_exception: false)
+    end
+
+    def authorized_to_trix_upload?
+      @resource.authorization.authorize_action("update?", record: @record, raise_exception: false)
+    end
+
+    def render_upload_unauthorized
+      render json: {error: "Not authorized"}, status: :forbidden
     end
   end
 end
