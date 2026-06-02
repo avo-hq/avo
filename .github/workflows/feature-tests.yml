@@ -98,7 +98,9 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      run: bundle exec rspec spec/features
+      run: |
+        bundle exec rspec spec/features
+        bundle exec rspec spec/requests
 
     - uses: actions/upload-artifact@v4
       with:
