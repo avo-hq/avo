@@ -11,7 +11,8 @@ loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   "html" => "HTML",
   "uri_service" => "URIService",
-  "has_html_attributes" => "HasHTMLAttributes"
+  "has_html_attributes" => "HasHTMLAttributes",
+  "engine_dsl" => "EngineDSL"
 )
 loader.ignore("#{__dir__}/generators")
 loader.setup
