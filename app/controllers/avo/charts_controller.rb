@@ -2,6 +2,12 @@ require_dependency "avo/base_controller"
 
 module Avo
   class ChartsController < BaseController
+    # Summarizable charts reuse the index query pipeline (including policy scope via
+    # `query_scope`). They were never meant to require `distribution_chart?` /
+    # `distribution_chart_full?` policy methods — those only surfaced once
+    # `explicit_authorization` defaulted to true.
+    skip_before_action :authorize_base_action, only: [:distribution_chart, :distribution_chart_full]
+
     before_action :validate_summarizable_field
 
     def distribution_chart
