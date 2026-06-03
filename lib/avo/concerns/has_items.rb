@@ -85,10 +85,6 @@ module Avo
           if item.is_field?
             fields << item
           end
-
-          if item.is_row?
-            fields << extract_fields(item)
-          end
         end
 
         fields.flatten
@@ -173,7 +169,7 @@ module Avo
 
       # Default renderable items for any HasItems container. Subclasses that
       # need to auto-wrap (Tab, Panel, Sidebar, Resource) override this.
-      # Card, Row, TabGroup fall through to the raw visible_items.
+      # Card and TabGroup fall through to the raw visible_items.
       def get_items
         visible_items
       end
@@ -216,10 +212,6 @@ module Avo
               item.items.grep(Avo::Resources::Items::Tab).each do |tab|
                 tab.items.grep(Avo::Resources::Items::Panel).each do |panel|
                   set_target_to_top panel.items.grep(Avo::Fields::BelongsToField)
-
-                  panel.items.grep(Avo::Resources::Items::Row).each do |row|
-                    set_target_to_top row.items.grep(Avo::Fields::BelongsToField)
-                  end
                 end
               end
             end
@@ -290,7 +282,7 @@ module Avo
       end
 
       # Extracts fields from a structure
-      # Structures can be panels, rows and sidebars
+      # Structures can be panels, cards, and sidebars
       def extract_fields(structure)
         structure.items.map do |item|
           if item.is_field?
@@ -301,10 +293,10 @@ module Avo
         end.compact
       end
 
-      # Extractable structures are panels, rows and sidebars
+      # Extractable structures are panels, cards, and sidebars
       # Sidebars are only extractable if they are not on the index view
       def extractable_structure?(structure)
-        structure.is_panel? || structure.is_row? || structure.is_card? || (structure.is_sidebar? && !view.index?)
+        structure.is_panel? || structure.is_card? || (structure.is_sidebar? && !view.index?)
       end
 
       # Standalone items are fields that don't have their own panel
