@@ -352,6 +352,22 @@
     @apply text-sm p-3 gap-1.5 min-w-10;
   }
 
+  /* Icon-only buttons drop the extra horizontal padding so they stay square */
+  .button--icon-only {
+    &.button--size-xs,
+    &.button--size-sm {
+      @apply p-1;
+    }
+
+    &.button--size-md {
+      @apply p-2;
+    }
+
+    &.button--size-lg {
+      @apply p-2.5;
+    }
+  }
+
   /* Icon button sizes */
   .button--size-xs .button__icon,
   .button--size-sm .button__icon{

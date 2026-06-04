@@ -40,11 +40,17 @@ class Avo::ButtonComponent < Avo::BaseComponent
       "button--size-#{@size}",
       "button--style-#{@style}",
       @class,
-      "button--color-#{@color}": @color.present?
+      "button--color-#{@color}": @color.present?,
+      "button--icon-only": icon_only?
     ]
     base_classes << "button--loading" if @args[:loading]
 
     class_names(*base_classes.compact)
+  end
+
+  # An icon button has an icon but no visible text, so it can be rendered with tighter, symmetric padding.
+  def icon_only?
+    (@icon.present? || @end_icon.present?) && (@style == :icon || content.blank?)
   end
 
   def is_link?
