@@ -340,6 +340,19 @@
     }
   }
 
+  /* Fully rounded (pill) shape — opt-in via `rounded: :full`. Overrides the
+     base `rounded-lg`/squircle radius. Wins on source order (single class, same
+     specificity as `.button`). Switches corner-shape back to `round` so the
+     squircle radius bump doesn't distort the pill. */
+  .button--rounded-full {
+    @apply rounded-full;
+
+    @supports (corner-shape: squircle) {
+      border-radius: 9999px;
+      corner-shape: round;
+    }
+  }
+
   /* Size variants */
   .button--size-xs {
     @apply text-xs px-2 py-1 gap-1 min-w-6;
@@ -427,7 +440,15 @@
 
   /* Icon spacing */
   .button__icon {
-    @apply pointer-events-none shrink-0 grow-0 w-auto -my-px;
+    @apply pointer-events-none shrink-0 grow-0 w-auto;
+  }
+
+  /* The `-my-px` pulls the icon tight against the text line, so it only applies
+     when there's a label. On icon-only buttons it would shave 2px off the height
+     and turn the box into an oval — so scope it here rather than overriding it
+     back out later (no cascade fight). */
+  .button:has(.button__label) .button__icon {
+    @apply -my-px;
   }
 
   .button__icon:not(:last-child) {
