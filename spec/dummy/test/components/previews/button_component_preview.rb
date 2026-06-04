@@ -6,9 +6,10 @@ class ButtonComponentPreview < Lookbook::Preview
   # @param size select { choices: [xs, sm, md, lg, xl] }
   # @param style select { choices: [primary, outline, tertiary, text, icon] }
   # @param color select { choices: [gray, red, green, blue] }
+  # @param rounded select { choices: [nil, full] }
   # @param icon text "Icon to display in the button"
-  def default(label: "Label", size: :md, style: :primary, color: :gray, icon: "tabler/outline/arrow-up")
-    a_button(size:, style:, color:, icon:) do
+  def default(label: "Label", size: :md, style: :primary, color: :gray, rounded: nil, icon: "tabler/outline/arrow-up")
+    a_button(size:, style:, color:, rounded:, icon:) do
       label
     end
   end

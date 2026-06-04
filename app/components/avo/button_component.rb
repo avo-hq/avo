@@ -4,6 +4,7 @@
 # style: primary/outline/text
 # size: :sm, :md, :lg
 # padding: nil (default), :sm or :xs for tighter, equal padding
+# rounded: nil (default, uses the standard radius), :full for a pill shape
 # color: nil, :primary, :accent, :gray, :red, :green, :blue, or any other tailwind color
 # icon: "tabler/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
@@ -11,6 +12,7 @@ class Avo::ButtonComponent < Avo::BaseComponent
   prop :size, default: :md
   prop :padding
   prop :style, default: :outline
+  prop :rounded
   prop :color
   prop :icon do |value|
     value&.to_sym
@@ -43,7 +45,8 @@ class Avo::ButtonComponent < Avo::BaseComponent
       "button--style-#{@style}",
       @class,
       "button--color-#{@color}": @color.present?,
-      "button--padding-#{@padding}": @padding.present?
+      "button--padding-#{@padding}": @padding.present?,
+      "button--rounded-#{@rounded}": @rounded.present?
     ]
     base_classes << "button--loading" if @args[:loading]
 
