@@ -37,11 +37,13 @@ class Avo::Resources::Post < Avo::BaseResource
   self.discreet_information = [
     :timestamps,
     {
+      as: :text,
       tooltip: -> { sanitize("Product is <strong>#{record.published_at ? "published" : "draft"}</strong>", tags: %w[strong]) },
       icon: -> { "tabler/outline/#{record.published_at ? "eye" : "eye-off"}" }
     },
     {
-      label: -> { record.published_at ? "✅" : "🙄" },
+      as: :text,
+      text: -> { record.published_at ? "✅" : "🙄" },
       tooltip: -> { "Post is #{record.published_at ? "published" : "draft"}. Click to toggle." },
       url: -> {
         Avo::Actions::TogglePublished.path(

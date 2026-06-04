@@ -19,7 +19,7 @@
 }
 
 .dropdown-menu {
-  @apply flex flex-col w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
+  @apply flex flex-col w-full rounded-lg border border-tertiary bg-primary;
 }
 
 .dropdown-menu--scrollable {

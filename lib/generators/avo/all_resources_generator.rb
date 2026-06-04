@@ -22,13 +22,18 @@ module Generators
       no_tasks do
         def fetch_models
           model_files = Dir[Rails.root.join("app/models/**/*.rb")]
-          model_files.map do |file|
+          model_files.filter_map do |file|
             model_name = file.sub(Rails.root.join("app/models/").to_s, "").sub(".rb", "")
-            model_name.camelize.constantize
+            klass = model_name.camelize.constantize
+
+            next unless klass.is_a?(Class)
+            next unless klass < ActiveRecord::Base
+            next if klass.abstract_class?
+
             model_name.camelize
           rescue NameError
             nil
-          end.compact
+          end
         end
       end
     end

@@ -126,11 +126,21 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_actions_list(actions_list)
     return unless can_see_the_actions_button?
 
-    # Actions button hotkey "a" only on index pages (non-nested).
-    # Pass as_row_control so the template can use hotkey_original for row controls,
-    # allowing the index-row-navigator controller to manage hotkey visibility.
+    # `as_row_control` hydrates each action with the current record (needed for both
+    # index rows and the single-record show/edit headers).
     as_row_control = @item.present?
-    hotkey = "a" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+
+    # Inside an index table row the hotkey must be managed by the index-row-navigator
+    # (data-hotkey-original); page-level headers use a plain data-hotkey.
+    as_index_row_control = row_controls_context?
+
+    # Actions button hotkey "a" on the main index, show and edit pages (non-nested,
+    # not an index row). The index component doesn't carry a @view, so detect it by
+    # class; show renders through the switcher and edit directly, both of which do
+    # carry a @view, so detect those by view.
+    hotkey = "a" if @reflection.nil? && !as_index_row_control && (
+      instance_of?(Avo::Views::ResourceIndexComponent) || @view&.show? || @view&.edit?
+    )
 
     render Avo::ActionsComponent.new(
       actions: @actions,
@@ -146,6 +156,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon_class: actions_list.icon_class,
       title: actions_list.title,
       as_row_control:,
+      as_index_row_control:,
       hotkey: hotkey
     )
   end

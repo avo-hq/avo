@@ -3,8 +3,8 @@ import BaseModalController from './base_modal_controller'
 /**
  * Persistent / show-hide strategy.
  *
- * The modal lives in the DOM at all times. It starts with the `hidden`
- * attribute and is revealed / hidden by toggling that attribute.
+ * The modal lives in the DOM at all times. It starts closed (the native popover
+ * is hidden until shown) and is revealed / hidden by toggling the popover.
  */
 export default class extends BaseModalController {
   connect() {
@@ -25,17 +25,17 @@ export default class extends BaseModalController {
   // -- strategy implementation ----------------------------------------------
 
   isOpen() {
-    return !this.modalTarget.hasAttribute('hidden')
+    return this.modalTarget.matches(':popover-open')
   }
 
   closeModal() {
-    this.modalTarget.setAttribute('hidden', '')
+    this.modalTarget.hidePopover()
     this.removeModalOpen()
     this.dispatchClose()
   }
 
   openModal() {
-    this.modalTarget.removeAttribute('hidden')
+    this.modalTarget.showPopover()
     this.addModalOpen()
     this.modalTarget.focus()
   }

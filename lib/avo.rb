@@ -4,13 +4,15 @@ require "active_support/inflector"
 require_relative "avo/version"
 require_relative "avo/tailwind_builder"
 require_relative "avo/configuration"
+require_relative "avo/engine_dsl"
 require_relative "avo/engine" if defined?(Rails)
 
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   "html" => "HTML",
   "uri_service" => "URIService",
-  "has_html_attributes" => "HasHTMLAttributes"
+  "has_html_attributes" => "HasHTMLAttributes",
+  "engine_dsl" => "EngineDSL"
 )
 loader.ignore("#{__dir__}/generators")
 loader.setup
