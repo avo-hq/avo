@@ -1,5 +1,5 @@
 .field-wrapper {
-  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 w-full grow-0 text-ellipsis overflow-auto;
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 w-full grow-0 text-ellipsis;
 }
 
 .field-wrapper__label {
