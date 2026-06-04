@@ -14,6 +14,11 @@
 
     --btn-text-color: color-mix(in oklab, var(--btn-color-accent), var(--color-content) 20%);
 
+    @supports (corner-shape: squircle) {
+      border-radius: var(--radius-3xl); /* when using the squircle shape, we need to set the border radius higher for some reason */
+      corner-shape: squircle;
+    }
+
     /* Base styles for all button types */
     &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)):active {
       @apply translate-y-px;
