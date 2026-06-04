@@ -13,9 +13,11 @@
   }
 
   input[type=radio]:focus-visible {
-    @apply outline-none;
+   @apply outline-none;
     &:after {
-      @apply ring ring-offset-2 ring-accent-content rounded-full !outline-none;
+      outline: var(--focus-outline);
+      outline-offset: var(--focus-outline-offset);
+      transition: none;
     }
   }
 }

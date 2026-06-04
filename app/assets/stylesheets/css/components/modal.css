@@ -87,7 +87,7 @@
 }
 
 .modal__controls {
-  @apply flex items-center justify-between py-2 px-3 w-full;
+  @apply flex items-center justify-between gap-2 py-2 px-3 w-full;
 }
 
 .modal--width-sm {

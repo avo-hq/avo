@@ -182,9 +182,9 @@ zh-TW:
       one: 另外一個項目
       other: "%{count} 個其他項目"
       zero: 沒有其他項目
-    x_records_selected_from_a_total_of_x_html: 本頁面共選擇了 <span class="font-bold text-gray-700">%{selected}</span> 筆記錄，所有頁面共有 <span class="font-bold text-gray-700">%{count}</span> 筆記錄
-    x_records_selected_from_all_pages_html: 從所有頁面中選中了 <span class="font-bold text-gray-700">%{count}</span> 筆記錄
-    x_records_selected_from_page_html: 在本頁中共選擇了 <span class="font-bold text-gray-700">%{selected}</span> 筆記錄
+    x_records_selected_from_a_total_of_x_html: 本頁面共選擇了 <span class="font-bold">%{selected}</span> 筆記錄，所有頁面共有 <span class="font-bold">%{count}</span> 筆記錄
+    x_records_selected_from_all_pages_html: 從所有頁面中選中了 <span class="font-bold">%{count}</span> 筆記錄
+    x_records_selected_from_page_html: 在本頁中共選擇了 <span class="font-bold">%{selected}</span> 筆記錄
     yes_confirm: 是的，確認
     you_cant_upload_new_resource: 在保存資源之前，您無法將檔案上傳到 Trix 編輯器。
     you_havent_set_attachment_key: 您尚未為此 Trix 欄位設定 `attachment_key`。

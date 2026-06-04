@@ -111,19 +111,7 @@
     @apply text-content-secondary;
   }
 
-  /* ==========================================================================
-    States: Focus
-    ========================================================================== */
-
-  select:focus-visible,
-  textarea:focus-visible,
-  .textarea-field:focus-visible,
-  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus-visible,
-  .input-field:focus-visible
-  {
-    @apply outline-none;
-    box-shadow: var(--box-shadow-focus);
-  }
+  /* Focus is handled by the global :focus-visible rule in focus.css. */
 }
 
 @layer component {
@@ -162,9 +150,10 @@
     ========================================================================== */
 
   .input-field__password-toggle {
-    @apply absolute text-content-secondary inset-y-0 end-0 flex items-center cursor-pointer;
+    @apply absolute text-content-secondary inset-y-0 end-0 flex items-center cursor-pointer rounded-lg;
 
     padding-inline-end: var(--input-icon-offset);
+    outline-offset: var(--focus-outline-offset-inset);
   }
 
   /* Wrapper-based selector: reliably targets password inputs with visibility toggle
@@ -305,7 +294,7 @@
     ========================================================================== */
 
   input[type="range"] {
-    @apply accent-accent ;
+    @apply accent-accent rounded-md;
   }
 
   /* Thumb (WebKit + Firefox) */

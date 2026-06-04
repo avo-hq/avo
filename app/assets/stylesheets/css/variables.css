@@ -39,8 +39,11 @@
     0 0 0 1px var(--color-red-600), 0 0 0 3px var(--color-red-300);
   --box-shadow-success: 0 0 5px 1px var(--color-green-600),
     0 0 0 1px var(--color-green-600), 0 0 0 3px var(--color-green-300);
-  --box-shadow-focus: 0 0 0 1px var(--color-primary),
-    0 0 0 3px var(--color-info-foreground);
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 1px;
+  --focus-outline-offset-inset: -2px;
+  --focus-outline-color: var(--color-info);
+  --focus-outline: var(--focus-outline-width) solid var(--focus-outline-color);
   --box-shadow-search-input-shortcut: 0 -1.4px 0 0.1px var(--color-tertiary) inset,
     0 0.8px 0 0.4px var(--color-primary) inset;
 

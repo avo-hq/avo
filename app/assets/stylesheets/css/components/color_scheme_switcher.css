@@ -22,7 +22,6 @@
 .color-scheme-switcher__compact-trigger {
   @apply inline-flex items-center gap-1 h-8 ps-2 pe-1.5 rounded-lg transition-all duration-150;
   @apply text-avo-neutral-300 bg-avo-neutral-800 border border-avo-neutral-700 hover:bg-avo-neutral-700 hover:text-avo-neutral-50;
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply cursor-pointer;
 }
 
@@ -105,7 +104,6 @@
 .color-scheme-switcher__scheme-button {
   @apply flex-1 inline-flex flex-col items-center justify-center gap-1 px-2 py-1.5 rounded-md;
   @apply text-content-secondary hover:bg-tertiary transition-all duration-150;
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
@@ -126,7 +124,7 @@
 }
 
 .color-scheme-switcher__button {
-  @apply inline-flex items-center justify-center p-1.5 py-0.5 rounded-md transition-all duration-150 text-avo-neutral-300 hover:bg-avo-neutral-700 hover:text-avo-neutral-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1 active:scale-95;
+  @apply inline-flex items-center justify-center p-1.5 py-0.5 rounded-md transition-all duration-150 text-avo-neutral-300 hover:bg-avo-neutral-700 hover:text-avo-neutral-50 active:scale-95;
   @apply border-0 bg-transparent cursor-pointer;
 }
 
@@ -180,7 +178,6 @@
   @apply flex items-center gap-2 w-full px-2 py-1.5;
   @apply rounded-md transition-all duration-150;
   @apply hover:bg-tertiary;
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
   @apply text-content text-xs font-medium;
 }
@@ -251,7 +248,6 @@
   @apply flex items-center justify-center p-1;
   @apply rounded-md transition-all duration-150;
   @apply hover:bg-tertiary;
-  @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-1;
   @apply border-0 bg-transparent cursor-pointer;
 }
 

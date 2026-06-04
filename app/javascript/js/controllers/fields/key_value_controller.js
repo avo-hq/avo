@@ -185,7 +185,6 @@ export default class extends Controller {
       title="${this.options.delete_text}"
       data-tippy="tooltip"
       data-button="delete-row"
-      tabindex="-1"
       ${this.options.disable_deleting_rows ? "disabled='disabled'" : ''}
       class="key-value__action-button ${this.options.disable_deleting_rows ? 'cursor-not-allowed' : ''}"
       >

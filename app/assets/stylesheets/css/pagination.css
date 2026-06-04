@@ -74,7 +74,7 @@
 
 /* Nav buttons wrapper */
 .pagination__nav {
-  @apply shrink-0 flex items-center;
+  @apply shrink-0 flex items-center py-0.5;
 }
 
 /* === Pagy nav === */
@@ -103,6 +103,10 @@
 
     &[aria-current="page"] {
       @apply bg-secondary text-content cursor-default font-medium;
+    }
+
+    &:focus-visible {
+      outline-offset: var(--focus-outline-offset-inset);
     }
   }
 

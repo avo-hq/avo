@@ -18,8 +18,8 @@
 .sidebar-link:focus-visible,
 .sidebar-link.active:focus-visible,
 .sidebar-subitem:focus-visible {
-  @apply outline-none relative z-10;
-  box-shadow: var(--box-shadow-focus);
+  @apply relative z-10;
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .sidebar-link[disabled],
@@ -69,7 +69,7 @@
 
 .sidebar-section__header:focus-visible {
   @apply bg-primary relative z-10;
-  box-shadow: var(--box-shadow-focus);
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .sidebar-section__items {

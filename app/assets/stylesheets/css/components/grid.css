@@ -75,6 +75,8 @@
 }
 
 .grid-card__title a {
+  @apply inline-block;
+
   color: inherit;
 }
 

@@ -188,9 +188,9 @@ pl:
       one: jeszcze jeden element
       other: "%{count} innych elementów"
       zero: brak innych elementów
-    x_records_selected_from_a_total_of_x_html: Wybrano <span class="font-bold text-gray-700">%{selected}</span> rekordów z tej strony spośród <span class="font-bold text-gray-700">%{count}</span> rekordów
-    x_records_selected_from_all_pages_html: Wybrano <span class="font-bold text-gray-700">%{count}</span> rekordów z wszystkich stron
-    x_records_selected_from_page_html: Wybrano <span class="font-bold text-gray-700">%{selected}</span> rekordów z tej strony
+    x_records_selected_from_a_total_of_x_html: Wybrano <span class="font-bold">%{selected}</span> rekordów z tej strony spośród <span class="font-bold">%{count}</span> rekordów
+    x_records_selected_from_all_pages_html: Wybrano <span class="font-bold">%{count}</span> rekordów z wszystkich stron
+    x_records_selected_from_page_html: Wybrano <span class="font-bold">%{selected}</span> rekordów z tej strony
     yes_confirm: Tak, potwierdzam
     you_cant_upload_new_resource: Nie możesz przesyłać plików do edytora Trix, dopóki nie zapiszesz zasobu.
     you_havent_set_attachment_key: Nie ustawiłeś `attachment_key` dla tego pola Trix.

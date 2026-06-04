@@ -26,7 +26,8 @@ tags.tagify .tagify__input {
 }
 
 tags.tagify.tagify--focus {
-  box-shadow: var(--box-shadow-focus);
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .tagify__dropdown {
