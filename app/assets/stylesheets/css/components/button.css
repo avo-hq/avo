@@ -351,6 +351,17 @@
       border-radius: 9999px;
       corner-shape: round;
     }
+
+    /* `.button:focus-visible` also sets `rounded-lg` and wins on specificity. */
+    &.button--focus-visible,
+    &:focus-visible {
+      @apply rounded-full;
+
+      @supports (corner-shape: squircle) {
+        border-radius: 9999px;
+        corner-shape: round;
+      }
+    }
   }
 
   /* Size variants */
