@@ -29,7 +29,9 @@ export default class extends BaseModalController {
   }
 
   closeModal() {
-    this.modalTarget.setAttribute('hidden', '')
+    this.conceal(() => {
+      this.modalTarget.setAttribute('hidden', '')
+    })
     this.removeModalOpen()
     this.dispatchClose()
   }
@@ -38,6 +40,7 @@ export default class extends BaseModalController {
     this.modalTarget.removeAttribute('hidden')
     this.addModalOpen()
     this.modalTarget.focus()
+    this.reveal()
   }
 
   toggleModal() {

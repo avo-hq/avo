@@ -3,11 +3,13 @@
 # A button/link can have the following settings:
 # style: primary/outline/text
 # size: :sm, :md, :lg
+# padding: nil (default), :sm or :xs for tighter, equal padding
 # color: nil, :primary, :accent, :gray, :red, :green, :blue, or any other tailwind color
 # icon: "tabler/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
   prop :path, kind: :positional
   prop :size, default: :md
+  prop :padding
   prop :style, default: :outline
   prop :color
   prop :icon do |value|
@@ -41,16 +43,11 @@ class Avo::ButtonComponent < Avo::BaseComponent
       "button--style-#{@style}",
       @class,
       "button--color-#{@color}": @color.present?,
-      "button--icon-only": icon_only?
+      "button--padding-#{@padding}": @padding.present?
     ]
     base_classes << "button--loading" if @args[:loading]
 
     class_names(*base_classes.compact)
-  end
-
-  # An icon button has an icon but no visible text, so it can be rendered with tighter, symmetric padding.
-  def icon_only?
-    (@icon.present? || @end_icon.present?) && (@style == :icon || content.blank?)
   end
 
   def is_link?
@@ -87,7 +84,9 @@ class Avo::ButtonComponent < Avo::BaseComponent
 
   def render_content
     concat helpers.svg(@icon, class: class_names("button__icon", @icon_class)) if @icon.present?
-    concat content if content.present? && @style != :icon
+    # Wrap the label so CSS can distinguish icon-only buttons (no `.button__label`)
+    # from buttons with text, and tighten their padding automatically.
+    concat content_tag(:span, content, class: "button__label") if content.present?
     concat helpers.svg(@end_icon, class: class_names("button__icon", @icon_class)) if @end_icon.present?
     concat hotkey_badge(@args.dig(:data, :hotkey)) if @args.dig(:data, :hotkey) && @args.dig(:data, :show_hotkey_badge) != false
   end

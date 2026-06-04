@@ -7,6 +7,9 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = ['modal', 'backdrop']
 
+  // Keep in sync with the --modal-transition-duration CSS variable.
+  static TRANSITION_MS = 90
+
   static values = {
     closeModalOnBackdropClick: { type: Boolean, default: true },
   }
@@ -45,6 +48,30 @@ export default class extends Controller {
 
   removeModalOpen() {
     document.body.classList.remove('modal-open')
+  }
+
+  // -- enter / leave transitions --------------------------------------------
+
+  /**
+   * Reveal the card with the scale-in transition. The element must already be
+   * visible (in the DOM / not `hidden`) so the closed styles paint first; the
+   * double rAF guarantees that initial frame before we flip to the open state.
+   */
+  reveal() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.modalTarget.classList.add('modal--open')
+      })
+    })
+  }
+
+  /**
+   * Play the leave transition, then run `onComplete` (remove or hide the
+   * element). Falls back to a timeout in case `transitionend` never fires.
+   */
+  conceal(onComplete) {
+    this.modalTarget.classList.remove('modal--open')
+    window.setTimeout(onComplete, this.constructor.TRANSITION_MS)
   }
 
   dispatchClose() {

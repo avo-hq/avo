@@ -7,7 +7,6 @@ class Avo::ModalComponent < Avo::BaseComponent
   prop :width, default: :xl # :sm, :md, :lg, :xl, :2xl, :3xl, :4xl, :full
   prop :height, default: :auto # :auto, :sm, :md, :lg, :xl, :2xl, :3xl, :4xl, :full
   prop :body_class
-  prop :overflow, default: :auto
   prop :close_modal_on_backdrop_click, default: true, reader: :public
   prop :title
   prop :description

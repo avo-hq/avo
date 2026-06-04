@@ -79,7 +79,7 @@
 
 /* Card body */
 .card__body {
-  @apply flex flex-col items-start self-stretch w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
+  @apply flex flex-col items-start self-stretch w-full rounded-lg border border-tertiary bg-primary;
 }
 
 /* Card footer - full width so pagination can span edge to edge */

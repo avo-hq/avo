@@ -88,7 +88,7 @@
 }
 
 .top-navbar {
-  @apply z-100 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
+  @apply z-400 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
 
   /* Three-region grid: start | center | end. start/end share remaining space
      equally (1fr each) so the center column (search) stays visually anchored

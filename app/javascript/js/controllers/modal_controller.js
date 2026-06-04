@@ -11,6 +11,7 @@ export default class extends BaseModalController {
     this.connectModal()
     this.addModalOpen()
     this.modalTarget.focus()
+    this.reveal()
   }
 
   disconnect() {
@@ -25,8 +26,10 @@ export default class extends BaseModalController {
   }
 
   closeModal() {
-    this.modalTarget.remove()
+    this.conceal(() => {
+      this.modalTarget.remove()
+      this.dispatchClose()
+    })
     this.removeModalOpen()
-    this.dispatchClose()
   }
 }

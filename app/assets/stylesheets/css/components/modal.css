@@ -12,7 +12,11 @@
 }
 
 .modal {
-  @apply fixed inset-0 w-full z-150 flex justify-center items-center;
+  @apply fixed inset-0 w-full z-1000 flex justify-center items-center;
+
+  /* Enter/leave transition duration, shared by the card and the backdrop.
+     Keep in sync with TRANSITION_MS in base_modal_controller.js. */
+  --modal-transition-duration: 90ms;
 }
 
 .modal__overlay {
@@ -23,6 +27,14 @@
   .dark & {
     background-color: color-mix(in oklch, var(--color-avo-neutral-950) 60%, transparent);
   }
+
+  /* Fade in/out alongside the card. */
+  opacity: 0;
+  transition: opacity var(--modal-transition-duration) ease-out;
+}
+
+.modal--open .modal__overlay {
+  opacity: 1;
 }
 
 .modal__card-container {
@@ -38,6 +50,26 @@
   max-height: calc(100dvh - 2rem);
 
   box-shadow: var(--shadow-modal);
+
+  /* Enter/leave transition: the card scales + fades from its center.
+     Closed is the default state; `.modal--open` (toggled in JS) is the
+     resting open state. */
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity var(--modal-transition-duration) ease-out,
+    transform var(--modal-transition-duration) ease-out;
+}
+
+.modal--open .modal__card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal__card {
+    transition: none;
+  }
 }
 
 /* Modal-specific card overrides. The flex-1 + min-h-0 chain lets the card and
