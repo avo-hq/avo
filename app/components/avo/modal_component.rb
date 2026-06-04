@@ -11,10 +11,9 @@ class Avo::ModalComponent < Avo::BaseComponent
   prop :title
   prop :description
   prop :show_close_button, default: true
-  prop :behavior, default: :ephemeral # :ephemeral removes from DOM on close, :persistent toggles hidden attribute
+  prop :behavior, default: :ephemeral # :ephemeral removes from DOM on close, :persistent toggles the popover open/closed
   prop :class, default: ""
   prop :data, default: {}.freeze
-  prop :hidden, default: false
 
   def stimulus_controller
     (@behavior == :persistent) ? "persistent-modal" : "modal"
