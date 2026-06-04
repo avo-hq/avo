@@ -178,7 +178,7 @@ RSpec.describe "Actions", type: :system do
 
       click_on "Actions"
       click_on "Export CSV"
-      find('[data-modal-target="backdrop"]').trigger("click")
+      find('[data-modal-target="modal"]').trigger("click")
 
       expect(page).not_to have_selector '[data-controller="modal"]'
     end
@@ -190,7 +190,7 @@ RSpec.describe "Actions", type: :system do
 
       click_on "Actions"
       click_on "Export CSV"
-      find('[data-modal-target="backdrop"]').trigger("click")
+      find('[data-modal-target="modal"]').trigger("click")
 
       expect(page).to have_selector '[data-controller~="modal"]'
 
