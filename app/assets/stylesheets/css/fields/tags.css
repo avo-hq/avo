@@ -14,20 +14,21 @@ tags.tagify {
   --tag-bg: var(--color-secondary);
   --tag-hover: var(--color-tertiary);
 
-  padding-block: var(--input-py);
-  align-items: center;
+  @apply min-h-8 items-center flex;
 }
 
 /* Align the inner editable area with the design system size tokens */
 tags.tagify .tagify__input {
-  margin: 0;
-  padding-block: 0;
-  line-height: var(--input-leading);
+  @apply self-center p-0 leading-6 px-1;
 }
 
 tags.tagify.tagify--focus {
   outline: var(--focus-outline);
   outline-offset: var(--focus-outline-offset);
+}
+
+tag.tagify__tag {
+  @apply my-1;
 }
 
 .tagify__dropdown {

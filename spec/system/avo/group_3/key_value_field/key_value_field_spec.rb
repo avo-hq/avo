@@ -62,6 +62,18 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(values[0].value).to eq "Test Value"
       end
 
+      it "focuses the new row's key input after adding a row" do
+        visit "/admin/resources/projects/#{project.id}/edit"
+        wait_for_loaded
+
+        find('[data-button="add-row"]').click
+
+        expect(find_field_element("meta")).to have_selector 'input[placeholder="Meta key"]'
+
+        focused_placeholder = page.evaluate_script("document.activeElement && document.activeElement.getAttribute('placeholder')")
+        expect(focused_placeholder).to eq "Meta key"
+      end
+
       it "adds a row to meta table and no input values" do
         visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded

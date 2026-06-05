@@ -19,6 +19,10 @@ export default class extends Controller {
     return !this.options.editable || this.options.disable_editing_values
   }
 
+  get prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }
+
   connect() {
     this.setOptions()
 
@@ -47,14 +51,28 @@ export default class extends Controller {
     this.fieldValue.push(['', ''])
     this.updateKeyValueComponent()
     this.focusLastRow()
+    this.animateLastRow()
   }
 
   deleteRow(event) {
     if (this.options.disable_deleting_rows || !this.options.editable) return
     const { index } = event.params
+    const row = this.rowsTarget.querySelectorAll('.key-value__row')[index]
+
+    // Update the data model right away so the form stays correct even if it is
+    // submitted before the exit animation finishes.
     this.fieldValue.splice(index, 1)
     this.updateTextareaInput()
-    this.updateKeyValueComponent()
+
+    if (!row || this.prefersReducedMotion) {
+      this.updateKeyValueComponent()
+      return
+    }
+
+    // Keep the (now stale) row on screen just long enough to animate it out,
+    // then rebuild the list to re-sync indices.
+    row.classList.add('key-value__row--leaving')
+    row.addEventListener('animationend', () => this.updateKeyValueComponent(), { once: true })
   }
 
   moveKey(fromIndex, toIndex) {
@@ -78,8 +96,24 @@ export default class extends Controller {
     return array
   }
 
+  get lastRow() {
+    return this.rowsTarget.querySelector('.key-value__row:last-child')
+  }
+
   focusLastRow() {
-    return this.rowsTarget.querySelector('.flex.key-value-row:last-child .key-value-input-key').focus()
+    this.lastRow?.querySelector('.key-value-input-key')?.focus()
+  }
+
+  animateLastRow() {
+    const row = this.lastRow
+    if (!row || this.prefersReducedMotion) return
+
+    row.classList.add('key-value__row--entering')
+    row.addEventListener(
+      'animationend',
+      () => row.classList.remove('key-value__row--entering'),
+      { once: true },
+    )
   }
 
   valueFieldUpdated(event) {
