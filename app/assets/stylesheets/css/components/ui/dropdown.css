@@ -95,7 +95,8 @@
 }
 
 .dropdown-menu__item:focus-visible,
-.dropdown-menu__list > :is(a, button):focus-visible {
+.dropdown-menu__list > :is(a, button):focus-visible,
+.dropdown-menu__list form > :is(a, button):focus-visible {
   @apply bg-primary;
   outline-offset: var(--focus-outline-offset-inset);
 }

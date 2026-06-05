@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="sidebar-profile__actions">
-    <%= render Avo::UI::DropdownComponent.new(popover_mode: true) do |component| %>
+    <%= render Avo::UI::DropdownComponent.new(popover_mode: true, classes: "sidebar-profile__dropdown") do |component| %>
       <% component.with_trigger do %>
         <%= render Avo::ButtonComponent.new(
           icon: "tabler/outline/dots",

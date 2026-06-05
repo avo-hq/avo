@@ -7,13 +7,13 @@
     method: method,
     disabled: disabled,
     params: params do %>
-    <%= helpers.svg(icon, class: 'sidebar-icon') if icon.present? %> <%= label %>
+    <%= helpers.svg(icon, class: 'sidebar-icon') if icon.present? %> <span class="truncate min-w-0"><%= label %></span>
   <% end %>
 <% else %>
   <%= link_to path,
     class: menu_item_classes,
     target: target,
     title: title do %>
-    <%= helpers.svg(icon, class: 'sidebar-icon') if icon.present? %> <%= label %>
+    <%= helpers.svg(icon, class: 'sidebar-icon') if icon.present? %> <span class="truncate min-w-0"><%= label %></span>
   <% end %>
 <% end %>
