@@ -12,11 +12,16 @@ ua:
       auto_tooltip: Авто (системні налаштування)
       dark: Темний
       dark_tooltip: Темний режим
+      hide: Сховати
       light: Світлий
       light_tooltip: Світлий режим
       neutrals: Тема
       neutrals_picker: Нейтральна тема
       schemes: Зовнішній вигляд
+      shortcut_badges: Значки ярликів
+      shortcut_badges_hide_tooltip: Сховати значки клавіатурних ярликів
+      shortcut_badges_show_tooltip: Показати значки клавіатурних ярликів
+      show: Показати
       title: Зовнішній вигляд
     applied: застосовано
     are_you_sure: Ви впевнені?
@@ -30,6 +35,10 @@ ua:
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
     cancel: Скасувати
+    checkbox_list:
+      hidden_selections:
+        one: 1 вибрана опція прихована за пошуком
+        other: "%{count} вибраних опцій приховано за пошуком"
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію
     choose_item: Виберіть %{item}
@@ -128,6 +137,11 @@ ua:
     pages: Pages
     per_page: На сторінці
     prev_page: Попередня сторінка
+    record:
+      few: записи
+      many: записів
+      one: запис
+      other: записів
     records_selected_from_all_pages_html: Вибрані всі записи з усіх сторінок
     reload: Перезавантажити
     remove_selection: Видалити вибір

@@ -80,19 +80,8 @@ document.addEventListener('turbo:frame-render', (e) => {
 })
 
 document.addEventListener('turbo:load', () => {
-  // Restore badge visibility preference from localStorage before installing hotkeys
-  if (window.Avo?.configuration?.hotkeys?.showKeyBadges !== false) {
-    try {
-      if (localStorage.getItem('avo:hotkeys:hide_badges') === '1') {
-        document.body.classList.add('hotkeys-hide-badges')
-      } else {
-        document.body.classList.remove('hotkeys-hide-badges')
-      }
-    } catch (e) {
-      // localStorage unavailable
-    }
-  }
-
+  // Badge visibility preference is restored pre-paint on <html> in
+  // _color_theme_override.html.erb; the class persists across Turbo navigations.
   if (window.Avo?.configuration?.hotkeys?.enabled !== false) installHotkeys()
   initTippy()
 

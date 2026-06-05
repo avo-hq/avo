@@ -71,11 +71,11 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   end
 
   def modal_args
+    # `modal_layout: true` is what routes the `new` action through the `avo/modal`
+    # layout. The modal's title, size and footer controls are rendered by
+    # `Avo::Views::ResourceEditComponent` when it detects this embedded context.
     {
-      modal_layout: true,
-      modal_width: :full,
-      modal_height: :full,
-      wrapper_class: "container mx-auto py-4"
+      modal_layout: true
     }
   end
 

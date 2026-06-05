@@ -1,5 +1,5 @@
 .field-wrapper {
-  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 w-full grow-0 text-ellipsis overflow-auto;
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 w-full grow-0 text-ellipsis;
 }
 
 .field-wrapper__label {
@@ -8,6 +8,12 @@
 
 .field-wrapper__help {
   @apply text-content-secondary mt-2 text-xs leading-4;
+}
+
+/* Boolean fields render a compact checkbox/toggle, so the help text sits
+   directly beneath it without the extra top margin other inputs need. */
+[data-field-type="boolean"] .field-wrapper__help {
+  @apply mt-0;
 }
 
 .field-wrapper__label-help {

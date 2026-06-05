@@ -88,7 +88,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   it "opens the keyboard shortcuts panel and closes it with escape" do
     visit "/admin/resources/projects"
 
-    expect(page).to have_css(".hotkey[hidden]", visible: false)
+    expect(page).to have_css(".hotkey", visible: :hidden)
 
     dispatch_keydown("?", code: "Slash", shift_key: true)
 
@@ -97,7 +97,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     dispatch_keydown("Escape")
 
-    expect(page).to have_css(".hotkey[hidden]", visible: false)
+    expect(page).to have_css(".hotkey", visible: :hidden)
   end
 
   it "does not open the keyboard shortcuts panel while typing in a search field" do
@@ -109,21 +109,21 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     search_input.send_keys("?")
 
     expect(search_input.value).to include("?")
-    expect(page).to have_css(".hotkey[hidden]", visible: false)
+    expect(page).to have_css(".hotkey", visible: :hidden)
   end
 
-  it "toggles the hotkeys-hide-badges body class when pressing Shift+K" do
+  it "toggles the hotkeys-hide-badges class on the html element when pressing Shift+K" do
     visit "/admin/resources/projects"
 
     expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: :all)
     expect(page).to have_css(".search-input__suffix kbd", visible: :all, count: 1)
-    expect(page).to have_no_css("body.hotkeys-hide-badges")
+    expect(page).to have_no_css("html.hotkeys-hide-badges")
 
     dispatch_keydown("K", shift_key: true)
-    expect(page).to have_css("body.hotkeys-hide-badges")
+    expect(page).to have_css("html.hotkeys-hide-badges")
 
     dispatch_keydown("K", shift_key: true)
-    expect(page).to have_no_css("body.hotkeys-hide-badges")
+    expect(page).to have_no_css("html.hotkeys-hide-badges")
   end
 
   it "applies kbd--called animation feedback when a hotkey fires" do
@@ -465,7 +465,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     it "still renders the keyboard shortcuts modal" do
       visit "/admin/resources/projects"
 
-      expect(page).to have_css(".hotkey[hidden]", visible: false)
+      expect(page).to have_css(".hotkey", visible: :hidden)
 
       dispatch_keydown("?", code: "Slash", shift_key: true)
 

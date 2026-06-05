@@ -6,7 +6,7 @@ RSpec.describe "Record previews", type: :system do
   it "opens the preview" do
     visit "/admin/resources/teams"
     within find("[data-resource-id='#{team.id}'] [data-field-id='preview'][data-field-type='preview']") do
-      expect(page).to have_css("svg.block.h-6.text-gray-600")
+      expect(page).to have_css("svg.block.h-6.text-content-secondary")
       find('a[title="View team"]').hover
     end
 

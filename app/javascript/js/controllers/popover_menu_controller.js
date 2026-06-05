@@ -56,6 +56,15 @@ export default class extends Controller {
         event.preventDefault()
         items[idx > 0 ? idx - 1 : items.length - 1].focus()
         break
+      case 'Escape':
+        // Close on Escape ourselves. Native popover light-dismiss is unreliable
+        // here because other document-level keydown handlers (e.g. the index-row
+        // navigator) can consume Escape first. stopPropagation keeps them from
+        // also reacting; hidePopover restores focus to the trigger.
+        event.preventDefault()
+        event.stopPropagation()
+        this.element.hidePopover()
+        break
       default:
     }
   }

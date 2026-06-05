@@ -12,11 +12,16 @@ pl:
       auto_tooltip: Automatycznie (preferencje systemowe)
       dark: Ciemny
       dark_tooltip: Tryb ciemny
+      hide: Ukryj
       light: Jasny
       light_tooltip: Tryb jasny
       neutrals: Motyw
       neutrals_picker: Motyw neutralny
       schemes: Wygląd
+      shortcut_badges: Ikony skrótów
+      shortcut_badges_hide_tooltip: Ukryj ikony skrótów klawiaturowych
+      shortcut_badges_show_tooltip: Pokaż ikony skrótów klawiaturowych
+      show: Pokaż
       title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?
@@ -30,6 +35,12 @@ pl:
     attachment_destroyed: Załącznik usunięty
     attachment_failed: Nie udało się dołączyć %{attachment_class}
     cancel: Anuluj
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} wybrane opcje ukryte przez wyszukiwanie"
+        many: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
+        one: 1 wybrana opcja ukryta przez wyszukiwanie
+        other: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
     choose_a_country: Wybierz kraj
     choose_an_option: Wybierz opcję
     choose_item: Wybierz %{item}
@@ -128,6 +139,11 @@ pl:
     pages: Strony
     per_page: Na stronie
     prev_page: Poprzednia strona
+    record:
+      few: rekordy
+      many: rekordów
+      one: rekord
+      other: rekordów
     records_selected_from_all_pages_html: Wybrane rekordy z wszystkich stron
     reload: Odśwież
     remove_selection: Usuń zaznaczenie

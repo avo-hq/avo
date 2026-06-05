@@ -11,17 +11,50 @@
   --modal-height-4xl: 56rem;
 }
 
+/* Rendered in the top layer via the native popover API (`popover="manual"`),
+   so it sits above everything without a z-index and gets a free `::backdrop`. */
 .modal {
-  @apply fixed inset-0 w-full z-150 flex justify-center items-center;
+  /* size-full + m-0 + border-0/p-0/bg-transparent reset the popover UA chrome
+     (fit-content sizing, auto margins, border, padding, background) so the
+     element stays a transparent, full-viewport flex container that centers the card. */
+  @apply fixed inset-0 size-full m-0 border-0 p-0 bg-transparent justify-center items-center;
+
+  /* Enter/leave transition duration, shared by the card and the backdrop.
+     Keep in sync with TRANSITION_MS in base_modal_controller.js. */
+  --modal-transition-duration: 90ms;
+
+  /* The popover attribute keeps the element display:none until it's shown; only
+     lay it out (flex) while open. `allow-discrete` on display/overlay keeps the
+     element in the top layer for the leave transition so the card + backdrop can
+     animate out before it's hidden. */
+  transition:
+    overlay var(--modal-transition-duration) ease-out allow-discrete,
+    display var(--modal-transition-duration) ease-out allow-discrete;
 }
 
-.modal__overlay {
-  @apply absolute w-full h-full flex justify-center items-center;
+.modal:popover-open {
+  @apply flex;
+}
 
+.modal::backdrop {
   background-color: color-mix(in oklch, var(--color-avo-neutral-950) 25%, transparent);
 
-  .dark & {
-    background-color: color-mix(in oklch, var(--color-avo-neutral-950) 60%, transparent);
+  /* Fade in/out alongside the card. */
+  opacity: 0;
+  transition: opacity var(--modal-transition-duration) ease-out;
+}
+
+.dark .modal::backdrop {
+  background-color: color-mix(in oklch, var(--color-avo-neutral-950) 60%, transparent);
+}
+
+.modal:popover-open::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .modal:popover-open::backdrop {
+    opacity: 0;
   }
 }
 
@@ -30,18 +63,74 @@
 }
 
 .modal__card {
-  @apply relative size-full shrink-0;
+  @apply relative w-full shrink-0 flex flex-col;
+
+  /* Never exceed the viewport — keeps a tall (e.g. :auto height) modal fully
+     on screen so its body can scroll instead of being clipped by the centered
+     overlay. */
+  max-height: calc(100dvh - 2rem);
 
   box-shadow: var(--shadow-modal);
+
+  /* Enter/leave transition: the card scales + fades from its center.
+     Closed (default) state; `:popover-open` is the resting open state, with
+     `@starting-style` supplying the from-state for the enter animation. */
+  opacity: 0;
+  transform: scale(0.975);
+  transition:
+    opacity var(--modal-transition-duration) ease-out,
+    transform var(--modal-transition-duration) ease-out;
 }
 
-/* Modal-specific card overrides */
+.modal:popover-open .modal__card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@starting-style {
+  .modal:popover-open .modal__card {
+    opacity: 0;
+    transform: scale(0.975);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal__card {
+    transition: none;
+  }
+}
+
+/* Head-shake "no" — played when the modal refuses to dismiss (a backdrop click
+   or Escape while close_modal_on_backdrop_click is false). */
+@keyframes modal-nudge {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-0.5rem); }
+  30% { transform: translateX(0.5rem); }
+  45% { transform: translateX(-0.375rem); }
+  60% { transform: translateX(0.375rem); }
+  75% { transform: translateX(-0.1875rem); }
+  90% { transform: translateX(0.1875rem); }
+}
+
+.modal__card--nudge {
+  animation: modal-nudge 400ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal__card--nudge {
+    animation: none;
+  }
+}
+
+/* Modal-specific card overrides. The flex-1 + min-h-0 chain lets the card and
+   its wrapper fill the (capped) modal height and shrink, so the body's
+   overflow-auto kicks in while the header and footer stay pinned. */
 .modal__card > .card {
-  @apply size-full;
+  @apply w-full flex-1 min-h-0;
 }
 
 .modal__card > .card > .card__wrapper {
-  @apply size-full flex flex-col;
+  @apply w-full flex flex-col flex-1 min-h-0;
 }
 
 .modal__card .card__header {
@@ -70,6 +159,13 @@
 
 .modal__body-content {
   @apply size-full;
+}
+
+/* Belongs-to "Create new" embeds an edit form in the modal. Drop the nested
+   panel chrome (background + border) and pad the body so the form breathes.
+   Scoped to match the `.card__body` selector above so the padding wins. */
+.card__body.modal-form-body {
+  @apply !p-4;
 }
 
 .modal__controls {

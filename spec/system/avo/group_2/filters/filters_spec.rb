@@ -23,7 +23,19 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_unchecked_field "Unfeatured"
       expect(page).to have_text "Featured post"
       expect(page).to have_text "Unfeatured post"
-      expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+      expect(page).to have_css(".button--disabled", text: "Reset filters")
+    end
+
+    it "marks reset filters as disabled when no filters are applied" do
+      visit url
+      open_filters_menu
+
+      reset_link = find("a.button--disabled", text: "Reset filters")
+
+      expect(reset_link["aria-disabled"]).to eq("true")
+      expect(reset_link["tabindex"]).to eq("-1")
+      expect(reset_link["data-disabled"]).to eq("true")
+      expect(reset_link[:href]).to end_with("#")
     end
 
     it "changes the query" do
@@ -87,7 +99,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_unchecked_field "Featured"
       expect(page).to have_unchecked_field "Unfeatured"
       expect(current_url).not_to include "encoded_filters="
-      expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+      expect(page).to have_css(".button--disabled", text: "Reset filters")
     end
   end
 
@@ -111,7 +123,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_checked_field "Has Members"
       expect(page).not_to have_text "Without Members"
       expect(page).to have_text "With Members"
-      expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+      expect(page).to have_css(".button--disabled", text: "Reset filters")
     end
 
     it "changes the query and reset" do
@@ -137,7 +149,7 @@ RSpec.describe "Filters", type: :system do
       expect(page).to have_checked_field "Has Members"
       expect(page).not_to have_text "Without Members"
       expect(page).to have_text "With Members"
-      expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+      expect(page).to have_css(".button--disabled", text: "Reset filters")
     end
   end
 
@@ -156,7 +168,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_select "published status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
-        expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+        expect(page).to have_css(".button--disabled", text: "Reset filters")
       end
 
       it "changes the query" do
@@ -196,7 +208,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(current_url).not_to include "encoded_filters="
-        expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+        expect(page).to have_css(".button--disabled", text: "Reset filters")
 
         select "Unpublished", from: "avo_filters_published_status"
         wait_for_loaded
@@ -216,7 +228,7 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
-        expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+        expect(page).to have_css(".button--disabled", text: "Reset filters")
       end
     end
   end
@@ -235,7 +247,7 @@ RSpec.describe "Filters", type: :system do
 
         expect(page).to have_text "Status"
         expect(page).to have_select "avo_filters_status", selected: [], options: ["draft", "published", "archived"]
-        expect(page).to have_css(".filters-card__reset.filters-card__reset--disabled", text: "Reset filters")
+        expect(page).to have_css(".button--disabled", text: "Reset filters")
       end
 
       it "changes the query" do
@@ -248,7 +260,7 @@ RSpec.describe "Filters", type: :system do
         click_on "Filter by Status"
         wait_for_loaded
 
-        expect(page).to have_text(/1-1\s+of\s+1/)
+        expect(page).to have_text("1 record")
 
         open_filters_menu
 
@@ -267,7 +279,7 @@ RSpec.describe "Filters", type: :system do
         click_on "Filter by Status"
         wait_for_loaded
 
-        expect(page).to have_text(/1-2\s+of\s+2/)
+        expect(page).to have_text("2 records")
       end
     end
   end
@@ -297,13 +309,13 @@ RSpec.describe "Filters", type: :system do
 
       it "filters by name" do
         visit url
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "With Members"
         click_on "Filter by name"
         wait_for_loaded
-        expect(page).to have_text(/1-1\s+of\s+1/)
+        expect(page).to have_text("1 record")
 
         open_filters_menu
         expect(page).to have_text "With Members"
@@ -311,18 +323,18 @@ RSpec.describe "Filters", type: :system do
 
         click_on "Reset filters"
         wait_for_loaded
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
       end
 
       it "filters by 音楽 ✓" do
         visit url
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
 
         open_filters_menu
         fill_in "avo_filters_name_filter", with: "音楽 ✓"
         click_on "Filter by name"
         wait_for_loaded
-        expect(page).to have_text(/1-1\s+of\s+1/)
+        expect(page).to have_text("1 record")
 
         open_filters_menu
         expect(page).to have_text "音楽 ✓"
@@ -330,7 +342,7 @@ RSpec.describe "Filters", type: :system do
 
         click_on "Reset filters"
         wait_for_loaded
-        expect(page).to have_text(/1-3\s+of\s+3/)
+        expect(page).to have_text("3 records")
       end
     end
   end

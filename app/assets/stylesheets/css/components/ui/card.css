@@ -48,7 +48,7 @@
 
 /* Card header */
 .card__header {
-  @apply flex flex-col items-start self-stretch py-3 px-4;
+  @apply flex flex-col items-start self-stretch py-2 px-4 leading-tight;
 
   &:has(select),
   &:has(.button) {
@@ -79,7 +79,7 @@
 
 /* Card body */
 .card__body {
-  @apply flex flex-col items-start self-stretch w-full rounded-lg border border-tertiary bg-primary overflow-hidden;
+  @apply flex flex-col items-start self-stretch w-full rounded-lg border border-tertiary bg-primary;
 }
 
 /* Card footer - full width so pagination can span edge to edge */

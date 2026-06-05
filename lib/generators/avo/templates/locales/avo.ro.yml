@@ -12,11 +12,16 @@ ro:
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
       dark_tooltip: Mod întunecat
+      hide: Ascunde
       light: Deschis
       light_tooltip: Mod deschis
       neutrals: Temă
       neutrals_picker: Temă neutre
       schemes: Aspect
+      shortcut_badges: Insignele scurtăturilor
+      shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură
+      shortcut_badges_show_tooltip: Afișează insignele scurtăturilor de tastatură
+      show: Afișează
       title: Aspect
     applied:
       few: aplicate
@@ -33,6 +38,11 @@ ro:
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
     cancel: Anulează
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} opțiuni selectate ascunse de căutare"
+        one: 1 opțiune selectată ascunsă de căutare
+        other: "%{count} de opțiuni selectate ascunse de căutare"
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune
     choose_item: Alege %{item}
@@ -130,6 +140,10 @@ ro:
     pages: Pagini
     per_page: Pe pagină
     prev_page: Pagina anterioara
+    record:
+      few: înregistrări
+      one: înregistrare
+      other: înregistrări
     records_selected_from_all_pages_html: Toate selectate din toate paginile
     reload: Reîncarcă
     remove_selection: Șterge selecția

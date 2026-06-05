@@ -286,7 +286,7 @@
   }
 </style>
 
-<div class="flex flex-col">
+<div class="flex flex-col" data-controller="appearance-preview">
   <%= render ui.panel(title: 'Color Tokens', description: 'Avo design system color variables for Light and Dark modes. Click any swatch to copy the CSS variable name.') do |panel| %>
     <% panel.with_body do %>
       <div class="flex flex-col gap-6">
@@ -296,14 +296,14 @@
           <p class="section-subtitle">Base colors used for layout and structure</p>
 
           <div class="tabs" id="foundations-tabs">
-            <button class="tab-button active" data-tab="foundations-light">☀️ Light Mode</button>
-            <button class="tab-button" data-tab="foundations-dark">🌙 Dark Mode</button>
+            <button data-action="click->appearance-preview#switchTab" class="tab-button active" data-tab="foundations-light">☀️ Light Mode</button>
+            <button data-action="click->appearance-preview#switchTab" class="tab-button" data-tab="foundations-dark">🌙 Dark Mode</button>
           </div>
 
           <div id="foundations-light" class="tab-content active">
             <div class="color-group">
               <% @foundation_tokens.each do |color| %>
-                <div class="color-swatch" onclick="copyToClipboard('<%= color[:name] %>')">
+                <div class="color-swatch" data-action="click->appearance-preview#copy" data-copy-text="<%= color[:name] %>">
                   <div class="swatch-color" style="background-color: var(<%= color[:name] %>)"></div>
                   <div class="swatch-info">
                     <div class="swatch-label"><%= color[:name] %></div>
@@ -321,7 +321,7 @@
             <div class="dark">
               <div class="color-group">
                 <% @foundation_tokens.each do |color| %>
-                  <div class="color-swatch" onclick="copyToClipboard('<%= color[:name] %>')">
+                  <div class="color-swatch" data-action="click->appearance-preview#copy" data-copy-text="<%= color[:name] %>">
                     <div class="swatch-color" style="background-color: var(<%= color[:name] %>)"></div>
                     <div class="swatch-info">
                       <div class="swatch-label"><%= color[:name] %></div>
@@ -339,7 +339,7 @@
           <h4 class="section-header" style="font-size: 0.95rem;">Neutral Scale</h4>
           <div class="neutral-scale">
             <% @neutral_scale.each do |item| %>
-              <div class="neutral-swatch" onclick="copyToClipboard('--color-avo-neutral-<%= item[:name] %>')">
+              <div class="neutral-swatch" data-action="click->appearance-preview#copy" data-copy-text="--color-avo-neutral-<%= item[:name] %>">
                 <div class="neutral-color" style="background-color: var(<%= item[:css_var] %>)"></div>
                 <div class="neutral-info">
                   <div class="neutral-label"><%= item[:name] %></div>
@@ -356,7 +356,7 @@
               <div class="accent-group">
                 <div class="accent-group-label" style="text-transform: capitalize;"><%= color[:name] %></div>
                 <div class="accent-group-swatches">
-                  <div class="neutral-swatch" onclick="copyToClipboard('--color-<%= color[:name] %>-500')">
+                  <div class="neutral-swatch" data-action="click->appearance-preview#copy" data-copy-text="--color-<%= color[:name] %>-500">
                     <div class="neutral-color" style="background-color: var(--color-<%= color[:name] %>-500)"></div>
                     <div class="neutral-info">
                       <div class="neutral-label">500</div>
@@ -364,7 +364,7 @@
                     </div>
                   </div>
 
-                  <div class="neutral-swatch" onclick="copyToClipboard('--color-<%= color[:name] %>-600')">
+                  <div class="neutral-swatch" data-action="click->appearance-preview#copy" data-copy-text="--color-<%= color[:name] %>-600">
                     <div class="neutral-color" style="background-color: var(--color-<%= color[:name] %>-600)"></div>
                     <div class="neutral-info">
                       <div class="neutral-label">600</div>
@@ -372,7 +372,7 @@
                     </div>
                   </div>
 
-                  <div class="neutral-swatch" onclick="copyToClipboard('--color-white')">
+                  <div class="neutral-swatch" data-action="click->appearance-preview#copy" data-copy-text="--color-white">
                     <div class="neutral-color" style="background-color: var(--color-white)"></div>
                     <div class="neutral-info">
                       <div class="neutral-label">fg</div>
@@ -391,10 +391,10 @@
           <p class="section-subtitle">Brand colors used for emphasis and accent elements</p>
 
           <div class="tabs" id="accents-tabs">
-            <button class="tab-button active" data-tab="accents-default">◼️ Default</button>
-            <button class="tab-button" data-tab="accents-light">☀️ Light Mode</button>
-            <button class="tab-button" data-tab="accents-dark">🌙 Dark Mode</button>
-            <button class="tab-button" data-tab="accents-options">🎨 All Colors</button>
+            <button data-action="click->appearance-preview#switchTab" class="tab-button active" data-tab="accents-default">◼️ Default</button>
+            <button data-action="click->appearance-preview#switchTab" class="tab-button" data-tab="accents-light">☀️ Light Mode</button>
+            <button data-action="click->appearance-preview#switchTab" class="tab-button" data-tab="accents-dark">🌙 Dark Mode</button>
+            <button data-action="click->appearance-preview#switchTab" class="tab-button" data-tab="accents-options">🎨 All Colors</button>
           </div>
 
           <div id="accents-default" class="tab-content active">
@@ -402,7 +402,7 @@
               <div class="accent-group-label">Light Mode</div>
               <div class="accent-cards accent-cards--detailed">
                 <% @accent_tokens.each do |color| %>
-                  <div class="accent-card accent-card--detailed" onclick="copyToClipboard('<%= color[:name] %>')">
+                  <div class="accent-card accent-card--detailed" data-action="click->appearance-preview#copy" data-copy-text="<%= color[:name] %>">
                     <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
                       <%= color[:name].sub('--color-', '') %>
                     </div>
@@ -420,7 +420,7 @@
               <div class="dark">
                 <div class="accent-cards accent-cards--detailed">
                   <% @accent_tokens.each do |color| %>
-                    <div class="accent-card accent-card--detailed" onclick="copyToClipboard('<%= color[:name] %>')">
+                    <div class="accent-card accent-card--detailed" data-action="click->appearance-preview#copy" data-copy-text="<%= color[:name] %>">
                       <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
                         <%= color[:name].sub('--color-', '') %>
                       </div>
@@ -440,7 +440,7 @@
           <div id="accents-light" class="tab-content">
             <div class="accent-cards accent-cards--detailed">
               <% @accent_tokens.each do |color| %>
-                <div class="accent-card accent-card--detailed" onclick="copyToClipboard('<%= color[:name] %>')">
+                <div class="accent-card accent-card--detailed" data-action="click->appearance-preview#copy" data-copy-text="<%= color[:name] %>">
                   <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
                     <%= color[:name].sub('--color-', '') %>
                   </div>
@@ -459,7 +459,7 @@
             <div class="dark">
               <div class="accent-cards accent-cards--detailed">
                 <% @accent_tokens.each do |color| %>
-                  <div class="accent-card accent-card--detailed" onclick="copyToClipboard('<%= color[:name] %>')">
+                  <div class="accent-card accent-card--detailed" data-action="click->appearance-preview#copy" data-copy-text="<%= color[:name] %>">
                     <div class="accent-swatch-color" style="background-color: <%= color[:value] %>">
                       <%= color[:name].sub('--color-', '') %>
                     </div>
@@ -478,7 +478,7 @@
           <div id="accents-options" class="tab-content">
             <div class="accent-cards">
               <% @accent_options.each do |color| %>
-                <div class="accent-card" onclick="copyToClipboard('--color-<%= color[:name] %>-500')">
+                <div class="accent-card" data-action="click->appearance-preview#copy" data-copy-text="--color-<%= color[:name] %>-500">
                   <div class="accent-swatch-color" style="background-color: var(--color-<%= color[:name] %>-500)"></div>
                   <div class="accent-swatch-info">
                     <div class="accent-name"><%= color[:name] %></div>
@@ -491,41 +491,6 @@
       </div>
     <% end %>
   <% end %>
+
+  <div class="copy-indicator" data-appearance-preview-target="indicator">Copied to clipboard!</div>
 </div>
-
-<div class="copy-indicator" id="copyIndicator">Copied to clipboard!</div>
-
-<script>
-  // Tab switching
-  document.querySelectorAll('.tab-button').forEach(button => {
-    button.addEventListener('click', function(event) {
-      event.preventDefault();
-      const tabId = this.dataset.tab;
-      const tabGroup = this.closest('.tabs');
-      const tabContainer = tabGroup.parentElement;
-
-      // Hide all tabs in this group
-      tabContainer.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('active');
-      });
-
-      // Deactivate all buttons in this group
-      tabGroup.querySelectorAll('.tab-button').forEach(btn => {
-        btn.classList.remove('active');
-      });
-
-      // Show selected tab and activate button
-      document.getElementById(tabId).classList.add('active');
-      this.classList.add('active');
-    });
-  });
-
-  // Copy to clipboard
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-      const indicator = document.getElementById('copyIndicator');
-      indicator.classList.add('show');
-      setTimeout(() => indicator.classList.remove('show'), 2000);
-    });
-  }
-</script>

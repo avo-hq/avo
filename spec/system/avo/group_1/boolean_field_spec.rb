@@ -31,7 +31,7 @@ RSpec.describe "BooleanField", type: :system do
         field_value = find_field_value_element("is_featured")
 
         expect(field_value).not_to have_text empty_dash
-        expect(field_value).to have_css("svg[data-checked-state='indeterminate'].text-gray-400")
+        expect(field_value).to have_css("svg[data-checked-state='indeterminate'].text-content-secondary")
       end
 
       it "shows indeterminate icon on index view" do
@@ -40,7 +40,7 @@ RSpec.describe "BooleanField", type: :system do
         field_value = index_field_wrapper(id: "is_featured", record_id: post.to_param)
 
         expect(field_value).not_to have_text empty_dash
-        expect(field_value).to have_css("svg[data-checked-state='indeterminate'].text-gray-400")
+        expect(field_value).to have_css("svg[data-checked-state='indeterminate'].text-content-secondary")
       end
     end
   end

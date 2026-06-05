@@ -5,7 +5,7 @@ class Avo::Fields::PreviewField::IndexComponent < Avo::Fields::IndexComponent
     link_to resource_view_path, title: t("avo.view_item", item: @resource.name).humanize do
       helpers.svg(
         "tabler/outline/zoom-scan",
-        class: "block h-6 text-gray-600",
+        class: "block h-6 text-content-secondary",
         data: {
           controller: "preview",
           preview_url_value: helpers.preview_resource_path(resource: @resource, turbo_frame: :preview_modal),

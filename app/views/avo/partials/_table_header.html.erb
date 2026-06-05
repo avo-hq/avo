@@ -64,7 +64,13 @@
       <%= content_tag :div,
         class: "relative flex items-center justify-between w-full" do %>
         <% if field.sortable && resource.sorting_supported? %>
-          <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction),
+          <%
+            # url_for(params) picks the alphabetically-first per-resource route,
+            # which on association tables routes sort links to the wrong resource.
+            sort_query_params = request.query_parameters.merge(sort_by: sort_by, sort_direction: sort_direction).compact
+            sort_url = "#{request.path}?#{sort_query_params.to_query}"
+          %>
+          <%= link_to sort_url,
             class: class_names("flex-1 flex justify-between", text_classes),
             'data-turbo-frame': params[:turbo_frame] do %>
             <%= field.table_header_label %>

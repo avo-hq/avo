@@ -325,4 +325,24 @@ export default class extends Controller {
 
     this.themeLabelTarget.textContent = theme.charAt(0).toUpperCase() + theme.slice(1)
   }
+
+  // Mirrors the Shift+K hotkey in global_hotkeys.js. CSS handles the active
+  // state via [data-key-badges] selectors against `:root.hotkeys-hide-badges`.
+  setKeyBadges(event) {
+    event.preventDefault()
+    const { keyBadges } = event.currentTarget.dataset
+    if (keyBadges !== 'show' && keyBadges !== 'hide') return
+
+    const hide = keyBadges === 'hide'
+    document.documentElement.classList.toggle('hotkeys-hide-badges', hide)
+    try {
+      if (hide) {
+        localStorage.setItem('avo:hotkeys:hide_badges', '1')
+      } else {
+        localStorage.removeItem('avo:hotkeys:hide_badges')
+      }
+    } catch (e) {
+      // localStorage unavailable (private browsing) — toggle works for the current session only
+    }
+  }
 }

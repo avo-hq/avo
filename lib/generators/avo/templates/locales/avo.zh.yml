@@ -12,11 +12,16 @@ zh:
       auto_tooltip: 自动（系统偏好）
       dark: 深色
       dark_tooltip: 深色模式
+      hide: 隐藏
       light: 浅色
       light_tooltip: 浅色模式
       neutrals: 主题
       neutrals_picker: 中性色主题
       schemes: 外观
+      shortcut_badges: 快捷键徽章
+      shortcut_badges_hide_tooltip: 隐藏键盘快捷键徽章
+      shortcut_badges_show_tooltip: 显示键盘快捷键徽章
+      show: 显示
       title: 外观
     applied: 已应用
     are_you_sure: 您确定吗？
@@ -30,6 +35,10 @@ zh:
     attachment_destroyed: 附件已删除
     attachment_failed: 无法附加 %{attachment_class}
     cancel: 取消
+    checkbox_list:
+      hidden_selections:
+        one: 1 个选项因搜索而隐藏
+        other: "%{count} 个选项因搜索而隐藏"
     choose_a_country: 选择一个国家
     choose_an_option: 选择一个选项
     choose_item: 选择 %{item}
@@ -126,6 +135,9 @@ zh:
     pages: 页面
     per_page: 每页显示
     prev_page: 上一页
+    record:
+      one: 条记录
+      other: 条记录
     records_selected_from_all_pages_html: 所有页面中选中的记录
     reload: 重新加载
     remove_selection: 清除选择

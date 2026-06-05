@@ -97,8 +97,8 @@ const DIRECT_HOTKEYS = [
     match: (e) => e.shiftKey && e.key === 'K'
       && window.Avo?.configuration?.hotkeys?.showKeyBadges !== false,
     handle: () => {
-      document.body.classList.toggle('hotkeys-hide-badges')
-      const hidden = document.body.classList.contains('hotkeys-hide-badges')
+      document.documentElement.classList.toggle('hotkeys-hide-badges')
+      const hidden = document.documentElement.classList.contains('hotkeys-hide-badges')
       try {
         if (hidden) {
           localStorage.setItem('avo:hotkeys:hide_badges', '1')

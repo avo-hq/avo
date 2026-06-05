@@ -1,9 +1,7 @@
 @theme {
   --top-navbar-height: 3rem;
 
-  --navbar-bg: var(--color-avo-neutral-900);
-  --navbar-notch-radius: 1rem;
-  --navbar-notch-color: var(--navbar-bg);
+  --navbar-notch-color: var(--color-navbar-background);
 
   --border-color: var(--color-tertiary);
 }
@@ -66,7 +64,8 @@
 }
 
 .main-content {
-  @apply w-(--content-width) flex flex-col bg-primary py-2 lg:py-4 px-2 lg:px-4 border-s border-(--border-color) ms-1;
+  @apply w-(--content-width) flex flex-col bg-(--color-main-content-background) py-2 lg:py-4 px-2 lg:px-4 border-s border-(--color-main-content-border) ms-1 rounded-se-(--navbar-notch-radius) rounded-ss-(--navbar-notch-radius);
+
   transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
   min-height: calc(100dvh - var(--top-navbar-height) - var(--spacing));
 }
@@ -89,7 +88,7 @@
 }
 
 .top-navbar {
-  @apply z-100 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
+  @apply z-400 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
 
   /* Three-region grid: start | center | end. start/end share remaining space
      equally (1fr each) so the center column (search) stays visually anchored
@@ -100,7 +99,7 @@
   gap: 0.75rem;
   padding-inline: 0.5rem;
 
-  background-color: var(--navbar-bg);
+  background-color: var(--color-navbar-background);
 
   > * {
     @apply pointer-events-auto;
@@ -123,6 +122,18 @@
     width: var(--navbar-notch-radius);
     height: var(--navbar-notch-radius);
     pointer-events: none;
+    /* border: 1px solid red; */
+  }
+
+  /* Hide the arches when --navbar-notch-enabled is false. A style query lets the
+     variable read like a boolean (true/false) instead of exposing raw CSS
+     display keywords. The pseudo-elements query their originating element
+     (.top-navbar), which inherits --navbar-notch-enabled from :root. */
+  @container style(--navbar-notch-enabled: false) {
+    &::before,
+    &::after {
+      display: none;
+    }
   }
 
   &::before {
@@ -155,7 +166,7 @@
 }
 
 .top-navbar__center {
-  @apply flex items-center justify-center min-w-0;
+  @apply flex items-center justify-center min-w-0 sm:w-80 lg:w-96 xl:w-120;
 
   /* Search input is rendered against the dark navbar in both light/dark
      themes, so it uses primitive neutral tokens that are stable across modes
@@ -207,7 +218,7 @@
 /* Links inside the always-dark navbar use primitive neutral tokens so they
    stay readable in both light and dark mode — matching the search input and
    sidebar toggle treatment. */
-.top-navbar a {
+.top-navbar .header-menu a {
   color: var(--color-avo-neutral-300);
 
   &:hover {
@@ -269,6 +280,14 @@ html[dir="rtl"] .avo-sidebar {
 
   html[dir="rtl"] .sidebar-open .avo-sidebar {
     transform: translateX(0);
+  }
+
+  .sidebar-open .main-content {
+    @apply rounded-ss-none;
+  }
+
+  .main:not(.sidebar-open) .main-content {
+    @apply ms-0;
   }
 }
 

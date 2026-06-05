@@ -47,7 +47,7 @@ Thank you!
 
 NOTE: We're using our local Postgres instance by default.
 
-Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using local Postgres). Do not commit these changes. From here, running `bin/init` will get you up-and-running.
+Once you pull the code down to your machine, modify `spec/dummy/config/database.yml` as appropriate to your environment (no changes needed if you're using local Postgres). Do not commit these changes. From here, running `bin/setup` (or `bin/setup --fast` to restore from the committed seed snapshot instead of running `db:seed`) will get you up-and-running.
 
 You may use docker with the provided `docker-compose.yml` file if you want to
 
@@ -59,9 +59,48 @@ You can run `bin/dev` from the root directory, which will start an overmind (sim
 
 ## Seeding the database for local development
 
-NOTE: If you used the `bin/init` script, this step has already been done for you.
+NOTE: If you used the `bin/setup` script, this step has already been done for you.
 
 Run `AVO_ADMIN_PASSWORD=secreto bin/rails db:seed` to seed the database with dummy data and create a user for yourself with the email `hi@avohq.io` and password `secreto`.
+
+## Fast seeding (for repeated DB resets)
+
+If you reset the dummy DB often, `bin/rails db:seed` is slow (~60-120s, much of it spent fetching cover images from picsum.photos). The fast-seed cache restores a fully-seeded DB in ~seconds.
+
+A snapshot of the seeded data lives in git at `spec/dummy/db/fast_seed/`, so a fresh clone can use it without first regenerating anything:
+
+```bash
+# First-time setup (also: anytime you want to reset the dummy DB)
+bin/setup --fast
+
+# Or directly:
+bin/rails app:db:fast_seed
+```
+
+When seed data or the schema changes, regenerate the committed snapshot:
+
+```bash
+bin/rails app:db:fast_seed:rebuild
+git add spec/dummy/db/fast_seed/
+git commit -m "Refresh fast-seed snapshot"
+```
+
+What these tasks do:
+
+- `app:db:fast_seed` drops and recreates `avo_dummy_development`, loads the schema, and restores the committed dump (`spec/dummy/db/fast_seed/data.sql`) + storage snapshot.
+- `app:db:fast_seed:rebuild` runs the optimized `spec/dummy/db/seeds.rb` end-to-end and overwrites the committed snapshot. Maintainers run this whenever the seed shape or schema changes.
+
+The `app:` prefix is Rails-engine convention — the dummy app at `spec/dummy/` is the host app, so its custom rake tasks get namespaced under `app:` when invoked from the gem root. (Built-in db tasks like `db:seed` get an automatic alias from Rails; custom tasks like these do not.)
+
+**Prerequisites:**
+
+- `pg_dump`, `pg_restore`, and `psql` must be on your `PATH`. The tasks fail fast with install hints if they're missing.
+- Active Storage must be using the `Disk` service (the dev default). If you've set `STORAGE_SERVICE=amazon` or similar, unset it.
+
+**Things to know:**
+
+- `app:db:fast_seed` drops the dummy DB. Any manual data you crafted in dev gets wiped.
+- The committed snapshot is regenerated only on demand by `app:db:fast_seed:rebuild`. After pulling new migrations from main, you may need to either re-run rebuild yourself or pull again once the snapshot has been refreshed upstream.
 
 ## Using your fork from another project
 

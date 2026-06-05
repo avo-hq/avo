@@ -12,11 +12,16 @@ tr:
       auto_tooltip: Otomatik (sistem tercihi)
       dark: Koyu
       dark_tooltip: Koyu mod
+      hide: Gizle
       light: Açık
       light_tooltip: Açık mod
       neutrals: Tema
       neutrals_picker: Nötr tema
       schemes: Görünüm
+      shortcut_badges: Kısayol rozetleri
+      shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle
+      shortcut_badges_show_tooltip: Klavye kısayolu rozetlerini göster
+      show: Göster
       title: Görünüm
     applied:
       one: uygulandı
@@ -32,6 +37,10 @@ tr:
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
     cancel: İptal et
+    checkbox_list:
+      hidden_selections:
+        one: 1 seçilen seçenek arama tarafından gizlendi
+        other: "%{count} seçilen seçenek arama tarafından gizlendi"
     choose_a_country: Bir ülke seç
     choose_an_option: Bir seçenek seç
     choose_item: "%{item} seçin"
@@ -128,6 +137,9 @@ tr:
     pages: Sayfalar
     per_page: Sayfa başına
     prev_page: Önceki sayfa
+    record:
+      one: kayıt
+      other: kayıtlar
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
     reload: Yeniden yükle
     remove_selection: Seçimi sil

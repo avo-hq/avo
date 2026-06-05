@@ -1,4 +1,4 @@
-<div class=" <%= class_names("flex shrink-0 items-center", "text-red-600": @status == 'failed', "text-green-600": @status == 'success', "text-gray-600": @status == 'neutral') %>">
+<div class=" <%= class_names("flex shrink-0 items-center", "text-danger-content": @status == 'failed', "text-success-content": @status == 'success', "text-content-secondary": @status == 'neutral') %>">
   <% if @status == 'success' %>
     <%= helpers.svg 'tabler/filled/circle-check', class: 'h-4' %>
   <% elsif @status == 'failed' %>

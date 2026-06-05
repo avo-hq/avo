@@ -12,11 +12,16 @@ zh-TW:
       auto_tooltip: 自動（系統偏好）
       dark: 深色
       dark_tooltip: 深色模式
+      hide: 隱藏
       light: 淺色
       light_tooltip: 淺色模式
       neutrals: 主題
       neutrals_picker: 中性色主題
       schemes: 外觀
+      shortcut_badges: 快捷鍵徽章
+      shortcut_badges_hide_tooltip: 隱藏鍵盤快捷鍵徽章
+      shortcut_badges_show_tooltip: 顯示鍵盤快捷鍵徽章
+      show: 顯示
       title: 外觀
     applied: 已應用
     are_you_sure: 您確定嗎？
@@ -30,6 +35,10 @@ zh-TW:
     attachment_destroyed: 附件已刪除
     attachment_failed: 無法附加 %{attachment_class}
     cancel: 取消
+    checkbox_list:
+      hidden_selections:
+        one: 1 個選項因搜尋而隱藏
+        other: "%{count} 個選項因搜尋而隱藏"
     choose_a_country: 選擇一個國家
     choose_an_option: 選擇一個選項
     choose_item: 選擇 %{item}
@@ -126,6 +135,9 @@ zh-TW:
     pages: 頁面
     per_page: 每頁顯示
     prev_page: 上一頁
+    record:
+      one: 筆記錄
+      other: 筆記錄
     records_selected_from_all_pages_html: 所有頁面中選中的記錄
     reload: 重新載入
     remove_selection: 清除選擇

@@ -12,11 +12,16 @@ ru:
       auto_tooltip: Авто (системные предпочтения)
       dark: Темный
       dark_tooltip: Темный режим
+      hide: Скрыть
       light: Светлый
       light_tooltip: Светлый режим
       neutrals: Тема
       neutrals_picker: Нейтральная тема
       schemes: Внешний вид
+      shortcut_badges: Значки ярлыков
+      shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
+      shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
+      show: Показать
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?
@@ -30,6 +35,12 @@ ru:
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
     cancel: Отмена
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} выбранных варианта скрыты по запросу"
+        many: "%{count} выбранных вариантов скрыто по запросу"
+        one: 1 выбранный вариант скрыт по запросу
+        other: "%{count} выбранных вариантов скрыто по запросу"
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
     choose_item: Выбрать %{item}
@@ -128,6 +139,11 @@ ru:
     pages: Страницы
     per_page: На странице
     prev_page: Предыдущая страница
+    record:
+      few: записи
+      many: записей
+      one: запись
+      other: записей
     records_selected_from_all_pages_html: Все записи выбраны со всех страниц
     reload: Обновить
     remove_selection: Убрать выбор

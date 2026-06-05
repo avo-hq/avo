@@ -1,19 +1,16 @@
-<%= tag.div class: class_names("modal", @class, {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}), tabindex: -1, data: {
+<%# Native HTML popover: rendered in the top layer with a `::backdrop` pseudo-element.
+    `manual` (not `auto`) keeps backdrop-click / Escape dismissal under our control so
+    `close_modal_on_backdrop_click` is honoured. A click on the modal's own centering
+    area (event.target === the modal) light-dismisses it; see #close in the controller. %>
+<%= tag.div class: class_names("modal", @class, {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}), tabindex: -1, popover: "manual", data: {
   controller: "#{ctrl} modal-size",
   "#{ctrl}-target": "modal",
   "#{ctrl}-close-modal-on-backdrop-click-value": close_modal_on_backdrop_click,
   "modal-size-current-width-value": @width,
   "modal-size-current-height-value": @height,
+  action: "click->#{ctrl}#closeOnBackdrop",
   **@data
-}, **(@hidden ? { hidden: true } : {}) do %>
-  <%= tag.div(
-    aria: { expanded: true },
-    class: "modal__overlay",
-    data: {
-      "#{ctrl}-target": "backdrop",
-      action: "click->#{ctrl}#close"
-    }
-  ) %>
+} do %>
   <div
     aria-expanded="true"
     role="dialog"
@@ -21,7 +18,7 @@
     class="modal__card-container"
     data-modal-size-target="container"
   >
-    <div class="modal__card">
+    <div class="modal__card" data-<%= ctrl %>-target="card">
       <div class="card">
         <div class="card__wrapper">
           <% if has_header? %>
@@ -67,7 +64,7 @@
 
           <div class="card__body <%= @body_class %>">
             <% if content? %>
-              <div class="modal__body-content overflow-auto">
+              <div class="modal__body-content">
                 <%= content %>
               </div>
             <% end %>

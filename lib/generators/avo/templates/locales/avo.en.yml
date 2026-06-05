@@ -12,11 +12,16 @@ en:
       auto_tooltip: Auto (system preference)
       dark: Dark
       dark_tooltip: Dark mode
+      hide: Hide
       light: Light
       light_tooltip: Light mode
       neutrals: Theme
       neutrals_picker: Select neutral color
       schemes: Appearance
+      shortcut_badges: Shortcut badges
+      shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
+      shortcut_badges_show_tooltip: Show keyboard shortcut badges
+      show: Show
       title: Appearance
     applied: applied
     are_you_sure: Are you sure?
@@ -30,6 +35,10 @@ en:
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
     cancel: Cancel
+    checkbox_list:
+      hidden_selections:
+        one: 1 selected option hidden by search
+        other: "%{count} selected options hidden by search"
     choose_a_country: Choose a country
     choose_an_option: Choose an option
     choose_item: Choose %{item}
@@ -126,6 +135,9 @@ en:
     pages: Pages
     per_page: Per page
     prev_page: Previous page
+    record:
+      one: record
+      other: records
     records_selected_from_all_pages_html: All records selected from all pages
     reload: Reload
     remove_selection: Remove selection

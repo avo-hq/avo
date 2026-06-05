@@ -12,11 +12,16 @@ nn:
       auto_tooltip: Auto (systempreferanse)
       dark: Mørk
       dark_tooltip: Mørkmodus
+      hide: Skjul
       light: Lys
       light_tooltip: Lysmodus
       neutrals: Tema
       neutrals_picker: Nøytrale tema
       schemes: Utseende
+      shortcut_badges: Snarveiknappar
+      shortcut_badges_hide_tooltip: Skjul snarveiknappar
+      shortcut_badges_show_tooltip: Vis snarveiknappar
+      show: Vis
       title: Utseende
     applied:
       one: applied
@@ -32,6 +37,10 @@ nn:
     attachment_destroyed: Vedlegg sletta
     attachment_failed: Klarte ikkje å legge ved %{attachment_class}
     cancel: Avbryt
+    checkbox_list:
+      hidden_selections:
+        one: 1 vald alternativ skjult av søk
+        other: "%{count} valde alternativ skjult av søk"
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ
     choose_item: Vel %{item}
@@ -128,6 +137,9 @@ nn:
     pages: Sider
     per_page: Per side
     prev_page: Førre side
+    record:
+      one: post
+      other: postar
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
     reload: Last inn på nytt
     remove_selection: Fjern val

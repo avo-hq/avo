@@ -12,11 +12,16 @@ ar:
       auto_tooltip: تلقائي (تفضيل النظام)
       dark: داكن
       dark_tooltip: وضع الداكن
+      hide: إخفاء
       light: فاتح
       light_tooltip: وضع الفاتح
       neutrals: السمة
       neutrals_picker: سمة الألوان المحايدة
       schemes: المظهر
+      shortcut_badges: شارات الاختصار
+      shortcut_badges_hide_tooltip: إخفاء شارات اختصارات لوحة المفاتيح
+      shortcut_badges_show_tooltip: عرض شارات اختصارات لوحة المفاتيح
+      show: عرض
       title: المظهر
     applied:
       few: applied
@@ -36,6 +41,14 @@ ar:
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
     cancel: إلغاء
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} خيارات محددة مخفية بواسطة البحث"
+        many: "%{count} خيارًا محددًا مخفيًا بواسطة البحث"
+        one: خيار محدد واحد مخفي بواسطة البحث
+        other: "%{count} خيار محدد مخفي بواسطة البحث"
+        two: خياران محددان مخفيان بواسطة البحث
+        zero: لا توجد خيارات محددة مخفية بواسطة البحث
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا
     choose_item: اختر %{item}
@@ -136,6 +149,13 @@ ar:
     pages: صفحات
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
+    record:
+      few: سجلات
+      many: سجلات
+      one: سجل
+      other: سجلات
+      two: سجلان
+      zero: سجلات
     records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات
     reload: إعادة تحميل
     remove_selection: إزالة التحديد

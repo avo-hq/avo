@@ -12,11 +12,16 @@ es:
       auto_tooltip: Automático (preferencia del sistema)
       dark: Oscuro
       dark_tooltip: Modo oscuro
+      hide: Ocultar
       light: Claro
       light_tooltip: Modo claro
       neutrals: Tema
       neutrals_picker: Tema neutro
       schemes: Apariencia
+      shortcut_badges: Insignias de atajo
+      shortcut_badges_hide_tooltip: Ocultar insignias de atajo de teclado
+      shortcut_badges_show_tooltip: Mostrar insignias de atajo de teclado
+      show: Mostrar
       title: Apariencia
     applied:
       one: aplicado
@@ -32,6 +37,10 @@ es:
     attachment_destroyed: Adjunto eliminado
     attachment_failed: No se pudo adjuntar %{attachment_class}
     cancel: Cancelar
+    checkbox_list:
+      hidden_selections:
+        one: 1 opción seleccionada oculta por la búsqueda
+        other: "%{count} opciones seleccionadas ocultas por la búsqueda"
     choose_a_country: Elige un país
     choose_an_option: Elige una opción
     choose_item: Elige %{item}
@@ -128,6 +137,9 @@ es:
     pages: Páginas
     per_page: Por página
     prev_page: Página anterior
+    record:
+      one: registro
+      other: registros
     records_selected_from_all_pages_html: Todos los registros seleccionados de todas las páginas.
     reload: Recargar
     remove_selection: Quitar la selección

@@ -1,10 +1,10 @@
 [data-component="avo/fields/common/stars_component"] {
     .star {
-      @apply h-5 w-5 text-gray-300 transition-colors;
+      @apply h-5 w-5 text-tertiary transition-colors;
     }
-  
+
     .star.filled {
-      @apply text-yellow-400;
+      @apply text-warning-foreground;
     }
   
     .rating-group {
