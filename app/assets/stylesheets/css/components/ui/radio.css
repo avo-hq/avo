@@ -13,7 +13,7 @@
   }
 
   input[type=radio]:focus-visible {
-   @apply outline-none;
+    @apply outline-none;
     &:after {
       outline: var(--focus-outline);
       outline-offset: var(--focus-outline-offset);
