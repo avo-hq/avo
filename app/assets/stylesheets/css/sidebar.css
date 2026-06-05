@@ -252,7 +252,7 @@
 }
 
 .sidebar-profile__dropdown {
-  @apply max-w-[60vw] sm:max-w-[40vw];
+  @apply max-w-[calc(100vw_-_2rem)] xs:max-w-2xs sm:max-w-sm mx-[1rem] mb-0.5;
   position-area: top span-left;
 }
 

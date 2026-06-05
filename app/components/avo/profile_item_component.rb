@@ -16,10 +16,6 @@ class Avo::ProfileItemComponent < Avo::BaseComponent
   prop :params, default: {}.freeze, reader: :public
   prop :classes, default: "", reader: :public
 
-  def title
-    @title || @label
-  end
-
   def menu_item_classes
     "sidebar-profile__menu-item #{classes}".strip
   end
