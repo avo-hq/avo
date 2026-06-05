@@ -252,16 +252,16 @@
 }
 
 .sidebar-profile__dropdown {
-  @apply xs:max-w-2xs sm:max-w-sm mb-0.5;
+  @apply sm:max-w-sm mb-0.5;
   position-area: top span-right;
 }
 
-/* On mobile the menu spans the full screen width instead of hugging the
+/* Below `sm` the menu spans the full screen width instead of hugging the
    trigger. Drop the anchor's inline placement (`position-area: none`), stretch
-   edge-to-edge (`inset-inline: 0`), and keep it tied to the trigger vertically
+   edge-to-edge (`inset-inline: 1rem`), and keep it tied to the trigger vertically
    by pinning the panel's bottom to the button's top. `top: auto` is required to
    override the popover UA `inset: 0`, which would otherwise stretch it upward. */
-@media (width < theme(--breakpoint-xs)) {
+@media (width < theme(--breakpoint-sm)) {
   .sidebar-profile__dropdown {
     position-area: none;
     inset-inline: 1rem;
