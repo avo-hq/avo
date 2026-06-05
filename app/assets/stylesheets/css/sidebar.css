@@ -254,6 +254,18 @@
 .sidebar-profile__dropdown {
   @apply sm:max-w-sm mb-0.5;
   position-area: top span-right;
+
+  /* The profile menu opens upward, so it should rise from below and drop back
+     down — the inverse of the shared `.popover-menu__panel` slide, which starts
+     above and suits the default downward-opening menus. We only flip the
+     transform direction; the open end-state (translateY(0)) is inherited. */
+  transform: translateY(0.25rem);
+}
+
+@starting-style {
+  .sidebar-profile__dropdown:popover-open {
+    transform: translateY(0.25rem);
+  }
 }
 
 /* Below `sm` the menu spans the full screen width instead of hugging the
