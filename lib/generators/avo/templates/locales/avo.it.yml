@@ -182,9 +182,9 @@ it:
       one: un altro elemento
       other: "%{count} altri elementi"
       zero: nessun altro elemento
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina su un totale di <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> record selezionati da tutte le pagine
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> record selezionati su questa pagina su un totale di <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> record selezionati da tutte le pagine
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> record selezionati su questa pagina
     yes_confirm: Sì, sono sicuro
     you_cant_upload_new_resource: Non puoi caricare file nell'editor Trix finché non salvi la risorsa.
     you_havent_set_attachment_key: Non hai impostato un `attachment_key` per questo campo Trix.

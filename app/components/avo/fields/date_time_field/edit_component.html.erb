@@ -37,7 +37,7 @@
       style: @field.get_html(:style, view: view, element: :input)
     %>
     <%= content_tag :button,
-      class: "absolute end-0 self-center me-2 uppercase font-semibold text-xs disabled:cursor-not-allowed disabled:opacity-50 text-content-secondary cursor-pointer",
+      class: "absolute end-0 self-center me-2 uppercase font-semibold text-xs disabled:cursor-not-allowed disabled:opacity-50 text-content-secondary cursor-pointer rounded-md",
       id: :reset,
       type: :button,
       title: t("avo.reset").capitalize,

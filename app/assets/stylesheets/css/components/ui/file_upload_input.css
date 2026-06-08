@@ -73,12 +73,14 @@
 }
 
 /* ==========================================================================
-   State: Focus (via focus-within for native input focus)
+   State: Focus (keyboard focus on the native input)
    ========================================================================== */
 
-/* Native input is inside the wrapper div; use :focus-within since the div receives no focus, the input does */
-.file-upload-input:has(.file-upload-input__native-input:focus-within) {
-  box-shadow: var(--box-shadow-focus);
+/* Match the inner <input> (the wrapper div isn't focusable) so the ring lifts
+   onto the drop zone; :focus-visible keeps it keyboard-only. */
+.file-upload-input:has(.file-upload-input__native-input input:focus-visible) {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
 }
 
 /* ==========================================================================

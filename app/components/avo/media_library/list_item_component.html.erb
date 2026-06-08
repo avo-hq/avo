@@ -1,4 +1,4 @@
-<%= link_to helpers.avo.media_library_path(blob),
+<%= link_to helpers.avo.edit_media_library_path(blob),
   id: dom_id(blob),
   class: "grid-card",
   data: do %>
@@ -9,13 +9,15 @@
       </div>
     </div>
   <% end %>
+  <% blob_url = helpers.safe_blob_url(blob) %>
+  <% representation_url = helpers.safe_blob_representation_url(blob.variant(resize_to_limit: [600, 600])) if blob.image? %>
   <div class="grid-card__image">
-    <% if blob.image? %>
-      <%= image_tag helpers.main_app.url_for(blob.variant(resize_to_limit: [600, 600])), class: "media-library__item-thumbnail-image #{@extra_classes}", loading: :lazy, width: blob.metadata["width"], height: blob.metadata["height"] %>
-    <% elsif blob.audio? %>
-      <%= audio_tag(helpers.main_app.url_for(blob), controls: true, preload: false, class: 'w-full') %>
-    <% elsif blob.video? %>
-      <%= video_tag(helpers.main_app.url_for(blob), controls: true, preload: false, class: 'w-full') %>
+    <% if representation_url %>
+      <%= image_tag representation_url, class: "media-library__item-thumbnail-image #{@extra_classes}", loading: :lazy, width: blob.metadata["width"], height: blob.metadata["height"] %>
+    <% elsif blob.audio? && blob_url %>
+      <%= audio_tag(blob_url, controls: true, preload: false, class: "w-full") %>
+    <% elsif blob.video? && blob_url %>
+      <%= video_tag(blob_url, controls: true, preload: false, class: "w-full") %>
     <% else %>
       <div class="media-library__item-thumbnail-placeholder">
         <%= helpers.svg "tabler/outline/file-text", class: "media-library__item-thumbnail-placeholder-icon" %>
@@ -26,5 +28,6 @@
     <% if @display_filename %>
       <span class="grid-card__title--truncate" title="<%= blob.filename %>"><%= blob.filename %></span>
     <% end %>
+    <span class="grid-card__description"><%= helpers.number_to_human_size(blob.byte_size) %></span>
   </div>
 <% end %>

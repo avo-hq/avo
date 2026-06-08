@@ -40,11 +40,13 @@ export default class extends Controller {
     const target = this.element
     const originalHTML = target.innerHTML
     target.innerHTML = 'Copied 👌'
-    target.classList.add('transition', 'opacity-80', 'bg-green-100')
+    // Scheme-reactive success treatment: success-tinted surface + success-content
+    // text (readable in both light and dark) instead of a hardcoded green-100.
+    target.classList.add('transition', 'opacity-80', 'bg-success/15', 'text-success-content')
 
     setTimeout(() => {
       target.innerHTML = originalHTML
-      target.classList.remove('opacity-80', 'bg-green-100')
+      target.classList.remove('opacity-80', 'bg-success/15', 'text-success-content')
     }, 1500)
   }
 }

@@ -218,7 +218,7 @@
 /* Links inside the always-dark navbar use primitive neutral tokens so they
    stay readable in both light and dark mode — matching the search input and
    sidebar toggle treatment. */
-.top-navbar .header-menu a {
+.top-navbar .header-menu__row a {
   color: var(--color-avo-neutral-300);
 
   &:hover {

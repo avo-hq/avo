@@ -1,0 +1,38 @@
+/* ==========================================================================
+   Focus ring — unified :focus-visible system
+   Single source of truth. Component overrides use plain selectors
+   (specificity 0,1,0) and win automatically. Never use !important.
+   ========================================================================== */
+
+@layer base {
+  :focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+    transition: none;
+  }
+
+  /* Suppress any stray focus ring on mouse/touch interaction */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  a[href]:empty:not([aria-label]) {
+    display: none;
+  }
+
+  /* User-opted-in higher contrast (macOS, GNOME, KDE) */
+  @media (prefers-contrast: more) {
+    :focus-visible {
+      outline-width: 3px;
+      outline-color: currentColor;
+    }
+  }
+
+  /* Forced-colors mode (Windows HCM) — wins in HCM */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+}

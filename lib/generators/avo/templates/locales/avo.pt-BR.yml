@@ -184,9 +184,9 @@ pt-BR:
       one: mais um item
       other: "%{count} mais items"
       zero: mais nenhum item
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros selecionados de todas as páginas
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> registros selecionados de todas as páginas
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> registros selecionados nesta página
     yes_confirm: Sim, tenho certeza
     you_cant_upload_new_resource: Você não pode fazer upload de imagens no editor Trix até salvar o recurso.
     you_havent_set_attachment_key: Você precisa definir uma `attachment_key` para este campo Trix.

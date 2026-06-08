@@ -135,9 +135,9 @@ en:
       one: one more item
       other: "%{count} more items"
       zero: no more items
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page from a total of <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records selected from all pages
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> records selected on this page from a total of <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> records selected from all pages
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records selected on this page
     yes_confirm: Yes, I'm sure
     you_missed_something_check_form: You might have missed something. Please check the form.
     more_records_available: There are more records available.

@@ -19,7 +19,7 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
       tabindex: "0",
       role: "grid",
       "aria-label": @resource.plural_name,
-      data: {"index-row-navigator-target": "table"}
+      data: {"index-row-navigator-target": "table", "content-focus": ""}
     }
   end
 

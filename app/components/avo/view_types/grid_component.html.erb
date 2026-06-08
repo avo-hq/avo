@@ -1,10 +1,14 @@
 <turbo-frame id="<%= @resource.model_key %>_list" target="_top" class="relative flex w-full flex-col @container">
+  <%# tabindex=-1 makes the wrapper a Shift+T focus anchor (top-level grids only, %>
+  <%# never a has-many grid on a show page); from here Tab steps through the cards. %>
   <%= content_tag :div,
     class: "grid-wrapper",
+    tabindex: (@reflection.present? ? nil : "-1"),
     data: {
       component_name: self.class.to_s.underscore,
       selected_resources_name: @resource.model_key,
       selected_resources: [],
+      **(@reflection.present? ? {} : {"content-focus": ""}),
       **(try(:drag_reorder_data_attributes) || {})
     } do %>
     <% @resources.each_with_index do |resource, index| %>

@@ -184,9 +184,9 @@ es:
       one: un elemento más
       other: "%{count} elementos más"
       zero: ningún elemento más
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página de un total de <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros seleccionados en todas las páginas
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros seleccionados en esta página
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> registros seleccionados en esta página de un total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> registros seleccionados en todas las páginas
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> registros seleccionados en esta página
     yes_confirm: Sí, estoy seguro
     you_cant_upload_new_resource: No puedes subir archivos al editor Trix hasta que guardes el recurso.
     you_havent_set_attachment_key: No has establecido una `attachment_key` para este campo Trix.

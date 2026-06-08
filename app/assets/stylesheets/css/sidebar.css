@@ -18,8 +18,8 @@
 .sidebar-link:focus-visible,
 .sidebar-link.active:focus-visible,
 .sidebar-subitem:focus-visible {
-  @apply outline-none relative z-10;
-  box-shadow: var(--box-shadow-focus);
+  @apply relative z-10;
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .sidebar-link[disabled],
@@ -69,7 +69,7 @@
 
 .sidebar-section__header:focus-visible {
   @apply bg-primary relative z-10;
-  box-shadow: var(--box-shadow-focus);
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .sidebar-section__items {
@@ -252,8 +252,40 @@
 }
 
 .sidebar-profile__dropdown {
-  @apply max-w-[calc(100vw_-_2rem)] xs:max-w-2xs sm:max-w-sm mx-[1rem] mb-0.5;
-  position-area: top span-left;
+  @apply sm:max-w-sm mb-0.5;
+  position-area: top span-right;
+
+  /* The profile menu opens upward, so it should rise from below and drop back
+     down — the inverse of the shared `.popover-menu__panel` slide, which starts
+     above and suits the default downward-opening menus. We only flip the
+     transform direction; the open end-state (translateY(0)) is inherited. */
+  transform: translateY(0.25rem);
+}
+
+@starting-style {
+  .sidebar-profile__dropdown:popover-open {
+    transform: translateY(0.25rem);
+  }
+}
+
+/* Below `sm` the menu spans the full screen width instead of hugging the
+   trigger. Drop the anchor's inline placement (`position-area: none`), stretch
+   edge-to-edge (`inset-inline: 1rem`), and keep it tied to the trigger vertically
+   by pinning the panel's bottom to the button's top. `top: auto` is required to
+   override the popover UA `inset: 0`, which would otherwise stretch it upward. */
+@media (width < theme(--breakpoint-sm)) {
+  .sidebar-profile__dropdown {
+    position-area: none;
+    inset-inline: 1rem;
+    top: auto;
+    bottom: anchor(top);
+    /* `width: auto` lets the two inset-inline values define the width (full
+       viewport minus the 1rem gutters). Without it the popover UA's
+       `width: fit-content` wins, the panel grows to its content, and long
+       menu labels never hit a boundary to truncate against. */
+    width: auto;
+    max-width: none;
+  }
 }
 
 /* Menu rows inherit the dropdown row layout — override text size and,

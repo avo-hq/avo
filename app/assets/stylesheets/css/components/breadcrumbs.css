@@ -52,6 +52,10 @@
   &:first-child {
     @apply -ms-1;
   }
+
+  &:focus-visible {
+    outline-offset: var(--focus-outline-offset-inset);
+  }
 }
 
 .breadcrumb-element__icon {

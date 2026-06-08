@@ -39,8 +39,19 @@
     0 0 0 1px var(--color-red-600), 0 0 0 3px var(--color-red-300);
   --box-shadow-success: 0 0 5px 1px var(--color-green-600),
     0 0 0 1px var(--color-green-600), 0 0 0 3px var(--color-green-300);
-  --box-shadow-focus: 0 0 0 1px var(--color-primary),
-    0 0 0 3px var(--color-info-foreground);
+  /* Focus ring knobs — read by the unified :focus-visible system in focus.css
+     and by component-level overrides across the app. Override these to restyle
+     every focus ring at once instead of touching individual components.
+     --focus-outline-color defaults to --color-info, so it resolves per-scheme.
+     --focus-outline-offset-inset is a negative offset for elements that need
+     the ring drawn *inside* their bounds (sidebar items, dropdowns, pagination,
+     etc.) so it isn't clipped by an overflow boundary. --focus-outline is the
+     ready-to-use shorthand (`outline: var(--focus-outline)`). */
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 1px;
+  --focus-outline-offset-inset: -2px;
+  --focus-outline-color: var(--color-info);
+  --focus-outline: var(--focus-outline-width) solid var(--focus-outline-color);
   --box-shadow-search-input-shortcut: 0 -1.4px 0 0.1px var(--color-tertiary) inset,
     0 0.8px 0 0.4px var(--color-primary) inset;
 
@@ -111,6 +122,16 @@
   /* Radius of the content panel's rounded top corners (and the matching navbar
      arches that fill them). Set to `0` to flatten the corners entirely. */
   --navbar-notch-radius: 1rem;
+
+  /* Motion speeds. Shared knobs for small UI transitions so timings stay
+     consistent and tunable in one place. Live in plain :root (not @theme) since
+     they're consumed via var() in component CSS, not as Tailwind utilities.
+     --speed-fast: snappy state flips (color/opacity/fill swaps).
+     --speed-moderate: motion that travels or transforms (scale, slide, pop).
+     --speed-slow: larger or more deliberate transitions (panels, overlays). */
+  --speed-fast: 90ms;
+  --speed-moderate: 150ms;
+  --speed-slow: 200ms;
 
   /* Force native controls (selects, radios, checkboxes, scrollbars, pickers) to
      follow Avo's appearance instead of the OS. Driven by `.dark` below, which is
