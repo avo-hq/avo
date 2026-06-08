@@ -24,6 +24,49 @@ RSpec.describe Avo::ApplicationHelper do
     end
   end
 
+  describe "#safe_blob_path and #safe_blob_url" do
+    def create_image_blob(filename: "keep.jpg")
+      ActiveStorage::Blob.create_and_upload!(
+        io: Avo::Engine.root.join("spec", "dummy", "db", "seed_files", "dummy-image.jpg").open,
+        filename: filename,
+        content_type: "image/jpeg"
+      )
+    end
+
+    it "returns routable URLs for blobs with a blank filename" do
+      blob = create_image_blob
+      blob.update_column(:filename, "")
+
+      path = helper.safe_blob_path(blob)
+      url = helper.safe_blob_url(blob)
+
+      expect(path).to include("/rails/active_storage/blobs/redirect/")
+      expect(path).to include("attachment.jpg")
+      expect(url).to include("/rails/active_storage/blobs/redirect/")
+      expect(url).to include("attachment.jpg")
+    end
+
+    it "returns normal URLs for blobs with a filename" do
+      blob = create_image_blob(filename: "photo.jpg")
+
+      path = helper.safe_blob_path(blob)
+      url = helper.safe_blob_url(blob)
+
+      expect(path).to include("photo.jpg")
+      expect(url).to include("photo.jpg")
+    end
+
+    it "returns routable representation URLs for variants of blobs with a blank filename" do
+      blob = create_image_blob
+      blob.update_column(:filename, "")
+
+      url = helper.safe_blob_representation_url(blob.variant(resize_to_limit: [600, 600]))
+
+      expect(url).to include("/rails/active_storage/representations/redirect/")
+      expect(url).to include("attachment.jpg")
+    end
+  end
+
   describe "#chart_color" do
     it "returns a color from the list of configured chart_colors" do
       expect(helper.chart_color(0)).to eq(Avo.configuration.appearance.chart_colors[0])

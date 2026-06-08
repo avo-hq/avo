@@ -10,47 +10,7 @@
         <%= helpers.svg "tabler/outline/x", class: "size-5" %>
       <% end %>
 
-      <div class="media-library-details__preview-shell">
-        <div class="media-library-details__preview-frame">
-          <% if @blob.image? %>
-            <%= image_tag helpers.main_app.url_for(@blob.variant(resize_to_limit: [1400, 1400])), class: "media-library-details__preview-image", loading: :lazy %>
-          <% elsif @blob.audio? %>
-            <%= audio_tag helpers.main_app.url_for(@blob), controls: true, preload: false, class: "media-library-details__preview-audio" %>
-          <% elsif @blob.video? %>
-            <%= video_tag helpers.main_app.url_for(@blob), controls: true, preload: false, class: "media-library-details__preview-video" %>
-          <% else %>
-            <div class="media-library-details__preview-placeholder">
-              <%= helpers.svg "tabler/outline/file-text", class: "media-library-details__preview-placeholder-icon" %>
-            </div>
-          <% end %>
-        </div>
-
-        <div class="media-library-details__actions">
-          <%= render Avo::ButtonComponent.new(helpers.main_app.url_for(@blob), is_link: true, style: :text, download: true) do %>
-            Download
-          <% end %>
-
-          <%= a_button style: :text,
-            type: :button,
-            data: {
-              controller: "copy-to-clipboard",
-              text: helpers.main_app.url_for(@blob),
-              action: "click->copy-to-clipboard#copy"
-            } do %>
-            Copy URL to clipboard
-          <% end %>
-
-          <%= a_button style: :text,
-            color: :red,
-            url: helpers.avo.media_library_path(@blob),
-            method: :delete,
-            data: {
-              turbo_confirm: "Are you sure you want to destroy this attachment?"
-            } do %>
-            Delete
-          <% end %>
-        </div>
-      </div>
+      <%= render partial: "avo/media_library/preview", locals: {blob: @blob} %>
     </section>
 
     <aside class="media-library-details__sidebar">

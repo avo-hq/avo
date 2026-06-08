@@ -1,8 +1,9 @@
 module Avo
   class MediaLibraryController < ApplicationController
     include Pagy::Method
+
     before_action :authorize_access!
-    before_action -> { @container_size = "large" }, only: [:show]
+    before_action -> { @container_size = "large" }, only: [:edit]
 
     def index
       @attaching = false
@@ -10,6 +11,10 @@ module Avo
     end
 
     def show
+      redirect_to avo.edit_media_library_path(params[:id])
+    end
+
+    def edit
       @blob = ActiveStorage::Blob.find(params[:id])
 
       add_breadcrumb title: "Media Library", path: avo.media_library_index_path, initials: "ML"
@@ -36,9 +41,24 @@ module Avo
 
     def update
       @blob = ActiveStorage::Blob.find(params[:id])
-      @blob.update!(blob_params)
 
-      redirect_to avo.media_library_path(@blob)
+      # A blank filename makes the blob unroutable (Active Storage URLs need a
+      # :filename segment) — refuse it rather than mangling the blob. Omitted
+      # filename (metadata-only PATCH) is fine; leave the existing name alone.
+      if blob_params.key?(:filename) && blob_params[:filename].blank?
+        flash[:error] = "Filename can't be blank."
+        return redirect_to avo.edit_media_library_path(@blob)
+      end
+
+      attributes = {
+        # Merge, don't replace: keep system metadata (width/height/analyzed/…).
+        metadata: @blob.metadata.merge(blob_params[:metadata]&.to_h || {})
+      }
+      attributes[:filename] = blob_params[:filename] if blob_params.key?(:filename)
+
+      @blob.update!(attributes)
+
+      redirect_to avo.edit_media_library_path(@blob)
     end
 
     def attach

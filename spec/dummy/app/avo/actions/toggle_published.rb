@@ -2,6 +2,7 @@ class Avo::Actions::TogglePublished < Avo::BaseAction
   self.name = "Toggle post published"
   self.message = <<~TEXT.chomp
     Are you sure, sure?
+    (a lot of purposeful empty space to test the action modal)
 
 
 

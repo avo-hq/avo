@@ -32,16 +32,28 @@
   );
 }
 
+/* Shift+T anchors focus on the grid wrapper; show the same focus ring as the
+   index table view so keyboard users see where focus landed before they Tab in. */
+.grid-wrapper[data-content-focus]:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+  /* Round the ring corners to match the index table's card focus ring. */
+  @apply rounded-xl;
+}
+
 .grid-card {
   @apply flex flex-col flex-1 shrink-0 basis-0 items-start border rounded-xl p-2 gap-2 min-w-52 bg-primary border-tertiary;
 
   box-shadow: var(--box-shadow-grid-card);
 }
 
+/* The cover link/image sits inside .grid-card__image, which clips overflow.
+   Lift the ring to .grid-card when any nested control is keyboard-focused,
+   matching the table grid pattern in table.css. */
+.grid-card:focus-visible,
 .grid-card:has(:focus-visible) {
-  @apply outline-none;
-
-  box-shadow: var(--box-shadow-focus);
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .grid-card__image {

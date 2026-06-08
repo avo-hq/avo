@@ -10,6 +10,9 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   prop :class
   prop :index
   prop :data, default: -> { {}.freeze }
+  # When true, the panel body becomes a Shift+T focus anchor: focusing it lets the
+  # user Tab into the fields and Shift+Tab back to the controls in the header.
+  prop :content_focusable, default: false
 
   renders_one :header
   renders_one :controls
@@ -19,6 +22,10 @@ class Avo::UI::PanelComponent < Avo::BaseComponent
   renders_one :body
   renders_one :card, "Avo::UI::CardComponent" # wraps content into a card automatically
   renders_one :footer
+
+  def content_focusable?
+    @content_focusable
+  end
 
   def has_cover?
     @cover.present?
