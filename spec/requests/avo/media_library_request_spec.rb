@@ -64,6 +64,21 @@ RSpec.describe "Media library edit", type: :request do
     expect(blob.metadata["title"]).to eq("Hello")
   end
 
+  it "allows metadata-only updates when filename is omitted" do
+    blob = create_image_blob(filename: "keep.jpg")
+    blob.update_column(:metadata, {"identified" => true, "width" => 120, "height" => 80})
+
+    patch "/admin/media-library/#{blob.id}", params: {blob: {metadata: {title: "Hello"}}}
+
+    expect(response).to redirect_to("/admin/media-library/#{blob.id}/edit")
+    expect(flash[:error]).to be_nil
+
+    blob.reload
+    expect(blob.filename.to_s).to eq("keep.jpg")
+    expect(blob.metadata["width"]).to eq(120)
+    expect(blob.metadata["title"]).to eq("Hello")
+  end
+
   it "renders the index grid even when a listed blob has a blank filename" do
     broken = create_image_blob
     broken.update_column(:filename, "")

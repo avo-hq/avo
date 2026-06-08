@@ -15,9 +15,9 @@
     <% if representation_url %>
       <%= image_tag representation_url, class: "media-library__item-thumbnail-image #{@extra_classes}", loading: :lazy, width: blob.metadata["width"], height: blob.metadata["height"] %>
     <% elsif blob.audio? && blob_url %>
-      <%= audio_tag(blob_url, controls: true, preload: false, class: 'w-full') %>
+      <%= audio_tag(blob_url, controls: true, preload: false, class: "w-full") %>
     <% elsif blob.video? && blob_url %>
-      <%= video_tag(blob_url, controls: true, preload: false, class: 'w-full') %>
+      <%= video_tag(blob_url, controls: true, preload: false, class: "w-full") %>
     <% else %>
       <div class="media-library__item-thumbnail-placeholder">
         <%= helpers.svg "tabler/outline/file-text", class: "media-library__item-thumbnail-placeholder-icon" %>

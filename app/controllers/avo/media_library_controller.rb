@@ -43,17 +43,20 @@ module Avo
       @blob = ActiveStorage::Blob.find(params[:id])
 
       # A blank filename makes the blob unroutable (Active Storage URLs need a
-      # :filename segment) — refuse it rather than mangling the blob.
-      if blob_params[:filename].blank?
+      # :filename segment) — refuse it rather than mangling the blob. Omitted
+      # filename (metadata-only PATCH) is fine; leave the existing name alone.
+      if blob_params.key?(:filename) && blob_params[:filename].blank?
         flash[:error] = "Filename can't be blank."
         return redirect_to avo.edit_media_library_path(@blob)
       end
 
-      @blob.update!(
-        filename: blob_params[:filename],
+      attributes = {
         # Merge, don't replace: keep system metadata (width/height/analyzed/…).
         metadata: @blob.metadata.merge(blob_params[:metadata]&.to_h || {})
-      )
+      }
+      attributes[:filename] = blob_params[:filename] if blob_params.key?(:filename)
+
+      @blob.update!(attributes)
 
       redirect_to avo.edit_media_library_path(@blob)
     end

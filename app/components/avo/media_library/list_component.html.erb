@@ -1,15 +1,15 @@
 <%= render ui.panel(title: @attaching ? nil : t("avo.media_library.title"),
-  data: {
-    controller: 'media-library',
-    media_library_controller_selector_value: params[:controller_selector],
-    media_library_controller_name_value: params[:controller_name],
-    media_library_item_details_frame_id_value: ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID,
-  }) do |panel| %>
+                    data: {
+                      controller: "media-library",
+                      media_library_controller_selector_value: params[:controller_selector],
+                      media_library_controller_name_value: params[:controller_name],
+                      media_library_item_details_frame_id_value: ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID
+                    }) do |panel| %>
   <%= panel.with_controls do %>
     <% if false && @attaching %>
       <%= a_button data: {
-        action: 'click->media-library#selectItems',
-      } do %>
+            action: "click->media-library#selectItems"
+          } do %>
         Attach
       <% end %>
     <% end %>
@@ -19,22 +19,22 @@
     <% if !@attaching %>
       <%= content_tag :div,
         data: {
-          controller: 'media-library-attach',
-          media_library_attach_direct_uploads_url_value: helpers.main_app.rails_direct_uploads_url,
+          controller: "media-library-attach",
+          media_library_attach_direct_uploads_url_value: helpers.main_app.rails_direct_uploads_url
         } do %>
         <%= content_tag :div,
           data: {
-            media_library_attach_target: 'dropzone',
+            media_library_attach_target: "dropzone"
           } do %>
           <%= render Avo::UI::FileUploadInputComponent.new(
-            id: "media-library-file-upload",
+            id: "media-library-file-upload"
           ) %>
         <% end %>
 
         <%= content_tag :div, "", class: "media-library__uploading-container", data: {
-          media_library_attach_target: 'uploadingContainer',
-          turbo_permanent: true,
-        } %>
+              media_library_attach_target: "uploadingContainer",
+              turbo_permanent: true
+            } %>
       <% end %>
     <% end %>
 
@@ -42,8 +42,8 @@
       <%# tabindex=-1 makes the grid a Shift+T focus anchor on the standalone library; %>
       <%# never in attach mode, where the host form already owns the page's anchor. %>
       <%= content_tag :div, class: "media-library__grid grid-wrapper mt-4",
-        tabindex: (@attaching ? nil : "-1"),
-        data: (@attaching ? {} : {"content-focus": ""}) do %>
+                            tabindex: (@attaching ? nil : "-1"),
+                            data: (@attaching ? {} : {"content-focus": ""}) do %>
         <%= render Avo::MediaLibrary::ListItemComponent.with_collection(@blobs, attaching: @attaching, multiple: @attaching) %>
       <% end %>
 

@@ -25,23 +25,23 @@
       <% end %>
 
       <%= a_button style: :text,
-        type: :button,
-        data: {
-          controller: "copy-to-clipboard",
-          text: blob_url,
-          action: "click->copy-to-clipboard#copy"
-        } do %>
+                   type: :button,
+                   data: {
+                     controller: "copy-to-clipboard",
+                     text: blob_url,
+                     action: "click->copy-to-clipboard#copy"
+                   } do %>
         Copy URL to clipboard
       <% end %>
     <% end %>
 
     <%= a_button style: :text,
-      color: :red,
-      url: avo.media_library_path(blob),
-      method: :delete,
-      data: {
-        turbo_confirm: "Are you sure you want to destroy this attachment?"
-      } do %>
+                 color: :red,
+                 url: avo.media_library_path(blob),
+                 method: :delete,
+                 data: {
+                   turbo_confirm: "Are you sure you want to destroy this attachment?"
+                 } do %>
       Delete
     <% end %>
   </div>

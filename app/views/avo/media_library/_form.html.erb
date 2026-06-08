@@ -1,15 +1,15 @@
 <div class="media-library-details__section media-library-details__section--form">
   <%= form_with model: blob,
-    url: avo.media_library_path(blob),
-    method: :patch,
-    class: "media-library-details__form all-fields-stacked description-list",
-    html: {
-      novalidate: true,
-      data: {
-        controller: "form avo-reactive-fields",
-        action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
-      }
-    } do |f| %>
+                url: avo.media_library_path(blob),
+                method: :patch,
+                class: "media-library-details__form all-fields-stacked description-list",
+                html: {
+                  novalidate: true,
+                  data: {
+                    controller: "form avo-reactive-fields",
+                    action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
+                  }
+                } do |f| %>
     <%= avo_edit_field :filename,
       as: :text,
       value: blob.filename.to_s,
@@ -55,14 +55,14 @@
 
     <div class="media-library-details__form-actions">
       <%= a_button type: :submit,
-        icon: "tabler/outline/arrow-up",
-        size: :lg,
-        style: :primary,
-        color: :primary,
-        data: {
-          hotkey: "Mod+Enter"
-        },
-        class: "w-full" do %>
+                   icon: "tabler/outline/arrow-up",
+                   size: :lg,
+                   style: :primary,
+                   color: :primary,
+                   data: {
+                     hotkey: "Mod+Enter"
+                   },
+                   class: "w-full" do %>
         Update
       <% end %>
     </div>
