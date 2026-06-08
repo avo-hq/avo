@@ -233,7 +233,7 @@ module Avo
         #       product:
         #         save: "Save product"
         def name_from_translation_key(count:, default:)
-          t(translation_key, count:, default:).humanize
+          t(translation_key, count:, default:)
         rescue I18n::InvalidPluralizationData
           default
         end
@@ -243,7 +243,7 @@ module Avo
         end
 
         def navigation_label
-          plural_name.humanize
+          plural_name
         end
 
         def find_record(id, query: nil, params: nil)

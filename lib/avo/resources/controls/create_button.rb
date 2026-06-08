@@ -6,7 +6,7 @@ module Avo
           super(**args)
 
           if args[:item].present?
-            @label = I18n.t("avo.create_new_item", item: args[:item].humanize(capitalize: false)) if label.nil?
+            @label = I18n.t("avo.create_new_item", item: args[:item]) if label.nil?
           end
         end
       end

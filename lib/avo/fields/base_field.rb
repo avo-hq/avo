@@ -140,11 +140,11 @@ module Avo
       end
 
       def translated_name(default:)
-        t(translation_key, count: 1, default: default).humanize
+        t(translation_key, count: 1, default: default)
       end
 
       def translated_plural_name(default:)
-        t(translation_key, count: 2, default: default).humanize
+        t(translation_key, count: 2, default: default)
       end
 
       def width_class

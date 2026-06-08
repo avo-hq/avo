@@ -250,7 +250,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         turbo_method: :delete,
         turbo_confirm: "Are you sure you want to detach this #{title}."
       } do
-      control.label || t("avo.detach_item", item: title).humanize
+      control.label || t("avo.detach_item", item: title)
     end
   end
 

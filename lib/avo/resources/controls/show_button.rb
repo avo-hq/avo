@@ -6,7 +6,7 @@ module Avo
           super(**args)
 
           if args[:item].present?
-            @title = I18n.t("avo.view_item", item: args[:item]).humanize if title.nil?
+            @title = I18n.t("avo.view_item", item: args[:item]) if title.nil?
           end
         end
       end
