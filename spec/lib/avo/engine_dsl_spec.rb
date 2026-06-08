@@ -1,5 +1,12 @@
 require "rails_helper"
 
+RSpec.describe "Avo::EngineDSL load order" do
+  it "is available via standalone require without full avo boot" do
+    expect(Avo::EngineDSL).to be_a(Module)
+    expect(Avo::EngineDSL.instance_methods).to include(:avo_engine)
+  end
+end
+
 RSpec.describe Avo::EngineDSL do
   before do
     stub_const("Avo::EngineDSLSpec", Module.new)
