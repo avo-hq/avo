@@ -19,7 +19,20 @@ const findResourceTable = () => document.querySelector(RESOURCE_TABLE_SELECTOR)
 // index table, the grid wrapper, or a show/edit panel body. Focusing it lets the
 // user immediately Tab into the content (and Shift+Tab back to the page controls).
 const CONTENT_FOCUS_SELECTOR = '[data-content-focus]'
-const findContentFocus = () => document.querySelector(CONTENT_FOCUS_SELECTOR)
+
+// Tabbed show/edit views render every panel with data-content-focus, but inactive
+// tab panels stay in the DOM with a hidden class. Skip those so Shift+T lands on
+// the content the user is actually viewing.
+const isVisibleContentFocus = (element) => {
+  if (!element) return false
+  if (element.closest('[hidden], .hidden')) return false
+
+  return element.getClientRects().length > 0
+}
+
+const findContentFocus = () => (
+  Array.from(document.querySelectorAll(CONTENT_FOCUS_SELECTOR)).find(isVisibleContentFocus) ?? null
+)
 
 // Find any mounted appearance Stimulus controller and call `method` on it.
 // Multiple appearance switchers can be on the page (inline + dropdown fallback);

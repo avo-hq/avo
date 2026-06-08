@@ -323,6 +323,53 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       expect(descriptor["contentFocus"]).to be(true)
       expect(descriptor["classes"]).to include("panel__body")
     end
+
+    it "focuses the visible tab panel on tabbed show views, not a hidden one" do
+      person = create(:person)
+
+      Avo::Resources::Person.with_temporary_items do
+        tabs do
+          tab title: "First" do
+            panel do
+              field :name, as: :text
+            end
+          end
+
+          tab title: "Second" do
+            panel do
+              field :type, as: :text
+            end
+          end
+        end
+      end
+
+      visit avo.resources_person_path(person)
+
+      scroll_to first_tab_group
+      click_tab "Second", within_target: first_tab_group
+
+      dispatch_keydown("T", shift_key: true)
+
+      focused_tab = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el?.hasAttribute('data-content-focus')) return null
+
+          return el.closest('[data-tabs-target="tabPanel"]')?.dataset?.tabId ?? null
+        })()
+      JS
+
+      expect(focused_tab).to eq("Second")
+
+      hidden_ancestor = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          return !!el?.closest('.hidden, [hidden]')
+        })()
+      JS
+
+      expect(hidden_ancestor).to be(false)
+    end
   end
 
   describe "accessible row navigation" do

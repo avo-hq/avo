@@ -6,16 +6,41 @@ module Avo
     def ui = Avo::UIInstance
 
     # Active Storage URL helpers raise UrlGenerationError when a blob's filename
-    # is blank (the route requires a :filename segment). Return nil instead so a
-    # single broken blob can't 500 a whole listing — callers fall back gracefully.
+    # is blank (the route requires a :filename segment). Use a synthetic filename
+    # so attach mode and other callers still get a routable URL; return nil only
+    # when generation still fails for another reason.
     def safe_blob_url(blob)
-      main_app.url_for(blob)
+      if blob.filename.to_s.blank?
+        main_app.rails_service_blob_url(blob.signed_id, routable_blob_filename(blob))
+      else
+        main_app.url_for(blob)
+      end
     rescue ActionController::UrlGenerationError
       nil
     end
 
     def safe_blob_path(blob)
-      main_app.rails_blob_path(blob)
+      if blob.filename.to_s.blank?
+        main_app.rails_service_blob_path(blob.signed_id, routable_blob_filename(blob))
+      else
+        main_app.rails_blob_path(blob)
+      end
+    rescue ActionController::UrlGenerationError
+      nil
+    end
+
+    def safe_blob_representation_url(representation)
+      blob = representation.blob
+
+      if blob.filename.to_s.blank?
+        main_app.rails_blob_representation_url(
+          blob.signed_id,
+          representation.variation.key,
+          routable_blob_filename(blob)
+        )
+      else
+        main_app.url_for(representation)
+      end
     rescue ActionController::UrlGenerationError
       nil
     end
@@ -217,6 +242,16 @@ module Avo
     end
 
     private
+
+    # The signed_id is what Active Storage uses to locate the blob; the filename
+    # segment is only required for routing, so a placeholder is fine when blank.
+    def routable_blob_filename(blob)
+      return blob.filename if blob.filename.to_s.present?
+
+      extension = Rack::Mime::MIME_TYPES.invert[blob.content_type]
+      extension = ".#{extension}" if extension.present? && !extension.start_with?(".")
+      "attachment#{extension}"
+    end
 
     def container_width_css_suffix(width)
       (width == :full) ? "full-width" : width.to_s

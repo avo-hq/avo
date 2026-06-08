@@ -39,7 +39,9 @@ RSpec.describe "Media library edit", type: :request do
     get "/admin/media-library/#{blob.id}/edit"
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include("media-library-details__preview-placeholder")
+    expect(response.body).to include("media-library-details__preview-image")
+    expect(response.body).to include("/rails/active_storage/representations/redirect/")
+    expect(response.body).to include("attachment.jpg")
   end
 
   it "refuses to blank the filename on update (keeps the blob intact)" do
@@ -69,8 +71,22 @@ RSpec.describe "Media library edit", type: :request do
     get "/admin/media-library"
 
     expect(response).to have_http_status(:ok)
-    # The broken blob falls back to the thumbnail placeholder instead of 500ing.
     expect(response.body).to include(ActionView::RecordIdentifier.dom_id(broken))
-    expect(response.body).to include("media-library__item-thumbnail-placeholder")
+    expect(response.body).to include("media-library__item-thumbnail-image")
+    expect(response.body).to include("/rails/active_storage/representations/redirect/")
+    expect(response.body).to include("attachment.jpg")
+  end
+
+  it "exposes routable blob URLs in attach mode when a listed blob has a blank filename" do
+    broken = create_image_blob
+    broken.update_column(:filename, "")
+
+    get "/admin/attach-media"
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include(ActionView::RecordIdentifier.dom_id(broken))
+    expect(response.body).to include('data-media-library-path-param="/rails/active_storage/blobs/redirect/')
+    expect(response.body).to include('data-media-library-url-param="http')
+    expect(response.body).to include("attachment.jpg")
   end
 end
