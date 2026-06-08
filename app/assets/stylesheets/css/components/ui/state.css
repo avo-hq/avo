@@ -7,11 +7,11 @@
 }
 
 .state__illustration {
-  @apply relative h-36 w-60 flex items-center justify-center;
+  @apply relative w-60 flex flex-col items-start;
 }
 
 .state__card {
-  @apply absolute flex h-11 w-44 items-center gap-1.5 rounded-lg border border-secondary p-2.5;
+  @apply relative flex h-11 w-44 items-center gap-1.5 rounded-lg border border-secondary p-2.5;
 
   background: linear-gradient(194deg, var(--color-primary) 27%, var(--color-background) 65%);
   box-shadow: var(--box-shadow-card);
@@ -22,11 +22,11 @@
 }
 
 .state__card--middle {
-  @apply start-14 top-8;
+  @apply start-14 -top-3;
 }
 
 .state__card--bottom {
-  @apply start-5 top-20;
+  @apply start-5 -top-2;
 }
 
 .state__badge {
@@ -66,12 +66,18 @@
 }
 
 .state__message {
-  @apply text-base font-normal leading-6 text-content-secondary;
+  @apply text-sm font-medium leading-tight text-content-secondary;
 }
 
 /*  Frame Load Failed Component */
 .state--frame-load-failed {
   @apply max-w-96 gap-1 min-w-0;
+}
+
+/* This variant's documents/magnifier are absolutely positioned, so its
+   illustration keeps the original fixed-height, centered layout. */
+.state--frame-load-failed .state__illustration {
+  @apply h-36 flex-row items-center justify-center;
 }
 
 .state__document {
