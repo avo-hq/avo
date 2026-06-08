@@ -169,7 +169,14 @@
 }
 
 .modal__controls {
-  @apply flex items-center justify-between py-2 px-3 w-full;
+  @apply flex items-center justify-between gap-2 py-2 px-3 w-full;
+}
+
+/* When the controls hold only buttons, nudge the horizontal padding in so the
+   buttons' own padding lines their text up with the modal body. The :not(:has())
+   guard backs off the moment any non-button control is present. */
+.modal__controls:has(> .button):not(:has(> :not(.button))) {
+  @apply px-1;
 }
 
 .modal--width-sm {

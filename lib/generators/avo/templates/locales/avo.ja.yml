@@ -184,9 +184,9 @@ ja:
       one: もう一つのアイテム
       other: "%{count}個のその他のアイテム"
       zero: その他のアイテムはありません
-    x_records_selected_from_a_total_of_x_html: このページの<span class="font-bold text-gray-700">%{count}</span>個中、<span class="font-bold text-gray-700">%{selected}</span>個のレコードが選択されました
-    x_records_selected_from_all_pages_html: すべてのページから<span class="font-bold text-gray-700">%{count}</span>個のレコードが選択されました
-    x_records_selected_from_page_html: このページから<span class="font-bold text-gray-700">%{selected}</span>個のレコードが選択されました
+    x_records_selected_from_a_total_of_x_html: このページの<span class="font-bold">%{count}</span>個中、<span class="font-bold">%{selected}</span>個のレコードが選択されました
+    x_records_selected_from_all_pages_html: すべてのページから<span class="font-bold">%{count}</span>個のレコードが選択されました
+    x_records_selected_from_page_html: このページから<span class="font-bold">%{selected}</span>個のレコードが選択されました
     yes_confirm: はい、私は確信しています
     you_cant_upload_new_resource: リソースを保存するまで、Trixエディタにファイルをアップロードすることはできません。
     you_havent_set_attachment_key: このTrixフィールドに`attachment_key`が設定されていません。

@@ -200,9 +200,9 @@ ar:
       one: عنصر واحد إضافي
       other: "%{count} عناصر إضافية"
       zero: لا توجد عناصر إضافية
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المحددة في هذه الصفحة من إجمالي<span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> السجلات المحددة من كل الصفحات
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المختارة في هذه الصفحة
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> السجلات المحددة في هذه الصفحة من إجمالي<span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> السجلات المحددة من كل الصفحات
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> السجلات المختارة في هذه الصفحة
     yes_confirm: نعم، أنا متأكد
     you_cant_upload_new_resource: لا يمكنك تحميل الملفات في محرر Trix حتى تحفظ السجل.
     you_havent_set_attachment_key: لم تقم بتعيين `attachment_key` لهذا الحقل Trix.

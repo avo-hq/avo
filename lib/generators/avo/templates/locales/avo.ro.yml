@@ -188,9 +188,9 @@ ro:
       one: încă un articol
       other: "%{count} mai multe articole"
       zero: zero articole
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> selectate
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> selectate dintr-un total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> selectate din toate paginile
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> selectate
     yes_confirm: Da, sunt sigur
     you_cant_upload_new_resource: Nu poți încărca fișiere în editorul Trix până când nu salvezi resursa.
     you_havent_set_attachment_key: Trebuie să setezi o `attachment_key` pentru acest câmp Trix.

@@ -105,6 +105,7 @@
    nest them into sublayers like `components.theme` and break the cascade
    between brand override (base) and the defaults / user picks. */
 @import "./css/variables.css";
+@import "./css/focus.css";
 
 @layer components {
   @import "./css/fonts.css";

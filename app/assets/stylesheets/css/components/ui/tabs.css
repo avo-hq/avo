@@ -70,7 +70,7 @@
   }
 
   .tabs__item:focus-visible {
-    @apply bg-primary outline-none ring-offset-2 ring-offset-primary ring-2 ring-content;
+    @apply bg-primary;
   }
 
   /* Wrapper */

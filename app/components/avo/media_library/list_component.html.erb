@@ -25,7 +25,6 @@
         <%= content_tag :div,
           data: {
             media_library_attach_target: 'dropzone',
-            action: 'click->media-library-attach#triggerFileBrowser',
           } do %>
           <%= render Avo::UI::FileUploadInputComponent.new(
             id: "media-library-file-upload",

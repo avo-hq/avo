@@ -21,7 +21,7 @@
         ) %>
 
       <% if as_toggle? %>
-        <div class="block w-10 h-6 rounded-full bg-tertiary peer-checked:bg-success"></div>
+        <div class="block w-10 h-6 rounded-full bg-tertiary peer-checked:bg-success peer-focus-visible:[outline:var(--focus-outline)] peer-focus-visible:[outline-offset:var(--focus-outline-offset)]"></div>
         <div class="dot absolute start-1 top-1 bg-primary w-4 h-4 rounded-full transition-transform duration-200 transform peer-checked:translate-x-4"></div>
       <% end %>
     <% end %>

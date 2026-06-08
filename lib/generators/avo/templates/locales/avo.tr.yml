@@ -184,9 +184,9 @@ tr:
       one: bir öğe daha
       other: "%{count} öğe daha"
       zero: daha fazla öğe yok
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen toplam kayıtlar <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> tüm sayfalardan seçilen kayıtlar
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen kayıtlar
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> bu sayfada seçilen toplam kayıtlar <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> tüm sayfalardan seçilen kayıtlar
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> bu sayfada seçilen kayıtlar
     yes_confirm: Evet, eminim
     you_cant_upload_new_resource: Kaynağı kaydedene kadar Trix editörüne dosya yükleyemezsiniz.
     you_havent_set_attachment_key: Bu Trix alanına bir `attachment_key` ayarlamadınız.

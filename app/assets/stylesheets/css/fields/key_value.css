@@ -55,6 +55,26 @@
   @apply border-t border-tertiary;
 }
 
+/* Played once when a new row is appended via the "Add" button.
+   The reverse plays when a row is removed. Both use the shared
+   --speed-moderate knob (slide/transform timing) from variables.css and
+   are gated on prefers-reduced-motion in the key-value controller. */
+.key-value__row--entering {
+  animation: key-value-row-enter var(--speed-moderate) ease;
+}
+
+.key-value__row--leaving {
+  @apply pointer-events-none;
+  animation: key-value-row-enter var(--speed-moderate) ease reverse forwards;
+}
+
+@keyframes key-value-row-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+
 .key-value__cell {
   @apply w-full;
 }

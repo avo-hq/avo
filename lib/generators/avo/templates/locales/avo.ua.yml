@@ -186,9 +186,9 @@ ua:
       one: ще один елемент
       other: "%{count} інших елементів"
       zero: жодного іншого елемента
-    x_records_selected_from_a_total_of_x_html: Вибрано <span class="font-bold text-gray-700">%{selected}</span> записів на цій сторінці з загальної кількості <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: Вибрано <span class="font-bold text-gray-700">%{count}</span> записів з усіх сторінок
-    x_records_selected_from_page_html: Вибрано <span class="font-bold text-gray-700">%{selected}</span> записів на цій сторінці
+    x_records_selected_from_a_total_of_x_html: Вибрано <span class="font-bold">%{selected}</span> записів на цій сторінці з загальної кількості <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: Вибрано <span class="font-bold">%{count}</span> записів з усіх сторінок
+    x_records_selected_from_page_html: Вибрано <span class="font-bold">%{selected}</span> записів на цій сторінці
     yes_confirm: Так, підтверджую
     you_cant_upload_new_resource: Ви не можете завантажувати файли в редактор Trix, поки не збережете ресурс.
     you_havent_set_attachment_key: Ви не встановили `attachment_key` для цього поля Trix.
