@@ -111,7 +111,19 @@
   /* Radius of the content panel's rounded top corners (and the matching navbar
      arches that fill them). Set to `0` to flatten the corners entirely. */
   --navbar-notch-radius: 1rem;
+
+  /* Force native controls (selects, radios, checkboxes, scrollbars, pickers) to
+     follow Avo's appearance instead of the OS. Driven by `.dark` below, which is
+     set in every mode (including Auto), overriding the native dark preference. */
+  color-scheme: light;
 }
+
+/* Unlayered so it beats the layered `.dark` block; a layered rule would lose to
+   the unlayered `:root` default above and the override wouldn't apply. */
+.dark {
+  color-scheme: dark;
+}
+
 
 /* Dark mode defaults live in @layer theme — same layer as the @theme block
    above — so the brand override (emitted in @layer base by
