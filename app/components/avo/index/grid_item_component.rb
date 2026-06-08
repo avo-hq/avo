@@ -59,7 +59,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
     return if @card[:title].blank?
 
     content_tag :div, class: "grid-card__title #{html(:title, :classes)}", style: html(:title, :style) do
-      link_to @card[:title], resource_view_path
+      link_to @card[:title], resource_view_path, tabindex: -1
     end
   end
 
