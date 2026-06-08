@@ -10,7 +10,7 @@
     <div data-controller="clear-input">
       <%= render Avo::UI::FileUploadInputComponent.new(
         id: upload_input_id,
-        title: @field.is_audio ? "Upload audio" : "Click to upload",
+        title: @field.accept&.include?("audio") ? "Upload audio" : "Click to upload",
         subtitle: "or drag and drop",
         description: @field.accept.present? ? "Accepts #{@field.accept}" : nil,
         disabled: disabled?,
