@@ -60,16 +60,22 @@
   @apply relative w-full overflow-hidden rounded-lg h-40 bg-secondary;
 }
 
+/* Keep the checkbox in the tab order, but visually hide it until the card is
+   hovered, the checkbox is focused, the card has any focused child, or the
+   checkbox is checked. `display: none` removes the input from the a11y tree
+   and from tab order, so we use opacity + absolute positioning instead. */
 .grid-card input[type="checkbox"] {
-  @apply hidden;
+  @apply absolute top-1 start-1 z-10 opacity-0 pointer-events-none;
+
+  /* Override mx-2 from RowSelectorComponent so the checkbox aligns to the card edge */
+  margin: 0 !important;
 }
 
 .grid-card input[type="checkbox"]:checked,
-.grid-card:hover input[type="checkbox"] {
-  @apply block z-10 absolute top-1 start-1;
-
-  /* Override mx-2 from item selector so checkbox aligns to card edge */
-  margin: 0 !important;
+.grid-card input[type="checkbox"]:focus-visible,
+.grid-card:hover input[type="checkbox"],
+.grid-card:focus-within input[type="checkbox"] {
+  @apply opacity-100 pointer-events-auto;
 }
 
 .grid-card__actions-row {
