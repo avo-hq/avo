@@ -63,7 +63,6 @@ RSpec.describe "Media library edit", type: :request do
   end
 
   it "renders the index grid even when a listed blob has a blank filename" do
-    good = create_image_blob(filename: "good.jpg")
     broken = create_image_blob
     broken.update_column(:filename, "")
 
