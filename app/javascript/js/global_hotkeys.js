@@ -30,9 +30,15 @@ const isVisibleContentFocus = (element) => {
   return element.getClientRects().length > 0
 }
 
-const findContentFocus = () => (
-  Array.from(document.querySelectorAll(CONTENT_FOCUS_SELECTOR)).find(isVisibleContentFocus) ?? null
-)
+const isModalOpen = () => document.body.classList.contains('modal-open')
+
+const findContentFocus = () => {
+  // Show/edit panel bodies stay in the layout behind open modals (e.g. attach
+  // media). Without this guard, Shift+T would focus obscured page content.
+  if (isModalOpen()) return null
+
+  return Array.from(document.querySelectorAll(CONTENT_FOCUS_SELECTOR)).find(isVisibleContentFocus) ?? null
+}
 
 // Find any mounted appearance Stimulus controller and call `method` on it.
 // Multiple appearance switchers can be on the page (inline + dropdown fallback);

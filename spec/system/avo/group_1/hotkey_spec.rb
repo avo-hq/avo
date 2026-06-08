@@ -370,6 +370,31 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
       expect(hidden_ancestor).to be(false)
     end
+
+    it "does not focus obscured panel content while a modal is open" do
+      user = create(:user)
+
+      visit avo.resources_user_path(user, "tab-group_first-tabs-group" => "Teams")
+
+      scroll_to first_tab_group
+      click_on "Attach team"
+
+      expect(page).to have_css("body.modal-open")
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      focused_behind_modal = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el?.hasAttribute('data-content-focus')) return false
+
+          return !el.closest('[aria-modal="true"]')
+        })()
+      JS
+
+      expect(focused_behind_modal).to be(false)
+    end
   end
 
   describe "accessible row navigation" do
