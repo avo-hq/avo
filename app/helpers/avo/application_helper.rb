@@ -5,6 +5,21 @@ module Avo
 
     def ui = Avo::UIInstance
 
+    # Active Storage URL helpers raise UrlGenerationError when a blob's filename
+    # is blank (the route requires a :filename segment). Return nil instead so a
+    # single broken blob can't 500 a whole listing — callers fall back gracefully.
+    def safe_blob_url(blob)
+      main_app.url_for(blob)
+    rescue ActionController::UrlGenerationError
+      nil
+    end
+
+    def safe_blob_path(blob)
+      main_app.rails_blob_path(blob)
+    rescue ActionController::UrlGenerationError
+      nil
+    end
+
     def render_license_warning(title: "", message: "", icon: "exclamation")
       render partial: "avo/sidebar/license_warning", locals: {
         title: title,

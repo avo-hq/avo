@@ -12,6 +12,7 @@
     } do |f| %>
     <%= avo_edit_field :filename,
       as: :text,
+      value: blob.filename.to_s,
       stacked: true,
       form: f,
       required: true,
@@ -57,6 +58,7 @@
         icon: "tabler/outline/arrow-up",
         size: :lg,
         style: :primary,
+        color: :primary,
         data: {
           hotkey: "Mod+Enter"
         },

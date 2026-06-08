@@ -8,6 +8,7 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         [
           shortcut(action: "Show keyboard shortcuts", keys: ["?"]),
           shortcut(action: "Focus Global Search", keys: {mac: ["Cmd", "K"], other: ["Ctrl", "K"]}),
+          shortcut(action: "Focus page content", keys: ["Shift", "T"]),
           shortcut(action: "Toggle sidebar", keys: ["Shift", "\\"]),
           shortcut(action: "Close modal", keys: ["Esc"]),
           shortcut(
@@ -55,7 +56,6 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
           shortcut(action: "Focus search", keys: ["/"]),
           shortcut(action: "Create new record", keys: ["C"]),
           shortcut(action: "Open actions", keys: ["A"]),
-          shortcut(action: "Focus table", keys: ["Shift", "T"]),
           shortcut(
             action: "Focus table and move to next / previous row",
             any_of: [["J"], ["K"]],

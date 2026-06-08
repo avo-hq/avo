@@ -39,9 +39,13 @@
     <% end %>
 
     <div class="media-library__stack">
-      <div class="media-library__grid grid-wrapper pt-4">
+      <%# tabindex=-1 makes the grid a Shift+T focus anchor on the standalone library; %>
+      <%# never in attach mode, where the host form already owns the page's anchor. %>
+      <%= content_tag :div, class: "media-library__grid grid-wrapper mt-4",
+        tabindex: (@attaching ? nil : "-1"),
+        data: (@attaching ? {} : {"content-focus": ""}) do %>
         <%= render Avo::MediaLibrary::ListItemComponent.with_collection(@blobs, attaching: @attaching, multiple: @attaching) %>
-      </div>
+      <% end %>
 
       <%# TODO: fix the extra margin %>
       <%= helpers.turbo_frame_tag ::Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID, class: "media-library__details-frame" %>

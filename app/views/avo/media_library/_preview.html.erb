@@ -1,0 +1,47 @@
+<%# A blob with a blank filename (or otherwise unroutable) can't produce a
+    service/representation URL, so fall back to the placeholder when it can't. %>
+<% blob_url = safe_blob_url(blob) %>
+
+<div class="media-library-details__preview-shell">
+  <div class="media-library-details__preview-frame">
+    <% if blob.image? && blob_url %>
+      <%= image_tag main_app.url_for(blob.variant(resize_to_limit: [1400, 1400])), class: "media-library-details__preview-image", loading: :lazy %>
+    <% elsif blob.audio? && blob_url %>
+      <%= audio_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-audio" %>
+    <% elsif blob.video? && blob_url %>
+      <%= video_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-video" %>
+    <% else %>
+      <div class="media-library-details__preview-placeholder">
+        <%= svg "tabler/outline/file-text", class: "media-library-details__preview-placeholder-icon" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="media-library-details__actions">
+    <% if blob_url %>
+      <%= a_link blob_url, style: :text, download: true do %>
+        Download
+      <% end %>
+
+      <%= a_button style: :text,
+        type: :button,
+        data: {
+          controller: "copy-to-clipboard",
+          text: blob_url,
+          action: "click->copy-to-clipboard#copy"
+        } do %>
+        Copy URL to clipboard
+      <% end %>
+    <% end %>
+
+    <%= a_button style: :text,
+      color: :red,
+      url: avo.media_library_path(blob),
+      method: :delete,
+      data: {
+        turbo_confirm: "Are you sure you want to destroy this attachment?"
+      } do %>
+      Delete
+    <% end %>
+  </div>
+</div>

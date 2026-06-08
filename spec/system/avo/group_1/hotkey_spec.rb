@@ -267,6 +267,64 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   #   expect(project.reload.name).to eq("Updated from hotkey")
   # end
 
+  describe "Shift+T focuses the screen content" do
+    def active_element_descriptor
+      page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el) return null
+          return {
+            tag: el.tagName,
+            classes: el.className,
+            contentFocus: el.hasAttribute('data-content-focus')
+          }
+        })()
+      JS
+    end
+
+    it "focuses the grid wrapper on a grid index" do
+      create_list(:user, 3)
+
+      visit "/admin/resources/users?view_type=grid"
+
+      expect(page).to have_css(".grid-wrapper[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("grid-wrapper")
+    end
+
+    it "focuses the panel body on the show view so Shift+Tab reaches the controls" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("panel__body")
+    end
+
+    it "focuses the panel body on the edit view so the user can Tab through fields" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}/edit"
+
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("panel__body")
+    end
+  end
+
   describe "accessible row navigation" do
     it "does not consume arrow keys when the table is not focused" do
       create_list(:project, 3)

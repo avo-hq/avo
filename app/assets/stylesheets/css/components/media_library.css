@@ -17,7 +17,7 @@
 }
 
 .media-library__grid {
-  @apply min-h-0 min-w-0 auto-rows-max pt-4;
+  @apply min-h-0 min-w-0 auto-rows-max;
 }
 
 .media-library__details-frame {
@@ -78,6 +78,31 @@
 
 .media-library-details__body {
   @apply flex flex-col gap-6;
+}
+
+/* Standalone blob edit page: preview on the start side, the information +
+   edit form sidebar on the end side. Mirrors the drawer's two-column body. */
+.media-library-edit {
+  @apply flex flex-col gap-6;
+}
+
+.media-library-edit__preview {
+  @apply min-w-0 flex-1;
+}
+
+.media-library-edit__sidebar {
+  @apply w-full;
+}
+
+@media (width >= 48rem) {
+  .media-library-edit {
+    @apply flex-row items-start;
+  }
+
+  .media-library-edit__sidebar {
+    @apply shrink-0;
+    width: 24rem;
+  }
 }
 
 .media-library-details__main {

@@ -21,6 +21,20 @@
   @apply w-full;
 }
 
+/* Shift+T anchors focus on the panel body. Mirror the table view's focus state:
+   suppress the body's own (clipped) outline and lift the ring to the whole panel,
+   exactly like `.card:has(table:focus-visible)` does for the index table. */
+.panel__body[data-content-focus] {
+  @apply outline-none;
+}
+
+.panel:has(.panel__body[data-content-focus]:focus-visible) {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+  /* Round the ring corners to match the index table's card focus ring. */
+  @apply rounded-xl;
+}
+
 .panel__sidebar {
   @apply w-full top-0 end-0 flex;
 }
