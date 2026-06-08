@@ -62,7 +62,7 @@ class Avo::Resources::Product < Avo::BaseResource
         }
         field :price, as: :money, currencies: %w[EUR USD RON PEN]
         field :description, as: :tiptap, placeholder: "Enter text", always_show: false
-        field :image, as: :file, is_image: true
+        field :image, as: :file
         field :category, as: :select, enum: ::Product.categories
         field :sizes, as: :select, multiple: true, options: {Large: :large, Medium: :medium, Small: :small}
       end

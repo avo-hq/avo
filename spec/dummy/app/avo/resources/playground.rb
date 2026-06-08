@@ -42,8 +42,8 @@ class Avo::Resources::Playground < Avo::BaseResource
     end
     field :external_image_url, as: :external_image
     field :gravatar_email, as: :gravatar, size: 48
-    field :file_attachment, as: :file, is_image: true
-    field :files_attachments, as: :files, is_image: true
+    field :file_attachment, as: :file
+    field :files_attachments, as: :files
 
     field :geo_heading, as: :heading, name: "Geo fields"
     field :location_coordinates, as: :location, stored_as: [:latitude, :longitude]

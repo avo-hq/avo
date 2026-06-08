@@ -22,7 +22,6 @@ module Avo
       # Show on all other views
       true
     }
-    class_attribute :may_download_file
     class_attribute :turbo
     class_attribute :authorize, default: true
     class_attribute :close_modal_on_backdrop_click, default: true
@@ -141,10 +140,6 @@ module Avo
 
       @response ||= {}
       @response[:messages] = []
-
-      if may_download_file.present?
-        puts "[Avo->] WARNING! Since version 3.2.2 'may_download_file' is unecessary and deprecated on actions. Can be safely removed from #{self.class.name}"
-      end
     end
 
     # Blank method

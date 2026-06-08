@@ -41,8 +41,8 @@ class Avo::Resources::Event < Avo::BaseResource
         foo: :bar
       }
 
-    field :avatar, as: :file, is_image: true, only_on: :forms
-    field :cover, as: :file, is_image: true, only_on: :forms
+    field :avatar, as: :file, only_on: :forms
+    field :cover, as: :file, only_on: :forms
 
     if params[:show_location_field] == "1"
       # Example for error message when resource is missing
