@@ -23,6 +23,10 @@ RSpec.describe Avo::EngineDSL do
     end)
 
     stub_const("Avo::EngineDSLSpec::Engine", Class.new(Rails::Engine) do
+      def self.name
+        "Avo::EngineDSLSpec::Engine"
+      end
+
       extend Avo::EngineDSL
       avo_engine
     end)
