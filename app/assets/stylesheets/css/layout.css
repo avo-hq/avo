@@ -85,7 +85,7 @@
 .main-content.focused,
 .main-content:focus-visible {
   outline: 2px solid var(--color-content);
-  outline-offset: 2px;
+  outline-offset: var(--focus-outline-offset-inset);
 }
 
 .main-content__container {
@@ -159,10 +159,6 @@
 
   > * {
     @apply pointer-events-auto;
-  }
-
-  .breadcrumbs__container {
-    @apply flex-nowrap overflow-x-auto;
   }
 
   /* Inverted arches at the top corners of the content area: a square just
