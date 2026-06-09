@@ -32,4 +32,10 @@ class Avo::ManualFrameComponent < Avo::BaseComponent
   def load_label
     t("avo.load") + " " + label
   end
+
+  # The Retry button's aria-label: "Retry <title>" (the visible copy is just
+  # "Retry"; the aria-label scopes it to this frame for screen readers).
+  def retry_label
+    t("avo.retry") + " " + label
+  end
 end

@@ -53,4 +53,30 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
 
     expect(page).to have_css("turbo-frame .state")
   end
+
+  it "renders a hidden error/Retry state mirroring the frame-load-failed markup" do
+    render_inline(described_class.new(
+      "has_many_field_show_orders",
+      deferred_url: "/orders",
+      title: "Orders"
+    ))
+
+    # The error state is present but hidden until the controller reveals it.
+    error = page.find("[data-manual-frame-target='error']", visible: false)
+    expect(error[:class]).to include("hidden")
+    expect(error).to have_css(".state.state--frame-load-failed", visible: false)
+    expect(error).to have_text("Couldn't load this content.")
+  end
+
+  it "renders a Retry button wired to the retry action, labeled from the title" do
+    render_inline(described_class.new(
+      "has_many_field_show_orders",
+      deferred_url: "/orders",
+      title: "Orders"
+    ))
+
+    button = page.find("button[data-action='manual-frame#retry']", visible: false)
+    expect(button[:"aria-label"]).to eq("Retry Orders")
+    expect(button).to have_text("Retry")
+  end
 end
