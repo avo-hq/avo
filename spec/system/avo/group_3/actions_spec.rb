@@ -17,6 +17,22 @@ RSpec.describe "Actions", type: :system do
         expect(page.find("a", text: "Dummy action")["data-disabled"]).to eq "false"
         expect(page.find("a", text: "Download file")["data-disabled"]).to eq "false"
       end
+
+      it "keeps disabled actions out of the keyboard tab order" do
+        visit "/admin/resources/users"
+
+        click_on "Actions"
+
+        # Disabled actions must not be reachable via Tab and must announce their state.
+        toggle_inactive = page.find("a", text: "Toggle inactive")
+        expect(toggle_inactive["tabindex"]).to eq "-1"
+        expect(toggle_inactive["aria-disabled"]).to eq "true"
+
+        # Enabled actions stay in the natural tab order.
+        dummy_action = page.find("a", text: "Dummy action")
+        expect(dummy_action["tabindex"]).to be_nil
+        expect(dummy_action["aria-disabled"]).to eq "false"
+      end
     end
 
     context "show" do

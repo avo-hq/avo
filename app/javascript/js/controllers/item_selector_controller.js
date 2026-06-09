@@ -81,6 +81,9 @@ export default class extends Controller {
         link.classList.remove(link.dataset.disabledClasses)
         link.setAttribute('data-href', link.getAttribute('href'))
         link.dataset.disabled = false
+        // Re-enabled actions rejoin the keyboard tab order.
+        link.removeAttribute('tabindex')
+        link.setAttribute('aria-disabled', 'false')
       }
     })
   }
@@ -93,6 +96,9 @@ export default class extends Controller {
         link.classList.add(link.dataset.disabledClasses)
         link.setAttribute('href', link.getAttribute('data-href'))
         link.dataset.disabled = true
+        // Keep disabled actions out of the tab order and announce their state.
+        link.setAttribute('tabindex', '-1')
+        link.setAttribute('aria-disabled', 'true')
       }
     })
   }
