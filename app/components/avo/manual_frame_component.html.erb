@@ -48,7 +48,7 @@
     <%= render Avo::LoadingComponent.new(title: label) %>
   </div>
 
-  <%# Error/Retry state (Unit 5) — hidden until a load fails; mirrors the
+  <%# Error/Retry state — hidden until a load fails; mirrors the
       `.state--frame-load-failed` markup from `home/failed_to_load.html.erb`.
       The controller reveals this on any failure event for this frame. %>
   <div class="hidden" data-manual-frame-target="error" aria-live="polite">
@@ -74,7 +74,7 @@
       </div>
 
       <p class="state__message text-center font-normal">
-        <%= t("avo.failed_to_load_manual") %>
+        <%= t("avo.failed_to_load_item", item: label) %>
       </p>
 
       <%= a_button color: :primary,

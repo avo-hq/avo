@@ -43,7 +43,7 @@ RSpec.describe "Manual loading failures", type: :system do
       within(frame) { click_on "Load Comments" }
 
       # The inline error + Retry appears inside the frame.
-      expect(frame).to have_text("Couldn't load this content.")
+      expect(frame).to have_text("Couldn't load Comments")
       expect(frame).to have_button("Retry")
 
       # We did NOT navigate to (or render into the frame) the generic failed_to_load page.
@@ -87,7 +87,7 @@ RSpec.describe "Manual loading failures", type: :system do
       # error state is gone.
       expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'] [data-resource-name='comments'][data-resource-id='#{comment.id}']")
       expect(page).not_to have_button("Retry")
-      expect(page).not_to have_text("Couldn't load this content.")
+      expect(page).not_to have_text("Couldn't load Comments")
     ensure
       Avo::Resources::User.restore_items_from_backup
     end
@@ -112,7 +112,7 @@ RSpec.describe "Manual loading failures", type: :system do
       within(frame) { click_on "Retry" }
 
       # Still failing -> the inline error + Retry stays, the frame is not blank.
-      expect(frame).to have_text("Couldn't load this content.")
+      expect(frame).to have_text("Couldn't load Comments")
       expect(frame).to have_button("Retry")
     ensure
       Avo::Resources::User.restore_items_from_backup
@@ -120,8 +120,9 @@ RSpec.describe "Manual loading failures", type: :system do
   end
 
   # Regression: a NON-manual frame that 500s must still route to the existing
-  # `/failed_to_load` page. The global `application.js` guard only early-returns
-  # for `data-manual-frame`, so non-manual frames keep the old behavior.
+  # `/failed_to_load` page. The manual controller calls `stopImmediatePropagation`
+  # only for its own in-flight deferred load, so non-manual frames (and post-load
+  # navigations) still reach the global `application.js` handler unchanged.
   describe "a non-manual (eager) frame that 500s (regression)" do
     it "still routes to the existing failed_to_load page" do
       allow_any_instance_of(Avo::AssociationsController).to receive(:index).and_raise("boom")
@@ -138,7 +139,7 @@ RSpec.describe "Manual loading failures", type: :system do
       frame = find('turbo-frame[id="has_many_field_show_comments"]')
       expect(frame).to have_text("Failed to load", wait: 5)
       # It is NOT the manual inline-error copy.
-      expect(frame).not_to have_text("Couldn't load this content.")
+      expect(frame).not_to have_text("Couldn't load Comments")
       expect(frame).not_to have_button("Retry")
     ensure
       Avo::Resources::User.restore_items_from_backup

@@ -33,15 +33,17 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     expect(button["tabindex"]).not_to eq("-1")
   end
 
-  it "humanizes a multi-word title for the button label" do
+  it "uses the title verbatim without mangling custom/translated names" do
+    # Callers pass already display-ready names (field.plural_name / tab.title);
+    # the component must not `humanize` them (which would downcase "Order Items").
     render_inline(described_class.new(
       "has_many_field_show_order_items",
       deferred_url: "/order_items",
-      title: "order_items"
+      title: "Order Items"
     ))
 
-    expect(page).to have_css("button[aria-label='Load Order items']")
-    expect(page).to have_text("Load Order items")
+    expect(page).to have_css("button[aria-label='Load Order Items']")
+    expect(page).to have_text("Load Order Items")
   end
 
   it "renders the placeholder state markup mirroring the empty state" do
@@ -65,7 +67,7 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     error = page.find("[data-manual-frame-target='error']", visible: false)
     expect(error[:class]).to include("hidden")
     expect(error).to have_css(".state.state--frame-load-failed", visible: false)
-    expect(error).to have_text("Couldn't load this content.")
+    expect(error).to have_text("Couldn't load Orders")
   end
 
   it "renders a Retry button wired to the retry action, labeled from the title" do

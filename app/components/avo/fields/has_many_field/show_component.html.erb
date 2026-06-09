@@ -1,4 +1,4 @@
-<% if @field.manual? && view.display? %>
+<% if @field.manual? && @field.view.display? %>
   <%= render Avo::ManualFrameComponent.new(@field.turbo_frame, deferred_url: @field.frame_url, title: @field.plural_name) %>
 <% else %>
   <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: turbo_frame_loading, target: :_top, class: "block" do %>

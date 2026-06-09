@@ -68,7 +68,7 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
-    failed_to_load_manual: Couldn't load this content.
+    failed_to_load_item: Couldn't load %{item}
     'false': 'False'
     file:
       one: file
@@ -104,7 +104,7 @@ en:
       value: Value
     less_content: Less content
     list_is_empty: List is empty
-    load: Load
+    load_item: Load %{item}
     loading: Loading
     media_library:
       title: Media Library
@@ -146,6 +146,7 @@ en:
     reset: reset
     reset_filters: Reset filters
     retry: Retry
+    retry_item: Retry %{item}
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated
