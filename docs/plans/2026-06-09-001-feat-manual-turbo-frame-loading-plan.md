@@ -1,7 +1,7 @@
 ---
 title: "feat: Manual (on-demand) Turbo Frame loading for tabs and associations"
 type: feat
-status: active
+status: completed
 date: 2026-06-09
 origin: docs/brainstorms/2026-06-08-on-demand-frame-loading-requirements.md
 ---
