@@ -1,6 +1,10 @@
 <% if @field.value %>
-  <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: turbo_frame_loading, target: "_top", class: "block" do %>
-    <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
+  <% if @field.manual? && view.display? %>
+    <%= render Avo::ManualFrameComponent.new(@field.turbo_frame, deferred_url: @field.frame_url, title: @field.name) %>
+  <% else %>
+    <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: turbo_frame_loading, target: "_top", class: "block" do %>
+      <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
+    <% end %>
   <% end %>
 <% else %>
   <%= render ui.panel(title: @field.name) do |panel| %>
