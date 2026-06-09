@@ -5,6 +5,7 @@ module Avo
       include Avo::Fields::Concerns::ReloadIcon
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
+      include Avo::Concerns::FrameLoadingMode
 
       def initialize(id, **args, &block)
         super
@@ -13,6 +14,7 @@ module Avo
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
         @description = args[:description]
+        @loading = args[:loading]
       end
 
       def field_resource
