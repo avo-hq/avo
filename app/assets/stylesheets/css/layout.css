@@ -277,7 +277,9 @@
   @apply flex items-center justify-end gap-3 min-w-0 h-full;
 }
 
-.top-navbar .header-menu a {
+/* Scope to the inline row only — overflow links in .header-menu__popover use
+   the adaptive dropdown surface tokens from .dropdown-menu__list. */
+.top-navbar .header-menu__row a {
   color: var(--top-navbar-content);
 
   &:hover {
