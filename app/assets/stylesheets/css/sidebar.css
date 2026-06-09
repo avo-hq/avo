@@ -98,7 +98,6 @@
 .sidebar-section__header:focus-visible {
   @apply relative z-10;
   background-color: var(--sidebar-focus-background);
-  box-shadow: var(--box-shadow-focus);
 }
 
 .sidebar-section__items {
