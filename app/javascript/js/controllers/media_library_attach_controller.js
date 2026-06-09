@@ -80,12 +80,15 @@ export default class extends Controller {
   }
 
   setupFileInput() {
-    // Create a hidden file input element
     this.fileInput = document.createElement('input')
     this.fileInput.type = 'file'
     this.fileInput.multiple = true
-    this.fileInput.style.display = 'none'
-    this.element.appendChild(this.fileInput)
+    // Match the drop zone's <label for>, then drop the input into the
+    // component's native-input slot. The component CSS makes it fill the zone
+    // (absolute inset-0, opacity-0) so it's clickable and keyboard-focusable,
+    // and the existing :focus-visible ring lifts onto the drop zone.
+    this.fileInput.id = 'media-library-file-upload'
+    this.dropzoneTarget.querySelector('.file-upload-input__native-input').appendChild(this.fileInput)
 
     // Handle file selection
     this.fileInput.addEventListener('change', (e) => {
@@ -93,10 +96,6 @@ export default class extends Controller {
       this.#submitFiles(files)
       this.fileInput.value = '' // Reset the input for future selections
     })
-  }
-
-  triggerFileBrowser() {
-    this.fileInput.click()
   }
 
   attachHandlers() {

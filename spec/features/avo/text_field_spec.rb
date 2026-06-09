@@ -61,7 +61,7 @@ RSpec.describe "TextField", type: :feature do
     end
   end
 
-  describe "decorate" do
+  describe "format_display_using" do
     let!(:city) { create :city, population: 18000 }
 
     it "only on display" do

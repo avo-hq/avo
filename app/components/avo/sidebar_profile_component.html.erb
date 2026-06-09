@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="sidebar-profile__actions">
-    <%= render Avo::UI::DropdownComponent.new(popover_mode: true) do |component| %>
+    <%= render Avo::UI::DropdownComponent.new(popover_mode: true, classes: "sidebar-profile__dropdown") do |component| %>
       <% component.with_trigger do %>
         <%= render Avo::ButtonComponent.new(
           icon: "tabler/outline/dots",
@@ -47,7 +47,7 @@
             },
             class: 'sidebar-profile__form' do |form| %>
             <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "sidebar-profile__sign-out" do %>
-              <%= helpers.svg "tabler/outline/logout", class: 'sidebar-icon' %> <%= t('avo.sign_out') %>
+              <%= helpers.svg "tabler/outline/logout", class: 'sidebar-icon' %> <span class="truncate min-w-0"><%= t('avo.sign_out') %></span>
             <% end %>
           <% end %>
         <% end %>

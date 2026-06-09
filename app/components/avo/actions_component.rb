@@ -4,6 +4,10 @@ class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
   prop :as_row_control, default: false
+  # True only for actions buttons inside an index table row, whose hotkey must be
+  # managed by the index-row-navigator (emitted as data-hotkey-original). Page-level
+  # header buttons (index/show/edit) use a plain data-hotkey instead.
+  prop :as_index_row_control, default: false
   prop :icon
   prop :icon_class
   prop :size, default: :md

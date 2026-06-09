@@ -16,7 +16,6 @@
         type: :button,
         color: @color,
         size: @size,
-        class: "focus:outline-hidden",
         icon: @icon,
         icon_class: @icon_class,
         popovertarget: component.popover_id,
@@ -24,7 +23,7 @@
           actions_dropdown_button: @resource.model_key,
           tippy: "tooltip",
           tippy_content: @title,
-          **(@hotkey.present? ? (@as_row_control ? {hotkey_original: @hotkey} : {hotkey: @hotkey}) : {})
+          **(@hotkey.present? ? (@as_index_row_control ? {hotkey_original: @hotkey} : {hotkey: @hotkey}) : {})
         } do %>
         <%= @label %>
       <% end %>

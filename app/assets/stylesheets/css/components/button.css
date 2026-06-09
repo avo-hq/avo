@@ -1,12 +1,6 @@
 @layer base {
   .button-icon {
-    @apply inline-flex cursor-pointer;
-
-    &:focus-visible {
-      @apply outline-none rounded-lg;
-
-      box-shadow: var(--box-shadow-focus);
-    }
+    @apply inline-flex cursor-pointer rounded-md;
   }
 
   .button {
@@ -14,16 +8,14 @@
 
     --btn-text-color: color-mix(in oklab, var(--btn-color-accent), var(--color-content) 20%);
 
+    @supports (corner-shape: squircle) {
+      border-radius: var(--radius-3xl); /* when using the squircle shape, we need to set the border radius higher for some reason */
+      corner-shape: squircle;
+    }
+
     /* Base styles for all button types */
     &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)):active {
       @apply translate-y-px;
-    }
-
-    &.button--focus-visible,
-    &:focus-visible {
-      @apply outline-none rounded-lg;
-
-      box-shadow: var(--box-shadow-focus);
     }
 
     &.button--disabled,
@@ -335,6 +327,30 @@
     }
   }
 
+  /* Fully rounded (pill) shape — opt-in via `rounded: :full`. Overrides the
+     base `rounded-lg`/squircle radius. Wins on source order (single class, same
+     specificity as `.button`). Switches corner-shape back to `round` so the
+     squircle radius bump doesn't distort the pill. */
+  .button--rounded-full {
+    @apply rounded-full;
+
+    @supports (corner-shape: squircle) {
+      border-radius: 9999px;
+      corner-shape: round;
+    }
+
+    /* `.button:focus-visible` also sets `rounded-lg` and wins on specificity. */
+    &.button--focus-visible,
+    &:focus-visible {
+      @apply rounded-full;
+
+      @supports (corner-shape: squircle) {
+        border-radius: 9999px;
+        corner-shape: round;
+      }
+    }
+  }
+
   /* Size variants */
   .button--size-xs {
     @apply text-xs px-2 py-1 gap-1 min-w-6;
@@ -352,6 +368,64 @@
     @apply text-sm p-3 gap-1.5 min-w-10;
   }
 
+  /* Icon-only buttons (an icon, no `.button__label`) get the same tight padding
+     as `.button--padding-sm`, automatically — no class or JS needed.
+     Wrapped in `:where()` so the `:has()`/`:not()` add no specificity: this rule
+     stays at one effective class (beating the base `.button--size-*` by source
+     order) while the explicit `.button--padding-sm/xs` modifiers (two classes)
+     still win — an explicit opt-in must override auto-detection.
+     Kept as its own rule, NOT grouped with the modifiers in a selector list: a
+     list is non-forgiving, so an engine that can't parse `:has()` would drop the
+     whole rule (taking the explicit modifier with it). */
+  :where(.button:has(.button__icon):not(:has(.button__label))) {
+    &.button--size-xs,
+    &.button--size-sm {
+      @apply px-1 py-1 min-w-0;
+    }
+
+    &.button--size-md {
+      @apply px-2 py-2 min-w-0;
+    }
+
+    &.button--size-lg {
+      @apply px-2.5 py-2.5 min-w-0;
+    }
+  }
+
+  /* Tighter, equal padding. Wins over `.button--size-*` on class specificity
+     (modifier + size = 2 classes beats the size rule's 1 class). Uses px/py to
+     stay logical/RTL-safe like the size variants it overrides. */
+  .button--padding-sm {
+    &.button--size-xs,
+    &.button--size-sm {
+      @apply px-1 py-1 min-w-0;
+    }
+
+    &.button--size-md {
+      @apply px-2 py-2 min-w-0;
+    }
+
+    &.button--size-lg {
+      @apply px-2.5 py-2.5 min-w-0;
+    }
+  }
+
+  /* Even tighter, equal padding — explicit opt-in via `.button--padding-xs`. */
+  .button--padding-xs {
+    &.button--size-xs,
+    &.button--size-sm {
+      @apply px-0.5 py-0.5 min-w-0;
+    }
+
+    &.button--size-md {
+      @apply px-1 py-1 min-w-0;
+    }
+
+    &.button--size-lg {
+      @apply px-1.5 py-1.5 min-w-0;
+    }
+  }
+
   /* Icon button sizes */
   .button--size-xs .button__icon,
   .button--size-sm .button__icon{
@@ -364,11 +438,27 @@
 
   /* Icon spacing */
   .button__icon {
-    @apply pointer-events-none shrink-0 grow-0 w-auto -my-px;
+    @apply pointer-events-none shrink-0 grow-0 w-auto;
+  }
+
+  /* The `-my-px` pulls the icon tight against the text line, so it only applies
+     when there's a label. On icon-only buttons it would shave 2px off the height
+     and turn the box into an oval — so scope it here rather than overriding it
+     back out later (no cascade fight). */
+  .button:has(.button__label) .button__icon {
+    @apply -my-px;
   }
 
   .button__icon:not(:last-child) {
     @apply me-1;
+  }
+
+  /* When key badges are hidden, the badge is `display: none` but still a DOM
+     sibling, so the icon stays `:not(:last-child)` and keeps its trailing margin.
+     If the icon's next sibling is that (now-hidden) badge, it's visually the last
+     element — drop the margin. */
+  .hotkeys-hide-badges .button__icon:has(+ .hotkey-badge) {
+    @apply me-0;
   }
 
   /* Loading state */

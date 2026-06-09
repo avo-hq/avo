@@ -105,7 +105,7 @@
 }
 
 .top-navbar {
-  @apply z-100 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
+  @apply z-400 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
 
   /* Top navbar theme contract.
      Override these variables on `.top-navbar` when the navbar needs its own

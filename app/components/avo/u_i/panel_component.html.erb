@@ -36,7 +36,7 @@
   <% end %>
 
   <div class="panel__content">
-    <div class="panel__body">
+    <div class="panel__body" <%= "data-content-focus tabindex=-1".html_safe if content_focusable? %>>
       <% if card? %>
         <div class="panel__card"><%= card %></div>
       <% else %>

@@ -88,7 +88,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   it "opens the keyboard shortcuts panel and closes it with escape" do
     visit "/admin/resources/projects"
 
-    expect(page).to have_css(".hotkey[hidden]", visible: false)
+    expect(page).to have_css(".hotkey", visible: :hidden)
 
     dispatch_keydown("?", code: "Slash", shift_key: true)
 
@@ -97,7 +97,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     dispatch_keydown("Escape")
 
-    expect(page).to have_css(".hotkey[hidden]", visible: false)
+    expect(page).to have_css(".hotkey", visible: :hidden)
   end
 
   it "does not open the keyboard shortcuts panel while typing in a search field" do
@@ -109,7 +109,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     search_input.send_keys("?")
 
     expect(search_input.value).to include("?")
-    expect(page).to have_css(".hotkey[hidden]", visible: false)
+    expect(page).to have_css(".hotkey", visible: :hidden)
   end
 
   it "toggles the hotkeys-hide-badges class on the html element when pressing Shift+K" do
@@ -266,6 +266,136 @@ RSpec.describe "Keyboard shortcuts", type: :system do
   #   expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
   #   expect(project.reload.name).to eq("Updated from hotkey")
   # end
+
+  describe "Shift+T focuses the screen content" do
+    def active_element_descriptor
+      page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el) return null
+          return {
+            tag: el.tagName,
+            classes: el.className,
+            contentFocus: el.hasAttribute('data-content-focus')
+          }
+        })()
+      JS
+    end
+
+    it "focuses the grid wrapper on a grid index" do
+      create_list(:user, 3)
+
+      visit "/admin/resources/users?view_type=grid"
+
+      expect(page).to have_css(".grid-wrapper[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("grid-wrapper")
+    end
+
+    it "focuses the panel body on the show view so Shift+Tab reaches the controls" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("panel__body")
+    end
+
+    it "focuses the panel body on the edit view so the user can Tab through fields" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}/edit"
+
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("panel__body")
+    end
+
+    it "focuses the visible tab panel on tabbed show views, not a hidden one" do
+      person = create(:person)
+
+      Avo::Resources::Person.with_temporary_items do
+        tabs do
+          tab title: "First" do
+            panel do
+              field :name, as: :text
+            end
+          end
+
+          tab title: "Second" do
+            panel do
+              field :type, as: :text
+            end
+          end
+        end
+      end
+
+      visit avo.resources_person_path(person)
+
+      scroll_to first_tab_group
+      click_tab "Second", within_target: first_tab_group
+
+      dispatch_keydown("T", shift_key: true)
+
+      focused_tab = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el?.hasAttribute('data-content-focus')) return null
+
+          return el.closest('[data-tabs-target="tabPanel"]')?.dataset?.tabId ?? null
+        })()
+      JS
+
+      expect(focused_tab).to eq("Second")
+
+      hidden_ancestor = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          return !!el?.closest('.hidden, [hidden]')
+        })()
+      JS
+
+      expect(hidden_ancestor).to be(false)
+    end
+
+    it "does not focus obscured panel content while a modal is open" do
+      user = create(:user)
+
+      visit avo.resources_user_path(user, "tab-group_first-tabs-group" => "Teams")
+
+      scroll_to first_tab_group
+      click_on "Attach team"
+
+      expect(page).to have_css("body.modal-open")
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      focused_behind_modal = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el?.hasAttribute('data-content-focus')) return false
+
+          return !el.closest('[aria-modal="true"]')
+        })()
+      JS
+
+      expect(focused_behind_modal).to be(false)
+    end
+  end
 
   describe "accessible row navigation" do
     it "does not consume arrow keys when the table is not focused" do
@@ -465,7 +595,7 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     it "still renders the keyboard shortcuts modal" do
       visit "/admin/resources/projects"
 
-      expect(page).to have_css(".hotkey[hidden]", visible: false)
+      expect(page).to have_css(".hotkey", visible: :hidden)
 
       dispatch_keydown("?", code: "Slash", shift_key: true)
 

@@ -184,9 +184,9 @@ nn:
       one: eitt element til
       other: "%{count} fleire element"
       zero: ingen fleire element
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> valde postar på denne sida av totalt <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> valde postar frå alle sider
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> valde postar på denne sida av totalt <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> valde postar frå alle sider
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, eg er sikker
     you_cant_upload_new_resource: Du kan ikkje laste opp filer til Trix-editoren før du lagrar ressursen.
     you_havent_set_attachment_key: Du har ikkje sett ein `attachment_key` til dette Trix-feltet.

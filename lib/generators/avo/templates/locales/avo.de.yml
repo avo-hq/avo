@@ -182,9 +182,9 @@ de:
       one: noch ein Eintrag
       other: "%{count} weitere Einträge"
       zero: keine weiteren Einträge
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> Einträge auf dieser Seite von insgesamt <span class="font-bold text-gray-700">%{count}</span> ausgewählt
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> Einträge von allen Seiten ausgewählt
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> Einträge auf dieser Seite ausgewählt
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> Einträge auf dieser Seite von insgesamt <span class="font-bold">%{count}</span> ausgewählt
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> Einträge von allen Seiten ausgewählt
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> Einträge auf dieser Seite ausgewählt
     yes_confirm: Ja, ich bin sicher
     you_cant_upload_new_resource: Du kannst keine Dateien in den Trix-Editor hochladen, bis die Ressource gespeichert ist.
     you_havent_set_attachment_key: Du hast keinen `attachment_key` für dieses Trix-Feld festgelegt.

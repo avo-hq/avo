@@ -19,19 +19,19 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
   end
 
   def is_image?
-    file.image? || @field.is_image
+    file.image?
   rescue
     false
   end
 
   def is_audio?
-    file.audio? || @field.is_audio
+    file.audio?
   rescue
     false
   end
 
   def is_video?
-    file.video? || @field.is_video
+    file.video?
   rescue
     false
   end

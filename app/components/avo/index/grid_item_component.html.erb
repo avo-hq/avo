@@ -18,12 +18,12 @@
     <%= render_badge %>
     <%= render Avo::UI::DropdownComponent.new(popover_mode: true) do |component| %>
       <% component.with_trigger do %>
-        <%= render Avo::ButtonComponent.new(
-          icon: "tabler/outline/dots-vertical",
+        <%= a_button icon: "tabler/outline/dots-vertical",
           size: :md,
+          padding: :xs,
           style: :text,
           popovertarget: component.popover_id
-        ) %>
+        %>
       <% end %>
       <% component.with_items do %>
         <%= render Avo::Index::ResourceControlsDropdownComponent.new(

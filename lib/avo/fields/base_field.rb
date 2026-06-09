@@ -80,13 +80,7 @@ module Avo
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using]
-        @format_display_using = args[:format_display_using] || args[:decorate]
-
-        unless Rails.env.production?
-          if args[:decorate].present?
-            puts "[Avo DEPRECATION WARNING]: The `decorate` field configuration option is nolonger supported and will be removed in future versions. Please discontinue its use and solely utilize `format_display_using` instead."
-          end
-        end
+        @format_display_using = args[:format_display_using]
 
         @format_index_using = args[:format_index_using]
         @format_show_using = args[:format_show_using]
@@ -94,7 +88,6 @@ module Avo
         @format_new_using = args[:format_new_using]
         @format_form_using = args[:format_form_using]
         @update_using = args[:update_using]
-        @decorate = args[:decorate]
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete]
         @help = args[:help]
@@ -235,13 +228,7 @@ module Avo
         end
 
         # Format value based on available formatter
-        final_value = format_value(final_value)
-
-        if @decorate.present? && @view.display?
-          final_value = execute_context(@decorate, value: final_value)
-        end
-
-        final_value
+        format_value(final_value)
       end
 
       def execute_context(target, **extra_args)

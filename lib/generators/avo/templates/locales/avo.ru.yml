@@ -188,9 +188,9 @@ ru:
       one: ещё один элемент
       other: "%{count} других элементов"
       zero: нет других элементов
-    x_records_selected_from_a_total_of_x_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице из общего количества <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: Выбрано <span class="font-bold text-gray-700">%{count}</span> записей со всех страниц
-    x_records_selected_from_page_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице
+    x_records_selected_from_a_total_of_x_html: Выбрано <span class="font-bold">%{selected}</span> записей на этой странице из общего количества <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: Выбрано <span class="font-bold">%{count}</span> записей со всех страниц
+    x_records_selected_from_page_html: Выбрано <span class="font-bold">%{selected}</span> записей на этой странице
     yes_confirm: Да, уверен
     you_cant_upload_new_resource: Вы не можете загружать файлы в редактор Trix, пока не сохраните ресурс.
     you_havent_set_attachment_key: Вы не установили `attachment_key` для этого поля Trix.

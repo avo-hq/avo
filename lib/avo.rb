@@ -1,3 +1,5 @@
+require_relative "avo/engine_dsl"
+
 require "zeitwerk"
 require "net/http"
 require "active_support/inflector"
@@ -10,9 +12,11 @@ loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   "html" => "HTML",
   "uri_service" => "URIService",
-  "has_html_attributes" => "HasHTMLAttributes"
+  "has_html_attributes" => "HasHTMLAttributes",
+  "engine_dsl" => "EngineDSL"
 )
 loader.ignore("#{__dir__}/generators")
+loader.ignore("#{__dir__}/avo/engine_dsl.rb")
 loader.setup
 
 module Avo

@@ -182,9 +182,9 @@ nl:
       one: nog één item
       other: "%{count} andere items"
       zero: geen andere items
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina van een totaal van <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records geselecteerd van alle pagina's
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> records geselecteerd op deze pagina van een totaal van <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> records geselecteerd van alle pagina's
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records geselecteerd op deze pagina
     yes_confirm: Ja, ik weet het zeker
     you_cant_upload_new_resource: Je kunt geen bestanden uploaden in de Trix-editor totdat je de bron hebt opgeslagen.
     you_havent_set_attachment_key: Je hebt geen `attachment_key` ingesteld voor dit Trix-veld.
