@@ -119,11 +119,7 @@ module Avo
         resource = target_resource
         resource = Avo.resource_manager.get_resource_by_model_class model if model.present?
 
-        query = resource.query_scope
-
-        if attach_scope.present?
-          query = Avo::ExecutionContext.new(target: attach_scope, query: query, parent: get_record).handle
-        end
+        query = scoped_target_query(resource, get_record)
 
         query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
           [resource.new(record: record).record_title, record.to_param]
@@ -212,12 +208,18 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+            target = target_resource(record:, polymorphic_model_class: value.safe_constantize)
+            record_id = target.find_record(id_from_param, query: scoped_target_query(target, record, for_find: true)).id
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).send(reflection.association_primary_key)
+          target = target_resource(record:)
+          record_id = if value.blank?
+            value
+          else
+            target.find_record(value, query: scoped_target_query(target, record, for_find: true)).send(reflection.association_primary_key)
+          end
 
           record.send(:"#{key}=", record_id)
         end
@@ -324,6 +326,14 @@ module Avo
       end
 
       private
+
+      def scoped_target_query(resource, parent_record, for_find: false)
+        query = for_find ? resource.class.find_scope : resource.query_scope
+
+        return query if attach_scope.blank?
+
+        Avo::ExecutionContext.new(target: attach_scope, query: query, parent: parent_record).handle
+      end
 
       def get_model_class(record)
         if record.nil?
