@@ -1,7 +1,7 @@
 require "rails_helper"
 
 # Component-layer integration coverage. The full merge contract is exercised
-# in `spec/lib/avo/table_row_options_spec.rb`; this file covers the parts that
+# in `spec/features/avo/lib/table_row_options_spec.rb`; this file covers the parts that
 # only the component owns: `view` derivation and the wiring of the merger
 # call.
 RSpec.describe Avo::Index::TableRowComponent, type: :component do

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :posts
 
   authenticate :user, ->(user) { user.is_admin? } do
-    mount_avo do
+    mount_avo mount_lookbook: true do
       scope :resources do
         get "courses/cities", to: "courses#cities"
         get "users/get_users", to: "users#get_users"
