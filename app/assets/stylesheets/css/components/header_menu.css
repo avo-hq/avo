@@ -10,17 +10,12 @@
   overflow-clip-margin: 4px;
 
   > a {
-    @apply text-sm font-medium rounded-md px-2 py-1;
+    @apply text-sm font-medium rounded-md outline-offset-2;
   }
 }
 
 .header-menu__row > * {
   @apply whitespace-nowrap shrink-0;
-}
-
-.header-menu__row > a:focus-visible {
-  @apply relative z-10;
-  outline-offset: var(--focus-outline-offset-inset);
 }
 
 /* The last visible item may be truncated to fill leftover space. */
