@@ -458,7 +458,7 @@ GEM
       zeitwerk (>= 2.6.18)
     psych (3.3.4)
     public_suffix (7.0.5)
-    puma (6.6.1)
+    puma (8.0.2)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.6)
@@ -784,7 +784,7 @@ DEPENDENCIES
   pluggy!
   prefixed_ids
   psych (< 4)
-  puma (~> 6.4)
+  puma (~> 8.0)
   rails (~> 7.1)
   rails-controller-testing
   ransack (>= 4.2.0)

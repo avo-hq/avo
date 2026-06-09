@@ -8,7 +8,7 @@ gem "jsbundling-rails"
 gem "cssbundling-rails"
 gem "sprockets-rails"
 gem "pg", ">= 0.18", "< 2.0"
-gem "puma", "~> 6.4"
+gem "puma", "~> 8.0"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "redis", "~> 5.0"
 gem "devise"
