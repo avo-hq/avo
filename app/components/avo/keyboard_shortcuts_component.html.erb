@@ -4,25 +4,47 @@
   width: :xl,
   behavior: :persistent
 ) do %>
-  <div class="hotkey__grid">
-    <% sections.each do |section| %>
-      <section class="hotkey__section" aria-labelledby="<%= section[:id] %>">
-        <h3 class="hotkey__section-title" id="<%= section[:id] %>">
-          <%= section[:title] %>
-        </h3>
+  <div data-controller="keyboard-shortcuts-search">
+    <div class="hotkey__search">
+      <%= helpers.svg "tabler/outline/search", class: "hotkey__search-icon" %>
+      <%= tag.input(
+        type: "search",
+        class: "hotkey__search-input",
+        placeholder: t("avo.search.placeholder"),
+        autocomplete: "off",
+        spellcheck: "false",
+        aria: {label: "Search keyboard shortcuts"},
+        data: {
+          "keyboard-shortcuts-search-target": "input",
+          action: "input->keyboard-shortcuts-search#filter keydown.esc->keyboard-shortcuts-search#clearOnEscape"
+        }
+      ) %>
+    </div>
 
-        <ul class="hotkey__section-body">
-          <% section[:shortcuts].each do |shortcut| %>
-            <li class="hotkey__row">
-              <span class="hotkey__action"><%= shortcut[:action] %></span>
+    <div class="hotkey__grid">
+      <% sections.each do |section| %>
+        <section class="hotkey__section" aria-labelledby="<%= section[:id] %>" data-keyboard-shortcuts-search-target="section">
+          <h3 class="hotkey__section-title" id="<%= section[:id] %>">
+            <%= section[:title] %>
+          </h3>
 
-              <%= tag.span class: "hotkey__keys", **(shortcut[:keys_aria_label].present? ? {aria: {label: shortcut[:keys_aria_label]}} : {}) do %>
-                <%= render_shortcut_keys(shortcut) %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      </section>
-    <% end %>
+          <ul class="hotkey__section-body">
+            <% section[:shortcuts].each do |shortcut| %>
+              <li class="hotkey__row" data-keyboard-shortcuts-search-target="row">
+                <span class="hotkey__action"><%= shortcut[:action] %></span>
+
+                <%= tag.span class: "hotkey__keys", **(shortcut[:keys_aria_label].present? ? {aria: {label: shortcut[:keys_aria_label]}} : {}) do %>
+                  <%= render_shortcut_keys(shortcut) %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </section>
+      <% end %>
+    </div>
+
+    <p class="hotkey__empty" data-keyboard-shortcuts-search-target="empty" hidden>
+      <%= t("avo.global_search.empty_state.no_results_found") %>
+    </p>
   </div>
 <% end %>
