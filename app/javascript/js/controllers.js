@@ -30,6 +30,7 @@ import IndexRowNavigatorController from './controllers/index_row_navigator_contr
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
+import KeyboardShortcutsSearchController from './controllers/keyboard_shortcuts_search_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
 import MapDarkModeController from './controllers/map_dark_mode_controller'
@@ -90,6 +91,7 @@ application.register('header-menu', HeaderMenuController)
 application.register('hidden-input', HiddenInputController)
 application.register('index-row-navigator', IndexRowNavigatorController)
 application.register('input-autofocus', InputAutofocusController)
+application.register('keyboard-shortcuts-search', KeyboardShortcutsSearchController)
 application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
 application.register('loading-button', LoadingButtonController)
