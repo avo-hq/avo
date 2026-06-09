@@ -36,9 +36,9 @@
     <p class="state__message"><%= label %></p>
 
     <%= a_button color: :primary,
-          icon: "tabler/outline/player-play",
-          aria: { label: load_label },
-          data: { action: "manual-frame#load" } do %>
+                 icon: "tabler/outline/player-play",
+                 aria: {label: load_label},
+                 data: {action: "manual-frame#load"} do %>
       <%= load_label %>
     <% end %>
   </div>
@@ -78,9 +78,9 @@
       </p>
 
       <%= a_button color: :primary,
-            icon: "tabler/outline/refresh",
-            aria: { label: retry_label },
-            data: { action: "manual-frame#retry" } do %>
+                   icon: "tabler/outline/refresh",
+                   aria: {label: retry_label},
+                   data: {action: "manual-frame#retry"} do %>
         <%= t("avo.retry") %>
       <% end %>
     </div>
