@@ -36,16 +36,17 @@
     %>
 
     <%= content_tag :button,
-      class: "absolute end-0 self-center me-2 uppercase font-semibold text-xs disabled:cursor-not-allowed disabled:opacity-50 text-content-secondary cursor-pointer rounded-md",
+      class: "absolute inset-y-0 end-0 flex items-center justify-center px-2.5 uppercase font-semibold text-xs disabled:cursor-not-allowed disabled:opacity-50 text-content-secondary cursor-pointer rounded-md",
       id: :reset,
       type: :button,
       title: t("avo.reset").capitalize,
       disabled: disabled?,
+      style: "outline-offset: var(--focus-outline-offset-inset)",
       data: {
         action: "click->date-field#clear",
         tippy: :tooltip
       } do %>
-      <%= helpers.svg "tabler/outline/x", class: "h-4" %>
+      <%= helpers.svg "tabler/outline/x", class: "size-4" %>
     <% end %>
   <% end %>
 <% end %>
