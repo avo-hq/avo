@@ -57,6 +57,7 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    failed_to_load_manual: Couldn't load this content.
     file:
       one: file
       other: files
@@ -72,6 +73,7 @@ en:
       key: Key
       value: Value
     list_is_empty: List is empty
+    load: Load
     loading: Loading
     more: More
     new: new
@@ -102,6 +104,7 @@ en:
     remove_selection: Remove selection
     reset_filters: Reset filters
     reset: reset
+    retry: Retry
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated

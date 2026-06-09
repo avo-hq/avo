@@ -1,0 +1,52 @@
+<%# Manual (on-demand) Turbo Frame: no `src`; the Load button supplies it on click. %>
+<%= turbo_frame_tag @frame_id,
+      target: :_top,
+      class: "block",
+      data: {
+        manual_frame: true,
+        controller: "manual-frame",
+        manual_frame_url_value: @deferred_url
+      } do %>
+  <%# Placeholder state — mirrors EmptyStateComponent's `.state` card markup. %>
+  <div class="<%= class_names("state", @classes) %>" data-manual-frame-target="placeholder">
+    <div class="state__illustration" aria-hidden="true">
+      <div class="state__card state__card--top">
+        <div class="state__badge">1</div>
+        <div class="state__body">
+          <div class="state__line state__line--title state__line--large"></div>
+          <div class="state__line state__line--content"></div>
+        </div>
+      </div>
+      <div class="state__card state__card--middle">
+        <div class="state__badge">2</div>
+        <div class="state__body">
+          <div class="state__line state__line--title state__line--large"></div>
+          <div class="state__line state__line--content"></div>
+        </div>
+      </div>
+      <div class="state__card state__card--bottom">
+        <div class="state__badge">3</div>
+        <div class="state__body">
+          <div class="state__line state__line--title state__line--large"></div>
+          <div class="state__line state__line--content"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="state__message"><%= label %></p>
+
+    <%= a_button color: :primary,
+          icon: "tabler/outline/player-play",
+          aria: { label: load_label },
+          data: { action: "manual-frame#load" } do %>
+      <%= load_label %>
+    <% end %>
+  </div>
+
+  <%# Loading state (R5) — revealed by the controller during the request. %>
+  <div class="hidden" data-manual-frame-target="loading" aria-live="polite">
+    <%= render Avo::LoadingComponent.new(title: label) %>
+  </div>
+
+  <%# Error/Retry state (Unit 5) — markup lands there; the seam is reserved here. %>
+<% end %>

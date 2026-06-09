@@ -102,6 +102,11 @@ document.addEventListener('turbo:frame-load', () => {
 })
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {
+  // Manual frames handle their own failures inline (see manual_frame_controller.js);
+  // skip the global redirect-to-/failed_to_load rewrite for them. Full inline
+  // error/Retry handling lands in Unit 5.
+  if (e.target.dataset.manualFrame) return
+
   if (e.detail.fetchResponse.response.status === 500) {
     const { id, src } = e.target
     // Don't try to redirect to failed to load if this is already a redirection to failed to load and crashed somewhere.
