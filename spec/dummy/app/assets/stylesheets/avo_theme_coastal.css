@@ -1,0 +1,68 @@
+/*
+  Dummy app Avo coastal chrome theme.
+
+  This mirrors how an application developer can retheme Avo by ejecting the
+  head partial and loading their own stylesheet after Avo's bundled CSS.
+*/
+
+:root {
+  --color-navbar-background: #0f4c5c;
+  --navbar-notch-enabled: true;
+  --navbar-notch-radius: 1.25rem;
+}
+
+.top-navbar {
+  --top-navbar-background: var(--color-navbar-background);
+  --top-navbar-content: #d8f3dc;
+  --top-navbar-content-hover: #ffffff;
+  --top-navbar-control-background: #123d4a;
+  --top-navbar-control-background-hover: #1d5f6f;
+  --top-navbar-control-border: #2a7787;
+  --top-navbar-control-content: #ffffff;
+  --top-navbar-control-muted: #a8dadc;
+  --top-navbar-control-shortcut-background: #1d5f6f;
+  --top-navbar-control-shortcut-border: #3a8fa0;
+  --top-navbar-control-shortcut-content: #e9fbfc;
+  --top-navbar-active-background: #09242d;
+  --top-navbar-active-content: #ffffff;
+  --top-navbar-start-notch-align-with-main-content: false;
+}
+
+.avo-sidebar {
+  --sidebar-background: #eef7f4;
+  --sidebar-border: #b7d7cf;
+  --sidebar-content: #123d4a;
+  --sidebar-content-secondary: #3d6f78;
+  --sidebar-link-hover-background: #d8ede7;
+  --sidebar-link-active-background: #c4e4dc;
+  --sidebar-focus-background: #ffffff;
+  --sidebar-profile-avatar-background: #ffffff;
+  --sidebar-profile-avatar-border: #b7d7cf;
+  --sidebar-profile-avatar-content: #0f4c5c;
+  --sidebar-status-border: #b7d7cf;
+}
+
+.dark {
+  --color-navbar-background: #081c24;
+}
+
+.dark .top-navbar {
+  --top-navbar-control-background: #0d2f3c;
+  --top-navbar-control-background-hover: #164a5a;
+  --top-navbar-control-border: #226678;
+  --top-navbar-active-background: #020d12;
+}
+
+.dark .avo-sidebar {
+  --sidebar-background: #081c24;
+  --sidebar-border: #164a5a;
+  --sidebar-content: #e9fbfc;
+  --sidebar-content-secondary: #a8dadc;
+  --sidebar-link-hover-background: #0d2f3c;
+  --sidebar-link-active-background: #164a5a;
+  --sidebar-focus-background: #10243a;
+  --sidebar-profile-avatar-background: #0d2f3c;
+  --sidebar-profile-avatar-border: #226678;
+  --sidebar-profile-avatar-content: #e9fbfc;
+  --sidebar-status-border: #164a5a;
+}

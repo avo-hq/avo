@@ -38,7 +38,7 @@
    the top-navbar and .main (which are siblings, not parent/child).
    --content-width is intentionally relative to .main's content box (which is
    already offset by --sidebar-offset-size via padding), so centering via
-   mx-auto happens inside the area to the right of the sidebar — not the page. */
+   mx-auto happens inside the area to the right of the sidebar, not the page. */
 [data-controller~="sidebar"] {
   --sidebar-width: --spacing(64);
   --sidebar-offset-size: 0rem;
@@ -64,12 +64,29 @@
 }
 
 .main-content {
-  @apply w-(--content-width) flex flex-col bg-(--color-main-content-background) py-2 lg:py-4 px-2 lg:px-4 border-s border-(--color-main-content-border) ms-1 rounded-se-(--navbar-notch-radius) rounded-ss-(--navbar-notch-radius);
+  --main-content-start-radius: 0px;
+  --main-content-end-radius: 0px;
+
+  @apply relative w-(--content-width) flex flex-col bg-(--color-main-content-background) py-2 lg:py-4 px-2 lg:px-4 border-s border-(--color-main-content-border) ms-1 rounded-se-(--main-content-end-radius) rounded-ss-(--main-content-start-radius);
 
   transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
   min-height: calc(100dvh - var(--top-navbar-height) - var(--spacing));
+
+  @container style(--navbar-notch-enabled: true) {
+    --main-content-end-radius: var(--main-content-radius);
+  }
+
+  @container style(--navbar-notch-enabled: true) and style(--top-navbar-start-notch-align-with-main-content: true) {
+    --main-content-start-radius: var(--main-content-radius);
+  }
+
 }
 
+.main-content.focused,
+.main-content:focus-visible {
+  outline: 2px solid var(--color-content);
+  outline-offset: 2px;
+}
 
 .main-content__container {
   @apply flex flex-1 flex-col px-2;
@@ -90,6 +107,45 @@
 .top-navbar {
   @apply z-400 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
 
+  /* Top navbar theme contract.
+     Override these variables on `.top-navbar` when the navbar needs its own
+     palette. They are defined here so the customization point stays local to
+     the navbar while popovers, dropdown panels, and the main content keep using
+     their own surface tokens.
+
+     Example:
+       .top-navbar {
+         --top-navbar-background: var(--color-primary);
+         --top-navbar-content: var(--color-content-secondary);
+         --top-navbar-content-hover: var(--color-content);
+         --top-navbar-control-background: var(--color-secondary);
+         --top-navbar-control-background-hover: var(--color-tertiary);
+         --top-navbar-control-border: var(--color-tertiary);
+         --top-navbar-control-content: var(--color-content);
+         --top-navbar-control-muted: var(--color-content-secondary);
+         --top-navbar-control-shortcut-background: var(--color-primary);
+         --top-navbar-control-shortcut-border: var(--color-tertiary);
+         --top-navbar-control-shortcut-content: var(--color-content-secondary);
+         --top-navbar-active-background: var(--color-foreground);
+         --top-navbar-active-content: var(--color-background);
+       }
+  */
+  --top-navbar-background: var(--color-navbar-background);
+  --top-navbar-content: var(--color-avo-neutral-300);
+  --top-navbar-content-hover: var(--color-avo-neutral-50);
+  --top-navbar-control-background: var(--color-avo-neutral-800);
+  --top-navbar-control-background-hover: var(--color-avo-neutral-700);
+  --top-navbar-control-border: var(--color-avo-neutral-700);
+  --top-navbar-control-content: var(--color-avo-neutral-50);
+  --top-navbar-control-muted: var(--color-avo-neutral-400);
+  --top-navbar-control-shortcut-background: var(--color-avo-neutral-700);
+  --top-navbar-control-shortcut-border: var(--color-avo-neutral-600);
+  --top-navbar-control-shortcut-content: var(--color-avo-neutral-200);
+  --top-navbar-active-background: var(--color-avo-neutral-950);
+  --top-navbar-active-content: var(--color-avo-neutral-50);
+  --top-navbar-start-notch-offset: 0px;
+  --navbar-notch-color: var(--top-navbar-background);
+
   /* Three-region grid: start | center | end. start/end share remaining space
      equally (1fr each) so the center column (search) stays visually anchored
      to the navbar's midpoint regardless of breadcrumb length. */
@@ -99,7 +155,7 @@
   gap: 0.75rem;
   padding-inline: 0.5rem;
 
-  background-color: var(--color-navbar-background);
+  background-color: var(--top-navbar-background);
 
   > * {
     @apply pointer-events-auto;
@@ -109,7 +165,7 @@
     @apply flex-nowrap overflow-x-auto;
   }
 
-  /* Inverted arches at the top corners of the content area — a square just
+  /* Inverted arches at the top corners of the content area: a square just
      below the navbar painted with the notch color, with a quarter-circle cut
      out of one bottom corner. The cut reveals the content beneath, so the
      content looks like it has a rounded top corner without actually applying
@@ -136,8 +192,17 @@
     }
   }
 
+  /* Moves the start notch to the main content start edge when requested. This
+     produces a different rounded look for layouts where the navbar should read
+     as one continuous strip above the sidebar and content panel. */
+  @container style(--top-navbar-start-notch-align-with-main-content: true) {
+    &::before {
+      --top-navbar-start-notch-offset: var(--sidebar-offset-size);
+    }
+  }
+
   &::before {
-    left: 0;
+    inset-inline-start: var(--top-navbar-start-notch-offset);
     background: radial-gradient(
       circle var(--navbar-notch-radius) at 100% 100%,
       transparent 99%,
@@ -146,7 +211,7 @@
   }
 
   &::after {
-    right: 0;
+    inset-inline-end: 0;
     background: radial-gradient(
       circle var(--navbar-notch-radius) at 0% 100%,
       transparent 99%,
@@ -168,32 +233,29 @@
 .top-navbar__center {
   @apply flex items-center justify-center min-w-0 sm:w-80 lg:w-96 xl:w-120;
 
-  /* Search input is rendered against the dark navbar in both light/dark
-     themes, so it uses primitive neutral tokens that are stable across modes
-     — matching the breadcrumbs and sidebar-toggle treatment. */
   .search-input__input {
-    background-color: var(--color-avo-neutral-800);
-    border-color: var(--color-avo-neutral-700);
-    color: var(--color-avo-neutral-50);
+    background-color: var(--top-navbar-control-background);
+    border-color: var(--top-navbar-control-border);
+    color: var(--top-navbar-control-content);
 
     &::placeholder {
-      color: var(--color-avo-neutral-400);
+      color: var(--top-navbar-control-muted);
     }
   }
 
   .search-input__prefix,
   .search-input__suffix {
-    color: var(--color-avo-neutral-400);
+    color: var(--top-navbar-control-muted);
   }
 
   .search-input__suffix kbd {
-    background-color: var(--color-avo-neutral-700);
-    border-color: var(--color-avo-neutral-600);
-    color: var(--color-avo-neutral-200);
+    background-color: var(--top-navbar-control-shortcut-background);
+    border-color: var(--top-navbar-control-shortcut-border);
+    color: var(--top-navbar-control-shortcut-content);
     box-shadow: none;
   }
 
-  /* On mobile, collapse the navbar search to just the input + search icon —
+  /* On mobile, collapse the navbar search to just the input + search icon:
      hide the keyboard shortcut suffix and drop the reserved end-padding so it
      stays compact next to the logo. */
   @media (width < theme(--breakpoint-sm)) {
@@ -215,14 +277,13 @@
   @apply flex items-center justify-end gap-3 min-w-0 h-full;
 }
 
-/* Links inside the always-dark navbar use primitive neutral tokens so they
-   stay readable in both light and dark mode — matching the search input and
-   sidebar toggle treatment. */
+/* Scope to the inline row only — overflow links in .header-menu__popover use
+   the adaptive dropdown surface tokens from .dropdown-menu__list. */
 .top-navbar .header-menu__row a {
-  color: var(--color-avo-neutral-300);
+  color: var(--top-navbar-content);
 
   &:hover {
-    color: var(--color-avo-neutral-50);
+    color: var(--top-navbar-content-hover);
   }
 }
 
@@ -243,14 +304,12 @@ button[data-sidebar-state="closed"] .sidebar-toggle-icon--closed {
   @apply inline-flex;
 }
 
-/* The toggle sits on the dark top-navbar, so it uses primitive neutral tokens
-   that are stable across light/dark — matching the breadcrumbs treatment. */
 button[data-sidebar-toggle-icon] {
-  --btn-text-color: var(--color-avo-neutral-300);
+  --btn-text-color: var(--top-navbar-content);
 
   &:hover {
-    --btn-text-color: var(--color-avo-neutral-50);
-    background-color: var(--color-avo-neutral-800);
+    --btn-text-color: var(--top-navbar-content-hover);
+    background-color: var(--top-navbar-control-background);
   }
 }
 
@@ -258,8 +317,10 @@ button[data-sidebar-toggle-icon] {
    Sidebar starts below the navbar (matching .main's padding-top), so the
    navbar is uninterrupted across the full viewport width. */
 .avo-sidebar {
-  @apply fixed z-50 start-0 flex-1 border-e border-tertiary lg:border-none bg-sidebar-background w-(--sidebar-width);
+  @apply fixed z-50 start-0 flex-1 border-e lg:border-none w-(--sidebar-width);
 
+  background-color: var(--sidebar-background);
+  border-color: var(--sidebar-border);
   top: var(--top-navbar-height);
   height: calc(100dvh - var(--top-navbar-height));
   transform: translateX(-100%);
@@ -281,11 +342,6 @@ html[dir="rtl"] .avo-sidebar {
   html[dir="rtl"] .sidebar-open .avo-sidebar {
     transform: translateX(0);
   }
-
-  .sidebar-open .main-content {
-    @apply rounded-ss-none;
-  }
-
   .main:not(.sidebar-open) .main-content {
     @apply ms-0;
   }

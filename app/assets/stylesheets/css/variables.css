@@ -90,11 +90,10 @@
      light mode and a subtly tinted surface in dark (see the .dark override). */
   --color-sidebar-background: var(--color-background);
 
-  /* Top navbar background. Dedicated knob so installs can recolor the navbar
-     without touching the neutral palette. Defaults to the page background so
-     the navbar blends with the canvas; resolves per-scheme automatically since
-     --color-background is itself redefined in .dark. Override it (here or in
-     `.dark`) to give the navbar its own color. */
+  /* Top navbar background. Kept as the global source for the scoped
+     --top-navbar-background token in layout.css, so existing installs can keep
+     overriding just the navbar background without touching the rest of the
+     navbar palette. */
   --color-navbar-background: var(--color-avo-neutral-900);
 
   /* Background of the main content panel. Dedicated knob so installs can recolor
@@ -108,6 +107,7 @@
      --border-color (which also draws the sidebar-status borders). Tracks
      --border-color by default, so it resolves per-scheme automatically. */
   --color-main-content-border: var(--border-color);
+
 }
 
 /* Navbar notch knobs live in a plain :root block, not in @theme:
@@ -122,6 +122,15 @@
   /* Radius of the content panel's rounded top corners (and the matching navbar
      arches that fill them). Set to `0` to flatten the corners entirely. */
   --navbar-notch-radius: 1rem;
+
+  /* Radius of the main content panel's top corners. Defaults to the navbar
+     notch radius so the content panel and inverted navbar arches stay aligned. */
+  --main-content-radius: var(--navbar-notch-radius);
+
+  /* Set to `true` to move the navbar's start notch to the main content edge.
+     When enabled, both main content top corners use --main-content-radius.
+     Otherwise only the end corner is rounded. */
+  --top-navbar-start-notch-align-with-main-content: false;
 
   /* Motion speeds. Shared knobs for small UI transitions so timings stay
      consistent and tunable in one place. Live in plain :root (not @theme) since
