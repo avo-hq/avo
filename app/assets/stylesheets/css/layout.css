@@ -307,6 +307,12 @@ button[data-sidebar-toggle-icon] {
     --btn-text-color: var(--top-navbar-content-hover);
     background-color: var(--top-navbar-control-background);
   }
+
+  /* The icons are nested inside `.button__label`, so the button's own
+     `items-center` doesn't reach them — center them within the label. */
+  .button__label {
+    @apply flex items-center;
+  }
 }
 
 /* Default hidden state - LTR: sidebar slides in from left.
