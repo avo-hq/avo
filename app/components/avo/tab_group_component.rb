@@ -27,16 +27,24 @@ class Avo::TabGroupComponent < Avo::BaseComponent
 
     if is_not_loaded?(tab)
       args[:loading] = :lazy
-      args[:src] = helpers.resource_path(
-        resource: resource,
-        record: resource.record,
-        keep_query_params: true,
-        active_tab_title: tab.title,
-        tab_turbo_frame: tab.turbo_frame_id(parent: group)
-      )
+      args[:src] = manual_frame_url(tab)
     end
 
     args
+  end
+
+  # The deferred load URL for a tab's turbo frame. Mirrors the `src` the lazy
+  # branch builds in `frame_args`, so a manual tab's Load button fetches the
+  # exact same proven URL — carrying `tab_turbo_frame` so `is_not_loaded?` is
+  # false on the framed re-render and the real `TabContentComponent` renders.
+  def manual_frame_url(tab)
+    helpers.resource_path(
+      resource: resource,
+      record: resource.record,
+      keep_query_params: true,
+      active_tab_title: tab.title,
+      tab_turbo_frame: tab.turbo_frame_id(parent: group)
+    )
   end
 
   def is_not_loaded?(tab)

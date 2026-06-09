@@ -28,7 +28,15 @@
         <% end %>
 
         <% if !tab.is_empty? %>
-          <% if tab.lazy_load && view.display? %>
+          <% if tab.manual? && view.display? %>
+            <% if is_not_loaded?(tab) %>
+              <%= render Avo::ManualFrameComponent.new(tab.turbo_frame_id(parent: group), deferred_url: manual_frame_url(tab), title: tab.title) %>
+            <% else %>
+              <%= turbo_frame_tag tab.turbo_frame_id(parent: group), target: :_top, class: "block" do %>
+                <%= render Avo::TabContentComponent.new tab:, resource:, index:, form:, view: %>
+              <% end %>
+            <% end %>
+          <% elsif tab.lazy_load && view.display? %>
             <%= turbo_frame_tag tab.turbo_frame_id(parent: group), **frame_args(tab) do %>
               <% if is_not_loaded?(tab) %>
                 <%= render Avo::LoadingComponent.new(title: tab.title) %>
