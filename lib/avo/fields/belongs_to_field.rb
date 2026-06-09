@@ -328,7 +328,8 @@ module Avo
       private
 
       def scoped_target_query(resource, parent_record, for_find: false)
-        query = for_find ? resource.class.find_scope : resource.query_scope
+        resource_class = resource.is_a?(Class) ? resource : resource.class
+        query = for_find ? resource_class.find_scope : resource_class.query_scope
 
         return query if attach_scope.blank?
 
