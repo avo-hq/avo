@@ -150,9 +150,9 @@
     ========================================================================== */
 
   .input-field__password-toggle {
-    @apply absolute text-content-secondary inset-y-0 end-0 flex items-center cursor-pointer rounded-lg;
+    @apply absolute text-content-secondary inset-y-0 end-0 flex items-center justify-center cursor-pointer rounded-lg;
 
-    padding-inline-end: var(--input-icon-offset);
+    padding-inline: var(--input-icon-offset);
     outline-offset: var(--focus-outline-offset-inset);
   }
 
