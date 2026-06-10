@@ -7,7 +7,7 @@ module Avo
 
           @label = args[:label] || I18n.t("avo.edit").capitalize
           if args[:item].present?
-            @title = I18n.t("avo.edit_item", item: args[:item]).humanize if title.nil?
+            @title = I18n.t("avo.edit_item", item: args[:item]) if title.nil?
           end
         end
       end
