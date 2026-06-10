@@ -7,9 +7,10 @@
   <div class="top-navbar__start">
     <%# Mobile always needs a toggle to reach the overlay sidebar. Desktop toggle
         is optional and controlled by sidebar_toggle_visible. %>
-    <%= a_button class: class_names('shrink-0', 'lg:hidden': !Avo.configuration.sidebar_toggle_visible),
+    <%= a_button class: class_names("shrink-0 -ms-1.5 lg:ms-0", "lg:hidden": !Avo.configuration.sidebar_toggle_visible),
                  size: :sm,
                  style: :text,
+                 padding: :sm,
                  data: {
                    action: 'click->sidebar#toggleSidebarForViewport',
                    sidebar_toggle_icon: true,

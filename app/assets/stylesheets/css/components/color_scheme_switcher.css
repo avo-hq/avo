@@ -20,7 +20,7 @@
 }
 
 .color-scheme-switcher__compact-trigger {
-  @apply inline-flex items-center gap-1 h-8 ps-2 pe-1.5 rounded-lg transition-all duration-150;
+  @apply inline-flex items-center gap-1 h-6 ps-1.5 pe-1 rounded-lg transition-all duration-150;
   @apply text-avo-neutral-300 bg-avo-neutral-800 border border-avo-neutral-700 hover:bg-avo-neutral-700 hover:text-avo-neutral-50;
   @apply cursor-pointer;
   background-color: var(--top-navbar-control-background);
@@ -30,6 +30,12 @@
   &:hover {
     background-color: var(--top-navbar-control-background-hover);
     color: var(--top-navbar-content-hover);
+  }
+}
+
+@media (min-width: theme(--breakpoint-lg)) {
+  .color-scheme-switcher__compact-trigger {
+    @apply h-8 ps-2 pe-1.5;
   }
 }
 

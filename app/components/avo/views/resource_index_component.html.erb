@@ -62,11 +62,9 @@
         <% end %>
 
         <% header.with_controls do %>
-          <div class="flex gap-3 flex-wrap">
-            <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
-              <%= render_control control %>
-            <% end %>
-          </div>
+          <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
+            <%= render_control control %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
