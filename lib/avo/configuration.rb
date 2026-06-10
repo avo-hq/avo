@@ -140,7 +140,7 @@ module Avo
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
-      @explicit_authorization = false
+      @explicit_authorization = true
       @authorization_methods = {
         index: "index?",
         show: "show?",
