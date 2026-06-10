@@ -1,6 +1,7 @@
 .breadcrumbs {
-  @apply sticky z-40 w-full bg-(--color-main-content-background) mb-4;
-  top: calc(var(--top-navbar-height));
+  @apply sticky z-40 w-full bg-(--color-main-content-background) mb-4 top-(--top-navbar-height);
+  /* Vertical optical adjustment */
+  @apply  -mt-1;
 }
 
 /* Soft fade strip just below the sticky breadcrumbs. Eases the seam between
@@ -34,6 +35,14 @@
 
   &:first-child {
     @apply -ms-1;
+  }
+
+  /* The home crumb is the first element and is the only one carrying an icon by
+     default. On small screens collapse it to just the icon to save horizontal
+     space; the label returns at md. Scoping to :has(icon) means a custom first
+     crumb without an icon keeps its text instead of rendering empty. */
+  &:first-child:has(.breadcrumb-element__icon) .breadcrumb-element__text {
+    @apply hidden md:inline;
   }
 
   &:focus-visible {

@@ -10,6 +10,8 @@
     <%= a_button class: class_names('shrink-0', 'lg:hidden': !Avo.configuration.sidebar_toggle_visible),
                  size: :sm,
                  style: :text,
+                 padding: :sm,
+                 class: "-ms-1.5 lg:ms-0",
                  data: {
                    action: 'click->sidebar#toggleSidebarForViewport',
                    sidebar_toggle_icon: true,

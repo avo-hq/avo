@@ -7,7 +7,7 @@ class Avo::Fields::Common::HeadingComponent < Avo::BaseComponent
 
   def after_initialize
     @view = @field.resource.view
-    @classes = "flex items-start py-1 leading-tight bg-secondary text-content-secondary text-xs #{@field.get_html(:classes, view: @view, element: :wrapper)}"
+    @classes = "flex items-start leading-tight bg-background text-content-secondary font-medium text-xs py-2 px-4 h-full w-full #{@field.get_html(:classes, view: @view, element: :wrapper)}"
     @data = {**stimulus_data_attributes, **@field.get_html(:data, view: @view, element: :wrapper)}
     add_stimulus_attributes_for(@field.resource, @data)
   end

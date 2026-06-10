@@ -1,6 +1,12 @@
+/* Card radii as shared design tokens. Consumed via Tailwind's `rounded-(--var)`
+   arbitrary-property syntax so the value can be reused and overridden anywhere
+   instead of being a one-off literal. */
+@theme {
+}
+
 /* Card Component - Based on Figma Design System */
 .card {
-  @apply flex flex-col items-start self-stretch rounded-xl border border-tertiary bg-secondary;
+  @apply flex flex-col items-start self-stretch rounded-card border border-tertiary bg-secondary;
 
   /* Contain horizontal overflow so a wide inner scroller (e.g. .card__wrapper
      wrapping a wide table) can't bleed past the card and push the document
@@ -79,7 +85,7 @@
 
 /* Card body */
 .card__body {
-  @apply flex flex-col items-start self-stretch w-full rounded-lg border border-tertiary bg-primary;
+  @apply flex flex-col items-start self-stretch w-full rounded-card-wrapper border border-tertiary bg-primary;
 }
 
 /* Card footer - full width so pagination can span edge to edge */
