@@ -170,6 +170,7 @@
     --color-primary: var(--color-avo-neutral-950);
     --color-secondary: var(--color-avo-neutral-800);
     --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
     --color-content: var(--color-white);
     --color-content-secondary: var(--color-avo-neutral-300);
 
