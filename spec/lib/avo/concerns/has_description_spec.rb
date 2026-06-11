@@ -84,7 +84,7 @@ RSpec.describe Avo::Concerns::HasDescription, type: :model do
 
     it "lets a lambda branch on loading_type to skip the SQL aggregation" do
       target = field(description: -> {
-        loading_type == :manual ? "Hey members" : "Hey members (#{query.count})"
+        (loading_type == :manual) ? "Hey members" : "Hey members (#{query.count})"
       })
 
       result = nil
@@ -96,7 +96,7 @@ RSpec.describe Avo::Concerns::HasDescription, type: :model do
 
     it "runs the SQL aggregation when loading_type is not :manual" do
       target = field(description: -> {
-        loading_type == :manual ? "Hey members" : "Hey members (#{query.count})"
+        (loading_type == :manual) ? "Hey members" : "Hey members (#{query.count})"
       })
 
       result = nil

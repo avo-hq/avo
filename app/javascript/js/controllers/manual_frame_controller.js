@@ -32,6 +32,7 @@ export default class extends Controller {
 
   connect() {
     this.pending = false
+    this.awaitingFrameLoad = false
     this.onRequestError = this.handleRequestError.bind(this)
     this.onBeforeFetchResponse = this.handleBeforeFetchResponse.bind(this)
     this.onFrameLoad = this.handleFrameLoad.bind(this)
@@ -52,6 +53,7 @@ export default class extends Controller {
     if (this.pending) return // ignore repeat clicks while a request is in flight
 
     this.pending = true
+    this.awaitingFrameLoad = false
     this.showLoading()
 
     // Setting `src` triggers Turbo to fetch and swap in the deferred content.
@@ -95,9 +97,9 @@ export default class extends Controller {
   // focus into the frame so keyboard / screen-reader users aren't dropped to
   // <body> when the Load button is removed from the DOM (R9).
   handleFrameLoad() {
-    if (!this.pending) return // not our load (or a later navigation inside content)
+    if (!this.awaitingFrameLoad) return // not our load (or a later navigation inside content)
 
-    this.pending = false
+    this.awaitingFrameLoad = false
 
     // Remember the open frame (and slide the window forward) — only on success,
     // so a failed load never sets the memory.
@@ -116,18 +118,29 @@ export default class extends Controller {
     this.showError()
   }
 
-  // A response arrived. If it's not OK (status >= 400), stop Turbo from rendering
-  // the error body into the frame, stop the global `application.js` handler from
-  // hijacking it, and show our inline error instead.
+  // A response arrived; our deferred load is resolved either way. If it's not OK
+  // (status >= 400), stop Turbo from rendering the error body into the frame,
+  // stop the global `application.js` handler from hijacking it, and show our
+  // inline error instead.
   handleBeforeFetchResponse(event) {
     if (!this.pending) return // after our load resolves, later navigations are Turbo's
 
     const response = event.detail?.fetchResponse?.response
     if (!response) return
 
-    if (response.ok) return // success: handleFrameLoad finishes the sequence
-
     this.pending = false
+
+    if (response.ok) {
+      // Success: handleFrameLoad finishes the sequence (focus + memory) once
+      // Turbo renders the frame. `pending` is cleared HERE (not there) so that
+      // if `turbo:frame-load` never fires (e.g. the response is missing the
+      // matching frame), later in-frame navigations are never mistaken for the
+      // deferred load and still reach the global failure handler.
+      this.awaitingFrameLoad = true
+
+      return
+    }
+
     event.preventDefault()
     event.stopImmediatePropagation()
     this.showError()

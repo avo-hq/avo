@@ -100,7 +100,7 @@ class Avo::Resources::Team < Avo::BaseResource
         # `loading_type` is `:manual` while the placeholder is shown (frame not
         # loaded yet), so we skip `query.count` and avoid a SQL hit on show-page
         # paint.
-        loading_type == :manual ? "Hey members" : "Hey members (#{query.count})"
+        (loading_type == :manual) ? "Hey members" : "Hey members (#{query.count})"
       },
       searchable: true,
       filterable: true,
