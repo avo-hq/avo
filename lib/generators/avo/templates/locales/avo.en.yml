@@ -43,6 +43,7 @@ en:
     choose_an_option: Choose an option
     choose_item: Choose %{item}
     clear_value: Clear value
+    click_to_load: Click to load
     click_to_reveal_filters: Click to reveal filters
     close: Close
     close_modal: Close modal

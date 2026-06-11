@@ -1,4 +1,6 @@
-<%# Manual (on-demand) Turbo Frame: no `src`; the Load button supplies it on click. %>
+<%# Manual (on-demand) Turbo Frame: no `src`; the Load button supplies it on click.
+    Three states (placeholder / loading / error) share the frame; the controller
+    swaps between them inside a View Transition so the frame morphs. %>
 <%= turbo_frame_tag @frame_id,
       target: :_top,
       class: "block",
@@ -7,34 +9,10 @@
         controller: "manual-frame",
         manual_frame_url_value: @deferred_url
       } do %>
-  <%# Placeholder state — mirrors EmptyStateComponent's `.state` card markup. %>
-  <div class="<%= class_names("state", @classes) %>" data-manual-frame-target="placeholder">
-    <div class="state__illustration" aria-hidden="true">
-      <div class="state__card state__card--top">
-        <div class="state__badge">1</div>
-        <div class="state__body">
-          <div class="state__line state__line--title state__line--large"></div>
-          <div class="state__line state__line--content"></div>
-        </div>
-      </div>
-      <div class="state__card state__card--middle">
-        <div class="state__badge">2</div>
-        <div class="state__body">
-          <div class="state__line state__line--title state__line--large"></div>
-          <div class="state__line state__line--content"></div>
-        </div>
-      </div>
-      <div class="state__card state__card--bottom">
-        <div class="state__badge">3</div>
-        <div class="state__body">
-          <div class="state__line state__line--title state__line--large"></div>
-          <div class="state__line state__line--content"></div>
-        </div>
-      </div>
-    </div>
-
-    <p class="state__message"><%= label %></p>
-
+  <%# Placeholder state — a dashed "drop zone" the user clicks to load. %>
+  <div class="<%= class_names("flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-secondary p-8 text-center", @classes) %>" data-manual-frame-target="placeholder">
+    <p class="text-base font-semibold text-content"><%= label %></p>
+    <p class="text-sm text-content-secondary"><%= t("avo.click_to_load") %></p>
     <%= a_button color: :primary,
                  icon: "tabler/outline/player-play",
                  aria: {label: load_label},
@@ -44,45 +22,18 @@
   </div>
 
   <%# Loading state (R5) — revealed by the controller during the request. %>
-  <div class="hidden" data-manual-frame-target="loading" aria-live="polite">
+  <div class="hidden flex items-center justify-center rounded-lg border-2 border-dashed border-secondary p-8" data-manual-frame-target="loading" aria-live="polite">
     <%= render Avo::LoadingComponent.new(title: label) %>
   </div>
 
-  <%# Error/Retry state — hidden until a load fails; mirrors the
-      `.state--frame-load-failed` markup from `home/failed_to_load.html.erb`.
-      The controller reveals this on any failure event for this frame. %>
-  <div class="hidden" data-manual-frame-target="error" aria-live="polite">
-    <div class="state state--frame-load-failed">
-      <div class="state__illustration" aria-hidden="true">
-        <% %i[start center end].each do |position| %>
-          <div class="state__document state__document--<%= position %>">
-            <div class="state__document-body">
-              <div class="state__document-lines">
-                <span class="state__document-line"></span>
-                <span class="state__document-line"></span>
-                <span class="state__document-line"></span>
-                <span class="state__document-line"></span>
-                <span class="state__document-line state__document-line--short"></span>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <div class="state__magnifier">
-          <%= svg "tabler/outline/zoom", class: "state__magnifier-icon" %>
-        </div>
-      </div>
-
-      <p class="state__message text-center font-normal">
-        <%= t("avo.failed_to_load_item", item: label) %>
-      </p>
-
-      <%= a_button color: :primary,
-                   icon: "tabler/outline/refresh",
-                   aria: {label: retry_label},
-                   data: {action: "manual-frame#retry"} do %>
-        <%= t("avo.retry") %>
-      <% end %>
-    </div>
+  <%# Error/Retry state — hidden until a load fails; the controller reveals it. %>
+  <div class="hidden flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-secondary p-8 text-center" data-manual-frame-target="error" aria-live="polite">
+    <p class="text-base font-normal text-content-secondary"><%= t("avo.failed_to_load_item", item: label) %></p>
+    <%= a_button color: :primary,
+                 icon: "tabler/outline/refresh",
+                 aria: {label: retry_label},
+                 data: {action: "manual-frame#retry"} do %>
+      <%= t("avo.retry") %>
+    <% end %>
   </div>
 <% end %>

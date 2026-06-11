@@ -46,17 +46,20 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     expect(page).to have_text("Load Order Items")
   end
 
-  it "renders the placeholder state markup mirroring the empty state" do
+  it "renders a dashed-dropzone placeholder with the title and a click-to-load hint" do
     render_inline(described_class.new(
       "has_many_field_show_orders",
       deferred_url: "/orders",
       title: "Orders"
     ))
 
-    expect(page).to have_css("turbo-frame .state")
+    placeholder = page.find("[data-manual-frame-target='placeholder']")
+    expect(placeholder[:class]).to include("border-dashed")
+    expect(placeholder).to have_text("Orders")
+    expect(placeholder).to have_text("Click to load")
   end
 
-  it "renders a hidden error/Retry state mirroring the frame-load-failed markup" do
+  it "renders a hidden error/Retry state" do
     render_inline(described_class.new(
       "has_many_field_show_orders",
       deferred_url: "/orders",
@@ -66,7 +69,7 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     # The error state is present but hidden until the controller reveals it.
     error = page.find("[data-manual-frame-target='error']", visible: false)
     expect(error[:class]).to include("hidden")
-    expect(error).to have_css(".state.state--frame-load-failed", visible: false)
+    expect(error[:class]).to include("border-dashed")
     expect(error).to have_text("Couldn't load Orders")
   end
 
