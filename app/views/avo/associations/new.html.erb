@@ -22,7 +22,7 @@
                 resource: @resource,
                 label_for: 'related_id',
                 label: @field.name.singularize do %>
-                <%= render Avo::Pro::AssociationSearch::ContainerComponent.new(
+                <%= render Avo::AdvancedSearch::Association::ContainerComponent.new(
                       form: form,
                       field: @field,
                       attach: true

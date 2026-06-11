@@ -231,9 +231,9 @@ module Avo
     end
 
     # Authorization is enabled when:
-    # (avo-pro gem is installed) AND (authorization_client is NOT nil)
+    # (avo-authorization gem is installed) AND (authorization_client is NOT nil)
     def authorization_enabled?
-      @authorization_enabled ||= Avo.plugin_manager.installed?("avo-pro") && !authorization_client.nil?
+      @authorization_enabled ||= Avo.plugin_manager.installed?("avo-authorization") && !authorization_client.nil?
     end
 
     def current_user_method(&block)

@@ -92,7 +92,7 @@ task "avo:sym_link" do
   end
 
   gem_paths = `bundle list --paths 2>/dev/null`.split("\n")
-  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
+  ["avo-advanced", "avo-pro", "avo-advanced_search", "avo-authorization", "avo-record_reordering", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
     path = gem_paths.find { |gem_path| gem_path.include?("/#{gem}-") }
 
     # If path is nil we check if package is defined outside of root (on release process it is)
