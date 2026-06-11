@@ -38,7 +38,7 @@
       <%= form.hidden_field :arguments, value: params[:arguments] %>
       <%= hidden_field_tag :resource_view, params[:resource_view] %>
       <% if @fields.present? %>
-        <div class="description-list border-t border-b border-tertiary">
+        <div class="description-list border-t border-tertiary">
           <% @fields.each_with_index do |field, index| %>
             <%= render field
               .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)

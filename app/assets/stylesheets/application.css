@@ -1,6 +1,11 @@
 /* @layer base, components, utilities; */
 @import "tailwindcss";
 
+@source not "*/tmp/cache";
+@source not "*/tmp/pids";
+@source not "*/tmp/screenshots";
+@source not "*/tmp/storage";
+
 /* TODO: Figure out a way to add those dynamically */
 /* Find a long term solution for this. */
 /* Basically this is a hack to make sure that we dont have specificity issues with the packages stylesheets. */
@@ -86,6 +91,23 @@
 @custom-variant resource-show-view (&:where(.resource-show-view *));
 @custom-variant resource-edit-view (&:where(.resource-edit-view *));
 @custom-variant resource-new-view (&:where(.resource-new-view *));
+
+/* Field wrappers use the same stacked layout below md, when the whole page
+   forces stacked fields, and when an individual field is explicitly stacked.
+   The component styles live in field-wrapper.css under `@variant field-stacked`. */
+@custom-variant field-stacked {
+  @media (width < 48rem) {
+    @slot;
+  }
+
+  &:is(.all-fields-stacked .field-wrapper, .field-wrapper.field-wrapper--stacked) {
+    @slot;
+  }
+
+  :is(.all-fields-stacked .field-wrapper, .field-wrapper.field-wrapper--stacked) & {
+    @slot;
+  }
+}
 
 /* Used to determine if the filters buttons is displayed. */
 @custom-variant index-missing-resources (&:where(.index-missing-resources *));

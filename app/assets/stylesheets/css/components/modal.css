@@ -17,7 +17,7 @@
   /* size-full + m-0 + border-0/p-0/bg-transparent reset the popover UA chrome
      (fit-content sizing, auto margins, border, padding, background) so the
      element stays a transparent, full-viewport flex container that centers the card. */
-  @apply fixed inset-0 size-full m-0 border-0 p-0 bg-transparent justify-center items-center;
+  @apply fixed inset-0 size-full m-0 border-0 p-0 bg-transparent justify-center items-center overflow-hidden;
 
   /* Enter/leave transition duration, shared by the card and the backdrop.
      Keep in sync with TRANSITION_MS in base_modal_controller.js. */
@@ -59,16 +59,20 @@
 }
 
 .modal__card-container {
-  @apply flex flex-col items-center justify-center relative shrink-0 w-full;
+  @apply flex flex-col items-center justify-center relative min-h-0 size-full;
 }
 
 .modal__card {
-  @apply relative w-full shrink-0 flex flex-col;
+  @apply relative w-full shrink-0 flex flex-col min-h-0 overflow-hidden;
 
   /* Never exceed the viewport — keeps a tall (e.g. :auto height) modal fully
      on screen so its body can scroll instead of being clipped by the centered
-     overlay. */
+     overlay. The width clamp does the same horizontally: the size classes set a
+     preferred width (e.g. w-xl), but on a narrow phone screen it caps to the
+     viewport instead of overflowing and being clipped on both sides. The gutter
+     is tight on mobile to reclaim width and opens up to 2rem from sm up. */
   max-height: calc(100dvh - 2rem);
+  max-width: calc(100dvw - 1rem);
 
   box-shadow: var(--shadow-modal);
 
@@ -80,6 +84,14 @@
   transition:
     opacity var(--modal-transition-duration) ease-out,
     transform var(--modal-transition-duration) ease-out;
+}
+
+/* Open the gutter back up from sm up, where the extra breathing room reads
+   better and the clamp rarely engages anyway. */
+@media (min-width: 640px) {
+  .modal__card {
+    max-width: calc(100dvw - 2rem);
+  }
 }
 
 .modal:popover-open .modal__card {
@@ -126,19 +138,19 @@
    its wrapper fill the (capped) modal height and shrink, so the body's
    overflow-auto kicks in while the header and footer stay pinned. */
 .modal__card > .card {
-  @apply w-full flex-1 min-h-0;
+  @apply w-full flex-1 min-h-0 overflow-hidden;
 }
 
 .modal__card > .card > .card__wrapper {
-  @apply w-full flex flex-col flex-1 min-h-0;
+  @apply w-full flex flex-col flex-1 min-h-0 overflow-hidden;
 }
 
 .modal__card .card__header {
-  @apply py-3 px-4;
+  @apply py-3 px-4 shrink-0;
 }
 
 .modal__card > .card > .card__wrapper > .card__body {
-  @apply flex flex-col flex-1 gap-4 items-start pt-0 px-0 min-h-64;
+  @apply block flex-1 pt-0 px-0 min-h-0 overflow-auto border-0 rounded-none bg-transparent;
 }
 
 .modal__title {
@@ -158,7 +170,7 @@
 }
 
 .modal__body-content {
-  @apply size-full;
+  @apply w-full min-h-48 rounded-card-wrapper border border-tertiary bg-primary;
 }
 
 /* Belongs-to "Create new" embeds an edit form in the modal. Drop the nested
@@ -169,7 +181,7 @@
 }
 
 .modal__controls {
-  @apply flex items-center justify-between gap-2 py-2 px-3 w-full;
+  @apply flex items-center justify-between gap-2 py-2 px-3 w-full shrink-0;
 }
 
 /* When the controls hold only buttons, nudge the horizontal padding in so the
