@@ -45,6 +45,7 @@ ru:
     choose_an_option: Выберите опцию
     choose_item: Выбрать %{item}
     clear_value: Очистить значение
+    click_to_load: Нажмите, чтобы загрузить
     click_to_reveal_filters: Нажмите, чтобы открыть фильтры
     close: Закрыть
     close_modal: Закрыть модальное окно
@@ -70,6 +71,7 @@ ru:
     failed: Ошибка
     failed_to_find_attachment: Вложение не найдено
     failed_to_load: Загрузка не удалась
+    failed_to_load_item: Не удалось загрузить %{item}
     'false': Ложь
     file:
       few: файла
@@ -107,6 +109,7 @@ ru:
       value: Значение
     less_content: Меньше контента
     list_is_empty: Список пуст
+    load_item: Загрузить %{item}
     loading: Загрузка...
     media_library:
       title: Медиатека
@@ -153,6 +156,8 @@ ru:
     resource_destroyed: Запись удалена
     resource_updated: Запись обновлена
     resources: Ресурсы
+    retry: Повторить
+    retry_item: Повторить %{item}
     reupload_file: Reupload %{item}
     run: Запустить
     save: Сохранить

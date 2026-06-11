@@ -43,6 +43,7 @@ nl:
     choose_an_option: Kies een optie
     choose_item: Kies %{item}
     clear_value: Waarde wissen
+    click_to_load: Klik om te laden
     click_to_reveal_filters: Klik om filters te tonen
     close: Sluiten
     close_modal: Modaal sluiten
@@ -68,6 +69,7 @@ nl:
     failed: Mislukt
     failed_to_find_attachment: Bijlage niet gevonden
     failed_to_load: Laden mislukt
+    failed_to_load_item: Laden van %{item} mislukt
     'false': Onwaar
     file:
       one: bestand
@@ -103,6 +105,7 @@ nl:
       value: Waarde
     less_content: Minder inhoud
     list_is_empty: Lijst is leeg
+    load_item: Laad %{item}
     loading: Laden...
     media_library:
       title: Mediabibliotheek
@@ -147,6 +150,8 @@ nl:
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt
     resources: Bronnen
+    retry: Opnieuw proberen
+    retry_item: Probeer %{item} opnieuw
     reupload_file: Reupload %{item}
     run: Uitvoeren
     save: Opslaan

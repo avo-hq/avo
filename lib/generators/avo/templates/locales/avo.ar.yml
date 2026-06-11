@@ -53,6 +53,7 @@ ar:
     choose_an_option: اختر خيارًا
     choose_item: اختر %{item}
     clear_value: مسح القيمة
+    click_to_load: انقر لتحميل
     click_to_reveal_filters: انقر لإظهار المرشحات
     close: إغلاق
     close_modal: أغلق النافذة
@@ -78,6 +79,7 @@ ar:
     failed: فشل
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
+    failed_to_load_item: فشل في تحميل %{item}
     'false': خطأ
     file:
       few: ملفات
@@ -117,6 +119,7 @@ ar:
       value: القيمة
     less_content: محتوى أقل
     list_is_empty: القائمة فارغة
+    load_item: تحميل %{item}
     loading: جاري التحميل
     media_library:
       title: مكتبة الوسائط
@@ -165,6 +168,8 @@ ar:
     resource_destroyed: تم حذف السجل
     resource_updated: تم تحديث السجل
     resources: المصادر
+    retry: إعادة المحاولة
+    retry_item: إعادة المحاولة %{item}
     reupload_file: Reupload %{item}
     run: تشغيل
     save: حفظ

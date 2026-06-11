@@ -43,6 +43,7 @@ ua:
     choose_an_option: Виберіть опцію
     choose_item: Виберіть %{item}
     clear_value: Очистити значення
+    click_to_load: Натисніть, щоб завантажити
     click_to_reveal_filters: Натисніть, щоб показати фільтри
     close: Закрити
     close_modal: Закрити вікно
@@ -68,6 +69,7 @@ ua:
     failed: Не вдалося
     failed_to_find_attachment: Не вдалося знайти вкладення
     failed_to_load: Не вдалося завантажити
+    failed_to_load_item: Не вдалося завантажити %{item}
     'false': Хибно
     file:
       few: файли
@@ -105,6 +107,7 @@ ua:
       value: Значення
     less_content: Менше вмісту
     list_is_empty: Список порожній
+    load_item: Завантажити %{item}
     loading: Завантаження
     media_library:
       title: Медіатека
@@ -151,6 +154,8 @@ ua:
     resource_destroyed: Запис видалено
     resource_updated: Запис оновлено
     resources: Ресурси
+    retry: Спробувати ще раз
+    retry_item: Спробувати ще раз %{item}
     reupload_file: Reupload %{item}
     run: Виконати
     save: Зберегти

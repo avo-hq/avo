@@ -43,6 +43,7 @@ zh-TW:
     choose_an_option: 選擇一個選項
     choose_item: 選擇 %{item}
     clear_value: 清除值
+    click_to_load: 點擊以加載
     click_to_reveal_filters: 點擊以顯示篩選器
     close: 關閉
     close_modal: 關閉模態框
@@ -68,6 +69,7 @@ zh-TW:
     failed: 失敗
     failed_to_find_attachment: 找不到附件
     failed_to_load: 載入失敗
+    failed_to_load_item: 加載 %{item} 失敗
     'false': 假
     file:
       one: 檔案
@@ -103,6 +105,7 @@ zh-TW:
       value: 值
     less_content: 內容較少
     list_is_empty: 清單為空
+    load_item: 加載 %{item}
     loading: 載入中...
     media_library:
       title: 媒體庫
@@ -147,6 +150,8 @@ zh-TW:
     resource_destroyed: 記錄已刪除
     resource_updated: 記錄已更新
     resources: 資源
+    retry: 重試
+    retry_item: 重試 %{item}
     reupload_file: Reupload %{item}
     run: 執行
     save: 保存

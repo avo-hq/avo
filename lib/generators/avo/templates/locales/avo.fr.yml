@@ -45,6 +45,7 @@ fr:
     choose_an_option: Sélectionnez une option
     choose_item: Choisir %{item}
     clear_value: Effacer la valeur
+    click_to_load: Cliquez pour charger
     click_to_reveal_filters: Cliquez pour révéler les filtres
     close: Fermer
     close_modal: Fermer la fenêtre modale
@@ -70,6 +71,7 @@ fr:
     failed: Échec
     failed_to_find_attachment: Impossible de trouver la pièce jointe
     failed_to_load: Impossible de charger
+    failed_to_load_item: Échec du chargement de %{item}
     'false': Faux
     file:
       one: fichier
@@ -105,6 +107,7 @@ fr:
       value: Valeur
     less_content: Moins de contenu
     list_is_empty: La liste est vide
+    load_item: Charger %{item}
     loading: Chargement
     media_library:
       title: Bibliothèque multimédia
@@ -149,6 +152,8 @@ fr:
     resource_destroyed: Ressource détruite
     resource_updated: Ressource mise à jour
     resources: Ressources
+    retry: Réessayer
+    retry_item: Réessayer %{item}
     reupload_file: Reupload %{item}
     run: Exécuter
     save: Enregistrer
