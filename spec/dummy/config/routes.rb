@@ -32,7 +32,5 @@ Rails.application.routes.draw do
     scope "(:locale)" do
       # mount_avo
     end
-
-    get "/avo", to: redirect("/admin")
   end
 end
