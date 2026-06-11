@@ -24,13 +24,21 @@ module Avo
           only_on Avo.configuration.resource_default_view
         end
 
-        super(id, **args, &block)
+        super
 
         @searchable = args[:searchable]
         @scope = args[:scope]
         @hide_search_input = args[:hide_search_input]
         @hide_filter_button = args[:hide_filter_button]
         @discreet_pagination = args[:discreet_pagination]
+      end
+
+      private
+
+      # Expose the association relation as `query` to description lambdas,
+      # mirroring how `attach_scope` receives `query` in the associations controller.
+      def description_attributes
+        {query: @record.public_send(association_name)}
       end
     end
   end

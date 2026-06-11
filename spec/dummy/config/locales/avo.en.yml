@@ -58,7 +58,7 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
-    failed_to_load_item: Couldn't load %{item}
+    failed_to_load_item: Failed to load %{item}
     file:
       one: file
       other: files

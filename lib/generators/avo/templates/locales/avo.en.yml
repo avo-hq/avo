@@ -69,8 +69,8 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
-    failed_to_load_item: Couldn't load %{item}
-    'false': 'False'
+    failed_to_load_item: Failed to load %{item}
+    "false": "False"
     file:
       one: file
       other: files
@@ -172,7 +172,7 @@ en:
     table_view: Table view
     this_field_has_attachments_disabled: This field has attachments disabled.
     tools: Tools
-    'true': 'True'
+    "true": "True"
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo

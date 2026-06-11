@@ -1,0 +1,38 @@
+.manual-frame {
+  @apply relative overflow-hidden rounded-lg border border-secondary px-4 py-3;
+}
+
+.manual-frame__overlay {
+  @apply absolute inset-0 z-10 flex items-center justify-center bg-primary/80 backdrop-blur-sm;
+}
+
+.manual-frame__loading {
+  @apply inline-flex items-center gap-2 rounded-lg border border-secondary bg-primary px-3 py-2 text-sm font-medium text-content shadow-panel;
+}
+
+.manual-frame__loading-icon {
+  @apply size-4 animate-spin text-content-secondary;
+}
+
+/* --- Error / Retry state -------------------------------------------------- */
+
+.manual-frame__error-row {
+  @apply flex items-center justify-between gap-3;
+}
+
+.manual-frame__error-message {
+  @apply inline-flex min-w-0 items-center gap-2 truncate text-sm text-content-secondary;
+}
+
+.manual-frame__error-icon {
+  @apply size-4 shrink-0 text-danger-content;
+}
+
+/* Dev-only "open this frame" note. */
+.manual-frame__error-note {
+  @apply mt-2 text-xs text-content-secondary;
+}
+
+.manual-frame__error-link {
+  @apply font-medium underline underline-offset-2;
+}

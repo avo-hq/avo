@@ -95,6 +95,8 @@ class Avo::Resources::Team < Avo::BaseResource
 
     field :memberships,
       as: :has_many,
+      loading: :manual,
+      description: "Hey members",
       searchable: true,
       filterable: true,
       linkable: true,
@@ -103,7 +105,7 @@ class Avo::Resources::Team < Avo::BaseResource
         query.where.not(user_id: parent.id).or(query.where(user_id: nil))
       end
 
-    field :admin, as: :has_one, linkable: true
+    field :admin, as: :has_one, linkable: true, loading: :manual
     field :team_members,
       as: :has_many,
       through: :memberships,

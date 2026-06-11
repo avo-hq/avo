@@ -30,7 +30,7 @@
         <% if !tab.is_empty? %>
           <% if tab.manual? && view.display? %>
             <% if is_not_loaded?(tab) %>
-              <%= render Avo::ManualFrameComponent.new(tab.turbo_frame_id(parent: group), deferred_url: manual_frame_url(tab), title: tab.title) %>
+              <%= render Avo::ManualFrameComponent.new(tab.turbo_frame_id(parent: group), deferred_url: manual_frame_url(tab), title: tab.title, description: tab.description) %>
             <% else %>
               <%= turbo_frame_tag tab.turbo_frame_id(parent: group), target: :_top, class: "block" do %>
                 <%= render Avo::TabContentComponent.new tab:, resource:, index:, form:, view: %>

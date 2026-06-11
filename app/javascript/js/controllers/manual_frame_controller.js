@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import { toggleHidden } from '../helpers/toggle_hidden'
 
 // Drives a manual (on-demand) Turbo Frame: the frame renders with NO `src`,
 // and clicking the Load button sets `src` from `data-manual-frame-url-value`
@@ -7,10 +8,8 @@ import { Controller } from '@hotwired/stimulus'
 // The controller is attached to the `<turbo-frame>` element itself, so
 // `this.element` is the frame.
 //
-// State swaps (placeholder -> loading -> content / error) run inside a View
-// Transition so the frame morphs between states. Browsers without the API fall
-// back to an instant swap. We deliberately do NOT set `loading="lazy"`, so
-// neither Turbo's lazy auto-fetch nor the #886 strip handler touches this frame.
+// We deliberately do NOT set `loading="lazy"`, so neither Turbo's lazy
+// auto-fetch nor the #886 strip handler touches this frame.
 export default class extends Controller {
   static targets = ['placeholder', 'loading', 'error']
 
@@ -22,19 +21,16 @@ export default class extends Controller {
     this.pending = false
     this.onRequestError = this.handleRequestError.bind(this)
     this.onBeforeFetchResponse = this.handleBeforeFetchResponse.bind(this)
-    this.onBeforeFrameRender = this.handleBeforeFrameRender.bind(this)
     this.onFrameLoad = this.handleFrameLoad.bind(this)
 
     this.element.addEventListener('turbo:fetch-request-error', this.onRequestError)
     this.element.addEventListener('turbo:before-fetch-response', this.onBeforeFetchResponse)
-    this.element.addEventListener('turbo:before-frame-render', this.onBeforeFrameRender)
     this.element.addEventListener('turbo:frame-load', this.onFrameLoad)
   }
 
   disconnect() {
     this.element.removeEventListener('turbo:fetch-request-error', this.onRequestError)
     this.element.removeEventListener('turbo:before-fetch-response', this.onBeforeFetchResponse)
-    this.element.removeEventListener('turbo:before-frame-render', this.onBeforeFrameRender)
     this.element.removeEventListener('turbo:frame-load', this.onFrameLoad)
   }
 
@@ -47,7 +43,7 @@ export default class extends Controller {
 
     // Setting `src` triggers Turbo to fetch and swap in the deferred content.
     // On Retry the `src` is already this URL (a failed load leaves it in place),
-    // and re-setting an attribute to its current value is a no-op — so reload()
+    // and re-setting an attribute to its current value is a no-op, so reload()
     // to force a fresh fetch in that case.
     if (this.element.getAttribute('src') === this.urlValue) {
       this.element.reload()
@@ -62,58 +58,25 @@ export default class extends Controller {
   }
 
   showLoading() {
-    this.morph(() => this.swap('loading'))
+    this.setHidden(this.placeholderTarget, false)
+    this.setHidden(this.loadingTarget, false)
+    this.setHidden(this.errorTarget, true)
   }
 
   showError() {
-    this.morph(() => this.swap('error'))
+    this.setHidden(this.placeholderTarget, true)
+    this.setHidden(this.loadingTarget, true)
+    this.setHidden(this.errorTarget, false)
   }
 
-  // Show exactly one state target, hiding the others.
-  swap(name) {
-    const targets = { placeholder: this.placeholderTarget, loading: this.loadingTarget, error: this.errorTarget }
-    Object.entries(targets).forEach(([n, el]) => {
-      if (el) el.classList.toggle('hidden', n !== name)
-    })
-  }
+  setHidden(element, hidden) {
+    if (!element) return
+    if (element.hasAttribute('hidden') === hidden) return
 
-  // Run a DOM mutation inside a View Transition so the frame morphs. A transient,
-  // per-frame `view-transition-name` scopes the morph to this frame; it's cleared
-  // when the transition settles so it never collides with other frames or with
-  // Turbo's page transitions. No-op wrapper when the API is unavailable.
-  morph(mutate) {
-    if (!document.startViewTransition) {
-      mutate()
-      return
-    }
-
-    this.element.style.viewTransitionName = this.transitionName
-    const transition = document.startViewTransition(() => mutate())
-    transition.finished.finally(() => {
-      this.element.style.viewTransitionName = ''
-    })
-  }
-
-  get transitionName() {
-    return `manual-frame-${this.element.id || 'frame'}`
+    toggleHidden(element)
   }
 
   // --- Lifecycle ------------------------------------------------------------
-
-  // Wrap Turbo's render of the loaded content in a View Transition so the
-  // content morphs in from the loading state. Only for our own deferred load.
-  handleBeforeFrameRender(event) {
-    if (!this.pending || !document.startViewTransition) return
-
-    const originalRender = event.detail.render
-    event.detail.render = (currentElement, newElement) => {
-      this.element.style.viewTransitionName = this.transitionName
-      const transition = document.startViewTransition(() => originalRender(currentElement, newElement))
-      transition.finished.finally(() => {
-        this.element.style.viewTransitionName = ''
-      })
-    }
-  }
 
   // Our deferred load succeeded and Turbo swapped the real content in. Move
   // focus into the frame so keyboard / screen-reader users aren't dropped to
@@ -123,12 +86,12 @@ export default class extends Controller {
 
     this.pending = false
     this.element.setAttribute('tabindex', '-1')
-    this.element.focus()
+    this.element.focus({ preventScroll: true })
   }
 
   // Network failure / timeout (no HTTP response at all).
   handleRequestError(event) {
-    if (!this.pending) return // a later in-frame navigation — let Turbo handle it
+    if (!this.pending) return // a later in-frame navigation, let Turbo handle it
 
     this.pending = false
     event.stopImmediatePropagation()

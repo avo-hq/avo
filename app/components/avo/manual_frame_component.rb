@@ -18,20 +18,23 @@ class Avo::ManualFrameComponent < Avo::BaseComponent
   # @param deferred_url [String] the URL the controller loads on click
   # @param title [String] label source; callers pass an already display-ready
   #   name (a field's `plural_name`/`name` or a tab title), used verbatim
-  # @param classes [String, nil] extra CSS classes for the `.state` placeholder container
+  # @param description [String, nil] the field/tab description, shown beside the
+  #   title when present (already resolved by the caller)
+  # @param classes [String, nil] extra CSS classes for the placeholder container
   prop :frame_id, kind: :positional
   prop :deferred_url
   prop :title
+  prop :description
   prop :classes
 
   # The display label. Callers already hand us presentation-ready, translated
-  # text (field name / tab title), so we use it as-is — never `humanize`, which
+  # text (field name / tab title), so we use it as-is. Never `humanize`, which
   # would mangle custom or translated names ("Order Items" -> "Order items").
   def label
     @title.to_s
   end
 
-  # "Load <title>" — interpolated so the full phrase is translatable, matching
+  # "Load <title>", interpolated so the full phrase is translatable, matching
   # the codebase's `attach_item`/`create_new_item` convention.
   def load_label
     t("avo.load_item", item: label)
@@ -41,5 +44,21 @@ class Avo::ManualFrameComponent < Avo::BaseComponent
   # "Retry"; the aria-label scopes it to this frame for screen readers).
   def retry_label
     t("avo.retry_item", item: label)
+  end
+
+  # In development only, a link straight to the deferred URL so a developer can
+  # open the failing frame on its own and read the real error / stack trace
+  # (the inline error state otherwise swallows the response). Mirrors the
+  # dev-only link in `avo/home/failed_to_load.html.erb`. Returns nil elsewhere.
+  def dev_details_note
+    return unless Rails.env.development? && @deferred_url.present?
+
+    helpers.tag.p(class: "manual-frame__error-note") do
+      helpers.safe_join([
+        "Follow ",
+        helpers.link_to("this link", @deferred_url, target: "_blank", rel: "noopener", class: "manual-frame__error-link"),
+        " for more details about the issue and how to fix it."
+      ])
+    end
   end
 end

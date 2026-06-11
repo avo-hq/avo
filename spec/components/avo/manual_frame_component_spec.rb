@@ -46,7 +46,7 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     expect(page).to have_text("Load Order Items")
   end
 
-  it "renders a dashed-dropzone placeholder with the title and a click-to-load hint" do
+  it "renders an action-bar placeholder with the title" do
     render_inline(described_class.new(
       "has_many_field_show_orders",
       deferred_url: "/orders",
@@ -54,9 +54,43 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     ))
 
     placeholder = page.find("[data-manual-frame-target='placeholder']")
-    expect(placeholder[:class]).to include("border-dashed")
+    expect(placeholder[:class]).to include("manual-frame")
     expect(placeholder).to have_text("Orders")
-    expect(placeholder).to have_text("Click to load")
+  end
+
+  it "renders a hidden loading backdrop overlay" do
+    render_inline(described_class.new(
+      "has_many_field_show_orders",
+      deferred_url: "/orders",
+      title: "Orders"
+    ))
+
+    loading = page.find("[data-manual-frame-target='loading']", visible: false)
+    expect(loading[:class]).to include("manual-frame__overlay")
+    expect(loading["hidden"]).not_to be_nil
+    expect(loading).to have_text("Loading")
+  end
+
+  it "shows the description beside the title when one is present" do
+    render_inline(described_class.new(
+      "has_many_field_show_orders",
+      deferred_url: "/orders",
+      title: "Orders",
+      description: "All recent orders"
+    ))
+
+    expect(page.find("[data-manual-frame-target='placeholder']")).to have_text("All recent orders")
+  end
+
+  it "omits the description when none is given" do
+    render_inline(described_class.new(
+      "has_many_field_show_orders",
+      deferred_url: "/orders",
+      title: "Orders"
+    ))
+
+    # Only the title text, no stray description span.
+    expect(page.find("[data-manual-frame-target='placeholder']").text.strip).to eq("Orders Load Orders")
   end
 
   it "renders a hidden error/Retry state" do
@@ -68,8 +102,8 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
 
     # The error state is present but hidden until the controller reveals it.
     error = page.find("[data-manual-frame-target='error']", visible: false)
-    expect(error[:class]).to include("hidden")
-    expect(error[:class]).to include("border-dashed")
+    expect(error["hidden"]).not_to be_nil
+    expect(error[:class]).to include("manual-frame")
     expect(error).to have_text("Couldn't load Orders")
   end
 
