@@ -10,11 +10,24 @@ import { toggleHidden } from '../helpers/toggle_hidden'
 //
 // We deliberately do NOT set `loading="lazy"`, so neither Turbo's lazy
 // auto-fetch nor the #886 strip handler touches this frame.
+//
+// Auto-load memory: when the frame is configured with a window
+// (`auto_load_for`), a successful load writes a short-lived cookie. The SERVER
+// reads that cookie on the next render and emits a real `<turbo-frame src>`
+// (no placeholder, no button) — so the controller never has to "auto-click".
+// All this controller does is write/refresh the cookie when the user opens the
+// frame; the decision to skip the button lives entirely on the server.
 export default class extends Controller {
   static targets = ['placeholder', 'loading', 'error']
 
   static values = {
     url: String,
+    // The cookie name the server reads to decide whether to skip the Load
+    // button on the next visit. Empty when the frame has no memory window.
+    cookieName: String,
+    // Seconds the memory cookie should live (its max-age). 0 (the Stimulus
+    // default when the attribute is absent) = no memory.
+    autoLoadFor: Number,
   }
 
   connect() {
@@ -85,6 +98,11 @@ export default class extends Controller {
     if (!this.pending) return // not our load (or a later navigation inside content)
 
     this.pending = false
+
+    // Remember the open frame (and slide the window forward) — only on success,
+    // so a failed load never sets the memory.
+    this.rememberOpen()
+
     this.element.setAttribute('tabindex', '-1')
     this.element.focus({ preventScroll: true })
   }
@@ -113,5 +131,17 @@ export default class extends Controller {
     event.preventDefault()
     event.stopImmediatePropagation()
     this.showError()
+  }
+
+  // --- Auto-load memory -----------------------------------------------------
+
+  // Write/refresh the cookie that tells the server "this frame is open, render
+  // it without the Load button next time." `max-age` gives it a sliding TTL —
+  // the browser drops it when the window lapses, and each successful load
+  // rewrites it with a fresh window. No-ops when the frame has no memory window.
+  rememberOpen() {
+    if (!this.cookieNameValue || this.autoLoadForValue <= 0) return
+
+    document.cookie = `${this.cookieNameValue}=1; path=/; max-age=${this.autoLoadForValue}; samesite=lax`
   }
 }

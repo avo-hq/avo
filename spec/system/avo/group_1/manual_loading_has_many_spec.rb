@@ -152,6 +152,30 @@ RSpec.describe "Manual loading associations", type: :system do
     end
   end
 
+  # `loading: {mode: :lazy}` — the hash form's other mode. A top-level
+  # association defaults to eager; `mode: :lazy` opts it into a native lazy
+  # frame (src present + loading="lazy"), so it fetches on reveal, not on paint.
+  describe "has_many with loading: {mode: :lazy}" do
+    let!(:comment) { create :comment, user: user, commentable: user }
+
+    it "renders a native lazy frame (src + loading=\"lazy\"), not a manual placeholder" do
+      Avo::Resources::User.with_temporary_items do
+        field :first_name, as: :text
+        field :comments, as: :has_many, loading: {mode: :lazy}
+      end
+
+      visit avo.resources_user_path(user)
+
+      frame = find('turbo-frame[id="has_many_field_show_comments"]', visible: :all)
+
+      expect(frame["loading"]).to eq("lazy")
+      expect(frame[:src]).to be_present
+      expect(page).not_to have_button("Load Comments")
+    ensure
+      Avo::Resources::User.restore_items_from_backup
+    end
+  end
+
   # The show component branches on `@field.manual?` BEFORE consuming the
   # switcher's hardcoded `turbo_frame_loading: :lazy`, so a manual association
   # inside a tab renders the placeholder regardless of that kwarg — proving the

@@ -29,14 +29,19 @@
 
         <% if !tab.is_empty? %>
           <% if tab.manual? && view.display? %>
-            <% if is_not_loaded?(tab) %>
-              <%= render Avo::ManualFrameComponent.new(tab.turbo_frame_id(parent: group), deferred_url: manual_frame_url(tab), title: tab.title, description: tab.description) %>
-            <% else %>
+            <% if !is_not_loaded?(tab) %>
               <%= turbo_frame_tag tab.turbo_frame_id(parent: group), target: :_top, class: "block" do %>
                 <%= render Avo::TabContentComponent.new tab:, resource:, index:, form:, view: %>
               <% end %>
+            <% elsif helpers.manual_frame_remembered?(manual_frame_url(tab), tab.auto_load_for) %>
+              <%# Remembered: render a real (lazy) frame so it loads with no Load button. %>
+              <%= turbo_frame_tag tab.turbo_frame_id(parent: group), **frame_args(tab) do %>
+                <%= render Avo::LoadingComponent.new(title: tab.title) %>
+              <% end %>
+            <% else %>
+              <%= render Avo::ManualFrameComponent.new(tab.turbo_frame_id(parent: group), deferred_url: manual_frame_url(tab), title: tab.title, description: tab.description, auto_load_for: tab.auto_load_for, cookie_name: helpers.manual_frame_cookie_name(manual_frame_url(tab))) %>
             <% end %>
-          <% elsif tab.lazy_load && view.display? %>
+          <% elsif (tab.lazy_load || tab.lazy_loading_mode?) && view.display? %>
             <%= turbo_frame_tag tab.turbo_frame_id(parent: group), **frame_args(tab) do %>
               <% if is_not_loaded?(tab) %>
                 <%= render Avo::LoadingComponent.new(title: tab.title) %>

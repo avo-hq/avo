@@ -1,6 +1,13 @@
 require "rails_helper"
 
 RSpec.describe Avo::ManualFrameComponent, type: :component do
+  # The component renders `ui.panel_header` and other Avo helpers that resolve
+  # through the request's view context, so build it from Avo::BaseController
+  # under render_inline (the same pattern as flash_alerts_component_spec).
+  around do |example|
+    with_controller_class(Avo::BaseController) { example.run }
+  end
+
   it "renders a turbo-frame with no src, marked as a manual frame" do
     render_inline(described_class.new(
       "has_many_field_show_orders",
@@ -89,8 +96,12 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
       title: "Orders"
     ))
 
-    # Only the title text, no stray description span.
-    expect(page.find("[data-manual-frame-target='placeholder']").text.strip).to eq("Orders Load Orders")
+    # The placeholder shows the title and the Load button, and no description
+    # text bleeds in when none was passed (contrast the description spec above).
+    placeholder = page.find("[data-manual-frame-target='placeholder']")
+    expect(placeholder).to have_text("Orders")
+    expect(placeholder).to have_button("Load Orders")
+    expect(placeholder).to have_no_text("All recent orders")
   end
 
   it "renders a hidden error/Retry state" do
@@ -104,7 +115,7 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     error = page.find("[data-manual-frame-target='error']", visible: false)
     expect(error["hidden"]).not_to be_nil
     expect(error[:class]).to include("manual-frame")
-    expect(error).to have_text("Couldn't load Orders")
+    expect(error).to have_text("Failed to load Orders")
   end
 
   it "renders a Retry button wired to the retry action, labeled from the title" do
@@ -117,5 +128,35 @@ RSpec.describe Avo::ManualFrameComponent, type: :component do
     button = page.find("button[data-action='manual-frame#retry']", visible: false)
     expect(button[:"aria-label"]).to eq("Retry Orders")
     expect(button).to have_text("Retry")
+  end
+
+  it "carries the memory window (seconds) and cookie name as Stimulus values when given" do
+    render_inline(described_class.new(
+      "has_many_field_show_orders",
+      deferred_url: "/orders",
+      title: "Orders",
+      auto_load_for: 300,
+      cookie_name: "amf_abc123"
+    ))
+
+    frame = page.find("turbo-frame#has_many_field_show_orders")
+    # The controller uses these to write the memory cookie (name + max-age) on a
+    # successful load; the server reads the cookie to skip the button next time.
+    expect(frame["data-manual-frame-auto-load-for-value"]).to eq("300")
+    expect(frame["data-manual-frame-cookie-name-value"]).to eq("amf_abc123")
+  end
+
+  it "omits the memory values entirely when no window is configured" do
+    render_inline(described_class.new(
+      "has_many_field_show_orders",
+      deferred_url: "/orders",
+      title: "Orders"
+    ))
+
+    # No window -> no data values -> the controller writes no cookie, so plain
+    # manual frames behave exactly as before (click-to-load every visit).
+    frame = page.find("turbo-frame#has_many_field_show_orders")
+    expect(frame["data-manual-frame-auto-load-for-value"]).to be_nil
+    expect(frame["data-manual-frame-cookie-name-value"]).to be_nil
   end
 end

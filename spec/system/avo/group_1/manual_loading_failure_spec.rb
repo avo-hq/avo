@@ -43,11 +43,14 @@ RSpec.describe "Manual loading failures", type: :system do
       within(frame) { click_on "Load Comments" }
 
       # The inline error + Retry appears inside the frame.
-      expect(frame).to have_text("Couldn't load Comments")
+      expect(frame).to have_text("Failed to load Comments")
       expect(frame).to have_button("Retry")
 
-      # We did NOT navigate to (or render into the frame) the generic failed_to_load page.
-      expect(page).not_to have_text("Failed to load")
+      # We did NOT navigate to (or render into the frame) the generic
+      # failed_to_load page. Both UIs say "Failed to load", so distinguish them
+      # structurally: the full-page error renders `.state--frame-load-failed`
+      # (and has no Retry), the manual inline error does not.
+      expect(frame).not_to have_css(".state--frame-load-failed")
       expect(frame[:src]).not_to include("/failed_to_load")
       expect(current_path).to eq(avo.resources_user_path(user))
     ensure
@@ -87,7 +90,7 @@ RSpec.describe "Manual loading failures", type: :system do
       # error state is gone.
       expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'] [data-resource-name='comments'][data-resource-id='#{comment.id}']")
       expect(page).not_to have_button("Retry")
-      expect(page).not_to have_text("Couldn't load Comments")
+      expect(page).not_to have_text("Failed to load Comments")
     ensure
       Avo::Resources::User.restore_items_from_backup
     end
@@ -112,7 +115,7 @@ RSpec.describe "Manual loading failures", type: :system do
       within(frame) { click_on "Retry" }
 
       # Still failing -> the inline error + Retry stays, the frame is not blank.
-      expect(frame).to have_text("Couldn't load Comments")
+      expect(frame).to have_text("Failed to load Comments")
       expect(frame).to have_button("Retry")
     ensure
       Avo::Resources::User.restore_items_from_backup
@@ -135,11 +138,10 @@ RSpec.describe "Manual loading failures", type: :system do
       visit avo.resources_user_path(user)
 
       # The eager frame fetches on paint, 500s, and the global handler rewrites
-      # its src to /failed_to_load — the existing error UI renders.
+      # its src to /failed_to_load — the existing full-page error UI renders.
       frame = find('turbo-frame[id="has_many_field_show_comments"]')
-      expect(frame).to have_text("Failed to load", wait: 5)
-      # It is NOT the manual inline-error copy.
-      expect(frame).not_to have_text("Couldn't load Comments")
+      expect(frame).to have_css(".state--frame-load-failed", wait: 5)
+      # It is the generic page, NOT the manual inline error (which has Retry).
       expect(frame).not_to have_button("Retry")
     ensure
       Avo::Resources::User.restore_items_from_backup

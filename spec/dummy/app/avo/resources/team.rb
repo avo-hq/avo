@@ -95,7 +95,7 @@ class Avo::Resources::Team < Avo::BaseResource
 
     field :memberships,
       as: :has_many,
-      loading: :manual,
+      loading: {mode: :manual, auto_load_for: 5.minutes},
       description: "Hey members",
       searchable: true,
       filterable: true,

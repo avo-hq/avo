@@ -20,11 +20,20 @@ class Avo::ManualFrameComponent < Avo::BaseComponent
   #   name (a field's `plural_name`/`name` or a tab title), used verbatim
   # @param description [String, nil] the field/tab description, shown beside the
   #   title when present (already resolved by the caller)
+  # @param auto_load_for [Integer, nil] seconds the browser should remember an
+  #   opened frame and auto-load it on return (sliding window). `nil` disables
+  #   the memory — the frame stays a click-to-load placeholder every visit.
+  # @param cookie_name [String, nil] the cookie the Stimulus controller writes on
+  #   a successful load so the server can render this frame without the Load
+  #   button on the next visit. Paired with `auto_load_for`; both come from the
+  #   `manual_frame_*` application helpers. `nil` when there's no memory window.
   # @param classes [String, nil] extra CSS classes for the placeholder container
   prop :frame_id, kind: :positional
   prop :deferred_url
   prop :title
   prop :description
+  prop :auto_load_for
+  prop :cookie_name
   prop :classes
 
   # The display label. Callers already hand us presentation-ready, translated

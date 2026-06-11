@@ -5,7 +5,9 @@
       data: {
         manual_frame: true,
         controller: "manual-frame",
-        manual_frame_url_value: @deferred_url
+        manual_frame_url_value: @deferred_url,
+        manual_frame_auto_load_for_value: @auto_load_for,
+        manual_frame_cookie_name_value: @cookie_name
       } do %>
   <%# Placeholder state. %>
   <div class="<%= class_names("manual-frame", @classes) %>" data-manual-frame-target="placeholder">
@@ -24,8 +26,7 @@
       class="manual-frame__overlay"
       data-manual-frame-target="loading"
       aria-live="polite"
-      hidden
-    >
+      hidden>
       <div class="manual-frame__loading">
         <%= svg "tabler/outline/refresh", class: "manual-frame__loading-icon" %>
         <span><%= t("avo.loading") %></span>
@@ -39,8 +40,7 @@
     class="manual-frame"
     data-manual-frame-target="error"
     aria-live="polite"
-    hidden
-  >
+    hidden>
     <div class="manual-frame__error-row">
       <span class="manual-frame__error-message">
         <%= svg "tabler/outline/alert-circle", class: "manual-frame__error-icon" %>

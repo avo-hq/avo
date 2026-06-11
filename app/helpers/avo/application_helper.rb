@@ -5,6 +5,35 @@ module Avo
 
     def ui = Avo::UIInstance
 
+    # The cookie name that remembers an opened manual frame. Derived from the
+    # frame's deferred URL (which already encodes resource + record + frame), so
+    # the memory is scoped per record + association/tab. Hashed to keep the name
+    # short and cookie-safe. The `manual-frame` Stimulus controller writes this
+    # same name client-side on a successful load (see manual_frame_controller.js).
+    def manual_frame_cookie_name(url)
+      "amf_#{Digest::MD5.hexdigest(url.to_s)}"
+    end
+
+    # Whether this manual frame was opened recently enough to skip the placeholder
+    # and render a real auto-loading `<turbo-frame src>` (so the Load button never
+    # appears). Presence-based: the cookie carries `max-age`, so the browser drops
+    # it when the window lapses — a present cookie means "still remembered".
+    #
+    # Sliding: every render that finds it remembered refreshes the cookie, so the
+    # window keeps moving forward as long as the user keeps coming back.
+    #
+    # Returns false (and touches nothing) for plain `loading: :manual` frames,
+    # which carry no `auto_load_for` window.
+    def manual_frame_remembered?(url, auto_load_for)
+      return false if auto_load_for.blank?
+
+      name = manual_frame_cookie_name(url)
+      return false if request.cookies[name].blank?
+
+      cookies[name] = {value: "1", path: "/", max_age: auto_load_for.to_i, same_site: :lax}
+      true
+    end
+
     # Active Storage URL helpers raise UrlGenerationError when a blob's filename
     # is blank (the route requires a :filename segment). Use a synthetic filename
     # so attach mode and other callers still get a routable URL; return nil only

@@ -1,8 +1,8 @@
 <% if @field.value %>
-  <% if @field.manual? && @field.view.display? %>
-    <%= render Avo::ManualFrameComponent.new(@field.turbo_frame, deferred_url: @field.frame_url, title: @field.name, description: @field.description) %>
+  <% if @field.manual? && @field.view.display? && !helpers.manual_frame_remembered?(@field.frame_url, @field.auto_load_for) %>
+    <%= render Avo::ManualFrameComponent.new(@field.turbo_frame, deferred_url: @field.frame_url, title: @field.name, description: @field.description, auto_load_for: @field.auto_load_for, cookie_name: helpers.manual_frame_cookie_name(@field.frame_url)) %>
   <% else %>
-    <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: turbo_frame_loading, target: "_top", class: "block" do %>
+    <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: (@field.lazy_loading_mode? ? "lazy" : turbo_frame_loading), target: "_top", class: "block" do %>
       <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
     <% end %>
   <% end %>
