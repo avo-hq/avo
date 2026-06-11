@@ -85,24 +85,25 @@
 }
 
 /* Stacked modifier */
-.all-fields-stacked .field-wrapper,
-.field-wrapper.field-wrapper--stacked {
-  @apply md:flex-col md:items-start gap-y-2 py-3;
+.field-wrapper {
+  @variant field-stacked {
+    @apply flex-col items-start gap-y-2 py-3;
 
-  .field-wrapper__label {
-    @apply md:w-full min-h-0 pt-0;
-  }
+    .field-wrapper__label {
+      @apply w-full min-h-0 pt-0;
+    }
 
-  .field-wrapper__label-help {
-    @apply pb-0;
-  }
+    .field-wrapper__label-help {
+      @apply pb-0;
+    }
 
-  .field-wrapper__content {
-    @apply pt-0 px-4 w-full;
-  }
+    .field-wrapper__content {
+      @apply pt-0 px-4 w-full;
+    }
 
-  .field-wrapper__content-wrapper {
-    @apply w-full;
+    .field-wrapper__content-wrapper {
+      @apply w-full;
+    }
   }
 }
 
