@@ -30,8 +30,8 @@
   </div>
 
   <div class="top-navbar__center">
-    <% if defined?(Avo::Pro::GlobalSearch::InputComponent) %>
-      <%= render Avo::Pro::GlobalSearch::InputComponent.new(resource: @resource) %>
+    <% if Avo.plugin_manager.installed?("avo-advanced_search") %>
+      <%= render Avo::AdvancedSearch::Global::InputComponent.new(resource: @resource) %>
     <% end %>
   </div>
 

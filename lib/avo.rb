@@ -1,4 +1,5 @@
 require_relative "avo/engine_dsl"
+require_relative "avo/railtie_dsl"
 
 require "zeitwerk"
 require "net/http"
@@ -13,10 +14,14 @@ loader.inflector.inflect(
   "html" => "HTML",
   "uri_service" => "URIService",
   "has_html_attributes" => "HasHTMLAttributes",
-  "engine_dsl" => "EngineDSL"
+  "engine_dsl" => "EngineDSL",
+  "plugin_dsl" => "PluginDSL",
+  "railtie_dsl" => "RailtieDSL"
 )
 loader.ignore("#{__dir__}/generators")
 loader.ignore("#{__dir__}/avo/engine_dsl.rb")
+loader.ignore("#{__dir__}/avo/plugin_dsl.rb")
+loader.ignore("#{__dir__}/avo/railtie_dsl.rb")
 loader.setup
 
 module Avo
