@@ -35,10 +35,13 @@ module Avo
 
       private
 
-      # Expose the association relation as `query` to description lambdas,
-      # mirroring how `attach_scope` receives `query` in the associations controller.
+      # Expose the association relation as `query` to callable descriptions, on
+      # top of the shared `loading_type` flag. Mirrors how `attach_scope` receives
+      # `query` in the associations controller. The relation is lazy; SQL runs
+      # only if the lambda enumerates or aggregates it (e.g. `query.count`) — so a
+      # manual placeholder should branch on `loading_type == :manual` to skip that.
       def description_attributes
-        {query: @record.public_send(association_name)}
+        super.merge(query: @record.public_send(association_name))
       end
     end
   end

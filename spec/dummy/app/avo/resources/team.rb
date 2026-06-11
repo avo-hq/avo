@@ -96,7 +96,12 @@ class Avo::Resources::Team < Avo::BaseResource
     field :memberships,
       as: :has_many,
       loading: {mode: :manual, auto_load_for: 5.minutes},
-      description: "Hey members",
+      description: -> {
+        # `loading_type` is `:manual` while the placeholder is shown (frame not
+        # loaded yet), so we skip `query.count` and avoid a SQL hit on show-page
+        # paint.
+        loading_type == :manual ? "Hey members" : "Hey members (#{query.count})"
+      },
       searchable: true,
       filterable: true,
       linkable: true,
