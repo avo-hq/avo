@@ -37,6 +37,7 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     when Avo::Menu::Dashboard then helpers.avo_dashboards.dashboard_path(item.parsed_dashboard)
     when Avo::Menu::Board then helpers.avo_kanban.board_path(item.record)
     when Avo::Menu::Page then item.navigation_path
+    when Avo::Menu::Action then item.navigation_path(helpers)
     end
   end
 
