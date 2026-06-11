@@ -6,11 +6,13 @@ class Avo::Resources::Items::Tab
   include Avo::Concerns::VisibleItems
   include Avo::Concerns::IsVisible
   include Avo::Concerns::VisibleInDifferentViews
+  include Avo::Concerns::FrameLoadingMode
 
   delegate :items, :add_item, to: :items_holder
 
   attr_accessor :description
   attr_reader :lazy_load
+  attr_reader :loading
 
   def initialize(title: nil, description: nil, view: nil, **args)
     @title = title
@@ -20,6 +22,7 @@ class Avo::Resources::Items::Tab
     @args = args
     @visible = args[:visible]
     @lazy_load = args[:lazy_load]
+    @loading = args[:loading]
 
     post_initialize if respond_to?(:post_initialize)
   end

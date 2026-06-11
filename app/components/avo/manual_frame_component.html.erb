@@ -1,0 +1,60 @@
+<%# Manual (on-demand) Turbo Frame: no `src`; the Load button supplies it on click. %>
+<%= turbo_frame_tag @frame_id,
+      target: :_top,
+      class: "block",
+      data: {
+        manual_frame: true,
+        controller: "manual-frame",
+        manual_frame_url_value: @deferred_url,
+        manual_frame_auto_load_for_value: @auto_load_for,
+        manual_frame_cookie_name_value: @cookie_name
+      } do %>
+  <%# Placeholder state. %>
+  <div class="<%= class_names("manual-frame", @classes) %>" data-manual-frame-target="placeholder">
+    <%= render ui.panel_header(title: label, description: @description) do |header| %>
+      <% header.with_controls do %>
+        <%= a_button color: :primary,
+                     icon: "tabler/outline/ripple-down",
+                     aria: {label: load_label},
+                     data: {action: "manual-frame#load"} do %>
+          <%= load_label %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <div
+      class="manual-frame__overlay"
+      data-manual-frame-target="loading"
+      aria-live="polite"
+      hidden>
+      <div class="manual-frame__loading">
+        <%= svg "tabler/outline/refresh", class: "manual-frame__loading-icon" %>
+        <span><%= t("avo.loading") %></span>
+      </div>
+    </div>
+  </div>
+
+  <%# Error/Retry state: a quiet inline message (danger-colored icon + muted %>
+  <%# copy), a low-key Retry, and a dev-only link to the failing URL. %>
+  <div
+    class="manual-frame"
+    data-manual-frame-target="error"
+    aria-live="polite"
+    hidden>
+    <div class="manual-frame__error-row">
+      <span class="manual-frame__error-message">
+        <%= svg "tabler/outline/alert-circle", class: "manual-frame__error-icon" %>
+        <%= t("avo.failed_to_load_item", item: label) %>
+      </span>
+
+      <%= a_button color: :gray,
+                   icon: "tabler/outline/refresh",
+                   aria: {label: retry_label},
+                   data: {action: "manual-frame#retry"} do %>
+        <%= t("avo.retry") %>
+      <% end %>
+    </div>
+
+    <%= dev_details_note %>
+  </div>
+<% end %>

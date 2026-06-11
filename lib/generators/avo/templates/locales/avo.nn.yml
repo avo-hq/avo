@@ -45,6 +45,7 @@ nn:
     choose_an_option: Vel eit alternativ
     choose_item: Vel %{item}
     clear_value: Nullstill verdi
+    click_to_load: Klikk for å laste inn
     click_to_reveal_filters: Vis filter
     close: Lukk
     close_modal: Lukk modal
@@ -70,6 +71,7 @@ nn:
     failed: Feila
     failed_to_find_attachment: Fann ikkje vedlegg
     failed_to_load: Lasting feila
+    failed_to_load_item: Feil ved innlasting av %{item}
     'false': Falsk
     file:
       one: file
@@ -105,6 +107,7 @@ nn:
       value: Verdi
     less_content: Mindre innhold
     list_is_empty: Lista er tom
+    load_item: Last inn %{item}
     loading: Lastar
     media_library:
       title: Media bibliotek
@@ -149,6 +152,8 @@ nn:
     resource_destroyed: Ressurs sletta
     resource_updated: Ressurs oppdatert
     resources: Ressursar
+    retry: Prøv igjen
+    retry_item: Prøv igjen %{item}
     reupload_file: Reupload %{item}
     run: Køyr
     save: Lagre

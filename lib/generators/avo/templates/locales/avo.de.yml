@@ -43,6 +43,7 @@ de:
     choose_an_option: Option auswählen
     choose_item: "%{item} auswählen"
     clear_value: Wert löschen
+    click_to_load: Klicken Sie hier, um zu laden
     click_to_reveal_filters: Klicken, um Filter anzuzeigen
     close: Schließen
     close_modal: Modal schließen
@@ -68,6 +69,7 @@ de:
     failed: Fehlgeschlagen
     failed_to_find_attachment: Anhang nicht gefunden
     failed_to_load: Laden fehlgeschlagen
+    failed_to_load_item: Fehler beim Laden von %{item}
     'false': Falsch
     file:
       one: Datei
@@ -103,6 +105,7 @@ de:
       value: Wert
     less_content: Weniger Inhalt
     list_is_empty: Liste ist leer
+    load_item: Lade %{item}
     loading: Lade...
     media_library:
       title: Medienbibliothek
@@ -147,6 +150,8 @@ de:
     resource_destroyed: Eintrag gelöscht
     resource_updated: Eintrag aktualisiert
     resources: Ressourcen
+    retry: Erneut versuchen
+    retry_item: Erneut versuchen %{item}
     reupload_file: Reupload %{item}
     run: Ausführen
     save: Speichern

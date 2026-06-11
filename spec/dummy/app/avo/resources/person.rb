@@ -106,6 +106,55 @@ class Avo::Resources::Person < Avo::BaseResource
           end
         end
       end
+
+      tab title: "Education", loading: :manual do
+        panel(title: "Education") do
+          card do
+            field :university, stacked: true, width: 50 do
+              "Stanford University"
+            end
+            field :degree, stacked: true, width: 50 do
+              "Computer Science"
+            end
+
+            field :graduation_year do
+              "2015"
+            end
+          end
+
+          sidebar do
+            card do
+              field :gpa do
+                "3.9"
+              end
+            end
+          end
+        end
+      end
+
+      tab title: "Skills", loading: :manual do
+        panel(title: "Skills") do
+          card do
+            field :primary_skill do
+              "Ruby on Rails"
+            end
+
+            field :certifications do
+              "AWS Certified"
+            end
+          end
+        end
+      end
+
+      tab title: "Hobbies", loading: :manual, lazy_load: true do
+        panel(title: "Hobbies") do
+          card do
+            field :favorite_hobby do
+              "Rock Climbing"
+            end
+          end
+        end
+      end
     end
   end
 end

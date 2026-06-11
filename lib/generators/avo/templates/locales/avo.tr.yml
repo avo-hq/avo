@@ -45,6 +45,7 @@ tr:
     choose_an_option: Bir seçenek seç
     choose_item: "%{item} seçin"
     clear_value: Değeri temizle
+    click_to_load: Yüklemek için tıklayın
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
     close: Kapat
     close_modal: Modali kapat
@@ -70,6 +71,7 @@ tr:
     failed: Başarısız
     failed_to_find_attachment: Ek bulunamadı
     failed_to_load: Yüklenemedi
+    failed_to_load_item: "%{item} yüklenemedi"
     'false': Yanlış
     file:
       one: dosya
@@ -105,6 +107,7 @@ tr:
       value: Değer
     less_content: Daha az içerik
     list_is_empty: Boş liste
+    load_item: "%{item} yükle"
     loading: Yükleniyor
     media_library:
       title: Ortam Kütüphanesi
@@ -149,6 +152,8 @@ tr:
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi
     resources: Kaynaklar
+    retry: Yeniden dene
+    retry_item: "%{item}'ı yeniden dene"
     reupload_file: Reupload %{item}
     run: Başlat
     save: Kaydet

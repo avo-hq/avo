@@ -287,6 +287,108 @@ RSpec.describe "Tabs", type: :system do
     end
   end
 
+  it "manual loading" do
+    education_frame_id = /avo-resources-items-tab-#{Digest::MD5.hexdigest("Education")}/
+    skills_frame_id = /avo-resources-items-tab-#{Digest::MD5.hexdigest("Skills")}/
+    hobbies_frame_id = /avo-resources-items-tab-#{Digest::MD5.hexdigest("Hobbies")}/
+
+    visit avo.resources_person_path(person)
+
+    scroll_to first_tab_group
+
+    # Every manual tab renders a no-`src` ManualFrameComponent placeholder with a
+    # Load button — including tabs that aren't currently active. Because there is
+    # no `src`, revealing them never fires a request.
+    education_frame = find("turbo-frame", id: education_frame_id, visible: :all)
+    expect(education_frame["src"]).to be_nil
+    expect(education_frame["data-manual-frame"]).not_to be_nil
+
+    skills_frame = find("turbo-frame", id: skills_frame_id, visible: :all)
+    expect(skills_frame["src"]).to be_nil
+    expect(skills_frame["data-manual-frame"]).not_to be_nil
+
+    # Reveal the first manual tab. Revealing toggles a CSS class only; the no-`src`
+    # frame must NOT fetch, so its content (GPA / university) is still absent and
+    # the Load button is shown (R6).
+    find('a[data-selected="false"][data-tabs-tab-name-param="Education"]').click
+
+    education_frame = find("turbo-frame", id: education_frame_id)
+    within(education_frame) do
+      expect(page).to have_button("Load Education")
+      expect(page).not_to have_selector('div[data-field-id="university"]')
+    end
+    # Still no `src` after reveal — reveal fires no request.
+    expect(education_frame["src"]).to be_nil
+
+    # Click Load: the frame fetches and swaps in the REAL tab content (not the
+    # placeholder again). This is the critical assertion — no placeholder loop.
+    within(education_frame) do
+      click_on "Load Education"
+    end
+
+    within(find("turbo-frame", id: education_frame_id)) do
+      # Lead with the positive content assertion so Capybara auto-waits for the
+      # async frame fetch to swap in the real content.
+      field_wrapper = find('div[data-field-id="university"]')
+      label = field_wrapper.find('div[data-slot="label"]')
+      value = field_wrapper.find('div[data-slot="value"]')
+      expect(label.text.strip).to eq("University")
+      expect(value.text.strip).to eq("Stanford University")
+
+      # Real content, not the placeholder loop.
+      expect(page).not_to have_button("Load Education")
+    end
+
+    # A second manual tab in the same group also has its own button and is not
+    # fetched until its own Load is clicked.
+    find('a[data-selected="false"][data-tabs-tab-name-param="Skills"]').click
+
+    skills_frame = find("turbo-frame", id: skills_frame_id)
+    within(skills_frame) do
+      expect(page).to have_button("Load Skills")
+      expect(page).not_to have_selector('div[data-field-id="primary_skill"]')
+    end
+    expect(skills_frame["src"]).to be_nil
+
+    within(skills_frame) do
+      click_on "Load Skills"
+    end
+
+    within(find("turbo-frame", id: skills_frame_id)) do
+      # Auto-waits for the async swap, then confirms it's content not placeholder.
+      expect(page).to have_selector('div[data-field-id="primary_skill"]')
+      expect(page).to have_text("Ruby on Rails")
+      expect(page).not_to have_button("Load Skills")
+    end
+
+    # R7 (in-DOM persistence): switch away to another tab and back — the loaded
+    # Education content stays without re-fetching.
+    find('a[data-selected="false"][data-tabs-tab-name-param="Employment"]').click
+    find('a[data-selected="false"][data-tabs-tab-name-param="Education"]').click
+
+    within(find("turbo-frame", id: education_frame_id)) do
+      expect(page).not_to have_button("Load Education")
+      expect(page).to have_selector('div[data-field-id="university"]')
+      expect(page).to have_text("Stanford University")
+    end
+
+    # A tab with BOTH `loading: :manual` and `lazy_load: true` takes the manual
+    # path: a no-`src` placeholder that fires no request on reveal (manual wins).
+    hobbies_frame = find("turbo-frame", id: hobbies_frame_id, visible: :all)
+    expect(hobbies_frame["src"]).to be_nil
+    expect(hobbies_frame["data-manual-frame"]).not_to be_nil
+    # Manual path wins: no `loading="lazy"` attribute, so no Turbo auto-fetch.
+    expect(hobbies_frame["loading"]).not_to eq("lazy")
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Hobbies"]').click
+
+    hobbies_frame = find("turbo-frame", id: hobbies_frame_id)
+    within(hobbies_frame) do
+      expect(page).to have_button("Load Hobbies")
+    end
+    expect(hobbies_frame["src"]).to be_nil
+  end
+
   describe "tabs with non-ASCII names" do
     let!(:user) { create :user }
 

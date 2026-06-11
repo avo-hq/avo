@@ -1,31 +1,35 @@
 <% if @field.value %>
-  <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: turbo_frame_loading, target: "_top", class: "block" do %>
-    <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
+  <% if @field.manual? && @field.view.display? && !helpers.manual_frame_remembered?(@field.frame_url, @field.auto_load_for) %>
+    <%= render Avo::ManualFrameComponent.new(@field.turbo_frame, deferred_url: @field.frame_url, title: @field.name, description: @field.description(loading_type: :manual), auto_load_for: @field.auto_load_for, cookie_name: helpers.manual_frame_cookie_name(@field.frame_url)) %>
+  <% else %>
+    <%= turbo_frame_tag @field.turbo_frame, src: @field.frame_url, loading: (@field.lazy_loading_mode? ? "lazy" : turbo_frame_loading), target: "_top", class: "block" do %>
+      <%= render(Avo::LoadingComponent.new(title: @field.name)) %>
+    <% end %>
   <% end %>
 <% else %>
   <%= render ui.panel(title: @field.name) do |panel| %>
     <% panel.with_controls do %>
       <% if can_attach? %>
         <%= a_link attach_path,
-          icon: 'tabler/outline/link',
+          icon: "tabler/outline/link",
           color: :primary,
           style: :text,
           data: {
             turbo_frame: Avo::MODAL_FRAME_ID,
             target: :attach
           } do %>
-          <%= t('avo.attach_item', item: @field.name.humanize(capitalize: false)) %>
+          <%= t("avo.attach_item", item: @field.name.humanize(capitalize: false)) %>
         <% end %>
       <% end %>
 
       <% if can_see_the_create_button? %>
         <%= a_link create_path,
-          icon: 'tabler/outline/plus',
-          'data-target': 'create',
-          'data-turbo-frame': '_top',
+          icon: "tabler/outline/plus",
+          "data-target": "create",
+          "data-turbo-frame": "_top",
           style: :primary,
           color: :accent do %>
-          <%= t('avo.create_new_item', item: @field.name.humanize(capitalize: false) ) %>
+          <%= t("avo.create_new_item", item: @field.name.humanize(capitalize: false)) %>
         <% end %>
       <% end %>
     <% end %>

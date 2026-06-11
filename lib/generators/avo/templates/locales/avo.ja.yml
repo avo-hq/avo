@@ -45,6 +45,7 @@ ja:
     choose_an_option: オプションを選択
     choose_item: "%{item}を選択"
     clear_value: 値をクリア
+    click_to_load: 読み込みをクリック
     click_to_reveal_filters: フィルターを表示するにはクリック
     close: 閉じる
     close_modal: モーダルを閉じる
@@ -70,6 +71,7 @@ ja:
     failed: 失敗
     failed_to_find_attachment: アタッチメントを見つけるのに失敗
     failed_to_load: 読み込みに失敗
+    failed_to_load_item: "%{item}の読み込みに失敗しました"
     'false': 偽
     file:
       one: ファイル
@@ -105,6 +107,7 @@ ja:
       value: 値
     less_content: コンテンツが少ない
     list_is_empty: リストは空です
+    load_item: "%{item}を読み込む"
     loading: 読み込み中
     media_library:
       title: メディアライブラリ
@@ -149,6 +152,8 @@ ja:
     resource_destroyed: レコードが破棄されました
     resource_updated: レコードが更新されました
     resources: リソース
+    retry: 再試行
+    retry_item: "%{item}を再試行"
     reupload_file: Reupload %{item}
     run: 実行
     save: 保存

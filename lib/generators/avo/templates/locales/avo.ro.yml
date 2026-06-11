@@ -47,6 +47,7 @@ ro:
     choose_an_option: Alege o opțiune
     choose_item: Alege %{item}
     clear_value: Șterge valoarea
+    click_to_load: Click pentru a încărca
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
     close: Închide
     close_modal: Închide modalul
@@ -72,6 +73,7 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
+    failed_to_load_item: Încărcarea %{item} a eșuat
     'false': Fals
     file:
       few: fişiere
@@ -108,6 +110,7 @@ ro:
       value: Valoare
     less_content: Mai puțin conținut
     list_is_empty: Lista este goală
+    load_item: Încărcați %{item}
     loading: Se incarcă
     media_library:
       title: Bibliotecă media
@@ -153,6 +156,8 @@ ro:
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată
     resources: Resurse
+    retry: Reîncercați
+    retry_item: Reîncercați %{item}
     reupload_file: Reupload %{item}
     run: Rulează
     save: Salvează

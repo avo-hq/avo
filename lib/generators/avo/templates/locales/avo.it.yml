@@ -43,6 +43,7 @@ it:
     choose_an_option: Scegli un'opzione
     choose_item: Scegli %{item}
     clear_value: Cancella valore
+    click_to_load: Clicca per caricare
     click_to_reveal_filters: Clicca per mostrare i filtri
     close: Chiudi
     close_modal: Chiudi modale
@@ -68,6 +69,7 @@ it:
     failed: Fallito
     failed_to_find_attachment: Impossibile trovare l'allegato
     failed_to_load: Caricamento fallito
+    failed_to_load_item: Impossibile caricare %{item}
     'false': Falso
     file:
       one: file
@@ -103,6 +105,7 @@ it:
       value: Valore
     less_content: Meno contenuti
     list_is_empty: La lista è vuota
+    load_item: Carica %{item}
     loading: Caricamento in corso
     media_library:
       title: Libreria multimediale
@@ -147,6 +150,8 @@ it:
     resource_destroyed: Record distrutto
     resource_updated: Record aggiornato
     resources: Risorse
+    retry: Riprova
+    retry_item: Riprova %{item}
     reupload_file: Reupload %{item}
     run: Esegui
     save: Salva

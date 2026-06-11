@@ -43,6 +43,7 @@ zh:
     choose_an_option: 选择一个选项
     choose_item: 选择 %{item}
     clear_value: 清除值
+    click_to_load: 点击加载
     click_to_reveal_filters: 点击以显示筛选器
     close: 关闭
     close_modal: 关闭模态框
@@ -68,6 +69,7 @@ zh:
     failed: 失败
     failed_to_find_attachment: 找不到附件
     failed_to_load: 加载失败
+    failed_to_load_item: 加载 %{item} 失败
     'false': 假
     file:
       one: 文件
@@ -103,6 +105,7 @@ zh:
       value: 值
     less_content: 内容较少
     list_is_empty: 列表为空
+    load_item: 加载 %{item}
     loading: 加载中...
     media_library:
       title: 媒体库
@@ -147,6 +150,8 @@ zh:
     resource_destroyed: 记录已删除
     resource_updated: 记录已更新
     resources: 资源
+    retry: 重试
+    retry_item: 重试 %{item}
     reupload_file: Reupload %{item}
     run: 运行
     save: 保存

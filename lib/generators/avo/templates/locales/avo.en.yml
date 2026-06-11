@@ -43,6 +43,7 @@ en:
     choose_an_option: Choose an option
     choose_item: Choose %{item}
     clear_value: Clear value
+    click_to_load: Click to load
     click_to_reveal_filters: Click to reveal filters
     close: Close
     close_modal: Close modal
@@ -68,6 +69,7 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    failed_to_load_item: Failed to load %{item}
     'false': 'False'
     file:
       one: file
@@ -103,6 +105,7 @@ en:
       value: Value
     less_content: Less content
     list_is_empty: List is empty
+    load_item: Load %{item}
     loading: Loading
     media_library:
       title: Media Library
@@ -147,6 +150,8 @@ en:
     resource_destroyed: Record destroyed
     resource_updated: Record updated
     resources: Resources
+    retry: Retry
+    retry_item: Retry %{item}
     reupload_file: Reupload %{item}
     run: Run
     save: Save

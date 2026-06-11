@@ -5,6 +5,7 @@ module Avo
       include Avo::Fields::Concerns::ReloadIcon
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
+      include Avo::Concerns::FrameLoadingMode
 
       def initialize(id, **args, &block)
         super
@@ -13,6 +14,7 @@ module Avo
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
         @description = args[:description]
+        @loading = args[:loading]
       end
 
       def field_resource
@@ -121,6 +123,17 @@ module Avo
 
       def default_view
         Avo.configuration.skip_show_view ? :edit : :show
+      end
+
+      # Attributes exposed to callable descriptions. `loading_type` tells a
+      # description lambda how the field is being rendered: `:manual` for a
+      # not-yet-loaded manual placeholder, `nil` for live/loaded content. A
+      # lambda can branch on it to avoid touching the association (e.g.
+      # `query.count`) on the placeholder paint. The manual placeholder render
+      # path passes `loading_type: :manual`; every other context keeps the
+      # `nil` default.
+      def description_attributes
+        {loading_type: nil}
       end
     end
   end

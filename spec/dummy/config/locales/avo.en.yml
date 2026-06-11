@@ -30,6 +30,7 @@ en:
     choose_item: Choose %{item}
     clear_value: Clear value
     reveal_filters: &reveal_filters Reveal filters
+    click_to_load: Click to load
     click_to_reveal_filters: *reveal_filters
     close_modal: Close modal
     close: Close
@@ -57,6 +58,7 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    failed_to_load_item: Failed to load %{item}
     file:
       one: file
       other: files
@@ -72,6 +74,7 @@ en:
       key: Key
       value: Value
     list_is_empty: List is empty
+    load_item: Load %{item}
     loading: Loading
     more: More
     new: new
@@ -102,6 +105,8 @@ en:
     remove_selection: Remove selection
     reset_filters: Reset filters
     reset: reset
+    retry: Retry
+    retry_item: Retry %{item}
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated

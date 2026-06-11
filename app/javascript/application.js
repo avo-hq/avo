@@ -102,6 +102,12 @@ document.addEventListener('turbo:frame-load', () => {
 })
 
 document.addEventListener('turbo:before-fetch-response', async (e) => {
+  // Manual frames handle their own deferred-load failures inline and call
+  // `stopImmediatePropagation()` (see manual_frame_controller.js), so this
+  // global handler never sees them. We intentionally do NOT skip on the
+  // `data-manual-frame` attribute: once a manual frame has loaded, a later
+  // navigation inside its content that 500s should still fall through to the
+  // /failed_to_load page like any other frame.
   if (e.detail.fetchResponse.response.status === 500) {
     const { id, src } = e.target
     // Don't try to redirect to failed to load if this is already a redirection to failed to load and crashed somewhere.

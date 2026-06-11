@@ -45,6 +45,7 @@ es:
     choose_an_option: Elige una opción
     choose_item: Elige %{item}
     clear_value: Borrar el valor
+    click_to_load: Haga clic para cargar
     click_to_reveal_filters: Pulsa para mostrar los filtros
     close: Cerrar
     close_modal: Cerrar modal
@@ -70,6 +71,7 @@ es:
     failed: Fallo
     failed_to_find_attachment: No se ha encontrado el archivo adjunto
     failed_to_load: No se ha podido cargar
+    failed_to_load_item: Error al cargar %{item}
     'false': Falso
     file:
       one: archivo
@@ -105,6 +107,7 @@ es:
       value: Valor
     less_content: Menos contenido
     list_is_empty: La lista está vacía
+    load_item: Cargar %{item}
     loading: Cargando
     media_library:
       title: Biblioteca de medios
@@ -149,6 +152,8 @@ es:
     resource_destroyed: Recurso eliminado
     resource_updated: Recurso actualizado
     resources: Recursos
+    retry: Reintentar
+    retry_item: Reintentar %{item}
     reupload_file: Reupload %{item}
     run: Ejecutar
     save: Guardar

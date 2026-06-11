@@ -45,6 +45,7 @@ nb:
     choose_an_option: Velg et alternativ
     choose_item: Velge %{item}
     clear_value: Nullstill verdi
+    click_to_load: Klikk for å laste
     click_to_reveal_filters: Vis filter
     close: Lukk
     close_modal: Lukk modal
@@ -70,6 +71,7 @@ nb:
     failed: Feilet
     failed_to_find_attachment: Fant ikke vedlegg
     failed_to_load: Lasting feilet
+    failed_to_load_item: Kunne ikke laste %{item}
     'false': Falsk
     file:
       one: file
@@ -105,6 +107,7 @@ nb:
       value: Verdi
     less_content: Mindre innhold
     list_is_empty: Listen er tom
+    load_item: Last %{item}
     loading: Laster
     media_library:
       title: Mediebibliotek
@@ -149,6 +152,8 @@ nb:
     resource_destroyed: Ressurs slettet
     resource_updated: Ressurs oppdatert
     resources: Ressurser
+    retry: Prøv igjen
+    retry_item: Prøv igjen %{item}
     reupload_file: Reupload %{item}
     run: Kjør
     save: Lagre
