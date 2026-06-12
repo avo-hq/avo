@@ -236,7 +236,10 @@ module Avo
         lookup_list_limit: 1000,
         frames: {
           loading: :lazy,
-          auto_load_for: 15.minutes
+          # 15 minutes, in seconds. Kept as a literal (not `15.minutes`) because
+          # this constant is evaluated at require time, before ActiveSupport's
+          # `Integer#minutes` core extension is guaranteed to be loaded.
+          auto_load_for: 15 * 60
         }
       }.freeze
     end
