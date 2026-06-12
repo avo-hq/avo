@@ -44,7 +44,7 @@ jobs:
         rails:
           - '7.1'
           - '8.0'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       RAILS_VERSION: ${{ matrix.rails }}
@@ -60,6 +60,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -69,7 +74,12 @@ jobs:
 
       - name: Prepare database
         run: |
-          bundle exec rake parallel:create parallel:migrate
+          # Migrate the primary database first so schema.rb is regenerated
+          # once, single-threaded. Then have parallel workers load that
+          # schema instead of running migrations concurrently, which races
+          # on schema.rb writes (see #4564).
+          bundle exec rake db:create db:migrate
+          bundle exec rake parallel:create parallel:load_schema
 
       - name: Get yarn cache directory path
         id: test-yarn-cache-dir-path
@@ -141,7 +151,7 @@ jobs:
           - name: group_3
             display: Group 3
             rspec_paths: spec/system/avo/group_3
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       RAILS_VERSION: ${{ matrix.rails }}
@@ -157,6 +167,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -166,7 +181,12 @@ jobs:
 
       - name: Prepare database
         run: |
-          bundle exec rake parallel:create parallel:migrate
+          # Migrate the primary database first so schema.rb is regenerated
+          # once, single-threaded. Then have parallel workers load that
+          # schema instead of running migrations concurrently, which races
+          # on schema.rb writes (see #4564).
+          bundle exec rake db:create db:migrate
+          bundle exec rake parallel:create parallel:load_schema
 
       - name: Get yarn cache directory path
         id: test-yarn-cache-dir-path
@@ -228,7 +248,7 @@ jobs:
         rails:
           - '7.1'
           - '8.0'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       RAILS_VERSION: ${{matrix.rails}}
@@ -242,6 +262,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -308,7 +333,7 @@ jobs:
       matrix:
         ruby: ['3.4']
         rails: ['8.0']
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       RAILS_VERSION: ${{matrix.rails}}
@@ -358,7 +383,7 @@ jobs:
           - '3.3'
         rails:
           - '8.0'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
       RAILS_VERSION: ${{matrix.rails}}
@@ -372,6 +397,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1

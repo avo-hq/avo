@@ -8,7 +8,7 @@ on:
 
 jobs:
   add_comment:
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     permissions:
       issues: write
       pull-requests: write
