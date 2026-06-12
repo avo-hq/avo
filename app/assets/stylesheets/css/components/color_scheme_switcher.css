@@ -280,6 +280,16 @@
   @apply border-0 bg-transparent cursor-pointer;
 }
 
+/* Focus ring instant, not animated. Must come after the five control rules. */
+.color-scheme-switcher__button,
+.color-scheme-switcher__compact-trigger,
+.color-scheme-switcher__theme-option,
+.color-scheme-switcher__accent-option,
+.color-scheme-switcher__scheme-button {
+  transition-property: all, outline, outline-offset;
+  transition-duration: 150ms, 0s, 0s;
+}
+
 .color-scheme-switcher__accent-option--active {
   @apply bg-tertiary ring-2 ring-primary-400 ring-offset-1;
 }
