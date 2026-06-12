@@ -100,5 +100,20 @@ RSpec.describe Avo::Fields::FrameBaseField, type: :model do
         expect(field.auto_load_for).to be_nil
       end
     end
+
+    context "when auto_load_for is globally set to nil (opt out)" do
+      before do
+        allow(Avo.configuration).to receive(:associations).and_return(
+          {frames: {loading: :manual, auto_load_for: nil}}
+        )
+      end
+
+      it "is manual but carries no memory window" do
+        field = field_without_loading
+
+        expect(field.manual?).to be true
+        expect(field.auto_load_for).to be_nil
+      end
+    end
   end
 end

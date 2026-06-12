@@ -39,7 +39,7 @@ module Avo
       # How long a manual frame remembers an opened frame when neither the field
       # nor the global config pins an explicit `auto_load_for`.
       def default_manual_auto_load_for
-        frame_loading_defaults[:auto_load_for] || 15.minutes
+        frame_loading_defaults.fetch(:auto_load_for, 15.minutes)
       end
 
       # The cold-start render mode: `:manual`, `:lazy`, or `nil` when unset.

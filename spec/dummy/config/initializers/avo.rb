@@ -37,7 +37,7 @@ Avo.configure do |config|
 
   # config.associations = {
   #   frames: {
-  #     loading: :manual
+  #     loading: :manual,
   #     # auto_load_for: 15.minutes
   #   }
   # }
