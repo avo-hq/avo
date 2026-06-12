@@ -63,6 +63,15 @@
   background: color-mix(in oklab, var(--color-primary), var(--color-accent) 10%);
 }
 
+/* Reorder drag placeholder (SortableJS ghostClass) — theme-aware for dark mode. */
+.table-row--ghost {
+  background: var(--color-table-row-selected);
+
+  & > td {
+    background: var(--color-table-row-selected);
+  }
+}
+
 table[role="grid"] {
   @apply outline-none;
 }
