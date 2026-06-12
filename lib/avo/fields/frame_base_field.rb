@@ -32,7 +32,7 @@ module Avo
           .to_s
       end
 
-      # Association frames inherit their cold-start defaults (`load_mode`,
+      # Association frames inherit their cold-start defaults (`loading`,
       # `auto_load_for`) from `config.associations = {frames: {...}}` when the
       # field itself doesn't pass `loading:`. See Avo::Concerns::FrameLoadingMode.
       def frame_loading_defaults

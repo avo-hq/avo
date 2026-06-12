@@ -228,14 +228,14 @@ module Avo
     # lookup before Avo shows the "more records available" notice.
     #
     # `frames` controls association turbo frames (has_one, has_many, habtm).
-    # `load_mode` is the cold-start render mode when a field doesn't set its own
+    # `loading` is the cold-start render mode when a field doesn't set its own
     # `loading:` — `:lazy` (loads on reveal) or `:manual` (placeholder + Load
     # button). `auto_load_for` is the manual memory window (see FrameLoadingMode).
     unless defined?(ASSOCIATIONS_DEFAULTS)
       ASSOCIATIONS_DEFAULTS = {
         lookup_list_limit: 1000,
         frames: {
-          load_mode: :lazy,
+          loading: :lazy,
           auto_load_for: 15.minutes
         }
       }.freeze

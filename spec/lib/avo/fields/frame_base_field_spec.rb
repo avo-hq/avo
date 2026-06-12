@@ -1,6 +1,15 @@
 require "rails_helper"
 
 RSpec.describe Avo::Fields::FrameBaseField, type: :model do
+  # Pin the global association defaults so these specs assert field-level
+  # behavior regardless of what the dummy app configures. Contexts that need a
+  # different global config re-stub `associations` below.
+  before do
+    allow(Avo.configuration).to receive(:associations).and_return(
+      {lookup_list_limit: 1000, frames: {loading: :lazy, auto_load_for: 15.minutes}}
+    )
+  end
+
   describe "#manual?" do
     # has_many, has_one and habtm all inherit FrameBaseField, so they share the
     # `loading:` capture and the `manual?` predicate.
@@ -44,7 +53,7 @@ RSpec.describe Avo::Fields::FrameBaseField, type: :model do
       Avo::Fields::HasManyField.new(:comments)
     end
 
-    context "with the default config (load_mode: :lazy)" do
+    context "with the default config (loading: :lazy)" do
       it "renders the association lazily, not manually, with no memory window" do
         field = field_without_loading
 
@@ -55,10 +64,10 @@ RSpec.describe Avo::Fields::FrameBaseField, type: :model do
       end
     end
 
-    context "when load_mode is globally set to :manual" do
+    context "when loading is globally set to :manual" do
       before do
         allow(Avo.configuration).to receive(:associations).and_return(
-          {frames: {load_mode: :manual, auto_load_for: 15.minutes}}
+          {frames: {loading: :manual, auto_load_for: 15.minutes}}
         )
       end
 
@@ -80,7 +89,7 @@ RSpec.describe Avo::Fields::FrameBaseField, type: :model do
     context "when auto_load_for is globally set to 0 (opt out)" do
       before do
         allow(Avo.configuration).to receive(:associations).and_return(
-          {frames: {load_mode: :manual, auto_load_for: 0}}
+          {frames: {loading: :manual, auto_load_for: 0}}
         )
       end
 

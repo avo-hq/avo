@@ -111,7 +111,7 @@ Avo.configure do |config|
   #   # Cold-start loading for association turbo frames (has_one, has_many, habtm),
   #   # used when a field doesn't set its own `loading:`.
   #   frames: {
-  #     load_mode: :lazy,           # :lazy (load on reveal) or :manual (placeholder + Load button)
+  #     loading: :lazy,             # :lazy (load on reveal) or :manual (placeholder + Load button)
   #     auto_load_for: 15.minutes   # how long a manual frame is remembered once opened (0/nil to disable)
   #   }
   # }

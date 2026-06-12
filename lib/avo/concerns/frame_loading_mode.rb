@@ -22,8 +22,8 @@
 #
 # When no per-call `loading:` is given, the host's `frame_loading_defaults`
 # supply the fallback. Association fields read them from
-# `Avo.configuration.associations = {frames: {load_mode:, auto_load_for:}}`
-# (default `load_mode: :lazy`); tabs have no global default and stay eager.
+# `Avo.configuration.associations = {frames: {loading:, auto_load_for:}}`
+# (default `loading: :lazy`); tabs have no global default and stay eager.
 module Avo
   module Concerns
     module FrameLoadingMode
@@ -55,7 +55,7 @@ module Avo
           elsif @loading.present?
             @loading.to_sym
           else
-            frame_loading_defaults[:load_mode]
+            frame_loading_defaults[:loading]
           end
       end
 
