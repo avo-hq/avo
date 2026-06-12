@@ -160,7 +160,7 @@ Avo.configure do |config|
   # and also only on test environment, in dev it works fine
   config.alert_dismiss_time = Rails.env.test? ? 10000 : 5000
   config.search_results_count = 8
-  config.associations_lookup_list_limit = 1000
+  config.associations = {lookup_list_limit: 1000}
 
   ## == Menus ==
   if Rails.env.test?

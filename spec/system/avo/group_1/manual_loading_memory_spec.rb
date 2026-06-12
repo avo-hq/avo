@@ -48,8 +48,8 @@ RSpec.describe "Manual loading memory (auto_load_for)", type: :system do
     end
   end
 
-  describe "loading: :manual (no memory window)" do
-    it "shows the Load button again on every visit" do
+  describe "loading: :manual (defaults to a 15-minute memory window)" do
+    it "server-renders a real auto-loading frame (no Load button) on a return visit" do
       Avo::Resources::User.with_temporary_items do
         field :first_name, as: :text
         field :comments, as: :has_many, loading: :manual
@@ -60,7 +60,33 @@ RSpec.describe "Manual loading memory (auto_load_for)", type: :system do
       wait_for_loaded
       expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'] [data-resource-name='comments'][data-resource-id='#{comment.id}']")
 
-      # No window -> no memory. The placeholder returns on the next visit.
+      # The default window remembers the opened frame: the next visit auto-loads
+      # it directly (a real `<turbo-frame src>`), with no Load button.
+      visit avo.resources_user_path(user)
+      wait_for_loaded
+
+      reloaded = find('turbo-frame[id="has_many_field_show_comments"]', visible: :all)
+      expect(reloaded[:src]).to be_present
+      expect(reloaded["data-manual-frame"]).to be_nil
+      expect(page).not_to have_button("Load Comments")
+    ensure
+      Avo::Resources::User.restore_items_from_backup
+    end
+  end
+
+  describe "loading: {mode: :manual, auto_load_for: 0} (opt out of memory)" do
+    it "shows the Load button again on every visit" do
+      Avo::Resources::User.with_temporary_items do
+        field :first_name, as: :text
+        field :comments, as: :has_many, loading: {mode: :manual, auto_load_for: 0}
+      end
+
+      visit avo.resources_user_path(user)
+      within('turbo-frame[id="has_many_field_show_comments"]') { click_on "Load Comments" }
+      wait_for_loaded
+      expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'] [data-resource-name='comments'][data-resource-id='#{comment.id}']")
+
+      # Opted out -> no memory. The placeholder returns on the next visit.
       visit avo.resources_user_path(user)
 
       frame = find('turbo-frame[id="has_many_field_show_comments"]')

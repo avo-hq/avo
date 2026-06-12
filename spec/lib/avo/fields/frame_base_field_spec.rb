@@ -36,4 +36,60 @@ RSpec.describe Avo::Fields::FrameBaseField, type: :model do
       end
     end
   end
+
+  # Association frames fall back to `config.associations = {frames: {...}}` when
+  # the field doesn't pass its own `loading:`. A per-field `loading:` always wins.
+  describe "global config fallback (config.associations.frames)" do
+    def field_without_loading
+      Avo::Fields::HasManyField.new(:comments)
+    end
+
+    context "with the default config (load_mode: :lazy)" do
+      it "renders the association lazily, not manually, with no memory window" do
+        field = field_without_loading
+
+        expect(field.loading_mode).to eq(:lazy)
+        expect(field.lazy_loading_mode?).to be true
+        expect(field.manual?).to be false
+        expect(field.auto_load_for).to be_nil
+      end
+    end
+
+    context "when load_mode is globally set to :manual" do
+      before do
+        allow(Avo.configuration).to receive(:associations).and_return(
+          {frames: {load_mode: :manual, auto_load_for: 15.minutes}}
+        )
+      end
+
+      it "makes un-annotated associations manual with the configured window" do
+        field = field_without_loading
+
+        expect(field.manual?).to be true
+        expect(field.auto_load_for).to eq(15.minutes.to_i)
+      end
+
+      it "still lets a per-field loading: override the global default" do
+        field = Avo::Fields::HasManyField.new(:comments, loading: {mode: :lazy})
+
+        expect(field.manual?).to be false
+        expect(field.lazy_loading_mode?).to be true
+      end
+    end
+
+    context "when auto_load_for is globally set to 0 (opt out)" do
+      before do
+        allow(Avo.configuration).to receive(:associations).and_return(
+          {frames: {load_mode: :manual, auto_load_for: 0}}
+        )
+      end
+
+      it "is manual but carries no memory window" do
+        field = field_without_loading
+
+        expect(field.manual?).to be true
+        expect(field.auto_load_for).to be_nil
+      end
+    end
+  end
 end

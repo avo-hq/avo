@@ -11,6 +11,7 @@ module Avo
     attr_writer :persistence
     attr_writer :resource_row_controls_config
     attr_writer :hotkeys
+    attr_writer :associations
     # When unset, Tailwind scans Rails.root.join("app"). Each entry is an absolute path or a path relative to Rails.root.
     attr_writer :tailwindcss_content_sources
     attr_accessor :timezone
@@ -55,7 +56,6 @@ module Avo
     attr_accessor :is_developer_method
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
-    attr_accessor :associations_lookup_list_limit
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
     attr_accessor :model_generator_hook
@@ -187,12 +187,12 @@ module Avo
       @is_developer_method = :is_developer?
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
-      @associations_lookup_list_limit = 1000
       @exclude_from_status = []
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
       @hotkeys = {}
+      @associations = {}
       @global_search = {
         enabled: true,
         navigation_section: true
@@ -222,12 +222,45 @@ module Avo
       }.freeze
     end
 
+    # Global defaults for associations.
+    #
+    # `lookup_list_limit` caps how many records are listed in a belongs_to/attach
+    # lookup before Avo shows the "more records available" notice.
+    #
+    # `frames` controls association turbo frames (has_one, has_many, habtm).
+    # `load_mode` is the cold-start render mode when a field doesn't set its own
+    # `loading:` — `:lazy` (loads on reveal) or `:manual` (placeholder + Load
+    # button). `auto_load_for` is the manual memory window (see FrameLoadingMode).
+    unless defined?(ASSOCIATIONS_DEFAULTS)
+      ASSOCIATIONS_DEFAULTS = {
+        lookup_list_limit: 1000,
+        frames: {
+          load_mode: :lazy,
+          auto_load_for: 15.minutes
+        }
+      }.freeze
+    end
+
     def resource_row_controls_config
       RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS.merge @resource_row_controls_config
     end
 
     def hotkeys
       HOTKEYS_DEFAULTS.merge @hotkeys
+    end
+
+    def associations
+      ASSOCIATIONS_DEFAULTS.deep_merge(@associations)
+    end
+
+    # Backward-compatible flat accessor — the canonical home is now
+    # `config.associations[:lookup_list_limit]`.
+    def associations_lookup_list_limit
+      associations[:lookup_list_limit]
+    end
+
+    def associations_lookup_list_limit=(value)
+      @associations[:lookup_list_limit] = value
     end
 
     # Authorization is enabled when:

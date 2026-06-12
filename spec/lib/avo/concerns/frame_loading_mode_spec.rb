@@ -23,17 +23,37 @@ RSpec.describe Avo::Concerns::FrameLoadingMode do
   describe "symbol shorthand loading: :manual" do
     subject { tab(:manual) }
 
-    it "is manual with no memory window (backward compatible)" do
+    it "is manual and defaults to a 15-minute memory window" do
       expect(subject.manual?).to be true
       expect(subject.loading_mode).to eq(:manual)
-      expect(subject.auto_load_for).to be_nil
+      expect(subject.auto_load_for).to eq(15.minutes.to_i)
     end
   end
 
   describe "hash loading: {mode: :manual}" do
     subject { tab({mode: :manual}) }
 
-    it "is manual with no memory window" do
+    it "is manual and defaults to a 15-minute memory window" do
+      expect(subject.manual?).to be true
+      expect(subject.loading_mode).to eq(:manual)
+      expect(subject.auto_load_for).to eq(15.minutes.to_i)
+    end
+  end
+
+  describe "hash loading: {mode: :manual, auto_load_for: 0}" do
+    subject { tab({mode: :manual, auto_load_for: 0}) }
+
+    it "is manual but opts out of the memory window" do
+      expect(subject.manual?).to be true
+      expect(subject.loading_mode).to eq(:manual)
+      expect(subject.auto_load_for).to be_nil
+    end
+  end
+
+  describe "hash loading: {mode: :manual, auto_load_for: nil}" do
+    subject { tab({mode: :manual, auto_load_for: nil}) }
+
+    it "is manual but opts out of the memory window" do
       expect(subject.manual?).to be true
       expect(subject.loading_mode).to eq(:manual)
       expect(subject.auto_load_for).to be_nil
