@@ -60,6 +60,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -157,6 +162,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -242,6 +252,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
@@ -372,6 +387,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
