@@ -87,13 +87,11 @@
 
   & a:not([role="separator"]) {
     @apply inline-flex items-center justify-center min-w-8 px-3 py-0.5 rounded-lg border border-transparent
-      text-sm font-medium leading-tight text-content no-underline transition-colors;
+      text-sm font-medium leading-tight text-content no-underline transition-all duration-150;
 
-    /* Resting transparent outline so the focus-visible ring fades its color in
-       from transparent instead of morphing from the link's (black) text color.
-       Offset is held at the focused (inset) value so only the color changes. */
-    outline: var(--focus-outline-width) solid transparent;
-    outline-offset: var(--focus-outline-offset-inset);
+    /* Focus ring instant, not animated. */
+    transition-property: all, outline, outline-offset;
+    transition-duration: 150ms, 0s, 0s;
 
     &:hover:not([aria-current="page"]):not([aria-disabled="true"]) {
       @apply bg-secondary;
@@ -112,7 +110,6 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-outline);
       outline-offset: var(--focus-outline-offset-inset);
     }
   }

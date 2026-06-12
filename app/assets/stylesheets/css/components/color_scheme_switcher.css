@@ -148,18 +148,6 @@
   }
 }
 
-/* Focus ring starts at the focus color but transparent, so it fades into view
-   rather than starting from the control's (gray) text color. Only the outline
-   color changes between resting and :focus-visible; width/offset stay constant. */
-.color-scheme-switcher__button,
-.color-scheme-switcher__compact-trigger,
-.color-scheme-switcher__theme-option,
-.color-scheme-switcher__accent-option,
-.color-scheme-switcher__scheme-button {
-  outline: var(--focus-outline-width) solid transparent;
-  outline-offset: var(--focus-outline-offset);
-}
-
 /* Scheme buttons - idle vs active state. The active "pill" stands out against
    the inline pill background through the scoped navbar active tokens. */
 .color-scheme-switcher__button[data-scheme="light"],
@@ -284,6 +272,16 @@
   @apply rounded-md transition-all duration-150;
   @apply hover:bg-tertiary;
   @apply border-0 bg-transparent cursor-pointer;
+}
+
+/* Focus ring instant, not animated. Must come after the five control rules. */
+.color-scheme-switcher__button,
+.color-scheme-switcher__compact-trigger,
+.color-scheme-switcher__theme-option,
+.color-scheme-switcher__accent-option,
+.color-scheme-switcher__scheme-button {
+  transition-property: all, outline, outline-offset;
+  transition-duration: 150ms, 0s, 0s;
 }
 
 .color-scheme-switcher__accent-option--active {
