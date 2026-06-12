@@ -23,6 +23,10 @@ RSpec.describe Avo::EngineDSL do
     end)
 
     stub_const("Avo::EngineDSLSpec::Engine", Class.new(Rails::Engine) do
+      def self.name
+        "Avo::EngineDSLSpec::Engine"
+      end
+
       extend Avo::EngineDSL
       avo_engine
     end)
@@ -36,7 +40,7 @@ RSpec.describe Avo::EngineDSL do
 
   it "isolates the engine namespace" do
     expect(engine).to be_isolated
-    expect(engine.isolated_namespace).to eq(Avo::EngineDSLSpec)
+    expect(engine.name.deconstantize).to eq("Avo::EngineDSLSpec")
   end
 
   it "accepts an explicit handler class" do

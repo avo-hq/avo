@@ -75,9 +75,9 @@ class Avo::ActionsComponent < Avo::BaseComponent
       render Avo::DividerComponent.new(action.label)
     when Avo::BaseAction
       render_action_link(action)
-    when defined?(Avo::Advanced::Resources::Controls::Action) && Avo::Advanced::Resources::Controls::Action
+    when defined?(Avo::CustomControls::Resources::Controls::Action) && Avo::CustomControls::Resources::Controls::Action
       render_action_link(action.action, icon: action.icon)
-    when defined?(Avo::Advanced::Resources::Controls::LinkTo) && Avo::Advanced::Resources::Controls::LinkTo
+    when defined?(Avo::CustomControls::Resources::Controls::LinkTo) && Avo::CustomControls::Resources::Controls::LinkTo
       link_to action.args[:path],
         class: action.args.delete(:class),
         **action.args.except(:path, :label, :icon) do

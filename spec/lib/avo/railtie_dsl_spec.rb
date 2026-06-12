@@ -21,6 +21,10 @@ RSpec.describe Avo::RailtieDSL do
     end)
 
     stub_const("Avo::RailtieDSLSpec::Railtie", Class.new(Rails::Railtie) do
+      def self.name
+        "Avo::RailtieDSLSpec::Railtie"
+      end
+
       extend Avo::RailtieDSL
       avo_railtie
     end)
