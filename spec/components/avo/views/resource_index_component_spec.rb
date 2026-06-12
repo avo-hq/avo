@@ -7,7 +7,7 @@ RSpec.describe Avo::Views::ResourceIndexComponent, type: :component do
   describe "#can_render_scopes?" do
     before do
       allow(Avo.plugin_manager).to receive(:installed?).and_call_original
-      allow(Avo.plugin_manager).to receive(:installed?).with("avo-resource_scopes").and_return(true)
+      allow(Avo.plugin_manager).to receive(:installed?).with("avo-scopes").and_return(true)
     end
 
     it "returns false when there are no scopes" do

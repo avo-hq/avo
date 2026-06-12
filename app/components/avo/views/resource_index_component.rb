@@ -143,7 +143,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def scopes_list
-    Avo::ResourceScopes::Scopes::ListComponent.new(
+    Avo::Scopes::ListComponent.new(
       scopes: @scopes,
       resource: @resource,
       turbo_frame: @turbo_frame,
@@ -155,7 +155,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def can_render_scopes?
-    Avo.plugin_manager.installed?("avo-resource_scopes") && @scopes.present?
+    Avo.plugin_manager.installed?("avo-scopes") && @scopes.present?
   end
 
   def back_path
