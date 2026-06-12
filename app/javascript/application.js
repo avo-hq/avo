@@ -12,6 +12,7 @@ import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
 import { attachHotkeyFeedback, installGlobalHotkeys } from './js/global_hotkeys'
+import nearestTopLayer from './js/helpers/top_layer'
 
 import './js/active-storage'
 import './js/controllers'
@@ -37,6 +38,9 @@ function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'basic',
     allowHTML: true,
+    // Default is <body>; a tooltip whose trigger lives in a top-layer modal
+    // would then paint under it, so append into the modal (see helpers/top_layer).
+    appendTo: (reference) => nearestTopLayer(reference) ?? document.body,
     // Hover-only. Default 'mouseenter focus' fires when something else (e.g. a
     // dropdown menu auto-focusing its active item on open) puts focus on the
     // trigger — which would surface the tooltip without user intent.
