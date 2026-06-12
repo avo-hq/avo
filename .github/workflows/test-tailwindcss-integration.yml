@@ -24,6 +24,11 @@ jobs:
         repository: avo-hq/avo_tailwindcss_test_repo
         ref: avo-1147/tailwindcss-integration
 
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
