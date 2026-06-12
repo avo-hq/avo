@@ -1,3 +1,3 @@
 module Avo
-  VERSION = "4.0.0.beta.49" unless const_defined?(:VERSION)
+  VERSION = "4.0.0.beta.50" unless const_defined?(:VERSION)
 end
