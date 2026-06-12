@@ -35,6 +35,13 @@ Avo.configure do |config|
   # Shouldn't impact on community only if custom authorization service was configured.
   config.explicit_authorization = true
 
+  # config.associations = {
+  #   frames: {
+  #     loading: :manual,
+  #     # auto_load_for: 15.minutes
+  #   }
+  # }
+
   ## == Customization ==
   config.id_links_to_resource = true
   # config.container_width = :small
@@ -160,7 +167,6 @@ Avo.configure do |config|
   # and also only on test environment, in dev it works fine
   config.alert_dismiss_time = Rails.env.test? ? 10000 : 5000
   config.search_results_count = 8
-  config.associations_lookup_list_limit = 1000
 
   ## == Menus ==
   if Rails.env.test?

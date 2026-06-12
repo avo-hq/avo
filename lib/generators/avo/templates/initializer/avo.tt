@@ -68,9 +68,6 @@ Avo.configure do |config|
   ## == Number of search results to display ==
   # config.search_results_count = 8
 
-  ## == Associations lookup list limit ==
-  # config.associations_lookup_list_limit = 1000
-
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.
   ## We compute the cache store by default, this is NOT the default, just an example.
@@ -104,6 +101,19 @@ Avo.configure do |config|
   # config.hotkeys = {
   #   enabled: true,          # Master switch: set to false to disable all keyboard shortcuts
   #   show_key_badges: true   # Set to false to hide inline kbd badge elements from the UI
+  # }
+
+  ## == Associations ==
+  # config.associations = {
+  #   # Cap how many records a belongs_to/attach lookup lists before showing the
+  #   # "more records available" notice.
+  #   lookup_list_limit: 1000,
+  #   # Cold-start loading for association turbo frames (has_one, has_many, habtm),
+  #   # used when a field doesn't set its own `loading:`.
+  #   frames: {
+  #     loading: :lazy,             # :lazy (load on reveal) or :manual (placeholder + Load button)
+  #     auto_load_for: 15.minutes   # how long a manual frame is remembered once opened (0/nil to disable)
+  #   }
   # }
 
   ## == Customization ==

@@ -324,18 +324,22 @@ module Avo
     end
 
     def select_options(query)
-      query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+      lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
+
+      query.all.limit(lookup_list_limit).map do |record|
         [@attachment_resource.new(record: record).record_title, record.to_param]
       end.tap do |options|
-        options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
+        options << t("avo.more_records_available") if options.size == lookup_list_limit
       end
     end
 
     def checkbox_list_options(query)
-      query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+      lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
+
+      query.all.limit(lookup_list_limit).map do |record|
         checkbox_list_option(record)
       end.tap do |options|
-        if options.size == Avo.configuration.associations_lookup_list_limit
+        if options.size == lookup_list_limit
           options << {title: t("avo.more_records_available"), hint: true}
         end
       end
