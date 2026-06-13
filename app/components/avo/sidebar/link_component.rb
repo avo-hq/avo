@@ -27,10 +27,16 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   end
 
   def is_external?
-    # If the path contains the scheme, check if it includes the root path or not
-    return !@path.include?(helpers.mount_path) if URI(@path).scheme.present?
+    uri = URI(@path)
+    # Paths without a scheme are always internal (relative app paths).
+    return false if uri.scheme.blank?
 
-    false
+    # A link with a scheme is internal only when its path is mounted under Avo.
+    # Compare against the URI path component, not the whole URL string, otherwise
+    # hosts like "avohq.io" falsely match a "/avo" mount path (via "//avohq.io").
+    !uri.path.start_with?(helpers.mount_path)
+  rescue URI::InvalidURIError
+    true
   end
 
   # For external links active_link_to marks them all as active.
