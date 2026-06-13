@@ -6,7 +6,7 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (4.0.0.beta.50)
+    avo (4.0.0.beta.51)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -560,7 +560,7 @@ GEM
     pstore (0.2.1)
     psych (3.3.4)
     public_suffix (7.0.5)
-    puma (6.6.1)
+    puma (8.0.2)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.5)
@@ -914,7 +914,7 @@ DEPENDENCIES
   prefixed_ids
   propshaft
   psych (< 4)
-  puma (~> 6.4)
+  puma (~> 8.0)
   rails (~> 7.1)
   rails-controller-testing
   ransack (>= 4.2.0)

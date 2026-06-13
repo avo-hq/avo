@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    avo (4.0.0.beta.50)
+    avo (4.0.0.beta.51)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
@@ -536,7 +536,7 @@ GEM
       date
       stringio
     public_suffix (6.0.2)
-    puma (6.6.1)
+    puma (8.0.2)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.0)
@@ -878,7 +878,7 @@ DEPENDENCIES
   pluggy!
   prefixed_ids
   propshaft
-  puma (~> 6.4)
+  puma (~> 8.0)
   rails (>= 8.1.0)
   rails-controller-testing
   ransack (>= 4.2.0)
