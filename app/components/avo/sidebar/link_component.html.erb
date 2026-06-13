@@ -1,5 +1,5 @@
 <% if @path.present? %>
-  <%= link_caller.send link_method, @path, class: "sidebar-link", active: @active, target: @target, data: link_data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
+  <%= link_caller.send link_method, @path, class: "sidebar-link", active: parent_link_active?, target: @target, data: link_data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
     <% if @reserve_icon_space || link_icon.present? %>
       <span class="sidebar-link__icon-wrapper sidebar-icon <%= 'sidebar-link__icon-wrapper--placeholder' if link_icon.blank? %>">
         <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" if link_icon.present? %>
@@ -29,14 +29,16 @@
 <% if @items.present? && parent_link_active? %>
   <div class="sidebar-subitem__items">
     <% @items.each_with_index do |item, index| %>
-      <% if item.path.present? %>
-        <%= link_caller.send link_method, item.path, class: "sidebar-subitem #{subitem_bar_class(index)}", active: @active, target: item.target, data: subitem_data(item), disabled: @disabled, "aria-disabled": @disabled, **item.args do %>
+      <% path = subitem_path(item) %>
+      <% active = index == active_item_index %>
+      <% if path.present? %>
+        <%= link_caller.send link_method, path, class: "sidebar-subitem #{subitem_bar_class(index)}", active: active, target: item.try(:target), data: subitem_data(item), disabled: @disabled, "aria-disabled": @disabled, **(item.try(:args) || {}).except(:active) do %>
           <span><%= item.try(:label).presence || item.try(:name).presence %></span>
 
           <%= hotkey_badge(item.hotkey, class: "ms-auto") if item.try(:hotkey).present? %>
         <% end %>
       <% else %>
-        <%= content_tag :div, class: "sidebar-subitem #{subitem_bar_class(index)}", active: @active, target: item.target, data: subitem_data(item) do %>
+        <%= content_tag :div, class: "sidebar-subitem #{subitem_bar_class(index)}", active: active, target: item.try(:target), data: subitem_data(item) do %>
           <span><%= item.try(:label).presence || item.try(:name).presence %></span>
         <% end %>
       <% end %>

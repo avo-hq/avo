@@ -26,6 +26,21 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     build_link_data(item.data, item.hotkey)
   end
 
+  # Resolve a sub-item's URL. A Link carries its own stored `path`; the other
+  # types (resource, dashboard, board, page) don't, so we derive the URL from the
+  # item type the same way ItemSwitcherComponent does for top-level items.
+  def subitem_path(item)
+    return item.path if item.try(:path).present?
+
+    case item
+    when Avo::Menu::Resource then helpers.resources_path(resource: item.parsed_resource, **item.fetch_params)
+    when Avo::Menu::Dashboard then helpers.avo_dashboards.dashboard_path(item.parsed_dashboard)
+    when Avo::Menu::Board then helpers.avo_kanban.board_path(item.record)
+    when Avo::Menu::Page then item.navigation_path
+    when Avo::Menu::Action then item.navigation_path(helpers)
+    end
+  end
+
   def is_external?
     # If the path contains the scheme, check if it includes the root path or not
     return !@path.include?(helpers.mount_path) if URI(@path).scheme.present?
@@ -49,7 +64,9 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
 
   def parent_link_active?
     return false if @path.blank?
-    helpers.is_active_link?(@path, @active)
+    # Keep the parent expanded when it is active itself, or when one of its
+    # sub-items is active (e.g. a nested resource that lives at a sibling path).
+    helpers.is_active_link?(@path, @active) || active_item_index.present?
   end
 
   def link_icon
@@ -59,9 +76,14 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   def active_item_index
     return @active_item_index if defined?(@active_item_index)
 
-    @active_item_index = @items&.index do |item|
-      item.path.present? && helpers.is_active_link?(item.path, @active)
+    active = @items.to_a.each_with_index.filter_map do |item, index|
+      path = subitem_path(item)
+      [index, path.length] if path.present? && helpers.is_active_link?(path, @active)
     end
+
+    # Favor the most specific match (longest path) so a record sub-item wins the
+    # indicator over the resource index it lives under, instead of the first match.
+    @active_item_index = active.max_by(&:last)&.first
   end
 
   def subitem_bar_class(index)
