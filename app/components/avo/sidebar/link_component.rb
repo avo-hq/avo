@@ -34,7 +34,8 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     # A link with a scheme is internal only when its path is mounted under Avo.
     # Compare against the URI path component, not the whole URL string, otherwise
     # hosts like "avohq.io" falsely match a "/avo" mount path (via "//avohq.io").
-    !uri.path.start_with?(helpers.mount_path)
+    # Use root_path_without_url so prefix_path + mount_path setups are recognized.
+    !uri.path.start_with?(helpers.root_path_without_url)
   rescue URI::InvalidURIError
     true
   end
