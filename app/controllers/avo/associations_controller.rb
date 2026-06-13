@@ -14,7 +14,7 @@ module Avo
     before_action :set_attachment_record, only: [:create, :destroy]
     before_action :set_attach_fields, only: [:new, :create]
     before_action :authorize_index_action, only: :index
-    before_action :authorize_attach_action, only: :new
+    before_action :authorize_attach_action, only: [:new, :create]
     before_action :authorize_detach_action, only: :destroy
 
     layout :choose_layout
