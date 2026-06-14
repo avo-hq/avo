@@ -31,6 +31,11 @@ RSpec.describe "Manual loading memory (auto_load_for)", type: :system do
       within(frame) { click_on "Load Comments" }
       wait_for_loaded
       expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'] [data-resource-name='comments'][data-resource-id='#{comment.id}']")
+      # The `manual-frame` Stimulus controller writes the memory cookie inside
+      # its `turbo:frame-load` handler, immediately before setting `tabindex`
+      # on the frame. Wait for that attribute so we don't navigate away before
+      # the cookie hits disk; otherwise the next render won't see it.
+      expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'][tabindex='-1']", visible: :all)
 
       # Return to the page (a refresh / following a link back). The cookie tells
       # the server to render a real `<turbo-frame src>` directly — it carries a
@@ -59,6 +64,10 @@ RSpec.describe "Manual loading memory (auto_load_for)", type: :system do
       within('turbo-frame[id="has_many_field_show_comments"]') { click_on "Load Comments" }
       wait_for_loaded
       expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'] [data-resource-name='comments'][data-resource-id='#{comment.id}']")
+      # See the matching comment in the 5-minute example above: wait for the
+      # `manual-frame` controller to mark the frame so the memory cookie is
+      # guaranteed to be written before the next visit.
+      expect(page).to have_selector("turbo-frame[id='has_many_field_show_comments'][tabindex='-1']", visible: :all)
 
       # The default window remembers the opened frame: the next visit auto-loads
       # it directly (a real `<turbo-frame src>`), with no Load button.
