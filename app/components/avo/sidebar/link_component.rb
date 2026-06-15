@@ -2,11 +2,14 @@
 
 require "view_component/version"
 
+# A single sidebar link (leaf). `variant: :default` or `:subitem`. Knows nothing
+# about menus; callers pass the path, label and resolved `active` (a match mode
+# like :inclusive, or a boolean to force it).
 class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   prop :label
   prop :path
   prop :active, default: :inclusive do |value|
-    value&.to_sym
+    value.is_a?(String) ? value.to_sym : value
   end
   prop :target do |value|
     value&.to_sym
@@ -15,15 +18,31 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   prop :icon
   prop :reserve_icon_space, default: false
   prop :args, kind: :**, default: {}.freeze
-  prop :items
   prop :hotkey, default: nil
+  prop :variant, default: :default
+  prop :bar_class, default: ""
 
-  def link_data
-    build_link_data(@data, @hotkey)
+  def subitem?
+    @variant == :subitem
   end
 
-  def subitem_data(item)
-    build_link_data(item.data, item.hotkey)
+  def root_css_class
+    return "sidebar-link" unless subitem?
+
+    ["sidebar-subitem", @bar_class].reject(&:blank?).join(" ")
+  end
+
+  # Sub-items don't show icons (for now); top-level links do.
+  def show_icon?
+    return false if subitem?
+
+    @reserve_icon_space || link_icon.present?
+  end
+
+  def link_data
+    return @data if @hotkey.blank?
+
+    @data.merge(hotkey: @hotkey)
   end
 
   def is_external?
@@ -54,41 +73,7 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
     end
   end
 
-  def parent_link_active?
-    return false if @path.blank?
-    helpers.is_active_link?(@path, @active)
-  end
-
   def link_icon
     @icon
-  end
-
-  def active_item_index
-    return @active_item_index if defined?(@active_item_index)
-
-    @active_item_index = @items&.index do |item|
-      item.path.present? && helpers.is_active_link?(item.path, @active)
-    end
-  end
-
-  def subitem_bar_class(index)
-    active_idx = active_item_index
-    return "" if active_idx.nil?
-
-    if index == active_idx
-      "sidebar-subitem--bar-active"
-    elsif index < active_idx
-      "sidebar-subitem--bar-pass"
-    else
-      ""
-    end
-  end
-
-  private
-
-  def build_link_data(data, hotkey)
-    return data if hotkey.blank?
-
-    data.merge(hotkey: hotkey)
   end
 end
