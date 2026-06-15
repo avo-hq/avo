@@ -152,6 +152,12 @@
   @apply py-1.5 my-px;
 }
 
+/* When the first menu item is a link (not a section), give it a bit more
+   breathing room from the top so it doesn't hug the sidebar's edge. */
+.sidebar__body-content > .sidebar-link:first-child {
+  @apply mt-3;
+}
+
 .sidebar-link:hover {
   color: var(--sidebar-content);
   background-color: var(--sidebar-link-hover-background);
