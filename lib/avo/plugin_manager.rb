@@ -33,6 +33,18 @@ module Avo
       Avo.field_manager.load_field method_name, klass
     end
 
+    # Register a custom menu DSL method (e.g. `form`) contributed by a plugin,
+    # so it can be used inside `config.main_menu` and friends. Delegates to
+    # avo-menu's builder when it's installed; a no-op otherwise, so plugins can
+    # register unconditionally. The block is evaluated in the menu builder's
+    # context, so it can call `link`, `resource`, etc. See
+    # Avo::Menu::Builder.register_item.
+    def register_menu_item(name, &block)
+      return unless defined?(Avo::Menu::Builder)
+
+      Avo::Menu::Builder.register_item(name, &block)
+    end
+
     def register_resource_tool
     end
 
