@@ -15,6 +15,13 @@ const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INP
 const RESOURCE_TABLE_SELECTOR = '[data-index-row-navigator-target="table"]'
 const findResourceTable = () => document.querySelector(RESOURCE_TABLE_SELECTOR)
 
+// The resource's index path is exposed via a <meta> tag only on show/edit pages,
+// letting the "i" hotkey return to the listing from a single record.
+const findResourcesIndexPath = () => {
+  const path = document.querySelector('meta[name="avo:resources-index-path"]')?.getAttribute('content')
+  return path && path.length ? path : null
+}
+
 // The content-focus point is the entry into each screen's main content: the
 // index table, the grid wrapper, or a show/edit panel body. Focusing it lets the
 // user immediately Tab into the content (and Shift+Tab back to the page controls).
@@ -79,6 +86,19 @@ const DIRECT_HOTKEYS = [
     handle: () => {
       const input = findResourceSearchInput()
       if (input) input.focus()
+    },
+  },
+  {
+    // i → return to the resource's index page (from a show/edit page).
+    match: (e) => e.key === 'i' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !isModalOpen() && !!findResourcesIndexPath(),
+    handle: () => {
+      const path = findResourcesIndexPath()
+      if (!path) return
+      if (window.Turbo) {
+        window.Turbo.visit(path)
+      } else {
+        window.location.assign(path)
+      }
     },
   },
   {
