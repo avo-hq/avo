@@ -24,7 +24,8 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         "Edit view",
         [
           shortcut(action: "Submit form", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
-          shortcut(action: "Unfocus field", keys: ["Esc"])
+          shortcut(action: "Unfocus field", keys: ["Esc"]),
+          shortcut(action: "Go to index", keys: ["I"])
         ]
       ),
       build_section(
@@ -32,7 +33,8 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         [
           shortcut(action: "Delete record", keys: ["D"]),
           shortcut(action: "Edit record", keys: ["E"]),
-          shortcut(action: "Open actions", keys: ["A"])
+          shortcut(action: "Open actions", keys: ["A"]),
+          shortcut(action: "Go to index", keys: ["I"])
         ]
       ),
       build_section(

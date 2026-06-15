@@ -5,6 +5,13 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <%# Exposes the resource's index path so the "i" hotkey can return to it from show/edit pages. %>
+    <% if @resource.present? && action_name.in?(%w[show edit update]) %>
+      <% if (resources_index_path = (resources_path(resource: @resource) rescue nil)) %>
+        <meta name="avo:resources-index-path" content="<%= resources_index_path %>">
+      <% end %>
+    <% end %>
+
     <% if !Avo.configuration.turbo[:instant_click] %>
       <meta name="turbo-prefetch" content="false">
     <% end %>

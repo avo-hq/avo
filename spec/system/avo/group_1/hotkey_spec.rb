@@ -225,6 +225,36 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
   end
 
+  it "returns to the index from the show page using the index hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("i")
+
+    expect(page).to have_current_path("/admin/resources/projects", ignore_query: true)
+  end
+
+  it "returns to the index from the edit page using the index hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}/edit"
+
+    dispatch_keydown("i")
+
+    expect(page).to have_current_path("/admin/resources/projects", ignore_query: true)
+  end
+
+  it "does not trigger the index hotkey while typing in a field" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}/edit"
+
+    find("input[name='project[name]']").send_keys("i")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
+  end
+
   it "opens the delete confirmation dialog using the delete hotkey" do
     project = create(:project)
 
