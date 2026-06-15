@@ -90,7 +90,7 @@ const DIRECT_HOTKEYS = [
   },
   {
     // i → return to the resource's index page (from a show/edit page).
-    match: (e) => e.key === 'i' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !!findResourcesIndexPath(),
+    match: (e) => e.key === 'i' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !isModalOpen() && !!findResourcesIndexPath(),
     handle: () => {
       const path = findResourcesIndexPath()
       if (!path) return

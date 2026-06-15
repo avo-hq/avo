@@ -255,6 +255,21 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
   end
 
+  it "does not trigger the index hotkey while a modal is open" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("?", code: "Slash", shift_key: true)
+
+    expect(page).to have_css("body.modal-open")
+    expect(page).to have_text("Keyboard shortcuts")
+
+    dispatch_keydown("i")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+  end
+
   it "opens the delete confirmation dialog using the delete hotkey" do
     project = create(:project)
 
