@@ -16,7 +16,12 @@ module Avo
     end
 
     def register(name, priority: 10)
-      @plugins << Plugin.new(name:, priority: priority)
+      # Capture the file that called `register` so the plugin can later resolve
+      # the gem it actually ships in. Plugins register under nicknames
+      # (e.g. `:rhino` for `avo-rhino_field`), so the name alone isn't enough.
+      registered_from = caller_locations(1, 1)&.first&.path
+
+      @plugins << Plugin.new(name:, priority: priority, registered_from: registered_from)
     end
 
     def register_view_type(name, component:, icon:, active_icon:, translation_key: nil)
