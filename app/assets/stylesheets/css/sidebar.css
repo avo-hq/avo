@@ -235,6 +235,60 @@
   border-end-start-radius: 2px;
 }
 
+/* Hover preview: redraw the full connector path down to the hovered subitem,
+   mirroring the active styling. Every item above it gets a vertical line; the
+   hovered item gets the L-shape, or a T-shape when the active item sits below
+   it (so the line continues past it). The preview is faint (0.6) only when it
+   extends below the active item — at or above the active item it stays solid. */
+.sidebar-subitem:hover,
+.sidebar-subitem:has(~ .sidebar-subitem:hover) {
+  @apply relative;
+}
+
+/* Vertical line for every item above the hovered one */
+.sidebar-subitem:has(~ .sidebar-subitem:hover)::before {
+  content: '';
+  @apply absolute top-0 bottom-0;
+  inset-inline-start: -10px;
+  width: auto;
+  height: auto;
+  border-inline-start: 2px solid var(--sidebar-link-active-background);
+  border-block-end: none;
+  border-end-start-radius: 0;
+}
+
+/* L-shape: endpoint at the hovered item */
+.sidebar-subitem:hover::before {
+  content: '';
+  @apply absolute top-0;
+  inset-inline-start: -10px;
+  height: 50%;
+  width: 10px;
+  border-inline-start: 2px solid var(--sidebar-link-active-background);
+  border-block-end: 2px solid var(--sidebar-link-active-background);
+  border-end-start-radius: 2px;
+}
+
+/* T-shape: when the active item is below the hovered one, the line must
+   continue down past it — full vertical line (top + bottom) with a branch to
+   the right (three endings) instead of the L-shape endpoint. */
+.sidebar-subitem:hover:has(~ .sidebar-subitem--bar-active)::before {
+  @apply top-0 bottom-0;
+  height: auto;
+  width: auto;
+  border-block-end: none;
+  border-end-start-radius: 0;
+}
+
+.sidebar-subitem:hover:has(~ .sidebar-subitem--bar-active)::after {
+  content: '';
+  @apply absolute;
+  top: calc(50% - 1px);
+  inset-inline-start: -10px;
+  width: 10px;
+  border-block-end: 2px solid var(--sidebar-link-active-background);
+}
+
 /* ================================================ */
 /* Sidebar Profile — SidebarProfileComponent        */
 /* BEM: .sidebar-profile (block)                    */
