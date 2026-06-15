@@ -1,11 +1,18 @@
 desc "Runs the update command for all Avo gems."
 task "avo:update" => :environment do
-  plugins = Avo.plugin_manager.plugins
-    .map { |plugin| plugin.name.to_s }
-    .uniq
-    .sort
+  # Read the real gem names from the bundle. Plugins register under nicknames
+  # (e.g. `avo-rhino_field` registers as `:rhino`), so the plugin manager can't
+  # be trusted to hand us valid gem names to pass to bundler.
+  gems = Bundler.load.specs.map(&:name).grep(/\Aavo(-|\z)/).uniq.sort
 
-  cmd = ["bundle", "update", *plugins].join(" ")
+  if gems.empty?
+    puts "[Avo->] No Avo gems found in the bundle."
+    next
+  end
+
+  # `--conservative` keeps bundler from bumping shared dependencies that aren't
+  # Avo gems themselves, so we only update the gems we explicitly list.
+  cmd = ["bundle", "update", "--conservative", *gems].join(" ")
   puts "[Avo->] Running `#{cmd}`"
   system cmd
 end
