@@ -152,6 +152,38 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
+  describe "dropdown inside a top-layer action modal (AVO-1345)" do
+    let(:field_value_slot) { tags_element(find_field_value_element("user_id")) }
+    let(:tags_input) { field_value_slot.find("span[contenteditable]") }
+    let!(:zezel) { create :user, first_name: "Zezel", last_name: "Nunu" }
+
+    it "mounts the suggestions dropdown inside the modal popover, not behind it" do
+      visit "/admin/resources/users/#{admin.slug}"
+      # Scroll the page before opening the modal: Tagify's body-based coordinates
+      # would otherwise misplace the dropdown by the scroll offset.
+      page.execute_script("window.scrollTo(0, 200)")
+
+      open_panel_action(action_name: "Toggle inactive")
+
+      tags_input.click
+      tags_input.set("Zezel")
+      wait_for_tags_to_load(field_value_slot)
+
+      expect(page).to have_selector(".tagify__dropdown")
+
+      # The dropdown must be a descendant of the nearest top-layer ancestor
+      # (the action modal popover), otherwise it paints under the modal.
+      dropdown_in_top_layer = page.evaluate_script(<<~JS)
+        (() => {
+          const dropdown = document.querySelector('.tagify__dropdown')
+          return !!(dropdown && dropdown.closest('[popover], dialog'))
+        })()
+      JS
+
+      expect(dropdown_in_top_layer).to be true
+    end
+  end
+
   describe "placeholder color (AVO-1272)" do
     let(:field_value_slot) { tags_element(find_field_value_element("user_id")) }
 
