@@ -111,9 +111,7 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        uses: ./.github/actions/run-rspec
-        with:
-          command: bundle exec parallel_rspec spec/features spec/requests
+        run: bundle exec parallel_rspec spec/features spec/requests
 
       - uses: actions/upload-artifact@v4
         with:
@@ -218,9 +216,7 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        uses: ./.github/actions/run-rspec
-        with:
-          command: bundle exec parallel_rspec ${{ matrix.spec_group.rspec_paths }}
+        run: bundle exec parallel_rspec ${{ matrix.spec_group.rspec_paths }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -309,9 +305,7 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      uses: ./.github/actions/run-rspec
-      with:
-        command: bundle exec rspec spec/components
+      run: bundle exec rspec spec/components
 
     - uses: actions/upload-artifact@v4
       with:
@@ -357,9 +351,7 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      uses: ./.github/actions/run-rspec
-      with:
-        command: bundle exec rspec spec/system/avo/i18n_spec.rb
+      run: bundle exec rspec spec/system/avo/i18n_spec.rb
 
     - uses: actions/upload-artifact@v4
       with:
@@ -443,9 +435,7 @@ jobs:
 
     - name: Run tests
       id: run_tests
-      uses: ./.github/actions/run-rspec
-      with:
-        command: bundle exec rspec spec/a11y
+      run: bundle exec rspec spec/a11y
 
     - uses: actions/upload-artifact@v4
       if: always() && steps.run_tests.outcome == 'failure'

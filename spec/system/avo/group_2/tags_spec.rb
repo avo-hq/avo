@@ -152,6 +152,63 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
+  describe "dropdown inside a top-layer action modal (AVO-1345)" do
+    let(:field_value_slot) { tags_element(find_field_value_element("user_id")) }
+    let(:tags_input) { field_value_slot.find("span[contenteditable]") }
+    let!(:zezel) { create :user, first_name: "Zezel", last_name: "Nunu" }
+
+    it "mounts the suggestions dropdown inside the modal popover, not behind it" do
+      visit "/admin/resources/users/#{admin.slug}"
+      # Scroll the page before opening the modal: Tagify positions in document
+      # coordinates (input rect + page scroll), but the modal is a fixed popover,
+      # so without correcting for the scroll offset the dropdown lands 200px off.
+      page.execute_script("window.scrollTo(0, 200)")
+
+      open_panel_action(action_name: "Toggle inactive")
+
+      tags_input.click
+      tags_input.set("Zezel")
+      wait_for_tags_to_load(field_value_slot)
+
+      expect(page).to have_selector(".tagify__dropdown")
+
+      # The dropdown must be a descendant of the nearest top-layer ancestor
+      # (the action modal popover), otherwise it paints under the modal.
+      dropdown_in_top_layer = page.evaluate_script(<<~JS)
+        !!document.querySelector('.tagify__dropdown')?.closest('[popover], dialog')
+      JS
+
+      expect(dropdown_in_top_layer).to be true
+
+      # ...and it must be positioned against the input, not pushed 200px down by
+      # the page scroll offset. A misplaced dropdown is what made it appear to
+      # "close" when the cursor moved toward where it was drawn.
+      expect(dropdown_gap_above_input).to be < 16
+
+      # Tagify re-positions on document scroll / resize / autocomplete, each time
+      # rewriting the dropdown's inline styles. The correction must survive those
+      # repositions, otherwise the dropdown jumps out from under the cursor.
+      page.execute_script("document.dispatchEvent(new Event('scroll'))")
+      expect(dropdown_gap_above_input).to be < 16
+    end
+
+    # Vertical distance (px) between the input's bottom edge and the dropdown's
+    # top edge, in viewport coordinates. ~0 when correctly anchored to the input.
+    def dropdown_gap_above_input
+      page.evaluate_script(<<~JS)
+        (() => {
+          const input = document.querySelector('[role="dialog"] tags.tagify')
+          const dropdown = document.querySelector('.tagify__dropdown')
+          const i = input.getBoundingClientRect()
+          const d = dropdown.getBoundingClientRect()
+          // place-below: dropdown top near input bottom; place-above: dropdown
+          // bottom near input top. Return the smaller of the two gaps.
+          return Math.min(Math.abs(d.top - i.bottom), Math.abs(d.bottom - i.top))
+        })()
+      JS
+    end
+  end
+
   describe "placeholder color (AVO-1272)" do
     let(:field_value_slot) { tags_element(find_field_value_element("user_id")) }
 

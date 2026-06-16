@@ -6,6 +6,7 @@ import URI from 'urijs'
 
 import { suggestionItemTemplate, tagTemplate } from './tags_field_helpers'
 import debouncePromise from '../../helpers/debounce_promise'
+import { tagifyAppendTarget, installTagifyTopLayerPositioning } from '../../helpers/tagify_top_layer'
 
 export default class extends Controller {
   static targets = ['input', 'fakeInput']
@@ -42,6 +43,10 @@ export default class extends Controller {
         enabled: 0,
         searchKeys: [this.labelAttributeValue],
         closeOnSelect: this.closeOnSelectValue,
+        // Default is <body>; mount the suggestions dropdown into a top-layer
+        // modal when the field is inside one, otherwise it paints underneath
+        // (see helpers/tagify_top_layer).
+        appendTarget: () => tagifyAppendTarget(this.element),
       },
     }
 
@@ -89,6 +94,10 @@ export default class extends Controller {
   initTagify() {
     this.tagify = new Tagify(this.inputTarget, this.tagifyOptions)
     const that = this
+
+    // When the dropdown is appended into a top-layer modal, Tagify's document
+    // coordinates are off by the page scroll offset; correct for that.
+    installTagifyTopLayerPositioning(this.tagify)
 
     function onInput(e) {
       // Create the URL from which to fetch the values

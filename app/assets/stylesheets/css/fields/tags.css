@@ -14,12 +14,21 @@ tags.tagify {
   --tag-bg: var(--color-secondary);
   --tag-hover: var(--color-tertiary);
 
-  @apply min-h-8 items-center flex;
+  padding-block: var(--input-py);
+  align-items: center;
+  @apply py-0 min-h-8;
+  /* min-height: calc(--spacing(8) + 1px); */
 }
 
 /* Align the inner editable area with the design system size tokens */
 tags.tagify .tagify__input {
-  @apply self-center p-0 leading-6 px-1;
+  margin: 0;
+  padding-block: 0;
+  @apply -my-px pt-1.5;
+
+  &:before {
+    @apply mt-px;
+  }
 }
 
 tags.tagify.tagify--focus {
@@ -28,7 +37,8 @@ tags.tagify.tagify--focus {
 }
 
 tag.tagify__tag {
-  @apply my-1;
+  @apply my-0 mt-1;
+  margin-top: calc(--spacing(1) - 1px);
 }
 
 .tagify__dropdown {
@@ -46,5 +56,5 @@ tag.tagify__tag {
 }
 
 .tagify__tag > div {
-  @apply !py-1;
+  @apply py-0.5! leading-5;
 }
