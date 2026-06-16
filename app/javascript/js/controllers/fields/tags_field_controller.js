@@ -6,7 +6,7 @@ import URI from 'urijs'
 
 import { suggestionItemTemplate, tagTemplate } from './tags_field_helpers'
 import debouncePromise from '../../helpers/debounce_promise'
-import { tagifyAppendTarget, positionTagifyDropdownInTopLayer } from '../../helpers/tagify_top_layer'
+import { tagifyAppendTarget, installTagifyTopLayerPositioning } from '../../helpers/tagify_top_layer'
 
 export default class extends Controller {
   static targets = ['input', 'fakeInput']
@@ -95,11 +95,9 @@ export default class extends Controller {
     this.tagify = new Tagify(this.inputTarget, this.tagifyOptions)
     const that = this
 
-    // When the dropdown is appended into a top-layer modal, Tagify's body-based
-    // coordinates are off by the page scroll offset, so we own its placement.
-    const repositionInTopLayer = () => positionTagifyDropdownInTopLayer(this.tagify)
-    this.tagify.on('dropdown:show', repositionInTopLayer)
-    this.tagify.on('dropdown:updated', repositionInTopLayer)
+    // When the dropdown is appended into a top-layer modal, Tagify's document
+    // coordinates are off by the page scroll offset; correct for that.
+    installTagifyTopLayerPositioning(this.tagify)
 
     function onInput(e) {
       // Create the URL from which to fetch the values

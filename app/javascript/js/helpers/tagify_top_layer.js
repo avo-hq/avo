@@ -10,30 +10,45 @@ export function tagifyAppendTarget(element) {
   return nearestTopLayer(element) ?? document.body
 }
 
-// Tagify positions the dropdown in document coordinates (the anchor's viewport
-// position plus the page scroll offset) because it normally lives under <body>.
-// Inside a fixed popover the containing block is the viewport itself (the modal
-// locks body scroll but keeps pageYOffset), so those document coordinates place
-// the dropdown off by the scroll offset. When the dropdown is in a top layer we
-// fully own its placement: position it `fixed` against the anchor's viewport
-// rect, flipping above the anchor when there isn't room below.
-export function positionTagifyDropdownInTopLayer(tagify) {
-  const topLayer = nearestTopLayer(tagify.DOM.scope)
+// Once the dropdown lives inside the modal, Tagify still mis-positions it.
+// Tagify converts the input's viewport rect into append-target coordinates by
+// subtracting the append target's in-flow ancestor offsets — correct for a
+// statically-positioned target, but wrong for Avo's modal, which is a
+// `position: fixed`, inset:0 popover (no transform). Its absolutely-positioned
+// children are anchored to the viewport, so subtracting the modal's in-flow
+// offset throws the dropdown thousands of px away (its `top` goes negative).
+//
+// We let Tagify do all of its own work (placement flip, width, RTL) and then
+// re-anchor the dropdown to the input's viewport rect, honoring the above/below
+// placement Tagify chose. Installing this by wrapping `dropdown.position` (not a
+// one-off `dropdown:show` listener) means it re-runs on *every* Tagify
+// reposition — the capture-phase document scroll listener, window resize,
+// autocomplete highlight — each of which rewrites the dropdown's inline styles.
+// Without that, those repositions would put the dropdown back thousands of px
+// away mid-interaction, so it looks like it closes when the cursor moves to it.
+export function installTagifyTopLayerPositioning(tagify) {
+  const reposition = tagify.dropdown.position
+
+  tagify.dropdown.position = (ddHeight) => {
+    reposition(ddHeight)
+    anchorDropdownToInput(tagify, ddHeight)
+  }
+}
+
+function anchorDropdownToInput(tagify, ddHeight) {
   const dropdown = tagify.DOM.dropdown
 
-  if (!topLayer || !dropdown) return
+  if (!nearestTopLayer(tagify.DOM.scope) || !dropdown) return
 
-  const anchor = tagify.settings.dropdown.position === 'input' ? tagify.DOM.input : tagify.DOM.scope
-  const anchorRect = anchor.getBoundingClientRect()
-  const dropdownHeight = dropdown.getBoundingClientRect().height
-  const viewportHeight = document.documentElement.clientHeight
-  const placeAbove = tagify.settings.dropdown.placeAbove ?? viewportHeight - anchorRect.bottom < dropdownHeight
-  const top = placeAbove ? anchorRect.top - dropdownHeight : anchorRect.bottom
+  const anchor = tagify.DOM.scope.getBoundingClientRect()
+  // Tagify passes the measured height while the dropdown is still detached (it
+  // positions before appending); fall back to offsetHeight once it's in the DOM.
+  const height = ddHeight || dropdown.offsetHeight
+  const placeAbove = dropdown.getAttribute('placement') === 'top'
+  const top = placeAbove ? anchor.top - height : anchor.bottom
 
-  dropdown.style.position = 'fixed'
-  dropdown.style.left = `${Math.floor(anchorRect.left)}px`
-  dropdown.style.top = `${Math.ceil(top)}px`
-  dropdown.style.minWidth = `${Math.ceil(anchorRect.width)}px`
-  dropdown.style.maxWidth = `${Math.ceil(anchorRect.width)}px`
-  dropdown.setAttribute('placement', placeAbove ? 'top' : 'bottom')
+  // The dropdown is absolute inside the fixed, inset:0 modal, so viewport
+  // coordinates map straight onto it.
+  dropdown.style.top = `${Math.round(top)}px`
+  dropdown.style.left = `${Math.round(anchor.left)}px`
 }

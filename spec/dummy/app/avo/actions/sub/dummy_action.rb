@@ -16,6 +16,7 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
     field :size, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
     # Used to test that JS overlays are visible over the popup
     # field :date, as: :date, help: "<span title='hey' data-tippy='tooltip'>hey</span>"
+    # field :tags, as: :tags, suggestions: -> { User.take(5).map { |user| {value: user.id, label: user.name} } }
 
     # Fields below are used to test the scrolling behavior of the modal.
     # field :size_2, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
