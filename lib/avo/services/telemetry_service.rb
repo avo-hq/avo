@@ -21,43 +21,41 @@ class Avo::Services::TelemetryService
       nil
     end
 
+    # The structural counts (resources, fields, field types, actions, filters)
+    # are gathered statically with Prism — no boot, no resource instantiation,
+    # no user code. The runtime-only values (menus, cache, config) are read
+    # here, where the live objects are already on hand.
     def avo_metadata
-      resources = Avo.resource_manager.all
-      dashboards = Avo::Current.app.dashboard_manager.all
-      field_definitions = resources.map(&:get_field_definitions)
-      fields_count = field_definitions.map(&:count).sum
-      fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
+      structural_metadata.merge(runtime_metadata)
+    end
 
-      field_types = {}
-      custom_fields_count = 0
-      field_definitions.each do |fields|
-        fields.each do |field|
-          field_types[field.type] ||= 0
-          field_types[field.type] += 1
+    def structural_metadata
+      StaticCollector.new(Rails.root.join("app", "avo")).collect
+    end
 
-          custom_fields_count += 1 if field.custom?
-        end
-      end
-
+    def runtime_metadata
       {
-        resources_count: resources.count,
-        dashboards_count: dashboards.count,
-        fields_count: fields_count,
-        fields_per_resource: fields_per_resource,
-        custom_fields_count: custom_fields_count,
-        field_types: field_types,
-        **other_metadata(:actions),
-        **other_metadata(:filters),
         main_menu_present: Avo.configuration.main_menu.present?,
         profile_menu_present: Avo.configuration.profile_menu.present?,
         cache_store: Avo.cache_store&.class&.to_s,
         cache_operational: cache_operational?,
+        plugins: plugins_metadata,
         **config_metadata
       }
-      # rescue => error
-      #   {
-      #     error: error.message
-      #   }
+    end
+
+    # The Avo ecosystem gems actually registered with the plugin manager (a
+    # subset of installed gems — only those that booted), with their resolved
+    # gem name and version.
+    def plugins_metadata
+      Avo.plugin_manager.all.map do |plugin|
+        {
+          name: plugin.gem_name || plugin.name.to_s,
+          version: plugin.version
+        }
+      end
+    rescue
+      []
     end
 
     def cache_operational?
@@ -67,19 +65,6 @@ class Avo::Services::TelemetryService
       operational
     rescue => error
       "error: #{error.message}"
-    end
-
-    def other_metadata(type = :actions)
-      resources = Avo.resource_manager.all
-
-      types = resources.map(&:"get_#{type}")
-      type_count = types.flatten.uniq.count
-      type_per_resource = sprintf("%0.01f", types.map(&:count).sum / (resources.count + 0.0))
-
-      {
-        "#{type}_count": type_count,
-        "#{type}_per_resource": type_per_resource
-      }
     end
 
     def config_metadata
