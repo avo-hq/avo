@@ -83,7 +83,7 @@
 /* ================================================ */
 
 .sidebar-section {
-  @apply not-first:mt-4;
+  @apply not-first:mt-5;
 }
 
 .sidebar-section__header {
