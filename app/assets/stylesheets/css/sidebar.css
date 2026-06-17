@@ -104,11 +104,6 @@
   @apply w-full flex flex-col;
 }
 
-/* Pull the first link a bit closer to the header above it */
-.sidebar-section__items > .sidebar-link:first-child {
-  @apply -mt-2;
-}
-
 /* Remove link gap when no items in the section have icons */
 .sidebar-section__items:not(:has(.sidebar-link__icon-wrapper)) .sidebar-link {
   @apply gap-0;
@@ -135,11 +130,6 @@
 
 .sidebar-group__items {
   @apply w-full flex flex-col;
-}
-
-/* Pull the first link a bit closer to the header above it */
-.sidebar-group__items > .sidebar-link:first-child {
-  @apply -mt-2;
 }
 
 /* Remove link gap when no items in the group have icons */
