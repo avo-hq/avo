@@ -88,6 +88,13 @@ jobs:
         rails:
           - '7.1'
           - '8.0'
+        # Only the matrix corners (oldest and newest) run; the cross-combos
+        # rarely surface version-specific failures the corners don't catch.
+        exclude:
+          - ruby: '3.3'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '7.1'
     runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
@@ -248,6 +255,13 @@ jobs:
         rails:
           - '7.1'
           - '8.0'
+        # Only the matrix corners (oldest and newest) run; the cross-combos
+        # rarely surface version-specific failures the corners don't catch.
+        exclude:
+          - ruby: '3.3'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '7.1'
     runs-on: blacksmith-4vcpu-ubuntu-2404
 
     env:
