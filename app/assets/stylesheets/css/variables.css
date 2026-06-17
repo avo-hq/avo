@@ -69,13 +69,11 @@
      content on top. Shared knob so any surface that needs a subtle hover state
      (table rows, etc.) reads from one place and stays per-scheme since it
      references --color-primary / --color-content. */
-  --color-hover-bg: color-mix(in oklab, var(--color-primary), var(--color-content) 5%);
-
-  /* Row surfaces. Base defaults to the primary surface; hover reuses the
-     shared --color-hover-bg tint; selected is a stronger content wash. All
-     resolve per-scheme via the underlying tokens. */
+  /* Row surfaces. Base defaults to the primary surface; hover is a faint
+     content wash; selected is a stronger one. All resolve per-scheme via the
+     underlying tokens. */
   --color-row-bg: var(--color-primary);
-  --color-row-bg-hover: var(--color-hover-bg);
+  --color-row-bg-hover: color-mix(in oklab, var(--color-primary), var(--color-content) 5%);
   --color-row-bg-selected: color-mix(in oklab, var(--color-primary), var(--color-content) 12%);
 
   --color-scheme: var(--color-white);
