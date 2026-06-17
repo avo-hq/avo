@@ -168,14 +168,14 @@ jobs:
           - name: group_3
             display: Group 3
             rspec_paths: spec/system/avo/group_3
-        # Only the matrix corners (oldest and newest) run the full system suite;
-        # the cross-combos rarely surface version-specific failures the corners
-        # don't already catch. Halves this job class from 12 runs to 6.
-        exclude:
-          - ruby: '3.3'
-            rails: '8.0'
-          - ruby: '3.4'
-            rails: '7.1'
+      # Only the matrix corners (oldest and newest) run the full system suite;
+      # the cross-combos rarely surface version-specific failures the corners
+      # don't already catch. Halves this job class from 12 runs to 6.
+      exclude:
+        - ruby: '3.3'
+          rails: '8.0'
+        - ruby: '3.4'
+          rails: '7.1'
     runs-on: blacksmith-8vcpu-ubuntu-2404
 
     env:
