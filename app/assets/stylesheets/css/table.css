@@ -1,6 +1,7 @@
 /* The dance we need to do to be able to have rounded corners on an HTML table */
 .table-row {
   @apply rounded-ss-lg;
+  background: var(--color-row-bg);
 
   &:first-child {
     & > td:first-child {
@@ -39,24 +40,19 @@
   }
 
   &:hover {
-    background: var(--color-table-row-hover);
+    background: var(--color-row-bg-hover);
   }
-}
-
-@theme {
-  --color-table-row-selected: color-mix(in oklab, var(--color-primary), var(--color-content) 12%);
-  --color-table-row-hover: color-mix(in oklab, var(--color-primary), var(--color-content) 5%);
 }
 
 .shift-pressed {
   & .highlighted-row {
-    background: var(--color-table-row-selected);
+    background: var(--color-row-bg-selected);
   }
 }
 
 .table-row:hover.selected-row,
 .selected-row {
-  background: var(--color-table-row-hover);
+  background: var(--color-row-bg-hover);
 }
 
 .table-row.is-keyboard-focused {
@@ -65,10 +61,10 @@
 
 /* Reorder drag placeholder (SortableJS ghostClass) — theme-aware for dark mode. */
 .table-row--ghost {
-  background: var(--color-table-row-selected);
+  background: var(--color-row-bg-selected);
 
   & > td {
-    background: var(--color-table-row-selected);
+    background: var(--color-row-bg-selected);
   }
 }
 

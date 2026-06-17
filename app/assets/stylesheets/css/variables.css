@@ -65,6 +65,17 @@
   --color-content: var(--color-avo-neutral-950);
   --color-content-secondary: var(--color-avo-neutral-500);
 
+  /* Generic hover surface tint: the primary surface with a faint wash of
+     content on top. Shared knob so any surface that needs a subtle hover state
+     (table rows, etc.) reads from one place and stays per-scheme since it
+     references --color-primary / --color-content. */
+  /* Row surfaces. Base defaults to the primary surface; hover is a faint
+     content wash; selected is a stronger one. All resolve per-scheme via the
+     underlying tokens. */
+  --color-row-bg: var(--color-primary);
+  --color-row-bg-hover: color-mix(in oklab, var(--color-primary), var(--color-content) 5%);
+  --color-row-bg-selected: color-mix(in oklab, var(--color-primary), var(--color-content) 12%);
+
   --color-scheme: var(--color-white);
   --color-scheme-opposite: var(--color-black);
 
