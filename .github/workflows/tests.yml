@@ -32,30 +32,15 @@ env:
 
 jobs:
   # ----------------------------------------------------------------------------
-  # Feature and request specs
+  # Build assets once
+  #
+  # The esbuild/Tailwind output in app/assets/builds/avo is identical across the
+  # Ruby/Rails matrix, so build it a single time here and share it with every
+  # test job via an artifact. The test jobs then need no Node/yarn at all.
   # ----------------------------------------------------------------------------
-  feature:
-    name: feature (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
-    strategy:
-      matrix:
-        ruby:
-          - '3.3'
-          - '3.4'
-        rails:
-          - '7.1'
-          - '8.0'
+  build_assets:
+    name: Build assets
     runs-on: blacksmith-4vcpu-ubuntu-2404
-
-    env:
-      RAILS_VERSION: ${{ matrix.rails }}
-      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
-
-    services:
-      postgres:
-        image: postgres:10.8
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
@@ -64,34 +49,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          bundler: default
-          ruby-version: ${{ matrix.ruby }}
-
-      - name: Prepare database
-        run: |
-          # Migrate the primary database first so schema.rb is regenerated
-          # once, single-threaded. Then have parallel workers load that
-          # schema instead of running migrations concurrently, which races
-          # on schema.rb writes (see #4564).
-          bundle exec rake db:create db:migrate
-          bundle exec rake parallel:create parallel:load_schema
-
-      - name: Get yarn cache directory path
-        id: test-yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v4
-        id: test-yarn-cache
-        with:
-          path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+          cache: yarn
 
       - name: Yarn install the dummy app
         run: |
@@ -108,6 +66,66 @@ jobs:
         run: |
           yarn build
           yarn build:custom-js
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
+          retention-days: 1
+
+  # ----------------------------------------------------------------------------
+  # Feature and request specs
+  # ----------------------------------------------------------------------------
+  feature:
+    name: feature (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: build_assets
+    strategy:
+      matrix:
+        ruby:
+          - '3.3'
+          - '3.4'
+        rails:
+          - '7.1'
+          - '8.0'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    env:
+      RAILS_VERSION: ${{ matrix.rails }}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
+
+      - name: Prepare database
+        run: |
+          # Migrate the primary database first so schema.rb is regenerated
+          # once, single-threaded. Then have parallel workers load that
+          # schema instead of running migrations concurrently, which races
+          # on schema.rb writes (see #4564).
+          bundle exec rake db:create db:migrate
+          bundle exec rake parallel:create parallel:load_schema
 
       - name: Run tests
         id: run_tests
@@ -131,6 +149,7 @@ jobs:
   # ----------------------------------------------------------------------------
   system:
     name: system (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }}, ${{ matrix.spec_group.display }})
+    needs: build_assets
     strategy:
       matrix:
         ruby:
@@ -149,7 +168,15 @@ jobs:
           - name: group_3
             display: Group 3
             rspec_paths: spec/system/avo/group_3
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+        # Only the matrix corners (oldest and newest) run the full system suite;
+        # the cross-combos rarely surface version-specific failures the corners
+        # don't already catch. Halves this job class from 12 runs to 6.
+        exclude:
+          - ruby: '3.3'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '7.1'
+    runs-on: blacksmith-8vcpu-ubuntu-2404
 
     env:
       RAILS_VERSION: ${{ matrix.rails }}
@@ -157,7 +184,9 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -165,17 +194,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
           bundler: default
           ruby-version: ${{ matrix.ruby }}
+
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
 
       - name: Prepare database
         run: |
@@ -185,34 +215,6 @@ jobs:
           # on schema.rb writes (see #4564).
           bundle exec rake db:create db:migrate
           bundle exec rake parallel:create parallel:load_schema
-
-      - name: Get yarn cache directory path
-        id: test-yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v4
-        id: test-yarn-cache
-        with:
-          path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Yarn install the dummy app
-        run: |
-          cd spec/dummy
-          yarn
-
-      - name: Yarn install
-        run: yarn
-
-      - name: Build assets
-        env:
-          RAILS_ENV: production
-          NODE_ENV: production
-        run: |
-          yarn build
-          yarn build:custom-js
 
       - name: Run tests
         id: run_tests
@@ -236,6 +238,7 @@ jobs:
   # ----------------------------------------------------------------------------
   components:
     name: components (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: build_assets
     strategy:
       matrix:
         ruby:
@@ -252,71 +255,46 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-        bundler: default
-        ruby-version: ${{ matrix.ruby }}
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
 
-    - name: Prepare database
-      run: |
-        bin/rails db:create db:migrate
+      - name: Prepare database
+        run: |
+          bin/rails db:create db:migrate
 
-    - name: Get yarn cache directory path
-      id: test-yarn-cache-dir-path
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec spec/components
 
-    - uses: actions/cache@v4
-      id: test-yarn-cache
-      with:
-        path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage_components_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: coverage/.resultset.json
 
-    - name: Yarn install the dummy app
-      run: |
-        cd spec/dummy
-        yarn
-
-    - name: Yarn install
-      run: yarn
-
-    - name: Build assets
-      env:
-        RAILS_ENV: production
-        NODE_ENV: production
-      run: |
-        yarn build
-        yarn build:custom-js
-
-    - name: Run tests
-      id: run_tests
-      run: bundle exec rspec spec/components
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: coverage_components_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
-        path: coverage/.resultset.json
-
-    - uses: actions/upload-artifact@v4
-      if: always() && steps.run_tests.outcome == 'failure'
-      with:
-        name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
-        path: ./spec/dummy/tmp/screenshots
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: ./spec/dummy/tmp/screenshots
 
   # ----------------------------------------------------------------------------
   # i18n tests
@@ -335,40 +313,43 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-        bundler: default
-        ruby-version: ${{ matrix.ruby }}
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
 
-    - name: Run tests
-      id: run_tests
-      run: bundle exec rspec spec/system/avo/i18n_spec.rb
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec spec/system/avo/i18n_spec.rb
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: coverage_system_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
-        path: coverage/.resultset.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage_system_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: coverage/.resultset.json
 
-    - uses: actions/upload-artifact@v4
-      if: always() && steps.run_tests.outcome == 'failure'
-      with:
-        name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
-        path: ./spec/dummy/tmp/screenshots
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: ./spec/dummy/tmp/screenshots
 
   # ----------------------------------------------------------------------------
   # Accessibility tests
   # ----------------------------------------------------------------------------
   accessibility:
     name: accessibility (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: build_assets
     strategy:
       matrix:
         ruby:
@@ -383,62 +364,38 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        bundler-cache: true
-        bundler: default
-        ruby-version: ${{ matrix.ruby }}
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
 
-    - name: Prepare database
-      run: |
-        bin/rails db:create db:migrate
+      - name: Prepare database
+        run: |
+          bin/rails db:create db:migrate
 
-    - name: Get yarn cache directory path
-      id: test-yarn-cache-dir-path
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec spec/a11y
 
-    - uses: actions/cache@v4
-      id: test-yarn-cache
-      with:
-        path: ${{ steps.test-yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-test-yarn-${{ hashFiles('**/yarn.lock') }}
-
-    - name: Yarn install the dummy app
-      run: |
-        cd spec/dummy
-        yarn
-
-    - name: Yarn install
-      run: yarn
-
-    - name: Build assets
-      env:
-        RAILS_ENV: production
-        NODE_ENV: production
-      run: |
-        yarn build
-
-    - name: Run tests
-      id: run_tests
-      run: bundle exec rspec spec/a11y
-
-    - uses: actions/upload-artifact@v4
-      if: always() && steps.run_tests.outcome == 'failure'
-      with:
-        name: rspec_failed_screenshots_a11y_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
-        path: ./spec/dummy/tmp/screenshots
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_a11y_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: ./spec/dummy/tmp/screenshots
