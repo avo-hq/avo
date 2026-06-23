@@ -15,7 +15,12 @@ task "avo:update" => :environment do
   # Avo gems themselves, so we only update the gems we explicitly list.
   cmd = ["bundle", "update", "--conservative", *gems].join(" ")
   puts "[Avo->] Running `#{cmd}`"
-  system cmd
+  # Restore the pre-Bundler env so the nested `bundle update` runs against the
+  # app's Gemfile with a clean environment. Without this it inherits the parent
+  # `bundle exec` settings (BUNDLE_GEMFILE, BUNDLE_FROZEN/--deployment, RUBYOPT),
+  # which can make the update silently refuse. Exported credentials survive
+  # because they're part of the original env Bundler snapshotted at boot.
+  Bundler.with_original_env { system cmd }
 end
 
 desc "Builds Avo (just assets for now)"
