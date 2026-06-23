@@ -1,7 +1,7 @@
 <%= content_tag :div, class: @classes, data: @data do %>
-    <% if @field.as_html %>
-      <%= sanitize @field.value %>
-    <% else %>
-      <div class="uppercase"><%= @field.value %></div>
-    <% end %>
+  <% if @field.as_html %>
+    <%= sanitize @field.value %>
+  <% else %>
+    <div class="uppercase"><%= @field.value %></div>
+  <% end %>
 <% end %>
