@@ -27,6 +27,15 @@ module Avo
       @gem_name = registered_gem&.name
     end
 
+    # The actual installed version of the gem that ships this plugin, resolved
+    # from the Bundler spec. More reliable than the class-level VERSION constant
+    # lookup because plugins are instances of Avo::Plugin (not subclasses).
+    def gem_version
+      return @gem_version if defined?(@gem_version)
+
+      @gem_version = registered_gem&.version&.to_s
+    end
+
     private
 
     def registered_gem
