@@ -46,7 +46,7 @@
     "@tiptap/pm": "^2.27.2",
     "@yaireo/tagify": "^4.37.1",
     "add": "^2.0.6",
-    "autoprefixer": "^10.5.0",
+    "autoprefixer": "^10.5.2",
     "chart.js": "^3.9.1",
     "chartkick": "^4.2.0",
     "codemirror": "5.59.1",
