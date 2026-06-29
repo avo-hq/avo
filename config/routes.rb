@@ -13,6 +13,7 @@ Avo::Engine.routes.draw do
     get "/search", to: "search#index"
     get "/:resource_name/search", to: "search#show"
     post "/resources/:resource_name/:id/attachments/", to: "attachments#create"
+    get "/resources/:resource_name/:id/encrypted_fields/:field_id", to: "encrypted_fields#reveal", as: "reveal_encrypted_field"
   end
 
   # Charts

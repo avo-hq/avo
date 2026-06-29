@@ -10,6 +10,8 @@ import CardFiltersController from './controllers/card_filters_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
+import EncryptedFieldController from './controllers/fields/encrypted_field_controller'
+import EncryptedFieldEditController from './controllers/fields/encrypted_field_edit_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
@@ -100,6 +102,8 @@ application.register('trix-body', TrixBodyController)
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)
 application.register('code-field', CodeFieldController)
+application.register('encrypted-field', EncryptedFieldController)
+application.register('encrypted-field-edit', EncryptedFieldEditController)
 application.register('date-field', DateFieldController)
 application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
