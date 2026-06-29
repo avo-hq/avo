@@ -1,0 +1,74 @@
+# AGENTS.md
+
+## Cursor Cloud specific instructions
+
+Avo is a Ruby on Rails admin-panel **engine/gem**. There is no standalone app; you
+develop and test it through the bundled dummy Rails app in `spec/dummy`. All
+commands below are run from the repo root unless noted.
+
+### Toolchain (already installed in the VM snapshot)
+- Ruby `3.3.1` via `rbenv` (initialized in `~/.bashrc`; available in any login shell).
+- Node + Yarn (classic) are pre-provisioned on `PATH`.
+- `overmind` (used by `bin/dev`) and `foreman` are installed globally.
+- PostgreSQL 16 is installed locally. `pg_hba.conf` is configured to `trust`
+  `127.0.0.1`/`::1`, so the app connects as user `postgres` with an empty password
+  (matching `spec/dummy/config/database.yml` defaults).
+
+The update script only refreshes dependencies (`bundle install`, `yarn install`,
+`spec/dummy` yarn). Everything below (starting Postgres, DB schema/seed, asset
+builds, running the server) is NOT done by the update script — do it yourself.
+
+### Start Postgres (needed every fresh VM boot; it does not auto-start)
+```
+sudo pg_ctlcluster 16 main start
+```
+
+### First-time / after-schema-change database setup
+The dev DB and test DB are part of the snapshot, but if missing or stale:
+```
+# Development DB
+AVO_LICENSE_KEY=license_123 bin/rails db:create
+AVO_LICENSE_KEY=license_123 bin/rails db:migrate
+AVO_LICENSE_KEY=license_123 AVO_ADMIN_PASSWORD=secret bin/rails db:seed
+# Test DB (schema only — load separately, migrate does not target it)
+AVO_LICENSE_KEY=license_123 RAILS_ENV=test bin/rails db:schema:load
+```
+Seeding creates a login: `avo@avohq.io` / `secret`.
+
+### Build assets (required before running the server or system tests)
+```
+yarn build:js
+yarn build:css
+yarn build:custom-js
+```
+`bin/dev` runs these as `--watch` processes, so during normal development they
+rebuild automatically.
+
+### Run the dummy app
+```
+AVO_LICENSE_KEY=license_123 bin/dev      # starts web + js/css/custom-js watchers via overmind
+```
+The server listens on `http://localhost:3030`. Avo is mounted at `/admin`
+(root `/` redirects there). Log in with `avo@avohq.io` / `secret`.
+
+Note: `bin/dev` uses a `&>` bashism in its overmind/foreman detection that misfires
+under `dash`; this is why `overmind` is installed (the `foreman` fallback branch is
+never reached). Do not "fix" `bin/dev` for this.
+
+### Lint
+```
+bundle exec standardrb        # Ruby (StandardRB)
+bundle exec erb_lint --lint-all   # ERB
+yarn eslint app/javascript        # JS
+```
+
+### Tests
+Tests run against `RAILS_ENV=test` with `AVO_LICENSE_KEY=license_123`.
+```
+bin/test            # everything (slow)
+bin/test unit       # feature + controller + component (fast)
+bin/test system     # system/browser tests (builds assets first, slow)
+bin/test ./spec/requests/avo/home_request_spec.rb   # single file
+```
+System tests use `cuprite` (headless Chrome). DB-backed specs need the test DB
+schema loaded (see above).
