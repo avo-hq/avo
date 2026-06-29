@@ -4,7 +4,7 @@ module Avo
     attr_reader :priority
     attr_reader :registered_from
 
-    delegate :version, :namespace, :engine, to: :class
+    delegate :namespace, :engine, to: :class
 
     def initialize(*, name:, priority:, registered_from: nil, **, &block)
       @name = name
@@ -25,6 +25,14 @@ module Avo
       return @gem_name if defined?(@gem_name)
 
       @gem_name = registered_gem&.name
+    end
+
+    # Installed version of this plugin's gem, resolved from the Bundler spec via
+    # the registration callsite. Falls back to the class-level VERSION constant.
+    def version
+      return @version if defined?(@version)
+
+      @version = registered_gem&.version&.to_s || self.class.version
     end
 
     private
