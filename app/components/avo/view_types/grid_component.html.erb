@@ -6,6 +6,8 @@
     tabindex: (@reflection.present? ? nil : "-1"),
     data: {
       component_name: self.class.to_s.underscore,
+      controller: "item-select-all",
+      resource_name: @resource.model_key,
       selected_resources_name: @resource.model_key,
       selected_resources: [],
       **(@reflection.present? ? {} : {"content-focus": ""}),
