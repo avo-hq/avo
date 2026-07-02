@@ -1942,10 +1942,10 @@
   resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.7.tgz#baccb07a970b91707df3a3e8ba6896c57ead2d11"
   integrity sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==
 
-"@yaireo/tagify@^4.37.1":
-  version "4.37.1"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.37.1.tgz#0312bab753d7d05f225bdaafdff7153e0fa3f159"
-  integrity sha512-/+0ZZ55rd4sG5Nlop2QF9D2oo3kbRgn/KlsW6oN1MwKVS7DDB2mIrGnizk740M0qzXvQfE7JhbCeWDuC8+6kmA==
+"@yaireo/tagify@^4.38.0":
+  version "4.38.0"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.38.0.tgz#db3d1e873cfa515082f7e6de4f502522fec86afa"
+  integrity sha512-/ZyG2NWQGNcTK4ay2aPE3ka/ZQmhTo+bUKb81SqjtQlt3VrGoxCNhmvKTV/mBJbY69BOXXeBEi+a5JLrvp6wLA==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -5154,10 +5154,10 @@ postcss@^8.4.33, postcss@^8.4.47:
     picocolors "^1.1.1"
     source-map-js "^1.2.1"
 
-postcss@^8.5.15:
-  version "8.5.15"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.15.tgz#d1eaf677a324e9ec02196da2d3fecf4a0b9a735c"
-  integrity sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==
+postcss@^8.5.16:
+  version "8.5.16"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.16.tgz#1230ce0b5df354c24c0ea45f99ce5f6a88279d28"
+  integrity sha512-vuwillviilfKZsg0VGj5R/YwwcHx4SLsIOI/7K6mQkWx+l5cUHTjj5g0AasTBcyXsbfTgrwsUNmVUb5xVwyPwg==
   dependencies:
     nanoid "^3.3.12"
     picocolors "^1.1.1"
