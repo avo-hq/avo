@@ -2,11 +2,11 @@ class Avo::Filters::IsAdmin < Avo::Filters::MultipleSelectFilter
   self.name = "Is admin"
 
   def apply(request, query, value)
-    if value.include? 'admins'
+    if value.include? "admins"
       query = query.admins
     end
 
-    if value.include? 'non_admins'
+    if value.include? "non_admins"
       query = query.non_admins
     end
 
@@ -16,7 +16,7 @@ class Avo::Filters::IsAdmin < Avo::Filters::MultipleSelectFilter
   def options
     {
       admins: "Admins",
-      non_admins: "Non admins",
+      non_admins: "Non admins"
     }
   end
 

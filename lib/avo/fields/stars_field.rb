@@ -4,7 +4,7 @@ module Avo
       attr_reader :max
 
       def initialize(name, **args, &block)
-        super(name, **args, &block)
+        super
 
         @max = args[:max] || 5
       end

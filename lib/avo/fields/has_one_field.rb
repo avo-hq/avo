@@ -21,7 +21,7 @@ module Avo
           hide_on :forms
         end
 
-        super(id, **args, &block)
+        super
 
         @placeholder ||= I18n.t "avo.choose_an_option"
         @attach_fields = args[:attach_fields]

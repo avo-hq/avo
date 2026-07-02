@@ -10,7 +10,7 @@ module Avo
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_a_country")
 
-        super(id, **args, &block)
+        super
 
         @countries = begin
           ISO3166::Country.translations.sort_by { |code, name| name }.to_h

@@ -3,7 +3,7 @@ module Avo
     module Controls
       class DeleteButton < BaseControl
         def initialize(**args)
-          super(**args)
+          super
 
           @label = args[:label] || I18n.t("avo.delete").capitalize
           if args[:item].present?

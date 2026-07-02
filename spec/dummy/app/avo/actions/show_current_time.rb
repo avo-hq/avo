@@ -29,7 +29,7 @@ class Avo::Actions::ShowCurrentTime < Avo::BaseAction
     timezone_id = Course.timezones.find { |_, cities| cities.include?(city) }&.first
 
     if timezone_id
-      formatted_current_time = TZInfo::Timezone.get(timezone_id).now.strftime('%H:%M:%S')
+      formatted_current_time = TZInfo::Timezone.get(timezone_id).now.strftime("%H:%M:%S")
 
       succeed "In #{city} it's now #{formatted_current_time}."
     else

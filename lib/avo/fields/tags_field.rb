@@ -9,7 +9,7 @@ module Avo
       attr_reader :suggestions_max_items
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         add_boolean_prop args, :close_on_select
         add_boolean_prop args, :enforce_suggestions

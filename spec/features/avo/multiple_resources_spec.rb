@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "Multiple resources on same model", type: :feature do
   let(:user) { create :user }
 
-  describe 'each resource' do
+  describe "each resource" do
     it "returns to parent resource when cancel creation" do
       visit "admin/resources/compact_users/#{user.to_param}/posts?turbo_frame=has_many_field_show_posts"
       expect(current_path).to eql "/admin/resources/compact_users/#{user.to_param}/posts"
