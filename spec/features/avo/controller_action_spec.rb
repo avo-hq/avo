@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Avo::UsersController, type: :controller do
-  let!(:user) { create :user}
+  let!(:user) { create :user }
 
   describe "@view instance variable" do
     it "assigns the @widget" do

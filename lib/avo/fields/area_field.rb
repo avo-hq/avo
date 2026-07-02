@@ -9,7 +9,7 @@ module Avo
       def initialize(id, **args, &block)
         hide_on :index
 
-        super(id, **args, &block)
+        super
 
         @geometry = args[:geometry].presence || :polygon # Accepts: `:polygon` or `:multi_polygon`
         @mapkick_options = args[:mapkick_options].presence || {}

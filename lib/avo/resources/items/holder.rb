@@ -19,7 +19,7 @@ class Avo::Resources::Items::Holder
   def field(field_name, **args, &block)
     # If the field is paresed inside a tab group, add it to the tab
     # This will happen when the field is parsed inside a tab group from a resource method
-    if from.present? && from.class == Avo::Resources::Items::TabGroup::Builder
+    if from.present? && from.instance_of?(Avo::Resources::Items::TabGroup::Builder)
       return from.field(field_name, holder: self, **args, &block)
     end
 

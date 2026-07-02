@@ -3,7 +3,7 @@ module Avo
     module Controls
       class ShowButton < BaseControl
         def initialize(**args)
-          super(**args)
+          super
 
           if args[:item].present?
             @title = I18n.t("avo.view_item", item: args[:item]).humanize if title.nil?

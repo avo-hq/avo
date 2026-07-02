@@ -3,7 +3,7 @@ module Avo
     module Controls
       class BackButton < BaseControl
         def initialize(**args)
-          super(**args)
+          super
 
           @label = args[:label] || I18n.t("avo.go_back")
         end
