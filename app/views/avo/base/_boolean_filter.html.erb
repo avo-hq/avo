@@ -2,8 +2,7 @@
   class="filters-section__body"
   data-controller="boolean-filter"
   data-filter-name="<%= filter.name %>"
-  data-boolean-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
->
+  data-boolean-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>">
   <div class="flex items-center">
     <% if filter.options.empty? %>
       <div class="filters-section__empty-state"><%= filter.class.empty_message %></div>
@@ -13,15 +12,14 @@
           <label class="filters-boolean-option">
             <%= check_box_tag filter.id, value, filter.selected_value(value.to_s, @applied_filters),
               id: "avo_filters_#{filter.id.parameterize.underscore}",
-              'data-filter-class': filter.class,
-              'data-boolean-filter-target': 'option',
-              'data-action': 'input->boolean-filter#changeFilter'
-            %>
+              "data-filter-class": filter.class,
+              "data-boolean-filter-target": "option",
+              "data-action": "input->boolean-filter#changeFilter" %>
             <span><%= label %></span>
           </label>
         <% end %>
       </div>
     <% end %>
-    <%= link_to 'url_redirect', request.url, data: { 'boolean-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, class: 'hidden' %>
+    <%= link_to "url_redirect", request.url, data: {"boolean-filter-target": "urlRedirect", "turbo-frame": params[:turbo_frame]}, class: "hidden" %>
   </div>
 </div>

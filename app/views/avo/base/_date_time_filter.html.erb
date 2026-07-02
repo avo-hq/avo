@@ -1,17 +1,18 @@
 <%= content_tag :div, class: "filters-section__body", data: {
-    controller: "date-time-filter",
-    filter_name: filter.name,
-    date_time_filter_class_value: filter.class.to_s,
-    date_time_filter_keep_filters_panel_open_value: @resource.keep_filters_panel_open,
-    date_time_filter_picker_options_value: filter.picker_options(@applied_filters[filter.class.to_s])
-  } do %>
+      controller: "date-time-filter",
+      filter_name: filter.name,
+      date_time_filter_class_value: filter.class.to_s,
+      date_time_filter_keep_filters_panel_open_value: @resource.keep_filters_panel_open,
+      date_time_filter_picker_options_value: filter.picker_options(@applied_filters[filter.class.to_s])
+    } do %>
   <div class="filters-date-input">
     <div class="w-full" data-slot="value">
       <%= text_field_tag :value, "",
-        class: input_classes('w-full mb-0 !pe-9'),
+        class: input_classes("w-full mb-0 !pe-9"),
         placeholder: filter.class.empty_message,
+        autocomplete: "off",
         data: {
-          date_time_filter_target: "input",
+          date_time_filter_target: "input"
         } %>
     </div>
 
@@ -29,9 +30,9 @@
   </div>
 
   <div class="flex justify-end">
-    <%= a_button style: :primary, data: { action: "date-time-filter#changeFilter" }, size: :sm do %>
+    <%= a_button style: :primary, data: {action: "date-time-filter#changeFilter"}, size: :sm do %>
       <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
     <% end %>
   </div>
-  <%= link_to 'url_redirect', request.url, data: { 'date-time-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, class: 'hidden' %>
+  <%= link_to "url_redirect", request.url, data: {"date-time-filter-target": "urlRedirect", "turbo-frame": params[:turbo_frame]}, class: "hidden" %>
 <% end %>
