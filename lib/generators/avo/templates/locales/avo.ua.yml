@@ -8,6 +8,25 @@ ua:
     appearance:
       accent_picker: Колір акценту
       accents: Акцент
+      accents_list:
+        amber: Amber
+        blue: Blue
+        brand: Brand
+        cyan: Cyan
+        emerald: Emerald
+        fuchsia: Fuchsia
+        green: Green
+        indigo: Indigo
+        lime: Lime
+        orange: Orange
+        pink: Pink
+        purple: Purple
+        red: Red
+        rose: Rose
+        sky: Sky
+        teal: Teal
+        violet: Violet
+        yellow: Yellow
       auto: Авто
       auto_tooltip: Авто (системні налаштування)
       dark: Темний
@@ -16,6 +35,17 @@ ua:
       light: Світлий
       light_tooltip: Світлий режим
       neutrals: Тема
+      neutrals_list:
+        brand: Brand
+        gray: Gray
+        mauve: Mauve
+        mist: Mist
+        neutral: Neutral
+        olive: Olive
+        slate: Slate
+        stone: Stone
+        taupe: Taupe
+        zinc: Zinc
       neutrals_picker: Нейтральна тема
       schemes: Зовнішній вигляд
       shortcut_badges: Значки ярликів

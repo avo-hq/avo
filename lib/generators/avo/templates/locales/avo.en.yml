@@ -8,6 +8,25 @@ en:
     appearance:
       accent_picker: Select accent color
       accents: Accent
+      accents_list:
+        amber: Amber
+        blue: Blue
+        brand: Brand
+        cyan: Cyan
+        emerald: Emerald
+        fuchsia: Fuchsia
+        green: Green
+        indigo: Indigo
+        lime: Lime
+        orange: Orange
+        pink: Pink
+        purple: Purple
+        red: Red
+        rose: Rose
+        sky: Sky
+        teal: Teal
+        violet: Violet
+        yellow: Yellow
       auto: Auto
       auto_tooltip: Auto (system preference)
       dark: Dark
@@ -18,35 +37,16 @@ en:
       neutrals: Theme
       neutrals_list:
         brand: Brand
-        slate: Slate
-        stone: Stone
         gray: Gray
-        zinc: Zinc
-        neutral: Neutral
-        taupe: Taupe
         mauve: Mauve
         mist: Mist
+        neutral: Neutral
         olive: Olive
+        slate: Slate
+        stone: Stone
+        taupe: Taupe
+        zinc: Zinc
       neutrals_picker: Select neutral color
-      accents_list:
-        brand: Brand
-        red: Red
-        orange: Orange
-        amber: Amber
-        yellow: Yellow
-        lime: Lime
-        green: Green
-        emerald: Emerald
-        teal: Teal
-        cyan: Cyan
-        sky: Sky
-        blue: Blue
-        indigo: Indigo
-        violet: Violet
-        purple: Purple
-        fuchsia: Fuchsia
-        pink: Pink
-        rose: Rose
       schemes: Appearance
       shortcut_badges: Shortcut badges
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges

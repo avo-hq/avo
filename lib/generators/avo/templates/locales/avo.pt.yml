@@ -8,6 +8,25 @@ pt:
     appearance:
       accent_picker: Cor de Acento
       accents: Acento
+      accents_list:
+        amber: Amber
+        blue: Blue
+        brand: Brand
+        cyan: Cyan
+        emerald: Emerald
+        fuchsia: Fuchsia
+        green: Green
+        indigo: Indigo
+        lime: Lime
+        orange: Orange
+        pink: Pink
+        purple: Purple
+        red: Red
+        rose: Rose
+        sky: Sky
+        teal: Teal
+        violet: Violet
+        yellow: Yellow
       auto: Automático
       auto_tooltip: Automático (preferência do sistema)
       dark: Escuro
@@ -16,6 +35,17 @@ pt:
       light: Claro
       light_tooltip: Modo Claro
       neutrals: Tema
+      neutrals_list:
+        brand: Brand
+        gray: Gray
+        mauve: Mauve
+        mist: Mist
+        neutral: Neutral
+        olive: Olive
+        slate: Slate
+        stone: Stone
+        taupe: Taupe
+        zinc: Zinc
       neutrals_picker: Tema Neutro
       schemes: Aparência
       shortcut_badges: Insígnias de atalho

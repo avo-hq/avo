@@ -8,6 +8,25 @@ ro:
     appearance:
       accent_picker: Culoare accent
       accents: Accent
+      accents_list:
+        amber: Amber
+        blue: Blue
+        brand: Brand
+        cyan: Cyan
+        emerald: Emerald
+        fuchsia: Fuchsia
+        green: Green
+        indigo: Indigo
+        lime: Lime
+        orange: Orange
+        pink: Pink
+        purple: Purple
+        red: Red
+        rose: Rose
+        sky: Sky
+        teal: Teal
+        violet: Violet
+        yellow: Yellow
       auto: Automat
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
@@ -16,6 +35,17 @@ ro:
       light: Deschis
       light_tooltip: Mod deschis
       neutrals: Temă
+      neutrals_list:
+        brand: Brand
+        gray: Gray
+        mauve: Mauve
+        mist: Mist
+        neutral: Neutral
+        olive: Olive
+        slate: Slate
+        stone: Stone
+        taupe: Taupe
+        zinc: Zinc
       neutrals_picker: Temă neutre
       schemes: Aspect
       shortcut_badges: Insignele scurtăturilor
