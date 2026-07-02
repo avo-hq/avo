@@ -20,14 +20,6 @@ module Avo
         add_string_prop args, :suggestions_max_items
         add_string_prop args, :mode, nil
         add_string_prop args, :fetch_values_from
-
-        @format_using ||= args[:fetch_labels]
-
-        unless Rails.env.production?
-          if args[:fetch_labels].present?
-            puts "[Avo DEPRECATION WARNING]: The `fetch_labels` field configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `format_using` instead."
-          end
-        end
       end
 
       def select_mode?

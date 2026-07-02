@@ -1,3 +1,8 @@
+# Only used for searchable fields
+
+# This controller is currently only used for searchable fields, it keeps the old search controller without any changes
+# Possibly have much more logic that it uses, but it's not worth the effort to refactor it since we're going to replace it with a new searchable fields way
+
 require_dependency "avo/application_controller"
 
 module Avo
@@ -161,7 +166,8 @@ module Avo
       highlighted_title = highlight(title&.to_s, CGI.escapeHTML(params[:q] || ""))
 
       record_path = if resource.link_to_child_resource
-        Avo.resource_manager.get_resource_by_model_class(record.class).new(record: record).record_path
+        child_resource = Avo.resource_manager.get_resource_by_model_class(record.class)
+        child_resource ? child_resource.new(record: record).record_path : resource.record_path
       else
         resource.record_path
       end
@@ -246,17 +252,6 @@ module Avo
       }
     end
 
-    def search_results_count(resource)
-      if resource.search_results_count
-        Avo::ExecutionContext.new(
-          target: resource.search_results_count,
-          params: params
-        ).handle
-      else
-        Avo.configuration.search_results_count
-      end
-    end
-
     def parse_results(query, resource)
       # When using custom search services query should return an array of hashes
       if query.is_a?(Array)
@@ -268,18 +263,15 @@ module Avo
         # Force count to 0 until implement an API to pass the count
         results_count = 0
 
-        # Apply the limit
-        results = query.first(search_results_count(resource))
+        results = Avo::Search::ResultsLimiter.apply(query)
       else
         query = apply_scope(query) if should_apply_any_scope?
 
         # Get the count
         results_count = query.reselect(resource.model_class.primary_key).count
 
-        # Get the results
-        query = query.limit(search_results_count(resource))
-
-        results = apply_search_metadata(query, resource)
+        limited_query = Avo::Search::ResultsLimiter.apply(query)
+        results = apply_search_metadata(limited_query, resource)
       end
 
       [results_count, results]

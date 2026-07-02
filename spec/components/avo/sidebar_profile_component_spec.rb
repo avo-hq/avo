@@ -3,7 +3,6 @@ require "rails_helper"
 RSpec.describe Avo::SidebarProfileComponent, type: :component do
   before do
     allow_message_expectations_on_nil
-    allow(Avo.license).to receive(:lacks_with_trial) { :menu_editor }.and_return(false)
   end
 
   describe "destroy_user_session_path" do
@@ -11,7 +10,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
-          expect(page).to have_css "form[action='/users/sign_out']", text: "Sign out"
+          expect(page).to have_css "form[action='/users/sign_out']", text: "Sign out", visible: :all
         end
       end
     end
@@ -48,7 +47,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
-          expect(page).to have_css "form[action='/accounts/sign_out']", text: "Sign out"
+          expect(page).to have_css "form[action='/accounts/sign_out']", text: "Sign out", visible: :all
         end
       end
     end
@@ -70,7 +69,7 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
       it "renders sign out link" do
         with_controller_class Avo::BaseController do
           render_inline(described_class.new(user: nil))
-          expect(page).to have_css "form[action='/custom/sign_out']", text: "Sign out"
+          expect(page).to have_css "form[action='/custom/sign_out']", text: "Sign out", visible: :all
         end
       end
     end

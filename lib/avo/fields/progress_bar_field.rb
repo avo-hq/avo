@@ -7,7 +7,7 @@ module Avo
       attr_reader :value_suffix
 
       def initialize(name, **args, &block)
-        super(name, **args, &block)
+        super
 
         @max = args[:max] || 100
         @step = args[:step] || 1

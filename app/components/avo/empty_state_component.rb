@@ -2,18 +2,19 @@
 
 class Avo::EmptyStateComponent < Avo::BaseComponent
   prop :message
-  prop :view_type, default: :table do |value|
-    value&.to_sym
-  end
-  prop :add_background, default: false
   prop :by_association, default: false
+  prop :classes
 
   def text
     @message || locale_message
   end
 
-  def view_type_svg
-    "avo/#{@view_type}-empty-state"
+  def cards
+    [
+      {number: 1, position: :top, title: :large},
+      {number: 2, position: :middle, title: :large},
+      {number: 3, position: :bottom, title: :large}
+    ]
   end
 
   private

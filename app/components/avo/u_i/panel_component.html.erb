@@ -1,0 +1,55 @@
+<%= tag.div class: class_names(
+  "panel",
+  @class,
+  "panel--has-sidebar": sidebar?,
+  "has-cover": has_cover?,
+), data: {
+  **@data,
+  component_name:,
+  "item-index": @index
+} do %>
+  <% if cover? %>
+    <div class="panel__cover"><%= cover %></div>
+  <% end %>
+
+  <% if header? %>
+    <div class="panel__header"><%= header %></div>
+  <% elsif title.present? || description.present? || controls? %>
+    <div class="panel__header">
+      <%= render ui.panel_header(
+        title:,
+        description:,
+      ) do |header| %>
+        <% if controls? %>
+          <% header.with_controls do %>
+            <%= controls %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if pre_bodies? %>
+    <% pre_bodies.each do |pre_body| %>
+      <div class="panel__pre-body"><%= pre_body %></div>
+    <% end %>
+  <% end %>
+
+  <div class="panel__content">
+    <div class="panel__body" <%= "data-content-focus tabindex=-1".html_safe if content_focusable? %>>
+      <% if card? %>
+        <div class="panel__card"><%= card %></div>
+      <% else %>
+        <%= body %>
+      <% end %>
+
+      <% if footer? %>
+        <div class="panel__footer"><%= footer %></div>
+      <% end %>
+    </div>
+
+    <% if sidebar? %>
+      <div class="panel__sidebar"><%= sidebar %></div>
+    <% end %>
+  </div>
+<% end %>

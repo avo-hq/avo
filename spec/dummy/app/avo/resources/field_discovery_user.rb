@@ -3,25 +3,29 @@ class Avo::Resources::FieldDiscoveryUser < Avo::BaseResource
   self.description = "This is a resource with discovered fields. It will show fields and associations as defined in the model."
 
   def fields
-    main_panel do
-      discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
+    panel do
+      card do
+        discover_columns except: %i[email active is_admin? birthday is_writer outside_link custom_css]
+      end
       discover_associations only: %i[cv_attachment]
 
       sidebar do
-        with_options only_on: :show do
-          discover_columns only: %i[email], as: :gravatar, link_to_record: true
-          field :heading, as: :heading, label: ""
-          discover_columns only: %i[active], name: "Is active"
-        end
+        card do
+          with_options only_on: :show do
+            discover_columns only: %i[email], as: :gravatar, link_to_record: true
+            field :heading, as: :heading, label: ""
+            discover_columns only: %i[active], name: "Is active"
+          end
 
-        discover_columns only: %i[birthday]
+          discover_columns only: %i[birthday]
 
-        field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-        field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
+          field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
+          field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
 
-        with_options only_on: :forms do
-          field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
-          discover_columns only: %i[custom_css]
+          with_options only_on: :forms do
+            field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+            discover_columns only: %i[custom_css]
+          end
         end
       end
     end

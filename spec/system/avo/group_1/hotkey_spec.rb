@@ -1,0 +1,651 @@
+require "rails_helper"
+
+RSpec.describe "Keyboard shortcuts", type: :system do
+  around do |example|
+    original = Avo.configuration.hotkeys
+    Avo.configuration.hotkeys = {enabled: true, show_key_badges: true}
+    example.run
+    Avo.configuration.hotkeys = original
+  end
+
+  def dispatch_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false)
+    page.execute_script(<<~JS)
+      const eventOptions = {
+        key: #{key.to_json},
+        code: #{code.to_json},
+        shiftKey: #{shift_key},
+        ctrlKey: #{ctrl_key},
+        metaKey: #{meta_key},
+        bubbles: true,
+        cancelable: true
+      }
+
+      const eventTarget = document.body || document.documentElement
+      eventTarget.dispatchEvent(new KeyboardEvent("keydown", eventOptions))
+    JS
+  end
+
+  def active_element_value
+    page.evaluate_script("document.activeElement && document.activeElement.value")
+  end
+
+  def dispatch_active_element_keydown(key)
+    page.execute_script(<<~JS)
+      const activeElement = document.activeElement
+      if (activeElement) {
+        activeElement.dispatchEvent(new KeyboardEvent("keydown", {
+          key: #{key.to_json},
+          bubbles: true,
+          cancelable: true
+        }))
+      }
+    JS
+  end
+
+  def focus_resource_table
+    expect(page).to have_css('[data-index-row-navigator-target="table"]')
+    expect(page).to have_css("tr[data-visit-path]", minimum: 1)
+
+    table = find('[data-index-row-navigator-target="table"]', visible: :all)
+    page.execute_script("arguments[0].focus({ preventScroll: true })", table.native)
+
+    expect(page.evaluate_script("document.activeElement?.tagName")).to eq("TABLE")
+  end
+
+  def active_descendant_id
+    page.evaluate_script(<<~JS)
+      (() => {
+        const table = document.querySelector('[data-index-row-navigator-target="table"]')
+        return table ? table.getAttribute('aria-activedescendant') : null
+      })()
+    JS
+  end
+
+  def dispatch_document_keydown(key, code: nil, shift_key: false, ctrl_key: false, meta_key: false, alt_key: false)
+    page.evaluate_script(<<~JS)
+      (() => {
+        const event = new KeyboardEvent("keydown", {
+          key: #{key.to_json},
+          code: #{code.to_json},
+          shiftKey: #{shift_key},
+          ctrlKey: #{ctrl_key},
+          metaKey: #{meta_key},
+          altKey: #{alt_key},
+          bubbles: true,
+          cancelable: true
+        })
+
+        const dispatchResult = document.dispatchEvent(event)
+
+        return {
+          defaultPrevented: event.defaultPrevented,
+          dispatchResult
+        }
+      })()
+    JS
+  end
+
+  it "opens the keyboard shortcuts panel and closes it with escape" do
+    visit "/admin/resources/projects"
+
+    expect(page).to have_css(".hotkey", visible: :hidden)
+
+    dispatch_keydown("?", code: "Slash", shift_key: true)
+
+    expect(page).to have_css(".hotkey", visible: true)
+    expect(page).to have_text("Keyboard shortcuts")
+
+    dispatch_keydown("Escape")
+
+    expect(page).to have_css(".hotkey", visible: :hidden)
+  end
+
+  it "does not open the keyboard shortcuts panel while typing in a search field" do
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+
+    search_input.click
+    search_input.send_keys("?")
+
+    expect(search_input.value).to include("?")
+    expect(page).to have_css(".hotkey", visible: :hidden)
+  end
+
+  it "toggles the hotkeys-hide-badges class on the html element when pressing Shift+K" do
+    visit "/admin/resources/projects"
+
+    expect(page).to have_css('[data-hotkey="r u"] .hotkey-badge kbd', visible: :all)
+    expect(page).to have_css(".search-input__suffix kbd", visible: :all, count: 1)
+    expect(page).to have_no_css("html.hotkeys-hide-badges")
+
+    dispatch_keydown("K", shift_key: true)
+    expect(page).to have_css("html.hotkeys-hide-badges")
+
+    dispatch_keydown("K", shift_key: true)
+    expect(page).to have_no_css("html.hotkeys-hide-badges")
+  end
+
+  it "applies kbd--called animation feedback when a hotkey fires" do
+    visit "/admin/resources/projects"
+
+    expect(page).to have_css('[data-hotkey="r u"]')
+
+    # The same hotkey is registered on multiple elements (desktop + mobile sidebar),
+    # and @github/hotkey clicks the last-registered one — which may be hidden on
+    # desktop. Block the click on ALL matching elements so navigation never starts.
+    # Also disable the kbd transition so `transitionend` never fires and
+    # `kbd--called` persists past the ~80ms animation window.
+    page.execute_script(<<~JS)
+      document.querySelectorAll('[data-hotkey="r u"]').forEach((el) => {
+        el.addEventListener('click', (e) => { e.preventDefault(); e.stopImmediatePropagation() }, true)
+      })
+      document.head.insertAdjacentHTML('beforeend', '<style>kbd { transition: none !important; }</style>')
+    JS
+
+    dispatch_keydown("r")
+    dispatch_keydown("u")
+
+    expect(page).to have_css('[data-hotkey="r u"] kbd.kbd--called', visible: :all)
+  end
+
+  it "navigates to resources using sidebar hotkeys" do
+    visit "/admin/resources/projects"
+
+    dispatch_keydown("r")
+    dispatch_keydown("u")
+
+    expect(page).to have_current_path("/admin/resources/users")
+  end
+
+  it "does not trigger sidebar hotkeys while typing in a search field" do
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+
+    search_input.click
+    search_input.send_keys("r")
+    search_input.send_keys("u")
+
+    expect(page).to have_current_path("/admin/resources/projects")
+  end
+
+  it "keeps row navigation in bounds after turbo-replacing table rows" do
+    target_project = create(:project, name: "Keyboard navigator target")
+    create_list(:project, 3)
+
+    visit "/admin/resources/projects"
+
+    focus_resource_table
+    3.times { dispatch_keydown("ArrowDown") }
+    expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+    write_in_search(target_project.name)
+
+    expect(page).to have_selector("[data-component-name='avo/index/table_row_component'][data-resource-id='#{target_project.to_param}']")
+    expect(page).to have_css("tr[data-visit-path]", count: 1)
+
+    # Search replaces the table via turbo and leaves focus on the search input.
+    # Re-focus the table so arrow navigation resumes on the new rows.
+    focus_resource_table
+    dispatch_keydown("ArrowUp")
+
+    focused_row = find("tr.table-row.is-keyboard-focused")
+    expect(focused_row["data-resource-id"]).to eq(target_project.to_param)
+  end
+
+  it "does not swallow slash on pages without search input" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    result = dispatch_document_keydown("/", code: "Slash")
+
+    expect(result["defaultPrevented"]).to be(false)
+    expect(result["dispatchResult"]).to be(true)
+  end
+
+  it "opens the edit page using the edit hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("e")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
+  end
+
+  it "goes back using the back hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}/edit"
+
+    dispatch_keydown("b")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+  end
+
+  it "returns to the index from the show page using the index hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("i")
+
+    expect(page).to have_current_path("/admin/resources/projects", ignore_query: true)
+  end
+
+  it "returns to the index from the edit page using the index hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}/edit"
+
+    dispatch_keydown("i")
+
+    expect(page).to have_current_path("/admin/resources/projects", ignore_query: true)
+  end
+
+  it "does not trigger the index hotkey while typing in a field" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}/edit"
+
+    find("input[name='project[name]']").send_keys("i")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
+  end
+
+  it "does not trigger the index hotkey while a modal is open" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("?", code: "Slash", shift_key: true)
+
+    expect(page).to have_css("body.modal-open")
+    expect(page).to have_text("Keyboard shortcuts")
+
+    dispatch_keydown("i")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+  end
+
+  it "opens the delete confirmation dialog using the delete hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("d")
+
+    expect(page).to have_css("dialog#turbo-confirm[open]", visible: true)
+    expect(active_element_value).to eq("confirm")
+    expect(page).to have_button("No, cancel")
+  end
+
+  it "navigates the delete confirmation dialog with the arrow keys" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("d")
+
+    expect(page).to have_css("dialog#turbo-confirm[open]", visible: true)
+    expect(active_element_value).to eq("confirm")
+
+    dispatch_active_element_keydown("ArrowDown")
+    expect(active_element_value).to eq("cancel")
+
+    dispatch_active_element_keydown("ArrowUp")
+    expect(active_element_value).to eq("confirm")
+  end
+
+  # it "submits the form with command or control enter" do
+  #   project = create(:project, name: "Original name")
+
+  #   visit "/admin/resources/projects/#{project.id}/edit"
+
+  #   fill_in "project_name", with: "Updated from hotkey"
+  #   dispatch_keydown("Enter", meta_key: true)
+
+  #   expect(page).to have_text("Project was successfully updated")
+  #   expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+  #   expect(project.reload.name).to eq("Updated from hotkey")
+  # end
+
+  describe "Shift+T focuses the screen content" do
+    def active_element_descriptor
+      page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el) return null
+          return {
+            tag: el.tagName,
+            classes: el.className,
+            contentFocus: el.hasAttribute('data-content-focus')
+          }
+        })()
+      JS
+    end
+
+    it "focuses the grid wrapper on a grid index" do
+      create_list(:user, 3)
+
+      visit "/admin/resources/users?view_type=grid"
+
+      expect(page).to have_css(".grid-wrapper[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("grid-wrapper")
+    end
+
+    it "focuses the panel body on the show view so Shift+Tab reaches the controls" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("panel__body")
+    end
+
+    it "focuses the panel body on the edit view so the user can Tab through fields" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}/edit"
+
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      descriptor = active_element_descriptor
+      expect(descriptor["contentFocus"]).to be(true)
+      expect(descriptor["classes"]).to include("panel__body")
+    end
+
+    it "focuses the visible tab panel on tabbed show views, not a hidden one" do
+      person = create(:person)
+
+      Avo::Resources::Person.with_temporary_items do
+        tabs do
+          tab title: "First" do
+            panel do
+              field :name, as: :text
+            end
+          end
+
+          tab title: "Second" do
+            panel do
+              field :type, as: :text
+            end
+          end
+        end
+      end
+
+      visit avo.resources_person_path(person)
+
+      scroll_to first_tab_group
+      click_tab "Second", within_target: first_tab_group
+
+      dispatch_keydown("T", shift_key: true)
+
+      focused_tab = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el?.hasAttribute('data-content-focus')) return null
+
+          return el.closest('[data-tabs-target="tabPanel"]')?.dataset?.tabId ?? null
+        })()
+      JS
+
+      expect(focused_tab).to eq("Second")
+
+      hidden_ancestor = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          return !!el?.closest('.hidden, [hidden]')
+        })()
+      JS
+
+      expect(hidden_ancestor).to be(false)
+    end
+
+    it "does not focus obscured panel content while a modal is open" do
+      user = create(:user)
+
+      visit avo.resources_user_path(user, "tab-group_first-tabs-group" => "Teams")
+
+      scroll_to first_tab_group
+      click_on "Attach team"
+
+      expect(page).to have_css("body.modal-open")
+      expect(page).to have_css(".panel__body[data-content-focus]")
+
+      dispatch_keydown("T", shift_key: true)
+
+      focused_behind_modal = page.evaluate_script(<<~JS)
+        (() => {
+          const el = document.activeElement
+          if (!el?.hasAttribute('data-content-focus')) return false
+
+          return !el.closest('[aria-modal="true"]')
+        })()
+      JS
+
+      expect(focused_behind_modal).to be(false)
+    end
+  end
+
+  describe "accessible row navigation" do
+    it "does not consume arrow keys when the table is not focused" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      result = dispatch_document_keydown("ArrowDown")
+
+      expect(result["defaultPrevented"]).to be(false)
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "focuses the table with Shift+T without selecting a row" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("T", shift_key: true)
+
+      expect(page.evaluate_script("document.activeElement && document.activeElement.tagName")).to eq("TABLE")
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "focuses the table and moves to the first row when pressing j" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to be_present
+    end
+
+    it "focuses the table and moves to the previous row when pressing k" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("k")
+
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to be_present
+    end
+
+    it "sets aria-activedescendant to the focused row id" do
+      create(:project)
+
+      visit "/admin/resources/projects"
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+      focused_row = find("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to eq(focused_row["id"])
+    end
+
+    it "clears row focus on Escape but keeps the table focused" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+      dispatch_keydown("Escape")
+
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+      expect(page.evaluate_script("document.activeElement && document.activeElement.tagName")).to eq("TABLE")
+    end
+
+    it "clears row focus when blurring the table after a turbo frame refresh" do
+      target_project = create(:project, name: "Blur after turbo target")
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+      write_in_search(target_project.name)
+      expect(page).to have_css("tr[data-visit-path]", count: 1)
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+
+      find("[data-resource-search-target='input']").click
+
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+      expect(active_descendant_id).to be_nil
+    end
+
+    it "does not trigger j/k while typing in the search field" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      search_input = find("[data-resource-search-target='input']")
+      search_input.click
+      search_input.send_keys("j")
+
+      expect(search_input.value).to include("j")
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "does not expose the table as a grid on a show view's has-many table" do
+      project = create(:project)
+      create(:comment, commentable: project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      # The associated comments table should NOT advertise itself as a focusable grid,
+      # so global j/k/Shift+T shortcuts find nothing and do nothing.
+      expect(page).to have_no_css('table[role="grid"]')
+      expect(page).to have_no_css('[data-index-row-navigator-target="table"]')
+
+      dispatch_keydown("j")
+      dispatch_keydown("T", shift_key: true)
+
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+  end
+
+  context "when hotkeys are disabled via config" do
+    around do |example|
+      original = Avo.configuration.hotkeys
+      Avo.configuration.hotkeys = {enabled: false}
+      example.run
+      Avo.configuration.hotkeys = original
+    end
+
+    it "does not open the keyboard shortcuts panel" do
+      visit "/admin/resources/projects"
+
+      expect(page).not_to have_css(".hotkey", visible: :all)
+
+      dispatch_keydown("?", code: "Slash", shift_key: true)
+
+      expect(page).not_to have_css(".hotkey", visible: true)
+    end
+
+    it "does not navigate using sidebar hotkeys" do
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("r")
+      dispatch_keydown("u")
+
+      expect(page).to have_current_path("/admin/resources/projects")
+    end
+
+    it "preserves arrow-key row navigation once the table is focused" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      focus_resource_table
+      dispatch_keydown("ArrowDown")
+
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "does not fire row-specific hotkeys" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      dispatch_keydown("e")
+
+      expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+    end
+  end
+
+  context "when show_key_badges is false" do
+    around do |example|
+      original = Avo.configuration.hotkeys
+      Avo.configuration.hotkeys = {enabled: true, show_key_badges: false}
+      example.run
+      Avo.configuration.hotkeys = original
+    end
+
+    it "does not render inline kbd badges but hotkeys still work" do
+      visit "/admin/resources/projects"
+
+      expect(page).not_to have_css('[data-hotkey="r u"] kbd')
+
+      dispatch_keydown("r")
+      dispatch_keydown("u")
+
+      expect(page).to have_current_path("/admin/resources/users")
+    end
+
+    it "still renders the keyboard shortcuts modal" do
+      visit "/admin/resources/projects"
+
+      expect(page).to have_css(".hotkey", visible: :hidden)
+
+      dispatch_keydown("?", code: "Slash", shift_key: true)
+
+      expect(page).to have_css(".hotkey", visible: true)
+      expect(page).to have_text("Keyboard shortcuts")
+    end
+  end
+end

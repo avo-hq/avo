@@ -1,33 +1,31 @@
-<thead
-  data-component-name="avo/partials/table_header"
-  class="bg-white border-b border-gray-200 pb-1">
-  <% if @resource.record_selector %>
+<thead data-component-name="avo/partials/table_header" class="table-header-group">
+  <% if resource.record_selector %>
     <th class="rounded-lg" data-control="item-select-th">
       <%= content_tag :label, name: t("avo.select_all") do %>
         <%= content_tag :span, t("avo.select_all"), class: 'sr-only' %>
+
         <%= tag :input,
           type: "checkbox",
           name: t("avo.select_all"),
           title: t("avo.select_all"),
           autocomplete: :off,
-          class: "mx-3 rounded w-4 h-4 checked:bg-primary-400 focus:checked:!bg-primary-400",
           data: {
             action: "input->item-select-all#toggle",
             item_select_all_target: "checkbox",
             tippy: "tooltip",
-          }
-        %>
+          } %>
       <% end %>
     </th>
   <% end %>
-  <% if @resource.render_row_controls_on_the_left? %>
+
+  <% if resource.render_row_controls_on_the_left? %>
     <th class="max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>
   <% end %>
-  <% fields.each_with_index do |field, index|  %>
-    <%
-      first_option = Avo.configuration.first_sorting_option.to_s
+
+  <% fields.each_with_index do |field, index| %>
+    <% first_option = Avo.configuration.first_sorting_option.to_s
 
       if params[:sort_by] == field.id.to_s
         second_option = first_option == "desc" ? "asc" : "desc"
@@ -54,23 +52,29 @@
         sort_by = field.id
         sort_direction = first_option
       end
-      text_classes = "text-gray-600 tracking-tight leading-tight text-xs font-semibold"
-    %>
+      text_classes = "text-content-secondary tracking-tight leading-tight text-xs font-semibold" %>
+
     <%= content_tag :th,
-      class: "relative text-left uppercase px-3 py-3 whitespace-nowrap rounded-l",
+      class: class_names("relative text-start px-2 py-2 whitespace-nowrap rounded-s", field.table_header_class),
       data: {
         control: "resource-field-th",
-        controller: "toggle",
         table_header_field_id: field.id,
         table_header_field_type: field.type,
       } do %>
       <%= content_tag :div,
         class: "relative flex items-center justify-between w-full" do %>
-        <% if field.sortable && @resource.sorting_supported? %>
-          <%= link_to params.permit!.merge(sort_by: sort_by, sort_direction: sort_direction),
+        <% if field.sortable && resource.sorting_supported? %>
+          <%
+            # url_for(params) picks the alphabetically-first per-resource route,
+            # which on association tables routes sort links to the wrong resource.
+            sort_query_params = request.query_parameters.merge(sort_by: sort_by, sort_direction: sort_direction).compact
+            sort_url = "#{request.path}?#{sort_query_params.to_query}"
+          %>
+          <%= link_to sort_url,
             class: class_names("flex-1 flex justify-between", text_classes),
             'data-turbo-frame': params[:turbo_frame] do %>
             <%= field.table_header_label %>
+
             <%= render partial: 'avo/partials/sortable_component', locals: {
               field: field,
               sort_tippy_content: I18n.t("avo.sort_#{sort_direction || "reset"}")
@@ -81,32 +85,34 @@
             <%= field.table_header_label %>
           <% end %>
         <% end %>
+
         <% if field.summarizable %>
-          <div id="summary-header-<%= field.id %>" class="<%= text_classes %> cursor-pointer" data-action="click->toggle#togglePanel">
-            <%= svg 'heroicons/solid/chart-bar', class: 'h-3 ml-1' %>
+          <% summary_popover_id = "summary-popover-#{field.id}" %>
+          <div class="popover-menu">
+            <button
+              type="button"
+              class="cursor-pointer rounded-md <%= text_classes %>"
+              popovertarget="<%= summary_popover_id %>"
+            >
+              <%= svg 'tabler/filled/chart-pie-4', class: 'h-3 ms-1' %>
+            </button>
+            <turbo-frame
+              id="<%= summary_popover_id %>"
+              popover="auto"
+              loading="lazy"
+              src="<%= distribution_chart_path(summary_chart_params_for(field)) %>"
+              class="popover-menu__panel"
+              data-controller="popover-menu"
+            >
+              <%= render Avo::LoadingComponent.new %>
+            </turbo-frame>
           </div>
-          <turbo-frame
-            id="summary-frame-<%= field.id %>"
-            loading="lazy"
-            src="<%= distribution_chart_path(
-              {
-                resource_name: field.resource.model_class,
-                field_id: field.id,
-                via_record_id: @parent_record&.to_param,
-                via_resource_class: @parent_resource&.class&.to_s,
-                association_name: @field&.attribute_id
-              }.compact
-            ) %>"
-            class="absolute inset-auto bg-white w-full sm:w-[400px] top-0 mt-6 p-4 z-40 shadow-modal rounded overflow-hidden hidden border border-gray-50"
-            data-toggle-target="panel"
-          >
-            <%= render Avo::LoadingComponent.new %>
-          </turbo-frame>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
-  <% if @resource.render_row_controls_on_the_right? %>
+
+  <% if resource.render_row_controls_on_the_right? %>
     <th class="w-px max-w-24" data-control="resource-controls-th">
       <!-- Item controls cell -->
     </th>

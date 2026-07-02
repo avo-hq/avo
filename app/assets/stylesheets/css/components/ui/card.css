@@ -1,0 +1,108 @@
+/* Card radii as shared design tokens. Consumed via Tailwind's `rounded-(--var)`
+   arbitrary-property syntax so the value can be reused and overridden anywhere
+   instead of being a one-off literal. */
+@theme {
+}
+
+/* Card Component - Based on Figma Design System */
+.card {
+  @apply flex flex-col items-start self-stretch rounded-card border border-tertiary bg-secondary;
+
+  /* Contain horizontal overflow so a wide inner scroller (e.g. .card__wrapper
+     wrapping a wide table) can't bleed past the card and push the document
+     wider than the viewport on narrow screens. */
+  overflow-x: clip;
+}
+
+/* Card variants */
+.card--default {
+  /* Default styling already applied */
+}
+
+.card--compact {
+  /* Compact variant - smaller spacing */
+  .card__wrapper {
+    @apply p-0.5;
+  }
+
+  .card__header {
+    @apply py-2 px-3;
+  }
+}
+
+.card--full-width {
+  /* Full width variant */
+  @apply w-full;
+}
+
+/* Card wrapper */
+.card__wrapper {
+  @apply flex flex-col items-start self-stretch w-full;
+  /* offset 1px from the wrapper to match the design */
+  padding: calc(var(--spacing) - 1px);
+  /* prevent scrollIntoView from shifting the table horizontally by the padding amount */
+  scroll-padding-inline: calc(var(--spacing) );
+}
+
+/* for pagination we need the padding to be 4px */
+/* TODO: maybe we can make the same padding for all the cases */
+.card:has(.card__footer .pagination) {
+  .card__wrapper {
+    @apply p-1;
+  }
+}
+
+/* Card header */
+.card__header {
+  @apply flex flex-col items-start self-stretch py-2 px-4 leading-tight;
+
+  &:has(select),
+  &:has(.button) {
+    @apply pe-0;
+  }
+
+  /* `sm` size buttons make the header too tall. This will compensate for it. */
+  .button {
+    @apply -my-1;
+  }
+}
+
+.card--compact-header {
+  .card__header {
+    @apply py-1 px-2;
+  }
+}
+
+/* Card title - Copy/14/500 from Figma */
+.card__title {
+  @apply text-content font-medium leading-6 text-sm;
+}
+
+/* Card description - Copy/14/400 from Figma */
+.card__description {
+  @apply text-content-secondary font-normal leading-5 text-sm;
+}
+
+/* Card body */
+.card__body {
+  @apply flex flex-col items-start self-stretch w-full rounded-card-wrapper border border-tertiary bg-primary;
+}
+
+/* Card footer - full width so pagination can span edge to edge */
+.card__footer {
+  @apply w-full;
+    &:has(.pagination) {
+      @apply p-1 pt-0;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card__header {
+    @apply py-2 px-3;
+  }
+
+  .card--compact .card__header {
+    @apply py-1 px-2;
+  }
+}

@@ -5,6 +5,6 @@
     @dashboard: <%%= @dashboard %>
     <br />
     <br />
-    Customize this partial under <code class='p-1 rounded bg-gray-500 text-white text-sm'>app/views/avo/cards/_<%= name.underscore %>.html.erb</code>
+    Customize this partial under <code class='p-1 rounded-sm bg-gray-500 text-white text-sm'>app/views/avo/cards/_<%= name.underscore %>.html.erb</code>
   </div>
 </div>

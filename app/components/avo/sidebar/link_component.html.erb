@@ -1,14 +1,27 @@
 <% if @path.present? %>
-  <%= link_caller.send link_method, @path, class: classes, active: @active, target: @target, data: @data, **@args do %>
-    <%= helpers.svg @icon, class: "h-4 text-gray-700" if @icon.present? %>
-    <%= @label %>
+  <%= link_caller.send link_method, @path, class: root_css_class, active: @active, target: @target, data: link_data, disabled: @disabled, "aria-disabled": @disabled, **@args do %>
+    <% if show_icon? %>
+      <span class="sidebar-link__icon-wrapper sidebar-icon <%= 'sidebar-link__icon-wrapper--placeholder' if link_icon.blank? %>">
+        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" if link_icon.present? %>
+      </span>
+    <% end %>
+
+    <span><%= @label %></span>
+
+    <%= hotkey_badge(@hotkey, class: "ms-auto") if @hotkey.present? %>
+
     <% if @target == :_blank %>
-      <%= helpers.svg('heroicons/outline/external-link', class: 'self-center ml-auto h-3 mr-2') %>
+      <%= helpers.svg("tabler/outline/external-link", class: "sidebar-link__external-icon sidebar-icon") %>
     <% end %>
   <% end %>
 <% else %>
-  <%= content_tag :div, class: classes, active: @active, target: @target, data: @data do %>
-    <%= helpers.svg @icon, class: "h-4 text-gray-700" if @icon.present? %>
-    <%= @label %>
+  <%= content_tag :div, class: root_css_class, active: @active, target: @target, data: @data do %>
+    <% if show_icon? %>
+      <span class="sidebar-link__icon-wrapper sidebar-icon <%= 'sidebar-link__icon-wrapper--placeholder' if link_icon.blank? %>">
+        <%= helpers.svg link_icon, class: "sidebar-link__icon sidebar-icon" if link_icon.present? %>
+      </span>
+    <% end %>
+
+    <span><%= @label %></span>
   <% end %>
 <% end %>

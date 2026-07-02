@@ -1,0 +1,56 @@
+.checkbox-list-field {
+  @apply flex flex-col gap-2;
+}
+
+.checkbox-list__search {
+  @apply w-full;
+}
+
+.checkbox-list {
+  --checkbox-list-max-height: 22rem;
+
+  @apply flex max-h-(--checkbox-list-max-height) flex-col overflow-y-auto rounded-lg border border-tertiary bg-primary p-1;
+
+  box-shadow: var(--box-shadow);
+}
+
+.checkbox-list__row {
+  @apply flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm text-content transition-colors;
+}
+
+.checkbox-list__row:hover {
+  @apply bg-secondary;
+}
+
+.checkbox-list__row:focus-within {
+  @apply bg-secondary ring-2 ring-accent-content ring-offset-2 ring-offset-primary;
+}
+
+.checkbox-list__row input[type="checkbox"] {
+  @apply shrink-0;
+}
+
+.checkbox-list .search-item-image {
+  @apply size-8 object-cover flex-shrink-0 rounded-lg border border-tertiary bg-background;
+}
+
+.checkbox-list .search-item-body {
+  @apply flex flex-1 min-w-0 flex-col gap-0.5;
+}
+
+.checkbox-list .search-item-title {
+  @apply overflow-hidden text-ellipsis text-content text-sm font-medium leading-5;
+}
+
+.checkbox-list .search-item-description {
+  @apply overflow-hidden text-ellipsis text-content-secondary text-xs font-normal leading-4;
+}
+
+.checkbox-list__empty {
+  @apply flex items-center justify-center px-3 py-2 text-sm text-content-secondary;
+}
+
+.checkbox-list__hint,
+.checkbox-list__hidden-selections {
+  @apply border-t border-tertiary px-3 py-2 text-sm text-content-secondary;
+}

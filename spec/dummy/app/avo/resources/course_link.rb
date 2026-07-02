@@ -30,4 +30,8 @@ class Avo::Resources::CourseLink < Avo::BaseResource
       }
     }
   end
+
+  def actions
+    action Avo::Actions::CheckLinkHealth
+  end
 end

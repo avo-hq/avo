@@ -3,6 +3,7 @@ require_dependency "avo/application_controller"
 module Avo
   class BaseController < ApplicationController
     include Avo::Concerns::FiltersSessionHandler
+    include Avo::Concerns::AssociationQueryScope
     include Avo::Concerns::SafeCall
 
     before_action :set_resource_name
@@ -11,49 +12,31 @@ module Avo
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
-    before_action :fill_record, only: [:create, :update]
+    before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
     # Don't run base authorizations for associations
-    before_action :authorize_base_action, except: :preview, if: -> { controller_name != "associations" }
+    before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
+
+    before_action :set_modal_params
+    layout :choose_layout
 
     def index
       @page_title = @resource.plural_name.humanize
 
       if @reflection.present? && !turbo_frame_request?
-        add_breadcrumb @record.class.to_s.pluralize, resources_path(resource: @parent_resource)
-        add_breadcrumb @parent_resource.record_title, resource_path(record: @record, resource: @parent_resource)
+        # A good rule of thumb is that the resource name entry (Users) gets just the initials
+        # The record name gets initials and avatar
+        add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials
+        add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar
       end
-      add_breadcrumb @resource.plural_name.humanize
+      add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
 
       set_applied_filters
       set_index_params
       set_filters
       set_actions
       set_query
-
-      # Eager load the associations
-      if @resource.includes.present?
-        @query = @query.includes(*@resource.includes)
-      end
-
-      # Eager load attachments
-      if @resource.attachments.present?
-        @resource.attachments.each do |attachment|
-          @query = @query.send(:"with_attached_#{attachment}")
-        end
-      end
-
-      apply_sorting if @index_params[:sort_by]
-
-      # Apply filters to the current query
-      filters_to_be_applied.each do |filter_class, filter_value|
-        @query = filter_class.safe_constantize.new(
-          arguments: @resource.get_filter_arguments(filter_class)
-        ).apply_query request, @query, filter_value
-      end
-
-      safe_call :set_and_apply_scopes
-      safe_call :apply_dynamic_filters
+      build_index_query
       apply_pagination
 
       # Create resources for each record
@@ -64,6 +47,36 @@ module Avo
       end
 
       set_component_for __method__
+
+      if request.headers["X-Search-Request"] == "resource-search-controller"
+        respond_to do |format|
+          format.turbo_stream do
+            has_resources = @resources.present?
+            common_args = {
+              resources: @resources,
+              resource: @resource,
+              reflection: @reflection,
+              parent_record: @parent_record,
+              parent_resource: @parent_resource,
+              pagy: @pagy,
+              query: @query,
+              actions: @actions
+            }
+
+            render turbo_stream: [
+              turbo_stream.replace("#{@resource.model_key}_body_content") do
+                Avo::Current.view_context.render Avo::ResourceListingComponent.new(
+                  **common_args,
+                  turbo_frame: @turbo_frame,
+                  index_params: @index_params
+                )
+              end,
+              # used to show/hide the filters button and bar
+              has_resources ? turbo_stream.remove_css_class("body", "index-missing-resources") : turbo_stream.add_css_class("body", "index-missing-resources")
+            ]
+          end
+        end
+      end
     end
 
     def show
@@ -78,22 +91,10 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
-      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
-      if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
+      add_via_breadcrumbs
 
-        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
-        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
-
-        add_breadcrumb @resource.plural_name.humanize
-      else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-      end
-
-      add_breadcrumb @resource.record_title
-      add_breadcrumb I18n.t("avo.details").upcase_first
+      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: I18n.t("avo.details").upcase_first, path: nil
 
       set_component_for __method__
     end
@@ -102,11 +103,6 @@ module Avo
       # Record is already hydrated on set_record_to_fill method
       @record = @resource.record
       @resource.hydrate(view: Avo::ViewInquirer.new(:new), user: _current_user)
-
-      # Handle special cases when creating a new record via a belongs_to relationship
-      if params[:via_belongs_to_resource_class].present?
-        return render turbo_stream: turbo_stream.append(Avo::MODAL_FRAME_ID, partial: "avo/base/new_via_belongs_to")
-      end
 
       set_actions
 
@@ -117,17 +113,20 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb via_resource.plural_name, resources_path(resource: via_resource)
-        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
-        add_breadcrumb @resource.plural_name.humanize
+        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
       else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
 
-      add_breadcrumb t("avo.new").humanize
+      add_breadcrumb title: t("avo.new").humanize
 
       set_component_for __method__, fallback_view: :edit
+
+      # Called from avo-advanced
+      safe_call :handle_reactive_fields
     end
 
     def create
@@ -165,8 +164,8 @@ module Avo
       saved = save_record
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
-      add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
-      add_breadcrumb t("avo.new").humanize
+      add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+      add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials
       set_actions
 
       set_component_for :edit
@@ -182,6 +181,9 @@ module Avo
       set_actions
 
       set_component_for __method__
+
+      # Called from avo-advanced
+      safe_call :handle_reactive_fields
     end
 
     def update
@@ -219,7 +221,24 @@ module Avo
       render layout: params[:turbo_frame].blank?
     end
 
+    def search
+      # Do not remove this method, it is implemented on avo-pro
+      # Just a placeholder to avoid:
+      # The search action could not be found for the :authorize_base_action
+      # callback on Avo::UsersController, but it is listed in the controller's
+      # :except option.
+      # Raising for missing callback actions is a new default in Rails 7.1, if you'd
+      # like to turn this off you can delete the option from the environment configurations
+      # or set `config.action_controller.raise_on_missing_callback_actions` to `false`.
+    end
+
     private
+
+    def unprocessable_status
+      # :unprocessable_content was added in Rails 7.1
+      # Use it when available, fall back to :unprocessable_entity for older versions
+      (Rails.version.to_f >= 7.1) ? :unprocessable_content : :unprocessable_entity
+    end
 
     def save_record
       perform_action_and_record_errors do
@@ -324,15 +343,16 @@ module Avo
       @index_params = {}
 
       set_pagination_params
-
-      # Sorting
-      @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
-
-      @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
+      set_sorting_params
 
       if @resource.available_view_types.exclude? @resource.view_type.to_sym
         raise "View type '#{@resource.view_type}' is unavailable for #{@resource.class}."
       end
+    end
+
+    def set_sorting_params
+      @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
+      @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
     end
 
     def set_filters
@@ -360,8 +380,11 @@ module Avo
     def set_applied_filters
       reset_filters if params[:reset_filter]
 
+      fetched_filters = fetch_filters
+      @current_encoded_filters = fetched_filters unless fetched_filters.is_a?(ActionController::Parameters)
+
       # Return if there are no filters or if the filters are actually ActionController::Parameters (used by dynamic filters)
-      return @applied_filters = {} if (fetched_filters = fetch_filters).blank? || fetched_filters.is_a?(ActionController::Parameters)
+      return @applied_filters = {} if fetched_filters.blank? || fetched_filters.is_a?(ActionController::Parameters)
 
       @applied_filters = Avo::Filters::BaseFilter.decode_filters(fetched_filters)
 
@@ -391,17 +414,7 @@ module Avo
 
     # Get the default state of the filters and override with the user applied filters
     def filters_to_be_applied
-      filter_defaults = {}
-
-      @resource.get_filters.each do |filter|
-        filter = filter[:class].new arguments: filter[:arguments]
-
-        unless filter.default.nil?
-          filter_defaults[filter.class.to_s] = filter.default
-        end
-      end
-
-      filter_defaults.merge(@applied_filters)
+      Avo::Filters::BasicFilters.to_be_applied(resource: @resource, applied_filters: @applied_filters)
     end
 
     def set_edit_title_and_breadcrumbs
@@ -415,27 +428,42 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb via_resource.plural_name, resources_path(resource: @resource)
-        add_breadcrumb via_resource.record_title, resource_path(record: via_record, resource: via_resource)
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
-        add_breadcrumb @resource.plural_name.humanize
+        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
       else
-        add_breadcrumb @resource.plural_name.humanize, resources_path(resource: @resource)
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
 
-      add_breadcrumb @resource.record_title, resource_path(record: @resource.record, resource: @resource, **last_crumb_args)
-      add_breadcrumb t("avo.edit").humanize
+      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: t("avo.edit").humanize
     end
 
     def create_success_action
-      return render "close_modal_and_reload_field" if params[:via_belongs_to_resource_class].present?
+      if params[:via_belongs_to_resource_class].present?
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.remove(Avo::MODAL_FRAME_ID),
+              turbo_stream.avo_update_belongs_to(
+                relation_name: params[:via_relation],
+                target_record_id: @record.to_param,
+                target_resource_label: @resource.record_title,
+                target_resource_class: @record.class.name
+              )
+            ]
+          end
+        end
+        return
+      end
 
       respond_to do |format|
-        format.html { redirect_to after_create_path, notice: create_success_message }
+        format.html { redirect_to after_create_path, flash: {success: create_success_message} }
       end
     end
 
@@ -443,7 +471,7 @@ module Avo
       flash.now[:error] = create_fail_message
 
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: unprocessable_status }
         format.turbo_stream { render "create_fail_action" }
       end
     end
@@ -473,7 +501,7 @@ module Avo
 
     def update_success_action
       respond_to do |format|
-        format.html { redirect_to after_update_path, notice: update_success_message }
+        format.html { redirect_to after_update_path, flash: {success: update_success_message} }
       end
     end
 
@@ -481,7 +509,7 @@ module Avo
       flash.now[:error] = update_fail_message
 
       respond_to do |format|
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: unprocessable_status }
         format.turbo_stream { render "update_fail_action" }
       end
     end
@@ -566,6 +594,7 @@ module Avo
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
       @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
+      Pagy::I18n.locale = @pagy_locale if defined?(Pagy::I18n) && Pagy::I18n.respond_to?(:locale=)
     end
 
     def pagy_query
@@ -597,6 +626,32 @@ module Avo
     def apply_pagination
       # Set `trim_extra` to false in associations so the first page has the `page=1` param assigned
       @pagy, @records = @resource.apply_pagination(index_params: @index_params, query: pagy_query, trim_extra: @related_resource.blank?)
+    end
+
+    def build_index_query
+      # Eager load the associations
+      if @resource.includes.present?
+        @query = @query.includes(*@resource.includes)
+      end
+
+      # Apply the search query if configured on the resource
+      apply_search
+
+      # Eager load attachments
+      if @resource.attachments.present?
+        @resource.attachments.each do |attachment|
+          @query = @query.send(:"with_attached_#{attachment}")
+        end
+      end
+
+      apply_sorting if @index_params[:sort_by]
+
+      # Apply filters to the current query
+      apply_index_filters
+      safe_call :set_and_apply_scopes
+      safe_call :apply_dynamic_filters
+
+      @query
     end
 
     def apply_sorting
@@ -641,9 +696,124 @@ module Avo
       @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
     end
 
-    # If we don't get a query object predefined from a child controller like associations, just spin one up
+    # If we don't get a query object predefined from a child controller like associations, just spin one up.
+    # `base_index_query` is association-aware so the charts controller can reuse the same starting point.
     def set_query
-      @query ||= @resource.class.query_scope
+      @query ||= base_index_query
+    end
+
+    # Returns the starting ActiveRecord relation for an index-style query,
+    # association-aware based on request params. Used by both the regular
+    # index view and the summarizable distribution chart so the two paths
+    # share one source of truth.
+    def base_index_query
+      if associated_summary?
+        build_association_scope_from_params
+      else
+        @resource.class.query_scope
+      end
+    end
+
+    def add_via_breadcrumbs
+      if params[:via_resource_class].present? && params[:via_record_id].present?
+        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
+        via_record = via_resource.find_record params[:via_record_id], params: params
+        via_resource = via_resource.new record: via_record
+
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+
+        add_breadcrumb title: @resource.plural_name.humanize, path: nil, initials: @resource.class.initials
+      else
+        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+      end
+    end
+
+    def associated_summary?
+      params[:via_record_id].present? && params[:via_resource_class].present? && (params[:association_name].present? || params[:related_name].present?)
+    end
+
+    def build_association_scope_from_params
+      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
+      @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
+      @parent_resource = parent_resource_class.new(record: @parent_record, view: Avo::ViewInquirer.new("show"))
+      @parent_resource.detect_fields
+
+      association_query_scope(
+        parent_resource: @parent_resource,
+        parent_record: @parent_record,
+        association_name: params[:association_name] || params[:related_name],
+        authorization: @resource.authorization(user: _current_user),
+        resource: @resource
+      )
+    end
+
+    def association_query_scope(
+      parent_resource:,
+      parent_record:,
+      association_name:,
+      authorization:,
+      resource:,
+      field_association_name: association_name
+    )
+      valid_association_name =
+        BaseResource.valid_association_name(parent_record, association_name)
+      association_field =
+        find_association_field(
+          resource: parent_resource,
+          association: field_association_name
+        )
+
+      query =
+        authorization.apply_policy(parent_record.send(valid_association_name))
+
+      if association_field&.scope.present?
+        query =
+          Avo::ExecutionContext.new(
+            target: association_field.scope,
+            query: query,
+            parent: parent_record,
+            resource: resource,
+            parent_resource: parent_resource
+          ).handle
+      end
+
+      query
+    end
+
+    def apply_index_filters
+      filters_to_be_applied.each do |filter_class, filter_value|
+        @query = filter_class.safe_constantize.new(
+          arguments: @resource.get_filter_arguments(filter_class)
+        ).apply_query request, @query, filter_value
+      end
+    end
+
+    def apply_search
+      return if @resource.class.search_query.nil? || params[:q].nil?
+
+      @query = Avo::ExecutionContext.new(
+        target: @resource.class.search_query,
+        params: params,
+        q: params[:q].strip,
+        query: @query
+      ).handle
+    end
+
+    def choose_layout
+      if params[:modal_layout].present?
+        "avo/modal"
+      else
+        "avo/application"
+      end
+    end
+
+    def set_modal_params
+      return unless params[:modal_layout].present?
+
+      @modal_width = params[:modal_width] || "4xl"
+      @modal_height = params[:modal_height] || "4xl"
+      @wrapper_class = params[:wrapper_class] || ""
     end
   end
 end

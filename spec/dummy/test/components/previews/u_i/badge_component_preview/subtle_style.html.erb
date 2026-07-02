@@ -1,0 +1,25 @@
+<div class="p-8 bg-white">
+  <h3 class="text-lg font-semibold text-gray-900 mb-6">Subtle Style - With Icon</h3>
+  <div class="flex flex-wrap gap-3">
+    <%= render Avo::UI::BadgeComponent.new(label: "Orange", style: :subtle, color: "orange", icon: "tabler/outline/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Yellow", style: :subtle, color: "yellow", icon: "tabler/outline/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Green", style: :subtle, color: "green", icon: "tabler/outline/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Teal", style: :subtle, color: "teal", icon: "tabler/outline/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Blue", style: :subtle, color: "blue", icon: "tabler/outline/paperclip") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Purple", style: :subtle, color: "purple", icon: "tabler/outline/paperclip") %>
+  </div>
+
+  <h3 class="text-lg font-semibold text-gray-900 mb-6 mt-8">Subtle Style - Without Icon</h3>
+  <div class="flex flex-wrap gap-3">
+    <%= render Avo::UI::BadgeComponent.new(label: "Orange", style: :subtle, color: "orange") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Yellow", style: :subtle, color: "yellow") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Green", style: :subtle, color: "green") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Teal", style: :subtle, color: "teal") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Blue", style: :subtle, color: "blue") %>
+    <%= render Avo::UI::BadgeComponent.new(label: "Purple", style: :subtle, color: "purple") %>
+  </div>
+
+  <p class="text-sm text-gray-600 mt-6 italic">
+    Note: Subtle style (default) available for all colors.
+  </p>
+</div>

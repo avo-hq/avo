@@ -5,14 +5,16 @@ module Avo
       include Avo::Fields::Concerns::ReloadIcon
       include Avo::Fields::Concerns::LinkableTitle
       include Avo::Concerns::HasDescription
+      include Avo::Concerns::FrameLoadingMode
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         @use_resource = args[:use_resource]
         @reloadable = args[:reloadable]
         @linkable = args[:linkable]
         @description = args[:description]
+        @loading = args[:loading]
       end
 
       def field_resource
@@ -28,6 +30,13 @@ module Avo
           .append_path(id.to_s)
           .append_query(query_params(add_turbo_frame:))
           .to_s
+      end
+
+      # Association frames inherit their cold-start defaults (`loading`,
+      # `auto_load_for`) from `config.associations = {frames: {...}}` when the
+      # field itself doesn't pass `loading:`. See Avo::Concerns::FrameLoadingMode.
+      def frame_loading_defaults
+        Avo.configuration.associations.fetch(:frames, {})
       end
 
       # The value
@@ -73,7 +82,7 @@ module Avo
       def component_for_view(view = Avo::ViewInquirer.new("index"))
         view = Avo::ViewInquirer.new("show") if view.in? %w[new create update edit]
 
-        super(view)
+        super
       end
 
       def authorized?
@@ -121,6 +130,17 @@ module Avo
 
       def default_view
         Avo.configuration.skip_show_view ? :edit : :show
+      end
+
+      # Attributes exposed to callable descriptions. `loading_type` tells a
+      # description lambda how the field is being rendered: `:manual` for a
+      # not-yet-loaded manual placeholder, `nil` for live/loaded content. A
+      # lambda can branch on it to avoid touching the association (e.g.
+      # `query.count`) on the placeholder paint. The manual placeholder render
+      # path passes `loading_type: :manual`; every other context keeps the
+      # `nil` default.
+      def description_attributes
+        {loading_type: nil}
       end
     end
   end

@@ -5,93 +5,117 @@
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
     **@resource.stimulus_data_attributes
-  } do %>
+  }.tap { |d| d[:controller] = "#{d[:controller]} index-row-navigator" if @reflection.blank? } do %>
+
   <%= render_cards_component %>
-  <%= render Avo::PanelComponent.new(
-      description: description,
-      cover_photo: resource.cover_photo,
-      data: {component: "resources-index"},
-      display_breadcrumbs: (@reflection.blank? && @parent_resource.blank?) || (@reflection.present? && !helpers.turbo_frame_request?)
-    ) do |c| %>
-    <% c.with_name_slot do %>
-      <%= render Avo::PanelNameComponent.new name: title, url: (params[:turbo_frame].present? && linkable?) ? field.frame_url(add_turbo_frame: false) : nil, target: :_blank do |panel_name_component| %>
-        <% panel_name_component.with_body do %>
-          <% if reloadable %>
-            <%= button_tag data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" } do %>
-              <%= helpers.svg "heroicons/outline/arrow-path", class: "ml-2 text-2xl h-6 " %>
-            <% end %>
+
+  <%= render ui.panel(
+      cover: resource.cover,
+      class: "w-full",
+      data: {
+        component_name:,
+        controller: "resource-search",
+        "resource-search-debounce-value": Avo.configuration.search_debounce.to_s,
+        "resource-search-url-value": request.fullpath
+      },
+    ) do |panel| %>
+      <% if @resource.cover.present? %>
+        <% panel.with_cover do %>
+          <%= render Avo::CoverComponent.new cover: @resource.cover %>
+        <% end %>
+      <% end %>
+
+    <% panel.with_header do %>
+      <%= render ui.panel_header(
+        title:,
+        description:
+      ) do |header| %>
+        <% header.with_title_slot do %>
+          <% if reloadable? %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              icon: "tabler/outline/refresh",
+              as: :icon,
+              title: t('avo.reload'),
+              classes: "cursor-pointer",
+              data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" }
+            ) %>
+          <% end %>
+
+          <% if linkable? %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              icon: "tabler/outline/external-link",
+              as: :icon,
+              url: field.frame_url(add_turbo_frame: false),
+              target: :_blank,
+              title: t('avo.open_in_new_tab')
+            ) %>
+          <% end %>
+
+          <% if Rails.env.development? %>
+            <%= render Avo::DiscreetInformationComponent.new(
+              as: :icon,
+              title: t('avo.open_in_your_editor'),
+              url: helpers.editor_file_path(@resource),
+              icon: "tabler/outline/code"
+            ) %>
+          <% end %>
+        <% end %>
+
+        <% header.with_controls do %>
+          <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
+            <%= render_control control %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
-    <% c.with_tools do %>
-      <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
-        <%= render_control control %>
-      <% end %>
-    <% end %>
-    <% c.with_body do %>
-      <div class="flex flex-col">
-        <%= render scopes_list if can_render_scopes? %>
-        <div class="flex flex-col">
-          <div class="flex flex-col xs:flex-row xs:justify-between space-y-2 xs:space-y-0 py-4 <%= "hidden" unless header_visible? %>">
-            <div class="flex items-center px-4 w-64">
-              <% if show_search_input %>
-                <%= render partial: "avo/partials/resource_search", locals: {resource: @resource.route_key, via_reflection: via_reflection} %>
-              <% else %>
-                <%# Offset for the space-y-2 property when the search is missing %>
-                <div class="-mb-2"></div>
-              <% end %>
-            </div>
 
-            <div class="justify-self-end flex justify-start xs:justify-end items-center px-4 space-x-3">
-              <%= render_dynamic_filters_button %>
-              <% unless field&.hide_filter_button %>
-                <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record %>
-              <% end %>
+    <% panel.with_body do %>
+      <div class="relative flex flex-col gap-y-4">
+        <% if header_visible? %>
+          <div class="relative flex flex-col gap-y-4 z-20">
+            <div class="flex flex-col gap-y-4">
+              <%= render scopes_list if can_render_scopes? %>
 
-              <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
+              <div class="flex flex-col xs:flex-row xs:justify-between gap-4">
+                <div class="flex w-64 items-center">
+                  <% if show_search_input %>
+                    <%= render ui.search_input(
+                      name: "q",
+                      value: params[:q],
+                      id: nil,
+                      placeholder: t('avo.search.placeholder'),
+                      shortcut: :slash,
+                      data: {
+                        action: "input->resource-search#search keydown->resource-search#blurOnEscape",
+                        "resource-search-target": "input"
+                      }) %>
+                  <% end %>
+                </div>
+
+                <div class="flex items-center justify-between space-x-3 rtl:space-x-reverse justify-self-end xs:justify-end">
+                  <% if show_dynamic_filters_button? %>
+                    <div class="index-missing-resources:hidden">
+                      <%= render_dynamic_filters_button %>
+                    </div>
+                  <% end %>
+
+                  <% unless field&.hide_filter_button %>
+                    <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record, parent_resource: @parent_resource %>
+                  <% end %>
+
+                  <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
+                </div>
+              </div>
+
+              <% if has_dynamic_filters? %>
+                <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
+              <% end %>
             </div>
           </div>
-          <% if has_dynamic_filters? %>
-            <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
-          <% end %>
-        </div>
+        <% end %>
+
+        <%= render Avo::ResourceListingComponent.new(**resource_content_components_common_args) %>
       </div>
-      <% if @resource.view_type.to_sym == :table %>
-        <% if @resources.present? %>
-          <div class="w-full relative flex-1 flex mt-0">
-            <%= render(@resource.resolve_component(Avo::Index::ResourceTableComponent).new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query, actions: @actions)) %>
-          </div>
-        <% else %>
-          <%= helpers.empty_state by_association: params[:related_name].present?, view_type: @resource.view_type, add_background: true %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <% c.with_bare_content do %>
-     <% if @resource.view_type.to_sym == :map %>
-        <% if @resources.present? %>
-          <div>
-            <%= render(@resource.resolve_component(Avo::Index::ResourceMapComponent).new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, pagy: @pagy, query: @query)) %>
-          </div>
-        <% else %>
-          <%= helpers.empty_state by_association: params[:related_name].present?, view_type: @resource.view_type, add_background: true %>
-        <% end %>
-      <% end %>
-      <% if @resource.view_type.to_sym == :table || @resource.view_type.to_sym == :map %>
-        <% if @records.present? %>
-          <div class="mt-4 w-full">
-            <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
-          </div>
-        <% end %>
-      <% end %>
-      <% if @resource.view_type.to_sym == :grid %>
-        <div id="records_panel">
-          <%= render Avo::Index::ResourceGridComponent.new(resources: @resources, resource: @resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: @actions) %>
-        </div>
-        <div class="mt-6">
-          <%= render Avo::PaginatorComponent.new pagy: @pagy, turbo_frame: @turbo_frame, index_params: @index_params, resource: @resource, parent_record: @parent_record, parent_resource: @parent_resource, discreet_pagination: field&.discreet_pagination %>
-        </div>
-      <% end %>
     <% end %>
   <% end %>
 <% end %>

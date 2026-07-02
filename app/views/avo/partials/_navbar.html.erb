@@ -1,15 +1,44 @@
-<%= content_tag :div, class: class_names("fixed bg-white p-2 w-full flex flex-shrink-0 items-center z-[100] px-4 lg:px-4 border-b space-x-4 lg:space-x-0 h-16", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
-  <div class="flex items-center space-x-2 w-auto lg:w-64 flex-shrink-0 h-full">
-    <div>
-      <%= a_button class: 'lg:hidden', icon: 'avo/menu', size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebarOnMobile' }, aria: {label: "Toggle sidebar"} %>
-      <%= a_button class: 'hidden lg:block', icon: 'avo/menu', size: :xs, compact: true, style: :text, data: { action: 'click->sidebar#toggleSidebar' }, aria: {label: "Toggle sidebar"} %>
+<%
+  sidebar_open_icon = 'layout-sidebar-left-collapse'
+  sidebar_closed_icon = 'layout-sidebar-left-expand'
+  sidebar_state = @sidebar_open ? 'open' : 'closed'
+%>
+<%= content_tag :nav, class: class_names("top-navbar", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
+  <div class="top-navbar__start">
+    <%# Mobile always needs a toggle to reach the overlay sidebar. Desktop toggle
+        is optional and controlled by sidebar_toggle_visible. %>
+    <%= a_button class: class_names("shrink-0 -ms-1.5 lg:ms-0", "lg:hidden": !Avo.configuration.sidebar_toggle_visible),
+                 size: :sm,
+                 style: :text,
+                 padding: :sm,
+                 data: {
+                   action: 'click->sidebar#toggleSidebarForViewport',
+                   sidebar_toggle_icon: true,
+                   sidebar_state: sidebar_state
+                 },
+                 aria: { label: "Toggle sidebar" } do %>
+      <span class="sidebar-toggle-icon sidebar-toggle-icon--open">
+        <%= svg sidebar_open_icon, class: 'h-4 button__icon' %>
+      </span>
+      <span class="sidebar-toggle-icon sidebar-toggle-icon--closed">
+        <%= svg sidebar_closed_icon, class: 'h-4 button__icon' %>
+      </span>
+    <% end %>
+
+    <div class="top-navbar__logo">
+      <%= render partial: "avo/partials/logo" %>
     </div>
-    <%= render partial: "avo/partials/logo" %>
   </div>
-  <div class="flex-1 flex items-center justify-between lg:justify-start space-x-2 sm:space-x-8 lg:px-2">
-    <%= render Avo::Pro::GlobalSearchComponent.new(resource:) if defined?(Avo::Pro::GlobalSearchComponent) %>
-    <div class="m-0">
-      <%= render partial: "avo/partials/header" %>
-    </div>
+
+  <div class="top-navbar__center">
+    <% if Avo.plugin_manager.installed?("avo-advanced_search") %>
+      <%= render Avo::AdvancedSearch::Global::InputComponent.new(resource: @resource) %>
+    <% end %>
+  </div>
+
+  <div class="top-navbar__end">
+    <%= render partial: "avo/partials/header" %>
+    <%= render Avo::Notifications::BellComponent.new if Avo.plugin_manager.installed?("avo-notifications") %>
+    <%= render partial: "avo/partials/color_scheme_switcher" %>
   </div>
 <% end %>

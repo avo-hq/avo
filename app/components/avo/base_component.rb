@@ -4,19 +4,62 @@ class Avo::BaseComponent < ViewComponent::Base
   extend PropInitializer::Properties
   include Turbo::FramesHelper
   include Avo::Concerns::FindAssociationField
+  include Avo::ApplicationHelper
 
   delegate :e, to: :helpers
   delegate :d, to: :helpers
   delegate :main_app, to: :helpers
   delegate :avo, to: :helpers
-
-  def has_with_trial(ability)
-    Avo.license.has_with_trial(ability)
-  end
+  delegate :ui, to: :helpers
+  delegate :svg, to: :helpers
 
   def component_name = self.class.name.to_s.underscore
 
+  # Renders a <kbd> badge for a hotkey string.
+  # Supports modifier tokens rendered in a friendly OS-aware way.
+  def hotkey_badge(hotkey, **html_options)
+    return unless Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges]
+
+    # `@github/hotkey` uses:
+    # - `+` for modifier combos (e.g. "Mod+Enter")
+    # - spaces for sequences/alternatives (e.g. "g n" or "Meta+Enter Control+Enter")
+    #
+    # Render key parts for the badge, mapping supported modifiers to OS-aware glyphs.
+    keys = hotkey.to_s.split(/[+\s]+/).reject(&:blank?)
+
+    first_key = keys.first
+    return if first_key.blank?
+
+    html_options[:class] = class_names("hotkey-badge", html_options[:class])
+
+    content_tag(:span, **html_options) do
+      # Render multiple keys (e.g. "g n") inside a wrapper so any provided
+      # classes (like `ms-auto`) are applied once.
+      safe_join(keys.map { |key| render_hotkey_badge_key(key) }, " ")
+    end
+  end
+
   private
+
+  def render_hotkey_badge_key(key)
+    token = key.to_s.strip
+
+    case token.downcase
+    when "mod"
+      tag.kbd do
+        helpers.safe_join([
+          tag.abbr("⌘", title: "Command", class: "no-underline os-pc:hidden"),
+          tag.abbr("CTRL", title: "CTRL", class: "no-underline os-mac:hidden")
+        ])
+      end
+    when "enter", "return"
+      tag.kbd("↵")
+    when "escape"
+      tag.kbd("Esc")
+    else
+      tag.kbd(token.upcase)
+    end
+  end
 
   # Use the @parent_resource to fetch the field using the @reflection name.
   def field

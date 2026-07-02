@@ -6,7 +6,7 @@ module Avo
       attr_reader :protocol
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         add_boolean_prop args, :link_to_record
         add_boolean_prop args, :as_html

@@ -1,5 +1,8 @@
 class Avo::Resources::Project < Avo::BaseResource
+  self.hotkey = "p r"
+
   self.title = :name
+  self.description = "This is the app's projects"
 
   self.search = {
     query: -> {
@@ -12,25 +15,73 @@ class Avo::Resources::Project < Avo::BaseResource
     query.unscoped
   }
 
+  self.table_view = {
+    row_options: {
+      style: -> {
+        if record.stage == "Done"
+          "background-color: var(--color-green-50)"
+        end
+      }
+    }
+  }
+
   self.discreet_information = [
+    :id,
     :timestamps,
-    :id_badge,
+    :created_at,
+    :updated_at,
     {
-      tooltip: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
-      icon: -> { "heroicons/outline/arrow-top-right-on-square" },
+      text: "label",
+      as: :badge,
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "tabler/outline/external-link" },
       url: -> { main_app.root_url },
-      url_target: :_blank,
-      # as: :badge
+      target: :_blank
     },
     {
-      label: "Test",
+      text: -> { "Simple text #{record.id}" },
+      as: :text,
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "tabler/outline/external-link" },
+      url: -> { main_app.root_url },
+      visible: true
+    },
+    {
+      text: -> { "Simple text (2) #{record.id}" },
+      as: :text,
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "tabler/outline/external-link" },
+      url: -> { main_app.root_url },
+      visible: true
+    },
+    {
+      text: -> { "Simple text (3) #{record.id}" },
+      as: :text,
+      title: -> { sanitize("View <strong>#{record.name}</strong> on site", tags: %w[strong]) },
+      icon: -> { "tabler/outline/external-link" },
+      url: -> { main_app.root_url },
+      visible: true
+    },
+    {
+      text: "Test",
       as: :badge,
       visible: false
+    },
+    {
+      as: :key_value,
+      key: "Key",
+      value: "Value"
+    },
+    {
+      as: :icon,
+      icon: "tabler/outline/cube-3d-sphere",
+      title: -> { Time.now }
     }
   ]
 
   def fields
     field :id, as: :id, link_to_record: true
+    field :user, as: :belongs_to, summarizable: true
     field :status,
       as: :status,
       failed_when: ["closed", :rejected, :failed, "user_reject"],
@@ -58,12 +109,26 @@ class Avo::Resources::Project < Avo::BaseResource
     field :stage,
       as: :badge,
       options: {
-        info: ["Discovery", "Idea"],
+        info: ["Discovery"],
         success: :Done,
         warning: "On hold",
-        danger: :Cancelled,
+        danger: "Cancelled",
+        violet: "Idea",
         neutral: :Drafting
       },
+      style: -> { ["Done", "Cancelled"].include?(record.stage) ? "solid" : "subtle" },
+      # style: :solid,
+      icon: -> {
+        {
+          "Discovery" => "tabler/outline/zoom-scan",
+          "Idea" => "tabler/outline/bulb",
+          "Drafting" => "tabler/outline/file-text",
+          "Done" => "tabler/outline/circle-check",
+          "On hold" => "tabler/outline/player-pause",
+          "Cancelled" => "tabler/outline/xbox-x"
+        }[record.stage]
+      },
+
       filterable: true,
       sortable: true,
       summarizable: true
@@ -82,7 +147,8 @@ class Avo::Resources::Project < Avo::BaseResource
       as: :files,
       translation_key: "avo.field_translations.files",
       direct_upload: true,
-      view_type: :list, stacked: false,
+      view_type: :list,
+      stacked: true,
       hide_view_type_switcher: false
     field :meta, as: :key_value, key_label: "Meta key", value_label: "Meta value", action_text: "New item", delete_text: "Remove item", disable_editing_keys: false, disable_editing_values: true, disable_adding_rows: false, disable_deleting_rows: false, html: -> do
       show do
@@ -90,11 +156,17 @@ class Avo::Resources::Project < Avo::BaseResource
       end
     end
 
-    field :users, as: :has_and_belongs_to_many
+    field :users, as: :has_and_belongs_to_many, linkable: true
     field :comments, as: :has_many, searchable: true
     field :even_reviews, as: :has_many, for_attribute: :reviews, scope: -> { query.where("reviews.id % 2 = ?", "0") }
     field :reviews, as: :has_many
     field :files_attachments, as: :has_many
+  end
+
+  def scopes
+    scope Avo::Scopes::ProjectDone
+    scope Avo::Scopes::ProjectOnHold
+    scope Avo::Scopes::ProjectCancelled
   end
 
   def actions
@@ -102,6 +174,11 @@ class Avo::Resources::Project < Avo::BaseResource
   end
 
   def filters
+    filter Avo::Filters::ProjectUserFilter
+    filter Avo::Filters::ProjectStatusFilter
+    filter Avo::Filters::ProjectStageFilter
+    filter Avo::Filters::ProjectCountryFilter
+    filter Avo::Filters::ProjectUsersRequiredFilter
     # filter PeopleFilter
     # filter People2Filter
     # filter FeaturedFilter

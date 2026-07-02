@@ -1,0 +1,53 @@
+.discreet-information {
+   @apply inline-flex shrink-0 rounded-md gap-1 items-center py-0.5 text-xs h-6 text-content-secondary;
+}
+
+.discreet-information__icon {
+  @apply inline size-4 text-content-secondary;
+}
+
+.discreet-information__text {
+  @apply inline-flex items-center gap-1;
+}
+
+.discreet-information__badge {
+  @apply inline-flex rounded-md items-center font-semibold gap-1 py-1 px-1 bg-linear-to-b from-primary/85 to-primary/85 bg-foreground text-foreground;
+
+  .discreet-information__icon {
+    @apply text-foreground size-3;
+  }
+}
+
+.discreet-information__key-value {
+  @apply inline-flex items-center;
+}
+
+.discreet-information__key {
+  @apply rounded-sm py-0.5 px-1 font-normal bg-linear-to-b  to-avo-neutral-200 from-foreground/6 to-black/4 bg-secondary;
+}
+
+.discreet-information__value {
+  @apply inline-flex items-center px-1;
+}
+
+.discreet-information--as-key-value,
+.discreet-information--as-badge {
+  @apply text-content-secondary font-semibold rounded-md;
+}
+
+.discreet-information--as-text {
+  @apply items-center;
+}
+
+.discreet-information--as-badge {
+  @apply rounded-md;
+
+  .discreet-information__text {
+    @apply px-2;
+  }
+}
+
+.discreet-information--as-key-value {
+  @apply inline-flex items-center bg-secondary px-0.5;
+}
+

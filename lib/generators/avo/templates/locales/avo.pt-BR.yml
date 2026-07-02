@@ -5,6 +5,24 @@ pt-BR:
     actions: Ações
     add_filter: Adicionar filtro
     and_x_other_resources: e %{count} outros recursos
+    appearance:
+      accent_picker: Cor de Acento
+      accents: Acento
+      auto: Automático
+      auto_tooltip: Automático (preferência do sistema)
+      dark: Escuro
+      dark_tooltip: Modo Escuro
+      hide: Ocultar
+      light: Claro
+      light_tooltip: Modo Claro
+      neutrals: Tema
+      neutrals_picker: Tema Neutro
+      schemes: Aparência
+      shortcut_badges: Badges de atalho
+      shortcut_badges_hide_tooltip: Ocultar badges de atalho do teclado
+      shortcut_badges_show_tooltip: Mostrar badges de atalho do teclado
+      show: Mostrar
+      title: Aparência
     applied:
       one: aplicado
       other: aplicados
@@ -19,16 +37,22 @@ pt-BR:
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
     cancel: Cancelar
+    checkbox_list:
+      hidden_selections:
+        one: 1 opção selecionada oculta pela pesquisa
+        other: "%{count} opções selecionadas ocultas pela pesquisa"
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção
     choose_item: Escolher %{item}
     clear_value: Limpar valor
+    click_to_load: Clique para carregar
     click_to_reveal_filters: Clique para revelar os filtros
     close: Fechar
     close_modal: Fechar modal
     confirm: Confirmar
     copy: Copiar
     create_new_item: Criar novo %{item}
+    created_at: Criado em
     created_at_timestamp: Criado em %{created_at}
     dashboard: Painel
     dashboards: Painéis
@@ -47,12 +71,30 @@ pt-BR:
     failed: Falhou
     failed_to_find_attachment: Falhou ao achar anexo
     failed_to_load: Falha ao carregar
+    failed_to_load_item: Falha ao carregar %{item}
     'false': Falso
     file:
       one: ficheiro
       other: ficheiros
     filter_by: Filtrar por
     filters: Filtros
+    global_search:
+      empty_state:
+        no_results_for_query: Não conseguimos encontrar nada correspondente a "%{query}"
+        no_results_found: Nenhum resultado encontrado
+        start_typing: Comece a digitar para pesquisar
+        start_typing_with_resource_list: Você pode pesquisar em %{resources}
+        start_typing_with_resources: Você pode pesquisar em %{resources} %{other_resources}
+        try_adjusting_search: Tente ajustar seus termos de pesquisa ou verificar se há erros de digitação
+      go_to: Ir para
+      keyboard_hints:
+        close: Fechar
+        navigate: Navegar
+        press: Pressione
+        select: Selecionar
+      results:
+        count_of_total: "%{count} de %{total}"
+      show_all_results_for: Mostrar todos os resultados para
     go_back: Voltar
     grid_view: Visualização em grade
     hide_content: Esconder conteúdo
@@ -65,6 +107,7 @@ pt-BR:
       value: Valor
     less_content: Menos conteúdo
     list_is_empty: Lista vazia
+    load_item: Carregar %{item}
     loading: Carregando
     media_library:
       title: Biblioteca de Mídia
@@ -86,15 +129,22 @@ pt-BR:
       other: "%{count} %{item}"
       zero: sem %{item}
     oops_nothing_found: Oops! Nada encontrado...
+    open_in_new_tab: Abrir em uma nova aba
+    open_in_your_editor: Abrir no seu editor
     order:
       higher: Mover registro um para cima
       lower: Mover registro um para baixo
       reorder_record: Reordenar registro
       to_bottom: Mover registro para baixo
       to_top: Mover registro para cima
+    pages: Páginas
     per_page: Por página
     prev_page: Página anterior
+    record:
+      one: registro
+      other: registros
     records_selected_from_all_pages_html: Todos os registros de todas as páginas selecionados
+    reload: Recarregar
     remove_selection: Remover seleção
     reset: resetar
     reset_filters: Limpar filtros
@@ -102,6 +152,9 @@ pt-BR:
     resource_destroyed: Recurso destruído
     resource_updated: Recurso atualizado
     resources: Recursos
+    retry: Tentar novamente
+    retry_item: Tentar novamente %{item}
+    reupload_file: Reupload %{item}
     run: Executar
     save: Salvar
     search:
@@ -112,6 +165,8 @@ pt-BR:
     select_item: Selecionar item
     show_content: Mostrar conteúdo
     sign_out: sair
+    skip_to_content: Pular para o conteúdo
+    skip_to_sidebar: Pular para a barra lateral
     sort_asc: Ordenar em ordem crescente
     sort_desc: Ordenar em ordem decrescente
     sort_reset: Redefinir ordenação
@@ -123,6 +178,7 @@ pt-BR:
     type_to_search: Digite para buscar.
     unauthorized: Não autorizado
     undo: desfazer
+    updated_at: Atualizado em
     updated_at_timestamp: Atualizado em %{updated_at}
     view: Visualizar
     view_item: visualizar %{item}
@@ -133,9 +189,9 @@ pt-BR:
       one: mais um item
       other: "%{count} mais items"
       zero: mais nenhum item
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> registros selecionados de todas as páginas
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> registros selecionados nesta página
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> registros selecionados nesta página de um total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> registros selecionados de todas as páginas
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> registros selecionados nesta página
     yes_confirm: Sim, tenho certeza
     you_cant_upload_new_resource: Você não pode fazer upload de imagens no editor Trix até salvar o recurso.
     you_havent_set_attachment_key: Você precisa definir uma `attachment_key` para este campo Trix.

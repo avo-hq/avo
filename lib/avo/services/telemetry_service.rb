@@ -2,7 +2,6 @@ class Avo::Services::TelemetryService
   class << self
     def telemetry_info
       {
-        # license: Avo.configuration.license,
         # license_key: Avo.configuration.license_key,
         avo_version: Avo::VERSION,
         rails_version: Rails::VERSION::STRING,

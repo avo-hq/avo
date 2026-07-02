@@ -6,39 +6,46 @@ class Avo::Resources::Items::Tab
   include Avo::Concerns::VisibleItems
   include Avo::Concerns::IsVisible
   include Avo::Concerns::VisibleInDifferentViews
+  include Avo::Concerns::FrameLoadingMode
 
   delegate :items, :add_item, to: :items_holder
 
   attr_accessor :description
   attr_reader :lazy_load
+  attr_reader :loading
 
-  def initialize(name: nil, description: nil, view: nil, **args)
-    @name = name
+  def initialize(title: nil, description: nil, view: nil, **args)
+    @title = title
     @description = description
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
     @args = args
     @visible = args[:visible]
     @lazy_load = args[:lazy_load]
+    @loading = args[:loading]
 
     post_initialize if respond_to?(:post_initialize)
   end
 
-  def name
-    Avo::ExecutionContext.new(target: @name).handle
+  def title
+    Avo::ExecutionContext.new(target: @title).handle
   end
 
   def id
-    name.to_s.parameterize
+    title.to_s.parameterize
   end
   alias_method :to_param, :id
 
   def turbo_frame_id(parent: nil)
-    digest_name = Digest::MD5.hexdigest(name)
+    digest_name = Digest::MD5.hexdigest(title)
     id = "#{Avo::Resources::Items::Tab.to_s.parameterize} #{digest_name}".parameterize
     return id if parent.nil?
 
     "#{parent.turbo_frame_id} #{id}".parameterize
+  end
+
+  def get_items
+    items_with_standalone_fields_wrapped_in_cards
   end
 
   class Builder
@@ -49,8 +56,8 @@ class Avo::Resources::Items::Tab
     delegate :panel, to: :items_holder
     delegate :items, to: :items_holder
 
-    def initialize(parent:, name: nil, **args)
-      @tab = Avo::Resources::Items::Tab.new(name: name, **args)
+    def initialize(parent:, title: nil, **args)
+      @tab = Avo::Resources::Items::Tab.new(title: title, **args)
       @items_holder = Avo::Resources::Items::Holder.new(parent: parent)
     end
 

@@ -12,9 +12,9 @@ class Avo::Resources::Person < Avo::BaseResource
     field :name, as: :text, link_to_record: true, sortable: true, stacked: true
     field :type, as: ::Pluggy::Fields::RadioField, name: "Type", options: {Spouse: "Spouse", Sibling: "Sibling"}, include_blank: true, filterable: true
     field :link, as: :text, as_html: true
-    field :spouses, as: :has_many, hide_search_input: true
     field :person, as: :belongs_to
     field :another_person, as: :belongs_to, link_to_child_resource: true
+    field :spouses, as: :has_many, hide_search_input: true
     field :relatives,
       as: :has_many,
       hide_search_input: true,
@@ -26,80 +26,131 @@ class Avo::Resources::Person < Avo::BaseResource
       description: "Default behaviour with link_to_child_resource disabled"
 
     tabs do
-      tab "Employment" do
+      tab title: "Employment" do
         panel do
-          field :job_title, as: :heading do
-            "Software Engineer"
-          end
-
-          cluster do
-            field :company, stacked: true do
+          card title: "Software Engineer" do
+            field :company, stacked: true, width: 50 do
               "TechCorp Inc."
             end
-            field :department, stacked: true do
+            field :department, stacked: true, width: 50 do
               "Research & Development"
             end
-          end
-
-          field :years_of_experience do
-            "7 Years"
+            field :years_of_experience do
+              "7 Years"
+            end
           end
 
           sidebar do
-            field :employee_id do
-              "EMP123456"
-            end
-            field :supervisor do
-              "Jane Smith"
+            card title: "Employee info" do
+              field :employee_id do
+                "EMP123456"
+              end
+              field :supervisor do
+                "Jane Smith"
+              end
             end
           end
         end
       end
 
-      tab "Address", lazy_load: true do
-        panel do
-          field :address, as: :heading
-          row divider: true do
-            field :street_address, stacked: true do
+      tab title: "Address", lazy_load: true do
+        panel(title: "Address") do
+          card do
+            field :street_address, stacked: true, width: 50 do
               "1234 Elm Street"
             end
-            field :city, stacked: true do
+            field :city, stacked: true, width: 50 do
               "Los Angeles"
             end
-          end
 
-          field :state do
-            "California"
+            field :state do
+              "California"
+            end
           end
 
           sidebar do
-            field :phone_number do
-              "+1 (555) 123-4567"
-            end
-            field :zip_code do
-              "90001"
+            card do
+              field :phone_number do
+                "+1 (555) 123-4567"
+              end
+              field :zip_code do
+                "90001"
+              end
             end
           end
         end
       end
 
-      tab "Preferences" do
+      tab title: "Preferences" do
         panel do
-          field :preferred_language do
-            "English"
-          end
+          card do
+            field :preferred_language do
+              "English"
+            end
 
-          field :theme_mode do
-            "Dark Mode"
-          end
+            field :theme_mode do
+              "Dark Mode"
+            end
 
-          field :notification_preference do
-            "Email & SMS"
+            field :notification_preference do
+              "Email & SMS"
+            end
           end
 
           sidebar do
-            field :timezone do
-              "Pacific Time (PST)"
+            card do
+              field :timezone do
+                "Pacific Time (PST)"
+              end
+            end
+          end
+        end
+      end
+
+      tab title: "Education", loading: :manual do
+        panel(title: "Education") do
+          card do
+            field :university, stacked: true, width: 50 do
+              "Stanford University"
+            end
+            field :degree, stacked: true, width: 50 do
+              "Computer Science"
+            end
+
+            field :graduation_year do
+              "2015"
+            end
+          end
+
+          sidebar do
+            card do
+              field :gpa do
+                "3.9"
+              end
+            end
+          end
+        end
+      end
+
+      tab title: "Skills", loading: :manual do
+        panel(title: "Skills") do
+          card do
+            field :primary_skill do
+              "Ruby on Rails"
+            end
+
+            field :certifications do
+              "AWS Certified"
+            end
+          end
+        end
+      end
+
+      tab title: "Hobbies", loading: :manual, lazy_load: true do
+        panel(title: "Hobbies") do
+          card do
+            field :favorite_hobby do
+              "Rock Climbing"
             end
           end
         end

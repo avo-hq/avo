@@ -31,23 +31,14 @@ module Avo
       @query = if @field.type == "array"
         @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block, record: @parent_record).handle || @parent_record.try(@field.id))
       else
-        @related_authorization.apply_policy(
-          @parent_record.send(
-            BaseResource.valid_association_name(@parent_record, association_from_params)
-          )
-        )
-      end
-
-      @association_field = find_association_field(resource: @parent_resource, association: params[:related_name])
-
-      if @association_field.present? && @association_field.scope.present?
-        @query = Avo::ExecutionContext.new(
-          target: @association_field.scope,
-          query: @query,
-          parent: @parent_record,
+        association_query_scope(
+          parent_resource: @parent_resource,
+          parent_record: @parent_record,
+          association_name: association_from_params,
+          authorization: @related_authorization,
           resource: @resource,
-          parent_resource: @parent_resource
-        ).handle
+          field_association_name: params[:related_name]
+        )
       end
 
       super
@@ -72,7 +63,11 @@ module Avo
           query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
         end
 
-        @options = select_options(query)
+        @options = if attach_using_checkbox_list?
+          checkbox_list_options(query)
+        else
+          select_options(query)
+        end
       end
 
       @url = Avo::Services::URIService.parse(avo.root_url.to_s)
@@ -97,14 +92,16 @@ module Avo
     def create_association
       association_name = BaseResource.valid_association_name(@record, association_from_params)
 
+      if attachment_records.empty?
+        @record.errors.add(:base, t("avo.choose_an_option"))
+        return false
+      end
+
       perform_action_and_record_errors do
-        if through_reflection? && additional_params.present?
-          new_join_record.save
-        elsif has_many_reflection? || through_reflection?
-          @record.send(association_name) << @attachment_record
-        else
-          @record.send(:"#{association_name}=", @attachment_record)
-          @record.save!
+        @record.transaction do
+          attachment_records.each do |attachment_record|
+            attach_record(association_name, attachment_record)
+          end
         end
       end
     end
@@ -148,7 +145,14 @@ module Avo
     end
 
     def set_attachment_record
-      @attachment_record = @related_resource.find_record attachment_id, params: params
+      if action_name == "create"
+        @attachment_records = attachment_ids.map do |id|
+          @related_resource.find_record id, params: params
+        end
+        @attachment_record = @attachment_records.first
+      else
+        @attachment_record = @related_resource.find_record attachment_id, params: params
+      end
     end
 
     def set_reflection_field
@@ -159,6 +163,16 @@ module Avo
 
     def attachment_id
       params[:related_id] || params.dig(:fields, :related_id)
+    end
+
+    def attachment_ids
+      Array(attachment_id).reject(&:blank?)
+    end
+
+    def attachment_records
+      @attachment_records ||= attachment_ids.map do |id|
+        @related_resource.find_record id, params: params
+      end
     end
 
     def reflection_class
@@ -242,14 +256,25 @@ module Avo
       end
     end
 
-    def new_join_record
+    def attach_record(association_name, attachment_record)
+      if through_reflection? && additional_params.present?
+        new_join_record(attachment_record).save!
+      elsif has_many_reflection? || through_reflection?
+        @record.send(association_name) << attachment_record
+      else
+        @record.send(:"#{association_name}=", attachment_record)
+        @record.save!
+      end
+    end
+
+    def new_join_record(attachment_record)
       @resource.fill_record(
         @reflection.through_reflection.klass.new(
-          source_foreign_key => @attachment_record.id,
+          source_foreign_key => attachment_record.id,
           through_foreign_key => @record.id
         ),
         additional_params,
-        fields: @attach_fields,
+        fields: @attach_fields
       )
     end
 
@@ -299,11 +324,48 @@ module Avo
     end
 
     def select_options(query)
-      query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+      lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
+
+      query.all.limit(lookup_list_limit).map do |record|
         [@attachment_resource.new(record: record).record_title, record.to_param]
       end.tap do |options|
-        options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
+        options << t("avo.more_records_available") if options.size == lookup_list_limit
       end
+    end
+
+    def checkbox_list_options(query)
+      lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
+
+      query.all.limit(lookup_list_limit).map do |record|
+        checkbox_list_option(record)
+      end.tap do |options|
+        if options.size == lookup_list_limit
+          options << {title: t("avo.more_records_available"), hint: true}
+        end
+      end
+    end
+
+    def checkbox_list_option(record)
+      resource = @attachment_resource.new(record:, view: Avo::ViewInquirer.new(:new), params:)
+      search_item = (@attachment_resource.fetch_search(:item, record:) || {}).with_indifferent_access
+      title = search_item[:title] || resource.record_title
+
+      {
+        id: record.to_param,
+        title:,
+        image_url: search_item[:image_url] || search_item[:avatar_url] || checkbox_list_avatar(resource),
+        image_format: search_item[:image_format],
+        image_alt: search_item[:image_alt] || search_item[:avatar_alt],
+        description: search_item[:description]
+      }.compact
+    end
+
+    def checkbox_list_avatar(resource)
+      resource.avatar.value if resource.avatar.present?
+    end
+
+    def attach_using_checkbox_list?
+      @field.respond_to?(:attach_using_checkbox_list?) && @field.attach_using_checkbox_list?
     end
 
     def pagination_key

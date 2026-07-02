@@ -128,14 +128,11 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def render_dynamic_filters_button
-    return unless Avo.avo_dynamic_filters_installed?
-    return unless @resource.has_filters?
-    return if field&.hide_filter_button
-    return if Avo::DynamicFilters.configuration.always_expanded
+    return unless show_dynamic_filters_button?
 
-    a_button size: :sm,
+    a_button size: :md,
       color: :primary,
-      icon: "avo/filter",
+      icon: "tabler/outline/filter",
       data: {
         controller: "avo-filters",
         action: "click->avo-filters#toggleFiltersArea",
@@ -146,18 +143,19 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def scopes_list
-    Avo::Advanced::Scopes::ListComponent.new(
+    Avo::Scopes::ListComponent.new(
       scopes: @scopes,
       resource: @resource,
       turbo_frame: @turbo_frame,
       parent_record: @parent_record,
+      parent_resource: @parent_resource,
       query: @query,
       loader: @resource.entity_loader(:scope)
     )
   end
 
   def can_render_scopes?
-    defined?(Avo::Advanced)
+    Avo.plugin_manager.installed?("avo-scopes") && @scopes.present?
   end
 
   def back_path
@@ -194,7 +192,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   def header_visible?
-    search_query_present? || filters_present? || has_many_view_types? || has_dynamic_filters?
+    search_query_present? || filters_present? || has_many_view_types? || has_dynamic_filters? || show_search_input || can_render_scopes?
   end
 
   def has_dynamic_filters?
@@ -219,11 +217,38 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     @dynamic_filters_component_id ||= "dynamic_filters_component_id_#{SecureRandom.hex(3)}"
   end
 
-  def reloadable
+  def reloadable?
     field&.reloadable?
   end
 
   def linkable?
     field&.linkable?
+  end
+
+  def resource_content_components_common_args
+    @resource_content_components_common_args ||= {
+      resources: @resources,
+      resource: @resource,
+      reflection: @reflection,
+      parent_record: @parent_record,
+      parent_resource: @parent_resource,
+      pagy: @pagy,
+      query: @query,
+      actions: @actions,
+      turbo_frame: @turbo_frame,
+      index_params: @index_params
+    }
+  end
+
+  def has_resources?
+    @resources.present?
+  end
+
+  def show_dynamic_filters_button?
+    Avo.avo_dynamic_filters_installed? &&
+      @resource.has_filters? &&
+      has_resources? &&
+      !field&.hide_filter_button &&
+      !Avo::DynamicFilters.configuration.always_expanded
   end
 end

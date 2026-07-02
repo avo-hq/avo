@@ -1,0 +1,128 @@
+/* Avatar Component Styles */
+.cado-avatar {
+  @apply relative block overflow-hidden size-full;
+}
+
+/* Size variants */
+.cado-avatar--large {
+  @apply size-20;
+}
+
+.cado-avatar--medium {
+  @apply size-12;
+}
+
+.cado-avatar--small {
+  @apply size-8;
+}
+
+.cado-avatar--tiny {
+  @apply size-5;
+}
+
+/* Shape variants */
+.cado-avatar--rounded {
+  @apply rounded-full;
+}
+
+.cado-avatar--square.cado-avatar--large {
+  @apply rounded-2xl;
+}
+
+.cado-avatar--square.cado-avatar--medium {
+  @apply rounded-xl;
+}
+
+.cado-avatar--square.cado-avatar--small,
+.cado-avatar--square.cado-avatar--tiny {
+  @apply rounded-md;
+}
+
+/* Background colors for different types and themes */
+.cado-avatar--placeholder,
+.cado-avatar--initials {
+  --bg: var(--color-tertiary);
+  --text: var(--color-foreground);
+  --bg-color: color-mix(in oklab, var(--bg), var(--color-primary) 85%);
+
+  background: color-mix(in oklab, var(--bg-color), var(--color-primary) 10%);
+  border-color: color-mix(in oklab, var(--bg), var(--color-content) 10%);
+  color: color-mix(in oklab, var(--text), var(--color-content) 40%);
+
+  @apply border;
+}
+
+.cado-avatar--initials.cado-avatar--orange {
+  --bg: var(--color-orange-400);
+  --text: var(--color-orange-600);
+}
+
+.cado-avatar--initials.cado-avatar--yellow {
+  --bg: var(--color-yellow-400);
+  --text: var(--color-yellow-600);
+}
+
+.cado-avatar--initials.cado-avatar--green {
+  --bg: var(--color-green-400);
+  --text: var(--color-green-600);
+}
+
+.cado-avatar--initials.cado-avatar--teal {
+  --bg: var(--color-teal-400);
+  --text: var(--color-teal-600);
+}
+
+.cado-avatar--initials.cado-avatar--blue {
+  --bg: var(--color-blue-400);
+  --text: var(--color-blue-600);
+}
+
+.cado-avatar--initials.cado-avatar--purple {
+  --bg: var(--color-purple-400);
+  --text: var(--color-purple-600);
+}
+
+/* Image container */
+.cado-avatar__image {
+  @apply absolute inset-0 size-full overflow-hidden;
+}
+
+.cado-avatar__img {
+  @apply size-full object-cover object-center bg-cover bg-center bg-no-repeat;
+}
+
+/* Initials text styling */
+.cado-avatar__initials {
+  @apply absolute top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium leading-none text-center whitespace-nowrap overflow-hidden text-ellipsis;
+}
+
+/* Initials text colors */
+.cado-avatar--initials .cado-avatar__initials {
+  /* @apply text-foreground; */
+}
+
+.cado-avatar--initials.cado-avatar--orange .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--yellow .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--green .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--teal .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--blue .cado-avatar__initials,
+.cado-avatar--initials.cado-avatar--purple .cado-avatar__initials {
+  /* @apply text-secondary; */
+}
+
+/* Font sizes for different avatar sizes */
+.cado-avatar--large .cado-avatar__initials {
+  @apply text-2xl leading-8 w-8;
+}
+
+.cado-avatar--medium .cado-avatar__initials {
+  @apply text-lg leading-6 w-6;
+}
+
+.cado-avatar--small .cado-avatar__initials {
+  @apply text-sm leading-6;
+}
+
+.cado-avatar--tiny .cado-avatar__initials {
+  @apply text-tiny leading-4;
+}

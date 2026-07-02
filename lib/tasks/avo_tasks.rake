@@ -1,18 +1,36 @@
 desc "Runs the update command for all Avo gems."
-task "avo:update" do
-  gems = Gem::Specification.map { |gem| gem.name }
+task "avo:update" => :environment do
+  # Start with avo core (it doesn't register itself as a plugin), then resolve
+  # every registered plugin to its real gem name. Plugins register under
+  # nicknames (e.g. `avo-rhino_field` registers as `:rhino`), so we ask each
+  # plugin for the gem it actually ships in instead of trusting the nickname.
+  gems = (["avo"] + Avo.plugin_manager.plugins.filter_map(&:gem_name)).uniq.sort
 
-  @license ||= if gems.include?("avo-advanced")
-    system "bundle update avo avo-advanced"
-  elsif gems.include?("avo-pro")
-    system "bundle update avo avo-pro"
-  elsif gems.include?("avo")
-    system "bundle update avo"
+  if gems.empty?
+    puts "[Avo->] No Avo gems found in the bundle."
+    next
   end
+
+  # `--conservative` keeps bundler from bumping shared dependencies that aren't
+  # Avo gems themselves, so we only update the gems we explicitly list.
+  cmd = ["bundle", "update", "--conservative", *gems].join(" ")
+  puts "[Avo->] Running `#{cmd}`"
+  # Restore the pre-Bundler env so the nested `bundle update` runs against the
+  # app's Gemfile with a clean environment. Without this it inherits the parent
+  # `bundle exec` settings (BUNDLE_GEMFILE, BUNDLE_FROZEN/--deployment, RUBYOPT),
+  # which can make the update silently refuse. Exported credentials survive
+  # because they're part of the original env Bundler snapshotted at boot.
+  Bundler.with_original_env { system cmd }
+end
+
+desc "Builds Avo (just assets for now)"
+task "avo:build" do
+  Rake::Task["avo:build-assets"].invoke
 end
 
 desc "Installs Avo assets and bundles them for when you want to use the GitHub repo in your app"
 task "avo:build-assets" do
+  puts "Building Avo assets"
   spec = get_gem_spec "avo"
   # Uncomment to enable only when the source is github.com
   # enabled = spec.source.to_s.include?('https://github.com/avo-hq/avo')
@@ -23,9 +41,11 @@ task "avo:build-assets" do
     path = spec.full_gem_path
 
     Dir.chdir(path) do
+      puts "Running `yarn install`"
       system "yarn"
-      system "bundle exec rails avo:sym_link"
-      system "yarn prod:build"
+
+      puts "Running `yarn build`"
+      system "yarn build"
     end
 
     puts "Done"
@@ -70,8 +90,13 @@ end
 
 desc "Symlinks all Avo gems to tmp/avo/packages"
 task "avo:sym_link" do
-  base_path = Rails.root.join("tmp", "avo").to_s.gsub("/spec/dummy", "")
+  puts "Running avo:sym_link"
+  base_path = Rails.root.join("tmp", "avo", "build-assets").to_s.gsub("/spec/dummy", "")
+
+  remove_directory_if_exists base_path
+
   packages_path = "#{base_path}/packages"
+
   if Dir.exist?(packages_path)
     `rm -rf #{packages_path}/*`
   else
@@ -80,8 +105,7 @@ task "avo:sym_link" do
   end
 
   gem_paths = `bundle list --paths 2>/dev/null`.split("\n")
-
-  ["avo-advanced", "avo-pro", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban"].each do |gem|
+  ["avo-advanced", "avo-pro", "avo-advanced_search", "avo-authorization", "avo-record_reordering", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
     path = gem_paths.find { |gem_path| gem_path.include?("/#{gem}-") }
 
     # If path is nil we check if package is defined outside of root (on release process it is)
@@ -95,33 +119,22 @@ task "avo:sym_link" do
     symlink_path path, "#{packages_path}/#{gem}"
   end
 
-  builds_css_path = Avo::Engine.root.join("app", "assets", "builds", "avo.base.css")
-  public_css_path = Avo::Engine.root.join("public", "avo-assets", "avo.base.css")
+  application_css_path = Avo::Engine.root.join("app", "assets", "stylesheets", "application.css")
+  raise "[Avo->] Failed to find #{application_css_path}." unless File.exist?(application_css_path.to_s)
 
-  base_css_path = if File.exist?(builds_css_path.to_s)
-    builds_css_path
-  elsif File.exist?(public_css_path.to_s)
-    public_css_path
-  else
-    raise "[Avo->] Failed to find avo.base.css."
-  end
-
-  dest_css_path = "#{base_path}/avo.base.css"
+  dest_css_path = "#{base_path}/application.css"
   remove_file_if_exists dest_css_path
 
-  puts "[Avo->] Linking avo.base.css to #{base_css_path}"
-  symlink_path base_css_path, dest_css_path
-
-  base_preset_path = Avo::Engine.root.join("tailwind.preset.js")
-  dest_preset_path = "#{base_path}/tailwind.preset.js"
-  remove_file_if_exists dest_preset_path
-
-  puts "[Avo->] Linking tailwind.preset.js to #{base_preset_path}"
-  symlink_path base_preset_path, dest_preset_path
+  puts "[Avo->] Linking application.css to #{application_css_path}"
+  symlink_path application_css_path, dest_css_path
 end
 
 def remove_file_if_exists(path)
   `rm #{path}` if File.exist?(path) || File.symlink?(path)
+end
+
+def remove_directory_if_exists(path)
+  `rm -rf #{path}` if Dir.exist?(path) || File.symlink?(path)
 end
 
 def symlink_path(from, to)
@@ -135,5 +148,31 @@ task "avo:yarn_install" do
   # tailwind.preset.js needs this dependencies in order to be required
   # Ensure that versions remain updated and synchronized with those specified in package.json.
   puts "[Avo->] Adding yarn dependencies"
-  `yarn add tailwindcss@^3.4.17 @tailwindcss/forms@^0.5.10 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
+  `yarn add tailwindcss@^4.0.0 @tailwindcss/typography@^0.5.16 @tailwindcss/container-queries@^0.1.1 --cwd #{Avo::Engine.root}`
+end
+
+desc "Build Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo/application.css)"
+task "avo:tailwindcss:build" => :environment do
+  unless Avo::TailwindBuilder.enabled?
+    puts "[Avo->] tailwindcss integration disabled or tailwindcss-ruby not found; skipping avo:tailwindcss:build"
+    next
+  end
+
+  puts "[Avo->] Building Avo Tailwind CSS extension (avo/application)..."
+  unless Avo::TailwindBuilder.build
+    abort "[Avo->] avo:tailwindcss:build failed"
+  end
+end
+
+desc "Watch Avo custom Tailwind CSS (requires tailwindcss-ruby gem; outputs app/assets/builds/avo/application.css)"
+task "avo:tailwindcss:watch" => :environment do
+  unless Avo::TailwindBuilder.enabled?
+    puts "[Avo->] tailwindcss integration disabled or tailwindcss-ruby not found; skipping avo:tailwindcss:watch"
+    next
+  end
+
+  puts "[Avo->] Watching Avo Tailwind CSS extension (avo/application)..."
+  unless Avo::TailwindBuilder.watch
+    abort "[Avo->] avo:tailwindcss:watch failed"
+  end
 end

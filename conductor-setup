@@ -1,0 +1,97 @@
+#!/bin/sh
+#/ Usage: ./conductor-setup
+#/
+#/ Setup files that are not tracked in git for Conductor workspaces.
+#/ This is run automatically when a new workspace is created.
+
+set -e
+
+echo "CONDUCTOR_WORKSPACE_NAME: $CONDUCTOR_WORKSPACE_NAME"
+
+# Repo root: this script lives at the repository root (see conductor.json).
+REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Get the workspace name name from the first argument, or use the directory name if not provided
+WORKSPACE_NAME="${1:-$CONDUCTOR_WORKSPACE_NAME}"
+
+if [ -z "$WORKSPACE_NAME" ]; then
+    echo "Workspace name is required (pass as first argument or set CONDUCTOR_WORKSPACE_NAME)"
+    exit 1
+fi
+
+# If the workspace name is not filesystem-safe, abort
+if ! echo "$WORKSPACE_NAME" | sed 's/[^a-zA-Z0-9_-]/_/g' >/dev/null 2>&1; then
+    echo "Workspace name is not filesystem-safe"
+    exit 1
+fi
+
+# Create the unique identifier
+IDENTIFIER="io.avohq.$WORKSPACE_NAME"
+
+echo "Setting up Conductor development workspace: $WORKSPACE_NAME"
+echo "App identifier: $IDENTIFIER"
+
+# Persist the per-workspace DB names to spec/dummy/.env FIRST so dotenv-rails
+# loads them on `bin/setup` below (and on every later `bin/dev` / `bin/rails` run).
+DATABASE_NAME="avo_dummy_${WORKSPACE_NAME}"
+TEST_DATABASE_NAME="${DATABASE_NAME}_test"
+ENV_FILE="$REPO_DIR/spec/dummy/.env"
+mkdir -p "$(dirname "$ENV_FILE")"
+touch "$ENV_FILE"
+# Strip any prior DB-name lines we wrote on a previous setup run.
+sed -i.bak '/^DATABASE_NAME=/d; /^TEST_DATABASE_NAME=/d' "$ENV_FILE" && rm -f "$ENV_FILE.bak"
+printf '\n# Set by conductor-setup -- one DB per workspace.\nDATABASE_NAME=%s\nTEST_DATABASE_NAME=%s\n' \
+    "$DATABASE_NAME" "$TEST_DATABASE_NAME" >> "$ENV_FILE"
+echo "✓ Wrote DATABASE_NAME=$DATABASE_NAME to spec/dummy/.env"
+
+# Hand off to the unified setup. `--fast` restores the dummy DB from the
+# committed snapshot at spec/dummy/db/fast_seed/ (sub-seconds vs ~60-120s for
+# db:setup). No-Docker is the default; pass `--docker` if you want Docker Postgres.
+"$REPO_DIR/bin/setup" --fast
+
+# Generate custom icon with ImageMagick if available
+if command -v magick >/dev/null 2>&1; then
+    echo ""
+    echo "Generating custom icon..."
+
+    # Generate icon with workspace name overlay
+    # Use the dev icon as base
+    BASE_ICON="$REPO_DIR/app/assets/images/avo/favicon.ico"
+    OUTPUT_ICON="$REPO_DIR/app/assets/images/avo/favicon.ico"
+
+    # Create icon with text overlay
+    # Position text in the bottom third of the icon
+    magick "$BASE_ICON" \
+        -gravity South \
+        -pointsize 26 \
+        -font Arial-Bold \
+        -fill white \
+        -stroke black \
+        -strokewidth 2 \
+        -annotate +0+0 "$WORKSPACE_NAME" \
+        "$OUTPUT_ICON"
+
+
+    echo "Generating custom logo..."
+    LOGO="$REPO_DIR/app/assets/images/avo/logo.png"
+    OUTPUT_LOGO="$REPO_DIR/app/assets/images/avo/logo.png"
+    magick "$LOGO" \
+        -gravity South \
+        -pointsize 60 \
+        -font Arial-Bold \
+        -fill white \
+        -stroke black \
+        -strokewidth 2 \
+        -annotate +0+60 "$WORKSPACE_NAME" \
+        "$OUTPUT_LOGO"
+
+    echo "✓ Custom icon generated!"
+else
+    echo ""
+    echo "⚠ ImageMagick not found - skipping icon generation"
+    echo "  Install with: brew install imagemagick"
+fi
+
+echo ""
+echo "✅ Setup complete! You can now run:"
+echo "    bin/dev"

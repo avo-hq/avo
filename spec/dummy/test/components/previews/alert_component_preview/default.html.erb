@@ -1,0 +1,48 @@
+<div class="space-y-6 max-w-md">
+  <div class="space-y-3">
+    <%= render Avo::AlertComponent.new(
+      :default,
+      "Your account has been successfully created.",
+      description: "This is a description",
+      timeout: :forever
+    ) %>
+
+    <%= render Avo::AlertComponent.new(
+      :success,
+      "Your account is verified and ready to use.",
+      description: "Short",
+      timeout: :forever
+    ) %>
+
+    <%= render Avo::AlertComponent.new(
+      :info,
+      "Your account has been successfully created.",
+      description: "This is a description long This is a description long This is a description long",
+      timeout: :forever
+    ) %>
+
+    <%= render Avo::AlertComponent.new(
+      :warning,
+      "Please verify your account to unlock all features.",
+      description: "This is a description long This is a description long This is a description long",
+      timeout: :forever
+    ) %>
+
+    <%= render Avo::AlertComponent.new(
+      :error,
+      "Something went wrong. Try again or contact support.",
+      description: "This is a description long This is a description long This is a description long",
+      timeout: :forever
+    ) %>
+  </div>
+
+  <div class="space-y-3">
+    <h3 class="text-sm font-semibold text-content">Flash-compatible single line</h3>
+
+    <%= render Avo::AlertComponent.new(
+      :success,
+      "Saved successfully",
+      timeout: :forever
+    ) %>
+  </div>
+</div>

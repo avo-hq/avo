@@ -1,0 +1,17 @@
+<%= wrapper_element class: class_names(
+  "breadcrumb-element",
+  "breadcrumb-element--link": link?
+) do %>
+  <% if @avatar.present? %>
+    <div class="breadcrumb-element__avatar">
+      <%= render Avo::UI::AvatarComponent.new src: helpers.main_app.url_for(@avatar.value), shape: :square, type: :avatar, size: :tiny %>
+    </div>
+  <% elsif @initials.present? %>
+    <span class="breadcrumb-element__initials"><%= render Avo::UI::AvatarComponent.new shape: :square, type: :initials, size: :tiny, initials: @initials %></span>
+  <% end %>
+  <% if @icon.present? %>
+    <%= helpers.svg @icon, class: "breadcrumb-element__icon" %>
+  <% end %>
+
+  <%= content_tag :span, @text, class: "breadcrumb-element__text" %>
+<% end %>

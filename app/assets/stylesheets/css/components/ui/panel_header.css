@@ -1,0 +1,46 @@
+/* Main breaking point: md */
+
+.header {
+  @apply flex flex-col gap-2 items-start justify-center pe-0 py-0;
+}
+
+.header__main {
+  @apply flex flex-col md:flex-row gap-4 items-center w-full;
+}
+
+.header__content {
+  @apply w-full flex gap-3 items-center grow shrink basis-0;
+}
+
+.header__avatar {
+  @apply shrink-0;
+}
+
+.header__text {
+  @apply flex flex-col gap-0.5 items-start grow shrink basis-0 min-h-px min-w-px not-italic;
+}
+
+.header__title {
+  @apply flex gap-2 font-medium leading-6 overflow-ellipsis w-full text-xl text-content;
+}
+
+.header__description {
+  @apply font-normal text-sm leading-5 w-full text-content-secondary grow;
+}
+
+.header__controls {
+  @apply w-full md:w-auto flex gap-3 items-center cursor-pointer shrink-0 flex-wrap justify-center md:justify-end;
+}
+
+.header__discreet-information {
+  @apply flex justify-start gap-x-2.5 gap-y-1 items-start w-full flex-wrap;
+}
+
+/* Size variants */
+.header--size-medium {
+  /* Default styles already applied */
+}
+
+.header--size-small {
+  /* Small variant uses same structure but can have different spacing if needed */
+}

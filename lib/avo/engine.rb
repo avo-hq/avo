@@ -18,9 +18,44 @@ Gem.loaded_specs["avo"].dependencies.each do |d|
   end
 end
 
+# Check for avo-licensing as a transitive dependency
+# This handles cases where avo-licensing is a dependency of other avo gems
+if Gem.loaded_specs.key?("avo-licensing") && !defined?(Avo::Licensing)
+  require "avo/licensing"
+end
+
 module Avo
   class Engine < ::Rails::Engine
     isolate_namespace Avo
+
+    rake_tasks do
+      if ENV["BUILD_AVO_ASSETS"] == "true"
+        if Rake::Task.task_defined?("assets:precompile")
+          Rake::Task["assets:precompile"].enhance(["avo:build"])
+        end
+      end
+
+      if Avo::TailwindBuilder.enabled? && Rake::Task.task_defined?("assets:precompile")
+        Rake::Task["assets:precompile"].enhance(["avo:tailwindcss:build"])
+      end
+    end
+
+    initializer "avo.tailwindcss", after: :load_config_initializers do
+      next unless Rails.env.development?
+      next unless defined?(Rails::Server)
+
+      Rails.application.config.after_initialize do
+        next unless Avo::TailwindBuilder.enabled?
+
+        begin
+          unless Avo::TailwindBuilder.build
+            Rails.logger.warn "Avo: Custom Tailwind CSS auto-build failed (run bin/rails avo:tailwindcss:build for details)."
+          end
+        rescue => e
+          Rails.logger.warn "Avo: Failed to auto-build Tailwind CSS: #{e.message}"
+        end
+      end
+    end
 
     config.after_initialize do
       # Reset before reloads in development
@@ -40,7 +75,7 @@ module Avo
       # This undoes Rails' previous nested directories behavior in the `app` dir.
       # More on this: https://github.com/fxn/zeitwerk/issues/250
       avo_directory = Rails.root.join("app", "avo").to_s
-      engine_avo_directory = Avo::Engine.root.join("app", "avo").to_s
+      engine_avo_directory = Engine.root.join("app", "avo").to_s
 
       [avo_directory, engine_avo_directory].each do |directory_path|
         ActiveSupport::Dependencies.autoload_paths.delete(directory_path)
@@ -54,7 +89,9 @@ module Avo
       # Add the mount_avo method to Rails
       # rubocop:disable Style/ArgumentsForwarding
       ActionDispatch::Routing::Mapper.include(Module.new {
-        def mount_avo(at: Avo.configuration.root_path, **options, &block)
+        def mount_avo(at: Avo.configuration.root_path, mount_lookbook: false, **options, &block)
+          Avo.configuration.mount_lookbook = mount_lookbook
+
           mount Avo::Engine, at:, **options
 
           scope at do
@@ -81,7 +118,7 @@ module Avo
 
     initializer "avo.test_buddy" do |app|
       if Avo::IN_DEVELOPMENT
-        Rails.autoloaders.main.push_dir Avo::Engine.root.join("spec", "testing_helpers")
+        Rails.autoloaders.main.push_dir Engine.root.join("spec", "testing_helpers")
       end
     end
 
@@ -89,11 +126,27 @@ module Avo
       app.config.debug_exception_response_format = :api
     end
 
-    config.app_middleware.use(
-      Rack::Static,
-      urls: ["/avo-assets"],
-      root: Avo::Engine.root.join("public")
-    )
+    initializer "avo.assets-importmaps", before: "importmap" do |app|
+      if app.respond_to?(:importmap)
+        app.config.importmap.paths << Engine.root.join("config/importmap.rb")
+      end
+    end
+
+    initializer "avo.assets" do |app|
+      if app.config.respond_to?(:assets)
+        # Add Avo's assets to the asset pipeline
+        app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "images").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "svgs").to_s
+        # Expose the fonts directory to sprockets
+        app.config.assets.paths << Engine.root.join("app", "assets", "images", "avo").to_s
+
+        if defined?(::Sprockets)
+          # Tell sprockets where your assets are located
+          app.config.assets.precompile += %w[avo_manifest.js]
+        end
+      end
+    end
 
     config.generators do |g|
       g.test_framework :rspec, view_specs: false
@@ -105,7 +158,7 @@ module Avo
     end
 
     initializer "avo.locales" do |app|
-      I18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
+      I18n.load_path += Dir[Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
     end
   end
 end

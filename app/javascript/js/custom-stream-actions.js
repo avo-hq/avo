@@ -5,19 +5,13 @@ import { saveAs } from 'file-saver'
 // TODO: move these to the avo_filters gem
 
 StreamActions.close_filters_dropdown = function () {
-  document.querySelector('.filters-dropdown-selector').classList.add('hidden')
+  const el = document.querySelector('.filters-dropdown-selector[open]')
+  if (el) el.close()
 }
 
 // Uses Turbo to refresh the page
 StreamActions.turbo_reload = function () {
   window.Turbo.visit(window.location.href, { action: 'replace' })
-}
-
-StreamActions.open_filter = function () {
-  const id = this.getAttribute('unique-id')
-  setTimeout(() => {
-    document.querySelector(`[data-filter-id="${id}"] .pill`).click()
-  }, 150)
 }
 // END TODO: move these to the avo_filters gem
 
@@ -36,6 +30,14 @@ StreamActions.download = function () {
     ),
     this.getAttribute('filename'),
   )
+}
+
+// Overriding the turbo_power as it needs the timeout to work
+
+StreamActions.turbo_progress_bar_hide = function () {
+  setTimeout(() => {
+    window.Turbo.navigator.adapter.progressBar.hide()
+  }, 1)
 }
 
 window.StreamActions = StreamActions

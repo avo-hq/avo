@@ -7,8 +7,9 @@
     selected_resources: [@resource.record_param],
     **@resource.stimulus_data_attributes
   } do %>
-  <%= content_tag :div, class: 'space-y-12' do %>
+  <%= content_tag :div, class: "panel-spacer" do %>
     <%= render_cards_component %>
+
     <% @resource.get_items.each_with_index do |item, index| %>
       <%= render Avo::Items::SwitcherComponent.new(
         resource: @resource,
@@ -20,14 +21,15 @@
         parent_record: @parent_record,
         parent_component: self,
         actions: @actions
-      )%>
+      ) %>
     <% end %>
   <% end %>
+
   <% if should_display_invalid_fields_errors? %>
     <turbo-stream action="append" target="alerts">
       <template>
         <% @resource.invalid_fields.each do |error| %>
-          <%= render Avo::AlertComponent.new error[:alert_type], error[:message] %>
+          <%= render Avo::AlertComponent.new error[:alert_type], error[:message], description: error[:description], timeout: :forever %>
         <% end %>
       </template>
     </turbo-stream>

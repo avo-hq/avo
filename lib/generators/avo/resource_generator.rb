@@ -30,8 +30,8 @@ module Generators
       def create
         return if override_controller?
 
-        template "resource/resource.tt", "app/avo/resources/#{resource_name}.rb"
-        invoke "avo:controller", [resource_name], options
+        template "resource/resource.tt", "app/avo/resources/#{file_path}.rb"
+        invoke "avo:controller", [class_name], options
       end
 
       no_tasks do
@@ -71,7 +71,7 @@ module Generators
         end
 
         def resource_class
-          class_name.remove(":").to_s
+          class_name
         end
 
         def controller_class
@@ -99,17 +99,17 @@ module Generators
         end
 
         def class_from_args
-          @class_from_args ||= options["model-class"]&.camelize || (class_name if class_name.include?("::"))
+          @class_from_args ||= options["model-class"]&.camelize
         end
 
         def model_class_from_args
-          if class_from_args.present? || class_name.include?("::")
-            "\n  self.model_class = ::#{class_from_args || class_name}"
+          if class_from_args.present?
+            "\n  self.model_class = ::#{class_from_args}"
           end
         end
 
         def model_class
-          @model_class ||= class_from_args || singular_name
+          @model_class ||= class_from_args.presence || class_name
         end
 
         def model
@@ -320,6 +320,49 @@ module Generators
 
         def field(name, type)
           ::Avo::Mappings::NAMES_MAPPING[name.to_sym] || ::Avo::Mappings::FIELDS_MAPPING[type&.to_sym] || {field: "text"}
+        end
+
+        ICON_MAP = {
+          user: "tabler/outline/users",
+          customer: "tabler/outline/user",
+          transaction: "tabler/outline/credit-card-pay",
+          post: "tabler/outline/ballpen",
+          comment: "tabler/outline/message",
+          product: "tabler/outline/package",
+          order: "tabler/outline/shopping-cart",
+          category: "tabler/outline/folder",
+          tag: "tabler/outline/tag",
+          project: "tabler/outline/building-store",
+          team: "tabler/outline/users-group",
+          company: "tabler/outline/building",
+          invoice: "tabler/outline/file-invoice",
+          payment: "tabler/outline/cash",
+          article: "tabler/outline/article",
+          event: "tabler/outline/calendar-event",
+          notification: "tabler/outline/bell",
+          message: "tabler/outline/mail",
+          setting: "heroicons/outline/cog",
+          report: "tabler/filled/chart-pie-4",
+          task: "tabler/outline/checklist",
+          review: "tabler/outline/star",
+          photo: "tabler/outline/photo",
+          image: "tabler/outline/photo",
+          video: "tabler/outline/video",
+          file: "tabler/outline/file",
+          document: "tabler/outline/file-text",
+          role: "tabler/outline/shield",
+          permission: "tabler/outline/lock",
+          subscription: "tabler/outline/credit-card",
+          plan: "tabler/outline/list",
+          address: "tabler/outline/map-pin",
+          location: "tabler/outline/map-pin",
+          country: "tabler/outline/world-map",
+          city: "tabler/outline/building-community",
+          account: "tabler/outline/user-circle",
+        }.freeze
+
+        def icon_for_resource
+          ICON_MAP[singular_name.underscore.split("/").last.downcase.to_sym]
         end
       end
     end

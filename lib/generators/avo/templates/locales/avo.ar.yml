@@ -5,6 +5,24 @@ ar:
     actions: أوامر
     add_filter: إضافة عامل تصفية
     and_x_other_resources: و %{count} موارد أخرى
+    appearance:
+      accent_picker: لون مميز
+      accents: اللون المميز
+      auto: تلقائي
+      auto_tooltip: تلقائي (تفضيل النظام)
+      dark: داكن
+      dark_tooltip: وضع الداكن
+      hide: إخفاء
+      light: فاتح
+      light_tooltip: وضع الفاتح
+      neutrals: السمة
+      neutrals_picker: سمة الألوان المحايدة
+      schemes: المظهر
+      shortcut_badges: شارات الاختصار
+      shortcut_badges_hide_tooltip: إخفاء شارات اختصارات لوحة المفاتيح
+      shortcut_badges_show_tooltip: عرض شارات اختصارات لوحة المفاتيح
+      show: عرض
+      title: المظهر
     applied:
       few: applied
       many: applied
@@ -23,16 +41,26 @@ ar:
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
     cancel: إلغاء
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} خيارات محددة مخفية بواسطة البحث"
+        many: "%{count} خيارًا محددًا مخفيًا بواسطة البحث"
+        one: خيار محدد واحد مخفي بواسطة البحث
+        other: "%{count} خيار محدد مخفي بواسطة البحث"
+        two: خياران محددان مخفيان بواسطة البحث
+        zero: لا توجد خيارات محددة مخفية بواسطة البحث
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا
     choose_item: اختر %{item}
     clear_value: مسح القيمة
+    click_to_load: انقر لتحميل
     click_to_reveal_filters: انقر لإظهار المرشحات
     close: إغلاق
     close_modal: أغلق النافذة
     confirm: تأكيد
     copy: نسخ
     create_new_item: إنشاء %{item} جديد
+    created_at: تم الإنشاء في
     created_at_timestamp: تم الإنشاء في %{created_at}
     dashboard: لوحة القيادة
     dashboards: لوحات القيادة
@@ -51,6 +79,7 @@ ar:
     failed: فشل
     failed_to_find_attachment: فشل في العثور على المرفق
     failed_to_load: فشل التحميل
+    failed_to_load_item: فشل في تحميل %{item}
     'false': خطأ
     file:
       few: ملفات
@@ -61,6 +90,23 @@ ar:
       zero:
     filter_by: تصفية حسب
     filters: مرشحات
+    global_search:
+      empty_state:
+        no_results_for_query: لم نتمكن من العثور على أي شيء يتطابق مع "%{query}"
+        no_results_found: لم يتم العثور على نتائج
+        start_typing: ابدأ الكتابة للبحث
+        start_typing_with_resource_list: يمكنك البحث عن %{resources}
+        start_typing_with_resources: يمكنك البحث عن %{resources} %{other_resources}
+        try_adjusting_search: حاول تعديل مصطلحات البحث الخاصة بك أو تحقق من الأخطاء المطبعية
+      go_to: اذهب إلى
+      keyboard_hints:
+        close: إغلاق
+        navigate: تنقل
+        press: اضغط
+        select: اختيار
+      results:
+        count_of_total: "%{count} من %{total}"
+      show_all_results_for: عرض جميع النتائج لـ
     go_back: العودة للخلف
     grid_view: عرض الشبكة
     hide_content: إخفاء المحتوى
@@ -73,6 +119,7 @@ ar:
       value: القيمة
     less_content: محتوى أقل
     list_is_empty: القائمة فارغة
+    load_item: تحميل %{item}
     loading: جاري التحميل
     media_library:
       title: مكتبة الوسائط
@@ -94,15 +141,26 @@ ar:
       other: "%{count} سجل %{item}"
       zero: لا يوجد %{item}
     oops_nothing_found: عذراً! لم يتم العثور على شيء...
+    open_in_new_tab: افتح في علامة تبويب جديدة
+    open_in_your_editor: افتح في محررك
     order:
       higher: حرك السجل للأعلى
       lower: حرك السجل للأسفل
       reorder_record: إعادة ترتيب السجل
       to_bottom: حرك السجل للأسفل بشكل كامل
       to_top: حرك السجل للأعلى بشكل كامل
+    pages: صفحات
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
+    record:
+      few: سجلات
+      many: سجلات
+      one: سجل
+      other: سجلات
+      two: سجلان
+      zero: سجلات
     records_selected_from_all_pages_html: جميع السجلات مختارة من جميع الصفحات
+    reload: إعادة تحميل
     remove_selection: إزالة التحديد
     reset: اعاده تعيين
     reset_filters: إعادة تعيين الفلاتر
@@ -110,6 +168,9 @@ ar:
     resource_destroyed: تم حذف السجل
     resource_updated: تم تحديث السجل
     resources: المصادر
+    retry: إعادة المحاولة
+    retry_item: إعادة المحاولة %{item}
+    reupload_file: Reupload %{item}
     run: تشغيل
     save: حفظ
     search:
@@ -120,6 +181,8 @@ ar:
     select_item: تحديد العنصر
     show_content: عرض المحتوى
     sign_out: تسجيل الخروج
+    skip_to_content: انتقل إلى المحتوى
+    skip_to_sidebar: تخطي إلى الشريط الجانبي
     sort_asc: ترتيب تصاعدي
     sort_desc: ترتيب تنازلي
     sort_reset: إعادة تهيئة الترتيب
@@ -131,6 +194,7 @@ ar:
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
+    updated_at: تم التحديث في
     updated_at_timestamp: تم التحديث في %{updated_at}
     view: عرض
     view_item: عرض %{item}
@@ -141,9 +205,9 @@ ar:
       one: عنصر واحد إضافي
       other: "%{count} عناصر إضافية"
       zero: لا توجد عناصر إضافية
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المحددة في هذه الصفحة من إجمالي<span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> السجلات المحددة من كل الصفحات
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> السجلات المختارة في هذه الصفحة
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> السجلات المحددة في هذه الصفحة من إجمالي<span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> السجلات المحددة من كل الصفحات
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> السجلات المختارة في هذه الصفحة
     yes_confirm: نعم، أنا متأكد
     you_cant_upload_new_resource: لا يمكنك تحميل الملفات في محرر Trix حتى تحفظ السجل.
     you_havent_set_attachment_key: لم تقم بتعيين `attachment_key` لهذا الحقل Trix.

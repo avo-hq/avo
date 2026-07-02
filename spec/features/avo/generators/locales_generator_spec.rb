@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "locales generator", type: :feature do
+RSpec.feature "locales generator", type: :feature, acquire_lock: :generator do
   it "generates the files" do
     # Define locales to backup
     backup_locales = %w[en pt]
@@ -15,7 +15,7 @@ RSpec.feature "locales generator", type: :feature do
       backup_files[locale] = {original: original_file, backup: backup_file}
     end
 
-    locales = %w[ar de en es fr it ja nb nl nn pl pt-BR pt ro ru tr uk zh zh-TW]
+    locales = %w[ar de en es fr it ja nb nl nn pl pt-BR pt ro ru tr ua zh zh-TW]
 
     files = locales.map do |locale|
       Rails.root.join("config", "locales", "avo.#{locale}.yml").to_s

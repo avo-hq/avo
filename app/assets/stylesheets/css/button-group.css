@@ -1,0 +1,23 @@
+.button-group {
+  @apply flex;
+
+  .button {
+    @apply -me-px;
+
+    &:first-child {
+      @apply rounded-e-none;
+    }
+
+    &:last-child {
+      @apply rounded-s-none;
+    }
+
+    &:not(:first-child):not(:last-child) {
+      @apply rounded-none;
+    }
+  }
+}
+
+form.button_to {
+  @apply inline-flex;
+}

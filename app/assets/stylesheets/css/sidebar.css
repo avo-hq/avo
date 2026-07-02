@@ -1,31 +1,436 @@
-.application-sidebar .active:hover,
-.application-sidebar .active {
-  @apply bg-primary-100 text-primary-500;
-}
+/* ================================================ */
+/* Sidebar Shared Utilities                         */
+/* ================================================ */
 
-.content-area {
-  /* remove the left padding. */
-  .main-content-area {
-    @apply lg:pl-0;
-    transition: padding 0.1s ease;
-  }
-
-  &.sidebar-open {
-    /* Add padding to the main area to allow for the sidebar to expand. */
-    .main-content-area {
-      @apply lg:pl-64;
-      transition: padding 0.1s ease;
-    }
-  }
-}
-
-.sidebar-open {
-  .avo-sidebar {
-    transform: translateX(0);
-    transition: transform 0.1s ease;
-  }
-}
 .avo-sidebar {
-  transform: translateX(-100%);
-  transition: transform 0.1s ease;
+  /* Sidebar theme contract.
+     Override these variables on `.avo-sidebar` when the sidebar needs its own
+     palette. The defaults keep the sidebar tied to Avo's semantic surface and
+     text tokens.
+
+     Example:
+       .avo-sidebar {
+         --sidebar-background: #eef7f4;
+         --sidebar-border: #b7d7cf;
+         --sidebar-content: #123d4a;
+         --sidebar-content-secondary: #3d6f78;
+         --sidebar-link-hover-background: #d8ede7;
+         --sidebar-link-active-background: #c4e4dc;
+         --sidebar-focus-background: #ffffff;
+         --sidebar-profile-avatar-background: #ffffff;
+       }
+  */
+  --sidebar-background: var(--color-sidebar-background);
+  --sidebar-border: var(--color-tertiary);
+  --sidebar-content: var(--color-content);
+  --sidebar-content-secondary: var(--color-content-secondary);
+  --sidebar-link-hover-background: color-mix(in oklab, var(--color-secondary), var(--color-content) 2%);
+  --sidebar-link-active-background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+  --sidebar-focus-background: var(--color-primary);
+  --sidebar-profile-avatar-background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary) 100%), var(--color-tertiary);
+  --sidebar-profile-avatar-border: var(--color-tertiary);
+  --sidebar-profile-avatar-content: var(--color-foreground);
+  --sidebar-status-border: var(--border-color);
+}
+
+.sidebar-icon {
+  @apply size-4;
+}
+
+.sidebar-icon--collapsed {
+  @apply rotate-90;
+}
+
+.sidebar-group__header:focus-visible,
+.sidebar-link:focus-visible,
+.sidebar-link.active:focus-visible,
+.sidebar-subitem:focus-visible {
+  @apply relative z-10;
+  outline-offset: var(--focus-outline-offset-inset);
+}
+
+.sidebar-link[disabled],
+.sidebar-link[aria-disabled='true'],
+.sidebar-subitem[disabled],
+.sidebar-subitem[aria-disabled='true'] {
+  @apply opacity-60 pointer-events-none;
+}
+
+/* ================================================ */
+/* Sidebar Layout — SidebarComponent                */
+/* BEM: .sidebar (block)                            */
+/* ================================================ */
+
+.sidebar__inner {
+  @apply flex flex-col w-full h-full;
+}
+
+.sidebar__body {
+  @apply flex-1 min-h-0 overflow-y-auto flex flex-col gap-y-4 items-start;
+}
+
+.sidebar__body-content {
+  @apply flex flex-col px-3 w-full;
+}
+
+.sidebar__footer {
+  @apply shrink-0;
+}
+
+/* ================================================ */
+/* Sidebar Section — Sidebar::SectionComponent      */
+/* BEM: .sidebar-section (block)                    */
+/* ================================================ */
+
+.sidebar-section {
+  @apply not-first:mt-5;
+}
+
+.sidebar-section__header {
+  @apply flex items-center w-full text-start p-2 pb-1 gap-2 rounded-lg text-base font-medium leading-6 border-none bg-transparent;
+  color: var(--sidebar-content-secondary);
+}
+
+.sidebar-section__header-inner {
+  @apply flex items-center gap-2;
+}
+
+.sidebar-section__header:focus-visible {
+  @apply relative z-10;
+  background-color: var(--sidebar-focus-background);
+}
+
+.sidebar-section__items {
+  @apply w-full flex flex-col;
+}
+
+/* Remove link gap when no items in the section have icons */
+.sidebar-section__items:not(:has(.sidebar-link__icon-wrapper)) .sidebar-link {
+  @apply gap-0;
+}
+
+/* ================================================ */
+/* Sidebar Group — Sidebar::GroupComponent          */
+/* BEM: .sidebar-group (block)                      */
+/* ================================================ */
+
+.sidebar-group:not(:last-of-type) {
+  @apply pb-4;
+}
+
+.sidebar-group__header {
+  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
+  color: var(--sidebar-content-secondary);
+}
+
+.sidebar-group__header:focus-visible {
+  @apply relative z-10;
+  background-color: var(--sidebar-focus-background);
+}
+
+.sidebar-group__items {
+  @apply w-full flex flex-col;
+}
+
+/* Remove link gap when no items in the group have icons */
+.sidebar-group__items:not(:has(.sidebar-link__icon-wrapper)) .sidebar-link {
+  @apply gap-0;
+}
+
+/* ================================================ */
+/* Sidebar Link — Sidebar::LinkComponent            */
+/* BEM: .sidebar-link (block)                       */
+/* ================================================ */
+
+.sidebar-link,
+.sidebar-subitem {
+  @apply flex items-center px-2 rounded-lg gap-2 text-sm font-medium leading-5;
+  color: var(--sidebar-content-secondary);
+}
+
+.sidebar-link {
+  @apply py-1.5 my-px;
+}
+
+/* When the first menu item is a link (not a section), give it a bit more
+   breathing room from the top so it doesn't hug the sidebar's edge. */
+.sidebar__body-content > .sidebar-link:first-child {
+  @apply mt-3;
+}
+
+.sidebar-link:hover {
+  color: var(--sidebar-content);
+  background-color: var(--sidebar-link-hover-background);
+}
+
+.sidebar-link:focus-visible,
+.sidebar-link.active:focus-visible {
+  @apply relative z-10;
+  background-color: var(--sidebar-focus-background);
+}
+
+.sidebar-link.active {
+  color: var(--sidebar-content);
+  background: var(--sidebar-link-active-background);
+}
+
+.sidebar-link__icon-wrapper {
+  @apply shrink-0 flex items-center justify-center;
+}
+
+/* Reserve same width when group has icons but this link has none (alignment) */
+.sidebar-link__icon-wrapper--placeholder {
+  @apply w-4 min-w-4;
+}
+
+.sidebar-link__external-icon {
+  @apply self-center ms-auto me-2;
+}
+
+/* ================================================ */
+/* Sidebar Subitem — Sidebar::SubitemComponent      */
+/* BEM: .sidebar-subitem (block)                    */
+/* ================================================ */
+
+.sidebar-subitem {
+  @apply py-1;
+}
+
+.sidebar-subitem__items {
+  @apply w-full flex flex-col ps-6;
+}
+
+.sidebar-subitem:hover {
+  color: var(--sidebar-content);
+}
+
+.sidebar-subitem:focus-visible {
+  @apply relative z-10;
+  color: var(--sidebar-content-secondary);
+}
+
+.sidebar-subitem.active:hover,
+.sidebar-subitem.active {
+  @apply bg-transparent;
+  color: var(--sidebar-content);
+}
+
+/* Bar indicators for submenu items */
+.sidebar-subitem--bar-pass,
+.sidebar-subitem--bar-active {
+  @apply relative;
+}
+
+/* I-shape: vertical line passing through items above active */
+.sidebar-subitem--bar-pass::before {
+  content: '';
+  @apply absolute top-0 bottom-0;
+  inset-inline-start: -10px;
+  border-inline-start: 2px solid var(--sidebar-link-active-background);
+}
+
+/* L-shape: vertical line curving right at active item */
+.sidebar-subitem--bar-active::before {
+  content: '';
+  @apply absolute top-0;
+  inset-inline-start: -10px;
+  height: 50%;
+  width: 10px;
+  border-inline-start: 2px solid var(--sidebar-link-active-background);
+  border-block-end: 2px solid var(--sidebar-link-active-background);
+  border-end-start-radius: 2px;
+}
+
+/* Hover preview: redraw the full connector path down to the hovered subitem,
+   mirroring the active styling. Every item above it gets a vertical line; the
+   hovered item gets the L-shape, or a T-shape when the active item sits below
+   it (so the line continues past it). The preview is faint (0.6) only when it
+   extends below the active item — at or above the active item it stays solid. */
+.sidebar-subitem:hover,
+.sidebar-subitem:has(~ .sidebar-subitem:hover) {
+  @apply relative;
+}
+
+/* Vertical line for every item above the hovered one */
+.sidebar-subitem:has(~ .sidebar-subitem:hover)::before {
+  content: '';
+  @apply absolute top-0 bottom-0;
+  inset-inline-start: -10px;
+  width: auto;
+  height: auto;
+  border-inline-start: 2px solid var(--sidebar-link-active-background);
+  border-block-end: none;
+  border-end-start-radius: 0;
+}
+
+/* L-shape: endpoint at the hovered item */
+.sidebar-subitem:hover::before {
+  content: '';
+  @apply absolute top-0;
+  inset-inline-start: -10px;
+  height: 50%;
+  width: 10px;
+  border-inline-start: 2px solid var(--sidebar-link-active-background);
+  border-block-end: 2px solid var(--sidebar-link-active-background);
+  border-end-start-radius: 2px;
+}
+
+/* T-shape: when the active item is below the hovered one, the line must
+   continue down past it — full vertical line (top + bottom) with a branch to
+   the right (three endings) instead of the L-shape endpoint. */
+.sidebar-subitem:hover:has(~ .sidebar-subitem--bar-active)::before {
+  @apply top-0 bottom-0;
+  height: auto;
+  width: auto;
+  border-block-end: none;
+  border-end-start-radius: 0;
+}
+
+.sidebar-subitem:hover:has(~ .sidebar-subitem--bar-active)::after {
+  content: '';
+  @apply absolute;
+  top: calc(50% - 1px);
+  inset-inline-start: -10px;
+  width: 10px;
+  border-block-end: 2px solid var(--sidebar-link-active-background);
+}
+
+/* ================================================ */
+/* Sidebar Profile — SidebarProfileComponent        */
+/* BEM: .sidebar-profile (block)                    */
+/* ================================================ */
+
+.sidebar-profile {
+  @apply flex items-center rtl:flex-row-reverse px-4 py-2 gap-4;
+  color: var(--sidebar-content);
+}
+
+.sidebar-profile__body {
+  @apply flex flex-1 items-center gap-2 w-full min-w-0;
+}
+
+.sidebar-profile__avatar-wrapper {
+  @apply flex items-center justify-center shrink-0 overflow-hidden rounded-lg border;
+  background: var(--sidebar-profile-avatar-background);
+  border-color: var(--sidebar-profile-avatar-border);
+}
+
+.sidebar-profile__avatar {
+  @apply size-8 flex items-center justify-center;
+}
+
+.sidebar-profile__avatar-img {
+  @apply size-full min-w-full min-h-full object-cover;
+}
+
+.sidebar-profile__avatar-initials {
+  @apply w-6 font-semibold text-sm leading-5 text-center text-ellipsis overflow-hidden tracking-tighter;
+  color: var(--sidebar-profile-avatar-content);
+}
+
+.sidebar-profile__info {
+  @apply flex flex-col min-w-0 rtl:text-end;
+}
+
+.sidebar-profile__title {
+  @apply font-medium text-ellipsis overflow-hidden text-sm leading-5;
+  color: var(--sidebar-content);
+}
+
+.sidebar-profile__subtitle {
+  @apply text-xs text-ellipsis overflow-hidden leading-4;
+  color: var(--sidebar-content-secondary);
+}
+
+.sidebar-profile__actions {
+  @apply flex items-center justify-center gap-1 shrink-0;
+}
+
+.sidebar-profile__form {
+  @apply flex w-full;
+}
+
+.sidebar-profile__dropdown {
+  @apply sm:max-w-sm mb-0.5;
+  position-area: top span-right;
+
+  /* The profile menu opens upward, so it should rise from below and drop back
+     down — the inverse of the shared `.popover-menu__panel` slide, which starts
+     above and suits the default downward-opening menus. We only flip the
+     transform direction; the open end-state (translateY(0)) is inherited. */
+  transform: translateY(0.25rem);
+}
+
+@starting-style {
+  .sidebar-profile__dropdown:popover-open {
+    transform: translateY(0.25rem);
+  }
+}
+
+/* Below `sm` the menu spans the full screen width instead of hugging the
+   trigger. Drop the anchor's inline placement (`position-area: none`), stretch
+   edge-to-edge (`inset-inline: 1rem`), and keep it tied to the trigger vertically
+   by pinning the panel's bottom to the button's top. `top: auto` is required to
+   override the popover UA `inset: 0`, which would otherwise stretch it upward. */
+@media (width < theme(--breakpoint-sm)) {
+  .sidebar-profile__dropdown {
+    position-area: none;
+    inset-inline: 1rem;
+    top: auto;
+    bottom: anchor(top);
+    /* `width: auto` lets the two inset-inline values define the width (full
+       viewport minus the 1rem gutters). Without it the popover UA's
+       `width: fit-content` wins, the panel grows to its content, and long
+       menu labels never hit a boundary to truncate against. */
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* Menu rows inherit the dropdown row layout — override text size and,
+   for sign-out, the danger color + hover. */
+.sidebar-profile__menu-item,
+.sidebar-profile__sign-out {
+  @apply !text-base;
+}
+
+.sidebar-profile__sign-out {
+  @apply !text-danger hover:!bg-danger/10 hover:!text-danger;
+}
+
+/* ================================================ */
+/* Sidebar Status (development only)                */
+/* BEM: .sidebar-status (block)                     */
+/* ================================================ */
+
+.sidebar-status {
+  @apply p-4 border-t;
+  border-color: var(--sidebar-status-border);
+}
+
+.sidebar-status__link {
+  @apply px-4 py-2 border rounded-sm flex justify-between items-center w-full text-sm;
+  border-color: var(--sidebar-status-border);
+  color: var(--sidebar-content);
+}
+
+.sidebar-status__indicator {
+  @apply rounded-full size-4;
+}
+
+.sidebar-status__indicator--ok {
+  @apply bg-green-400;
+}
+
+.sidebar-status__indicator--error {
+  @apply bg-orange-400;
+}
+
+.sidebar-status__hint {
+  @apply absolute text-xs hidden text-center w-full -ms-4;
+  color: var(--sidebar-content-secondary);
+}
+
+.sidebar-status:hover .sidebar-status__hint {
+  @apply block;
 }

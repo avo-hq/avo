@@ -5,6 +5,24 @@ tr:
     actions: Aksiyonlar
     add_filter: Filtre ekle
     and_x_other_resources: ve %{count} diğer kaynak
+    appearance:
+      accent_picker: Vurgu rengi
+      accents: Vurgu
+      auto: Otomatik
+      auto_tooltip: Otomatik (sistem tercihi)
+      dark: Koyu
+      dark_tooltip: Koyu mod
+      hide: Gizle
+      light: Açık
+      light_tooltip: Açık mod
+      neutrals: Tema
+      neutrals_picker: Nötr tema
+      schemes: Görünüm
+      shortcut_badges: Kısayol rozetleri
+      shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle
+      shortcut_badges_show_tooltip: Klavye kısayolu rozetlerini göster
+      show: Göster
+      title: Görünüm
     applied:
       one: uygulandı
       other: uygulanan
@@ -19,16 +37,22 @@ tr:
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
     cancel: İptal et
+    checkbox_list:
+      hidden_selections:
+        one: 1 seçilen seçenek arama tarafından gizlendi
+        other: "%{count} seçilen seçenek arama tarafından gizlendi"
     choose_a_country: Bir ülke seç
     choose_an_option: Bir seçenek seç
     choose_item: "%{item} seçin"
     clear_value: Değeri temizle
+    click_to_load: Yüklemek için tıklayın
     click_to_reveal_filters: Filtreleri ortaya çıkarmak için tıklayın
     close: Kapat
     close_modal: Modali kapat
     confirm: Onayla
     copy: Kopya
     create_new_item: Yeni bir %{item} oluşturun
+    created_at: Oluşturulma tarihi
     created_at_timestamp: "%{created_at} tarihinde oluşturuldu"
     dashboard: Yönetim Paneli
     dashboards: Yönetim Panelleri
@@ -47,12 +71,30 @@ tr:
     failed: Başarısız
     failed_to_find_attachment: Ek bulunamadı
     failed_to_load: Yüklenemedi
+    failed_to_load_item: "%{item} yüklenemedi"
     'false': Yanlış
     file:
       one: dosya
       other: dosyalar
     filter_by: Tarafından filtre
     filters: Filtreler
+    global_search:
+      empty_state:
+        no_results_for_query: '"%{query}" ile eşleşen hiçbir şey bulamadık'
+        no_results_found: Sonuç bulunamadı
+        start_typing: Aramaya başlamak için yazmaya başlayın
+        start_typing_with_resource_list: "%{resources} üzerinde arama yapabilirsiniz"
+        start_typing_with_resources: "%{resources} %{other_resources} üzerinde arama yapabilirsiniz"
+        try_adjusting_search: Arama terimlerinizi ayarlamayı veya yazım hatalarını kontrol etmeyi deneyin
+      go_to: Git
+      keyboard_hints:
+        close: Kapat
+        navigate: Gezin
+        press: Bas
+        select: Seç
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: Tüm sonuçları göster
     go_back: Geri dön
     grid_view: Grid görünümü
     hide_content: İçeriği gizle
@@ -65,6 +107,7 @@ tr:
       value: Değer
     less_content: Daha az içerik
     list_is_empty: Boş liste
+    load_item: "%{item} yükle"
     loading: Yükleniyor
     media_library:
       title: Ortam Kütüphanesi
@@ -86,15 +129,22 @@ tr:
       other: "%{count} %{item}"
       zero: sıfır %{item}
     oops_nothing_found: Hata! Hiçbir şey bulunamadı
+    open_in_new_tab: Yeni bir sekmede aç
+    open_in_your_editor: Editörünüzde açın
     order:
       higher: Kaydı yüksekten sırala
       lower: Kaydı düşükten sırala
       reorder_record: Kaydı yeniden sırala
       to_bottom: Kaydı en alta taşı
       to_top: Kaydı en üste taşı
+    pages: Sayfalar
     per_page: Sayfa başına
     prev_page: Önceki sayfa
+    record:
+      one: kayıt
+      other: kayıtlar
     records_selected_from_all_pages_html: Tüm sayfalardan seçilen tüm kayıtlar
+    reload: Yeniden yükle
     remove_selection: Seçimi sil
     reset: sıfırlama
     reset_filters: Filtreleri sıfırla
@@ -102,6 +152,9 @@ tr:
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi
     resources: Kaynaklar
+    retry: Yeniden dene
+    retry_item: "%{item}'ı yeniden dene"
+    reupload_file: Reupload %{item}
     run: Başlat
     save: Kaydet
     search:
@@ -112,6 +165,8 @@ tr:
     select_item: Öğe seç
     show_content: İçeriği göster
     sign_out: Çıkış yap
+    skip_to_content: İçeriğe atla
+    skip_to_sidebar: Kenara atla
     sort_asc: Artan sırala
     sort_desc: Azalan sırala
     sort_reset: Sıralamayı sıfırla
@@ -123,6 +178,7 @@ tr:
     type_to_search: Aramak için yazın.
     unauthorized: Yetkisiz
     undo: geri al
+    updated_at: Güncelleme tarihi
     updated_at_timestamp: "%{updated_at} tarihinde güncellendi"
     view: Görünüm
     view_item: "%{item} öğresini görüntüle"
@@ -133,9 +189,9 @@ tr:
       one: bir öğe daha
       other: "%{count} öğe daha"
       zero: daha fazla öğe yok
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen toplam kayıtlar <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> tüm sayfalardan seçilen kayıtlar
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> bu sayfada seçilen kayıtlar
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> bu sayfada seçilen toplam kayıtlar <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> tüm sayfalardan seçilen kayıtlar
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> bu sayfada seçilen kayıtlar
     yes_confirm: Evet, eminim
     you_cant_upload_new_resource: Kaynağı kaydedene kadar Trix editörüne dosya yükleyemezsiniz.
     you_havent_set_attachment_key: Bu Trix alanına bir `attachment_key` ayarlamadınız.

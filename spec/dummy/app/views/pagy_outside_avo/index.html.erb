@@ -1,0 +1,17 @@
+<h1>Pagy outside Avo</h1>
+
+<p>This page lives outside the mounted Avo app.</p>
+
+<div>
+  <%== @pagy.info_tag %>
+</div>
+
+<ul>
+  <% @posts.each do |post| %>
+    <li><%= post.name %></li>
+  <% end %>
+</ul>
+
+<nav aria-label="Posts pagination outside Avo">
+  <%== @pagy.series_nav %>
+</nav>

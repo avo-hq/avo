@@ -1,0 +1,82 @@
+/* The dance we need to do to be able to have rounded corners on an HTML table */
+.table-row {
+  @apply rounded-ss-lg;
+  background: var(--color-row-bg);
+
+  &:first-child {
+    & > td:first-child {
+      @apply rounded-ss-lg border-s;
+    }
+  }
+  &:first-child {
+    & > td:last-child {
+      @apply rounded-se-lg border-e;
+    }
+  }
+
+  &:last-child {
+    & > td {
+      @apply border-b;
+    }
+
+    & > td:first-child {
+      @apply rounded-es-lg border-s;
+    }
+    & > td:last-child {
+      @apply rounded-ee-lg border-e;
+    }
+    @apply border-t border-tertiary;
+  }
+
+  & > td {
+    @apply border-t border-tertiary;
+
+    &:first-child {
+      @apply border-s;
+    }
+    &:last-child {
+      @apply border-e border-t;
+    }
+  }
+
+  &:hover {
+    background: var(--color-row-bg-hover);
+  }
+}
+
+.shift-pressed {
+  & .highlighted-row {
+    background: var(--color-row-bg-selected);
+  }
+}
+
+.table-row:hover.selected-row,
+.selected-row {
+  background: var(--color-row-bg-hover);
+}
+
+.table-row.is-keyboard-focused {
+  background: color-mix(in oklab, var(--color-primary), var(--color-accent) 10%);
+}
+
+/* Reorder drag placeholder (SortableJS ghostClass) — theme-aware for dark mode. */
+.table-row--ghost {
+  background: var(--color-row-bg-selected);
+
+  & > td {
+    background: var(--color-row-bg-selected);
+  }
+}
+
+table[role="grid"] {
+  @apply outline-none;
+}
+
+/* The table sits inside .card > .card__wrapper.overflow-auto, which clips any
+   outline drawn on the <table> itself. Lift the ring to the outer .card so it
+   can sit outside the wrapper, matching the card's own border radius and
+   visible bounds. */
+.card:has(table[role="grid"]:focus-visible) {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}

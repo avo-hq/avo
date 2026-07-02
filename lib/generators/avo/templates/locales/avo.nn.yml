@@ -5,6 +5,24 @@ nn:
     actions: Handlingar
     add_filter: Legg til filter
     and_x_other_resources: og %{count} andre ressursar
+    appearance:
+      accent_picker: Aksentfarge
+      accents: Aksent
+      auto: Auto
+      auto_tooltip: Auto (systempreferanse)
+      dark: Mørk
+      dark_tooltip: Mørkmodus
+      hide: Skjul
+      light: Lys
+      light_tooltip: Lysmodus
+      neutrals: Tema
+      neutrals_picker: Nøytrale tema
+      schemes: Utseende
+      shortcut_badges: Snarveiknappar
+      shortcut_badges_hide_tooltip: Skjul snarveiknappar
+      shortcut_badges_show_tooltip: Vis snarveiknappar
+      show: Vis
+      title: Utseende
     applied:
       one: applied
       other: applied
@@ -19,16 +37,22 @@ nn:
     attachment_destroyed: Vedlegg sletta
     attachment_failed: Klarte ikkje å legge ved %{attachment_class}
     cancel: Avbryt
+    checkbox_list:
+      hidden_selections:
+        one: 1 vald alternativ skjult av søk
+        other: "%{count} valde alternativ skjult av søk"
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ
     choose_item: Vel %{item}
     clear_value: Nullstill verdi
+    click_to_load: Klikk for å laste inn
     click_to_reveal_filters: Vis filter
     close: Lukk
     close_modal: Lukk modal
     confirm: Stadfest
     copy: Kopier
     create_new_item: Lag ny %{item}
+    created_at: Oppretta den
     created_at_timestamp: Oppretta den %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -47,12 +71,30 @@ nn:
     failed: Feila
     failed_to_find_attachment: Fann ikkje vedlegg
     failed_to_load: Lasting feila
+    failed_to_load_item: Feil ved innlasting av %{item}
     'false': Falsk
     file:
       one: file
       other: files
     filter_by: Filtrer etter
     filters: Filter
+    global_search:
+      empty_state:
+        no_results_for_query: Vi kunne ikke finne noe som matcher "%{query}"
+        no_results_found: Ingen resultat funnet
+        start_typing: Byrja å skriva for å søkja
+        start_typing_with_resource_list: Du kan søkja på %{resources}
+        start_typing_with_resources: Du kan søkja på %{resources} %{other_resources}
+        try_adjusting_search: Prøv å justere søkevilkårene dine eller sjekk for skrivefeil
+      go_to: Gå til
+      keyboard_hints:
+        close: Lukk
+        navigate: Naviger
+        press: Trykk
+        select: Vel
+      results:
+        count_of_total: "%{count} av %{total}"
+      show_all_results_for: Vis alle resultater for
     go_back: Gå tilbake
     grid_view: Gridvisning
     hide_content: Skjul innhald
@@ -65,6 +107,7 @@ nn:
       value: Verdi
     less_content: Mindre innhold
     list_is_empty: Lista er tom
+    load_item: Last inn %{item}
     loading: Lastar
     media_library:
       title: Media bibliotek
@@ -86,15 +129,22 @@ nn:
       other: "%{count} %{item}"
       zero: ingen %{item}
     oops_nothing_found: Oops! Fann ikkje noko...
+    open_in_new_tab: Opne i ein ny fane
+    open_in_your_editor: Opne i di redigeringsprogram
     order:
       higher: Flytt elementet opp
       lower: Flytt elementet ned
       reorder_record: Sorter element
       to_bottom: Flytt elementet til botnen
       to_top: Flytt elementet til toppen
+    pages: Sider
     per_page: Per side
     prev_page: Førre side
+    record:
+      one: post
+      other: postar
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
+    reload: Last inn på nytt
     remove_selection: Fjern val
     reset: nullstille
     reset_filters: Nullstill filter
@@ -102,6 +152,9 @@ nn:
     resource_destroyed: Ressurs sletta
     resource_updated: Ressurs oppdatert
     resources: Ressursar
+    retry: Prøv igjen
+    retry_item: Prøv igjen %{item}
+    reupload_file: Reupload %{item}
     run: Køyr
     save: Lagre
     search:
@@ -112,6 +165,8 @@ nn:
     select_item: Vel
     show_content: Vis innhald
     sign_out: Logg ut
+    skip_to_content: Hopp til innhald
+    skip_to_sidebar: Hopp til sidefelt
     sort_asc: Sorter stigande
     sort_desc: Sorter synkende
     sort_reset: Nullstill sortering
@@ -123,6 +178,7 @@ nn:
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
     undo: angre
+    updated_at: Oppdatert den
     updated_at_timestamp: Oppdatert den %{updated_at}
     view: Vis
     view_item: vis %{item}
@@ -133,9 +189,9 @@ nn:
       one: eitt element til
       other: "%{count} fleire element"
       zero: ingen fleire element
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> valde postar på denne sida av totalt <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> valde postar frå alle sider
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> valde postar på denne sida av totalt <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> valde postar frå alle sider
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, eg er sikker
     you_cant_upload_new_resource: Du kan ikkje laste opp filer til Trix-editoren før du lagrar ressursen.
     you_havent_set_attachment_key: Du har ikkje sett ein `attachment_key` til dette Trix-feltet.

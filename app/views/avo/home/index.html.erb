@@ -1,6 +1,6 @@
 <div class="flex flex-col">
-  <%= render Avo::PanelComponent.new(name: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.') do |c| %>
-    <% c.with_body do %>
+  <%= render ui.panel(title: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.') do |panel| %>
+    <% panel.with_body do %>
       <div class="flex flex-col justify-between py-6 min-h-24">
         <div class="px-6 space-y-4">
           <h3>About</h3>
@@ -15,29 +15,29 @@
             We have big plans for Avo to make it the default starting point of your application. We'll be releasing features as soon as they're ready.
 
             <ul class="grid sm:grid-cols-2 max-w-168">
-              <li><span class="mr-2">👍</span> Built with Hotwire</li>
-              <li><span class="mr-2">👍</span> Resources</li>
-              <li><span class="mr-2">👍</span> Ordering</li>
-              <li><span class="mr-2">👍</span> Filters</li>
-              <li><span class="mr-2">👍</span> Actions</li>
-              <li><span class="mr-2">👍</span> Grid view</li>
-              <li><span class="mr-2">👍</span> Authorization</li>
-              <li><span class="mr-2">👍</span> Localization</li>
-              <li><span class="mr-2">👍</span> Resource tools</li>
-              <li><span class="mr-2">👍</span> Custom tools</li>
-              <li><span class="mr-2">👍</span> Custom fields</li>
-              <li><span class="mr-2">👍</span> Menu editor</li>
-              <li><span class="mr-2">👍</span> Search</li>
-              <li><span class="mr-2">👍</span> Dashboards</li>
-              <li><span class="mr-2">👍</span> Responsive design</li>
-              <li><span class="mr-2">👍</span> Menu editor</li>
-              <li><span class="mr-2">👍</span> Stimulus JS integration</li>
-              <li><span class="mr-2">👍</span> Tabs and panels</li>
-              <li><span class="mr-2">🕐</span> Resource cards</li>
-              <li><span class="mr-2">🕐</span> Track resource changes</li>
-              <li><span class="mr-2">🕐</span> Smart resource generation</li>
-              <li><span class="mr-2">🕐</span> Records preview</li>
-              <li><span class="mr-2">🕐</span> Themes</li>
+              <li><span class="me-2">👍</span> Built with Hotwire</li>
+              <li><span class="me-2">👍</span> Resources</li>
+              <li><span class="me-2">👍</span> Ordering</li>
+              <li><span class="me-2">👍</span> Filters</li>
+              <li><span class="me-2">👍</span> Actions</li>
+              <li><span class="me-2">👍</span> Grid view</li>
+              <li><span class="me-2">👍</span> Authorization</li>
+              <li><span class="me-2">👍</span> Localization</li>
+              <li><span class="me-2">👍</span> Resource tools</li>
+              <li><span class="me-2">👍</span> Custom tools</li>
+              <li><span class="me-2">👍</span> Custom fields</li>
+              <li><span class="me-2">👍</span> Menu editor</li>
+              <li><span class="me-2">👍</span> Search</li>
+              <li><span class="me-2">👍</span> Dashboards</li>
+              <li><span class="me-2">👍</span> Responsive design</li>
+              <li><span class="me-2">👍</span> Menu editor</li>
+              <li><span class="me-2">👍</span> Stimulus JS integration</li>
+              <li><span class="me-2">👍</span> Tabs and panels</li>
+              <li><span class="me-2">🕐</span> Resource cards</li>
+              <li><span class="me-2">🕐</span> Track resource changes</li>
+              <li><span class="me-2">🕐</span> Smart resource generation</li>
+              <li><span class="me-2">🕐</span> Records preview</li>
+              <li><span class="me-2">🕐</span> Themes</li>
             </ul>
           </p>
 

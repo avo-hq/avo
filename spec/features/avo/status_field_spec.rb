@@ -22,7 +22,7 @@ RSpec.describe "StatusField", type: :feature do
 
       it {
         is_expected.to have_text status
-        is_expected.to have_css ".text-red-600"
+        is_expected.to have_css ".text-danger-content"
       }
     end
 
@@ -64,7 +64,7 @@ RSpec.describe "StatusField", type: :feature do
 
       it {
         is_expected.to have_text status
-        is_expected.to have_css ".text-red-600"
+        is_expected.to have_css ".text-danger-content"
       }
     end
 
@@ -106,7 +106,7 @@ RSpec.describe "StatusField", type: :feature do
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text fail_status
-        expect(find_field_value_element("status")).to have_css ".text-red-600"
+        expect(find_field_value_element("status")).to have_css ".text-danger-content"
       end
 
       it "changes the status to load value" do
@@ -228,7 +228,7 @@ RSpec.describe "StatusField", type: :feature do
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
 
         expect(find_field_element("status")).to have_text "normal"
-        expect(find_field_element("status")).not_to have_css ".text-red-600"
+        expect(find_field_element("status")).not_to have_css ".text-danger-content"
         expect(find_field_element("status")).not_to have_css ".spinner"
       end
 
@@ -241,7 +241,7 @@ RSpec.describe "StatusField", type: :feature do
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
         expect(find_field_value_element("status")).to have_text "failed"
-        expect(find_field_element("status")).to have_css ".text-red-600"
+        expect(find_field_element("status")).to have_css ".text-danger-content"
         expect(find_field_element("status")).not_to have_css ".spinner"
       end
 
@@ -256,7 +256,7 @@ RSpec.describe "StatusField", type: :feature do
 
         expect(find_field_element("status")).to have_text "waiting"
         expect(find_field_element("status")).to have_css ".spinner"
-        expect(find_field_element("status")).not_to have_css ".text-red-600"
+        expect(find_field_element("status")).not_to have_css ".text-danger-content"
       end
     end
   end
@@ -282,7 +282,7 @@ RSpec.describe "StatusField", type: :feature do
         visit "/admin/resources/projects"
 
         expect(find_field_element("status")).to have_text "user_reject"
-        expect(find_field_element("status")).to have_css ".text-red-600"
+        expect(find_field_element("status")).to have_css ".text-danger-content"
       end
     end
   end

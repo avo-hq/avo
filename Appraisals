@@ -1,24 +1,15 @@
 ["3.3", "3.4"].each do |ruby_version|
-  ["6.1", "7.1", "8.0"].each do |rails_version|
+  ["7.1", "8.0"].each do |rails_version|
     appraise "rails-#{rails_version}-ruby-#{ruby_version}" do
       gem "psych", "< 4"
       gem "rails", "~> #{rails_version}"
       gem "activestorage", "~> #{rails_version}"
-      gem "activestorage"
       gem "acts-as-taggable-on"
 
       if rails_version == "8.0" && ruby_version == "3.3.0"
         gem "view_component", "4.0.0"
       else
         gem "view_component", "3.23.2"
-      end
-
-      if rails_version == "6.1"
-        # Fix `<module:LoggerThreadSafeLevel>': uninitialized constant ActiveSupport::LoggerThreadSafeLevel::Logger (NameError)
-        # https://stackoverflow.com/questions/79360526/uninitialized-constant-activesupportloggerthreadsafelevellogger-nameerror
-        gem "concurrent-ruby", "1.3.4"
-        # Ruby 3.4: mutex_m is no longer a default gem, but Rails 6.1/ActiveSupport requires it.
-        gem "mutex_m"
       end
     end
   end

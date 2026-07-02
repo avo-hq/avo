@@ -1,23 +1,45 @@
-import { Controller } from '@hotwired/stimulus'
+import BaseModalController from './base_modal_controller'
 
-// Connects to data-controller="modal"
-export default class extends Controller {
-  static targets = ['modal', 'backdrop']
-
-  static values = {
-    closeModalOnBackdropClick: true,
+/**
+ * Inject / destroy strategy.
+ *
+ * The modal is added to the DOM (usually via Turbo) when it should appear and
+ * removed entirely when it is closed. Showing/hiding the popover drives the CSS
+ * enter/leave transition; the element is removed once the leave transition ends.
+ */
+export default class extends BaseModalController {
+  connect() {
+    this.connectModal()
+    this.addModalOpen()
+    this.modalTarget.showPopover()
+    this.modalTarget.focus()
   }
 
-  close(event) {
-    if (event.target === this.backdropTarget && !this.closeModalOnBackdropClickValue) return
-
-    this.closeModal()
+  disconnect() {
+    this.disconnectModal()
+    this.removeModalOpen()
   }
 
-  // May be invoked by the other controllers
+  // -- strategy implementation ----------------------------------------------
+
+  isOpen() {
+    return true // if the element is in the DOM it's open
+  }
+
   closeModal() {
-    this.modalTarget.remove()
+    this.removeModalOpen()
 
-    document.dispatchEvent(new Event('modal-controller:close'))
+    const remove = () => {
+      window.clearTimeout(timer)
+      this.modalTarget.removeEventListener('transitionend', remove)
+      if (this.modalTarget.isConnected) this.modalTarget.remove()
+      this.dispatchClose()
+    }
+
+    // Remove once the leave transition finishes, with a timeout fallback for
+    // reduced-motion (no transition → no `transitionend`).
+    const timer = window.setTimeout(remove, this.constructor.TRANSITION_MS + 50)
+    this.modalTarget.addEventListener('transitionend', remove)
+    this.modalTarget.hidePopover()
   }
 }

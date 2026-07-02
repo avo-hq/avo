@@ -1,0 +1,457 @@
+/* TODO: rename this file to theming or something similar */
+@theme {
+  --color-avo-neutral-25: oklch(99.71% 0 89.88);
+  --color-avo-neutral-50: oklch(98.51% 0 89.88);
+  --color-avo-neutral-100: oklch(97.31% 0 89.88);
+  --color-avo-neutral-200: oklch(92.8% 0 89.88);
+  --color-avo-neutral-300: oklch(75.72% 0 89.88);
+  --color-avo-neutral-400: oklch(62.68% 0 89.88);
+  --color-avo-neutral-500: oklch(53.48% 0 89.88);
+  --color-avo-neutral-600: oklch(47.84% 0 89.88);
+  --color-avo-neutral-700: oklch(42.76% 0 89.88);
+  --color-avo-neutral-800: oklch(39.04% 0 89.88);
+  --color-avo-neutral-900: oklch(27.68% 0 89.88);
+  --color-avo-neutral-950: oklch(20.46% 0 89.88);
+
+  /* semantic - Mode 1 */
+  --color-success: var(--color-green-500);
+  --color-success-content: var(--color-green-600);
+  --color-success-foreground: var(--color-green-400);
+  --color-info: var(--color-blue-400);
+  --color-info-content: var(--color-blue-600);
+  --color-info-foreground: var(--color-blue-500);
+  --color-warning: var(--color-yellow-500);
+  --color-warning-content: var(--color-yellow-600);
+  --color-warning-foreground: var(--color-yellow-400);
+  --color-danger: var(--color-red-500);
+  --color-danger-content: var(--color-red-600);
+  --color-danger-foreground: var(--color-red-400);
+
+  --shadow-content: 0 8px 16px 0 rgba(0, 0, 0, 0.08);
+  --box-shadow-card: 0 8px 16px 0 rgba(0, 0, 0, 0.04);
+  --box-shadow-dropdown-card: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+  --box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --box-shadow-grid-card: 0 -1.5px 0 1px var(--color-secondary) inset,
+    0 0.8px 0 1.3px var(--color-primary) inset;
+
+  --box-shadow-active: 0 0 0 2px var(--color-info-foreground);
+  --box-shadow-error: 0 0 5px 1px var(--color-red-600),
+    0 0 0 1px var(--color-red-600), 0 0 0 3px var(--color-red-300);
+  --box-shadow-success: 0 0 5px 1px var(--color-green-600),
+    0 0 0 1px var(--color-green-600), 0 0 0 3px var(--color-green-300);
+  /* Focus ring knobs — read by the unified :focus-visible system in focus.css
+     and by component-level overrides across the app. Override these to restyle
+     every focus ring at once instead of touching individual components.
+     --focus-outline-color defaults to --color-info, so it resolves per-scheme.
+     --focus-outline-offset-inset is a negative offset for elements that need
+     the ring drawn *inside* their bounds (sidebar items, dropdowns, pagination,
+     etc.) so it isn't clipped by an overflow boundary. --focus-outline is the
+     ready-to-use shorthand (`outline: var(--focus-outline)`). */
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 1px;
+  --focus-outline-offset-inset: -2px;
+  --focus-outline-color: var(--color-info);
+  --focus-outline: var(--focus-outline-width) solid var(--focus-outline-color);
+  --box-shadow-search-input-shortcut: 0 -1.4px 0 0.1px var(--color-tertiary) inset,
+    0 0.8px 0 0.4px var(--color-primary) inset;
+
+  /* foundations - Light Mode */
+  --color-background: var(--color-avo-neutral-50);
+  --color-foreground: var(--color-avo-neutral-800);
+  --color-primary: var(--color-white);
+  --color-secondary: var(--color-avo-neutral-100);
+  --color-tertiary: var(--color-avo-neutral-200);
+  --color-quaternary: var(--color-avo-neutral-300);
+  --color-content: var(--color-avo-neutral-950);
+  --color-content-secondary: var(--color-avo-neutral-500);
+
+  /* Generic hover surface tint: the primary surface with a faint wash of
+     content on top. Shared knob so any surface that needs a subtle hover state
+     (table rows, etc.) reads from one place and stays per-scheme since it
+     references --color-primary / --color-content. */
+  /* Row surfaces. Base defaults to the primary surface; hover is a faint
+     content wash; selected is a stronger one. All resolve per-scheme via the
+     underlying tokens. */
+  --color-row-bg: var(--color-primary);
+  --color-row-bg-hover: color-mix(in oklab, var(--color-primary), var(--color-content) 5%);
+  --color-row-bg-selected: color-mix(in oklab, var(--color-primary), var(--color-content) 12%);
+
+  --color-scheme: var(--color-white);
+  --color-scheme-opposite: var(--color-black);
+
+  /* themes - Neutral Light */
+  --color-accent: var(--color-avo-neutral-800);
+  --color-accent-content: var(--color-avo-neutral-950);
+  --color-accent-foreground: var(--color-white);
+
+  /* Brand-scoped picker swatch defaults. These are read by the "Brand"
+     entries in the picker (color_scheme_switcher.css). They are deliberately
+     literal values, not `var(...)` references — so user-selected
+     `.neutral-theme-*` / `.accent-theme-*` classes never override them and
+     the brand swatches stay stable while another theme is hovered or active.
+     Avo::Configuration::Appearance#brand_css_overrides re-emits these in
+     `@layer base` when the developer configures `neutral_colors:` /
+     `accent_colors:`, so a configured install shows its actual brand colors. */
+  --color-brand-neutral-400: oklch(62.68% 0 89.88);
+  --color-brand-accent: oklch(39.04% 0 89.88);
+
+  /* Semantic variables */
+
+  /* Sidebar background. Dedicated knob so installs can recolor the sidebar
+     independently of the neutral palette. Defaults to the page background in
+     light mode and a subtly tinted surface in dark (see the .dark override). */
+  --color-sidebar-background: var(--color-background);
+
+  /* Top navbar background. Kept as the global source for the scoped
+     --top-navbar-background token in layout.css, so existing installs can keep
+     overriding just the navbar background without touching the rest of the
+     navbar palette. */
+  --color-navbar-background: var(--color-avo-neutral-900);
+
+  /* Background of the main content panel. Dedicated knob so installs can recolor
+     the content surface independently of the primary surface token. Defaults to
+     --color-primary; resolves per-scheme since --color-primary is redefined in
+     .dark. */
+  --color-main-content-background: var(--color-primary);
+
+  /* Border between the sidebar and the main content panel. Dedicated knob so
+     installs can restyle just this seam without touching the shared
+     --border-color (which also draws the sidebar-status borders). Tracks
+     --border-color by default, so it resolves per-scheme automatically. */
+  --color-main-content-border: var(--border-color);
+
+  --radius-card: var(--radius-xl);
+  --radius-card-wrapper: var(--radius-lg);
+}
+
+/* Navbar notch knobs live in a plain :root block, not in @theme:
+   --navbar-notch-enabled is read by a style query (Tailwind tree-shakes @theme
+   vars not referenced via var(), so it would be stripped), and we keep
+   --navbar-notch-radius alongside it so both notch knobs sit together. */
+:root {
+  /* Set to `false` to hide the navbar's inverted corner arches (e.g. when the
+     navbar and content share a background). */
+  --navbar-notch-enabled: true;
+
+  /* Radius of the content panel's rounded top corners (and the matching navbar
+     arches that fill them). Set to `0` to flatten the corners entirely. */
+  --navbar-notch-radius: 1rem;
+
+  /* Radius of the main content panel's top corners. Defaults to the navbar
+     notch radius so the content panel and inverted navbar arches stay aligned. */
+  --main-content-radius: var(--navbar-notch-radius);
+
+  /* Set to `true` to move the navbar's start notch to the main content edge.
+     When enabled, both main content top corners use --main-content-radius.
+     Otherwise only the end corner is rounded. */
+  --top-navbar-start-notch-align-with-main-content: false;
+
+  /* Motion speeds. Shared knobs for small UI transitions so timings stay
+     consistent and tunable in one place. Live in plain :root (not @theme) since
+     they're consumed via var() in component CSS, not as Tailwind utilities.
+     --speed-fast: snappy state flips (color/opacity/fill swaps).
+     --speed-moderate: motion that travels or transforms (scale, slide, pop).
+     --speed-slow: larger or more deliberate transitions (panels, overlays). */
+  --speed-fast: 90ms;
+  --speed-moderate: 150ms;
+  --speed-slow: 200ms;
+
+  /* Force native controls (selects, radios, checkboxes, scrollbars, pickers) to
+     follow Avo's appearance instead of the OS. Driven by `.dark` below, which is
+     set in every mode (including Auto), overriding the native dark preference. */
+  color-scheme: light;
+}
+
+/* Unlayered so it beats the layered `.dark` block; a layered rule would lose to
+   the unlayered `:root` default above and the override wouldn't apply. */
+.dark {
+  color-scheme: dark;
+}
+
+
+/* Dark mode defaults live in @layer theme — same layer as the @theme block
+   above — so the brand override (emitted in @layer base by
+   Avo::Configuration::Appearance#brand_css_overrides) can win against these
+   defaults. Layer order: theme < base < components. */
+@layer theme {
+  .dark {
+    /* foundations - Dark Mode */
+    --color-background: var(--color-avo-neutral-900);
+    --color-foreground: var(--color-avo-neutral-50);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-secondary: var(--color-avo-neutral-800);
+    --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: var(--color-white);
+    --color-content-secondary: var(--color-avo-neutral-300);
+
+    --color-scheme: var(--color-black);
+    --color-scheme-opposite: var(--color-white);
+
+    /* themes - Neutral Dark */
+    --color-accent: var(--color-avo-neutral-50);
+    --color-accent-content: var(--color-avo-neutral-100);
+    --color-accent-foreground: var(--color-avo-neutral-950);
+
+    /* Brand-scoped picker swatch default for dark mode — same rationale as in
+       :root, but using the dark default accent (neutral-50) so the swatch reads
+       correctly under the dark scheme. */
+    --color-brand-accent: oklch(97.31% 0 89.88);
+
+    /* Semantic variables */
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), var(--color-scheme) 14%);
+
+  }
+}
+
+/* User-pickable theme classes live in @layer components — a HIGHER layer than
+   brand override (base), so a user-selected `.neutral-theme-slate` or
+   `.accent-theme-orange` still wins over a configured brand color. */
+@layer components {
+  .neutral-theme-slate {
+    --color-avo-neutral-25: oklch(98.51% 0 89.88);
+    --color-avo-neutral-50: var(--color-slate-50);
+    --color-avo-neutral-100: var(--color-slate-100);
+    --color-avo-neutral-200: var(--color-slate-200);
+    --color-avo-neutral-300: var(--color-slate-300);
+    --color-avo-neutral-400: var(--color-slate-400);
+    --color-avo-neutral-500: var(--color-slate-500);
+    --color-avo-neutral-600: var(--color-slate-600);
+    --color-avo-neutral-700: var(--color-slate-700);
+    --color-avo-neutral-800: var(--color-slate-800);
+    --color-avo-neutral-900: var(--color-slate-900);
+    --color-avo-neutral-950: var(--color-slate-950);
+  }
+  .neutral-theme-stone {
+    --color-avo-neutral-25: oklch(98.51% 0 89.88);
+    --color-avo-neutral-50: var(--color-stone-50);
+    --color-avo-neutral-100: var(--color-stone-100);
+    --color-avo-neutral-200: var(--color-stone-200);
+    --color-avo-neutral-300: var(--color-stone-300);
+    --color-avo-neutral-400: var(--color-stone-400);
+    --color-avo-neutral-500: var(--color-stone-500);
+    --color-avo-neutral-600: var(--color-stone-600);
+    --color-avo-neutral-700: var(--color-stone-700);
+    --color-avo-neutral-800: var(--color-stone-800);
+    --color-avo-neutral-900: var(--color-stone-900);
+    --color-avo-neutral-950: var(--color-stone-950);
+  }
+  .neutral-theme-taupe {
+    --color-avo-neutral-25: oklch(98.5% 0.004 70);
+    --color-avo-neutral-50: var(--color-taupe-50);
+    --color-avo-neutral-100: var(--color-taupe-100);
+    --color-avo-neutral-200: var(--color-taupe-200);
+    --color-avo-neutral-300: var(--color-taupe-300);
+    --color-avo-neutral-400: var(--color-taupe-400);
+    --color-avo-neutral-500: var(--color-taupe-500);
+    --color-avo-neutral-600: var(--color-taupe-600);
+    --color-avo-neutral-700: var(--color-taupe-700);
+    --color-avo-neutral-800: var(--color-taupe-800);
+    --color-avo-neutral-900: var(--color-taupe-900);
+    --color-avo-neutral-950: var(--color-taupe-950);
+  }
+  .neutral-theme-mauve {
+    --color-avo-neutral-25: oklch(98.5% 0.005 310);
+    --color-avo-neutral-50: var(--color-mauve-50);
+    --color-avo-neutral-100: var(--color-mauve-100);
+    --color-avo-neutral-200: var(--color-mauve-200);
+    --color-avo-neutral-300: var(--color-mauve-300);
+    --color-avo-neutral-400: var(--color-mauve-400);
+    --color-avo-neutral-500: var(--color-mauve-500);
+    --color-avo-neutral-600: var(--color-mauve-600);
+    --color-avo-neutral-700: var(--color-mauve-700);
+    --color-avo-neutral-800: var(--color-mauve-800);
+    --color-avo-neutral-900: var(--color-mauve-900);
+    --color-avo-neutral-950: var(--color-mauve-950);
+  }
+  .neutral-theme-mist {
+    --color-avo-neutral-25: oklch(98.5% 0.004 240);
+    --color-avo-neutral-50: var(--color-mist-50);
+    --color-avo-neutral-100: var(--color-mist-100);
+    --color-avo-neutral-200: var(--color-mist-200);
+    --color-avo-neutral-300: var(--color-mist-300);
+    --color-avo-neutral-400: var(--color-mist-400);
+    --color-avo-neutral-500: var(--color-mist-500);
+    --color-avo-neutral-600: var(--color-mist-600);
+    --color-avo-neutral-700: var(--color-mist-700);
+    --color-avo-neutral-800: var(--color-mist-800);
+    --color-avo-neutral-900: var(--color-mist-900);
+    --color-avo-neutral-950: var(--color-mist-950);
+  }
+  .neutral-theme-gray {
+    --color-avo-neutral-25: oklch(98.51% 0 89.88);
+    --color-avo-neutral-50: var(--color-gray-50);
+    --color-avo-neutral-100: var(--color-gray-100);
+    --color-avo-neutral-200: var(--color-gray-200);
+    --color-avo-neutral-300: var(--color-gray-300);
+    --color-avo-neutral-400: var(--color-gray-400);
+    --color-avo-neutral-500: var(--color-gray-500);
+    --color-avo-neutral-600: var(--color-gray-600);
+    --color-avo-neutral-700: var(--color-gray-700);
+    --color-avo-neutral-800: var(--color-gray-800);
+    --color-avo-neutral-900: var(--color-gray-900);
+    --color-avo-neutral-950: var(--color-gray-950);
+  }
+  .neutral-theme-zinc {
+    --color-avo-neutral-25: oklch(98.51% 0 89.88);
+    --color-avo-neutral-50: var(--color-zinc-50);
+    --color-avo-neutral-100: var(--color-zinc-100);
+    --color-avo-neutral-200: var(--color-zinc-200);
+    --color-avo-neutral-300: var(--color-zinc-300);
+    --color-avo-neutral-400: var(--color-zinc-400);
+    --color-avo-neutral-500: var(--color-zinc-500);
+    --color-avo-neutral-600: var(--color-zinc-600);
+    --color-avo-neutral-700: var(--color-zinc-700);
+    --color-avo-neutral-800: var(--color-zinc-800);
+    --color-avo-neutral-900: var(--color-zinc-900);
+    --color-avo-neutral-950: var(--color-zinc-950);
+  }
+  .neutral-theme-neutral {
+    --color-avo-neutral-25: oklch(98.51% 0 89.88);
+    --color-avo-neutral-50: var(--color-neutral-50);
+    --color-avo-neutral-100: var(--color-neutral-100);
+    --color-avo-neutral-200: var(--color-neutral-200);
+    --color-avo-neutral-300: var(--color-neutral-300);
+    --color-avo-neutral-400: var(--color-neutral-400);
+    --color-avo-neutral-500: var(--color-neutral-500);
+    --color-avo-neutral-600: var(--color-neutral-600);
+    --color-avo-neutral-700: var(--color-neutral-700);
+    --color-avo-neutral-800: var(--color-neutral-800);
+    --color-avo-neutral-900: var(--color-neutral-900);
+    --color-avo-neutral-950: var(--color-neutral-950);
+  }
+  .neutral-theme-olive {
+    --color-avo-neutral-25: oklch(98.5% 0.005 140);
+    --color-avo-neutral-50: var(--color-olive-50);
+    --color-avo-neutral-100: var(--color-olive-100);
+    --color-avo-neutral-200: var(--color-olive-200);
+    --color-avo-neutral-300: var(--color-olive-300);
+    --color-avo-neutral-400: var(--color-olive-400);
+    --color-avo-neutral-500: var(--color-olive-500);
+    --color-avo-neutral-600: var(--color-olive-600);
+    --color-avo-neutral-700: var(--color-olive-700);
+    --color-avo-neutral-800: var(--color-olive-800);
+    --color-avo-neutral-900: var(--color-olive-900);
+    --color-avo-neutral-950: var(--color-olive-950);
+  }
+
+  .accent-theme-red {
+    /* themes - Red */
+    --color-accent: var(--color-red-500);
+    --color-accent-content: var(--color-red-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-orange {
+    /* themes - Orange */
+    --color-accent: var(--color-orange-500);
+    --color-accent-content: var(--color-orange-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-amber {
+    /* themes - Amber */
+    --color-accent: var(--color-amber-500);
+    --color-accent-content: var(--color-amber-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-yellow {
+    /* themes - Yellow */
+    --color-accent: var(--color-yellow-500);
+    --color-accent-content: var(--color-yellow-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-lime {
+    /* themes - Lime */
+    --color-accent: var(--color-lime-500);
+    --color-accent-content: var(--color-lime-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-green {
+    /* themes - Green */
+    --color-accent: var(--color-green-500);
+    --color-accent-content: var(--color-green-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-emerald {
+    /* themes - Emerald */
+    --color-accent: var(--color-emerald-500);
+    --color-accent-content: var(--color-emerald-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-teal {
+    /* themes - Teal */
+    --color-accent: var(--color-teal-500);
+    --color-accent-content: var(--color-teal-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-cyan {
+    /* themes - Cyan */
+    --color-accent: var(--color-cyan-500);
+    --color-accent-content: var(--color-cyan-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-sky {
+    /* themes - Sky */
+    --color-accent: var(--color-sky-500);
+    --color-accent-content: var(--color-sky-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-blue {
+    /* themes - Blue */
+    --color-accent: var(--color-blue-500);
+    --color-accent-content: var(--color-blue-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-indigo {
+    /* themes - Indigo */
+    --color-accent: var(--color-indigo-500);
+    --color-accent-content: var(--color-indigo-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-violet {
+    /* themes - Violet */
+    --color-accent: var(--color-violet-500);
+    --color-accent-content: var(--color-violet-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-purple {
+    /* themes - Purple */
+    --color-accent: var(--color-purple-500);
+    --color-accent-content: var(--color-purple-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-fuchsia {
+    /* themes - Fuchsia */
+    --color-accent: var(--color-fuchsia-500);
+    --color-accent-content: var(--color-fuchsia-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-pink {
+    /* themes - Pink */
+    --color-accent: var(--color-pink-500);
+    --color-accent-content: var(--color-pink-600);
+    --color-accent-foreground: var(--color-white);
+  }
+
+  .accent-theme-rose {
+    /* themes - Rose */
+    --color-accent: var(--color-rose-500);
+    --color-accent-content: var(--color-rose-600);
+    --color-accent-foreground: var(--color-white);
+  }
+}
+/* end @layer components for theme classes */

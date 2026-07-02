@@ -1,28 +1,82 @@
-<div class="modal-container fixed inset-0 w-full min-h-screen z-[100] flex justify-center items-center"
-  data-controller="modal"
-  data-modal-target="modal"
-  data-modal-close-modal-on-backdrop-click-value="<%= close_modal_on_backdrop_click %>"
->
-  <div aria-expanded="true" class="modal-overlay absolute w-full h-full bg-opacity-25 bg-gray-800 flex justify-center items-center" data-modal-target="backdrop" data-action="click->modal#close" ></div>
-  <div aria-expanded="true" role="dialog" aria-modal="true" class="modal-body rounded-lg inset-auto bg-white flex z-50 relative shadow-modal <%= overflow_classes %> <%= width_classes %> <%= height_classes %>">
-    <div class="flex-1 flex flex-col justify-between">
-      <div>
-        <% if heading? %>
-          <div class="p-6 pb-0 text-2xl tracking-normal font-semibold text-black">
-            <%= heading %>
+<%# Native HTML popover: rendered in the top layer with a `::backdrop` pseudo-element.
+    `manual` (not `auto`) keeps backdrop-click / Escape dismissal under our control so
+    `close_modal_on_backdrop_click` is honoured. A click on the modal's own centering
+    area (event.target === the modal) light-dismisses it; see #close in the controller. %>
+<%= tag.div class: class_names("modal", @class, {"modal--width-#{@width}": @width.present?, "modal--height-#{@height}": @height.present?}), tabindex: -1, popover: "manual", data: {
+  controller: "#{ctrl} modal-size",
+  "#{ctrl}-target": "modal",
+  "#{ctrl}-close-modal-on-backdrop-click-value": close_modal_on_backdrop_click,
+  "modal-size-current-width-value": @width,
+  "modal-size-current-height-value": @height,
+  action: "click->#{ctrl}#closeOnBackdrop",
+  **@data
+} do %>
+  <div
+    aria-expanded="true"
+    role="dialog"
+    aria-modal="true"
+    class="modal__card-container"
+    data-modal-size-target="container"
+  >
+    <div class="modal__card" data-<%= ctrl %>-target="card">
+      <div class="card">
+        <div class="card__wrapper">
+          <% if has_header? %>
+            <div class="card__header">
+              <div class="flex w-full items-start gap-4">
+                <div class="flex min-w-0 grow items-center">
+                  <div class="flex flex-col items-start gap-0.5">
+                    <% if @title.present? || heading? %>
+                      <p class="modal__title">
+                        <%= @title.presence || heading %>
+                      </p>
+                    <% end %>
+
+                    <% if @description.present? %>
+                      <p class="card__description">
+                        <%= @description %>
+                      </p>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <% if false && Rails.env.development? %>
+                    <%= render partial: "avo/modal/size_selector", locals: { type: 'width', width: @width, height: @height } %>
+                    <%= render partial: "avo/modal/size_selector", locals: { type: 'height', width: @width, height: @height } %>
+                  <% end %>
+
+                  <% if @show_close_button %>
+                    <button
+                      type="button"
+                      class="modal__close-button"
+                      data-action="click-><%= ctrl %>#closeModal"
+                      aria-label="<%= t('avo.close') %>"
+                      tabindex="-1"
+                    >
+                      <%= helpers.svg "tabler/outline/x", class: "size-5" %>
+                    </button>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="card__body <%= @body_class %>">
+            <% if content? %>
+              <div class="modal__body-content">
+                <%= content %>
+              </div>
+            <% end %>
           </div>
-        <% end %>
-        <% if content? %>
-          <div class="p-6 text-base text-gray-500">
-            <%= content %>
-          </div>
-        <% end %>
-      </div>
-      <% if controls? %>
-        <div class="flex justify-end items-baseline space-x-4 p-4 bg-gray-100">
-          <%= controls %>
+
+          <% if controls? %>
+            <div class="card__footer modal__controls">
+              <%= controls %>
+            </div>
+          <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
-</div>
+<% end %>

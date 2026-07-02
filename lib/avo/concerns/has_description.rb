@@ -6,11 +6,20 @@ module Avo
 
       class_methods do
         attr_accessor :description
+        attr_accessor :discreet_description
       end
 
       def description(additional_attributes = {})
         Avo::ExecutionContext.new(
           target: @description || self.class.description,
+          **description_attributes,
+          **additional_attributes
+        ).handle
+      end
+
+      def discreet_description(additional_attributes = {})
+        Avo::ExecutionContext.new(
+          target: @discreet_description || self.class.discreet_description,
           **description_attributes,
           **additional_attributes
         ).handle

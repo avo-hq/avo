@@ -1,0 +1,343 @@
+/* Modal Component — composes .card for the content shell */
+
+/* Height size variables */
+.modal {
+  --modal-height-sm: 24rem;
+  --modal-height-md: 28rem;
+  --modal-height-lg: 32rem;
+  --modal-height-xl: 36rem;
+  --modal-height-2xl: 42rem;
+  --modal-height-3xl: 48rem;
+  --modal-height-4xl: 56rem;
+}
+
+/* Rendered in the top layer via the native popover API (`popover="manual"`),
+   so it sits above everything without a z-index and gets a free `::backdrop`. */
+.modal {
+  /* size-full + m-0 + border-0/p-0/bg-transparent reset the popover UA chrome
+     (fit-content sizing, auto margins, border, padding, background) so the
+     element stays a transparent, full-viewport flex container that centers the card. */
+  @apply fixed inset-0 size-full m-0 border-0 p-0 bg-transparent justify-center items-center overflow-hidden;
+
+  /* Enter/leave transition duration, shared by the card and the backdrop.
+     Keep in sync with TRANSITION_MS in base_modal_controller.js. */
+  --modal-transition-duration: 90ms;
+
+  /* The popover attribute keeps the element display:none until it's shown; only
+     lay it out (flex) while open. `allow-discrete` on display/overlay keeps the
+     element in the top layer for the leave transition so the card + backdrop can
+     animate out before it's hidden. */
+  transition:
+    overlay var(--modal-transition-duration) ease-out allow-discrete,
+    display var(--modal-transition-duration) ease-out allow-discrete;
+}
+
+.modal:popover-open {
+  @apply flex;
+}
+
+.modal::backdrop {
+  background-color: color-mix(in oklch, var(--color-avo-neutral-950) 25%, transparent);
+
+  /* Fade in/out alongside the card. */
+  opacity: 0;
+  transition: opacity var(--modal-transition-duration) ease-out;
+}
+
+.dark .modal::backdrop {
+  background-color: color-mix(in oklch, var(--color-avo-neutral-950) 60%, transparent);
+}
+
+.modal:popover-open::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .modal:popover-open::backdrop {
+    opacity: 0;
+  }
+}
+
+.modal__card-container {
+  @apply flex flex-col items-center justify-center relative min-h-0 size-full;
+}
+
+.modal__card {
+  @apply relative w-full shrink-0 flex flex-col min-h-0 overflow-hidden;
+
+  /* Never exceed the viewport — keeps a tall (e.g. :auto height) modal fully
+     on screen so its body can scroll instead of being clipped by the centered
+     overlay. The width clamp does the same horizontally: the size classes set a
+     preferred width (e.g. w-xl), but on a narrow phone screen it caps to the
+     viewport instead of overflowing and being clipped on both sides. The gutter
+     is tight on mobile to reclaim width and opens up to 2rem from sm up. */
+  max-height: calc(100dvh - 2rem);
+  max-width: calc(100dvw - 1rem);
+
+  box-shadow: var(--shadow-modal);
+
+  /* Enter/leave transition: the card scales + fades from its center.
+     Closed (default) state; `:popover-open` is the resting open state, with
+     `@starting-style` supplying the from-state for the enter animation. */
+  opacity: 0;
+  transform: scale(0.975);
+  transition:
+    opacity var(--modal-transition-duration) ease-out,
+    transform var(--modal-transition-duration) ease-out;
+}
+
+/* Open the gutter back up from sm up, where the extra breathing room reads
+   better and the clamp rarely engages anyway. */
+@media (min-width: 640px) {
+  .modal__card {
+    max-width: calc(100dvw - 2rem);
+  }
+}
+
+.modal:popover-open .modal__card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@starting-style {
+  .modal:popover-open .modal__card {
+    opacity: 0;
+    transform: scale(0.975);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal__card {
+    transition: none;
+  }
+}
+
+/* Head-shake "no" — played when the modal refuses to dismiss (a backdrop click
+   or Escape while close_modal_on_backdrop_click is false). */
+@keyframes modal-nudge {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-0.5rem); }
+  30% { transform: translateX(0.5rem); }
+  45% { transform: translateX(-0.375rem); }
+  60% { transform: translateX(0.375rem); }
+  75% { transform: translateX(-0.1875rem); }
+  90% { transform: translateX(0.1875rem); }
+}
+
+.modal__card--nudge {
+  animation: modal-nudge 400ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal__card--nudge {
+    animation: none;
+  }
+}
+
+/* Modal-specific card overrides. The flex-1 + min-h-0 chain lets the card and
+   its wrapper fill the (capped) modal height and shrink, so the body's
+   overflow-auto kicks in while the header and footer stay pinned. */
+.modal__card > .card {
+  @apply w-full flex-1 min-h-0 overflow-hidden;
+}
+
+.modal__card > .card > .card__wrapper {
+  @apply w-full flex flex-col flex-1 min-h-0 overflow-hidden;
+}
+
+.modal__card .card__header {
+  @apply py-3 px-4 shrink-0;
+}
+
+.modal__card > .card > .card__wrapper > .card__body {
+  @apply block flex-1 pt-0 px-0 min-h-0 overflow-auto border-0 rounded-none bg-transparent;
+}
+
+.modal__title {
+  @apply font-medium;
+}
+
+.modal__close-button {
+  @apply shrink-0 size-5 cursor-pointer text-content-secondary hover:text-content transition-colors;
+}
+
+.modal__width-selector {
+  @apply shrink-0 size-5 cursor-pointer text-content-secondary hover:text-content transition-colors;
+}
+
+.modal__height-selector {
+  @apply shrink-0 size-5 cursor-pointer text-content-secondary hover:text-content transition-colors;
+}
+
+.modal__body-content {
+  @apply w-full min-h-48 rounded-card-wrapper border border-tertiary bg-primary;
+}
+
+/* Belongs-to "Create new" embeds an edit form in the modal. Drop the nested
+   panel chrome (background + border) and pad the body so the form breathes.
+   Scoped to match the `.card__body` selector above so the padding wins. */
+.card__body.modal-form-body {
+  @apply !p-4;
+}
+
+.modal__controls {
+  @apply flex items-center justify-between gap-2 py-2 px-3 w-full shrink-0;
+}
+
+/* When the controls hold only buttons, nudge the horizontal padding in so the
+   buttons' own padding lines their text up with the modal body. The :not(:has())
+   guard backs off the moment any non-button control is present. */
+.modal__controls:has(> .button):not(:has(> :not(.button))) {
+  @apply px-1;
+}
+
+.modal--width-sm {
+  .modal__card {
+    @apply w-sm;
+  }
+}
+
+.modal--width-md {
+  .modal__card {
+    @apply w-md;
+  }
+}
+
+.modal--width-lg {
+  .modal__card {
+    @apply w-lg;
+  }
+}
+
+.modal--width-xl {
+  .modal__card {
+    @apply w-xl;
+  }
+}
+
+.modal--width-2xl {
+  .modal__card {
+    @apply w-2xl;
+  }
+}
+
+.modal--width-3xl {
+  .modal__card {
+    @apply w-3xl;
+  }
+}
+
+.modal--width-4xl {
+  .modal__card {
+    @apply w-4xl;
+  }
+}
+
+.modal--width-25 {
+  .modal__card {
+    @apply w-[25dvw];
+  }
+}
+
+.modal--width-50 {
+  .modal__card {
+    @apply w-[50dvw];
+  }
+}
+
+.modal--width-75 {
+  .modal__card {
+    @apply w-[75dvw];
+  }
+}
+
+.modal--width-100 {
+  .modal__card {
+    @apply w-full;
+  }
+}
+
+.modal--width-full {
+  .modal__card {
+    @apply w-[calc(100dvw-2rem)];
+  }
+}
+
+.modal--height-auto {
+  .modal__card {
+    @apply min-h-32;
+  }
+}
+
+.modal--height-sm {
+  .modal__card {
+    @apply h-[var(--modal-height-sm)];
+  }
+}
+
+.modal--height-md {
+  .modal__card {
+    @apply h-[var(--modal-height-md)];
+  }
+}
+
+.modal--height-lg {
+  .modal__card {
+    @apply h-[var(--modal-height-lg)];
+  }
+}
+
+.modal--height-xl {
+  .modal__card {
+    @apply h-[var(--modal-height-xl)];
+  }
+}
+
+.modal--height-2xl {
+  .modal__card {
+    @apply h-[var(--modal-height-2xl)];
+  }
+}
+
+.modal--height-3xl {
+  .modal__card {
+    @apply h-[var(--modal-height-3xl)];
+  }
+}
+
+.modal--height-4xl {
+  .modal__card {
+    @apply h-[var(--modal-height-4xl)];
+  }
+}
+
+.modal--height-full {
+  .modal__card {
+    @apply h-[calc(100dvh-2rem)];
+  }
+}
+
+
+.modal--height-25 {
+  .modal__card {
+    @apply h-[25dvh];
+  }
+}
+
+.modal--height-50 {
+  .modal__card {
+    @apply h-[50dvh];
+  }
+}
+
+.modal--height-75 {
+  .modal__card {
+    @apply h-[75dvh];
+  }
+}
+
+.modal--height-100 {
+  .modal__card {
+    @apply h-full;
+  }
+}

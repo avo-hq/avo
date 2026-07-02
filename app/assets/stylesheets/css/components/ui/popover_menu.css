@@ -1,0 +1,47 @@
+.popover-menu {
+  @apply inline-flex;
+}
+
+.popover-menu__panel {
+  @apply m-0 p-0 border-0 rounded-lg bg-primary mt-1;
+  position-anchor: auto;
+  position-area: bottom span-left;
+  position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+  box-shadow: var(--box-shadow-card);
+
+  /* Native popover enter/leave animation. The panel is display:none while
+     closed, so `allow-discrete` on display/overlay keeps it in the top layer
+     through the leave transition, letting it fade out before it's hidden.
+     `@starting-style` below supplies the from-state for the enter animation. */
+  opacity: 0;
+  transform: translateY(-0.25rem);
+  transition:
+    opacity 75ms ease-out,
+    transform 75ms ease-out,
+    overlay 75ms ease-out allow-discrete,
+    display 75ms ease-out allow-discrete;
+}
+
+.popover-menu__panel:popover-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@starting-style {
+  .popover-menu__panel:popover-open {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+/* When the panel hosts a dropdown card, the card provides the
+   visual chrome — drop the panel's own background and shadow so we
+   don't render two stacked cards. */
+.popover-menu__panel:has(> .dropdown-card) {
+  @apply bg-transparent;
+  box-shadow: none;
+}
+
+.popover-menu__panel::backdrop {
+  @apply bg-transparent;
+}

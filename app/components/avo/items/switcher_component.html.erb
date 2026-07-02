@@ -1,5 +1,17 @@
-<% if item.is_panel? || item.is_main_panel? %>
+<% if item.is_panel? %>
   <%= render panel_component %>
+<% elsif item.is_card? %>
+  <%= render Avo::UI::CardComponent.new(
+    title: item.title,
+    description: item.description,
+    index:
+  ) do |card| %>
+    <% card.with_body do %>
+      <%= render ui.description_list do %>
+        <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: item, view: @view, form: @form, field_component_extra_args: @field_component_extra_args, reflection: @reflection %>
+      <% end %>
+    <% end %>
+  <% end %>
 <% elsif item.is_tool? %>
   <% if item&.partial.present? %>
     <%= render item.partial, tool: item, form: @form %>
@@ -8,12 +20,53 @@
   <%= render tab_group_component %>
 <% elsif item.is_field? %>
   <%= render field_component %>
-<% elsif item.is_row? %>
-  <%= render Avo::RowComponent.new(divider: item.divider) do |c| %>
-    <% c.with_body do %>
-      <%= render Avo::Items::VisibleItemsComponent.new resource: @resource, item: @item, view: @view, form: @form, reflection: @reflection %>
+<% elsif item.is_collaboration? %>
+  <%= render Avo::Collaboration::TimelineComponent.new(resource: @resource) %>
+<% elsif item.is_header? %>
+  <% if @resource.cover.present? && @resource.cover.visible_in_current_view? %>
+    <%= render Avo::CoverComponent.new cover: @resource.cover %>
+  <% end %>
+
+  <%= render ui.panel_header(title:, description: @resource.description, index:) do |header| %>
+    <% header.with_controls do %>
+      <% controls.each do |control| %>
+        <%= render_control control %>
+      <% end %>
+    <% end %>
+
+    <% if @resource.avatar.present? %>
+      <% header.with_avatar do %>
+        <%= render Avo::UI::AvatarComponent.new src: helpers.main_app.url_for(@resource.avatar.value), shape: :square, type: :avatar %>
+      <% end %>
+    <% end %>
+
+    <% if Rails.env.development? %>
+      <% header.with_title_slot do %>
+        <%= render Avo::DiscreetInformationComponent.new(
+          as: :icon,
+          title: t('avo.open_in_your_editor'),
+          url: helpers.editor_file_path(@resource),
+          icon: "tabler/outline/code"
+        ) %>
+      <% end %>
+    <% end %>
+
+    <% if @resource.get_external_link.present? || @resource.discreet_information.items.any? %>
+      <% header.with_discreet_information do %>
+        <% if @resource.get_external_link.present? %>
+          <%= render Avo::DiscreetInformationComponent.new(
+            as: :icon,
+            url: @resource.get_external_link,
+            target: :_blank,
+            title: helpers.t("avo.visit_record_on_external_path"),
+            icon: "tabler/outline/external-link"
+          ) %>
+        <% end %>
+
+        <% @resource.discreet_information.items.each do |item| %>
+          <%= render Avo::DiscreetInformationComponent.new(**item) %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
-<% elsif item.is_collaboration? %>
-  <%= render Avo::Collaborate::TimelineComponent.new(resource: @resource) %>
 <% end %>

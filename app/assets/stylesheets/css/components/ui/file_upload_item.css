@@ -1,0 +1,78 @@
+/* File Upload Item Component - Based on Figma Design System */
+/* BEM Methodology: .file-upload-item (block), .file-upload-item__* (elements), .file-upload-item--* (modifiers) */
+
+.file-upload-item {
+  @apply relative flex h-14 items-center justify-between overflow-clip rounded-lg border border-tertiary bg-primary px-4 w-full;
+}
+
+/* ==========================================================================
+   Progress Bar (hidden by default, shown via --uploading state)
+   ========================================================================== */
+
+.file-upload-item__progress {
+  @apply absolute inset-y-0 start-0 bg-secondary h-full hidden;
+}
+
+.file-upload-item--uploading .file-upload-item__progress {
+  @apply block;
+}
+
+/* ==========================================================================
+   Body
+   ========================================================================== */
+
+.file-upload-item__body {
+  @apply relative z-10 flex min-w-0 flex-1 flex-col gap-0.5 items-stretch overflow-hidden;
+}
+
+.file-upload-item__title {
+  @apply min-w-0 truncate text-xs font-medium leading-4 text-content;
+}
+
+.file-upload-item__meta {
+  @apply flex items-center gap-1 text-xs font-normal leading-4 text-content-secondary;
+
+}
+
+/* ==========================================================================
+   Status Indicators (all rendered, controlled by state classes)
+   ========================================================================== */
+
+.file-upload-item__status {
+  @apply flex items-center gap-0.5;
+}
+
+.file-upload-item__status-icon {
+  @apply size-3;
+}
+
+/* State: Complete */
+.file-upload-item__status--complete {
+  @apply text-success-content;
+}
+
+/* State: Error */
+.file-upload-item__status--error {
+  @apply text-danger-content;
+}
+
+/* State: Uploading */
+.file-upload-item__status--uploading {
+  @apply text-content-secondary;
+}
+
+/* ==========================================================================
+   Actions
+   ========================================================================== */
+
+.file-upload-item__actions {
+  @apply relative z-10 flex shrink-0 items-center gap-1;
+}
+
+.file-upload-item__action {
+  @apply size-6 flex items-center justify-center rounded-lg text-content-secondary transition;
+}
+
+.file-upload-item__action svg {
+  @apply size-3.5;
+}

@@ -4,22 +4,21 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   get "hey", to: "home#index"
+  get "pagy_outside_avo", to: "pagy_outside_avo#index"
   post "csp-violation-report-endpoint", to: "csp_reports#create"
 
   resources :posts
 
   authenticate :user, ->(user) { user.is_admin? } do
-    scope :admin do
-      get "custom_tool", to: "avo/tools#custom_tool", as: :custom_tool
-    end
-
-    mount_avo do
+    mount_avo mount_lookbook: true do
       scope :resources do
         get "courses/cities", to: "courses#cities"
         get "users/get_users", to: "users#get_users"
       end
 
       put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
+
+      get "custom_tool", to: "tools#custom_tool", as: :custom_tool
     end
 
     # Uncomment to test constraints /123/en/admin
@@ -33,5 +32,7 @@ Rails.application.routes.draw do
     scope "(:locale)" do
       # mount_avo
     end
+
+    get "/avo", to: redirect("/admin")
   end
 end
