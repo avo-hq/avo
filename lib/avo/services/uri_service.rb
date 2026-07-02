@@ -28,7 +28,7 @@ module Avo
         @uri.path.concat("/") unless @uri.path.ends_with? "/"
 
         # Add the paths to the URI
-        @uri[:path] = @uri.path.concat(join_paths(paths))
+        @uri.path = @uri.path.concat(join_paths(paths))
 
         self
       end
@@ -46,7 +46,7 @@ module Avo
         return self if params.blank?
 
         # Add the query params to the URI
-        @uri[:query] = [@uri.query, *params].compact.join("&")
+        @uri.query = [@uri.query, *params].compact.join("&")
 
         self
       end
