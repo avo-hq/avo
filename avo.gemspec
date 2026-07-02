@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
 
   # NOTE: `public/` is rejected below — Avo 4 ships precompiled assets from
   # `app/assets/builds`, and a stale `public/avo-assets` dir was what bloated some builds.
-  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js"]
+  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js", "safelist.txt"]
     .reject { |f| f.start_with?("public/") }
 
   spec.add_dependency "activerecord", ">= 6.1"
