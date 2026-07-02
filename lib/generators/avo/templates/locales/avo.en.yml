@@ -16,7 +16,37 @@ en:
       light: Light
       light_tooltip: Light mode
       neutrals: Theme
+      neutrals_list:
+        brand: Brand
+        slate: Slate
+        stone: Stone
+        gray: Gray
+        zinc: Zinc
+        neutral: Neutral
+        taupe: Taupe
+        mauve: Mauve
+        mist: Mist
+        olive: Olive
       neutrals_picker: Select neutral color
+      accents_list:
+        brand: Brand
+        red: Red
+        orange: Orange
+        amber: Amber
+        yellow: Yellow
+        lime: Lime
+        green: Green
+        emerald: Emerald
+        teal: Teal
+        cyan: Cyan
+        sky: Sky
+        blue: Blue
+        indigo: Indigo
+        violet: Violet
+        purple: Purple
+        fuchsia: Fuchsia
+        pink: Pink
+        rose: Rose
       schemes: Appearance
       shortcut_badges: Shortcut badges
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges

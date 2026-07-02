@@ -270,6 +270,20 @@ module Avo
       })
     end
 
+    # Translates appearance UI strings with English fallback when the active locale
+    # omits Avo 4 appearance keys. Returns plain text safe for HTML attributes.
+    def avo_appearance_t(key, **options)
+      full_key = "avo.appearance.#{key}"
+      defaults = []
+      defaults << I18n.t(full_key, locale: :en, raise: false) if I18n.locale != :en
+      defaults << options[:default] if options.key?(:default)
+      I18n.t(full_key, **options.except(:default), default: defaults.presence)
+    end
+
+    def appearance_neutral_labels(neutrals)
+      neutrals.index_with { |theme| avo_appearance_t("neutrals_list.#{theme}", default: theme.capitalize) }
+    end
+
     private
 
     # The signed_id is what Active Storage uses to locate the blob; the filename

@@ -67,6 +67,38 @@ RSpec.describe Avo::ApplicationHelper do
     end
   end
 
+  describe "#avo_appearance_t" do
+    before do
+      I18n.backend.store_translations(:en, avo: {appearance: {test_fallback_key: "English only"}})
+    end
+
+    it "falls back to English when the active locale omits appearance keys" do
+      I18n.with_locale(:de) do
+        expect(helper.avo_appearance_t("test_fallback_key")).to eq("English only")
+      end
+    end
+
+    it "returns plain text safe for HTML attributes" do
+      result = helper.avo_appearance_t("auto_tooltip")
+
+      expect(result).not_to include("<")
+      expect(result).not_to include("translation_missing")
+      expect(result).not_to include('">')
+    end
+
+    it "uses the explicit default when the key is missing in both locales" do
+      expect(helper.avo_appearance_t("neutrals_list.unknown", default: "Fallback")).to eq("Fallback")
+    end
+  end
+
+  describe "#appearance_neutral_labels" do
+    it "returns a label map keyed by neutral theme name" do
+      labels = helper.appearance_neutral_labels(%w[brand slate])
+
+      expect(labels).to eq({"brand" => "Brand", "slate" => "Slate"})
+    end
+  end
+
   describe "#chart_color" do
     it "returns a color from the list of configured chart_colors" do
       expect(helper.chart_color(0)).to eq(Avo.configuration.appearance.chart_colors[0])
