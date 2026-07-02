@@ -44,6 +44,25 @@ yarn build:custom-js
 `bin/dev` runs these as `--watch` processes, so during normal development they
 rebuild automatically.
 
+### After pulling/merging main (non-obvious gotchas)
+- The dev group includes `actual_db_schema`, which treats migrations from other
+  branches as "phantom" and can roll them back / hide them after a branch switch or
+  merge. Symptom: the app raises `ActiveRecord::PendingMigrationError` while
+  `bin/rails db:migrate` / `db:migrate:status` claim nothing is pending. Fix by
+  reloading the dev DB from the (up-to-date) `schema.rb`:
+  ```
+  AVO_LICENSE_KEY=license_123 RAILS_ENV=development bin/rails db:drop db:create
+  AVO_LICENSE_KEY=license_123 RAILS_ENV=development bin/rails db:schema:load
+  AVO_LICENSE_KEY=license_123 RAILS_ENV=test bin/rails db:schema:load
+  AVO_LICENSE_KEY=license_123 AVO_ADMIN_PASSWORD=secret RAILS_ENV=development bin/rails db:seed
+  ```
+  Always pass `RAILS_ENV` explicitly and run `db:schema:load` as its own command
+  (chaining `db:drop db:create db:schema:load` in one invocation sometimes leaves the
+  schema only partially loaded).
+- If the server boots with a stale `NoMethodError` on a config setter that exists in
+  `lib/avo/configuration.rb`, clear the bootsnap cache: `rm -rf spec/dummy/tmp/cache/bootsnap*`.
+- If `bin/dev` reports "Overmind is already running", remove the stale socket: `rm -f .overmind.sock`.
+
 ### Run the dummy app
 ```
 AVO_LICENSE_KEY=license_123 bin/dev      # starts web + js/css/custom-js watchers via overmind
