@@ -1,10 +1,10 @@
 <%= field_wrapper(**field_wrapper_args, data: { controller: 'hidden-input' }) do %>
-  <div data-controller="hidden-input" class="flex w-full">
-    <% unless @field.always_show %>
-      <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
-    <% end %>
+  <div data-controller="hidden-input" class="flex flex-col w-full">
     <div class="<%= class_names("tiptap__content py-2 max-w-4xl", "hidden": !@field.always_show) %> " data-hidden-input-target="content">
       <%= sanitize @field.value.to_s %>
     </div>
+    <% unless @field.always_show %>
+      <%= link_to t('avo.show_content'), 'javascript:void(0);', class: 'font-bold inline-block', data: { action: 'click->hidden-input#showContent' } %>
+    <% end %>
   </div>
 <% end %>

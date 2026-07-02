@@ -68,6 +68,8 @@ module Avo
 
       def check_bad_resources
         resources.each do |resource|
+          next if resource.is_abstract?
+
           has_model = resource.model_class.present?
 
           unless has_model
@@ -164,7 +166,8 @@ module Avo
               resource.model_class,
               Avo.configuration.authorization_methods.stringify_keys["index"],
               policy_class: resource.authorization_policy,
-              raise_exception: false
+              raise_exception: false,
+              resource_class: resource.to_s
             )
           end
           .sort_by { |r| r.name }

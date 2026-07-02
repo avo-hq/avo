@@ -1,0 +1,60 @@
+<%= field_wrapper(**field_wrapper_args) do %>
+  <%= tag.div class: "checkbox-list-field", data: checkbox_list_field_data do %>
+    <% if inline_search? %>
+      <%= tag.div class: "checkbox-list__search search-input" do %>
+        <%= tag.input(
+          type: "search",
+          id: inline_search_input_id,
+          placeholder: inline_search_label,
+          autocomplete: "off",
+          class: "input-field search-input__input checkbox-list__search-input",
+          data: {"checkbox-list-field-target": "input"},
+          aria: {label: inline_search_aria_label, controls: checkbox_list_id}
+        ) %>
+
+        <span class="search-input__prefix" aria-hidden="true"><%= helpers.svg "tabler/outline/search" %></span>
+      <% end %>
+    <% end %>
+
+    <%= tag.div id: checkbox_list_id, class: "checkbox-list", role: "group", aria: {label: @field.name} do %>
+      <%= @form.collection_check_boxes(@field.id, selectable_options, ->(option) { @field.option_id(option) }, ->(option) { @field.option_title(option) }) do |builder| %>
+        <%= render Avo::Fields::CheckboxListField::ItemComponent.new(
+          id: @field.normalize_id(builder.value),
+          title: builder.text,
+          image_url: @field.option_image_url(builder.object),
+          image_format: @field.option_image_format(builder.object),
+          image_alt: @field.option_image_alt(builder.object),
+          description: @field.option_description(builder.object),
+          name: input_name,
+          checked: checked?(builder.value),
+          disabled: disabled?,
+          input_classes: class_names(
+            "size-4",
+            @field.get_html(:classes, view: view, element: :input)
+          ),
+          input_data: @data,
+          input_html_id: input_html_id(builder.value),
+          input_style: @style
+        ) %>
+      <% end %>
+
+      <% if selectable_options.empty? %>
+        <%= tag.div class: "checkbox-list__empty" do %>
+          No options available
+        <% end %>
+      <% elsif inline_search? %>
+        <%= tag.div class: "checkbox-list__empty", hidden: true, data: {"checkbox-list-field-target": "empty"} do %>
+          No matching options
+        <% end %>
+
+        <%= tag.div class: "checkbox-list__hidden-selections", hidden: true, role: "status", data: {"checkbox-list-field-target": "hiddenSelections"} %>
+      <% end %>
+
+      <% if more_records_hint.present? %>
+        <%= tag.div class: "checkbox-list__hint", role: "status" do %>
+          <%= @field.option_title(more_records_hint) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

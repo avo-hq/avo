@@ -2,7 +2,7 @@
 
 class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
   def initialize(...)
-    super(...)
+    super
 
     @polymorphic_record = nil
   end
@@ -57,28 +57,32 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     @field.get_html(:data, view: view, element: :input).fetch(:action, nil)
   end
 
-  def create_path(target_resource = nil)
+  def create_path(target_resource = nil, **args)
     return nil if @resource.blank?
 
     helpers.new_resource_path(**{
       via_relation: @field.id.to_s,
+      via_relation_class: resource.model_class.to_s,
       resource: target_resource || @field.target_resource,
       via_record_id: resource.record.persisted? ? resource.record.to_param : nil,
-      via_belongs_to_resource_class: resource.class.name
+      via_belongs_to_resource_class: resource.class.name,
+      **args
     }.compact)
+  end
+
+  def modal_args
+    # `modal_layout: true` is what routes the `new` action through the `avo/modal`
+    # layout. The modal's title, size and footer controls are rendered by
+    # `Avo::Views::ResourceEditComponent` when it detects this embedded context.
+    {
+      modal_layout: true
+    }
   end
 
   private
 
   def visit_through_association?
     @field.target_resource.to_s == params[:via_resource_class].to_s
-  end
-
-  def model_keys
-    @field.types.map do |type|
-      resource = Avo.resource_manager.get_resource_by_model_class(type.to_s)
-      [type.to_s, resource.model_key]
-    end.to_h
   end
 
   def reload_data

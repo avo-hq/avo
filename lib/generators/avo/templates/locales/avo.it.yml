@@ -5,6 +5,24 @@ it:
     actions: Azioni
     add_filter: Aggiungi filtro
     and_x_other_resources: e altri %{count} risorse
+    appearance:
+      accent_picker: Colore accento
+      accents: Accento
+      auto: Automatico
+      auto_tooltip: Automatico (preferenza di sistema)
+      dark: Scuro
+      dark_tooltip: Modalità scura
+      hide: Nascondi
+      light: Chiaro
+      light_tooltip: Modalità chiara
+      neutrals: Tema
+      neutrals_picker: Tema neutro
+      schemes: Aspetto
+      shortcut_badges: Badge di scorciatoia
+      shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera
+      shortcut_badges_show_tooltip: Mostra i badge delle scorciatoie da tastiera
+      show: Mostra
+      title: Aspetto
     applied: applicato
     are_you_sure: Sei sicuro?
     are_you_sure_detach_item: Sei sicuro di voler staccare questo %{item}?
@@ -17,16 +35,22 @@ it:
     attachment_destroyed: Allegato distrutto
     attachment_failed: Impossibile allegare %{attachment_class}
     cancel: Annulla
+    checkbox_list:
+      hidden_selections:
+        one: 1 opzione selezionata nascosta dalla ricerca
+        other: "%{count} opzioni selezionate nascoste dalla ricerca"
     choose_a_country: Scegli un paese
     choose_an_option: Scegli un'opzione
     choose_item: Scegli %{item}
     clear_value: Cancella valore
+    click_to_load: Clicca per caricare
     click_to_reveal_filters: Clicca per mostrare i filtri
     close: Chiudi
     close_modal: Chiudi modale
     confirm: Conferma
     copy: Copia
     create_new_item: Crea nuovo %{item}
+    created_at: Creato il
     created_at_timestamp: Creato il %{created_at}
     dashboard: Cruscotto
     dashboards: Cruscotti
@@ -45,12 +69,30 @@ it:
     failed: Fallito
     failed_to_find_attachment: Impossibile trovare l'allegato
     failed_to_load: Caricamento fallito
+    failed_to_load_item: Impossibile caricare %{item}
     'false': Falso
     file:
       one: file
       other: file
     filter_by: Filtra per
     filters: Filtri
+    global_search:
+      empty_state:
+        no_results_for_query: Non siamo riusciti a trovare nulla che corrisponda a "%{query}"
+        no_results_found: Nessun risultato trovato
+        start_typing: Inizia a digitare per cercare
+        start_typing_with_resource_list: Puoi cercare su %{resources}
+        start_typing_with_resources: Puoi cercare su %{resources} %{other_resources}
+        try_adjusting_search: Prova a modificare i termini di ricerca o controlla eventuali errori di battitura
+      go_to: Vai a
+      keyboard_hints:
+        close: Chiudi
+        navigate: Naviga
+        press: Premi
+        select: Seleziona
+      results:
+        count_of_total: "%{count} di %{total}"
+      show_all_results_for: Mostra tutti i risultati per
     go_back: Torna indietro
     grid_view: Vista griglia
     hide_content: Nascondi contenuto
@@ -63,6 +105,7 @@ it:
       value: Valore
     less_content: Meno contenuti
     list_is_empty: La lista è vuota
+    load_item: Carica %{item}
     loading: Caricamento in corso
     media_library:
       title: Libreria multimediale
@@ -84,15 +127,22 @@ it:
       other: "%{count} %{item}"
       zero: nessun %{item}
     oops_nothing_found: Ops! Niente trovato...
+    open_in_new_tab: Apri in una nuova scheda
+    open_in_your_editor: Apri nel tuo editor
     order:
       higher: Sposta record più in alto
       lower: Sposta record più in basso
       reorder_record: Riordina record
       to_bottom: Sposta record in fondo
       to_top: Sposta record in cima
+    pages: Pagine
     per_page: Per pagina
     prev_page: Pagina precedente
+    record:
+      one: record
+      other: record
     records_selected_from_all_pages_html: Tutti i record selezionati da tutte le pagine
+    reload: Ricarica
     remove_selection: Rimuovi selezione
     reset: Reimposta
     reset_filters: Reimposta filtri
@@ -100,6 +150,9 @@ it:
     resource_destroyed: Record distrutto
     resource_updated: Record aggiornato
     resources: Risorse
+    retry: Riprova
+    retry_item: Riprova %{item}
+    reupload_file: Reupload %{item}
     run: Esegui
     save: Salva
     search:
@@ -110,6 +163,8 @@ it:
     select_item: Seleziona elemento
     show_content: Mostra contenuto
     sign_out: Esci
+    skip_to_content: Vai al contenuto
+    skip_to_sidebar: Salta al sidebar
     sort_asc: Ordina in ordine crescente
     sort_desc: Ordina in ordine decrescente
     sort_reset: Reimposta ordinamento
@@ -121,6 +176,7 @@ it:
     type_to_search: Digita per cercare.
     unauthorized: Non autorizzato
     undo: Annulla
+    updated_at: Aggiornato il
     updated_at_timestamp: Aggiornato il %{updated_at}
     view: Visualizza
     view_item: Visualizza %{item}
@@ -131,9 +187,9 @@ it:
       one: un altro elemento
       other: "%{count} altri elementi"
       zero: nessun altro elemento
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina su un totale di <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> record selezionati da tutte le pagine
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> record selezionati su questa pagina
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> record selezionati su questa pagina su un totale di <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> record selezionati da tutte le pagine
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> record selezionati su questa pagina
     yes_confirm: Sì, sono sicuro
     you_cant_upload_new_resource: Non puoi caricare file nell'editor Trix finché non salvi la risorsa.
     you_havent_set_attachment_key: Non hai impostato un `attachment_key` per questo campo Trix.

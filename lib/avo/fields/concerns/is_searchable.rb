@@ -4,11 +4,8 @@ module Avo
       module IsSearchable
         extend ActiveSupport::Concern
 
-        def is_searchable?
-          return false unless defined?(Avo::Pro)
-
-          @searchable && Avo.license.has_with_trial(:searchable_associations)
-        end
+        # Don't remove, avo-pro hooks into this method to check if the field is searchable.
+        def is_searchable? = false
       end
     end
   end

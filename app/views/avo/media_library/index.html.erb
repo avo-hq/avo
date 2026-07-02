@@ -1,7 +1,9 @@
 <%= render Avo::TurboFrameWrapperComponent.new(turbo_frame_request_id) do %>
   <% if turbo_frame_request_id %>
-    <%= render Avo::ModalComponent.new do |c| %>
-      <%= render Avo::MediaLibrary::ListComponent.new attaching: @attaching %>
+    <%= render Avo::ModalComponent.new(title: t("avo.media_library.title")) do |c| %>
+      <div class="p-4">
+        <%= render Avo::MediaLibrary::ListComponent.new attaching: @attaching %>
+      </div>
     <% end %>
   <% else %>
     <%= render Avo::MediaLibrary::ListComponent.new attaching: @attaching %>

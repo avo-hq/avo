@@ -1,0 +1,285 @@
+/* @layer base, components, utilities; */
+@import "tailwindcss";
+
+@source not "*/tmp/cache";
+@source not "*/tmp/pids";
+@source not "*/tmp/screenshots";
+@source not "*/tmp/storage";
+
+/* TODO: Figure out a way to add those dynamically */
+/* Find a long term solution for this. */
+/* Basically this is a hack to make sure that we dont have specificity issues with the packages stylesheets. */
+/* However if we do this the packages builds are kinda irrelevant. */
+/* And we also need to release a new version of avo anytime that a package stylesheet changes. */
+@source "../../../tmp/avo/build-assets/packages/avo-advanced";
+@source "../../../tmp/avo/build-assets/packages/avo-dashboards";
+@source "../../../tmp/avo/build-assets/packages/avo-dynamic_filters";
+@source "../../../tmp/avo/build-assets/packages/avo-kanban";
+@source "../../../tmp/avo/build-assets/packages/avo-menu";
+@source "../../../tmp/avo/build-assets/packages/avo-pro";
+@source "../../../tmp/avo/build-assets/packages/avo-forms";
+
+/* We couldn't find a way to implement blocklist in the CSS config */
+/* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
+@source inline("break-all");
+
+/* Tailwind colors */
+/* red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose */
+
+@theme {
+  --spacing-3/4: 75%;
+
+  --color-application: rgb(var(--avo-color-application-background));
+
+  --color-primary-100: rgb(var(--avo-color-primary-100));
+  --color-primary-150: rgb(var(--avo-color-primary-150));
+  --color-primary-200: rgb(var(--avo-color-primary-200));
+  --color-primary-300: rgb(var(--avo-color-primary-300));
+  --color-primary-400: rgb(var(--avo-color-primary-400));
+  --color-primary-500: rgb(var(--avo-color-primary-500));
+  --color-primary-600: rgb(var(--avo-color-primary-600));
+  --color-primary-700: rgb(var(--avo-color-primary-700));
+  --color-primary-800: rgb(var(--avo-color-primary-800));
+  --color-primary-850: rgb(var(--avo-color-primary-850));
+  --color-primary-900: rgb(var(--avo-color-primary-900));
+
+  --aspect-media-library-item: 4 / 3;
+
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --shadow-panel: "0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04)";
+  --shadow-modal: " 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04)";
+
+  --breakpoint-xs: 30rem;
+
+  --container-8xl: 96rem;
+
+  /* Tiny text size originally added for discreet information */
+  --text-tiny: 0.625rem;
+}
+
+@plugin '@tailwindcss/typography';
+
+/* Add dark mode variant */
+@custom-variant light (&:where(.light, .light *));
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant neutral-theme-brand (&:where(.neutral-theme-brand, .neutral-theme-brand *));
+@custom-variant neutral-theme-slate (&:where(.neutral-theme-slate, .neutral-theme-slate *));
+@custom-variant neutral-theme-stone (&:where(.neutral-theme-stone, .neutral-theme-stone *));
+@custom-variant neutral-theme-gray (&:where(.neutral-theme-gray, .neutral-theme-gray *));
+@custom-variant neutral-theme-zinc (&:where(.neutral-theme-zinc, .neutral-theme-zinc *));
+@custom-variant neutral-theme-neutral (&:where(.neutral-theme-neutral, .neutral-theme-neutral *));
+@custom-variant neutral-theme-taupe (&:where(.neutral-theme-taupe, .neutral-theme-taupe *));
+@custom-variant neutral-theme-mauve (&:where(.neutral-theme-mauve, .neutral-theme-mauve *));
+@custom-variant neutral-theme-mist (&:where(.neutral-theme-mist, .neutral-theme-mist *));
+@custom-variant neutral-theme-olive (&:where(.neutral-theme-olive, .neutral-theme-olive *));
+
+@custom-variant os-mac (&:where(.os-mac, .os-mac *));
+@custom-variant os-pc (&:where(.os-pc, .os-pc *));
+
+@custom-variant has-cover (&:where(.has-cover *));
+@custom-variant has-sidebar (&:where(.has-sidebar *));
+@custom-variant has-record-selector (&:where(.has-record-selector *));
+@custom-variant index-grid-view (&:where(.index-grid-view *));
+@custom-variant kanban-dragging (&:where(.kanban-dragging *));
+@custom-variant floating-controls (&:where(.floating-controls *));
+@custom-variant shift-pressed (&:where(.shift-pressed *));
+
+@custom-variant resource-index-view (&:where(.resource-index-view *));
+@custom-variant resource-show-view (&:where(.resource-show-view *));
+@custom-variant resource-edit-view (&:where(.resource-edit-view *));
+@custom-variant resource-new-view (&:where(.resource-new-view *));
+
+/* Field wrappers use the same stacked layout below md, when the whole page
+   forces stacked fields, and when an individual field is explicitly stacked.
+   The component styles live in field-wrapper.css under `@variant field-stacked`. */
+@custom-variant field-stacked {
+  @media (width < 48rem) {
+    @slot;
+  }
+
+  &:is(.all-fields-stacked .field-wrapper, .field-wrapper.field-wrapper--stacked) {
+    @slot;
+  }
+
+  :is(.all-fields-stacked .field-wrapper, .field-wrapper.field-wrapper--stacked) & {
+    @slot;
+  }
+}
+
+/* Used to determine if the filters buttons is displayed. */
+@custom-variant index-missing-resources (&:where(.index-missing-resources *));
+
+/* https://tailwindcss.com/docs/upgrade-guide#hover-styles-on-mobile */
+/* needed to fix hover on system tests we need to find a better solution */
+/* I discovered that the Tailwind v4 `hover` change is affecting the test browser. As a temporary fix, I forced a custom variant to preserve the Tailwind v3 `hover` behavior, since it resolves the failing tests. However, we’ll need to find a more robust long-term solution. This one was tricky to pinpoint. */
+@custom-variant hover (&:hover);
+
+@import "./css/components/ui/checkbox.css";
+@import "./css/components/tooltip.css";
+@import "./css/fields/tags.css";
+
+/* variables.css uses explicit @layer theme { .dark } and @layer components
+   { .neutral-theme-*, .accent-theme-* } blocks internally. Importing it OUTSIDE
+   any @layer wrapper preserves those layer assignments — wrapping it would
+   nest them into sublayers like `components.theme` and break the cascade
+   between brand override (base) and the defaults / user picks. */
+@import "./css/variables.css";
+@import "./css/focus.css";
+
+@layer components {
+  @import "./css/fonts.css";
+  @import "./css/button-group.css";
+  @import "./css/typography.css";
+  @import "./css/tooltips.css";
+  @import "./css/loader.css";
+  @import "./css/pagination.css";
+  @import "./css/active-storage.css";
+  @import "./css/scrollbar.css";
+  @import "./css/layout.css";
+  @import "./css/spinner.css";
+  @import "./css/table.css";
+  @import "./css/resource-controls.css";
+
+  @import "./css/fields/status.css";
+  @import "./css/fields/code.css";
+  @import "./css/fields/easy-mde.css";
+  @import "./css/fields/progress.css";
+  @import "./css/fields/key_value.css";
+  @import "./css/fields/trix.css";
+  @import "./css/fields/tiptap.css";
+  @import "./css/fields/stars.css";
+
+  /* UI 4 */
+  @import "./css/components/ui/card.css";
+  @import "./css/components/ui/panel.css";
+  @import "./css/components/ui/panel_header.css";
+  @import "./css/components/ui/description_list.css";
+  @import "./css/components/ui/tabs.css";
+  @import "./css/components/ui/badge.css";
+  @import "./css/components/ui/state.css";
+  @import "./css/components/ui/file_upload_input.css";
+  @import "./css/components/ui/file_upload_item.css";
+  @import "./css/components/ui/dropdown.css";
+  @import "./css/components/ui/dropdown_card.css";
+  @import "./css/components/ui/popover_menu.css";
+  @import "./css/components/ui/radio.css";
+  @import "./css/components/ui/checkbox_list.css";
+  @import "./css/components/ui/count.css";
+  @import "./css/components/input.css";
+
+  @import "./css/components/field-wrapper.css";
+  @import "./css/components/avatar.css";
+  @import "./css/components/alert.css";
+  @import "./css/components/breadcrumbs.css";
+  @import "./css/components/button.css";
+  @import "./css/components/grid.css";
+  @import "./css/components/media_library.css";
+  @import "./css/components/distribution_chart.css";
+  @import "./css/components/color_scheme_switcher.css";
+  @import "./css/components/discreet_information.css";
+  @import "./css/components/header_menu.css";
+  @import "./css/components/hotkey.css";
+  @import "./css/components/manual_frame.css";
+  @import "./css/components/modal.css";
+  @import "./css/components/filters.css";
+  @import "./css/css-animations.css";
+  @import "./css/sidebar.css";
+
+  html,
+  body {
+    @apply antialiased relative h-full text-content;
+
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    will-change: opacity;
+    will-change: transform;
+
+    @apply transition transform duration-150;
+  }
+
+  .fade-enter-active {
+    @apply relative ease-out delay-150;
+  }
+
+  .fade-leave-active {
+    @apply relative ease-in;
+  }
+
+  .fade-enter {
+    @apply delay-150 opacity-0 -translate-y-1;
+  }
+
+  .fade-enter-to {
+    @apply delay-150 opacity-100 translate-y-0;
+  }
+
+  .fade-leave {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .fade-leave-to {
+    @apply opacity-0 translate-y-1;
+  }
+
+  .turbo-progress-bar {
+    @apply bg-primary-400;
+  }
+
+  body.modal-open {
+    @apply overflow-hidden;
+  }
+
+  trix-editor {
+    max-height: 320px !important;
+    overflow-y: auto;
+  }
+
+  dialog#turbo-confirm {
+    @apply bg-transparent;
+  }
+
+  dl {
+    @apply text-sm grid gap-x-2 grid-cols-[max-content_1fr];
+
+    dt {
+      @apply font-bold;
+    }
+
+    dd {
+      @apply ms-0 col-start-2;
+    }
+  }
+
+  .panel-spacer {
+    @apply relative flex flex-col gap-y-12;
+
+    &>[data-component="avo/ui/panel_header_component"],
+    &>[data-component="avo/cover_component"] {
+      @apply -mb-8; /* Offset from the regular panel spacing */
+    }
+  }
+}
+
+.loading-spinner {
+  @apply absolute top-1/2 border-2 w-4 h-4 rounded-full;
+
+  border-color: var(--color-content);
+  border-right-color: var(--color-tertiary);
+  transform: translateY(-50%);
+  transform-origin: center center;
+  animation: text-input-spin 0.9s linear infinite;
+}
+
+@keyframes text-input-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}

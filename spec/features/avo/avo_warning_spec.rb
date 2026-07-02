@@ -1,13 +1,19 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "AvoWarning", type: :feature do
+RSpec.feature "AvoWarning", type: :feature, acquire_lock: :generator do
   before :all do
     Rails::Generators.invoke("avo:resource", ["bad", "--quiet", "--skip"], {destination_root: Rails.root})
+
+    load Rails.root.join("app", "avo", "resources", "bad.rb")
   end
 
   after :all do
-    files = %w[spec/dummy/app/avo/resources/bad_resource.rb spec/dummy/app/controllers/avo/bads_controller.rb]
+    if defined?(Avo::Resources) && Avo::Resources.const_defined?(:Bad, false)
+      Avo::Resources.send(:remove_const, :Bad)
+    end
+
+    files = %w[spec/dummy/app/avo/resources/bad.rb spec/dummy/app/controllers/avo/bads_controller.rb]
     files.each do |path|
       File.delete(path) if File.exist?(path)
     end
@@ -20,8 +26,6 @@ RSpec.feature "AvoWarning", type: :feature do
     expect(page).to have_text "Avo::Resources::Bad does not have a valid model assigned. It failed to find the Bad model."
     expect(page).to have_text "Please create that model or assign one using self.model_class = YOUR_MODEL"
     expect(page).to have_link href: "https://docs.avohq.io/3.0/resources.html#self_model_class"
-
-    delete_files [Rails.root.join("app", "avo", "resources", "bad.rb").to_s]
   end
 
   it "displays menu editor warning" do

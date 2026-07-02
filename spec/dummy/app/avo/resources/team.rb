@@ -1,4 +1,5 @@
 class Avo::Resources::Team < Avo::BaseResource
+  self.hotkey = "r t"
   self.includes = [:admin, :team_members, :locations]
   self.search = {
     query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }
@@ -18,55 +19,75 @@ class Avo::Resources::Team < Avo::BaseResource
   }
 
   def fields
-    main_panel do
-      field :preview, as: :preview
+    panel do
+      card do
+        field :preview, as: :preview
 
-      unless params[:hide_id]
-        field :id, as: :id, filterable: true
-      end
-      field :name, as: :text, sortable: true, show_on: :preview, filterable: true, html: -> do
-        index do
-          wrapper do
-            style do
-              if record.color
-                "color: #{record.color}"
+        unless params[:hide_id]
+          field :id, as: :id, filterable: true
+        end
+        field :name, as: :text, sortable: true, show_on: :preview, filterable: true, html: -> do
+          index do
+            wrapper do
+              style do
+                if record.color
+                  "color: #{record.color}"
+                end
               end
             end
           end
         end
-      end
-      field :logo, as: :external_image, hide_on: :show do
-        if record&.url
-          "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
+        field :logo, as: :external_image, hide_on: :show do
+          if record&.url
+            "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
+          end
+        rescue
+          "nope"
         end
-      rescue
-        "nope"
-      end
-      field :created_at, as: :date_time, filterable: true
-      field :color, as: :color_pickerrr, hide_on: :index, show_on: :preview
-      field :invalid, as: :invalid_field
-      field :description,
-        as: :textarea,
-        rows: 5,
-        readonly: false,
-        hide_on: :index,
-        format_using: -> { value.to_s.truncate 30 },
-        default: "This is a wonderful team!",
-        filterable: true,
-        nullable: true,
-        null_values: ["0", "", "null", "nil"],
-        show_on: :preview
+        field :created_at, as: :date_time, filterable: true
+        field :color, as: :color_pickerrr, hide_on: :index, show_on: :preview
+        field :invalid, as: :invalid_field
+        field :description,
+          as: :textarea,
+          rows: 5,
+          readonly: false,
+          hide_on: :index,
+          default: "This is a wonderful team!",
+          filterable: true,
+          nullable: true,
+          null_values: ["0", "", "null", "nil"],
+          show_on: :preview
 
-      field :members_count, as: :number do
-        record.team_members.length
+        field :members_count, as: :number do
+          record.team_members.length
+        end
+
+        field :team_member_ids,
+          as: :checkbox_list,
+          name: "Team members",
+          inline_search: true,
+          only_on: :forms,
+          options: -> {
+            User.active.order(:id).map do |user|
+              {
+                id: user.id,
+                title: user.name,
+                image_url: user.avatar,
+                image_format: "circle",
+                description: user.email
+              }
+            end
+          }
       end
 
       sidebar do
-        field :url, as: :text
-        field :created_at, as: :date_time, hide_on: :forms
-        field :logo, as: :external_image do
-          if record&.url
-            "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
+        card title: "Other information" do
+          field :url, as: :text
+          field :created_at, as: :date_time, hide_on: :forms
+          field :logo, as: :external_image do
+            if record&.url
+              "//img.logo.dev/#{URI.parse(record.url).host}?size=180&token=pk_CyYjya8hRsWjO7C7osDMfw"
+            end
           end
         end
       end
@@ -74,6 +95,13 @@ class Avo::Resources::Team < Avo::BaseResource
 
     field :memberships,
       as: :has_many,
+      loading: {mode: :manual, auto_load_for: 5.minutes},
+      description: -> {
+        # `loading_type` is `:manual` while the placeholder is shown (frame not
+        # loaded yet), so we skip `query.count` and avoid a SQL hit on show-page
+        # paint.
+        (loading_type == :manual) ? "Hey members" : "Hey members (#{query.count})"
+      },
       searchable: true,
       filterable: true,
       linkable: true,
@@ -82,10 +110,11 @@ class Avo::Resources::Team < Avo::BaseResource
         query.where.not(user_id: parent.id).or(query.where(user_id: nil))
       end
 
-    field :admin, as: :has_one, linkable: true
+    field :admin, as: :has_one, linkable: true, loading: :manual
     field :team_members,
       as: :has_many,
       through: :memberships,
+      attach_using: :checkbox_list,
       linkable: true,
       reloadable: true
     field :reviews, as: :has_many,

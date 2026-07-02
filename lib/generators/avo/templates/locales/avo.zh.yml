@@ -5,6 +5,24 @@ zh:
     actions: 操作
     add_filter: 添加筛选器
     and_x_other_resources: 和 %{count} 个其他资源
+    appearance:
+      accent_picker: 强调色
+      accents: 强调色
+      auto: 自动
+      auto_tooltip: 自动（系统偏好）
+      dark: 深色
+      dark_tooltip: 深色模式
+      hide: 隐藏
+      light: 浅色
+      light_tooltip: 浅色模式
+      neutrals: 主题
+      neutrals_picker: 中性色主题
+      schemes: 外观
+      shortcut_badges: 快捷键徽章
+      shortcut_badges_hide_tooltip: 隐藏键盘快捷键徽章
+      shortcut_badges_show_tooltip: 显示键盘快捷键徽章
+      show: 显示
+      title: 外观
     applied: 已应用
     are_you_sure: 您确定吗？
     are_you_sure_detach_item: 您确定要分离此 %{item} 吗？
@@ -17,16 +35,22 @@ zh:
     attachment_destroyed: 附件已删除
     attachment_failed: 无法附加 %{attachment_class}
     cancel: 取消
+    checkbox_list:
+      hidden_selections:
+        one: 1 个选项因搜索而隐藏
+        other: "%{count} 个选项因搜索而隐藏"
     choose_a_country: 选择一个国家
     choose_an_option: 选择一个选项
     choose_item: 选择 %{item}
     clear_value: 清除值
+    click_to_load: 点击加载
     click_to_reveal_filters: 点击以显示筛选器
     close: 关闭
     close_modal: 关闭模态框
     confirm: 确认
     copy: 复制
     create_new_item: 创建新的 %{item}
+    created_at: 创建于
     created_at_timestamp: 创建于%{created_at}
     dashboard: 仪表盘
     dashboards: 仪表盘
@@ -45,12 +69,30 @@ zh:
     failed: 失败
     failed_to_find_attachment: 找不到附件
     failed_to_load: 加载失败
+    failed_to_load_item: 加载 %{item} 失败
     'false': 假
     file:
       one: 文件
       other: 文件
     filter_by: 按...筛选
     filters: 筛选器
+    global_search:
+      empty_state:
+        no_results_for_query: 我们找不到与 "%{query}" 匹配的任何内容
+        no_results_found: 未找到结果
+        start_typing: 开始输入以搜索
+        start_typing_with_resource_list: 您可以在 %{resources} 上搜索
+        start_typing_with_resources: 您可以在 %{resources} %{other_resources} 上搜索
+        try_adjusting_search: 尝试调整您的搜索词或检查拼写错误
+      go_to: 前往
+      keyboard_hints:
+        close: 关闭
+        navigate: 导航
+        press: 按
+        select: 选择
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: 显示所有结果
     go_back: 返回
     grid_view: 网格视图
     hide_content: 隐藏内容
@@ -63,6 +105,7 @@ zh:
       value: 值
     less_content: 内容较少
     list_is_empty: 列表为空
+    load_item: 加载 %{item}
     loading: 加载中...
     media_library:
       title: 媒体库
@@ -84,15 +127,22 @@ zh:
       other: "%{count} 个 %{item}"
       zero: 没有 %{item}
     oops_nothing_found: 哎呀！什么都没找到...
+    open_in_new_tab: 在新标签页中打开
+    open_in_your_editor: 在您的编辑器中打开
     order:
       higher: 将记录上移
       lower: 将记录下移
       reorder_record: 重新排序记录
       to_bottom: 将记录移至底部
       to_top: 将记录移至顶部
+    pages: 页面
     per_page: 每页显示
     prev_page: 上一页
+    record:
+      one: 条记录
+      other: 条记录
     records_selected_from_all_pages_html: 所有页面中选中的记录
+    reload: 重新加载
     remove_selection: 清除选择
     reset: 重置
     reset_filters: 重置筛选器
@@ -100,6 +150,9 @@ zh:
     resource_destroyed: 记录已删除
     resource_updated: 记录已更新
     resources: 资源
+    retry: 重试
+    retry_item: 重试 %{item}
+    reupload_file: Reupload %{item}
     run: 运行
     save: 保存
     search:
@@ -110,6 +163,8 @@ zh:
     select_item: 选择项目
     show_content: 显示内容
     sign_out: 登出
+    skip_to_content: 跳转至内容
+    skip_to_sidebar: 跳到侧边栏
     sort_asc: 升序排序
     sort_desc: 降序排序
     sort_reset: 重置排序
@@ -121,6 +176,7 @@ zh:
     type_to_search: 输入以搜索。
     unauthorized: 未经授权
     undo: 撤销
+    updated_at: 更新于
     updated_at_timestamp: 更新于%{updated_at}
     view: 查看
     view_item: 查看 %{item}
@@ -131,9 +187,9 @@ zh:
       one: 另外一个项目
       other: "%{count} 个其他项目"
       zero: 没有其他项目
-    x_records_selected_from_a_total_of_x_html: 本页面共选择了 <span class="font-bold text-gray-700">%{selected}</span> 条记录，所有页面共有 <span class="font-bold text-gray-700">%{count}</span> 条记录
-    x_records_selected_from_all_pages_html: 从所有页面中选中了 <span class="font-bold text-gray-700">%{count}</span> 条记录
-    x_records_selected_from_page_html: 在本页中共选择了 <span class="font-bold text-gray-700">%{selected}</span> 条记录
+    x_records_selected_from_a_total_of_x_html: 本页面共选择了 <span class="font-bold">%{selected}</span> 条记录，所有页面共有 <span class="font-bold">%{count}</span> 条记录
+    x_records_selected_from_all_pages_html: 从所有页面中选中了 <span class="font-bold">%{count}</span> 条记录
+    x_records_selected_from_page_html: 在本页中共选择了 <span class="font-bold">%{selected}</span> 条记录
     yes_confirm: 是的，确认
     you_cant_upload_new_resource: 在保存资源之前，您无法将文件上传到 Trix 编辑器。
     you_havent_set_attachment_key: 您尚未为此 Trix 字段设置 `attachment_key`。

@@ -1,0 +1,16 @@
+require "rails_helper"
+
+RSpec.describe "PasswordField", type: :system do
+  describe "revealable true" do
+    context "create" do
+      it "password revealable button is toggling" do
+        visit "/admin/resources/users/new"
+
+        expect(page).to have_field type: "password", id: "user_password_confirmation"
+        # Toggle is the next sibling of the password_confirmation input
+        find("#user_password_confirmation + [data-action='password-visibility#toggle']").click
+        expect(page).to have_field type: "text", id: "user_password_confirmation"
+      end
+    end
+  end
+end

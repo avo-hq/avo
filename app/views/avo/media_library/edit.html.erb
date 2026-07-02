@@ -1,0 +1,29 @@
+<%= render ui.panel(title: @blob.filename.to_s, content_focusable: true) do |panel| %>
+  <%= panel.with_controls do %>
+    <%= a_link avo.media_library_index_path,
+      icon: "tabler/outline/arrow-left",
+      style: :text,
+      title: t("avo.go_back"),
+      data: {
+        hotkey: "b",
+        tippy: :tooltip
+      } do %>
+      <%= t("avo.go_back") %>
+    <% end %>
+  <% end %>
+
+  <%= panel.with_body do %>
+    <div class="media-library-edit">
+      <div class="media-library-edit__preview">
+        <%= render partial: "avo/media_library/preview", locals: {blob: @blob} %>
+      </div>
+
+      <aside class="media-library-edit__sidebar">
+        <div class="media-library-details__sidebar-panel">
+          <%= render partial: "avo/media_library/information", locals: {blob: @blob} %>
+          <%= render partial: "avo/media_library/form", locals: {blob: @blob} %>
+        </div>
+      </aside>
+    </div>
+  <% end %>
+<% end %>

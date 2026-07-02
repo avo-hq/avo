@@ -1,9 +1,17 @@
 class Avo::Actions::TogglePublished < Avo::BaseAction
   self.name = "Toggle post published"
-  self.message = "Are you sure, sure?"
+  self.message = <<~TEXT.chomp
+    Are you sure, sure?
+    (a lot of purposeful empty space to test the action modal)
+
+
+
+
+    Sure?
+  TEXT
   self.confirm_button_label = "Toggle"
   self.cancel_button_label = "Don't toggle yet"
-  self.no_confirmation = -> { arguments[:no_confirmation] || false }
+  self.confirmation = -> { arguments.key?(:confirmation) ? arguments[:confirmation] : true }
 
   def fields
     field :notify_user, as: :boolean, default: true

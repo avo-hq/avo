@@ -1,4 +1,4 @@
-# avo/index/resource_table_component
+# avo/view_types/table_component
 module TestHelpers
   module AvoHelpers
     def find_component(name)

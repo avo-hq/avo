@@ -1,37 +1,59 @@
-<div class="flex flex-col sm:flex-row items-center justify-between aborder-t aborder-slate-200 rounded-2xl space-y-2 sm:space-y-0">
-  <div class="flex-2 sm:flex sm:items-center sm:justify-between">
-    <div>
-      <div class="text-sm leading-5 text-slate-600 flex items-center">
-        <div data-controller="per-page">
-          <div class="flex items-center">
-            <%= content_tag :label, name: t('avo.per_page').downcase do %>
-              <%= select_tag 'per_page',
-                options_for_select(per_page_options, @index_params[:per_page]),
-                class: 'appearance-none inline-flex bg-white-100 disabled:bg-white-400 disabled:cursor-not-allowed focus:bg-white text-slate-700 disabled:text-slate-600 rounded-md py-1 px-2 leading-tight border border-slate-300 outline-none focus:border-slate-400 outline w-16 mr-1 text-sm',
-                data: {
-                  'turbo-frame': @turbo_frame,
-                  'per-page-target': 'selector',
-                  action: 'change->per-page#reload'
-                }
-              %> <%= t('avo.per_page').downcase %>
+<div class="pagination">
+  <%# Left: per-page selector %>
+  <div class="pagination__per-page">
+    <%= render ui.dropdown(popover_mode: true) do |component| %>
+      <% component.with_trigger do %>
+        <button
+          type="button"
+          class="pagination__per-page-input"
+          popovertarget="<%= component.popover_id %>"
+          aria-haspopup="listbox"
+        >
+          <span class="pagination__per-page-value"><%== current_per_page_label %></span>
+          <span class="pagination__per-page-icon" aria-hidden="true">
+            <%= helpers.svg "tabler/outline/chevron-down" %>
+          </span>
+        </button>
+      <% end %>
+      <% component.with_items do %>
+        <% per_page_options.each do |option| %>
+          <%= link_to change_items_per_page_url(option),
+            class: "dropdown-menu__item",
+            data: { turbo_frame: @turbo_frame } do %>
+            <%== per_page_option_label(option) %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%# Right: info + navigation grouped pill %>
+  <div class="pagination__controls-wrap">
+    <div class="pagination__controls">
+      <% if @resource.pagination_type.default? %>
+        <div class="pagination__info">
+          <% if @pagy.pages <= 1 %>
+            <span><%= formatted_count %> <%= t("avo.record", count: @pagy.count) %></span>
+          <% else %>
+            <span class="pagination__info-number">
+              <%= formatted_number(@pagy.from) %>-<%= formatted_number(@pagy.to) %>
+            </span>
+            &nbsp; of &nbsp;
+            <% if @pagy.count >= 10_000 %>
+              <span title="<%= formatted_count %>" data-tippy="tooltip">
+                <%= number_to_social(@pagy.count, start_at: 10_000) %>
+              </span>
+            <% else %>
+              <span><%= formatted_count %></span>
             <% end %>
-          </div>
-          <% per_page_options.each do |option| %>
-            <%= link_to "Change to #{option} items per page", change_items_per_page_url(option), class: 'hidden', 'data-per-page-option': option, 'data-turbo-frame': @turbo_frame %>
           <% end %>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="flex">
-    <div class="flex-2 sm:flex sm:items-center sm:justify-between space-y-2 sm:space-y-0 text-center sm:text-left pagy-gem-version-<%= helpers.pagy_major_version %>">
-      <% if @resource.pagination_type.default? %>
-        <div class="text-sm text-slate-600 mr-4"><%== helpers.pagy_info @pagy %></div>
       <% end %>
 
       <% if @pagy.pages > 1 %>
-        <%# @todo: add first & last page. make the first and last buttons rounded %>
-        <%== helpers.pagy_nav @pagy, anchor_string: "data-turbo-frame=\"#{@turbo_frame}\"" %>
+        <div class="pagination__nav">
+          <%== formatted_series_nav %>
+        </div>
       <% end %>
     </div>
   </div>

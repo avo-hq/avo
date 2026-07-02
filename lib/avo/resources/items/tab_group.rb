@@ -6,9 +6,9 @@ class Avo::Resources::Items::TabGroup
   include Avo::Concerns::IsVisible
   include Avo::Concerns::VisibleInDifferentViews
 
-  attr_accessor :index, :style, :name, :title, :description
+  attr_accessor :index, :style, :title, :description
 
-  def initialize(index: 0, view: nil, style: nil, title: nil, description: nil, id: nil, name: nil, **args)
+  def initialize(index: 0, view: nil, style: nil, title: nil, description: nil, id: nil, **args)
     @index = index
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
@@ -16,7 +16,6 @@ class Avo::Resources::Items::TabGroup
     @title = title
     @description = description
     @id = id
-    @name = name
     @args = args
     @visible = args[:visible]
 
@@ -24,11 +23,11 @@ class Avo::Resources::Items::TabGroup
   end
 
   # The user might assign an id to a group.
-  # If not, we'll use the name.
+  # If not, we'll use the title.
   # If not, we'll use the index
   def id
     return @id if @id.present?
-    return @name.parameterize if @name.present?
+    return @title.parameterize if @title.present?
 
     index
   end
@@ -51,14 +50,14 @@ class Avo::Resources::Items::TabGroup
       parsed = Avo::Dsl::FieldParser.new(id: field_name, order_index: @items_index, **args, &block).parse
       field_instance = parsed.instance
 
-      name = field_instance.name
-      tab = Avo::Resources::Items::Tab.new name: name
+      title = field_instance.name
+      tab = Avo::Resources::Items::Tab.new title: title
 
       if field_instance.has_own_panel?
         tab.items_holder.add_item parsed.instance
       else
         # If the field is not in a panel, create one and add it
-        panel = Avo::Resources::Items::Panel.new name: name
+        panel = Avo::Resources::Items::Panel.new title: title
         panel.items_holder.add_item parsed.instance
         # Add that panel to the items_holder
         tab.items_holder.add_item panel
@@ -67,9 +66,8 @@ class Avo::Resources::Items::TabGroup
       @items_holder.tabs tab
     end
 
-    def initialize(name:, id:, parent:, title: nil, description: nil, style: nil, **args)
+    def initialize(id:, parent:, title: nil, description: nil, style: nil, **args)
       @group = Avo::Resources::Items::TabGroup.new(
-        name: name,
         id: id,
         style: style,
         title: title,

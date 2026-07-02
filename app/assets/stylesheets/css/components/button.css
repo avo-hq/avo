@@ -1,0 +1,476 @@
+@layer base {
+  .button-icon {
+    @apply inline-flex cursor-pointer rounded-md;
+  }
+
+  .button {
+    @apply inline-flex justify-center grow-0 items-center font-medium leading-[14px] fill-current whitespace-nowrap transition-transform duration-100 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 data-[disabled='true']:opacity-60 gap-1.5 border border-transparent rounded-lg;
+
+    --btn-text-color: color-mix(in oklab, var(--btn-color-accent), var(--color-content) 20%);
+
+    @supports (corner-shape: squircle) {
+      border-radius: var(--radius-3xl); /* when using the squircle shape, we need to set the border radius higher for some reason */
+      corner-shape: squircle;
+    }
+
+    /* Base styles for all button types */
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)):active {
+      @apply translate-y-px;
+    }
+
+    &.button--disabled,
+    &:disabled,
+    &[disabled],
+    &[data-disabled='true'] {
+      @apply opacity-60 pointer-events-none;
+    }
+
+    /* Default colors */
+    --btn-color-accent: var(--color-avo-neutral-50);
+    --btn-color-accent-content: var(--color-avo-neutral-100);
+    --btn-color-accent-foreground: var(--color-avo-neutral-950);
+
+    &&.button--color-primary {
+      --btn-color-accent: var(--color-avo-neutral-800);
+      --btn-color-accent-content: var(--color-avo-neutral-950);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-accent {
+      --btn-color-accent: var(--color-accent);
+      --btn-color-accent-content: var(--color-accent-content);
+      --btn-color-accent-foreground: var(--color-accent-foreground);
+    }
+
+    &&.button--color-teal {
+      --btn-color-accent: var(--color-teal-500);
+      --btn-color-accent-content: var(--color-teal-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-red {
+      --btn-color-accent: var(--color-red-500);
+      --btn-color-accent-content: var(--color-red-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-blue {
+      --btn-color-accent: var(--color-blue-500);
+      --btn-color-accent-content: var(--color-blue-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-gray {
+      --btn-color-accent: var(--color-gray-500);
+      --btn-color-accent-content: var(--color-gray-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-orange {
+      --btn-color-accent: var(--color-orange-500);
+      --btn-color-accent-content: var(--color-orange-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-green {
+      --btn-color-accent: var(--color-green-500);
+      --btn-color-accent-content: var(--color-green-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-amber {
+      --btn-color-accent: var(--color-amber-500);
+      --btn-color-accent-content: var(--color-amber-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-yellow {
+      --btn-color-accent: var(--color-yellow-500);
+      --btn-color-accent-content: var(--color-yellow-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-lime {
+      --btn-color-accent: var(--color-lime-500);
+      --btn-color-accent-content: var(--color-lime-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-emerald {
+      --btn-color-accent: var(--color-emerald-500);
+      --btn-color-accent-content: var(--color-emerald-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-cyan {
+      --btn-color-accent: var(--color-cyan-500);
+      --btn-color-accent-content: var(--color-cyan-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-sky {
+      --btn-color-accent: var(--color-sky-500);
+      --btn-color-accent-content: var(--color-sky-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-indigo {
+      --btn-color-accent: var(--color-indigo-500);
+      --btn-color-accent-content: var(--color-indigo-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-violet {
+      --btn-color-accent: var(--color-violet-500);
+      --btn-color-accent-content: var(--color-violet-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-purple {
+      --btn-color-accent: var(--color-purple-500);
+      --btn-color-accent-content: var(--color-purple-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-fuchsia {
+      --btn-color-accent: var(--color-fuchsia-500);
+      --btn-color-accent-content: var(--color-fuchsia-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-pink {
+      --btn-color-accent: var(--color-pink-500);
+      --btn-color-accent-content: var(--color-pink-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &&.button--color-rose {
+      --btn-color-accent: var(--color-rose-500);
+      --btn-color-accent-content: var(--color-rose-600);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    /* The kbd element is taller than the button text, so we need to offset it */
+    &>span >kbd {
+      @apply -my-1;
+    }
+  }
+
+  .dark {
+    .button--style-primary {
+      &:not([class*="button--color-"]) {
+        --btn-color-accent: var(--color-avo-neutral-800);
+        --btn-color-accent-content: var(--color-avo-neutral-950);
+        --btn-color-accent-foreground: var(--color-white);
+        background: linear-gradient(180deg, var(--btn-color-accent-content) 0%, var(--btn-color-accent) 100%);
+      }
+    }
+
+    .button--style-outline {
+      --btn-color-accent: var(--color-avo-neutral-100);
+      --btn-color-accent-content: var(--color-avo-neutral-200);
+      --btn-color-accent-foreground: var(--color-avo-neutral-950);
+    }
+
+    .button--style-text {
+      &:not([class*="button--color-"]) {
+        --btn-text-color: var(--color-avo-neutral-100);
+      }
+    }
+
+    .button.button--color-primary {
+      --btn-color-accent: var(--color-avo-neutral-100);
+      --btn-color-accent-content: var(--color-avo-neutral-200);
+      --btn-color-accent-foreground: var(--color-avo-neutral-950);
+    }
+  }
+
+  /* Primary style */
+  .button--style-primary {
+    @apply text-(--btn-color-accent-foreground) border-(--btn-color-accent);
+    background: linear-gradient(180deg, var(--btn-color-accent-content) 0%, var(--btn-color-accent) 100%);
+
+    &:not([class*="button--color-"]) {
+      /* :where(:not(…)) filters disabled states out of hover without adding
+         specificity, so disabled buttons show no hover feedback while :active
+         and :disabled keep winning as before. */
+      &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+        &.button--hover,
+        &:hover {
+          background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 96%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 96%, var(--color-black)) 100%);
+        }
+      }
+    }
+
+    box-shadow:
+      inset 0px -1.4px 0px 0.1px var(--btn-color-accent-content),
+      inset 0px 0.8px 0px 0.4px color-mix(in oklch, white 45%, transparent);
+
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--hover,
+      &:hover {
+        @apply text-(--btn-color-accent-foreground);
+
+        background: linear-gradient(180deg, color-mix(in oklab, var(--btn-color-accent-content) 90%, var(--color-black)) 0%, color-mix(in oklab, var(--btn-color-accent) 90%, var(--color-black)) 100%), var(--color-primary);
+        box-shadow: 0 -1.4px 0 0.1px var(--btn-color-accent-content) inset, 0 0.8px 0 0.4px color-mix(in oklab, var(--color-white) 45%, transparent) inset;
+      }
+    }
+
+    &.button--active,
+    &:active {
+      @apply bg-accent;
+      box-shadow: 0 0.5px 2px 0.5px var(--btn-color-accent-content) inset;
+    }
+
+    &.button--disabled,
+    &:disabled,
+    &[disabled],
+    &[data-disabled='true'] {
+      @apply text-(--btn-color-accent-foreground) border-transparent ;
+      box-shadow: none;
+    }
+  }
+
+  /* Outline style */
+  .button--style-outline {
+    @apply text-(--btn-text-color);
+
+    /* Special override to make it look more neutral when standlone */
+    &:not([class*="button--color-"]) {
+      @apply text-content border-content-secondary/50;
+
+      --btn-box-shadow-color: color-mix(in oklab, var(--color-content), transparent 65%);
+
+      &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+        &.button--hover,
+        &:hover {
+          --btn-box-shadow-color: color-mix(in oklab, var(--color-content), transparent 55%);
+          @apply text-content bg-tertiary;
+        }
+      }
+
+      &.button--disabled,
+      &:disabled,
+      &[disabled],
+      &[data-disabled='true'] {
+        @apply text-content-secondary border-content-secondary;
+      }
+    }
+
+    --btn-box-shadow-color: color-mix(in oklab, var(--btn-color-accent), transparent 65%);
+
+    border-color: var(--btn-color-accent);
+    background: var(--color-primary);
+    box-shadow: 0 -1.4px 0 0.1px var(--btn-box-shadow-color) inset, 0 0.8px 0 0.4px var(--color-primary) inset;
+
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--hover,
+      &:hover {
+        @apply text-(--btn-text-color);
+
+        --btn-box-shadow-color: color-mix(in oklab, var(--btn-color-accent), transparent 55%);
+        background: color-mix(in oklab, var(--btn-color-accent), var(--color-primary) 85%);
+      }
+    }
+
+    &.button--active:not(:disabled),
+    &:active:not(:disabled) {
+      background-color: color-mix(in oklab, var(--btn-color-accent-content) 10%, transparent);
+
+      box-shadow: 0 4px 4px 0.5px color-mix(in oklab, var(--color-black) 4%, transparent) inset;
+    }
+
+    &.button--disabled,
+    &:disabled,
+    &[disabled],
+    &[data-disabled='true'] {
+      @apply bg-secondary text-(--btn-color-accent-content);
+      box-shadow: none;
+    }
+
+    /* Primary color override */
+    &.button--color-primary {
+      @apply border-(--color-avo-neutral-500);
+    }
+  }
+
+  /* Tertiary style (outline buttons) */
+  .button--style-text {
+    @apply bg-transparent text-(--btn-text-color) border border-transparent;
+
+    &:not([class*="button--color-"]) {
+      --btn-color-accent: var(--color-avo-neutral-800);
+      --btn-color-accent-content: var(--color-avo-neutral-950);
+      --btn-color-accent-foreground: var(--color-white);
+    }
+
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--hover,
+      &:hover {
+        background: color-mix(in oklab, var(--btn-color-accent), var(--color-primary) 85%);
+        @apply text-(--btn-text-color);
+      }
+    }
+
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--active,
+      &:active {
+        @apply bg-secondary;
+      }
+    }
+
+    &.button--disabled,
+    &:disabled,
+    &[disabled],
+    &[data-disabled='true'] {
+      @apply text-content;
+    }
+  }
+
+  /* Fully rounded (pill) shape — opt-in via `rounded: :full`. Overrides the
+     base `rounded-lg`/squircle radius. Wins on source order (single class, same
+     specificity as `.button`). Switches corner-shape back to `round` so the
+     squircle radius bump doesn't distort the pill. */
+  .button--rounded-full {
+    @apply rounded-full;
+
+    @supports (corner-shape: squircle) {
+      border-radius: 9999px;
+      corner-shape: round;
+    }
+
+    /* `.button:focus-visible` also sets `rounded-lg` and wins on specificity. */
+    &.button--focus-visible,
+    &:focus-visible {
+      @apply rounded-full;
+
+      @supports (corner-shape: squircle) {
+        border-radius: 9999px;
+        corner-shape: round;
+      }
+    }
+  }
+
+  /* Size variants */
+  .button--size-xs {
+    @apply text-xs px-2 py-1 gap-1 min-w-6;
+  }
+
+  .button--size-sm {
+    @apply text-xs px-2 py-1 gap-1 min-w-6;
+  }
+
+  .button--size-md {
+    @apply text-sm px-3 py-2 gap-[5px] min-w-8;
+  }
+
+  .button--size-lg {
+    @apply text-sm p-3 gap-1.5 min-w-10;
+  }
+
+  /* Icon-only buttons (an icon, no `.button__label`) get the same tight padding
+     as `.button--padding-sm`, automatically — no class or JS needed.
+     Wrapped in `:where()` so the `:has()`/`:not()` add no specificity: this rule
+     stays at one effective class (beating the base `.button--size-*` by source
+     order) while the explicit `.button--padding-sm/xs` modifiers (two classes)
+     still win — an explicit opt-in must override auto-detection.
+     Kept as its own rule, NOT grouped with the modifiers in a selector list: a
+     list is non-forgiving, so an engine that can't parse `:has()` would drop the
+     whole rule (taking the explicit modifier with it). */
+  :where(.button:has(.button__icon):not(:has(.button__label))) {
+    &.button--size-xs,
+    &.button--size-sm {
+      @apply px-1 py-1 min-w-0;
+    }
+
+    &.button--size-md {
+      @apply px-2 py-2 min-w-0;
+    }
+
+    &.button--size-lg {
+      @apply px-2.5 py-2.5 min-w-0;
+    }
+  }
+
+  /* Tighter, equal padding. Wins over `.button--size-*` on class specificity
+     (modifier + size = 2 classes beats the size rule's 1 class). Uses px/py to
+     stay logical/RTL-safe like the size variants it overrides. */
+  .button--padding-sm {
+    &.button--size-xs,
+    &.button--size-sm {
+      @apply px-1 py-1 min-w-0;
+    }
+
+    &.button--size-md {
+      @apply px-2 py-2 min-w-0;
+    }
+
+    &.button--size-lg {
+      @apply px-2.5 py-2.5 min-w-0;
+    }
+  }
+
+  /* Even tighter, equal padding — explicit opt-in via `.button--padding-xs`. */
+  .button--padding-xs {
+    &.button--size-xs,
+    &.button--size-sm {
+      @apply px-0.5 py-0.5 min-w-0;
+    }
+
+    &.button--size-md {
+      @apply px-1 py-1 min-w-0;
+    }
+
+    &.button--size-lg {
+      @apply px-1.5 py-1.5 min-w-0;
+    }
+  }
+
+  /* Icon button sizes */
+  .button--size-xs .button__icon,
+  .button--size-sm .button__icon{
+    @apply h-3;
+  }
+  .button--size-md .button__icon,
+  .button--size-lg .button__icon {
+    @apply h-4;
+  }
+
+  /* Icon spacing */
+  .button__icon {
+    @apply pointer-events-none shrink-0 grow-0 w-auto;
+  }
+
+  /* The `-my-px` pulls the icon tight against the text line, so it only applies
+     when there's a label. On icon-only buttons it would shave 2px off the height
+     and turn the box into an oval — so scope it here rather than overriding it
+     back out later (no cascade fight). */
+  .button:has(.button__label) .button__icon {
+    @apply -my-px;
+  }
+
+  .button__icon:not(:last-child) {
+    @apply me-1;
+  }
+
+  /* When key badges are hidden, the badge is `display: none` but still a DOM
+     sibling, so the icon stays `:not(:last-child)` and keeps its trailing margin.
+     If the icon's next sibling is that (now-hidden) badge, it's visually the last
+     element — drop the margin. */
+  .hotkeys-hide-badges .button__icon:has(+ .hotkey-badge) {
+    @apply me-0;
+  }
+
+  /* Loading state */
+  .button--loading {
+    @apply relative;
+  }
+
+  .button__spinner {
+    @apply absolute inset-0 flex items-center justify-center;
+  }
+
+  .hotkey-badge {
+    @apply -mt-0.5;
+  }
+}

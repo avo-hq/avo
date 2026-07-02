@@ -1,0 +1,23 @@
+<%= tag.label class: "checkbox-list__row", for: @input_html_id, data: row_data do %>
+  <%= tag.input(
+    type: "checkbox",
+    id: @input_html_id,
+    name: @name,
+    value: @id,
+    checked: @checked,
+    disabled: @disabled,
+    class: @input_classes,
+    data: @input_data,
+    style: @input_style
+  ) %>
+  <% if @image_url.present? %>
+    <%= image_tag @image_url, class: image_class, alt: alt_text %>
+  <% end %>
+
+  <div class="search-item-body">
+    <div class="search-item-title"><%= @title %></div>
+    <% if @description.present? %>
+      <div class="search-item-description"><%= @description %></div>
+    <% end %>
+  </div>
+<% end %>

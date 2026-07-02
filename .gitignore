@@ -17,6 +17,7 @@ spec/dummy/.env
 spec/dummy/.env.test
 spec/examples.txt
 vendor/cache/
+vendor/bundle/
 public/javascripts/
 
 js_bundle_stats.html

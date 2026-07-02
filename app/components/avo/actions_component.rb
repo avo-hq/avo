@@ -4,13 +4,15 @@ class Avo::ActionsComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
   prop :as_row_control, default: false
+  # True only for actions buttons inside an index table row, whose hotkey must be
+  # managed by the index-row-navigator (emitted as data-hotkey-original). Page-level
+  # header buttons (index/show/edit) use a plain data-hotkey instead.
+  prop :as_index_row_control, default: false
   prop :icon
   prop :icon_class
   prop :size, default: :md
   prop :title
-  prop :color do |value|
-    value || :primary
-  end
+  prop :color
   prop :include, default: [].freeze do |include|
     Array(include).to_set
   end
@@ -22,7 +24,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
       label || I18n.t("avo.actions")
     end
   end
-  prop :style, default: :outline
+  prop :style, default: :primary
   prop :actions, default: [].freeze
   prop :exclude, default: [].freeze do |exclude|
     Array(exclude).to_set
@@ -30,6 +32,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   prop :resource
   prop :view
   prop :host_component
+  prop :hotkey
 
   delegate_missing_to :@host_component
 
@@ -63,7 +66,7 @@ class Avo::ActionsComponent < Avo::BaseComponent
   private
 
   def icon(icon)
-    helpers.svg icon, class: "h-5 shrink-0 mr-1 inline pointer-events-none"
+    helpers.svg icon, class: "h-5 shrink-0 me-1 inline pointer-events-none"
   end
 
   def render_item(action)
@@ -72,11 +75,11 @@ class Avo::ActionsComponent < Avo::BaseComponent
       render Avo::DividerComponent.new(action.label)
     when Avo::BaseAction
       render_action_link(action)
-    when defined?(Avo::Advanced::Resources::Controls::Action) && Avo::Advanced::Resources::Controls::Action
+    when defined?(Avo::CustomControls::Resources::Controls::Action) && Avo::CustomControls::Resources::Controls::Action
       render_action_link(action.action, icon: action.icon)
-    when defined?(Avo::Advanced::Resources::Controls::LinkTo) && Avo::Advanced::Resources::Controls::LinkTo
+    when defined?(Avo::CustomControls::Resources::Controls::LinkTo) && Avo::CustomControls::Resources::Controls::LinkTo
       link_to action.args[:path],
-        class: action.args.delete(:class) || "flex items-center px-4 py-3 w-full text-black font-semibold text-sm hover:bg-primary-100",
+        class: action.args.delete(:class),
         **action.args.except(:path, :label, :icon) do
           raw("#{icon(action.args[:icon])} #{action.args[:label]}")
         end
@@ -89,7 +92,11 @@ class Avo::ActionsComponent < Avo::BaseComponent
     link_to action.link_arguments(resource: @resource, arguments: action.arguments).first,
       data: action_data_attributes(action),
       title: action.action_name,
-      class: action_css_class(action) do
+      class: action_css_class(action),
+      # Keep disabled actions out of the tab order and announce their state.
+      # The href stays put: item_selector_controller reads it to toggle actions.
+      tabindex: (-1 if action.disabled?),
+      aria: {disabled: action.disabled?} do
         raw("#{icon(icon || action.icon)} #{action.action_name}")
       end
   end
@@ -102,16 +109,15 @@ class Avo::ActionsComponent < Avo::BaseComponent
       "actions-picker-target": action.standalone ? "standaloneAction" : "resourceAction",
       disabled: action.disabled?,
       turbo_prefetch: false,
-      enabled_classes: "text-black",
-      disabled_classes: "text-gray-500",
+      disabled_classes: "dropdown-menu__item--disabled",
       resource_name: action.resource.model_key
     }
   end
 
   def action_css_class(action)
-    helpers.class_names("flex items-center px-4 py-3 w-full font-semibold text-sm hover:bg-primary-100", {
-      "text-gray-500": action.disabled?,
-      "text-black": action.enabled?,
+    helpers.class_names("", {
+      "dropdown-menu__item--disabled": action.disabled?,
+      "": action.enabled?,
     })
   end
 end

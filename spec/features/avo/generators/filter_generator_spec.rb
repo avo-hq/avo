@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "filter generator", type: :feature do
+RSpec.feature "filter generator", type: :feature, acquire_lock: :generator do
   describe "without a type" do
     it "generates the files" do
       filter = Rails.root.join("app", "avo", "filters", "cats.rb").to_s

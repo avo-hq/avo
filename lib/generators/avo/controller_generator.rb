@@ -20,12 +20,24 @@ module Generators
 
       private
 
+      # File path under app/controllers/avo/. Pluralizes the last segment only.
+      # Example: "galaxy/sector/planet/satellite" -> "galaxy/sector/planet/satellites_controller"
+      # File written: app/controllers/avo/galaxy/sector/planet/satellites_controller.rb
       def controller_name
-        "#{plural_name}_controller"
+        segments = file_path.split("/")
+        segments[-1] = segments[-1].pluralize
+        "#{segments.join("/")}_controller"
       end
 
+      # Constant defined inside the file. Pluralizes the last namespace segment only.
+      # Example: "Galaxy::Sector::Planet::Satellite" -> "Avo::Galaxy::Sector::Planet::SatellitesController"
+      #
+      #   class Avo::Galaxy::Sector::Planet::SatellitesController < Avo::ResourcesController
+      #   end
       def controller_class
-        "Avo::#{class_name.camelize.pluralize}Controller"
+        parts = class_name.split("::").map(&:camelize)
+        parts[-1] = parts[-1].pluralize
+        "Avo::#{parts.join("::")}Controller"
       end
     end
   end

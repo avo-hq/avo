@@ -1,0 +1,416 @@
+name: Tests
+
+
+on:
+  pull_request:
+    branches:
+      - main
+      - 1.x
+      - 2.x
+      - 4-dev
+  push:
+    branches:
+      - main
+      - 1.x
+      - 2.x
+      - 4-dev
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  RAILS_ENV: test
+  PGHOST: localhost
+  PGUSER: postgres
+  PGPORT: 5432
+  POSTGRES_HOST: localhost
+  POSTGRES_USERNAME: postgres
+  POSTGRES_PORT: 5432
+  BUNDLE_PATH_RELATIVE_TO_CWD: true
+  AVO_LICENSE_KEY: license_123
+  COVERAGE: true
+
+jobs:
+  # ----------------------------------------------------------------------------
+  # Build assets once
+  #
+  # The esbuild/Tailwind output in app/assets/builds/avo is identical across the
+  # Ruby/Rails matrix, so build it a single time here and share it with every
+  # test job via an artifact. The test jobs then need no Node/yarn at all.
+  # ----------------------------------------------------------------------------
+  build_assets:
+    name: Build assets
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - name: Yarn install the dummy app
+        run: |
+          cd spec/dummy
+          yarn
+
+      - name: Yarn install
+        run: yarn
+
+      - name: Build assets
+        env:
+          RAILS_ENV: production
+          NODE_ENV: production
+        run: |
+          yarn build
+          yarn build:custom-js
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
+          retention-days: 1
+
+  # ----------------------------------------------------------------------------
+  # Feature and request specs
+  # ----------------------------------------------------------------------------
+  feature:
+    name: feature (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: build_assets
+    strategy:
+      matrix:
+        ruby:
+          - '3.3'
+          - '3.4'
+        rails:
+          - '7.1'
+          - '8.0'
+        # Only the matrix corners (oldest and newest) run; the cross-combos
+        # rarely surface version-specific failures the corners don't catch.
+        exclude:
+          - ruby: '3.3'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '7.1'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    env:
+      RAILS_VERSION: ${{ matrix.rails }}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
+
+      - name: Prepare database
+        run: |
+          # Migrate the primary database first so schema.rb is regenerated
+          # once, single-threaded. Then have parallel workers load that
+          # schema instead of running migrations concurrently, which races
+          # on schema.rb writes (see #4564).
+          bundle exec rake db:create db:migrate
+          bundle exec rake parallel:create parallel:load_schema
+
+      - name: Run tests
+        id: run_tests
+        run: bundle exec parallel_rspec spec/features spec/requests
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage_features_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: coverage/.resultset.json
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: |
+            ./spec/dummy/tmp/screenshots
+            ./spec/examples.txt
+
+  # ----------------------------------------------------------------------------
+  # System specs (sharded)
+  # ----------------------------------------------------------------------------
+  system:
+    name: system (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }}, ${{ matrix.spec_group.display }})
+    needs: build_assets
+    strategy:
+      matrix:
+        ruby:
+          - '3.3'
+          - '3.4'
+        rails:
+          - '7.1'
+          - '8.0'
+        spec_group:
+          - name: group_1
+            display: Group 1
+            rspec_paths: spec/system/avo/group_1
+          - name: group_2
+            display: Group 2
+            rspec_paths: spec/system/avo/group_2
+          - name: group_3
+            display: Group 3
+            rspec_paths: spec/system/avo/group_3
+        # Only the matrix corners (oldest and newest) run the full system suite;
+        # the cross-combos rarely surface version-specific failures the corners
+        # don't already catch. Halves this job class from 12 runs to 6.
+        exclude:
+          - ruby: '3.3'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '7.1'
+    runs-on: blacksmith-8vcpu-ubuntu-2404
+
+    env:
+      RAILS_VERSION: ${{ matrix.rails }}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
+
+      - name: Prepare database
+        run: |
+          # Migrate the primary database first so schema.rb is regenerated
+          # once, single-threaded. Then have parallel workers load that
+          # schema instead of running migrations concurrently, which races
+          # on schema.rb writes (see #4564).
+          bundle exec rake db:create db:migrate
+          bundle exec rake parallel:create parallel:load_schema
+
+      - name: Run tests
+        id: run_tests
+        run: bundle exec parallel_rspec ${{ matrix.spec_group.rspec_paths }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage_system_${{ matrix.rails }}_ruby_${{ matrix.ruby }}_${{ matrix.spec_group.name }}
+          path: coverage/.resultset.json
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}_${{ matrix.spec_group.name }}
+          path: |
+            ./spec/dummy/tmp/screenshots
+            ./spec/examples.txt
+
+  # ----------------------------------------------------------------------------
+  # Components specs
+  # ----------------------------------------------------------------------------
+  components:
+    name: components (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: build_assets
+    strategy:
+      matrix:
+        ruby:
+          - '3.3'
+          - '3.4'
+        rails:
+          - '7.1'
+          - '8.0'
+        # Only the matrix corners (oldest and newest) run; the cross-combos
+        # rarely surface version-specific failures the corners don't catch.
+        exclude:
+          - ruby: '3.3'
+            rails: '8.0'
+          - ruby: '3.4'
+            rails: '7.1'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    env:
+      RAILS_VERSION: ${{matrix.rails}}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
+
+      - name: Prepare database
+        run: |
+          bin/rails db:create db:migrate
+
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec spec/components
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage_components_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: coverage/.resultset.json
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: ./spec/dummy/tmp/screenshots
+
+  # ----------------------------------------------------------------------------
+  # i18n tests
+  # ----------------------------------------------------------------------------
+  i18n:
+    name: i18n (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    strategy:
+      matrix:
+        ruby: ['3.4']
+        rails: ['8.0']
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    env:
+      RAILS_VERSION: ${{matrix.rails}}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec spec/system/avo/i18n_spec.rb
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage_system_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: coverage/.resultset.json
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: ./spec/dummy/tmp/screenshots
+
+  # ----------------------------------------------------------------------------
+  # Accessibility tests
+  # ----------------------------------------------------------------------------
+  accessibility:
+    name: accessibility (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: build_assets
+    strategy:
+      matrix:
+        ruby:
+          - '3.3'
+        rails:
+          - '8.0'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    env:
+      RAILS_VERSION: ${{matrix.rails}}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Download built assets
+        uses: actions/download-artifact@v4
+        with:
+          name: avo-assets
+          path: app/assets/builds/avo
+
+      - name: Prepare database
+        run: |
+          bin/rails db:create db:migrate
+
+      - name: Run tests
+        id: run_tests
+        run: bundle exec rspec spec/a11y
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.run_tests.outcome == 'failure'
+        with:
+          name: rspec_failed_screenshots_a11y_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
+          path: ./spec/dummy/tmp/screenshots

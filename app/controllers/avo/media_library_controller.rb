@@ -1,14 +1,35 @@
 module Avo
   class MediaLibraryController < ApplicationController
-    include Pagy::Backend
+    include Pagy::Method
+
     before_action :authorize_access!
+    before_action -> { @container_size = "large" }, only: [:edit]
 
     def index
       @attaching = false
+      add_breadcrumb title: "Media Library", initials: "ML"
     end
 
     def show
+      redirect_to avo.edit_media_library_path(params[:id])
+    end
+
+    def edit
       @blob = ActiveStorage::Blob.find(params[:id])
+
+      add_breadcrumb title: "Media Library", path: avo.media_library_index_path, initials: "ML"
+      add_breadcrumb title: @blob.filename.to_s, path: nil, initials: extract_initials(@blob.filename.to_s)
+    end
+
+    def extract_initials(filename)
+      # Remove file extension
+      name_without_ext = File.basename(filename, File.extname(filename))
+
+      # Split by spaces and take first 2 words
+      words = name_without_ext.split(" ").first(2)
+
+      # Extract first character of each word and join
+      words.map { |word| word[0] }.join("").upcase
     end
 
     def destroy
@@ -20,7 +41,24 @@ module Avo
 
     def update
       @blob = ActiveStorage::Blob.find(params[:id])
-      @blob.update!(blob_params)
+
+      # A blank filename makes the blob unroutable (Active Storage URLs need a
+      # :filename segment) — refuse it rather than mangling the blob. Omitted
+      # filename (metadata-only PATCH) is fine; leave the existing name alone.
+      if blob_params.key?(:filename) && blob_params[:filename].blank?
+        flash[:error] = "Filename can't be blank."
+        return redirect_to avo.edit_media_library_path(@blob)
+      end
+
+      attributes = {
+        # Merge, don't replace: keep system metadata (width/height/analyzed/…).
+        metadata: @blob.metadata.merge(blob_params[:metadata]&.to_h || {})
+      }
+      attributes[:filename] = blob_params[:filename] if blob_params.key?(:filename)
+
+      @blob.update!(attributes)
+
+      redirect_to avo.edit_media_library_path(@blob)
     end
 
     def attach

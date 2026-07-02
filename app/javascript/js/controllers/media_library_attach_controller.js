@@ -62,19 +62,14 @@ export default class extends Controller {
     directUploadsUrl: String,
   }
 
-  dragCopy = 'drag file or click to upload'
-
   dropCopy = "drop it like it's hot"
-
-  droppedCopy = 'uploading file. hang tight'
-
-  unsupportedCopy = 'wrong file type. try again'
-
-  draggingClasses = ['dropzone-dragging', '!border-gray-700', '!text-gray-700']
 
   connect() {
     this.attachHandlers()
     this.setupFileInput()
+    this.fileUploadInput = this.dropzoneTarget.querySelector('.file-upload-input')
+    this.titleEl = this.fileUploadInput?.querySelector('.file-upload-input__title')
+    this.originalTitleHTML = this.titleEl?.innerHTML
   }
 
   disconnect() {
@@ -85,12 +80,15 @@ export default class extends Controller {
   }
 
   setupFileInput() {
-    // Create a hidden file input element
     this.fileInput = document.createElement('input')
     this.fileInput.type = 'file'
     this.fileInput.multiple = true
-    this.fileInput.style.display = 'none'
-    this.element.appendChild(this.fileInput)
+    // Match the drop zone's <label for>, then drop the input into the
+    // component's native-input slot. The component CSS makes it fill the zone
+    // (absolute inset-0, opacity-0) so it's clickable and keyboard-focusable,
+    // and the existing :focus-visible ring lifts onto the drop zone.
+    this.fileInput.id = 'media-library-file-upload'
+    this.dropzoneTarget.querySelector('.file-upload-input__native-input').appendChild(this.fileInput)
 
     // Handle file selection
     this.fileInput.addEventListener('change', (e) => {
@@ -98,10 +96,6 @@ export default class extends Controller {
       this.#submitFiles(files)
       this.fileInput.value = '' // Reset the input for future selections
     })
-  }
-
-  triggerFileBrowser() {
-    this.fileInput.click()
   }
 
   attachHandlers() {
@@ -156,12 +150,12 @@ export default class extends Controller {
   }
 
   dragAction() {
-    this.dropzoneTarget.classList.add(...this.draggingClasses)
-    this.dropzoneTarget.innerHTML = this.dropCopy
+    this.fileUploadInput?.setAttribute('data-dragging', 'true')
+    if (this.titleEl) this.titleEl.textContent = this.dropCopy
   }
 
   dropAction() {
-    this.dropzoneTarget.classList.remove(...this.draggingClasses)
-    this.dropzoneTarget.innerHTML = this.droppedCopy
+    this.fileUploadInput?.removeAttribute('data-dragging')
+    if (this.titleEl) this.titleEl.innerHTML = this.originalTitleHTML
   }
 }

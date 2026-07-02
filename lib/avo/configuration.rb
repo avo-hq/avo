@@ -1,7 +1,6 @@
 module Avo
   class Configuration
     attr_writer :app_name
-    attr_writer :branding
     attr_writer :root_path
     attr_writer :cache_store
     attr_writer :logger
@@ -11,6 +10,10 @@ module Avo
     attr_writer :exclude_from_status
     attr_writer :persistence
     attr_writer :resource_row_controls_config
+    attr_writer :hotkeys
+    attr_writer :associations
+    # When unset, Tailwind scans Rails.root.join("app"). Each entry is an absolute path or a path relative to Rails.root.
+    attr_writer :tailwindcss_content_sources
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -23,11 +26,8 @@ module Avo
     attr_accessor :authenticate
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
-    attr_accessor :full_width_container
-    attr_accessor :full_width_index_view
     attr_accessor :cache_resources_on_index_view
     attr_accessor :context
-    attr_accessor :display_breadcrumbs
     attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
     attr_accessor :home_path
@@ -36,10 +36,11 @@ module Avo
     attr_accessor :display_license_request_timeout_error
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
-    attr_writer :disabled_features
+    attr_accessor :global_search
     attr_accessor :buttons_on_form_footers
     attr_accessor :main_menu
     attr_accessor :profile_menu
+    attr_accessor :header_menu
     attr_accessor :model_resource_mapping
     attr_reader :resource_default_view
     attr_accessor :authorization_client
@@ -55,10 +56,76 @@ module Avo
     attr_accessor :is_developer_method
     attr_accessor :search_results_count
     attr_accessor :first_sorting_option
-    attr_accessor :associations_lookup_list_limit
     attr_accessor :column_names_mapping
     attr_accessor :column_types_mapping
     attr_accessor :model_generator_hook
+    attr_accessor :send_metadata
+    attr_accessor :use_stacked_fields
+    attr_accessor :default_editor_url
+    attr_writer :body_classes
+    attr_accessor :sidebar_toggle_visible
+    attr_accessor :tailwindcss_integration_enabled
+    attr_accessor :mount_lookbook
+
+    unless defined?(CONTAINER_WIDTH_DEFAULTS)
+      CONTAINER_WIDTH_DEFAULTS = {
+        index: :large,
+        show: :small,
+        new: :small,
+        edit: :small,
+        create: :small,
+        update: :small
+      }.freeze
+
+      VALID_CONTAINER_WIDTHS = %i[full large small].freeze
+
+      CONTAINER_WIDTH_GROUPS = {
+        forms: %i[new edit create update],
+        display: %i[index show],
+        single: %i[show new edit create update]
+      }.freeze
+    end
+
+    def container_width=(value)
+      case value
+      when NilClass
+        @container_width = nil
+      when Symbol
+        raise ArgumentError, "Invalid container width: #{value}. Must be one of #{VALID_CONTAINER_WIDTHS}" unless VALID_CONTAINER_WIDTHS.include?(value)
+        @container_width = CONTAINER_WIDTH_DEFAULTS.transform_values { value }
+      when Hash
+        valid_keys = CONTAINER_WIDTH_DEFAULTS.keys + CONTAINER_WIDTH_GROUPS.keys
+        invalid_keys = value.keys.reject { |k| valid_keys.include?(k) }
+        raise ArgumentError, "Invalid container width keys: #{invalid_keys}. Valid keys: #{valid_keys}" if invalid_keys.any?
+
+        invalid_values = value.values.reject { |v| VALID_CONTAINER_WIDTHS.include?(v) }
+        raise ArgumentError, "Invalid container widths: #{invalid_values}" if invalid_values.any?
+
+        # Expand group aliases first
+        expanded_aliases = value
+          .select { |k, _| CONTAINER_WIDTH_GROUPS.key?(k) }
+          .each_with_object({}) do |(alias_key, width), result|
+            CONTAINER_WIDTH_GROUPS[alias_key].each { |view| result[view] = width }
+          end
+
+        # Specific keys win over group aliases
+        specific_keys = value.reject { |k, _| CONTAINER_WIDTH_GROUPS.key?(k) }
+
+        @container_width = CONTAINER_WIDTH_DEFAULTS.merge(expanded_aliases).merge(specific_keys)
+      end
+    end
+
+    def container_width
+      @container_width || CONTAINER_WIDTH_DEFAULTS
+    end
+
+    def tailwindcss_content_sources
+      if @tailwindcss_content_sources.nil?
+        [Rails.root.join("app")]
+      else
+        Array(@tailwindcss_content_sources)
+      end
+    end
 
     def initialize
       @root_path = "/avo"
@@ -73,7 +140,7 @@ module Avo
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
-      @explicit_authorization = false
+      @explicit_authorization = true
       @authorization_methods = {
         index: "index?",
         show: "show?",
@@ -84,17 +151,14 @@ module Avo
         destroy: "destroy?"
       }
       @id_links_to_resource = false
-      @full_width_container = false
-      @full_width_index_view = false
       @cache_resources_on_index_view = Avo::PACKED
       @persistence = {
         driver: nil
       }
       @context = proc {}
       @initial_breadcrumbs = proc {
-        add_breadcrumb I18n.t("avo.home").humanize, avo.root_path
+        add_breadcrumb title: I18n.t("avo.home").humanize, path: avo.root_path, icon: "tabler/outline/home"
       }
-      @display_breadcrumbs = true
       @hide_layout_when_printing = false
       @home_path = nil
       @search_debounce = 300
@@ -102,10 +166,10 @@ module Avo
       @display_license_request_timeout_error = true
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
-      @disabled_features = []
       @buttons_on_form_footers = false
       @main_menu = nil
       @profile_menu = nil
+      @header_menu = nil
       @model_resource_mapping = {}
       @resource_default_view = Avo::ViewInquirer.new("show")
       @authorization_client = :pundit
@@ -117,18 +181,30 @@ module Avo
       @turbo = default_turbo
       @default_url_options = []
       @pagination = {}
-      @click_row_to_view_record = false
+      @click_row_to_view_record = true
       @alert_dismiss_time = 5000
       @is_admin_method = :is_admin?
       @is_developer_method = :is_developer?
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
-      @associations_lookup_list_limit = 1000
       @exclude_from_status = []
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
+      @hotkeys = {}
+      @associations = {}
+      @global_search = {
+        enabled: true,
+        navigation_section: true
+      }
       @model_generator_hook = true
+      @send_metadata = true
+      @use_stacked_fields = false
+      @default_editor_url = "cursor://file/%{path}"
+      @sidebar_toggle_visible = true
+      @body_classes = []
+      @tailwindcss_integration_enabled = true
+      @mount_lookbook = false
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
@@ -139,14 +215,61 @@ module Avo
       }.freeze
     end
 
+    unless defined?(HOTKEYS_DEFAULTS)
+      HOTKEYS_DEFAULTS = {
+        enabled: true,
+        show_key_badges: true
+      }.freeze
+    end
+
+    # Global defaults for associations.
+    #
+    # `lookup_list_limit` caps how many records are listed in a belongs_to/attach
+    # lookup before Avo shows the "more records available" notice.
+    #
+    # `frames` controls association turbo frames (has_one, has_many, habtm).
+    # `loading` is the cold-start render mode when a field doesn't set its own
+    # `loading:` — `:lazy` (loads on reveal) or `:manual` (placeholder + Load
+    # button). `auto_load_for` is the manual memory window (see FrameLoadingMode).
+    unless defined?(ASSOCIATIONS_DEFAULTS)
+      ASSOCIATIONS_DEFAULTS = {
+        lookup_list_limit: 1000,
+        frames: {
+          loading: :lazy,
+          # 15 minutes, in seconds. Kept as a literal (not `15.minutes`) because
+          # this constant is evaluated at require time, before ActiveSupport's
+          # `Integer#minutes` core extension is guaranteed to be loaded.
+          auto_load_for: 15 * 60
+        }
+      }.freeze
+    end
+
     def resource_row_controls_config
       RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS.merge @resource_row_controls_config
     end
 
+    def hotkeys
+      HOTKEYS_DEFAULTS.merge @hotkeys
+    end
+
+    def associations
+      ASSOCIATIONS_DEFAULTS.deep_merge(@associations)
+    end
+
+    # Backward-compatible flat accessor — the canonical home is now
+    # `config.associations[:lookup_list_limit]`.
+    def associations_lookup_list_limit
+      associations[:lookup_list_limit]
+    end
+
+    def associations_lookup_list_limit=(value)
+      @associations[:lookup_list_limit] = value
+    end
+
     # Authorization is enabled when:
-    # (avo-pro gem is installed) AND (authorization_client is NOT nil)
+    # (avo-authorization gem is installed) AND (authorization_client is NOT nil)
     def authorization_enabled?
-      @authorization_enabled ||= Avo.plugin_manager.installed?("avo-pro") && !authorization_client.nil?
+      @authorization_enabled ||= Avo.plugin_manager.installed?("avo-authorization") && !authorization_client.nil?
     end
 
     def current_user_method(&block)
@@ -183,44 +306,16 @@ module Avo
       @root_path
     end
 
-    def disabled_features
-      Avo::ExecutionContext.new(target: @disabled_features).handle
+    def appearance
+      @appearance ||= Avo::Configuration::Appearance.new
     end
 
-    def feature_enabled?(feature)
-      !disabled_features.map(&:to_sym).include?(feature.to_sym)
-    end
-
-    def branding
-      Avo::Configuration::Branding.new(**@branding || {})
+    def appearance=(options = {})
+      @appearance = Avo::Configuration::Appearance.new(options)
     end
 
     def app_name
       Avo::ExecutionContext.new(target: @app_name).handle
-    end
-
-    def license=(value)
-      if Rails.env.development?
-        puts "[Avo DEPRECATION WARNING]: The `config.license` configuration option is no longer supported and will be removed in future versions. Please discontinue its use and solely utilize the `license_key` instead."
-      end
-    end
-
-    def clear_license_response_on_deploy=(value)
-      if Rails.env.development?
-        puts "[Avo DEPRECATION WARNING]: The `config.clear_license_response_on_deploy` configuration option is deprecated and will be removed in future versions. Please discontinue its use, no extra action is needed."
-      end
-    end
-
-    def license
-      gems = Gem::Specification.map {|gem| gem.name}
-
-      @license ||= if gems.include?("avo-advanced")
-        "advanced"
-      elsif gems.include?("avo-pro")
-        "pro"
-      elsif gems.include?("avo")
-        "community"
-      end
     end
 
     def resource_default_view=(view)
@@ -234,7 +329,7 @@ module Avo
       ).handle
     end
 
-    # When not in production or test we'll just use the FileStore which is good enough.
+    # When not in production we'll just use the FileStore which is good enough.
     # When running in production we'll use Rails.cache if it's not ActiveSupport::Cache::MemoryStore or ActiveSupport::Cache::NullStore.
     # If it's one of rejected cache stores, we'll use the FileStore.
     # We decided against the MemoryStore in production because it will not be shared between multiple processes (when using Puma).
@@ -248,8 +343,6 @@ module Avo
           else
             Rails.cache
           end
-        elsif Rails.env.test?
-          Rails.cache
         else
           file_store_instance
         end
@@ -299,8 +392,30 @@ module Avo
       @locale || I18n.default_locale
     end
 
+    # Known RTL (Right-to-Left) locale codes
+    RTL_LOCALES = %w[ar he fa ur yi ps sd ku ckb ug dv].freeze unless defined?(RTL_LOCALES)
+
+    # Check if the given locale is RTL
+    def self.rtl_locale?(locale = I18n.locale)
+      RTL_LOCALES.include?(locale.to_s.split("-").first.downcase)
+    end
+
+    # Check if the current locale is RTL
+    def rtl?
+      self.class.rtl_locale?(I18n.locale)
+    end
+
+    # Returns "rtl" or "ltr" based on current locale
+    def text_direction
+      rtl? ? "rtl" : "ltr"
+    end
+
     def explicit_authorization
       Avo::ExecutionContext.new(target: @explicit_authorization).handle
+    end
+
+    def body_classes
+      Avo::ExecutionContext.new(target: @body_classes).handle
     end
 
     def persistence
@@ -315,6 +430,17 @@ module Avo
       raise "'mount_avo_engines' option is now obsolete. \n" \
         "Please refer to the upgrade guide for details on the new mounting point: \n" \
         "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
+    end
+
+    # Returns the Link items produced by evaluating the `header_menu` lambda.
+    # Empty when unset or when avo-menu (which owns the DSL) isn't installed.
+    def header_menu_items
+      return [] if @header_menu.nil?
+      return [] unless Avo.plugin_manager.installed?("avo-menu")
+
+      Avo::Menu::Builder.parse_menu(&@header_menu).items.select do |item|
+        item.is_a?(Avo::Menu::Link)
+      end
     end
   end
 

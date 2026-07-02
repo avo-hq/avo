@@ -9,41 +9,35 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= render_cards_component %>
-  <%= form_with model: @resource.record,
-    scope: @resource.form_scope,
-    url: form_url,
-    method: form_method,
-    local: true,
-    html: {
-      novalidate: true,
-      data: {
-        controller: "form",
-        action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
-      }
-    },
-    multipart: true do |form| %>
-    <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
-    <%= content_tag :div, class: "space-y-12" do %>
-      <% @resource.get_items.each_with_index do |item, index| %>
-        <%= render Avo::Items::SwitcherComponent.new(
-          resource: @resource,
-          reflection: @reflection,
-          item: item,
-          index: index + 1,
-          view: @view,
-          parent_resource: @parent_resource,
-          parent_record: @parent_record,
-          form: form,
-          parent_component: self,
-          actions: @actions
-        ) %>
-      <% end %>
 
-      <% if Avo.configuration.buttons_on_form_footers %>
-        <%= render Avo::PanelComponent.new do |c| %>
-          <% c.with_footer_tools do %>
-            <% @resource.render_edit_controls.each do |control| %>
-              <%= render_control control %>
+  <%= build_form do |form| %>
+    <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
+
+    <% if embedded_in_modal? %>
+      <%# The form wraps the modal so the footer submit button posts natively. %>
+      <%= render Avo::ModalComponent.new(title: title, width: :"4xl", body_class: "modal-form-body") do |c| %>
+        <% c.with_controls do %>
+          <% @resource.render_edit_controls.each do |control| %>
+            <%= render_control control %>
+          <% end %>
+        <% end %>
+
+        <%= content_tag :div, render_form_items(form), class: "panel-spacer" %>
+      <% end %>
+    <% else %>
+      <%= content_tag :div, class: "panel-spacer" do %>
+        <%= render_form_items(form) %>
+
+        <% if Avo.configuration.buttons_on_form_footers %>
+          <%= render ui.panel do |panel| %>
+            <% panel.with_footer do %>
+              <%= render ui.panel_header do |header| %>
+                <% header.with_controls do %>
+                  <% @resource.render_edit_controls.each do |control| %>
+                    <%= render_control control %>
+                  <% end %>
+                <% end %>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>

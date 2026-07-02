@@ -1,0 +1,13 @@
+@layer components {
+  .resource-controls {
+    .resource-control,
+    button:not(.button),
+    a:not(.button) {
+      @apply text-content-secondary;
+
+      &:hover {
+        @apply text-content;
+      }
+    }
+  }
+}

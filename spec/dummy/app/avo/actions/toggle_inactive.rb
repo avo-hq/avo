@@ -1,5 +1,6 @@
 class Avo::Actions::ToggleInactive < Avo::BaseAction
   self.name = "Toggle inactive"
+  self.description = "Toggle the inactive status of the user"
 
   def fields
     field :notify_user, as: :boolean, default: true

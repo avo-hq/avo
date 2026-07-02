@@ -1,0 +1,39 @@
+<%= tag.div class: class_names(
+  @class,
+  "header",
+  "header--size-medium": size_medium?,
+  "header--size-small": size_small?
+), data: { "item-index": @index, component: component_name }.compact_blank do %>
+  <div class="header__main">
+    <div class="header__content">
+      <% if avatar? %>
+        <div class="header__avatar"><%= avatar %></div>
+      <% end %>
+
+      <div class="header__text">
+        <div class="header__title">
+          <div data-slot="text-value">
+            <% if @url.present? %>
+              <%= link_to @title, @url, target: @target %>
+            <% else %>
+              <%= @title %>
+            <% end %>
+          </div>
+          <%= title_slot %>
+        </div>
+
+        <% if @description.present? %>
+          <div class="header__description"><%= @description %></div>
+        <% end %>
+
+      <% if discreet_information? %>
+        <div class="header__discreet-information mt-2"><%= discreet_information %></div>
+      <% end %>
+      </div>
+    </div>
+
+    <% if controls? %>
+      <div class="header__controls"><%= controls %></div>
+    <% end %>
+  </div>
+<% end %>

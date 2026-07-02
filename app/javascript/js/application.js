@@ -2,6 +2,7 @@ import { Alert, Popover } from 'tailwindcss-stimulus-components'
 import { Application, Controller } from '@hotwired/stimulus'
 import Clipboard from '@stimulus-components/clipboard'
 import PasswordVisibility from '@stimulus-components/password-visibility'
+import PasswordVisibilityController from './controllers/password_visibility_controller'
 import TextareaAutogrow from 'stimulus-textarea-autogrow'
 import TurboPower from 'turbo_power'
 
@@ -33,7 +34,7 @@ window.FakeStimulus = {
 application.register('alert', Alert)
 application.register('popover', Popover)
 application.register('clipboard', Clipboard)
-application.register('password-visibility', PasswordVisibility)
+application.register('password-visibility', PasswordVisibilityController)
 application.register('textarea-autogrow', TextareaAutogrow)
 
 export { application }

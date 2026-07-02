@@ -76,28 +76,25 @@ end
 Capybara.save_path = if Rails::VERSION::MAJOR == 6 && Rails::VERSION::MINOR == 1
   DownloadHelpers::PATH
 else
-  "tmp/screenshots"
+  "tmp/screenshots#{ENV.fetch("TEST_ENV_NUMBER", "")}"
 end
 
 Capybara.default_max_wait_time = 5
 
 require "support/controller_routes"
 require "support/avo_helpers"
-require "support/filter_helpers"
 
 RSpec.configure do |config|
   config.include TestHelpers::ControllerRoutes, type: :controller
   config.include Requests::JsonHelpers, type: :controller
   config.include TestHelpers::DisableAuthentication, type: :system
   config.include TestHelpers::DisableAuthentication, type: :feature
-  config.include TestHelpers::DisableHQRequest
   config.include TestHelpers::AvoHelpers, type: :feature
   config.include TestHelpers::AvoHelpers, type: :system
-  config.include TestHelpers::FilterHelpers, type: :feature
-  config.include TestHelpers::FilterHelpers, type: :system
   config.include Warden::Test::Helpers
   config.include DownloadHelpers
   config.include ViewComponent::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
   config.include Avo::TestHelpers
 
   # Include Avo::PrefixedTestHelpers if you want to use the avo_ prefixed helpers
@@ -148,25 +145,17 @@ RSpec.configure do |config|
   config.after(:example) { clear_downloads }
 
   config.around(:example, type: :system) do |example|
-    # Stub license request for system tests.
-    stub_request(:post, Avo::Licensing::HQ::ENDPOINT).to_return(
-      status: 200,
-      body: {}.to_json,
-      headers: json_headers
-    )
-    ENV["RUN_WITH_NULL_LICENSE"] = "1"
-
     WebMock.disable_net_connect!(
       net_http_connect_on_start: true,
       allow_localhost: true,
       allow: ["googlechromelabs.github.io", "edgedl.me.gvt1.com"]
     )
+
     example.run
 
     # WebMock.allow_net_connect!
     WebMock.allow_net_connect!(net_http_connect_on_start: true)
     WebMock.reset!
-    ENV["RUN_WITH_NULL_LICENSE"] = "0"
   end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
@@ -210,8 +199,13 @@ require "support/factory_bot"
 require "support/database_cleaner"
 require "support/js_error_detector"
 require "support/devise"
+require "support/parallel_fs_lock"
 require "support/shared_contexts"
 require "support/timezone"
+
+# a11y support
+require "axe-rspec"
+require "support/axe_driver"
 
 # https://github.com/titusfortner/webdrivers/issues/247
 # Webdrivers::Chromedriver.required_version = "114.0.5735.90"

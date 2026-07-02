@@ -7,11 +7,35 @@ export default class extends Controller {
     panelList: Boolean,
   }
 
-  // get the table or grid component, if both null, get the panel body (for show page for example)
+  // Table/grid on index pages; main content region on show/edit and other non-list views.
   get parentTarget() {
-    return document.querySelector('[data-component-name="avo/index/resource_table_component"]')
-      || document.querySelector('[data-component-name="avo/index/resource_grid_component"]')
-      || document.querySelector('[data-target="panel-body"]')
+    return document.querySelector('[data-component-name="avo/view_types/table_component"]')
+      || document.querySelector('[data-component-name="avo/view_types/grid_component"]')
+      || document.querySelector('#main-content')
+  }
+
+  // Parent nodes grow with page content, but overflow should be measured against
+  // the visible viewport — the old .scrollable-wrapper had a fixed height for this.
+  get visibleParentDimensions() {
+    const parent = this.parentTarget
+
+    if (!parent) {
+      return { top: 0, left: 0, right: window.innerWidth, bottom: window.innerHeight }
+    }
+
+    const rect = parent.getBoundingClientRect()
+
+    return {
+      top: rect.top,
+      left: rect.left,
+      right: rect.right,
+      bottom: Math.min(rect.bottom, window.innerHeight),
+    }
+  }
+
+  // Check if the document is in RTL mode
+  get isRTL() {
+    return document.documentElement.dir === 'rtl'
   }
 
   childDimensions = null
@@ -23,7 +47,7 @@ export default class extends Controller {
     this.element.style.display = 'block'
     this.childDimensions = this.contentTarget.getBoundingClientRect()
     this.element.style.display = ''
-    this.parentDimensions = this.parentTarget.getBoundingClientRect()
+    this.parentDimensions = this.visibleParentDimensions
 
     this.adjustOverflow()
   }
@@ -41,9 +65,15 @@ export default class extends Controller {
   }
 
   adjustHorizontalOverflow() {
-    if (this.contentLeftOverflow) {
-      this.contentTarget.classList.remove('xl:right-0', 'sm:right-0')
-      this.contentTarget.classList.add('xl:left-0', 'sm:left-0')
+    if (this.isRTL) {
+      // RTL: Check for right overflow and flip to left if needed
+      if (this.contentRightOverflow) {
+        this.contentTarget.classList.remove('xl:start-0', 'sm:start-0')
+        this.contentTarget.classList.add('xl:end-0', 'sm:end-0')
+      }
+    } else if (this.contentLeftOverflow) {
+      this.contentTarget.classList.remove('xl:end-0', 'sm:end-0')
+      this.contentTarget.classList.add('xl:start-0', 'sm:start-0')
     }
   }
 
@@ -58,5 +88,9 @@ export default class extends Controller {
 
   get contentLeftOverflow() {
     return this.parentDimensions.left > this.childDimensions.left
+  }
+
+  get contentRightOverflow() {
+    return this.parentDimensions.right < this.childDimensions.right
   }
 }

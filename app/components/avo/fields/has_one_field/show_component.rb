@@ -22,8 +22,8 @@ class Avo::Fields::HasOneField::ShowComponent < Avo::Fields::ShowComponent
   end
 
   def attach_path
-    helpers.avo.resources_associations_new_path(
-      @resource.singular_model_key,
+    helpers.avo.send(
+      :"resources_#{@resource.route_key}_associations_new_path",
       @resource.record_param,
       @field.id,
       for_attribute: @field.for_attribute

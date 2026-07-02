@@ -1,3 +1,4 @@
+import '../../helpers/flatpickr_top_layer'
 import { Controller } from '@hotwired/stimulus'
 import { DateTime } from 'luxon'
 import flatpickr from 'flatpickr'
@@ -226,7 +227,7 @@ export default class extends Controller {
 
   onClose(selectedDates, dateStr, instance) {
     if (instance.config.allowInput && instance.altInput.value) {
-      const value = instance.altInput.value
+      const { value } = instance.altInput
       if (value) {
         instance.setDate(value, true, instance.config.altFormat)
       } else {

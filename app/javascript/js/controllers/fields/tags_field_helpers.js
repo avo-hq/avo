@@ -17,7 +17,7 @@ export function tagTemplate(tagData) {
   class="tagify__tag ${tagData.class ? tagData.class : ''}"
   ${this.getAttributes(tagData)}
 >
-  <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+  <x title='' class=' tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
   <div>
       <span class='tagify__tag-text'>${possibleLabel}</span>
   </div>
@@ -28,15 +28,13 @@ export function tagTemplate(tagData) {
 export function suggestionItemTemplate(tagData) {
   return `
 <div ${this.getAttributes(tagData)}
-  class='tagify__dropdown__item flex items-center ${
-  tagData.class ? tagData.class : ''
+  class='tagify__dropdown__item dropdown-menu__item ${tagData.class ? tagData.class : ''
 }'
   tabindex="0"
   role="option">
-  ${
-  tagData.avatar
+  ${tagData.avatar
     ? `
-  <div class='rounded w-8 h-8 block mr-2'>
+  <div class='rounded-sm w-8 h-8 block me-2'>
       <img onerror="this.style.visibility='hidden'" class="w-full" src="${tagData.avatar}">
   </div>`
     : ''

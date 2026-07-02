@@ -1,8 +1,6 @@
 module Avo
   module Fields
     class FilesField < BaseField
-      attr_accessor :is_audio
-      attr_accessor :is_image
       attr_accessor :direct_upload
       attr_accessor :accept
       attr_reader :display_filename
@@ -10,13 +8,11 @@ module Avo
       attr_reader :hide_view_type_switcher
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
-        @is_audio = args[:is_audio].present? ? args[:is_audio] : false
-        @is_image = args[:is_image].present? ? args[:is_image] : @is_avatar
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
         @accept = args[:accept].present? ? args[:accept] : nil
-        @display_filename = args[:display_filename].nil? ? true : args[:display_filename]
+        @display_filename = args[:display_filename].nil? || args[:display_filename]
         @view_type = args[:view_type] || :grid
         @hide_view_type_switcher = args[:hide_view_type_switcher]
       end

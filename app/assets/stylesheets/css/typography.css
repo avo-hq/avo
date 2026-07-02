@@ -18,8 +18,34 @@ h5 {
   @apply text-lg;
 }
 
+kbd {
+  @apply inline-flex min-w-5 items-center justify-center rounded-sm border border-tertiary bg-tertiary px-1 py-px text-[10px] leading-[14px] font-medium text-content-secondary;
+
+  box-shadow: var(--box-shadow-search-input-shortcut);
+  transition: transform 0.08s ease-out;
+}
+
+kbd.kbd--called {
+  transform: scale(0.75) translateY(2px);
+  box-shadow: none;
+}
+
+.hotkeys-hide-badges .hotkey-badge {
+  display: none;
+}
+
 @layer base {
   a {
-    @apply text-primary-500;
+    color: var(--color-info-content);
+    @apply rounded-xs;
+
+    &:active,
+    &:hover {
+      color: color-mix(
+        in oklab,
+        var(--color-info-content),
+        var(--color-content) 30%
+      );
+    }
   }
 }

@@ -10,6 +10,7 @@ module Avo
 
       @display = in? DISPLAY_VIEWS
       @form = in? FORM_VIEWS
+      @single = in? [*FORM_VIEWS, :show].compact.uniq
     end
 
     def display?
@@ -20,12 +21,16 @@ module Avo
       @form
     end
 
+    def single?
+      @single
+    end
+
     # To avoid breaking changes we allow the comparison with symbols
     def ==(other)
       if other.is_a? Symbol
         to_sym == other
       else
-        super(other)
+        super
       end
     end
 

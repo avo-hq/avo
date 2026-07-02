@@ -148,14 +148,13 @@ RSpec.feature "belongs_to", type: :feature do
     it "hides the User column" do
       visit "/admin/resources/users/#{user.id}/comments?turbo_frame=has_many_field_show_comments"
 
-      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "ID"
       expect(find("thead")).to have_text "Tiny name"
       expect(find("thead")).to have_text "Commentable"
       expect(find("thead")).not_to have_text "User"
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
-      # breadcrumb contains the user's name
-      expect(page).to have_text user.name, count: 1
+      expect(page.find('[data-component-name="avo/view_types/table_component"]')).not_to have_text user.name
     end
   end
 
@@ -181,15 +180,14 @@ RSpec.feature "belongs_to", type: :feature do
     it "hides the Commentable column" do
       visit "/admin/resources/projects/#{project.id}/comments?turbo_frame=has_many_field_show_comments"
 
-      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "ID"
       expect(find("thead")).to have_text "Tiny name"
       expect(find("thead")).to have_text "User"
       expect(find("thead")).not_to have_text "Commentable"
       expect(page).to have_text comment.id
       expect(page).to have_text "a comment"
       expect(page).to have_text user.name
-      # breadcrumb contains the project's name
-      expect(page).to have_text project.name, count: 1
+      expect(page.find('[data-component-name="avo/view_types/table_component"]')).not_to have_text project.name
     end
   end
 
@@ -201,15 +199,14 @@ RSpec.feature "belongs_to", type: :feature do
     it "hides the Reviewable column" do
       visit "/admin/resources/teams/#{team.id}/reviews?turbo_frame=has_many_field_show_reviews"
 
-      expect(find("thead")).to have_text "Id"
+      expect(find("thead")).to have_text "ID"
       expect(find("thead")).to have_text "Excerpt"
       expect(find("thead")).to have_text "User"
       expect(find("thead")).not_to have_text "Reviewable"
       expect(page).to have_text review.id
       expect(page).to have_text "a review"
       expect(page).to have_text user.name
-      # breadcrumb contains the team's name
-      expect(page).to have_text team.name, count: 1
+      expect(page.find('[data-component-name="avo/view_types/table_component"]')).not_to have_text team.name
     end
   end
 end

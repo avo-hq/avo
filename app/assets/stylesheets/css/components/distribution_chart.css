@@ -1,0 +1,51 @@
+.distribution-chart__body {
+  @apply flex items-center justify-center p-8 w-full;
+}
+
+@media (width >= 48rem) {
+  /* Cap to match the chart card's outer height (pie + header offset). */
+  .distribution-chart__sidecard .card__body {
+    max-height: calc(360px + 1rem + 2px);
+    overflow-y: auto;
+  }
+}
+
+.distribution-chart__grid {
+  @apply grid grid-cols-[auto_1fr_auto_auto] gap-x-3 p-4;
+}
+
+.distribution-chart__row {
+  @apply grid grid-cols-subgrid col-span-full items-center rounded-md bg-transparent border-none px-2 py-1 cursor-pointer text-start text-sm font-semibold lowercase text-content-secondary transition-opacity;
+
+  &:hover {
+    @apply bg-secondary;
+  }
+}
+
+.distribution-chart__row--inactive {
+  @apply opacity-50;
+
+  .distribution-chart__key {
+    @apply line-through;
+  }
+}
+
+.distribution-chart__color {
+  @apply size-3 rounded-full;
+}
+
+.distribution-chart__key {
+  @apply truncate;
+}
+
+.distribution-chart__value {
+  @apply text-end;
+}
+
+.distribution-chart__percentage {
+  @apply opacity-60 whitespace-nowrap text-end;
+}
+
+.distribution-chart__footer {
+  @apply flex items-center justify-center px-4 py-2 text-sm;
+}

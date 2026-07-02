@@ -1,43 +1,33 @@
 <% if available_view_types.count > 1 %>
   <%
-    info = {
-      table: {
-        new_view_type: 'table',
-        new_icon: "avo/table-view-type",
-        translation_key: 'avo.table_view',
-      },
-      grid: {
-        new_view_type: 'grid',
-        new_icon: "avo/grid-view-type",
-        translation_key: 'avo.grid_view',
-      },
-      list: {
-        new_view_type: 'list',
-        new_icon: 'queue-list',
-      },
-      map: {
-        new_view_type: 'map',
-        new_icon: "avo/map-view-type",
-        translation_key: 'avo.map_view',
-      },
-    }
+    view_type_hotkeys = { table: "v t", grid: "v g", map: "v m" }
   %>
   <div class="flex">
     <div class="button-group">
       <% available_view_types.each do |type| %>
+        <% view_info = Avo.view_type_manager.find(type) %>
         <% is_active_view = view_type.to_s == type.to_s %>
+        <% hotkey = view_type_hotkeys[type.to_sym] %>
+        <%
+          # Build the URL by reusing the current request path and merging the
+          # view_type into the existing query params. This avoids `url_for(params)`
+          # picking the wrong per-resource route when multiple resources share
+          # the same controller/action.
+          query_params = request.query_parameters.merge(view_type: type.to_s)
+          toggle_url = "#{request.path}?#{query_params.to_query}"
+        %>
 
-        <%= a_link url_for(params.permit!.merge(view_type: type)).to_s,
-          icon: info[type][:new_icon],
-          color: is_active_view ? :primary : :gray,
-          rounded: false,
-          size: :sm,
-          class: is_active_view ? "z-20" : "bg-gray-100 border-gray-300",
+        <%= a_link toggle_url,
+          icon: is_active_view ? view_info&.[](:active_icon) : view_info&.[](:icon),
+          style: :primary,
+          class: is_active_view ? "button--active" : "",
           title: t('avo.switch_to_view', view_type: type),
           data: {
             tippy: 'tooltip',
             'turbo-frame': turbo_frame,
-            control: "view-type-toggle-#{type}"
+            control: "view-type-toggle-#{type}",
+            is_active: is_active_view,
+            **(hotkey ? { hotkey: hotkey, show_hotkey_badge: false } : {})
           }
         %>
       <% end %>

@@ -1,0 +1,83 @@
+.breadcrumbs {
+  @apply sticky z-40 w-full bg-(--color-main-content-background) mb-4 top-(--top-navbar-height);
+  /* Vertical optical adjustment */
+  @apply  -mt-1;
+}
+
+/* Soft fade strip just below the sticky breadcrumbs. Eases the seam between
+   the breadcrumb bar and the content scrolling underneath. */
+.breadcrumbs::after {
+  content: "";
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  inset-inline: 0.25rem;
+  transform: translateY(100%);
+  height: --spacing(4);
+  background: linear-gradient(
+    to bottom,
+    var(--color-main-content-background),
+    color-mix(in oklab, var(--color-main-content-background), transparent 100%)
+  );
+  pointer-events: none;
+}
+
+.breadcrumbs__container {
+  @apply flex flex-wrap gap-y-0 gap-x-px sm:gap-2 items-center pt-0 mt-0 mb-2;
+}
+
+.breadcrumbs__separator {
+  @apply text-content-secondary flex items-center;
+}
+
+.breadcrumb-element {
+  @apply inline-flex items-center gap-2 font-medium leading-6 text-sm rounded-lg  px-1 py-0.5 text-content-secondary;
+
+  &:first-child {
+    @apply -ms-1;
+  }
+
+  /* The home crumb is the first element and is the only one carrying an icon by
+     default. On small screens collapse it to just the icon to save horizontal
+     space; the label returns at md. Scoping to :has(icon) means a custom first
+     crumb without an icon keeps its text instead of rendering empty. */
+  &:first-child:has(.breadcrumb-element__icon) .breadcrumb-element__text {
+    @apply hidden md:inline;
+  }
+
+  &:focus-visible {
+    outline-offset: var(--focus-outline-offset-inset);
+  }
+}
+
+.breadcrumb-element__icon {
+  @apply shrink-0 flex items-center size-4 text-content-secondary;
+}
+
+.breadcrumb-element__initials {
+  /* TODO: refresh the design tokens (border color, bg, text color) */
+  @apply shrink-0 flex items-center justify-center;
+}
+
+.breadcrumb-element__avatar {
+  @apply inline-flex items-center;
+
+}
+
+.breadcrumb-element__text {
+  @apply shrink-0 whitespace-nowrap text-content;
+}
+
+.breadcrumb-element--link {
+  .breadcrumb-element__text {
+    @apply text-content-secondary;
+  }
+
+  &:hover {
+    @apply bg-tertiary;
+
+    .breadcrumb-element__text {
+      @apply text-content;
+    }
+  }
+}

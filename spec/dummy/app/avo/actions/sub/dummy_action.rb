@@ -14,6 +14,21 @@ class Avo::Actions::Sub::DummyAction < Avo::BaseAction
 
   def fields
     field :size, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # Used to test that JS overlays are visible over the popup
+    # field :date, as: :date, help: "<span title='hey' data-tippy='tooltip'>hey</span>"
+    # field :tags, as: :tags, suggestions: -> { User.take(5).map { |user| {value: user.id, label: user.name} } }
+
+    # Fields below are used to test the scrolling behavior of the modal.
+    # field :size_2, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # field :size_3, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # field :size_4, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # field :size_5, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # field :size_6, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # # field :size_7, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # # field :size_8, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # # field :size_9, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+    # # field :size_10, as: :radio, options: {small: "Small Option", medium: "Medium Option", large: "Large Option"}, default: :medium
+
     TestBuddy.hi("Dummy action fields")
     field :keep_modal_open, as: :boolean
     field :persistent_text, as: :text

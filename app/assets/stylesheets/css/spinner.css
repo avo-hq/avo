@@ -47,3 +47,11 @@
     -webkit-transform: scale(1);
   }
 }
+
+.avo-search-overlay {
+  @apply hidden absolute inset-0 z-10 bg-secondary/30 backdrop-blur-[1px] items-center justify-center pointer-events-none;
+}
+
+.avo-search-overlay.is-active {
+  @apply flex;
+}

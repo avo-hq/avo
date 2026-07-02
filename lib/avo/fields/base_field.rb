@@ -16,6 +16,7 @@ module Avo
       include Avo::Fields::Concerns::IsDisabled
       include Avo::Fields::Concerns::IsRequired
       include Avo::Fields::Concerns::UseViewComponents
+      include Avo::Fields::Concerns::DomId
 
       include ActionView::Helpers::UrlHelper
 
@@ -44,8 +45,10 @@ module Avo
       attr_reader :format_form_using
       attr_reader :autocomplete
       attr_reader :help
+      attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
+      attr_reader :size
       attr_reader :for_presentation_only
       attr_reader :for_attribute
 
@@ -60,6 +63,7 @@ module Avo
       attr_accessor :action
       attr_accessor :user
       attr_accessor :panel_name
+      attr_accessor :width
 
       class_attribute :field_name_attribute
 
@@ -76,13 +80,7 @@ module Avo
         @nullable = args[:nullable] || false
         @null_values = args[:null_values] || [nil, ""]
         @format_using = args[:format_using]
-        @format_display_using = args[:format_display_using] || args[:decorate]
-
-        unless Rails.env.production?
-          if args[:decorate].present?
-            puts "[Avo DEPRECATION WARNING]: The `decorate` field configuration option is nolonger supported and will be removed in future versions. Please discontinue its use and solely utilize `format_display_using` instead."
-          end
-        end
+        @format_display_using = args[:format_display_using]
 
         @format_index_using = args[:format_index_using]
         @format_show_using = args[:format_show_using]
@@ -90,16 +88,17 @@ module Avo
         @format_new_using = args[:format_new_using]
         @format_form_using = args[:format_form_using]
         @update_using = args[:update_using]
-        @decorate = args[:decorate]
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete]
         @help = args[:help]
+        @label_help = args[:label_help]
         @default = args[:default]
         @visible = args[:visible]
         @html = args[:html]
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]
         @stacked = args[:stacked]
+        @size = args[:size] || :md
         @for_presentation_only = args[:for_presentation_only] || false
         @resource = args[:resource]
         @action = args[:action]
@@ -107,6 +106,8 @@ module Avo
         @for_attribute = args[:for_attribute]
         @meta = args[:meta]
         @copyable = args[:copyable] || false
+        @react_on = Array.wrap(args[:react_on]).map(&:to_s)
+        @record = args[:record]
 
         @args = args
 
@@ -114,7 +115,17 @@ module Avo
         @computed = block.present?
         @computed_value = nil
 
+        @width = args[:width] || 100
+
+        if width_option.present? && width_option != 100
+          @stacked = true
+        end
+
         post_initialize if respond_to?(:post_initialize)
+      end
+
+      def width_option
+        @width_option ||= execute_context(@width)
       end
 
       def translation_key
@@ -129,6 +140,25 @@ module Avo
         t(translation_key, count: 2, default: default).humanize
       end
 
+      def width_class
+        case width_option
+        when 25
+          "w-1/4"
+        when 33
+          "w-1/3"
+        when 50
+          "w-1/2"
+        when 66
+          "w-2/3"
+        when 75
+          "w-3/4"
+        when 100
+          "w-full"
+        else
+          "w-full"
+        end
+      end
+
       # Getting the name of the resource (user/users, post/posts)
       # We'll first check to see if the user passed a name
       # Secondly we'll try to find a translation key
@@ -136,12 +166,16 @@ module Avo
       def name
         if custom_name?
           Avo::ExecutionContext.new(target: @name).handle
+        elsif name_override.present?
+          name_override
         elsif translation_key
           translated_name default: default_name
         else
           default_name
         end
       end
+
+      def name_override = nil
 
       def plural_name
         default = name.pluralize
@@ -157,6 +191,10 @@ module Avo
         @table_header_label ||= name
       end
 
+      def table_header_class
+        @table_header_class ||= ""
+      end
+
       def custom_name?
         !@name.nil?
       end
@@ -169,7 +207,7 @@ module Avo
         Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
       end
 
-      def attribute_id = (@attribure_id ||= @for_attribute || @id)
+      def attribute_id = (@attribute_id ||= @for_attribute || @id)
 
       def value(property = nil)
         return @value if @value.present?
@@ -190,13 +228,7 @@ module Avo
         end
 
         # Format value based on available formatter
-        final_value = format_value(final_value)
-
-        if @decorate.present? && @view.display?
-          final_value = execute_context(@decorate, value: final_value)
-        end
-
-        final_value
+        format_value(final_value)
       end
 
       def execute_context(target, **extra_args)

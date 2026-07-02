@@ -1,5 +1,3 @@
-@import './../../../../../node_modules/trix/dist/trix.css';
-
 .trix-content.hidden {
   display: block !important;
   overflow: hidden;
@@ -26,19 +24,90 @@
   @apply list-decimal;
 }
 
-trix-toolbar {
-  .trix-button-row {
-    @apply flex-wrap gap-x-5;
-  }
+trix-editor {
+  @apply block w-full bg-primary text-content rounded-lg p-3;
+  border: none !important;
 
-  .trix-button-group:not(:first-child) {
-    @apply ml-0;
+  &:empty::before {
+    @apply !text-content-secondary;
   }
 }
+
 
 /* Hack to remove border from trix when rendered from ActionText */
 .trix-content {
   & .trix-content {
-    border: none;
+    @apply border-none;
   }
+}
+
+/* Theme Trix content with Avo tokens. */
+.trix-content pre,
+trix-editor pre {
+  @apply !bg-tertiary text-content rounded;
+}
+
+.trix-content code,
+trix-editor code {
+  @apply !bg-tertiary text-content rounded px-1 py-0.5 text-sm;
+}
+
+.trix-content pre code,
+trix-editor pre code {
+  @apply !bg-transparent p-0;
+}
+
+trix-toolbar {
+  @apply !block bg-transparent border-0 p-0;
+
+  .trix-button-row {
+    @apply !flex !flex-wrap gap-x-3 gap-y-1 items-center;
+  }
+
+  .trix-button-group {
+    @apply !flex !flex-nowrap border border-tertiary rounded bg-primary overflow-hidden flex-shrink-0;
+    @apply !mb-0;
+  }
+
+  .trix-button-group:not(:first-child) {
+    @apply !ms-0 me-0;
+  }
+
+  .trix-button {
+    @apply flex items-center justify-center border-0 border-s border-tertiary first:border-s-0 size-8 text-content;
+    @apply !border-b-0;
+
+    &:not(:disabled):hover {
+      @apply bg-tertiary;
+    }
+
+    &.trix-active {
+      @apply bg-tertiary;
+    }
+  }
+
+  .trix-dialog {
+    @apply bg-secondary border-tertiary shadow-none;
+  }
+
+  .trix-input--dialog {
+    @apply bg-primary text-content border-tertiary;
+
+    &::placeholder {
+      @apply text-content-secondary;
+    }
+  }
+
+  .trix-button--dialog {
+    @apply text-content border-tertiary;
+
+    &:hover {
+      @apply bg-tertiary;
+    }
+  }
+}
+
+/* Trix toolbar icons are image-based and need inversion only in dark mode. */
+.dark trix-toolbar .trix-button--icon:not(.trix-active)::before {
+  filter: invert(1);
 }

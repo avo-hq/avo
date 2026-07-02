@@ -33,6 +33,10 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
     end
   end
 
+  def initials
+    name.split(" ").map(&:first).join("").first(2).upcase
+  end
+
   def sign_out_method
     :delete
   end
@@ -52,5 +56,15 @@ class Avo::SidebarProfileComponent < Avo::BaseComponent
 
   def can_sign_out_user?
     sign_out_path.present? && main_app.respond_to?(sign_out_path&.to_sym)
+  end
+
+  def custom_profile_component
+    Avo::Sidebar::CustomProfileComponent.new
+  end
+
+  def render_custom_profile_menu?
+    return false unless Avo.plugin_manager.installed?("avo-menu")
+
+    custom_profile_component.render?
   end
 end

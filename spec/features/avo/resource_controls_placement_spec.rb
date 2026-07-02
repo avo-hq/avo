@@ -39,7 +39,7 @@ RSpec.feature "ResourceControlsConfiguration", type: :feature do
 
       within find("table") do
         # XPath containing the index of the cell
-        expect(page).to have_xpath("tbody/tr[1]/td[6][@data-control='resource-controls']")
+        expect(page).to have_xpath("tbody/tr[1]/td[8][@data-control='resource-controls']")
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.feature "ResourceControlsConfiguration", type: :feature do
 
         within find("table") do
           # XPath containing the index of the cell
-          expect(page).to have_xpath("tbody/tr[1]/td[6][@data-control='resource-controls']")
+          expect(page).to have_xpath("tbody/tr[1]/td[8][@data-control='resource-controls']")
         end
       end
     end
@@ -63,7 +63,7 @@ RSpec.feature "ResourceControlsConfiguration", type: :feature do
       within find("table") do
         # XPath containing the index of the cell
         expect(page).to have_xpath("tbody/tr[1]/td[1][@data-control='resource-controls']")
-        expect(page).to have_xpath("tbody/tr[1]/td[7][@data-control='resource-controls']")
+        expect(page).to have_xpath("tbody/tr[1]/td[9][@data-control='resource-controls']")
       end
     end
 
@@ -74,7 +74,7 @@ RSpec.feature "ResourceControlsConfiguration", type: :feature do
         within find("table") do
           # XPath containing the index of the cell
           expect(page).to have_xpath("tbody/tr[1]/td[1][@data-control='resource-controls']")
-          expect(page).to have_xpath("tbody/tr[1]/td[7][@data-control='resource-controls']")
+          expect(page).to have_xpath("tbody/tr[1]/td[9][@data-control='resource-controls']")
         end
       end
     end

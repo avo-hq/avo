@@ -28,7 +28,7 @@ module Avo
     #   show_field_wrapper(id: "name", type: "text")
     #   show_field_wrapper(id: "name")
     def show_field_wrapper(id:, type: nil)
-      base_data = "[data-panel-id='main'] [data-field-id='#{id}']"
+      base_data = "[data-field-id='#{id}']"
 
       if type.present?
         find("#{base_data}[data-resource-show-target='#{wrapper_name_for(id: id, type: type)}']")
@@ -93,21 +93,8 @@ module Avo
       "—"
     end
 
-    # Example usage:
-    #   click_resource_search_input # opens the first search box on the given page
-    #   opens the search box for the "users" resource
-    #   within(has_and_belongs_to_many_field_wrapper(id: :users)) {
-    #     click_resource_search_input
-    #     write_in_search("Bob")
-    #   }
-    def click_resource_search_input
-      first("[data-search-resource]:not([data-search-resource='global'])").click
-      wait_for_search_loaded
-    end
-
     def click_global_search_input
-      page.find(:xpath, "//*[contains(@class, 'global-search')]").click
-      wait_for_search_loaded
+      page.find("[data-global-search-target='input']").click
     end
 
     # Should use the click_global_search_input or click_resource_search_input method to open the search box first.
@@ -119,10 +106,15 @@ module Avo
     #   }
     def write_in_search(input)
       # Use xpath to find outside of within context if any
-      find(:xpath, "//input[@class='aa-Input']").set(input)
+      find('[data-resource-search-target="input"]').set(input)
       wait_for_search_loaded
     end
 
+    def write_in_global_search(input)
+      page.find("[data-global-search-target='input']").set(input)
+    end
+
+    # TODO: this will make sense only on global search
     # Should use the click_global_search_input or click_resource_search_input method to open the search box first and optionaly write_in_search.
     # Example usage:
     #   open_search_box(:users) # opens the search box for the "users" resource
@@ -142,7 +134,7 @@ module Avo
     # Sometimes other element may be overlapping the button so the `.trigger("click")` solves the issue
     # Trigger can't be used by default because it breaks on some feature specs
     def save
-      button = find("button.button-component", text: "Save")
+      button = find("button.button", text: "Save")
       button.click
     rescue Capybara::Cuprite::MouseEventFailed
       button.trigger("click")
@@ -151,14 +143,16 @@ module Avo
     end
 
     def click_tab(tab_name = "", within_target: nil, **args)
+      tab_container_selector = '[data-controller="tabs"] [role="tablist"]'
+
       if within_target.present?
         within within_target do
-          within find('[data-controller="tabs"] [data-tabs-target="tabSwitcher"]') do
+          within find(tab_container_selector) do
             find_link(tab_name).trigger("click")
           end
         end
       else
-        within find('[data-controller="tabs"] [data-tabs-target="tabSwitcher"]') do
+        within find(tab_container_selector) do
           find_link(tab_name).trigger("click")
         end
       end
@@ -192,6 +186,22 @@ module Avo
       sleep 0.2
     end
 
+    def set_picker_dates(input, *dates)
+      page.execute_script(
+        "arguments[0]._flatpickr.setDate(arguments[1], true)",
+        input.native,
+        (dates.length == 1) ? dates.first : dates
+      )
+    end
+
+    def set_picker_time(input, hour:, minute: 0, second: 0)
+      page.execute_script(
+        "arguments[0]._flatpickr.setDate(arguments[1], true)",
+        input.native,
+        "#{hour}:#{minute}:#{second}"
+      )
+    end
+
     def set_picker_hour(value)
       find(".flatpickr-hour").set(value)
     end
@@ -215,23 +225,23 @@ module Avo
     end
 
     def close_picker
-      find('[data-target="title"]').trigger("click")
+      all(".header__title").first.trigger("click")
       sleep 0.3
     end
 
     # Click on the action from the panel (index and show above the table)
-    # Pass list: nil to run an action outside of the list
+    # Pass list: nil to run a standalone action (found by data-action-name / action name, not link text)
     # Pass list: "List name" if list is not the default "Actions"
     # Example usage:
     #   open_panel_action(action_name: "Dummy action")
     #   open_panel_action(list: nil, action_name: "Release fish")
     #   open_panel_action(list: "Runnables", action_name: "Release fish")
     def open_panel_action(action_name:, list: "Actions")
-      open_action(action_name: action_name, list: list, context: first("[data-target='panel-tools']"))
+      open_action(action_name: action_name, list: list, context: first(".header__controls"))
     end
 
     # Open the action from the record_id row
-    # Pass list: nil to run an action outside of the list
+    # Pass list: nil to run a standalone row action (matched by action name, not visible label)
     # Pass list: "List name" if list is not the default "Actions"
     # Example usage:
     #   open_row_action(action_name: "Dummy action")
@@ -333,6 +343,20 @@ module Avo
       find('#turbo-confirm button[value="confirm"]').click
     end
 
+    # Clicks a row control action (destroy, detach, edit, etc.) for a given record.
+    # Works for both grid view (actions behind a popover trigger) and table view (flat inline actions).
+    def click_row_action(record, control:)
+      row = find("[data-record-id='#{record.to_param}']")
+
+      if row.has_css?(".grid-card__actions-row button[popovertarget]", wait: 0)
+        row.find(".grid-card__actions-row button[popovertarget]").click
+      end
+
+      within(row) do
+        find("a[data-control='#{control}'][data-resource-id='#{record.to_param}']").click
+      end
+    end
+
     private
 
     # Returns the name of the wrapper element for the given field id and type
@@ -355,19 +379,33 @@ module Avo
       find('[data-sidebar-target="sidebar"]')
     end
 
-    # Opens an action. If a list is provided, it will click on the list first
-    # and then find the specified action name within the panel.
-    # If no list is present, it will directly click on the action link.
+    # Opens an action. If a list is provided, it will click the list trigger (Actions, etc.),
+    # then finds the action link inside the native popover panel referenced by popovertarget.
+    # If no list is present, it will directly click the action anchor (matched by
+    # data-action-name, i.e. the action's name), not the visible label — row controls
+    # often override the label while keeping the same action name.
     def open_action(action_name:, list:, context:, &block)
+      list_popover_id = nil
+
       within(context) do
         if list.present?
           sleep 0.1
-          click_on list
-          within("[data-toggle-target='panel']") do
-            find("a[data-action-name='#{action_name}']").click
-          end
+          list_trigger = find(:link_or_button, text: list)
+          list_popover_id = list_trigger["popovertarget"].presence
+          list_trigger.click
         else
-          click_link(action_name)
+          # Prefer visible matches only: the same action can appear again inside closed popovers/lists.
+          find("a[data-action-name='#{action_name}']", match: :first).click
+        end
+      end
+
+      if list.present? && list_popover_id.present?
+        within(page.find(:id, list_popover_id)) do
+          find("a[data-action-name='#{action_name}']", visible: :all, match: :first).click
+        end
+      elsif list.present?
+        within(context) do
+          find("a[data-action-name='#{action_name}']", visible: :all, match: :first).click
         end
       end
 
@@ -381,6 +419,10 @@ module Avo
 
     def row(id)
       "[data-component-name='avo/index/table_row_component'][data-resource-id='#{id}']"
+    end
+
+    def strip_html(text)
+      text.strip.gsub(/\s+/, " ")
     end
   end
 end

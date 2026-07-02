@@ -1,0 +1,19 @@
+.dropdown-card {
+  /* this is a temporary fix to get the dropdown card to work - there is a tichet open (AVO-1234) to fix this */
+  @apply overflow-hidden rounded-lg bg-secondary p-0.5;
+  /* box-shadow: var(--box-shadow-dropdown-card); */
+  border: solid 1px var(--color-tertiary);
+}
+
+.dropdown-card__body {
+  @apply overflow-hidden rounded-lg border border-tertiary bg-primary;
+}
+
+.dropdown-card__footer,
+.dropdown-card__header {
+  @apply flex w-full items-center px-2 py-1.5;
+}
+
+.dropdown-card__title {
+  @apply text-sm text-content font-medium text-content-secondary;
+}

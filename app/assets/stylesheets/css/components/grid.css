@@ -1,0 +1,141 @@
+/* Grid Card Component - Based on Figma Design System */
+/* BEM Methodology: .grid-card (block), .grid-card__element (elements) */
+
+.grid-wrapper {
+  /*
+   * Fluid column count from the *container* (cqw), not the viewport.
+   * Nearest `container-type` ancestor: e.g. `@container` on the grid turbo-frame.
+   * `--grid-max-cols`: cap columns as if the row were evenly split (incl. gaps).
+   * `--grid-min-col`: floor track width so cards never shrink below `min-w-52`.
+   */
+  --grid-max-cols: 12;
+  --grid-min-col: 13rem; /* 52 * 0.25rem, matches .grid-card min-w-52 */
+  --grid-gap: 1rem; /* gap-4 */
+
+  @apply w-full gap-4;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      min(
+        100%,
+        max(
+          var(--grid-min-col),
+          calc(
+            (100cqw - (var(--grid-max-cols) - 1) * var(--grid-gap)) /
+              var(--grid-max-cols)
+          )
+        )
+      ),
+      1fr
+    )
+  );
+}
+
+/* Shift+T anchors focus on the grid wrapper; show the same focus ring as the
+   index table view so keyboard users see where focus landed before they Tab in. */
+.grid-wrapper[data-content-focus]:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+  /* Round the ring corners to match the index table's card focus ring. */
+  @apply rounded-xl;
+}
+
+.grid-card {
+  @apply flex flex-col flex-1 shrink-0 basis-0 items-start border rounded-xl p-2 gap-2 min-w-52 bg-primary border-tertiary;
+
+  box-shadow: var(--box-shadow-grid-card);
+}
+
+/* The cover link/image sits inside .grid-card__image, which clips overflow.
+   Lift the ring to .grid-card when any nested control is keyboard-focused,
+   matching the table grid pattern in table.css. */
+.grid-card:focus-visible,
+.grid-card:has(:focus-visible) {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-offset);
+}
+
+.grid-card__image {
+  @apply relative w-full overflow-hidden rounded-lg h-40 bg-secondary;
+}
+
+/* Keep the checkbox in the tab order, but visually hide it until the card is
+   hovered, the checkbox is focused, the card has any focused child, or the
+   checkbox is checked. `display: none` removes the input from the a11y tree
+   and from tab order, so we use opacity + absolute positioning instead. */
+.grid-card input[type="checkbox"] {
+  @apply absolute top-1 start-1 z-10 opacity-0 pointer-events-none;
+
+  /* Override mx-2 from RowSelectorComponent so the checkbox aligns to the card edge */
+  margin: 0 !important;
+}
+
+.grid-card input[type="checkbox"]:checked,
+.grid-card input[type="checkbox"]:focus-visible,
+.grid-card:hover input[type="checkbox"],
+.grid-card:focus-within input[type="checkbox"] {
+  @apply opacity-100 pointer-events-auto;
+}
+
+.grid-card__actions-row {
+  @apply flex items-center justify-end w-full gap-2 self-stretch;
+}
+
+.grid-card__badge {
+  @apply flex-1 shrink-0 basis-0 flex;
+}
+
+.grid-card__content {
+  @apply flex flex-col items-start w-full px-2 pb-2;
+}
+
+.grid-card__title {
+  @apply text-content text-base font-medium self-stretch leading-6;
+}
+
+.grid-card__title--truncate {
+  @apply overflow-hidden text-ellipsis whitespace-nowrap text-content-secondary text-xs font-normal leading-4;
+}
+
+.grid-card__title a {
+  @apply inline-block;
+
+  color: inherit;
+}
+
+.grid-card__description {
+  @apply text-content-secondary text-xs font-normal self-stretch leading-4;
+}
+
+@keyframes icon-float {
+  0%, 100% { translate: 0 0; }
+  50%       { translate: 0 -5px; }
+}
+
+.grid-card__icon {
+  @apply absolute size-4 pointer-events-none;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+  transition: transform 0.5s ease-out;
+}
+
+.grid-card__icon--repelling {
+  transition: transform 0.08s ease-out;
+}
+
+.grid-card__avocado {
+  @apply block;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+  transition: transform 0.5s ease-out;
+
+  &.grid-card__icon--repelling {
+    transition: transform 0.08s ease-out;
+  }
+}
+
+.grid-card__icon--float {
+  animation-name: icon-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+}

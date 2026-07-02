@@ -5,6 +5,24 @@ nl:
     actions: Acties
     add_filter: Filter toevoegen
     and_x_other_resources: en %{count} andere bronnen
+    appearance:
+      accent_picker: Accentkleur
+      accents: Accent
+      auto: Automatisch
+      auto_tooltip: Automatisch (systeemvoorkeur)
+      dark: Donker
+      dark_tooltip: Donkermodus
+      hide: Verbergen
+      light: Licht
+      light_tooltip: Lichtmodus
+      neutrals: Thema
+      neutrals_picker: Neutrale thema
+      schemes: Uiterlijk
+      shortcut_badges: Sneltoets badges
+      shortcut_badges_hide_tooltip: Verberg sneltoets badges
+      shortcut_badges_show_tooltip: Toon sneltoets badges
+      show: Toon
+      title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?
     are_you_sure_detach_item: Weet u zeker dat u dit %{item} wilt loskoppelen?
@@ -17,16 +35,22 @@ nl:
     attachment_destroyed: Bijlage verwijderd
     attachment_failed: Kon %{attachment_class} niet bijvoegen
     cancel: Annuleren
+    checkbox_list:
+      hidden_selections:
+        one: 1 geselecteerde optie verborgen door zoekopdracht
+        other: "%{count} geselecteerde opties verborgen door zoekopdracht"
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
     choose_item: Kies %{item}
     clear_value: Waarde wissen
+    click_to_load: Klik om te laden
     click_to_reveal_filters: Klik om filters te tonen
     close: Sluiten
     close_modal: Modaal sluiten
     confirm: Bevestigen
     copy: Kopie
     create_new_item: Nieuw %{item} aanmaken
+    created_at: Aangemaakt op
     created_at_timestamp: Aangemaakt op %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -45,12 +69,30 @@ nl:
     failed: Mislukt
     failed_to_find_attachment: Bijlage niet gevonden
     failed_to_load: Laden mislukt
+    failed_to_load_item: Laden van %{item} mislukt
     'false': Onwaar
     file:
       one: bestand
       other: bestanden
     filter_by: Filteren op
     filters: Filters
+    global_search:
+      empty_state:
+        no_results_for_query: We konden niets vinden dat overeenkomt met "%{query}"
+        no_results_found: Geen resultaten gevonden
+        start_typing: Begin met typen om te zoeken
+        start_typing_with_resource_list: Je kunt zoeken op %{resources}
+        start_typing_with_resources: Je kunt zoeken op %{resources} %{other_resources}
+        try_adjusting_search: Probeer uw zoektermen aan te passen of controleer op typfouten
+      go_to: Ga naar
+      keyboard_hints:
+        close: Sluiten
+        navigate: Navigeren
+        press: Druk
+        select: Selecteren
+      results:
+        count_of_total: "%{count} van %{total}"
+      show_all_results_for: Toon alle resultaten voor
     go_back: Terug
     grid_view: Rasterweergave
     hide_content: Inhoud verbergen
@@ -63,6 +105,7 @@ nl:
       value: Waarde
     less_content: Minder inhoud
     list_is_empty: Lijst is leeg
+    load_item: Laad %{item}
     loading: Laden...
     media_library:
       title: Mediabibliotheek
@@ -84,15 +127,22 @@ nl:
       other: "%{count} %{item}"
       zero: geen %{item}
     oops_nothing_found: Oeps! Niets gevonden...
+    open_in_new_tab: Openen in een nieuw tabblad
+    open_in_your_editor: Openen in uw editor
     order:
       higher: Verplaats record omhoog
       lower: Verplaats record omlaag
       reorder_record: Record opnieuw ordenen
       to_bottom: Verplaats record naar onderen
       to_top: Verplaats record naar boven
+    pages: Pagina's
     per_page: Per pagina
     prev_page: Vorige pagina
+    record:
+      one: record
+      other: records
     records_selected_from_all_pages_html: Alle geselecteerde records van alle pagina's
+    reload: Vernieuwen
     remove_selection: Selectie verwijderen
     reset: resetten
     reset_filters: Filters resetten
@@ -100,6 +150,9 @@ nl:
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt
     resources: Bronnen
+    retry: Opnieuw proberen
+    retry_item: Probeer %{item} opnieuw
+    reupload_file: Reupload %{item}
     run: Uitvoeren
     save: Opslaan
     search:
@@ -110,6 +163,8 @@ nl:
     select_item: Item selecteren
     show_content: Inhoud tonen
     sign_out: Afmelden
+    skip_to_content: Ga naar de inhoud
+    skip_to_sidebar: Overslaan naar zijbalk
     sort_asc: Oplopend sorteren
     sort_desc: Aflopend sorteren
     sort_reset: Sortering resetten
@@ -121,6 +176,7 @@ nl:
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
+    updated_at: Bijgewerkt op
     updated_at_timestamp: Bijgewerkt op %{updated_at}
     view: Bekijken
     view_item: "%{item} bekijken"
@@ -131,9 +187,9 @@ nl:
       one: nog één item
       other: "%{count} andere items"
       zero: geen andere items
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina van een totaal van <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records geselecteerd van alle pagina's
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records geselecteerd op deze pagina
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> records geselecteerd op deze pagina van een totaal van <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> records geselecteerd van alle pagina's
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records geselecteerd op deze pagina
     yes_confirm: Ja, ik weet het zeker
     you_cant_upload_new_resource: Je kunt geen bestanden uploaden in de Trix-editor totdat je de bron hebt opgeslagen.
     you_havent_set_attachment_key: Je hebt geen `attachment_key` ingesteld voor dit Trix-veld.

@@ -5,6 +5,24 @@ ru:
     actions: Действия
     add_filter: Добавить фильтр
     and_x_other_resources: и %{count} других ресурсов
+    appearance:
+      accent_picker: Цвет акцента
+      accents: Акцент
+      auto: Авто
+      auto_tooltip: Авто (системные предпочтения)
+      dark: Темный
+      dark_tooltip: Темный режим
+      hide: Скрыть
+      light: Светлый
+      light_tooltip: Светлый режим
+      neutrals: Тема
+      neutrals_picker: Нейтральная тема
+      schemes: Внешний вид
+      shortcut_badges: Значки ярлыков
+      shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
+      shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
+      show: Показать
+      title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?
     are_you_sure_detach_item: Вы уверены, что хотите отсоединить этот %{item}?
@@ -17,16 +35,24 @@ ru:
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
     cancel: Отмена
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} выбранных варианта скрыты по запросу"
+        many: "%{count} выбранных вариантов скрыто по запросу"
+        one: 1 выбранный вариант скрыт по запросу
+        other: "%{count} выбранных вариантов скрыто по запросу"
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
     choose_item: Выбрать %{item}
     clear_value: Очистить значение
+    click_to_load: Нажмите, чтобы загрузить
     click_to_reveal_filters: Нажмите, чтобы открыть фильтры
     close: Закрыть
     close_modal: Закрыть модальное окно
     confirm: Подтвердить
     copy: Копировать
     create_new_item: Создать новый %{item}
+    created_at: Создано
     created_at_timestamp: Создано в %{created_at}
     dashboard: Панель управления
     dashboards: Панели управления
@@ -45,6 +71,7 @@ ru:
     failed: Ошибка
     failed_to_find_attachment: Вложение не найдено
     failed_to_load: Загрузка не удалась
+    failed_to_load_item: Не удалось загрузить %{item}
     'false': Ложь
     file:
       few: файла
@@ -53,6 +80,23 @@ ru:
       other: файлов
     filter_by: Фильтровать по
     filters: Фильтры
+    global_search:
+      empty_state:
+        no_results_for_query: Мы не смогли найти ничего, соответствующего "%{query}"
+        no_results_found: Результатов не найдено
+        start_typing: Начните печатать для поиска
+        start_typing_with_resource_list: Вы можете искать на %{resources}
+        start_typing_with_resources: Вы можете искать на %{resources} %{other_resources}
+        try_adjusting_search: Попробуйте изменить условия поиска или проверьте на опечатки
+      go_to: Перейти к
+      keyboard_hints:
+        close: Закрыть
+        navigate: Навигация
+        press: Нажмите
+        select: Выбрать
+      results:
+        count_of_total: "%{count} из %{total}"
+      show_all_results_for: Показать все результаты для
     go_back: Назад
     grid_view: Сетка
     hide_content: Скрыть содержимое
@@ -65,6 +109,7 @@ ru:
       value: Значение
     less_content: Меньше контента
     list_is_empty: Список пуст
+    load_item: Загрузить %{item}
     loading: Загрузка...
     media_library:
       title: Медиатека
@@ -86,15 +131,24 @@ ru:
       other: "%{count} %{item}"
       zero: нет %{item}
     oops_nothing_found: Ой! Ничего не найдено...
+    open_in_new_tab: Открыть в новой вкладке
+    open_in_your_editor: Открыть в вашем редакторе
     order:
       higher: Переместить запись вверх
       lower: Переместить запись вниз
       reorder_record: Переупорядочить запись
       to_bottom: Переместить запись в конец
       to_top: Переместить запись в начало
+    pages: Страницы
     per_page: На странице
     prev_page: Предыдущая страница
+    record:
+      few: записи
+      many: записей
+      one: запись
+      other: записей
     records_selected_from_all_pages_html: Все записи выбраны со всех страниц
+    reload: Обновить
     remove_selection: Убрать выбор
     reset: сбросить
     reset_filters: Сбросить фильтры
@@ -102,6 +156,9 @@ ru:
     resource_destroyed: Запись удалена
     resource_updated: Запись обновлена
     resources: Ресурсы
+    retry: Повторить
+    retry_item: Повторить %{item}
+    reupload_file: Reupload %{item}
     run: Запустить
     save: Сохранить
     search:
@@ -112,6 +169,8 @@ ru:
     select_item: Выбрать элемент
     show_content: Показать содержимое
     sign_out: Выйти
+    skip_to_content: Перейти к содержимому
+    skip_to_sidebar: Пропустить в боковую панель
     sort_asc: Сортировать по возрастанию
     sort_desc: Сортировать по убыванию
     sort_reset: Сбросить сортировку
@@ -123,6 +182,7 @@ ru:
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить
+    updated_at: Обновлено
     updated_at_timestamp: Обновлено в %{updated_at}
     view: Просмотр
     view_item: Просмотр %{item}
@@ -133,9 +193,9 @@ ru:
       one: ещё один элемент
       other: "%{count} других элементов"
       zero: нет других элементов
-    x_records_selected_from_a_total_of_x_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице из общего количества <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: Выбрано <span class="font-bold text-gray-700">%{count}</span> записей со всех страниц
-    x_records_selected_from_page_html: Выбрано <span class="font-bold text-gray-700">%{selected}</span> записей на этой странице
+    x_records_selected_from_a_total_of_x_html: Выбрано <span class="font-bold">%{selected}</span> записей на этой странице из общего количества <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: Выбрано <span class="font-bold">%{count}</span> записей со всех страниц
+    x_records_selected_from_page_html: Выбрано <span class="font-bold">%{selected}</span> записей на этой странице
     yes_confirm: Да, уверен
     you_cant_upload_new_resource: Вы не можете загружать файлы в редактор Trix, пока не сохраните ресурс.
     you_havent_set_attachment_key: Вы не установили `attachment_key` для этого поля Trix.

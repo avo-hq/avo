@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Avo::Resources::City < Avo::BaseResource
+  self.hotkey = "r c"
   self.search = {
-    query: -> { query.ransack(id_eq: params[:q], m: "or").result(distinct: false) }
+    query: -> { query.ransack(id_eq: params[:q], name_cont: params[:q], m: "or").result(distinct: false) }
   }
   self.extra_params = [city: [:name, :metadata, :coordinates, :city_center_area, :description, :population, :is_capital, :image_url, :tiny_description, :status, features: {}, metadata: {}]]
   self.default_view_type = :map
@@ -28,9 +29,11 @@ class Avo::Resources::City < Avo::BaseResource
         }
       ]
     end,
+    map: {
+      position: :top
+    },
     table: {
-      visible: true,
-      layout: :bottom
+      visible: true
     }
   }
 
