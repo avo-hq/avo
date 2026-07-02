@@ -8,6 +8,25 @@ zh:
     appearance:
       accent_picker: 强调色
       accents: 强调色
+      accents_list:
+        amber: 琥珀
+        blue: 蓝色
+        brand: 品牌
+        cyan: 青色
+        emerald: 祖母绿
+        fuchsia: 品红
+        green: 绿色
+        indigo: 靛蓝
+        lime: 青柠
+        orange: 橙色
+        pink: 粉色
+        purple: 紫色
+        red: 红色
+        rose: 玫瑰
+        sky: 天蓝
+        teal: 蓝绿
+        violet: 紫罗兰
+        yellow: 黄色
       auto: 自动
       auto_tooltip: 自动（系统偏好）
       dark: 深色
@@ -16,6 +35,17 @@ zh:
       light: 浅色
       light_tooltip: 浅色模式
       neutrals: 主题
+      neutrals_list:
+        brand: 品牌
+        gray: 灰色
+        mauve: 淡紫
+        mist: 薄雾
+        neutral: 中性
+        olive: 橄榄
+        slate: 石板
+        stone: 石色
+        taupe: 灰褐
+        zinc: 锌色
       neutrals_picker: 中性色主题
       schemes: 外观
       shortcut_badges: 快捷键徽章

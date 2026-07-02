@@ -5,6 +5,8 @@ import Cookies from 'js-cookie'
 export default class extends Controller {
   static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
 
+  static values = { themeLabels: Object }
+
   connect() {
     this.appearance = window.Avo?.configuration?.appearance || {}
     this.lockedNeutral = this.appearance.neutralLocked ? this.appearance.neutral : null
@@ -323,7 +325,9 @@ export default class extends Controller {
   updateThemeLabelText(theme) {
     if (!this.hasThemeLabelTarget) return
 
-    this.themeLabelTarget.textContent = theme.charAt(0).toUpperCase() + theme.slice(1)
+    const labels = this.hasThemeLabelsValue ? this.themeLabelsValue : {}
+    const label = labels[theme] || theme.charAt(0).toUpperCase() + theme.slice(1)
+    this.themeLabelTarget.textContent = label
   }
 
   // Mirrors the Shift+K hotkey in global_hotkeys.js. CSS handles the active

@@ -8,6 +8,25 @@ nl:
     appearance:
       accent_picker: Accentkleur
       accents: Accent
+      accents_list:
+        amber: Amber
+        blue: Blauw
+        brand: Merk
+        cyan: Cyaan
+        emerald: Smaragd
+        fuchsia: Fuchsia
+        green: Groen
+        indigo: Indigo
+        lime: Limoen
+        orange: Oranje
+        pink: Roze
+        purple: Paars
+        red: Rood
+        rose: Roos
+        sky: Hemelblauw
+        teal: Blauwgroen
+        violet: Violet
+        yellow: Geel
       auto: Automatisch
       auto_tooltip: Automatisch (systeemvoorkeur)
       dark: Donker
@@ -16,6 +35,17 @@ nl:
       light: Licht
       light_tooltip: Lichtmodus
       neutrals: Thema
+      neutrals_list:
+        brand: Merk
+        gray: Grijs
+        mauve: Mauve
+        mist: Mist
+        neutral: Neutraal
+        olive: Olijf
+        slate: Leisteen
+        stone: Steen
+        taupe: Taupe
+        zinc: Zink
       neutrals_picker: Neutrale thema
       schemes: Uiterlijk
       shortcut_badges: Sneltoets badges

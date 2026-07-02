@@ -8,6 +8,25 @@ ar:
     appearance:
       accent_picker: لون مميز
       accents: اللون المميز
+      accents_list:
+        amber: كهرماني
+        blue: أزرق
+        brand: العلامة
+        cyan: سماوي
+        emerald: زمردي
+        fuchsia: فوشيا
+        green: أخضر
+        indigo: نيلي
+        lime: ليموني
+        orange: برتقالي
+        pink: وردي
+        purple: أرجواني
+        red: أحمر
+        rose: زهري
+        sky: سماوي
+        teal: تركواز
+        violet: بنفسجي
+        yellow: أصفر
       auto: تلقائي
       auto_tooltip: تلقائي (تفضيل النظام)
       dark: داكن
@@ -16,6 +35,17 @@ ar:
       light: فاتح
       light_tooltip: وضع الفاتح
       neutrals: السمة
+      neutrals_list:
+        brand: العلامة
+        gray: رمادي
+        mauve: بنفسجي فاتح
+        mist: ضباب
+        neutral: محايد
+        olive: زيتوني
+        slate: أردوازي
+        stone: حجري
+        taupe: رمادي بني
+        zinc: زنك
       neutrals_picker: سمة الألوان المحايدة
       schemes: المظهر
       shortcut_badges: شارات الاختصار

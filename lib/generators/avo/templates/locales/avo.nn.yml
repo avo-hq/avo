@@ -8,6 +8,25 @@ nn:
     appearance:
       accent_picker: Aksentfarge
       accents: Aksent
+      accents_list:
+        amber: Rav
+        blue: Blå
+        brand: Merke
+        cyan: Cyan
+        emerald: Smaragd
+        fuchsia: Fuchsia
+        green: Grøn
+        indigo: Indigo
+        lime: Lime
+        orange: Oransje
+        pink: Rosa
+        purple: Lilla
+        red: Raud
+        rose: Rose
+        sky: Himmelblå
+        teal: Blågrøn
+        violet: Fiolett
+        yellow: Gul
       auto: Auto
       auto_tooltip: Auto (systempreferanse)
       dark: Mørk
@@ -16,6 +35,17 @@ nn:
       light: Lys
       light_tooltip: Lysmodus
       neutrals: Tema
+      neutrals_list:
+        brand: Merke
+        gray: Grå
+        mauve: Mauve
+        mist: Tåke
+        neutral: Nøytral
+        olive: Oliven
+        slate: Skifer
+        stone: Stein
+        taupe: Taupe
+        zinc: Sink
       neutrals_picker: Nøytrale tema
       schemes: Utseende
       shortcut_badges: Snarveiknappar

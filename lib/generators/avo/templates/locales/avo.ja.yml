@@ -8,6 +8,25 @@ ja:
     appearance:
       accent_picker: アクセントカラー
       accents: アクセント
+      accents_list:
+        amber: アンバー
+        blue: ブルー
+        brand: ブランド
+        cyan: シアン
+        emerald: エメラルド
+        fuchsia: フクシア
+        green: グリーン
+        indigo: インディゴ
+        lime: ライム
+        orange: オレンジ
+        pink: ピンク
+        purple: パープル
+        red: レッド
+        rose: ローズ
+        sky: スカイ
+        teal: ティール
+        violet: バイオレット
+        yellow: イエロー
       auto: 自動
       auto_tooltip: 自動（システム設定）
       dark: ダーク
@@ -16,6 +35,17 @@ ja:
       light: ライト
       light_tooltip: ライトモード
       neutrals: テーマ
+      neutrals_list:
+        brand: ブランド
+        gray: グレー
+        mauve: モーブ
+        mist: ミスト
+        neutral: ニュートラル
+        olive: オリーブ
+        slate: スレート
+        stone: ストーン
+        taupe: トープ
+        zinc: ジンク
       neutrals_picker: ニュートラルテーマ
       schemes: 外観
       shortcut_badges: ショートカットバッジ
