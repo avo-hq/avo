@@ -33,7 +33,8 @@ AVO_LICENSE_KEY=license_123 AVO_ADMIN_PASSWORD=secret bin/rails db:seed
 # Test DB (schema only — load separately, migrate does not target it)
 AVO_LICENSE_KEY=license_123 RAILS_ENV=test bin/rails db:schema:load
 ```
-Seeding creates a login: `avo@avohq.io` / `secret`.
+Seeding creates an admin login: `hi@avohq.io` / `secret` (the email is hardcoded in
+`spec/dummy/db/seeds.rb`; the password comes from `AVO_ADMIN_PASSWORD`, else `secreto`).
 
 ### Build assets (required before running the server or system tests)
 ```
@@ -68,7 +69,7 @@ rebuild automatically.
 AVO_LICENSE_KEY=license_123 bin/dev      # starts web + js/css/custom-js watchers via overmind
 ```
 The server listens on `http://localhost:3030`. Avo is mounted at `/admin`
-(root `/` redirects there). Log in with `avo@avohq.io` / `secret`.
+(root `/` redirects there). Log in with `hi@avohq.io` / `secret`.
 
 Note: `bin/dev` uses a `&>` bashism in its overmind/foreman detection that misfires
 under `dash`; this is why `overmind` is installed (the `foreman` fallback branch is
