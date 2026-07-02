@@ -23,7 +23,7 @@
 }
 
 .filters-section__title {
-  @apply text-sm font-medium text-foreground;
+  @apply flex items-center gap-1 text-sm font-medium text-foreground;
 }
 
 .filters-section__body {

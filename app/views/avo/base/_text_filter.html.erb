@@ -1,22 +1,21 @@
 <div
+  class="filters-section__body"
   data-controller="text-filter"
   data-filter-name="<%= filter.name %>"
   data-text-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>"
 >
-  <%= filter_wrapper name: filter.name do %>
-    <%= text_field_tag filter.id, filter.applied_or_default_value(@applied_filters),
-      class: input_classes('w-full mb-0'),
-      id: "avo_filters_#{filter.id.parameterize.underscore}",
-      placeholder: filter.class.empty_message,
-      'data-filter-class': filter.class.to_s,
-      'data-text-filter-target': 'text',
-      'data-action': 'keypress->text-filter#tryToSubmit' %>
+  <%= text_field_tag filter.id, filter.applied_or_default_value(@applied_filters),
+    class: input_classes('w-full mb-0'),
+    id: "avo_filters_#{filter.id.parameterize.underscore}",
+    placeholder: filter.class.empty_message,
+    'data-filter-class': filter.class.to_s,
+    'data-text-filter-target': 'text',
+    'data-action': 'keypress->text-filter#tryToSubmit' %>
 
-    <div class="flex justify-end">
-      <%= a_button style: :primary, data: { action: "text-filter#changeFilter" }, size: :sm do %>
-        <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
-      <% end %>
-    </div>
-    <%= link_to 'url_redirect', request.url, data: { 'text-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, class: 'hidden' %>
-  <% end %>
+  <div class="flex justify-end">
+    <%= a_button style: :primary, data: { action: "text-filter#changeFilter" }, size: :sm do %>
+      <%= filter.button_label || "#{t("avo.filter_by")} #{filter.name}" %>
+    <% end %>
+  </div>
+  <%= link_to 'url_redirect', request.url, data: { 'text-filter-target': 'urlRedirect', 'turbo-frame': params[:turbo_frame] }, class: 'hidden' %>
 </div>
