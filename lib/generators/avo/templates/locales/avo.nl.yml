@@ -10,23 +10,23 @@ nl:
       accents: Accent
       accents_list:
         amber: Amber
-        blue: Blue
-        brand: Brand
-        cyan: Cyan
-        emerald: Emerald
+        blue: Blauw
+        brand: Merk
+        cyan: Cyaan
+        emerald: Smaragd
         fuchsia: Fuchsia
-        green: Green
+        green: Groen
         indigo: Indigo
-        lime: Lime
-        orange: Orange
-        pink: Pink
-        purple: Purple
-        red: Red
-        rose: Rose
-        sky: Sky
-        teal: Teal
+        lime: Limoen
+        orange: Oranje
+        pink: Roze
+        purple: Paars
+        red: Rood
+        rose: Roos
+        sky: Hemelblauw
+        teal: Blauwgroen
         violet: Violet
-        yellow: Yellow
+        yellow: Geel
       auto: Automatisch
       auto_tooltip: Automatisch (systeemvoorkeur)
       dark: Donker
@@ -36,16 +36,16 @@ nl:
       light_tooltip: Lichtmodus
       neutrals: Thema
       neutrals_list:
-        brand: Brand
-        gray: Gray
+        brand: Merk
+        gray: Grijs
         mauve: Mauve
         mist: Mist
-        neutral: Neutral
-        olive: Olive
-        slate: Slate
-        stone: Stone
+        neutral: Neutraal
+        olive: Olijf
+        slate: Leisteen
+        stone: Steen
         taupe: Taupe
-        zinc: Zinc
+        zinc: Zink
       neutrals_picker: Neutrale thema
       schemes: Uiterlijk
       shortcut_badges: Sneltoets badges

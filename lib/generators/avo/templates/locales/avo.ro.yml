@@ -9,24 +9,24 @@ ro:
       accent_picker: Culoare accent
       accents: Accent
       accents_list:
-        amber: Amber
-        blue: Blue
+        amber: Chihlimbar
+        blue: Albastru
         brand: Brand
         cyan: Cyan
-        emerald: Emerald
-        fuchsia: Fuchsia
-        green: Green
+        emerald: Smarald
+        fuchsia: Fucsia
+        green: Verde
         indigo: Indigo
         lime: Lime
-        orange: Orange
-        pink: Pink
-        purple: Purple
-        red: Red
-        rose: Rose
-        sky: Sky
-        teal: Teal
+        orange: Portocaliu
+        pink: Roz
+        purple: Mov
+        red: Roșu
+        rose: Trandafiriu
+        sky: Cer
+        teal: Turcoaz
         violet: Violet
-        yellow: Yellow
+        yellow: Galben
       auto: Automat
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
@@ -37,13 +37,13 @@ ro:
       neutrals: Temă
       neutrals_list:
         brand: Brand
-        gray: Gray
-        mauve: Mauve
-        mist: Mist
-        neutral: Neutral
-        olive: Olive
-        slate: Slate
-        stone: Stone
+        gray: Gri
+        mauve: Mov deschis
+        mist: Ceață
+        neutral: Neutru
+        olive: Măsliniu
+        slate: Ardezie
+        stone: Piatră
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Temă neutre

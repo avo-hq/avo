@@ -9,24 +9,24 @@ de:
       accent_picker: Akzentfarbe
       accents: Akzent
       accents_list:
-        amber: Amber
-        blue: Blue
-        brand: Brand
+        amber: Bernstein
+        blue: Blau
+        brand: Marke
         cyan: Cyan
-        emerald: Emerald
+        emerald: Smaragd
         fuchsia: Fuchsia
-        green: Green
+        green: Grün
         indigo: Indigo
-        lime: Lime
+        lime: Limette
         orange: Orange
         pink: Pink
-        purple: Purple
-        red: Red
+        purple: Lila
+        red: Rot
         rose: Rose
-        sky: Sky
-        teal: Teal
-        violet: Violet
-        yellow: Yellow
+        sky: Himmelblau
+        teal: Blaugrün
+        violet: Violett
+        yellow: Gelb
       auto: Automatisch
       auto_tooltip: Automatisch (Systemeinstellung)
       dark: Dunkel
@@ -36,16 +36,16 @@ de:
       light_tooltip: Heller Modus
       neutrals: Thema
       neutrals_list:
-        brand: Brand
-        gray: Gray
-        mauve: Mauve
-        mist: Mist
+        brand: Marke
+        gray: Grau
+        mauve: Malve
+        mist: Nebel
         neutral: Neutral
-        olive: Olive
-        slate: Slate
-        stone: Stone
+        olive: Oliv
+        slate: Schiefer
+        stone: Stein
         taupe: Taupe
-        zinc: Zinc
+        zinc: Zink
       neutrals_picker: Neutrale Themen
       schemes: Erscheinungsbild
       shortcut_badges: Verknüpfungssymbole

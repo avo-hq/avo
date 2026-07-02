@@ -9,24 +9,24 @@ tr:
       accent_picker: Vurgu rengi
       accents: Vurgu
       accents_list:
-        amber: Amber
-        blue: Blue
-        brand: Brand
-        cyan: Cyan
-        emerald: Emerald
-        fuchsia: Fuchsia
-        green: Green
-        indigo: Indigo
-        lime: Lime
-        orange: Orange
-        pink: Pink
-        purple: Purple
-        red: Red
-        rose: Rose
-        sky: Sky
-        teal: Teal
-        violet: Violet
-        yellow: Yellow
+        amber: Kehribar
+        blue: Mavi
+        brand: Marka
+        cyan: Camgöbeği
+        emerald: Zümrüt
+        fuchsia: Fuşya
+        green: Yeşil
+        indigo: İndigo
+        lime: Limon
+        orange: Turuncu
+        pink: Pembe
+        purple: Mor
+        red: Kırmızı
+        rose: Gül
+        sky: Gök
+        teal: Deniz mavisi
+        violet: Menekşe
+        yellow: Sarı
       auto: Otomatik
       auto_tooltip: Otomatik (sistem tercihi)
       dark: Koyu
@@ -36,16 +36,16 @@ tr:
       light_tooltip: Açık mod
       neutrals: Tema
       neutrals_list:
-        brand: Brand
-        gray: Gray
-        mauve: Mauve
-        mist: Mist
-        neutral: Neutral
-        olive: Olive
-        slate: Slate
-        stone: Stone
+        brand: Marka
+        gray: Gri
+        mauve: Eflatun
+        mist: Sis
+        neutral: Nötr
+        olive: Zeytin
+        slate: Arduvaz
+        stone: Taş
         taupe: Taupe
-        zinc: Zinc
+        zinc: Çinko
       neutrals_picker: Nötr tema
       schemes: Görünüm
       shortcut_badges: Kısayol rozetleri

@@ -9,24 +9,24 @@ ru:
       accent_picker: Цвет акцента
       accents: Акцент
       accents_list:
-        amber: Amber
-        blue: Blue
-        brand: Brand
-        cyan: Cyan
-        emerald: Emerald
-        fuchsia: Fuchsia
-        green: Green
-        indigo: Indigo
-        lime: Lime
-        orange: Orange
-        pink: Pink
-        purple: Purple
-        red: Red
-        rose: Rose
-        sky: Sky
-        teal: Teal
-        violet: Violet
-        yellow: Yellow
+        amber: Янтарный
+        blue: Синий
+        brand: Бренд
+        cyan: Бирюзовый
+        emerald: Изумрудный
+        fuchsia: Фуксия
+        green: Зелёный
+        indigo: Индиго
+        lime: Лайм
+        orange: Оранжевый
+        pink: Розовый
+        purple: Фиолетовый
+        red: Красный
+        rose: Розовый
+        sky: Небесный
+        teal: Бирюзовый
+        violet: Фиолетовый
+        yellow: Жёлтый
       auto: Авто
       auto_tooltip: Авто (системные предпочтения)
       dark: Темный
@@ -36,16 +36,16 @@ ru:
       light_tooltip: Светлый режим
       neutrals: Тема
       neutrals_list:
-        brand: Brand
-        gray: Gray
-        mauve: Mauve
-        mist: Mist
-        neutral: Neutral
-        olive: Olive
-        slate: Slate
-        stone: Stone
-        taupe: Taupe
-        zinc: Zinc
+        brand: Бренд
+        gray: Серый
+        mauve: Лиловый
+        mist: Туман
+        neutral: Нейтральный
+        olive: Оливковый
+        slate: Шифер
+        stone: Каменный
+        taupe: Тауп
+        zinc: Цинк
       neutrals_picker: Нейтральная тема
       schemes: Внешний вид
       shortcut_badges: Значки ярлыков

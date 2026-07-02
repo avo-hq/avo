@@ -9,24 +9,24 @@ fr:
       accent_picker: Couleur d'accent
       accents: Accent
       accents_list:
-        amber: Amber
-        blue: Blue
-        brand: Brand
+        amber: Ambre
+        blue: Bleu
+        brand: Marque
         cyan: Cyan
-        emerald: Emerald
+        emerald: Émeraude
         fuchsia: Fuchsia
-        green: Green
+        green: Vert
         indigo: Indigo
-        lime: Lime
+        lime: Citron vert
         orange: Orange
-        pink: Pink
-        purple: Purple
-        red: Red
-        rose: Rose
-        sky: Sky
-        teal: Teal
+        pink: Rose
+        purple: Violet
+        red: Rouge
+        rose: Rosé
+        sky: Ciel
+        teal: Sarcelle
         violet: Violet
-        yellow: Yellow
+        yellow: Jaune
       auto: Automatique
       auto_tooltip: Automatique (préférence système)
       dark: Sombre
@@ -36,14 +36,14 @@ fr:
       light_tooltip: Mode clair
       neutrals: Thème
       neutrals_list:
-        brand: Brand
-        gray: Gray
+        brand: Marque
+        gray: Gris
         mauve: Mauve
-        mist: Mist
-        neutral: Neutral
+        mist: Brume
+        neutral: Neutre
         olive: Olive
-        slate: Slate
-        stone: Stone
+        slate: Ardoise
+        stone: Pierre
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Thème neutre

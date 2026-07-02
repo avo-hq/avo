@@ -9,24 +9,24 @@ it:
       accent_picker: Colore accento
       accents: Accento
       accents_list:
-        amber: Amber
-        blue: Blue
-        brand: Brand
-        cyan: Cyan
-        emerald: Emerald
-        fuchsia: Fuchsia
-        green: Green
+        amber: Ambra
+        blue: Blu
+        brand: Marchio
+        cyan: Ciano
+        emerald: Smeraldo
+        fuchsia: Fucsia
+        green: Verde
         indigo: Indigo
         lime: Lime
-        orange: Orange
-        pink: Pink
-        purple: Purple
-        red: Red
-        rose: Rose
-        sky: Sky
-        teal: Teal
-        violet: Violet
-        yellow: Yellow
+        orange: Arancione
+        pink: Rosa
+        purple: Viola
+        red: Rosso
+        rose: Rosato
+        sky: Cielo
+        teal: Verde acqua
+        violet: Violetto
+        yellow: Giallo
       auto: Automatico
       auto_tooltip: Automatico (preferenza di sistema)
       dark: Scuro
@@ -36,16 +36,16 @@ it:
       light_tooltip: Modalità chiara
       neutrals: Tema
       neutrals_list:
-        brand: Brand
-        gray: Gray
-        mauve: Mauve
-        mist: Mist
-        neutral: Neutral
-        olive: Olive
-        slate: Slate
-        stone: Stone
+        brand: Marchio
+        gray: Grigio
+        mauve: Malva
+        mist: Nebbia
+        neutral: Neutro
+        olive: Oliva
+        slate: Ardesia
+        stone: Pietra
         taupe: Taupe
-        zinc: Zinc
+        zinc: Zinco
       neutrals_picker: Tema neutro
       schemes: Aspetto
       shortcut_badges: Badge di scorciatoia
