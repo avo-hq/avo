@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Avo
   module Services
     class URIService
@@ -23,10 +25,10 @@ module Avo
         return self if paths.blank?
 
         # Add the intermediary forward slash
-        @uri.path = @uri.path.concat("/") unless @uri.path.ends_with? "/"
+        @uri.path.concat("/") unless @uri.path.ends_with? "/"
 
         # Add the paths to the URI
-        @uri.merge!(path: @uri.path.concat(join_paths(paths)))
+        @uri[:path] = @uri.path.concat(join_paths(paths))
 
         self
       end
@@ -44,7 +46,7 @@ module Avo
         return self if params.blank?
 
         # Add the query params to the URI
-        @uri.merge!(query: [@uri.query, *params].compact.join("&"))
+        @uri[:query] = [@uri.query, *params].compact.join("&")
 
         self
       end
@@ -65,9 +67,7 @@ module Avo
 
       # Removes the forward slash if it's present at the start of the path
       def sanitize_path(path)
-        if path.to_s.starts_with? "/"
-          path = path[1..]
-        end
+        path = path[1..] if path.to_s.starts_with? "/"
 
         ERB::Util.url_encode path
       end

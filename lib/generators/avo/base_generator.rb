@@ -6,7 +6,7 @@ module Generators
       hide!
 
       def initialize(*args)
-        super(*args)
+        super
 
         # Don't output the version if requested so
         unless args.include?(["--skip-avo-version"])

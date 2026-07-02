@@ -4,7 +4,7 @@ class Avo::ResourceTools::SidebarTool < Avo::BaseResourceTool
   def initialize(**args)
     @render_panel = args[:render_panel]
 
-    super(**args)
+    super
   end
 
   self.name = "Sidebar tool"

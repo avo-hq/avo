@@ -2,7 +2,7 @@ module Avo
   module Fields
     class StatusField < BaseField
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         @loading_when = args[:loading_when].present? ? [args[:loading_when]].flatten.map(&:to_sym) : []
         @failed_when = args[:failed_when].present? ? [args[:failed_when]].flatten.map(&:to_sym) : []

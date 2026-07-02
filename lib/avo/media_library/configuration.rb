@@ -1,7 +1,6 @@
 module Avo
   module MediaLibrary
     class Configuration
-
       class_attribute :visible, default: true
       class_attribute :enabled, default: false
 

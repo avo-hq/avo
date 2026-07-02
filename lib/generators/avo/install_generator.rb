@@ -30,7 +30,7 @@ module Generators
         end
 
         if defined?(Account) && Account.is_a?(ActiveRecord::Base)
-          Rails::Generators.invoke("avo:resource", ["account", "-q"], {destination_root: Rails.root })
+          Rails::Generators.invoke("avo:resource", ["account", "-q"], {destination_root: Rails.root})
         end
       end
     end

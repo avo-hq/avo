@@ -61,8 +61,8 @@ module Avo
         search_query_undefined = error_payload(
           header: "⚠️ Warning ⚠️",
           help: "",
-          _label: "Search is disabled for #{resource}.\n To enable it please use this guide...",
-          _url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
+          label: "Search is disabled for #{resource}.\n To enable it please use this guide...",
+          url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
         )
 
         return [key, search_query_undefined]
@@ -235,8 +235,8 @@ module Avo
     end
 
     def error_payload(
-      _label:,
-      _url: "",
+      label:,
+      url: "",
       header: "🚨 An error occurred during search 🚨",
       help: "Please review and resolve the issue before deployment 🚨"
     )
@@ -244,8 +244,8 @@ module Avo
         header:,
         help:,
         results: {
-          _label:,
-          _url:,
+          _label: label,
+          _url: url,
           _error: true
         },
         count: 1
