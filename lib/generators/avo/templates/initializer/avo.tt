@@ -133,7 +133,7 @@ Avo.configure do |config|
   # config.field_wrapper_layout = true
   # config.resource_parent_controller = "Avo::ResourcesController"
   # config.first_sorting_option = :desc # :desc or :asc
-  # config.exclude_from_status = [] # show the license key on the status page (hidden by default)
+  # config.exclude_from_status = ["license_key"]
   # config.model_generator_hook = true
 
   ## == Appearance ==
