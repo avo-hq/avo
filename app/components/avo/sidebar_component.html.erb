@@ -63,13 +63,12 @@
       </div>
     </div>
     <div class="sidebar__footer">
-      <% if Rails.env.development? %>
+      <% if can_access_private_status? %>
         <div class="sidebar-status">
           <%= link_to helpers.avo.avo_private_status_path, class: "sidebar-status__link" do %>
             <span>Avo Status</span>
             <span><div class="sidebar-status__indicator <%= Avo.app_status ? "sidebar-status__indicator--ok" : "sidebar-status__indicator--error" %>"></div></span>
           <% end %>
-          <div class="sidebar-status__hint">👆Visible only in development👆</div>
         </div>
       <% end %>
       <%= render Avo::SidebarProfileComponent.new user: helpers._current_user %>
