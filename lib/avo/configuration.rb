@@ -187,7 +187,7 @@ module Avo
       @is_developer_method = :is_developer?
       @search_results_count = 8
       @first_sorting_option = :desc # :desc or :asc
-      @exclude_from_status = []
+      @exclude_from_status = ["license_key"]
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
