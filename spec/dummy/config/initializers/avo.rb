@@ -12,7 +12,6 @@ Avo.configure do |config|
 
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]
-  config.exclude_from_status = ["license_key"]
 
   ## == App context ==
   config.current_user_method = :current_user
