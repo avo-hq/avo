@@ -64,7 +64,7 @@
     "luxon": "^3.7.2",
     "mapbox-gl": "1.13.3",
     "mapkick": "^0.2.6",
-    "postcss": "^8.5.15",
+    "postcss": "^8.5.16",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
     "postcss-loader": "^7.3.4",
