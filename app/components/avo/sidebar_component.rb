@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::SidebarComponent < Avo::BaseComponent
+  include Avo::Concerns::PrivateAccess
+
   prop :sidebar_open, default: false
   prop :for_mobile, default: false
 

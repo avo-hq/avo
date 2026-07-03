@@ -12,6 +12,7 @@ module Avo
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
     include Avo::Concerns::FindAssociationField
+    include Avo::Concerns::PrivateAccess
 
     protect_from_forgery with: :exception
     before_action :decode_params
@@ -300,13 +301,6 @@ module Avo
       else
         "avo/application"
       end
-    end
-
-    def authenticate_developer_or_admin!
-      # We don't care about this in development
-      return if Rails.env.development?
-
-      raise_404 unless Avo::Current.user_is_developer? || Avo::Current.user_is_admin?
     end
 
     def raise_404
