@@ -221,7 +221,8 @@ module Avo
         current_user: args[:current_user],
         resource: args[:resource],
         records: args[:query],
-        query: args[:query]
+        query: args[:query],
+        request: args[:request]
       )
 
       self
