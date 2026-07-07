@@ -56,7 +56,8 @@ module Avo
         fields: @fields,
         current_user: _current_user,
         resource: @resource,
-        query: @query
+        query: @query,
+        request: request
       )
 
       @response = performed_action.response

@@ -86,6 +86,7 @@ class Avo::Resources::User < Avo::BaseResource
   def actions
     action Avo::Actions::ToggleInactive, icon: "tabler/outline/world-map"
     action Avo::Actions::ToggleAdmin
+    action Avo::Actions::ShowRequestPath
     divider label: "Other actions"
     action Avo::Actions::Sub::DummyAction
     action Avo::Actions::DownloadFile, icon: "tabler/outline/arrow-left"
