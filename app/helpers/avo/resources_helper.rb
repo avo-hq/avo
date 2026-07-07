@@ -28,15 +28,6 @@ module Avo
     alias_method :edit_field_wrapper, :field_wrapper
     alias_method :show_field_wrapper, :field_wrapper
 
-    def filter_wrapper(name: nil, index: nil, **args, &block)
-      render layout: "layouts/avo/filter_wrapper", locals: {
-        name: name,
-        index: index
-      } do
-        capture(&block)
-      end
-    end
-
     def item_selector_data_attributes(resource, controller: "")
       {
         resource_name: resource.model_key,

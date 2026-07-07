@@ -22,7 +22,20 @@
           <div class="filters-card__content">
             <div class="divide-y divide-secondary">
               <% @filters.each do |filter| %>
-                <%= render partial: filter.class.template, locals: {filter: filter} %>
+                <div class="filters-section">
+                  <div class="filters-section__title">
+                    <%= filter.name %>
+                    <% if Rails.env.development? %>
+                      <%= render Avo::DiscreetInformationComponent.new(
+                        as: :icon,
+                        url: helpers.editor_file_path(filter),
+                        icon: "tabler/outline/code",
+                        title: t("avo.open_in_your_editor")
+                      ) %>
+                    <% end %>
+                  </div>
+                  <%= render partial: filter.class.template, locals: {filter: filter} %>
+                </div>
               <% end %>
             </div>
           </div>
