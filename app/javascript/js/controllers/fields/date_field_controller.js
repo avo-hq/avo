@@ -86,6 +86,12 @@ export default class extends Controller {
     return this.timezoneValue || this.browserZone
   }
 
+  // Locale from the <html lang> attribute so Luxon tokens like `cccc` translate.
+  // Luxon reads locale data from the browser's native Intl API, so no locale files are bundled.
+  get locale() {
+    return document.documentElement.lang || 'en'
+  }
+
   connect() {
     // Cache the initial value so we can fill it back on disconnection.
     // We do that so the JS parser will continue to work when the user hits the back button to return on this page.
@@ -125,7 +131,7 @@ export default class extends Controller {
       }
     }
 
-    this.context.element.innerText = value.toFormat(this.formatValue)
+    this.context.element.innerText = value.toFormat(this.formatValue, { locale: this.locale })
   }
 
   initEdit() {
