@@ -129,7 +129,7 @@ module Avo
     end
 
     def app_status
-      true
+      :ok
     end
 
     def avo_dynamic_filters_installed?

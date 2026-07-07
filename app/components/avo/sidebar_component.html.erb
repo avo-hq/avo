@@ -67,7 +67,7 @@
         <div class="sidebar-status">
           <%= link_to helpers.avo.avo_private_status_path, class: "sidebar-status__link" do %>
             <span>Avo Status</span>
-            <span><div class="sidebar-status__indicator <%= Avo.app_status ? "sidebar-status__indicator--ok" : "sidebar-status__indicator--error" %>"></div></span>
+            <span><div class="sidebar-status__indicator sidebar-status__indicator--<%= Avo.app_status %>"></div></span>
           <% end %>
         </div>
       <% end %>
