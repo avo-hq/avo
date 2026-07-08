@@ -126,13 +126,22 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_actions_list(actions_list)
     return unless can_see_the_actions_button?
 
-    # `as_row_control` hydrates each action with the current record (needed for both
-    # index rows and the single-record show/edit headers).
-    as_row_control = @item.present?
-
     # Inside an index table row the hotkey must be managed by the index-row-navigator
     # (data-hotkey-original); page-level headers use a plain data-hotkey.
     as_index_row_control = row_controls_context?
+
+    # `as_row_control` hydrates each action with the current record (needed for both
+    # index rows and the single-record show/edit headers). @item is only ever set for
+    # the show/edit field-panel switcher, so it's blank for index rows -- fall back to
+    # row_controls_context? there so per-row actions_list entries get hydrated too.
+    as_row_control = @item.present? || as_index_row_control
+
+    # @actions is built once by the controller's set_actions, before any row exists
+    # (its @resource.record is nil there), so a `visible` block that inspects the
+    # record can't tell rows apart -- and since set_actions already dropped the
+    # non-visible ones, there's nothing left downstream to recover them from. Rebuild
+    # the list fresh from this row's own hydrated resource instead of reusing it.
+    actions = as_index_row_control ? row_actions : @actions
 
     # Actions button hotkey "a" on the main index, show and edit pages (non-nested,
     # not an index row). The index component doesn't carry a @view, so detect it by
@@ -143,7 +152,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     )
 
     render Avo::ActionsComponent.new(
-      actions: @actions,
+      actions:,
       resource: @resource,
       view: @view,
       exclude: actions_list.exclude,
@@ -159,6 +168,12 @@ class Avo::ResourceComponent < Avo::BaseComponent
       as_index_row_control:,
       hotkey: hotkey
     )
+  end
+
+  def row_actions
+    @resource.get_actions
+      .map { |action_bag| action_bag[:class].new(record: @resource.record, resource: @resource, view: @view, **action_bag.except(:class)) }
+      .select { |action| action.is_a?(Avo::Divider) || action.visible_in_view(parent_resource: @parent_resource) }
   end
 
   def render_delete_button(control)
