@@ -9,16 +9,16 @@ gemspec
 # =============================================================================
 # RAILS & CORE DEPENDENCIES
 # =============================================================================
-gem "rails", ">= 8.0.0"
+gem "rails", ">= 8.1.0"
 # gem "rails", github: "rails/rails", branch: "main"
 
 # ActiveStorage for file uploads
-gem "activestorage", ">= 8.0.0"
+gem "activestorage", ">= 8.1.0"
 
 # Asset pipeline
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "sprockets-rails"
+gem "propshaft"
 
 # =============================================================================
 # DATABASE & ORM
@@ -28,7 +28,7 @@ gem "pg", ">= 0.18", "< 2.0"
 # =============================================================================
 # SERVER & DEPLOYMENT
 # =============================================================================
-gem "puma", "~> 6.4"
+gem "puma", "~> 8.0"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "redis", "~> 5.0"
 
@@ -66,7 +66,7 @@ gem "zeitwerk"
 gem "iso"
 gem "addressable"
 gem "acts_as_list"
-gem "acts-as-taggable-on", "~> 12.0"
+gem "acts-as-taggable-on", ">= 12.0"
 gem "bundler-integrity", "~> 1.0"
 gem "countries"
 gem "image_processing", "~> 1.12"
@@ -74,7 +74,7 @@ gem "prefixed_ids"
 gem "hashid-rails", "~> 1.4", ">= 1.4.1"
 gem "money-rails", "~> 1.12"
 gem "csv"
-gem "view_component", "4.0.0"
+gem "view_component", ">= 4.9.0"
 
 # =============================================================================
 # AWS & CLOUD SERVICES
@@ -118,8 +118,12 @@ group :development do
 
   # Development console & debugging
   gem "web-console", ">= 3.3.0"
+  # Required by lookbook for livereload
   gem "listen", ">= 3.5.1"
-  gem "debug", platforms: [:mri, :mingw, :x64_mingw]
+  gem "actioncable"
+  gem "debug", platforms: [:mri, :windows]
+
+  gem "ruby-lsp-rspec", require: false
 
   # Uncomment for performance profiling
   # gem "rack-mini-profiler"
@@ -137,6 +141,7 @@ group :test do
   gem "rspec-rails", "~> 6.0", ">= 6.0.3"
   gem "rspec-retry", "~> 0.6.2"
   gem "rails-controller-testing"
+  gem "parallel_tests"
 
   # Browser testing
   gem "capybara"
@@ -157,6 +162,11 @@ group :test do
   # Performance testing
   gem "test-prof"
   gem "database_cleaner-active_record"
+
+  # A11y
+  gem "selenium-webdriver"
+  gem "axe-core-rspec"
+  gem "axe-core-capybara"
 end
 
 # =============================================================================
@@ -167,12 +177,15 @@ group :development, :test do
   gem "amazing_print"
   gem "dotenv-rails"
 
+  # CI automation & code review
+  gem "danger", require: false
+
   # Test data & factories
   gem "faker", require: false
   gem "factory_bot_rails"
 
   # Code quality & linting
-  gem "i18n-tasks", "~> 1.0.12"
+  gem "i18n-tasks", ">= 1.0.12"
   gem "erb-formatter", require: false
   gem "erb_lint", require: false
 
@@ -185,10 +198,15 @@ group :development, :test do
 
   # Build & dependency management
   gem "appraisal", require: false
+
+  gem "openssl"
+
+  # Component documentation & preview
+  gem "lookbook", ">= 2.3.8"
 end
 
 # =============================================================================
 # PLATFORM SPECIFIC
 # =============================================================================
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "tzinfo-data", platforms: [:windows, :jruby]

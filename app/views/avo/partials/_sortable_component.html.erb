@@ -1,17 +1,17 @@
 <%
-  icon = "avo/selector"
+  icon = "tabler/outline/selector"
 
   if params[:sort_by] == field.id.to_s
     case params[:sort_direction]
       when 'asc'
-        icon = "avo/sort-ascending"
+        icon = "tabler/outline/sort-ascending"
       when 'desc'
-        icon = "avo/sort-descending"
+        icon = "tabler/outline/sort-descending"
       end
   end
 %>
 <%= svg icon,
-  class: 'inline-block fill-current text-gray-500 relative leading-none min-w-[1rem] min-h-full ml-1 h-4',
+  class: 'inline-block fill-current text-gray-500 relative leading-none min-w-[1rem] min-h-full ms-1 h-4',
   data: {
     tippy: :tooltip,
     tippy_content: sort_tippy_content

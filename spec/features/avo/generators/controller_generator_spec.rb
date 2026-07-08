@@ -1,7 +1,7 @@
 require "rails_helper"
 require "rails/generators"
 
-RSpec.feature "controller generator", type: :feature do
+RSpec.feature "controller generator", type: :feature, acquire_lock: :generator do
   it "generates the files" do
     file = Rails.root.join("app", "controllers", "avo", "cats_controller.rb").to_s
 

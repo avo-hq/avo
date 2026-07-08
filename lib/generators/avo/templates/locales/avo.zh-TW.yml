@@ -5,6 +5,54 @@ zh-TW:
     actions: 操作
     add_filter: 新增篩選器
     and_x_other_resources: 和 %{count} 個其他資源
+    appearance:
+      accent_picker: 重點顏色
+      accents: 重點色
+      accents_list:
+        amber: 琥珀
+        blue: 藍色
+        brand: 品牌
+        cyan: 青色
+        emerald: 祖母綠
+        fuchsia: 品紅
+        green: 綠色
+        indigo: 靛藍
+        lime: 青檸
+        orange: 橙色
+        pink: 粉色
+        purple: 紫色
+        red: 紅色
+        rose: 玫瑰
+        sky: 天藍
+        teal: 藍綠
+        violet: 紫羅蘭
+        yellow: 黃色
+      auto: 自動
+      auto_tooltip: 自動（系統偏好）
+      dark: 深色
+      dark_tooltip: 深色模式
+      hide: 隱藏
+      light: 淺色
+      light_tooltip: 淺色模式
+      neutrals: 主題
+      neutrals_list:
+        brand: 品牌
+        gray: 灰色
+        mauve: 淡紫
+        mist: 薄霧
+        neutral: 中性
+        olive: 橄欖
+        slate: 石板
+        stone: 石色
+        taupe: 灰褐
+        zinc: 鋅色
+      neutrals_picker: 中性色主題
+      schemes: 外觀
+      shortcut_badges: 快捷鍵徽章
+      shortcut_badges_hide_tooltip: 隱藏鍵盤快捷鍵徽章
+      shortcut_badges_show_tooltip: 顯示鍵盤快捷鍵徽章
+      show: 顯示
+      title: 外觀
     applied: 已應用
     are_you_sure: 您確定嗎？
     are_you_sure_detach_item: 您確定要分離此 %{item} 嗎？
@@ -17,16 +65,22 @@ zh-TW:
     attachment_destroyed: 附件已刪除
     attachment_failed: 無法附加 %{attachment_class}
     cancel: 取消
+    checkbox_list:
+      hidden_selections:
+        one: 1 個選項因搜尋而隱藏
+        other: "%{count} 個選項因搜尋而隱藏"
     choose_a_country: 選擇一個國家
     choose_an_option: 選擇一個選項
     choose_item: 選擇 %{item}
     clear_value: 清除值
+    click_to_load: 點擊以加載
     click_to_reveal_filters: 點擊以顯示篩選器
     close: 關閉
     close_modal: 關閉模態框
     confirm: 確認
     copy: 複製
     create_new_item: 新增 %{item}
+    created_at: 建立於
     created_at_timestamp: 建立於%{created_at}
     dashboard: 儀表板
     dashboards: 儀表板
@@ -45,12 +99,30 @@ zh-TW:
     failed: 失敗
     failed_to_find_attachment: 找不到附件
     failed_to_load: 載入失敗
+    failed_to_load_item: 加載 %{item} 失敗
     'false': 假
     file:
       one: 檔案
       other: 檔案
     filter_by: 按...篩選
     filters: 篩選器
+    global_search:
+      empty_state:
+        no_results_for_query: 我們找不到任何與 "%{query}" 匹配的內容
+        no_results_found: 未找到結果
+        start_typing: 開始輸入以搜尋
+        start_typing_with_resource_list: 您可以在 %{resources} 上搜尋
+        start_typing_with_resources: 您可以在 %{resources} %{other_resources} 上搜尋
+        try_adjusting_search: 嘗試調整您的搜索條件或檢查拼寫錯誤
+      go_to: 前往
+      keyboard_hints:
+        close: 關閉
+        navigate: 導航
+        press: 按下
+        select: 選擇
+      results:
+        count_of_total: "%{count} / %{total}"
+      show_all_results_for: 顯示所有結果
     go_back: 返回
     grid_view: 網格視圖
     hide_content: 隱藏內容
@@ -63,6 +135,7 @@ zh-TW:
       value: 值
     less_content: 內容較少
     list_is_empty: 清單為空
+    load_item: 加載 %{item}
     loading: 載入中...
     media_library:
       title: 媒體庫
@@ -84,15 +157,22 @@ zh-TW:
       other: "%{count} 個 %{item}"
       zero: 沒有 %{item}
     oops_nothing_found: 哎呀！什麼都沒找到...
+    open_in_new_tab: 在新分頁中開啟
+    open_in_your_editor: 在您的編輯器中打開
     order:
       higher: 將記錄上移
       lower: 將記錄下移
       reorder_record: 重新排序記錄
       to_bottom: 將記錄移至底部
       to_top: 將記錄移至頂部
+    pages: 頁面
     per_page: 每頁顯示
     prev_page: 上一頁
+    record:
+      one: 筆記錄
+      other: 筆記錄
     records_selected_from_all_pages_html: 所有頁面中選中的記錄
+    reload: 重新載入
     remove_selection: 清除選擇
     reset: 重置
     reset_filters: 重置篩選器
@@ -100,6 +180,9 @@ zh-TW:
     resource_destroyed: 記錄已刪除
     resource_updated: 記錄已更新
     resources: 資源
+    retry: 重試
+    retry_item: 重試 %{item}
+    reupload_file: Reupload %{item}
     run: 執行
     save: 保存
     search:
@@ -110,6 +193,8 @@ zh-TW:
     select_item: 選擇項目
     show_content: 顯示內容
     sign_out: 登出
+    skip_to_content: 跳至內容
+    skip_to_sidebar: 跳到側邊欄
     sort_asc: 升冪排序
     sort_desc: 降冪排序
     sort_reset: 重置排序
@@ -121,6 +206,7 @@ zh-TW:
     type_to_search: 輸入以搜尋。
     unauthorized: 未經授權
     undo: 復原
+    updated_at: 更新於
     updated_at_timestamp: 更新於%{updated_at}
     view: 檢視
     view_item: 檢視 %{item}
@@ -131,9 +217,9 @@ zh-TW:
       one: 另外一個項目
       other: "%{count} 個其他項目"
       zero: 沒有其他項目
-    x_records_selected_from_a_total_of_x_html: 本頁面共選擇了 <span class="font-bold text-gray-700">%{selected}</span> 筆記錄，所有頁面共有 <span class="font-bold text-gray-700">%{count}</span> 筆記錄
-    x_records_selected_from_all_pages_html: 從所有頁面中選中了 <span class="font-bold text-gray-700">%{count}</span> 筆記錄
-    x_records_selected_from_page_html: 在本頁中共選擇了 <span class="font-bold text-gray-700">%{selected}</span> 筆記錄
+    x_records_selected_from_a_total_of_x_html: 本頁面共選擇了 <span class="font-bold">%{selected}</span> 筆記錄，所有頁面共有 <span class="font-bold">%{count}</span> 筆記錄
+    x_records_selected_from_all_pages_html: 從所有頁面中選中了 <span class="font-bold">%{count}</span> 筆記錄
+    x_records_selected_from_page_html: 在本頁中共選擇了 <span class="font-bold">%{selected}</span> 筆記錄
     yes_confirm: 是的，確認
     you_cant_upload_new_resource: 在保存資源之前，您無法將檔案上傳到 Trix 編輯器。
     you_havent_set_attachment_key: 您尚未為此 Trix 欄位設定 `attachment_key`。

@@ -1,0 +1,55 @@
+<%
+  preview_action = ->(label) do
+    # Use a real focusable control so Tab / :focus-visible work in Lookbook (divs are skipped).
+    button_tag type: "button", class: "dropdown-menu__item menu__item--action" do
+      safe_join [
+        svg("tabler/outline/plus", class: "dropdown-menu__icon menu__item__icon--action"),
+        content_tag(:span, label)
+      ]
+    end
+  end
+
+  preview_body = ->(text) do
+    content_tag(:div, class: "flex min-h-64 items-center justify-center") do
+      text
+    end
+  end
+%>
+
+<div class="w-full max-w-6xl">
+  <div class="grid w-full grid-cols-[repeat(auto-fit,minmax(min(100%,247px),1fr))] gap-4">
+
+    <%# Header + body + footer %>
+    <div class="min-w-0 w-full">
+      <%= render Avo::UI::DropdownCardComponent.new do |c| %>
+        <% c.with_header { preview_action.("Header item") } %>
+        <% c.with_body { preview_body.("With Header and Footer") } %>
+        <% c.with_footer { preview_action.("Footer item") } %>
+      <% end %>
+    </div>
+
+    <%# Header + body only %>
+    <div class="min-w-0 w-full">
+      <%= render Avo::UI::DropdownCardComponent.new do |c| %>
+        <% c.with_header { preview_action.("Header item") } %>
+        <% c.with_body { preview_body.("Header only") } %>
+      <% end %>
+    </div>
+
+    <%# Footer + body only %>
+    <div class="min-w-0 w-full">
+      <%= render Avo::UI::DropdownCardComponent.new do |c| %>
+        <% c.with_body { preview_body.("Footer only") } %>
+        <% c.with_footer { preview_action.("Footer item") } %>
+      <% end %>
+    </div>
+
+    <%# Body only %>
+    <div class="min-w-0 w-full">
+      <%= render Avo::UI::DropdownCardComponent.new do |c| %>
+        <% c.with_body { preview_body.("No header or footer") } %>
+      <% end %>
+    </div>
+
+  </div>
+</div>

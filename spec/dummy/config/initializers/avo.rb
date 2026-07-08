@@ -12,7 +12,6 @@ Avo.configure do |config|
 
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]
-  config.exclude_from_status = ["license_key"]
 
   ## == App context ==
   config.current_user_method = :current_user
@@ -30,13 +29,22 @@ Avo.configure do |config|
   end
   config.locale = :en
   # config.raise_error_on_missing_policy = true
+  config.authorization_client = nil
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"
   # Shouldn't impact on community only if custom authorization service was configured.
   config.explicit_authorization = true
 
+  # config.associations = {
+  #   frames: {
+  #     loading: :manual,
+  #     # auto_load_for: 15.minutes
+  #   }
+  # }
+
   ## == Customization ==
   config.id_links_to_resource = true
-  config.full_width_container = false
+  # config.container_width = :small
+  config.use_stacked_fields = false
   config.buttons_on_form_footers = false
   config.resource_default_view = :show
   config.search_debounce = 300
@@ -47,29 +55,103 @@ Avo.configure do |config|
     instant_click: true
   }
 
-  ## == Branding ==
-  config.branding = {
-    colors: {
-      # background: "#FFFCF9", # basecamp
-      # background: "#F6F6F7", # original
-      # background: "#FBF7F0", # hotwire
-      # background: "248 246 242", # cookpad
-      # BLUE
-      100 => "#CEE7F8",
-      400 => "#399EE5",
-      500 => "#0886DE",
-      600 => "#066BB2",
-      # # ORANGE
-      # 100 => "#FFECCC",
-      # 400 => "#FFB435",
-      # 500 => "#FFA102",
-      # 600 => "#CC8102",
+  # config.resource_row_controls_config = {
+  #   placement: :right,
+  #   float: true,
+  #   show_on_hover: true
+  # }
+
+  config.sidebar_toggle_visible = true
+
+  # config.hotkeys = {
+  #   enabled: true,
+  #   # show_key_badges: true
+  # }
+
+  ## == Appearance ==
+  config.appearance = {
+    picker_layout: :inline, # :inline (default, with mobile auto-collapse) or :dropdown (always compact)
+    logo: "avo/logo.png",
+    logo_dark: "avo/logo-dark.png",
+    logomark: "avo/logomark.png",
+    logomark_dark: "avo/logomark-dark.png",
+    favicon: "avo/favicon.ico",
+    favicon_dark: "avo/favicon-dark.ico",
+    # scheme: :dark, # :auto, :light, :dark
+    # neutral: :olive, # :brand, :slate, :stone or any other tailwind color name
+    # accent: :blue, # :neutral, :red, :orange, or any other tailwind color name
+    # lock: [:neutral], # [:scheme, :neutral, :accent]
+    # neutrals: %w[brand mist olive],
+    # accents: %w[brand red orange pink rose],
+    # Override the brand neutral and accent palettes. Both keys are independent —
+    # set one, the other, both, or neither. A single palette is applied in both
+    # light and dark mode (matching the built-in `.neutral-theme-*` /
+    # `.accent-theme-*` classes).
+    # All 12 shades are required for `neutral_colors`; all three tokens for `accent_colors`.
+    # Values are passed through verbatim — any string a CSS custom property
+    # accepts works (`oklch(...)`, `#hex`, `rgb(...)`, `hsl(...)`, `var(...)`).
+    # Comment this block out to see Avo's defaults instead.
+    # neutral_colors: {
+    #   25 => "oklch(98.5% 0.005 60)",
+    #   50 => "oklch(97%   0.008 60)",
+    #   100 => "oklch(93%   0.012 60)",
+    #   200 => "oklch(86%   0.015 60)",
+    #   300 => "oklch(76%   0.015 60)",
+    #   400 => "oklch(63%   0.014 60)",
+    #   500 => "oklch(53%   0.013 60)",
+    #   600 => "oklch(48%   0.012 60)",
+    #   700 => "oklch(43%   0.011 60)",
+    #   800 => "oklch(39%   0.010 60)",
+    #   900 => "oklch(28%   0.008 60)",
+    #   950 => "oklch(20%   0.005 60)"
+    # },
+    # accent_colors: {
+    #   color: "oklch(55% 0.2 280)",
+    #   content: "oklch(45% 0.2 280)",
+    #   foreground: "oklch(99% 0 0)"
+    # },
+    persistence: :database, # :database or :cookie
+    load_settings: -> {
+      appearance = Avo.configuration.appearance
+      current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {
+        color_scheme: appearance.scheme.to_s,
+        neutral: appearance.neutral&.to_s,
+        accent: appearance.accent&.to_s
+      }
     },
-    # chart_colors: ['#FFB435', "#FFA102", "#CC8102", '#FFB435', "#FFA102", "#CC8102"],
-    logo: "/avo-assets/logo.png",
-    logomark: "/avo-assets/logomark.png",
-    # placeholder: "/avo-assets/placeholder.svg",
+    save_settings: -> {
+      next unless current_user
+
+      current_user.update!(
+        avo_preferences: current_user.avo_preferences.to_h.deep_merge(
+          "appearance" => settings.stringify_keys
+        )
+      )
+    }
   }
+
+  # `lock:` accepts any subset of [:scheme, :neutral, :accent].
+  # - A key in `lock:` hides its switcher and forces the configured value.
+  # - Anything not in `lock:` is exposed as a switcher, with the configured value as default.
+  # - `persistence:` (`:cookie` | `:database`) controls where unlocked user picks are stored.
+
+  # on static mode:
+  #   - if the scheme is set, we force the scheme and not show the scheme switcher
+  #   - if the scheme is not set, we show the scheme switcher and default to auto. the user may choos eit and we save it in the cookies
+  #   - if the neutral is set, we force the neutral and not show the neutral switcher
+  #   - if the accent is set, we force the accent and not show the accent switcher
+  #   - if neutral and accent aren't set, we show the neutral and accent switchers and default to neutral and blue. the user may choose either and we save it in the cookies
+  # on dynamic mode:
+  #   - we show the scheme switcher
+  #   - we store the scheme in the database
+  #   - we store the neutral and accent in the database
+  #   - we store the mode in the database
+  #   - we store the logo in the database
+  #   - we store the logomark in the database
+  #   - we store the favicon in the database
+  # on dynamic mode (:database):
+  #   - PATCH /appearance_settings sends a partial JSON body (only scheme, neutral, or accent changed).
+  #   - merge `settings` in `save_settings`; load the full hash in `load_settings`.
 
   # Uncomment to test out manual resource loading.
   # config.resources = [
@@ -77,9 +159,13 @@ Avo.configure do |config|
   #   "Avo::Resources::Fish"
   # ]
 
-  config.alert_dismiss_time = 5000
+  # https://linear.app/avo-hq/issue/AVO-630/add-support-for-ruby-340-and-remove-ruby-314-from-test-matrix
+  # Not sure why yet but this is needed to make the test pass
+  # ./spec/system/avo/alert_backtrace_spec.rb:21 will not show the alert if the time is 5000
+  # only with version rails 8.0.2 and ruby 3.4.5
+  # and also only on test environment, in dev it works fine
+  config.alert_dismiss_time = Rails.env.test? ? 10000 : 5000
   config.search_results_count = 8
-  config.associations_lookup_list_limit = 1000
 
   ## == Menus ==
   if Rails.env.test?
@@ -89,7 +175,7 @@ Avo.configure do |config|
   end
   # end
   # config.profile_menu = -> do
-  #   link "Profile", path: "/profile", icon: "heroicons/outline/user-circle"
+  #   link "Profile", path: "/profile", icon: "tabler/outline/user-circle"
   #   # link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post, params: {hehe: :hoho}
   # end
 

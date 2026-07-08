@@ -1,42 +1,62 @@
 <div data-controller="toggle" data-toggle-exemption-containers-value='[".flatpickr-calendar"]' data-component-name="<%= self.class.to_s.underscore %>">
-  <div class="relative w-full flex justify-between">
-    <%= a_button class: 'focus:outline-none',
-      color: :primary,
-      size: :sm,
-      icon: "avo/filter",
+  <div class="filters__bar">
+    <%= a_button style: :outline,
+      icon: "tabler/outline/filter",
       title: t('avo.click_to_reveal_filters'),
       'data-button': 'resource-filters',
       'data-action': 'click->toggle#togglePanel',
       'data-tippy': 'tooltip' do %>
       <%= t 'avo.filters' %>
-      <% if @applied_filters.present? %>
-        <span class="ml-1">(<%= "#{@applied_filters.count} #{t('avo.applied', count: @applied_filters.count)}" %>)</span>
+      <% if applied_filters_count.positive? %>
+        <%= render Avo::UI::CountComponent.new(count: applied_filters_count, classes: "ms-1") %>
       <% end %>
     <% end %>
-    <div
-      class="absolute block inset-auto sm:right-0 top-full bg-white min-w-[300px] mt-2 z-40 shadow-modal rounded divide-y divide-gray-300 <%= 'hidden' unless params[:keep_filters_panel_open] == '1' %>"
-      data-toggle-target="panel"
-      data-transition-enter="transition ease-out duration-100"
-      data-transition-enter-start="transform opacity-0 -translate-y-1"
-      data-transition-enter-end="transform opacity-100 translate-y-0"
-      data-transition-leave="transition ease-in duration-75"
-      data-transition-leave-start="transform opacity-100 translate-y-0"
-      data-transition-leave-end="transform opacity-0 -translate-y-1"
-    >
-      <% @filters.each do |filter| %>
-        <%= render partial: filter.class.template, locals: {filter: filter} %>
-      <% end %>
-      <div class="p-4 border-gray-300 border-t">
-        <% if @applied_filters.present? %>
-          <%= a_link reset_path, data: {turbo_frame: params[:turbo_frame]}, color: :gray, size: :sm, class: 'w-full justify-center' do %>
-            <%= t('avo.reset_filters') %>
-          <% end %>
-        <% else %>
-          <%= a_button class: 'w-full justify-center', disabled: true do %>
+    <%= tag.div class: 'filters__panel css-animate-slide-down',
+      data: {toggle_target: 'panel'},
+      hidden: params[:keep_filters_panel_open] != '1' do %>
+      <%= render Avo::UI::DropdownCardComponent.new do |card| %>
+        <% card.with_header do %>
+          <span class="dropdown-card__title"><%= t('avo.filters') %></span>
+        <% end %>
+        <% card.with_body do %>
+          <div class="filters-card__content">
+            <div class="divide-y divide-secondary">
+              <% @filters.each do |filter| %>
+                <div class="filters-section">
+                  <div class="filters-section__title">
+                    <%= filter.name %>
+                    <% if Rails.env.development? %>
+                      <%= render Avo::DiscreetInformationComponent.new(
+                        as: :icon,
+                        url: helpers.editor_file_path(filter),
+                        icon: "tabler/outline/code",
+                        title: t("avo.open_in_your_editor")
+                      ) %>
+                    <% end %>
+                  </div>
+                  <%= render partial: filter.class.template, locals: {filter: filter} %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% card.with_footer do %>
+          <% reset_disabled = @applied_filters.blank? %>
+          <%= a_link(reset_disabled ? "#" : reset_path,
+            style: :text,
+            size: :sm,
+            title: t('avo.reset_filters'),
+            aria: {disabled: reset_disabled},
+            tabindex: (reset_disabled ? -1 : nil),
+            data: {
+              turbo_frame: params[:turbo_frame],
+              **(reset_disabled ? {disabled: true} : {})
+            },
+            class: class_names("w-full", "button--disabled": reset_disabled)) do %>
             <%= t('avo.reset_filters') %>
           <% end %>
         <% end %>
-      </div>
-    </div>
+      <% end %>
+    <% end %>
   </div>
 </div>

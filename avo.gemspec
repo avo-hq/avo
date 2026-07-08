@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.name = "avo"
   spec.version = Avo::VERSION
   spec.authors = ["Adrian Marin", "Mihai Marin", "Paul Bob"]
-  spec.email = ["avo@avohq.io"]
+  spec.email = ["hi@avohq.io"]
   spec.homepage = "https://avohq.io"
   spec.summary = "Admin panel framework and Content Management System for Ruby on Rails."
   spec.description = "Avo is a very custom Content Management System for Ruby on Rails that saves engineers and teams months of development time by building user interfaces and logic using configuration rather than traditional coding; When configuration is not enough, you can fallback to familiar Ruby on Rails code."
@@ -31,13 +31,15 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.0.0"
   spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
-  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js"]
-  spec.files.reject! { |file_name| %w[application.js application.js.map app/assets/builds/avo.custom.js avo.custom.js.map].any? { |rejected_file| file_name.include? rejected_file } }
+  # NOTE: `public/` is rejected below — Avo 4 ships precompiled assets from
+  # `app/assets/builds`, and a stale `public/avo-assets` dir was what bloated some builds.
+  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js", "safelist.txt"]
+    .reject { |f| f.start_with?("public/") }
 
   spec.add_dependency "activerecord", ">= 6.1"
   spec.add_dependency "activesupport", ">= 6.1"
   spec.add_dependency "actionview", ">= 6.1"
-  spec.add_dependency "pagy", ">= 7.0.0", "< 43"
+  spec.add_dependency "pagy", ">= 43.0"
   spec.add_dependency "zeitwerk", ">= 2.6.12"
   spec.add_dependency "active_link_to"
   spec.add_dependency "view_component", ">= 3.7.0"

@@ -19,19 +19,19 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
   end
 
   def is_image?
-    file.image? || @field.is_image
+    file.image?
   rescue
     false
   end
 
   def is_audio?
-    file.audio? || @field.is_audio
+    file.audio?
   rescue
     false
   end
 
   def is_video?
-    file.video? || @field.is_video
+    file.video?
   rescue
     false
   end
@@ -51,9 +51,9 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
   def document_arguments
     args = {
       class: class_names(
-        "relative flex flex-col justify-evenly items-center px-2 rounded-lg border bg-white border-gray-500 min-h-24",
+        "relative flex flex-col justify-evenly items-center px-2 rounded-lg border bg-primary border-tertiary min-h-24",
         {
-          "hover:bg-gray-100 transition": file.representable?
+          "hover:bg-secondary transition": file.representable?
         }
       )
     }

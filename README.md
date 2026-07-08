@@ -17,7 +17,7 @@
 [![codecov](https://codecov.io/gh/avo-hq/avo/branch/master/graph/badge.svg?token=Q2LMFE4989)](https://codecov.io/gh/avo-hq/avo)
 [![Maintainability](https://api.codeclimate.com/v1/badges/676a0afa2cc79f03aa29/maintainability)](https://codeclimate.com/github/avo-hq/avo/maintainability)
 
-![](./public/avo-assets/logo-on-white.png)
+![](./app/assets/images/avo/logo-on-white.png)
 
 **<a href="https://avohq.io" title="Ruby on Rails Admin Panel Framework">Avo - Ruby on Rails Admin Panel Framework</a>**
 
@@ -64,7 +64,7 @@ Avo is a very custom Admin Panel Framework, Content Management System, and Inter
   - **Mobile interface** - Check your data on the go from any mobile device.
   - **Tabbed interface** - Conditionally show the data you need
   - **Menu builder** - Group and surface information as you need to
-  - **Branding** - Make it look
+  - **Appearance** - Make it look good
 
 ## Some of the things we're going to focus on next
 
@@ -128,3 +128,5 @@ Please read the [RELEASE.MD](./RELEASE.MD)
  - [`marksmith`](https://github.com/avo-hq/marksmith) - GitHub-style markdown editor for Ruby and Rails
  - [`prop_initializer`](https://github.com/avo-hq/prop_initializer) - A flexible tool for defining properties on Ruby classes.
  - [`stimulus-confetti`](https://github.com/avo-hq/stimulus-confetti) - The easiest way to add confetti to your StimulusJS app
+ - [`db_config`](https://github.com/avo-hq/db_config) - Database-backed configuration store for Rails with automatic type conversion, default values, and high-performance eager loading.
+ - [`jsonq`](https://github.com/avo-hq/jsonq) - Friendly JSON column queries for ActiveRecord

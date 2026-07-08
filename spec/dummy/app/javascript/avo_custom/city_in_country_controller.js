@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus'
 const LOADER_CLASSES = 'absolute bg-gray-100 opacity-10 w-full h-full'
 
 export default class extends Controller {
-  static targets = ['countrySelectInput', 'citySelectInput', 'citySelectWrapper'];
+  static targets = ['countrySelectInput', 'citySelectInput', 'citySelectWrapper']
 
   static values = {
     view: String,
@@ -34,6 +34,10 @@ export default class extends Controller {
   }
 
   async connect() {
+    if (this.viewValue !== 'edit') {
+      return
+    }
+
     this.captureTheInitialValue()
 
     // Trigger the change on load

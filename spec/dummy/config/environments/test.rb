@@ -6,7 +6,10 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.cache_classes = false
+  # Feature specs (Capybara) can span multiple requests; if classes reload between
+  # requests, ActiveRecord model equality (`record == other`) can become flaky
+  # because instances may belong to different class objects.
+  config.cache_classes = true
 
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that

@@ -5,9 +5,57 @@ de:
     actions: Aktionen
     add_filter: Filter hinzufügen
     and_x_other_resources: und %{count} weitere Ressourcen
+    appearance:
+      accent_picker: Akzentfarbe
+      accents: Akzent
+      accents_list:
+        amber: Bernstein
+        blue: Blau
+        brand: Marke
+        cyan: Cyan
+        emerald: Smaragd
+        fuchsia: Fuchsia
+        green: Grün
+        indigo: Indigo
+        lime: Limette
+        orange: Orange
+        pink: Pink
+        purple: Lila
+        red: Rot
+        rose: Rose
+        sky: Himmelblau
+        teal: Blaugrün
+        violet: Violett
+        yellow: Gelb
+      auto: Automatisch
+      auto_tooltip: Automatisch (Systemeinstellung)
+      dark: Dunkel
+      dark_tooltip: Dunkler Modus
+      hide: Ausblenden
+      light: Hell
+      light_tooltip: Heller Modus
+      neutrals: Thema
+      neutrals_list:
+        brand: Marke
+        gray: Grau
+        mauve: Malve
+        mist: Nebel
+        neutral: Neutral
+        olive: Oliv
+        slate: Schiefer
+        stone: Stein
+        taupe: Taupe
+        zinc: Zink
+      neutrals_picker: Neutrale Themen
+      schemes: Erscheinungsbild
+      shortcut_badges: Verknüpfungssymbole
+      shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
+      shortcut_badges_show_tooltip: Tastenkombinationssymbole anzeigen
+      show: Anzeigen
+      title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?
-    are_you_sure_detach_item: Sind Sie sicher, dass Sie dieses %{item} abhängen möchten?
+    are_you_sure_detach_item: Möchten Sie diesen Datensatz vom Typ %{item} wirklich abhängen?
     are_you_sure_you_want_to_run_this_option: Sind Sie sicher, dass Sie diese Aktion ausführen möchten?
     attach: Anhängen
     attach_and_attach_another: Anhängen und noch eins anhängen
@@ -17,16 +65,22 @@ de:
     attachment_destroyed: Anhang gelöscht
     attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
     cancel: Abbrechen
+    checkbox_list:
+      hidden_selections:
+        one: 1 ausgewählte Option durch die Suche ausgeblendet
+        other: "%{count} ausgewählte Optionen durch die Suche ausgeblendet"
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen
     choose_item: "%{item} auswählen"
     clear_value: Wert löschen
+    click_to_load: Klicken Sie hier, um zu laden
     click_to_reveal_filters: Klicken, um Filter anzuzeigen
     close: Schließen
     close_modal: Modal schließen
     confirm: Bestätigen
     copy: Kopieren
-    create_new_item: Neues %{item} erstellen
+    create_new_item: "%{item} hinzufügen"
+    created_at: Erstellt am
     created_at_timestamp: Erstellt am %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -45,12 +99,30 @@ de:
     failed: Fehlgeschlagen
     failed_to_find_attachment: Anhang nicht gefunden
     failed_to_load: Laden fehlgeschlagen
+    failed_to_load_item: Fehler beim Laden von %{item}
     'false': Falsch
     file:
       one: Datei
       other: Dateien
     filter_by: Filtern nach
     filters: Filter
+    global_search:
+      empty_state:
+        no_results_for_query: Wir konnten nichts finden, das "%{query}" entspricht
+        no_results_found: Keine Ergebnisse gefunden
+        start_typing: Beginnen Sie mit der Eingabe, um zu suchen
+        start_typing_with_resource_list: Sie können auf %{resources} suchen
+        start_typing_with_resources: Sie können auf %{resources} %{other_resources} suchen
+        try_adjusting_search: Versuchen Sie, Ihre Suchbegriffe anzupassen oder auf Tippfehler zu überprüfen
+      go_to: Gehe zu
+      keyboard_hints:
+        close: Schließen
+        navigate: Navigieren
+        press: Drücken Sie
+        select: Auswählen
+      results:
+        count_of_total: "%{count} von %{total}"
+      show_all_results_for: Alle Ergebnisse für anzeigen
     go_back: Zurück
     grid_view: Rasteransicht
     hide_content: Inhalt ausblenden
@@ -63,6 +135,7 @@ de:
       value: Wert
     less_content: Weniger Inhalt
     list_is_empty: Liste ist leer
+    load_item: Lade %{item}
     loading: Lade...
     media_library:
       title: Medienbibliothek
@@ -70,7 +143,7 @@ de:
     more_content: Mehr Inhalt
     more_records_available: Es sind weitere Datensätze verfügbar.
     nested:
-      add_new_item: Neues %{item} hinzufügen
+      add_new_item: "%{item} hinzufügen"
     new: neu
     next_page: Nächste Seite
     no_cancel: Nein, abbrechen
@@ -84,15 +157,22 @@ de:
       other: "%{count} %{item}"
       zero: keine %{item}
     oops_nothing_found: Oops! Nichts gefunden...
+    open_in_new_tab: In neuem Tab öffnen
+    open_in_your_editor: In Ihrem Editor öffnen
     order:
       higher: Eintrag nach oben verschieben
       lower: Eintrag nach unten verschieben
       reorder_record: Eintrag neu anordnen
       to_bottom: Eintrag ans Ende verschieben
       to_top: Eintrag an den Anfang verschieben
+    pages: Seiten
     per_page: Pro Seite
     prev_page: Vorherige Seite
+    record:
+      one: Eintrag
+      other: Einträge
     records_selected_from_all_pages_html: Alle Einträge von allen Seiten ausgewählt
+    reload: Neu laden
     remove_selection: Auswahl aufheben
     reset: zurücksetzen
     reset_filters: Filter zurücksetzen
@@ -100,6 +180,9 @@ de:
     resource_destroyed: Eintrag gelöscht
     resource_updated: Eintrag aktualisiert
     resources: Ressourcen
+    retry: Erneut versuchen
+    retry_item: Erneut versuchen %{item}
+    reupload_file: Reupload %{item}
     run: Ausführen
     save: Speichern
     search:
@@ -110,6 +193,8 @@ de:
     select_item: Eintrag auswählen
     show_content: Inhalt anzeigen
     sign_out: Abmelden
+    skip_to_content: Zum Inhalt springen
+    skip_to_sidebar: Zum Seitenbereich überspringen
     sort_asc: Aufsteigend sortieren
     sort_desc: Absteigend sortieren
     sort_reset: Sortierung zurücksetzen
@@ -121,6 +206,7 @@ de:
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
+    updated_at: Aktualisiert am
     updated_at_timestamp: Aktualisiert am %{updated_at}
     view: Anzeigen
     view_item: "%{item} anzeigen"
@@ -131,9 +217,9 @@ de:
       one: noch ein Eintrag
       other: "%{count} weitere Einträge"
       zero: keine weiteren Einträge
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> Einträge auf dieser Seite von insgesamt <span class="font-bold text-gray-700">%{count}</span> ausgewählt
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> Einträge von allen Seiten ausgewählt
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> Einträge auf dieser Seite ausgewählt
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> Einträge auf dieser Seite von insgesamt <span class="font-bold">%{count}</span> ausgewählt
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> Einträge von allen Seiten ausgewählt
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> Einträge auf dieser Seite ausgewählt
     yes_confirm: Ja, ich bin sicher
     you_cant_upload_new_resource: Du kannst keine Dateien in den Trix-Editor hochladen, bis die Ressource gespeichert ist.
     you_havent_set_attachment_key: Du hast keinen `attachment_key` für dieses Trix-Feld festgelegt.

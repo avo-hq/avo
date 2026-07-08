@@ -1,13 +1,9 @@
 <% if @name.present? %>
-  <turbo-frame id="<%= @name %>">
-    <% if helpers.turbo_frame_request? %>
-      <%= helpers.turbo_stream_action_tag :append, target: "alerts", template: render(Avo::FlashAlertsComponent.new(flashes: helpers.flash)) %>
-    <% end %>
+  <%= turbo_frame_tag @name, class: @class do %>
+    <%= flash_content %>
     <%= content %>
-  </turbo-frame>
-<% else %>
-  <% if helpers.turbo_frame_request? %>
-    <%= helpers.turbo_stream_action_tag :append, target: "alerts", template: render(Avo::FlashAlertsComponent.new(flashes: helpers.flash)) %>
   <% end %>
+<% else %>
+  <%= flash_content %>
   <%= content %>
 <% end %>

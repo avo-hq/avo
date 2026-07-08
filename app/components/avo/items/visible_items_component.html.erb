@@ -1,4 +1,4 @@
-<% @item.visible_items.each_with_index do |field, index| %>
+<% @item.get_items.each_with_index do |field, index| %>
   <%= render Avo::Items::SwitcherComponent.new(
     resource: @resource,
     reflection: @reflection,
@@ -7,5 +7,6 @@
     view: @view,
     form: @form,
     field_component_extra_args: @field_component_extra_args,
-  )%>
+    parent_component: @parent_component,
+  ) %>
 <% end %>

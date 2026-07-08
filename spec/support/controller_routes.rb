@@ -14,16 +14,11 @@ module TestHelpers
       include_context "has_admin_user"
 
       before do
-        sign_in admin
-      end
-    end
-  end
-
-  module DisableHQRequest
-    extend ActiveSupport::Concern
-    included do
-      before do
-        stub_pro_license_request
+        if respond_to?(:login_as)
+          login_as admin, scope: :user
+        else
+          sign_in admin
+        end
       end
     end
   end

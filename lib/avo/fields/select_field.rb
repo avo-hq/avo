@@ -8,7 +8,7 @@ module Avo
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
 
-        super(id, **args, &block)
+        super
 
         @options = if args[:options].is_a? Hash
           ActiveSupport::HashWithIndifferentAccess.new args[:options]

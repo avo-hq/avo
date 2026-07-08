@@ -1,0 +1,73 @@
+<script nonce="<%= content_security_policy_nonce %>">
+  // Apply color scheme and theme classes before paint to avoid FOUC.
+  // Database-persisted and locked settings are already server-rendered
+  // on <html>. This script handles cookie overrides and "auto" dark mode.
+  (function() {
+    var root = document.documentElement;
+    var appearance = window.Avo && window.Avo.configuration && window.Avo.configuration.appearance || {};
+
+    // Restore the kbd-badge visibility preference (Shift+K) before paint so a
+    // hidden set of badges never flashes in. It's a per-client preference, so it
+    // lives in localStorage rather than a cookie; the class sits on <html> next
+    // to the theme classes, which also lets it persist across Turbo navigations.
+    var hotkeys = window.Avo && window.Avo.configuration && window.Avo.configuration.hotkeys || {};
+    if (hotkeys.showKeyBadges !== false) {
+      try {
+        if (localStorage.getItem('avo:hotkeys:hide_badges') === '1') {
+          root.classList.add('hotkeys-hide-badges');
+        }
+      } catch (e) {}
+    }
+
+    if (appearance.persistence !== 'database') {
+      function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+      }
+
+      if (!appearance.neutralLocked) {
+        var theme = getCookie('theme');
+        if (theme && theme !== 'brand') {
+          Array.from(root.classList).forEach(function(cls) {
+            if (cls.indexOf('neutral-theme-') === 0) root.classList.remove(cls);
+          });
+          root.classList.add('neutral-theme-' + theme);
+        }
+      }
+
+      if (!appearance.accentLocked) {
+        var accent = getCookie('accent_color');
+        if (accent && accent !== 'brand') {
+          Array.from(root.classList).forEach(function(cls) {
+            if (cls.indexOf('accent-theme-') === 0) root.classList.remove(cls);
+          });
+          root.classList.add('accent-theme-' + accent);
+        }
+      }
+
+      if (!appearance.schemeLocked) {
+        var scheme = getCookie('color_scheme');
+        if (scheme) {
+          root.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
+          root.classList.add('scheme-' + scheme);
+          if (scheme === 'dark') {
+            root.classList.add('dark');
+          } else if (scheme === 'light') {
+            root.classList.remove('dark');
+          }
+        }
+      }
+    }
+
+    // Handle "auto" scheme — always needs JS for media query detection
+    if (root.classList.contains('scheme-auto')) {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    }
+  })();
+</script>

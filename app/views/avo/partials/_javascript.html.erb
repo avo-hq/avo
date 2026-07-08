@@ -1,11 +1,10 @@
+<% appearance = Avo.configuration.appearance %>
 <%= javascript_tag nonce: true do %>
   window.Avo = window.Avo || { configuration: {} }
   Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
   Avo.configuration.root_path = '<%= root_path_without_url %>'
   Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
   Avo.configuration.cookies_key = '<%= Avo::COOKIES_KEY %>'
-  Avo.configuration.preserve_sidebar_scroll = '<%= ::Avo.configuration.feature_enabled?(:preserve_sidebar_scroll) %>'
-  Avo.configuration.focus_sidebar_menu_item = '<%= ::Avo.configuration.feature_enabled?(:focus_sidebar_menu_item) %>'
   <% if Avo.avo_dynamic_filters_installed? %>
   Avo.configuration.avo_filters = {
     param_key: '<%= Avo::DynamicFilters.configuration.param_key %>'
@@ -13,8 +12,23 @@
   <% end %>
   Avo.configuration.modal_frame_id = '<%= ::Avo::MODAL_FRAME_ID %>'
   Avo.configuration.stimulus_controllers = []
+  Avo.configuration.hotkeys = {
+    enabled: <%= Avo.configuration.hotkeys[:enabled] %>,
+    showKeyBadges: <%= Avo.configuration.hotkeys[:show_key_badges] %>
+  }
   Avo.configuration.media_library = {
     enabled: <%= Avo::MediaLibrary.configuration.enabled? %>,
     visible: <%= Avo::MediaLibrary.configuration.visible? %>
+  }
+  Avo.configuration.appearance = {
+    persistence: '<%= appearance.persistence %>',
+    scheme: '<%= appearance.scheme %>',
+    neutral: '<%= appearance.neutral_css_class %>',
+    accent: '<%= appearance.accent_css_class %>',
+    schemeLocked: <%= appearance.scheme_locked? %>,
+    neutralLocked: <%= appearance.neutral_locked? %>,
+    accentLocked: <%= appearance.accent_locked? %>,
+    neutrals: <%== appearance.neutrals.as_json %>,
+    accents: <%== appearance.accents.as_json %>
   }
 <% end %>

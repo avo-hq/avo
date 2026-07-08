@@ -5,6 +5,54 @@ en:
     actions: Actions
     add_filter: Add filter
     and_x_other_resources: and %{count} other resources
+    appearance:
+      accent_picker: Select accent color
+      accents: Accent
+      accents_list:
+        amber: Amber
+        blue: Blue
+        brand: Brand
+        cyan: Cyan
+        emerald: Emerald
+        fuchsia: Fuchsia
+        green: Green
+        indigo: Indigo
+        lime: Lime
+        orange: Orange
+        pink: Pink
+        purple: Purple
+        red: Red
+        rose: Rose
+        sky: Sky
+        teal: Teal
+        violet: Violet
+        yellow: Yellow
+      auto: Auto
+      auto_tooltip: Auto (system preference)
+      dark: Dark
+      dark_tooltip: Dark mode
+      hide: Hide
+      light: Light
+      light_tooltip: Light mode
+      neutrals: Theme
+      neutrals_list:
+        brand: Brand
+        gray: Gray
+        mauve: Mauve
+        mist: Mist
+        neutral: Neutral
+        olive: Olive
+        slate: Slate
+        stone: Stone
+        taupe: Taupe
+        zinc: Zinc
+      neutrals_picker: Select neutral color
+      schemes: Appearance
+      shortcut_badges: Shortcut badges
+      shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
+      shortcut_badges_show_tooltip: Show keyboard shortcut badges
+      show: Show
+      title: Appearance
     applied: applied
     are_you_sure: Are you sure?
     are_you_sure_detach_item: Are you sure you want to detach this %{item}.
@@ -17,16 +65,22 @@ en:
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
     cancel: Cancel
+    checkbox_list:
+      hidden_selections:
+        one: 1 selected option hidden by search
+        other: "%{count} selected options hidden by search"
     choose_a_country: Choose a country
     choose_an_option: Choose an option
     choose_item: Choose %{item}
     clear_value: Clear value
+    click_to_load: Click to load
     click_to_reveal_filters: Click to reveal filters
     close: Close
     close_modal: Close modal
     confirm: Confirm
     copy: Copy
     create_new_item: Create new %{item}
+    created_at: Created at
     created_at_timestamp: Created at %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -45,12 +99,30 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    failed_to_load_item: Failed to load %{item}
     'false': 'False'
     file:
       one: file
       other: files
     filter_by: Filter by
     filters: Filters
+    global_search:
+      empty_state:
+        no_results_for_query: We couldn't find anything matching "%{query}"
+        no_results_found: No results found
+        start_typing: Start typing to search
+        start_typing_with_resource_list: You can search on %{resources}
+        start_typing_with_resources: You can search on %{resources} %{other_resources}
+        try_adjusting_search: Try adjusting your search terms or check for typos
+      go_to: Go to
+      keyboard_hints:
+        close: Close
+        navigate: Navigate
+        press: Press
+        select: Select
+      results:
+        count_of_total: "%{count} of %{total}"
+      show_all_results_for: Show all results for
     go_back: Go back
     grid_view: Grid view
     hide_content: Hide content
@@ -63,6 +135,7 @@ en:
       value: Value
     less_content: Less content
     list_is_empty: List is empty
+    load_item: Load %{item}
     loading: Loading
     media_library:
       title: Media Library
@@ -84,15 +157,22 @@ en:
       other: "%{count} %{item}"
       zero: no %{item}
     oops_nothing_found: Oops! Nothing found...
+    open_in_new_tab: Open in a new tab
+    open_in_your_editor: Open in your editor
     order:
       higher: Move record higher
       lower: Move record lower
       reorder_record: Reorder record
       to_bottom: Move record to bottom
       to_top: Move record to top
+    pages: Pages
     per_page: Per page
     prev_page: Previous page
+    record:
+      one: record
+      other: records
     records_selected_from_all_pages_html: All records selected from all pages
+    reload: Reload
     remove_selection: Remove selection
     reset: reset
     reset_filters: Reset filters
@@ -100,6 +180,9 @@ en:
     resource_destroyed: Record destroyed
     resource_updated: Record updated
     resources: Resources
+    retry: Retry
+    retry_item: Retry %{item}
+    reupload_file: Reupload %{item}
     run: Run
     save: Save
     search:
@@ -110,6 +193,8 @@ en:
     select_item: Select item
     show_content: Show content
     sign_out: Sign out
+    skip_to_content: Skip to content
+    skip_to_sidebar: Skip to sidebar
     sort_asc: Sort ascending
     sort_desc: Sort descending
     sort_reset: Reset sorting
@@ -121,6 +206,7 @@ en:
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo
+    updated_at: Updated at
     updated_at_timestamp: Updated at %{updated_at}
     view: View
     view_item: view %{item}
@@ -131,9 +217,9 @@ en:
       one: one more item
       other: "%{count} more items"
       zero: no more items
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page from a total of <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records selected from all pages
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> records selected on this page from a total of <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> records selected from all pages
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records selected on this page
     yes_confirm: Yes, I'm sure
     you_cant_upload_new_resource: You can't upload files into the Trix editor until you save the resource.
     you_havent_set_attachment_key: You haven't set an `attachment_key` to this Trix field.

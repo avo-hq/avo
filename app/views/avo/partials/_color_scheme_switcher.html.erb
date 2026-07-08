@@ -1,0 +1,23 @@
+<% appearance = Avo.configuration.appearance %>
+<% show_neutral_picker = !appearance.neutral_locked? %>
+<% show_accent_picker = !appearance.accent_locked? %>
+<% show_scheme_picker = !appearance.scheme_locked? %>
+<% show_key_badges_toggle = Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges] %>
+<% return unless show_neutral_picker || show_accent_picker || show_scheme_picker || show_key_badges_toggle %>
+<% locals = {
+     appearance: appearance,
+     show_neutral_picker: show_neutral_picker,
+     show_accent_picker: show_accent_picker,
+     show_scheme_picker: show_scheme_picker,
+     show_key_badges_toggle: show_key_badges_toggle,
+     active_neutral: current_neutral,
+     active_accent: current_accent,
+     neutral_labels: appearance_neutral_labels(appearance.neutrals)
+   } %>
+
+<%# :inline renders BOTH the desktop pill (lg:+) and the compact dropdown trigger (mobile fallback). %>
+<%# :dropdown renders ONLY the compact dropdown trigger at every breakpoint. %>
+<% if appearance.picker_layout == :inline %>
+  <%= render partial: "avo/partials/switcher_inline", locals: locals %>
+<% end %>
+<%= render partial: "avo/partials/switcher_dropdown", locals: locals %>

@@ -1,4 +1,6 @@
 class Avo::Resources::User < Avo::BaseResource
+  self.hotkey = "r u"
+  self.icon = "tabler/outline/users"
   self.title = -> {
     record.name
   }
@@ -21,6 +23,11 @@ class Avo::Resources::User < Avo::BaseResource
     query.order(last_name: :asc)
   end
 
+  self.discreet_information = [
+    :id,
+    :timestamps
+  ]
+
   self.includes = [:posts, :post]
   self.attachments = [:cv]
   self.devise_password_optional = true
@@ -33,16 +40,34 @@ class Avo::Resources::User < Avo::BaseResource
     end
   }
 
+  self.avatar = {
+    source: -> {
+      record.avatar
+    }
+  }
+
+  # self.cover = {
+  #   visible_on: :show,
+  #   source: -> {
+  #     if record.present?
+  #       record.avatar
+  #     end
+  #   }
+  # }
+
   # self.row_controls_config = {
   #   float: true,
   #   show_on_hover: true
   # }
 
   def fields
-    test_field("Heading")
+    card do
+      test_field("Heading")
+    end
 
-    main_panel do
-      main_panel_fields
+    header
+    panel do
+      first_panel_fields
     end
 
     user_information_panel
@@ -54,16 +79,17 @@ class Avo::Resources::User < Avo::BaseResource
 
     # Uncomment this to test computed file fields
     # field :first_post_image, as: :file, is_image: true do
-    #   record&.posts&.first&.cover_photo
+    #   record&.posts&.first&.cover
     # end
   end
 
   def actions
-    action Avo::Actions::ToggleInactive, icon: "heroicons/outline/globe"
+    action Avo::Actions::ToggleInactive, icon: "tabler/outline/world-map"
     action Avo::Actions::ToggleAdmin
+    action Avo::Actions::ShowRequestPath
     divider label: "Other actions"
     action Avo::Actions::Sub::DummyAction
-    action Avo::Actions::DownloadFile, icon: "heroicons/outline/arrow-left"
+    action Avo::Actions::DownloadFile, icon: "tabler/outline/arrow-left"
     action Avo::Actions::Test::Query
     divider
     action Avo::Actions::Test::NoConfirmationPostsRedirect
@@ -75,15 +101,16 @@ class Avo::Resources::User < Avo::BaseResource
 
   def filters
     filter Avo::Filters::UserNamesFilter
+    filter Avo::Filters::UserActiveFilter
     filter Avo::Filters::IsAdmin
     filter Avo::Filters::Birthday
     filter Avo::Filters::DummyMultipleSelectFilter
   end
 
-  def test_field(id)
-    return unless ENV['testing_methods']
+  def test_field(id, **args)
+    return unless ENV["testing_methods"]
 
-    field id.to_sym, as: :text do
+    field id.to_sym, as: :text, **args do
       id
     end
   end
@@ -92,77 +119,25 @@ class Avo::Resources::User < Avo::BaseResource
     field :fish, as: :has_one
   end
 
-  def main_panel_fields
-    test_field("Inside main panel")
-    field :id, as: :id, link_to_record: true, sortable: false
-    field :email, as: :gravatar, link_to_record: true, only_on: :index
-    with_options as: :text, only_on: :index do
-      field :first_name, placeholder: "John"
-      field :last_name, placeholder: "Doe", filterable: true
-    end
-    field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true
-    field :active, as: :boolean, name: "Is active", only_on: :index
-    field :cv, as: :file, name: "CV"
-    field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
-    field :roles, as: :boolean_group, options: -> do
-      # test condition
-      raise if record.nil?
-      {admin: "Administrator", manager: "Manager", writer: "Writer"}
-    end
-    field :permissions, as: :boolean_group, options: {create: "Create", read: "Read", update: "Update", delete: "Delete"}
-    field :birthday,
-      as: :date,
-      first_day_of_week: 1,
-      picker_format: "F J Y",
-      format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
-      placeholder: "Feb 24th 1955",
-      required: true,
-      only_on: [:index]
-
-    field :some_token, only_on: :show
-
-    field :is_writer, as: :text,
-      sortable: -> {
-        # Order by something else completely, just to make a test case that clearly and reliably does what we want.
-        query.order(id: direction)
-      },
-      hide_on: :edit do
-        record.posts.to_a.size > 0 ? "yes" : "no"
+  def first_panel_fields
+    card do
+      test_field("Inside main panel")
+      field :id, as: :id, link_to_record: true, sortable: false
+      field :email, as: :gravatar, link_to_record: true, only_on: :index, name: :Gravatar
+      with_options as: :text, only_on: :index do
+        field :first_name, placeholder: "John"
+        field :last_name, placeholder: "Doe", filterable: true
       end
-
-    field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
-    field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
-
-    with_options hide_on: :forms do
-      field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
-      field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
-    end
-    field :team_id, as: :hidden, default: 0 # For testing purposes
-
-    test_sidebar
-
-    main_panel_sidebar
-  end
-
-  def test_sidebar
-    return unless ENV['testing_methods']
-
-    sidebar panel_wrapper: false do
-      tool Avo::ResourceTools::SidebarTool, render_panel: true
-      test_field("Inside test_sidebar")
-    end
-  end
-
-  def main_panel_sidebar
-    sidebar do
-      field :some_token, only_on: :show
-      test_field("Inside main_panel_sidebar")
-      with_options only_on: :show do
-        field :email, as: :gravatar, link_to_record: true
-        field :heading, as: :heading, label: ""
-        field :active, as: :boolean, name: "Is active"
+      field :email, as: :text, name: "User Email", required: true, protocol: :mailto, copyable: true, label_help: "The email of the user"
+      field :active, as: :boolean, name: "Is active", only_on: :index, summarizable: true
+      field :cv, as: :file, name: "CV"
+      field :is_admin, as: :boolean, name: "Is admin", only_on: :index
+      field :roles, as: :boolean_group, label_help: "The roles of the user", options: -> do
+        # test condition
+        raise if record.nil?
+        {admin: "Administrator", manager: "Manager", writer: "Writer"}
       end
-      field :is_admin?, as: :boolean, name: "Is admin", only_on: :index
+      field :permissions, as: :boolean_group, options: {create: "Create", read: "Read", update: "Update", delete: "Delete"}
       field :birthday,
         as: :date,
         first_day_of_week: 1,
@@ -170,31 +145,98 @@ class Avo::Resources::User < Avo::BaseResource
         format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
         placeholder: "Feb 24th 1955",
         required: true,
-        filterable: true,
-        only_on: [:show]
-      field :is_writer, as: :text,
-        hide_on: :edit do
-          raise "This should not execute on Index" if view.index?
+        only_on: [:index]
 
-          record.posts.to_a.size > 0 ? "yes" : "no"
+      field :some_token, only_on: :show
+
+      field :is_writer, as: :text,
+        sortable: -> {
+          # Order by something else completely, just to make a test case that clearly and reliably does what we want.
+          query.order(id: direction)
+        },
+        hide_on: :edit do
+          (record.posts.to_a.size > 0) ? "yes" : "no"
         end
-      field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do
-        main_app.hey_url
-      end
-      with_options only_on: :forms do
+
+      field :password, as: :password, name: "User Password", required: false, only_on: :forms, help: 'You may verify the password strength <a href="http://www.passwordmeter.com/" target="_blank">here</a>.'
+      field :password_confirmation, as: :password, name: "Password confirmation", required: false, revealable: true
+
+      with_options hide_on: :forms do
         field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
         field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+        field :avo_preferences, as: :code, theme: "dracula", language: "json", height: "250px", pretty_generated: true
+      end
+      field :team_id, as: :hidden, default: 0 # For testing purposes
+    end
+
+    test_sidebar
+
+    first_panel_sidebar
+  end
+
+  def test_sidebar
+    return unless ENV["testing_methods"]
+
+    sidebar do
+      tool Avo::ResourceTools::SidebarTool, render_panel: true
+      card do
+        test_field("Inside test_sidebar")
+      end
+    end
+  end
+
+  def first_panel_sidebar
+    sidebar do
+      card do
+        field :some_token, only_on: :show
+        test_field("Inside first_panel_sidebar")
+        with_options only_on: :show do
+          field :email, as: :gravatar, link_to_record: true
+          field :heading, as: :heading, label: ""
+          field :active, as: :boolean, name: "Is active"
+        end
+        field :is_admin, as: :boolean, name: "Is admin", only_on: :index
+        field :birthday,
+          as: :date,
+          first_day_of_week: 1,
+          picker_format: "F J Y",
+          format: "cccc, d LLLL yyyy", # Wednesday, 10 February 1988
+          placeholder: "Feb 24th 1955",
+          required: true,
+          filterable: true,
+          only_on: [:show]
+        field :is_writer, as: :text,
+          hide_on: :edit do
+            raise "This should not execute on Index" if view.index?
+
+            (record.posts.to_a.size > 0) ? "yes" : "no"
+          end
+        field :outside_link, as: :text, only_on: [:show], format_using: -> { link_to("hey", value, target: "_blank") } do
+          main_app.hey_url
+        end
+        with_options only_on: :forms do
+          field :dev, as: :heading, label: '<div class="underline uppercase font-bold">DEV</div>', as_html: true
+          field :custom_css, as: :code, theme: "dracula", language: "css", help: "This enables you to edit the user's custom styles.", height: "250px"
+        end
       end
     end
   end
 
   def user_information_panel
-    panel do
-      test_field("Inside panel")
+    card title: "User information", description: "User information description", only_on: :show do
+      field :is_admin?, as: :boolean
 
-      field :user_information, as: :heading
-      row do
-        test_field("Inside panel -> row")
+      field :first_name, placeholder: "John"
+      field :last_name, placeholder: "Doe"
+      field :last_name, placeholder: "Doe"
+    end
+
+    panel title: "User information", description: "User information description" do
+      card do
+        test_field("Inside panel")
+
+        field :user_information, as: :heading
+        test_field("Inside panel -> row", width: 33)
         stacked_name
       end
 
@@ -203,26 +245,30 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def panel_test_sidebars
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
     sidebar do
-      field :sidebar_test, as: :text do
-        ";)"
+      card do
+        field :sidebar_test, as: :text do
+          ";)"
+        end
+        test_field("Inside panel -> sidebar")
       end
-      test_field("Inside panel -> sidebar")
     end
 
     sidebar do
-      field :sidebar_test_2, as: :text do
-        "another ;)"
+      card do
+        field :sidebar_test_2, as: :text do
+          "another ;)"
+        end
+        test_field("Inside panel -> sidebar 2")
+        tool Avo::ResourceTools::SidebarTool
       end
-      test_field("Inside panel -> sidebar 2")
-      tool Avo::ResourceTools::SidebarTool
     end
   end
 
   def stacked_name
-    with_options as: :text, stacked: true do
+    with_options as: :text, stacked: true, width: 33 do
       field :first_name, placeholder: "John"
       field :last_name, placeholder: "Doe"
     end
@@ -234,10 +280,8 @@ class Avo::Resources::User < Avo::BaseResource
       test_tab
       test_field("Inside tabs")
       first_tabs_group_fields
-      tab "Created at" do
-        panel do
-          field :created_at, as: :date_time
-        end
+      tab title: "Created at" do
+        field :created_at, as: :date_time
       end
     end
   end
@@ -268,8 +312,8 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def birthday_tab
-    tab -> { "Birthday" }, description: "hey you", hide_on: :show do
-      panel do
+    tab title: -> { "Birthday" }, description: "hey you", hide_on: :show do
+      card do
         field :birthday,
           as: :date,
           first_day_of_week: 1,
@@ -282,11 +326,13 @@ class Avo::Resources::User < Avo::BaseResource
   end
 
   def test_tab
-    return unless ENV['testing_methods']
+    return unless ENV["testing_methods"]
 
-    tab "test_tab" do
+    tab title: "test_tab" do
       panel do
-        test_field("Inside tabs -> tab -> panel")
+        card do
+          test_field("Inside tabs -> tab -> panel")
+        end
       end
 
       test_field("Inside tabs -> tab")
@@ -301,7 +347,7 @@ class Avo::Resources::User < Avo::BaseResource
       show_on: :edit,
       translation_key: "avo.field_translations.people"
     field :spouses, as: :has_many # STI has_many resource
-    field :projects, as: :has_and_belongs_to_many
+    field :projects, as: :has_and_belongs_to_many, attach_using: :checkbox_list
     field :team_memberships, as: :has_many
   end
 end

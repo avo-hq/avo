@@ -1,0 +1,19 @@
+<%= tag.nav class: "breadcrumbs", aria: { label: "Breadcrumb" } do %>
+  <div class="breadcrumbs__container">
+    <% @items.each_with_index do |item, index| %>
+      <% is_last = index == @items.length - 1 %>
+
+      <%= render Avo::BreadcrumbElementComponent.new(
+        text: item.title,
+        url: item.path,
+        icon: item.icon,
+        avatar: item.avatar,
+        initials: item.initials
+      ) %>
+
+      <% unless is_last %>
+        <span class="breadcrumbs__separator">/</span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

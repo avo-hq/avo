@@ -73,9 +73,9 @@ module Avo
       def initialize(id, **args, &block)
         args[:placeholder] ||= I18n.t("avo.choose_an_option")
 
-        super(id, **args, &block)
+        super
 
-        @searchable = args[:searchable] == true
+        @searchable = (args[:searchable] == true || args[:searchable].is_a?(Hash)) ? args[:searchable] : false
         @polymorphic_as = args[:polymorphic_as]
         @types = args[:types]
         @relation_method = attribute_id.to_s.parameterize.underscore
@@ -84,7 +84,7 @@ module Avo
         @polymorphic_help = args[:polymorphic_help]
         @target = args[:target]
         @use_resource = args[:use_resource] || nil
-        @can_create = args[:can_create].nil? ? true : args[:can_create]
+        @can_create = args[:can_create].nil? || args[:can_create]
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
         @link_to_child_resource = args[:link_to_child_resource]
       end
@@ -119,16 +119,14 @@ module Avo
         resource = target_resource
         resource = Avo.resource_manager.get_resource_by_model_class model if model.present?
 
-        query = resource.query_scope
+        query = scoped_target_query(resource, get_record)
 
-        if attach_scope.present?
-          query = Avo::ExecutionContext.new(target: attach_scope, query: query, parent: get_record).handle
-        end
+        lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
 
-        query.all.limit(Avo.configuration.associations_lookup_list_limit).map do |record|
+        query.all.limit(lookup_list_limit).map do |record|
           [resource.new(record: record).record_title, record.to_param]
         end.tap do |options|
-          options << t("avo.more_records_available") if options.size == Avo.configuration.associations_lookup_list_limit
+          options << t("avo.more_records_available") if options.size == lookup_list_limit
         end
       end
 
@@ -212,12 +210,18 @@ module Avo
           if valid_model_class.blank? || id_from_param.blank?
             record.send(:"#{polymorphic_as}_id=", nil)
           else
-            record_id = target_resource(record:, polymorphic_model_class: value.safe_constantize).find_record(id_from_param).id
+            target = target_resource(record:, polymorphic_model_class: value.safe_constantize)
+            record_id = target.find_record(id_from_param, query: scoped_target_query(target, record, for_find: true)).id
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
         else
-          record_id = value.blank? ? value : target_resource(record:).find_record(value).send(reflection.association_primary_key)
+          target = target_resource(record:)
+          record_id = if value.blank?
+            value
+          else
+            target.find_record(value, query: scoped_target_query(target, record, for_find: true)).send(reflection.association_primary_key)
+          end
 
           record.send(:"#{key}=", record_id)
         end
@@ -324,6 +328,15 @@ module Avo
       end
 
       private
+
+      def scoped_target_query(resource, parent_record, for_find: false)
+        resource_class = resource.is_a?(Class) ? resource : resource.class
+        query = for_find ? resource_class.find_scope : resource_class.query_scope
+
+        return query if attach_scope.blank?
+
+        Avo::ExecutionContext.new(target: attach_scope, query: query, parent: parent_record).handle
+      end
 
       def get_model_class(record)
         if record.nil?

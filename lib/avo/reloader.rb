@@ -11,7 +11,7 @@ class Avo::Reloader
 
     # reload all files declared in each directory
     directories.keys.each do |dir|
-      Dir.glob("#{dir}/**/*.rb".to_s).each do |file|
+      Dir.glob("#{dir}/**/*.rb").each do |file|
         if File.exist? file
           load file
         end
@@ -28,7 +28,7 @@ class Avo::Reloader
   def files
     # we want to watch some files no matter what
     paths = [
-      Rails.root.join("config", "initializers", "avo.rb"),
+      Rails.root.join("config", "initializers", "avo.rb")
     ]
 
     # we want to watch some files only in Avo development

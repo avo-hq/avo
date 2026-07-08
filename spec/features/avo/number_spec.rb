@@ -81,7 +81,7 @@ RSpec.describe "number", type: :feature do
       it "clears the users_required" do
         is_expected.to have_xpath "//input[@id='project_users_required'][@type='number'][@placeholder='Users required'][@min='10.0'][@max='1000000.0'][@step='1.0'][@value='#{users_required}']"
 
-        fill_in "project_users_required", with: 'nil'
+        fill_in "project_users_required", with: "nil"
 
         save
 
@@ -103,7 +103,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}"
 
         expect(find_field_element(:users_required)).to have_text("10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects"
 
         expect(find_field_element(:users_required)).to have_text("10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -135,7 +135,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}"
 
         expect(find_field_element(:users_required)).to have_text("10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -149,7 +149,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}/edit"
 
         expect(page).to have_field("project_users_required", with: "10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end
@@ -163,7 +163,7 @@ RSpec.describe "number", type: :feature do
         visit "/admin/resources/projects/#{project.id}/edit"
 
         expect(page).to have_field("project_users_required", with: "10,000")
-
+      ensure
         Avo::Resources::Project.restore_items_from_backup
       end
     end

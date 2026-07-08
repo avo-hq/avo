@@ -12,6 +12,7 @@ module Avo
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
     include Avo::Concerns::FindAssociationField
+    include Avo::Concerns::PrivateAccess
 
     protect_from_forgery with: :exception
     before_action :decode_params
@@ -25,7 +26,6 @@ module Avo
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
-    before_action :set_stylesheet_assets_path
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -247,8 +247,9 @@ module Avo
       end
     end
 
-    def mark_container_as_full_width
-      @container_full_width = true
+    def mark_container_width(width)
+      raise ArgumentError, "Invalid container width: #{width}. Must be one of #{Avo::Configuration::VALID_CONTAINER_WIDTHS}" unless Avo::Configuration::VALID_CONTAINER_WIDTHS.include?(width.to_sym)
+      @container_size = width.to_s
     end
 
     def add_initial_breadcrumbs
@@ -294,30 +295,12 @@ module Avo
       Avo.logger.debug "Failed to set ActiveStorage::Current.url_options, #{exception.inspect}"
     end
 
-    def set_stylesheet_assets_path
-      # Prefer the user's tailwind config if it exists, otherwise use the default one from Avo
-      @stylesheet_assets_path = if Rails.root.join("config", "avo", "tailwind.config.js").exist?
-        "avo.tailwind"
-      elsif Avo::PACKED
-        "/avo-assets/avo.base"
-      else
-        "avo.base"
-      end
-    end
-
     def choose_layout
       if turbo_frame_request?
         "avo/blank"
       else
         "avo/application"
       end
-    end
-
-    def authenticate_developer_or_admin!
-      # We don't care about this in development
-      return if Rails.env.development?
-
-      raise_404 unless Avo::Current.user_is_developer? || Avo::Current.user_is_admin?
     end
 
     def raise_404

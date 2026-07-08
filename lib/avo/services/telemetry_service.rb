@@ -2,7 +2,6 @@ class Avo::Services::TelemetryService
   class << self
     def telemetry_info
       {
-        # license: Avo.configuration.license,
         # license_key: Avo.configuration.license_key,
         avo_version: Avo::VERSION,
         rails_version: Rails::VERSION::STRING,
@@ -55,10 +54,10 @@ class Avo::Services::TelemetryService
         cache_operational: cache_operational?,
         **config_metadata
       }
-    # rescue => error
-    #   {
-    #     error: error.message
-    #   }
+      # rescue => error
+      #   {
+      #     error: error.message
+      #   }
     end
 
     def cache_operational?

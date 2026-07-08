@@ -5,6 +5,54 @@ pt:
     actions: Ações
     add_filter: Adicionar filtro
     and_x_other_resources: e %{count} outros recursos
+    appearance:
+      accent_picker: Cor de Acento
+      accents: Acento
+      accents_list:
+        amber: Âmbar
+        blue: Azul
+        brand: Marca
+        cyan: Ciano
+        emerald: Esmeralda
+        fuchsia: Fúcsia
+        green: Verde
+        indigo: Índigo
+        lime: Lima
+        orange: Laranja
+        pink: Rosa
+        purple: Roxo
+        red: Vermelho
+        rose: Rosé
+        sky: Céu
+        teal: Verde-azulado
+        violet: Violeta
+        yellow: Amarelo
+      auto: Automático
+      auto_tooltip: Automático (preferência do sistema)
+      dark: Escuro
+      dark_tooltip: Modo Escuro
+      hide: Ocultar
+      light: Claro
+      light_tooltip: Modo Claro
+      neutrals: Tema
+      neutrals_list:
+        brand: Marca
+        gray: Cinzento
+        mauve: Malva
+        mist: Névoa
+        neutral: Neutro
+        olive: Oliva
+        slate: Ardósia
+        stone: Pedra
+        taupe: Taupe
+        zinc: Zinco
+      neutrals_picker: Tema Neutro
+      schemes: Aparência
+      shortcut_badges: Insígnias de atalho
+      shortcut_badges_hide_tooltip: Ocultar insígnias de atalho do teclado
+      shortcut_badges_show_tooltip: Mostrar insígnias de atalho do teclado
+      show: Mostrar
+      title: Aparência
     applied:
       one: aplicado
       other: aplicados
@@ -19,16 +67,22 @@ pt:
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
     cancel: Cancelar
+    checkbox_list:
+      hidden_selections:
+        one: 1 opção selecionada oculta pela pesquisa
+        other: "%{count} opções selecionadas ocultas pela pesquisa"
     choose_a_country: Escolha um país
     choose_an_option: Escolha uma opção
     choose_item: Escolher %{item}
     clear_value: Apagar valor
+    click_to_load: Clique para carregar
     click_to_reveal_filters: Clique para mostrar os filtros
     close: Fechar
     close_modal: Fechar modal
     confirm: Confirmar
     copy: Copiar
     create_new_item: Criar novo %{item}
+    created_at: Criado em
     created_at_timestamp: Criado em %{created_at}
     dashboard: Painel
     dashboards: Painéis
@@ -47,12 +101,30 @@ pt:
     failed: Falhou
     failed_to_find_attachment: Falha ao encontrar anexo
     failed_to_load: Falhou ao carregar
+    failed_to_load_item: Falha ao carregar %{item}
     'false': Falso
     file:
       one: ficheiro
       other: ficheiros
     filter_by: Filtrar por
     filters: Filtros
+    global_search:
+      empty_state:
+        no_results_for_query: Não conseguimos encontrar nada correspondente a "%{query}"
+        no_results_found: Nenhum resultado encontrado
+        start_typing: Comece a digitar para pesquisar
+        start_typing_with_resource_list: Você pode pesquisar em %{resources}
+        start_typing_with_resources: Você pode pesquisar em %{resources} %{other_resources}
+        try_adjusting_search: Tente ajustar seus termos de pesquisa ou verificar se há erros de digitação
+      go_to: Ir para
+      keyboard_hints:
+        close: Fechar
+        navigate: Navegar
+        press: Pressione
+        select: Selecionar
+      results:
+        count_of_total: "%{count} de %{total}"
+      show_all_results_for: Mostrar todos os resultados para
     go_back: Voltar
     grid_view: Visualização em grelha
     hide_content: Esconder conteúdo
@@ -65,6 +137,7 @@ pt:
       value: Valor
     less_content: Menos conteúdo
     list_is_empty: Lista vazia
+    load_item: Carregar %{item}
     loading: A carregar
     media_library:
       title: Biblioteca de Mídia
@@ -86,15 +159,22 @@ pt:
       other: "%{count} %{item}"
       zero: sem %{item}
     oops_nothing_found: Oops! Nada encontrado...
+    open_in_new_tab: Abrir em uma nova aba
+    open_in_your_editor: Abrir no seu editor
     order:
       higher: Mover recurso para cima
       lower: Mover recuros para baixo
       reorder_record: Reordenar recurso
       to_bottom: Mover recurso para o fundo
       to_top: Mover recurso para o topo
+    pages: Páginas
     per_page: Por página
     prev_page: Página anterior
+    record:
+      one: registo
+      other: registos
     records_selected_from_all_pages_html: Todos os itens de todas as páginas selecionados
+    reload: Recarregar
     remove_selection: Remover seleção
     reset: restaurar
     reset_filters: Limpar filtros
@@ -102,6 +182,9 @@ pt:
     resource_destroyed: Recurso destruído
     resource_updated: Recurso atualizado
     resources: Recursos
+    retry: Tentar novamente
+    retry_item: Tentar novamente %{item}
+    reupload_file: Reupload %{item}
     run: Executar
     save: Guardar
     search:
@@ -112,6 +195,8 @@ pt:
     select_item: Selecionar item
     show_content: Mostrar conteúdo
     sign_out: Terminar sessão
+    skip_to_content: Ir para o conteúdo
+    skip_to_sidebar: Pular para a barra lateral
     sort_asc: Ordenar em ordem crescente
     sort_desc: Ordenar em ordem decrescente
     sort_reset: Redefinir ordenação
@@ -123,6 +208,7 @@ pt:
     type_to_search: Escreva para pesquisar.
     unauthorized: Não autorizado
     undo: desfazer
+    updated_at: Atualizado em
     updated_at_timestamp: Atualizado em %{updated_at}
     view: Ver
     view_item: ver %{item}
@@ -133,9 +219,9 @@ pt:
       one: mais um item
       other: "%{count} mais items"
       zero: mais nenhum item
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> itens selecionados nesta página de um total de <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> itens selecionados de todas as páginas
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> itens selecionados nesta página
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> itens selecionados nesta página de um total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> itens selecionados de todas as páginas
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> itens selecionados nesta página
     yes_confirm: Sim, tenho a certeza
     you_cant_upload_new_resource: Não pode carregar ficheiros no editor Trix até guardar o recurso.
     you_havent_set_attachment_key: Precisa definir uma `attachment_key` para este campo Trix.

@@ -1,0 +1,48 @@
+<%= content_tag :div, class: class_names("file-upload-item",{
+  "file-upload-item--uploading": show_progress?,
+}, @classes) do %>
+  <span
+    class="file-upload-item__progress"
+    style="width: <%= progress_percentage %>%;"
+    aria-hidden="true">
+  </span>
+
+  <div class="file-upload-item__body">
+    <p class="file-upload-item__title" title="<%= @title %>"><%= @title %></p>
+
+    <div class="file-upload-item__meta">
+      <span class="file-upload-item__size">
+        <% if @state == :error || @state == :failed %>
+          Upload failed.
+        <% else %>
+          <%= @size_label %>
+        <% end %>
+      </span>
+
+      <% if show_progress? %>
+        <span aria-hidden="true">|</span>
+
+        <% if @state == :complete %>
+          <span class="file-upload-item__status file-upload-item__status--complete">
+          <%= svg("tabler/outline/circle-check", class: "file-upload-item__status-icon") %>
+            <span class="file-upload-item__status-label">Complete</span>
+          </span>
+        <% end %>
+        <% if @state == :error || @state == :failed %>
+          <span class="file-upload-item__status file-upload-item__status--error">
+            <%= svg("tabler/outline/circle-x", class: "file-upload-item__status-icon") %>
+            <span class="file-upload-item__status-label">Try again</span>
+          </span>
+        <% end %>
+        <% if @state == :uploading %>
+          <span class="file-upload-item__status file-upload-item__status--uploading">
+            <%= svg("tabler/outline/upload", class: "file-upload-item__status-icon") %>
+            <span class="file-upload-item__status-label"><%= progress_percentage %>%</span>
+          </span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= content_tag :div, content, class: "file-upload-item__actions" if content.present? %>
+<% end %>

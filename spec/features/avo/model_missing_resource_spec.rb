@@ -11,7 +11,7 @@ RSpec.feature "MissingResourceError", type: :feature do
     it "shows informative error with suggested solution for missing resource" do
       expect {
         subject
-      }.to raise_error(Avo::MissingResourceError).with_message "Failed to find a resource while rendering the :location field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :location field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/3.0/resources.html."
+      }.to raise_error(Avo::MissingResourceError).with_message "Failed to find a resource while rendering the :location field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :location field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/4.0/resources.html."
     end
   end
 
@@ -22,7 +22,7 @@ RSpec.feature "MissingResourceError", type: :feature do
     it "shows informative error with suggested solution for missing resource" do
       expect {
         subject
-      }.to raise_error.with_message "Failed to find a resource while rendering the :location field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :location field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/3.0/resources.html."
+      }.to raise_error.with_message "Failed to find a resource while rendering the :location field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :location field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/4.0/resources.html."
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.feature "MissingResourceError", type: :feature do
     it "shows informative error with suggested solution for missing resource" do
       expect {
         subject
-      }.to raise_error(Avo::MissingResourceError).with_message "Failed to find a resource while rendering the :locations field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :locations field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/3.0/resources.html."
+      }.to raise_error(Avo::MissingResourceError).with_message "Failed to find a resource while rendering the :locations field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :locations field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/4.0/resources.html."
     end
   end
 
@@ -44,7 +44,7 @@ RSpec.feature "MissingResourceError", type: :feature do
     it "shows informative error with suggested solution for missing resource" do
       expect {
         subject
-      }.to raise_error(Avo::MissingResourceError).with_message "Failed to find a resource while rendering the :locations field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :locations field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/3.0/resources.html."
+      }.to raise_error(Avo::MissingResourceError).with_message "Failed to find a resource while rendering the :locations field.\nYou may generate a resource for it by running 'rails generate avo:resource location'.\n\nAlternatively add the 'use_resource' option to the :locations field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/4.0/resources.html."
     end
   end
 
@@ -55,7 +55,7 @@ RSpec.feature "MissingResourceError", type: :feature do
     it "shows informative error with suggested solution for missing array resource" do
       expect {
         subject
-      }.to raise_error.with_message "Failed to find a resource while rendering the :items field.\nYou may generate a resource for it by running 'rails generate avo:resource item --array'.\n\nAlternatively add the 'use_resource' option to the :items field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/3.0/array-resources.html."
+      }.to raise_error.with_message "Failed to find a resource while rendering the :items field.\nYou may generate a resource for it by running 'rails generate avo:resource item --array'.\n\nAlternatively add the 'use_resource' option to the :items field to specify a custom resource to be used.\nMore info on https://docs.avohq.io/4.0/array-resources.html."
     end
   end
 end

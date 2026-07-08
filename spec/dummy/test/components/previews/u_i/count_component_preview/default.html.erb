@@ -1,0 +1,21 @@
+<div class="flex items-center gap-6 p-6">
+  <span class="text-sm text-content">
+    Dynamic
+    <%= render Avo::UI::CountComponent.new(count: count, classes: "ms-1") %>
+  </span>
+
+  <span class="text-sm text-content">
+    Single digit
+    <%= render Avo::UI::CountComponent.new(count: 3, classes: "ms-1") %>
+  </span>
+
+  <span class="text-sm text-content">
+    Double digit
+    <%= render Avo::UI::CountComponent.new(count: 12, classes: "ms-1") %>
+  </span>
+
+  <span class="text-sm text-content">
+    Large
+    <%= render Avo::UI::CountComponent.new(count: 99, classes: "ms-1") %>
+  </span>
+</div>

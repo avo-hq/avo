@@ -5,6 +5,54 @@ nb:
     actions: Handlinger
     add_filter: Legg til filter
     and_x_other_resources: og %{count} andre ressurser
+    appearance:
+      accent_picker: Aksentfarge
+      accents: Aksent
+      accents_list:
+        amber: Rav
+        blue: Blå
+        brand: Merke
+        cyan: Cyan
+        emerald: Smaragd
+        fuchsia: Fuchsia
+        green: Grønn
+        indigo: Indigo
+        lime: Lime
+        orange: Oransje
+        pink: Rosa
+        purple: Lilla
+        red: Rød
+        rose: Rose
+        sky: Himmelblå
+        teal: Blågrønn
+        violet: Fiolett
+        yellow: Gul
+      auto: Auto
+      auto_tooltip: Auto (systempreferanse)
+      dark: Mørk
+      dark_tooltip: Mørk modus
+      hide: Skjul
+      light: Lys
+      light_tooltip: Lys modus
+      neutrals: Tema
+      neutrals_list:
+        brand: Merke
+        gray: Grå
+        mauve: Mauve
+        mist: Tåke
+        neutral: Nøytral
+        olive: Oliven
+        slate: Skifer
+        stone: Stein
+        taupe: Taupe
+        zinc: Sink
+      neutrals_picker: Nøytralt tema
+      schemes: Utseende
+      shortcut_badges: Snarveisknapper
+      shortcut_badges_hide_tooltip: Skjul snarveisknapper
+      shortcut_badges_show_tooltip: Vis snarveisknapper
+      show: Vis
+      title: Utseende
     applied:
       one: applied
       other: applied
@@ -19,16 +67,22 @@ nb:
     attachment_destroyed: Vedlett slettet
     attachment_failed: Kunne ikke legge ved %{attachment_class}
     cancel: Avbryt
+    checkbox_list:
+      hidden_selections:
+        one: 1 valgt alternativ skjult av søk
+        other: "%{count} valgte alternativer skjult av søk"
     choose_a_country: Velg et land
     choose_an_option: Velg et alternativ
     choose_item: Velge %{item}
     clear_value: Nullstill verdi
+    click_to_load: Klikk for å laste
     click_to_reveal_filters: Vis filter
     close: Lukk
     close_modal: Lukk modal
     confirm: Bekreft
     copy: Kopier
     create_new_item: Lag ny %{item}
+    created_at: Opprettet den
     created_at_timestamp: Opprettet den %{created_at}
     dashboard: Dashboard
     dashboards: Dashboards
@@ -47,12 +101,30 @@ nb:
     failed: Feilet
     failed_to_find_attachment: Fant ikke vedlegg
     failed_to_load: Lasting feilet
+    failed_to_load_item: Kunne ikke laste %{item}
     'false': Falsk
     file:
       one: file
       other: files
     filter_by: Filtrer etter
     filters: Filter
+    global_search:
+      empty_state:
+        no_results_for_query: Vi kunne ikke finne noe som matcher "%{query}"
+        no_results_found: Ingen resultater funnet
+        start_typing: Begynn å skrive for å søke
+        start_typing_with_resource_list: Du kan søke på %{resources}
+        start_typing_with_resources: Du kan søke på %{resources} %{other_resources}
+        try_adjusting_search: Prøv å justere søkevilkårene dine eller sjekk for skrivefeil
+      go_to: Gå til
+      keyboard_hints:
+        close: Lukk
+        navigate: Naviger
+        press: Trykk
+        select: Velg
+      results:
+        count_of_total: "%{count} av %{total}"
+      show_all_results_for: Vis alle resultater for
     go_back: Gå tilbake
     grid_view: Grid visning
     hide_content: Skjul innhold
@@ -65,6 +137,7 @@ nb:
       value: Verdi
     less_content: Mindre innhold
     list_is_empty: Listen er tom
+    load_item: Last %{item}
     loading: Laster
     media_library:
       title: Mediebibliotek
@@ -86,15 +159,22 @@ nb:
       other: "%{count} %{item}"
       zero: ingen %{item}
     oops_nothing_found: Oops! Ingen ting funnet...
+    open_in_new_tab: Åpne i ny fane
+    open_in_your_editor: Åpne i redigeringsprogrammet ditt
     order:
       higher: Flytt elementet høyere
       lower: Flytt elementet lavere
       reorder_record: Sorter elementer
       to_bottom: Flytt elementet til bunnen
       to_top: Flytt elementet til toppen
+    pages: Sider
     per_page: Per side
     prev_page: Forrige side
+    record:
+      one: post
+      other: poster
     records_selected_from_all_pages_html: Alle poster valgt fra alle sider
+    reload: Last inn på nytt
     remove_selection: Fjern valg
     reset: nullstille
     reset_filters: Nullstill filter
@@ -102,6 +182,9 @@ nb:
     resource_destroyed: Ressurs slettet
     resource_updated: Ressurs oppdatert
     resources: Ressurser
+    retry: Prøv igjen
+    retry_item: Prøv igjen %{item}
+    reupload_file: Reupload %{item}
     run: Kjør
     save: Lagre
     search:
@@ -112,6 +195,8 @@ nb:
     select_item: Velg
     show_content: Vis innhold
     sign_out: Logg ut
+    skip_to_content: Hopp til innhold
+    skip_to_sidebar: Hopp til sidefelt
     sort_asc: Sorter stigende
     sort_desc: Sorter synkende
     sort_reset: Tilbakestill sortering
@@ -123,6 +208,7 @@ nb:
     type_to_search: Søk.
     unauthorized: Ikke autorisert
     undo: angre
+    updated_at: Oppdatert den
     updated_at_timestamp: Oppdatert den %{updated_at}
     view: Vis
     view_item: vis %{item}
@@ -133,9 +219,9 @@ nb:
       one: ett element til
       other: "%{count} flere elementer"
       zero: ingen flere elementer
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> poster valgt fra alle sider
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> poster valgt på denne siden
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> poster valgt på denne siden fra totalt <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> poster valgt fra alle sider
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, jeg er sikker
     you_cant_upload_new_resource: Du kan ikke laste opp filer til Trix editoren før du lagrer ressursen.
     you_havent_set_attachment_key: Du har ikke satt en `attachment_key` til dette Trix-feltet.

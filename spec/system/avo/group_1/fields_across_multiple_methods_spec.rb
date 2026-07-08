@@ -1,0 +1,87 @@
+require "rails_helper"
+
+# This spec tests if the fields across multiple methods declared on the user resource are on the correct places
+# It also tests if the fields and other items are in the correct order
+
+RSpec.describe "Main menu and fields across multiple methods", type: :system do
+  let(:user) { create :user }
+
+  it "finds all test fields/tabs/sidebars where they should be" do
+    ENV["testing_methods"] = "1"
+    visit "/admin/resources/users/#{user.to_param}"
+
+    # Finds heading test field
+    find("[data-item-index='1'] [data-field-id='Heading'][data-resource-show-target='headingTextWrapper']")
+
+    # Finds main panel
+    find("[data-item-index='3']")
+    find("[data-item-index='3'] [data-field-id='id'][data-resource-show-target='idIdWrapper']")
+
+    # Verify that Heading comes before main panel
+    assert_selector(:xpath, "//*[contains(@data-item-index, '1')]//*[contains(@data-field-id, 'Heading')][contains(@data-resource-show-target, 'headingTextWrapper')]/following::*[contains(@data-item-index, '2')]")
+
+    # Find inside main panel test field
+    show_field_wrapper(id: "Inside main panel")
+
+    # Inside main panel
+    within('[data-item-index="3"]') do
+      # Find first test sidebar
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
+        expect(page).to have_content("Sidebar tool")
+
+        # Find inside sidebar test field
+        find("[data-field-id='Inside test_sidebar'][data-resource-show-target='inside testSidebarTextWrapper']")
+      end
+
+      # Find user sidebar
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
+        # Find inside main panel sidebar test field
+        find("[data-field-id='Inside first_panel_sidebar'][data-resource-show-target='inside firstPanelSidebarTextWrapper']")
+      end
+    end
+
+    # Inside user information panel
+    within('[data-item-index="5"]') do
+      # Find inside panel test field
+      find("[data-field-id='Inside panel'][data-resource-show-target='inside panelTextWrapper']")
+
+      # Inside row component
+      within(".card", match: :first) do
+        find("[data-field-id='Inside panel -> row'][data-resource-show-target='inside panel > rowTextWrapper']")
+        expect(find("[data-field-id='Inside panel -> row']")[:class]).to include("w-1/3")
+      end
+
+      # Sidebars were removed from the community tier
+      # Find panel test first sidebar
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="0"]') do
+        # Find inside panel inside sidebar test field
+        find("[data-field-id='Inside panel -> sidebar'][data-resource-show-target='inside panel > sidebarTextWrapper']")
+      end
+
+      # Find panel test second sidebar
+      within('[data-component-name="avo/resource_sidebar_component"][data-component-index="1"]') do
+        # Find inside panel inside second sidebar test field
+        find("[data-field-id='Inside panel -> sidebar 2'][data-resource-show-target='inside panel > sidebar 2TextWrapper']")
+
+        expect(page).to have_text("🪧 This sidebar partial is waiting to be updated")
+      end
+    end
+
+    # Tabs
+    within("[data-tabs-group-id-value='first-tabs-group']") do
+      within('[role="tablist"]') do
+        expect(page).to have_text("test_tab")
+        expect(page).to have_text("Inside tabs")
+        expect(page).to have_text("Fish")
+      end
+
+      # Find Inside tabs -> tab -> panel test field
+      find("[data-field-id='Inside tabs -> tab -> panel'][data-resource-show-target='inside tabs > tab > panelTextWrapper']")
+
+      # Find Inside tabs -> tab test field
+      find("[data-field-id='Inside tabs -> tab'][data-resource-show-target='inside tabs > tabTextWrapper']")
+    end
+
+    ENV["testing_methods"] = nil
+  end
+end

@@ -37,7 +37,7 @@ Avo.configure do |config|
   # }
   # config.raise_error_on_missing_policy = false
   config.authorization_client = nil
-  config.explicit_authorization = true
+  # config.explicit_authorization = true
 
   ## == Localization ==
   # config.locale = 'en-US'
@@ -68,9 +68,6 @@ Avo.configure do |config|
   ## == Number of search results to display ==
   # config.search_results_count = 8
 
-  ## == Associations lookup list limit ==
-  # config.associations_lookup_list_limit = 1000
-
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.
   ## We compute the cache store by default, this is NOT the default, just an example.
@@ -100,62 +97,86 @@ Avo.configure do |config|
   #   file_logger
   # }
 
+  ## == Keyboard shortcuts ==
+  # config.hotkeys = {
+  #   enabled: true,          # Master switch: set to false to disable all keyboard shortcuts
+  #   show_key_badges: true   # Set to false to hide inline kbd badge elements from the UI
+  # }
+
+  ## == Associations ==
+  # config.associations = {
+  #   # Cap how many records a belongs_to/attach lookup lists before showing the
+  #   # "more records available" notice.
+  #   lookup_list_limit: 1000,
+  #   # Cold-start loading for association turbo frames (has_one, has_many, habtm),
+  #   # used when a field doesn't set its own `loading:`.
+  #   frames: {
+  #     loading: :lazy,             # :lazy (load on reveal) or :manual (placeholder + Load button)
+  #     auto_load_for: 15.minutes   # how long a manual frame is remembered once opened (0/nil to disable)
+  #   }
+  # }
+
   ## == Customization ==
   config.click_row_to_view_record = true
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
   # config.currency = 'USD'
   # config.hide_layout_when_printing = false
-  # config.full_width_container = false
-  # config.full_width_index_view = false
+  # config.container_width = :large # :full, :large, or :small. Hash for per-view: { index: :full, single: :small }
+  # config.use_stacked_fields = false
+  # Set to false to disable Avo's Tailwind integration even when `tailwindcss-ruby` is installed.
+  # config.tailwindcss_integration_enabled = true
   # config.search_debounce = 300
   # config.view_component_path = "app/components"
   # config.display_license_request_timeout_error = true
-  # config.disabled_features = []
   # config.buttons_on_form_footers = true
   # config.field_wrapper_layout = true
   # config.resource_parent_controller = "Avo::ResourcesController"
   # config.first_sorting_option = :desc # :desc or :asc
-  # config.exclude_from_status = []
+  # config.exclude_from_status = ["license_key"]
   # config.model_generator_hook = true
 
-  ## == Branding ==
-  # config.branding = {
-  #   colors: {
-  #     background: "248 246 242",
-  #     100 => "#CEE7F8",
-  #     400 => "#399EE5",
-  #     500 => "#0886DE",
-  #     600 => "#066BB2",
-  #   },
+  ## == Appearance ==
+  # config.appearance = {
+  #   logo: "avo/logo.png",
+  #   logo_dark: "avo/logo-dark.png",
+  #   logomark: "avo/logomark.png",
+  #   logomark_dark: "avo/logomark-dark.png",
+  #   favicon: "avo/favicon.ico",
+  #   favicon_dark: "avo/favicon-dark.ico",
+  #   lock: [:scheme, :neutral, :accent]
+  #   neutrals: [:brand, :neutral, :slate, :olive],
+  #   accents: [:brand, :red, :blue, :sky, :purple],
+  #   mode: :static,
+  #   neutral: :brand,
+  #   accent: :brand,
+  #   scheme: :auto,
+  #   persistence: :database,
+  #   placeholder: "avo/placeholder.svg",
   #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
-  #   logo: "/avo-assets/logo.png",
-  #   logomark: "/avo-assets/logomark.png",
-  #   placeholder: "/avo-assets/placeholder.svg",
-  #   favicon: "/avo-assets/favicon.ico"
+  #   load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
   # }
 
   ## == Breadcrumbs ==
-  # config.display_breadcrumbs = true
   # config.set_initial_breadcrumbs do
-  #   add_breadcrumb "Home", '/<%= options[:path] %>'
+  #   add_breadcrumb title: "Home", path: '/<%= options[:path] %>'
   # end
 
   ## == Menus ==
   # config.main_menu = -> {
-  #   section "Dashboards", icon: "avo/dashboards" do
+  #   section "Dashboards", icon: "tabler/outline/layout-dashboard" do
   #     all_dashboards
   #   end
 
-  #   section "Resources", icon: "avo/resources" do
+  #   section "Resources", icon: "tabler/outline/chart-bar-popular" do
   #     all_resources
   #   end
 
-  #   section "Tools", icon: "avo/tools" do
+  #   section "Tools", icon: "tabler/outline/tool" do
   #     all_tools
   #   end
   # }
   # config.profile_menu = -> {
-  #   link "Profile", path: "/<%= options[:path] %>/profile", icon: "heroicons/outline/user-circle"
+  #   link "Profile", path: "/<%= options[:path] %>/profile", icon: "tabler/outline/user-circle"
   # }
 end

@@ -1,0 +1,226 @@
+require "rails_helper"
+
+RSpec.describe Avo::UI::BadgeComponent, type: :component do
+  let(:valid_colors) { described_class::VALID_COLORS }
+  describe "rendering" do
+    it "renders default badge with neutral color" do
+      render_inline(described_class.new(label: "Test Badge"))
+
+      expect(page).to have_css(".badge")
+      expect(page).to have_text("Test Badge")
+      # Check for correct CSS classes (colors are now handled via CSS variables in classes)
+      expect(page).to have_css(".badge--subtle.badge--neutral")
+    end
+
+    it "renders badge without label" do
+      render_inline(described_class.new(label: ""))
+
+      expect(page).to have_css(".badge")
+      expect(page).not_to have_css(".badge__label")
+    end
+
+    it "renders badge with icon on the left" do
+      render_inline(described_class.new(
+        label: "With Icon",
+        icon: "tabler/outline/paperclip"
+      ))
+
+      expect(page).to have_css(".badge__icon")
+      expect(page).to have_text("With Icon")
+    end
+  end
+
+  describe "color logic" do
+    context "with subtle style (default)" do
+      it "uses correct CSS classes for semantic colors" do
+        render_inline(described_class.new(
+          label: "Success",
+          color: "success",
+          style: "subtle"
+        ))
+
+        # Check for correct CSS classes (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--success")
+      end
+
+      it "uses correct CSS classes for full colors" do
+        render_inline(described_class.new(
+          label: "Purple",
+          color: "purple",
+          style: "subtle"
+        ))
+
+        # Check for correct CSS classes (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--purple")
+      end
+    end
+
+    context "with solid style" do
+      it "uses correct CSS classes for colors that support solid style" do
+        render_inline(described_class.new(
+          label: "Purple",
+          color: "purple",
+          style: "solid"
+        ))
+
+        # Should have solid style class and color class (colors use CSS variables)
+        expect(page).to have_css(".badge--solid.badge--purple")
+      end
+
+      it "semantic colors support solid style" do
+        render_inline(described_class.new(
+          label: "Success",
+          color: "success",
+          style: "solid"
+        ))
+
+        # Semantic colors now support solid style
+        expect(page).to have_css(".badge--solid.badge--success")
+        expect(page).not_to have_css(".badge--subtle.badge--success")
+      end
+
+      # Test solid style for colors that support it (orange, yellow, green, teal, blue, purple)
+      %w[orange yellow green teal blue purple].each do |base_color|
+        it "uses solid style for #{base_color}" do
+          render_inline(described_class.new(
+            label: "Test",
+            color: base_color,
+            style: "solid"
+          ))
+
+          # Should have solid style class and color class
+          expect(page).to have_css(".badge.badge--solid.badge--#{base_color}")
+        end
+      end
+    end
+
+    context "with invalid color" do
+      it "falls back to 'neutral'" do
+        render_inline(described_class.new(
+          label: "Invalid",
+          color: "rainbow"
+        ))
+
+        # Should use neutral color class (colors use CSS variables)
+        expect(page).to have_css(".badge--subtle.badge--neutral")
+      end
+
+      it "does not raise an error" do
+        expect {
+          render_inline(described_class.new(
+            label: "Test",
+            color: "nonexistent_color"
+          ))
+        }.not_to raise_error
+      end
+    end
+  end
+
+  describe "parameter validation" do
+    it "normalizes invalid style to 'subtle'" do
+      render_inline(described_class.new(label: "Test", style: "invalid"))
+
+      # Component should normalize invalid style to "subtle" (default)
+      expect(page).to have_css(".badge--subtle")
+      expect(page).not_to have_css(".badge--invalid")
+    end
+
+    it "accepts all valid styles" do
+      described_class::VALID_STYLES.each do |style|
+        expect {
+          render_inline(described_class.new(label: "Test", style: style))
+        }.not_to raise_error
+      end
+    end
+
+    it "accepts all valid colors" do
+      valid_colors.each do |color|
+        expect {
+          render_inline(described_class.new(label: "Test", color: color))
+        }.not_to raise_error
+      end
+    end
+  end
+
+  describe "all color variants" do
+    context "semantic colors" do
+      %w[neutral success danger warning info].each do |color|
+        it "renders #{color} badge correctly with CSS classes" do
+          render_inline(described_class.new(
+            label: color.capitalize,
+            color: color
+          ))
+
+          # Check for correct CSS classes (colors use CSS variables)
+          expect(page).to have_css(".badge--subtle.badge--#{color}")
+        end
+      end
+    end
+
+    context "full colors with variants" do
+      %w[orange yellow green teal blue purple].each do |color|
+        it "renders #{color} subtle style correctly with CSS classes" do
+          render_inline(described_class.new(
+            label: color.capitalize,
+            color: color,
+            style: "subtle"
+          ))
+
+          # Check for correct CSS classes (colors use CSS variables)
+          expect(page).to have_css(".badge--subtle.badge--#{color}")
+        end
+
+        it "renders #{color} solid style correctly with CSS classes" do
+          render_inline(described_class.new(
+            label: color.capitalize,
+            color: color,
+            style: "solid"
+          ))
+
+          # Check for correct CSS classes (colors use CSS variables)
+          expect(page).to have_css(".badge--solid.badge--#{color}")
+        end
+      end
+    end
+  end
+
+  describe "icon rendering" do
+    it "does not render icon when not provided" do
+      render_inline(described_class.new(label: "No Icon"))
+
+      expect(page).not_to have_css("svg")
+    end
+  end
+
+  describe "edge cases" do
+    it "handles nil label gracefully" do
+      expect {
+        render_inline(described_class.new(label: nil))
+      }.not_to raise_error
+    end
+
+    it "handles empty string label" do
+      render_inline(described_class.new(label: ""))
+
+      expect(page).to have_css(".badge")
+      expect(page).not_to have_css("span.truncate")
+    end
+
+    it "handles very long label text" do
+      long_label = "A" * 100
+      render_inline(described_class.new(label: long_label))
+
+      expect(page).to have_text(long_label)
+    end
+
+    it "handles icon without label" do
+      render_inline(described_class.new(
+        label: "",
+        icon: "tabler/outline/paperclip"
+      ))
+
+      expect(page).to have_css("svg")
+      expect(page).not_to have_css("span.truncate")
+    end
+  end
+end

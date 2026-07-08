@@ -1,19 +1,19 @@
-<div class="space-y-1 mb-4"
-  <% if collapsable %>
-    data-controller="menu"
-    data-menu-target="self"
-    data-menu-key-param="<%= key %>"
-    data-menu-default-collapsed-state="<%= collapsed ? 'collapsed' : 'expanded' %>"
-  <% end %>
->
-  <%= render Avo::Sidebar::HeadingComponent.new label: item.name, icon: helpers.svg(icon, class: "h-5"), collapsable: item.collapsable, collapsed: collapsed, key: key %>
-  <%= content_tag :div, class: class_names("w-full space-y-1", {"hidden": collapsed}),
+<%= tag.div class: "sidebar-section", data: data do %>
+  <%= render Avo::Sidebar::HeadingComponent.new(
+    title: item.name,
+    icon: icon,
+    collapsable: collapsable,
+    collapsed: collapsed
+  ) %>
+
+  <%= content_tag :div,
+    hidden: collapsed,
+    class: "sidebar-section__items",
     data: {
       menu_target: :items,
-      **section_collapse_data_animation
     } do %>
     <% @items.each do |item| %>
       <%= render Avo::Sidebar::ItemSwitcherComponent.new item: item %>
     <% end %>
   <% end %>
-</div>
+<% end %>

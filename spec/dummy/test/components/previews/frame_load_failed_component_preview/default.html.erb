@@ -1,0 +1,67 @@
+<div style="padding: 2rem;">
+  <div>
+    <div class="mb-2 font-semibold">Interactive</div>
+    <div class="state state--frame-load-failed">
+      <div class="state__illustration" aria-hidden="true">
+        <% %i[start center end].each do |position| %>
+          <div class="state__document state__document--<%= position %>">
+            <div class="state__document-body">
+              <div class="state__document-lines">
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line state__document-line--short"></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="state__magnifier">
+          <%= svg "tabler/outline/zoom", class: "state__magnifier-icon" %>
+        </div>
+      </div>
+
+      <p class="state__message text-center font-normal">
+        Failed to load:
+        <span class="font-bold"><%= frame.to_s.humanize.downcase %></span>
+      </p>
+
+      <% if src.present? %>
+        <p class="state__note text-center font-normal">
+          Follow
+          <%= link_to "this link", src, target: "_blank", rel: "noopener", class: "state__link font-normal" %>
+          for more details about the issue and how to fix it.
+        </p>
+      <% end %>
+    </div>
+
+    <div class="mt-4 mb-2 font-semibold">Without dev note</div>
+    <div class="state state--frame-load-failed">
+      <div class="state__illustration" aria-hidden="true">
+        <% %i[start center end].each do |position| %>
+          <div class="state__document state__document--<%= position %>">
+            <div class="state__document-body">
+              <div class="state__document-lines">
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line"></span>
+                <span class="state__document-line state__document-line--short"></span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="state__magnifier">
+          <%= svg "tabler/outline/zoom", class: "state__magnifier-icon" %>
+        </div>
+      </div>
+
+      <p class="state__message text-center font-normal">
+        Failed to load:
+        <span class="font-bold"><%= frame.to_s.humanize.downcase %></span>
+      </p>
+    </div>
+  </div>
+</div>

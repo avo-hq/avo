@@ -1,7 +1,7 @@
 <%= field_wrapper(**field_wrapper_args) do %>
   <%= content_tag :div, data: {controller: "progress-bar-field"} do %>
     <% if @field.display_value %>
-      <div class="text-center text-sm font-semibold w-full leading-none mb-1">
+      <div class="text-center text-sm font-semibold w-full leading-none mb-1 mt-1">
         <span data-progress-bar-field-target="label"><%= @field.value %></span><%= @field.value_suffix if @field.value_suffix.present? %>
       </div>
     <% end %>

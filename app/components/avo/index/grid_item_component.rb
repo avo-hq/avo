@@ -40,7 +40,7 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def render_cover
     return link_to_cover if @card[:cover_url].present?
 
-    link_to resource_view_path do
+    link_to resource_view_path, aria: {label: cover_link_label} do
       render Avo::Index::GridCoverEmptyStateComponent.new
     end
   end
@@ -48,38 +48,44 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def link_to_cover
     classes = "absolute h-full w-full object-cover"
 
-    link_to image_tag(@card[:cover_url], class: classes), resource_view_path, class: classes, title: @card[:title], loading: :lazy, width: "640", height: "480"
+    link_to image_tag(@card[:cover_url], class: classes, alt: ""), resource_view_path, class: classes, aria: {label: cover_link_label}, loading: :lazy, width: "640", height: "480"
+  end
+
+  def cover_link_label
+    "Open record ##{@resource.record_param}"
   end
 
   def render_title
     return if @card[:title].blank?
 
-    content_tag :div, class: "grid font-semibold leading-tight text-lg mb-2 #{html(:title, :classes)}", style: html(:title, :style) do
-      link_to @card[:title], resource_view_path
+    content_tag :div, class: "grid-card__title #{html(:title, :classes)}", style: html(:title, :style) do
+      link_to @card[:title], resource_view_path, tabindex: -1
     end
   end
 
   def render_body
     return if @card[:body].blank?
 
-    content_tag :div, class: "text-sm break-words text-gray-500 #{html(:body, :classes)}", style: html(:body, :style) do
+    content_tag :div, class: "grid-card__description #{html(:body, :classes)}", style: html(:body, :style) do
       @card[:body]
     end
   end
 
   def render_badge
-    return if @card[:badge_label].blank?
+    return if @card[:badge].blank? || (@card[:badge][:label].blank? && @card[:badge][:icon].blank?)
 
+    # Wrap BadgeComponent in positioned container to maintain absolute positioning
     content_tag :div,
-      class: class_names("absolute block inset-auto top-0 right-0 mt-2 mr-2 text-sm font-semibold bg-#{badge_color}-50 border border-#{badge_color}-300 text-#{badge_color}-700 rounded shadow-lg px-2 py-px z-10", html(:badge, :classes)),
-      title: @card[:badge_title],
+      class: class_names("grid-card__badge", html(:badge, :classes)),
+      title: @card[:badge][:title],
       style: html(:badge, :style),
       data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do
-      @card[:badge_label]
+      render Avo::UI::BadgeComponent.new(
+        label: @card[:badge][:label],
+        color: @card[:badge][:color],
+        style: @card[:badge][:style],
+        icon: @card[:badge][:icon]
+      )
     end
-  end
-
-  def badge_color
-    @card[:badge_color] || "gray"
   end
 end

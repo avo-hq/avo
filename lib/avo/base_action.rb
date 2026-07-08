@@ -9,10 +9,11 @@ module Avo
     end
 
     class_attribute :name, default: nil
+    class_attribute :description, default: nil
     class_attribute :message
     class_attribute :confirm_button_label
     class_attribute :cancel_button_label
-    class_attribute :no_confirmation, default: false
+    class_attribute :confirmation, default: true
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
       # Hide on the :new view by default
@@ -21,7 +22,6 @@ module Avo
       # Show on all other views
       true
     }
-    class_attribute :may_download_file
     class_attribute :turbo
     class_attribute :authorize, default: true
     class_attribute :close_modal_on_backdrop_click, default: true
@@ -119,7 +119,7 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: :play, query: nil, index_query: nil)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: "tabler/outline/player-play", query: nil, index_query: nil)
       @record = record
       @resource = resource
       @user = user
@@ -140,14 +140,21 @@ module Avo
 
       @response ||= {}
       @response[:messages] = []
-
-      if may_download_file.present?
-        puts "[Avo->] WARNING! Since version 3.2.2 'may_download_file' is unecessary and deprecated on actions. Can be safely removed from #{self.class.name}"
-      end
     end
 
     # Blank method
     def fields
+    end
+
+    def get_description
+      Avo::ExecutionContext.new(
+        target: self.class.description,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments,
+        query: @query
+      ).handle
     end
 
     def get_message
@@ -214,7 +221,8 @@ module Avo
         current_user: args[:current_user],
         resource: args[:resource],
         records: args[:query],
-        query: args[:query]
+        query: args[:query],
+        request: args[:request]
       )
 
       self
@@ -351,9 +359,9 @@ module Avo
       !enabled?
     end
 
-    def no_confirmation?
+    def confirmation?
       Avo::ExecutionContext.new(
-        target: no_confirmation,
+        target: confirmation,
         action: self,
         resource: @resource,
         view: @view,

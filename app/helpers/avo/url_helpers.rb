@@ -45,16 +45,17 @@ module Avo
     end
 
     def resource_attach_path(resource, record_id, related_name, related_id = nil)
-      helpers.avo.resources_associations_new_path(resource.singular_route_key, record_id, related_name)
+      helpers.avo.send(:"resources_#{resource.route_key}_associations_new_path", record_id, related_name)
     end
 
     def resource_detach_path(
       model_name, # teams
       record_id, # 1
       related_name, # admin
-      related_id = nil
+      related_id = nil,
+      **args
     )
-      avo.resources_associations_destroy_path(model_name, record_id, related_name, related_id)
+      avo.send(:"resources_#{model_name}_associations_destroy_path", record_id, related_name, related_id, **args)
     end
 
     def related_resources_path(
@@ -76,9 +77,14 @@ module Avo
       rescue
       end
 
-      route_key = parent_resource&.route_key || parent_record.model_name.route_key
+      route_key = if parent_resource.present?
+        parent_resource.route_key
+      else
+        Avo.resource_manager.get_resource_by_model_class(parent_record.class)&.route_key ||
+          parent_record.model_name.route_key
+      end
 
-      avo.resources_associations_index_path(route_key, record.to_param, **existing_params, **args)
+      avo.send(:"resources_#{route_key}_associations_index_path", record.to_param, **existing_params, **args)
     end
 
     def resource_view_path(**args)

@@ -4,7 +4,7 @@ module Avo
       attr_reader :always_show
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         hide_on :index
 

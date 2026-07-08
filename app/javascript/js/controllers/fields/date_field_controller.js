@@ -1,3 +1,4 @@
+import '../../helpers/flatpickr_top_layer'
 import { Controller } from '@hotwired/stimulus'
 import { DateTime } from 'luxon'
 import flatpickr from 'flatpickr'
@@ -85,6 +86,12 @@ export default class extends Controller {
     return this.timezoneValue || this.browserZone
   }
 
+  // Locale from the <html lang> attribute so Luxon tokens like `cccc` translate.
+  // Luxon reads locale data from the browser's native Intl API, so no locale files are bundled.
+  get locale() {
+    return document.documentElement.lang || 'en'
+  }
+
   connect() {
     // Cache the initial value so we can fill it back on disconnection.
     // We do that so the JS parser will continue to work when the user hits the back button to return on this page.
@@ -124,7 +131,7 @@ export default class extends Controller {
       }
     }
 
-    this.context.element.innerText = value.toFormat(this.formatValue)
+    this.context.element.innerText = value.toFormat(this.formatValue, { locale: this.locale })
   }
 
   initEdit() {
@@ -226,7 +233,7 @@ export default class extends Controller {
 
   onClose(selectedDates, dateStr, instance) {
     if (instance.config.allowInput && instance.altInput.value) {
-      const value = instance.altInput.value
+      const { value } = instance.altInput
       if (value) {
         instance.setDate(value, true, instance.config.altFormat)
       } else {

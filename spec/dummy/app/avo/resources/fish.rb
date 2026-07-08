@@ -23,7 +23,7 @@ class Avo::Resources::Fish < Avo::BaseResource
     field :id, as: :id
     field :id, as: :number, only_on: :forms, readonly: -> { !view.new? }
     field :name, as: :text, required: -> { view.new? }, help: "help text"
-    field :size, as: :radio, options: {small: "Small", medium: "Medium", large: "Large"}
+    field :size, as: :radio, options: {small: "Small", "medium one": :Medium, "large two": :Large}, default: :Large
     field :secondary_field_for_name,
       as: :text,
       for_attribute: :name,
@@ -36,56 +36,56 @@ class Avo::Resources::Fish < Avo::BaseResource
     tool Avo::ResourceTools::NestedFishReviews, only_on: :new
     tool Avo::ResourceTools::FishInformation, show_on: :forms
     tabs visible: true do
-      tab "big useless tab here" do
-        panel do
+      tab title: "big useless tab here" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "another big useless tab here 2" do
-        panel do
+      tab title: "another big useless tab here 2" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "big tab here 3" do
-        panel do
+      tab title: "big tab here 3" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "big tab here 3.5" do
-        panel do
+      tab title: "big tab here 3.5" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "tab here 4" do
-        panel do
+      tab title: "tab here 4" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "tab" do
-        panel do
+      tab title: "tab" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "big useless tab here 6" do
-        panel do
+      tab title: "big useless tab here 6" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "big useless tab here 7" do
-        panel do
+      tab title: "big useless tab here 7" do
+        card do
           field :id, as: :id
         end
       end
 
-      tab "big tab 8" do
-        panel do
+      tab title: "big tab 8" do
+        card do
           field :id, as: :id
         end
       end

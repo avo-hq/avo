@@ -1,0 +1,14 @@
+<div style="padding: 2rem;">
+  <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    <div>
+      <%= render Avo::BreadcrumbElementComponent.new(
+        text: text,
+        url: current ? nil : url,
+        icon: icon,
+        separator: separator,
+        current: current
+      ) %>
+    </div>
+  </div>
+</div>
+

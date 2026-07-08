@@ -5,6 +5,54 @@ ro:
     actions: Acțiuni
     add_filter: Adăugați filtru
     and_x_other_resources: plus alte %{count} recorduri
+    appearance:
+      accent_picker: Culoare accent
+      accents: Accent
+      accents_list:
+        amber: Chihlimbar
+        blue: Albastru
+        brand: Brand
+        cyan: Cyan
+        emerald: Smarald
+        fuchsia: Fucsia
+        green: Verde
+        indigo: Indigo
+        lime: Lime
+        orange: Portocaliu
+        pink: Roz
+        purple: Mov
+        red: Roșu
+        rose: Trandafiriu
+        sky: Cer
+        teal: Turcoaz
+        violet: Violet
+        yellow: Galben
+      auto: Automat
+      auto_tooltip: Automat (preferința sistemului)
+      dark: Întunecat
+      dark_tooltip: Mod întunecat
+      hide: Ascunde
+      light: Deschis
+      light_tooltip: Mod deschis
+      neutrals: Temă
+      neutrals_list:
+        brand: Brand
+        gray: Gri
+        mauve: Mov deschis
+        mist: Ceață
+        neutral: Neutru
+        olive: Măsliniu
+        slate: Ardezie
+        stone: Piatră
+        taupe: Taupe
+        zinc: Zinc
+      neutrals_picker: Temă neutre
+      schemes: Aspect
+      shortcut_badges: Insignele scurtăturilor
+      shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură
+      shortcut_badges_show_tooltip: Afișează insignele scurtăturilor de tastatură
+      show: Afișează
+      title: Aspect
     applied:
       few: aplicate
       one: aplicat
@@ -20,16 +68,23 @@ ro:
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
     cancel: Anulează
+    checkbox_list:
+      hidden_selections:
+        few: "%{count} opțiuni selectate ascunse de căutare"
+        one: 1 opțiune selectată ascunsă de căutare
+        other: "%{count} de opțiuni selectate ascunse de căutare"
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune
     choose_item: Alege %{item}
     clear_value: Șterge valoarea
+    click_to_load: Click pentru a încărca
     click_to_reveal_filters: Faceți clic pentru a afișa filtrele
     close: Închide
     close_modal: Închide modalul
     confirm: Confirm
     copy: Copiază
     create_new_item: Creează %{item}
+    created_at: Creat la
     created_at_timestamp: Creat la %{created_at}
     dashboard: Panou de control
     dashboards: Panouri de control
@@ -48,6 +103,7 @@ ro:
     failed: A eșuat
     failed_to_find_attachment: Atașamentul nu a fost găsit
     failed_to_load: Încărcarea a eșuat
+    failed_to_load_item: Încărcarea %{item} a eșuat
     'false': Fals
     file:
       few: fişiere
@@ -55,6 +111,23 @@ ro:
       other: fişiere
     filter_by: Filtează după
     filters: Filtre
+    global_search:
+      empty_state:
+        no_results_for_query: Nu am putut găsi nimic care să se potrivească cu "%{query}"
+        no_results_found: Nu s-au găsit rezultate
+        start_typing: Începeți să tastați pentru a căuta
+        start_typing_with_resource_list: Puteți căuta pe %{resources}
+        start_typing_with_resources: Puteți căuta pe %{resources} %{other_resources}
+        try_adjusting_search: Încercați să ajustați termenii de căutare sau verificați dacă sunt greșeli de tipar
+      go_to: Mergi la
+      keyboard_hints:
+        close: Închide
+        navigate: Navighează
+        press: Apasă
+        select: Selectează
+      results:
+        count_of_total: "%{count} din %{total}"
+      show_all_results_for: Arată toate rezultatele pentru
     go_back: Înapoi
     grid_view: Vezi sub formă de grid
     hide_content: Ascunde conținutul
@@ -67,6 +140,7 @@ ro:
       value: Valoare
     less_content: Mai puțin conținut
     list_is_empty: Lista este goală
+    load_item: Încărcați %{item}
     loading: Se incarcă
     media_library:
       title: Bibliotecă media
@@ -88,15 +162,23 @@ ro:
       other: "%{count} %{item}"
       zero: 0 %{item}
     oops_nothing_found: Oups! Nu am găsit rezultate...
+    open_in_new_tab: Deschide într-o filă nouă
+    open_in_your_editor: Deschideți în editorul dvs.
     order:
       higher: Mutați înregistrarea mai sus
       lower: Mutați înregistrarea mai jos
       reorder_record: Reordonați înregistrarea
       to_bottom: Mutați înregistrarea jos de tot
       to_top: Mutați înregistrarea sus de tot
+    pages: Pagini
     per_page: Pe pagină
     prev_page: Pagina anterioara
+    record:
+      few: înregistrări
+      one: înregistrare
+      other: înregistrări
     records_selected_from_all_pages_html: Toate selectate din toate paginile
+    reload: Reîncarcă
     remove_selection: Șterge selecția
     reset: resetare
     reset_filters: Resetați filtrele
@@ -104,6 +186,9 @@ ro:
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată
     resources: Resurse
+    retry: Reîncercați
+    retry_item: Reîncercați %{item}
+    reupload_file: Reupload %{item}
     run: Rulează
     save: Salvează
     search:
@@ -114,6 +199,8 @@ ro:
     select_item: Selectează record
     show_content: Arată conținutul
     sign_out: Delogare
+    skip_to_content: Sari la conținut
+    skip_to_sidebar: Sari la bara laterală
     sort_asc: Sortare crescătoare
     sort_desc: Sortare descrescătoare
     sort_reset: Resetare sortare
@@ -125,6 +212,7 @@ ro:
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează
+    updated_at: Actualizat la
     updated_at_timestamp: Actualizat la %{updated_at}
     view: vezi
     view_item: vezi %{item}
@@ -135,9 +223,9 @@ ro:
       one: încă un articol
       other: "%{count} mai multe articole"
       zero: zero articole
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> selectate dintr-un total de <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> selectate din toate paginile
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> selectate
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> selectate dintr-un total de <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> selectate din toate paginile
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> selectate
     yes_confirm: Da, sunt sigur
     you_cant_upload_new_resource: Nu poți încărca fișiere în editorul Trix până când nu salvezi resursa.
     you_havent_set_attachment_key: Trebuie să setezi o `attachment_key` pentru acest câmp Trix.

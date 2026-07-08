@@ -14,7 +14,7 @@
   } do %>
     <%= @form.text_field @field.id,
       value: @field.edit_formatted_value,
-      class: classes("w-full #{"hidden" unless params[:avo_show_hidden_inputs]}"),
+      class: classes("w-full #{"!hidden" unless params[:avo_show_hidden_inputs]}"),
       data: {
         date_field_target: :input,
         placeholder: @field.placeholder,
@@ -37,16 +37,17 @@
       style: @field.get_html(:style, view: view, element: :input)
     %>
     <%= content_tag :button,
-      class: "absolute right-0 self-center mr-4 uppercase font-semibold text-xs disabled:cursor-not-allowed disabled:opacity-50",
+      class: "absolute inset-y-0 end-0 flex items-center justify-center px-2.5 uppercase font-semibold text-xs disabled:cursor-not-allowed disabled:opacity-50 text-content-secondary cursor-pointer rounded-lg",
       id: :reset,
       type: :button,
       title: t("avo.reset").capitalize,
       disabled: disabled?,
+      style: "outline-offset: var(--focus-outline-offset-inset)",
       data: {
         action: "click->date-field#clear",
         tippy: :tooltip
       } do %>
-      <%= helpers.svg "avo/times", class: "h-4" %>
+      <%= helpers.svg "tabler/outline/x", class: "size-4" %>
     <% end %>
   <% end %>
 <% end %>

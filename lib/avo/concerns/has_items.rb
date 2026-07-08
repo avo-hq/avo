@@ -3,52 +3,18 @@ module Avo
     module HasItems
       extend ActiveSupport::Concern
 
-      class_methods do
-        def deprecated_dsl_api(name, method)
-          message = "This API was deprecated. Please use the `#{name}` method inside the `#{method}` method."
-          raise DeprecatedAPIError.new message
-        end
-
-        # DSL methods
-        def field(name, as: :text, **args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def panel(name = nil, **args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def row(**args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def tabs(**args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def tool(klass, **args)
-          deprecated_dsl_api __method__, "fields"
-        end
-
-        def sidebar(**args, &block)
-          deprecated_dsl_api __method__, "fields"
-        end
-        # END DSL methods
-      end
-
       attr_writer :items_holder
 
       delegate :invalid_fields, to: :items_holder
 
       delegate :field, to: :items_holder
       delegate :panel, to: :items_holder
-      delegate :row, to: :items_holder
-      delegate :cluster, to: :items_holder
+      delegate :card, to: :items_holder
       delegate :tabs, to: :items_holder
       delegate :tool, to: :items_holder
       delegate :heading, to: :items_holder
       delegate :sidebar, to: :items_holder
-      delegate :main_panel, to: :items_holder
+      delegate :header, to: :items_holder
       delegate :collaboration_timeline, to: :items_holder
 
       def items_holder
@@ -87,11 +53,11 @@ module Avo
           next if item.nil?
 
           if only_root
-            # When `item.is_main_panel? == true` then also `item.is_panel? == true`
-            # But when only_root == true we want to extract main_panel items
-            # In all other circumstances items will get extracted when checking for `item.is_panel?`
-            if item.is_main_panel?
-              fields << extract_fields(item)
+            # When only_root == true we want to extract the panel and card items
+            if item.is_panel? || item.is_card?
+              if item.visible_in_view?(view: view)
+                fields << extract_fields(item)
+              end
             end
           else
             # Dive into panels to fetch their fields
@@ -110,14 +76,14 @@ module Avo
             if item.is_sidebar?
               fields << extract_fields(item)
             end
+
+            if item.is_card?
+              fields << extract_fields(item)
+            end
           end
 
           if item.is_field?
             fields << item
-          end
-
-          if item.is_row?
-            fields << extract_fields(item)
           end
         end
 
@@ -201,31 +167,32 @@ module Avo
         end
       end
 
+      # Default renderable items for any HasItems container. Subclasses that
+      # need to auto-wrap (Tab, Panel, Sidebar, Resource) override this.
+      # Card and TabGroup fall through to the raw visible_items.
       def get_items
-        # Each group is built only by standalone items or items that have their own panel, keeping the items order
+        visible_items
+      end
+
+      # Groups consecutive "standalone" fields (fields that don't bring their
+      # own panel — text, select, date, etc.) into cards, so containers like
+      # Panel/Sidebar/Tab render a nice card background around them even when
+      # the user forgot to write `card do ... end` themselves. Fields that
+      # have their own panel (has_many, has_and_belongs_to_many, has_one,
+      # belongs_to) and explicit panels/cards pass through untouched and
+      # break the run, so you get separate cards around each group.
+      def items_with_standalone_fields_wrapped_in_cards
         grouped_items = visible_items.slice_when do |prev, curr|
-          # Slice when the item type changes from standalone to panel or vice-versa
           is_standalone?(prev) != is_standalone?(curr)
         end.to_a.map do |group|
-          { elements: group, is_standalone: is_standalone?(group.first) }
+          {elements: group, is_standalone: is_standalone?(group.first)}
         end
 
-        # Creates a main panel if it's missing and adds first standalone group of items if present
-        if items.none? { |item| item.is_main_panel? }
-          if (standalone_group = grouped_items.find { |group| group[:is_standalone] }).present?
-            calculated_main_panel = Avo::Resources::Items::MainPanel.new
-            hydrate_item calculated_main_panel
-            calculated_main_panel.items_holder.items = standalone_group[:elements]
-            grouped_items[grouped_items.index standalone_group] = { elements: [calculated_main_panel], is_standalone: false }
-          end
-        end
-
-        # For each standalone group, wrap items in a panel
         grouped_items.select { |group| group[:is_standalone] }.each do |group|
-          calculated_panel = Avo::Resources::Items::Panel.new
-          calculated_panel.items_holder.items = group[:elements]
-          hydrate_item calculated_panel
-          group[:elements] = calculated_panel
+          card = Avo::Resources::Items::Card.new
+          hydrate_item card
+          card.items_holder.items = group[:elements]
+          group[:elements] = card
         end
 
         grouped_items.flat_map { |group| group[:elements] }
@@ -245,10 +212,6 @@ module Avo
               item.items.grep(Avo::Resources::Items::Tab).each do |tab|
                 tab.items.grep(Avo::Resources::Items::Panel).each do |panel|
                   set_target_to_top panel.items.grep(Avo::Fields::BelongsToField)
-
-                  panel.items.grep(Avo::Resources::Items::Row).each do |row|
-                    set_target_to_top row.items.grep(Avo::Fields::BelongsToField)
-                  end
                 end
               end
             end
@@ -281,10 +244,14 @@ module Avo
             next true if item.is_a?(Avo::Resources::Items::TabGroup) ||
               item.is_a?(Avo::Resources::Items::Tab) ||
               item.is_heading? ||
-              item.is_a?(Avo::Fields::LocationField)
+              item.is_a?(Avo::Fields::LocationField) ||
+              item.is_header?
 
             # Skip nested fields
             next true if item.try(:nested_on?, view)
+
+            # When the resource is a form, we want to show all items even if there is no setter method
+            next true if defined?(Avo::Forms::Core::Resources::FormResource) && try(:resource).is_a?(Avo::Forms::Core::Resources::FormResource)
 
             item.resource.record.respond_to?(:"#{item.try(:for_attribute) || item.id}=")
           end
@@ -315,7 +282,7 @@ module Avo
       end
 
       # Extracts fields from a structure
-      # Structures can be panels, rows and sidebars
+      # Structures can be panels, cards, and sidebars
       def extract_fields(structure)
         structure.items.map do |item|
           if item.is_field?
@@ -326,10 +293,10 @@ module Avo
         end.compact
       end
 
-      # Extractable structures are panels, rows and sidebars
+      # Extractable structures are panels, cards, and sidebars
       # Sidebars are only extractable if they are not on the index view
       def extractable_structure?(structure)
-        structure.is_panel? || structure.is_row? || (structure.is_sidebar? && !view.index?)
+        structure.is_panel? || structure.is_card? || (structure.is_sidebar? && !view.index?)
       end
 
       # Standalone items are fields that don't have their own panel

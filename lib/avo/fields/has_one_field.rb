@@ -1,6 +1,7 @@
 module Avo
   module Fields
     class HasOneField < FrameBaseField
+      include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::Nested
 
       attr_reader :attach_fields,
@@ -21,9 +22,10 @@ module Avo
           hide_on :forms
         end
 
-        super(id, **args, &block)
+        super
 
         @placeholder ||= I18n.t "avo.choose_an_option"
+        @searchable = (args[:searchable] == true || args[:searchable].is_a?(Hash)) ? args[:searchable] : false
         @attach_fields = args[:attach_fields]
         @attach_scope = args[:attach_scope]
       end
@@ -52,8 +54,6 @@ module Avo
 
         record
       end
-
-      def is_searchable? = false
     end
   end
 end

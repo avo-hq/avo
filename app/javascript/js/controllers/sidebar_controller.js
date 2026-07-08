@@ -56,13 +56,35 @@ export default class extends Controller {
     this.attachScrollVisibilityAnchor()
 
     // Restore sidebar scroll position
-    if (this.sidebarScrollPosition && window.Avo.configuration.preserve_sidebar_scroll) {
+    if (this.sidebarScrollPosition) {
       document.querySelector('.avo-sidebar .mac-styled-scrollbar').scrollTo({
         top: this.sidebarScrollPosition,
         behavior: 'instant',
       })
     }
     this.rememberScrollPosition()
+
+    const isMobile = window.innerWidth < 1024
+    const isOpen = isMobile
+      ? this.mainAreaTarget.classList.contains('sidebar-mobile-open')
+      : this.mainAreaTarget.classList.contains('sidebar-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
+
+    this.handleToggleShortcut = (event) => {
+      if (event.repeat || event.defaultPrevented) return
+      if (event.target?.closest('input, textarea, select, [contenteditable]')) return
+      // Shift+\ — use event.code so layout differences (Shift+\ → "|" on US) don't matter.
+      if (!event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return
+      if (event.code !== 'Backslash') return
+
+      event.preventDefault()
+      this.toggleSidebarForViewport()
+    }
+    document.addEventListener('keydown', this.handleToggleShortcut)
+  }
+
+  disconnect() {
+    document.removeEventListener('keydown', this.handleToggleShortcut)
   }
 
   rememberScrollPosition() {
@@ -77,32 +99,65 @@ export default class extends Controller {
   }
 
   attachScrollVisibilityAnchor() {
-    if (window.Avo.configuration.focus_sidebar_menu_item) {
-      scrollSidebarMenuItemIntoView()
+    scrollSidebarMenuItemIntoView()
+  }
+
+  get toggleButtons() {
+    return document.querySelectorAll('[data-sidebar-toggle-icon]')
+  }
+
+  setToggleButtonsState(state) {
+    this.toggleButtons.forEach((button) => {
+      button.dataset.sidebarState = state
+    })
+  }
+
+  toggleSidebarForViewport() {
+    if (window.innerWidth < 1024) {
+      this.toggleSidebarOnMobile()
+    } else {
+      this.toggleSidebar()
     }
   }
 
   toggleSidebar() {
     if (this.sidebarTarget.classList.contains('hidden')) {
       this.sidebarTarget.classList.remove('hidden')
+
+      // The sidebar starts the session as display:none when closed. Removing
+      // `hidden` and toggling `sidebar-open` in the same tick would let the
+      // browser collapse both style changes into one repaint — meaning the
+      // transform: translateX transition would never fire on the very first
+      // open. Force a reflow so the browser commits the post-hidden state
+      // (translateX(-100%) visible) before we flip to translateX(0).
+      this.mainAreaTarget.offsetHeight // eslint-disable-line no-unused-expressions
     }
     this.mainAreaTarget.classList.toggle('sidebar-open')
 
     Cookies.set(this.cookieKey, this.newValue(Cookies.get(this.cookieKey)))
+
+    const isOpen = this.mainAreaTarget.classList.contains('sidebar-open')
+    // Keep the controller's openValue in sync so --sidebar-offset-size flips,
+    // which drives the navbar spacer width and .main padding transitions.
+    this.openValue = isOpen
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   toggleSidebarOnMobile() {
     if (this.mobileSidebarTarget.classList.contains('hidden')) {
-      this.mainAreaTarget.classList.remove('sidebar-open')
+      this.mainAreaTarget.classList.remove('sidebar-mobile-open')
       this.mobileSidebarTarget.classList.remove('hidden')
 
       // we force a reflow here because we remove then
-      // immediately add the sidebar-open class
+      // immediately add the sidebar-mobile-open class
       // which doesn't give the browser enough time to apply the
       // transition.
-      this.mainAreaTarget.offsetHeight;
+      this.mainAreaTarget.offsetHeight // eslint-disable-line no-unused-expressions
     }
-    this.mainAreaTarget.classList.toggle('sidebar-open')
+    this.mainAreaTarget.classList.toggle('sidebar-mobile-open')
+
+    const isOpen = this.mainAreaTarget.classList.contains('sidebar-mobile-open')
+    this.setToggleButtonsState(isOpen ? 'open' : 'closed')
   }
 
   // private
@@ -110,7 +165,7 @@ export default class extends Controller {
     if (oldValue === undefined) {
       return '0'
     }
+
     return oldValue === '1' ? '0' : '1'
   }
-
 }

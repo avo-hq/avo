@@ -3,12 +3,12 @@
 source "https://rubygems.org"
 
 gem "rails", "~> 8.0"
-gem "activestorage"
+gem "activestorage", "~> 8.0"
 gem "jsbundling-rails"
 gem "cssbundling-rails"
-gem "sprockets-rails"
+gem "propshaft"
 gem "pg", ">= 0.18", "< 2.0"
-gem "puma", "~> 6.4"
+gem "puma", "~> 8.0"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "redis", "~> 5.0"
 gem "devise"
@@ -40,7 +40,7 @@ gem "net-smtp", require: false
 gem "avo-money_field"
 gem "avo-record_link_field"
 gem "pluggy", path: "../pluggy"
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "tzinfo-data", platforms: [:windows, :jruby]
 gem "psych", "< 4"
 
 group :development do
@@ -59,13 +59,16 @@ group :development do
   gem "ruby-statistics", "< 4"
   gem "web-console", ">= 3.3.0"
   gem "listen", ">= 3.5.1"
-  gem "debug", platforms: [:mri, :mingw, :x64_mingw]
+  gem "actioncable"
+  gem "debug", platforms: [:mri, :windows]
+  gem "ruby-lsp-rspec", require: false
 end
 
 group :test do
   gem "rspec-rails", "~> 6.0", ">= 6.0.3"
   gem "rspec-retry", "~> 0.6.2"
   gem "rails-controller-testing"
+  gem "parallel_tests"
   gem "capybara"
   gem "cuprite"
   gem "fuubar"
@@ -78,20 +81,26 @@ group :test do
   gem "simplecov-lcov"
   gem "test-prof"
   gem "database_cleaner-active_record"
+  gem "selenium-webdriver"
+  gem "axe-core-rspec"
+  gem "axe-core-capybara"
 end
 
 group :development, :test do
   gem "amazing_print"
   gem "dotenv-rails"
+  gem "danger", require: false
   gem "faker", require: false
   gem "factory_bot_rails"
-  gem "i18n-tasks", "~> 1.0.12"
+  gem "i18n-tasks", ">= 1.0.12"
   gem "erb-formatter", require: false
   gem "erb_lint", require: false
   gem "solargraph", require: false
   gem "solargraph-rails", require: false
   gem "ruby-openai"
   gem "appraisal", require: false
+  gem "openssl"
+  gem "lookbook", ">= 2.3.8"
 end
 
 gemspec path: "../"

@@ -1,17 +1,80 @@
-@import 'codemirror/lib/codemirror.css';
-
-/* themes */
-@import 'codemirror/theme/dracula.css';
-@import 'codemirror/theme/eclipse.css';
-@import 'codemirror/theme/material-darker.css';
-
+/* Base CodeMirror surface */
 .CodeMirror {
+  @apply border border-tertiary rounded-b-lg bg-primary text-content p-0 min-h-auto;
   height: var(--height) !important;
-  min-height: auto;
-  padding: 0;
 }
 
-/* overlay CodeMirror fullscreen & Preview on small screens */
-.CodeMirror-fullscreen, .editor-preview-active-side {
-  z-index: 50;
+.CodeMirror-gutters {
+  @apply bg-secondary border-e border-tertiary;
+}
+
+.CodeMirror-linenumber {
+  @apply text-content-secondary;
+}
+
+.CodeMirror-cursor {
+  @apply border-s-content;
+}
+
+.CodeMirror-selected {
+  @apply !bg-tertiary;
+}
+
+.CodeMirror-scrollbar-filler,
+.CodeMirror-gutter-filler {
+  @apply bg-primary;
+}
+
+/* Shared placeholder styling (standalone and EasyMDE) */
+.EasyMDEContainer .CodeMirror .CodeMirror-placeholder,
+[data-controller="code-field"] .CodeMirror .CodeMirror-placeholder {
+  @apply text-content-secondary opacity-100;
+}
+
+/* Standalone code field (CodeMirror without EasyMDE) */
+[data-controller="code-field"] .CodeMirror {
+  @apply border border-tertiary rounded-lg;
+}
+
+/* Lift the main stacking context above the navbar (z-index: 100) when CodeMirror is fullscreen */
+.main-content:has(.CodeMirror-fullscreen) {
+  z-index: 101;
+}
+
+/* EasyMDE shell */
+.editor-toolbar {
+  @apply border border-tertiary rounded-t-lg;
+}
+
+/* Dark mode EasyMDE overrides (tiny_description field) */
+.dark .editor-toolbar {
+  @apply bg-secondary border-tertiary;
+}
+
+.dark .editor-toolbar a,
+.dark .editor-toolbar button {
+  @apply !text-content bg-transparent;
+}
+
+.dark .editor-toolbar a:hover,
+.dark .editor-toolbar a.active,
+.dark .editor-toolbar button:hover,
+.dark .editor-toolbar button.active {
+  @apply !bg-tertiary !border-tertiary;
+}
+
+.dark .editor-toolbar i.separator {
+  @apply border-tertiary;
+}
+
+.dark .editor-statusbar {
+  @apply text-content-secondary;
+}
+
+.dark .editor-preview {
+  @apply bg-primary text-content;
+}
+
+.dark .editor-preview-side {
+  @apply bg-primary text-content border-tertiary;
 }

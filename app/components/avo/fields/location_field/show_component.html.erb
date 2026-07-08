@@ -1,3 +1,9 @@
-<%= field_wrapper(**field_wrapper_args) do %>
-  <%= field.render_map(params) %>
+<%= field_wrapper(**field_wrapper_args, full_width: true) do %>
+  <% if field.static_map?(params) %>
+    <%= field.render_map(params) %>
+  <% else %>
+    <div class="w-full" data-controller="map-dark-mode">
+      <%= field.render_map(params) %>
+    </div>
+  <% end %>
 <% end %>

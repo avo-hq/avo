@@ -37,12 +37,6 @@ shared_examples "view pages load" do |resource|
       }.to raise_error ActiveRecord::RecordNotFound
     end
   end
-
-  context "search" do
-    it "loads the search page" do
-      visit "/admin/avo_api/#{plural_name}/search?q="
-    end
-  end
 end
 
 RSpec.feature "Views", type: :feature do

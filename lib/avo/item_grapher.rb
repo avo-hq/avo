@@ -9,7 +9,7 @@ class Avo::ItemGrapher
 
   def decode_item(item)
     result = ""
-    result << "──" * (item[:level])
+    result << "──" * item[:level]
     result << "→"
     result << item[:id]
     if item[:items].present?

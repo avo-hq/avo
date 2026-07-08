@@ -1,15 +1,47 @@
 [data-component="avo/fields/common/progress_bar_component"] {
+  /* Track — a recessed groove. The base element is the track in Firefox; the
+     ::-webkit-progress-bar mirrors it for Chrome/Safari. The inset shadow is a
+     fixed dark occlusion so the groove reads the same in light and dark. */
   & progress {
-    @apply h-2 bg-white border border-slate-400 rounded shadow-inner;
-  }
-  & progress[value]::-webkit-progress-bar {
-    @apply bg-white border border-gray-500 rounded shadow-inner;
-  }
-  & progress[value]::-webkit-progress-value{
-    @apply bg-primary-500 rounded;
+    @apply h-2 rounded-sm border border-content-secondary/15 overflow-hidden;
 
+    background-color: var(--color-tertiary);
+    box-shadow: inset 0 1px 2px 0 color-mix(in oklab, var(--color-black) 14%, transparent);
   }
+
+  & progress[value]::-webkit-progress-bar {
+    @apply rounded-sm;
+
+    background-color: var(--color-tertiary);
+    box-shadow: inset 0 1px 2px 0 color-mix(in oklab, var(--color-black) 14%, transparent);
+  }
+
+  /* Fill — a slightly raised, glossy bar sitting in the groove. The vertical
+     gradient lightens the top and darkens the foot (baked-in highlight so the
+     depth survives even where pseudo-element box-shadows are ignored), keyed off
+     the accent token so it tracks the theme. */
+  & progress[value]::-webkit-progress-value {
+    @apply rounded-sm;
+
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-accent), var(--color-white) 22%) 0%,
+      var(--color-accent) 55%,
+      color-mix(in oklab, var(--color-accent), var(--color-black) 12%) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklab, var(--color-white) 35%, transparent),
+      inset 0 -1px 1px 0 color-mix(in oklab, var(--color-black) 18%, transparent);
+  }
+
   & progress[value]::-moz-progress-bar {
-    @apply bg-primary-500 rounded appearance-none;
+    @apply rounded-sm appearance-none;
+
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--color-accent), var(--color-white) 22%) 0%,
+      var(--color-accent) 55%,
+      color-mix(in oklab, var(--color-accent), var(--color-black) 12%) 100%
+    );
   }
 }

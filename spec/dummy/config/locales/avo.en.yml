@@ -22,10 +22,16 @@ en:
     attachment_destroyed: Attachment destroyed
     cancel: Cancel
     choose_a_country: Choose a country
+    checkbox_list:
+      hidden_selections:
+        one: 1 selected option hidden by search
+        other: "%{count} selected options hidden by search"
     choose_an_option: Choose an option
     choose_item: Choose %{item}
     clear_value: Clear value
-    click_to_reveal_filters: Click to reveal filters
+    reveal_filters: &reveal_filters Reveal filters
+    click_to_load: Click to load
+    click_to_reveal_filters: *reveal_filters
     close_modal: Close modal
     close: Close
     confirm: Confirm
@@ -40,8 +46,11 @@ en:
     details: details
     created_at_timestamp: "Created at %{created_at}"
     updated_at_timestamp: "Updated at %{updated_at}"
+    created_at: Created at
+    updated_at: Updated at
     download: Download
     download_file: Download file
+    reupload_file: Reupload %{item}
     download_item: Download %{item}
     edit: edit
     edit_item: edit %{item}
@@ -49,6 +58,7 @@ en:
     failed: Failed
     failed_to_find_attachment: Failed to find attachment
     failed_to_load: Failed to load
+    failed_to_load_item: Failed to load %{item}
     file:
       one: file
       other: files
@@ -64,6 +74,7 @@ en:
       key: Key
       value: Value
     list_is_empty: List is empty
+    load_item: Load %{item}
     loading: Loading
     more: More
     new: new
@@ -73,6 +84,9 @@ en:
     no_item_found: No record found
     no_options_available: No options available
     no_related_item_found: No related record found
+    reload: Reload
+    open_in_new_tab: Open in a new tab
+    open_in_your_editor: Open in your editor
     not_authorized: You are not authorized to perform this action.
     number_of_items:
       one: one %{item}
@@ -91,6 +105,8 @@ en:
     remove_selection: Remove selection
     reset_filters: Reset filters
     reset: reset
+    retry: Retry
+    retry_item: Retry %{item}
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated
@@ -107,6 +123,8 @@ en:
     more_content: More content
     less_content: Less content
     sign_out: Sign out
+    skip_to_content: Skip to content
+    skip_to_sidebar: Skip to sidebar
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
     tools: Tools
@@ -122,9 +140,9 @@ en:
       one: one more item
       other: "%{count} more items"
       zero: no more items
-    x_records_selected_from_a_total_of_x_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page from a total of <span class="font-bold text-gray-700">%{count}</span>
-    x_records_selected_from_all_pages_html: <span class="font-bold text-gray-700">%{count}</span> records selected from all pages
-    x_records_selected_from_page_html: <span class="font-bold text-gray-700">%{selected}</span> records selected on this page
+    x_records_selected_from_a_total_of_x_html: <span class="font-bold">%{selected}</span> records selected on this page from a total of <span class="font-bold">%{count}</span>
+    x_records_selected_from_all_pages_html: <span class="font-bold">%{count}</span> records selected from all pages
+    x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records selected on this page
     yes_confirm: Yes, I'm sure
     you_missed_something_check_form: You might have missed something. Please check the form.
     more_records_available: There are more records available.

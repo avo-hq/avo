@@ -14,8 +14,12 @@ module Avo
         self.class.ancestors.include?(Avo::Resources::Items::Panel)
       end
 
-      def is_main_panel?
-        self.class.ancestors.include?(Avo::Resources::Items::MainPanel)
+      def is_card?
+        self.class.ancestors.include?(Avo::Resources::Items::Card)
+      end
+
+      def is_header?
+        self.class.ancestors.include?(Avo::Resources::Items::Header)
       end
 
       def is_tool?
@@ -32,10 +36,6 @@ module Avo
 
       def is_sidebar?
         self.class.ancestors.include?(Avo::Resources::Items::Sidebar)
-      end
-
-      def is_row?
-        self.class.respond_to?(:item_type) && self.class.item_type == :row
       end
 
       def is_collaboration?

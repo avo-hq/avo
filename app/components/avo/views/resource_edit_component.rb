@@ -2,16 +2,12 @@
 
 class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
   include Avo::ApplicationHelper
+  include Avo::Concerns::FormBuilder
 
   prop :resource
   prop :record
   prop :actions, default: [].freeze
   prop :view, default: Avo::ViewInquirer.new(:edit).freeze
-  prop :display_breadcrumbs, default: true, reader: :public
-
-  def after_initialize
-    @display_breadcrumbs = @reflection.blank? && display_breadcrumbs
-  end
 
   def title
     @resource.default_panel_name
@@ -55,6 +51,35 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     @resource.render_edit_controls
   end
 
+  # True when the form is shown inside a modal opened from a belongs_to
+  # "Create new" link. In that case the title moves to the modal header and the
+  # controls move to the modal footer, so the in-form panel header is skipped.
+  def embedded_in_modal?
+    params[:via_belongs_to_resource_class].present?
+  end
+
+  # Renders the form panels. When embedded in a modal the panel header is
+  # dropped — its title and controls live in the modal chrome instead.
+  def render_form_items(form)
+    items = @resource.get_items
+    items = items.reject(&:is_header?) if embedded_in_modal?
+
+    safe_join(items.each_with_index.map do |item, index|
+      render Avo::Items::SwitcherComponent.new(
+        resource: @resource,
+        reflection: @reflection,
+        item: item,
+        index: index + 1,
+        view: @view,
+        parent_resource: @parent_resource,
+        parent_record: @parent_record,
+        form: form,
+        parent_component: self,
+        actions: @actions
+      )
+    end)
+  end
+
   private
 
   def via_index?
@@ -63,27 +88,5 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
 
   def is_edit?
     @view.in?(%w[edit update])
-  end
-
-  def form_method
-    return :put if is_edit?
-
-    :post
-  end
-
-  def form_url
-    if is_edit?
-      helpers.resource_path(
-        record: @resource.record,
-        resource: @resource
-      )
-    else
-      helpers.resources_path(
-        resource: @resource,
-        via_relation_class: params[:via_relation_class],
-        via_relation: params[:via_relation],
-        via_record_id: params[:via_record_id]
-      )
-    end
   end
 end

@@ -7,13 +7,13 @@ class Avo::Resources::Items::ItemGroup
   include Avo::Concerns::VisibleInDifferentViews
   include Avo::Concerns::IsVisible
 
-  attr_reader :name
+  attr_reader :title
   attr_reader :description
 
   delegate :items, :add_item, to: :items_holder
 
-  def initialize(name: nil, description: nil, view: nil, **args)
-    @name = name
+  def initialize(title: nil, description: nil, view: nil, **args)
+    @title = title
     @view = Avo::ViewInquirer.new view
     @description = description
     @items_holder = Avo::Resources::Items::Holder.new
@@ -28,13 +28,11 @@ class Avo::Resources::Items::ItemGroup
 
     delegate :heading, to: :items_holder
     delegate :field, to: :items_holder
-    delegate :row, to: :items_holder
-    delegate :cluster, to: :items_holder
     delegate :items, to: :items_holder
     delegate :sidebar, to: :items_holder
 
-    def initialize(parent:, name: nil, **args)
-      @panel = Avo::Resources::Items::Panel.new(name: name, **args)
+    def initialize(parent:, title: nil, **args)
+      @panel = Avo::Resources::Items::Panel.new(title: title, **args)
       @items_holder = Avo::Resources::Items::Holder.new(from: self.class, parent: parent)
     end
 
