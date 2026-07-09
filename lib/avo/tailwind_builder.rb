@@ -19,7 +19,19 @@ module Avo
     end
 
     def self.enabled?
-      Avo.configuration.tailwindcss_integration_enabled && tailwindcss_available?
+      Avo.configuration.tailwindcss_integration_enabled && tailwindcss_available? && tailwindcss_rails_version_supported?
+    end
+
+    # tailwindcss-rails depends on tailwindcss-ruby at every major version, so requiring
+    # "tailwindcss/ruby" succeeds even when the host app is pinned to tailwindcss-rails 3.x
+    # (Tailwind CSS v3). Avo's build pipeline emits Tailwind v4-only syntax, so we only enable
+    # the integration when tailwindcss-rails (if bundled at all) is >= 4.0.0. Apps that manage
+    # tailwindcss-ruby directly (no tailwindcss-rails) are unaffected by this check.
+    def self.tailwindcss_rails_version_supported?
+      spec = Gem.loaded_specs["tailwindcss-rails"]
+      return true unless spec
+
+      Gem::Version.new(spec.version) >= Gem::Version.new("4.0.0")
     end
 
     def build
