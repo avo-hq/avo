@@ -11,6 +11,39 @@ RSpec.describe Avo::TailwindBuilder do
     config.instance_variable_set(:@tailwindcss_content_sources, previous)
   end
 
+  describe ".enabled?" do
+    def stub_tailwindcss_rails_version(version)
+      fake_spec = Gem::Specification.new { |s|
+        s.name = "tailwindcss-rails"
+        s.version = version
+      }
+      allow(Gem).to receive(:loaded_specs).and_return(Gem.loaded_specs.merge("tailwindcss-rails" => fake_spec))
+    end
+
+    before do
+      allow(config).to receive(:tailwindcss_integration_enabled).and_return(true)
+      allow(described_class).to receive(:tailwindcss_available?).and_return(true)
+    end
+
+    it "is disabled when the host app bundles tailwindcss-rails below version 4" do
+      stub_tailwindcss_rails_version("3.0.0")
+
+      expect(described_class.enabled?).to be false
+    end
+
+    it "is enabled when the host app bundles tailwindcss-rails 4 or higher" do
+      stub_tailwindcss_rails_version("4.0.0")
+
+      expect(described_class.enabled?).to be true
+    end
+
+    it "is enabled when tailwindcss-rails is not bundled at all" do
+      allow(Gem).to receive(:loaded_specs).and_return(Gem.loaded_specs.except("tailwindcss-rails"))
+
+      expect(described_class.enabled?).to be true
+    end
+  end
+
   describe "#generate_input_file" do
     after do
       FileUtils.rm_f(input_path)
