@@ -114,7 +114,7 @@ GEM
       csv
       parser
       prism
-    addressable (2.8.9)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     amazing_print (2.0.0)
     annotate (2.6.5)
@@ -214,8 +214,9 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    css_parser (2.0.0)
+    css_parser (3.0.0)
       addressable
+      ssrf_filter (~> 1.5)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
     csv (3.3.5)
@@ -764,6 +765,7 @@ GEM
     spring (4.4.2)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
+    ssrf_filter (1.5.0)
     standard (1.35.0.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
