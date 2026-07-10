@@ -1,23 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Avo plugin manager boot race - end-to-end regression" do
-  # Isolate this file's mutations of the global plugin manager, matching
-  # boot_thread_safety_spec.rb.
-  around do |example|
-    original_manager = Avo.instance_variable_get(:@plugin_manager)
-    example.run
-  ensure
-    Avo.instance_variable_set(:@plugin_manager, original_manager)
-  end
-
-  # Mirrors spec/features/avo/lib/mount_avo_spec.rb's pattern: draw mount_avo
-  # into a fresh, isolated RouteSet so this spec never touches the dummy
-  # app's real routes.
-  def draw_mount_avo(**options)
-    routes = ActionDispatch::Routing::RouteSet.new
-    routes.draw { mount_avo(**options) }
-    routes
-  end
+  include_context "with isolated plugin manager"
 
   def stub_pro_engine
     stub_const("Avo::PluginManagerBootRaceSpec", Module.new)

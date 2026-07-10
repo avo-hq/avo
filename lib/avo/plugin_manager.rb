@@ -1,7 +1,7 @@
 module Avo
   class PluginManager
     attr_reader :plugins
-    attr_accessor :engines
+    attr_reader :engines
 
     alias_method :all, :plugins
 
@@ -10,6 +10,10 @@ module Avo
       @engines = []
     end
 
+    # Direct, immediate reset -- unlike #begin_reload/#commit_reload, this is
+    # not part of Avo.boot's lifecycle (nothing calls it in production) and
+    # offers no atomicity guarantee. Kept as a manual escape hatch for specs
+    # that want a clean manager without going through a full reload cycle.
     def reset
       @plugins = []
       @engines = []
@@ -101,6 +105,9 @@ module Avo
     end
 
     def mount_engine(klass, **options)
+      # Dedup by class so a plugin hook that (by bug) calls mount_engine
+      # twice for the same engine within one boot can't leave a duplicate
+      # entry for #commit_reload to publish.
       @building_engines.delete_if { |engine| engine[:klass] == klass }
       @building_engines << {klass:, options:}
     end

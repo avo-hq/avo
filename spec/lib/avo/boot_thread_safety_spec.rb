@@ -1,16 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Avo.boot thread safety" do
-  # Isolate this file's mutations of the global plugin manager -- Avo.boot
-  # mutates a process-wide singleton, and these specs deliberately register
-  # fake plugins/engines under it to reproduce the race, so the original
-  # (rails_helper-booted) manager must be restored for every other spec file.
-  around do |example|
-    original_manager = Avo.instance_variable_get(:@plugin_manager)
-    example.run
-  ensure
-    Avo.instance_variable_set(:@plugin_manager, original_manager)
-  end
+  include_context "with isolated plugin manager"
 
   it "populates plugin_manager as before for a normal single-threaded boot" do
     fake_engine = Class.new(Rails::Engine)
