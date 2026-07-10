@@ -55,6 +55,11 @@ module Avo
 
   class ViewTypeComponentNotFoundError < StandardError; end
 
+  # Serializes Avo.boot so concurrent code reloads (config.to_prepare fires on
+  # every reload, from every request thread) can't interleave the plugin
+  # registry reset with its repopulation. See PluginManager#begin_reload.
+  @boot_mutex = Mutex.new
+
   # Exception raised when a resource is missing
   class MissingResourceError < StandardError
     def initialize(model_class, field)
@@ -92,17 +97,20 @@ module Avo
 
     # Runs when the app boots up
     def boot
-      Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
-      @logger = Avo.configuration.logger
-      @field_manager = Avo::Fields::FieldManager.build
-      @view_type_manager = nil # force re-init with defaults on next access
-      @cache_store = Avo.configuration.cache_store
-      Avo.plugin_manager.reset
-      # Run load hooks for plugins to include them in the app.
-      # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
-      ActiveSupport.run_load_hooks(:avo_plugin_include, self)
-      ActiveSupport.run_load_hooks(:avo_boot, self)
-      eager_load_actions
+      @boot_mutex.synchronize do
+        Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
+        @logger = Avo.configuration.logger
+        @field_manager = Avo::Fields::FieldManager.build
+        @view_type_manager = nil # force re-init with defaults on next access
+        @cache_store = Avo.configuration.cache_store
+        Avo.plugin_manager.begin_reload
+        # Run load hooks for plugins to include them in the app.
+        # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
+        ActiveSupport.run_load_hooks(:avo_plugin_include, self)
+        ActiveSupport.run_load_hooks(:avo_boot, self)
+        Avo.plugin_manager.commit_reload
+        eager_load_actions
+      end
     end
 
     # Runs on each request

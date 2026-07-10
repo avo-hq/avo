@@ -15,13 +15,34 @@ module Avo
       @engines = []
     end
 
+    # Starts a re-registration cycle without touching the currently published
+    # @plugins/@engines, so concurrent readers (e.g. mount_avo's route-drawing
+    # loop) keep seeing the complete pre-reload list until #commit_reload
+    # publishes the new one. Called by Avo.boot inside its Mutex, so only one
+    # reload is ever building at a time.
+    def begin_reload
+      @building_plugins = []
+      @building_engines = []
+    end
+
+    # Publishes the registrations collected since #begin_reload. Each
+    # reassignment is a single atomic pointer swap, so a concurrent reader
+    # always observes either the complete old list or the complete new one,
+    # never a partially rebuilt one.
+    def commit_reload
+      @plugins = @building_plugins
+      @engines = @building_engines
+      @building_plugins = nil
+      @building_engines = nil
+    end
+
     def register(name, priority: 10)
       # Capture the file that called `register` so the plugin can later resolve
       # the gem it actually ships in. Plugins register under nicknames
       # (e.g. `:rhino` for `avo-rhino_field`), so the name alone isn't enough.
       registered_from = caller_locations(1, 1)&.first&.path
 
-      @plugins << Plugin.new(name:, priority: priority, registered_from: registered_from)
+      @building_plugins << Plugin.new(name:, priority: priority, registered_from: registered_from)
     end
 
     def register_view_type(name, component:, icon:, active_icon:, translation_key: nil)
@@ -80,7 +101,8 @@ module Avo
     end
 
     def mount_engine(klass, **options)
-      @engines << {klass:, options:}
+      @building_engines.delete_if { |engine| engine[:klass] == klass }
+      @building_engines << {klass:, options:}
     end
   end
 
