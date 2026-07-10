@@ -33,9 +33,9 @@ end
 # Draws mount_avo into a fresh, isolated RouteSet so specs exercising route
 # drawing (e.g. mount_lookbook config, plugin-engine mounting) never touch
 # the dummy app's real routes.
-def draw_mount_avo(**options)
+def draw_mount_avo(**)
   routes = ActionDispatch::Routing::RouteSet.new
-  routes.draw { mount_avo(**options) }
+  routes.draw { mount_avo(**) }
   routes
 end
 
