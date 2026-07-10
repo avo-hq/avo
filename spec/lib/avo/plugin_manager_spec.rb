@@ -74,17 +74,33 @@ RSpec.describe Avo::PluginManager do
     end
   end
 
-  describe "#reset" do
-    it "clears both plugins and engines directly, independent of begin_reload/commit_reload" do
-      manager.begin_reload
+  describe "register/mount_engine called outside a begin_reload/commit_reload window" do
+    # Mirrors a real call pattern: gems/avo-permissions registers its plugin
+    # name directly inside a Rails initializer (not inside
+    # ActiveSupport.on_load(:avo_boot)), which runs before Avo.boot ever
+    # calls #begin_reload for the first time.
+    it "does not raise when called on a freshly-initialized manager" do
+      expect { manager.register(:avo_permissions, priority: 5) }.not_to raise_error
+      expect { manager.mount_engine(engine_a, at: "/a") }.not_to raise_error
+    end
+
+    it "discards a pre-begin_reload registration on the next begin_reload, matching pre-atomic-publish behavior" do
+      manager.register(:avo_permissions, priority: 5)
       manager.mount_engine(engine_a, at: "/a")
+
+      manager.begin_reload
       manager.commit_reload
-      expect(manager.engines).not_to be_empty
 
-      manager.reset
-
-      expect(manager.engines).to eq([])
       expect(manager.plugins).to eq([])
+      expect(manager.engines).to eq([])
+    end
+
+    it "does not raise when called again after a commit_reload, between reload cycles" do
+      manager.begin_reload
+      manager.commit_reload
+
+      expect { manager.register(:late_plugin, priority: 5) }.not_to raise_error
+      expect { manager.mount_engine(engine_b, at: "/b") }.not_to raise_error
     end
   end
 end

@@ -8,15 +8,8 @@ module Avo
     def initialize
       @plugins = []
       @engines = []
-    end
-
-    # Direct, immediate reset -- unlike #begin_reload/#commit_reload, this is
-    # not part of Avo.boot's lifecycle (nothing calls it in production) and
-    # offers no atomicity guarantee. Kept as a manual escape hatch for specs
-    # that want a clean manager without going through a full reload cycle.
-    def reset
-      @plugins = []
-      @engines = []
+      @building_plugins = []
+      @building_engines = []
     end
 
     # Starts a re-registration cycle without touching the currently published
@@ -29,15 +22,26 @@ module Avo
       @building_engines = []
     end
 
-    # Publishes the registrations collected since #begin_reload. Each
-    # reassignment is a single atomic pointer swap, so a concurrent reader
-    # always observes either the complete old list or the complete new one,
-    # never a partially rebuilt one.
+    # Publishes the registrations collected since #begin_reload. Each of the
+    # two reassignments below is individually an atomic pointer swap, so a
+    # reader of .engines alone (or .plugins alone) always sees the complete
+    # old list or the complete new one, never a partially rebuilt one. The
+    # two fields are not published jointly -- a reader combining both in one
+    # operation could observe them from different reload generations. No
+    # current reader does that (mount_avo reads only .engines; installed?
+    # reads only .plugins).
     def commit_reload
       @plugins = @building_plugins
       @engines = @building_engines
-      @building_plugins = nil
-      @building_engines = nil
+      # Reset to fresh arrays rather than nil: register/mount_engine must
+      # stay callable even outside a begin_reload/commit_reload window --
+      # e.g. avo-permissions calls Avo.plugin_manager.register at Rails
+      # initializer time, before Avo.boot ever runs. Such a call is simply
+      # discarded by the next #begin_reload rather than raising, matching
+      # the pre-atomic-publish behavior where register/mount_engine never
+      # crashed regardless of timing.
+      @building_plugins = []
+      @building_engines = []
     end
 
     def register(name, priority: 10)
