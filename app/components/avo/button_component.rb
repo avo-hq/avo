@@ -6,7 +6,7 @@
 # padding: nil (default), :sm or :xs for tighter, equal padding
 # rounded: nil (default, uses the standard radius), :full for a pill shape
 # color: nil, :primary, :accent, :gray, :red, :green, :blue, or any other tailwind color
-# icon: "tabler/outline/paperclip" as specified in the docs (https://docs.avohq.io/3.0/icons.html)
+# icon: "tabler/outline/paperclip" as specified in the docs (https://docs.avohq.io/4.0/icons.html)
 class Avo::ButtonComponent < Avo::BaseComponent
   prop :path, kind: :positional
   prop :size, default: :md
