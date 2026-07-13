@@ -62,7 +62,7 @@ module Avo
           header: "⚠️ Warning ⚠️",
           help: "",
           label: "Search is disabled for #{resource}.\n To enable it please use this guide...",
-          url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
+          url: "https://docs.avohq.io/4.0/search/resource-search.html#enable-search-for-a-resource"
         )
 
         return [key, search_query_undefined]

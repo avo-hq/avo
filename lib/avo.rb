@@ -173,7 +173,7 @@ module Avo
       return if Avo.configuration.main_menu.nil?
 
       Avo.error_manager.add({
-        url: "https://docs.avohq.io/3.0/menu-editor.html",
+        url: "https://docs.avohq.io/4.0/menu-editor.html",
         target: "_blank",
         message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
       })
@@ -183,7 +183,7 @@ module Avo
       return if Avo.configuration.profile_menu.nil?
 
       Avo.error_manager.add({
-        url: "https://docs.avohq.io/3.0/menu-editor.html#profile-menu",
+        url: "https://docs.avohq.io/4.0/menu-editor.html#profile-menu",
         target: "_blank",
         message: "The profile menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
       })

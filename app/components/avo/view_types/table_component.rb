@@ -101,7 +101,7 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
   def disable_select_all
     if Rails.env.development?
       Avo.error_manager.add({
-        url: "https://docs.avohq.io/3.0/select-all.html#serialization-known-issues",
+        url: "https://docs.avohq.io/4.0/select-all.html#serialization-known-issues",
         target: "_blank",
         message: "An error occurred while serializing the query object. The Select All feature has been disabled because it depends on successful query serialization. For more details and troubleshooting steps, click here."
       })
