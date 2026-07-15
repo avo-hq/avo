@@ -1,1 +1,1 @@
-<span class="<%= class_names("count", @classes) %>"><%= @count %></span>
+<%= content_tag :span, @count, class: class_names("count", @classes), data: @data %>

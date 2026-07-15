@@ -7,4 +7,5 @@
 class Avo::UI::CountComponent < Avo::BaseComponent
   prop :count
   prop :classes, default: nil
+  prop :data, default: -> { {} }
 end
