@@ -3,4 +3,10 @@ class Avo::Scopes::<%= class_name.camelize %> < Avo::Scopes::BaseScope
   # self.description = "<%= name.underscore.humanize %> description."
   self.scope = -> { query.all }
   self.visible = -> { true }
+  # Show a record-count pill next to the label. Opt-in; off by default.
+  #   true / :eager  -> count during render (blocks paint; cheap counts)
+  #   :lazy          -> count after paint via an async Turbo Frame (recommended)
+  #   :hover         -> count on first hover (degrades to :lazy on touch)
+  #   { loading: :lazy, count: -> { query.count } } -> custom/cheaper count
+  # self.counter = :lazy
 end

@@ -7,4 +7,8 @@
 class Avo::UI::CountComponent < Avo::BaseComponent
   prop :count
   prop :classes, default: nil
+  # Optional accessible name. When set, it becomes the pill's aria-label so a
+  # screen reader announces something meaningful (e.g. "42 records") instead of
+  # a bare number. Visible text is unchanged.
+  prop :label, default: nil
 end
