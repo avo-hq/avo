@@ -40,4 +40,26 @@ RSpec.describe Avo::Sidebar::LinkComponent, type: :component do
       expect(build(path: "http://[invalid").is_external?).to be true
     end
   end
+
+  describe "#resolved_active" do
+    def build(path:, active: :inclusive)
+      component = described_class.new(label: "Link", path: path, active: active)
+      allow(component).to receive(:helpers).and_return(double(root_path_without_url: "/avo"))
+      component
+    end
+
+    it "downgrades a default root link to :exclusive so it isn't active everywhere" do
+      expect(build(path: "/avo").resolved_active).to eq :exclusive
+      expect(build(path: "/avo/").resolved_active).to eq :exclusive
+    end
+
+    it "leaves non-root links inclusive" do
+      expect(build(path: "/avo/resources/users").resolved_active).to eq :inclusive
+    end
+
+    it "only overrides the default :inclusive mode, leaving other modes untouched" do
+      expect(build(path: "/avo", active: :exact).resolved_active).to eq :exact
+      expect(build(path: "/avo", active: true).resolved_active).to eq true
+    end
+  end
 end
