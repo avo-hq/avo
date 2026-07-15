@@ -76,4 +76,22 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   def link_icon
     @icon
   end
+
+  # A link pointing at the root path would stay active on every page under
+  # `:inclusive` matching (root is a prefix of all of them). Fall back to
+  # `:exclusive` so it only lights up on the root page itself. Only kicks in
+  # for the default mode — an explicit `active:` from the caller wins.
+  def resolved_active
+    return @active unless @active == :inclusive && root_link?
+
+    :exclusive
+  end
+
+  def root_link?
+    return false if @path.blank?
+
+    URI(@path).path.chomp("/") == helpers.root_path_without_url.chomp("/")
+  rescue URI::InvalidURIError
+    false
+  end
 end
