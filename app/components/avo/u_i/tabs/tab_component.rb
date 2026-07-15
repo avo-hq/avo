@@ -19,6 +19,7 @@ module Avo
         prop :data, default: {}.freeze
         prop :classes
         prop :title
+        prop :badge
       end
     end
   end
