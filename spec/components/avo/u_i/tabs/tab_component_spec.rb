@@ -86,6 +86,28 @@ RSpec.describe Avo::UI::Tabs::TabComponent, type: :component do
     end
   end
 
+  describe "badge" do
+    it "renders an html_safe string badge after the label" do
+      render_component(badge: "<span class='count'>42</span>".html_safe)
+
+      expect(page).to have_css("span.tabs__item-label", text: "Tab")
+      expect(page).to have_css("span.count", text: "42")
+    end
+
+    it "renders a component badge after the label" do
+      render_component(badge: Avo::UI::CountComponent.new(count: 7, label: "7 records"))
+
+      expect(page).to have_css("span.count", text: "7")
+      expect(page).to have_css("span.count[aria-label='7 records']")
+    end
+
+    it "renders no badge markup when badge is nil (regression)" do
+      render_component
+
+      expect(page).not_to have_css("span.count")
+    end
+  end
+
   describe "disabled state" do
     it "applies disabled attributes to link" do
       render_component(disabled: true)

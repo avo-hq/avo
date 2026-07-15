@@ -19,6 +19,10 @@ module Avo
         prop :data, default: {}.freeze
         prop :classes
         prop :title
+        # Optional trailing renderable (a component instance or html_safe string)
+        # shown after the label — e.g. a count pill. Kept generic so this
+        # component stays unaware of what the badge represents.
+        prop :badge, default: nil
       end
     end
   end
