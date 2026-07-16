@@ -10,9 +10,9 @@ module Avo
 
     class_attribute :name, default: nil
     class_attribute :description, default: nil
-    class_attribute :message
-    class_attribute :confirm_button_label
-    class_attribute :cancel_button_label
+    class_attribute :message, default: -> { I18n.t("avo.are_you_sure_you_want_to_run_this_option") }
+    class_attribute :confirm_button_label, default: -> { I18n.t("avo.run") }
+    class_attribute :cancel_button_label, default: -> { I18n.t("avo.cancel") }
     class_attribute :confirmation, default: true
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
@@ -132,9 +132,6 @@ module Avo
       ).handle.with_indifferent_access
       @query = query
       @index_query = index_query
-      self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
-      self.class.confirm_button_label ||= I18n.t("avo.run")
-      self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
       self.items_holder = Avo::Resources::Items::Holder.new
 
