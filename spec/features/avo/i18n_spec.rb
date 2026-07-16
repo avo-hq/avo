@@ -12,6 +12,14 @@ RSpec.feature "i18n", type: :feature do
         expect(find('[data-component-name="avo/ui/panel_component"] .header__text').text).to eq "People"
       end
     end
+
+    describe "resource-scoped field translations" do
+      it "uses the resource-scoped translation with shared fallback" do
+        visit avo.new_resources_product_path
+
+        expect(page).to have_text("Product title")
+      end
+    end
   end
 
   describe "save button" do

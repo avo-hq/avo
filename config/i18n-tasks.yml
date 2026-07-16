@@ -115,8 +115,10 @@ search:
 ignore_missing:
   - 'avo.field_translations.file'
   - 'avo.field_translations.people'
+  - 'avo.field_translations.title'
   - 'avo.number_of_items'
   - 'avo.resource_translations.user'
+  - 'avo.resource_translations.product.fields.title'
   - 'avo.resource_translations.team_members'
   - 'avo.x_items_more'
 
