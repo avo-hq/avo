@@ -141,6 +141,7 @@ class Avo::Resources::Post < Avo::BaseResource
     filter Avo::Filters::FeaturedFilter
     filter Avo::Filters::PublishedFilter
     filter Avo::Filters::PostStatusFilter
+    filter Avo::Filters::PostLongOptionsFilter
   end
 
   def actions
