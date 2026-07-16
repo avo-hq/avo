@@ -203,8 +203,22 @@ module Avo
         @id.to_s.humanize(keep_id_suffix: true)
       end
 
+      def help
+        return @help if @args.key?(:help)
+
+        translated_field_option(:help)
+      end
+
+      def default_placeholder
+        name
+      end
+
       def placeholder
-        Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
+        target = @placeholder
+        target = translated_field_option(:placeholder) if target.nil? && !@args.key?(:placeholder)
+        target = default_placeholder if target.nil?
+
+        Avo::ExecutionContext.new(target:, record: record, resource: @resource, view: @view).handle
       end
 
       def attribute_id = (@attribute_id ||= @for_attribute || @id)
@@ -342,6 +356,10 @@ module Avo
       end
 
       private
+
+      def translated_field_option(option_name)
+        t("#{translation_key}.#{option_name}", default: nil)
+      end
 
       def fetch_parent
         params = Avo::Current.params
