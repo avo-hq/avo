@@ -52,7 +52,7 @@ module Avo
     end
 
     def search_resource(resource)
-      key = resource.name.pluralize.downcase
+      key = resource.route_key
 
       # If search query is not defined return error in dev and nil otwherwise.
       if resource.search_query.blank?
