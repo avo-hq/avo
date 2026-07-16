@@ -169,10 +169,16 @@ never reached). Do not "fix" `bin/dev` for this.
 
 ### Lint
 ```
-bundle exec standardrb        # Ruby (StandardRB)
+bundle exec standardrb        # Ruby (StandardRB) -- note: .standard.yml sets `fix: true`, so this auto-fixes files
 bundle exec erb_lint --lint-all   # ERB
-yarn eslint app/javascript        # JS
+yarn eslint app/javascript        # JS -- see caveat below
 ```
+The JS lint config (`.eslintrc.json`) is the legacy eslintrc format and only works
+with old ESLint. `package.json` pins ESLint v9, which (a) defaults to flat config
+and (b) is incompatible with the `sort-imports-es6-autofix` plugin, so
+`yarn eslint app/javascript` fails locally out of the box. CI works around this by
+installing `eslint@6.8.0` (plus matching plugins) at job time before linting
+(see `.github/workflows/lint.yml`). Do not "fix" this by changing the pinned version.
 
 ### Tests
 Tests run against `RAILS_ENV=test` with `AVO_LICENSE_KEY=license_123`.
