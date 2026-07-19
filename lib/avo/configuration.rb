@@ -66,6 +66,9 @@ module Avo
     attr_accessor :sidebar_toggle_visible
     attr_accessor :tailwindcss_integration_enabled
     attr_accessor :mount_lookbook
+    # Extra config keys (beyond the R28 default-locked set) the dynamic-config
+    # overlay must never override. See Avo::DynamicConfigProvider.
+    attr_writer :locked_config_keys
 
     unless defined?(CONTAINER_WIDTH_DEFAULTS)
       CONTAINER_WIDTH_DEFAULTS = {
@@ -205,6 +208,68 @@ module Avo
       @body_classes = []
       @tailwindcss_integration_enabled = true
       @mount_lookbook = false
+      @locked_config_keys = []
+    end
+
+    # App-declared locked config keys, on top of the R28 default-locked set.
+    def locked_config_keys
+      @locked_config_keys ||= []
+    end
+
+    # DSL: `config.lock_config_keys :app_name, :per_page`. Additive.
+    def lock_config_keys(*keys)
+      locked_config_keys.concat(keys.flatten.map(&:to_sym))
+    end
+
+    # Read a configuration value through the dynamic-config overlay. Returns the
+    # overlay value when the key is overridden and not locked, otherwise the
+    # file value. This is the Configuration read-through seam (Unit 2). When no
+    # provider is installed it is a single predicate + return (near-zero cost).
+    #
+    # Locked keys (R28 default set + `locked_config_keys`) never consult the
+    # provider, so a buggy or hostile provider cannot override them.
+    def dynamic_config_value(key, file_value)
+      return file_value if Avo::DynamicConfigProvider.config_key_locked?(key)
+
+      Avo.apply_dynamic_config(file_value) do |provider|
+        result = provider.config_value(key, file_value)
+        result.equal?(Avo::DynamicConfigProvider::NO_CHANGE) ? file_value : result
+      end
+    end
+
+    # Scalar configuration getters that read through the overlay. The reader is
+    # redefined below to consult `dynamic_config_value`; the writer stays the one
+    # `attr_accessor` already defined. This is a *starter* set — Unit 6 owns the
+    # full per-option classification and extends it against the metadata registry.
+    unless defined?(OVERRIDABLE_SCALAR_KEYS)
+      OVERRIDABLE_SCALAR_KEYS = %i[
+        per_page
+        per_page_steps
+        via_per_page
+        timezone
+        currency
+        default_view_type
+        id_links_to_resource
+        cache_resources_on_index_view
+        home_path
+        search_debounce
+        click_row_to_view_record
+        alert_dismiss_time
+        search_results_count
+        first_sorting_option
+        buttons_on_form_footers
+        use_stacked_fields
+        sidebar_toggle_visible
+        global_search
+      ].freeze
+    end
+
+    OVERRIDABLE_SCALAR_KEYS.each do |key|
+      # Redefine the reader (the attr_accessor writer above is preserved). The
+      # later definition wins over the attr_accessor-generated reader.
+      define_method(key) do
+        dynamic_config_value(key, instance_variable_get(:"@#{key}"))
+      end
     end
 
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
@@ -269,7 +334,11 @@ module Avo
     # Authorization is enabled when:
     # (avo-authorization gem is installed) AND (authorization_client is NOT nil)
     def authorization_enabled?
-      @authorization_enabled ||= Avo.plugin_manager.installed?("avo-authorization") && !authorization_client.nil?
+      base = (@authorization_enabled ||= Avo.plugin_manager.installed?("avo-authorization") && !authorization_client.nil?)
+      # :authorization_enabled is in the R28 default-locked set, so this always
+      # returns the file value — the read-through is here for consistency and to
+      # document the memo-bypass contract.
+      dynamic_config_value(:authorization_enabled, base)
     end
 
     def current_user_method(&block)
@@ -306,8 +375,14 @@ module Avo
       @root_path
     end
 
+    # `appearance` and `authorization_enabled?` memoize on this process-global
+    # Configuration instance. Reading them through `dynamic_config_value` keeps
+    # the file value memoized but never serves a stale memo for an overlay
+    # override: an override is returned uncached, so an overlay change on a later
+    # request is reflected immediately (Unit 2 memo-bypass requirement).
     def appearance
-      @appearance ||= Avo::Configuration::Appearance.new
+      base = (@appearance ||= Avo::Configuration::Appearance.new)
+      dynamic_config_value(:appearance, base)
     end
 
     def appearance=(options = {})
@@ -315,7 +390,8 @@ module Avo
     end
 
     def app_name
-      Avo::ExecutionContext.new(target: @app_name).handle
+      file_value = Avo::ExecutionContext.new(target: @app_name).handle
+      dynamic_config_value(:app_name, file_value)
     end
 
     def resource_default_view=(view)

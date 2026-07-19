@@ -95,6 +95,53 @@ module Avo
       @lambda_registry ||= Avo::LambdaRegistry.new
     end
 
+    # The currently registered dynamic-config provider. Defaults to the null
+    # provider (no-op). See Avo::DynamicConfigProvider.
+    def dynamic_config_provider
+      @dynamic_config_provider ||= Avo::DynamicConfigProvider.new
+    end
+
+    # Register the real provider (the avo-dynamic_config gem calls this on the
+    # :avo_boot load hook). Flips the single guard predicate the seams check.
+    def register_dynamic_config_provider(provider)
+      @dynamic_config_provider = provider
+      @dynamic_config_provider_present = true
+      provider
+    end
+
+    # Single, near-free guard every seam checks first. False (one predicate,
+    # returns immediately) unless a real provider has been registered, so seams
+    # add no measurable overhead when the gem is absent.
+    def dynamic_config_provider_installed?
+      @dynamic_config_provider_present == true
+    end
+
+    # Drop back to the null provider. Called from Avo.boot before the :avo_boot
+    # hooks so a dev reload starts clean; the gem re-registers on that hook.
+    def reset_dynamic_config_provider
+      @dynamic_config_provider = nil
+      @dynamic_config_provider_present = false
+    end
+
+    # Run +block+ with the registered provider, guarded and rescued. Returns
+    # +fallback+ when no provider is installed (the hot path — one predicate) or
+    # when the provider raises (degrade to file config + log, never a 500 — R15).
+    def apply_dynamic_config(fallback)
+      return fallback unless dynamic_config_provider_installed?
+
+      yield dynamic_config_provider
+    rescue => error
+      logger.error("[Avo::DynamicConfig] provider error, serving file config: #{error.class}: #{error.message}")
+      fallback
+    end
+
+    # The overlay fingerprint for a resource class, mixed into cache_hash so
+    # index/grid fragment caches bust on overlay changes. Nil when absent, so
+    # today's cache key is unchanged.
+    def dynamic_config_cache_fingerprint(resource_class)
+      apply_dynamic_config(nil) { |provider| provider.cache_fingerprint(resource_class) }
+    end
+
     # Runs when the app boots up
     def boot
       Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
@@ -106,6 +153,9 @@ module Avo
       # Rebuild the named-lambda registry: drop runtime entries and replay the
       # declarative registrations so initializer-declared lambdas survive reloads.
       Avo.lambda_registry.reset
+      # Drop back to the null dynamic-config provider so a dev reload starts
+      # clean; the avo-dynamic_config gem re-registers on the :avo_boot hook below.
+      Avo.reset_dynamic_config_provider
       # Run load hooks for plugins to include them in the app.
       # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
       ActiveSupport.run_load_hooks(:avo_plugin_include, self)

@@ -52,6 +52,128 @@ module Avo
       attr_accessor :user
       attr_accessor :record
 
+      # === Dynamic-config option registry (Unit 2) ===
+      #
+      # Plain `class_attribute` leaves nothing queryable, so the overlay's
+      # completeness check (R8) would have nothing to introspect. We intercept
+      # `class_attribute` and record every option name declared directly on a
+      # class into a per-class list. `Avo::Resources::Base.own_dynamic_config_option_attributes`
+      # is then the source of truth the completeness spec compares against the
+      # classified/excluded lists, so adding a new option in core fails CI until
+      # it is classified.
+      #
+      # Only declarations *lexically below this point* are recorded — the option
+      # class_attributes on Base itself. The concern-contributed class_attributes
+      # (included above) are out of Unit 2's scope; Unit 6 extends coverage.
+      def self.class_attribute(*names, **options)
+        (@own_dynamic_config_option_attributes ||= []).concat(names.map(&:to_sym))
+        super
+      end
+
+      def self.own_dynamic_config_option_attributes
+        (@own_dynamic_config_option_attributes ||= []).uniq
+      end
+
+      unless defined?(DYNAMIC_CONFIG_OPTIONS)
+        # Resource options the overlay may override (R7/R8). Exposed to Unit 6 via
+        # `dynamic_config_options`. Classifications are directional here; Unit 6
+        # owns the final per-option metadata.
+        DYNAMIC_CONFIG_OPTIONS = %i[
+          title
+          icon
+          search
+          includes
+          attachments
+          single_includes
+          single_attachments
+          custom_translation_key
+          default_view_type
+          devise_password_optional
+          view_types
+          grid_view
+          table_view
+          confirm_on_save
+          visible_on_sidebar
+          hotkey
+          index_query
+          find_record_method
+          after_create_path
+          after_update_path
+          record_selector
+          keep_filters_panel_open
+          extra_params
+          link_to_child_resource
+          map_view
+          components
+          default_sort_column
+          default_sort_direction
+          external_link
+        ].freeze
+
+        # Options declared as class_attributes but NOT overridable via the overlay
+        # in v1: identity/routing (`id`), the locked policy class (R28), internal
+        # loaders, and abstract/ordering machinery.
+        DYNAMIC_CONFIG_EXCLUDED_OPTIONS = %i[
+          id
+          authorization_policy
+          scopes_loader
+          filters_loader
+          abstract
+          ordering
+        ].freeze
+      end
+
+      # The overridable resource option names (consumed by Unit 6's metadata
+      # registry and its re-validation against core's enumeration).
+      def self.dynamic_config_options
+        DYNAMIC_CONFIG_OPTIONS
+      end
+
+      # === Lock DSL (R28) ===
+      #
+      # `self.locked_options :some_option` marks options the overlay can never
+      # override on this resource (on top of the core default-locked set). Locks
+      # are enforced core-side in every seam, so they hold against a buggy or
+      # hostile provider.
+      def self.locked_options(*names)
+        @locked_options ||= []
+        @locked_options.concat(names.flatten.map(&:to_sym)) if names.any?
+        @locked_options
+      end
+
+      # True when an option is locked against overlay overrides — either the core
+      # default-locked set or a `locked_options` declaration anywhere up the
+      # ancestry chain.
+      def self.dynamic_config_locked_option?(option)
+        option = option.to_sym
+        return true if Avo::DynamicConfigProvider.default_locked_resource_option?(option)
+
+        klass = self
+        while klass.respond_to?(:locked_options)
+          declared = klass.instance_variable_get(:@locked_options)
+          return true if declared&.include?(option)
+          klass = klass.superclass
+        end
+
+        false
+      end
+
+      # Read a resource option through the overlay for a *class-level* consumer
+      # (query_scope, find_record, search, navigation). Locked options and the
+      # no-provider path return the file value with a single predicate check.
+      def self.dynamic_config_option(option, file_value)
+        return file_value if dynamic_config_locked_option?(option)
+
+        Avo.apply_dynamic_config(file_value) do |provider|
+          overrides = provider.entity_options_for(self)
+          (overrides.is_a?(Hash) && overrides.key?(option.to_sym)) ? overrides[option.to_sym] : file_value
+        end
+      end
+
+      def dynamic_config_locked_option?(option)
+        self.class.dynamic_config_locked_option?(option)
+      end
+
       class_attribute :id, default: :id
       class_attribute :title # TODO: extract this to HasTitle concern
       class_attribute :icon
@@ -117,7 +239,7 @@ module Avo
         # It's used to apply the authorization feature.
         def query_scope
           authorization.apply_policy Avo::ExecutionContext.new(
-            target: index_query,
+            target: dynamic_config_option(:index_query, index_query),
             query: model_class
           ).handle
         end
@@ -243,7 +365,16 @@ module Avo
         end
 
         def navigation_label
-          plural_name.humanize
+          dynamic_config_option(:navigation_label, plural_name.humanize)
+        end
+
+        # Class-level re-icon seam for the sidebar/navigation. Captures the raw
+        # class_attribute reader as `_file_icon` and reads through the overlay.
+        # The instance-level `icon` reader (class_attribute) is untouched — its
+        # override goes through the instance option seam.
+        alias_method :_file_icon, :icon
+        def icon
+          dynamic_config_option(:icon, _file_icon)
         end
 
         def find_record(id, query: nil, params: nil)
@@ -260,7 +391,7 @@ module Avo
           end
 
           Avo::ExecutionContext.new(
-            target: find_record_method,
+            target: dynamic_config_option(:find_record_method, find_record_method),
             query: query,
             id: id,
             params: params,
@@ -269,12 +400,13 @@ module Avo
         end
 
         def search_query
-          search.dig(:query)
+          dynamic_config_option(:search, search).dig(:query)
         end
 
         def fetch_search(key, record: nil)
           # self.class.fetch_search
-          Avo::ExecutionContext.new(target: search[key], resource: self, record: record).handle
+          search_config = dynamic_config_option(:search, search)
+          Avo::ExecutionContext.new(target: search_config[key], resource: self, record: record).handle
         end
       end
 
@@ -305,6 +437,13 @@ module Avo
             self.class.model_class = model_class.base_class
           end
         end
+
+        # Instance option seam: apply overlay option overrides to THIS instance
+        # only (class_attribute instance writers shadow the class value without
+        # touching shared class state). Covers bare `.new(record:)`. `.dup`
+        # copies these ivars from an already-applied instance, and `hydrate`
+        # re-applies, so both paths carry overrides.
+        apply_dynamic_config_options
       end
 
       def detect_fields
@@ -316,6 +455,12 @@ module Avo
         else
           fetch_fields
         end
+
+        # Field seam: the provider may add/edit/remove/reorder items on the
+        # per-instance holder AFTER fetch_fields completes (which runs any
+        # avo-meta fetch_fields prepend), giving overlay-wins ordering
+        # structurally.
+        apply_dynamic_config_items
 
         self
       end
@@ -430,6 +575,10 @@ module Avo
 
           send plural_entity
 
+          # Entity-bag seam: inject provider-supplied action/filter/scope
+          # definitions into the per-instance loader bag.
+          apply_dynamic_config_attachables(entity)
+
           entity_loader(entity).bag
         end
 
@@ -457,6 +606,11 @@ module Avo
         if @record.present?
           hydrate_model_with_default_values if @view&.new?
         end
+
+        # Re-apply overlay option overrides: `.dup` (association contexts) skips
+        # `initialize`, and the controller hydrates the dup, so this is where a
+        # dup'd instance picks up (or refreshes) its overrides.
+        apply_dynamic_config_options
 
         self
       end
@@ -623,6 +777,12 @@ module Avo
           result << parent_record
         end
 
+        # Mix in the overlay fingerprint so index/grid fragment caches bust on
+        # overlay changes. Nil when no provider is installed, so today's key is
+        # unchanged.
+        fingerprint = Avo.dynamic_config_cache_fingerprint(self.class)
+        result << fingerprint unless fingerprint.nil?
+
         result
       end
 
@@ -760,6 +920,48 @@ module Avo
       end
 
       private
+
+      # Apply overlay option overrides to this instance. Locked options are
+      # skipped core-side, so a lock holds even against a buggy provider. Values
+      # are written through the class_attribute instance writers, shadowing the
+      # class value for this instance only.
+      def apply_dynamic_config_options
+        Avo.apply_dynamic_config(nil) do |provider|
+          overrides = provider.entity_options_for(self.class)
+          next unless overrides.is_a?(Hash) && overrides.any?
+
+          overrides.each do |option, value|
+            next if self.class.dynamic_config_locked_option?(option)
+
+            writer = :"#{option}="
+            public_send(writer, value) if respond_to?(writer)
+          end
+        end
+
+        nil
+      end
+
+      # Let the provider mutate the per-instance items_holder (add/edit/remove/
+      # reorder). The provider mutates in place; the return value is ignored.
+      def apply_dynamic_config_items
+        Avo.apply_dynamic_config(nil) { |provider| provider.items_for(self) }
+
+        nil
+      end
+
+      # Inject provider-supplied entity definitions into the per-instance loader
+      # bag for the given entity (:action / :filter / :scope).
+      def apply_dynamic_config_attachables(entity)
+        Avo.apply_dynamic_config(nil) do |provider|
+          extras = provider.attachables_for(self, entity)
+          next unless extras.is_a?(Array) && extras.any?
+
+          loader = entity_loader(entity)
+          extras.each { |definition| loader.use(definition) }
+        end
+
+        nil
+      end
 
       def flatten_keys(array)
         # [:fish_type, information: [:name, :history], reviews_attributes: [:body, :user_id]]

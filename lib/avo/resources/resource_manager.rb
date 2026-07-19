@@ -176,7 +176,11 @@ module Avo
       def resources_for_navigation(user = nil)
         get_available_resources(user)
           .select do |resource|
-            resource.visible_on_sidebar
+            # Navigation/discovery seam: `visible_on_sidebar` is read through the
+            # overlay so a provider can hide a resource from the sidebar without
+            # touching class state. No-op (file value) when no provider is
+            # installed.
+            resource.dynamic_config_option(:visible_on_sidebar, resource.visible_on_sidebar)
           end
       end
 
