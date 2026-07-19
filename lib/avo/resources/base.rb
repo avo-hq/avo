@@ -481,7 +481,11 @@ module Avo
         when :edit
           record_title
         when :new
-          t("avo.create_new_item", item: name.humanize(capitalize: false)).upcase_first
+          item = self.class.name_from_translation_key(
+            count: 1,
+            default: self.class.demodulized_class_name.underscore.humanize(capitalize: false)
+          )
+          t("avo.create_new_item", item:)
         end
       end
 
