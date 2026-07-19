@@ -8,7 +8,7 @@ module Avo
           @label = args[:label] || I18n.t(
             "#{args[:resource].translation_key}.save",
             default: I18n.t("avo.save")
-          ).capitalize
+          )
         end
       end
     end

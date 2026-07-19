@@ -21,7 +21,7 @@ module Avo
     layout :choose_layout
 
     def index
-      @page_title = @resource.plural_name.humanize
+      @page_title = @resource.plural_name
 
       if @reflection.present? && !turbo_frame_request?
         # A good rule of thumb is that the resource name entry (Users) gets just the initials
@@ -29,7 +29,7 @@ module Avo
         add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials
         add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar
       end
-      add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+      add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
 
       set_applied_filters
       set_index_params
@@ -122,9 +122,9 @@ module Avo
         add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
         add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
-        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
 
       add_breadcrumb title: t("avo.new").humanize
@@ -170,7 +170,7 @@ module Avo
       saved = save_record
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
-      add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+      add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials
       set_actions
 
@@ -455,9 +455,9 @@ module Avo
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
-        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
 
       add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials
@@ -743,9 +743,9 @@ module Avo
         add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
         add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
-        add_breadcrumb title: @resource.plural_name.humanize, path: nil, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: nil, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
     end
 
