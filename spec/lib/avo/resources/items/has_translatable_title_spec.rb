@@ -77,7 +77,7 @@ RSpec.describe Avo::Concerns::HasTranslatableTitle, type: :model do
     it "trusts the translated title casing and punctuation" do
       item = build_item(item_class, title: "Localized fallback")
 
-      expect(item.title).to eq(scope == "tabs" ? "VAT & API history" : "VAT & API details")
+      expect(item.title).to eq((scope == "tabs") ? "VAT & API history" : "VAT & API details")
     end
 
     it "supports a full translation_key override" do
