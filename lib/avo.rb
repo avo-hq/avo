@@ -90,6 +90,11 @@ module Avo
     attr_reader :field_manager
     delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
+    # Process-global registry of named lambdas (see Avo::LambdaRegistry).
+    def lambda_registry
+      @lambda_registry ||= Avo::LambdaRegistry.new
+    end
+
     # Runs when the app boots up
     def boot
       Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
@@ -98,6 +103,9 @@ module Avo
       @view_type_manager = nil # force re-init with defaults on next access
       @cache_store = Avo.configuration.cache_store
       Avo.plugin_manager.reset
+      # Rebuild the named-lambda registry: drop runtime entries and replay the
+      # declarative registrations so initializer-declared lambdas survive reloads.
+      Avo.lambda_registry.reset
       # Run load hooks for plugins to include them in the app.
       # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
       ActiveSupport.run_load_hooks(:avo_plugin_include, self)
