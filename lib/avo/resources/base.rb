@@ -965,7 +965,18 @@ module Avo
           next unless extras.is_a?(Array) && extras.any?
 
           loader = entity_loader(entity)
-          extras.each { |definition| loader.use(definition) }
+          extras.each do |definition|
+            # Shape-validate at the seam: a malformed element (not a `{class:, …}`
+            # hash) would sit in the bag and crash an unrelated later request
+            # (find_action, filter build) outside any rescue. Drop and log it here
+            # so the seam degrades instead of deferring a 500.
+            unless definition.is_a?(Hash) && definition[:class]
+              Avo.logger.error("[avo] dynamic config skipped a malformed #{entity} attachable: #{definition.inspect}")
+              next
+            end
+
+            loader.use(definition)
+          end
         end
 
         nil

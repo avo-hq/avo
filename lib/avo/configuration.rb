@@ -272,6 +272,19 @@ module Avo
       end
     end
 
+    # The config keys that actually read through the overlay seam (the scalar
+    # keys above plus the three hand-wired readers). The commercial gem's option
+    # metadata cross-checks against this so it can't advertise a key as
+    # overridable that would silently no-op — a write the admin sees confirmed
+    # and audited but that never takes effect.
+    unless defined?(DYNAMIC_CONFIG_OVERRIDABLE_KEYS)
+      DYNAMIC_CONFIG_OVERRIDABLE_KEYS = (OVERRIDABLE_SCALAR_KEYS + %i[appearance authorization_enabled app_name]).freeze
+    end
+
+    def self.dynamic_config_overridable_keys
+      DYNAMIC_CONFIG_OVERRIDABLE_KEYS
+    end
+
     unless defined?(RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS)
       RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS = {
         placement: :right,
