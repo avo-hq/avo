@@ -46,6 +46,7 @@ module Generators
         scripts: "app/views/avo/partials/_scripts.html.erb",
         sidebar_extra: "app/views/avo/partials/_sidebar_extra.html.erb",
         profile_menu_extra: "app/views/avo/partials/_profile_menu_extra.html.erb",
+        avo_overrides: "app/assets/stylesheets/avo-overrides.css",
       }
 
       def handle
@@ -105,7 +106,7 @@ module Generators
               say("Failed to find the `#{template_id.to_sym}` template.", :yellow)
             end
           elsif path_exists? options[:partial]
-            return unless confirm_ejection_on template_path
+            return unless confirm_ejection_on options[:partial]
             eject options[:partial]
           else
             say("Failed to find the `#{options[:partial]}` template.", :yellow)

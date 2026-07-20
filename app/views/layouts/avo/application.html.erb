@@ -25,6 +25,7 @@
     <%= stylesheet_link_tag "avo/dependencies", "data-turbo-track": "reload", as: "style" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
     <%= stylesheet_link_tag "avo/application", "data-turbo-track": "reload", as: "style" %>
+    <%= stylesheet_link_tag "avo-overrides", "data-turbo-track": "reload", as: "style" %>
 
     <%= javascript_include_tag "avo/application", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
 
