@@ -30,7 +30,7 @@
             <%= render Avo::Sidebar::HeadingComponent.new title: t('avo.resources'), icon: "tabler/outline/topology-star-3" %>
 
             <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
-              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon, hotkey: resource.try(:hotkey).presence %>
+              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.navigation_icon, hotkey: resource.try(:hotkey).presence %>
             <% end %>
           </div>
 

@@ -368,13 +368,16 @@ module Avo
           dynamic_config_option(:navigation_label, plural_name.humanize)
         end
 
-        # Class-level re-icon seam for the sidebar/navigation. Captures the raw
-        # class_attribute reader as `_file_icon` and reads through the overlay.
-        # The instance-level `icon` reader (class_attribute) is untouched — its
-        # override goes through the instance option seam.
-        alias_method :_file_icon, :icon
-        def icon
-          dynamic_config_option(:icon, _file_icon)
+        # Class-level re-icon seam for the sidebar/navigation, mirroring
+        # `navigation_label`. Reads the file `icon` (a plain class_attribute)
+        # through the overlay. It is a *separate* method rather than a wrapper of
+        # the `icon` reader on purpose: on ActiveSupport < 8.0, `self.icon = ...`
+        # in a subclass redefines that subclass's `icon` reader method, which would
+        # silently shadow any override placed on the reader itself. Navigation
+        # consumers call `navigation_icon`; the instance `icon` reader (used for
+        # record icons) is untouched and gets its override via the instance seam.
+        def navigation_icon
+          dynamic_config_option(:icon, icon)
         end
 
         def find_record(id, query: nil, params: nil)
@@ -931,6 +934,11 @@ module Avo
           next unless overrides.is_a?(Hash) && overrides.any?
 
           overrides.each do |option, value|
+            # Enforce the allowlist at the write site, not just the lock set: an
+            # option classified excluded/not-overridable (id, abstract,
+            # scopes_loader, …) has a public writer but must never be applied,
+            # even if a buggy or hostile provider returns it.
+            next unless self.class.dynamic_config_options.include?(option.to_sym)
             next if self.class.dynamic_config_locked_option?(option)
 
             writer = :"#{option}="

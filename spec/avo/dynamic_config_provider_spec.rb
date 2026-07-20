@@ -93,6 +93,19 @@ RSpec.describe Avo::DynamicConfigProvider do
       end
     end
 
+    it "ignores an excluded (not-overridable-in-v1) option even though it has a writer" do
+      # `id` is in DYNAMIC_CONFIG_EXCLUDED_OPTIONS but has a public `id=` writer.
+      # The instance seam must gate on the allowlist, not just the lock set, so a
+      # buggy or hostile provider can't apply an excluded option per-request.
+      stub_provider.options_by_ref[Avo::Resources::Post] = {id: :hacked_id}
+
+      with_provider(stub_provider) do
+        instance = Avo::Resources::Post.new(view: Avo::ViewInquirer.new("index"))
+        expect(instance.id).to eq(Avo::Resources::Post.id)
+        expect(instance.id).not_to eq(:hacked_id)
+      end
+    end
+
     it "carries the override across .dup and bare .new(record:)" do
       user = User.create!(first_name: "Grace", last_name: "Hopper", email: "grace+ovr@example.com", password: "password")
       stub_provider.options_by_ref[Avo::Resources::User] = {record_selector: false}
@@ -208,21 +221,26 @@ RSpec.describe Avo::DynamicConfigProvider do
   end
 
   describe "navigation / discovery seam" do
-    it "hides a resource and relabels/re-icons another" do
+    it "hides a resource and relabels/re-icons another that sets its own icon" do
       Avo.init
-      stub_provider.options_by_ref[Avo::Resources::User] = {visible_on_sidebar: false}
-      stub_provider.options_by_ref[Avo::Resources::Post] = {navigation_label: "Articles", icon: "custom-icon"}
+      stub_provider.options_by_ref[Avo::Resources::Post] = {visible_on_sidebar: false}
+      # User does `self.icon = ...` in the dummy — the case that exposes the
+      # ActiveSupport <8.0 reader-clobber, so re-icon must read through
+      # navigation_icon rather than a wrapper of the `icon` class_attribute reader.
+      stub_provider.options_by_ref[Avo::Resources::User] = {navigation_label: "People", icon: "custom-icon"}
 
       with_provider(stub_provider) do
         navigable = Avo.resource_manager.resources_for_navigation
 
-        expect(navigable).not_to include(Avo::Resources::User)
-        expect(Avo::Resources::Post.navigation_label).to eq("Articles")
-        expect(Avo::Resources::Post.icon).to eq("custom-icon")
+        expect(navigable).not_to include(Avo::Resources::Post)
+        expect(Avo::Resources::User.navigation_label).to eq("People")
+        expect(Avo::Resources::User.navigation_icon).to eq("custom-icon")
+        # The plain icon reader is an untouched class_attribute — still the file value.
+        expect(Avo::Resources::User.icon).to eq("tabler/outline/users")
       end
 
-      # File values restored once the provider is gone.
-      expect(Avo::Resources::Post.icon).to eq(Avo::Resources::Post.send(:_file_icon))
+      # File value restored once the provider is gone.
+      expect(Avo::Resources::User.navigation_icon).to eq("tabler/outline/users")
     end
   end
 
