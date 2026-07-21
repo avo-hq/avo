@@ -71,6 +71,42 @@ RSpec.describe Avo::UI::Tabs::TabComponent, type: :component do
       end
     end
 
+    context "with badge" do
+      it "renders a component badge inside the tab link" do
+        render_component(badge: Avo::UI::CountComponent.new(count: "5"))
+
+        expect(page).to have_css("a.tabs__item span.count", text: "5")
+      end
+
+      it "renders a pre-rendered safe-string badge inside the tab link" do
+        render_component(badge: %(<span class="deferred-badge">x</span>).html_safe)
+
+        expect(page).to have_css("a.tabs__item span.deferred-badge", text: "x")
+      end
+
+      it "renders the badge after the label" do
+        render_component(label: "Published", badge: Avo::UI::CountComponent.new(count: "9"))
+
+        expect(page).to have_css(".tabs__item-label + span.count")
+      end
+
+      it "omits badge markup when no badge is given" do
+        render_component
+
+        expect(page).not_to have_css("span.count")
+      end
+
+      it "omits badge markup when badge is nil" do
+        render_component(badge: nil)
+
+        expect(page).not_to have_css("span.count")
+      end
+
+      it "does not raise when passed a badge keyword" do
+        expect { render_component(badge: Avo::UI::CountComponent.new(count: "1")) }.not_to raise_error
+      end
+    end
+
     it "renders with custom attributes" do
       render_component(
         id: "custom-tab-id",
