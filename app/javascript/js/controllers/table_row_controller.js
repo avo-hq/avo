@@ -17,8 +17,8 @@ export default class extends Controller {
   anchor = null
 
   mouseEntered(event) {
-    const row = event.target.closest('tr')
-    const url = row.dataset.visitPath
+    const row = event.target.closest('[data-visit-path]')
+    const url = row?.dataset?.visitPath
 
     if (url) {
       this.anchor = this.createAnchor(url)
@@ -64,14 +64,14 @@ export default class extends Controller {
       return // Don't navigate if a link or button is clicked
     }
 
-    const row = event.target.closest('tr')
-    const url = row.dataset.visitPath
+    const row = event.target.closest('[data-visit-path]')
+    const url = row?.dataset?.visitPath
 
     if (!row || !url) {
       return
     }
 
-    if (event.metaKey || event.ctrlKey) {
+    if (event.metaKey || event.ctrlKey || row.dataset.visitTarget === '_blank') {
       this.#visitInNewTab(url)
     } else {
       this.#visitInSameTab(url)
