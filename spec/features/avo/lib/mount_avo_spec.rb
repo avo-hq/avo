@@ -8,12 +8,6 @@ RSpec.describe "mount_avo" do
     Avo.configuration.mount_lookbook = original
   end
 
-  def draw_mount_avo(**options)
-    routes = ActionDispatch::Routing::RouteSet.new
-    routes.draw { mount_avo(**options) }
-    routes
-  end
-
   it "defaults mount_lookbook to false" do
     draw_mount_avo
 
