@@ -45,7 +45,8 @@ RSpec.describe "self.table_view row_options", type: :feature do
       visit avo.resources_users_path
 
       controllers = page.first("tr.table-row")[:"data-controller"].split(/\s+/)
-      expect(controllers).to include("item-selector", "my-row-controller")
+      expect(controllers).to include("item-selector")
+      expect(controllers).to include("my-row-controller")
     end
   end
 
@@ -79,7 +80,7 @@ RSpec.describe "self.table_view row_options", type: :feature do
       visit avo.resources_users_path
 
       tr = page.first("tr.table-row")
-      expect(tr[:class]).to include("table-row", "group", "z-21")
+      expect(tr[:class]).to include("table-row", "group", "z-21", "cursor-pointer", "relative", "has-row-link")
       expect(tr[:"data-record-id"]).to eq(admin.to_param)
     end
   end

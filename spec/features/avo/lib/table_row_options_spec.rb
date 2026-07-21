@@ -27,8 +27,7 @@ RSpec.describe Avo::TableRowOptions do
         component_name: "avo/index/table_row_component",
         resource_name: "messages",
         record_id: "42",
-        controller: "item-selector table-row",
-        action: "click->table-row#visitRecord keydown.enter->table-row#visitRecord"
+        controller: "item-selector"
       }
     }
   end
@@ -103,20 +102,19 @@ RSpec.describe Avo::TableRowOptions do
     it "token-concatenates data-controller, preserving Avo's tokens" do
       result = merge(user_options: {data: {controller: "my-controller"}})
       tokens = result[:data][:controller].split(/\s+/)
-      expect(tokens).to include("item-selector", "table-row", "my-controller")
+      expect(tokens).to include("item-selector", "my-controller")
     end
 
     it "token-concatenates data-action, preserving Avo's tokens" do
       result = merge(user_options: {data: {action: "click->mything#do"}})
-      expect(result[:data][:action]).to include("click->table-row#visitRecord")
-      expect(result[:data][:action]).to include("click->mything#do")
+      expect(result[:data][:action]).to eq("click->mything#do")
     end
 
     it "deduplicates tokens in data-controller" do
-      result = merge(user_options: {data: {controller: "table-row item-selector"}})
+      result = merge(user_options: {data: {controller: "item-selector my-other"}})
       tokens = result[:data][:controller].split(/\s+/)
-      expect(tokens.count("table-row")).to eq(1)
       expect(tokens.count("item-selector")).to eq(1)
+      expect(tokens).to include("my-other")
     end
 
     describe "Avo-wins on reserved keys" do
