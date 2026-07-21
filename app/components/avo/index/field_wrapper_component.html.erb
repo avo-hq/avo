@@ -1,10 +1,10 @@
-<%= content_tag :td,
+<%= content_tag @html_tag,
   class: class_names(
     "group/clipboard px-2 leading-none whitespace-nowrap h-full text-content text-sm",
     @classes,
     @field.get_html(:classes, view: @view, element: :wrapper),
     {
-      "py-4": !@flush
+      density_padding_class => !@flush
     }
   ),
   data: {
