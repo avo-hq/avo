@@ -5,8 +5,8 @@ require "rails_helper"
 RSpec.describe Avo::UI::CountComponent, type: :component do
   include Capybara::RSpecMatchers
 
-  def render_component(**opts)
-    render_inline(described_class.new(**opts))
+  def render_component(**)
+    render_inline(described_class.new(**))
   end
 
   describe "rendering" do
