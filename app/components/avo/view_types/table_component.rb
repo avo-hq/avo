@@ -23,6 +23,25 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
     }
   end
 
+  # Click-to-view is delegated from <tbody> so we never attach Stimulus actions
+  # to <tr> elements (unreliable across browsers). Per-row gating still uses
+  # data-visit-path on each row.
+  def table_row_delegation_data
+    return {} unless Avo.configuration.click_row_to_view_record
+
+    reorder = try(:drag_reorder_data_attributes) || {}
+
+    {
+      controller: class_names(reorder[:controller], "table-row"),
+      action: [
+        reorder[:action],
+        "click->table-row#visitRecord",
+        "mouseover->table-row#mouseEntered",
+        "mouseout->table-row#mouseLeft"
+      ].compact_blank.join(" ")
+    }
+  end
+
   def encrypted_query
     # TODO: move this to the resource where we can apply the adapter pattern
     if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)

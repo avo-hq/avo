@@ -80,8 +80,9 @@ RSpec.describe "self.table_view row_options", type: :feature do
       visit avo.resources_users_path
 
       tr = page.first("tr.table-row")
-      expect(tr[:class]).to include("table-row", "group", "z-21", "cursor-pointer", "relative", "has-row-link")
+      expect(tr[:class]).to include("table-row", "group", "z-21", "cursor-pointer")
       expect(tr[:"data-record-id"]).to eq(admin.to_param)
+      expect(tr[:"data-visit-path"]).to be_present
     end
   end
 end

@@ -59,7 +59,7 @@ export default class extends Controller {
     // Remove data-hotkey from row controls before @github/hotkey library scans
     // Store the original values so we can restore them for the focused row only
     if (this.hotkeysEnabled) {
-      const controls = this.element.querySelectorAll('tr.has-row-link [data-hotkey]')
+      const controls = this.element.querySelectorAll('tr[data-visit-path] [data-hotkey]')
       controls.forEach((control) => {
         const hotkey = control.getAttribute('data-hotkey')
         control.setAttribute('data-hotkey-original', hotkey)
@@ -165,8 +165,7 @@ export default class extends Controller {
       if (this.currentIndex === -1) return
       event.preventDefault()
       const row = rows[this.currentIndex]
-      const href = row?.querySelector('a.row-link')?.href
-      if (href) window.Turbo.visit(href)
+      if (row?.dataset.visitPath) window.Turbo.visit(row.dataset.visitPath)
 
       return
     }
@@ -199,7 +198,7 @@ export default class extends Controller {
   }
 
   rows() {
-    return Array.from(this.element.querySelectorAll('tr.has-row-link'))
+    return Array.from(this.element.querySelectorAll('tr[data-visit-path]'))
   }
 
   tableHasFocus() {

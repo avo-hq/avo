@@ -50,6 +50,7 @@
         <%= content_tag :tbody, class: "card__body table-row-group rounded-lg tr>td:first:rounded-t-lg tr>td:last:rounded-b-lg",
           data: {
             **(try(:drag_reorder_data_attributes) || {}),
+            **table_row_delegation_data,
           } do %>
           <% @table_row_components.each do |table_row_component| %>
             <%= render table_row_component %>

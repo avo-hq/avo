@@ -31,29 +31,6 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
     Avo.configuration.click_row_to_view_record && can_view?
   end
 
-  def row_visit_path
-    helpers.resource_show_path(
-      resource: @resource,
-      parent_resource: @parent_resource,
-      parent_record: @parent_record,
-      parent_or_child_resource: parent_or_child_resource
-    )
-  end
-
-  # Native anchor overlay for click-to-view. Nested inside the first available
-  # <td> (see the template) so it does not add a column. Absolute positioning
-  # against the relative <tr> covers the whole row — avoiding Stimulus
-  # data-action on <tr>, which intermittently fails to fire.
-  def row_link_anchor
-    helpers.tag.a(
-      "",
-      href: row_visit_path,
-      class: "row-link",
-      tabindex: "-1",
-      "aria-hidden": "true"
-    )
-  end
-
   # The render context for `row_options` blocks. Derived from `@reflection`
   # rather than passed as a prop, matching the precedent in
   # `Avo::Views::ResourceIndexComponent` and `Avo::ResourceComponent`.
@@ -79,7 +56,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
   def default_tr_attributes
     {
       id: "#{self.class.to_s.underscore}_#{@resource.record_param}",
-      class: class_names("table-row group z-21", {"cursor-pointer relative has-row-link": click_row_to_view_record}),
+      class: class_names("table-row group z-21", {"cursor-pointer": click_row_to_view_record}),
       data: default_tr_data
     }
   end
@@ -91,8 +68,21 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
       resource_name: @resource.class.to_s,
       record_id: @resource.record_param
     }
+    # visit_path only — click handling is delegated from <tbody> (table-row
+    # controller) so we never bind Stimulus actions on <tr>, which browsers
+    # handle unreliably.
+    data[:visit_path] = row_visit_path if click_row_to_view_record
     data.merge!(item_selector_data_attributes(@resource))
     data.merge!(try(:drag_reorder_item_data_attributes) || {})
     data
+  end
+
+  def row_visit_path
+    helpers.resource_show_path(
+      resource: @resource,
+      parent_resource: @parent_resource,
+      parent_record: @parent_record,
+      parent_or_child_resource: parent_or_child_resource
+    )
   end
 end
