@@ -19,7 +19,7 @@ RSpec.feature "eject generator", type: :feature, acquire_lock: :generator do
   it "ejects the Avo overrides stylesheet" do
     Rails::Generators.invoke(
       "avo:eject",
-      ["--partial", ":avo_overrides", "--skip-avo-version"],
+      ["--partial", ":avo_overrides_css", "--skip-avo-version"],
       {destination_root: Rails.root}
     )
 
