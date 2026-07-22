@@ -282,6 +282,29 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text("2 records")
       end
     end
+
+    context "when the options overflow the visible rows" do
+      let(:select_id) { "avo_filters_long_options" }
+
+      it "scrolls to reach the options past the visible ones" do
+        visit url
+        open_filters_menu
+
+        expect(page).to have_select select_id
+
+        overflows = page.evaluate_script(
+          "(() => { const el = document.getElementById('#{select_id}'); return el.scrollHeight > el.clientHeight })()"
+        )
+        expect(overflows).to be(true), "expected the options to overflow the select so it needs to scroll"
+
+        overflow_y = page.evaluate_script(
+          "getComputedStyle(document.getElementById('#{select_id}')).overflowY"
+        )
+        # `overflow: hidden` still allows programmatic scrolling, so asserting on
+        # scrollTop would pass even when the user can't reach the hidden options.
+        expect(overflow_y).to be_in(%w[auto scroll])
+      end
+    end
   end
 
   describe "Text filter" do

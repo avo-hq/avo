@@ -8,4 +8,7 @@ class Avo::UI::CountComponent < Avo::BaseComponent
   prop :count
   prop :classes, default: nil
   prop :data, default: -> { {} }
+  # Optional accessible name (e.g. "1,234 records") when the visible +count+ is
+  # abbreviated or purely numeric. Rendered as aria-label; omitted when nil.
+  prop :label, default: nil
 end

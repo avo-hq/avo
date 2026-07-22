@@ -51,6 +51,7 @@ module Avo
     attr_accessor :resource_parent_controller
     attr_accessor :default_url_options
     attr_accessor :click_row_to_view_record
+    attr_accessor :density
     attr_accessor :alert_dismiss_time
     attr_accessor :is_admin_method
     attr_accessor :is_developer_method
@@ -182,6 +183,7 @@ module Avo
       @default_url_options = []
       @pagination = {}
       @click_row_to_view_record = true
+      @density = :normal
       @alert_dismiss_time = 5000
       @is_admin_method = :is_admin?
       @is_developer_method = :is_developer?

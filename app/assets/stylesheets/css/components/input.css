@@ -203,7 +203,11 @@
     background-position: left var(--input-icon-offset) center;
   }
 
+  /* The base reset sets `overflow: hidden` on every select, which clips the
+     options past the visible rows and leaves no way to scroll to them. */
   select[multiple] {
+    @apply overflow-y-auto;
+
     background-image: none;
   }
 

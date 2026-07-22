@@ -22,5 +22,6 @@
   ) do %>
     <%= svg @icon, class: "tabs__item-icon", "aria-hidden": "true" if @icon.present? %>
     <%= tag.span @label, class: "tabs__item-label" if @label.present? %>
+    <%= render_badge %>
   <% end %>
 <% end %>

@@ -19,6 +19,17 @@ module Avo
         prop :data, default: {}.freeze
         prop :classes
         prop :title
+        prop :badge, default: nil
+
+        private
+
+        # The badge may be a component instance (eager count pill) or a
+        # pre-rendered safe string (deferred counter frame); render accordingly.
+        def render_badge
+          return unless @badge.present?
+
+          @badge.respond_to?(:render_in) ? render(@badge) : @badge
+        end
       end
     end
   end

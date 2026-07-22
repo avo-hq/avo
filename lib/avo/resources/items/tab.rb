@@ -7,6 +7,7 @@ class Avo::Resources::Items::Tab
   include Avo::Concerns::IsVisible
   include Avo::Concerns::VisibleInDifferentViews
   include Avo::Concerns::FrameLoadingMode
+  include Avo::Concerns::HasTranslatableTitle
 
   delegate :items, :add_item, to: :items_holder
 
@@ -14,9 +15,10 @@ class Avo::Resources::Items::Tab
   attr_reader :lazy_load
   attr_reader :loading
 
-  def initialize(title: nil, description: nil, view: nil, **args)
+  def initialize(title: nil, description: nil, translation_key: nil, view: nil, **args)
     @title = title
     @description = description
+    @translation_key = translation_key
     @items_holder = Avo::Resources::Items::Holder.new
     @view = Avo::ViewInquirer.new view
     @args = args
@@ -25,10 +27,6 @@ class Avo::Resources::Items::Tab
     @loading = args[:loading]
 
     post_initialize if respond_to?(:post_initialize)
-  end
-
-  def title
-    Avo::ExecutionContext.new(target: @title).handle
   end
 
   def id
@@ -46,6 +44,12 @@ class Avo::Resources::Items::Tab
 
   def get_items
     items_with_standalone_fields_wrapped_in_cards
+  end
+
+  private
+
+  def title_translation_scope
+    "tabs"
   end
 
   class Builder

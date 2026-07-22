@@ -2,7 +2,22 @@
 pt:
   avo:
     resource_translations:
-      product: "Produto"
+      product:
+        one: "Produto"
+        other: "Produtos"
+        fields:
+          title:
+            one: "Título do produto"
+            other: "Títulos do produto"
+    field_translations:
+      title:
+        one: "Título"
+        other: "Títulos"
+      people:
+        one: pessoa
+        other: pessoas
+        help: "As pessoas associadas a este registo"
+        placeholder: "Escolher pessoas"
     action_translations:
       toggle_inactive:
         name: "Alternar inativo"
