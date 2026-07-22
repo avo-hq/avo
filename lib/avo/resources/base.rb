@@ -62,7 +62,9 @@ module Avo
       class_attribute :single_attachments, default: []
       class_attribute :authorization_policy
       class_attribute :custom_translation_key
-      class_attribute :default_view_type, default: :table
+      # No default here so an unset resource falls through to
+      # Avo.configuration.default_view_type in #view_type.
+      class_attribute :default_view_type
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
       class_attribute :filters_loader

@@ -44,7 +44,6 @@ module Avo
       attr_reader :format_new_using
       attr_reader :format_form_using
       attr_reader :autocomplete
-      attr_reader :help
       attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
@@ -213,8 +212,24 @@ module Avo
         @id.to_s.humanize(keep_id_suffix: true)
       end
 
+      def help
+        return @help unless @help.nil?
+
+        translated_option(:help)
+      end
+
       def placeholder
-        Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
+        target = if !@placeholder.nil?
+          @placeholder
+        else
+          translated_option(:placeholder).presence || default_placeholder
+        end
+
+        Avo::ExecutionContext.new(target: target, record: record, resource: @resource, view: @view).handle
+      end
+
+      def default_placeholder
+        name
       end
 
       def attribute_id = (@attribute_id ||= @for_attribute || @id)
@@ -352,6 +367,18 @@ module Avo
       end
 
       private
+
+      # Resolve a field-adjacent string (help, placeholder, include_blank) from
+      # the same translation_key siblings the field name uses: resource-scoped
+      # first, then the shared field_translations key.
+      def translated_option(option)
+        translation_lookup_keys.each do |key|
+          translation = I18n.t("#{key}.#{option}", default: nil)
+          return translation if translation.present?
+        end
+
+        nil
+      end
 
       def translate_field_name(count:, default:)
         translation_lookup_keys.each do |key|
