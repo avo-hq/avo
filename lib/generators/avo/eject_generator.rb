@@ -48,6 +48,10 @@ module Generators
         profile_menu_extra: "app/views/avo/partials/_profile_menu_extra.html.erb",
         avo_overrides: "app/assets/stylesheets/avo-overrides.css",
         avo_overrides_js: "app/assets/javascripts/avo-overrides.js",
+        asset_overrides: [
+          "app/assets/stylesheets/avo-overrides.css",
+          "app/assets/javascripts/avo-overrides.js"
+        ],
       }
 
       def handle
@@ -98,11 +102,13 @@ module Generators
         def eject_partial
           if options[:partial].starts_with?(":")
             template_id = path_to_sym options[:partial]
-            template_path = TEMPLATES[template_id]
+            template_paths = Array(TEMPLATES[template_id])
 
-            if path_exists? template_path
-              return unless confirm_ejection_on template_path
-              eject template_path
+            if template_paths.any? && template_paths.all? { |path| path_exists? path }
+              template_paths.each do |template_path|
+                next unless confirm_ejection_on template_path
+                eject template_path
+              end
             else
               say("Failed to find the `#{template_id.to_sym}` template.", :yellow)
             end

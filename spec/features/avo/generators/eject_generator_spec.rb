@@ -37,4 +37,15 @@ RSpec.feature "eject generator", type: :feature, acquire_lock: :generator do
     expect(overrides_js_path).to exist
     expect(overrides_js_path.read).to be_blank
   end
+
+  it "ejects both Avo overrides assets at once" do
+    Rails::Generators.invoke(
+      "avo:eject",
+      ["--partial", ":asset_overrides", "--skip-avo-version"],
+      {destination_root: Rails.root}
+    )
+
+    expect(overrides_path).to exist
+    expect(overrides_js_path).to exist
+  end
 end
