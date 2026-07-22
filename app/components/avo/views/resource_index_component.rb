@@ -182,7 +182,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def index_view_frame_args
     args = {
       target: :_top,
-      class: "block",
+      class: "relative flex flex-col gap-y-4",
       data: {
         controller: "resource-index",
         action: "turbo:frame-load->resource-index#loaded"

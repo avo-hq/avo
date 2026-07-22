@@ -70,9 +70,8 @@
     <% end %>
 
     <% panel.with_body do %>
-      <div class="relative flex flex-col gap-y-4">
-        <% if !lazy_load_index_view? || index_view_loaded? %>
-          <% index_view_content = capture do %>
+      <% if !lazy_load_index_view? || index_view_loaded? %>
+        <% index_view_content = capture do %>
           <% if header_visible? %>
             <div class="relative flex flex-col gap-y-4 z-20">
               <div class="flex flex-col gap-y-4">
@@ -116,22 +115,23 @@
             </div>
           <% end %>
 
-          <%= render Avo::ResourceListingComponent.new(**resource_content_components_common_args) %>
-          <% end %>
+        <%= render Avo::ResourceListingComponent.new(**resource_content_components_common_args) %>
         <% end %>
+      <% end %>
 
-        <% if lazy_load_index_view? %>
-          <%= turbo_frame_tag @resource.index_view_frame, **index_view_frame_args do %>
-            <% if index_view_loaded? %>
-              <%= index_view_content %>
-            <% else %>
-              <%= render Avo::LoadingComponent.new(title:) %>
-            <% end %>
+      <% if lazy_load_index_view? %>
+        <%= turbo_frame_tag @resource.index_view_frame, **index_view_frame_args do %>
+          <% if index_view_loaded? %>
+            <%= index_view_content %>
+          <% else %>
+            <%= render Avo::LoadingComponent.new(title:) %>
           <% end %>
-        <% else %>
-          <%= index_view_content %>
         <% end %>
-      </div>
+      <% else %>
+        <div class="relative flex flex-col gap-y-4">
+          <%= index_view_content %>
+        </div>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

@@ -4,6 +4,7 @@ class Avo::Resources::User < Avo::BaseResource
   self.title = -> {
     record.name
   }
+  # self.index_view_loading = :lazy
   self.description = -> {
     description = "Users of the app. view: #{view}"
     if !view.index?
