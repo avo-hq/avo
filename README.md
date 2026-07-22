@@ -76,6 +76,25 @@ For more up-to-date info check out our 🗺 [Roadmap](https://github.com/orgs/av
 
 Use this RailsBytes template to get started quick `rails app:template LOCATION='https://avohq.io/app-template'`. If you need a more detailed guide, follow [this page](https://docs.avohq.io/4.0/installation.html).
 
+# Localization
+
+Tab and panel titles use the resource's translation key with the title parameterized as the final segment:
+
+```yaml
+en:
+  avo:
+    resource_translations:
+      user:
+        tabs:
+          activity: Activity
+        panels:
+          contact_information: Contact information
+```
+
+For `tab title: "Activity"` and `panel title: "Contact information"`, Avo looks up `avo.resource_translations.user.tabs.activity` and `avo.resource_translations.user.panels.contact_information`. The configured title remains the fallback. Pass a full `translation_key:` to either item when the generated key is not suitable.
+
+See the [localization documentation](https://docs.avohq.io/4.0/i18n.html) for the other available conventions.
+
 # Contributing
 
 Please read [CONTRIBUTING.MD](./CONTRIBUTING.MD)
