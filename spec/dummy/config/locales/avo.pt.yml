@@ -18,6 +18,13 @@ pt:
         other: pessoas
         help: "As pessoas associadas a este registo"
         placeholder: "Escolher pessoas"
+    action_translations:
+      toggle_inactive:
+        name: "Alternar inativo"
+        message: "Tem a certeza de que pretende alternar o estado inativo?"
+        confirm_button_label: "Alternar"
+        cancel_button_label: "Cancelar"
+        description: "Alterna o estado inativo do utilizador"
   test:
     translation_key:
       course:
