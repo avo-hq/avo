@@ -1,4 +1,6 @@
-<%= render Avo::TurboFrameWrapperComponent.new(params[:turbo_frame]) do %>
+<% turbo_frame = params[:turbo_frame] unless @index_view_frame.present? && params[:turbo_frame] == @index_view_frame %>
+
+<%= render Avo::TurboFrameWrapperComponent.new(turbo_frame) do %>
   <%= render @component.new(
       resource: @resource,
       resources: @resources,

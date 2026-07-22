@@ -182,7 +182,8 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def index_view_frame_args
     args = {
       target: :_top,
-      class: "block"
+      class: "block",
+      data: {turbo_action: :advance}
     }
 
     unless index_view_loaded?

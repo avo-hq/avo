@@ -69,4 +69,19 @@ RSpec.describe "Lazy-loaded resource indexes", type: :request do
   ensure
     Avo::Resources::User.index_view_loading = original_loading
   end
+
+  it "keeps loading records eagerly for custom index components" do
+    original_components = Avo::Resources::Project.components
+    Avo::Resources::Project.components = {
+      resource_index_component: Avo::ForTest::ResourceIndexComponent
+    }
+    expect(Avo::Resources::Project).to receive(:query_scope).and_call_original
+
+    get "/admin/resources/projects"
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Custom index component here!")
+  ensure
+    Avo::Resources::Project.components = original_components
+  end
 end

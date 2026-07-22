@@ -20,6 +20,12 @@ RSpec.describe "Lazy-loaded resource index", type: :system do
     expect(page).to have_text(matching_project.name)
     expect(page).to have_text(other_project.name)
 
+    first('svg[data-tippy-content="Sort descending"]').click
+
+    expect(page).to have_current_path(/sort_direction=desc/)
+    expect(page).to have_css("turbo-frame#projects_index[complete]")
+    expect(page).to have_text(matching_project.name)
+
     write_in_search("Deferred result")
 
     expect(page).to have_text(matching_project.name)

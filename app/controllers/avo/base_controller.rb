@@ -35,6 +35,7 @@ module Avo
       set_index_params
       set_filters
       set_actions
+      set_component_for __method__
       set_index_view_loading
       @resource.hydrate(params: params)
 
@@ -52,8 +53,6 @@ module Avo
         @records = []
         @resources = []
       end
-
-      set_component_for __method__
 
       if resource_search_request?
         respond_to do |format|
@@ -358,10 +357,13 @@ module Avo
     end
 
     def set_index_view_loading
-      @index_view_frame = @resource.index_view_frame if @resource.index_view_lazy_loading? && @reflection.blank?
+      supports_lazy_loading = @component <= Avo::Views::ResourceIndexComponent
+      @index_view_frame = @resource.index_view_frame if @resource.index_view_lazy_loading? && @reflection.blank? && supports_lazy_loading
       @index_view_loaded = @index_view_frame.blank? ||
         request.headers["Turbo-Frame"] == @index_view_frame ||
         resource_search_request?
+
+      params[:turbo_frame] ||= @index_view_frame if @index_view_frame.present? && @index_view_loaded
     end
 
     def resource_search_request?
