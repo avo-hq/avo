@@ -28,6 +28,8 @@
     <%= stylesheet_link_tag "avo-overrides", "data-turbo-track": "reload", as: "style" %>
 
     <%= javascript_include_tag "avo/application", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
+    <%# Loaded after avo/application.js (which sets window.Stimulus) so overrides can register controllers. %>
+    <%= javascript_include_tag "avo-overrides", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
 
     <% if !Avo::PACKED && defined?(Hotwire::Livereload) %>
       <%= javascript_include_tag "hotwire-livereload", defer: true, nonce: request.content_security_policy_nonce %>

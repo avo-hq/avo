@@ -47,6 +47,7 @@ module Generators
         sidebar_extra: "app/views/avo/partials/_sidebar_extra.html.erb",
         profile_menu_extra: "app/views/avo/partials/_profile_menu_extra.html.erb",
         avo_overrides: "app/assets/stylesheets/avo-overrides.css",
+        avo_overrides_js: "app/assets/javascripts/avo-overrides.js",
       }
 
       def handle

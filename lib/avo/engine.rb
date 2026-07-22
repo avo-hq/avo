@@ -138,6 +138,7 @@ module Avo
         app.config.assets.paths << Engine.root.join("app", "assets", "builds").to_s
         app.config.assets.paths << Engine.root.join("app", "assets", "images").to_s
         app.config.assets.paths << Engine.root.join("app", "assets", "svgs").to_s
+        app.config.assets.paths << Engine.root.join("app", "assets", "javascripts").to_s
         # Expose the fonts directory to sprockets
         app.config.assets.paths << Engine.root.join("app", "assets", "images", "avo").to_s
 

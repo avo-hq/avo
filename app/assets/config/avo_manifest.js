@@ -2,3 +2,4 @@
 //= link_tree ../images
 //= link_tree ../svgs
 //= link avo-overrides.css
+//= link avo-overrides.js
