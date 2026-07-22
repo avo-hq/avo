@@ -67,6 +67,9 @@ module Generators
           say "Please specify a partial or a component to eject.\n" \
               "Examples: rails g avo:eject --partial :logo\n" \
               "          rails g avo:eject --partial app/views/layouts/avo/application.html.erb\n" \
+              "          rails g avo:eject --partial :avo_overrides_css   # app/assets/stylesheets/avo-overrides.css\n" \
+              "          rails g avo:eject --partial :avo_overrides_js    # app/assets/javascripts/avo-overrides.js\n" \
+              "          rails g avo:eject --partial :asset_overrides     # both of the above\n" \
               "          rails g avo:eject --component Avo::Index::TableRowComponent\n" \
               "          rails g avo:eject --component avo/index/table_row_component\n" \
               "          rails g avo:eject --controller application_controller\n" \
