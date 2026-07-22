@@ -357,7 +357,7 @@ module Avo
     end
 
     def set_index_view_loading
-      supports_lazy_loading = @component <= Avo::Views::ResourceIndexComponent
+      supports_lazy_loading = @component == Avo::Views::ResourceIndexComponent
       @index_view_frame = @resource.index_view_frame if @resource.index_view_lazy_loading? && @reflection.blank? && supports_lazy_loading
       @index_view_loaded = @index_view_frame.blank? ||
         request.headers["Turbo-Frame"] == @index_view_frame ||

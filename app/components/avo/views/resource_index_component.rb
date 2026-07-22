@@ -183,7 +183,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     args = {
       target: :_top,
       class: "block",
-      data: {turbo_action: :advance}
+      data: {
+        controller: "resource-index",
+        action: "turbo:frame-load->resource-index#loaded"
+      }
     }
 
     unless index_view_loaded?

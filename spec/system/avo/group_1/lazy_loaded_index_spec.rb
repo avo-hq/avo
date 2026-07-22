@@ -28,6 +28,8 @@ RSpec.describe "Lazy-loaded resource index", type: :system do
 
     write_in_search("Deferred result")
 
+    expect(page).to have_current_path(/sort_direction=desc/)
+    expect(page).to have_current_path(/q=Deferred(\+|%20)result/)
     expect(page).to have_text(matching_project.name)
     expect(page).not_to have_text(other_project.name)
   end
