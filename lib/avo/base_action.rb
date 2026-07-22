@@ -25,6 +25,7 @@ module Avo
     class_attribute :turbo
     class_attribute :authorize, default: true
     class_attribute :close_modal_on_backdrop_click, default: true
+    class_attribute :custom_translation_key
 
     attr_accessor :view
     attr_accessor :response
@@ -48,6 +49,7 @@ module Avo
     delegate :main_app, to: :view_context
     delegate :to_param, to: :class
     delegate :link_arguments, to: :class
+    delegate :translation_key, to: :class
 
     class << self
       delegate :context, to: ::Avo::Current
@@ -62,6 +64,15 @@ module Avo
       def to_param
         to_s
       end
+
+      def class_name
+        to_s.delete_prefix("Avo::Actions::")
+      end
+
+      def translation_key
+        custom_translation_key || "avo.action_translations.#{class_name.underscore}"
+      end
+      alias_method :translation_key=, :custom_translation_key=
 
       def path(resource:, arguments: {}, **args)
         Avo::Services::URIService.parse(resource.record&.to_param.present? ? resource.record_path : resource.records_path)
@@ -105,6 +116,9 @@ module Avo
     end
 
     def action_name
+      translated = translated_option(:name)
+      return translated if translated.present?
+
       if name.present?
         return Avo::ExecutionContext.new(
           target: name,
@@ -144,47 +158,19 @@ module Avo
     end
 
     def get_description
-      Avo::ExecutionContext.new(
-        target: self.class.description,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:description)
     end
 
     def get_message
-      Avo::ExecutionContext.new(
-        target: self.class.message,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:message)
     end
 
     def cancel_button_label
-      Avo::ExecutionContext.new(
-        target: self.class.cancel_button_label,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:cancel_button_label)
     end
 
     def confirm_button_label
-      Avo::ExecutionContext.new(
-        target: self.class.confirm_button_label,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:confirm_button_label)
     end
 
     def handle_action(**args)
@@ -367,6 +353,24 @@ module Avo
     end
 
     private
+
+    def translated_option(option)
+      I18n.t("#{translation_key}.#{option}", default: nil)
+    end
+
+    def resolve_option(option)
+      translated = translated_option(option)
+      return translated if translated.present?
+
+      Avo::ExecutionContext.new(
+        target: self.class.public_send(option),
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments,
+        query: @query
+      ).handle
+    end
 
     def add_message(body, type = :info, timeout: nil)
       response[:messages] << {

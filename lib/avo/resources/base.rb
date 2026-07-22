@@ -62,7 +62,9 @@ module Avo
       class_attribute :single_attachments, default: []
       class_attribute :authorization_policy
       class_attribute :custom_translation_key
-      class_attribute :default_view_type, default: :table
+      # No default here so an unset resource falls through to
+      # Avo.configuration.default_view_type in #view_type.
+      class_attribute :default_view_type
       class_attribute :index_view_loading, default: :eager
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
@@ -735,7 +737,12 @@ module Avo
       end
 
       def get_external_link
-        return unless record&.persisted?
+        return if record.nil?
+        # Skip only on the "create" form views where there's no saved record to
+        # link to yet. Avoid `record.persisted?` here: non-ActiveRecord records
+        # (e.g. API-backed resources) report `persisted? => false` and would
+        # never render an external link.
+        return if view&.new? || view&.create?
 
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
