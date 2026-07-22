@@ -71,50 +71,66 @@
 
     <% panel.with_body do %>
       <div class="relative flex flex-col gap-y-4">
-        <% if header_visible? %>
-          <div class="relative flex flex-col gap-y-4 z-20">
-            <div class="flex flex-col gap-y-4">
-              <%= render scopes_list if can_render_scopes? %>
+        <% if !lazy_load_index_view? || index_view_loaded? %>
+          <% index_view_content = capture do %>
+          <% if header_visible? %>
+            <div class="relative flex flex-col gap-y-4 z-20">
+              <div class="flex flex-col gap-y-4">
+                <%= render scopes_list if can_render_scopes? %>
 
-              <div class="flex flex-col xs:flex-row xs:justify-between gap-4">
-                <div class="flex w-64 items-center">
-                  <% if show_search_input %>
-                    <%= render ui.search_input(
-                      name: "q",
-                      value: params[:q],
-                      id: nil,
-                      placeholder: t('avo.search.placeholder'),
-                      shortcut: :slash,
-                      data: {
-                        action: "input->resource-search#search keydown->resource-search#blurOnEscape",
-                        "resource-search-target": "input"
-                      }) %>
-                  <% end %>
+                <div class="flex flex-col xs:flex-row xs:justify-between gap-4">
+                  <div class="flex w-64 items-center">
+                    <% if show_search_input %>
+                      <%= render ui.search_input(
+                        name: "q",
+                        value: params[:q],
+                        id: nil,
+                        placeholder: t('avo.search.placeholder'),
+                        shortcut: :slash,
+                        data: {
+                          action: "input->resource-search#search keydown->resource-search#blurOnEscape",
+                          "resource-search-target": "input"
+                        }) %>
+                    <% end %>
+                  </div>
+
+                  <div class="flex items-center justify-between space-x-3 rtl:space-x-reverse justify-self-end xs:justify-end">
+                    <% if show_dynamic_filters_button? %>
+                      <div class="index-missing-resources:hidden">
+                        <%= render_dynamic_filters_button %>
+                      </div>
+                    <% end %>
+
+                    <% unless field&.hide_filter_button %>
+                      <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record, parent_resource: @parent_resource %>
+                    <% end %>
+
+                    <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
+                  </div>
                 </div>
 
-                <div class="flex items-center justify-between space-x-3 rtl:space-x-reverse justify-self-end xs:justify-end">
-                  <% if show_dynamic_filters_button? %>
-                    <div class="index-missing-resources:hidden">
-                      <%= render_dynamic_filters_button %>
-                    </div>
-                  <% end %>
-
-                  <% unless field&.hide_filter_button %>
-                    <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record, parent_resource: @parent_resource %>
-                  <% end %>
-
-                  <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
-                </div>
+                <% if has_dynamic_filters? %>
+                  <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
+                <% end %>
               </div>
-
-              <% if has_dynamic_filters? %>
-                <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
-              <% end %>
             </div>
-          </div>
+          <% end %>
+
+          <%= render Avo::ResourceListingComponent.new(**resource_content_components_common_args) %>
+          <% end %>
         <% end %>
 
-        <%= render Avo::ResourceListingComponent.new(**resource_content_components_common_args) %>
+        <% if lazy_load_index_view? %>
+          <%= turbo_frame_tag @resource.index_view_frame, **index_view_frame_args do %>
+            <% if index_view_loaded? %>
+              <%= index_view_content %>
+            <% else %>
+              <%= render Avo::LoadingComponent.new(title:) %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= index_view_content %>
+        <% end %>
       </div>
     <% end %>
   <% end %>

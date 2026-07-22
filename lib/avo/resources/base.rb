@@ -63,6 +63,7 @@ module Avo
       class_attribute :authorization_policy
       class_attribute :custom_translation_key
       class_attribute :default_view_type, default: :table
+      class_attribute :index_view_loading, default: :eager
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
       class_attribute :filters_loader
@@ -288,6 +289,14 @@ module Avo
       delegate :model_key, to: :class
       delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
+
+      def index_view_lazy_loading?
+        self.class.index_view_loading.to_s == "lazy"
+      end
+
+      def index_view_frame
+        "#{model_key}_index"
+      end
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
         @view = Avo::ViewInquirer.new(view) if view.present?
