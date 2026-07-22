@@ -128,15 +128,25 @@ module Avo
       end
 
       def translation_key
-        @translation_key || "avo.field_translations.#{@id}"
+        @translation_key || resource_scoped_translation_key || shared_translation_key
+      end
+
+      def shared_translation_key
+        "avo.field_translations.#{@id}"
+      end
+
+      def resource_scoped_translation_key
+        return if @resource.blank?
+
+        "#{@resource.translation_key}.fields.#{@id}"
       end
 
       def translated_name(default:)
-        t(translation_key, count: 1, default: default).humanize
+        translate_field_name(count: 1, default: default).humanize
       end
 
       def translated_plural_name(default:)
-        t(translation_key, count: 2, default: default).humanize
+        translate_field_name(count: 2, default: default).humanize
       end
 
       def width_class
@@ -358,8 +368,36 @@ module Avo
 
       private
 
+      # Resolve a field-adjacent string (help, placeholder, include_blank) from
+      # the same translation_key siblings the field name uses: resource-scoped
+      # first, then the shared field_translations key.
       def translated_option(option)
-        I18n.t("#{translation_key}.#{option}", default: nil)
+        translation_lookup_keys.each do |key|
+          translation = I18n.t("#{key}.#{option}", default: nil)
+          return translation if translation.present?
+        end
+
+        nil
+      end
+
+      def translate_field_name(count:, default:)
+        translation_lookup_keys.each do |key|
+          translation = t(key, count: count, default: nil)
+          return translation if translation.present?
+        rescue I18n::InvalidPluralizationData
+          next
+        end
+
+        default
+      end
+
+      def translation_lookup_keys
+        return [translation_key] if @translation_key.present?
+
+        keys = []
+        keys << resource_scoped_translation_key if resource_scoped_translation_key.present?
+        keys << shared_translation_key
+        keys
       end
 
       def fetch_parent
