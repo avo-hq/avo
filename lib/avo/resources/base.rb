@@ -726,7 +726,12 @@ module Avo
       end
 
       def get_external_link
-        return unless record&.persisted?
+        return if record.nil?
+        # Skip only on the "create" form views where there's no saved record to
+        # link to yet. Avoid `record.persisted?` here: non-ActiveRecord records
+        # (e.g. API-backed resources) report `persisted? => false` and would
+        # never render an external link.
+        return if view&.new? || view&.create?
 
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end
