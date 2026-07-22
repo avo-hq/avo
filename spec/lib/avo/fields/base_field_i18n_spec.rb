@@ -117,6 +117,18 @@ RSpec.describe Avo::Fields::BaseField, "field-adjacent i18n" do
 
       expect(field.placeholder).to eq I18n.t("avo.choose_an_option")
     end
+
+    it "lets has_one (frame) fields use a translated placeholder before choose_an_option" do
+      field = Avo::Fields::HasOneField.new(:dates)
+
+      I18n.with_locale(:en) { expect(field.placeholder).to eq "EN Placeholder" }
+    end
+
+    it "keeps choose_an_option as the has_one default when no translation exists" do
+      field = Avo::Fields::HasOneField.new(:missing_field)
+
+      expect(field.placeholder).to eq I18n.t("avo.choose_an_option")
+    end
   end
 
   describe "#include_blank" do

@@ -29,10 +29,6 @@ module Avo
         @attach_scope = args[:attach_scope]
       end
 
-      def default_placeholder
-        I18n.t("avo.choose_an_option")
-      end
-
       def label
         field_label
       end
