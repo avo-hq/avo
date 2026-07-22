@@ -7,8 +7,10 @@ module Avo
             placeholder || "—"
           elsif @args[:include_blank] == false
             false
+          elsif @args.key?(:include_blank)
+            execute_context(@args[:include_blank])
           else
-            @args[:include_blank]
+            translated_field_option(:include_blank)
           end
         end
       end
