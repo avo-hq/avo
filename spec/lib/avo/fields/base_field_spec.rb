@@ -107,6 +107,33 @@ RSpec.describe Avo::Fields::BaseField, type: :model do
       expect(field.name).to eq "Description"
     end
 
+    it "skips a resource-scoped key with invalid pluralization data and uses the shared fallback" do
+      I18n.backend.store_translations(
+        :en,
+        avo: {
+          resource_translations: {
+            product: {
+              fields: {
+                subtitle: {
+                  other: "Product subtitles"
+                }
+              }
+            }
+          },
+          field_translations: {
+            subtitle: {
+              one: "Subtitle",
+              other: "Subtitles"
+            }
+          }
+        }
+      )
+
+      field = build_field(:subtitle)
+
+      expect(field.name).to eq "Subtitle"
+    end
+
     it "falls back to the humanized field id when no translations exist" do
       field = build_field(:sku_code)
 
