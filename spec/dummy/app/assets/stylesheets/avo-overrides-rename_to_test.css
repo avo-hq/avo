@@ -1,0 +1,12 @@
+/* Active Avo theme selector.
+   Instead of copy-pasting a theme's CSS in here, import the one you want. Under
+   Propshaft the url() is rewritten to the fingerprinted asset at serve time and
+   the imported file is compiled/served automatically; for Sprockets host apps
+   the imported file is also declared in app/assets/config/avo_manifest.js.
+
+   Swap the filename to switch themes: rose.css, ocean.css, jelly.css,
+   christmas.css, torture.css. @import must stay at the very top of the file.
+   garland.css is a decorative overlay layered on top of whichever theme. */
+/* @import url("christmas.css");
+@import url("garland.css"); */
+@import url("avo_theme_canvas.css");

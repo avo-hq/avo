@@ -1,0 +1,78 @@
+/* Torture theme — a STRESS TEST, not a pretty theme.
+   Purpose: exercise the *entire* documented CSS-customization surface at once,
+   with deliberately clashing extreme values, so any dead/renamed knob shows up
+   as "this did nothing." The rose/ocean/jelly themes only touched the neutral
+   ramp, accent and radii — this hits every scoped navbar/sidebar var, the row
+   surfaces, motion speeds, and the notch-alignment toggle.
+
+   Every variable set below was grep-verified to be *consumed* by Avo's compiled
+   CSS (app/assets/builds/avo/application.css). One documented pair was NOT:
+
+     --color-table-row-hover / --color-table-row-selected  → ABSENT from the
+     build. The live knobs are --color-row-bg-hover / --color-row-bg-selected
+     (used here). The docs are stale for table-row coloring.
+
+   Standalone alternate — NOT auto-loaded. Point the layout's
+   stylesheet_link_tag at "torture" (+ `//= link torture.css` in
+   app/assets/config/avo_manifest.js) to see it. Loaded unlayered → wins. */
+
+:root {
+  /* Motion OFF — the harshest motion setting. prefers-reduced-motion aside,
+     every transition should snap. If anything still animates, its timing isn't
+     wired to these knobs. */
+  --speed-fast: 0ms;
+  --speed-moderate: 0ms;
+  --speed-slow: 0ms;
+
+  /* Push the notch to the content edge and give it a big radius, so a
+     mis-wired alignment toggle is obvious. */
+  --top-navbar-start-notch-align-with-main-content: true;
+  --navbar-notch-radius: 2rem;
+  --main-content-radius: 2rem;
+
+  /* Fat, loud focus ring — impossible to miss if focus styling is live. */
+  --focus-outline-color: oklch(80% 0.2 130);
+  --focus-outline-width: 4px;
+  --focus-outline-offset: 2px;
+
+  /* Row surfaces: garish, unmissable hover/selection (correct knob names). */
+  --color-row-bg-hover: oklch(85% 0.18 90);      /* acid yellow */
+  --color-row-bg-selected: oklch(70% 0.2 330);   /* hot magenta */
+
+  /* Content panel vs sidebar — clashing so the seam is visible. */
+  --color-main-content-background: oklch(96% 0.05 200);
+  --color-main-content-border: oklch(55% 0.25 25);
+}
+
+/* Top navbar — every scoped knob, each a different loud hue so a dead one
+   reads as a hole in the palette. */
+.top-navbar {
+  --top-navbar-background: oklch(30% 0.15 300);
+  --top-navbar-content: oklch(95% 0.15 90);
+  --top-navbar-content-hover: oklch(85% 0.2 160);
+  --top-navbar-control-background: oklch(40% 0.18 200);
+  --top-navbar-control-background-hover: oklch(50% 0.2 160);
+  --top-navbar-control-border: oklch(70% 0.22 25);
+  --top-navbar-control-content: oklch(95% 0.1 90);
+  --top-navbar-control-muted: oklch(75% 0.12 300);
+  --top-navbar-control-shortcut-background: oklch(60% 0.2 25);
+  --top-navbar-control-shortcut-border: oklch(80% 0.2 90);
+  --top-navbar-control-shortcut-content: oklch(15% 0.05 300);
+  --top-navbar-active-background: oklch(85% 0.2 130);
+  --top-navbar-active-content: oklch(15% 0.1 300);
+}
+
+/* Sidebar — every scoped knob, clashing on purpose. */
+.avo-sidebar {
+  --sidebar-background: oklch(25% 0.18 160);
+  --sidebar-border: oklch(70% 0.22 25);
+  --sidebar-content: oklch(95% 0.12 90);
+  --sidebar-content-secondary: oklch(75% 0.15 200);
+  --sidebar-link-hover-background: oklch(45% 0.2 300);
+  --sidebar-link-active-background: oklch(60% 0.24 25);
+  --sidebar-focus-background: oklch(50% 0.2 130);
+  --sidebar-profile-avatar-background: oklch(70% 0.2 90);
+  --sidebar-profile-avatar-border: oklch(85% 0.2 160);
+  --sidebar-profile-avatar-content: oklch(15% 0.05 300);
+  --sidebar-status-border: oklch(70% 0.22 25);
+}
