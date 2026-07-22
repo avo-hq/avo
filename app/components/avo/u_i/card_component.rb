@@ -5,7 +5,9 @@ class Avo::UI::CardComponent < Avo::BaseComponent
   prop :description
   prop :class
   prop :wrapper_class
-  prop :with_padding, default: -> { true }
+  # Opt-in body padding via the `.card--padded` modifier. Defaults to false so
+  # cards holding wide content (index tables, scrollers) stay flush to the edge.
+  prop :padded, default: -> { false }
   prop :variant, default: -> { :default }
   prop :options, kind: :**
   prop :data, default: -> { {}.freeze }
@@ -25,41 +27,4 @@ class Avo::UI::CardComponent < Avo::BaseComponent
       end
     end
   end
-
-  private
-
-  # def panel_classes
-  #   base_classes = "panel"
-  #   variant_classes = case variant
-  #                    when :compact
-  #                      "panel--compact"
-  #                    when :full_width
-  #                      "panel--full-width"
-  #                    else
-  #                      "panel--default"
-  #                    end
-  #   padding_classes = with_padding ? "panel--with-padding" : ""
-
-  #   [base_classes, variant_classes, padding_classes].compact.join(" ")
-  # end
-
-  # def compact?
-  #   variant == :compact
-  # end
-
-  # def full_width?
-  #   variant == :full_width
-  # end
-
-  # def with_padding?
-  #   with_padding
-  # end
-
-  # def header_classes
-  #   "panel__header"
-  # end
-
-  # def body_classes
-  #   "panel__body"
-  # end
 end

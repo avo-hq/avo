@@ -35,6 +35,16 @@
   @apply w-full;
 }
 
+/* Padded variant. `.card__body` ships unpadded so wide content (tables,
+   scrollers) can sit flush to the card edge. Add `card--padded` to a card whose
+   body holds free-form content (custom tools, forms, prose) that should get the
+   standard card padding. Usage: `panel.with_card(class: "card--padded")`. */
+.card--padded {
+  .card__body {
+    @apply p-4;
+  }
+}
+
 /* Card wrapper */
 .card__wrapper {
   @apply flex flex-col items-start self-stretch w-full;
