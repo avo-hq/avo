@@ -108,10 +108,8 @@ module Generators
             template_paths = Array(TEMPLATES[template_id])
 
             if template_paths.any? && template_paths.all? { |path| path_exists? path }
-              template_paths.each do |template_path|
-                next unless confirm_ejection_on template_path
-                eject template_path
-              end
+              return unless confirm_ejection_on template_paths.join("' and '")
+              template_paths.each { |template_path| eject template_path }
             else
               say("Failed to find the `#{template_id.to_sym}` template.", :yellow)
             end
