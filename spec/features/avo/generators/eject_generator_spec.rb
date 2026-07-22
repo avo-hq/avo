@@ -6,7 +6,10 @@ RSpec.feature "eject generator", type: :feature, acquire_lock: :generator do
   let(:overrides_js_path) { Rails.root.join("app", "assets", "javascripts", "avo-overrides.js") }
 
   before do
-    allow_any_instance_of(Generators::Avo::EjectGenerator)
+    # Stub the shell's yes? (normal arity) rather than the generator's, which
+    # Thor delegates via a `def yes?(*args)` splat that trips rspec-mocks'
+    # any_instance handling ("__yes?_without_any_instance__ takes -1 argument").
+    allow_any_instance_of(Thor::Shell::Basic)
       .to receive(:yes?)
       .and_return(true)
   end
