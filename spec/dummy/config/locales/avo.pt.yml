@@ -2,7 +2,17 @@
 pt:
   avo:
     resource_translations:
-      product: "Produto"
+      product:
+        one: "Produto"
+        other: "Produtos"
+        fields:
+          title:
+            one: "Título do produto"
+            other: "Títulos do produto"
+    field_translations:
+      title:
+        one: "Título"
+        other: "Títulos"
   test:
     translation_key:
       course:

@@ -129,15 +129,25 @@ module Avo
       end
 
       def translation_key
-        @translation_key || "avo.field_translations.#{@id}"
+        @translation_key || resource_scoped_translation_key || shared_translation_key
+      end
+
+      def shared_translation_key
+        "avo.field_translations.#{@id}"
+      end
+
+      def resource_scoped_translation_key
+        return if @resource.blank?
+
+        "#{@resource.translation_key}.fields.#{@id}"
       end
 
       def translated_name(default:)
-        t(translation_key, count: 1, default: default).humanize
+        translate_field_name(count: 1, default: default).humanize
       end
 
       def translated_plural_name(default:)
-        t(translation_key, count: 2, default: default).humanize
+        translate_field_name(count: 2, default: default).humanize
       end
 
       def width_class
@@ -342,6 +352,26 @@ module Avo
       end
 
       private
+
+      def translate_field_name(count:, default:)
+        translation_lookup_keys.each do |key|
+          translation = t(key, count: count, default: nil)
+          return translation if translation.present?
+        rescue I18n::InvalidPluralizationData
+          next
+        end
+
+        default
+      end
+
+      def translation_lookup_keys
+        return [translation_key] if @translation_key.present?
+
+        keys = []
+        keys << resource_scoped_translation_key if resource_scoped_translation_key.present?
+        keys << shared_translation_key
+        keys
+      end
 
       def fetch_parent
         params = Avo::Current.params
