@@ -24,10 +24,13 @@ module Avo
 
         super
 
-        @placeholder ||= I18n.t "avo.choose_an_option"
         @searchable = (args[:searchable] == true || args[:searchable].is_a?(Hash)) ? args[:searchable] : false
         @attach_fields = args[:attach_fields]
         @attach_scope = args[:attach_scope]
+      end
+
+      def default_placeholder
+        I18n.t("avo.choose_an_option")
       end
 
       def label

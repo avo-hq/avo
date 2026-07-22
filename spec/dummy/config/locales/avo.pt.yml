@@ -3,6 +3,12 @@ pt:
   avo:
     resource_translations:
       product: "Produto"
+    field_translations:
+      people:
+        one: pessoa
+        other: pessoas
+        help: "As pessoas associadas a este registo"
+        placeholder: "Escolher pessoas"
   test:
     translation_key:
       course:

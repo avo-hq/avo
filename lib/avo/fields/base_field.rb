@@ -44,7 +44,6 @@ module Avo
       attr_reader :format_new_using
       attr_reader :format_form_using
       attr_reader :autocomplete
-      attr_reader :help
       attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
@@ -203,8 +202,24 @@ module Avo
         @id.to_s.humanize(keep_id_suffix: true)
       end
 
+      def help
+        return @help unless @help.nil?
+
+        translated_option(:help)
+      end
+
       def placeholder
-        Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
+        target = if !@placeholder.nil?
+          @placeholder
+        else
+          translated_option(:placeholder).presence || default_placeholder
+        end
+
+        Avo::ExecutionContext.new(target: target, record: record, resource: @resource, view: @view).handle
+      end
+
+      def default_placeholder
+        name
       end
 
       def attribute_id = (@attribute_id ||= @for_attribute || @id)
@@ -342,6 +357,10 @@ module Avo
       end
 
       private
+
+      def translated_option(option)
+        I18n.t("#{translation_key}.#{option}", default: nil)
+      end
 
       def fetch_parent
         params = Avo::Current.params
