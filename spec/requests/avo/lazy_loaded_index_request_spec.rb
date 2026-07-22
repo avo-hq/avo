@@ -24,7 +24,7 @@ RSpec.describe "Lazy-loaded resource indexes", type: :request do
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("Projects")
-    expect(response.body).to include('turbo-frame id="projects_index"')
+    expect(response.body).to match(/<turbo-frame[^>]+id="projects_index"/)
     expect(response.body).to include('src="/admin/resources/projects"')
     expect(response.body).to include("Loading projects")
     expect(response.body).not_to include(project.name)
@@ -38,7 +38,7 @@ RSpec.describe "Lazy-loaded resource indexes", type: :request do
     get "/admin/resources/projects", headers: {"Turbo-Frame" => "projects_index"}
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('turbo-frame id="projects_index"')
+    expect(response.body).to match(/<turbo-frame[^>]+id="projects_index"/)
     expect(response.body).to include("avo/view_types/table_component")
     expect(response.body).to include(project.name)
     expect(response.body).not_to include("Loading projects")
@@ -64,7 +64,7 @@ RSpec.describe "Lazy-loaded resource indexes", type: :request do
       headers: {"Turbo-Frame" => "users_index"}
 
     expect(response).to have_http_status(:ok)
-    expect(response.body).to include('turbo-frame id="users_index"')
+    expect(response.body).to match(/<turbo-frame[^>]+id="users_index"/)
     expect(response.body).to include('class="grid-wrapper"')
   ensure
     Avo::Resources::User.index_view_loading = original_loading
