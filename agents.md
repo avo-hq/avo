@@ -66,6 +66,38 @@ When toggling the visibility of some html elements, use the `hidden` HTML attrib
 
 Whenever possible use the `partial:` keyword when rendering partials unless needed otherwise.
 
+### Class as a URL parameter (slug)
+
+When a class travels in a URL (a scope, filter, action, or any selectable type), encode it as a readable slug, not the raw class name, and resolve it back by matching against the objects you already registered.
+
+Never `constantize` the param. It is user input, and constantizing it means arbitrary class loading (autoload DoS, information disclosure, gadget surface). Match against a known set instead.
+
+Parameterize: derive a stable slug from the class. Keep the full namespace path; do not `demodulize`, or nested classes collide (`A::Active` and `B::Active` both become `active`). `underscore` turns `::` into `/`; map that boundary to `-` so the URL builder does not `%2F` encode a slash.
+
+```ruby
+def self.param
+  @param ||= name.underscore               # Avo::Scopes::Admin::NonAdmins => "avo/scopes/admin/non_admins"
+              .delete_prefix("avo/scopes/") # => "admin/non_admins" (strip the type's conventional root)
+              .tr("/", "-")                 # => "admin-non_admins"
+end
+```
+
+Result: `/admin/resources/users?scope=admin-non_admins`
+
+Class and module names are CamelCase, so `_` only comes from a word boundary and `-` only from a `::` boundary. `admin-non_admins` maps unambiguously to `Admin::NonAdmins`, and distinct nested classes never collide.
+
+Deparameterize: match the computed slug against the registered set and return the class. Do not rebuild the class from the string.
+
+```ruby
+scopes.find { |scope| scope.param == params[:scope] }
+```
+
+Guards:
+
+- Let `self.param` be overridden for a custom short slug (`scope=vip`), which also breaks the rare collision.
+- Assert slug uniqueness within the set at boot; raise and point the author at `self.param` on conflict.
+- During a transition, also accept the legacy value so bookmarked URLs keep working (`scope.param == p || scope.name == p`); drop the fallback a version later.
+
 ## Logging in (development & testing)
 
 The dummy app at `spec/dummy` uses Devise for authentication. Avo is mounted at `/admin` and is wrapped in an `authenticate :user, ->(user) { user.is_admin? }` block, so you need an admin user to reach it.
