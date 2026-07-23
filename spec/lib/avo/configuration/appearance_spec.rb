@@ -328,6 +328,14 @@ RSpec.describe Avo::Configuration::Appearance do
         end
       end
 
+      context "when main_content_background is blank" do
+        let(:options) { {main_content_background: ""} }
+
+        it "treats it as unset and returns nil (emits no empty declaration)" do
+          expect(appearance.brand_css_overrides).to be_nil
+        end
+      end
+
       context "when main_content_background is a gradient" do
         let(:options) { {main_content_background: "linear-gradient(to bottom, #fff, #eee)"} }
 
@@ -347,6 +355,20 @@ RSpec.describe Avo::Configuration::Appearance do
 
           expect(css.scan(":root {").size).to eq(1)
           expect(css).to include("--color-accent: oklch(0.6 0.2 260);")
+          expect(css).to include("--main-content-background: url('/bg.png');")
+        end
+      end
+
+      context "when main_content_background is combined with neutral_colors" do
+        let(:options) do
+          {neutral_colors: complete_neutral, main_content_background: "url('/bg.png')"}
+        end
+
+        it "emits both the neutral shades and the main content background in one :root block" do
+          css = appearance.brand_css_overrides
+
+          expect(css.scan(":root {").size).to eq(1)
+          expect(css).to include("--color-avo-neutral-25: oklch(0.99 0.01 240);")
           expect(css).to include("--main-content-background: url('/bg.png');")
         end
       end

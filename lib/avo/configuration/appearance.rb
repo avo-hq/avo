@@ -101,9 +101,12 @@ class Avo::Configuration::Appearance
   # Returns the accent name for the data attribute (nil when accent is unset)
   def accent_css_class = accent&.to_s
 
-  # Returns the inline CSS string that overrides brand vars at :root when
-  # neutral_colors / accent_colors are configured. Returns nil when neither is
-  # set so the layout can skip emitting the <style> tag entirely.
+  # Returns the inline CSS string that overrides appearance vars at :root when
+  # any of neutral_colors / accent_colors / main_content_background are
+  # configured. Despite the "brand" name this is the single appearance CSS
+  # override pipeline, so it also emits non-brand layout vars like
+  # --main-content-background. Returns nil when none are set so the layout can
+  # skip emitting the <style> tag entirely.
   #
   # Brand palettes are single-toned — one set of values applied in both light
   # and dark mode (matching how the built-in `.neutral-theme-*` /
@@ -123,7 +126,7 @@ class Avo::Configuration::Appearance
   # Without an `@layer` wrapper, the unlayered inline style would beat every
   # layered rule regardless of specificity, silently breaking theme selection.
   def brand_css_overrides
-    return nil if neutral_colors.nil? && accent_colors.nil? && main_content_background.nil?
+    return nil if neutral_colors.nil? && accent_colors.nil? && main_content_background.blank?
 
     [
       "@layer base {",
@@ -159,9 +162,10 @@ class Avo::Configuration::Appearance
       declarations << "  --color-brand-accent: #{accent_colors[:color]};"
     end
 
-    if main_content_background
+    if main_content_background.present?
       # Consumed by `.main-content { background: var(--main-content-background, ...) }`.
       # Accepts any CSS background value (url(), gradient, color, or shorthand).
+      # Blank is treated as unset so we never emit an empty declaration.
       declarations << "  --main-content-background: #{main_content_background};"
     end
 
