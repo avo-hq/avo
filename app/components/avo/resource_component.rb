@@ -305,7 +305,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_link_to(link)
+    # Anything outside CONTROL_OPTIONS is a plain HTML attribute (rel:, id:…) and
+    # rides ButtonComponent's `prop :args, kind: :**` wildcard onto the <a> tag.
     a_link link.path,
+      **link.args.except(*Avo::Resources::Controls::BaseControl::CONTROL_OPTIONS),
       color: link.color,
       style: link.style,
       icon: link.icon,
