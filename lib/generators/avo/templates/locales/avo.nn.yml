@@ -66,6 +66,7 @@ nn:
     attachment_class_detached: "%{attachment_class} fjerna."
     attachment_destroyed: Vedlegg sletta
     attachment_failed: Klarte ikkje å legge ved %{attachment_class}
+    back_to_top: Tilbake til toppen
     cancel: Avbryt
     checkbox_list:
       hidden_selections:

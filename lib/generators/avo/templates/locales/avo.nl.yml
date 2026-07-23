@@ -64,6 +64,7 @@ nl:
     attachment_class_detached: "%{attachment_class} losgekoppeld."
     attachment_destroyed: Bijlage verwijderd
     attachment_failed: Kon %{attachment_class} niet bijvoegen
+    back_to_top: Terug naar boven
     cancel: Annuleren
     checkbox_list:
       hidden_selections:

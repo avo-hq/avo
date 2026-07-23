@@ -11,6 +11,7 @@ module Avo
     attr_writer :persistence
     attr_writer :resource_row_controls_config
     attr_writer :hotkeys
+    attr_writer :back_to_top
     attr_writer :associations
     # When unset, Tailwind scans Rails.root.join("app"). Each entry is an absolute path or a path relative to Rails.root.
     attr_writer :tailwindcss_content_sources
@@ -194,6 +195,7 @@ module Avo
       @column_types_mapping = {}
       @resource_row_controls_config = {}
       @hotkeys = {}
+      @back_to_top = {}
       @associations = {}
       @global_search = {
         enabled: true,
@@ -221,6 +223,15 @@ module Avo
       HOTKEYS_DEFAULTS = {
         enabled: true,
         show_key_badges: true
+      }.freeze
+    end
+
+    # "Back to top" pill. `enabled` toggles it; `threshold` is how many pixels
+    # the page must be scrolled down before an upward scroll reveals it.
+    unless defined?(BACK_TO_TOP_DEFAULTS)
+      BACK_TO_TOP_DEFAULTS = {
+        enabled: false,
+        threshold: 64
       }.freeze
     end
 
@@ -252,6 +263,10 @@ module Avo
 
     def hotkeys
       HOTKEYS_DEFAULTS.merge @hotkeys
+    end
+
+    def back_to_top
+      BACK_TO_TOP_DEFAULTS.merge @back_to_top
     end
 
     def associations

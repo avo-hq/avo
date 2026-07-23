@@ -66,6 +66,7 @@ tr:
     attachment_class_detached: "%{attachment_class} ilişkisi kesildi."
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
+    back_to_top: Yukarı dön
     cancel: İptal et
     checkbox_list:
       hidden_selections:

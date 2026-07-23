@@ -64,6 +64,7 @@ pl:
     attachment_class_detached: "%{attachment_class} odłączony."
     attachment_destroyed: Załącznik usunięty
     attachment_failed: Nie udało się dołączyć %{attachment_class}
+    back_to_top: Powrót na górę
     cancel: Anuluj
     checkbox_list:
       hidden_selections:

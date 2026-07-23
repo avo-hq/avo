@@ -103,6 +103,12 @@ Avo.configure do |config|
   #   show_key_badges: true   # Set to false to hide inline kbd badge elements from the UI
   # }
 
+  ## == Back to top button ==
+  # config.back_to_top = {
+  #   enabled: true,   # Off by default; set to true to show the "Back to top" pill
+  #   threshold: 64    # Pixels scrolled down before an upward scroll reveals it
+  # }
+
   ## == Associations ==
   # config.associations = {
   #   # Cap how many records a belongs_to/attach lookup lists before showing the

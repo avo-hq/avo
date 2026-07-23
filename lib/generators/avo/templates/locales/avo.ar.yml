@@ -70,6 +70,7 @@ ar:
     attachment_class_detached: "%{attachment_class} تم فصل"
     attachment_destroyed: تم حذف المرفق
     attachment_failed: فشل في إرفاق %{attachment_class}
+    back_to_top: العودة إلى الأعلى
     cancel: إلغاء
     checkbox_list:
       hidden_selections:

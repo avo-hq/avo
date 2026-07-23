@@ -1,0 +1,37 @@
+/* "Back to top" pill, mirroring the Furo docs theme (diataxis.fr): a fixed
+   button centered just below the navbar that reveals when the user scrolls back
+   up and hides when scrolling down. Visibility is driven by the back_to_top
+   Stimulus controller toggling `.back-to-top--visible`. */
+.back-to-top {
+  @apply fixed z-50 flex items-center gap-1 rounded-2xl bg-primary ps-2 pe-3 py-2 text-content no-underline;
+
+  inset-inline-start: 50%;
+  top: calc(var(--top-navbar-height) + 0.5rem);
+  font-size: 0.8125rem;
+  box-shadow: 0 0.2rem 0.5rem rgb(0 0 0 / 0.05), 0 0 1px 0 hsl(220 9% 46% / 0.5);
+
+  /* Hidden by default. Uses opacity/visibility rather than the `hidden`
+     attribute so appearing/disappearing can transition. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(-0.5rem);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+
+  &:hover {
+    @apply text-content bg-secondary;
+  }
+}
+
+.back-to-top--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.back-to-top__icon {
+  @apply size-4 shrink-0;
+
+  fill: currentColor;
+}

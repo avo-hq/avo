@@ -66,6 +66,7 @@ ja:
     attachment_class_detached: "%{attachment_class}をデタッチしました。"
     attachment_destroyed: アタッチは削除されました
     attachment_failed: "%{attachment_class}の添付に失敗しました"
+    back_to_top: トップに戻る
     cancel: キャンセル
     checkbox_list:
       hidden_selections:

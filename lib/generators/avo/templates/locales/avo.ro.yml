@@ -67,6 +67,7 @@ ro:
     attachment_class_detached: "%{attachment_class} separat."
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
+    back_to_top: Înapoi la început
     cancel: Anulează
     checkbox_list:
       hidden_selections:

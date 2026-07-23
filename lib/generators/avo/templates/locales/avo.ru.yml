@@ -64,6 +64,7 @@ ru:
     attachment_class_detached: "%{attachment_class} отсоединено."
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
+    back_to_top: Вернуться к началу
     cancel: Отмена
     checkbox_list:
       hidden_selections:
