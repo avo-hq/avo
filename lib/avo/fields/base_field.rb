@@ -142,11 +142,11 @@ module Avo
       end
 
       def translated_name(default:)
-        translate_field_name(count: 1, default: default).humanize
+        translate_field_name(count: 1, default: default)
       end
 
       def translated_plural_name(default:)
-        translate_field_name(count: 2, default: default).humanize
+        translate_field_name(count: 2, default: default)
       end
 
       def width_class
@@ -185,6 +185,16 @@ module Avo
       end
 
       def name_override = nil
+
+      # The name as it should read inside a sentence, e.g. "Attach payment method".
+      # A resolved translation is used verbatim; only the generated fallback is lowercased.
+      def sentence_name
+        return name if custom_name? || name_override.present?
+
+        default = default_name.humanize(capitalize: false)
+
+        translation_key ? translated_name(default:) : default
+      end
 
       def plural_name
         default = name.pluralize
