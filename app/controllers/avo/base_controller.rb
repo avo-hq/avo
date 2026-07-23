@@ -35,20 +35,26 @@ module Avo
       set_index_params
       set_filters
       set_actions
-      set_query
-      build_index_query
-      apply_pagination
-
-      # Create resources for each record
-      # Duplicate the @resource before hydration to avoid @resource keeping last record.
+      set_component_for __method__
+      set_index_view_loading
       @resource.hydrate(params: params)
-      @resources = @records.map do |record|
-        @resource.dup.hydrate(record: record)
+
+      if @index_view_loaded
+        set_query
+        build_index_query
+        apply_pagination
+
+        # Create resources for each record
+        # Duplicate the @resource before hydration to avoid @resource keeping last record.
+        @resources = @records.map do |record|
+          @resource.dup.hydrate(record: record)
+        end
+      else
+        @records = []
+        @resources = []
       end
 
-      set_component_for __method__
-
-      if request.headers["X-Search-Request"] == "resource-search-controller"
+      if resource_search_request?
         respond_to do |format|
           format.turbo_stream do
             has_resources = @resources.present?
@@ -67,7 +73,7 @@ module Avo
               turbo_stream.replace("#{@resource.model_key}_body_content") do
                 Avo::Current.view_context.render Avo::ResourceListingComponent.new(
                   **common_args,
-                  turbo_frame: @turbo_frame,
+                  turbo_frame: params[:turbo_frame],
                   index_params: @index_params
                 )
               end,
@@ -348,6 +354,20 @@ module Avo
       if @resource.available_view_types.exclude? @resource.view_type.to_sym
         raise "View type '#{@resource.view_type}' is unavailable for #{@resource.class}."
       end
+    end
+
+    def set_index_view_loading
+      supports_lazy_loading = @component == Avo::Views::ResourceIndexComponent
+      @index_view_frame = @resource.index_view_frame if @resource.index_view_lazy_loading? && @reflection.blank? && supports_lazy_loading
+      @index_view_loaded = @index_view_frame.blank? ||
+        request.headers["Turbo-Frame"] == @index_view_frame ||
+        resource_search_request?
+
+      params[:turbo_frame] ||= @index_view_frame if @index_view_frame.present? && @index_view_loaded
+    end
+
+    def resource_search_request?
+      request.headers["X-Search-Request"] == "resource-search-controller"
     end
 
     def set_sorting_params

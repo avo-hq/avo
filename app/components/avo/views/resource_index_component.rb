@@ -171,6 +171,32 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   private
 
+  def lazy_load_index_view?
+    @resource.index_view_lazy_loading? && @reflection.blank?
+  end
+
+  def index_view_loaded?
+    request.headers["Turbo-Frame"] == @resource.index_view_frame
+  end
+
+  def index_view_frame_args
+    args = {
+      target: :_top,
+      class: "relative flex flex-col gap-y-4",
+      data: {
+        controller: "resource-index",
+        action: "turbo:frame-load->resource-index#loaded"
+      }
+    }
+
+    unless index_view_loaded?
+      args[:src] = request.fullpath
+      args[:loading] = :lazy
+    end
+
+    args
+  end
+
   def reflection_model_class
     @reflection.active_record.to_s
   end
