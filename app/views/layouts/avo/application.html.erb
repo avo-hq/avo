@@ -57,6 +57,8 @@
     >
       <%= render partial: "avo/partials/navbar", locals: {resource: @resource} %>
 
+      <%= render partial: "avo/partials/back_to_top" if Avo.configuration.back_to_top[:enabled] %>
+
       <div id="main-sidebar" tabindex="-1" class="hidden lg:flex">
         <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %>
       </div>

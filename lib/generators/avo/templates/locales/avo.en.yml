@@ -64,6 +64,7 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
+    back_to_top: Back to top
     cancel: Cancel
     checkbox_list:
       hidden_selections:

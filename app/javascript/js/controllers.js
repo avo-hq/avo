@@ -4,6 +4,7 @@ import ActionController from './controllers/action_controller'
 import ActionsOverflowController from './controllers/actions_overflow_controller'
 import ActionsPickerController from './controllers/actions_picker_controller'
 import AttachmentsController from './controllers/attachments_controller'
+import BackToTopController from './controllers/back_to_top_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
 import CardFiltersController from './controllers/card_filters_controller'
@@ -76,6 +77,7 @@ application.register('confirm-dialog', ConfirmDialogController)
 application.register('actions-overflow', ActionsOverflowController)
 application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
+application.register('back-to-top', BackToTopController)
 application.register('boolean-filter', BooleanFilterController)
 application.register('card-filters', CardFiltersController)
 application.register('clear-input', ClearInputController)
