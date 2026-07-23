@@ -14,6 +14,8 @@ import AppearanceController from './controllers/appearance_controller'
 import AppearancePreviewController from './controllers/appearance_preview_controller'
 import ConfirmDialogController from './controllers/confirm_dialog_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
+import EncryptedFieldController from './controllers/fields/encrypted_field_controller'
+import EncryptedFieldEditController from './controllers/fields/encrypted_field_edit_controller'
 import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
@@ -134,6 +136,8 @@ application.register('trix-body', TrixBodyController)
 application.register('belongs-to-field', BelongsToFieldController)
 application.register('checkbox-list-field', CheckboxListFieldController)
 application.register('code-field', CodeFieldController)
+application.register('encrypted-field', EncryptedFieldController)
+application.register('encrypted-field-edit', EncryptedFieldEditController)
 application.register('date-field', DateFieldController)
 application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)

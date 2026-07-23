@@ -1,0 +1,17 @@
+<%= field_wrapper(**field_wrapper_args) do %>
+  <div data-controller="encrypted-field"
+       data-encrypted-field-reveal-path-value="<%= reveal_path %>"
+       class="flex items-center gap-2">
+    <span data-encrypted-field-target="value" class="font-mono"><%= @field.masked_value %></span>
+    <% if @field.revealable %>
+      <button type="button"
+              data-action="click->encrypted-field#toggle"
+              data-encrypted-field-target="button"
+              class="text-gray-500 hover:text-gray-700 focus:outline-none"
+              title="Reveal value">
+        <%= helpers.svg "heroicons/outline/eye", class: "h-4 w-4", data: { encrypted_field_target: "showIcon" } %>
+        <%= helpers.svg "heroicons/outline/eye-slash", class: "h-4 w-4 hidden", data: { encrypted_field_target: "hideIcon" } %>
+      </button>
+    <% end %>
+  </div>
+<% end %>
