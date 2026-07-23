@@ -6,15 +6,6 @@
 @source not "*/tmp/screenshots";
 @source not "*/tmp/storage";
 
-/* Scans gem sources so their utilities compile into this build, which loads
-   after the gems' own stylesheets and would otherwise override them. Being
-   removed: gems now ship BEM component classes that core cannot clobber, so
-   they no longer need core to compile their utilities. Entries leave as each
-   gem migrates; the block and avo:sym_link go with the last one.
-   See .claude/rules/gem-css.md in the workspace. */
-@source "../../../tmp/avo/build-assets/packages/avo-kanban";
-@source "../../../tmp/avo/build-assets/packages/avo-forms";
-
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
 @source inline("break-all");
