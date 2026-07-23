@@ -12,7 +12,6 @@
    they no longer need core to compile their utilities. Entries leave as each
    gem migrates; the block and avo:sym_link go with the last one.
    See .claude/rules/gem-css.md in the workspace. */
-@source "../../../tmp/avo/build-assets/packages/avo-dashboards";
 @source "../../../tmp/avo/build-assets/packages/avo-kanban";
 @source "../../../tmp/avo/build-assets/packages/avo-forms";
 
