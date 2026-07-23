@@ -33,23 +33,34 @@ module Generators
         # Add view file
         template "tool/view.tt", "app/views/avo/tools/#{file_name}.html.erb"
 
-        # Add the route in the `routes.rb` file.
-        # The route should be defined inside the Avo engine.
-        # The new tool has a dedicated path helper.
-        # EX:
-        #   bin/rails generate avo:tool lolo
-        #   will generate the avo.lolo_path helper
-        # THe fact that it will always generate the definded? and Avo::Engine.routes.draw wraps is unfortunate. We'd love a PR to fix that.
-        route_contents = <<~ROUTE
+        # Add the route inside the `mount_avo` block so it gets the `avo.#{file_name}_path` helper.
+        # If `mount_avo` is a one-liner, turn it into a block. If it's already a block, inject into it.
+        # If there's no `mount_avo` at all, fall back to a standalone Avo engine routes block.
+        routes_path = "config/routes.rb"
+        routes_content = File.read(Rails.root.join(routes_path))
+        route_definition = "get \"#{file_name}\", to: \"tools##{file_name}\", as: :#{file_name}"
 
-          if defined? ::Avo
-            Avo::Engine.routes.draw do
-              # This route is not protected, secure it with authentication if needed.
-              get "#{file_name}", to: "tools##{file_name}", as: :#{file_name}
-            end
+        if (match = routes_content.match(/^([ \t]*)mount_avo\b.*\bdo\b.*$/))
+          indent = match[1] + "  "
+          inject_into_file routes_path, after: /^[ \t]*mount_avo\b.*\bdo\b.*\n/ do
+            "#{indent}#{route_definition}\n"
           end
-        ROUTE
-        append_to_file "config/routes.rb", route_contents
+        elsif (match = routes_content.match(/^([ \t]*)mount_avo\b.*$/))
+          indent = match[1]
+          inner = indent + "  "
+          gsub_file routes_path, /^[ \t]*mount_avo\b.*$/ do |line|
+            "#{line} do\n#{inner}#{route_definition}\n#{indent}end"
+          end
+        else
+          append_to_file routes_path, <<~ROUTE
+
+            if defined? ::Avo
+              Avo::Engine.routes.draw do
+                #{route_definition}
+              end
+            end
+          ROUTE
+        end
 
         # Restart the server so the new routes go into effect.
         Rails::Command.invoke "restart"
