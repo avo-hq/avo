@@ -6,7 +6,7 @@
     rounded: @field.rounded,
     link_to_record: @field.link_to_record,
     link: resource_view_path,
-    title: t('avo.view_item', item: @resource.name).humanize
+    title: t('avo.view_item', item: @resource.name).upcase_first
   )
   %>
 <% end %>
