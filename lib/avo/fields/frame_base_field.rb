@@ -129,7 +129,7 @@ module Avo
       private
 
       def default_view
-        Avo.configuration.skip_show_view ? :edit : :show
+        Avo.configuration.resource_default_view.edit? ? :edit : :show
       end
 
       # Attributes exposed to callable descriptions. `loading_type` tells a
