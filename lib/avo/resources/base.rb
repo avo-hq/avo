@@ -236,9 +236,18 @@ module Avo
         #       product:
         #         save: "Save product"
         def name_from_translation_key(count:, default:)
-          t(translation_key, count:, default: nil).presence || default
+          t(translation_key, count:, default:)
         rescue I18n::InvalidPluralizationData
           default
+        end
+
+        # The name as it should read inside a sentence, e.g. "Create new payment method".
+        # A resolved translation is used verbatim; only the generated fallback is lowercased.
+        def sentence_name
+          name_from_translation_key(
+            count: 1,
+            default: demodulized_class_name.underscore.humanize(capitalize: false)
+          )
         end
 
         def underscore_name
@@ -481,11 +490,7 @@ module Avo
         when :edit
           record_title
         when :new
-          item = self.class.name_from_translation_key(
-            count: 1,
-            default: self.class.demodulized_class_name.underscore.humanize(capitalize: false)
-          )
-          t("avo.create_new_item", item:)
+          t("avo.create_new_item", item: self.class.sentence_name)
         end
       end
 
