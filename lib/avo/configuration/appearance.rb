@@ -4,6 +4,7 @@ class Avo::Configuration::Appearance
     :accent,  # Symbol — default accent selection (e.g. :blue, :brand)
     :neutral_colors, # Hash{ 25 => ..., 50 => ..., ..., 950 => ... } — full 12-shade brand override (single palette, applied in both light and dark mode)
     :accent_colors,  # Hash{ color:, content:, foreground: } — three-token brand override (single palette, applied in both light and dark mode)
+    :main_content_background, # String — any CSS `background` value (image url(), gradient, color, or shorthand) for the main content section; nil leaves the themed default
     :neutrals, # Array[String] — available neutral theme names
     :accents, # Array[String] — available accent color names
     :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent]
@@ -62,6 +63,7 @@ class Avo::Configuration::Appearance
     @accent = config[:accent]
     @neutral_colors = config[:neutral_colors]
     @accent_colors = config[:accent_colors]
+    @main_content_background = config[:main_content_background]
     @neutrals = Array(config[:neutrals]).map(&:to_s).freeze
     @accents = Array(config[:accents]).map(&:to_s).freeze
     @lock = Array(config[:lock]).map(&:to_sym).freeze
@@ -121,7 +123,7 @@ class Avo::Configuration::Appearance
   # Without an `@layer` wrapper, the unlayered inline style would beat every
   # layered rule regardless of specificity, silently breaking theme selection.
   def brand_css_overrides
-    return nil if neutral_colors.nil? && accent_colors.nil?
+    return nil if neutral_colors.nil? && accent_colors.nil? && main_content_background.nil?
 
     [
       "@layer base {",
@@ -155,6 +157,12 @@ class Avo::Configuration::Appearance
       # never set this var, so the swatch keeps showing the configured brand
       # accent even while another accent is hovered or selected.
       declarations << "  --color-brand-accent: #{accent_colors[:color]};"
+    end
+
+    if main_content_background
+      # Consumed by `.main-content { background: var(--main-content-background, ...) }`.
+      # Accepts any CSS background value (url(), gradient, color, or shorthand).
+      declarations << "  --main-content-background: #{main_content_background};"
     end
 
     declarations

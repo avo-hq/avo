@@ -24,6 +24,10 @@ RSpec.describe Avo::Configuration::Appearance do
       expect(appearance.accent_colors).to be_nil
     end
 
+    it "defaults main_content_background to nil" do
+      expect(appearance.main_content_background).to be_nil
+    end
+
     it "defaults lock to an empty array" do
       expect(appearance.lock).to eq([])
     end
@@ -298,6 +302,52 @@ RSpec.describe Avo::Configuration::Appearance do
           expect(css).not_to include(".dark {")
           expect(css).to include("--color-avo-neutral-25: oklch(0.99 0.01 240);")
           expect(css).to include("--color-accent-foreground: oklch(1 0 0);")
+        end
+      end
+
+      context "when only main_content_background is configured" do
+        let(:options) { {main_content_background: "url('/bg.png') center/cover no-repeat"} }
+
+        it "emits the --main-content-background declaration inside @layer base :root" do
+          css = appearance.brand_css_overrides
+
+          expect(css).to start_with("@layer base {")
+          expect(css.scan(":root {").size).to eq(1)
+          expect(css).to include("--main-content-background: url('/bg.png') center/cover no-repeat;")
+        end
+
+        it "emits the block even though neutral_colors / accent_colors are unset" do
+          expect(appearance.brand_css_overrides).not_to be_nil
+        end
+
+        it "does not emit neutral or accent declarations" do
+          css = appearance.brand_css_overrides
+
+          expect(css).not_to include("--color-avo-neutral-")
+          expect(css).not_to include("--color-accent")
+        end
+      end
+
+      context "when main_content_background is a gradient" do
+        let(:options) { {main_content_background: "linear-gradient(to bottom, #fff, #eee)"} }
+
+        it "emits the gradient value verbatim" do
+          expect(appearance.brand_css_overrides)
+            .to include("--main-content-background: linear-gradient(to bottom, #fff, #eee);")
+        end
+      end
+
+      context "when main_content_background is combined with accent_colors" do
+        let(:options) do
+          {accent_colors: complete_accent, main_content_background: "url('/bg.png')"}
+        end
+
+        it "emits both the accent tokens and the main content background in one :root block" do
+          css = appearance.brand_css_overrides
+
+          expect(css.scan(":root {").size).to eq(1)
+          expect(css).to include("--color-accent: oklch(0.6 0.2 260);")
+          expect(css).to include("--main-content-background: url('/bg.png');")
         end
       end
     end

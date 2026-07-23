@@ -155,6 +155,7 @@ Avo.configure do |config|
   #   persistence: :database,
   #   placeholder: "avo/placeholder.svg",
   #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
+  #   main_content_background: "url('/my-background.png') center/cover no-repeat",
   #   load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },
   # }
 

@@ -63,7 +63,15 @@
   --main-content-end-radius: 0;
   --main-content-width: var(--content-width);
 
-  @apply relative w-(--main-content-width) flex flex-col bg-(--color-main-content-background) py-2 lg:py-4 px-2 lg:px-4 border-s border-(--color-main-content-border) rounded-se-(--main-content-end-radius) rounded-ss-(--main-content-start-radius);
+  @apply relative w-(--main-content-width) flex flex-col py-2 lg:py-4 px-2 lg:px-4 border-s border-(--color-main-content-border) rounded-se-(--main-content-end-radius) rounded-ss-(--main-content-start-radius);
+
+  /* Configurable via `config.appearance = { main_content_background: ... }` which
+     sets --main-content-background at :root. Falls back to the themed color so the
+     unset state is unchanged. An image value is centered and covers by default. */
+  background: var(--main-content-background, var(--color-main-content-background));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   transition: margin 0.1s ease-in-out, width 0.1s ease-in-out;
   min-height: calc(100dvh - var(--top-navbar-height) - var(--spacing));

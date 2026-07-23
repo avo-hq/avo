@@ -50,4 +50,28 @@ RSpec.describe "Appearance overrides", type: :request do
       expect(response.body).to include('rel="icon"')
     end
   end
+
+  context "when a main content background is configured" do
+    let(:overrides_css) do
+      <<~CSS
+        @layer base {
+          :root {
+            --main-content-background: url('/bg.png') center/cover no-repeat;
+          }
+        }
+      CSS
+    end
+
+    before do
+      allow(Avo.configuration.appearance).to receive(:brand_css_overrides).and_return(overrides_css)
+    end
+
+    it "emits the --main-content-background declaration inside a style tag" do
+      get "/admin/failed_to_load"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("--main-content-background: url('/bg.png') center/cover no-repeat;")
+      expect(response.body).to match(%r{<style\b[^>]*>.*--main-content-background.*</style>}m)
+    end
+  end
 end
