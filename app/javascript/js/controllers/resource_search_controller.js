@@ -37,7 +37,10 @@ export default class extends Controller {
   async performSearch() {
     const query = this.inputTarget.value
 
-    const [pathName, queryString] = this.urlValue.split('?')
+    const sourceUrl = this.urlValue.includes('turbo_frame')
+      ? this.urlValue
+      : `${window.location.pathname}${window.location.search}`
+    const [pathName, queryString] = sourceUrl.split('?')
     const newUrl = this.buildSearchUrl(pathName, queryString, query)
 
     // Replace current URL without affecting browser history
