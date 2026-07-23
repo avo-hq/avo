@@ -64,6 +64,7 @@ zh-TW:
     attachment_class_detached: "%{attachment_class} 已分離。"
     attachment_destroyed: 附件已刪除
     attachment_failed: 無法附加 %{attachment_class}
+    back_to_top: 回到頂部
     cancel: 取消
     checkbox_list:
       hidden_selections:

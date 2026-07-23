@@ -64,6 +64,7 @@ de:
     attachment_class_detached: "%{attachment_class} abgehängt."
     attachment_destroyed: Anhang gelöscht
     attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
+    back_to_top: Zurück nach oben
     cancel: Abbrechen
     checkbox_list:
       hidden_selections:

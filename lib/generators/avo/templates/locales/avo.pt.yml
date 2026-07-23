@@ -66,6 +66,7 @@ pt:
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
+    back_to_top: Voltar ao topo
     cancel: Cancelar
     checkbox_list:
       hidden_selections:

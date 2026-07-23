@@ -66,6 +66,7 @@ fr:
     attachment_class_detached: "%{attachment_class} détaché."
     attachment_destroyed: Pièce jointe détruite
     attachment_failed: Échec de l'ajout de %{attachment_class}
+    back_to_top: Retour en haut
     cancel: Annuler
     checkbox_list:
       hidden_selections:

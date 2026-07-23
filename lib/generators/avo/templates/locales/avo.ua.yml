@@ -64,6 +64,7 @@ ua:
     attachment_class_detached: "%{attachment_class} відкріплено."
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
+    back_to_top: Назад до верху
     cancel: Скасувати
     checkbox_list:
       hidden_selections:
