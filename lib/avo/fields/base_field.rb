@@ -189,11 +189,14 @@ module Avo
       # The name as it should read inside a sentence, e.g. "Attach payment method".
       # A resolved translation is used verbatim; only the generated fallback is lowercased.
       def sentence_name
-        return name if custom_name? || name_override.present?
-
-        default = default_name.humanize(capitalize: false)
-
-        translation_key ? translated_name(default:) : default
+        # Field discovery assigns a name to every association field, so a custom
+        # name is not necessarily developer-authored. Only the translation branch
+        # is trusted verbatim; every other name keeps the lowercasing it had.
+        if custom_name? || name_override.present? || translation_key.nil?
+          name.humanize(capitalize: false)
+        else
+          translated_name(default: default_name.humanize(capitalize: false))
+        end
       end
 
       def plural_name

@@ -44,6 +44,7 @@ module Avo
 
       # class methods
       delegate :class_name, to: :class
+      delegate :sentence_name, to: :class
       delegate :route_key, to: :class
       delegate :singular_route_key, to: :class
 

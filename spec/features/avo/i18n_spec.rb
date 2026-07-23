@@ -53,6 +53,18 @@ RSpec.feature "i18n", type: :feature do
       expect(field.sentence_name).to eq "missing field name"
     end
 
+    it "uses a translated field name verbatim inside a sentence" do
+      expect(Avo::Fields::BaseField.new(:payment_intent_id).sentence_name).to eq "Payment Intent ID"
+    end
+
+    # Field discovery assigns a name to every association field, so `name:` alone
+    # does not mean a developer authored it. Those keep their previous lowercasing.
+    it "lowercases a non-translated name inside a sentence" do
+      field = Avo::Fields::BaseField.new(:main_post, name: "Main post")
+
+      expect(field.sentence_name).to eq "main post"
+    end
+
     it "uses a translated array field name verbatim" do
       expect(Avo::Fields::ArrayField.new(:people).name).to eq "API People"
     end
