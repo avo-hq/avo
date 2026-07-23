@@ -2,7 +2,7 @@ module Avo
   module Fields
     class ArrayField < ManyFrameBaseField
       def translated_name(default:)
-        translate_field_name(count: 2, default: default_name)
+        translate_field_name(count: 2, default:)
       end
 
       def view_component_name

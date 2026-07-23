@@ -69,6 +69,13 @@ RSpec.feature "i18n", type: :feature do
       expect(Avo::Fields::ArrayField.new(:people).name).to eq "API People"
     end
 
+    # ArrayField and HasManyField override translated_name, so they have to honor
+    # the default they are handed or sentence_name silently returns a title-cased name.
+    it "lowercases a non-translated plural field name inside a sentence" do
+      expect(Avo::Fields::ArrayField.new(:missing_things).sentence_name).to eq "missing things"
+      expect(Avo::Fields::HasManyField.new(:missing_things).sentence_name).to eq "missing things"
+    end
+
     describe "resource index (has_many)" do
       it "translation on the panel title" do
         visit "/admin/resources/users/#{user.id}/people?turbo_frame=has_many_field_show_people"
