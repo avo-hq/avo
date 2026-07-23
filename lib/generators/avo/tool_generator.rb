@@ -39,17 +39,18 @@ module Generators
         routes_path = "config/routes.rb"
         routes_content = File.read(Rails.root.join(routes_path))
         route_definition = "get \"#{file_name}\", to: \"tools##{file_name}\", as: :#{file_name}"
+        mount_avo_line = routes_content.lines.find { |line| line.match?(/^[ \t]*mount_avo\b/) }
 
-        if (match = routes_content.match(/^([ \t]*)mount_avo\b.*\bdo\b.*$/))
-          indent = match[1] + "  "
-          inject_into_file routes_path, after: /^[ \t]*mount_avo\b.*\bdo\b.*\n/ do
+        if mount_avo_line && mount_avo_line_is_block?(mount_avo_line)
+          indent = mount_avo_line[/^[ \t]*/] + "  "
+          inject_into_file routes_path, after: /^[ \t]*mount_avo\b.*\n/ do
             "#{indent}#{route_definition}\n"
           end
-        elsif (match = routes_content.match(/^([ \t]*)mount_avo\b.*$/))
-          indent = match[1]
+        elsif mount_avo_line
+          indent = mount_avo_line[/^[ \t]*/]
           inner = indent + "  "
           gsub_file routes_path, /^[ \t]*mount_avo\b.*$/ do |line|
-            "#{line} do\n#{inner}#{route_definition}\n#{indent}end"
+            "#{insert_do_before_comment(line)}\n#{inner}#{route_definition}\n#{indent}end"
           end
         else
           append_to_file routes_path, <<~ROUTE
@@ -81,6 +82,24 @@ module Generators
 
         def in_code(text)
           "<code class='p-1 rounded-sm bg-gray-500 text-white text-sm'>#{text}</code>"
+        end
+
+        # Code before a trailing `#` comment (so `do` inside comments is ignored).
+        def code_before_comment(line)
+          line.to_s.sub(/[ \t]*#.*$/, "")
+        end
+
+        def mount_avo_line_is_block?(line)
+          code_before_comment(line).match?(/\bdo\b/)
+        end
+
+        # Insert ` do` before any trailing `#` comment so Ruby still opens the block.
+        def insert_do_before_comment(line)
+          if (match = line.match(/\A(.*?)([ \t]*#.*)\z/))
+            "#{match[1]} do#{match[2]}"
+          else
+            "#{line} do"
+          end
         end
       end
     end
