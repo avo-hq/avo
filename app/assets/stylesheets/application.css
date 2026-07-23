@@ -6,17 +6,14 @@
 @source not "*/tmp/screenshots";
 @source not "*/tmp/storage";
 
-/* TODO: Figure out a way to add those dynamically */
-/* Find a long term solution for this. */
-/* Basically this is a hack to make sure that we dont have specificity issues with the packages stylesheets. */
-/* However if we do this the packages builds are kinda irrelevant. */
-/* And we also need to release a new version of avo anytime that a package stylesheet changes. */
-@source "../../../tmp/avo/build-assets/packages/avo-advanced";
+/* Scans gem sources so their utilities compile into this build, which loads
+   after the gems' own stylesheets and would otherwise override them. Being
+   removed: gems now ship BEM component classes that core cannot clobber, so
+   they no longer need core to compile their utilities. Entries leave as each
+   gem migrates; the block and avo:sym_link go with the last one.
+   See .claude/rules/gem-css.md in the workspace. */
 @source "../../../tmp/avo/build-assets/packages/avo-dashboards";
-@source "../../../tmp/avo/build-assets/packages/avo-dynamic_filters";
 @source "../../../tmp/avo/build-assets/packages/avo-kanban";
-@source "../../../tmp/avo/build-assets/packages/avo-menu";
-@source "../../../tmp/avo/build-assets/packages/avo-pro";
 @source "../../../tmp/avo/build-assets/packages/avo-forms";
 
 /* We couldn't find a way to implement blocklist in the CSS config */

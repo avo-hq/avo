@@ -105,7 +105,14 @@ task "avo:sym_link" do
   end
 
   gem_paths = `bundle list --paths 2>/dev/null`.split("\n")
-  ["avo-advanced", "avo-pro", "avo-advanced_search", "avo-authorization", "avo-record_reordering", "avo-dynamic_filters", "avo-dashboards", "avo-menu", "avo-kanban", "avo-forms"].each do |gem|
+  # Must stay in step with the @source entries in app/assets/stylesheets/application.css —
+  # symlinking a gem core no longer scans just creates an unread directory. Both
+  # lists lose entries as gems migrate to BEM component classes, and this task
+  # is removed with the last one.
+  #
+  # Keep prose here free of bare Tailwind utility names: this file is inside
+  # core's automatic content detection, so a stray word emits a CSS rule.
+  ["avo-dashboards", "avo-kanban", "avo-forms"].each do |gem|
     path = gem_paths.find { |gem_path| gem_path.include?("/#{gem}-") }
 
     # If path is nil we check if package is defined outside of root (on release process it is)
