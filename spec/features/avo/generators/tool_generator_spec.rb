@@ -87,4 +87,41 @@ RSpec.feature "tool generator", type: :feature, acquire_lock: :generator do
       end
     RUBY
   end
+
+  it "converts a one-line mount_avo with mount_lookbook into a block" do
+    File.write(routes_path, <<~RUBY)
+      Rails.application.routes.draw do
+        mount_avo mount_lookbook: true
+      end
+    RUBY
+
+    invoke_tool_generator
+
+    expect(File.read(routes_path)).to include(<<~RUBY.indent(2))
+      mount_avo mount_lookbook: true do
+        get "lolo", to: "tools#lolo", as: :lolo
+      end
+    RUBY
+  end
+
+  it "injects the route into an existing mount_avo block, keeping a comment after do" do
+    File.write(routes_path, <<~RUBY)
+      Rails.application.routes.draw do
+        mount_avo mount_lookbook: true do # admin panel
+        end
+      end
+    RUBY
+
+    invoke_tool_generator
+
+    routes = File.read(routes_path)
+
+    expect(routes).to include(<<~RUBY.indent(2))
+      mount_avo mount_lookbook: true do # admin panel
+        get "lolo", to: "tools#lolo", as: :lolo
+      end
+    RUBY
+    # The `do` line is left untouched — no second `do` appended to it.
+    expect(routes).not_to match(/# admin panel do/)
+  end
 end
