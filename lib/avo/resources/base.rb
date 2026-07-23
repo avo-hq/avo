@@ -44,6 +44,7 @@ module Avo
 
       # class methods
       delegate :class_name, to: :class
+      delegate :sentence_name, to: :class
       delegate :route_key, to: :class
       delegate :singular_route_key, to: :class
 
@@ -236,9 +237,18 @@ module Avo
         #       product:
         #         save: "Save product"
         def name_from_translation_key(count:, default:)
-          t(translation_key, count:, default:).humanize
+          t(translation_key, count:, default:)
         rescue I18n::InvalidPluralizationData
           default
+        end
+
+        # The name as it should read inside a sentence, e.g. "Create new payment method".
+        # A resolved translation is used verbatim; only the generated fallback is lowercased.
+        def sentence_name
+          name_from_translation_key(
+            count: 1,
+            default: demodulized_class_name.underscore.humanize(capitalize: false)
+          )
         end
 
         def underscore_name
@@ -246,7 +256,7 @@ module Avo
         end
 
         def navigation_label
-          plural_name.humanize
+          plural_name
         end
 
         def find_record(id, query: nil, params: nil)
@@ -481,7 +491,10 @@ module Avo
         when :edit
           record_title
         when :new
-          t("avo.create_new_item", item: name.humanize(capitalize: false)).upcase_first
+          # upcase_first, not humanize: locales like de put the item first
+          # ("%{item} hinzufügen"), so the sentence still needs its initial cased
+          # while the interpolated name stays exactly as translated.
+          t("avo.create_new_item", item: self.class.sentence_name).upcase_first
         end
       end
 

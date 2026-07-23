@@ -142,11 +142,11 @@ module Avo
       end
 
       def translated_name(default:)
-        translate_field_name(count: 1, default: default).humanize
+        translate_field_name(count: 1, default: default)
       end
 
       def translated_plural_name(default:)
-        translate_field_name(count: 2, default: default).humanize
+        translate_field_name(count: 2, default: default)
       end
 
       def width_class
@@ -177,7 +177,7 @@ module Avo
           Avo::ExecutionContext.new(target: @name).handle
         elsif name_override.present?
           name_override
-        elsif translation_key
+        elsif name_from_translation?
           translated_name default: default_name
         else
           default_name
@@ -185,6 +185,14 @@ module Avo
       end
 
       def name_override = nil
+
+      # The name as it should read inside a sentence, e.g. "Attach payment method".
+      # A resolved translation is used verbatim; only the generated fallback is lowercased.
+      def sentence_name
+        return name.humanize(capitalize: false) unless name_from_translation?
+
+        translated_name(default: default_name.humanize(capitalize: false))
+      end
 
       def plural_name
         default = name.pluralize
@@ -378,6 +386,13 @@ module Avo
         end
 
         nil
+      end
+
+      # Whether #name resolves through a translation key rather than a supplied name.
+      # Field discovery assigns a name to every association field, so a custom name
+      # is not necessarily developer-authored -- only a translation is trusted verbatim.
+      def name_from_translation?
+        !custom_name? && name_override.blank? && !translation_key.nil?
       end
 
       def translate_field_name(count:, default:)

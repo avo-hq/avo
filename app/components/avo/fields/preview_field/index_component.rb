@@ -2,7 +2,7 @@
 
 class Avo::Fields::PreviewField::IndexComponent < Avo::Fields::IndexComponent
   def render_preview
-    link_to resource_view_path, title: t("avo.view_item", item: @resource.name).humanize do
+    link_to resource_view_path, title: t("avo.view_item", item: @resource.sentence_name).upcase_first do
       helpers.svg(
         "tabler/outline/zoom-scan",
         class: "block h-6 text-content-secondary",
