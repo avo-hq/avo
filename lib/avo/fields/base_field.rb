@@ -177,7 +177,7 @@ module Avo
           Avo::ExecutionContext.new(target: @name).handle
         elsif name_override.present?
           name_override
-        elsif translation_key
+        elsif name_from_translation?
           translated_name default: default_name
         else
           default_name

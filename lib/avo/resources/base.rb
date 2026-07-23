@@ -491,7 +491,10 @@ module Avo
         when :edit
           record_title
         when :new
-          t("avo.create_new_item", item: self.class.sentence_name)
+          # upcase_first, not humanize: locales like de put the item first
+          # ("%{item} hinzufügen"), so the sentence still needs its initial cased
+          # while the interpolated name stays exactly as translated.
+          t("avo.create_new_item", item: self.class.sentence_name).upcase_first
         end
       end
 

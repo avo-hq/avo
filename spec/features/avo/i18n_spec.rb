@@ -148,9 +148,15 @@ RSpec.feature "i18n", type: :feature do
     it "apply translation_key" do
       visit avo.resources_courses_path(force_locale: :pt)
 
+      # Scoped to the breadcrumbs on purpose. A page-wide `have_text("cursos")`
+      # passes even with the fix reverted, because the pt sidebar renders
+      # "Recursos" and that contains "cursos" as a substring.
+      breadcrumbs = find(".breadcrumbs").text
+
       # The pt fixture defines `curso`/`cursos` in lowercase. Avo used to
       # capitalize that for display; it is now rendered as written.
-      expect(page).to have_text("cursos")
+      expect(breadcrumbs).to include "cursos"
+      expect(breadcrumbs).not_to include "Cursos"
       expect(page).to have_text("Criar novo curso")
     end
   end
