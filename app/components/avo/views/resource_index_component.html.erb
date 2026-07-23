@@ -35,9 +35,9 @@
             <%= render Avo::DiscreetInformationComponent.new(
               icon: "tabler/outline/refresh",
               as: :icon,
-              title: t('avo.reload'),
+              title: t("avo.reload"),
               classes: "cursor-pointer",
-              data: { controller: "panel-refresh", action: "click->panel-refresh#refresh" }
+              data: {controller: "panel-refresh", action: "click->panel-refresh#refresh"}
             ) %>
           <% end %>
 
@@ -47,14 +47,14 @@
               as: :icon,
               url: field.frame_url(add_turbo_frame: false),
               target: :_blank,
-              title: t('avo.open_in_new_tab')
+              title: t("avo.open_in_new_tab")
             ) %>
           <% end %>
 
           <% if Rails.env.development? %>
             <%= render Avo::DiscreetInformationComponent.new(
               as: :icon,
-              title: t('avo.open_in_your_editor'),
+              title: t("avo.open_in_your_editor"),
               url: helpers.editor_file_path(@resource),
               icon: "tabler/outline/code"
             ) %>
@@ -84,12 +84,13 @@
                         name: "q",
                         value: params[:q],
                         id: nil,
-                        placeholder: t('avo.search.placeholder'),
+                        placeholder: t("avo.search.placeholder"),
                         shortcut: :slash,
                         data: {
                           action: "input->resource-search#search keydown->resource-search#blurOnEscape",
                           "resource-search-target": "input"
-                        }) %>
+                        }
+                      ) %>
                     <% end %>
                   </div>
 
@@ -104,7 +105,7 @@
                       <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record, parent_resource: @parent_resource %>
                     <% end %>
 
-                    <%= render partial: "avo/partials/view_toggle_button", locals: { available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame } %>
+                    <%= render partial: "avo/partials/view_toggle_button", locals: {available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame} %>
                   </div>
                 </div>
 
