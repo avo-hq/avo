@@ -189,6 +189,9 @@
   @import "./css/components/filters.css";
   @import "./css/css-animations.css";
   @import "./css/sidebar.css";
+  /* After sidebar.css: the handle overlays the sidebar's end edge and its
+     focus treatment overrides the shared ring. */
+  @import "./css/components/sidebar_resize.css";
 
   html,
   body {

@@ -103,3 +103,75 @@ RSpec.describe "Sidebar width carrier", type: :request do
     end
   end
 end
+
+# Unit 5: the server-rendered half of the handle. What matters here is what a
+# browser with no JS receives — the system specs cover everything after the
+# controller connects.
+RSpec.describe "Sidebar resize handle", type: :request do
+  let(:admin_user) { create :user, roles: {admin: true} }
+
+  before { login_as admin_user }
+
+  let(:path) { "/admin/failed_to_load" }
+
+  def handle
+    Nokogiri::HTML(response.body).at_css(".sidebar-resize-handle")
+  end
+
+  # R20 / the no-JS contract. The partial always renders `hidden`;
+  # sidebar_resize_controller is the only thing that removes it. Without JS the
+  # element stays inert: no orphaned tab stop, no strip eating content clicks.
+  it "always renders the handle hidden, whatever the sidebar state" do
+    get path
+
+    expect(handle).to be_present
+    expect(handle.attributes).to have_key("hidden")
+  end
+
+  # R21's static half. axe-core 4.12 lists aria-valuenow as a REQUIRED attribute
+  # of role="separator", so these cannot wait for Unit 8 to make them dynamic.
+  it "renders a labelled separator with the server-computed value and bounds" do
+    cookies["avo.sidebar.width"] = "384"
+    get path
+
+    expect(handle["role"]).to eq("separator")
+    expect(handle["tabindex"]).to eq("0")
+    expect(handle["aria-orientation"]).to eq("vertical")
+    expect(handle["aria-controls"]).to eq("main-sidebar")
+    expect(handle["aria-label"]).to be_present
+    expect(handle["title"]).to be_present
+    expect(handle["aria-valuenow"]).to eq("384")
+    expect(handle["aria-valuemin"]).to eq("200")
+    expect(handle["aria-valuemax"]).to eq("480")
+  end
+
+  it "falls back to the 256px default value with no stored width" do
+    get path
+
+    expect(handle["aria-valuenow"]).to eq("256")
+  end
+
+  # aria-controls has to resolve, or the separator points at nothing.
+  it "points aria-controls at an element that exists" do
+    get path
+
+    expect(Nokogiri::HTML(response.body).at_css("##{handle["aria-controls"]}")).to be_present
+  end
+
+  # The S5 off-switch: drag-only resizing is a known WCAG SC 2.5.7 gap, so a host
+  # under an AA/VPAT obligation can remove the affordance entirely rather than
+  # inherit a failure by upgrading.
+  context "with Avo.configuration.sidebar_resizable = false" do
+    around do |example|
+      Avo.configuration.sidebar_resizable = false
+      example.run
+      Avo.configuration.sidebar_resizable = true
+    end
+
+    it "renders no handle at all" do
+      get path
+
+      expect(handle).to be_nil
+    end
+  end
+end

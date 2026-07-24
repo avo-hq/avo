@@ -66,6 +66,11 @@ module Avo
     attr_accessor :default_editor_url
     attr_writer :body_classes
     attr_accessor :sidebar_toggle_visible
+    # Off-switch for the drag-to-resize sidebar handle. Drag-only resizing is a
+    # known WCAG SC 2.5.7 (Dragging Movements) gap, so a host with an AA/VPAT
+    # obligation can disable it entirely; when false the handle is neither
+    # rendered nor wired up.
+    attr_accessor :sidebar_resizable
     attr_accessor :tailwindcss_integration_enabled
     attr_accessor :mount_lookbook
 
@@ -206,6 +211,7 @@ module Avo
       @use_stacked_fields = false
       @default_editor_url = "cursor://file/%{path}"
       @sidebar_toggle_visible = true
+      @sidebar_resizable = true
       @body_classes = []
       @tailwindcss_integration_enabled = true
       @mount_lookbook = false
