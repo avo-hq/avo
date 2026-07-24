@@ -34,11 +34,18 @@
   height: var(--top-navbar-height);
 }
 
-/* Layout variables live on the outermost sidebar host so they cascade to both
-   the top-navbar and .main (which are siblings, not parent/child).
+/* Derived layout variables live on the outermost sidebar host so they cascade
+   to both the top-navbar and .main (which are siblings, not parent/child).
    --content-width is intentionally relative to .main's content box (which is
    already offset by --sidebar-offset-size via padding), so centering via
-   mx-auto happens inside the area to the right of the sidebar, not the page. */
+   mx-auto happens inside the area to the right of the sidebar, not the page.
+
+   These are the DERIVED layout variables and originate here, on the lowest
+   common ancestor. The raw stored preference they derive from,
+   --sidebar-width-stored, is a user preference that lives on <html> — written
+   before paint by app/views/avo/partials/_sidebar_width_override.html.erb and
+   inherited down. The derivation happens in the lg media block below.
+   Boundary: preferences on <html>, layout derivation here. */
 [data-controller~="sidebar"] {
   --sidebar-width: --spacing(64);
   --sidebar-offset-size: 0;
@@ -47,6 +54,21 @@
 }
 
 @media (min-width: theme(--breakpoint-lg)) {
+  /* Derive the real width from the stored preference, gated to >= lg so the
+     mobile default (the base --sidebar-width above) wins below lg without
+     !important, and a desktop-chosen width never becomes a mobile overlay (R19).
+     The producer of --sidebar-width-stored is the nonce'd pre-paint carrier at
+     app/views/avo/partials/_sidebar_width_override.html.erb (server-validated
+     from the avo.sidebar.width cookie); with no cookie it is undefined and the
+     --spacing(64) fallback keeps today's 256px. The 200px / 480px bounds
+     duplicate Avo::SIDEBAR_WIDTH_MIN / Avo::SIDEBAR_WIDTH_MAX (lib/avo.rb); the
+     40vw term is CSS-owned (R10/R11) — the server has no viewport. No
+     [data-sidebar-open-value] qualifier: the width must be correct even while
+     the sidebar is translated off-screen. */
+  [data-controller~="sidebar"] {
+    --sidebar-width: clamp(200px, var(--sidebar-width-stored, --spacing(64)), min(480px, 40vw));
+  }
+
   [data-controller~="sidebar"][data-sidebar-open-value="true"] {
     --sidebar-offset-size: var(--sidebar-width);
   }

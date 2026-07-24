@@ -30,6 +30,19 @@ module Avo
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
 
+  # Resizable-sidebar width bounds, in pixels. The server clamps the persisted
+  # `avo.sidebar.width` cookie to this range (Avo::ApplicationHelper#sidebar_width)
+  # and emits both into window.Avo.configuration for the JS drag/keyboard layer;
+  # the CSS clamp() in css/layout.css keeps a commented duplicate. They are
+  # private_constant on purpose: the origin's scope boundary excludes a host-app
+  # configuration API for the bounds/default, so these must not become public API
+  # by accident. Reachable inside Avo via unqualified lexical lookup (e.g. from
+  # Avo::ApplicationHelper, which is nested in Avo); views read them through the
+  # #sidebar_width_min / #sidebar_width_max helpers rather than the constants.
+  SIDEBAR_WIDTH_MIN = 200
+  SIDEBAR_WIDTH_MAX = 480
+  private_constant :SIDEBAR_WIDTH_MIN, :SIDEBAR_WIDTH_MAX
+
   # Frame IDs
   MODAL_FRAME_ID = :modal_frame
   MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID = :media_library_item_details

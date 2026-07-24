@@ -38,6 +38,7 @@
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
     <%= render partial: "avo/partials/color_theme_override" %>
+    <%= render partial: "avo/partials/sidebar_width_override" %>
 
     <%# appearance_overrides MUST render after the application stylesheet so its inline %>
     <%# :root / .dark declarations win on equal-specificity cascade. %>

@@ -1,0 +1,19 @@
+<% if @sidebar_width %>
+  <script nonce="<%= content_security_policy_nonce %>">
+    // Apply the persisted sidebar width before first paint to avoid a 256px
+    // flash (R15). @sidebar_width was validated server-side to an Integer within
+    // bounds (Avo::ApplicationHelper#sidebar_width), so it is interpolated below
+    // as a bare JS number literal — never a string taken from the cookie.
+    //
+    // The value lands on <html>, which Turbo never replaces, so it survives
+    // Drive and restoration visits. The lg-gated clamp in css/layout.css derives
+    // --sidebar-width from --sidebar-width-stored and re-clamps it for the
+    // current viewport (R11), so nothing here needs to know the viewport.
+    //
+    // This is a CSSOM write (element.style.setProperty), which is outside the
+    // scope of style-src; the <script> performing it is governed by script-src
+    // and runs only where the host nonces script-src (A16) — the same dependency
+    // _color_theme_override.html.erb already carries.
+    document.documentElement.style.setProperty('--sidebar-width-stored', <%= @sidebar_width %> + 'px');
+  </script>
+<% end %>

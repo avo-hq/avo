@@ -284,6 +284,13 @@ module Avo
       neutrals.index_with { |theme| avo_appearance_t("neutrals_list.#{theme}", default: theme.capitalize) }
     end
 
+    # Resizable-sidebar width bounds for the JS layer (window.Avo.configuration).
+    # Read the private_constant bounds via unqualified lexical lookup — the
+    # constants themselves stay non-public API (see lib/avo.rb).
+    def sidebar_width_min = SIDEBAR_WIDTH_MIN
+
+    def sidebar_width_max = SIDEBAR_WIDTH_MAX
+
     private
 
     # The signed_id is what Active Storage uses to locate the blob; the filename
@@ -334,6 +341,38 @@ module Avo
       end
 
       classes
+    end
+
+    # Resizable sidebar (>= lg): the width the user dragged to, read from the
+    # persistent `avo.sidebar.width` cookie and validated to a pixel Integer
+    # within [SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX], or nil when the cookie is
+    # absent or invalid. The pre-paint carrier (_sidebar_width_override.html.erb)
+    # emits nothing when this is nil, so an existing user with no cookie keeps
+    # today's 256px default (R9).
+    #
+    # R17 trust boundary. The cookie is user-controlled input, and not only by
+    # the admin: a sibling subdomain, a plaintext MITM, or the host app can set
+    # it too. Every guard here is load-bearing:
+    #   - valid_encoding? — Rack can hand us a UTF-8-tagged String with invalid
+    #     bytes (e.g. `avo.sidebar.width=%C3%28`); blank?/presence/match? then
+    #     raise ArgumentError — a 500 on every admin page, settable remotely.
+    #   - \A..\z, not ^..$ — line anchors accept "200\n<script>…"; \Z would allow
+    #     a trailing newline too.
+    #   - bytesize guard caps the work before the regex.
+    # Deliberately NOT Integer(v, exception: false) (accepts "2_0_0", "+200",
+    # " 200 ") and NOT bare to_i (nil.to_i -> 0 -> clamp -> 200 would ship a
+    # 200px sidebar to every existing user; "٤٨٠".to_i is also 0).
+    #
+    # The invariant is a TYPE invariant: this returns an Integer or nil, never a
+    # String — so there is no injection path even into the carrier's JS.
+    def sidebar_width
+      value = cookies["#{Avo::COOKIES_KEY}.sidebar.width"].to_s
+      return nil if value.empty?
+      return nil unless value.valid_encoding?
+      return nil if value.bytesize > 4
+      return nil unless /\A\d+\z/.match?(value)
+
+      value.to_i.clamp(SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX)
     end
 
     def current_neutral
