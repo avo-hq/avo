@@ -4,8 +4,9 @@
   style: style,
   data: data do %>
   <%= content_tag :div,
-    class: class_names("field-wrapper__label", @field.get_html(:classes, view: @view, element: :label)),
-    data: {slot: "label"} do %>
+    class: label_classes,
+    style: label_style,
+    data: label_data do %>
     <span class="self-center">
     <% if @form.present? %>
       <%= @form.label label_for, label %>
@@ -19,8 +20,9 @@
     </span>
   <% end %>
   <%= content_tag :div,
-    class: class_names("field-wrapper__content", @field.get_html(:classes, view: @view, element: :content)),
-    data: {slot: "value"} do %>
+    class: content_classes,
+    style: content_style,
+    data: content_data do %>
     <%= tag.div class: "field-wrapper__content-wrapper" do %>
       <% if on_show? %>
         <div class="flex flex-row items-center group gap-x-1 group/clipboard w-full">

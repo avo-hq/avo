@@ -36,6 +36,28 @@ class Avo::Resources::Team < Avo::BaseResource
               end
             end
           end
+          show do
+            label do
+              style do
+                if record.color
+                  "color: #{record.color}"
+                end
+              end
+              data do
+                {block_label_marker: "name"}
+              end
+            end
+            content do
+              style do
+                if record.color
+                  "color: #{record.color}"
+                end
+              end
+              data do
+                {block_content_marker: "name"}
+              end
+            end
+          end
         end
         field :logo, as: :external_image, hide_on: :show do
           if record&.url
