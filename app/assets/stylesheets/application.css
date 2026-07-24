@@ -6,19 +6,6 @@
 @source not "*/tmp/screenshots";
 @source not "*/tmp/storage";
 
-/* TODO: Figure out a way to add those dynamically */
-/* Find a long term solution for this. */
-/* Basically this is a hack to make sure that we dont have specificity issues with the packages stylesheets. */
-/* However if we do this the packages builds are kinda irrelevant. */
-/* And we also need to release a new version of avo anytime that a package stylesheet changes. */
-@source "../../../tmp/avo/build-assets/packages/avo-advanced";
-@source "../../../tmp/avo/build-assets/packages/avo-dashboards";
-@source "../../../tmp/avo/build-assets/packages/avo-dynamic_filters";
-@source "../../../tmp/avo/build-assets/packages/avo-kanban";
-@source "../../../tmp/avo/build-assets/packages/avo-menu";
-@source "../../../tmp/avo/build-assets/packages/avo-pro";
-@source "../../../tmp/avo/build-assets/packages/avo-forms";
-
 /* We couldn't find a way to implement blocklist in the CSS config */
 /* blocklist: ['bg-[#{chart_color(index)}]', 'bg-[${color}]'] */
 @source inline("break-all");
