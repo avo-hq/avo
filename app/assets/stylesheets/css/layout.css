@@ -127,8 +127,14 @@
   @apply 2xl:container 2xl:mx-auto;
 }
 
+/* max-width (not a fixed width) so the container fills the space left of a
+   widened sidebar instead of overflowing it, while still capping at 960px on
+   wide viewports. w-full is required: .container-small is a flex item of
+   .main-content (flex flex-col), and per Flexbox §4.2 the auto inline margins
+   from mx-auto suppress the default align-self: stretch — without an explicit
+   width the item would collapse to its content width. */
 .container-small {
-  @apply xl:px-0 xl:w-240 xl:mx-auto;
+  @apply xl:px-0 xl:w-full xl:max-w-240 xl:mx-auto;
 }
 
 .container-full-width {
