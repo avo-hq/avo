@@ -4,11 +4,55 @@ RSpec.feature "HtmlAttributes", type: :feature do
   let(:product) { create :product }
 
   context "on show" do
-    it "renders the html attributes" do
-      visit avo.resources_product_path product
+    before { visit avo.resources_product_path product }
 
-      expect(field_wrapper(:title).find('[data-slot="value"]')[:class]).to include "bg-gray-50 !text-pink-600"
-      expect(field_wrapper(:title).find('[data-slot="label"]')[:class]).to include "bg-gray-50 !text-pink-600"
+    let(:label) { field_wrapper(:title).find('[data-slot="label"]') }
+    let(:content) { field_wrapper(:title).find('[data-slot="value"]') }
+
+    it "renders the html attributes" do
+      expect(content[:class]).to include "bg-gray-50 !text-pink-600"
+      expect(label[:class]).to include "bg-gray-50 !text-pink-600"
+    end
+
+    it "renders the style attribute on the label and content elements" do
+      expect(label[:style]).to include "letter-spacing: 0.5px"
+      expect(content[:style]).to include "letter-spacing: 1px"
+    end
+
+    it "renders the data attributes on the label and content elements" do
+      expect(label["data-show-label-marker"]).to eq "title"
+      expect(content["data-show-content-marker"]).to eq "title"
+    end
+
+    it "keeps the slot data attributes when the field declares its own data" do
+      expect(label["data-slot"]).to eq "label"
+      expect(content["data-slot"]).to eq "value"
+    end
+
+    it "renders no style attribute for a field without html options" do
+      expect(field_wrapper(:price).find('[data-slot="label"]')[:style]).to be_blank
+      expect(field_wrapper(:price).find('[data-slot="value"]')[:style]).to be_blank
+    end
+  end
+
+  context "on edit" do
+    before { visit avo.edit_resources_product_path product }
+
+    let(:label) { field_wrapper(:title).find('[data-slot="label"]') }
+    let(:content) { field_wrapper(:title).find('[data-slot="value"]') }
+
+    it "renders the classes, style and data attributes on the label element" do
+      expect(label[:class]).to include "bg-gray-100 !text-blue-600"
+      expect(label[:style]).to include "letter-spacing: 1.5px"
+      expect(label["data-edit-label-marker"]).to eq "title"
+      expect(label["data-slot"]).to eq "label"
+    end
+
+    it "renders the classes, style and data attributes on the content element" do
+      expect(content[:class]).to include "bg-gray-100 !text-blue-600"
+      expect(content[:style]).to include "letter-spacing: 2px"
+      expect(content["data-edit-content-marker"]).to eq "title"
+      expect(content["data-slot"]).to eq "value"
     end
   end
 
