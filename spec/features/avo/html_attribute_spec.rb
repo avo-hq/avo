@@ -2,12 +2,11 @@ require "rails_helper"
 
 RSpec.feature "HtmlAttributes", type: :feature do
   let(:product) { create :product }
+  let(:label) { field_wrapper(:title).find('[data-slot="label"]') }
+  let(:content) { field_wrapper(:title).find('[data-slot="value"]') }
 
   context "on show" do
     before { visit avo.resources_product_path product }
-
-    let(:label) { field_wrapper(:title).find('[data-slot="label"]') }
-    let(:content) { field_wrapper(:title).find('[data-slot="value"]') }
 
     it "renders the html attributes" do
       expect(content[:class]).to include "bg-gray-50 !text-pink-600"
@@ -37,9 +36,6 @@ RSpec.feature "HtmlAttributes", type: :feature do
 
   context "on edit" do
     before { visit avo.edit_resources_product_path product }
-
-    let(:label) { field_wrapper(:title).find('[data-slot="label"]') }
-    let(:content) { field_wrapper(:title).find('[data-slot="value"]') }
 
     it "renders the classes, style and data attributes on the label element" do
       expect(label[:class]).to include "bg-gray-100 !text-blue-600"
@@ -73,6 +69,22 @@ RSpec.feature "HtmlAttributes", type: :feature do
 
       expect(field_element_by_resource_id("name", red_team.id)["style"]).to match(/color: #FF0000/)
       expect(field_element_by_resource_id("name", green_team.id)["style"]).to match(/color: #00FF00/)
+    end
+  end
+
+  context "with the block notation on show" do
+    let(:team) { create :team, color: "#FF0000" }
+
+    before { visit avo.resources_team_path team }
+
+    it "evaluates the block syntax for the label and content elements" do
+      label = field_wrapper(:name).find('[data-slot="label"]')
+      content = field_wrapper(:name).find('[data-slot="value"]')
+
+      expect(label[:style]).to match(/color: #FF0000/)
+      expect(label["data-block-label-marker"]).to eq "name"
+      expect(content[:style]).to match(/color: #FF0000/)
+      expect(content["data-block-content-marker"]).to eq "name"
     end
   end
 end
