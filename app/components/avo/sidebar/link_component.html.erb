@@ -6,9 +6,9 @@
       </span>
     <% end %>
 
-    <span><%= @label %></span>
+    <span class="sidebar-link__label" title="<%= @label %>"><%= @label %></span>
 
-    <%= hotkey_badge(@hotkey, class: "ms-auto") if @hotkey.present? %>
+    <%= hotkey_badge(@hotkey, class: "ms-auto shrink-0") if @hotkey.present? %>
 
     <% if @target == :_blank %>
       <%= helpers.svg("tabler/outline/external-link", class: "sidebar-link__external-icon sidebar-icon") %>
@@ -22,6 +22,6 @@
       </span>
     <% end %>
 
-    <span><%= @label %></span>
+    <span class="sidebar-link__label" title="<%= @label %>"><%= @label %></span>
   <% end %>
 <% end %>

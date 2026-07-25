@@ -195,6 +195,7 @@ RSpec.configure do |config|
 end
 
 require "support/helpers"
+require "support/cookie_helpers"
 require "support/factory_bot"
 require "support/database_cleaner"
 require "support/js_error_detector"

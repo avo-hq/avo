@@ -8,7 +8,7 @@
   >
     <div class="sidebar-section__header-inner">
       <%= helpers.svg @icon, class: "sidebar-section__icon sidebar-icon" if @icon.present? %>
-      <span><%= @title %></span>
+      <span class="sidebar-section__title" title="<%= @title %>"><%= @title %></span>
     </div>
     <span class="sidebar-section__icon sidebar-icon <%= 'sidebar-icon--collapsed' if @collapsed %>"
       data-menu-target="svg"
@@ -19,6 +19,6 @@
 <% else %>
   <div class="sidebar-section__header">
     <%= helpers.svg @icon, class: "sidebar-section__icon sidebar-icon" if @icon.present? %>
-    <span><%= @title %></span>
+    <span class="sidebar-section__title" title="<%= @title %>"><%= @title %></span>
   </div>
 <% end %>
