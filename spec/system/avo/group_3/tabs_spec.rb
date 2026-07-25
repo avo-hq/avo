@@ -452,7 +452,8 @@ RSpec.describe "Tabs", type: :system do
   end
 
   # ponytail: scroll-preservation test dropped — flaky to assert via
-  # browser rendering/ResizeObserver timing. The fix (save scrollLeft before
-  # removing overflow-x, restore after) is verified by inspection and manual
-  # testing; fighting Cuprite for this measurement isn't worth the maintenance.
+  # browser rendering/ResizeObserver timing. The fix (each panel has its own
+  # copy of the tab buttons row; scroll position is synced across copies via
+  # a dataset value on the .tab-group container) is verified in-browser;
+  # fighting Cuprite for this measurement isn't worth the maintenance.
 end
