@@ -115,7 +115,9 @@ RSpec.configure do |config|
 
   config.before(:each, type: :system) {
     browser_options = {
-      save_path: DownloadHelpers::PATH
+      :save_path => DownloadHelpers::PATH,
+      # Keep animations (e.g. tab view transitions) out of system tests.
+      "force-prefers-reduced-motion" => nil
     }
     if ENV["DOCKER"]
       browser_options["no-sandbox"] = nil

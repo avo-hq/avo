@@ -99,7 +99,7 @@ export default class extends Controller {
       return
     }
 
-    this.animate(swap, {oldItem, newItem})
+    this.animate(swap, { oldItem, newItem })
   }
 
   holdHeight(frame) {
@@ -111,7 +111,6 @@ export default class extends Controller {
     // cover responses missing the frame and network errors — without them a
     // failed load would leave the group frozen at the held height.
     const events = ['turbo:frame-load', 'turbo:frame-missing', 'turbo:fetch-request-error']
-    const unbind = () => events.forEach((event) => frame.removeEventListener(event, release))
 
     const clear = () => {
       this.element.style.height = ''
@@ -119,13 +118,13 @@ export default class extends Controller {
     }
 
     const release = () => {
-      unbind()
+      events.forEach((event) => frame.removeEventListener(event, release))
       this.releaseHold = null
       this.animate(clear)
     }
 
     this.releaseHold = () => {
-      unbind()
+      events.forEach((event) => frame.removeEventListener(event, release))
       this.releaseHold = null
       clear()
     }
@@ -139,8 +138,10 @@ export default class extends Controller {
   // named as well so the accent bar morphs between tabs. Names are applied
   // only for the duration of the transition so multiple tab groups on a
   // page never collide.
-  animate(mutate, {oldItem, newItem} = {}) {
-    if (!document.startViewTransition) {
+  animate(mutate, { oldItem, newItem } = {}) {
+    // Reduced motion also keeps the swap synchronous in system tests, where
+    // the transition callback's timing is unreliable in headless Chrome.
+    if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       mutate()
 
       return
