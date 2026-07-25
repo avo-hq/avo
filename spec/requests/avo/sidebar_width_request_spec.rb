@@ -175,3 +175,98 @@ RSpec.describe "Sidebar resize handle", type: :request do
     end
   end
 end
+
+# Avo.configuration.sidebar_default_width — the host-facing knob for where the
+# sidebar starts before anyone drags it. The bounds around it stay unconfigurable
+# by design; this is the only width knob.
+RSpec.describe "Sidebar default width configuration", type: :request do
+  let(:admin_user) { create :user, roles: {admin: true} }
+
+  before { login_as admin_user }
+
+  let(:path) { "/admin/failed_to_load" }
+
+  def with_default_width(value)
+    original = Avo.configuration.sidebar_default_width
+    Avo.configuration.sidebar_default_width = value
+    yield
+  ensure
+    Avo.configuration.sidebar_default_width = original
+  end
+
+  def carrier_script
+    Nokogiri::HTML(response.body).css("script").find { |node| node.text.include?("--sidebar-width") }
+  end
+
+  def handle
+    Nokogiri::HTML(response.body).at_css(".sidebar-resize-handle")
+  end
+
+  describe "clamping" do
+    it "accepts a value inside the bounds" do
+      with_default_width(400) { expect(Avo.configuration.sidebar_default_width).to eq(400) }
+    end
+
+    # Outside the bounds the sidebar would start at a width the handle cannot
+    # drag back to, and aria-valuenow would sit outside its own min/max.
+    it "clamps above the maximum and below the minimum" do
+      with_default_width(9999) { expect(Avo.configuration.sidebar_default_width).to eq(480) }
+      with_default_width(10) { expect(Avo.configuration.sidebar_default_width).to eq(200) }
+    end
+
+    it "accepts a numeric string" do
+      with_default_width("400") { expect(Avo.configuration.sidebar_default_width).to eq(400) }
+    end
+
+    # A typo must not silently ship a 200px sidebar, which is what clamping an
+    # unparseable value would do.
+    it "falls back to 256 rather than the minimum for an unusable value" do
+      with_default_width("wide") { expect(Avo.configuration.sidebar_default_width).to eq(256) }
+      with_default_width(nil) { expect(Avo.configuration.sidebar_default_width).to eq(256) }
+    end
+  end
+
+  describe "rendering" do
+    # Zero bytes and zero CSP surface for the overwhelming majority who never
+    # touch this — same discipline as "no cookie means no script".
+    it "emits nothing when the default is unchanged" do
+      get path
+
+      expect(response.body).not_to include("--sidebar-width-default")
+      expect(carrier_script).to be_nil
+    end
+
+    it "emits the configured default through the pre-paint carrier" do
+      with_default_width(400) { get path }
+
+      expect(carrier_script.text).to include("setProperty('--sidebar-width-default', 400 + 'px')")
+      expect(carrier_script.attributes).to have_key("nonce")
+      expect(Nokogiri::HTML(response.body).at_css("html")["style"]).to be_nil
+    end
+
+    it "exposes the configured default to the JS layer" do
+      with_default_width(400) { get path }
+
+      expect(response.body).to match(/widthDefault:\s*400/)
+    end
+
+    it "uses the configured default for the handle's static aria-valuenow" do
+      with_default_width(400) { get path }
+
+      expect(handle["aria-valuenow"]).to eq("400")
+    end
+
+    # A dragged width is a per-user preference and outranks the install-wide
+    # starting width. Both land on <html>; the CSS fallback chain does the rest.
+    it "lets a stored cookie width outrank the configured default" do
+      with_default_width(400) do
+        cookies["avo.sidebar.width"] = "300"
+        get path
+      end
+
+      expect(carrier_script.text).to include("setProperty('--sidebar-width-default', 400 + 'px')")
+      expect(carrier_script.text).to include("setProperty('--sidebar-width-stored', 300 + 'px')")
+      expect(handle["aria-valuenow"]).to eq("300")
+    end
+  end
+end

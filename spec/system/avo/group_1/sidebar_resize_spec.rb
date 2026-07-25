@@ -742,3 +742,88 @@ RSpec.describe "sidebar resize drag (Units 6-7)", type: :system do
     expect(sidebar_width).to be_within(3).of(rendered - 20)
   end
 end
+
+# Avo.configuration.sidebar_default_width in the browser: the configured width has
+# to reach the rendered layout, stay subordinate to a dragged width, and — the
+# part worth a spec — NOT leak below lg, where the sidebar is a full-height
+# overlay and a wide value would cover the screen.
+RSpec.describe "sidebar default width configuration (browser)", type: :system do
+  let!(:user) { create :user }
+  let(:index_path) { "/admin/resources/users" }
+
+  around do |example|
+    original = Avo.configuration.sidebar_default_width
+    Avo.configuration.sidebar_default_width = 400
+    example.run
+    Avo.configuration.sidebar_default_width = original
+  end
+
+  def visit_avo(width:, height: 900, cookies: {})
+    Capybara.reset_sessions!
+    Capybara.current_session.current_window.resize_to(width, height)
+    visit "/"
+    cookies.each { |name, value| set_browser_cookie(name, value) }
+    visit index_path
+    expect(page).to have_selector(".main[data-controller~='sidebar']", visible: :all)
+  end
+
+  def sidebar_offset
+    page.evaluate_script(
+      "parseFloat(getComputedStyle(document.querySelector('.main[data-controller~=\"sidebar\"]')).paddingInlineStart)"
+    )
+  end
+
+  # The mobile sidebar is the second .avo-sidebar in DOM order; the first lives in
+  # #main-sidebar, which is display:none below lg.
+  def mobile_sidebar_width
+    page.evaluate_script(
+      "parseFloat(getComputedStyle(document.querySelectorAll('.avo-sidebar')[1]).width)"
+    )
+  end
+
+  it "starts the sidebar at the configured width" do
+    visit_avo(width: 1440)
+
+    expect(sidebar_offset).to be_within(1).of(400)
+  end
+
+  # R19 extended to the config. A configured 400px would be a near-full-screen
+  # overlay on a phone, so the fallback chain lives inside the lg media block and
+  # the base --spacing(64) wins below it.
+  it "keeps the 256px mobile default below lg" do
+    visit_avo(width: 428, height: 926)
+
+    expect(
+      page.evaluate_script("document.documentElement.style.getPropertyValue('--sidebar-width-default')")
+    ).to eq("400px") # the preference is present on <html>...
+    expect(mobile_sidebar_width).to be_within(1).of(256) # ...but the gate wins
+  end
+
+  it "lets a dragged width outrank the configured default" do
+    visit_avo(width: 1440, cookies: {"avo.sidebar.width" => "300"})
+
+    expect(sidebar_offset).to be_within(1).of(300)
+  end
+
+  # Remove-when-default now means the CONFIGURED default. A host on 400px whose
+  # user drags back to 400 must end up with no cookie, not a cookie that merely
+  # restates the install's own setting.
+  it "removes the cookie when a drag lands on the configured default" do
+    visit_avo(width: 1440, cookies: {"avo.sidebar.width" => "300"})
+
+    handle = page.evaluate_script("document.querySelector('.sidebar-resize-handle').getBoundingClientRect().toJSON()")
+    x = (handle["left"] + handle["width"] / 2).round
+    mouse = page.driver.browser.mouse
+    mouse.move(x: x, y: 400)
+    mouse.down
+    mouse.move(x: x + 100, y: 400, steps: 10) # 300 + 100 = 400, the configured default
+    sleep 0.12
+    mouse.up
+    sleep 0.12
+
+    expect(sidebar_offset).to be_within(2).of(400)
+    expect(
+      page.evaluate_script("document.cookie.indexOf('avo.sidebar.width=')")
+    ).to eq(-1)
+  end
+end

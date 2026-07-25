@@ -7,7 +7,8 @@
   Avo.configuration.cookies_key = '<%= Avo::COOKIES_KEY %>'
   Avo.configuration.sidebar = {
     widthMin: <%= sidebar_width_min %>,
-    widthMax: <%= sidebar_width_max %>
+    widthMax: <%= sidebar_width_max %>,
+    widthDefault: <%= sidebar_width_default %>
   }
   <% if Avo.avo_dynamic_filters_installed? %>
   Avo.configuration.avo_filters = {

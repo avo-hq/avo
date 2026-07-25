@@ -17,9 +17,9 @@
   aria-valuenow / -valuemin / -valuemax are STATIC server values in this unit
   (Unit 8 makes valuenow track the drag). They are required, not optional:
   axe-core 4.12 lists aria-valuenow as a mandatory attribute of role="separator".
-  The default 256 is --spacing(64), which is layout.css's --sidebar-width when no
-  stored width preference exists. %>
-<% current_width = @sidebar_width || 256 %>
+  With no stored width the value is the starting width — Avo's 256px unless the
+  host set Avo.configuration.sidebar_default_width. %>
+<% current_width = @sidebar_width || sidebar_width_default %>
 <%= tag.div "",
   class: class_names("sidebar-resize-handle", "print:hidden": Avo.configuration.hide_layout_when_printing),
   hidden: true,

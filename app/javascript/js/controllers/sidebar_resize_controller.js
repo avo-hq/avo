@@ -225,10 +225,13 @@ export default class extends Controller {
     return Math.min(window.Avo.configuration.sidebar.widthMax, 0.4 * window.innerWidth)
   }
 
-  // --spacing(64) = 16rem. Computed rather than hardcoded to 256 so a host that
-  // raises the root font size still gets remove-when-default.
+  // The width the sidebar starts at with no stored preference — Avo's 256px
+  // unless the host set Avo.configuration.sidebar_default_width. This is what
+  // remove-when-default compares against, so reading it from config rather than
+  // hardcoding 256 is what keeps a configured host from accumulating a cookie
+  // that merely restates their own default.
   get defaultWidth() {
-    return 16 * parseFloat(getComputedStyle(document.documentElement).fontSize)
+    return window.Avo.configuration.sidebar.widthDefault
   }
 
   get isRtl() {

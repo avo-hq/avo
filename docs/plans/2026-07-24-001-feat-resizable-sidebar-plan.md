@@ -190,11 +190,22 @@ R22 correct edge and inverted drag direction in RTL
 
 ## Scope Boundaries
 
-Carried from origin, unchanged: `Avo::ResourceSidebarComponent` and
+Carried from origin: `Avo::ResourceSidebarComponent` and
 `Avo::UI::PanelComponent`'s `.panel__sidebar` are out of scope · no cross-device
 sync · no collapse-to-icons / rail mode · no per-resource or per-page widths ·
-**no configuration API for host apps to change the min/max bounds or the default**
-· no drag-to-close.
+no drag-to-close.
+
+> **Amended by request: the default width IS configurable.** The origin's
+> boundary was *"no configuration API for host apps to change the min/max bounds
+> or the default"*. `Avo.configuration.sidebar_default_width` now exists. The
+> **bounds** remain unconfigurable — `SIDEBAR_WIDTH_MIN`/`MAX` stay
+> `private_constant` and the configured default is clamped into them, so it can
+> never place the sidebar at a width the handle cannot drag back to. Two
+> consequences worth noting: the configured default applies **only at `>= lg`**
+> (below it the sidebar is a full-height overlay, and a wide value would cover a
+> phone screen, so R19's mobile 256px is unchanged), and **remove-when-default
+> now means the configured default**, so a host on 400px does not accumulate
+> cookies that merely restate their own setting.
 
 Added during planning:
 

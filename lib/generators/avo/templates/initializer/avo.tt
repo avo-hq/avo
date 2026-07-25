@@ -103,6 +103,16 @@ Avo.configure do |config|
   #   show_key_badges: true   # Set to false to hide inline kbd badge elements from the UI
   # }
 
+  ## == Sidebar ==
+  # Width the sidebar starts at on desktop, in pixels, before a user drags it.
+  # Clamped to 200..480. Only applies at >= lg — below that the sidebar is a
+  # full-height overlay and stays 256px so it cannot cover a phone screen.
+  # config.sidebar_default_width = 256
+  #
+  # Set to false to remove the drag-to-resize handle entirely. Drag-only resizing
+  # is a known WCAG SC 2.5.7 gap, so hosts with an AA/VPAT obligation can opt out.
+  # config.sidebar_resizable = true
+
   ## == Back to top button ==
   # config.back_to_top = {
   #   enabled: true,   # Off by default; set to true to show the "Back to top" pill

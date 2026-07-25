@@ -71,6 +71,11 @@ module Avo
     # obligation can disable it entirely; when false the handle is neither
     # rendered nor wired up.
     attr_accessor :sidebar_resizable
+    # Width the desktop sidebar starts at, in pixels, before the user drags it.
+    # Only applies at >= lg: below that the sidebar is a full-height overlay, and
+    # a wide configured value would cover a phone screen, so the mobile default
+    # stays 256px regardless.
+    attr_writer :sidebar_default_width
     attr_accessor :tailwindcss_integration_enabled
     attr_accessor :mount_lookbook
 
@@ -212,6 +217,7 @@ module Avo
       @default_editor_url = "cursor://file/%{path}"
       @sidebar_toggle_visible = true
       @sidebar_resizable = true
+      @sidebar_default_width = SIDEBAR_WIDTH_DEFAULT
       @body_classes = []
       @tailwindcss_integration_enabled = true
       @mount_lookbook = false
@@ -439,6 +445,18 @@ module Avo
 
     def body_classes
       Avo::ExecutionContext.new(target: @body_classes).handle
+    end
+
+    # Clamped into the same [SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX] range the drag
+    # and the persisted cookie use — outside it the sidebar would start at a
+    # width the handle cannot drag back to, and aria-valuenow would sit outside
+    # its own declared min/max. Anything unparseable falls back to the built-in
+    # default rather than clamping to the minimum, so a typo does not silently
+    # ship a 200px sidebar. The bounds constants stay private (lib/avo.rb):
+    # this accessor is the only host-facing width knob.
+    def sidebar_default_width
+      Integer(@sidebar_default_width, exception: false)
+        &.clamp(SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX) || SIDEBAR_WIDTH_DEFAULT
     end
 
     def persistence

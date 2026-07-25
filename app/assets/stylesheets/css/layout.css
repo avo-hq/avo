@@ -59,14 +59,19 @@
      !important, and a desktop-chosen width never becomes a mobile overlay (R19).
      The producer of --sidebar-width-stored is the nonce'd pre-paint carrier at
      app/views/avo/partials/_sidebar_width_override.html.erb (server-validated
-     from the avo.sidebar.width cookie); with no cookie it is undefined and the
-     --spacing(64) fallback keeps today's 256px. The 200px / 480px bounds
+     from the avo.sidebar.width cookie). With no cookie it is undefined and the
+     fallback chain takes over: --sidebar-width-default, written by the same
+     carrier when the host sets Avo.configuration.sidebar_default_width, then
+     --spacing(64) for the untouched 256px. That chain is deliberately INSIDE
+     this media block — below lg the sidebar is a full-height overlay, so a wide
+     configured default would cover a phone screen and the base declaration's
+     --spacing(64) must win there (R19). The 200px / 480px bounds
      duplicate Avo::SIDEBAR_WIDTH_MIN / Avo::SIDEBAR_WIDTH_MAX (lib/avo.rb); the
      40vw term is CSS-owned (R10/R11) — the server has no viewport. No
      [data-sidebar-open-value] qualifier: the width must be correct even while
      the sidebar is translated off-screen. */
   [data-controller~="sidebar"] {
-    --sidebar-width: clamp(200px, var(--sidebar-width-stored, --spacing(64)), min(480px, 40vw));
+    --sidebar-width: clamp(200px, var(--sidebar-width-stored, var(--sidebar-width-default, --spacing(64))), min(480px, 40vw));
   }
 
   [data-controller~="sidebar"][data-sidebar-open-value="true"] {
