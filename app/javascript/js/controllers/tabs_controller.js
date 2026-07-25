@@ -84,6 +84,10 @@ export default class extends Controller {
     }
 
     oldItem.style.viewTransitionName = 'tabs-active-item'
+    // Name the group container too so its box smoothly animates to the new
+    // panel's height (and the old content crossfades into the new) instead
+    // of snapping.
+    this.element.style.viewTransitionName = 'tabs-group'
     // Marker class scopes the "disable root crossfade" CSS to our transition
     // so it can't interfere with other (e.g. Turbo) view transitions.
     document.documentElement.classList.add('tabs-view-transition')
@@ -96,6 +100,7 @@ export default class extends Controller {
 
     transition.finished.finally(() => {
       newItem.style.viewTransitionName = ''
+      this.element.style.viewTransitionName = ''
       document.documentElement.classList.remove('tabs-view-transition')
     })
   }

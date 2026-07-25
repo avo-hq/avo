@@ -197,7 +197,16 @@
     animation: none;
   }
 
-  html.tabs-view-transition::view-transition-group(tabs-active-item) {
+  html.tabs-view-transition::view-transition-group(tabs-active-item),
+  html.tabs-view-transition::view-transition-group(tabs-group) {
     animation-duration: 200ms;
+  }
+
+  /* The group container is named too so its box animates to the new
+     panel's height. Snapshots keep their natural height (UA default), so
+     clip the taller one instead of letting it hang out of the shrinking/
+     growing box. */
+  html.tabs-view-transition::view-transition-image-pair(tabs-group) {
+    overflow: clip;
   }
 }
