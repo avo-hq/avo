@@ -177,6 +177,8 @@ nl:
     remove_selection: Selectie verwijderen
     reset: resetten
     reset_filters: Filters resetten
+    resize_sidebar: Formaat van zijbalk wijzigen
+    resize_sidebar_hint: Sleep om het formaat van de zijbalk te wijzigen. Dubbelklik om te herstellen.
     resource_created: Record aangemaakt
     resource_destroyed: Record verwijderd
     resource_updated: Record bijgewerkt

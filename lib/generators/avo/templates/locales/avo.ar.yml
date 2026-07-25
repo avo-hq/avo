@@ -195,6 +195,8 @@ ar:
     remove_selection: إزالة التحديد
     reset: اعاده تعيين
     reset_filters: إعادة تعيين الفلاتر
+    resize_sidebar: تغيير حجم الشريط الجانبي
+    resize_sidebar_hint: اسحب لتغيير حجم الشريط الجانبي. انقر نقرًا مزدوجًا لإعادة التعيين.
     resource_created: تم إنشاء السجل
     resource_destroyed: تم حذف السجل
     resource_updated: تم تحديث السجل

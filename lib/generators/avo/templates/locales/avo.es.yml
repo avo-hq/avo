@@ -179,6 +179,8 @@ es:
     remove_selection: Quitar la selección
     reset: restablecer
     reset_filters: Reiniciar filtros
+    resize_sidebar: Cambiar el tamaño de la barra lateral
+    resize_sidebar_hint: Arrastra para cambiar el tamaño de la barra lateral. Haz doble clic para restablecer.
     resource_created: Recurso creado
     resource_destroyed: Recurso eliminado
     resource_updated: Recurso actualizado
