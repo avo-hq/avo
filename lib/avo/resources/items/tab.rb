@@ -14,6 +14,7 @@ class Avo::Resources::Items::Tab
   attr_accessor :description
   attr_reader :lazy_load
   attr_reader :loading
+  attr_reader :badge
 
   def initialize(title: nil, description: nil, translation_key: nil, view: nil, **args)
     @title = title
@@ -25,6 +26,7 @@ class Avo::Resources::Items::Tab
     @visible = args[:visible]
     @lazy_load = args[:lazy_load]
     @loading = args[:loading]
+    @badge = args[:badge]
 
     post_initialize if respond_to?(:post_initialize)
   end
