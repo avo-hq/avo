@@ -106,23 +106,31 @@ export default class extends Controller {
     this.element.style.height = `${this.element.offsetHeight}px`
     this.element.style.overflow = 'clip'
 
+    // turbo:frame-load covers success and Avo's /failed_to_load fallback for
+    // 500s (which loads into the frame like regular content). The other two
+    // cover responses missing the frame and network errors — without them a
+    // failed load would leave the group frozen at the held height.
+    const events = ['turbo:frame-load', 'turbo:frame-missing', 'turbo:fetch-request-error']
+    const unbind = () => events.forEach((event) => frame.removeEventListener(event, release))
+
     const clear = () => {
       this.element.style.height = ''
       this.element.style.overflow = ''
     }
 
     const release = () => {
+      unbind()
       this.releaseHold = null
       this.animate(clear)
     }
 
     this.releaseHold = () => {
-      frame.removeEventListener('turbo:frame-load', release)
+      unbind()
       this.releaseHold = null
       clear()
     }
 
-    frame.addEventListener('turbo:frame-load', release, {once: true})
+    events.forEach((event) => frame.addEventListener(event, release))
   }
 
   // Run a DOM mutation inside a view transition. The group container is
