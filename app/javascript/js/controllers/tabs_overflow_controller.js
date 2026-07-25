@@ -10,19 +10,26 @@ export default class extends Controller {
     this.update = this.update.bind(this)
     this.resizeObserver = new ResizeObserver(this.update)
     this.resizeObserver.observe(this.element)
+
+    // Capture scroll position as the user scrolls, so we have it ready
+    // when update() runs (by then, the browser may have already reset it).
+    this.lastScrollLeft = this.element.scrollLeft
+    this.handleScroll = this.handleScroll.bind(this)
+    this.element.addEventListener('scroll', this.handleScroll)
+
     this.update()
   }
 
   disconnect() {
     this.resizeObserver?.disconnect()
+    this.element.removeEventListener('scroll', this.handleScroll)
+  }
+
+  handleScroll() {
+    this.lastScrollLeft = this.element.scrollLeft
   }
 
   update() {
-    // Capture the current scroll position before removing the scrollable class.
-    // When the class is removed, overflow-x-auto is dropped and the browser
-    // resets scrollLeft to 0. We restore it after re-applying the class.
-    const originalScrollLeft = this.element.scrollLeft
-
     // Drop the modifier so we can measure the natural (wrapping) layout.
     this.element.classList.remove(MODIFIER_CLASS)
 
@@ -35,6 +42,8 @@ export default class extends Controller {
     this.element.classList.toggle(MODIFIER_CLASS, wraps)
 
     // Restore the scroll position after re-applying the scrollable class.
-    this.element.scrollLeft = originalScrollLeft
+    // Use the last captured scroll position from handleScroll, since the
+    // browser may have already reset scrollLeft by the time update() runs.
+    this.element.scrollLeft = this.lastScrollLeft ?? 0
   }
 }
