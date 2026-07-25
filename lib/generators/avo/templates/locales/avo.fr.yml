@@ -179,6 +179,8 @@ fr:
     remove_selection: Supprimer la sélection
     reset: réinitialiser
     reset_filters: Réinitialiser les filtres
+    resize_sidebar: Redimensionner la barre latérale
+    resize_sidebar_hint: Faites glisser pour redimensionner la barre latérale. Double-cliquez pour réinitialiser.
     resource_created: Ressource créee
     resource_destroyed: Ressource détruite
     resource_updated: Ressource mise à jour

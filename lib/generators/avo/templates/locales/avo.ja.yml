@@ -179,6 +179,8 @@ ja:
     remove_selection: 選択を解除
     reset: リセット
     reset_filters: フィルターをリセット
+    resize_sidebar: サイドバーのサイズを変更
+    resize_sidebar_hint: ドラッグしてサイドバーのサイズを変更します。ダブルクリックでリセットします。
     resource_created: レコードが作成されました
     resource_destroyed: レコードが破棄されました
     resource_updated: レコードが更新されました

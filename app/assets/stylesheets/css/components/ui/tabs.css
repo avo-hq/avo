@@ -13,7 +13,11 @@
   /* Scrollable modifier - single-row, horizontally scrollable with edge
      shadows. Toggled on by the `tabs-overflow` controller. */
   .tabs--scrollable {
-    @apply flex-nowrap overflow-x-auto;
+    /* overflow-y is clipped explicitly: `overflow-x: auto` alone computes
+       overflow-y to auto as well, and the active item's 1px underline
+       overlap (margin-bottom: -1px) would otherwise create a 1px vertical
+       scroll. */
+    @apply flex-nowrap overflow-x-auto overflow-y-hidden;
     scrollbar-width: none;
 
     /* Scroll shadows (Lea Verou's background-attachment: local technique).
@@ -147,13 +151,15 @@
 
   /* Remove default border from scope wrappers */
   .tabs__item-wrapper--scope {
-    @apply border-b-0;
+    @apply relative border-b-0;
   }
 
-  /* Active border only on active tab wrapper - positioned to overlay container border */
-  .tabs__item-wrapper--scope.tabs__item--active {
-    @apply border-b-2 border-accent;
-    margin-bottom: -1px; /* Overlap with container border */
+  /* Active indicator - a dedicated element (not a border) so the view
+     transition can morph just the bar between tabs. Positioned to overlay
+     the container border, like the old border-b-2 + -1px margin did. */
+  .tabs__indicator {
+    @apply absolute inset-x-0 h-0.5 bg-accent;
+    bottom: -1px;
   }
 
   /* Tab Group Component */
@@ -176,5 +182,31 @@
     .tab-group {
       --tab-group-modifier: 8;
     }
+  }
+
+  /* ============================================
+     ACTIVE INDICATOR VIEW TRANSITION
+     ============================================ */
+  /* The tabs controller names the outgoing and incoming active items
+     `tabs-active-item` for the duration of the swap, so the browser morphs
+     the indicator between the two rows. Only animate the named pair — the
+     root crossfade is disabled (scoped to our transition via the marker
+     class on <html>) so the rest of the page doesn't flash. */
+  html.tabs-view-transition::view-transition-old(root),
+  html.tabs-view-transition::view-transition-new(root) {
+    animation: none;
+  }
+
+  html.tabs-view-transition::view-transition-group(tabs-active-item),
+  html.tabs-view-transition::view-transition-group(tabs-group) {
+    animation-duration: 200ms;
+  }
+
+  /* The group container is named too so its box animates to the new
+     panel's height. Snapshots keep their natural height (UA default), so
+     clip the taller one instead of letting it hang out of the shrinking/
+     growing box. */
+  html.tabs-view-transition::view-transition-image-pair(tabs-group) {
+    overflow: clip;
   }
 }

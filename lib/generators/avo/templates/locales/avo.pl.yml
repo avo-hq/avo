@@ -183,6 +183,8 @@ pl:
     remove_selection: Usuń zaznaczenie
     reset: Resetuj
     reset_filters: Resetuj filtry
+    resize_sidebar: Zmień rozmiar paska bocznego
+    resize_sidebar_hint: Przeciągnij, aby zmienić rozmiar paska bocznego. Kliknij dwukrotnie, aby zresetować.
     resource_created: Rekord utworzony
     resource_destroyed: Rekord usunięty
     resource_updated: Rekord zaktualizowany

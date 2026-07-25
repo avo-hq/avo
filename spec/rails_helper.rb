@@ -115,7 +115,13 @@ RSpec.configure do |config|
 
   config.before(:each, type: :system) {
     browser_options = {
-      save_path: DownloadHelpers::PATH
+      :save_path => DownloadHelpers::PATH,
+      # Keep animations (e.g. tab view transitions) out of system tests.
+      "force-prefers-reduced-motion" => nil,
+      # CI's Linux runners have no pointing device, so Chrome reports
+      # `hover: none` / `pointer: none` and hides pointer-gated UI (e.g. the
+      # sidebar resize handle). Report a mouse-like device everywhere.
+      "blink-settings" => "primaryPointerType=4,availablePointerTypes=4,primaryHoverType=2,availableHoverTypes=2"
     }
     if ENV["DOCKER"]
       browser_options["no-sandbox"] = nil

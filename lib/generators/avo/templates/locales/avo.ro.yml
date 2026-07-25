@@ -183,6 +183,8 @@ ro:
     remove_selection: Șterge selecția
     reset: resetare
     reset_filters: Resetați filtrele
+    resize_sidebar: Redimensionați bara laterală
+    resize_sidebar_hint: Trageți pentru a redimensiona bara laterală. Faceți dublu clic pentru a reseta.
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată

@@ -179,6 +179,8 @@ tr:
     remove_selection: Seçimi sil
     reset: sıfırlama
     reset_filters: Filtreleri sıfırla
+    resize_sidebar: Kenar çubuğunu yeniden boyutlandır
+    resize_sidebar_hint: Kenar çubuğunu yeniden boyutlandırmak için sürükleyin. Sıfırlamak için çift tıklayın.
     resource_created: Kayıt oluşturuldu
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi
