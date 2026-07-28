@@ -61,7 +61,7 @@
      app/views/avo/partials/_sidebar_width_override.html.erb (server-validated
      from the avo.sidebar.width cookie). With no cookie it is undefined and the
      fallback chain takes over: --sidebar-width-default, written by the same
-     carrier when the host sets Avo.configuration.sidebar_default_width, then
+     carrier when the host sets Avo.configuration.sidebar[:default_width], then
      --spacing(64) for the untouched 256px. That chain is deliberately INSIDE
      this media block — below lg the sidebar is a full-height overlay, so a wide
      configured default would cover a phone screen and the base declaration's

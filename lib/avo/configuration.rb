@@ -65,17 +65,7 @@ module Avo
     attr_accessor :use_stacked_fields
     attr_accessor :default_editor_url
     attr_writer :body_classes
-    attr_accessor :sidebar_toggle_visible
-    # Off-switch for the drag-to-resize sidebar handle. Drag-only resizing is a
-    # known WCAG SC 2.5.7 (Dragging Movements) gap, so a host with an AA/VPAT
-    # obligation can disable it entirely; when false the handle is neither
-    # rendered nor wired up.
-    attr_accessor :sidebar_resizable
-    # Width the desktop sidebar starts at, in pixels, before the user drags it.
-    # Only applies at >= lg: below that the sidebar is a full-height overlay, and
-    # a wide configured value would cover a phone screen, so the mobile default
-    # stays 256px regardless.
-    attr_writer :sidebar_default_width
+    attr_writer :sidebar
     attr_accessor :tailwindcss_integration_enabled
     attr_accessor :mount_lookbook
 
@@ -215,9 +205,7 @@ module Avo
       @send_metadata = true
       @use_stacked_fields = false
       @default_editor_url = "cursor://file/%{path}"
-      @sidebar_toggle_visible = true
-      @sidebar_resizable = true
-      @sidebar_default_width = SIDEBAR_WIDTH_DEFAULT
+      @sidebar = {}
       @body_classes = []
       @tailwindcss_integration_enabled = true
       @mount_lookbook = false
@@ -244,6 +232,29 @@ module Avo
       BACK_TO_TOP_DEFAULTS = {
         enabled: false,
         threshold: 64
+      }.freeze
+    end
+
+    # Sidebar.
+    #
+    # `toggle_visible` shows the navbar button that collapses the desktop
+    # sidebar. On mobile the toggle is always visible regardless.
+    #
+    # `resizable` is the off-switch for the drag-to-resize handle. Drag-only
+    # resizing is a known WCAG SC 2.5.7 (Dragging Movements) gap, so a host with
+    # an AA/VPAT obligation can disable it entirely; when false the handle is
+    # neither rendered nor wired up.
+    #
+    # `default_width` is where the desktop sidebar starts, in pixels, before the
+    # user drags it. Only applies at >= lg: below that the sidebar is a
+    # full-height overlay, and a wide configured value would cover a phone
+    # screen, so the mobile default stays 256px regardless. It is absent here and
+    # filled in by the #sidebar reader: SIDEBAR_WIDTH_DEFAULT (lib/avo.rb) isn't
+    # defined yet when this constant is evaluated at require time.
+    unless defined?(SIDEBAR_DEFAULTS)
+      SIDEBAR_DEFAULTS = {
+        toggle_visible: true,
+        resizable: true
       }.freeze
     end
 
@@ -447,16 +458,28 @@ module Avo
       Avo::ExecutionContext.new(target: @body_classes).handle
     end
 
-    # Clamped into the same [SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX] range the drag
-    # and the persisted cookie use — outside it the sidebar would start at a
-    # width the handle cannot drag back to, and aria-valuenow would sit outside
-    # its own declared min/max. Anything unparseable falls back to the built-in
-    # default rather than clamping to the minimum, so a typo does not silently
-    # ship a 200px sidebar. The bounds constants stay private (lib/avo.rb):
-    # this accessor is the only host-facing width knob.
-    def sidebar_default_width
-      Integer(@sidebar_default_width, exception: false)
-        &.clamp(SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX) || SIDEBAR_WIDTH_DEFAULT
+    # `default_width` is clamped into the same [SIDEBAR_WIDTH_MIN,
+    # SIDEBAR_WIDTH_MAX] range the drag and the persisted cookie use — outside it
+    # the sidebar would start at a width the handle cannot drag back to, and
+    # aria-valuenow would sit outside its own declared min/max. Anything
+    # unparseable falls back to the built-in default rather than clamping to the
+    # minimum, so a typo does not silently ship a 200px sidebar. The bounds
+    # constants stay private (lib/avo.rb): this hash is the only host-facing knob.
+    def sidebar
+      config = SIDEBAR_DEFAULTS.merge(@sidebar)
+      width = Integer(config[:default_width], exception: false)&.clamp(SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX)
+
+      config.merge(default_width: width || SIDEBAR_WIDTH_DEFAULT)
+    end
+
+    # Backward-compatible flat accessor — the canonical home is now
+    # `config.sidebar[:toggle_visible]`.
+    def sidebar_toggle_visible
+      sidebar[:toggle_visible]
+    end
+
+    def sidebar_toggle_visible=(value)
+      @sidebar[:toggle_visible] = value
     end
 
     def persistence

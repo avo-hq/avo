@@ -292,7 +292,7 @@ module Avo
     def sidebar_width_max = SIDEBAR_WIDTH_MAX
 
     # Already clamped into the bounds by Avo::Configuration.
-    def sidebar_width_default = Avo.configuration.sidebar_default_width
+    def sidebar_width_default = Avo.configuration.sidebar[:default_width]
 
     # nil when the host has not changed the starting width, so the pre-paint
     # carrier emits nothing at all and the stylesheet's own --spacing(64)

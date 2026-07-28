@@ -64,12 +64,12 @@ RSpec.describe "sidebar", type: :system do
     end
   end
 
-  context "when sidebar_toggle_visible is false" do
+  context "when sidebar[:toggle_visible] is false" do
     around do |example|
-      original = Avo.configuration.sidebar_toggle_visible
-      Avo.configuration.sidebar_toggle_visible = false
+      original = Avo.configuration.sidebar
+      Avo.configuration.sidebar = original.merge(toggle_visible: false)
       example.run
-      Avo.configuration.sidebar_toggle_visible = original
+      Avo.configuration.sidebar = original
     end
 
     it "hides the desktop toggle but keeps mobile access" do

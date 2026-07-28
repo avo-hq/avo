@@ -67,7 +67,7 @@
       <%# Immediately after the sidebar wrapper: after every nav link and both %>
       <%# skip links in the tab order, before the content. Must stay inside %>
       <%# .main to inherit --sidebar-offset-size, which positions it. %>
-      <%= render partial: "avo/partials/sidebar_resize_handle" if Avo.configuration.sidebar_resizable %>
+      <%= render partial: "avo/partials/sidebar_resize_handle" if Avo.configuration.sidebar[:resizable] %>
 
       <div class="flex lg:hidden">
         <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open, for_mobile: true %>
