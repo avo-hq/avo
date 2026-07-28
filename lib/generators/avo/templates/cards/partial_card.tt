@@ -1,8 +1,0 @@
-class Avo::Cards::<%= class_name.camelize %> < Avo::Cards::PartialCard
-  self.id = "<%= name.underscore %>"
-  self.label = "<%= name.underscore.humanize %>"
-  self.partial = "avo/cards/<%= name.underscore %>"
-  # self.display_header = true
-  # self.cols = 1
-  # self.rows = 1
-end

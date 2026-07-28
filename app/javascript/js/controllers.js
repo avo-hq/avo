@@ -7,7 +7,6 @@ import AttachmentsController from './controllers/attachments_controller'
 import BackToTopController from './controllers/back_to_top_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
-import CardFiltersController from './controllers/card_filters_controller'
 import CheckboxListFieldController from './controllers/fields/checkbox_list_field_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
@@ -15,7 +14,6 @@ import AppearanceController from './controllers/appearance_controller'
 import AppearancePreviewController from './controllers/appearance_preview_controller'
 import ConfirmDialogController from './controllers/confirm_dialog_controller'
 import CopyToClipboardController from './controllers/copy_to_clipboard_controller'
-import DashboardCardController from './controllers/dashboard_card_controller'
 import DateFieldController from './controllers/fields/date_field_controller'
 import DateTimeFilterController from './controllers/date_time_filter_controller'
 import DistributionChartController from './controllers/distribution_chart_controller'
@@ -80,12 +78,10 @@ application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('back-to-top', BackToTopController)
 application.register('boolean-filter', BooleanFilterController)
-application.register('card-filters', CardFiltersController)
 application.register('clear-input', ClearInputController)
 application.register('appearance', AppearanceController)
 application.register('appearance-preview', AppearancePreviewController)
 application.register('copy-to-clipboard', CopyToClipboardController)
-application.register('dashboard-card', DashboardCardController)
 application.register('date-time-filter', DateTimeFilterController)
 application.register('distribution-chart', DistributionChartController)
 application.register('filter', FilterController)
