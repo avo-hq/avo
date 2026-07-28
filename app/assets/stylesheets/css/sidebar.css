@@ -460,6 +460,10 @@
   @apply bg-orange-400;
 }
 
+.sidebar-status__indicator--warning {
+  @apply bg-amber-400;
+}
+
 .sidebar-status__hint {
   @apply absolute text-xs hidden text-center w-full -ms-4;
   color: var(--sidebar-content-secondary);
