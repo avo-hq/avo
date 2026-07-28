@@ -14,28 +14,16 @@
   overflow-x: clip;
 }
 
-/* Card variants */
-.card--default {
-  /* Default styling already applied */
-}
+/* Card modifiers. Combine as needed via the `class` option. */
 
-.card--compact {
-  /* Compact variant - smaller spacing */
+/* Tightens the wrapper padding around the card's contents. */
+.card--compact-wrapper {
   .card__wrapper {
     @apply p-0.5;
   }
-
-  .card__header {
-    @apply py-2 px-3;
-  }
 }
 
-.card--full-width {
-  /* Full width variant */
-  @apply w-full;
-}
-
-/* Padded variant. `.card__body` ships unpadded so wide content (tables,
+/* Padded modifier. `.card__body` ships unpadded so wide content (tables,
    scrollers) can sit flush to the card edge. Add `card--padded` to a card whose
    body holds free-form content (custom tools, forms, prose) that should get the
    standard card padding. Usage: `panel.with_card(class: "card--padded")`. */
@@ -110,9 +98,5 @@
 @media (max-width: 768px) {
   .card__header {
     @apply py-2 px-3;
-  }
-
-  .card--compact .card__header {
-    @apply py-1 px-2;
   }
 }

@@ -1,7 +1,7 @@
 <%= field_wrapper(**field_wrapper_args, full_width: true) do %>
   <% toolbar_id = "#{@input_id}-toolbar" %>
   <%= content_tag :div,
-    class: class_names("card card--full-width card--compact-header max-w-4xl", @input_id),
+    class: class_names("card card--compact-header w-full max-w-4xl", @input_id),
     data: do %>
     <div class="card__wrapper">
       <div class="card__header !p-1">
