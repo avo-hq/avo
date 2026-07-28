@@ -65,9 +65,33 @@
   }
 }
 
-.card--compact-header {
+/* Header compaction is split per axis so a card can shorten its header without
+   also narrowing it. Compose the two when you want both. */
+.card--compact-header-y {
   .card__header {
-    @apply py-1 px-2;
+    @apply py-1;
+  }
+
+  /* Most of a header's height is leading, not padding, so the title is
+     tightened here too. Scoped to the modifier so cards without it keep the
+     design system's leading; the description keeps the base value. */
+  .card__title {
+    @apply leading-normal;
+  }
+}
+
+.card--compact-header-x {
+  .card__header {
+    @apply px-2;
+  }
+
+  /* A header holding a control pulls its end padding in so the control sits
+     near the edge, keeping a hair of breathing room. This has to be repeated
+     here because `.card--compact-header-x .card__header` (0,2,0) outranks the
+     base `.card__header:has(select)` (0,1,1) that sets it. */
+  .card__header:has(select),
+  .card__header:has(.button) {
+    @apply pe-1;
   }
 }
 
