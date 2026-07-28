@@ -743,7 +743,7 @@ RSpec.describe "sidebar resize drag (Units 6-7)", type: :system do
   end
 end
 
-# Avo.configuration.sidebar_default_width in the browser: the configured width has
+# Avo.configuration.sidebar[:default_width] in the browser: the configured width has
 # to reach the rendered layout, stay subordinate to a dragged width, and — the
 # part worth a spec — NOT leak below lg, where the sidebar is a full-height
 # overlay and a wide value would cover the screen.
@@ -752,10 +752,10 @@ RSpec.describe "sidebar default width configuration (browser)", type: :system do
   let(:index_path) { "/admin/resources/users" }
 
   around do |example|
-    original = Avo.configuration.sidebar_default_width
-    Avo.configuration.sidebar_default_width = 400
+    original = Avo.configuration.sidebar
+    Avo.configuration.sidebar = original.merge(default_width: 400)
     example.run
-    Avo.configuration.sidebar_default_width = original
+    Avo.configuration.sidebar = original
   end
 
   def visit_avo(width:, height: 900, cookies: {})

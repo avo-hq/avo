@@ -226,7 +226,7 @@ export default class extends Controller {
   }
 
   // The width the sidebar starts at with no stored preference — Avo's 256px
-  // unless the host set Avo.configuration.sidebar_default_width. This is what
+  // unless the host set Avo.configuration.sidebar[:default_width]. This is what
   // remove-when-default compares against, so reading it from config rather than
   // hardcoding 256 is what keeps a configured host from accumulating a cookie
   // that merely restates their own default.

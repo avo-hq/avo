@@ -161,11 +161,12 @@ RSpec.describe "Sidebar resize handle", type: :request do
   # The S5 off-switch: drag-only resizing is a known WCAG SC 2.5.7 gap, so a host
   # under an AA/VPAT obligation can remove the affordance entirely rather than
   # inherit a failure by upgrading.
-  context "with Avo.configuration.sidebar_resizable = false" do
+  context "with Avo.configuration.sidebar[:resizable] = false" do
     around do |example|
-      Avo.configuration.sidebar_resizable = false
+      original = Avo.configuration.sidebar
+      Avo.configuration.sidebar = original.merge(resizable: false)
       example.run
-      Avo.configuration.sidebar_resizable = true
+      Avo.configuration.sidebar = original
     end
 
     it "renders no handle at all" do
@@ -176,7 +177,7 @@ RSpec.describe "Sidebar resize handle", type: :request do
   end
 end
 
-# Avo.configuration.sidebar_default_width — the host-facing knob for where the
+# Avo.configuration.sidebar[:default_width] — the host-facing knob for where the
 # sidebar starts before anyone drags it. The bounds around it stay unconfigurable
 # by design; this is the only width knob.
 RSpec.describe "Sidebar default width configuration", type: :request do
@@ -187,11 +188,11 @@ RSpec.describe "Sidebar default width configuration", type: :request do
   let(:path) { "/admin/failed_to_load" }
 
   def with_default_width(value)
-    original = Avo.configuration.sidebar_default_width
-    Avo.configuration.sidebar_default_width = value
+    original = Avo.configuration.sidebar
+    Avo.configuration.sidebar = original.merge(default_width: value)
     yield
   ensure
-    Avo.configuration.sidebar_default_width = original
+    Avo.configuration.sidebar = original
   end
 
   def carrier_script
@@ -204,25 +205,25 @@ RSpec.describe "Sidebar default width configuration", type: :request do
 
   describe "clamping" do
     it "accepts a value inside the bounds" do
-      with_default_width(400) { expect(Avo.configuration.sidebar_default_width).to eq(400) }
+      with_default_width(400) { expect(Avo.configuration.sidebar[:default_width]).to eq(400) }
     end
 
     # Outside the bounds the sidebar would start at a width the handle cannot
     # drag back to, and aria-valuenow would sit outside its own min/max.
     it "clamps above the maximum and below the minimum" do
-      with_default_width(9999) { expect(Avo.configuration.sidebar_default_width).to eq(480) }
-      with_default_width(10) { expect(Avo.configuration.sidebar_default_width).to eq(200) }
+      with_default_width(9999) { expect(Avo.configuration.sidebar[:default_width]).to eq(480) }
+      with_default_width(10) { expect(Avo.configuration.sidebar[:default_width]).to eq(200) }
     end
 
     it "accepts a numeric string" do
-      with_default_width("400") { expect(Avo.configuration.sidebar_default_width).to eq(400) }
+      with_default_width("400") { expect(Avo.configuration.sidebar[:default_width]).to eq(400) }
     end
 
     # A typo must not silently ship a 200px sidebar, which is what clamping an
     # unparseable value would do.
     it "falls back to 256 rather than the minimum for an unusable value" do
-      with_default_width("wide") { expect(Avo.configuration.sidebar_default_width).to eq(256) }
-      with_default_width(nil) { expect(Avo.configuration.sidebar_default_width).to eq(256) }
+      with_default_width("wide") { expect(Avo.configuration.sidebar[:default_width]).to eq(256) }
+      with_default_width(nil) { expect(Avo.configuration.sidebar[:default_width]).to eq(256) }
     end
   end
 

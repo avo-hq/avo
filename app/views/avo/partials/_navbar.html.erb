@@ -6,8 +6,8 @@
 <%= content_tag :nav, class: class_names("top-navbar", {"print:hidden": Avo.configuration.hide_layout_when_printing}) do %>
   <div class="top-navbar__start">
     <%# Mobile always needs a toggle to reach the overlay sidebar. Desktop toggle
-        is optional and controlled by sidebar_toggle_visible. %>
-    <%= a_button class: class_names("shrink-0 -ms-1.5 lg:ms-0", "lg:hidden": !Avo.configuration.sidebar_toggle_visible),
+        is optional and controlled by sidebar[:toggle_visible]. %>
+    <%= a_button class: class_names("shrink-0 -ms-1.5 lg:ms-0", "lg:hidden": !Avo.configuration.sidebar[:toggle_visible]),
                  size: :sm,
                  style: :text,
                  padding: :sm,

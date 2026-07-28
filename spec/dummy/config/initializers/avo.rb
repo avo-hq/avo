@@ -62,7 +62,7 @@ Avo.configure do |config|
   #   show_on_hover: true
   # }
 
-  config.sidebar_toggle_visible = true
+  config.sidebar = {toggle_visible: true}
 
   # config.hotkeys = {
   #   enabled: true,

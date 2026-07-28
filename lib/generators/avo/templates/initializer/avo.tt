@@ -104,14 +104,21 @@ Avo.configure do |config|
   # }
 
   ## == Sidebar ==
-  # Width the sidebar starts at on desktop, in pixels, before a user drags it.
-  # Clamped to 200..480. Only applies at >= lg — below that the sidebar is a
-  # full-height overlay and stays 256px so it cannot cover a phone screen.
-  # config.sidebar_default_width = 256
+  # config.sidebar = {
+  #   # Show the navbar button that collapses the sidebar on desktop. On mobile
+  #   # the toggle is always visible regardless of this setting.
+  #   toggle_visible: true,
   #
-  # Set to false to remove the drag-to-resize handle entirely. Drag-only resizing
-  # is a known WCAG SC 2.5.7 gap, so hosts with an AA/VPAT obligation can opt out.
-  # config.sidebar_resizable = true
+  #   # Set to false to remove the drag-to-resize handle entirely. Drag-only
+  #   # resizing is a known WCAG SC 2.5.7 gap, so hosts with an AA/VPAT
+  #   # obligation can opt out.
+  #   resizable: true,
+  #
+  #   # Width the sidebar starts at on desktop, in pixels, before a user drags it.
+  #   # Clamped to 200..480. Only applies at >= lg — below that the sidebar is a
+  #   # full-height overlay and stays 256px so it cannot cover a phone screen.
+  #   default_width: 256
+  # }
 
   ## == Back to top button ==
   # config.back_to_top = {

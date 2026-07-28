@@ -37,7 +37,7 @@ module Avo
   # css/layout.css keeps a commented duplicate of the bounds.
   #
   # All three are private_constant. The BOUNDS have no host-facing knob by
-  # design. The DEFAULT does — `Avo.configuration.sidebar_default_width` — and
+  # design. The DEFAULT does — `Avo.configuration.sidebar[:default_width]` — and
   # this constant is only its fallback, so it must not become public API by
   # accident either. Reachable inside Avo via unqualified lexical lookup (e.g.
   # from Avo::Configuration and Avo::ApplicationHelper, both nested in Avo);

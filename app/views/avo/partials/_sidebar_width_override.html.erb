@@ -3,7 +3,7 @@
   <script nonce="<%= content_security_policy_nonce %>">
     // Apply the sidebar width before first paint to avoid a 256px flash (R15).
     // Both values below are produced server-side as Integers within bounds
-    // (Avo::ApplicationHelper#sidebar_width, Avo::Configuration#sidebar_default_width),
+    // (Avo::ApplicationHelper#sidebar_width, Avo::Configuration#sidebar),
     // so they are interpolated as bare JS number literals — never a string taken
     // from the cookie or from the host's initializer.
     //
