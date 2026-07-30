@@ -29,6 +29,9 @@
           <% if @searchable %>
             <p class="dropdown-menu__search-empty" data-popover-menu-target="empty" hidden>No matching options</p>
           <% end %>
+          <% if footer? %>
+            <div class="dropdown-menu__footer"><%= footer %></div>
+          <% end %>
         </div>
       <% end %>
     <% end %>
