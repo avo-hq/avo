@@ -7,6 +7,10 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
   prop :open, default: false
   prop :dropdown_menu_classes, default: ""
   prop :popover_mode, default: false
+  # Renders a filter input above the items that narrows them as the user types
+  # (client-side, over the rendered items). Popover mode only.
+  prop :searchable, default: false
+  prop :search_placeholder
 
   renders_one :trigger
   renders_one :items
@@ -19,6 +23,10 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
 
   def popover_id
     @popover_id ||= "popover-#{SecureRandom.hex(3)}"
+  end
+
+  def search_placeholder
+    @search_placeholder || I18n.t("avo.search.placeholder", default: "Search")
   end
 
   def data

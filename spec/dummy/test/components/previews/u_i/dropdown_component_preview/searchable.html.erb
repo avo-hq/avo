@@ -1,0 +1,18 @@
+<div class="border-2 border-gray-200 rounded-md p-4 w-96 flex justify-center items-center">
+  <%= render Avo::UI::DropdownComponent.new(popover_mode: true, searchable: true) do |component| %>
+    <% component.with_trigger do %>
+      <button type="button"
+              class="inline-flex items-center justify-center rounded-md p-1 cursor-pointer"
+              popovertarget="<%= component.popover_id %>"
+              aria-haspopup="menu"
+              aria-label="Fruits">
+        <%= svg "tabler/outline/dots-vertical" %>
+      </button>
+    <% end %>
+    <% component.with_items do %>
+      <% %w[Apple Avocado Banana Cherry Mango Peach Pear Plum].each do |fruit| %>
+        <%= button_tag(fruit, type: "button") %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
