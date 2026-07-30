@@ -79,6 +79,45 @@ module Avo
       Avo::Menu::Builder.register_item(name, &block)
     end
 
+    # Register a plugin's configuration namespace on Avo::Configuration so host
+    # apps configure the plugin from config/initializers/avo.rb:
+    #
+    #   Avo.plugin_manager.register_configuration :intelligence, Avo::Intelligence::Configuration
+    #
+    #   Avo.configure do |config|
+    #     config.intelligence.thinking_effort = "medium"
+    #   end
+    #
+    # Call it at require time, not from an :avo_boot hook — the host's avo.rb
+    # initializer reads the accessor, and initializers run before Avo.boot.
+    # Instances are memoized per Configuration object, so replacing
+    # Avo.configuration resets plugin configs along with everything else.
+    def register_configuration(name, klass)
+      name = name.to_sym
+      @configuration_namespaces ||= {}
+
+      # Guard against a plugin silently shadowing a core option or another
+      # plugin's namespace. Re-registering the same namespace with the same
+      # class is fine — boot runs more than once.
+      existing = @configuration_namespaces[name]
+      if existing.nil? && Avo::Configuration.method_defined?(name)
+        raise ArgumentError, "Avo::Configuration already defines ##{name}; pick a different configuration namespace."
+      end
+      if !existing.nil? && existing != klass
+        raise ArgumentError, "Configuration namespace :#{name} is already registered with #{existing}; pick a different namespace."
+      end
+
+      @configuration_namespaces[name] = klass
+
+      Avo::Configuration.define_method(name) do
+        (@plugin_configurations ||= {})[name] ||= klass.new
+      end
+
+      Avo::Configuration.define_method(:"#{name}=") do |value|
+        (@plugin_configurations ||= {})[name] = value
+      end
+    end
+
     def register_resource_tool
     end
 
