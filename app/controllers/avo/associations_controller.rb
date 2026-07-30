@@ -256,10 +256,14 @@ module Avo
       end
     end
 
+    def collection_through_reflection?
+      through_reflection? && @reflection.collection?
+    end
+
     def attach_record(association_name, attachment_record)
       if through_reflection? && additional_params.present?
         new_join_record(attachment_record).save!
-      elsif has_many_reflection? || through_reflection?
+      elsif has_many_reflection? || collection_through_reflection?
         @record.send(association_name) << attachment_record
       else
         @record.send(:"#{association_name}=", attachment_record)
