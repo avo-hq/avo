@@ -223,10 +223,6 @@ module Avo
       @reflection.source_reflection.foreign_key
     end
 
-    def through_foreign_key
-      @reflection.through_reflection.foreign_key
-    end
-
     # Resolve the join record through the (scoped) through association rather
     # than an unscoped `find_by` on the join model. When a pair of records is
     # linked more than once, the association's scope is the only thing that
@@ -310,12 +306,16 @@ module Avo
       through_record.save!
     end
 
+    # Build the join record *through* the (scoped) through association, so Rails
+    # stamps the scope's attributes on it — `-> { where level: :admin }` writing
+    # `level` — along with the through foreign key. Building it on the join
+    # model instead writes the two foreign keys and nothing else, so a scoped
+    # association reports a successful attach and then doesn't match the row it
+    # just wrote. The `<<` arm below already goes through the association; this
+    # only differs in having attach fields to fill.
     def new_join_record(attachment_record)
       @resource.fill_record(
-        @reflection.through_reflection.klass.new(
-          source_foreign_key => attachment_record.id,
-          through_foreign_key => @record.id
-        ),
+        @record.send(@reflection.through_reflection.name).new(source_foreign_key => attachment_record.id),
         additional_params,
         fields: @attach_fields
       )
