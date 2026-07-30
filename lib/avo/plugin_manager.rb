@@ -88,8 +88,9 @@ module Avo
     #     config.intelligence.thinking_effort = "medium"
     #   end
     #
-    # Call it at require time, not from an :avo_boot hook — the host's avo.rb
-    # initializer reads the accessor, and initializers run before Avo.boot.
+    # Call it from an engine initializer ordered `before: :load_config_initializers`
+    # (or at require time) — the host's avo.rb reads the accessor, so it must be
+    # defined before config/initializers run. An :avo_boot hook is too late.
     # Instances are memoized per Configuration object, so replacing
     # Avo.configuration resets plugin configs along with everything else.
     def register_configuration(name, klass)
