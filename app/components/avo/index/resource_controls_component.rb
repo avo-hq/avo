@@ -57,11 +57,15 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     Avo.resource_manager.get_resource_by_model_class @parent_record.class
   end
 
+  # Rails uses ThroughReflection for both `has_many :through` and
+  # `has_one :through`, so the class alone can't tell a collection from a
+  # singular association — `collection?` is what separates them.
   def is_has_many_association?
+    return @reflection.collection? if @reflection.instance_of?(ActiveRecord::Reflection::ThroughReflection)
+
     @reflection.class.in? [
       ActiveRecord::Reflection::HasManyReflection,
-      ActiveRecord::Reflection::HasAndBelongsToManyReflection,
-      ActiveRecord::Reflection::ThroughReflection
+      ActiveRecord::Reflection::HasAndBelongsToManyReflection
     ]
   end
 
