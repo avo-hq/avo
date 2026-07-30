@@ -142,6 +142,9 @@ class Avo::Resources::Team < Avo::BaseResource
       attach_using: :checkbox_list,
       linkable: true,
       reloadable: true
+    # The collection counterpart of `admin`: a `has_many :through` whose through
+    # association is scoped, so detaching has to respect that scope too.
+    field :admins, as: :has_many, through: :admin_memberships
     field :reviews, as: :has_many,
       reloadable: -> {
         current_user.is_admin?

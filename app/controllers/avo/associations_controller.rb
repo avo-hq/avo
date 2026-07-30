@@ -109,12 +109,10 @@ module Avo
     def destroy
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if collection_through_reflection?
-        join_record.destroy!
+      if through_reflection?
+        join_record&.destroy!
       elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
-      elsif through_reflection?
-        detach_singular_through association_name
       else
         @record.send(:"#{association_name}=", nil)
       end
@@ -229,9 +227,25 @@ module Avo
       @reflection.through_reflection.foreign_key
     end
 
+    # Resolve the join record through the (scoped) through association rather
+    # than an unscoped `find_by` on the join model. When a pair of records is
+    # linked more than once, the association's scope is the only thing that
+    # tells one join row from another — `-> { where level: :admin }` picking the
+    # admin row out of a user's memberships, say. An unscoped lookup matches on
+    # the two foreign keys alone and destroys whichever row it happens to hit.
+    #
+    # A `has_many :through` narrows the association down to the record being
+    # detached. A `has_one :through` already *is* that record, so it only has to
+    # be checked against the one named in the URL — otherwise a stale page or a
+    # double detach would destroy whatever is currently attached.
     def join_record
-      @reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
-        through_foreign_key => @record.id)
+      through_records = @record.send(@reflection.through_reflection.name)
+
+      if @reflection.collection?
+        through_records.find_by(source_foreign_key => @attachment_record.id)
+      elsif through_records.present? && through_records[source_foreign_key] == @attachment_record.id
+        through_records
+      end
     end
 
     def has_many_reflection?
@@ -294,20 +308,6 @@ module Avo
       # record instead of raising when it's invalid. Without this `save!` the
       # attach would report success while nothing was written.
       through_record.save!
-    end
-
-    # `@record.send(:"#{association_name}=", nil)` detaches whatever is
-    # currently attached — it never looks at the record named in the URL. For a
-    # singular through that destroys the current join row, so a stale page or a
-    # double detach would take out a row the user never asked to detach.
-    #
-    # Resolving the row ourselves also lets us use `destroy!` over Rails'
-    # `destroy`, so a blocked destroy surfaces instead of reporting success —
-    # matching what the `has_many :through` arm above already does.
-    def detach_singular_through(association_name)
-      return unless @record.send(association_name) == @attachment_record
-
-      @record.send(@reflection.through_reflection.name)&.destroy!
     end
 
     def new_join_record(attachment_record)
