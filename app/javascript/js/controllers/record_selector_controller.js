@@ -32,6 +32,12 @@ export default class extends Controller {
       return
     }
 
+    // Ranges are addressed by row. Index view types outside a table (avo-notifications renders one)
+    // give this component an index but no row to walk up to, so there's nothing to span.
+    if (!event.target.closest('tr')) {
+      return
+    }
+
     // If there's no last checked index and the shift key isn't pressed, set the starting index
     if (!this.hasLastCheckedIndex) {
       this.#setStartingIndex(event)
@@ -110,7 +116,8 @@ export default class extends Controller {
   #selectorMouseenterHandler(event) {
     // Add the highlighted-row class to the row that the mouse is over
     event.target.closest('tr').classList.add('highlighted-row')
-    if (this.lastCheckedIndex) {
+    // Check against null, not truthiness — index 0 is a valid anchor
+    if (this.hasLastCheckedIndex) {
       // Highlight the range of rows between the last checked index and the current index
       this.#highlightRange(this.lastCheckedIndex, parseInt(event.target.closest('tr').dataset.index))
     }
@@ -127,8 +134,8 @@ export default class extends Controller {
 
   // Highlight the range of rows between the start index and the end index
   #highlightRange(startIndex, endIndex) {
-    const theRange = difference(range(startIndex, endIndex))
-    theRange.forEach((index) => {
+    // `range` excludes the end index, but the hovered row is highlighted by the caller
+    range(startIndex, endIndex).forEach((index) => {
       const tr = document.querySelector(`tr[data-index="${index}"]`)
       tr.classList.add('highlighted-row')
     })
