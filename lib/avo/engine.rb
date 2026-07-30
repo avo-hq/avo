@@ -144,6 +144,23 @@ module Avo
         if defined?(::Sprockets)
           # Tell sprockets where your assets are located
           app.config.assets.precompile += %w[avo_manifest.js]
+
+          # Listed after avo_manifest.js on purpose. When the Tailwind integration is on, the
+          # app builds its own app/assets/builds/avo/application.css to replace the stock one
+          # we ship — but our avo_manifest.js and the app's manifest.js both `link_tree
+          # ../builds`, so two different files compile under the logical path
+          # avo/application.css and Sprockets keeps whichever it wrote last. Since we append
+          # our manifest after the app's, ours used to win and production served a stylesheet
+          # with none of the app's utilities in it. Silently: the build succeeded, the file was
+          # right there, and only the precompiled manifest pointed elsewhere.
+          #
+          # Naming the logical path here compiles it once more, last, and Sprockets resolves it
+          # through the load path — which picks the app's build when it has one (its
+          # app/assets/builds precedes ours) and our stock file when it doesn't. That also
+          # covers apps whose manifest.js doesn't link ../builds at all.
+          #
+          # Propshaft resolves through the load path to begin with, so it was never affected.
+          app.config.assets.precompile += %w[avo/application.css]
         end
       end
     end
