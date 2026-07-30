@@ -14,6 +14,9 @@ class Avo::UI::DropdownComponent < Avo::BaseComponent
 
   renders_one :trigger
   renders_one :items
+  # A row pinned under the list — outside the scrollable group and the inline
+  # search's filter scope, so it stays visible. Popover mode only.
+  renders_one :footer
 
   # this is used to trigger the dropdown menu from trigger element
   # data: {action: component.action} => click->dropdown-menu#toggle
