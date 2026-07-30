@@ -39,6 +39,10 @@ RSpec.describe Avo::Index::ResourceControlsComponent, type: :component do
         expect(build_component(reflection: reflection.call).is_has_many_association?).to be(false)
       end
     end
+
+    it "is false when there is no reflection at all" do
+      expect(build_component(reflection: nil).is_has_many_association?).to be(false)
+    end
   end
 
   describe "#can_detach?" do
