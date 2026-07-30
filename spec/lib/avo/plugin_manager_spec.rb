@@ -158,5 +158,14 @@ RSpec.describe Avo::PluginManager do
 
       expect { manager.register_configuration :my_plugin, config_class }.not_to raise_error
     end
+
+    it "raises when a different class tries to claim an already-registered namespace" do
+      manager.register_configuration :my_plugin, config_class
+
+      other_class = Class.new
+      expect { manager.register_configuration :my_plugin, other_class }
+        .to raise_error(ArgumentError, /already registered/)
+      expect(Avo::Configuration.new.my_plugin).to be_a(config_class)
+    end
   end
 end

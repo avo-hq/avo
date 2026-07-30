@@ -96,11 +96,15 @@ module Avo
       name = name.to_sym
       @configuration_namespaces ||= {}
 
-      # Guard against a plugin silently shadowing a core option (or another
-      # plugin's namespace). Re-registering the same namespace is fine — boot
-      # runs more than once.
-      if !@configuration_namespaces.key?(name) && Avo::Configuration.method_defined?(name)
+      # Guard against a plugin silently shadowing a core option or another
+      # plugin's namespace. Re-registering the same namespace with the same
+      # class is fine — boot runs more than once.
+      existing = @configuration_namespaces[name]
+      if existing.nil? && Avo::Configuration.method_defined?(name)
         raise ArgumentError, "Avo::Configuration already defines ##{name}; pick a different configuration namespace."
+      end
+      if !existing.nil? && existing != klass
+        raise ArgumentError, "Configuration namespace :#{name} is already registered with #{existing}; pick a different namespace."
       end
 
       @configuration_namespaces[name] = klass
