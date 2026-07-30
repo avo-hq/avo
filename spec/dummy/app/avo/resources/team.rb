@@ -132,7 +132,10 @@ class Avo::Resources::Team < Avo::BaseResource
         query.where.not(user_id: parent.id).or(query.where(user_id: nil))
       end
 
-    field :admin, as: :has_one, linkable: true, loading: :manual
+    # `attach_fields` on a `has_one :through` — the extra field lands on the
+    # join record (TeamMembership), which the association's scope also owns.
+    field :admin, as: :has_one, linkable: true, loading: :manual,
+      attach_fields: -> { field :notes, as: :text }
     field :team_members,
       as: :has_many,
       through: :memberships,

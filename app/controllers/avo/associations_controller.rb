@@ -268,14 +268,28 @@ module Avo
     end
 
     def attach_record(association_name, attachment_record)
-      if through_reflection? && additional_params.present?
+      if collection_through_reflection? && additional_params.present?
         new_join_record(attachment_record).save!
       elsif has_many_reflection? || collection_through_reflection?
         @record.send(association_name) << attachment_record
       else
         @record.send(:"#{association_name}=", attachment_record)
         @record.save!
+
+        # A singular through association owns exactly one join record, and the
+        # assignment above already created or replaced it through the (scoped)
+        # through association. Fill the attach fields onto that row instead of
+        # inserting a second one that the scope wouldn't even match.
+        fill_join_record if through_reflection? && additional_params.present?
       end
+    end
+
+    def fill_join_record
+      join_record = @record.send(@reflection.through_reflection.name)
+
+      return if join_record.blank?
+
+      @resource.fill_record(join_record, additional_params, fields: @attach_fields).save!
     end
 
     def new_join_record(attachment_record)

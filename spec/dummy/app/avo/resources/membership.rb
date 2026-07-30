@@ -27,6 +27,8 @@ class Avo::Resources::Membership < Avo::BaseResource
         }
       end
 
+    field :notes, as: :text
+
     field :user, as: :belongs_to, searchable: false, attach_scope: -> {
       # puts ["parent->", parent, parent.team].inspect
       query
