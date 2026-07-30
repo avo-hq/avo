@@ -62,7 +62,7 @@
         <% end %>
 
         <% header.with_controls do %>
-          <% @resource.render_index_controls(item: singular_resource_name.downcase).each do |control| %>
+          <% @resource.render_index_controls(item: singular_resource_name).each do |control| %>
             <%= render_control control %>
           <% end %>
         <% end %>
