@@ -103,4 +103,60 @@ RSpec.describe Avo::PluginManager do
       expect { manager.mount_engine(engine_b, at: "/b") }.not_to raise_error
     end
   end
+
+  describe "#register_configuration" do
+    let(:config_class) do
+      Class.new do
+        attr_accessor :thinking_effort
+      end
+    end
+
+    after do
+      if Avo::Configuration.method_defined?(:my_plugin)
+        Avo::Configuration.remove_method(:my_plugin)
+        Avo::Configuration.remove_method(:my_plugin=)
+      end
+    end
+
+    it "defines a memoized namespace accessor on Avo::Configuration" do
+      manager.register_configuration :my_plugin, config_class
+
+      configuration = Avo::Configuration.new
+      configuration.my_plugin.thinking_effort = "high"
+
+      expect(configuration.my_plugin).to be_a(config_class)
+      expect(configuration.my_plugin.thinking_effort).to eq("high")
+      expect(configuration.my_plugin).to equal(configuration.my_plugin)
+    end
+
+    it "memoizes per Configuration instance, so replacing Avo.configuration resets plugin configs" do
+      manager.register_configuration :my_plugin, config_class
+
+      one = Avo::Configuration.new
+      two = Avo::Configuration.new
+
+      expect(one.my_plugin).not_to equal(two.my_plugin)
+    end
+
+    it "allows assigning a whole configuration object" do
+      manager.register_configuration :my_plugin, config_class
+
+      configuration = Avo::Configuration.new
+      replacement = config_class.new
+      configuration.my_plugin = replacement
+
+      expect(configuration.my_plugin).to equal(replacement)
+    end
+
+    it "raises when the namespace would shadow an existing option" do
+      expect { manager.register_configuration :appearance, config_class }
+        .to raise_error(ArgumentError, /already defines/)
+    end
+
+    it "allows re-registering the same namespace across boots" do
+      manager.register_configuration :my_plugin, config_class
+
+      expect { manager.register_configuration :my_plugin, config_class }.not_to raise_error
+    end
+  end
 end
