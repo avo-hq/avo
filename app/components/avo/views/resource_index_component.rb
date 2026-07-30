@@ -97,13 +97,16 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     )
   end
 
+  # Feeds the "%{item}" interpolation in the index create/attach buttons, so it
+  # returns the sentence form: a translated name stays verbatim, a generated one
+  # is lowercased. The buttons upcase_first the sentence.
   def singular_resource_name
     if @reflection.present?
-      return name.singularize if field.present?
+      return field.sentence_name.singularize if field.present?
 
-      reflection_resource.name
+      reflection_resource.sentence_name
     else
-      @resource.singular_name || @resource.model_class.model_name.name.downcase
+      @resource.sentence_name.presence || @resource.model_class.model_name.name.downcase
     end
   end
 

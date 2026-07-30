@@ -139,6 +139,12 @@ RSpec.feature "i18n", type: :feature do
       expect(page).to have_text("Create new API Product")
     end
 
+    it "interpolates the translated resource name into the index create button" do
+      visit avo.resources_products_path
+
+      expect(page).to have_link("Create new API Product")
+    end
+
     it "still capitalizes Avo's own chrome strings" do
       visit avo.new_resources_product_path
 
