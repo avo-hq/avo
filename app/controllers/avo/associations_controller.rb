@@ -109,11 +109,15 @@ module Avo
     def destroy
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if through_reflection?
+      if collection_through_reflection?
         join_record.destroy!
       elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
       else
+        # Covers `has_one`, `belongs_to` and `has_one :through`. For the latter
+        # Rails resolves the join record through the (scoped) through
+        # association, so the right row is destroyed and a missing one is a
+        # no-op — unlike `join_record`, which is an unscoped `find_by`.
         @record.send(:"#{association_name}=", nil)
       end
 
@@ -243,6 +247,13 @@ module Avo
       @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
     end
 
+    # Rails uses ThroughReflection for both `has_many :through` and
+    # `has_one :through`, so `through_reflection?` alone can't tell a collection
+    # from a singular association.
+    def collection_through_reflection?
+      through_reflection? && @reflection.collection?
+    end
+
     def additional_params
       @additional_params ||= params[:fields].slice(*@attach_fields&.map(&:id))
     end
@@ -254,10 +265,6 @@ module Avo
           .items_holder
           .items
       end
-    end
-
-    def collection_through_reflection?
-      through_reflection? && @reflection.collection?
     end
 
     def attach_record(association_name, attachment_record)
