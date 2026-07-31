@@ -414,6 +414,11 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       JS
 
       expect(hidden_ancestor).to be(false)
+    ensure
+      # `with_temporary_items` sets a class attribute that outlives the example,
+      # so without this the swapped-in tabs leak into every later spec that
+      # renders a Person.
+      Avo::Resources::Person.restore_items_from_backup
     end
 
     it "does not focus obscured panel content while a modal is open" do
