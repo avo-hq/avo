@@ -31,7 +31,9 @@ The loader reports what is **installed**, never what is **licensed** — license
 
 These unlock sections inside a core skill rather than owning a subject outright. A core skill's pointer block names them.
 
-| Gem | Unlocks | Named by | More |
+Column three carries the subject in **both** tables — the loader reads it positionally to describe a gem the app does not have.
+
+| Gem | Skill | Subjects | More |
 | --- | --- | --- | --- |
-| `avo-menu` | The initializer menu DSL — `config.main_menu`, `config.profile_menu` | `avo-navigation-search`, `avo-menu-icons` | https://avohq.io/addons/menu-editor |
-| `avo-advanced_search` | Global Cmd+K search across resources; searchable associations | `avo-navigation-search`, `avo-associations` | https://avohq.io/addons/global-search |
+| `avo-menu` | none — see `avo-navigation-search`, `avo-menu-icons` | The initializer menu DSL — `config.main_menu`, `config.profile_menu` | https://avohq.io/addons/menu-editor |
+| `avo-advanced_search` | none — see `avo-navigation-search`, `avo-associations` | Global Cmd+K search across resources; searchable associations | https://avohq.io/addons/global-search |
