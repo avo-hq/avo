@@ -22,12 +22,12 @@ RSpec.describe "avo-skills-resolve" do
 
   # Feature gems keep VERSION at lib/avo/<namespace>/version.rb; only core uses
   # lib/avo/version.rb. Getting this wrong hard-fails every app with an add-on.
-  def make_gem(name, version, declares: version, skills: false)
+  def make_gem(name, version, declares: version, skills: false, quote: '"')
     namespace = (name == "avo") ? nil : name.delete_prefix("avo-")
     dir = gem_home.join("gems", "#{name}-#{version}")
     lib = [dir, "lib", "avo", namespace].compact.reduce(:join)
     FileUtils.mkdir_p(lib)
-    File.write(lib.join("version.rb"), %(module Avo\n  VERSION = "#{declares}"\nend\n))
+    File.write(lib.join("version.rb"), %(module Avo\n  VERSION = #{quote}#{declares}#{quote}\nend\n))
 
     if skills
       FileUtils.mkdir_p(lib.join("skills"))
@@ -67,6 +67,18 @@ RSpec.describe "avo-skills-resolve" do
 
       expect(status).to eq 0
       expect(out).to include("gems/avo-4.1.0/lib/avo/skills")
+    end
+  end
+
+  # avo-audit_logging declares VERSION with single quotes. Matching only double
+  # quotes would fail the assertion on a gem that is perfectly healthy.
+  context "when a gem declares VERSION with single quotes" do
+    it "reads the version and accepts the gem" do
+      make_gem("avo", "4.1.0", skills: true, quote: "'")
+      out, status = resolve(app_with(gem_lock("avo (4.1.0)")))
+
+      expect(status).to eq 0
+      expect(out).not_to include("version_mismatch")
     end
   end
 

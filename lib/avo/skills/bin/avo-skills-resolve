@@ -137,10 +137,13 @@ version_file_for() {
   fi
 }
 
+# Both quote styles are in use across the gem family — avo-audit_logging
+# declares VERSION with single quotes — so matching only double quotes would
+# fail the version assertion on a gem that is perfectly fine.
 installed_version_of() {
   local file="$1"
   [ -f "$file" ] || return 1
-  sed -n 's/.*VERSION *= *"\([^"]*\)".*/\1/p' "$file" | head -1
+  sed -n "s/.*VERSION *= *['\"]\([^'\"]*\)['\"].*/\1/p" "$file" | head -1
 }
 
 # Resolves, asserts, and echoes the gem's path. A path- or git-sourced gem is a
