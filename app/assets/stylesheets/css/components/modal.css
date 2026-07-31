@@ -233,6 +233,12 @@
   }
 }
 
+.modal--width-5xl {
+  .modal__card {
+    @apply w-5xl;
+  }
+}
+
 .modal--width-25 {
   .modal__card {
     @apply w-[25dvw];
