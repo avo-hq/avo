@@ -1,6 +1,4 @@
-require_dependency "avo/base_controller"
-
 module Avo
-  class ResourcesController < BaseController
+  class ResourcesController < Avo::BaseController
   end
 end

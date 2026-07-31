@@ -1,7 +1,5 @@
-require_dependency "avo/application_controller"
-
 module Avo
-  class BaseController < ApplicationController
+  class BaseController < Avo::ApplicationController
     include Avo::Concerns::FiltersSessionHandler
     include Avo::Concerns::AssociationQueryScope
     include Avo::Concerns::SafeCall

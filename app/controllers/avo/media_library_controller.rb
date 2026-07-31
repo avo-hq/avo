@@ -1,5 +1,5 @@
 module Avo
-  class MediaLibraryController < ApplicationController
+  class MediaLibraryController < Avo::ApplicationController
     include Pagy::Method
 
     before_action :authorize_access!
