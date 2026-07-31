@@ -3,6 +3,8 @@ name: avo
 description: >-
   Load the official Avo skills that ship inside the installed avo gem. Use this whenever a task touches Avo in any way — creating or changing anything under `app/avo/` (resources, fields, actions, filters, scopes, cards, dashboards, resource tools), configuring `config/initializers/avo.rb`, customizing Avo views or components, debugging why something renders wrong or does not appear in the admin panel, or answering any question about how Avo works. Reach for it the moment `Avo::`, `field :`, `app/avo/`, "resource", "admin panel", or "Avo" appears in a request. The real instructions are versioned with the installed gem, so they are correct for this project's Avo version — load them instead of relying on prior knowledge of Avo. Not for unrelated Rails work that never touches Avo.
 allowed-tools: Bash, Read
+metadata:
+  requires-gem: avo — this loader resolves the installed gem and reads the skills that ship inside it
 ---
 
 # Avo skills loader
