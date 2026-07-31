@@ -28,3 +28,15 @@ shared_context "has_admin_user" do
     })
   end
 end
+
+shared_context "with a destroyable join record" do
+  # The dummy's `raise_test_error` before_destroy exists to prove other specs go
+  # through `destroy`. Detach specs need the destroy to actually land, so they
+  # can tell which join row Avo picked.
+  def without_destroy_callback
+    TeamMembership.skip_callback(:destroy, :before, :raise_test_error, raise: false)
+    yield
+  ensure
+    TeamMembership.set_callback(:destroy, :before, :raise_test_error, if: -> { Rails.env.test? })
+  end
+end

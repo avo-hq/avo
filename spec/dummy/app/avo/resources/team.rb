@@ -132,13 +132,19 @@ class Avo::Resources::Team < Avo::BaseResource
         query.where.not(user_id: parent.id).or(query.where(user_id: nil))
       end
 
-    field :admin, as: :has_one, linkable: true, loading: :manual
+    # `attach_fields` on a `has_one :through` — the extra field lands on the
+    # join record (TeamMembership), which the association's scope also owns.
+    field :admin, as: :has_one, linkable: true, loading: :manual,
+      attach_fields: -> { field :notes, as: :text }
     field :team_members,
       as: :has_many,
       through: :memberships,
       attach_using: :checkbox_list,
       linkable: true,
       reloadable: true
+    # The collection counterpart of `admin`: a `has_many :through` whose through
+    # association is scoped, so detaching has to respect that scope too.
+    field :admins, as: :has_many, through: :admin_memberships, attach_fields: -> { field :notes, as: :text }
     field :reviews, as: :has_many,
       reloadable: -> {
         current_user.is_admin?

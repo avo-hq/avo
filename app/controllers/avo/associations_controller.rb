@@ -110,7 +110,7 @@ module Avo
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
       if through_reflection?
-        join_record.destroy!
+        join_record&.destroy!
       elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
       else
@@ -223,13 +223,29 @@ module Avo
       @reflection.source_reflection.foreign_key
     end
 
-    def through_foreign_key
-      @reflection.through_reflection.foreign_key
+    # Resolve the join record through the (scoped) through association rather
+    # than an unscoped `find_by` on the join model. When a pair of records is
+    # linked more than once, the association's scope is the only thing that
+    # tells one join row from another — `-> { where level: :admin }` picking the
+    # admin row out of a user's memberships, say. An unscoped lookup matches on
+    # the two foreign keys alone and destroys whichever row it happens to hit.
+    #
+    # A `has_many :through` narrows the association down to the record being
+    # detached. A `has_one :through` already *is* that record, so it only has to
+    # be checked against the one named in the URL — otherwise a stale page or a
+    # double detach would destroy whatever is currently attached.
+    def join_record
+      return through_association.find_by(source_foreign_key => @attachment_record.id) if @reflection.collection?
+
+      record = through_association
+      record if record.present? && record[source_foreign_key] == @attachment_record.id
     end
 
-    def join_record
-      @reflection.through_reflection.klass.find_by(source_foreign_key => @attachment_record.id,
-        through_foreign_key => @record.id)
+    # The through association itself: a collection proxy for `has_many :through`,
+    # the join record (or nil) for `has_one :through`. Reading it rather than the
+    # join model is what keeps the association's scope in play.
+    def through_association
+      @record.send(@reflection.through_reflection.name)
     end
 
     def has_many_reflection?
@@ -241,6 +257,13 @@ module Avo
 
     def through_reflection?
       @reflection.instance_of? ActiveRecord::Reflection::ThroughReflection
+    end
+
+    # Rails uses ThroughReflection for both `has_many :through` and
+    # `has_one :through`, so `through_reflection?` alone can't tell a collection
+    # from a singular association.
+    def collection_through_reflection?
+      through_reflection? && @reflection.collection?
     end
 
     def additional_params
@@ -257,22 +280,57 @@ module Avo
     end
 
     def attach_record(association_name, attachment_record)
-      if through_reflection? && additional_params.present?
+      # Hand-build the join record only when attach fields have to land before
+      # the insert: `<<` saves immediately, and a join model that validates one
+      # of those columns (StorePatron#review) fails before we could fill it.
+      # Otherwise prefer `<<` — it fills in the polymorphic source type and
+      # handles composite primary keys, neither of which we do by hand.
+      #
+      # Collection-only, and not merely by preference: it builds *through* the
+      # association, and `new` is a collection proxy method. A singular through
+      # also needs replace semantics, which only assignment gives — building a
+      # second join record would leave the association with two rows to pick
+      # from.
+      if collection_through_reflection? && additional_params.present?
         new_join_record(attachment_record).save!
-      elsif has_many_reflection? || through_reflection?
+      elsif has_many_reflection? || collection_through_reflection?
         @record.send(association_name) << attachment_record
       else
         @record.send(:"#{association_name}=", attachment_record)
         @record.save!
+
+        persist_join_record if through_reflection?
       end
     end
 
+    # A singular through association owns exactly one join record, and the
+    # assignment in `attach_record` already created or replaced it through the
+    # (scoped) through association.
+    def persist_join_record
+      through_record = through_association
+
+      return if through_record.blank?
+
+      # Fill the attach fields onto that row instead of inserting a second one
+      # that the association's scope wouldn't even match.
+      @resource.fill_record(through_record, additional_params, fields: @attach_fields) if additional_params.present?
+
+      # Rails writes the join record with `create`, which returns an unsaved
+      # record instead of raising when it's invalid. Without this `save!` the
+      # attach would report success while nothing was written.
+      through_record.save!
+    end
+
+    # Build the join record *through* the (scoped) through association, so Rails
+    # stamps the scope's attributes on it — `-> { where level: :admin }` writing
+    # `level` — along with the through foreign key. Building it on the join
+    # model instead writes the two foreign keys and nothing else, so a scoped
+    # association reports a successful attach and then doesn't match the row it
+    # just wrote. The `<<` arm below already goes through the association; this
+    # only differs in having attach fields to fill.
     def new_join_record(attachment_record)
       @resource.fill_record(
-        @reflection.through_reflection.klass.new(
-          source_foreign_key => attachment_record.id,
-          through_foreign_key => @record.id
-        ),
+        through_association.new(source_foreign_key => attachment_record.id),
         additional_params,
         fields: @attach_fields
       )
