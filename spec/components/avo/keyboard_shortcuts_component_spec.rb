@@ -12,4 +12,17 @@ RSpec.describe Avo::KeyboardShortcutsComponent, type: :component do
     expect(page).to have_text("⌘")
     expect(page).to have_text("CTRL")
   end
+
+  # The assistant shortcut belongs to avo-intelligence, so the modal must not advertise a key
+  # nothing is listening for when the gem isn't installed.
+  it "lists the assistant shortcut only when avo-intelligence is installed" do
+    render_inline(described_class.new)
+    expect(page).not_to have_text("Open the assistant")
+
+    allow(Avo.plugin_manager).to receive(:installed?).and_call_original
+    allow(Avo.plugin_manager).to receive(:installed?).with("avo-intelligence").and_return(true)
+
+    render_inline(described_class.new)
+    expect(page).to have_text("Open the assistant")
+  end
 end
