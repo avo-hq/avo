@@ -9,8 +9,19 @@ export default class extends Controller {
 
   autoClicking = false
 
+  // Every lookup in here is scoped to this controller's element. A page can hold several tables (a
+  // show page renders one per has_many association) and each numbers its rows from zero, so a
+  // document-wide lookup by index always lands in the first table.
   get itemSelectorCells() {
-    return document.querySelectorAll('.item-selector-cell')
+    return this.element.querySelectorAll('.item-selector-cell')
+  }
+
+  #rowAt(index) {
+    return this.element.querySelector(`tr[data-index="${index}"]`)
+  }
+
+  #checkboxAt(index) {
+    return this.element.querySelector(`input[type="checkbox"][data-index="${index}"]`)
   }
 
   get hasLastCheckedIndex() {
@@ -63,7 +74,7 @@ export default class extends Controller {
 
     // Loop through the range of rows and toggle the checkboxes
     theRange.forEach((index) => {
-      const checkbox = document.querySelector(`input[type="checkbox"][data-index="${index}"]`)
+      const checkbox = this.#checkboxAt(index)
 
       // Toggle the checkbox if it's not in the same state as the target checkbox
       if (checkbox.checked !== state) {
@@ -127,7 +138,7 @@ export default class extends Controller {
     // Remove the highlighted-row class from the row that the mouse is over
     event.target.closest('tr').classList.remove('highlighted-row')
     // Remove the highlighted-row class from all rows
-    document.querySelectorAll('tr[data-index]').forEach((tr) => {
+    this.element.querySelectorAll('tr[data-index]').forEach((tr) => {
       tr.classList.remove('highlighted-row')
     })
   }
@@ -136,8 +147,7 @@ export default class extends Controller {
   #highlightRange(startIndex, endIndex) {
     // `range` excludes the end index, but the hovered row is highlighted by the caller
     range(startIndex, endIndex).forEach((index) => {
-      const tr = document.querySelector(`tr[data-index="${index}"]`)
-      tr.classList.add('highlighted-row')
+      this.#rowAt(index).classList.add('highlighted-row')
     })
   }
 
