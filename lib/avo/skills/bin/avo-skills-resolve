@@ -95,15 +95,22 @@ lock_section_of() { printf '%s\n' "$AVO_GEMS" | awk -F'|' -v n="$1" '$1 == n { p
 resolve_path() {
   local gem="$1" version="$2" candidate
 
-  candidate="$(cd "$APP_ROOT" && bundle show "$gem" 2>/dev/null)"
+  # BUNDLE_GEMFILE wins over the working directory, so an agent invoked from
+  # inside any `bundle exec` context would otherwise resolve that outer bundle's
+  # Avo instead of this app's. Clear bundler's ambient state and resolve from the
+  # app root. (The version assertion below would catch the mismatch, but failing
+  # loudly on a question we can simply answer correctly is worse.)
+  candidate="$(cd "$APP_ROOT" && env -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT bundle show "$gem" 2>/dev/null)"
   if [ -n "$candidate" ] && [ -d "$candidate" ]; then
     printf '%s\n' "$candidate"; return 0
   fi
 
   # `gempath` (plural) rather than `gemdir`: a bundle installed under a
   # different Ruby or a custom GEM_HOME still shows up here.
+  # Same reason as above: bundler's RUBYOPT shim makes `gem env` report the
+  # active bundle's paths rather than the machine's real gem homes.
   local gempaths
-  gempaths="$(gem env gempath 2>/dev/null)"
+  gempaths="$(env -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT gem env gempath 2>/dev/null)"
   if [ -n "$gempaths" ]; then
     local IFS=:
     for dir in $gempaths; do

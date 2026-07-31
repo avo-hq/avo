@@ -1,6 +1,16 @@
 ---
 name: avo-engine-internals
-description: The Rails-engine plumbing you touch when writing custom Ruby that runs inside Avo — engine path helpers (`avo.` vs `main_app.`), `Avo::Current`, `Avo::ExecutionContext`, reserved model names / route conflicts, `Avo::Services::EncryptionService`, and calling your app's helpers from inside Avo. Use when the user wants to link from the admin back to their main app, fix `undefined method 'posts_path'` (or a route resolving to the wrong page) inside Avo, access the current user / request / params / context / tenant inside an Avo block, know which variables (`record`, `resource`, `view`, `current_user`) are available in a lambda or why `record` is nil, use one of their app's view helpers inside an Avo field, fix a model named `resource` / `chart` / `search` / `home` / `attachment` that breaks the admin or causes routing conflicts, keep a reserved-name model while renaming its Avo resource (`--model-class`), fix a `resources :resources` route helper clash, or encrypt/decrypt a value to pass safely through Avo params. Set the tenant for the current admin request.
+description: >-
+  The Rails-engine plumbing you touch when writing custom Ruby that runs inside Avo — engine path
+  helpers (`avo.` vs `main_app.`), `Avo::Current`, `Avo::ExecutionContext`, reserved model names
+  and route conflicts, `Avo::Services::EncryptionService`, and calling your app's helpers from
+  inside Avo. Use when the user wants to link from the admin back to their main app, fix
+  `undefined method 'posts_path'` inside Avo, access the current user / request / params / context
+  / tenant inside an Avo block, know which variables (`record`, `resource`, `view`,
+  `current_user`) a lambda gets or why `record` is nil, use an app view helper inside an Avo
+  field, fix a model named `resource` / `chart` / `search` / `home` that breaks the admin, keep a
+  reserved-name model while renaming its resource (`--model-class`), or encrypt a value to pass
+  through Avo params.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   avo-version: "4.0.24"

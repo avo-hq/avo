@@ -1,22 +1,17 @@
 ---
 name: avo-associations
 description: >-
-  Wire Active Record relationships into Avo resources as association fields
-  (`field :x, as: :belongs_to | :has_one | :has_many | :has_and_belongs_to_many`)
-  inside `def fields` in `app/avo/resources/<model>.rb`, including polymorphic
-  and `has_many :through` relations, type-to-search pickers, extra join-table
-  fields at attach time, and nested create-in-form. Use when the user wants to
-  link one record to another or surface related records — whether they say it in
-  Avo terms ("add a belongs_to field", "show a has_many panel", "make the
-  association searchable", "polymorphic belongs_to", "has_many through with
-  attach_fields", "use_resource / attach_scope on an association") or in plain
-  Rails/product terms with no Avo vocabulary: "a post belongs to a user", "show
-  all of a user's orders on their page", "add a profile to the user", "connect
-  users and teams with a join table", "the user dropdown is too long — make it
-  type-to-search", "a comment can belong to a post or a project", "add extra
-  fields when attaching a member to a team", "create the related record right
-  from the form", "let admins pick the author while editing the post", or "link
-  these two models in the admin".
+  Wire Active Record relationships into Avo resources as association fields (`field :x, as:
+  :belongs_to | :has_one | :has_many | :has_and_belongs_to_many`) inside `def fields`, including
+  polymorphic and `has_many :through` relations, type-to-search pickers, extra join-table fields
+  at attach time, and nested create-in-form. Use when the user wants to link one record to another
+  or surface related records — in Avo terms ("add a belongs_to field", "show a has_many panel",
+  "make the association searchable", "polymorphic belongs_to", "has_many through with
+  attach_fields", "use_resource / attach_scope") or in plain Rails terms ("a post belongs to a
+  user", "show all of a user's orders on their page", "connect users and teams with a join table",
+  "the user dropdown is too long — make it type-to-search", "a comment can belong to a post or a
+  project", "add extra fields when attaching a member to a team", "create the related record right
+  from the form", "link these two models in the admin").
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   avo-version: "4.0.24"

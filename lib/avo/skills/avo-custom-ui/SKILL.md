@@ -1,6 +1,16 @@
 ---
 name: avo-custom-ui
-description: Build custom UI inside an Avo admin panel and wire up the JS/CSS/Tailwind plumbing behind it — standalone custom-tool pages (route + controller + sidebar item), resource tools (a partial embedded in a record's Show/Edit view, including extra form inputs and nested forms), Avo's native ViewComponents (a_button/a_link, ui.panel, ui.card, ui.description_list) for consistent, dark-mode-ready markup, ejecting Avo's own partials/components/controllers to customize them, Stimulus controllers and dynamic/dependent forms, adding your own CSS/JS through the asset pipeline, the TailwindCSS integration, and packaging any of it as an Avo plugin. Use when the user wants to add a custom page/section to the admin, build a dashboard widget or custom panel on a record page, add extra inputs to an edit form that aren't columns, build a nested form, make a form dynamic (when country changes reload the cities — cascading/dependent selects), toggle or disable a field based on another field, add their own JavaScript or CSS or a Stimulus controller to the admin, override how Avo renders the index table or any view's markup, style a custom tool so it matches the rest of the admin, use Tailwind classes in custom admin UI, migrate the admin's styling to Tailwind 4, or package their customization as a reusable plugin/gem — whether they phrase it with Avo terms ("custom tool", "resource tool", "eject", "ui.panel", "stimulus_controllers") or as a plain Rails/product ask ("add a custom admin page", "embed a widget on the show page", "extra fields on the form", "dependent dropdowns in the admin", "add JS to my admin").
+description: >-
+  Build custom UI inside an Avo admin panel and the JS/CSS/Tailwind plumbing behind it —
+  standalone custom-tool pages (route + controller + sidebar item), resource tools embedded in a
+  record's Show/Edit view, Avo's native ViewComponents (a_button/a_link, ui.panel, ui.card,
+  ui.description_list), ejecting Avo's own partials and components, Stimulus controllers, dynamic
+  and dependent forms, custom CSS/JS through the asset pipeline, the TailwindCSS integration, and
+  packaging any of it as an Avo plugin. Use when the user wants a custom admin page, a dashboard
+  widget or panel on a record page, extra form inputs that aren't columns, a nested form,
+  cascading or dependent selects, a field toggled by another field, their own JavaScript or
+  Stimulus controller in the admin, to override how a view renders, to style a custom tool to
+  match the admin, or to package a customization as a reusable plugin.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   avo-version: "4.0.24"
