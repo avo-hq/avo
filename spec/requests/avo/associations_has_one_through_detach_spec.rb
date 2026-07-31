@@ -3,22 +3,14 @@
 require "rails_helper"
 
 RSpec.describe "Associations detach has_one through", type: :request do
+  include_context "with a destroyable join record"
+
   let(:admin_user) { create :user, roles: {admin: true} }
   let(:team) { create :team }
   let(:user) { create :user }
 
   before do
     login_as admin_user, scope: :user
-  end
-
-  # The dummy's `raise_test_error` before_destroy exists to prove other specs go
-  # through `destroy`. Most of the specs here need the destroy to actually land
-  # so we can tell which row Avo picked.
-  def without_destroy_callback
-    TeamMembership.skip_callback(:destroy, :before, :raise_test_error, raise: false)
-    yield
-  ensure
-    TeamMembership.set_callback(:destroy, :before, :raise_test_error, if: -> { Rails.env.test? })
   end
 
   def detach(record = user)
@@ -39,19 +31,17 @@ RSpec.describe "Associations detach has_one through", type: :request do
     expect(TeamMembership.exists?(membership.id)).to be true
   end
 
-  context "when the same user has both a scoped and an unscoped join record" do
-    it "destroys the join record the association scope points at" do
-      member_row = TeamMembership.create!(team: team, user: user, level: "member")
-      admin_row = TeamMembership.create!(team: team, user: user, level: "admin")
+  it "destroys the join record the association scope points at" do
+    member_row = TeamMembership.create!(team: team, user: user, level: "member")
+    admin_row = TeamMembership.create!(team: team, user: user, level: "admin")
 
-      expect(team.reload.admin).to eq(user)
+    expect(team.reload.admin).to eq(user)
 
-      without_destroy_callback { detach }
+    without_destroy_callback { detach }
 
-      expect(TeamMembership.exists?(admin_row.id)).to be false
-      expect(TeamMembership.exists?(member_row.id)).to be true
-      expect(team.reload.admin).to be_nil
-    end
+    expect(TeamMembership.exists?(admin_row.id)).to be false
+    expect(TeamMembership.exists?(member_row.id)).to be true
+    expect(team.reload.admin).to be_nil
   end
 
   # Assigning `nil` detaches whatever is currently attached, ignoring the record

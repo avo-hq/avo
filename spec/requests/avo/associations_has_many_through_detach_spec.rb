@@ -7,19 +7,14 @@ require "rails_helper"
 # records is linked more than once, only the association's scope says which join
 # row belongs to the association.
 RSpec.describe "Associations detach has_many through", type: :request do
+  include_context "with a destroyable join record"
+
   let(:admin_user) { create :user, roles: {admin: true} }
   let(:team) { create :team }
   let(:user) { create :user }
 
   before do
     login_as admin_user, scope: :user
-  end
-
-  def without_destroy_callback
-    TeamMembership.skip_callback(:destroy, :before, :raise_test_error, raise: false)
-    yield
-  ensure
-    TeamMembership.set_callback(:destroy, :before, :raise_test_error, if: -> { Rails.env.test? })
   end
 
   def detach(association, record = user)

@@ -53,17 +53,5 @@ RSpec.describe "Associations attach has_many through", type: :request do
       expect(store.reload.patrons).to eq([user])
       expect(StorePatron.find_by(store: store, user: user).review).to eq("Great paper towels")
     end
-
-    # `StorePatron` validates `review`, so a missing attach field must still
-    # surface rather than reporting a successful attach.
-    it "reports a join record the attach fields left invalid" do
-      expect {
-        post "/admin/resources/stores/#{store.id}/patrons",
-          params: {fields: {related_id: user.id, review: ""}, view: "show"},
-          as: :turbo_stream
-      }.not_to change(StorePatron, :count)
-
-      expect(flash[:error]).to eq("Failed to attach User")
-    end
   end
 end

@@ -235,13 +235,17 @@ module Avo
     # be checked against the one named in the URL — otherwise a stale page or a
     # double detach would destroy whatever is currently attached.
     def join_record
-      through_records = @record.send(@reflection.through_reflection.name)
+      return through_association.find_by(source_foreign_key => @attachment_record.id) if @reflection.collection?
 
-      if @reflection.collection?
-        through_records.find_by(source_foreign_key => @attachment_record.id)
-      elsif through_records.present? && through_records[source_foreign_key] == @attachment_record.id
-        through_records
-      end
+      record = through_association
+      record if record.present? && record[source_foreign_key] == @attachment_record.id
+    end
+
+    # The through association itself: a collection proxy for `has_many :through`,
+    # the join record (or nil) for `has_one :through`. Reading it rather than the
+    # join model is what keeps the association's scope in play.
+    def through_association
+      @record.send(@reflection.through_reflection.name)
     end
 
     def has_many_reflection?
@@ -276,6 +280,17 @@ module Avo
     end
 
     def attach_record(association_name, attachment_record)
+      # Hand-build the join record only when attach fields have to land before
+      # the insert: `<<` saves immediately, and a join model that validates one
+      # of those columns (StorePatron#review) fails before we could fill it.
+      # Otherwise prefer `<<` — it fills in the polymorphic source type and
+      # handles composite primary keys, neither of which we do by hand.
+      #
+      # Collection-only, and not merely by preference: it builds *through* the
+      # association, and `new` is a collection proxy method. A singular through
+      # also needs replace semantics, which only assignment gives — building a
+      # second join record would leave the association with two rows to pick
+      # from.
       if collection_through_reflection? && additional_params.present?
         new_join_record(attachment_record).save!
       elsif has_many_reflection? || collection_through_reflection?
@@ -292,7 +307,7 @@ module Avo
     # assignment in `attach_record` already created or replaced it through the
     # (scoped) through association.
     def persist_join_record
-      through_record = @record.send(@reflection.through_reflection.name)
+      through_record = through_association
 
       return if through_record.blank?
 
@@ -315,7 +330,7 @@ module Avo
     # only differs in having attach fields to fill.
     def new_join_record(attachment_record)
       @resource.fill_record(
-        @record.send(@reflection.through_reflection.name).new(source_foreign_key => attachment_record.id),
+        through_association.new(source_foreign_key => attachment_record.id),
         additional_params,
         fields: @attach_fields
       )

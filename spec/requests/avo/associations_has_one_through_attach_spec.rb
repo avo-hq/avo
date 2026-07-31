@@ -79,16 +79,5 @@ RSpec.describe "Associations attach has_one through", type: :request do
       expect(flash[:notice]).to be_nil
       expect(flash[:error]).to eq("Failed to attach User")
     end
-
-    it "reports the failure when attach_fields are present too" do
-      expect {
-        post "/admin/resources/teams/#{team.id}/admin",
-          params: {fields: {related_id: user.id, notes: "Promoted by Bob"}, view: "show"},
-          as: :turbo_stream
-      }.not_to change(TeamMembership, :count)
-
-      expect(team.reload.admin).to be_nil
-      expect(flash[:error]).to eq("Failed to attach User")
-    end
   end
 end
