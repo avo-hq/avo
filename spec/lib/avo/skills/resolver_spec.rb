@@ -5,9 +5,14 @@ require "fileutils"
 # The resolver is the one component that must never guess. Every branch below is
 # a state a real app reaches: a Ruby-version mismatch that breaks `bundle show`,
 # a stale gem left behind by another install, a lock naming a gem that is gone.
+module SkillsResolver
+  BIN = Avo::Engine.root.join("lib", "avo", "skills", "bin", "avo-skills-resolve").to_s
+  SRC = Avo::Engine.root.join("lib", "avo", "skills")
+end
+
 RSpec.describe "avo-skills-resolve" do
-  RESOLVER = Avo::Engine.root.join("lib", "avo", "skills", "bin", "avo-skills-resolve").to_s
-  SKILLS_SRC = Avo::Engine.root.join("lib", "avo", "skills")
+  let(:resolver) { SkillsResolver::BIN }
+  let(:skills_src) { SkillsResolver::SRC }
 
   around do |example|
     Dir.mktmpdir("avo-skills-spec") do |dir|
@@ -31,8 +36,8 @@ RSpec.describe "avo-skills-resolve" do
 
     if skills
       FileUtils.mkdir_p(lib.join("skills"))
-      FileUtils.cp(SKILLS_SRC.join("index.md"), lib.join("skills", "index.md"))
-      FileUtils.cp(SKILLS_SRC.join("package-map.md"), lib.join("skills", "package-map.md"))
+      FileUtils.cp(skills_src.join("index.md"), lib.join("skills", "index.md"))
+      FileUtils.cp(skills_src.join("package-map.md"), lib.join("skills", "package-map.md"))
     end
 
     dir
@@ -48,7 +53,7 @@ RSpec.describe "avo-skills-resolve" do
   def resolve(app)
     stdout = IO.popen(
       {"GEM_HOME" => gem_home.to_s, "GEM_PATH" => gem_home.to_s},
-      [RESOLVER, err: [:child, :out]],
+      [resolver, err: [:child, :out]],
       chdir: app.to_s
     ) { _1.read }
 

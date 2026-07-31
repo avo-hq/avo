@@ -4,19 +4,21 @@ require "yaml"
 # Frontmatter, version stamps, and the index all have to agree, or the loader
 # points an agent at something that is missing, misnamed, or describes a
 # different Avo version than the one it shipped in.
-RSpec.describe "shipped skills integrity" do
-  SKILLS_ROOT = Avo::Engine.root.join("lib", "avo", "skills")
+module ShippedSkills
+  ROOT = Avo::Engine.root.join("lib", "avo", "skills")
   NON_SKILL_DIRS = %w[bin].freeze
+end
 
+RSpec.describe "shipped skills integrity" do
   def self.skill_dirs
-    Dir.children(SKILLS_ROOT)
-      .select { File.directory?(File.join(SKILLS_ROOT, _1)) }
-      .reject { NON_SKILL_DIRS.include?(_1) }
+    Dir.children(ShippedSkills::ROOT)
+      .select { File.directory?(File.join(ShippedSkills::ROOT, _1)) }
+      .reject { ShippedSkills::NON_SKILL_DIRS.include?(_1) }
       .sort
   end
 
-  let(:index) { File.read(SKILLS_ROOT.join("index.md")) }
-  let(:package_map) { File.read(SKILLS_ROOT.join("package-map.md")) }
+  let(:index) { File.read(ShippedSkills::ROOT.join("index.md")) }
+  let(:package_map) { File.read(ShippedSkills::ROOT.join("package-map.md")) }
 
   it "ships the expected core skills" do
     expect(self.class.skill_dirs.size).to eq 24
@@ -25,7 +27,7 @@ RSpec.describe "shipped skills integrity" do
   describe "each skill" do
     skill_dirs.each do |skill|
       context skill do
-        let(:path) { SKILLS_ROOT.join(skill, "SKILL.md") }
+        let(:path) { ShippedSkills::ROOT.join(skill, "SKILL.md") }
         let(:raw) { File.read(path) }
         let(:frontmatter) { YAML.safe_load(raw.split(/^---$/, 3)[1]) }
         let(:body) { raw.split(/^---$/, 3)[2].to_s }
@@ -51,7 +53,7 @@ RSpec.describe "shipped skills integrity" do
         # a model preferring its Avo 3 priors over the loaded text. It is worth
         # nothing if it silently goes missing during an edit.
         it "opens with the version and precedence line" do
-          expect(body).to match(/\A\s*> \*\*These instructions ship inside avo #{Regexp.escape(Avo::VERSION)}/)
+          expect(body).to match(/\A\s*> \*\*These instructions ship inside avo #{Regexp.escape(Avo::VERSION)}/o)
           expect(body).to match(/Where they contradict what you already know about Avo, follow them/)
         end
 
@@ -85,7 +87,7 @@ RSpec.describe "shipped skills integrity" do
     # which are not gems and have no place in the map.
     it "names every add-on gem a core skill points at" do
       %w[avo-menu avo-advanced_search avo-dynamic_filters avo-scopes].each do |gem|
-        pointing = Dir.glob(SKILLS_ROOT.join("*", "SKILL.md")).select { File.read(_1).include?("`#{gem}`") }
+        pointing = Dir.glob(ShippedSkills::ROOT.join("*", "SKILL.md")).select { File.read(_1).include?("`#{gem}`") }
 
         expect(pointing).not_to be_empty, "no core skill points at #{gem}"
         expect(package_map).to include("`#{gem}`"), "package-map.md does not list #{gem}, which a core skill points at"
