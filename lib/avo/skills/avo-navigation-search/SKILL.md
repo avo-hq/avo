@@ -1,29 +1,24 @@
 ---
 name: avo-navigation-search
 description: >-
-  Shape how people move through and find things in an Avo admin — the sidebar / profile / header
-  menus in `config/initializers/avo.rb`, per-resource `self.search`, the Cmd+K global search
-  palette, breadcrumbs, and keyboard shortcuts. Use when the user wants to reorder or group the
-  sidebar, split resources into sections, add a link (docs/billing) or dashboard or action to the
-  admin nav, hide a resource from the menu for non-admins, add a keyboard shortcut or command
-  palette, make a resource searchable, let admins search users by email or across all records, add
-  breadcrumbs to a custom page, or add a sign-out link to the profile menu — including
-  product-shaped phrasings that never say "Avo": "organize the admin sidebar", "group my models into
-  sections", "add a Cmd+K / command palette / global search", "make X searchable in the admin", "let
-  staff look up users by email", "add a keyboard shortcut to jump to Orders", "collapse the menu
-  sections by default".
+  Navigate and search an Avo admin — per-resource search (`self.search`), searching across fields
+  and through associations, search authorization and result limits, breadcrumbs, keyboard
+  shortcuts, and the auto-generated sidebar. Use when the user wants to make a resource
+  searchable, search by email or across several columns, search through an association, authorize
+  or limit search results, change breadcrumbs, add a hotkey, or hide something from the sidebar.
+  The menu editor DSL and the Cmd+K global palette are add-ons and ship their own skills.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  requires-gem: avo-menu (https://avohq.io/addons/menu-editor), avo-advanced_search (https://avohq.io/addons/global-search) — the rest is Community
+  requires-gem: none — per-resource search, breadcrumbs, hotkeys and the auto sidebar are Community; the menu editor (avo-menu) and global search (avo-advanced_search) ship their own skills
 ---
 
 > **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Navigation & Search
 
-> **Some of this needs an add-on gem.** The initializer menu DSL (`config.main_menu`, `config.profile_menu`) needs `avo-menu`; the Cmd+K global search palette needs `avo-advanced_search`. Everything else here — breadcrumbs, per-resource search, resource-icon menus — is Community.
+> **Two neighbouring subjects live in their own gems.** The sidebar menu **editor** DSL is `avo-menu`, and the Cmd+K **global** search palette is `avo-advanced_search` — each ships its own skill inside its own gem, pinned to that gem's version. Everything on this page is Community: per-resource search, breadcrumbs, keyboard shortcuts, and the auto-generated sidebar.
 >
-> Re-run the Avo skills loader to see which of these the app actually has. If it reports a gem missing from `Gemfile.lock`, say which add-on provides the feature rather than writing DSL that will not render.
+> Re-run the Avo skills loader to see which of those gems this app has. If it reports one missing from `Gemfile.lock`, name the add-on rather than describing a feature the app cannot use.
 
 This skill owns everything about **getting around** an Avo admin and **finding records** in it: the three configurable menus, per-resource search, the global Cmd+K palette, breadcrumbs, and keyboard shortcuts.
 
@@ -72,137 +67,11 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 ## Menus
 
-Avo has **three** menus, all built from the same DSL, all assigned a `Proc` in the initializer:
-
-| Config key | Renders in | Item types it renders |
-| --- | --- | --- |
-| `config.main_menu` | The sidebar | **All** item types |
-| `config.profile_menu` | The profile widget (sidebar footer) | `link_to` **only** (sign-out auto-added) |
-| `config.header_menu` | The top navigation bar | `link_to` **only** |
-
-Recommended hierarchy for `main_menu`: **`section` → `group` → item**. Sections are top-level containers with an icon header; groups are collapsable sub-categories inside them.
-
-```ruby
-# config/initializers/avo.rb
-Avo.configure do |config|
-  config.main_menu = -> {
-    section "Resources", icon: "tabler/outline/building-store", collapsable: true do
-      group "Company", collapsable: true do
-        resource :projects do
-          link_to "First project", path: "/admin/resources/projects/1"
-          resource :tasks            # nested resource — resolves its own URL
-        end
-        resource :team, icon: "heroicons/outline/user-group"
-        resource :reviews, icon: "heroicons/outline/star"
-      end
-    end
-
-    section "Other", icon: "tabler/outline/dots", collapsable: true, collapsed: true do
-      link_to "Avo HQ", path: "https://avohq.io", target: :_blank
-    end
-  }
-end
-```
-
-### Item types (`main_menu`)
-
-- `link_to "Docs", path: "https://…", target: :_blank` — any path, internal or external (`link` is an alias). `:_blank` also renders an external-link icon.
-- `resource :users` — link to a resource's Index. Pass the plural symbol (`:users`) or the full class string (`"Avo::Resources::User"`). Unknown resources are silently skipped.
-- `dashboard :sales` — link to a [dashboard](https://docs.avohq.io/4.0/dashboards.md) by `id` or `name`.
-- `page "Avo::Pages::Settings"` and `form "Avo::Forms::AppSettings"` — pages/forms (needs the `avo-forms` add-on). Pass the class name **as a String** so it isn't autoloaded while the initializer parses.
-- `board 1` — a [kanban board](https://docs.avohq.io/4.0/kanban-boards.md) by `id` (needs the `avo-kanban` add-on).
-- `action Avo::Actions::ExportData, resource: :projects` — triggers a **standalone** action's modal from the menu.
-- `render "avo/sidebar/items/custom_tool"` — a partial or `render SomeComponent.new(...)` for anything custom.
-
-Change any item's label with `label:` (`resource :posts, label: "News posts"`).
-
-### Add everything at once
-
-```ruby
-section "App", icon: "heroicons/outline/beaker" do
-  group "Dashboards" do
-    all_dashboards
-  end
-  group "Resources" do
-    all_resources except: [:users, :orders]   # except takes route keys (plural symbols)
-  end
-  group "All tools" do
-    all_tools
-  end
-end
-```
-
-`all_dashboards`, `all_pages`, `all_forms`, `all_boards`, `all_tools` behave the same. **`all_resources` respects authorization** — it only shows resources whose policy `index?` passes, so make sure `def index?` is defined (see **avo-authorization**).
-
-### Trigger an action from the menu
-
-```ruby
-# app/avo/actions/export_data.rb
-class Avo::Actions::ExportData < Avo::BaseAction
-  self.name = "Export data"   # used as the menu label unless overridden
-  self.standalone = true      # REQUIRED — the menu has no selected record
-end
-```
-
-```ruby
-config.main_menu = -> {
-  action Avo::Actions::ExportData, resource: :projects, label: "Export"  # top level: resource: required
-  resource :projects do
-    action Avo::Actions::ExportData   # nested: inherits :projects
-  end
-}
-```
-
-Non-standalone actions are skipped with a log warning.
-
-### Visibility & authorization
-
-`visible:` (boolean or block) is available on **every** item. The block gets `current_user`, `context`, `params`, and `view_context` (route helpers via `view_context.main_app.…`). A `group` auto-hides when every item inside it is invisible.
-
-```ruby
-resource :audit_logs, visible: -> { current_user.admin? }
-
-# Reuse the resource's own policy instead of hand-rolling the check:
-resource :team, visible: -> {
-  authorize current_user, Team, "index?", raise_exception: false
-}
-```
-
-### Icons, hotkeys, data, collapsing
-
-- `icon:` — on `section` and individual items only; **not** on `group` or on sub-items nested inside a `resource` block. Use `"tabler/outline/…"` (preferred) or `"heroicons/outline/…"`. For `resource` items with no `icon:`, the resource class's `self.icon` is used. Choosing names → **avo-menu-icons**.
-- `hotkey: "g p"` — renders a `<kbd>` badge and registers a jump-to shortcut. Uses [@github/hotkey](https://github.com/github/hotkey) syntax; **space = a sequence** (`"g p"` = press `g` then `p`). For `resource` items it falls back to the resource class's `self.hotkey`.
-- `data: { turbo: false }` or `data: { turbo_method: :delete }` — arbitrary data attributes.
-- `collapsable: true` (+ optional `collapsed: true` for a default-collapsed first visit) — on `section` and `group`. State is stored in the browser's Local Storage; a stored preference always beats `collapsed:`.
-
-### Sub-items
-
-Pass a block to `resource` to nest child items under it. Any item type nests; a nested `resource`/`dashboard`/`page`/`board`/`action` resolves its own URL (only `link_to` needs an explicit `path:`), a nested `action` inherits the enclosing resource, and **nested items render no icon**. Avo highlights the active sub-item by longest-path match. Optionally wrap them in a `subitems do … end` block (purely for readability).
-
-### Profile menu & header menu
-
-Both render **`link_to` only** — other item types are ignored.
-
-```ruby
-config.profile_menu = -> {
-  link_to "Profile", path: "/profile", icon: "user-circle"
-  # Sign-out is added automatically. For a custom sign-out path:
-  link_to "Sign out", path: main_app.destroy_user_session_path, icon: "user-circle", method: :post
-}
-
-config.header_menu = -> {
-  link_to "Docs", path: "https://docs.avohq.io", target: :_blank
-  link_to "Sign out", path: main_app.destroy_user_session_path, method: :delete
-}
-```
-
-`link_to` supports `method:` and `params:` (honored in the profile and header menus) and `title:` (hover tooltip). For heavier custom content in the profile menu, eject `_profile_menu_extra.html.erb` with `bin/rails generate avo:eject --partial :profile_menu_extra`.
+The sidebar menu **editor** — `config.main_menu`, `config.profile_menu`, sections, groups, sub-items, visibility rules — is the `avo-menu` add-on, and its instructions ship inside that gem. Re-run the Avo skills loader and read the **avo-menu** skill from the path it prints. If the loader reports the gem missing from `Gemfile.lock`, this app does not have it; say so rather than writing DSL that will not render, and use the Community path below.
 
 ### Community fallback (no `avo-menu`)
 
 Without the menu editor the sidebar is auto-generated; control it from each resource file: `self.visible_on_sidebar = false` to hide, `self.icon` for the icon, `self.hotkey` for a jump shortcut. (These attributes belong to **avo-resources**; the sidebar effect is the navigation part.)
-
----
 
 ## Search
 
@@ -290,41 +159,9 @@ config.search_results_count = 16   # global, in the initializer
 # or per resource: query.ransack(name_cont: q).result(distinct: false).limit(current_user.admin? ? 30 : 10)
 ```
 
-### Global search (Cmd+K palette) — paid add-on
+### Global search (Cmd+K palette)
 
-Searches every resource that has `self.search`, all at once. Opened via the navbar trigger or `Cmd+K` / `Ctrl+K`. It also does **direct ID lookup** (paste a UUID, a prefixed id like `plan_1234`, or a plain number → a "Direct match" section) and shows a "Go to" **navigation section** of resource Index links.
-
-```ruby
-# config/initializers/avo.rb
-config.global_search = {
-  enabled: true,               # Boolean or lambda (Avo::ExecutionContext)
-  navigation_section: true,    # the "Go to" links; Boolean or lambda
-  search_on_type: true         # false → require Enter; NOTE: not lambda-able (any Proc is truthy)
-}
-```
-
-Per-resource global-search tweaks live in the `self.search` hash:
-
-- `hide_on_global: true` — keep the resource's own Index search bar but drop it from the palette/direct-match/results page.
-- `display_count: false` — skip the "Users (8 of 21)" counting query (or a lambda) when it's expensive.
-- `item:` — customize how each result row renders (title/description/image/path); without it rows fall back to the record's title.
-
-```ruby
-self.search = {
-  query: -> { query.ransack(name_cont: q, body_cont: q, m: "or").result(distinct: false) },
-  hide_on_global: false,
-  display_count: true,
-  item: -> {
-    {
-      title: "[#{record.id}] #{record.name}",
-      description: record.truncated_body,
-      image_url: main_app.url_for(record.cover_photo),
-      image_format: :rounded,
-      path: avo.resources_post_path(record, custom: "search")
-    }
-  }
-}
-```
+One palette spanning every resource is the `avo-advanced_search` add-on, and its instructions ship inside that gem — read the **avo-advanced-search** skill from the path the loader prints. Everything above on this page is Community and works without it.
 
 ### Custom (non-ActiveRecord) providers
 

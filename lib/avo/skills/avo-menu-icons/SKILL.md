@@ -1,18 +1,24 @@
 ---
 name: avo-menu-icons
-description: Add icons to Avo menu items in config/initializers/avo.rb. Use when the user wants to populate icons for sidebar sections, groups, resources, links, and dashboards. Especially useful when migrating from Avo 3 to Avo 4.
+description: >-
+  Choose semantically correct Tabler icons for Avo menu items and resources, and apply them. Use
+  when the user wants icons in the sidebar, an icon on a resource or dashboard, to populate
+  missing icons across the admin, or is migrating from Avo 3. Ships the icon list and the concept-
+  to-icon matching strategy. Applying an icon to a resource (`self.icon`) is Community and covered
+  here; placing one inside the initializer menu DSL needs the avo-menu add-on, whose own skill
+  covers that.
 allowed-tools: Read, Edit, Glob, Bash
 metadata:
-  requires-gem: avo-menu (https://avohq.io/addons/menu-editor) — only for the initializer menu DSL; resource icons are Community
+  requires-gem: none — icon selection and resource icons are Community; the initializer menu DSL needs avo-menu, which ships its own skill
 ---
 
 > **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Add Icons to Avo Menu Items
 
-> **The initializer menu DSL needs the `avo-menu` add-on.** Icons on resources, dashboards, and links are Community and work without it — Approach B below covers that path.
+> **This skill picks the icon; `avo-menu` places it in the menu DSL.** Choosing a semantically right Tabler name, and setting `self.icon` on a resource, are Community and covered here. Writing that icon into `config.main_menu` is the `avo-menu` add-on, whose skill ships inside that gem.
 >
-> Re-run the Avo skills loader to check whether `avo-menu` is in this app's `Gemfile.lock` before routing to Approach A.
+> Re-run the Avo skills loader to check for `avo-menu` before routing to Approach A.
 
 Before doing anything, list the icon names available to this app. `<AVO_GEM_PATH>` is the path the Avo skills loader printed — this skill lives inside that gem, so build the path from it rather than from the app's working directory:
 
@@ -26,46 +32,7 @@ To use an icon, prefix the name with `tabler/outline/` or `tabler/filled/` — e
 
 ---
 
-## Determine the approach
-
-There are two ways to add icons in Avo. Identify which one to use:
-
-### Approach A — Initializer menu DSL
-
-Use this when `config/initializers/avo.rb` contains a `config.main_menu` or `config.profile_menu` block. Icons are added inline to the DSL calls inside those blocks. The menu DSL requires the `avo-menu` paid add-on — if it's not installed, use Approach B instead.
-
-### Approach B — Resource files
-
-Use this when the initializer has **no** `config.main_menu` / `config.profile_menu` block, meaning Avo auto-generates the sidebar from the registered resources. Icons are added via `self.icon` inside each resource class.
-
-**Decision rule:**
-
-1. If the user explicitly says which approach they want, use that.
-2. Otherwise, read `config/initializers/avo.rb`:
-   - If it contains `config.main_menu` or `config.profile_menu` → use **Approach A**.
-   - If neither block is present → use **Approach B**.
-
----
-
-## Approach A — Add icons in the initializer
-
-### Step 1: Read the Avo menu configuration
-
-Find and read the Avo initializer — usually `config/initializers/avo.rb`. Locate the `config.main_menu` block and `config.profile_menu` if present.
-
-### Step 2: Identify items without icons
-
-For each DSL call inside the menu blocks, check whether it already has an `icon:` argument:
-
-- `section "Name", ...`
-- `group "Name", ...`
-- `resource :name, ...`
-- `link "Name", path: ..., ...`
-- `dashboard :name, ...`
-
-Collect every call that is missing `icon:`.
-
-### Step 3: Choose icons
+## Choosing an icon
 
 For each item without an icon, find the best-matching name from the outline list. Prefer outline icons; only use filled when it clearly fits better.
 
@@ -101,24 +68,32 @@ For each item without an icon, find the best-matching name from the outline list
 
 Always verify the chosen name exists in the icons list before using it.
 
-### Step 4: Apply the changes
+---
 
-Edit the initializer, adding `icon: "tabler/outline/{name}"` (or `tabler/filled/{name}`) to each matched item:
+## Determine the approach
 
-- Preserve exact indentation, spacing, and all existing arguments.
-- Place `icon:` naturally — before `collapsable:`/`collapsed:` on sections, otherwise appended.
-- Do not touch anything outside the menu blocks.
-- Leave existing `icon:` values unchanged.
+There are two ways to add icons in Avo. Identify which one to use:
 
-### Step 5: Report
+### Approach A — Initializer menu DSL
 
-Tell the user:
+Use this when `config/initializers/avo.rb` contains a `config.main_menu` or `config.profile_menu` block. Icons are added inline to the DSL calls inside those blocks. The menu DSL requires the `avo-menu` paid add-on — if it's not installed, use Approach B instead.
 
-- Total icons added
-- For each item that got an icon: menu item name → icon chosen, with a one-word reason
-- Any items skipped because no good match was found
+### Approach B — Resource files
+
+Use this when the initializer has **no** `config.main_menu` / `config.profile_menu` block, meaning Avo auto-generates the sidebar from the registered resources. Icons are added via `self.icon` inside each resource class.
+
+**Decision rule:**
+
+1. If the user explicitly says which approach they want, use that.
+2. Otherwise, read `config/initializers/avo.rb`:
+   - If it contains `config.main_menu` or `config.profile_menu` → use **Approach A**.
+   - If neither block is present → use **Approach B**.
 
 ---
+
+## Approach A — icons in the initializer menu DSL
+
+The `config.main_menu` / `config.profile_menu` DSL is the `avo-menu` add-on. Pick the icon name with the section above, then read the **avo-menu** skill — re-run the Avo skills loader and open the path it prints — for where `icon:` goes on each DSL call. If the loader reports `avo-menu` missing from `Gemfile.lock`, this app cannot use Approach A; use Approach B.
 
 ## Approach B — Add icons in resource files
 
@@ -134,7 +109,7 @@ The resource name is the class name without the `Resource` suffix (e.g. `Avo::Re
 
 ### Step 3: Choose icons
 
-Apply the same matching strategy from Approach A Step 3, using the resource name as the concept to match.
+Apply the matching strategy from **Choosing an icon** above, using the resource name as the concept to match.
 
 ### Step 4: Apply the changes
 

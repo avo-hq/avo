@@ -13,6 +13,7 @@ The loader reports what is **installed**, never what is **licensed** — license
 
 | Gem | Skill | Subjects | More |
 | --- | --- | --- | --- |
+| `avo-advanced_search` | `avo-advanced-search` | Cmd+K global search across resources; searchable association pickers | https://avohq.io/addons/global-search |
 | `avo-api` | `avo-rest-api` | JSON REST API over every resource, token auth, per-token permission matrix | https://avohq.io/addons/api |
 | `avo-audit_logging` | `avo-audit-logging` | Who changed and viewed what — timeline, diffs, revert | https://avohq.io/pricing |
 | `avo-authorization` | `avo-authorization` | Pundit policies for resources, actions, associations, files | https://avohq.io/addons/authorization |
@@ -23,17 +24,7 @@ The loader reports what is **installed**, never what is **licensed** — license
 | `avo-forms` | `avo-forms-and-pages` | Model-agnostic forms and sidebar page hierarchies | https://avohq.io/addons/forms |
 | `avo-http_resource` | `avo-http-resource` | Back a resource with an external HTTP API instead of Active Record | https://avohq.io/addons/http-resource |
 | `avo-kanban` | `avo-kanban` | Database-backed drag-and-drop boards across resources | https://avohq.io/addons/kanban |
+| `avo-menu` | `avo-menu` | The sidebar menu editor DSL — sections, groups, links, dashboards, visibility, sub-items, profile and header menus | https://avohq.io/addons/menu-editor |
 | `avo-notifications` | `avo-notifications` | In-app notifications — bell dropdown, levels, action buttons, realtime | https://avohq.io/addons/notifications |
 | `avo-record_reordering` | `avo-record-reordering` | Persistent up/down and drag-and-drop record ordering | https://avohq.io/addons/record-reordering |
 | `avo-scopes` | `avo-scopes` | Scope tabs on the index — default view, counts, per-scope columns | https://avohq.io/addons/scopes |
-
-## Referenced by core skills, ships no skill of its own
-
-These unlock sections inside a core skill rather than owning a subject outright. A core skill's pointer block names them.
-
-Column three carries the subject in **both** tables — the loader reads it positionally to describe a gem the app does not have.
-
-| Gem | Skill | Subjects | More |
-| --- | --- | --- | --- |
-| `avo-menu` | none — see `avo-navigation-search`, `avo-menu-icons` | The initializer menu DSL — `config.main_menu`, `config.profile_menu` | https://avohq.io/addons/menu-editor |
-| `avo-advanced_search` | none — see `avo-navigation-search`, `avo-associations` | Global Cmd+K search across resources; searchable associations | https://avohq.io/addons/global-search |

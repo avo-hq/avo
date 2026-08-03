@@ -14,16 +14,16 @@ description: >-
   from the form", "link these two models in the admin").
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  requires-gem: avo-advanced_search (https://avohq.io/addons/searchable-associations) — only for searchable associations; the rest is Community
+  requires-gem: none — Community; searchable association pickers need avo-advanced_search, which ships its own skill
 ---
 
 > **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Associations
 
-> **Searchable association pickers need the `avo-advanced_search` add-on.** Declaring and configuring the association fields themselves is Community.
+> **Searchable pickers live in their own gem.** Turning a long association dropdown into a type-to-search field is `avo-advanced_search`, whose skill ships inside that gem. Declaring and configuring association fields — everything on this page — is Community.
 >
-> Re-run the Avo skills loader to check whether `avo-advanced_search` is in this app's `Gemfile.lock` before recommending a searchable picker.
+> Re-run the Avo skills loader before recommending a searchable picker; if the gem is absent from `Gemfile.lock`, `searchable: true` falls back to a plain select with no error.
 
 Avo turns Rails [Active Record associations](https://guides.rubyonrails.org/association_basics.html) into fields. You declare one line in the resource's `def fields` and Avo renders it per view: a `belongs_to` becomes a link on Show/Index and a dropdown (or search picker) on the forms; `has_one`, `has_many`, and `has_and_belongs_to_many` render as panels below the record's fields with attach / detach / create controls.
 
@@ -142,44 +142,7 @@ The extra fields render inside the attach modal and their values persist on the 
 
 ### Searchable associations
 
-When the target has too many records for a dropdown, `searchable` swaps it for a type-to-search picker.
-
-- **Paid add-on** (`avo-advanced_search` gem) — [searchable-associations](https://avohq.io/addons/searchable-associations). Confirm the license before proposing it.
-- **Needs a query source, or the picker is silently empty.** Supply it either on the target resource (`self.search = { query: -> { ... } }`, shared by every picker pointing at it) or field-level inside `searchable: { query: -> { ... } }` (that picker only; overrides the resource-level one).
-
-Boolean form — reuse the target resource's `self.search`:
-
-```ruby
-field :links, as: :has_many, searchable: true
-```
-
-Hash form — override per picker, or gate it:
-
-```ruby
-field :user, as: :belongs_to,
-  searchable: {
-    query: -> { query.ransack(name_cont: q).result(distinct: false) },
-    item:  -> { { title: "Reviewer: #{record.first_name}", description: record.email } },
-    enabled: -> { current_user.admin? } # falsy → falls back to the plain <select>
-  }
-```
-
-Polymorphic `belongs_to` runs the search once per declared type. With the boolean form, define `self.search[:query]` on each target resource. With a single field-level proc, branch on `query.klass` (or `query.klass.name`):
-
-```ruby
-field :commentable, as: :belongs_to,
-  polymorphic_as: :commentable, types: [::Post, ::Project],
-  searchable: {
-    query: -> {
-      case query.klass.name
-      when "Post"    then query.ransack(body_cont: q).result(distinct: false)
-      when "Project" then query.ransack(name_cont: q).result(distinct: false)
-      end
-    }
-  }
-```
-
-`query:` locals include `q`, `query`, `params`, `parent_record` (can be `nil` on create forms — guard with `&.`); `item:` locals are `record`, `resource`.
+Turning a long `belongs_to` / `has_many` picker into a type-to-search field is the `avo-advanced_search` add-on, and its instructions ship inside that gem — read the **avo-advanced-search** skill from the path the loader prints. Without the gem `searchable: true` falls back to a plain select with no error, so check before recommending it.
 
 ## Gotchas
 

@@ -10,7 +10,7 @@ Each entry is a directory beside this file: `<skill>/SKILL.md`.
 | --- | --- |
 | `avo-resources` | Generate and configure resources — title, includes, sorting, pagination, cover/avatar, array (non-DB) resources |
 | `avo-fields` | Add and configure fields in `def fields` — pick the `as:` type, options, formatting, layout |
-| `avo-associations` | Wire `belongs_to` / `has_many` / `has_one` / HABTM fields, searchable pickers, polymorphism, STI |
+| `avo-associations` | Wire `belongs_to` / `has_many` / `has_one` / HABTM fields, polymorphism, STI |
 | `avo-actions` | Actions that run Ruby on selected, single, or no records — bulk ops, forms, modals, responses |
 | `avo-filters` | Filter the index with basic filters. Dynamic filters and scopes are package-owned — see below |
 | `avo-index-views` | How the index renders — table styling, grid cards, map markers, view types |
@@ -33,8 +33,8 @@ Each entry is a directory beside this file: `<skill>/SKILL.md`.
 | Skill | Covers |
 | --- | --- |
 | `avo-branding-appearance` | Logo, favicon, color scheme, palettes, CSS re-skin, icons |
-| `avo-menu-icons` | Populate menu items with Tabler icons. The initializer menu DSL needs `avo-menu` |
-| `avo-navigation-search` | Menus, breadcrumbs, keyboard shortcuts, per-resource search, the Cmd+K palette |
+| `avo-menu-icons` | Pick the right Tabler icon and apply it to resources. The menu DSL is `avo-menu`'s own skill |
+| `avo-navigation-search` | Per-resource search, breadcrumbs, keyboard shortcuts, the auto-generated sidebar |
 | `avo-custom-ui` | Custom pages, embedded panels, dynamic/nested forms, ejected views, Stimulus, Tailwind |
 | `avo-i18n` | Translate and localize the admin — labels, locale switching, RTL |
 | `avo-controllers` | Override per-resource CRUD controller hooks and safely extend Avo's ApplicationController |
