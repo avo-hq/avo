@@ -184,21 +184,11 @@ module Generators
           TARGETS.values
         end
 
-        # The resolver has exactly one source of truth: the copy inside the gem.
-        # It is stamped with the gem version on the way out so the installed copy
-        # can tell the user when it has fallen behind.
+        # Copied verbatim. The resolver compares itself against the gem's copy by
+        # content at run time, so there is nothing to stamp — and a global
+        # install needs no special case.
         def install_resolver(destination)
-          # A global copy stays unstamped. The staleness check compares its stamp
-          # against the resolved gem, which is meaningful for one app and pure
-          # noise across four on different versions; the resolver already treats
-          # the unstamped sentinel as "do not warn".
-          stamped = if options[:global]
-            resolver_source
-          else
-            resolver_source.sub(/^STAMP_VERSION=.*$/, %(STAMP_VERSION="#{::Avo::VERSION}"))
-          end
-
-          create_file destination, stamped
+          create_file destination, resolver_source
           chmod destination, 0o755
         end
 

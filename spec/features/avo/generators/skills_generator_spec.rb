@@ -45,14 +45,14 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
     end
   end
 
-  it "stamps the installed resolver with the gem version but is otherwise identical" do
+  # Byte-identical, which is what lets the resolver detect its own staleness by
+  # comparing content instead of carrying a version.
+  it "installs the resolver verbatim" do
     generate
 
     installed = File.read(Rails.root.join(".claude/skills/avo/scripts/avo-skills-resolve"))
-    source = File.read(gem_resolver)
 
-    expect(installed).to include(%(STAMP_VERSION="#{Avo::VERSION}"))
-    expect(installed.sub(/^STAMP_VERSION=.*$/, "STAMP")).to eq source.sub(/^STAMP_VERSION=.*$/, "STAMP")
+    expect(installed).to eq File.read(gem_resolver)
   end
 
   it "refreshes an edited copy when re-run" do
@@ -62,7 +62,7 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
     File.write(resolver, "# stale local edit\n")
     generate(["-q", "--skip-avo-version", "--force"])
 
-    expect(File.read(resolver)).to include("STAMP_VERSION=")
+    expect(File.read(resolver)).to eq File.read(gem_resolver)
     expect(File.read(resolver)).not_to include("stale local edit")
   end
 
@@ -111,15 +111,13 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
       global_targets.each { |t| expect(File).not_to exist Rails.root.join(t, "SKILL.md").to_s }
     end
 
-    # The loader finds the app by walking up from the working directory, so one
-    # copy serves every project. Stamping it would make it report itself stale
-    # in every project whose Avo differs from the one that installed it.
-    it "leaves the resolver unstamped so it cannot cry stale across projects" do
+    # One copy serves every project, so it must be the same bytes the gem ships —
+    # otherwise it would report itself stale everywhere.
+    it "installs the same verbatim resolver as an app install" do
       generate(["-q", "--skip-avo-version", "--global"])
 
-      resolver = File.read(File.join(@home, ".claude/skills/avo/scripts/avo-skills-resolve"))
-      expect(resolver).to include('STAMP_VERSION="0.0.0-dev"')
-      expect(resolver).not_to include(%(STAMP_VERSION="#{Avo::VERSION}"))
+      expect(File.read(File.join(@home, ".claude/skills/avo/scripts/avo-skills-resolve")))
+        .to eq File.read(gem_resolver)
     end
 
     it "is otherwise the same file the app install writes" do
