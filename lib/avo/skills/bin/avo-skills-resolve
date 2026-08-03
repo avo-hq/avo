@@ -13,13 +13,10 @@
 # exits non-zero with a stable token on stderr. There is no soft-failure mode:
 # the caller must stop rather than fall back on prior knowledge of Avo.
 #
-# Usage: avo-skills-resolve [--quiet]
+# Usage: avo-skills-resolve
 
 set -uo pipefail
 
-
-QUIET=0
-[ "${1:-}" = "--quiet" ] && QUIET=1
 
 fail() { printf 'avo-skills: error %s: %s\n' "$1" "$2" >&2; exit 1; }
 warn() { printf 'avo-skills: warning %s: %s\n' "$1" "$2" >&2; }
@@ -219,10 +216,8 @@ printf 'avo %s' "$AVO_VERSION"
 [ "$AVO_SECTION" != "GEM" ] && printf ' (%s source — working tree, version not asserted)' "$(printf '%s' "$AVO_SECTION" | tr 'A-Z' 'a-z')"
 printf '\n%s\n\n' "$SKILLS_ROOT"
 
-if [ "$QUIET" -eq 0 ]; then
-  cat "$SKILLS_ROOT/index.md"
-  printf '\n'
-fi
+cat "$SKILLS_ROOT/index.md"
+printf '\n' 
 
 printf '\n## Installed packages with their own skills\n\n'
 found_pkg=0
@@ -239,7 +234,7 @@ while IFS='|' read -r name version section; do
 
   found_pkg=1
   printf -- '- **%s %s** — %s\n' "$name" "$version" "$pkg_index"
-  [ "$QUIET" -eq 0 ] && sed -n 's/^/  /p' "$pkg_index/index.md"
+  sed -n 's/^/  /p' "$pkg_index/index.md"
   printf '\n'
 done <<< "$AVO_GEMS"
 [ "$found_pkg" -eq 0 ] && printf 'None. Every skill this app has is in the core index above.\n'
