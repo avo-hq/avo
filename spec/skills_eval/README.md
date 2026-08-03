@@ -35,7 +35,7 @@ Fresh sessions matter. Once the loader has fired in a session its content is in 
 
 | Date | Avo version | Trigger | Prior conflict | False triggers | Notes |
 | --- | --- | --- | --- | --- | --- |
-| 2026-08-03 | 4.0.24 (branch) | **14/15 (93%)** | 3/3 fired — diffs unscored | **0/4** | `claude -p` in `spec/dummy`. The one miss was #11 "make this board drag-and-drop": the app has no board, and the agent correctly asked which one rather than guessing. Corpus defect, not a trigger failure. Prior-conflict prompts all fired; whether each *followed* the loaded text still needs a human reading the diffs. |
+| 2026-08-03 | 4.0.24 (branch) | **14/15 (93%)** | **3/3 pass** (diffs reviewed by a maintainer) | **0/4** | `claude -p` in `spec/dummy`. The one miss was #11 "make this board drag-and-drop": the app has no board, and the agent correctly asked which one rather than guessing. Corpus defect, not a trigger failure. Prior-conflict evidence: #17 used `value.split(" to ")`, which appears only in `avo-filters`' Gotchas; #18 refused to write DSL and named the missing gem; #19 chose the per-resource approach after checking for `avo-menu`, and `list_icons.rb` caught a hallucinated icon name (`rings-wedding`) before it reached a file. |
 
 ### Notes on running it
 
