@@ -1,5 +1,9 @@
 require "rails_helper"
 require "rails/generators"
+require "tmpdir"
+# lib/generators is outside the Zeitwerk root, so the class is only defined once
+# something invokes it. Requiring it keeps the unit-level examples order-independent.
+require "generators/avo/skills_generator"
 
 RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
   let(:targets) { %w[.claude/skills/avo .agents/skills/avo .cursor/skills/avo] }
@@ -154,16 +158,66 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
       generate(["-q", "--skip-avo-version", "--clean-legacy"])
     end
 
-    it "reports home leftovers instead of removing them" do
-      generator = Generators::Avo::SkillsGenerator.new([], ["--skip-avo-version"], destination_root: Rails.root)
-      allow(generator).to receive(:global_legacy_skill_dirs)
-        .and_return([File.expand_path("~/.claude/skills/avo-fields")])
-      allow(generator).to receive(:legacy_skill_dirs).and_return([])
+    # These exercise the reporting directly, so they run against their own temp
+    # root — the dummy app is shared with every other generator spec.
+    describe "reporting" do
+      around do |example|
+        Dir.mktmpdir("skills-legacy") do |dir|
+          @sandbox = dir
+          example.run
+        end
+      end
 
-      output = capture_generator_output { generator.clean_legacy_skills }
+      def plant_in_sandbox(*names, root:)
+        names.each do |name|
+          dir = File.join(@sandbox, root, name)
+          FileUtils.mkdir_p(dir)
+          File.write(File.join(dir, "SKILL.md"), "---\nname: #{name}\n---\n")
+        end
+      end
 
-      expect(output).to match(/Not removing those/)
-      expect(output).to include("~/.claude/skills/avo-fields")
+      def report(args = ["--skip-avo-version", "--no-clean-legacy"])
+        generator = Generators::Avo::SkillsGenerator.new([], args, destination_root: @sandbox)
+        yield generator if block_given?
+        capture_generator_output { generator.clean_legacy_skills }
+      end
+
+      # The full catalog is 35 skills per scan path. Listing them individually
+      # buries the prompt under a hundred lines of noise.
+      it "summarizes by directory rather than listing every skill" do
+        %w[.claude/skills .agents/skills].each do |root|
+          plant_in_sandbox(*(1..35).map { "avo-skill-#{_1}" }, root: root)
+        end
+
+        output = report
+
+        expect(output).to include("Found 70 skills")
+        expect(output).to match(%r{^\s+\.claude/skills/\s+35$})
+        expect(output).to match(%r{^\s+\.agents/skills/\s+35$})
+        expect(output).not_to include("avo-skill-1\n")
+        expect(output.lines.count).to be < 15
+      end
+
+      it "offers one glob per directory instead of every path" do
+        plant_in_sandbox("avo-fields", "avo-kanban", root: ".claude/skills")
+
+        output = report
+
+        expect(output).to include("rm -rf .claude/skills/avo-*")
+        expect(output).not_to include("avo-fields avo-kanban")
+      end
+
+      it "reports home leftovers instead of removing them" do
+        output = report(["--skip-avo-version"]) do |generator|
+          allow(generator).to receive(:global_legacy_skill_dirs)
+            .and_return([File.expand_path("~/.claude/skills/avo-fields")])
+          allow(generator).to receive(:legacy_skill_dirs).and_return([])
+        end
+
+        expect(output).to match(/Not removing those/)
+        expect(output).to match(%r{^\s+~/\.claude/skills/\s+1$})
+        expect(output).to include("rm -rf ~/.claude/skills/avo-*")
+      end
     end
 
     def capture_generator_output

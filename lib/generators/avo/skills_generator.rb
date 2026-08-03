@@ -64,14 +64,14 @@ module Generators
         return if leftovers.empty? && global.empty?
 
         if leftovers.any?
-          say "\nFound #{leftovers.length} skill(s) in this project from a previous avo-hq/skills install:"
-          leftovers.each { |dir| say "  #{display_path(dir)}", :yellow }
+          say "\nFound #{pluralize_skills(leftovers.length)} in this project from a previous avo-hq/skills install:"
+          by_directory(leftovers).each { |dir, count| say "  #{dir}#{" " * padding(dir)}#{count}", :yellow }
           say "These are not version-pinned and can shadow the skills that ship with your Avo gem."
 
           if remove_legacy?
-            leftovers.each do |dir|
-              FileUtils.rm_rf(dir)
-              say_status :remove, display_path(dir), :red
+            by_directory(leftovers).each do |dir, count|
+              leftovers.select { |path| display_dir(path) == dir }.each { |path| FileUtils.rm_rf(path) }
+              say_status :remove, "#{dir} (#{pluralize_skills(count)})", :red
             end
           else
             report_kept(leftovers)
@@ -93,14 +93,39 @@ module Generators
 
         def report_kept(leftovers)
           say "\nLeaving them in place. Remove them later with:", :yellow
-          say "  rm -rf #{leftovers.map { display_path(_1) }.join(" ")}"
+          say "  #{removal_command(leftovers)}"
         end
 
         def report_global(global)
-          say "\nAlso found #{global.length} in #{GLOBAL_LEGACY_ROOT}, shared by every project on this machine:", :yellow
-          global.each { |dir| say "  #{display_path(dir)}" }
+          say "\nAlso found #{pluralize_skills(global.length)} in #{GLOBAL_LEGACY_ROOT}, shared by every project on this machine:", :yellow
+          by_directory(global).each { |dir, count| say "  #{dir}#{" " * padding(dir)}#{count}" }
           say "Not removing those — another project may still want them. If not, run:"
-          say "  rm -rf #{global.map { display_path(_1) }.join(" ")}"
+          say "  #{removal_command(global)}"
+        end
+
+        # One glob per directory rather than one path per skill: with the full
+        # catalog installed this is the difference between a readable command
+        # and 35 pasted paths.
+        def removal_command(dirs)
+          "rm -rf #{by_directory(dirs).keys.map { "#{_1}avo-*" }.join(" ")}"
+        end
+
+        # Directory => how many legacy skills sit in it, so a full catalog
+        # reports three lines instead of a hundred.
+        def by_directory(dirs)
+          dirs.group_by { display_dir(_1) }.transform_values(&:count).sort.to_h
+        end
+
+        def display_dir(path)
+          "#{display_path(File.dirname(path))}/"
+        end
+
+        def padding(dir)
+          [2, 28 - dir.length].max
+        end
+
+        def pluralize_skills(count)
+          "#{count} skill#{"s" unless count == 1}"
         end
 
         def legacy_skill_dirs
