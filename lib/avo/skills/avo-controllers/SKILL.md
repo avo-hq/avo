@@ -3,11 +3,10 @@ name: avo-controllers
 description: Override the per-resource CRUD controller hooks Avo generates (redirect paths, flash messages, custom responses, save/destroy behavior) and safely extend Avo's private ApplicationController. Use when the user wants to redirect somewhere else after creating/updating/deleting in the admin, change the "successfully created/updated" flash message, soft-delete or archive instead of destroying, swap `@record.save!` for a service object, run code before every admin request, set a `Current` attribute or tenant per admin request, override `fill_record`, or fix `ActionDispatch::MissingController`. Covers `Avo::CoursesController < Avo::ResourcesController`, the `avo:controller` generator, `after_create_path`/`after_update_path`/`after_destroy_path`, `*_success_message`/`*_fail_message`, `create_/update_/destroy_success_action`/`*_fail_action`, `save_record_action`/`destroy_record_action`, and extending `Avo::ApplicationController` with a concern in `to_prepare`.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Resource Controllers
 

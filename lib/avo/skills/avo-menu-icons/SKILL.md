@@ -3,11 +3,10 @@ name: avo-menu-icons
 description: Add icons to Avo menu items in config/initializers/avo.rb. Use when the user wants to populate icons for sidebar sections, groups, resources, links, and dashboards. Especially useful when migrating from Avo 3 to Avo 4.
 allowed-tools: Read, Edit, Glob, Bash
 metadata:
-  avo-version: "4.0.24"
   requires-gem: avo-menu (https://avohq.io/addons/menu-editor) — only for the initializer menu DSL; resource icons are Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Add Icons to Avo Menu Items
 

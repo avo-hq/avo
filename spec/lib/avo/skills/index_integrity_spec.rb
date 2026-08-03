@@ -45,15 +45,11 @@ RSpec.describe "shipped skills integrity" do
           expect(frontmatter.dig("metadata", "requires-gem").to_s.strip).not_to be_empty
         end
 
-        it "is stamped with this gem's version" do
-          expect(frontmatter.dig("metadata", "avo-version")).to eq Avo::VERSION
-        end
-
         # This line is the mitigation for the design's highest-severity risk —
         # a model preferring its Avo 3 priors over the loaded text. It is worth
         # nothing if it silently goes missing during an edit.
-        it "opens with the version and precedence line" do
-          expect(body).to match(/\A\s*> \*\*These instructions ship inside avo #{Regexp.escape(Avo::VERSION)}/o)
+        it "opens with the precedence line" do
+          expect(body).to match(/\A\s*> \*\*These instructions ship inside the `avo` gem this app has locked/)
           expect(body).to match(/Where they contradict what you already know about Avo, follow them/)
         end
 

@@ -3,11 +3,10 @@ name: avo-performance
 description: Make the Avo admin fast and fix stale or wrong cached rows — pick and force a cache store (config.cache_store, Solid Cache), control index row caching (cache_resources_on_index_view, cache_hash), and bust stale caches. Use when the user wants to speed up the admin, cache admin index rows, or fix caching side-effects — both Avo phrasings ("speed up the Avo admin", "why is the Avo index slow", "set up Solid Cache for Avo", "override cache_hash on a resource", "disable cache_resources_on_index_view") and Rails-shaped ones without Avo ("the admin is slow / the index page takes forever", "speed up the admin", "admin rows don't update after I change a related record", "stale data on the admin list", "admin links point to the old mount path after I moved it", "cache admin index rows"). For N+1 on the index — the single biggest slowness cause — see the self.includes option in avo-resources.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Performance & Caching
 

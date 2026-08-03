@@ -3,11 +3,10 @@ name: avo-actions
 description: Build Avo actions — Ruby classes in `app/avo/actions/*.rb`, registered on a resource's `def actions` — that run a custom operation on selected records, a single record, or nothing at all, with optional form fields, a confirmation modal, feedback notifications, custom responses, and multi-step flows. Use when the user wants to let admins bulk-approve these orders, mark selected invoices as paid, add a button to export selected users to CSV, deactivate/ban a user from the admin, send a welcome email to selected records, trigger a background job for these records, add a Publish/Approve button on the post page, add a monthly report button, collect a reason when someone does something, add a confirmation dialog before an operation, or build a multi-step form/wizard in the admin.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Actions
 

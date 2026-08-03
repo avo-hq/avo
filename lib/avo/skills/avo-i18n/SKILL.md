@@ -3,11 +3,10 @@ name: avo-i18n
 description: Translate and localize the Avo admin — resource, action, and field labels, tab and panel titles, field help/placeholder/include_blank text, save-button labels, the interface language, and right-to-left layout — via `config/locales/avo.<locale>.yml`, `self.translation_key`, and `config.locale`. Use when the user wants to translate the admin to another language (French/Spanish/German/Arabic/…), localize or rename resource/field/action labels, translate tab or panel titles, make the admin multilingual, support RTL languages, change or force the admin's interface language, or show a different label per language.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo i18n (Localization)
 

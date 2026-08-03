@@ -3,11 +3,10 @@ name: avo-media-library
 description: Turn on and manage Avo's Media Library — a central browser/manager for every uploaded asset, plus an asset picker inside the trix, rhino, and markdown rich-text editors — configured in config/initializers/avo.rb. Use when the user wants to "let users upload and manage images", "have one place to view and manage all our assets/uploads", "add an image or asset gallery to the admin", "insert/pick an existing image in the rich-text editor while writing content", "reuse uploaded images across records", "a digital asset manager for the admin", or "browse all the files I've uploaded" — and when they want to turn the Media Library on or off, hide or conditionally show its sidebar item, re-add it to a customized menu, or disable the gallery picker on a markdown field. Disabled by default and gated behind `defined?(Avo::MediaLibrary)`; Community license; currently in Alpha (breaking changes expected).
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community (Alpha)
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Enable and manage the Avo Media Library
 

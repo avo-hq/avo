@@ -3,11 +3,10 @@ name: avo-aware
 description: Keep the Avo admin panel in sync when you change a Rails model, migration, or add a capability — even when the request never mentions Avo. Use only in an app that has the `avo` gem in its Gemfile AND an `app/avo/` directory, when the user asks to add or change a model column, add a model, add an enum/status, create an association, or add a capability like "let admins approve orders" or "users can archive projects" — anything whose admin surface should be updated too. Does the Rails change first, then proposes the matching Avo change and routes it to the right vertical skill.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — dispatcher; the target skill states its own gem
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Keep the Avo admin in step with Rails changes
 

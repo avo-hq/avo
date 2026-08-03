@@ -3,11 +3,10 @@ name: avo-update
 description: Update an app's Avo gems and apply every upgrade-guide step for the versions crossed — record the current versions, run `bin/rails avo:update`, diff `Gemfile.lock` to see the real jump, then work the upgrade guide section by section from oldest to newest, writing a deletable log as you go. Use when the user wants to update or upgrade Avo, bump the Avo gems, get on the latest Avo, apply the Avo upgrade guide, catch up an admin panel that's several versions behind, find out what breaks if they upgrade, or fix an admin that broke after an Avo bump. Also covers the Avo 3 → Avo 4 major upgrade.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Update
 

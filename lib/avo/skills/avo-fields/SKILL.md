@@ -3,11 +3,10 @@ name: avo-fields
 description: Add or change fields in an Avo resource's `def fields` — pick the `as:` type, set options (required, default, help, visibility, formatting), and use computed and view-specific fields. Use when the user wants to add a field to an Avo resource, or — said without naming Avo — "add a status field to the Project model", "make the email field required", "show the user's avatar", "add a dropdown for order status", "the price should display as currency", "add a rich-text editor for the body", "hide the notes field on the index page", "add a star rating", "make the name column sortable", "show a badge for the order state", or "add a color picker / date picker / progress bar to a model". For belongs_to / has_many / has_one and other association fields, use the avo-associations skill instead.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community; some field types need companion gems (see Gotchas)
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Add or change an Avo field
 

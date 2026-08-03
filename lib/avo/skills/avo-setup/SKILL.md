@@ -3,11 +3,10 @@ name: avo-setup
 description: Install Avo, mount it in `config/routes.rb`, authenticate the private gem server, and set the license key. Use when the user wants to install Avo, add an admin panel to a Rails app, mount the admin at a path/scope/nested path/subdomain (e.g. `/backoffice`, `admin.myapp.com`), add paid Avo add-on gems (`avo-dashboards`, `avo-dynamic_filters`, `avo-kanban`, …), fix a `403 Forbidden` pulling a private or paid Avo gem, can't bundle the paid gem, set the gem-server token on Heroku/Hatchbox/GitHub Actions/Docker/Kamal, deploy the admin when the gem won't install, add or wire a license key, fix an admin that says unlicensed or shows a license-timeout badge, or append custom routes inside the Avo engine.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — this skill installs `avo` plus any paid add-on gems
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Setup
 

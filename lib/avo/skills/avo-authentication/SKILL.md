@@ -3,11 +3,10 @@ name: avo-authentication
 description: Tell Avo who the current user is, gate access to the admin, and wire up roles, the sidebar profile widget, and the sign-out link — all in config/initializers/avo.rb and routes.rb. Use when the user wants to set config.current_user_method, integrate Devise or the Rails 8 auth scaffold, restrict Avo with authenticate_with or a route-level `authenticate :user`, add lightweight is_admin?/is_developer? roles, or fix the profile/sign-out UI — including Rails-shaped requests with no mention of Avo like "put the admin behind login", "require login to see the admin", "only let admins into the admin panel", "the admin shows 'Avo user' instead of my name", "add a logout button to the admin", "show the signed-in user's avatar in the sidebar", or "the admin doesn't know who's logged in".
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Authentication
 

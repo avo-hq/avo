@@ -3,11 +3,10 @@ name: avo-index-views
 description: Control how records render on an Avo resource's Index screen — table styling, grid cards, map markers, and which view types are available. Use when the user wants to change how a list of records looks or behaves on the index. Avo phrasings ("enable grid view", "set default_view_type", "configure row_options", "add a map view", "restrict view_types") and Rails-shaped ones without naming Avo ("show these products as image cards", "put the stores on a map", "highlight failed orders in red", "gray out archived rows", "let users toggle between list and grid", "make grid the default", "add a data attribute / Stimulus controller to each row", "move the row action buttons to the left", "run an action on all matching records not just this page"). Not for authoring brand-new custom view types (that's plugin work — see avo-custom-ui).
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Index Views
 

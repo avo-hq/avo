@@ -3,11 +3,10 @@ name: avo-resources
 description: Generate an Avo CRUD resource from a Rails model and configure resource-level behavior in `app/avo/resources/<name>.rb` plus its controller. Use when the user wants to generate an Avo resource, add a model to the admin panel, expose a table in the admin, set a resource's title/description/icon/cover/avatar or discreet info, fix ActionDispatch::MissingController, avoid N+1 with includes, tune sort/pagination/index query, build an array (non-DB) resource, or map multiple resources to one model.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Resources
 

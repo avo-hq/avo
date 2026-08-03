@@ -3,11 +3,10 @@ name: avo-admin-config
 description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, persist filters/pagination across requests, or opt out of usage metadata.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Admin Configuration
 

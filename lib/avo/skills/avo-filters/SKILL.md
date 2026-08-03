@@ -3,11 +3,10 @@ name: avo-filters
 description: Route a filtering request to the right Avo system, then implement basic filters (developer-written Ruby filter classes) on a resource's Index view. Use when the user wants to filter, segment, or set a default view for the records on a resource index — e.g. "filter projects by status", "filter users by role", "filter by a date range", "let users build their own ad-hoc filters", "filter by an association", "only show active records by default", "add a tab for admin/active users", "segment orders into paid/unpaid tabs", or "show a count next to each tab". Covers the avo:filter generator, def filters, and the routing table that decides between basic filters, dynamic filters, and scopes. Dynamic filters and scopes are implemented by their own gems and ship their own skills — this skill points at them.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — basic filters are Community; this skill routes to avo-dynamic_filters and avo-scopes, which ship their own skills
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Filter and segment an Avo resource index
 

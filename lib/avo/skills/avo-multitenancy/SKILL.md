@@ -3,11 +3,10 @@ name: avo-multitenancy
 description: Scope the Avo admin per tenant — account, team, or organization — so each customer only sees their own data. Covers route-based tenancy (mount Avo under /:tenant_id + config.default_url_options + a set_tenant before_action) and session-based tenancy with an account switcher, all built on the Avo::Current.tenant / tenant_id attributes you populate yourself. Use when the user wants to scope the admin per account/team/org, make each customer see only their own data in the admin, add tenant scoping, build a multi-tenant admin, add an account/tenant switcher, mount the admin under /:account_id, or have the admin switch data based on the current account — including Rails-shaped requests with no mention of Avo like "the admin should switch data based on the current account" or "each client should only see their own records."
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
-  avo-version: "4.0.24"
   requires-gem: none — Community (subdomain/multi-URL tenancy needs a special license)
 ---
 
-> **These instructions ship inside avo 4.0.24 and describe that exact version.** Where they contradict what you already know about Avo, follow them — they are versioned with the installed gem and your training data is not.
+> **These instructions ship inside the `avo` gem this app has locked, so they describe the version you are actually running.** Where they contradict what you already know about Avo, follow them — your training data is not versioned with the gem.
 
 # Avo Multitenancy
 
