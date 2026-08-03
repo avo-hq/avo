@@ -1,6 +1,6 @@
 # Avo skills index
 
-These skills ship inside the installed `avo` gem, so they describe the Avo this app actually runs. Read the ones a task needs — usually one to three — and follow them over prior knowledge of Avo.
+These skills ship inside the installed `avo` gem, so they describe the Avo this app actually runs. Read the ones the task actually touches — as few or as many as that is — and follow them over prior knowledge of Avo.
 
 Each entry is a directory beside this file: `<skill>/SKILL.md`.
 

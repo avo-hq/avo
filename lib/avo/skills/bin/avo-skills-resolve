@@ -253,4 +253,4 @@ awk -F'|' '
   printf -- '- **%s** — %s\n' "$gem" "$subjects"
 done
 
-printf '\n---\nRead only the skills this task needs, usually one to three. Treat them as authoritative for this app over prior knowledge of Avo.\n'
+printf '\n---\nRead every skill this task actually touches — one that spans resources, fields, filters and actions needs all four. Skip the ones it does not; loading by reflex costs context and dilutes focus. Treat what you read as authoritative for this app over prior knowledge of Avo.\n'

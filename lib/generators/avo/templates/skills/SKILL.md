@@ -51,7 +51,9 @@ The index names each skill and what it covers. Read the `SKILL.md` of every skil
 cat <SKILLS_PATH>/<skill-name>/SKILL.md
 ```
 
-Match on what each entry covers. Load more than one when the task spans them — they compose. Load only what is relevant; typically one to three. Do not read all of them by reflex.
+Match on what each entry covers. They compose, so load every one the task actually touches — building a resource with fields, an association, a filter and a bulk action legitimately needs all of them, and stopping short leaves you guessing at the part you skipped.
+
+The discipline is relevance, not economy: skip what the task does not touch, and never read the whole set by reflex.
 
 The resolver also lists installed packages that ship their own skills, and names the add-on gems this app does **not** have. If a task needs one of those, say which gem provides it rather than describing a feature the app cannot use.
 
