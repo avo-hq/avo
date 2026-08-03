@@ -41,6 +41,8 @@ module Generators
       # removing it. The user gets the command instead.
       GLOBAL_LEGACY_ROOT = "~/.claude/skills"
 
+      class_option :global, type: :boolean,
+        desc: "Install to your home directory instead of this app, so every Avo project on this machine shares one loader"
       class_option :only, type: :string, desc: "Install one target only (#{TARGETS.keys.join(", ")})"
       class_option :path, type: :string, desc: "Install to this directory instead of the default scan paths"
       class_option :clean_legacy, type: :boolean,
@@ -128,11 +130,17 @@ module Generators
           "#{count} skill#{"s" unless count == 1}"
         end
 
+        # Cleanup is scoped to wherever this run installs. A project install must
+        # not delete from the home directory another project may still rely on;
+        # a --global install is exactly the case where home is fair game.
         def legacy_skill_dirs
-          skill_dirs_in(LEGACY_ROOTS.map { File.expand_path(_1, destination_root) })
+          roots = options[:global] ? [File.expand_path(GLOBAL_LEGACY_ROOT)] : LEGACY_ROOTS.map { File.expand_path(_1, destination_root) }
+          skill_dirs_in(roots)
         end
 
         def global_legacy_skill_dirs
+          return [] if options[:global]
+
           skill_dirs_in([File.expand_path(GLOBAL_LEGACY_ROOT)])
         end
 
@@ -152,8 +160,13 @@ module Generators
           dir.delete_prefix("#{File.expand_path(destination_root)}/")
         end
 
+        # The loader holds no per-project state — it finds the app by walking up
+        # from the working directory at run time — so one global copy serves
+        # every Avo project on the machine, each resolving its own lock.
         def destinations
           return [options[:path]] if options[:path].present?
+
+          return roots.map { |target| File.expand_path("~/#{target}") } if options[:global]
 
           if (only = options[:only]).present?
             target = TARGETS[only]
@@ -165,14 +178,25 @@ module Generators
           TARGETS.values
         end
 
+        def roots
+          return [TARGETS.fetch(options[:only])] if options[:only].present? && TARGETS.key?(options[:only])
+
+          TARGETS.values
+        end
+
         # The resolver has exactly one source of truth: the copy inside the gem.
         # It is stamped with the gem version on the way out so the installed copy
         # can tell the user when it has fallen behind.
         def install_resolver(destination)
-          stamped = resolver_source.sub(
-            /^STAMP_VERSION=.*$/,
-            %(STAMP_VERSION="#{::Avo::VERSION}")
-          )
+          # A global copy stays unstamped. The staleness check compares its stamp
+          # against the resolved gem, which is meaningful for one app and pure
+          # noise across four on different versions; the resolver already treats
+          # the unstamped sentinel as "do not warn".
+          stamped = if options[:global]
+            resolver_source
+          else
+            resolver_source.sub(/^STAMP_VERSION=.*$/, %(STAMP_VERSION="#{::Avo::VERSION}"))
+          end
 
           create_file destination, stamped
           chmod destination, 0o755

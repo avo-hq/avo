@@ -90,6 +90,46 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
     targets.each { |target| expect(File).not_to exist Rails.root.join(target, "SKILL.md").to_s }
   end
 
+  describe "--global" do
+    let(:global_targets) { %w[.claude/skills/avo .agents/skills/avo .cursor/skills/avo] }
+
+    around do |example|
+      Dir.mktmpdir("fake-home") do |home|
+        @home = home
+        original = ENV["HOME"]
+        ENV["HOME"] = home
+        example.run
+      ensure
+        ENV["HOME"] = original
+      end
+    end
+
+    it "installs to the home directory, not the app" do
+      generate(["-q", "--skip-avo-version", "--global"])
+
+      global_targets.each { |t| expect(File).to exist File.join(@home, t, "SKILL.md") }
+      global_targets.each { |t| expect(File).not_to exist Rails.root.join(t, "SKILL.md").to_s }
+    end
+
+    # The loader finds the app by walking up from the working directory, so one
+    # copy serves every project. Stamping it would make it report itself stale
+    # in every project whose Avo differs from the one that installed it.
+    it "leaves the resolver unstamped so it cannot cry stale across projects" do
+      generate(["-q", "--skip-avo-version", "--global"])
+
+      resolver = File.read(File.join(@home, ".claude/skills/avo/scripts/avo-skills-resolve"))
+      expect(resolver).to include('STAMP_VERSION="0.0.0-dev"')
+      expect(resolver).not_to include(%(STAMP_VERSION="#{Avo::VERSION}"))
+    end
+
+    it "is otherwise the same file the app install writes" do
+      generate(["-q", "--skip-avo-version", "--global"])
+
+      global = File.read(File.join(@home, ".claude/skills/avo/SKILL.md"))
+      expect(global).to eq File.read(Avo::Engine.root.join("lib/generators/avo/templates/skills/SKILL.md"))
+    end
+  end
+
   describe "legacy cleanup" do
     def plant_legacy(*names, root: ".claude/skills")
       names.map do |name|
