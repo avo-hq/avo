@@ -87,5 +87,5 @@ A pure service object, bug fix, or view tweak has no admin dimension — just do
 ## Notes
 
 - The skills live outside any scanned skills directory, so nothing indexes them and they cost no startup context. This file is the only Avo entry in context until a task actually needs Avo knowledge.
-- They update with `bundle update avo`. There is nothing to copy into this repo and nothing that can drift.
+- They update when the gems do. Use `bin/rails avo:update`, which bumps avo **and every installed Avo add-on** together — `bundle update avo` moves core only, leaving each add-on's skills on the version it was already pinned to. There is nothing to copy into this repo and nothing that can drift.
 - Re-run `rails g avo:skills` after upgrading Avo to refresh this loader — the resolver warns when its own copy is older than the gem.
