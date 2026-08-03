@@ -132,7 +132,8 @@ RSpec.describe "avo-skills-resolve" do
 
       expect(status).not_to eq 0
       expect(out).to include("skills_not_shipped")
-      expect(out).to match(/Skills ship from avo \d+\.\d+\.\d+ onward/)
+      expect(out).to include("3.9.0")
+      expect(out).to match(/avo:update/)
     end
   end
 

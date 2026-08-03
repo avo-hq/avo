@@ -22,7 +22,6 @@ set -uo pipefail
 # compares it against the gem it resolves and warns on drift.
 STAMP_VERSION="0.0.0-dev"
 
-MIN_SKILLS_VERSION="4.1.0"
 
 QUIET=0
 [ "${1:-}" = "--quiet" ] && QUIET=1
@@ -190,8 +189,12 @@ AVO_SECTION="$(lock_section_of avo)"
 SKILLS_ROOT="$AVO_PATH/lib/avo/skills"
 PACKAGE_MAP="$SKILLS_ROOT/package-map.md"
 
+# Reachable because the deprecated avo-hq/skills channel hands the pointer to
+# everyone, including apps whose Avo predates gem-shipped skills. No minimum
+# version is named: this file is copied into the app and cannot be updated when
+# a release number turns out differently than planned.
 [ -f "$SKILLS_ROOT/index.md" ] || fail skills_not_shipped \
-  "avo $AVO_VERSION does not ship agent skills. Skills ship from avo $MIN_SKILLS_VERSION onward — upgrade, or use the documentation at https://docs.avohq.io. Do not answer from prior knowledge of Avo."
+  "avo $AVO_VERSION does not ship agent skills. Run 'bin/rails avo:update' to get a version that does, then re-run 'rails g avo:skills'. Until then use the documentation at https://docs.avohq.io — do not answer from prior knowledge of Avo."
 
 # The map is the trust boundary as well as the miss-path lookup: 'avo-' on
 # rubygems.org is an unreserved namespace, and loaded skill text becomes
