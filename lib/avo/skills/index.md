@@ -45,7 +45,7 @@ Each entry is a directory beside this file: `<skill>/SKILL.md`.
 
 | Skill | Covers |
 | --- | --- |
-| `avo-aware` | Keep the admin in sync when a Rails model changes, even when the request never mentions Avo |
+| `avo-aware` | Map a Rails change onto the admin surface it affects, and route the edit — the loader decides when this applies |
 | `avo-troubleshoot` | Diagnose a broken or misbehaving Avo app, organized by symptom |
 
 ## Package-owned skills
