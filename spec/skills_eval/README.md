@@ -35,6 +35,12 @@ Fresh sessions matter. Once the loader has fired in a session its content is in 
 
 | Date | Avo version | Trigger | Prior conflict | False triggers | Notes |
 | --- | --- | --- | --- | --- | --- |
-| _not yet run_ | | | | | |
+| 2026-08-03 | 4.0.24 (branch) | **14/15 (93%)** | 3/3 fired — diffs unscored | **0/4** | `claude -p` in `spec/dummy`. The one miss was #11 "make this board drag-and-drop": the app has no board, and the agent correctly asked which one rather than guessing. Corpus defect, not a trigger failure. Prior-conflict prompts all fired; whether each *followed* the loaded text still needs a human reading the diffs. |
+
+### Notes on running it
+
+`claude -p` denies Bash by default, so a run without `--allowedTools "Bash,Read,Glob,Grep,Skill"` reports every prompt as a miss — the loader triggers, then cannot execute the resolver. That failure is indistinguishable from a real one in the log. The first attempt at this eval lost 11 results to it.
+
+Trigger and false-trigger rates are mechanical and can be automated. **Prior-conflict cannot**: it asks whether the produced diff followed the shipped instructions or the model's priors, which needs someone reading the output who is not the author of the skill.
 
 **The legacy `avo-hq/skills` catalog must not be removed until this table has a passing row.** Removing it is the irreversible step, and this is the only evidence that bears on whether the replacement works.
