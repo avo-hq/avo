@@ -86,6 +86,96 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
     targets.each { |target| expect(File).not_to exist Rails.root.join(target, "SKILL.md").to_s }
   end
 
+  describe "legacy cleanup" do
+    def plant_legacy(*names, root: ".claude/skills")
+      names.map do |name|
+        dir = Rails.root.join(root, name)
+        FileUtils.mkdir_p(dir)
+        File.write(dir.join("SKILL.md"), "---\nname: #{name}\n---\n")
+        dir
+      end
+    end
+
+    it "removes a leftover catalog when asked" do
+      stale = plant_legacy("avo-fields", "avo-kanban")
+      generate(["-q", "--skip-avo-version", "--clean-legacy"])
+
+      stale.each { |dir| expect(Dir).not_to exist dir.to_s }
+    end
+
+    it "leaves the loader it just installed alone" do
+      plant_legacy("avo-fields")
+      generate(["-q", "--skip-avo-version", "--clean-legacy"])
+
+      expect(File).to exist Rails.root.join(".claude/skills/avo/SKILL.md").to_s
+    end
+
+    it "keeps leftovers when told not to clean" do
+      stale = plant_legacy("avo-fields")
+      generate(["-q", "--skip-avo-version", "--no-clean-legacy"])
+
+      stale.each { |dir| expect(Dir).to exist dir.to_s }
+    end
+
+    # A `rm -rf` driven by a name glob alone is not something to hand a user.
+    it "ignores an avo-prefixed directory that is not a skill" do
+      unrelated = Rails.root.join(".claude/skills/avo-notes")
+      FileUtils.mkdir_p(unrelated)
+      File.write(unrelated.join("README.md"), "not a skill")
+
+      generate(["-q", "--skip-avo-version", "--clean-legacy"])
+
+      expect(Dir).to exist unrelated.to_s
+    end
+
+    it "cleans every scan directory, not just Claude's" do
+      stale = %w[.claude/skills .agents/skills .cursor/skills].flat_map { plant_legacy("avo-fields", root: _1) }
+      generate(["-q", "--skip-avo-version", "--clean-legacy"])
+
+      stale.each { |dir| expect(Dir).not_to exist dir.to_s }
+    end
+
+    it "does not prompt in quiet mode and keeps the files" do
+      stale = plant_legacy("avo-fields")
+      generate
+
+      stale.each { |dir| expect(Dir).to exist dir.to_s }
+    end
+
+    # ~/.claude/skills is shared by every project on the machine. A generator run
+    # inside one app must not delete from it — another app may still want those
+    # skills, and a test suite must never be able to wipe a real home directory.
+    it "never deletes from the shared home skills directory" do
+      home_skills = File.expand_path("~/.claude/skills")
+
+      expect(FileUtils).not_to receive(:rm_rf).with(a_string_starting_with(home_skills))
+
+      plant_legacy("avo-fields")
+      generate(["-q", "--skip-avo-version", "--clean-legacy"])
+    end
+
+    it "reports home leftovers instead of removing them" do
+      generator = Generators::Avo::SkillsGenerator.new([], ["--skip-avo-version"], destination_root: Rails.root)
+      allow(generator).to receive(:global_legacy_skill_dirs)
+        .and_return([File.expand_path("~/.claude/skills/avo-fields")])
+      allow(generator).to receive(:legacy_skill_dirs).and_return([])
+
+      output = capture_generator_output { generator.clean_legacy_skills }
+
+      expect(output).to match(/Not removing those/)
+      expect(output).to include("~/.claude/skills/avo-fields")
+    end
+
+    def capture_generator_output
+      original = $stdout
+      $stdout = StringIO.new
+      yield
+      $stdout.string
+    ensure
+      $stdout = original
+    end
+  end
+
   describe "the installed loader" do
     subject(:body) { File.read(Rails.root.join(".claude/skills/avo/SKILL.md")) }
 
@@ -110,11 +200,11 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
       expect(body).to include("Report and stop.")
     end
 
-    it "names every location a legacy global install can hide in" do
-      expect(body).to include(".claude/skills/avo-*")
-      expect(body).to include(".agents/skills/avo-*")
-      expect(body).to include(".cursor/skills/avo-*")
-      expect(body).to include("~/.claude/skills/avo-*")
+    # Legacy cleanup is the generator's job now, not something the model has to
+    # remember to check on every invocation.
+    it "carries no legacy-cleanup instructions" do
+      expect(body).not_to match(/Remove any older global install/i)
+      expect(body).not_to include("skills/avo-*")
     end
 
     it "names each resolver error token so the agent can act on it" do
