@@ -302,7 +302,7 @@ module Avo
       self
     end
 
-    def reload_record(records)
+    def reload_record(records = @query)
       # Force close modal to avoid default redirect to
       # Redirect is 100% not wanted when using reload_record
       close_modal
