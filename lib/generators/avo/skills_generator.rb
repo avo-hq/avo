@@ -1,4 +1,5 @@
 require_relative "base_generator"
+require_relative "skills_install_panel"
 
 module Generators
   module Avo
@@ -44,15 +45,20 @@ module Generators
       class_option :global, type: :boolean,
         desc: "Install to your home directory instead of this app, so every Avo project on this machine shares one loader"
       class_option :only, type: :string, desc: "Install one target only (#{TARGETS.keys.join(", ")})"
+      class_option :panel, type: :boolean, default: true,
+        desc: "Show the interactive install panel (skipped automatically without a TTY, or when --global/--only is given)"
       class_option :path, type: :string, desc: "Install to this directory instead of the default scan paths"
       class_option :clean_legacy, type: :boolean,
         desc: "Remove skills left by a pre-gem install of avo-hq/skills (skips the prompt either way)"
 
       def install_loader
-        destinations.each do |destination|
-          copy_file "skills/SKILL.md", File.join(destination, "SKILL.md")
-          install_resolver File.join(destination, "scripts", "avo-skills-resolve")
-        end
+        return if panel_cancelled?
+
+        # Only the loader is written. The resolver stays inside the gem, where
+        # `bundle update` refreshes it and it cannot drift; a copy in the app
+        # would be one more file to keep in sync, and 250 lines of shell in
+        # someone's repo is a reasonable thing to be suspicious of.
+        destinations.each { |destination| copy_file "skills/SKILL.md", File.join(destination, "SKILL.md") }
       end
 
       # A leftover catalog sits in the same scan directories as the loader and
@@ -134,12 +140,12 @@ module Generators
         # not delete from the home directory another project may still rely on;
         # a --global install is exactly the case where home is fair game.
         def legacy_skill_dirs
-          roots = options[:global] ? [File.expand_path(GLOBAL_LEGACY_ROOT)] : LEGACY_ROOTS.map { File.expand_path(_1, destination_root) }
+          roots = global_install? ? [File.expand_path(GLOBAL_LEGACY_ROOT)] : LEGACY_ROOTS.map { File.expand_path(_1, destination_root) }
           skill_dirs_in(roots)
         end
 
         def global_legacy_skill_dirs
-          return [] if options[:global]
+          return [] if global_install?
 
           skill_dirs_in([File.expand_path(GLOBAL_LEGACY_ROOT)])
         end
@@ -166,7 +172,7 @@ module Generators
         def destinations
           return [options[:path]] if options[:path].present?
 
-          return roots.map { |target| File.expand_path("~/#{target}") } if options[:global]
+          return roots.map { |target| File.expand_path("~/#{target}") } if global_install?
 
           if (only = options[:only]).present?
             target = TARGETS[only]
@@ -180,24 +186,44 @@ module Generators
 
         def roots
           return [TARGETS.fetch(options[:only])] if options[:only].present? && TARGETS.key?(options[:only])
+          return panel_choice.targets.map { |key| TARGETS.fetch(key) } if panel_choice
 
           TARGETS.values
         end
 
-        # Copied verbatim. The resolver compares itself against the gem's copy by
-        # content at run time, so there is nothing to stamp — and a global
-        # install needs no special case.
-        def install_resolver(destination)
-          create_file destination, resolver_source
-          chmod destination, 0o755
+        # Shown once, memoized, and only when the user has not already answered
+        # with flags. Without a TTY there is nobody to answer, so the defaults
+        # stand and the install is silent.
+        def panel_choice
+          return @panel_choice if defined?(@panel_choice)
+
+          @panel_choice = if skip_panel?
+            nil
+          else
+            SkillsInstallPanel.new.run
+          end
         end
 
-        def resolver_source
-          @resolver_source ||= File.read(resolver_path)
+        def skip_panel?
+          options[:panel] == false ||
+            options[:quiet] ||
+            options[:path].present? ||
+            options[:only].present? ||
+            !options[:global].nil? ||
+            !SkillsInstallPanel.interactive?
         end
 
-        def resolver_path
-          File.expand_path("../../avo/skills/bin/avo-skills-resolve", __dir__)
+        def panel_cancelled?
+          return false unless panel_choice&.cancelled?
+
+          say "Cancelled. Nothing was installed.", :yellow
+          true
+        end
+
+        def global_install?
+          return options[:global] unless options[:global].nil?
+
+          panel_choice&.scope == "global"
         end
       end
     end

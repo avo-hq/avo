@@ -7,7 +7,6 @@ require "generators/avo/skills_generator"
 
 RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
   let(:targets) { %w[.claude/skills/avo .agents/skills/avo .cursor/skills/avo] }
-  let(:gem_resolver) { Avo::Engine.root.join("lib", "avo", "skills", "bin", "avo-skills-resolve") }
 
   def generate(args = ["-q", "--skip-avo-version"])
     Rails::Generators.invoke("avo:skills", args, {destination_root: Rails.root})
@@ -22,48 +21,37 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
   it "installs the loader into every scan path" do
     generate
 
-    targets.each do |target|
-      expect(File).to exist Rails.root.join(target, "SKILL.md").to_s
-      expect(File).to exist Rails.root.join(target, "scripts", "avo-skills-resolve").to_s
-    end
+    targets.each { |target| expect(File).to exist Rails.root.join(target, "SKILL.md").to_s }
   end
 
-  it "installs an executable resolver" do
+  # 250 lines of shell in someone's repo is a fair thing to be suspicious of,
+  # and a copy is one more artifact that can drift. The resolver stays in the
+  # gem; the loader tells the agent how to reach it.
+  it "installs nothing but the SKILL.md" do
     generate
 
     targets.each do |target|
-      expect(File).to be_executable Rails.root.join(target, "scripts", "avo-skills-resolve").to_s
+      installed = Dir.glob(Rails.root.join(target, "**", "*"), File::FNM_DOTMATCH).select { File.file?(_1) }
+
+      expect(installed.map { File.basename(_1) }).to eq ["SKILL.md"]
     end
   end
 
   it "copies rather than symlinks, so bundle update cannot break the link" do
     generate
 
-    targets.each do |target|
-      expect(File).not_to be_symlink Rails.root.join(target, "SKILL.md").to_s
-      expect(File).not_to be_symlink Rails.root.join(target, "scripts", "avo-skills-resolve").to_s
-    end
+    targets.each { |target| expect(File).not_to be_symlink Rails.root.join(target, "SKILL.md").to_s }
   end
 
-  # Byte-identical, which is what lets the resolver detect its own staleness by
-  # comparing content instead of carrying a version.
-  it "installs the resolver verbatim" do
+  it "refreshes an edited loader when re-run" do
     generate
 
-    installed = File.read(Rails.root.join(".claude/skills/avo/scripts/avo-skills-resolve"))
-
-    expect(installed).to eq File.read(gem_resolver)
-  end
-
-  it "refreshes an edited copy when re-run" do
-    generate
-
-    resolver = Rails.root.join(".claude/skills/avo/scripts/avo-skills-resolve")
-    File.write(resolver, "# stale local edit\n")
+    loader = Rails.root.join(".claude/skills/avo/SKILL.md")
+    File.write(loader, "# stale local edit
+")
     generate(["-q", "--skip-avo-version", "--force"])
 
-    expect(File.read(resolver)).to eq File.read(gem_resolver)
-    expect(File.read(resolver)).not_to include("stale local edit")
+    expect(File.read(loader)).to eq File.read(Avo::Engine.root.join("lib/generators/avo/templates/skills/SKILL.md"))
   end
 
   it "installs one target only with --only" do
@@ -113,13 +101,6 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
 
     # One copy serves every project, so it must be the same bytes the gem ships —
     # otherwise it would report itself stale everywhere.
-    it "installs the same verbatim resolver as an app install" do
-      generate(["-q", "--skip-avo-version", "--global"])
-
-      expect(File.read(File.join(@home, ".claude/skills/avo/scripts/avo-skills-resolve")))
-        .to eq File.read(gem_resolver)
-    end
-
     it "is otherwise the same file the app install writes" do
       generate(["-q", "--skip-avo-version", "--global"])
 
@@ -285,6 +266,16 @@ RSpec.feature "skills generator", type: :feature, acquire_lock: :generator do
 
       expect(description).to be_present
       expect(description.length).to be <= 1024
+    end
+
+    it "teaches the agent how to find the gem" do
+      expect(body).to match(/bundle show avo/)
+      expect(body).to match(/gem which avo/)
+      expect(body).to match(%r{lib/avo/skills/bin/avo-skills-resolve})
+    end
+
+    it "warns that gem which can return the wrong version" do
+      expect(body).to match(/different version than this app locked/)
     end
 
     it "tells the agent to stop on a resolver error rather than fall back on priors" do

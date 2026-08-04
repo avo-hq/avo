@@ -196,20 +196,7 @@ allowlisted() {
   grep -qE "^\| \`$1\` \|" "$PACKAGE_MAP"
 }
 
-# --- 6. Staleness of this copy ----------------------------------------------
-#
-# Compared by content, not by version. What matters is whether this copy still
-# behaves like the one the gem ships — and two Avo releases with an unchanged
-# resolver are not drift. A version comparison would warn after every routine
-# upgrade, and a warning that fires constantly stops being read.
-
-CANONICAL="$AVO_PATH/lib/avo/skills/bin/avo-skills-resolve"
-if [ -f "$CANONICAL" ] && ! cmp -s "$0" "$CANONICAL"; then
-  warn resolver_stale \
-    "this copy of the resolver differs from the one in avo $AVO_VERSION. Run 'rails g avo:skills' to refresh it."
-fi
-
-# --- 7. Emit ----------------------------------------------------------------
+# --- 6. Emit ----------------------------------------------------------------
 
 printf '# Avo skills for this app\n\n'
 printf 'avo %s' "$AVO_VERSION"
