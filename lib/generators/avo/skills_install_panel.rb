@@ -2,97 +2,184 @@ require "io/console"
 
 module Generators
   module Avo
-    # A small keyboard-driven panel for `rails g avo:skills`.
+    # The `rails g avo:skills` install flow: one question per screen, answered
+    # up front, then the generator runs to completion without interrupting.
     #
-    # Two groups with different semantics: scope is a radio (this app OR the
-    # machine), targets are checkboxes (any combination of scan directories).
-    # Written against io/console from stdlib rather than a prompt gem, because
-    # avo is a dependency of other people's apps and a TUI is not worth adding
-    # one for.
+    # Two screen kinds. A :radio moves its selection with the arrows, so
+    # down-then-enter picks the second option — pressing space to commit a
+    # highlighted row is a step people miss. A :checkbox has an independent
+    # state per row, so there space is the toggle and the arrows only move.
     #
-    # Falls back to defaults whenever there is no interactive terminal, so
-    # `-q`, CI, and piped invocations behave predictably. Callers pass explicit
-    # flags to skip the panel entirely.
+    # Written against io/console from stdlib rather than a prompt gem: avo is a
+    # dependency of other people's apps, and a TUI is not worth adding one for.
     class SkillsInstallPanel
-      SCOPES = [
-        {key: "local", label: "This app", hint: "committed, so the whole team gets it"},
-        {key: "global", label: "This machine", hint: "one install, every Avo project"}
-      ].freeze
+      # `visible_when` takes the answers so far, so a screen that only makes
+      # sense given an earlier answer is skipped rather than asked pointlessly.
+      # `summary` takes them too, and renders above the options — how the final
+      # confirm screen shows what it is about to do.
+      Screen = Struct.new(:key, :kind, :title, :hint, :options, :visible_when, :summary)
+      Option = Struct.new(:key, :label, :hint, :recommended)
 
-      TARGETS = [
-        {key: "claude", label: ".claude/skills", hint: "Claude Code"},
-        {key: "agents", label: ".agents/skills", hint: "Codex, Gemini CLI, Goose, Amp, OpenCode"},
-        {key: "cursor", label: ".cursor/skills", hint: "Cursor"}
-      ].freeze
-
-      Result = Struct.new(:scope, :targets, :cancelled) do
+      Result = Struct.new(:answers, :cancelled) do
         def cancelled? = !!cancelled
+
+        def [](key) = answers[key]
       end
 
       def self.interactive?
         $stdin.tty? && $stdout.tty?
       end
 
-      def initialize(input: $stdin, output: $stdout)
+      # `defaults` seeds each screen, including one that never becomes visible —
+      # its default is then simply the answer.
+      def initialize(screens, defaults: {}, input: $stdin, output: $stdout)
+        @screens = screens
         @input = input
         @output = output
-        @scope = 0
-        @targets = TARGETS.map { |t| [t[:key], true] }.to_h
-        @cursor = 0
-        @rows_drawn = 0
+        @answers = {}
+        @screens.each { |s| @answers[s.key] = defaults.fetch(s.key) { initial_for(s) } }
       end
 
-      # Rows are the two scopes then the three targets, so one cursor walks
-      # both groups and the whole panel is arrow-navigable.
-      def rows
-        SCOPES.length + TARGETS.length
-      end
-
+      # `step` carries the direction, so a skipped screen is stepped over the
+      # way it was entered — otherwise going back would walk into it forwards.
       def run
-        render
-        loop do
-          case read_key
-          when :up then move(-1)
-          when :down then move(1)
-          when :space then toggle
-          when :enter then return finish
-          when :cancel then return cancel
+        index = 0
+        step = 1
+
+        while index < @screens.length
+          screen = @screens[index]
+          unless visible?(screen)
+            index += step
+            next
           end
-          render
+
+          case ask(screen, first: first_visible?(index))
+          when :back then step = -1
+          when :cancel then return Result.new({}, true)
+          else step = 1
+          end
+          index += step
         end
+
+        Result.new(@answers, false)
       end
 
       private
 
+      def visible?(screen) = screen.visible_when.nil? || screen.visible_when.call(@answers)
+
+      # Back is only offered when there is an earlier screen still worth
+      # returning to, so a hidden first screen does not strand the user.
+      def first_visible?(index) = @screens[0...index].none? { visible?(_1) }
+
       attr_reader :input, :output
 
-      def move(delta)
-        @cursor = (@cursor + delta) % rows
-      end
-
-      def toggle
-        if @cursor < SCOPES.length
-          @scope = @cursor
+      def initial_for(screen)
+        if screen.kind == :radio
+          (screen.options.find(&:recommended) || screen.options.first).key
         else
-          key = TARGETS[@cursor - SCOPES.length][:key]
-          # Refuse to empty the set: an install with no target writes nothing
-          # and looks like a silent no-op.
-          @targets[key] = !@targets[key] unless @targets[key] && selected_targets.length == 1
+          screen.options.map(&:key)
         end
       end
 
-      def selected_targets
-        TARGETS.map { |t| t[:key] }.select { |k| @targets[k] }
+      def ask(screen, first:)
+        cursor = start_cursor(screen)
+        rows = 0
+
+        loop do
+          rows = draw(screen, cursor, rows, first: first)
+
+          case read_key
+          when :up then cursor = (cursor - 1) % screen.options.length
+          when :down then cursor = (cursor + 1) % screen.options.length
+          when :space then toggle(screen, cursor)
+          when :enter then return commit(screen, cursor, rows)
+          when :back then (return erase(rows) { :back }) unless first
+          when :cancel then return erase(rows) { :cancel }
+          end
+
+          # A radio's selection follows the cursor, so moving is choosing and
+          # enter alone is enough.
+          @answers[screen.key] = screen.options[cursor].key if screen.kind == :radio
+        end
       end
 
-      def finish
-        clear
-        Result.new(SCOPES[@scope][:key], selected_targets, false)
+      def start_cursor(screen)
+        return 0 unless screen.kind == :radio
+
+        screen.options.index { |o| o.key == @answers[screen.key] } || 0
       end
 
-      def cancel
-        clear
-        Result.new(nil, [], true)
+      def toggle(screen, cursor)
+        return if screen.kind == :radio
+
+        key = screen.options[cursor].key
+        selected = @answers[screen.key]
+        # Refuse to empty the set: installing nowhere writes nothing and reads
+        # as a silent no-op.
+        return if selected == [key]
+
+        @answers[screen.key] = selected.include?(key) ? selected - [key] : selected + [key]
+        @answers[screen.key] = screen.options.map(&:key).select { |k| @answers[screen.key].include?(k) }
+      end
+
+      def commit(screen, cursor, rows)
+        @answers[screen.key] = screen.options[cursor].key if screen.kind == :radio
+        erase(rows) { :next }
+      end
+
+      def erase(rows)
+        output.print("\e[#{rows}A\e[J") if rows.positive?
+        yield
+      end
+
+      def draw(screen, cursor, previous_rows, first:)
+        output.print("\e[#{previous_rows}A\e[J") if previous_rows.positive?
+
+        lines = ["", "  #{bold(screen.title)}"]
+        lines << "  #{dim(screen.hint)}" if screen.hint
+        lines << ""
+
+        if screen.summary
+          screen.summary.call(@answers).each { |line| lines << "    #{line}" }
+          lines << ""
+        end
+
+        screen.options.each_with_index do |option, i|
+          lines << option_row(screen, option, i, cursor)
+        end
+
+        lines << ""
+        lines << "  #{dim(keys_hint(screen, first: first))}"
+        lines << ""
+
+        output.print(lines.join("\n") + "\n")
+        lines.length
+      end
+
+      def option_row(screen, option, index, cursor)
+        marker =
+          if screen.kind == :radio
+            (@answers[screen.key] == option.key) ? "(•)" : "( )"
+          else
+            @answers[screen.key].include?(option.key) ? "[x]" : "[ ]"
+          end
+
+        label = option.label
+        label += " #{dim("(recommended)")}" if option.recommended
+        text = "#{(cursor == index) ? "›" : " "} #{marker} #{label}"
+        text += "  #{dim(option.hint)}" if option.hint
+
+        (cursor == index) ? "  #{bold(text)}" : "  #{text}"
+      end
+
+      def keys_hint(screen, first:)
+        parts = ["↑↓ move"]
+        parts << "space toggle" if screen.kind == :checkbox
+        parts << "enter continue"
+        parts << "← back" unless first
+        parts << "q cancel"
+        parts.join("   ")
       end
 
       def read_key
@@ -100,70 +187,37 @@ module Generators
         case char
         when "\r", "\n" then :enter
         when " " then :space
-        when "", "q", "\e" then escape_or_cancel(char)
+        # nil is EOF: stdin closed, or a test keyboard ran dry. Treat it as
+        # cancel rather than spinning on it forever.
+        when nil, "q", "\u0003", "\u0004" then :cancel
+        when "\e" then escape_sequence
         else :none
         end
       rescue Interrupt
         :cancel
       end
 
-      # An arrow key arrives as ESC [ A. A bare ESC means cancel, so peek at
-      # what follows before deciding.
-      def escape_or_cancel(char)
-        return :cancel unless char == "\e"
+      # Arrows arrive as ESC [ A. A bare ESC cancels, so peek before deciding.
+      def escape_sequence
         return :cancel unless input.respond_to?(:read_nonblock)
 
         begin
           seq = input.read_nonblock(2)
-        rescue IO::WaitReadable, EOFError, Errno::EAGAIN
+        rescue IO::WaitReadable, EOFError, Errno::EAGAIN, Errno::EWOULDBLOCK
           return :cancel
         end
 
         case seq
         when "[A" then :up
         when "[B" then :down
+        when "[D" then :back
         else :none
         end
       end
 
-      def clear
-        output.print("\e[#{@rows_drawn}A\e[J") if @rows_drawn.positive?
-        @rows_drawn = 0
-      end
+      def bold(text) = "\e[1m#{text}\e[0m"
 
-      def render
-        clear
-        lines = []
-        lines << ""
-        lines << "  Install the Avo skills loader"
-        lines << ""
-        lines << "  #{dim("Where")}"
-        SCOPES.each_with_index do |scope, i|
-          lines << row(i, (@scope == i) ? "(•)" : "( )", scope[:label], scope[:hint])
-        end
-        lines << ""
-        lines << "  #{dim("Which agents")}"
-        TARGETS.each_with_index do |target, i|
-          lines << row(SCOPES.length + i, @targets[target[:key]] ? "[x]" : "[ ]", target[:label], target[:hint])
-        end
-        lines << ""
-        lines << "  #{dim("↑↓ move   space select   enter install   q cancel")}"
-        lines << ""
-
-        output.print(lines.join("\n") + "\n")
-        @rows_drawn = lines.length
-      end
-
-      def row(index, marker, label, hint)
-        active = @cursor == index
-        pointer = active ? "›" : " "
-        text = "#{pointer} #{marker} #{label.ljust(16)} #{dim(hint)}"
-        active ? "  \e[1m#{text}\e[0m" : "  #{text}"
-      end
-
-      def dim(text)
-        "\e[2m#{text}\e[0m"
-      end
+      def dim(text) = "\e[2m#{text}\e[0m"
     end
   end
 end
