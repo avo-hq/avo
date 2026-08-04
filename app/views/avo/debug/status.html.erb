@@ -3,9 +3,3 @@
 <% else %>
   <%= render Avo::Debug::StatusComponent.new %>
 <% end %>
-
-<%# DEBUG: temporary telemetry metadata dump — do not push %>
-<div class="mt-4 p-4 bg-primary text-content border border-tertiary rounded-sm overflow-auto text-sm">
-  <div class="font-semibold mb-2">avo_metadata (debug)</div>
-  <%= raw Avo::Services::TelemetryService.avo_metadata.ai(html: true) %>
-</div>

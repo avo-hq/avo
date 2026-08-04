@@ -50,4 +50,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "docile"
   spec.add_dependency "prop_initializer", ">= 0.3.0"
   spec.add_dependency "avo-icons", ">= 0.1.2"
+  # Default gem on Ruby 3.3+, but we still support 3.2 — declare it.
+  spec.add_dependency "prism", ">= 0.24"
 end

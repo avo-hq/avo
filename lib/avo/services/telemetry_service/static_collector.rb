@@ -273,7 +273,7 @@ module Avo
         end
 
         unless const_defined?(:Result)
-          Result = Struct.new(:kind, :class_name, :model_class, :kanban_view, :fields_count, :field_types, :actions, :filters, keyword_init: true)
+          Result = Struct.new(:kind, :class_name, :model_class, :kanban_view, :fields_count, :field_types, :actions, :filters)
         end
       end
     end

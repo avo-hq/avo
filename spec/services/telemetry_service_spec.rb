@@ -35,19 +35,19 @@ RSpec.describe Avo::Services::TelemetryService do
   end
 
   describe ".plugins_metadata" do
-    def plugin_double(gem_name:, name:, gem_version:)
-      instance_double(Avo::Plugin, gem_name: gem_name, name: name, gem_version: gem_version)
+    def plugin_double(gem_name:, name:, version:)
+      instance_double(Avo::Plugin, gem_name: gem_name, name: name, version: version)
     end
 
     it "maps registered plugins to their resolved gem name and version" do
-      plugin = plugin_double(gem_name: "avo-kanban", name: "avo-kanban", gem_version: "4.0.0")
+      plugin = plugin_double(gem_name: "avo-kanban", name: "avo-kanban", version: "4.0.0")
       allow(Avo.plugin_manager).to receive(:all).and_return([plugin])
 
       expect(described_class.plugins_metadata).to eq([{name: "avo-kanban", version: "4.0.0"}])
     end
 
     it "falls back to the registration name when the gem can't be resolved" do
-      plugin = plugin_double(gem_name: nil, name: :rhino, gem_version: nil)
+      plugin = plugin_double(gem_name: nil, name: :rhino, version: nil)
       allow(Avo.plugin_manager).to receive(:all).and_return([plugin])
 
       expect(described_class.plugins_metadata).to eq([{name: "rhino", version: nil}])
