@@ -18,7 +18,7 @@
             turbo_frame: Avo::MODAL_FRAME_ID,
             target: :attach
           } do %>
-          <%= t("avo.attach_item", item: @field.name.humanize(capitalize: false)) %>
+          <%= t("avo.attach_item", item: @field.sentence_name) %>
         <% end %>
       <% end %>
 
@@ -29,7 +29,7 @@
           "data-turbo-frame": "_top",
           style: :primary,
           color: :accent do %>
-          <%= t("avo.create_new_item", item: @field.name.humanize(capitalize: false)) %>
+          <%= t("avo.create_new_item", item: @field.sentence_name) %>
         <% end %>
       <% end %>
     <% end %>

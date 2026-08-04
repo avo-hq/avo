@@ -50,13 +50,29 @@ class Avo::Resources::Product < Avo::BaseResource
         field :title, as: :text, html: {
           show: {
             label: {
-              classes: "bg-gray-50 !text-pink-600"
+              classes: "bg-gray-50 !text-pink-600",
+              style: "letter-spacing: 0.5px;",
+              data: {show_label_marker: "title"}
             },
             content: {
-              classes: "bg-gray-50 !text-pink-600"
+              classes: "bg-gray-50 !text-pink-600",
+              style: "letter-spacing: 1px;",
+              data: {show_content_marker: "title"}
             },
             wrapper: {
               classes: "bg-gray-50"
+            }
+          },
+          edit: {
+            label: {
+              classes: "bg-gray-100 !text-blue-600",
+              style: "letter-spacing: 1.5px;",
+              data: {edit_label_marker: "title"}
+            },
+            content: {
+              classes: "bg-gray-100 !text-blue-600",
+              style: "letter-spacing: 2px;",
+              data: {edit_content_marker: "title"}
             }
           }
         }

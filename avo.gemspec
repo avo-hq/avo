@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
       "public gem pushes."
   end
 
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = ">= 3.2.0"
   spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
   # NOTE: `public/` is rejected below — Avo 4 ships precompiled assets from

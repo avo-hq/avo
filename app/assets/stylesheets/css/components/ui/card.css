@@ -14,28 +14,16 @@
   overflow-x: clip;
 }
 
-/* Card variants */
-.card--default {
-  /* Default styling already applied */
-}
+/* Card modifiers. Combine as needed via the `class` option. */
 
-.card--compact {
-  /* Compact variant - smaller spacing */
+/* Tightens the wrapper padding around the card's contents. */
+.card--compact-wrapper {
   .card__wrapper {
     @apply p-0.5;
   }
-
-  .card__header {
-    @apply py-2 px-3;
-  }
 }
 
-.card--full-width {
-  /* Full width variant */
-  @apply w-full;
-}
-
-/* Padded variant. `.card__body` ships unpadded so wide content (tables,
+/* Padded modifier. `.card__body` ships unpadded so wide content (tables,
    scrollers) can sit flush to the card edge. Add `card--padded` to a card whose
    body holds free-form content (custom tools, forms, prose) that should get the
    standard card padding. Usage: `panel.with_card(class: "card--padded")`. */
@@ -77,9 +65,33 @@
   }
 }
 
-.card--compact-header {
+/* Header compaction is split per axis so a card can shorten its header without
+   also narrowing it. Compose the two when you want both. */
+.card--compact-header-y {
   .card__header {
-    @apply py-1 px-2;
+    @apply py-1;
+  }
+
+  /* Most of a header's height is leading, not padding, so the title is
+     tightened here too. Scoped to the modifier so cards without it keep the
+     design system's leading; the description keeps the base value. */
+  .card__title {
+    @apply leading-normal;
+  }
+}
+
+.card--compact-header-x {
+  .card__header {
+    @apply px-2;
+  }
+
+  /* A header holding a control pulls its end padding in so the control sits
+     near the edge, keeping a hair of breathing room. This has to be repeated
+     here because `.card--compact-header-x .card__header` (0,2,0) outranks the
+     base `.card__header:has(select)` (0,1,1) that sets it. */
+  .card__header:has(select),
+  .card__header:has(.button) {
+    @apply pe-1;
   }
 }
 
@@ -110,9 +122,5 @@
 @media (max-width: 768px) {
   .card__header {
     @apply py-2 px-3;
-  }
-
-  .card--compact .card__header {
-    @apply py-1 px-2;
   }
 }

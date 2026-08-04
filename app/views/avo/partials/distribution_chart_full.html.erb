@@ -3,7 +3,7 @@
 <% end %>
 
 <%= render ui.panel(
-  title: "#{@resource.plural_name.humanize} summary",
+  title: "#{@resource.plural_name} summary",
   description: "Distribution by \"#{@field_id.to_s.humanize.downcase}\""
 ) do |panel| %>
   <% panel.with_controls do %>

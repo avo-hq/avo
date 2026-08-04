@@ -37,6 +37,16 @@ module UI
     def default
       render_with_template(template: "u_i/dropdown_component_preview/default")
     end
+
+    # Popover dropdown with an inline search input that filters the items
+    def searchable
+      render_with_template(template: "u_i/dropdown_component_preview/searchable")
+    end
+
+    # Popover dropdown with a footer row pinned under the (filterable) list
+    def with_footer
+      render_with_template(template: "u_i/dropdown_component_preview/with_footer")
+    end
     # @!endgroup
   end
 end

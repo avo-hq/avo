@@ -64,6 +64,7 @@ ua:
     attachment_class_detached: "%{attachment_class} відкріплено."
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
+    back_to_top: Назад до верху
     cancel: Скасувати
     checkbox_list:
       hidden_selections:
@@ -180,6 +181,8 @@ ua:
     remove_selection: Видалити вибір
     reset: Скинути
     reset_filters: Скинути фільтри
+    resize_sidebar: Змінити розмір бічної панелі
+    resize_sidebar_hint: Перетягніть, щоб змінити розмір бічної панелі. Двічі клацніть, щоб скинути.
     resource_created: Запис створено
     resource_destroyed: Запис видалено
     resource_updated: Запис оновлено

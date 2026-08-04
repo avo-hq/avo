@@ -1,7 +1,5 @@
-require_dependency "avo/base_controller"
-
 module Avo
-  class ChartsController < BaseController
+  class ChartsController < Avo::BaseController
     # Summarizable charts reuse the index query pipeline (including policy scope via
     # `query_scope`). They were never meant to require `distribution_chart?` /
     # `distribution_chart_full?` policy methods — those only surfaced once
@@ -19,7 +17,7 @@ module Avo
     def distribution_chart_full
       compute_summary_data
 
-      @page_title = "#{@resource.plural_name.humanize} — #{@field_id.to_s.humanize} summary"
+      @page_title = "#{@resource.plural_name} — #{@field_id.to_s.humanize} summary"
       @container_size = :small
 
       index_params = {

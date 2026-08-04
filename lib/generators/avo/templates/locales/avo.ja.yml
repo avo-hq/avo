@@ -66,6 +66,7 @@ ja:
     attachment_class_detached: "%{attachment_class}をデタッチしました。"
     attachment_destroyed: アタッチは削除されました
     attachment_failed: "%{attachment_class}の添付に失敗しました"
+    back_to_top: トップに戻る
     cancel: キャンセル
     checkbox_list:
       hidden_selections:
@@ -178,6 +179,8 @@ ja:
     remove_selection: 選択を解除
     reset: リセット
     reset_filters: フィルターをリセット
+    resize_sidebar: サイドバーのサイズを変更
+    resize_sidebar_hint: ドラッグしてサイドバーのサイズを変更します。ダブルクリックでリセットします。
     resource_created: レコードが作成されました
     resource_destroyed: レコードが破棄されました
     resource_updated: レコードが更新されました

@@ -1,0 +1,162 @@
+/* Drag handle for the desktop sidebar (R1–R3, R8, R18, R22).
+
+   A fixed overlay sibling rather than a border on either side: .avo-sidebar and
+   .main-content are separate layout contexts and neither can host a grab zone
+   that straddles the seam without eating its own clicks.
+
+   Geometry — the strip covers [offset − 2px, offset + 13px]. Only 2px bite into
+   the sidebar, leaving >= 6px of the 8px `body.os-pc` scroll gutter grabbable.
+   The other 13px stop exactly at the earliest interactive box edge in the
+   layout: .main-content's start budget is 17px (1px border + 16px padding, since
+   .container-small zeroes the inner 8px at >= xl), but the first breadcrumb
+   pulls its own 4px of padding back out for optical alignment, so anything
+   past +13px starts covering it. sidebar_resize_spec.rb holds that line.
+
+   Why not the 24px that WCAG SC 2.5.8 wants: it reaches 11px past this and
+   covers the start edge of every breadcrumb link, panel body and panel button on
+   a show page. Drag-only resizing already misses SC 2.5.7 (hence
+   Avo.configuration.sidebar_resizable as the off-switch), so AA is not reachable
+   here either way, and 15px is still comfortably above the 12px minimum this
+   feature needs.
+
+   The at-rest divider is .main-content's own `border-s`; this element draws no
+   second hairline. Its ::before seam is transparent until hover/focus/drag, and
+   the grip is ::after because role="separator" forces role="presentation" onto
+   any real child node.
+
+   `hidden` is owned exclusively by sidebar_resize_controller.js. */
+.sidebar-resize-handle {
+  @apply fixed;
+
+  z-index: 100; /* above .avo-sidebar (50), below .top-navbar (400) */
+  inset-inline-start: calc(var(--sidebar-offset-size) - 2px);
+  top: var(--top-navbar-height);
+  width: 15px;
+  height: calc(100dvh - var(--top-navbar-height));
+
+  /* Unconditional, not only while dragging. The hover cursor is how every OS
+     teaches a drag affordance, and since sidebar labels no longer wrap (R12)
+     it is the only discoverability signal this feature has. */
+  cursor: col-resize;
+
+  /* A hybrid device reporting `pointer: fine` must not have the gesture stolen
+     as a pan. */
+  touch-action: none;
+
+  /* The grip reveal replaces the unified focus ring: focus.css's 2px outline
+     around a viewport-tall strip would draw a rectangle over page content.
+     Plain selector, never !important — see css/focus.css. */
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+/* The seam. Transparent at rest so the only line at the boundary stays
+   .main-content's border-s; it paints on hover/focus/drag. */
+.sidebar-resize-handle::before {
+  content: "";
+
+  @apply absolute inset-y-0;
+
+  inset-inline-start: 2px;
+  width: 1px;
+  background-color: transparent;
+  transition: background-color var(--speed-fast) ease, width var(--speed-fast) ease;
+}
+
+/* The grip: a short rounded bar, vertically centered in the viewport. The
+   cursor crosses this strip dozens of times a session on the way to the
+   content, so the reveal is transitioned rather than instant. */
+.sidebar-resize-handle::after {
+  content: "";
+
+  @apply absolute rounded-full;
+
+  top: calc(50% - 12px);
+  inset-inline-start: 2px;
+  width: 2px;
+  height: 24px;
+  background-color: var(--color-content-secondary);
+  opacity: 0;
+  transition: opacity var(--speed-fast) ease;
+}
+
+.sidebar-resize-handle:hover::after {
+  opacity: 0.6;
+}
+
+.sidebar-resize-handle:focus-visible::after {
+  opacity: 1;
+}
+
+.sidebar-resize-handle:focus-visible::before {
+  width: 2px;
+  background-color: var(--color-content);
+}
+
+/* R18 — not resizable below lg. `display: none` also drops it from the tab
+   order, so this holds with no JS at all. */
+@media (width < theme(--breakpoint-lg)) {
+  .sidebar-resize-handle {
+    display: none;
+  }
+}
+
+/* R8 — no drag affordance where there is no precise pointer. Deliberately
+   rendered-then-hidden rather than not rendered: the element's existence
+   should not be coupled to a media query. */
+@media (pointer: coarse), (hover: none) {
+  .sidebar-resize-handle {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-resize-handle,
+  .sidebar-resize-handle::before,
+  .sidebar-resize-handle::after {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Drag state. html[data-sidebar-resizing] is a CSS hook only — cross-controller
+   state goes through the controller's public isDragging getter.
+   ========================================================================== */
+
+/* R4: the width must track the pointer 1:1, so every layout transition that
+   would smear it is suspended for the duration. */
+html[data-sidebar-resizing] .main,
+html[data-sidebar-resizing] .main-content,
+html[data-sidebar-resizing] .avo-sidebar {
+  transition: none;
+}
+
+/* R5. The `*` scope is required, not defensive: a plain `body { cursor }` is
+   defeated by every descendant that declares its own. */
+html[data-sidebar-resizing] {
+  @apply select-none;
+}
+
+html[data-sidebar-resizing] *,
+html[data-sidebar-resizing] *:hover {
+  cursor: col-resize !important;
+}
+
+/* R2's third clause — the handle stays lit for the whole drag, even once the
+   pointer has travelled far away from it. */
+html[data-sidebar-resizing] .sidebar-resize-handle::after {
+  opacity: 1;
+}
+
+html[data-sidebar-resizing] .sidebar-resize-handle::before {
+  width: 2px;
+  background-color: var(--color-content);
+}
+
+/* Pinned at a bound. Without this the pointer keeps moving while the edge stays
+   still with no cue at all, which reads exactly like a broken widget. */
+.sidebar-resize-handle[data-at-bound]::after {
+  background-color: var(--color-content);
+  opacity: 1;
+}

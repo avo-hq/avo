@@ -1,0 +1,30 @@
+<% custom_default = custom_sidebar_width_default %>
+<% if @sidebar_width || custom_default %>
+  <script nonce="<%= content_security_policy_nonce %>">
+    // Apply the sidebar width before first paint to avoid a 256px flash (R15).
+    // Both values below are produced server-side as Integers within bounds
+    // (Avo::ApplicationHelper#sidebar_width, Avo::Configuration#sidebar),
+    // so they are interpolated as bare JS number literals — never a string taken
+    // from the cookie or from the host's initializer.
+    //
+    // They land on <html>, which Turbo never replaces, so they survive Drive and
+    // restoration visits. The lg-gated clamp in css/layout.css derives
+    // --sidebar-width from them and re-clamps for the current viewport (R11), so
+    // nothing here needs to know the viewport.
+    //
+    // These are CSSOM writes (element.style.setProperty), which are outside the
+    // scope of style-src; the <script> performing them is governed by script-src
+    // and runs only where the host nonces script-src (A16) — the same dependency
+    // _color_theme_override.html.erb already carries.
+    <% if custom_default %>
+      // The host's configured starting width. Emitted only when it differs from
+      // Avo's own 256px, and consumed only inside the lg media block — below lg
+      // the sidebar is a full-height overlay and keeps the mobile default.
+      document.documentElement.style.setProperty('--sidebar-width-default', <%= custom_default %> + 'px');
+    <% end %>
+    <% if @sidebar_width %>
+      // The width this user dragged to. Outranks the configured default.
+      document.documentElement.style.setProperty('--sidebar-width-stored', <%= @sidebar_width %> + 'px');
+    <% end %>
+  </script>
+<% end %>

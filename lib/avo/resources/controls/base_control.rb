@@ -2,6 +2,19 @@ module Avo
   module Resources
     module Controls
       class BaseControl
+        unless defined?(CONTROL_OPTIONS)
+          # Keys the control consumes itself, either as an option it renders from
+          # (`style`, `icon`…) or as internal plumbing merged in by `execute_block`
+          # (`as_index_control`, `item`…). Everything a user passes *outside* this
+          # list is forwarded to the rendered element as an HTML attribute, so
+          # `link_to "Docs", url, rel: "noopener"` reaches the `<a>` tag.
+          CONTROL_OPTIONS = %i[
+            label path title target data class
+            style color size icon icon_class confirmation_message
+            as_index_control from_custom_list item
+          ].freeze
+        end
+
         attr_reader :label, :title, :color, :style, :icon, :icon_class, :confirmation_message, :size, :as_index_control
 
         def initialize(**args)

@@ -64,6 +64,7 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
+    back_to_top: Back to top
     cancel: Cancel
     checkbox_list:
       hidden_selections:
@@ -176,6 +177,8 @@ en:
     remove_selection: Remove selection
     reset: reset
     reset_filters: Reset filters
+    resize_sidebar: Resize sidebar
+    resize_sidebar_hint: Drag to resize the sidebar. Double-click to reset.
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated

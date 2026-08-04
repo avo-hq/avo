@@ -9,11 +9,29 @@
         class: class_names("popover-menu__panel", @classes),
         data: {controller: "popover-menu"} do %>
         <div class="dropdown-menu">
+          <% if @searchable %>
+            <div class="dropdown-menu__search search-input">
+              <input type="search"
+                     class="search-input__input"
+                     placeholder="<%= search_placeholder %>"
+                     aria-label="<%= search_placeholder %>"
+                     autocomplete="off"
+                     data-popover-menu-target="searchInput"
+                     data-action="input->popover-menu#filter">
+              <span class="search-input__prefix" aria-hidden="true"><%= helpers.svg "tabler/outline/search" %></span>
+            </div>
+          <% end %>
           <div class="dropdown-menu__group">
             <div class="dropdown-menu__list">
               <%= items %>
             </div>
           </div>
+          <% if @searchable %>
+            <p class="dropdown-menu__search-empty" data-popover-menu-target="empty" hidden>No matching options</p>
+          <% end %>
+          <% if footer? %>
+            <div class="dropdown-menu__footer"><%= footer %></div>
+          <% end %>
         </div>
       <% end %>
     <% end %>

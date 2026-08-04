@@ -17,7 +17,8 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
             keys_aria_label: "Up arrow or down arrow"
           ),
           shortcut(action: "Go back", keys: ["B"]),
-          shortcut(action: "Toggle keyboard shortcut badges", keys: ["Shift", "K"])
+          shortcut(action: "Toggle keyboard shortcut badges", keys: ["Shift", "K"]),
+          *assistant_shortcuts
         ]
       ),
       build_section(
@@ -88,6 +89,15 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
   end
 
   private
+
+  # avo-intelligence binds Cmd/Ctrl+J itself (its chat bar listens for the keydown directly, so it
+  # fires from inside a field too). Core has no assistant to open, so the modal only lists it when
+  # the gem is installed.
+  def assistant_shortcuts
+    return [] unless Avo.plugin_manager.installed?("avo-intelligence")
+
+    [shortcut(action: "Open the assistant", keys: {mac: ["Cmd", "J"], other: ["Ctrl", "J"]})]
+  end
 
   def build_section(title, shortcuts)
     {

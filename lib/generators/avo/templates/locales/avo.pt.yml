@@ -66,6 +66,7 @@ pt:
     attachment_class_detached: "%{attachment_class} separado."
     attachment_destroyed: Anexo destruído
     attachment_failed: Não foi possível anexar %{attachment_class}
+    back_to_top: Voltar ao topo
     cancel: Cancelar
     checkbox_list:
       hidden_selections:
@@ -178,6 +179,8 @@ pt:
     remove_selection: Remover seleção
     reset: restaurar
     reset_filters: Limpar filtros
+    resize_sidebar: Redimensionar a barra lateral
+    resize_sidebar_hint: Arraste para redimensionar a barra lateral. Clique duas vezes para repor.
     resource_created: Recurso criado
     resource_destroyed: Recurso destruído
     resource_updated: Recurso atualizado
