@@ -1,7 +1,5 @@
-require_dependency "avo/base_controller"
-
 module Avo
-  class AssociationsController < BaseController
+  class AssociationsController < Avo::BaseController
     before_action :set_record, only: [:show, :index, :new, :create, :destroy]
     before_action :set_related_resource_name
     before_action :set_related_resource, only: [:show, :index, :new, :create, :destroy]
