@@ -1,4 +1,10 @@
-require "prism"
+# Prism is a default gem on Ruby 3.3+, so requiring it costs users nothing and
+# needs no dependency declaration. On Ruby 3.2 (EOL) it may be absent — we skip
+# the structural telemetry rather than make every app carry a parser for it.
+begin
+  require "prism"
+rescue LoadError
+end
 
 module Avo
   module Services
@@ -46,6 +52,8 @@ module Avo
         end
 
         def collect
+          return {} unless defined?(Prism)
+
           files = parse_files
 
           resources = files.select { |f| f.kind == :resource }
