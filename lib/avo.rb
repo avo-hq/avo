@@ -19,6 +19,10 @@ loader.inflector.inflect(
   "railtie_dsl" => "RailtieDSL"
 )
 loader.ignore("#{__dir__}/generators")
+# Shipped agent skills. Markdown alone is invisible to Zeitwerk, but a skill that
+# bundles a script makes its hyphenated directory eligible, and Zeitwerk then
+# raises trying to constantize e.g. `avo-menu-icons`.
+loader.ignore("#{__dir__}/avo/skills")
 loader.ignore("#{__dir__}/avo/engine_dsl.rb")
 loader.ignore("#{__dir__}/avo/plugin_dsl.rb")
 loader.ignore("#{__dir__}/avo/railtie_dsl.rb")

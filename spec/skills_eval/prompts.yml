@@ -1,0 +1,65 @@
+# Evaluation corpus for the Avo skills loader.
+#
+# Two things here cannot be proven by any test in this repo: whether the pointer
+# skill fires on a realistic request, and whether a model follows the loaded
+# instructions over its own priors. Both fail silently, so they are measured
+# rather than asserted. See README.md for the pass bar and how to score a run.
+
+pass_bar:
+  trigger_rate: 0.90        # share of prompts where the loader fires at all
+  prior_conflict_rate: 1.00 # share of conflict cases where loaded text wins
+
+# Does the pointer skill fire, and does the agent load the right skill?
+# Phrased the way a developer actually types, not the way the docs are titled.
+trigger:
+  - prompt: "add a filter to my Post resource so I can narrow by status"
+    expect_skill: avo-filters
+  - prompt: "why isn't my field showing up on the edit page?"
+    expect_skill: avo-troubleshoot
+  - prompt: "I want a status column on the users table in the admin"
+    expect_skill: avo-fields
+  - prompt: "a post belongs to a user — show that in the admin"
+    expect_skill: avo-associations
+  - prompt: "add a bulk action to mark these orders as shipped"
+    expect_skill: avo-actions
+  - prompt: "put the app logo in the admin sidebar"
+    expect_skill: avo-branding-appearance
+  - prompt: "expose the Invoice model in the admin panel"
+    expect_skill: avo-resources
+  - prompt: "our admin is slow on the orders index"
+    expect_skill: avo-performance
+  - prompt: "only admins should be able to delete records here"
+    expect_skill: avo-authentication
+  - prompt: "upgrade Avo to the latest version"
+    expect_skill: avo-update
+  - prompt: "make this board drag-and-drop"
+    expect_gem: avo-kanban       # absent from most locks; expect the named-gem branch
+  - prompt: "let users filter the index by any column themselves"
+    expect_gem: avo-dynamic_filters
+
+# The loader must NOT fire on these. A skill that triggers on everything costs
+# context on every unrelated turn and trains the user to ignore it.
+no_trigger:
+  - "add a database index on orders.created_at"
+  - "why is my RSpec suite slow?"
+  - "rename the User model to Account"
+  - "set up Sidekiq for background jobs"
+
+# Does the loaded text beat the model's training data? Each case is one where a
+# confident wrong answer is the likely default.
+prior_conflict:
+  - prompt: "add a filter to the Post resource"
+    conflict: >-
+      Models carry Avo 3 priors where filters were a different DSL. The shipped
+      skill describes this version's `avo:filter` generator and `def filters`.
+    scored_on: "the produced diff follows the shipped skill, not the Avo 3 shape"
+  - prompt: "add dynamic filters to this resource"
+    conflict: >-
+      Dynamic filters moved out of core into avo-dynamic_filters. A model that
+      answers from memory writes core DSL that will not render.
+    scored_on: "the agent routes to the package-owned skill, or names the gem when it is absent"
+  - prompt: "set up the menu with icons"
+    conflict: >-
+      The initializer menu DSL needs avo-menu. Without it the answer must route
+      to per-resource `self.icon` instead.
+    scored_on: "the agent checks for the gem before choosing an approach"
