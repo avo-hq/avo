@@ -92,6 +92,14 @@ RSpec.describe "Media library edit", type: :request do
     expect(response.body).to include("attachment.jpg")
   end
 
+  # AVO-1416: the attach modal has to be wide enough for the media grid.
+  it "renders the attach modal at the wide size" do
+    get "/admin/attach-media", headers: {"Turbo-Frame" => Avo::MODAL_FRAME_ID.to_s}
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("modal--width-5xl")
+  end
+
   it "exposes routable blob URLs in attach mode when a listed blob has a blank filename" do
     broken = create_image_blob
     broken.update_column(:filename, "")
