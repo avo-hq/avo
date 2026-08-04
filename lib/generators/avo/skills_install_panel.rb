@@ -22,6 +22,7 @@ module Generators
 
       Result = Struct.new(:answers, :cancelled) do
         def cancelled? = !!cancelled
+
         def [](key) = answers[key]
       end
 
