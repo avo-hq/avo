@@ -28,9 +28,6 @@ Gem::Specification.new do |spec|
       "public gem pushes."
   end
 
-  # NOTE: pagy >= 43.5.0 requires Ruby >= 3.3, so on Ruby 3.2 Bundler resolves
-  # pagy back to 43.4.4. That's expected — bump to 3.3 only when we need a
-  # pagy feature from 43.5.0 onwards.
   spec.required_ruby_version = ">= 3.2.0"
   spec.post_install_message = "Thank you for using Avo 💪  Docs are available at https://docs.avohq.io"
 
