@@ -1,16 +1,16 @@
 require "rails_helper"
 
-RSpec.describe "Avo::BaseComponent#hotkey_badge", type: :component do
-  class HotkeyBadgeTestComponent < Avo::BaseComponent
-    def initialize(hotkey:)
-      @hotkey = hotkey
-    end
-
-    def call
-      hotkey_badge(@hotkey)
-    end
+class HotkeyBadgeTestComponent < Avo::BaseComponent
+  def initialize(hotkey:)
+    @hotkey = hotkey
   end
 
+  def call
+    hotkey_badge(@hotkey)
+  end
+end
+
+RSpec.describe "Avo::BaseComponent#hotkey_badge", type: :component do
   around do |example|
     original = Avo.configuration.hotkeys
     Avo.configuration.hotkeys = {enabled: true, show_key_badges: true}
@@ -68,4 +68,3 @@ RSpec.describe "Avo::BaseComponent#hotkey_badge", type: :component do
     end
   end
 end
-

@@ -8,7 +8,7 @@ class Avo::Fields::TiptapField::EditComponent < Avo::Fields::EditComponent
     @resource_id = args[:resource_id]
     @resource_name = args[:resource_name]
 
-    super(**args)
+    super
   end
 
   def resource_name

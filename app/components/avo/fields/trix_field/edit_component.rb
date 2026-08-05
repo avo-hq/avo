@@ -8,7 +8,7 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
     @resource_id = args[:resource_id] || @resource&.record&.to_param
     @resource_name = args[:resource_name] || @resource&.singular_route_key
 
-    super(**args)
+    super
 
     @input_id = if @resource_name.present?
       "#{@field.type}_#{@resource_name}_#{@field.id}"

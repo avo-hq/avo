@@ -71,8 +71,6 @@ module Avo
       attr_reader :link_to_child_resource
 
       def initialize(id, **args, &block)
-        args[:placeholder] ||= I18n.t("avo.choose_an_option")
-
         super
 
         @searchable = (args[:searchable] == true || args[:searchable].is_a?(Hash)) ? args[:searchable] : false
@@ -87,6 +85,10 @@ module Avo
         @can_create = args[:can_create].nil? || args[:can_create]
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
         @link_to_child_resource = args[:link_to_child_resource]
+      end
+
+      def default_placeholder
+        I18n.t("avo.choose_an_option")
       end
 
       def value

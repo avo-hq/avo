@@ -8,9 +8,7 @@ module Avo
       attr_reader :stored_value
 
       def initialize(id, **args, &block)
-        args[:placeholder] ||= I18n.t("avo.choose_a_country")
-
-        super(id, **args, &block)
+        super
 
         @countries = begin
           ISO3166::Country.translations.sort_by { |code, name| name }.to_h
@@ -18,6 +16,10 @@ module Avo
           {none: "You need to install the countries gem for this field to work properly"}
         end
         @display_code = args[:display_code].present? ? args[:display_code] : false
+      end
+
+      def default_placeholder
+        I18n.t("avo.choose_a_country")
       end
 
       def select_options

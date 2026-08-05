@@ -8,6 +8,25 @@ ua:
     appearance:
       accent_picker: Колір акценту
       accents: Акцент
+      accents_list:
+        amber: Бурштиновий
+        blue: Синій
+        brand: Бренд
+        cyan: Блакитний
+        emerald: Смарагдовий
+        fuchsia: Фуксія
+        green: Зелений
+        indigo: Індиго
+        lime: Лайм
+        orange: Помаранчевий
+        pink: Рожевий
+        purple: Фіолетовий
+        red: Червоний
+        rose: Трояндовий
+        sky: Небесний
+        teal: Бірюзовий
+        violet: Фіолетовий
+        yellow: Жовтий
       auto: Авто
       auto_tooltip: Авто (системні налаштування)
       dark: Темний
@@ -16,6 +35,17 @@ ua:
       light: Світлий
       light_tooltip: Світлий режим
       neutrals: Тема
+      neutrals_list:
+        brand: Бренд
+        gray: Сірий
+        mauve: Ліловий
+        mist: Туман
+        neutral: Нейтральний
+        olive: Оливковий
+        slate: Шифер
+        stone: Кам'яний
+        taupe: Taupe
+        zinc: Цинк
       neutrals_picker: Нейтральна тема
       schemes: Зовнішній вигляд
       shortcut_badges: Значки ярликів
@@ -34,6 +64,7 @@ ua:
     attachment_class_detached: "%{attachment_class} відкріплено."
     attachment_destroyed: Вкладення знищено
     attachment_failed: Не вдалося прикріпити %{attachment_class}
+    back_to_top: Назад до верху
     cancel: Скасувати
     checkbox_list:
       hidden_selections:
@@ -150,6 +181,8 @@ ua:
     remove_selection: Видалити вибір
     reset: Скинути
     reset_filters: Скинути фільтри
+    resize_sidebar: Змінити розмір бічної панелі
+    resize_sidebar_hint: Перетягніть, щоб змінити розмір бічної панелі. Двічі клацніть, щоб скинути.
     resource_created: Запис створено
     resource_destroyed: Запис видалено
     resource_updated: Запис оновлено

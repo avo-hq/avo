@@ -8,6 +8,25 @@ ru:
     appearance:
       accent_picker: Цвет акцента
       accents: Акцент
+      accents_list:
+        amber: Янтарный
+        blue: Синий
+        brand: Бренд
+        cyan: Бирюзовый
+        emerald: Изумрудный
+        fuchsia: Фуксия
+        green: Зелёный
+        indigo: Индиго
+        lime: Лайм
+        orange: Оранжевый
+        pink: Розовый
+        purple: Фиолетовый
+        red: Красный
+        rose: Розовый
+        sky: Небесный
+        teal: Бирюзовый
+        violet: Фиолетовый
+        yellow: Жёлтый
       auto: Авто
       auto_tooltip: Авто (системные предпочтения)
       dark: Темный
@@ -16,6 +35,17 @@ ru:
       light: Светлый
       light_tooltip: Светлый режим
       neutrals: Тема
+      neutrals_list:
+        brand: Бренд
+        gray: Серый
+        mauve: Лиловый
+        mist: Туман
+        neutral: Нейтральный
+        olive: Оливковый
+        slate: Шифер
+        stone: Каменный
+        taupe: Тауп
+        zinc: Цинк
       neutrals_picker: Нейтральная тема
       schemes: Внешний вид
       shortcut_badges: Значки ярлыков
@@ -34,6 +64,7 @@ ru:
     attachment_class_detached: "%{attachment_class} отсоединено."
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
+    back_to_top: Вернуться к началу
     cancel: Отмена
     checkbox_list:
       hidden_selections:
@@ -152,6 +183,8 @@ ru:
     remove_selection: Убрать выбор
     reset: сбросить
     reset_filters: Сбросить фильтры
+    resize_sidebar: Изменить размер боковой панели
+    resize_sidebar_hint: Перетащите, чтобы изменить размер боковой панели. Дважды щёлкните, чтобы сбросить.
     resource_created: Запись создана
     resource_destroyed: Запись удалена
     resource_updated: Запись обновлена

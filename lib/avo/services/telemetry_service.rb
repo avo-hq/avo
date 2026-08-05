@@ -54,10 +54,10 @@ class Avo::Services::TelemetryService
         cache_operational: cache_operational?,
         **config_metadata
       }
-    # rescue => error
-    #   {
-    #     error: error.message
-    #   }
+      # rescue => error
+      #   {
+      #     error: error.message
+      #   }
     end
 
     def cache_operational?

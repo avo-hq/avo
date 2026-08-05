@@ -8,7 +8,7 @@ module Avo
       attr_reader :picker_options
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         add_string_prop args, :first_day_of_week, 1
         add_string_prop args, :picker_format, "Y-m-d"

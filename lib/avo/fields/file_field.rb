@@ -8,13 +8,13 @@ module Avo
       attr_reader :display_filename
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
         @is_avatar = args[:is_avatar].present? ? args[:is_avatar] : false
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
         @accept = args[:accept].present? ? args[:accept] : nil
-        @display_filename = args[:display_filename].nil? ? true : args[:display_filename]
+        @display_filename = args[:display_filename].nil? || args[:display_filename]
       end
 
       def path

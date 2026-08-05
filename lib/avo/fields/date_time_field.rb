@@ -7,7 +7,7 @@ module Avo
       attr_reader :relative
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         add_boolean_prop args, :time_24hr
         add_string_prop args, :picker_format, "Y-m-d H:i:S"

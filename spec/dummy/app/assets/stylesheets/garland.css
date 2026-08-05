@@ -1,0 +1,95 @@
+/* Xmas fairy-light garland — decorative OVERLAY, independent of the color theme.
+   Strings of glowing bulbs frame all four edges of the viewport (top/bottom on
+   <body>, left/right on <html>). Fixed + pointer-events:none, so it never shifts
+   layout or eats clicks. Light-weight: no images, no JS — layered radial-gradients
+   and one keyframe. Import it ALONGSIDE any theme (see avo-overrides.css).
+
+   The bulbs are hand-placed along one full sine period per 260px repeat, so the
+   string drapes in a WAVE and tiles seamlessly. Each bulb has its own radius
+   (~3–6px, so sizes look random) and a baked glow: white-hot core → saturated
+   colour → soft translucent bloom. A warm drop-shadow filter adds the extra
+   "lightbulb installation" halo on top, and pulses to twinkle. Geometry is baked
+   into the gradient stops + background-size (260px period, 48px strip depth). */
+
+html::before, html::after,
+body::before, body::after {
+  content: "";
+  position: fixed;
+  z-index: 2147483000; /* above app chrome; pointer-events:none keeps it click-through */
+  pointer-events: none;
+  /* Installation glow: two warm halos bloom around every lit bulb, breathing. */
+  filter:
+    drop-shadow(0 0 3px rgba(255, 240, 170, 0.55))
+    drop-shadow(0 0 9px rgba(255, 220, 130, 0.40));
+  animation: garland-glow 1.6s ease-in-out infinite alternate;
+}
+/* Desync opposite edges so the frame shimmers rather than pulsing as one unit. */
+html::after, body::after { animation-delay: 0.8s; }
+
+/* ---- Top & bottom: horizontal wave strings on <body> ----
+   Each bulb: `circle at Xpx Ypx, #fff core, COLOUR body, translucent bloom`.
+   Y rides a sine wave (11px crest → 33px trough → back); radius varies per bulb. */
+body::before, body::after {
+  left: 0;
+  right: 0;
+  height: 48px;
+  background-repeat: repeat-x;
+  background-size: 260px 48px;
+  background-image:
+    radial-gradient(circle at 13px 19px,  #ffffff 0 1px, #ff4d4d 1px 3.5px, rgba(255,77,77,0.40) 6.5px, transparent 11px),
+    radial-gradient(circle at 39px 13px,  #ffffff 0 1px, #35d07f 1px 5px,   rgba(53,208,127,0.40) 8px,  transparent 13px),
+    radial-gradient(circle at 65px 11px,  #ffffff 0 1px, #ffd23f 1px 4px,   rgba(255,210,63,0.45) 7px,  transparent 12px),
+    radial-gradient(circle at 91px 13px,  #ffffff 0 1px, #4da3ff 1px 6px,   rgba(77,163,255,0.40) 9px,  transparent 14px),
+    radial-gradient(circle at 117px 19px, #ffffff 0 1px, #ff4d4d 1px 3.5px, rgba(255,77,77,0.40) 6.5px, transparent 11px),
+    radial-gradient(circle at 143px 25px, #ffffff 0 1px, #35d07f 1px 5px,   rgba(53,208,127,0.40) 8px,  transparent 13px),
+    radial-gradient(circle at 169px 31px, #ffffff 0 1px, #ffd23f 1px 4.5px, rgba(255,210,63,0.45) 7.5px, transparent 12px),
+    radial-gradient(circle at 195px 33px, #ffffff 0 1px, #4da3ff 1px 3px,   rgba(77,163,255,0.40) 6px,  transparent 11px),
+    radial-gradient(circle at 221px 31px, #ffffff 0 1px, #ff4d4d 1px 6px,   rgba(255,77,77,0.40) 9px,   transparent 14px),
+    radial-gradient(circle at 247px 25px, #ffffff 0 1px, #35d07f 1px 4px,   rgba(53,208,127,0.40) 7px,  transparent 12px);
+}
+body::before { top: 0; }
+body::after  { bottom: 0; transform: scaleY(-1); } /* flip so bulbs hang up from the bottom edge */
+
+/* ---- Left & right: vertical wave strings on <html> ----
+   Same bulbs with coordinates swapped: the wave now sways horizontally as it
+   runs down the edge. */
+html::before, html::after {
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  background-repeat: repeat-y;
+  background-size: 48px 260px;
+  background-image:
+    radial-gradient(circle at 19px 13px,  #ffffff 0 1px, #ff4d4d 1px 3.5px, rgba(255,77,77,0.40) 6.5px, transparent 11px),
+    radial-gradient(circle at 13px 39px,  #ffffff 0 1px, #35d07f 1px 5px,   rgba(53,208,127,0.40) 8px,  transparent 13px),
+    radial-gradient(circle at 11px 65px,  #ffffff 0 1px, #ffd23f 1px 4px,   rgba(255,210,63,0.45) 7px,  transparent 12px),
+    radial-gradient(circle at 13px 91px,  #ffffff 0 1px, #4da3ff 1px 6px,   rgba(77,163,255,0.40) 9px,  transparent 14px),
+    radial-gradient(circle at 19px 117px, #ffffff 0 1px, #ff4d4d 1px 3.5px, rgba(255,77,77,0.40) 6.5px, transparent 11px),
+    radial-gradient(circle at 25px 143px, #ffffff 0 1px, #35d07f 1px 5px,   rgba(53,208,127,0.40) 8px,  transparent 13px),
+    radial-gradient(circle at 31px 169px, #ffffff 0 1px, #ffd23f 1px 4.5px, rgba(255,210,63,0.45) 7.5px, transparent 12px),
+    radial-gradient(circle at 33px 195px, #ffffff 0 1px, #4da3ff 1px 3px,   rgba(77,163,255,0.40) 6px,  transparent 11px),
+    radial-gradient(circle at 31px 221px, #ffffff 0 1px, #ff4d4d 1px 6px,   rgba(255,77,77,0.40) 9px,   transparent 14px),
+    radial-gradient(circle at 25px 247px, #ffffff 0 1px, #35d07f 1px 4px,   rgba(53,208,127,0.40) 7px,  transparent 12px);
+}
+html::before { left: 0; }
+html::after  { right: 0; transform: scaleX(-1); }
+
+/* Breathing installation glow — brightness + halo swell. */
+@keyframes garland-glow {
+  from {
+    filter: brightness(0.88)
+      drop-shadow(0 0 2px rgba(255, 240, 170, 0.40))
+      drop-shadow(0 0 6px rgba(255, 220, 130, 0.28));
+  }
+  to {
+    filter: brightness(1.22)
+      drop-shadow(0 0 4px rgba(255, 240, 170, 0.75))
+      drop-shadow(0 0 12px rgba(255, 220, 130, 0.55));
+  }
+}
+
+/* Respect reduced-motion: keep the lights lit, drop the pulsing. */
+@media (prefers-reduced-motion: reduce) {
+  html::before, html::after,
+  body::before, body::after { animation: none; }
+}

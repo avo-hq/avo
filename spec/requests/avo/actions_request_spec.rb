@@ -34,4 +34,20 @@ RSpec.describe "Actions", type: :request do
       expect(response).to have_http_status(:ok)
     end
   end
+
+  describe "request object in handle" do
+    it "gives the handle method access to the current request" do
+      target = create(:user)
+      path = "/admin/resources/users/actions"
+
+      post path,
+        params: {
+          action_id: "Avo::Actions::ShowRequestPath",
+          fields: {avo_resource_ids: target.id.to_s}
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq path
+    end
+  end
 end

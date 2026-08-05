@@ -22,5 +22,9 @@
   ) do %>
     <%= svg @icon, class: "tabs__item-icon", "aria-hidden": "true" if @icon.present? %>
     <%= tag.span @label, class: "tabs__item-label" if @label.present? %>
+    <%= render_badge %>
   <% end %>
+  <%# Dedicated indicator element so the view transition morphs only the
+      bar, not the label. %>
+  <%= tag.span class: "tabs__indicator", "aria-hidden": true if @variant == :scope && @active %>
 <% end %>

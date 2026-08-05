@@ -6,7 +6,7 @@ module Pluggy
       attr_reader :options
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         add_array_prop args, :options
       end

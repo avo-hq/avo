@@ -8,6 +8,25 @@ en:
     appearance:
       accent_picker: Select accent color
       accents: Accent
+      accents_list:
+        amber: Amber
+        blue: Blue
+        brand: Brand
+        cyan: Cyan
+        emerald: Emerald
+        fuchsia: Fuchsia
+        green: Green
+        indigo: Indigo
+        lime: Lime
+        orange: Orange
+        pink: Pink
+        purple: Purple
+        red: Red
+        rose: Rose
+        sky: Sky
+        teal: Teal
+        violet: Violet
+        yellow: Yellow
       auto: Auto
       auto_tooltip: Auto (system preference)
       dark: Dark
@@ -16,6 +35,17 @@ en:
       light: Light
       light_tooltip: Light mode
       neutrals: Theme
+      neutrals_list:
+        brand: Brand
+        gray: Gray
+        mauve: Mauve
+        mist: Mist
+        neutral: Neutral
+        olive: Olive
+        slate: Slate
+        stone: Stone
+        taupe: Taupe
+        zinc: Zinc
       neutrals_picker: Select neutral color
       schemes: Appearance
       shortcut_badges: Shortcut badges
@@ -34,6 +64,7 @@ en:
     attachment_class_detached: "%{attachment_class} detached."
     attachment_destroyed: Attachment destroyed
     attachment_failed: Failed to attach %{attachment_class}
+    back_to_top: Back to top
     cancel: Cancel
     checkbox_list:
       hidden_selections:
@@ -146,6 +177,8 @@ en:
     remove_selection: Remove selection
     reset: reset
     reset_filters: Reset filters
+    resize_sidebar: Resize sidebar
+    resize_sidebar_hint: Drag to resize the sidebar. Double-click to reset.
     resource_created: Record created
     resource_destroyed: Record destroyed
     resource_updated: Record updated

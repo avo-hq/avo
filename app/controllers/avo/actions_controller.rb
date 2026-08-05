@@ -1,7 +1,5 @@
-require_dependency "avo/application_controller"
-
 module Avo
-  class ActionsController < ApplicationController
+  class ActionsController < Avo::ApplicationController
     before_action :set_resource_name, :set_resource
     before_action :set_query, :set_record, :set_action, :verify_authorization, only: [:show, :handle]
     before_action :set_fields, only: :handle
@@ -56,7 +54,8 @@ module Avo
         fields: @fields,
         current_user: _current_user,
         resource: @resource,
-        query: @query
+        query: @query,
+        request: request
       )
 
       @response = performed_action.response

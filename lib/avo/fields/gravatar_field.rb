@@ -12,12 +12,12 @@ module Avo
       def initialize(id, **args, &block)
         args[:name] ||= "Avatar"
 
-        super(id, **args, &block)
+        super
 
         hide_on [:edit, :new]
 
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
-        @rounded = args[:rounded].nil? ? true : args[:rounded]
+        @rounded = args[:rounded].nil? || args[:rounded]
         @size = args[:size].present? ? args[:size].to_i : 32
         @default = args[:default].present? ? ERB::Util.url_encode(args[:default]).to_s : ""
       end

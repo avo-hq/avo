@@ -3,10 +3,12 @@ module Avo
     module Controls
       class AttachButton < BaseControl
         def initialize(**args)
-          super(**args)
+          super
 
           if args[:item].present?
-            @label = I18n.t("avo.attach_item", item: args[:item]) if label.nil?
+            # upcase_first because locales like de put the item first
+            # ("%{item} anhängen"); the interpolated name stays as translated.
+            @label = I18n.t("avo.attach_item", item: args[:item]).upcase_first if label.nil?
           end
         end
       end

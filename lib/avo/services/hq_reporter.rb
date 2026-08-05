@@ -1,3 +1,4 @@
+require "active_support/core_ext/integer/time"
 require "net/http"
 
 module Avo

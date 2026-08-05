@@ -1,4 +1,4 @@
-<%= tag.div class: class_names("card", @class), data: {**@data, item_index: @index} do %>
+<%= tag.div class: class_names("card", @class, "card--padded" => @padded), data: {**@data, item_index: @index} do %>
   <%= tag.div class: class_names("card__wrapper", @wrapper_class) do %>
     <% if header? %>
       <div class="card__header"><%= header %></div>

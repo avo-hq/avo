@@ -1,0 +1,242 @@
+#!/usr/bin/env bash
+#
+# Avo skills loader — resolves the skills that ship inside this app's locked Avo
+# gems, proves each resolved gem is the version the lock names, and prints the
+# combined index.
+#
+# Gemfile.lock is the inventory and the version oracle. `bundle show` is only one
+# path resolver among several: it exits non-zero on an unrelated Ruby-version
+# mismatch, and `gem which` happily returns a stale gem from another version, so
+# neither is trusted without the version assertion below.
+#
+# Exit 0 prints verified absolute paths and index content on stdout. Any failure
+# exits non-zero with a stable token on stderr. There is no soft-failure mode:
+# the caller must stop rather than fall back on prior knowledge of Avo.
+#
+# Usage: avo-skills-resolve
+
+set -uo pipefail
+
+
+fail() { printf 'avo-skills: error %s: %s\n' "$1" "$2" >&2; exit 1; }
+warn() { printf 'avo-skills: warning %s: %s\n' "$1" "$2" >&2; }
+
+# --- 1. Locate Gemfile.lock -------------------------------------------------
+
+find_lock() {
+  local dir="$PWD"
+  while [ "$dir" != "/" ]; do
+    [ -f "$dir/Gemfile.lock" ] && { printf '%s\n' "$dir/Gemfile.lock"; return 0; }
+    dir="$(dirname "$dir")"
+  done
+  return 1
+}
+
+LOCK="$(find_lock)" || fail not_an_app \
+  "no Gemfile.lock found in $PWD or any parent directory. This does not look like a Ruby app; do not guess an Avo version."
+APP_ROOT="$(dirname "$LOCK")"
+
+# --- 2. Parse the lock ------------------------------------------------------
+#
+# Top-level specs are indented exactly four spaces; their dependencies get six,
+# so the anchored pattern below never mistakes a dependency for an installed gem.
+# The section (GEM/PATH/GIT) is carried through because a path- or git-sourced
+# gem legitimately has no version to assert against.
+
+LOCK_ENTRIES="$(awk '
+  /^(GEM|PATH|GIT)$/            { section = $1; next }
+  /^[A-Z]/                      { section = "" ; next }
+  section == ""                 { next }
+  /^    [^ ]+ \([^)]+\)$/ {
+    name = $1
+    gsub(/[()]/, "", $2)
+    print name "|" $2 "|" section
+  }
+' "$LOCK")"
+
+avo_line="$(printf '%s\n' "$LOCK_ENTRIES" | grep -m1 '^avo|' || true)"
+[ -n "$avo_line" ] && [ -z "${avo_line##avo|*}" ] || fail avo_not_locked \
+  "the avo gem is not in $LOCK. This app does not use Avo, or its bundle is not installed."
+
+# --- 3. Validate every parsed name and version (never trust the lock) -------
+
+valid_name()    { [[ "$1" =~ ^[a-z0-9_]+(-[a-z0-9_]+)*$ ]]; }
+valid_version() { [[ "$1" =~ ^[0-9]+(\.[0-9a-zA-Z]+)*$ ]]; }
+
+AVO_GEMS=""
+while IFS='|' read -r name version section; do
+  [ -z "$name" ] && continue
+  case "$name" in avo|avo-*) ;; *) continue ;; esac
+  valid_name "$name" || fail malformed_lock \
+    "gem name '$name' in $LOCK is not a valid gem name. Refusing to build a path from it."
+  valid_version "$version" || fail malformed_lock \
+    "version '$version' for gem '$name' in $LOCK is not a valid version string."
+  AVO_GEMS+="$name|$version|$section"$'\n'
+done <<< "$LOCK_ENTRIES"
+
+lock_version_of() { printf '%s\n' "$AVO_GEMS" | awk -F'|' -v n="$1" '$1 == n { print $2; exit }'; }
+lock_section_of() { printf '%s\n' "$AVO_GEMS" | awk -F'|' -v n="$1" '$1 == n { print $3; exit }'; }
+
+# --- 4. Resolve a gem's path ------------------------------------------------
+#
+# Bundler subprocess stderr is discarded rather than inherited: bundler prints
+# configuration on some error paths, and this app's bundle may carry a private
+# gem-server credential that must never reach an agent transcript.
+
+resolve_path() {
+  local gem="$1" version="$2" candidate
+
+  # BUNDLE_GEMFILE wins over the working directory, so an agent invoked from
+  # inside any `bundle exec` context would otherwise resolve that outer bundle's
+  # Avo instead of this app's. Clear bundler's ambient state and resolve from the
+  # app root. (The version assertion below would catch the mismatch, but failing
+  # loudly on a question we can simply answer correctly is worse.)
+  candidate="$(cd "$APP_ROOT" && env -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT bundle show "$gem" 2>/dev/null)"
+  if [ -n "$candidate" ] && [ -d "$candidate" ]; then
+    printf '%s\n' "$candidate"; return 0
+  fi
+
+  # `gempath` (plural) rather than `gemdir`: a bundle installed under a
+  # different Ruby or a custom GEM_HOME still shows up here.
+  # Same reason as above: bundler's RUBYOPT shim makes `gem env` report the
+  # active bundle's paths rather than the machine's real gem homes.
+  local gempaths
+  gempaths="$(env -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT gem env gempath 2>/dev/null)"
+  if [ -n "$gempaths" ]; then
+    local IFS=:
+    for dir in $gempaths; do
+      [ -d "$dir/gems/$gem-$version" ] && { printf '%s\n' "$dir/gems/$gem-$version"; return 0; }
+    done
+  fi
+
+  candidate="$(find "$APP_ROOT/vendor/bundle" -maxdepth 4 -type d -name "$gem-$version" 2>/dev/null | head -1)"
+  if [ -n "$candidate" ] && [ -d "$candidate" ]; then
+    printf '%s\n' "$candidate"; return 0
+  fi
+
+  return 1
+}
+
+# Core keeps VERSION at lib/avo/version.rb; a feature gem keeps it at
+# lib/avo/<gem name minus the avo- prefix>/version.rb.
+version_file_for() {
+  local gem="$1" path="$2"
+  if [ "$gem" = "avo" ]; then
+    printf '%s\n' "$path/lib/avo/version.rb"
+  else
+    printf '%s\n' "$path/lib/avo/${gem#avo-}/version.rb"
+  fi
+}
+
+# Both quote styles are in use across the gem family — avo-audit_logging
+# declares VERSION with single quotes — so matching only double quotes would
+# fail the version assertion on a gem that is perfectly fine.
+installed_version_of() {
+  local file="$1"
+  [ -f "$file" ] || return 1
+  sed -n "s/.*VERSION *= *['\"]\([^'\"]*\)['\"].*/\1/p" "$file" | head -1
+}
+
+# Resolves, asserts, and echoes the gem's path. A path- or git-sourced gem is a
+# working tree, so its version legitimately differs from the lock — report the
+# source instead of failing.
+resolve_and_verify() {
+  local gem="$1" strict="$2" path locked installed section
+  locked="$(lock_version_of "$gem")"
+  section="$(lock_section_of "$gem")"
+
+  path="$(resolve_path "$gem" "$locked")" || {
+    [ "$strict" = "strict" ] && fail gem_not_on_disk \
+      "$gem $locked is in $LOCK but no matching gem is installed on disk. Run 'bundle install'. If the app pins a Ruby version this shell is not running, switch to it first — the gems live under that Ruby. Do not guess a path."
+    return 1
+  }
+
+  if [ "$section" != "GEM" ]; then
+    printf '%s\n' "$path"; return 0
+  fi
+
+  installed="$(installed_version_of "$(version_file_for "$gem" "$path")")" || {
+    [ "$strict" = "strict" ] && fail version_mismatch \
+      "cannot read a VERSION constant for $gem at $path. Refusing to use an unverified path."
+    return 1
+  }
+
+  if [ "$installed" != "$locked" ]; then
+    [ "$strict" = "strict" ] && fail version_mismatch \
+      "$LOCK says $gem $locked but the gem resolved at $path is $installed. Refusing to load skills that do not match this app's locked version."
+    return 1
+  fi
+
+  printf '%s\n' "$path"
+}
+
+# --- 5. Resolve avo itself, then read its package map -----------------------
+
+# `fail` inside a command substitution exits only that subshell, so the caller
+# must propagate the status — otherwise a hard failure would print its error and
+# then carry on resolving, which is the one thing this script must never do.
+AVO_PATH="$(resolve_and_verify avo strict)" || exit 1
+AVO_VERSION="$(lock_version_of avo)"
+AVO_SECTION="$(lock_section_of avo)"
+SKILLS_ROOT="$AVO_PATH/lib/avo/skills"
+PACKAGE_MAP="$SKILLS_ROOT/package-map.md"
+
+# Reachable because the deprecated avo-hq/skills channel hands the pointer to
+# everyone, including apps whose Avo predates gem-shipped skills. No minimum
+# version is named: this file is copied into the app and cannot be updated when
+# a release number turns out differently than planned.
+[ -f "$SKILLS_ROOT/index.md" ] || fail skills_not_shipped \
+  "avo $AVO_VERSION does not ship agent skills. Run 'bin/rails avo:update' to get a version that does, then re-run 'rails g avo:skills'. Until then use the documentation at https://docs.avohq.io — do not answer from prior knowledge of Avo."
+
+# The map is the trust boundary as well as the miss-path lookup: 'avo-' on
+# rubygems.org is an unreserved namespace, and loaded skill text becomes
+# instructions, so a gem name alone never earns that authority.
+allowlisted() {
+  [ -f "$PACKAGE_MAP" ] || return 1
+  grep -qE "^\| \`$1\` \|" "$PACKAGE_MAP"
+}
+
+# --- 6. Emit ----------------------------------------------------------------
+
+printf '# Avo skills for this app\n\n'
+printf 'avo %s' "$AVO_VERSION"
+[ "$AVO_SECTION" != "GEM" ] && printf ' (%s source — working tree, version not asserted)' "$(printf '%s' "$AVO_SECTION" | tr 'A-Z' 'a-z')"
+printf '\n%s\n\n' "$SKILLS_ROOT"
+
+cat "$SKILLS_ROOT/index.md"
+printf '\n' 
+
+printf '\n## Installed packages with their own skills\n\n'
+found_pkg=0
+while IFS='|' read -r name version section; do
+  [ -z "$name" ] || [ "$name" = "avo" ] && continue
+  allowlisted "$name" || continue
+
+  pkg_path="$(resolve_and_verify "$name" lenient)" || {
+    printf -- '- %s %s — in %s but not resolvable on disk; run bundle install\n' "$name" "$version" "$(basename "$LOCK")"
+    continue
+  }
+  pkg_index="$(find "$pkg_path/lib" -maxdepth 4 -type d -name skills -exec test -f '{}/index.md' \; -print 2>/dev/null | head -1)"
+  [ -n "$pkg_index" ] || continue
+
+  found_pkg=1
+  printf -- '- **%s %s** — %s\n' "$name" "$version" "$pkg_index"
+  sed -n 's/^/  /p' "$pkg_index/index.md"
+  printf '\n'
+done <<< "$AVO_GEMS"
+[ "$found_pkg" -eq 0 ] && printf 'None. Every skill this app has is in the core index above.\n'
+
+printf '\n## Not installed\n\n'
+printf 'These provide subjects the core skills point at. They are absent from %s, so this app does not have them — name the add-on rather than describing features it cannot use. This reports what is installed, never what is licensed.\n\n' "$(basename "$LOCK")"
+awk -F'|' '
+  /^\| `avo-/ {
+    gsub(/^ *| *$/, "", $2); gsub(/`/, "", $2)
+    gsub(/^ *| *$/, "", $4)
+    print $2 "\t" $4
+  }
+' "$PACKAGE_MAP" 2>/dev/null | while IFS=$'\t' read -r gem subjects; do
+  printf '%s\n' "$AVO_GEMS" | grep -q "^$gem|" && continue
+  printf -- '- **%s** — %s\n' "$gem" "$subjects"
+done
+
+printf '\n---\nRead every skill this task actually touches — one that spans resources, fields, filters and actions needs all four. Skip the ones it does not; loading by reflex costs context and dilutes focus. Treat what you read as authoritative for this app over prior knowledge of Avo.\n'

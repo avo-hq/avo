@@ -29,7 +29,7 @@ RSpec.describe "CountryField", type: :feature do
       it "displays the placeholder" do
         visit url
 
-        expect(page).to have_select "project_country", selected: nil, options: ['No country', *countries]
+        expect(page).to have_select "project_country", selected: nil, options: ["No country", *countries]
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe "CountryField", type: :feature do
     context "edit" do
       let!(:url) { "/admin/resources/projects/#{project.id}/edit" }
 
-      it { is_expected.to have_select "project_country", selected: country_name, options: ['No country', *countries] }
+      it { is_expected.to have_select "project_country", selected: country_name, options: ["No country", *countries] }
 
       it "changes the country" do
         visit url

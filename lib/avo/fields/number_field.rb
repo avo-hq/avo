@@ -6,7 +6,7 @@ module Avo
       attr_reader :step
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         @min = args[:min].present? ? args[:min].to_f : nil
         @max = args[:max].present? ? args[:max].to_f : nil

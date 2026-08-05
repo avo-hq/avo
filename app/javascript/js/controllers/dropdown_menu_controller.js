@@ -8,6 +8,9 @@ export default class extends Controller {
     // One may want to have elements that are exempt from triggering the click outside event
     exemptionContainers: Array,
     logger: Boolean,
+    // Opt-in: re-align a left-aligned panel to the right when it would overflow the
+    // viewport, so it opens leftward instead of being clipped at the right edge.
+    flip: Boolean,
   }
 
   get exemptionContainerTargets() {
@@ -53,6 +56,7 @@ export default class extends Controller {
 
   open() {
     this.menuTarget.show()
+    this.maybeFlip()
     this.element.addEventListener('keydown', this.boundHandleKeydown)
     document.body.classList.add('dropdown-open')
     this.dispatch('open', { bubbles: true })
@@ -71,6 +75,23 @@ export default class extends Controller {
     this.menuTarget.close()
     this.element.removeEventListener('keydown', this.boundHandleKeydown)
     document.body.classList.remove('dropdown-open')
+  }
+
+  // Re-align the panel when `flip` is enabled. We always re-measure from the
+  // default left-aligned position (start-0), then switch to right-aligned (end-0)
+  // only if the panel would spill past the right edge of the viewport — so it
+  // opens leftward instead of being clipped. Dropdowns that don't opt in are
+  // untouched. Assumes the opted-in panel is left-aligned by default.
+  maybeFlip() {
+    if (!this.flipValue || !this.hasMenuTarget) return
+
+    this.menuTarget.classList.remove('start-auto', 'end-0')
+    this.menuTarget.classList.add('start-0', 'end-auto')
+
+    if (this.menuTarget.getBoundingClientRect().right > document.documentElement.clientWidth) {
+      this.menuTarget.classList.remove('start-0', 'end-auto')
+      this.menuTarget.classList.add('start-auto', 'end-0')
+    }
   }
 
   handleKeydown(event) {

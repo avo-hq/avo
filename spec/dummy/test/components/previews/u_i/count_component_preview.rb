@@ -9,7 +9,7 @@ module UI
     def default(count: 3)
       render_with_template(
         template: "u_i/count_component_preview/default",
-        locals: { count: count }
+        locals: {count: count}
       )
     end
   end

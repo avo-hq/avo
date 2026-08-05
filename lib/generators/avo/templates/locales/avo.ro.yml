@@ -8,6 +8,25 @@ ro:
     appearance:
       accent_picker: Culoare accent
       accents: Accent
+      accents_list:
+        amber: Chihlimbar
+        blue: Albastru
+        brand: Brand
+        cyan: Cyan
+        emerald: Smarald
+        fuchsia: Fucsia
+        green: Verde
+        indigo: Indigo
+        lime: Lime
+        orange: Portocaliu
+        pink: Roz
+        purple: Mov
+        red: Roșu
+        rose: Trandafiriu
+        sky: Cer
+        teal: Turcoaz
+        violet: Violet
+        yellow: Galben
       auto: Automat
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
@@ -16,6 +35,17 @@ ro:
       light: Deschis
       light_tooltip: Mod deschis
       neutrals: Temă
+      neutrals_list:
+        brand: Brand
+        gray: Gri
+        mauve: Mov deschis
+        mist: Ceață
+        neutral: Neutru
+        olive: Măsliniu
+        slate: Ardezie
+        stone: Piatră
+        taupe: Taupe
+        zinc: Zinc
       neutrals_picker: Temă neutre
       schemes: Aspect
       shortcut_badges: Insignele scurtăturilor
@@ -37,6 +67,7 @@ ro:
     attachment_class_detached: "%{attachment_class} separat."
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
+    back_to_top: Înapoi la început
     cancel: Anulează
     checkbox_list:
       hidden_selections:
@@ -152,6 +183,8 @@ ro:
     remove_selection: Șterge selecția
     reset: resetare
     reset_filters: Resetați filtrele
+    resize_sidebar: Redimensionați bara laterală
+    resize_sidebar_hint: Trageți pentru a redimensiona bara laterală. Faceți dublu clic pentru a reseta.
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată

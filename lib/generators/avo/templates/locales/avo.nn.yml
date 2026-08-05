@@ -8,6 +8,25 @@ nn:
     appearance:
       accent_picker: Aksentfarge
       accents: Aksent
+      accents_list:
+        amber: Rav
+        blue: Blå
+        brand: Merke
+        cyan: Cyan
+        emerald: Smaragd
+        fuchsia: Fuchsia
+        green: Grøn
+        indigo: Indigo
+        lime: Lime
+        orange: Oransje
+        pink: Rosa
+        purple: Lilla
+        red: Raud
+        rose: Rose
+        sky: Himmelblå
+        teal: Blågrøn
+        violet: Fiolett
+        yellow: Gul
       auto: Auto
       auto_tooltip: Auto (systempreferanse)
       dark: Mørk
@@ -16,6 +35,17 @@ nn:
       light: Lys
       light_tooltip: Lysmodus
       neutrals: Tema
+      neutrals_list:
+        brand: Merke
+        gray: Grå
+        mauve: Mauve
+        mist: Tåke
+        neutral: Nøytral
+        olive: Oliven
+        slate: Skifer
+        stone: Stein
+        taupe: Taupe
+        zinc: Sink
       neutrals_picker: Nøytrale tema
       schemes: Utseende
       shortcut_badges: Snarveiknappar
@@ -36,6 +66,7 @@ nn:
     attachment_class_detached: "%{attachment_class} fjerna."
     attachment_destroyed: Vedlegg sletta
     attachment_failed: Klarte ikkje å legge ved %{attachment_class}
+    back_to_top: Tilbake til toppen
     cancel: Avbryt
     checkbox_list:
       hidden_selections:
@@ -148,6 +179,8 @@ nn:
     remove_selection: Fjern val
     reset: nullstille
     reset_filters: Nullstill filter
+    resize_sidebar: Endre storleik på sidepanelet
+    resize_sidebar_hint: Dra for å endre storleik på sidepanelet. Dobbeltklikk for å tilbakestille.
     resource_created: Ressurs generert
     resource_destroyed: Ressurs sletta
     resource_updated: Ressurs oppdatert

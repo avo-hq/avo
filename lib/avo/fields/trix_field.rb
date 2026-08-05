@@ -8,7 +8,7 @@ module Avo
       attr_reader :hide_attachment_url
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         hide_on :index
 

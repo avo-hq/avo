@@ -4,7 +4,7 @@ class Avo::ModalComponent < Avo::BaseComponent
   renders_one :heading
   renders_one :controls
 
-  prop :width, default: :xl # :sm, :md, :lg, :xl, :2xl, :3xl, :4xl, :full
+  prop :width, default: :xl # :sm, :md, :lg, :xl, :2xl, :3xl, :4xl, :5xl, :full
   prop :height, default: :auto # :auto, :sm, :md, :lg, :xl, :2xl, :3xl, :4xl, :full
   prop :body_class
   prop :close_modal_on_backdrop_click, default: true, reader: :public

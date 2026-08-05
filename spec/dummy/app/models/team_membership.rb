@@ -12,6 +12,9 @@
 class TeamMembership < ApplicationRecord
   belongs_to :team
   belongs_to :user
+  # Declared first so it wins over `raise_test_error`, letting specs exercise a
+  # destroy that is *blocked* rather than one that blows up.
+  before_destroy -> { throw :abort }, if: -> { ENV["MEMBERSHIP_ABORT_DESTROY"] == "true" }
   before_destroy :raise_test_error, if: -> { Rails.env.test? }
 
   validate :fail, if: -> { ENV["MEMBERSHIP_FAIL"] == "true" }

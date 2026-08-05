@@ -1,5 +1,5 @@
-require 'rails/generators'
-require 'rails/generators/rails/model/model_generator'
+require "rails/generators"
+require "rails/generators/rails/model/model_generator"
 
 module Rails
   module Generators

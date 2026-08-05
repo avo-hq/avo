@@ -6,7 +6,7 @@ module Generators
       hide!
 
       def initialize(name, *options)
-        super(name, *options)
+        super
         invoke "avo:version", name, *options
       end
     end

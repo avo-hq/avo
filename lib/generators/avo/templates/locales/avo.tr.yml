@@ -8,6 +8,25 @@ tr:
     appearance:
       accent_picker: Vurgu rengi
       accents: Vurgu
+      accents_list:
+        amber: Kehribar
+        blue: Mavi
+        brand: Marka
+        cyan: Camgöbeği
+        emerald: Zümrüt
+        fuchsia: Fuşya
+        green: Yeşil
+        indigo: İndigo
+        lime: Limon
+        orange: Turuncu
+        pink: Pembe
+        purple: Mor
+        red: Kırmızı
+        rose: Gül
+        sky: Gök
+        teal: Deniz mavisi
+        violet: Menekşe
+        yellow: Sarı
       auto: Otomatik
       auto_tooltip: Otomatik (sistem tercihi)
       dark: Koyu
@@ -16,6 +35,17 @@ tr:
       light: Açık
       light_tooltip: Açık mod
       neutrals: Tema
+      neutrals_list:
+        brand: Marka
+        gray: Gri
+        mauve: Eflatun
+        mist: Sis
+        neutral: Nötr
+        olive: Zeytin
+        slate: Arduvaz
+        stone: Taş
+        taupe: Taupe
+        zinc: Çinko
       neutrals_picker: Nötr tema
       schemes: Görünüm
       shortcut_badges: Kısayol rozetleri
@@ -36,6 +66,7 @@ tr:
     attachment_class_detached: "%{attachment_class} ilişkisi kesildi."
     attachment_destroyed: Ek silindi
     attachment_failed: "%{attachment_class} eklenemedi"
+    back_to_top: Yukarı dön
     cancel: İptal et
     checkbox_list:
       hidden_selections:
@@ -148,6 +179,8 @@ tr:
     remove_selection: Seçimi sil
     reset: sıfırlama
     reset_filters: Filtreleri sıfırla
+    resize_sidebar: Kenar çubuğunu yeniden boyutlandır
+    resize_sidebar_hint: Kenar çubuğunu yeniden boyutlandırmak için sürükleyin. Sıfırlamak için çift tıklayın.
     resource_created: Kayıt oluşturuldu
     resource_destroyed: Kayıt silindi
     resource_updated: Kayıt güncellendi

@@ -2,7 +2,7 @@ module Avo
   module Fields
     class BooleanGroupField < BaseField
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         @options = args[:options] || {}
       end

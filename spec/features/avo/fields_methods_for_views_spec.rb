@@ -114,7 +114,6 @@ RSpec.feature "Fields methods for each view", type: :feature do
       expect(page).not_to have_css "[data-field-id='city']"
       expect(page).not_to have_selector 'turbo-frame[id="has_many_field_show_links"]'
 
-
       # Restore the original method
       Avo::Resources::Course.class_eval do
         define_method(:show_fields, original_show_fields)

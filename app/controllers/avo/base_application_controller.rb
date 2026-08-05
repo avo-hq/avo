@@ -12,6 +12,7 @@ module Avo
     include Avo::UrlHelpers
     include Avo::Concerns::Breadcrumbs
     include Avo::Concerns::FindAssociationField
+    include Avo::Concerns::PrivateAccess
 
     protect_from_forgery with: :exception
     before_action :decode_params
@@ -25,6 +26,7 @@ module Avo
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
+    before_action :set_sidebar_width
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -281,6 +283,15 @@ module Avo
       @sidebar_open = value.blank? || value == "1"
     end
 
+    # Registered after _authenticate! (via set_sidebar_open) so the user-controlled
+    # `avo.sidebar.width` cookie is never parsed for an unauthenticated request.
+    # #sidebar_width validates the cookie to an Integer|nil (R17); the pre-paint
+    # carrier (_sidebar_width_override.html.erb) reads @sidebar_width and emits
+    # nothing when it is nil.
+    def set_sidebar_width
+      @sidebar_width = sidebar_width
+    end
+
     # Set the current host for ActiveStorage
     def set_active_storage_current_host
       if defined?(ActiveStorage::Current)
@@ -300,13 +311,6 @@ module Avo
       else
         "avo/application"
       end
-    end
-
-    def authenticate_developer_or_admin!
-      # We don't care about this in development
-      return if Rails.env.development?
-
-      raise_404 unless Avo::Current.user_is_developer? || Avo::Current.user_is_admin?
     end
 
     def raise_404

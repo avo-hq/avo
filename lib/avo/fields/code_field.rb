@@ -16,7 +16,7 @@ module Avo
           args[:update_using] ||= -> { value.blank? ? value : JSON.parse(value) }
         end
 
-        super(id, **args, &block)
+        super
 
         @language = args[:language].present? ? args[:language].to_s : "javascript"
         @theme = args[:theme].present? ? args[:theme].to_s : "default"

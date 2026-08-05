@@ -8,6 +8,25 @@ fr:
     appearance:
       accent_picker: Couleur d'accent
       accents: Accent
+      accents_list:
+        amber: Ambre
+        blue: Bleu
+        brand: Marque
+        cyan: Cyan
+        emerald: Émeraude
+        fuchsia: Fuchsia
+        green: Vert
+        indigo: Indigo
+        lime: Citron vert
+        orange: Orange
+        pink: Rose
+        purple: Violet
+        red: Rouge
+        rose: Rosé
+        sky: Ciel
+        teal: Sarcelle
+        violet: Violet
+        yellow: Jaune
       auto: Automatique
       auto_tooltip: Automatique (préférence système)
       dark: Sombre
@@ -16,6 +35,17 @@ fr:
       light: Clair
       light_tooltip: Mode clair
       neutrals: Thème
+      neutrals_list:
+        brand: Marque
+        gray: Gris
+        mauve: Mauve
+        mist: Brume
+        neutral: Neutre
+        olive: Olive
+        slate: Ardoise
+        stone: Pierre
+        taupe: Taupe
+        zinc: Zinc
       neutrals_picker: Thème neutre
       schemes: Apparence
       shortcut_badges: Badges de raccourci
@@ -36,6 +66,7 @@ fr:
     attachment_class_detached: "%{attachment_class} détaché."
     attachment_destroyed: Pièce jointe détruite
     attachment_failed: Échec de l'ajout de %{attachment_class}
+    back_to_top: Retour en haut
     cancel: Annuler
     checkbox_list:
       hidden_selections:
@@ -148,6 +179,8 @@ fr:
     remove_selection: Supprimer la sélection
     reset: réinitialiser
     reset_filters: Réinitialiser les filtres
+    resize_sidebar: Redimensionner la barre latérale
+    resize_sidebar_hint: Faites glisser pour redimensionner la barre latérale. Double-cliquez pour réinitialiser.
     resource_created: Ressource créee
     resource_destroyed: Ressource détruite
     resource_updated: Ressource mise à jour

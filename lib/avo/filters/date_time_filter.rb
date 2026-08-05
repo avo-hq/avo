@@ -24,7 +24,7 @@ module Avo
           defaultDate: value,
           enableTime: has_time?,
           enableSeconds: has_time?,
-          time_24hr: has_time? ? true : nil,
+          time_24hr: has_time? || nil,
           noCalendar: type == :time,
           mode: mode,
           dateFormat: picker_format,

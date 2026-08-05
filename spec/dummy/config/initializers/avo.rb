@@ -12,7 +12,6 @@ Avo.configure do |config|
 
   ## == Licensing ==
   config.license_key = ENV["AVO_LICENSE_KEY"]
-  config.exclude_from_status = ["license_key"]
 
   ## == App context ==
   config.current_user_method = :current_user
@@ -51,6 +50,7 @@ Avo.configure do |config|
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
   config.click_row_to_view_record = true
+  config.back_to_top = {enabled: true}
 
   config.turbo = {
     instant_click: true
@@ -62,7 +62,7 @@ Avo.configure do |config|
   #   show_on_hover: true
   # }
 
-  config.sidebar_toggle_visible = true
+  config.sidebar = {toggle_visible: true}
 
   # config.hotkeys = {
   #   enabled: true,

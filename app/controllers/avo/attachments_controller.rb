@@ -1,7 +1,5 @@
-require_dependency "avo/application_controller"
-
 module Avo
-  class AttachmentsController < ApplicationController
+  class AttachmentsController < Avo::ApplicationController
     before_action :set_resource_name, only: [:destroy, :create]
     before_action :set_resource, only: [:destroy, :create]
     before_action :set_record, only: [:destroy, :create]

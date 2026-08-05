@@ -6,7 +6,7 @@ module Avo
       def initialize(id, **args, &block)
         show_on :forms
 
-        super(id, **args, &block)
+        super
 
         hide_on :index, :show
 

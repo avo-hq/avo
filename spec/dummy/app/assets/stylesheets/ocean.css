@@ -1,0 +1,77 @@
+/* Ocean theme — harsh edition.
+   Same knobs as the rose theme (neutral ramp + accent), but cold, saturated and
+   high-contrast: steel-blue surfaces in light, near-black navy in dark, with an
+   electric cyan accent. Ocean hue in oklch ≈ 240 (surfaces) / 220 (accent).
+
+   Harsher than the default: deeper darks, brighter accent, punchier content
+   colors, and every corner flattened (all --radius-* → 0, notch off).
+
+   This is a standalone alternate theme. It is NOT auto-loaded — to use it,
+   point the layout's stylesheet_link_tag at "ocean" instead of "avo-overrides"
+   (app/views/layouts/avo/application.html.erb), or copy its contents into
+   avo-overrides.css. Loaded unlayered, it wins over Avo's @theme defaults. */
+
+/* Flatten every corner. Zeroing the Tailwind radius scale kills roundedness
+   everywhere (cards, inputs, badges, dropdowns, buttons); the notch/card knobs
+   square off the navbar and content panel. */
+:root {
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-card: 0;
+  --radius-card-wrapper: 0;
+
+  --navbar-notch-enabled: false;
+  --navbar-notch-radius: 0;
+  --main-content-radius: 0;
+}
+
+/* Light mode: cold steel-blue surfaces, hard contrast. */
+:root {
+  --color-avo-neutral-25: oklch(99% 0.006 240);
+  --color-avo-neutral-50: oklch(97.5% 0.012 240);
+  --color-avo-neutral-100: oklch(95% 0.02 240);
+  --color-avo-neutral-200: oklch(89% 0.035 240);
+  --color-avo-neutral-300: oklch(75% 0.06 240);
+  --color-avo-neutral-400: oklch(60% 0.1 240);
+  --color-avo-neutral-500: oklch(50% 0.14 240);
+  --color-avo-neutral-600: oklch(43% 0.15 240);
+  --color-avo-neutral-700: oklch(36% 0.13 240);
+  --color-avo-neutral-800: oklch(29% 0.11 240);
+  --color-avo-neutral-900: oklch(20% 0.09 240);
+  --color-avo-neutral-950: oklch(13% 0.07 240);
+
+  /* Harsher contrast than default: pin content to near-black, page to white. */
+  --color-content: oklch(12% 0.06 240);
+  --color-background: var(--color-white);
+
+  /* Electric cyan accent + focus ring. */
+  --color-accent: var(--color-cyan-500);
+  --color-accent-content: var(--color-cyan-600);
+  --color-accent-foreground: var(--color-white);
+  --focus-outline-color: var(--color-cyan-400);
+  --focus-outline-width: 3px;
+}
+
+/* Dark mode: near-black navy, electric cyan. */
+.dark {
+  --color-avo-neutral-900: oklch(17% 0.08 240);
+  --color-avo-neutral-950: oklch(10% 0.06 240);
+  --color-avo-neutral-800: oklch(24% 0.1 240);
+  --color-avo-neutral-700: oklch(32% 0.12 240);
+  --color-avo-neutral-600: oklch(42% 0.14 240);
+
+  --color-content: var(--color-white);
+  --color-background: oklch(10% 0.06 240);
+  --color-primary: oklch(7% 0.04 240);
+
+  --color-accent: var(--color-cyan-400);
+  --color-accent-content: var(--color-cyan-300);
+  --color-accent-foreground: oklch(10% 0.06 240);
+  --focus-outline-color: var(--color-cyan-400);
+  --focus-outline-width: 3px;
+}

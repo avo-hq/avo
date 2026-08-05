@@ -8,6 +8,25 @@ zh:
     appearance:
       accent_picker: 强调色
       accents: 强调色
+      accents_list:
+        amber: 琥珀
+        blue: 蓝色
+        brand: 品牌
+        cyan: 青色
+        emerald: 祖母绿
+        fuchsia: 品红
+        green: 绿色
+        indigo: 靛蓝
+        lime: 青柠
+        orange: 橙色
+        pink: 粉色
+        purple: 紫色
+        red: 红色
+        rose: 玫瑰
+        sky: 天蓝
+        teal: 蓝绿
+        violet: 紫罗兰
+        yellow: 黄色
       auto: 自动
       auto_tooltip: 自动（系统偏好）
       dark: 深色
@@ -16,6 +35,17 @@ zh:
       light: 浅色
       light_tooltip: 浅色模式
       neutrals: 主题
+      neutrals_list:
+        brand: 品牌
+        gray: 灰色
+        mauve: 淡紫
+        mist: 薄雾
+        neutral: 中性
+        olive: 橄榄
+        slate: 石板
+        stone: 石色
+        taupe: 灰褐
+        zinc: 锌色
       neutrals_picker: 中性色主题
       schemes: 外观
       shortcut_badges: 快捷键徽章
@@ -34,6 +64,7 @@ zh:
     attachment_class_detached: "%{attachment_class} 已分离。"
     attachment_destroyed: 附件已删除
     attachment_failed: 无法附加 %{attachment_class}
+    back_to_top: 返回顶部
     cancel: 取消
     checkbox_list:
       hidden_selections:
@@ -146,6 +177,8 @@ zh:
     remove_selection: 清除选择
     reset: 重置
     reset_filters: 重置筛选器
+    resize_sidebar: 调整侧边栏大小
+    resize_sidebar_hint: 拖动以调整侧边栏大小。双击可重置。
     resource_created: 记录已创建
     resource_destroyed: 记录已删除
     resource_updated: 记录已更新

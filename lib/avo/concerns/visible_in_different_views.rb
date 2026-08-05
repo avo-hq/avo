@@ -13,10 +13,10 @@ module Avo
 
       def initialize_views
         # Set defaults
-        @show_on_index = @show_on_index.nil? ? true : @show_on_index
-        @show_on_show = @show_on_show.nil? ? true : @show_on_show
-        @show_on_new = @show_on_new.nil? ? true : @show_on_new
-        @show_on_edit = @show_on_edit.nil? ? true : @show_on_edit
+        @show_on_index = @show_on_index.nil? || @show_on_index
+        @show_on_show = @show_on_show.nil? || @show_on_show
+        @show_on_new = @show_on_new.nil? || @show_on_new
+        @show_on_edit = @show_on_edit.nil? || @show_on_edit
         @show_on_preview = @show_on_preview.nil? ? false : @show_on_preview
 
         if @args.present?

@@ -4,7 +4,7 @@ module Avo
       attr_reader :link_to_record
 
       def initialize(id, **args, &block)
-        super(id, **args, &block)
+        super
 
         @link_to_record = args[:link_to_record].present? ? args[:link_to_record] : false
 

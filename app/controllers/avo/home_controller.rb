@@ -1,7 +1,5 @@
-require_dependency "avo/application_controller"
-
 module Avo
-  class HomeController < ApplicationController
+  class HomeController < Avo::ApplicationController
     def index
       if Avo.configuration.home_path.present?
         # If the home_path is a block run it, if not, just use it

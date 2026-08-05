@@ -65,8 +65,8 @@ module Avo
         end
       end
 
-      def placeholder
-        @placeholder || I18n.t("avo.choose_an_option")
+      def default_placeholder
+        I18n.t("avo.choose_an_option")
       end
 
       def has_own_panel?
@@ -129,7 +129,7 @@ module Avo
       private
 
       def default_view
-        Avo.configuration.skip_show_view ? :edit : :show
+        Avo.configuration.resource_default_view.edit? ? :edit : :show
       end
 
       # Attributes exposed to callable descriptions. `loading_type` tells a

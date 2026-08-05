@@ -97,13 +97,16 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     )
   end
 
+  # Feeds the "%{item}" interpolation in the index create/attach buttons, so it
+  # returns the sentence form: a translated name stays verbatim, a generated one
+  # is lowercased. The buttons upcase_first the sentence.
   def singular_resource_name
     if @reflection.present?
-      return name.singularize if field.present?
+      return field.sentence_name.singularize if field.present?
 
-      reflection_resource.name
+      reflection_resource.sentence_name
     else
-      @resource.singular_name || @resource.model_class.model_name.name.downcase
+      @resource.sentence_name.presence || @resource.model_class.model_name.name.downcase
     end
   end
 
@@ -170,6 +173,32 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   end
 
   private
+
+  def lazy_load_index_view?
+    @resource.index_view_lazy_loading? && @reflection.blank?
+  end
+
+  def index_view_loaded?
+    request.headers["Turbo-Frame"] == @resource.index_view_frame
+  end
+
+  def index_view_frame_args
+    args = {
+      target: :_top,
+      class: "relative flex flex-col gap-y-4",
+      data: {
+        controller: "resource-index",
+        action: "turbo:frame-load->resource-index#loaded"
+      }
+    }
+
+    unless index_view_loaded?
+      args[:src] = request.fullpath
+      args[:loading] = :lazy
+    end
+
+    args
+  end
 
   def reflection_model_class
     @reflection.active_record.to_s

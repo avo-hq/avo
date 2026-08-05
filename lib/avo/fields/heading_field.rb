@@ -9,7 +9,7 @@ module Avo
         args[:updatable] = false
         @label = args[:label] || id.to_s.humanize
 
-        super(id, **args, &block)
+        super
 
         # this field is not used to update anything
         @for_presentation_only = true

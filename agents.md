@@ -66,6 +66,38 @@ When toggling the visibility of some html elements, use the `hidden` HTML attrib
 
 Whenever possible use the `partial:` keyword when rendering partials unless needed otherwise.
 
+### Class as a URL parameter (slug)
+
+When a class travels in a URL (a scope, filter, action, or any selectable type), encode it as a readable slug, not the raw class name, and resolve it back by matching against the objects you already registered.
+
+Never `constantize` the param. It is user input, and constantizing it means arbitrary class loading (autoload DoS, information disclosure, gadget surface). Match against a known set instead.
+
+Parameterize: derive a stable slug from the class. Keep the full namespace path; do not `demodulize`, or nested classes collide (`A::Active` and `B::Active` both become `active`). `underscore` turns `::` into `/`; map that boundary to `-` so the URL builder does not `%2F` encode a slash.
+
+```ruby
+def self.param
+  @param ||= name.underscore               # Avo::Scopes::Admin::NonAdmins => "avo/scopes/admin/non_admins"
+              .delete_prefix("avo/scopes/") # => "admin/non_admins" (strip the type's conventional root)
+              .tr("/", "-")                 # => "admin-non_admins"
+end
+```
+
+Result: `/admin/resources/users?scope=admin-non_admins`
+
+Class and module names are CamelCase, so `_` only comes from a word boundary and `-` only from a `::` boundary. `admin-non_admins` maps unambiguously to `Admin::NonAdmins`, and distinct nested classes never collide.
+
+Deparameterize: match the computed slug against the registered set and return the class. Do not rebuild the class from the string.
+
+```ruby
+scopes.find { |scope| scope.param == params[:scope] }
+```
+
+Guards:
+
+- Let `self.param` be overridden for a custom short slug (`scope=vip`), which also breaks the rare collision.
+- Assert slug uniqueness within the set at boot; raise and point the author at `self.param` on conflict.
+- During a transition, also accept the legacy value so bookmarked URLs keep working (`scope.param == p || scope.name == p`); drop the fallback a version later.
+
 ## Logging in (development & testing)
 
 The dummy app at `spec/dummy` uses Devise for authentication. Avo is mounted at `/admin` and is wrapped in an `authenticate :user, ->(user) { user.is_admin? }` block, so you need an admin user to reach it.
@@ -91,3 +123,102 @@ Do not drive the sign-in form in tests. Use the Devise/Warden test helpers inste
 - System & feature specs: `login_as(admin, scope: :user)` (Warden test mode is enabled in `spec/support/devise.rb`).
 - Controller specs: `sign_in admin` (Devise's `ControllerHelpers`).
 - Get an admin user from the shared context: `include_context "has_admin_user"`, which exposes `admin` via `create(:user, roles: {admin: true})`. The mix-in `TestHelpers::DisableAuthentication` (`spec/support/controller_routes.rb`) wires this up automatically.
+
+## Cursor Cloud specific instructions
+
+Avo is a Ruby on Rails admin-panel **engine/gem**. There is no standalone app; you
+develop and test it through the bundled dummy Rails app in `spec/dummy`. All
+commands below are run from the repo root unless noted.
+
+### Toolchain (already installed in the VM snapshot)
+- Ruby `3.3.1` via `rbenv` (initialized in `~/.bashrc`; available in any login shell).
+- Node + Yarn (classic) are pre-provisioned on `PATH`.
+- `overmind` (used by `bin/dev`) and `foreman` are installed globally.
+- PostgreSQL 16 is installed locally. `pg_hba.conf` is configured to `trust`
+  `127.0.0.1`/`::1`, so the app connects as user `postgres` with an empty password
+  (matching `spec/dummy/config/database.yml` defaults).
+
+The update script only refreshes dependencies (`bundle install`, `yarn install`,
+`spec/dummy` yarn). Everything below (starting Postgres, DB schema/seed, asset
+builds, running the server) is NOT done by the update script — do it yourself.
+
+### Start Postgres (needed every fresh VM boot; it does not auto-start)
+```
+sudo pg_ctlcluster 16 main start
+```
+
+### First-time / after-schema-change database setup
+The dev DB and test DB are part of the snapshot, but if missing or stale:
+```
+# Development DB
+AVO_LICENSE_KEY=license_123 bin/rails db:create
+AVO_LICENSE_KEY=license_123 bin/rails db:migrate
+AVO_LICENSE_KEY=license_123 AVO_ADMIN_PASSWORD=secret bin/rails db:seed
+# Test DB (schema only — load separately, migrate does not target it)
+AVO_LICENSE_KEY=license_123 RAILS_ENV=test bin/rails db:schema:load
+```
+Seeding creates an admin login: `hi@avohq.io` / `secret` (the email is hardcoded in
+`spec/dummy/db/seeds.rb`; the password comes from `AVO_ADMIN_PASSWORD`, else `secreto`).
+
+### Build assets (required before running the server or system tests)
+```
+yarn build:js
+yarn build:css
+yarn build:custom-js
+```
+`bin/dev` runs these as `--watch` processes, so during normal development they
+rebuild automatically.
+
+### After pulling/merging main (non-obvious gotchas)
+- The dev group includes `actual_db_schema`, which treats migrations from other
+  branches as "phantom" and can roll them back / hide them after a branch switch or
+  merge. Symptom: the app raises `ActiveRecord::PendingMigrationError` while
+  `bin/rails db:migrate` / `db:migrate:status` claim nothing is pending. Fix by
+  reloading the dev DB from the (up-to-date) `schema.rb`:
+  ```
+  AVO_LICENSE_KEY=license_123 RAILS_ENV=development bin/rails db:drop db:create
+  AVO_LICENSE_KEY=license_123 RAILS_ENV=development bin/rails db:schema:load
+  AVO_LICENSE_KEY=license_123 RAILS_ENV=test bin/rails db:schema:load
+  AVO_LICENSE_KEY=license_123 AVO_ADMIN_PASSWORD=secret RAILS_ENV=development bin/rails db:seed
+  ```
+  Always pass `RAILS_ENV` explicitly and run `db:schema:load` as its own command
+  (chaining `db:drop db:create db:schema:load` in one invocation sometimes leaves the
+  schema only partially loaded).
+- If the server boots with a stale `NoMethodError` on a config setter that exists in
+  `lib/avo/configuration.rb`, clear the bootsnap cache: `rm -rf spec/dummy/tmp/cache/bootsnap*`.
+- If `bin/dev` reports "Overmind is already running", remove the stale socket: `rm -f .overmind.sock`.
+
+### Run the dummy app
+```
+AVO_LICENSE_KEY=license_123 bin/dev      # starts web + js/css/custom-js watchers via overmind
+```
+The server listens on `http://localhost:3030`. Avo is mounted at `/admin`
+(root `/` redirects there). Log in with `hi@avohq.io` / `secret`.
+
+Note: `bin/dev` uses a `&>` bashism in its overmind/foreman detection that misfires
+under `dash`; this is why `overmind` is installed (the `foreman` fallback branch is
+never reached). Do not "fix" `bin/dev` for this.
+
+### Lint
+```
+bundle exec standardrb        # Ruby (StandardRB) -- note: .standard.yml sets `fix: true`, so this auto-fixes files
+bundle exec erb_lint --lint-all   # ERB
+yarn eslint app/javascript        # JS -- see caveat below
+```
+The JS lint config (`.eslintrc.json`) is the legacy eslintrc format and only works
+with old ESLint. `package.json` pins ESLint v9, which (a) defaults to flat config
+and (b) is incompatible with the `sort-imports-es6-autofix` plugin, so
+`yarn eslint app/javascript` fails locally out of the box. CI works around this by
+installing `eslint@6.8.0` (plus matching plugins) at job time before linting
+(see `.github/workflows/lint.yml`). Do not "fix" this by changing the pinned version.
+
+### Tests
+Tests run against `RAILS_ENV=test` with `AVO_LICENSE_KEY=license_123`.
+```
+bin/test            # everything (slow)
+bin/test unit       # feature + controller + component (fast)
+bin/test system     # system/browser tests (builds assets first, slow)
+bin/test ./spec/requests/avo/home_request_spec.rb   # single file
+```
+System tests use `cuprite` (headless Chrome). DB-backed specs need the test DB
+schema loaded (see above).

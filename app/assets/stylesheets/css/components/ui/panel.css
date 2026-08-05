@@ -21,6 +21,14 @@
   @apply w-full;
 }
 
+/* Several `card`s declared in one `panel do ... end` block land as adjacent
+   children of the body, which is a plain block container — so without this they
+   render flush, borders touching. Matches the panel's own `gap-y-4` rhythm.
+   Adjacent-sibling scoped so a lone card stays flush with the panel. */
+.panel__body > .card + .card {
+  @apply mt-4;
+}
+
 /* Shift+T anchors focus on the panel body. Mirror the table view's focus state:
    suppress the body's own (clipped) outline and lift the ring to the whole panel,
    exactly like `.card:has(table:focus-visible)` does for the index table. */
