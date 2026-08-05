@@ -194,6 +194,7 @@ end
 
 - **Gem-gated types break without their companion gem** (the field silently fails to render or raises). If the user asks for one, tell them to add the gem:
   - `:rhino` → `gem "avo-rhino_field"`
+  - `:lexxy` → `gem "avo-lexxy_field"` (Basecamp's Lexxy editor for Action Text; needs Rails >= 8.0.2)
   - `:markdown` → `gem "marksmith"` + `gem "commonmarker"`
   - `:money` → `gem "avo-money_field"` + `gem "money-rails", "~> 1.12"` (and `monetize :price_cents` on the model)
   - `:location` / `:area` → `gem "mapkick-rb"` (**not** `mapkick`) + `MAPBOX_ACCESS_TOKEN` env var
