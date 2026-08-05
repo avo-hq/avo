@@ -484,6 +484,33 @@ RSpec.describe "Actions", type: :system do
       click_on "Actions"
       expect(page.find("a", text: "Toggle post published")["data-disabled"]).to eq "true"
     end
+
+    # Regression for https://github.com/avo-hq/avo/pull/4595 — selected grid
+    # records must reach the action (confirmation message + handle query).
+    it "runs an action with the selected records on the products grid" do
+      product = create :product, title: "Grid Product One"
+
+      visit avo.resources_products_path
+
+      grid_component = find(
+        "[data-component-name=\"avo/index/grid_item_component\"]" \
+        "[data-resource-name=\"products\"]" \
+        "[data-record-id=\"#{product.to_param}\"]"
+      )
+
+      within grid_component do
+        grid_component.hover
+        find("input[type=checkbox]").click
+      end
+
+      open_panel_action(action_name: "Show products")
+
+      expect(page).to have_text "Selected products: Grid Product One"
+
+      run_action
+
+      expect(page).to have_text "Selected products: Grid Product One"
+    end
   end
 
   describe "record assignment" do
