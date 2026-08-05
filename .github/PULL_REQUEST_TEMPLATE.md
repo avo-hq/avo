@@ -7,6 +7,25 @@ Fixes # (issue)
   By submitting the Contribution, you acknowledge that you have read the Contributor License Agreement at https://avohq.io/cla and agree to be bound by its terms.
 -->
 
+## Release note
+
+<!-- release-note-help
+This becomes the customer-facing line in Avo's release notes and feeds the
+monthly "what shipped" rollup. Write it for someone who uses Avo, not for a
+reviewer reading the diff.
+
+  Note  one line, no trailing period
+  Type  feature | fix | improvement | internal
+
+Use `internal` for changes users never see — CI, tooling, docs. A check
+reports a missing or unparseable note but never blocks the merge.
+
+Delete this comment once you have filled the two lines in.
+-->
+
+Note:
+Type:
+
 # Checklist:
 <!--
   Please go through the steps and complete them if they make sense (add tests if the change requires it, add to the docs, etc.)
