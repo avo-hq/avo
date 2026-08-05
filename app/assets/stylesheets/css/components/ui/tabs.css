@@ -184,6 +184,16 @@
     }
   }
 
+  /* The breakout above assumes the container has padding to give up. The
+     belongs-to "Create new" modal has exactly as much as the breakout consumes,
+     so the dashed border ends up flush against the modal edge while the sibling
+     panels stay inset. Keep the group in flow there and let its own padding
+     hold the content off the border. AVO-1365. */
+  .modal-form-body .tab-group {
+    width: 100%;
+    margin-inline: 0;
+  }
+
   /* ============================================
      ACTIVE INDICATOR VIEW TRANSITION
      ============================================ */

@@ -78,10 +78,18 @@ class Avo::ActionsComponent < Avo::BaseComponent
     when defined?(Avo::CustomControls::Resources::Controls::Action) && Avo::CustomControls::Resources::Controls::Action
       render_action_link(action.action, icon: action.icon)
     when defined?(Avo::CustomControls::Resources::Controls::LinkTo) && Avo::CustomControls::Resources::Controls::LinkTo
-      link_to action.args[:path],
-        class: action.args.delete(:class),
-        **action.args.except(:path, :label, :icon) do
-          raw("#{icon(action.args[:icon])} #{action.args[:label]}")
+      # Dropdown items render as plain links, not ButtonComponents, so the styling
+      # options have nothing to land in — spreading the raw kwargs leaked them into
+      # the markup (color: :fuchsia rendered as color="fuchsia"). Excluding
+      # CONTROL_OPTIONS drops those and the internal plumbing while still forwarding
+      # genuine HTML attributes like rel:.
+      link_to action.path,
+        **action.args.except(*Avo::Resources::Controls::BaseControl::CONTROL_OPTIONS),
+        class: action.classes,
+        title: action.title,
+        target: action.target,
+        data: action.data do
+          raw("#{icon(action.icon)} #{action.label}")
         end
     end
   end

@@ -170,7 +170,7 @@
 }
 
 .modal__body-content {
-  @apply w-full min-h-48 rounded-card-wrapper border border-tertiary bg-primary;
+  @apply w-full min-h-48 rounded-card-wrapper border border-tertiary bg-primary p-4;
 }
 
 /* Belongs-to "Create new" embeds an edit form in the modal. Drop the nested
@@ -230,6 +230,12 @@
 .modal--width-4xl {
   .modal__card {
     @apply w-4xl;
+  }
+}
+
+.modal--width-5xl {
+  .modal__card {
+    @apply w-5xl;
   }
 }
 

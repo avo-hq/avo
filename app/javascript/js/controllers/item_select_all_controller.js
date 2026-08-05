@@ -22,6 +22,8 @@ export default class extends Controller {
   }
 
   elementAttributeValueChanged(element) {
+    if (!this.hasCheckboxTarget) return
+
     // Check if anything is selected.
     const selectedResources = JSON.parse(element.dataset.selectedResources)
     // If all are selected, mark the checkbox as checked.
@@ -47,7 +49,10 @@ export default class extends Controller {
 
   deselectAll() {
     this.itemCheckboxTargets.forEach((checkbox) => checkbox.checked && checkbox.click())
-    this.checkboxTarget.checked = false
+
+    if (this.hasCheckboxTarget) {
+      this.checkboxTarget.checked = false
+    }
 
     if (this.selectAllEnabled()) {
       this.selectAllOverlay(false)
@@ -73,7 +78,10 @@ export default class extends Controller {
     let allSelected = true
     // eslint-disable-next-line no-return-assign
     this.itemCheckboxTargets.forEach((checkbox) => allSelected = allSelected && checkbox.checked)
-    this.checkboxTarget.checked = allSelected
+
+    if (this.hasCheckboxTarget) {
+      this.checkboxTarget.checked = allSelected
+    }
 
     if (this.selectAllEnabled()) {
       this.selectAllOverlay(allSelected)

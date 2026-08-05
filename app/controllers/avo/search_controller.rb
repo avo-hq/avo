@@ -3,10 +3,8 @@
 # This controller is currently only used for searchable fields, it keeps the old search controller without any changes
 # Possibly have much more logic that it uses, but it's not worth the effort to refactor it since we're going to replace it with a new searchable fields way
 
-require_dependency "avo/application_controller"
-
 module Avo
-  class SearchController < ApplicationController
+  class SearchController < Avo::ApplicationController
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::TextHelper
 

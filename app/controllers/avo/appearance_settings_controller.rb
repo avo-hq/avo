@@ -1,5 +1,5 @@
 module Avo
-  class AppearanceSettingsController < ApplicationController
+  class AppearanceSettingsController < Avo::ApplicationController
     def update
       appearance = Avo.configuration.appearance
 

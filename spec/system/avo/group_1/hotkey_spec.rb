@@ -29,17 +29,25 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     page.evaluate_script("document.activeElement && document.activeElement.value")
   end
 
-  def dispatch_active_element_keydown(key)
+  def dispatch_active_element_keydown(key, ctrl_key: false, meta_key: false)
     page.execute_script(<<~JS)
       const activeElement = document.activeElement
       if (activeElement) {
         activeElement.dispatchEvent(new KeyboardEvent("keydown", {
           key: #{key.to_json},
+          ctrlKey: #{ctrl_key},
+          metaKey: #{meta_key},
           bubbles: true,
           cancelable: true
         }))
       }
     JS
+  end
+
+  def focus_field(field_id)
+    page.execute_script("document.getElementById(#{field_id.to_json}).focus()")
+
+    expect(page.evaluate_script("document.activeElement && document.activeElement.id")).to eq(field_id)
   end
 
   def focus_resource_table
@@ -299,18 +307,24 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(active_element_value).to eq("confirm")
   end
 
-  # it "submits the form with command or control enter" do
-  #   project = create(:project, name: "Original name")
+  # The binding lives on the `form` element, so the keydown has to originate from a
+  # field inside it and bubble up — dispatching on `body` never reaches the form.
+  # (`fill_in` leaves focus on `body`, hence the explicit `focus_field`.)
+  {"command" => {meta_key: true}, "control" => {ctrl_key: true}}.each do |modifier, options|
+    it "submits the form with #{modifier} enter" do
+      project = create(:project, name: "Original name")
 
-  #   visit "/admin/resources/projects/#{project.id}/edit"
+      visit "/admin/resources/projects/#{project.id}/edit"
 
-  #   fill_in "project_name", with: "Updated from hotkey"
-  #   dispatch_keydown("Enter", meta_key: true)
+      fill_in "project_name", with: "Updated from hotkey"
+      focus_field("project_name")
+      dispatch_active_element_keydown("Enter", **options)
 
-  #   expect(page).to have_text("Project was successfully updated")
-  #   expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
-  #   expect(project.reload.name).to eq("Updated from hotkey")
-  # end
+      expect(page).to have_text("Project was successfully updated")
+      expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+      expect(project.reload.name).to eq("Updated from hotkey")
+    end
+  end
 
   describe "Shift+T focuses the screen content" do
     def active_element_descriptor
