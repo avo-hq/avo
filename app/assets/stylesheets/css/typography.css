@@ -1,20 +1,20 @@
-h1 {
+h1:not(:where(.marksmith-rendered-body *)) {
   @apply text-4xl;
 }
 
-h2 {
+h2:not(:where(.marksmith-rendered-body *)) {
   @apply text-3xl;
 }
 
-h3 {
+h3:not(:where(.marksmith-rendered-body *)) {
   @apply text-2xl;
 }
 
-h4 {
+h4:not(:where(.marksmith-rendered-body *)) {
   @apply text-xl;
 }
 
-h5 {
+h5:not(:where(.marksmith-rendered-body *)) {
   @apply text-lg;
 }
 

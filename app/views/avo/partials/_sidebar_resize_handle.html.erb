@@ -1,0 +1,43 @@
+<%# Resize handle for the desktop sidebar (R1–R3, R8, R18, R20–R22).
+
+  Rendered only when Avo.configuration.sidebar[:resizable] is on (the S5
+  accessibility off-switch), and always with `hidden` present (R20). The
+  sidebar_resize controller is the SINGLE owner of that attribute: it removes
+  `hidden` on connect when the sidebar is open at >= lg, and re-adds it
+  otherwise. So a cold load, a closed sidebar, or a no-JS visit each leave a
+  correct, inert handle with no orphaned tab stop.
+
+  aria-controls points at #main-sidebar — the layout wrapper carries that id and
+  is the skip-link target; the .avo-sidebar it wraps has no id of its own.
+
+  role="separator" forces role="presentation" onto any descendant, so the grip
+  is a ::after pseudo-element in css/components/sidebar_resize.css, never a child
+  node here.
+
+  aria-valuenow / -valuemin / -valuemax are STATIC server values in this unit
+  (Unit 8 makes valuenow track the drag). They are required, not optional:
+  axe-core 4.12 lists aria-valuenow as a mandatory attribute of role="separator".
+  With no stored width the value is the starting width — Avo's 256px unless the
+  host set Avo.configuration.sidebar[:default_width]. %>
+<% current_width = @sidebar_width || sidebar_width_default %>
+<%= tag.div "",
+  class: class_names("sidebar-resize-handle", "print:hidden": Avo.configuration.hide_layout_when_printing),
+  hidden: true,
+  role: "separator",
+  tabindex: "0",
+  title: t("avo.resize_sidebar_hint"),
+  aria: {
+    orientation: "vertical",
+    controls: "main-sidebar",
+    label: t("avo.resize_sidebar"),
+    valuenow: current_width,
+    valuemin: sidebar_width_min,
+    valuemax: sidebar_width_max
+  },
+  data: {
+    controller: "sidebar-resize",
+    # Only the press is bound here. The controller attaches pointermove/up/cancel
+    # to `window` for the duration of the drag rather than relying on
+    # setPointerCapture to retarget them — see the note in startDrag.
+    action: "pointerdown->sidebar-resize#startDrag dblclick->sidebar-resize#reset"
+  } %>

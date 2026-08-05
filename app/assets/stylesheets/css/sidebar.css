@@ -87,12 +87,25 @@
 }
 
 .sidebar-section__header {
-  @apply flex items-center w-full text-start p-2 pb-1 gap-2 rounded-lg text-base font-medium leading-6 border-none bg-transparent;
+  @apply flex items-center w-full text-start p-2 pb-1 gap-2 rounded-lg text-base font-medium leading-6 border-none bg-transparent min-w-0;
   color: var(--sidebar-content-secondary);
 }
 
 .sidebar-section__header-inner {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-2 min-w-0;
+}
+
+/* Section icons (leading icon and the collapse chevron both carry this class)
+   must never shrink when a long title truncates beside them. */
+.sidebar-section__icon {
+  @apply shrink-0;
+}
+
+/* Long section titles render on one line and truncate with an ellipsis; the
+   full text stays available via the `title` attribute. `min-w-0` is load-bearing
+   — a flex item won't shrink below its content width without it. */
+.sidebar-section__title {
+  @apply flex-1 min-w-0 truncate;
 }
 
 .sidebar-section__header:focus-visible {
@@ -119,8 +132,20 @@
 }
 
 .sidebar-group__header {
-  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-xs font-medium leading-4 cursor-pointer border-none bg-transparent;
+  @apply flex w-full text-start px-2 py-1 gap-2 rounded-lg text-xs font-medium leading-4 cursor-pointer border-none bg-transparent min-w-0;
   color: var(--sidebar-content-secondary);
+}
+
+/* Flex + `min-w-0` so the enclosed title becomes a shrinkable flex item and can
+   truncate; without a display context a bare inline span never clips. */
+.sidebar-group__header-inner {
+  @apply flex min-w-0;
+}
+
+/* Mirror `.sidebar-section__title`: one line, ellipsis on overflow, full text
+   on hover via `title`. */
+.sidebar-group__title {
+  @apply flex-1 min-w-0 truncate;
 }
 
 .sidebar-group__header:focus-visible {
@@ -174,6 +199,15 @@
   background: var(--sidebar-link-active-background);
 }
 
+/* Labels render on one line and truncate with an ellipsis; the full text stays
+   available via the `title` attribute. `min-w-0` is load-bearing — a flex item
+   won't shrink below its content width without it — and `flex-1` makes `ms-auto`
+   on the hotkey badge / external icon a no-op when a long label leaves no free
+   space. */
+.sidebar-link__label {
+  @apply flex-1 min-w-0 truncate;
+}
+
 .sidebar-link__icon-wrapper {
   @apply shrink-0 flex items-center justify-center;
 }
@@ -184,7 +218,7 @@
 }
 
 .sidebar-link__external-icon {
-  @apply self-center ms-auto me-2;
+  @apply self-center ms-auto me-2 shrink-0;
 }
 
 /* ================================================ */
@@ -424,6 +458,10 @@
 
 .sidebar-status__indicator--error {
   @apply bg-orange-400;
+}
+
+.sidebar-status__indicator--warning {
+  @apply bg-amber-400;
 }
 
 .sidebar-status__hint {

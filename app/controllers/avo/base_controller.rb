@@ -1,7 +1,5 @@
-require_dependency "avo/application_controller"
-
 module Avo
-  class BaseController < ApplicationController
+  class BaseController < Avo::ApplicationController
     include Avo::Concerns::FiltersSessionHandler
     include Avo::Concerns::AssociationQueryScope
     include Avo::Concerns::SafeCall
@@ -21,7 +19,7 @@ module Avo
     layout :choose_layout
 
     def index
-      @page_title = @resource.plural_name.humanize
+      @page_title = @resource.plural_name
 
       if @reflection.present? && !turbo_frame_request?
         # A good rule of thumb is that the resource name entry (Users) gets just the initials
@@ -29,26 +27,32 @@ module Avo
         add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials
         add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar
       end
-      add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+      add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
 
       set_applied_filters
       set_index_params
       set_filters
       set_actions
-      set_query
-      build_index_query
-      apply_pagination
-
-      # Create resources for each record
-      # Duplicate the @resource before hydration to avoid @resource keeping last record.
+      set_component_for __method__
+      set_index_view_loading
       @resource.hydrate(params: params)
-      @resources = @records.map do |record|
-        @resource.dup.hydrate(record: record)
+
+      if @index_view_loaded
+        set_query
+        build_index_query
+        apply_pagination
+
+        # Create resources for each record
+        # Duplicate the @resource before hydration to avoid @resource keeping last record.
+        @resources = @records.map do |record|
+          @resource.dup.hydrate(record: record)
+        end
+      else
+        @records = []
+        @resources = []
       end
 
-      set_component_for __method__
-
-      if request.headers["X-Search-Request"] == "resource-search-controller"
+      if resource_search_request?
         respond_to do |format|
           format.turbo_stream do
             has_resources = @resources.present?
@@ -67,7 +71,7 @@ module Avo
               turbo_stream.replace("#{@resource.model_key}_body_content") do
                 Avo::Current.view_context.render Avo::ResourceListingComponent.new(
                   **common_args,
-                  turbo_frame: @turbo_frame,
+                  turbo_frame: params[:turbo_frame],
                   index_params: @index_params
                 )
               end,
@@ -116,9 +120,9 @@ module Avo
         add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
         add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
-        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
 
       add_breadcrumb title: t("avo.new").humanize
@@ -164,7 +168,7 @@ module Avo
       saved = save_record
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
-      add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+      add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials
       set_actions
 
@@ -350,6 +354,20 @@ module Avo
       end
     end
 
+    def set_index_view_loading
+      supports_lazy_loading = @component == Avo::Views::ResourceIndexComponent
+      @index_view_frame = @resource.index_view_frame if @resource.index_view_lazy_loading? && @reflection.blank? && supports_lazy_loading
+      @index_view_loaded = @index_view_frame.blank? ||
+        request.headers["Turbo-Frame"] == @index_view_frame ||
+        resource_search_request?
+
+      params[:turbo_frame] ||= @index_view_frame if @index_view_frame.present? && @index_view_loaded
+    end
+
+    def resource_search_request?
+      request.headers["X-Search-Request"] == "resource-search-controller"
+    end
+
     def set_sorting_params
       @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
@@ -370,7 +388,7 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action_bag|
-          action_bag.delete(:class).new(record: @record, resource: @resource, view: @view, **action_bag)
+          action_bag[:class].new(record: @record, resource: @resource, view: @view, **action_bag.except(:class))
         end
         .select do |action|
           action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
@@ -435,9 +453,9 @@ module Avo
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
-        add_breadcrumb title: @resource.plural_name.humanize, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
 
       add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials
@@ -723,9 +741,9 @@ module Avo
         add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
         add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
 
-        add_breadcrumb title: @resource.plural_name.humanize, path: nil, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: nil, initials: @resource.class.initials
       else
-        add_breadcrumb title: @resource.plural_name.humanize, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
       end
     end
 

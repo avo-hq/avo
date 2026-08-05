@@ -64,6 +64,7 @@ zh-TW:
     attachment_class_detached: "%{attachment_class} 已分離。"
     attachment_destroyed: 附件已刪除
     attachment_failed: 無法附加 %{attachment_class}
+    back_to_top: 回到頂部
     cancel: 取消
     checkbox_list:
       hidden_selections:
@@ -176,6 +177,8 @@ zh-TW:
     remove_selection: 清除選擇
     reset: 重置
     reset_filters: 重置篩選器
+    resize_sidebar: 調整側邊欄大小
+    resize_sidebar_hint: 拖曳以調整側邊欄大小。按兩下即可重設。
     resource_created: 記錄已建立
     resource_destroyed: 記錄已刪除
     resource_updated: 記錄已更新

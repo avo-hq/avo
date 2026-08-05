@@ -12,10 +12,11 @@ class Avo::Resources::Items::ItemGroup
 
   delegate :items, :add_item, to: :items_holder
 
-  def initialize(title: nil, description: nil, view: nil, **args)
+  def initialize(title: nil, description: nil, translation_key: nil, view: nil, **args)
     @title = title
     @view = Avo::ViewInquirer.new view
     @description = description
+    @translation_key = translation_key
     @items_holder = Avo::Resources::Items::Holder.new
     @args = args
     @visible = args[:visible]

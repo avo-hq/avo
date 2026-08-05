@@ -1,0 +1,49 @@
+/* Christmas theme — evergreen surfaces, holly-red accent, gold focus.
+   Same knobs as the other themes: pine-green neutral ramp (oklch hue ≈ 150),
+   a red accent for buttons/links, and a warm gold focus ring. Sidebar and
+   navbar lean deepest green so they read like a wreath around the content.
+
+   Standalone alternate — NOT auto-loaded. Point the layout's
+   stylesheet_link_tag at "christmas" (+ `//= link christmas.css` in
+   app/assets/config/avo_manifest.js). Loaded unlayered → wins. */
+
+/* Light mode: frosty green-white surfaces, red trim. */
+:root {
+  --color-avo-neutral-25: oklch(99.2% 0.008 150);
+  --color-avo-neutral-50: oklch(98% 0.016 150);
+  --color-avo-neutral-100: oklch(96% 0.028 150);
+  --color-avo-neutral-200: oklch(90% 0.05 150);
+  --color-avo-neutral-300: oklch(76% 0.08 150);
+  --color-avo-neutral-400: oklch(62% 0.1 150);
+  --color-avo-neutral-500: oklch(52% 0.11 150);
+  --color-avo-neutral-600: oklch(45% 0.11 150);
+  --color-avo-neutral-700: oklch(38% 0.1 150);
+  --color-avo-neutral-800: oklch(32% 0.09 150);
+  --color-avo-neutral-900: oklch(25% 0.08 150);
+  --color-avo-neutral-950: oklch(18% 0.06 150);
+
+  /* Holly-red accent + warm gold focus ring. */
+  --color-accent: var(--color-red-600);
+  --color-accent-content: var(--color-red-700);
+  --color-accent-foreground: var(--color-white);
+  --focus-outline-color: oklch(80% 0.15 85); /* gold */
+
+  /* Deepest evergreen for the navbar so it frames the content. */
+  --color-navbar-background: oklch(28% 0.09 150);
+}
+
+/* Dark mode: deep forest at night, glowing red, gold sparkle. */
+.dark {
+  --color-avo-neutral-900: oklch(22% 0.07 150);
+  --color-avo-neutral-950: oklch(15% 0.05 150);
+  --color-avo-neutral-800: oklch(29% 0.08 150);
+  --color-avo-neutral-700: oklch(37% 0.09 150);
+  --color-avo-neutral-600: oklch(46% 0.1 150);
+
+  --color-primary: oklch(13% 0.045 150);
+
+  --color-accent: var(--color-red-500);
+  --color-accent-content: var(--color-red-400);
+  --color-accent-foreground: var(--color-white);
+  --focus-outline-color: oklch(85% 0.15 85); /* gold */
+}

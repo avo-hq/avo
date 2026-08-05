@@ -64,6 +64,7 @@ it:
     attachment_class_detached: "%{attachment_class} staccato."
     attachment_destroyed: Allegato distrutto
     attachment_failed: Impossibile allegare %{attachment_class}
+    back_to_top: Torna su
     cancel: Annulla
     checkbox_list:
       hidden_selections:
@@ -176,6 +177,8 @@ it:
     remove_selection: Rimuovi selezione
     reset: Reimposta
     reset_filters: Reimposta filtri
+    resize_sidebar: Ridimensiona la barra laterale
+    resize_sidebar_hint: Trascina per ridimensionare la barra laterale. Fai doppio clic per ripristinare.
     resource_created: Record creato
     resource_destroyed: Record distrutto
     resource_updated: Record aggiornato

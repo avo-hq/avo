@@ -19,6 +19,10 @@ loader.inflector.inflect(
   "railtie_dsl" => "RailtieDSL"
 )
 loader.ignore("#{__dir__}/generators")
+# Shipped agent skills. Markdown alone is invisible to Zeitwerk, but a skill that
+# bundles a script makes its hyphenated directory eligible, and Zeitwerk then
+# raises trying to constantize e.g. `avo-menu-icons`.
+loader.ignore("#{__dir__}/avo/skills")
 loader.ignore("#{__dir__}/avo/engine_dsl.rb")
 loader.ignore("#{__dir__}/avo/plugin_dsl.rb")
 loader.ignore("#{__dir__}/avo/railtie_dsl.rb")
@@ -29,6 +33,24 @@ module Avo
   IN_DEVELOPMENT = ENV["AVO_IN_DEVELOPMENT"] == "1"
   PACKED = !IN_DEVELOPMENT
   COOKIES_KEY = "avo"
+
+  # Resizable-sidebar width bounds and starting width, in pixels. The server
+  # clamps the persisted `avo.sidebar.width` cookie to this range
+  # (Avo::ApplicationHelper#sidebar_width) and emits all three into
+  # window.Avo.configuration for the JS drag layer; the CSS clamp() in
+  # css/layout.css keeps a commented duplicate of the bounds.
+  #
+  # All three are private_constant. The BOUNDS have no host-facing knob by
+  # design. The DEFAULT does — `Avo.configuration.sidebar[:default_width]` — and
+  # this constant is only its fallback, so it must not become public API by
+  # accident either. Reachable inside Avo via unqualified lexical lookup (e.g.
+  # from Avo::Configuration and Avo::ApplicationHelper, both nested in Avo);
+  # views read them through the #sidebar_width_min / #sidebar_width_max /
+  # #sidebar_width_default helpers rather than the constants.
+  SIDEBAR_WIDTH_MIN = 200
+  SIDEBAR_WIDTH_MAX = 480
+  SIDEBAR_WIDTH_DEFAULT = 256
+  private_constant :SIDEBAR_WIDTH_MIN, :SIDEBAR_WIDTH_MAX, :SIDEBAR_WIDTH_DEFAULT
 
   # Frame IDs
   MODAL_FRAME_ID = :modal_frame
@@ -54,6 +76,11 @@ module Avo
   class DeprecatedAPIError < StandardError; end
 
   class ViewTypeComponentNotFoundError < StandardError; end
+
+  # Serializes Avo.boot so concurrent code reloads (config.to_prepare fires on
+  # every reload, from every request thread) can't interleave the plugin
+  # registry reset with its repopulation. See PluginManager#begin_reload.
+  @boot_mutex = Mutex.new
 
   # Exception raised when a resource is missing
   class MissingResourceError < StandardError
@@ -92,16 +119,19 @@ module Avo
 
     # Runs when the app boots up
     def boot
-      Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
-      @logger = Avo.configuration.logger
-      @field_manager = Avo::Fields::FieldManager.build
-      @view_type_manager = nil # force re-init with defaults on next access
-      @cache_store = Avo.configuration.cache_store
-      Avo.plugin_manager.reset
-      # Run load hooks for plugins to include them in the app.
-      # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
-      ActiveSupport.run_load_hooks(:avo_plugin_include, self)
-      ActiveSupport.run_load_hooks(:avo_boot, self)
+      @boot_mutex.synchronize do
+        Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
+        @logger = Avo.configuration.logger
+        @field_manager = Avo::Fields::FieldManager.build
+        @view_type_manager = nil # force re-init with defaults on next access
+        @cache_store = Avo.configuration.cache_store
+        Avo.plugin_manager.begin_reload
+        # Run load hooks for plugins to include them in the app.
+        # This is useful for plugins that need to include modules in the app that will be used on avo_boot hook.
+        ActiveSupport.run_load_hooks(:avo_plugin_include, self)
+        ActiveSupport.run_load_hooks(:avo_boot, self)
+        Avo.plugin_manager.commit_reload
+      end
       eager_load_actions
     end
 
@@ -173,7 +203,7 @@ module Avo
       return if Avo.configuration.main_menu.nil?
 
       Avo.error_manager.add({
-        url: "https://docs.avohq.io/3.0/menu-editor.html",
+        url: "https://docs.avohq.io/4.0/menu-editor.html",
         target: "_blank",
         message: "The menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
       })
@@ -183,7 +213,7 @@ module Avo
       return if Avo.configuration.profile_menu.nil?
 
       Avo.error_manager.add({
-        url: "https://docs.avohq.io/3.0/menu-editor.html#profile-menu",
+        url: "https://docs.avohq.io/4.0/menu-editor.html#profile-menu",
         target: "_blank",
         message: "The profile menu editor is available exclusively with the Pro license or above. Consider upgrading to access this feature."
       })

@@ -25,8 +25,11 @@
     <%= stylesheet_link_tag "avo/dependencies", "data-turbo-track": "reload", as: "style" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
     <%= stylesheet_link_tag "avo/application", "data-turbo-track": "reload", as: "style" %>
+    <%= stylesheet_link_tag "avo-overrides", "data-turbo-track": "reload", as: "style" %>
 
     <%= javascript_include_tag "avo/application", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
+    <%# Loaded after avo/application.js (which sets window.Stimulus) so overrides can register controllers. %>
+    <%= javascript_include_tag "avo-overrides", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
 
     <% if !Avo::PACKED && defined?(Hotwire::Livereload) %>
       <%= javascript_include_tag "hotwire-livereload", defer: true, nonce: request.content_security_policy_nonce %>
@@ -35,6 +38,7 @@
     <%= render Avo::AssetManager::JavascriptComponent.new asset_manager: Avo.asset_manager %>
     <%= render partial: "avo/partials/head" %>
     <%= render partial: "avo/partials/color_theme_override" %>
+    <%= render partial: "avo/partials/sidebar_width_override" %>
 
     <%# appearance_overrides MUST render after the application stylesheet so its inline %>
     <%# :root / .dark declarations win on equal-specificity cascade. %>
@@ -54,9 +58,16 @@
     >
       <%= render partial: "avo/partials/navbar", locals: {resource: @resource} %>
 
+      <%= render partial: "avo/partials/back_to_top" if Avo.configuration.back_to_top[:enabled] %>
+
       <div id="main-sidebar" tabindex="-1" class="hidden lg:flex">
         <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %>
       </div>
+
+      <%# Immediately after the sidebar wrapper: after every nav link and both %>
+      <%# skip links in the tab order, before the content. Must stay inside %>
+      <%# .main to inherit --sidebar-offset-size, which positions it. %>
+      <%= render partial: "avo/partials/sidebar_resize_handle" if Avo.configuration.sidebar[:resizable] %>
 
       <div class="flex lg:hidden">
         <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open, for_mobile: true %>

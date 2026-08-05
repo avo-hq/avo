@@ -12,6 +12,8 @@ class Avo::Reloader
     # reload all files declared in each directory
     directories.keys.each do |dir|
       Dir.glob("#{dir}/**/*.rb").each do |file|
+        next if shipped_skill_asset?(file)
+
         if File.exist? file
           load file
         end
@@ -20,6 +22,13 @@ class Avo::Reloader
   end
 
   private
+
+  # Scripts bundled with a shipped agent skill are assets, not runtime code.
+  # `load`ing one runs it against whatever ARGV the host process has — which is
+  # how a skill helper ends up aborting an unrelated rspec run.
+  def shipped_skill_asset?(file)
+    file.include?("/skills/")
+  end
 
   def updater
     @updater ||= config.file_watcher.new(files, directories) { reload! }

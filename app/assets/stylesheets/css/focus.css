@@ -16,7 +16,7 @@
     outline: none;
   }
 
-  a[href]:empty:not([aria-label]) {
+  a[href]:empty:not([aria-label]):not([aria-labelledby]) {
     display: none;
   }
 

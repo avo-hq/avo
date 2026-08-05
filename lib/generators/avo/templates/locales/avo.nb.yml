@@ -66,6 +66,7 @@ nb:
     attachment_class_detached: "%{attachment_class} fjernet."
     attachment_destroyed: Vedlett slettet
     attachment_failed: Kunne ikke legge ved %{attachment_class}
+    back_to_top: Til toppen
     cancel: Avbryt
     checkbox_list:
       hidden_selections:
@@ -178,6 +179,8 @@ nb:
     remove_selection: Fjern valg
     reset: nullstille
     reset_filters: Nullstill filter
+    resize_sidebar: Endre størrelse på sidepanelet
+    resize_sidebar_hint: Dra for å endre størrelse på sidepanelet. Dobbeltklikk for å tilbakestille.
     resource_created: Ressurs generert
     resource_destroyed: Ressurs slettet
     resource_updated: Ressurs oppdatert

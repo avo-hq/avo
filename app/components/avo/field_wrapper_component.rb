@@ -43,6 +43,34 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     "#{@style} #{@field.get_html(:style, view: @view, element: :wrapper)}"
   end
 
+  def label_classes
+    class_names("field-wrapper__label", @field.get_html(:classes, view: @view, element: :label))
+  end
+
+  # Returned as-is so a blank value stays `nil` and `content_tag` omits the
+  # attribute instead of rendering an empty `style` on every field wrapper.
+  def label_style
+    @field.get_html(:style, view: @view, element: :label)
+  end
+
+  # The slot goes first so field-declared data merges on top of it rather than
+  # replacing it — `[data-slot="label"]` is a selector the app relies on.
+  def label_data
+    {slot: "label"}.merge(@field.get_html(:data, view: @view, element: :label))
+  end
+
+  def content_classes
+    class_names("field-wrapper__content", @field.get_html(:classes, view: @view, element: :content))
+  end
+
+  def content_style
+    @field.get_html(:style, view: @view, element: :content)
+  end
+
+  def content_data
+    {slot: "value"}.merge(@field.get_html(:data, view: @view, element: :content))
+  end
+
   def label
     @label || @field.name
   end

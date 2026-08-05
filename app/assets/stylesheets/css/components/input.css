@@ -27,6 +27,9 @@
     padding-block: var(--input-py);
     font-size: var(--input-font-size);
     line-height: var(--input-leading);
+    /* Inter's contextual alternates render "0x0" as "0×0" while typing in
+       browsers that shape form controls (Firefox). Visual only, but confusing. */
+    font-variant-ligatures: no-contextual;
   }
 
   tags.tagify {
@@ -203,7 +206,11 @@
     background-position: left var(--input-icon-offset) center;
   }
 
+  /* The base reset sets `overflow: hidden` on every select, which clips the
+     options past the visible rows and leaves no way to scroll to them. */
   select[multiple] {
+    @apply overflow-y-auto;
+
     background-image: none;
   }
 

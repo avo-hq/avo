@@ -67,6 +67,7 @@ ro:
     attachment_class_detached: "%{attachment_class} separat."
     attachment_destroyed: Atașamentul a fost distrus
     attachment_failed: Nu s-a reușit atașarea %{attachment_class}
+    back_to_top: Înapoi la început
     cancel: Anulează
     checkbox_list:
       hidden_selections:
@@ -182,6 +183,8 @@ ro:
     remove_selection: Șterge selecția
     reset: resetare
     reset_filters: Resetați filtrele
+    resize_sidebar: Redimensionați bara laterală
+    resize_sidebar_hint: Trageți pentru a redimensiona bara laterală. Faceți dublu clic pentru a reseta.
     resource_created: Resursă creata
     resource_destroyed: Resursă ștearsă
     resource_updated: Resursă actualizată

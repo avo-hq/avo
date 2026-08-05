@@ -44,7 +44,6 @@ module Avo
       attr_reader :format_new_using
       attr_reader :format_form_using
       attr_reader :autocomplete
-      attr_reader :help
       attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
@@ -129,15 +128,25 @@ module Avo
       end
 
       def translation_key
-        @translation_key || "avo.field_translations.#{@id}"
+        @translation_key || resource_scoped_translation_key || shared_translation_key
+      end
+
+      def shared_translation_key
+        "avo.field_translations.#{@id}"
+      end
+
+      def resource_scoped_translation_key
+        return if @resource.blank?
+
+        "#{@resource.translation_key}.fields.#{@id}"
       end
 
       def translated_name(default:)
-        t(translation_key, count: 1, default: default).humanize
+        translate_field_name(count: 1, default: default)
       end
 
       def translated_plural_name(default:)
-        t(translation_key, count: 2, default: default).humanize
+        translate_field_name(count: 2, default: default)
       end
 
       def width_class
@@ -168,7 +177,7 @@ module Avo
           Avo::ExecutionContext.new(target: @name).handle
         elsif name_override.present?
           name_override
-        elsif translation_key
+        elsif name_from_translation?
           translated_name default: default_name
         else
           default_name
@@ -176,6 +185,14 @@ module Avo
       end
 
       def name_override = nil
+
+      # The name as it should read inside a sentence, e.g. "Attach payment method".
+      # A resolved translation is used verbatim; only the generated fallback is lowercased.
+      def sentence_name
+        return name.humanize(capitalize: false) unless name_from_translation?
+
+        translated_name(default: default_name.humanize(capitalize: false))
+      end
 
       def plural_name
         default = name.pluralize
@@ -203,8 +220,24 @@ module Avo
         @id.to_s.humanize(keep_id_suffix: true)
       end
 
+      def help
+        return @help unless @help.nil?
+
+        translated_option(:help)
+      end
+
       def placeholder
-        Avo::ExecutionContext.new(target: @placeholder || name, record: record, resource: @resource, view: @view).handle
+        target = if !@placeholder.nil?
+          @placeholder
+        else
+          translated_option(:placeholder).presence || default_placeholder
+        end
+
+        Avo::ExecutionContext.new(target: target, record: record, resource: @resource, view: @view).handle
+      end
+
+      def default_placeholder
+        name
       end
 
       def attribute_id = (@attribute_id ||= @for_attribute || @id)
@@ -342,6 +375,45 @@ module Avo
       end
 
       private
+
+      # Resolve a field-adjacent string (help, placeholder, include_blank) from
+      # the same translation_key siblings the field name uses: resource-scoped
+      # first, then the shared field_translations key.
+      def translated_option(option)
+        translation_lookup_keys.each do |key|
+          translation = I18n.t("#{key}.#{option}", default: nil)
+          return translation if translation.present?
+        end
+
+        nil
+      end
+
+      # Whether #name resolves through a translation key rather than a supplied name.
+      # Field discovery assigns a name to every association field, so a custom name
+      # is not necessarily developer-authored -- only a translation is trusted verbatim.
+      def name_from_translation?
+        !custom_name? && name_override.blank? && !translation_key.nil?
+      end
+
+      def translate_field_name(count:, default:)
+        translation_lookup_keys.each do |key|
+          translation = t(key, count: count, default: nil)
+          return translation if translation.present?
+        rescue I18n::InvalidPluralizationData
+          next
+        end
+
+        default
+      end
+
+      def translation_lookup_keys
+        return [translation_key] if @translation_key.present?
+
+        keys = []
+        keys << resource_scoped_translation_key if resource_scoped_translation_key.present?
+        keys << shared_translation_key
+        keys
+      end
 
       def fetch_parent
         params = Avo::Current.params

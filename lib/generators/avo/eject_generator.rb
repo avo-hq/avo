@@ -46,6 +46,12 @@ module Generators
         scripts: "app/views/avo/partials/_scripts.html.erb",
         sidebar_extra: "app/views/avo/partials/_sidebar_extra.html.erb",
         profile_menu_extra: "app/views/avo/partials/_profile_menu_extra.html.erb",
+        avo_overrides_css: "app/assets/stylesheets/avo-overrides.css",
+        avo_overrides_js: "app/assets/javascripts/avo-overrides.js",
+        asset_overrides: [
+          "app/assets/stylesheets/avo-overrides.css",
+          "app/assets/javascripts/avo-overrides.js"
+        ],
       }
 
       def handle
@@ -61,6 +67,9 @@ module Generators
           say "Please specify a partial or a component to eject.\n" \
               "Examples: rails g avo:eject --partial :logo\n" \
               "          rails g avo:eject --partial app/views/layouts/avo/application.html.erb\n" \
+              "          rails g avo:eject --partial :avo_overrides_css   # app/assets/stylesheets/avo-overrides.css\n" \
+              "          rails g avo:eject --partial :avo_overrides_js    # app/assets/javascripts/avo-overrides.js\n" \
+              "          rails g avo:eject --partial :asset_overrides     # both of the above\n" \
               "          rails g avo:eject --component Avo::Index::TableRowComponent\n" \
               "          rails g avo:eject --component avo/index/table_row_component\n" \
               "          rails g avo:eject --controller application_controller\n" \
@@ -96,16 +105,16 @@ module Generators
         def eject_partial
           if options[:partial].starts_with?(":")
             template_id = path_to_sym options[:partial]
-            template_path = TEMPLATES[template_id]
+            template_paths = Array(TEMPLATES[template_id])
 
-            if path_exists? template_path
-              return unless confirm_ejection_on template_path
-              eject template_path
+            if template_paths.any? && template_paths.all? { |path| path_exists? path }
+              return unless confirm_ejection_on template_paths.join("' and '")
+              template_paths.each { |template_path| eject template_path }
             else
               say("Failed to find the `#{template_id.to_sym}` template.", :yellow)
             end
           elsif path_exists? options[:partial]
-            return unless confirm_ejection_on template_path
+            return unless confirm_ejection_on options[:partial]
             eject options[:partial]
           else
             say("Failed to find the `#{options[:partial]}` template.", :yellow)

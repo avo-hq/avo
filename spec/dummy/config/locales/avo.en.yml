@@ -6,6 +6,14 @@ en:
     resource_translations:
       product:
         save: "Save the product!"
+        fields:
+          title:
+            one: "Product title"
+            other: "Product titles"
+    field_translations:
+      title:
+        one: "Title"
+        other: "Titles"
     action_ran_successfully: Action ran successfully!
     actions: Actions
     and_x_other_resources: and %{count} other resources

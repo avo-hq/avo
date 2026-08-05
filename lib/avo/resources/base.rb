@@ -44,6 +44,7 @@ module Avo
 
       # class methods
       delegate :class_name, to: :class
+      delegate :sentence_name, to: :class
       delegate :route_key, to: :class
       delegate :singular_route_key, to: :class
 
@@ -62,7 +63,10 @@ module Avo
       class_attribute :single_attachments, default: []
       class_attribute :authorization_policy
       class_attribute :custom_translation_key
-      class_attribute :default_view_type, default: :table
+      # No default here so an unset resource falls through to
+      # Avo.configuration.default_view_type in #view_type.
+      class_attribute :default_view_type
+      class_attribute :index_view_loading, default: :eager
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
       class_attribute :filters_loader
@@ -233,9 +237,18 @@ module Avo
         #       product:
         #         save: "Save product"
         def name_from_translation_key(count:, default:)
-          t(translation_key, count:, default:).humanize
+          t(translation_key, count:, default:)
         rescue I18n::InvalidPluralizationData
           default
+        end
+
+        # The name as it should read inside a sentence, e.g. "Create new payment method".
+        # A resolved translation is used verbatim; only the generated fallback is lowercased.
+        def sentence_name
+          name_from_translation_key(
+            count: 1,
+            default: demodulized_class_name.underscore.humanize(capitalize: false)
+          )
         end
 
         def underscore_name
@@ -243,7 +256,7 @@ module Avo
         end
 
         def navigation_label
-          plural_name.humanize
+          plural_name
         end
 
         def find_record(id, query: nil, params: nil)
@@ -288,6 +301,14 @@ module Avo
       delegate :model_key, to: :class
       delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
+
+      def index_view_lazy_loading?
+        self.class.index_view_loading.to_s == "lazy"
+      end
+
+      def index_view_frame
+        "#{model_key}_index"
+      end
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
         @view = Avo::ViewInquirer.new(view) if view.present?
@@ -470,7 +491,10 @@ module Avo
         when :edit
           record_title
         when :new
-          t("avo.create_new_item", item: name.humanize(capitalize: false)).upcase_first
+          # upcase_first, not humanize: locales like de put the item first
+          # ("%{item} hinzufügen"), so the sentence still needs its initial cased
+          # while the interpolated name stays exactly as translated.
+          t("avo.create_new_item", item: self.class.sentence_name).upcase_first
         end
       end
 
@@ -726,7 +750,12 @@ module Avo
       end
 
       def get_external_link
-        return unless record&.persisted?
+        return if record.nil?
+        # Skip only on the "create" form views where there's no saved record to
+        # link to yet. Avoid `record.persisted?` here: non-ActiveRecord records
+        # (e.g. API-backed resources) report `persisted? => false` and would
+        # never render an external link.
+        return if view&.new? || view&.create?
 
         Avo::ExecutionContext.new(target: external_link, resource: self, record: record).handle
       end

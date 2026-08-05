@@ -1,6 +1,9 @@
 <%= render Avo::TurboFrameWrapperComponent.new(turbo_frame_request_id) do %>
   <% if turbo_frame_request_id %>
-    <%= render Avo::ModalComponent.new(title: t("avo.media_library.title")) do |c| %>
+    <%# The library is a grid of media cards (13rem floor per card), so the default
+        :xl modal fits two columns and 4xl three, leaving a ragged last row. 5xl
+        fits four, so a page of 12 lands as three full rows. %>
+    <%= render Avo::ModalComponent.new(title: t("avo.media_library.title"), width: :"5xl") do |c| %>
       <div class="p-4">
         <%= render Avo::MediaLibrary::ListComponent.new attaching: @attaching %>
       </div>

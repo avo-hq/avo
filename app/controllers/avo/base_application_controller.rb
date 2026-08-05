@@ -26,6 +26,7 @@ module Avo
     before_action :add_initial_breadcrumbs
     before_action :set_view
     before_action :set_sidebar_open
+    before_action :set_sidebar_width
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -280,6 +281,15 @@ module Avo
     def set_sidebar_open
       value = cookies["#{Avo::COOKIES_KEY}.sidebar.open"]
       @sidebar_open = value.blank? || value == "1"
+    end
+
+    # Registered after _authenticate! (via set_sidebar_open) so the user-controlled
+    # `avo.sidebar.width` cookie is never parsed for an unauthenticated request.
+    # #sidebar_width validates the cookie to an Integer|nil (R17); the pre-paint
+    # carrier (_sidebar_width_override.html.erb) reads @sidebar_width and emits
+    # nothing when it is nil.
+    def set_sidebar_width
+      @sidebar_width = sidebar_width
     end
 
     # Set the current host for ActiveStorage

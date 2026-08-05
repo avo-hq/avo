@@ -3,10 +3,8 @@
 # This controller is currently only used for searchable fields, it keeps the old search controller without any changes
 # Possibly have much more logic that it uses, but it's not worth the effort to refactor it since we're going to replace it with a new searchable fields way
 
-require_dependency "avo/application_controller"
-
 module Avo
-  class SearchController < ApplicationController
+  class SearchController < Avo::ApplicationController
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::TextHelper
 
@@ -52,7 +50,7 @@ module Avo
     end
 
     def search_resource(resource)
-      key = resource.name.pluralize.downcase
+      key = resource.route_key
 
       # If search query is not defined return error in dev and nil otwherwise.
       if resource.search_query.blank?
@@ -62,7 +60,7 @@ module Avo
           header: "⚠️ Warning ⚠️",
           help: "",
           label: "Search is disabled for #{resource}.\n To enable it please use this guide...",
-          url: "https://docs.avohq.io/3.0/search.html#enable-search-for-a-resource"
+          url: "https://docs.avohq.io/4.0/search/resource-search.html#enable-search-for-a-resource"
         )
 
         return [key, search_query_undefined]

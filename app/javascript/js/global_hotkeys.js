@@ -164,6 +164,16 @@ const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 // so it never reaches a document-level listener. Must be registered on each element.
 function hotkeyFireHandler(event) {
   const el = event.currentTarget
+
+  // Stale element left behind after a Turbo body replacement (e.g. clicking a
+  // broken resource renders Rails' error page). @github/hotkey keeps its
+  // reference, so without this guard pressing "p" would .click() the detached
+  // sidebar link and navigate. Cancel so hotkeys are inert on non-Avo pages.
+  if (!el.isConnected) {
+    event.preventDefault()
+    return
+  }
+
   const hotkey = el.getAttribute('data-hotkey')
 
   // Apply feedback to ALL elements sharing this hotkey (e.g. desktop + mobile sidebar).

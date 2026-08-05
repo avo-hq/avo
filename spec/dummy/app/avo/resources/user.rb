@@ -4,6 +4,7 @@ class Avo::Resources::User < Avo::BaseResource
   self.title = -> {
     record.name
   }
+  # self.index_view_loading = :lazy
   self.description = -> {
     description = "Users of the app. view: #{view}"
     if !view.index?
@@ -280,7 +281,7 @@ class Avo::Resources::User < Avo::BaseResource
       test_tab
       test_field("Inside tabs")
       first_tabs_group_fields
-      tab title: "Created at" do
+      tab title: "Created at", badge: Avo::UI::CountComponent.new(count: 3) do
         field :created_at, as: :date_time
       end
     end

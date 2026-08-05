@@ -1,18 +1,47 @@
 module Avo
   class PluginManager
     attr_reader :plugins
-    attr_accessor :engines
+    attr_reader :engines
 
     alias_method :all, :plugins
 
     def initialize
       @plugins = []
       @engines = []
+      @building_plugins = []
+      @building_engines = []
     end
 
-    def reset
-      @plugins = []
-      @engines = []
+    # Starts a re-registration cycle without touching the currently published
+    # @plugins/@engines, so concurrent readers (e.g. mount_avo's route-drawing
+    # loop) keep seeing the complete pre-reload list until #commit_reload
+    # publishes the new one. Called by Avo.boot inside its Mutex, so only one
+    # reload is ever building at a time.
+    def begin_reload
+      @building_plugins = []
+      @building_engines = []
+    end
+
+    # Publishes the registrations collected since #begin_reload. Each of the
+    # two reassignments below is individually an atomic pointer swap, so a
+    # reader of .engines alone (or .plugins alone) always sees the complete
+    # old list or the complete new one, never a partially rebuilt one. The
+    # two fields are not published jointly -- a reader combining both in one
+    # operation could observe them from different reload generations. No
+    # current reader does that (mount_avo reads only .engines; installed?
+    # reads only .plugins).
+    def commit_reload
+      @plugins = @building_plugins
+      @engines = @building_engines
+      # Reset to fresh arrays rather than nil: register/mount_engine must
+      # stay callable even outside a begin_reload/commit_reload window --
+      # e.g. avo-permissions calls Avo.plugin_manager.register at Rails
+      # initializer time, before Avo.boot ever runs. Such a call is simply
+      # discarded by the next #begin_reload rather than raising, matching
+      # the pre-atomic-publish behavior where register/mount_engine never
+      # crashed regardless of timing.
+      @building_plugins = []
+      @building_engines = []
     end
 
     def register(name, priority: 10)
@@ -21,7 +50,7 @@ module Avo
       # (e.g. `:rhino` for `avo-rhino_field`), so the name alone isn't enough.
       registered_from = caller_locations(1, 1)&.first&.path
 
-      @plugins << Plugin.new(name:, priority: priority, registered_from: registered_from)
+      @building_plugins << Plugin.new(name:, priority: priority, registered_from: registered_from)
     end
 
     def register_view_type(name, component:, icon:, active_icon:, translation_key: nil)
@@ -48,6 +77,46 @@ module Avo
       return unless defined?(Avo::Menu::Builder)
 
       Avo::Menu::Builder.register_item(name, &block)
+    end
+
+    # Register a plugin's configuration namespace on Avo::Configuration so host
+    # apps configure the plugin from config/initializers/avo.rb:
+    #
+    #   Avo.plugin_manager.register_configuration :intelligence, Avo::Intelligence::Configuration
+    #
+    #   Avo.configure do |config|
+    #     config.intelligence.thinking_effort = "medium"
+    #   end
+    #
+    # Call it from an engine initializer ordered `before: :load_config_initializers`
+    # (or at require time) — the host's avo.rb reads the accessor, so it must be
+    # defined before config/initializers run. An :avo_boot hook is too late.
+    # Instances are memoized per Configuration object, so replacing
+    # Avo.configuration resets plugin configs along with everything else.
+    def register_configuration(name, klass)
+      name = name.to_sym
+      @configuration_namespaces ||= {}
+
+      # Guard against a plugin silently shadowing a core option or another
+      # plugin's namespace. Re-registering the same namespace with the same
+      # class is fine — boot runs more than once.
+      existing = @configuration_namespaces[name]
+      if existing.nil? && Avo::Configuration.method_defined?(name)
+        raise ArgumentError, "Avo::Configuration already defines ##{name}; pick a different configuration namespace."
+      end
+      if !existing.nil? && existing != klass
+        raise ArgumentError, "Configuration namespace :#{name} is already registered with #{existing}; pick a different namespace."
+      end
+
+      @configuration_namespaces[name] = klass
+
+      Avo::Configuration.define_method(name) do
+        (@plugin_configurations ||= {})[name] ||= klass.new
+      end
+
+      Avo::Configuration.define_method(:"#{name}=") do |value|
+        (@plugin_configurations ||= {})[name] = value
+      end
     end
 
     def register_resource_tool
@@ -80,7 +149,11 @@ module Avo
     end
 
     def mount_engine(klass, **options)
-      @engines << {klass:, options:}
+      # Dedup by class so a plugin hook that (by bug) calls mount_engine
+      # twice for the same engine within one boot can't leave a duplicate
+      # entry for #commit_reload to publish.
+      @building_engines.delete_if { |engine| engine[:klass] == klass }
+      @building_engines << {klass:, options:}
     end
   end
 

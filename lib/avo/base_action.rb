@@ -10,9 +10,9 @@ module Avo
 
     class_attribute :name, default: nil
     class_attribute :description, default: nil
-    class_attribute :message
-    class_attribute :confirm_button_label
-    class_attribute :cancel_button_label
+    class_attribute :message, default: -> { I18n.t("avo.are_you_sure_you_want_to_run_this_option") }
+    class_attribute :confirm_button_label, default: -> { I18n.t("avo.run") }
+    class_attribute :cancel_button_label, default: -> { I18n.t("avo.cancel") }
     class_attribute :confirmation, default: true
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
@@ -25,6 +25,7 @@ module Avo
     class_attribute :turbo
     class_attribute :authorize, default: true
     class_attribute :close_modal_on_backdrop_click, default: true
+    class_attribute :custom_translation_key
 
     attr_accessor :view
     attr_accessor :response
@@ -48,6 +49,7 @@ module Avo
     delegate :main_app, to: :view_context
     delegate :to_param, to: :class
     delegate :link_arguments, to: :class
+    delegate :translation_key, to: :class
 
     class << self
       delegate :context, to: ::Avo::Current
@@ -62,6 +64,15 @@ module Avo
       def to_param
         to_s
       end
+
+      def class_name
+        to_s.delete_prefix("Avo::Actions::")
+      end
+
+      def translation_key
+        custom_translation_key || "avo.action_translations.#{class_name.underscore}"
+      end
+      alias_method :translation_key=, :custom_translation_key=
 
       def path(resource:, arguments: {}, **args)
         Avo::Services::URIService.parse(resource.record&.to_param.present? ? resource.record_path : resource.records_path)
@@ -105,6 +116,9 @@ module Avo
     end
 
     def action_name
+      translated = translated_option(:name)
+      return translated if translated.present?
+
       if name.present?
         return Avo::ExecutionContext.new(
           target: name,
@@ -132,9 +146,6 @@ module Avo
       ).handle.with_indifferent_access
       @query = query
       @index_query = index_query
-      self.class.message ||= I18n.t("avo.are_you_sure_you_want_to_run_this_option")
-      self.class.confirm_button_label ||= I18n.t("avo.run")
-      self.class.cancel_button_label ||= I18n.t("avo.cancel")
 
       self.items_holder = Avo::Resources::Items::Holder.new
 
@@ -147,47 +158,19 @@ module Avo
     end
 
     def get_description
-      Avo::ExecutionContext.new(
-        target: self.class.description,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:description)
     end
 
     def get_message
-      Avo::ExecutionContext.new(
-        target: self.class.message,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:message)
     end
 
     def cancel_button_label
-      Avo::ExecutionContext.new(
-        target: self.class.cancel_button_label,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:cancel_button_label)
     end
 
     def confirm_button_label
-      Avo::ExecutionContext.new(
-        target: self.class.confirm_button_label,
-        resource: @resource,
-        record: @record,
-        view: @view,
-        arguments: @arguments,
-        query: @query
-      ).handle
+      resolve_option(:confirm_button_label)
     end
 
     def handle_action(**args)
@@ -303,7 +286,7 @@ module Avo
       self
     end
 
-    def reload_record(records)
+    def reload_record(records = @query)
       # Force close modal to avoid default redirect to
       # Redirect is 100% not wanted when using reload_record
       close_modal
@@ -370,6 +353,24 @@ module Avo
     end
 
     private
+
+    def translated_option(option)
+      I18n.t("#{translation_key}.#{option}", default: nil)
+    end
+
+    def resolve_option(option)
+      translated = translated_option(option)
+      return translated if translated.present?
+
+      Avo::ExecutionContext.new(
+        target: self.class.public_send(option),
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments: @arguments,
+        query: @query
+      ).handle
+    end
 
     def add_message(body, type = :info, timeout: nil)
       response[:messages] << {

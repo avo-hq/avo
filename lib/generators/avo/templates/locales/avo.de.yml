@@ -64,6 +64,7 @@ de:
     attachment_class_detached: "%{attachment_class} abgehängt."
     attachment_destroyed: Anhang gelöscht
     attachment_failed: "%{attachment_class} konnte nicht angehängt werden"
+    back_to_top: Zurück nach oben
     cancel: Abbrechen
     checkbox_list:
       hidden_selections:
@@ -176,6 +177,8 @@ de:
     remove_selection: Auswahl aufheben
     reset: zurücksetzen
     reset_filters: Filter zurücksetzen
+    resize_sidebar: Seitenleistengröße ändern
+    resize_sidebar_hint: Ziehen, um die Größe der Seitenleiste zu ändern. Doppelklicken zum Zurücksetzen.
     resource_created: Eintrag erstellt
     resource_destroyed: Eintrag gelöscht
     resource_updated: Eintrag aktualisiert

@@ -6,6 +6,17 @@ def find_field_element(field_id)
   find("[data-field-id='#{field_id}']")
 end
 
+# The checkbox rendered by Avo::RowSelectorComponent. Matched on the leading actions so that adding
+# an action to the component doesn't send every caller hunting for the new literal.
+def record_selector_checkbox_selector
+  'input[type="checkbox"][data-action^="input->item-selector#toggle"]'
+end
+
+# Only table rows get shift-select wired; grid items have no row to walk up to.
+def shift_selectable_checkbox_selector
+  'input[type="checkbox"][data-action*="record-selector#toggleMultiple"]'
+end
+
 def field_wrapper(field_id, field_type = nil)
   if field_type.present?
     find("[data-field-id='#{field_id}'][data-field-type='#{field_type}']")
@@ -28,6 +39,15 @@ end
 
 def json_headers
   {"Content-Type" => "application/json"}
+end
+
+# Draws mount_avo into a fresh, isolated RouteSet so specs exercising route
+# drawing (e.g. mount_lookbook config, plugin-engine mounting) never touch
+# the dummy app's real routes.
+def draw_mount_avo(**)
+  routes = ActionDispatch::Routing::RouteSet.new
+  routes.draw { mount_avo(**) }
+  routes
 end
 
 class DummyRequest

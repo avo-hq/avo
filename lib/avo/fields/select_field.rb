@@ -6,8 +6,6 @@ module Avo
       attr_reader :display_value, :multiple
 
       def initialize(id, **args, &block)
-        args[:placeholder] ||= I18n.t("avo.choose_an_option")
-
         super
 
         @options = if args[:options].is_a? Hash
@@ -22,6 +20,10 @@ module Avo
         @enum = args[:enum]
         @multiple = args[:multiple]
         @display_value = args[:display_value] || false
+      end
+
+      def default_placeholder
+        I18n.t("avo.choose_an_option")
       end
 
       def grouped_options

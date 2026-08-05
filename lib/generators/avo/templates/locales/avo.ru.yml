@@ -64,6 +64,7 @@ ru:
     attachment_class_detached: "%{attachment_class} отсоединено."
     attachment_destroyed: Вложение удалено
     attachment_failed: Не удалось прикрепить %{attachment_class}
+    back_to_top: Вернуться к началу
     cancel: Отмена
     checkbox_list:
       hidden_selections:
@@ -182,6 +183,8 @@ ru:
     remove_selection: Убрать выбор
     reset: сбросить
     reset_filters: Сбросить фильтры
+    resize_sidebar: Изменить размер боковой панели
+    resize_sidebar_hint: Перетащите, чтобы изменить размер боковой панели. Дважды щёлкните, чтобы сбросить.
     resource_created: Запись создана
     resource_destroyed: Запись удалена
     resource_updated: Запись обновлена
