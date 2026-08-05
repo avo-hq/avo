@@ -43,6 +43,10 @@ class Avo::Resources::Product < Avo::BaseResource
     source: -> { record.image.attached? ? main_app.url_for(record.image.variant(resize_to_fill: [300, 300])) : nil }
   }
 
+  def actions
+    action Avo::Actions::Test::ShowProducts
+  end
+
   def fields
     panel do
       card do
