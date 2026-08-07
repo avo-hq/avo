@@ -30,7 +30,7 @@ class Avo::Services::TelemetryService
     end
 
     def structural_metadata
-      StaticCollector.new(Rails.root.join("app", "avo")).collect
+      StaticCollector.new(Rails.root).collect
     end
 
     def runtime_metadata

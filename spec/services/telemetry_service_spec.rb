@@ -18,9 +18,9 @@ RSpec.describe Avo::Services::TelemetryService do
       expect(metadata[:config]).to include(:root_path, :app_name)
     end
 
-    it "collects statically from the app's app/avo directory" do
+    it "collects statically from the app root" do
       expect(described_class::StaticCollector).to receive(:new)
-        .with(Rails.root.join("app", "avo")).and_call_original
+        .with(Rails.root).and_call_original
 
       described_class.avo_metadata
     end

@@ -3,20 +3,25 @@ require "fileutils"
 require "tmpdir"
 
 RSpec.describe Avo::Services::TelemetryService::StaticCollector do
-  # Builds a throwaway app/avo tree so the assertions stay deterministic and
+  # Builds a throwaway app root so the assertions stay deterministic and
   # independent of the dummy app's (evolving) resources.
   around do |example|
     Dir.mktmpdir("avo-telemetry") do |dir|
-      @avo_root = dir
+      @app_root = dir
       write_fixture
       example.run
     end
   end
 
-  subject(:metadata) { described_class.new(@avo_root).collect }
+  subject(:metadata) { described_class.new(@app_root).collect }
 
+  # Paths are relative to app/avo, where all the Avo entities live.
   def write(relative_path, contents)
-    path = File.join(@avo_root, relative_path)
+    write_app_file(File.join("app", "avo", relative_path), contents)
+  end
+
+  def write_app_file(relative_path, contents)
+    path = File.join(@app_root, relative_path)
     FileUtils.mkdir_p(File.dirname(path))
     File.write(path, contents)
   end
@@ -172,8 +177,187 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
     end
   end
 
+  context "with a field that omits `as:`" do
+    before do
+      write "resources/plain.rb", <<~RUBY
+        class Avo::Resources::Plain < Avo::BaseResource
+          def fields
+            field :name
+            field :title,
+              readonly: true
+          end
+        end
+      RUBY
+    end
+
+    it "types them as text, the way FieldParser defaults them" do
+      expect(metadata[:field_types]["text"]).to eq(4)
+      expect(metadata[:fields_count]).to eq(8)
+    end
+  end
+
+  context "with `as:` pointing at a field class" do
+    before do
+      write "resources/person.rb", <<~RUBY
+        class Avo::Resources::Person < Avo::BaseResource
+          def fields
+            field :kind, as: ::Pluggy::Fields::RadioField
+            field :note, as: Avo::Fields::TextareaField
+          end
+        end
+      RUBY
+    end
+
+    it "derives the type from the class name, as the runtime does" do
+      expect(metadata[:field_types]["radio"]).to eq(1)
+      expect(metadata[:field_types]["textarea"]).to eq(2)
+    end
+
+    it "counts a class outside Avo's namespace as custom" do
+      # The base fixture's color_picker (1) + the Pluggy radio field (1).
+      # Avo::Fields::TextareaField is core, so it does not count.
+      expect(metadata[:custom_fields_count]).to eq(2)
+    end
+  end
+
+  context "with a bare `field` reference that is not a declaration" do
+    before do
+      write "resources/interpolated.rb", <<~'RUBY'
+        class Avo::Resources::Interpolated < Avo::BaseResource
+          def fields
+            field :level, as: :select, options: {"#{field.id}": "field", "#{record.id}": "record"}
+          end
+        end
+      RUBY
+    end
+
+    it "counts only the declaration" do
+      expect(metadata[:fields_count]).to eq(7)
+      expect(metadata[:field_types]["select"]).to eq(1)
+    end
+  end
+
+  context "with fields and actions declared in a shared concern" do
+    before do
+      write "concerns/timestamps.rb", <<~RUBY
+        module Avo::Concerns::Timestamps
+          def fields
+            field :created_at, as: :date_time
+            field :updated_at, as: :date_time
+            action Avo::Actions::Touch
+          end
+        end
+      RUBY
+
+      write "resources/article.rb", <<~RUBY
+        class Avo::Resources::Article < Avo::BaseResource
+          include Avo::Concerns::Timestamps
+
+          def fields
+            field :title, as: :text
+          end
+        end
+      RUBY
+
+      write "resources/note.rb", <<~RUBY
+        class Avo::Resources::Note < Avo::BaseResource
+          include Timestamps
+        end
+      RUBY
+    end
+
+    it "credits the concern's fields to every resource that includes it" do
+      # base 6 + article (1 own + 2 concern) + note (2 concern) = 11.
+      expect(metadata[:fields_count]).to eq(11)
+      expect(metadata[:field_types]["date_time"]).to eq(4)
+    end
+
+    it "credits the concern's actions too" do
+      # Publish (base fixture) + Touch, wired via the concern on two resources.
+      expect(metadata[:actions_count]).to eq(2)
+    end
+
+    it "does not count the concern itself as a resource" do
+      expect(metadata[:resources_count]).to eq(4)
+    end
+  end
+
+  context "with a concern that includes another concern" do
+    before do
+      write "concerns/auditable.rb", <<~RUBY
+        module Avo::Concerns::Auditable
+          include Avo::Concerns::Stamped
+
+          def fields
+            field :audited_by, as: :text
+          end
+        end
+      RUBY
+
+      write "concerns/stamped.rb", <<~RUBY
+        module Avo::Concerns::Stamped
+          def fields
+            field :stamped_at, as: :date_time
+          end
+        end
+      RUBY
+
+      write "resources/invoice.rb", <<~RUBY
+        class Avo::Resources::Invoice < Avo::BaseResource
+          include Avo::Concerns::Auditable
+        end
+      RUBY
+
+      write "resources/receipt.rb", <<~RUBY
+        class Avo::Resources::Receipt < Avo::BaseResource
+          include Avo::Concerns::Auditable
+        end
+      RUBY
+    end
+
+    it "resolves the nested concern once per resource, not once per visit" do
+      # Each of the two resources gets audited_by + stamped_at.
+      expect(metadata[:field_types]["text"]).to eq(4)
+      expect(metadata[:field_types]["date_time"]).to eq(2)
+      expect(metadata[:fields_count]).to eq(10)
+    end
+  end
+
+  context "with resources registered through config.resources" do
+    before do
+      write_app_file "config/initializers/avo.rb", <<~RUBY
+        Avo.configure do |config|
+          config.resources = [
+            Avo::Resources::Legacy,
+            "Avo::Resources::Post",
+            Avo::Resources::FromAGem
+          ]
+        end
+      RUBY
+
+      write_app_file "app/admin/legacy.rb", <<~RUBY
+        class Avo::Resources::Legacy < Avo::BaseResource
+          def fields
+            field :id, as: :id
+            field :label, as: :text
+          end
+        end
+      RUBY
+    end
+
+    it "picks up a resource living outside app/avo" do
+      expect(metadata[:resources_count]).to eq(3)
+      expect(metadata[:fields_count]).to eq(8)
+    end
+
+    it "does not double-count one already found under app/avo" do
+      # Post is listed in the initializer and lives in app/avo/resources.
+      expect(metadata[:field_types]["textarea"]).to eq(1)
+    end
+  end
+
   context "when app/avo does not exist" do
-    subject(:metadata) { described_class.new(File.join(@avo_root, "nope")).collect }
+    subject(:metadata) { described_class.new(File.join(@app_root, "nope")).collect }
 
     it "returns empty counts without raising" do
       expect(metadata[:resources_count]).to eq(0)
