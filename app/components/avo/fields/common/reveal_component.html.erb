@@ -1,0 +1,33 @@
+<div
+  class="field-wrapper__input relative inline-flex items-center max-w-full"
+  data-controller="reveal-field"
+  data-reveal-field-payload-value="<%= encoded_value %>"
+  data-reveal-field-mask-value="<%= mask %>"
+  data-component="<%= component_name %>"
+>
+  <input
+    type="password"
+    readonly
+    tabindex="-1"
+    autocomplete="off"
+    spellcheck="false"
+    class="<%= class_names("w-full", "min-w-[8rem]": index?) %>"
+    data-reveal-field-target="input"
+    value="<%= mask %>"
+    aria-label="<%= @field.name %>"
+  />
+
+  <button
+    type="button"
+    class="input-field__password-toggle"
+    data-action="reveal-field#toggle"
+    data-reveal-field-target="button"
+    data-show-label="<%= t("avo.show_content") %>"
+    data-hide-label="<%= t("avo.hide_content") %>"
+    aria-label="<%= t("avo.show_content") %>"
+    aria-pressed="false"
+  >
+    <%= helpers.svg("tabler/outline/eye", data: {"reveal-field-target": "icon"}) %>
+    <%= helpers.svg("tabler/outline/eye-off", class: "hidden", data: {"reveal-field-target": "icon"}) %>
+  </button>
+</div>

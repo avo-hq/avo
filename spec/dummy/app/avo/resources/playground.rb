@@ -11,7 +11,8 @@ class Avo::Resources::Playground < Avo::BaseResource
 
     field :form_heading, as: :heading, name: "Form and scalar fields"
     field :hidden_token, as: :hidden
-    field :password_value, as: :password, revealable: true
+    field :password_value, as: :reveal
+    field :password_value, as: :password, revealable: true, only_on: :forms
     field :boolean_value, as: :boolean, as_toggle: true
     field :number_value, as: :number, min: 0, max: 100, step: 1
     field :date_value, as: :date
