@@ -1,0 +1,11 @@
+<%# Copyable shell command row. Click anywhere to copy via the copy-to-clipboard controller. %>
+<button type="button"
+  class="group w-full flex items-center gap-2 text-left font-mono text-sm bg-secondary hover:bg-tertiary text-content rounded-lg px-3 py-2 transition-colors cursor-pointer"
+  data-controller="copy-to-clipboard"
+  data-text="<%= command %>"
+  data-action="click->copy-to-clipboard#copy"
+  title="Click to copy">
+  <span class="text-content-secondary select-none" aria-hidden="true">$</span>
+  <span class="grow break-all"><%= command %></span>
+  <span class="text-xs text-content-secondary shrink-0">Copy</span>
+</button>

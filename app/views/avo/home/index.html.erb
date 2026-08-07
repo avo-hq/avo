@@ -1,61 +1,170 @@
 <div class="flex flex-col">
-  <%= render ui.panel(title: 'Welcome to Avo', description: 'This page is visible only in development. It will be hidden in other environments.') do |panel| %>
-    <% panel.with_body do %>
-      <div class="flex flex-col justify-between py-6 min-h-24">
-        <div class="px-6 space-y-4">
-          <h3>About</h3>
+  <%= render ui.panel(
+    title: "Welcome to Avo",
+    description: "Avo is installed and running. Here's what to do next — and how far you can take it. Only you see this page; it's hidden outside development."
+  ) do |panel| %>
+    <% panel.with_card(padded: true) do %>
+      <div class="flex flex-col">
 
-          <p>
-            <strong>Avo</strong>'s mission is to make it easy for you to manage your content and build tools that are ready to deploy, all while using your favorite framework, Ruby on Rails.
-          </p>
-
-          <h3>Vision</h3>
-
-          <p>
-            We have big plans for Avo to make it the default starting point of your application. We'll be releasing features as soon as they're ready.
-
-            <ul class="grid sm:grid-cols-2 max-w-168">
-              <li><span class="me-2">👍</span> Built with Hotwire</li>
-              <li><span class="me-2">👍</span> Resources</li>
-              <li><span class="me-2">👍</span> Ordering</li>
-              <li><span class="me-2">👍</span> Filters</li>
-              <li><span class="me-2">👍</span> Actions</li>
-              <li><span class="me-2">👍</span> Grid view</li>
-              <li><span class="me-2">👍</span> Authorization</li>
-              <li><span class="me-2">👍</span> Localization</li>
-              <li><span class="me-2">👍</span> Resource tools</li>
-              <li><span class="me-2">👍</span> Custom tools</li>
-              <li><span class="me-2">👍</span> Custom fields</li>
-              <li><span class="me-2">👍</span> Menu editor</li>
-              <li><span class="me-2">👍</span> Search</li>
-              <li><span class="me-2">👍</span> Dashboards</li>
-              <li><span class="me-2">👍</span> Responsive design</li>
-              <li><span class="me-2">👍</span> Menu editor</li>
-              <li><span class="me-2">👍</span> Stimulus JS integration</li>
-              <li><span class="me-2">👍</span> Tabs and panels</li>
-              <li><span class="me-2">🕐</span> Resource cards</li>
-              <li><span class="me-2">🕐</span> Track resource changes</li>
-              <li><span class="me-2">🕐</span> Smart resource generation</li>
-              <li><span class="me-2">🕐</span> Records preview</li>
-              <li><span class="me-2">🕐</span> Themes</li>
-            </ul>
-          </p>
-
-        </div>
-
-        <div class="px-6 mt-8">
-          <div class="space">
-            <%= render partial: 'resources' %>
-            <hr class="my-6">
-            <%= render partial: 'dashboards' %>
-            <hr class="my-6">
-            <%= render partial: 'filters' %>
-            <hr class="my-6">
-            <%= render partial: 'actions' %>
-            <hr class="my-6">
-            <%= render partial: 'docs' %>
+        <%# ── Start here: the post-install next steps ─────────────────────── %>
+        <section class="space-y-4">
+          <div class="space-y-1">
+            <h2 class="text-base font-semibold text-content">Start here</h2>
+            <p class="text-sm text-content-secondary">Three steps take you from a fresh install to an admin your team logs into every day.</p>
           </div>
-        </div>
+
+          <ol class="space-y-6">
+            <li class="flex gap-3">
+              <span class="shrink-0 size-6 mt-0.5 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-xs font-semibold">1</span>
+              <div class="grow space-y-2">
+                <div class="font-medium text-content">Create your first resource</div>
+                <p class="text-sm text-content-secondary">A resource maps one of your models to a full set of screens — list, show, create, and edit. Point Avo at a model and it builds the interface around it.</p>
+
+                <%
+                  models = begin
+                    ApplicationRecord.descendants
+                  rescue => _exception
+                    []
+                  end
+                %>
+                <% if models.present? %>
+                  <% first_model, *other_models = models %>
+                  <p class="text-sm text-content-secondary">You already have <%= models.count %> <%= "model".pluralize(models.count) %> in this app — generate a resource for one:</p>
+                  <%= render "command", command: "bin/rails generate avo:resource #{first_model}" %>
+
+                  <% if other_models.any? %>
+                    <div data-controller="hidden-input">
+                      <button type="button" class="text-sm font-medium text-content-secondary hover:text-content transition-colors cursor-pointer" data-action="hidden-input#showContent">
+                        Show commands for the other <%= other_models.count %> <%= "model".pluralize(other_models.count) %> →
+                      </button>
+                      <div class="hidden mt-2 space-y-2" data-hidden-input-target="content">
+                        <% other_models.each do |model| %>
+                          <%= render "command", command: "bin/rails generate avo:resource #{model}" %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <p class="text-sm text-content-secondary">Generate one with:</p>
+                  <%= render "command", command: "bin/rails generate avo:resource post" %>
+                <% end %>
+
+                <div class="text-sm"><a href="https://docs.avohq.io/4.0/resources.html" target="_blank" title="Avo Resources documentation">Resources docs →</a></div>
+              </div>
+            </li>
+
+            <li class="flex gap-3">
+              <span class="shrink-0 size-6 mt-0.5 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-xs font-semibold">2</span>
+              <div class="grow space-y-2">
+                <div class="font-medium text-content">Tell Avo who's signed in</div>
+                <p class="text-sm text-content-secondary">Wire up your <code class="font-mono text-[0.85em] bg-secondary rounded px-1 py-0.5">current_user</code> so Avo knows who's using the panel. This is required before authorization can work.</p>
+                <div class="text-sm"><a href="https://docs.avohq.io/4.0/authentication.html#customize-the-current-user-method" target="_blank" title="Set up the current user">Set up the current user →</a></div>
+              </div>
+            </li>
+
+            <li class="flex gap-3">
+              <span class="shrink-0 size-6 mt-0.5 rounded-full bg-accent text-accent-foreground flex items-center justify-center text-xs font-semibold">3</span>
+              <div class="grow space-y-2">
+                <div class="font-medium text-content">Decide who can do what</div>
+                <p class="text-sm text-content-secondary">Set up authorization with Pundit policies so people only see and touch the records they should. Don't ship an admin that shows everyone everything.</p>
+                <div class="text-sm"><a href="https://docs.avohq.io/4.0/authorization.html" target="_blank" title="Set up authorization">Set up authorization →</a></div>
+              </div>
+            </li>
+          </ol>
+
+          <p class="text-sm text-content-secondary">Prefer to poke around first? <a href="https://main.avodemo.com/" target="_blank" title="Avo live demo">Explore the live demo →</a></p>
+        </section>
+
+        <div class="border-t border-tertiary my-8"></div>
+
+        <%# ── What you can build with the core ────────────────────────────── %>
+        <section class="space-y-4">
+          <div class="space-y-1">
+            <h2 class="text-base font-semibold text-content">What you can build</h2>
+            <p class="text-sm text-content-secondary">The core does more than CRUD. These ship with Avo and work right now.</p>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-x-8 gap-y-6">
+            <div class="space-y-2">
+              <div class="font-medium text-content">Actions</div>
+              <p class="text-sm text-content-secondary">Run business logic on one record or a thousand — approve, export, or send a message.</p>
+              <%= render "command", command: "bin/rails generate avo:action toggle_published" %>
+              <div class="text-sm"><a href="https://docs.avohq.io/4.0/actions/overview.html" target="_blank" title="Avo Actions documentation">Actions docs →</a></div>
+            </div>
+
+            <div class="space-y-2">
+              <div class="font-medium text-content">Filters</div>
+              <p class="text-sm text-content-secondary">Slice any list down to the records that matter.</p>
+              <%= render "command", command: "bin/rails generate avo:filter published_filter" %>
+              <div class="text-sm"><a href="https://docs.avohq.io/4.0/filters.html" target="_blank" title="Avo Filters documentation">Filters docs →</a></div>
+            </div>
+
+            <div class="space-y-2">
+              <div class="font-medium text-content">Search</div>
+              <p class="text-sm text-content-secondary">Jump to any record from one box, across every resource.</p>
+              <div class="text-sm"><a href="https://docs.avohq.io/4.0/search.html" target="_blank" title="Avo Search documentation">Search docs →</a></div>
+            </div>
+
+            <div class="space-y-2">
+              <div class="font-medium text-content">Fields &amp; associations</div>
+              <p class="text-sm text-content-secondary">Text, dates, files, rich editors, has-many, belongs-to — each declared in a line.</p>
+              <div class="text-sm"><a href="https://docs.avohq.io/4.0/fields.html" target="_blank" title="Avo Fields documentation">Fields docs →</a></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="border-t border-tertiary my-8"></div>
+
+        <%# ── Go further with add-ons (the push) ──────────────────────────── %>
+        <section class="space-y-4">
+          <div class="space-y-1">
+            <h2 class="text-base font-semibold text-content">Go further with add-ons</h2>
+            <p class="text-sm text-content-secondary">The core manages records. Add-ons take Avo the rest of the way — each is a gem you drop in when the need shows up. <span class="text-content font-medium">Every add-on runs free in development</span>, so you can install one, try it locally, and only need a license when you deploy.</p>
+          </div>
+
+          <%
+            addons = [
+              ["Dashboards", "dashboards.html", "Metrics and charts at a glance."],
+              ["Kanban", "kanban-boards.html", "Drag-and-drop boards for pipelines."],
+              ["Dynamic Filters", "dynamic-filters.html", "Users stack their own filter combinations."],
+              ["Audit Logging", "audit-logging.html", "A record of who did what, and when."],
+              ["Media Library", "media-library.html", "Every uploaded asset in one place."],
+              ["Collaboration", "collaboration.html", "Comments and status updates on records."],
+              ["Resource Scopes", "scopes.html", "Model scopes as one-click segments."],
+              ["Record Reordering", "record-reordering.html", "Drag-and-drop ordering for lists."]
+            ]
+          %>
+          <div class="grid sm:grid-cols-2 gap-x-6 gap-y-0.5 -mx-2">
+            <% addons.each do |title, slug, description| %>
+              <a href="https://docs.avohq.io/4.0/<%= slug %>" target="_blank" title="<%= title %>" class="flex items-baseline gap-2 rounded-lg px-2 py-1.5 hover:bg-secondary transition-colors">
+                <span class="font-medium text-content shrink-0"><%= title %></span>
+                <span class="text-sm text-content-secondary"><%= description %></span>
+              </a>
+            <% end %>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 pt-1">
+            <%= render ui.button("https://docs.avohq.io/4.0/#add-ons", is_link: true, style: :primary, color: :accent, size: :sm, target: "_blank") do %>
+              Browse all add-ons →
+            <% end %>
+            <%= render ui.button("https://avohq.io/pricing", is_link: true, style: :text, size: :sm, target: "_blank") do %>
+              See pricing
+            <% end %>
+          </div>
+        </section>
+
+        <div class="border-t border-tertiary my-8"></div>
+
+        <%# ── When you get stuck ──────────────────────────────────────────── %>
+        <section class="space-y-2">
+          <h2 class="text-base font-semibold text-content">When you get stuck</h2>
+          <p class="text-sm text-content-secondary">
+            <a href="https://docs.avohq.io" target="_blank" title="Avo documentation">Read the docs</a> ·
+            <a href="https://docs.avohq.io/4.0/agentic-engineering.html" target="_blank" title="Build Avo with AI agents">Build it with AI agents</a> ·
+            <a href="https://docs.avohq.io/4.0/technical-support.html" target="_blank" title="Avo technical support">Technical support</a>
+          </p>
+        </section>
+
       </div>
     <% end %>
   <% end %>
