@@ -56,7 +56,7 @@ end
 
 2. **Turn it on** with the `Enable it` snippet above. This is the only step needed for "let users upload/manage assets" or "add an asset gallery". Mention the Alpha status.
 
-3. **Control the sidebar item (optional).** By default an enabled Media Library adds a sidebar item.
+3. **Control who may use it.** `visible` is the per-user gate for the whole feature — it decides both whether the sidebar item shows *and* whether that user may reach any Media Library route. By default an enabled Media Library is visible to everyone who can sign in to Avo.
    - Hide it outright with a Boolean:
      ```ruby
      if defined?(Avo::MediaLibrary)
@@ -73,7 +73,7 @@ end
        end
      end
      ```
-   `visible` only affects the menu item; it does not disable the feature. (When `enabled` is `false`, `visible` is moot — the killswitch already hides everything.)
+   A user for whom `visible` returns `false` gets a 404 on every Media Library route. It is access control, not just a menu toggle: it already hid the sidebar item and the media-library button in the `trix` toolbar, and it now closes the routes those point at. Leave it at its default `true` only if every Avo user is allowed to browse, rename and delete every uploaded asset. (When `enabled` is `false`, `visible` is moot — the killswitch already hides everything.)
 
 4. **Re-add it to a customized menu (if needed).** If the app defines a custom `config.main_menu` (see **avo-navigation-search**), the Media Library item does **not** appear automatically. Add it back as a `link_to` (or `link`) pointing at `avo.media_library_index_path`, inside the normal `Avo.configure` block:
    ```ruby
@@ -106,8 +106,8 @@ end
 
 - **Alpha feature.** It's still in alpha and future releases may include breaking changes. Say so, and tell the user to watch the upgrade guide. Don't present it as stable.
 - **Always guard with `if defined?(Avo::MediaLibrary)`.** The docs wrap every `Avo::MediaLibrary.configure` call this way. Without the guard, an environment where the constant isn't present would raise on boot.
-- **`config.enabled` is an all-or-nothing killswitch.** Flipping it off hides the menu item, blocks the routes, *and* hides the editor icons — for everyone. There is no per-user or per-resource enable; use `config.visible` (a block) if you only want to gate who *sees the menu item*.
-- **`enabled` and `visible` are different levers.** `enabled` = whole feature on/off. `visible` = just the sidebar item (Boolean or block). Hiding the item with `visible = false` does not disable uploads or the editor picker.
+- **`config.enabled` is an all-or-nothing killswitch.** Flipping it off hides the menu item, blocks the routes, *and* hides the editor icons — for everyone. For per-user access use a `config.visible` block.
+- **`enabled` and `visible` are different levers.** `enabled` = whole feature on/off, for everyone. `visible` = who may use it (Boolean or block, evaluated per request). `visible` covers the sidebar item, the `trix` toolbar button, and the routes — so don't reach for it to "tidy up the sidebar" and expect the feature to stay reachable.
 - **A customized menu drops the item.** If `config.main_menu` is defined, the Media Library sidebar item won't appear on its own — re-add it manually with `link_to "Media Library", avo.media_library_index_path`.
 - **`media_library: false` is markdown-only.** `trix` and `rhino` don't support per-field toggling; the killswitch is the only way to remove their buttons. `lexxy` follows its own `attachments_disabled` option.
 - **It's `Avo::MediaLibrary.configure`, not `Avo.configure`.** The enable/visible settings live on their own configuration object. Only the menu `link_to` goes inside the main `Avo.configure` block.
@@ -119,5 +119,5 @@ After editing, tell the user:
 - The file you changed (`config/initializers/avo.rb`) and which block (`Avo::MediaLibrary.configure` and/or `Avo.configure`).
 - What you set: `config.enabled`, `config.visible` (Boolean or block), any `link_to` menu item, and any `media_library: false` on a markdown field.
 - That the feature is **Community-licensed** but in **Alpha**, so breaking changes are possible — watch the upgrade guide.
-- Whether the sidebar item will show, and for whom (if you used a `visible` block).
+- Whether the sidebar item will show, and for whom (if you used a `visible` block) — and that the same block now decides who may reach the Media Library at all.
 - If they customized their menu: remind them the item only appears because you re-added the `link_to`.
