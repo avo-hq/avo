@@ -64,6 +64,15 @@ RSpec.describe Avo::Sidebar::LinkComponent, type: :component do
   end
 
   describe "resource color modifier" do
+    it "has a stylesheet rule for every palette name" do
+      css = Rails.root.join("../../app/assets/stylesheets/css/sidebar.css").read
+
+      described_class::PALETTE_COLORS.each do |name|
+        expect(css).to include(".sidebar-link--color-#{name} "), "missing light-theme CSS rule for #{name}"
+        expect(css.scan(".sidebar-link--color-#{name} ").size).to be >= 2, "missing dark-theme CSS rule for #{name}"
+      end
+    end
+
     before do
       # Same rationale as the external-link rendering block below: the
       # component-test view context doesn't expose `root_path_without_url`.

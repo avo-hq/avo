@@ -6,10 +6,9 @@ require "view_component/version"
 # about menus; callers pass the path, label and resolved `active` (a match mode
 # like :inclusive, or a boolean to force it).
 class Avo::Sidebar::LinkComponent < Avo::BaseComponent
-  # The raw Tailwind palette names accepted for the tinted sidebar icon — the
-  # non-semantic subset of Avo::UI::BadgeComponent::VALID_COLORS. Each has a
-  # matching `.sidebar-link--color-<name>` rule in css/sidebar.css.
-  PALETTE_COLORS = %i[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze unless defined?(PALETTE_COLORS)
+  # The raw Tailwind palette names accepted for the tinted sidebar icon. Each
+  # has a matching `.sidebar-link--color-<name>` rule in css/sidebar.css.
+  PALETTE_COLORS = (Avo::UI::BadgeComponent::VALID_COLORS - %i[neutral success info warning danger]).freeze unless defined?(PALETTE_COLORS)
 
   prop :label
   prop :path
