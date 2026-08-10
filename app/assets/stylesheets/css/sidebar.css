@@ -210,6 +210,52 @@
 
 .sidebar-link__icon-wrapper {
   @apply shrink-0 flex items-center justify-center;
+  color: var(--sidebar-icon-color, currentColor);
+}
+
+/* Resource color: tints only the icon stroke. Each modifier sets a scoped
+   variable that only the icon wrapper consumes; the link's own color, hover
+   and active rules stay untouched. Light theme uses the 600 shade (700 for
+   the yellow family, which cannot reach 3:1 non-text contrast on the light
+   sidebar otherwise); dark theme overrides to the 400 shade below. */
+.sidebar-link--color-red { --sidebar-icon-color: var(--color-red-600); }
+.sidebar-link--color-orange { --sidebar-icon-color: var(--color-orange-600); }
+.sidebar-link--color-amber { --sidebar-icon-color: var(--color-amber-700); }
+.sidebar-link--color-yellow { --sidebar-icon-color: var(--color-yellow-700); }
+.sidebar-link--color-lime { --sidebar-icon-color: var(--color-lime-700); }
+.sidebar-link--color-green { --sidebar-icon-color: var(--color-green-600); }
+.sidebar-link--color-emerald { --sidebar-icon-color: var(--color-emerald-600); }
+.sidebar-link--color-teal { --sidebar-icon-color: var(--color-teal-600); }
+.sidebar-link--color-cyan { --sidebar-icon-color: var(--color-cyan-600); }
+.sidebar-link--color-sky { --sidebar-icon-color: var(--color-sky-600); }
+.sidebar-link--color-blue { --sidebar-icon-color: var(--color-blue-600); }
+.sidebar-link--color-indigo { --sidebar-icon-color: var(--color-indigo-600); }
+.sidebar-link--color-violet { --sidebar-icon-color: var(--color-violet-600); }
+.sidebar-link--color-purple { --sidebar-icon-color: var(--color-purple-600); }
+.sidebar-link--color-fuchsia { --sidebar-icon-color: var(--color-fuchsia-600); }
+.sidebar-link--color-pink { --sidebar-icon-color: var(--color-pink-600); }
+.sidebar-link--color-rose { --sidebar-icon-color: var(--color-rose-600); }
+
+/* Dark theme: lift the tints to the 400 shade so they stay legible on the
+   dark sidebar background. */
+.dark {
+  .sidebar-link--color-red { --sidebar-icon-color: var(--color-red-400); }
+  .sidebar-link--color-orange { --sidebar-icon-color: var(--color-orange-400); }
+  .sidebar-link--color-amber { --sidebar-icon-color: var(--color-amber-400); }
+  .sidebar-link--color-yellow { --sidebar-icon-color: var(--color-yellow-400); }
+  .sidebar-link--color-lime { --sidebar-icon-color: var(--color-lime-400); }
+  .sidebar-link--color-green { --sidebar-icon-color: var(--color-green-400); }
+  .sidebar-link--color-emerald { --sidebar-icon-color: var(--color-emerald-400); }
+  .sidebar-link--color-teal { --sidebar-icon-color: var(--color-teal-400); }
+  .sidebar-link--color-cyan { --sidebar-icon-color: var(--color-cyan-400); }
+  .sidebar-link--color-sky { --sidebar-icon-color: var(--color-sky-400); }
+  .sidebar-link--color-blue { --sidebar-icon-color: var(--color-blue-400); }
+  .sidebar-link--color-indigo { --sidebar-icon-color: var(--color-indigo-400); }
+  .sidebar-link--color-violet { --sidebar-icon-color: var(--color-violet-400); }
+  .sidebar-link--color-purple { --sidebar-icon-color: var(--color-purple-400); }
+  .sidebar-link--color-fuchsia { --sidebar-icon-color: var(--color-fuchsia-400); }
+  .sidebar-link--color-pink { --sidebar-icon-color: var(--color-pink-400); }
+  .sidebar-link--color-rose { --sidebar-icon-color: var(--color-rose-400); }
 }
 
 /* Reserve same width when group has icons but this link has none (alignment) */

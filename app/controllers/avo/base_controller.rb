@@ -24,10 +24,10 @@ module Avo
       if @reflection.present? && !turbo_frame_request?
         # A good rule of thumb is that the resource name entry (Users) gets just the initials
         # The record name gets initials and avatar
-        add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials
-        add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar
+        add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials, color: @parent_resource.class.color
+        add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar, color: @parent_resource.class.color
       end
-      add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
+      add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials, color: @resource.class.color
 
       set_applied_filters
       set_index_params
@@ -97,7 +97,7 @@ module Avo
 
       add_via_breadcrumbs
 
-      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials, color: @resource.class.color
       add_breadcrumb title: I18n.t("avo.details").upcase_first, path: nil
 
       set_component_for __method__
@@ -117,12 +117,12 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
 
-        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials, color: @resource.class.color
       else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
       end
 
       add_breadcrumb title: t("avo.new").humanize
@@ -168,8 +168,8 @@ module Avo
       saved = save_record
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
-      add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
-      add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
+      add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials, color: @resource.class.color
       set_actions
 
       set_component_for :edit
@@ -416,7 +416,7 @@ module Avo
       # Go through all filters
       @resource.get_filters
         .select do |filter|
-          filter[:class].instance_methods(false).include? :react
+          filter[:class].method_defined?(:react, false)
         end
         .each do |filter|
           # Run the react method if it's present
@@ -446,19 +446,19 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), initials: via_resource.class.initials, color: via_resource.class.color
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
           via_record_id: params[:via_record_id]
         }
-        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials, color: @resource.class.color
       else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
       end
 
-      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials, color: @resource.class.color
       add_breadcrumb title: t("avo.edit").humanize
     end
 
@@ -611,7 +611,7 @@ module Avo
 
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
-      @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
+      @pagy_locale = locale.to_s
       Pagy::I18n.locale = @pagy_locale if defined?(Pagy::I18n) && Pagy::I18n.respond_to?(:locale=)
     end
 
@@ -738,12 +738,12 @@ module Avo
         via_record = via_resource.find_record params[:via_record_id], params: params
         via_resource = via_resource.new record: via_record
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
 
-        add_breadcrumb title: @resource.plural_name, path: nil, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: nil, initials: @resource.class.initials, color: @resource.class.color
       else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
       end
     end
 

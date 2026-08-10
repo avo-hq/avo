@@ -81,3 +81,23 @@
     }
   }
 }
+
+/* Resource color on the initials chip: reuses the avatar component's --bg/--text
+   tint variables, so the existing color-mix keeps it readable in both themes. */
+.breadcrumb-element--color-red .cado-avatar--initials { --bg: var(--color-red-400); --text: var(--color-red-600); }
+.breadcrumb-element--color-orange .cado-avatar--initials { --bg: var(--color-orange-400); --text: var(--color-orange-600); }
+.breadcrumb-element--color-amber .cado-avatar--initials { --bg: var(--color-amber-400); --text: var(--color-amber-600); }
+.breadcrumb-element--color-yellow .cado-avatar--initials { --bg: var(--color-yellow-400); --text: var(--color-yellow-600); }
+.breadcrumb-element--color-lime .cado-avatar--initials { --bg: var(--color-lime-400); --text: var(--color-lime-600); }
+.breadcrumb-element--color-green .cado-avatar--initials { --bg: var(--color-green-400); --text: var(--color-green-600); }
+.breadcrumb-element--color-emerald .cado-avatar--initials { --bg: var(--color-emerald-400); --text: var(--color-emerald-600); }
+.breadcrumb-element--color-teal .cado-avatar--initials { --bg: var(--color-teal-400); --text: var(--color-teal-600); }
+.breadcrumb-element--color-cyan .cado-avatar--initials { --bg: var(--color-cyan-400); --text: var(--color-cyan-600); }
+.breadcrumb-element--color-sky .cado-avatar--initials { --bg: var(--color-sky-400); --text: var(--color-sky-600); }
+.breadcrumb-element--color-blue .cado-avatar--initials { --bg: var(--color-blue-400); --text: var(--color-blue-600); }
+.breadcrumb-element--color-indigo .cado-avatar--initials { --bg: var(--color-indigo-400); --text: var(--color-indigo-600); }
+.breadcrumb-element--color-violet .cado-avatar--initials { --bg: var(--color-violet-400); --text: var(--color-violet-600); }
+.breadcrumb-element--color-purple .cado-avatar--initials { --bg: var(--color-purple-400); --text: var(--color-purple-600); }
+.breadcrumb-element--color-fuchsia .cado-avatar--initials { --bg: var(--color-fuchsia-400); --text: var(--color-fuchsia-600); }
+.breadcrumb-element--color-pink .cado-avatar--initials { --bg: var(--color-pink-400); --text: var(--color-pink-600); }
+.breadcrumb-element--color-rose .cado-avatar--initials { --bg: var(--color-rose-400); --text: var(--color-rose-600); }
