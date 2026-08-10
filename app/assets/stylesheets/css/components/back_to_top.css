@@ -1,9 +1,9 @@
-/* "Back to top" pill, mirroring the Furo docs theme (diataxis.fr): a fixed
-   button centered just below the navbar that reveals when the user scrolls back
-   up and hides when scrolling down. Visibility is driven by the back_to_top
-   Stimulus controller toggling `.back-to-top--visible`. */
+/* "Back to top" pill: a fixed button centered just below the navbar that
+   reveals once the page is scrolled past the configured threshold. Visibility
+   is driven by the back_to_top Stimulus controller toggling
+   `.back-to-top--visible`. */
 .back-to-top {
-  @apply fixed z-50 flex items-center gap-1 rounded-2xl bg-primary ps-2 pe-3 py-2 text-content no-underline;
+  @apply fixed z-50 flex items-center gap-1 rounded-2xl bg-primary ps-2 pe-3 py-1 text-content no-underline;
 
   inset-inline-start: 50%;
   top: calc(var(--top-navbar-height) + 0.5rem);

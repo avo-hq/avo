@@ -229,11 +229,11 @@ module Avo
     end
 
     # "Back to top" pill. `enabled` toggles it; `threshold` is how many pixels
-    # the page must be scrolled down before an upward scroll reveals it.
+    # the page must be scrolled down before it shows up.
     unless defined?(BACK_TO_TOP_DEFAULTS)
       BACK_TO_TOP_DEFAULTS = {
-        enabled: false,
-        threshold: 64
+        enabled: true,
+        threshold: 400
       }.freeze
     end
 
