@@ -18,6 +18,7 @@ module Avo
     before_action :decode_params
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
+    around_action :set_browser_timezone, if: -> { Avo.configuration.use_browser_timezone }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -276,6 +277,25 @@ module Avo
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
       I18n.with_locale(params[:force_locale], &action)
+    end
+
+    # The browser-timezone Stimulus controller mirrors the viewer's IANA zone
+    # into a cookie (no HTTP header carries it), so every response renders in
+    # the viewer's local zone. `ActiveSupport::TimeZone[]` validates the
+    # user-controlled cookie — junk lookups return nil and we fall back to the
+    # app zone. The one-shot `timezone_changed` cookie is set right before the
+    # controller's Turbo reload, so the reloaded page announces the change once.
+    def set_browser_timezone(&action)
+      zone = ActiveSupport::TimeZone[cookies["#{Avo::COOKIES_KEY}.browser_timezone"].to_s]
+      return yield if zone.nil?
+
+      if cookies.delete("#{Avo::COOKIES_KEY}.timezone_changed").present?
+        flash.now[:notice] = t("avo.timezone_changed",
+          timezone: zone.tzinfo.name,
+          default: "Dates and times are now displayed in your time zone (%{timezone}).")
+      end
+
+      Time.use_zone(zone, &action)
     end
 
     def set_sidebar_open

@@ -204,6 +204,7 @@ de:
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht
     this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.
+    timezone_changed: Daten und Zeiten werden jetzt in Ihrer Zeitzone (%{timezone}) angezeigt.
     tools: Werkzeuge
     'true': Wahr
     type_to_search: Tippen, um zu suchen.

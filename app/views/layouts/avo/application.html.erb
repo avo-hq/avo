@@ -46,7 +46,7 @@
     <%= content_for :head %>
   </head>
 
-  <body class="<%= class_names("floating-controls bg-background", *body_classes, "all-fields-stacked": Avo.configuration.use_stacked_fields) %>">
+  <body class="<%= class_names("floating-controls bg-background", *body_classes, "all-fields-stacked": Avo.configuration.use_stacked_fields) %>"<% if Avo.configuration.use_browser_timezone %> data-controller="browser-timezone"<% end %>>
     <a href="#main-sidebar" class="skip-to-content"><%= t("avo.skip_to_sidebar") %></a>
     <a href="#main-content" class="skip-to-content"><%= t("avo.skip_to_content") %></a>
 

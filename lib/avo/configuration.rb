@@ -63,6 +63,7 @@ module Avo
     attr_accessor :model_generator_hook
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
+    attr_accessor :use_browser_timezone
     attr_accessor :default_editor_url
     attr_writer :body_classes
     attr_writer :sidebar
@@ -204,6 +205,7 @@ module Avo
       @model_generator_hook = true
       @send_metadata = true
       @use_stacked_fields = false
+      @use_browser_timezone = true
       @default_editor_url = "cursor://file/%{path}"
       @sidebar = {}
       @body_classes = []

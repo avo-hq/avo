@@ -210,6 +210,7 @@ ro:
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
     this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
+    timezone_changed: Datele și orele sunt acum afișate în fusul tău orar (%{timezone}).
     tools: Instrumente
     'true': Adevărat
     type_to_search: Caută aici...

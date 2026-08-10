@@ -206,6 +206,7 @@ nb:
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabell visning
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
+    timezone_changed: Datoer og tider vises nå i din tidssone (%{timezone}).
     tools: Redskapene
     'true': Sann
     type_to_search: Søk.

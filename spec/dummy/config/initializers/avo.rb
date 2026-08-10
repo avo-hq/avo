@@ -15,6 +15,10 @@ Avo.configure do |config|
 
   ## == App context ==
   config.current_user_method = :current_user
+  # Per-visitor time zones are on by default. Keep the suite deterministic —
+  # the first-load soft reload + flash would race every browser spec. The
+  # browser-timezone specs opt back in themselves.
+  config.use_browser_timezone = false if Rails.env.test?
   # config.is_admin_method = :is_admin?
   # config.is_developer_method = :is_developer?
   config.model_resource_mapping = {
