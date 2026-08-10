@@ -204,6 +204,7 @@ en:
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
     this_field_has_attachments_disabled: This field has attachments disabled.
+    timezone_changed: Dates and times are now displayed in your time zone (%{timezone}).
     tools: Tools
     'true': 'True'
     type_to_search: Type to search.

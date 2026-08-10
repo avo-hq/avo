@@ -7,6 +7,7 @@ import AttachmentsController from './controllers/attachments_controller'
 import BackToTopController from './controllers/back_to_top_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
+import BrowserTimezoneController from './controllers/browser_timezone_controller'
 import CheckboxListFieldController from './controllers/fields/checkbox_list_field_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
@@ -78,6 +79,7 @@ application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('back-to-top', BackToTopController)
 application.register('boolean-filter', BooleanFilterController)
+application.register('browser-timezone', BrowserTimezoneController)
 application.register('clear-input', ClearInputController)
 application.register('appearance', AppearanceController)
 application.register('appearance-preview', AppearancePreviewController)

@@ -144,6 +144,7 @@ Avo.configure do |config|
   # config.density = :normal # :tight, :normal, :relaxed
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
+  # config.use_browser_timezone = false # render server-side dates/times in each visitor's own time zone
   # config.currency = 'USD'
   # config.hide_layout_when_printing = false
   # config.container_width = :large # :full, :large, or :small. Hash for per-view: { index: :full, single: :small }

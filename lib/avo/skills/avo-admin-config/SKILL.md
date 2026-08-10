@@ -56,6 +56,7 @@ Every option below is a `config.<name>` assignment inside `Avo.configure`. Most 
 config.app_name = "Avocadelicious"              # navbar label next to the logo
 config.app_name = -> { I18n.t "app_name" }      # block form for dynamic/i18n names
 config.timezone = "UTC"                          # for date/datetime fields
+config.use_browser_timezone = true               # render server-side dates/times in each visitor's own zone (default false); detects the browser zone via cookie, soft-reloads once and shows an alert
 config.currency = "USD"                          # for currency fields
 config.locale   = "en-US"                        # force Avo's UI locale (default: I18n.default_locale)
 ```
