@@ -3,7 +3,7 @@
    is driven by the back_to_top Stimulus controller toggling
    `.back-to-top--visible`. */
 .back-to-top {
-  @apply fixed z-50 flex items-center gap-1 rounded-2xl bg-primary ps-2 pe-3 py-2 text-content no-underline;
+  @apply fixed z-50 flex items-center gap-1 rounded-2xl bg-primary ps-2 pe-3 py-1 text-content no-underline;
 
   inset-inline-start: 50%;
   top: calc(var(--top-navbar-height) + 0.5rem);
