@@ -15,7 +15,7 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(-50%) translateY(-0.5rem);
+  transform: translateX(-50%) translateY(0.5rem);
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
 
   &:hover {
