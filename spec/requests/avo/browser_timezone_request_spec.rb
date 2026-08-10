@@ -11,13 +11,17 @@ RSpec.describe "Browser timezone", type: :request do
 
   before do
     login_as admin_user
+    Avo.configuration.use_browser_timezone = true
     allow(Time).to receive(:use_zone).and_call_original
   end
 
-  after { Avo.configuration.use_browser_timezone = true }
+  # The dummy app pins the config off for the whole suite (the first-load soft
+  # reload would race every browser spec), so restore that, and assert the
+  # shipped default on a fresh configuration instead.
+  after { Avo.configuration.use_browser_timezone = false }
 
   it "is on by default" do
-    expect(Avo.configuration.use_browser_timezone).to be true
+    expect(Avo::Configuration.new.use_browser_timezone).to be true
   end
 
   it "renders the request in the cookie's zone" do
