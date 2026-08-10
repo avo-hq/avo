@@ -1,15 +1,14 @@
 import { Controller } from '@hotwired/stimulus'
 
-// Reveals a "Back to top" pill when the user scrolls back up, mirroring the
-// Furo docs theme (used by diataxis.fr): hidden within `threshold` px of the
-// top, shown on upward scroll, hidden again on downward scroll.
+// Reveals a "Back to top" pill once the page is scrolled `threshold` px down,
+// in either direction, and hides it again near the top.
 export default class extends Controller {
-  static values = { threshold: { type: Number, default: 64 } }
+  static values = { threshold: { type: Number, default: 400 } }
 
   connect() {
-    this.lastScroll = this.scrollTop
     this.onScroll = this.onScroll.bind(this)
     window.addEventListener('scroll', this.onScroll, { passive: true })
+    this.onScroll()
   }
 
   disconnect() {
@@ -21,17 +20,11 @@ export default class extends Controller {
   }
 
   onScroll() {
-    const current = this.scrollTop
-
-    if (current < this.thresholdValue) {
+    if (this.scrollTop >= this.thresholdValue) {
+      this.show()
+    } else {
       this.hide()
-    } else if (current < this.lastScroll) {
-      this.show() // scrolling up
-    } else if (current > this.lastScroll) {
-      this.hide() // scrolling down
     }
-
-    this.lastScroll = current
   }
 
   scrollToTop(event) {
