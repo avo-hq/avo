@@ -210,6 +210,7 @@ ru:
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица
     this_field_has_attachments_disabled: Для этого поля прикрепления отключены.
+    timezone_changed: Даты и время теперь отображаются в вашем часовом поясе (%{timezone}).
     tools: Инструменты
     'true': Истина
     type_to_search: Поиск...

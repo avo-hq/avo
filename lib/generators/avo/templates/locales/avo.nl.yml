@@ -204,6 +204,7 @@ nl:
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave
     this_field_has_attachments_disabled: Bijlagen zijn uitgeschakeld voor dit veld.
+    timezone_changed: Data en tijden worden nu weergegeven in uw tijdzone (%{timezone}).
     tools: Gereedschappen
     'true': Waar
     type_to_search: Typ om te zoeken.

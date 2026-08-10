@@ -222,6 +222,7 @@ ar:
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
+    timezone_changed: تُعرض التواريخ والأوقات الآن في منطقتك الزمنية (%{timezone}).
     tools: الأدوات
     'true': صحيح
     type_to_search: اكتب للبحث.

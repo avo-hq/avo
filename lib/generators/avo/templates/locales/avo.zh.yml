@@ -204,6 +204,7 @@ zh:
     switch_to_view: 切换到 %{view_type} 视图
     table_view: 表格视图
     this_field_has_attachments_disabled: 此字段已禁用附件。
+    timezone_changed: 日期和时间现在以您的时区 (%{timezone}) 显示。
     tools: 工具
     'true': 真
     type_to_search: 输入以搜索。

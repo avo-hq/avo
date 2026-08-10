@@ -206,6 +206,7 @@ tr:
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
     this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.
+    timezone_changed: Tarih ve saatler artık sizin zaman diliminizde (%{timezone}) görüntüleniyor.
     tools: Araçlar
     'true': Doğru
     type_to_search: Aramak için yazın.

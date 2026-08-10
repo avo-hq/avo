@@ -204,6 +204,7 @@ it:
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella
     this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.
+    timezone_changed: Le date e gli orari sono ora visualizzati nel tuo fuso orario (%{timezone}).
     tools: Strumenti
     'true': Vero
     type_to_search: Digita per cercare.

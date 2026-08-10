@@ -210,6 +210,7 @@ pl:
     switch_to_view: Przełącz na widok %{view_type}
     table_view: Widok tabelaryczny
     this_field_has_attachments_disabled: Załączniki są wyłączone dla tego pola.
+    timezone_changed: Daty i czasy są teraz wyświetlane w Twojej strefie czasowej (%{timezone}).
     tools: Narzędzia
     'true': Prawda
     type_to_search: Wpisz, aby wyszukać.

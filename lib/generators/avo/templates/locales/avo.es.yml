@@ -206,6 +206,7 @@ es:
     switch_to_view: Cambiar a la vista %{view_type}
     table_view: Vista en tabla
     this_field_has_attachments_disabled: Este campo tiene los adjuntos deshabilitados.
+    timezone_changed: Las fechas y horas ahora se muestran en su zona horaria (%{timezone}).
     tools: Herramientas
     'true': Verdadero
     type_to_search: Escribe para buscar.

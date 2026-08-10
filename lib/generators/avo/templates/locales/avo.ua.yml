@@ -208,6 +208,7 @@ ua:
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.
+    timezone_changed: Дати та часи тепер відображаються у вашому часовому поясі (%{timezone}).
     tools: Інструменти
     'true': Істина
     type_to_search: Введіть для пошуку.
