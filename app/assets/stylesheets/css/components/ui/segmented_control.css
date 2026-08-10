@@ -1,0 +1,39 @@
+/* Segmented control — a radio group styled as a strip of buttons. Pure CSS,
+   no JS: the visually-hidden radios keep the group accessible and keyboard
+   navigable, while the adjacent label reflects the checked state.
+
+   Markup:
+   <div class="segmented-control" role="radiogroup">
+     <input class="segmented-control__input" type="radio" id="x-a" name="x" value="a" checked>
+     <label class="segmented-control__option" for="x-a">A</label>
+     <input class="segmented-control__input" type="radio" id="x-b" name="x" value="b">
+     <label class="segmented-control__option" for="x-b">B</label>
+   </div>
+*/
+.segmented-control {
+  @apply inline-flex items-center self-start rounded border border-tertiary bg-secondary overflow-hidden text-xs;
+}
+
+.segmented-control__input {
+  @apply sr-only;
+}
+
+.segmented-control__option {
+  @apply cursor-pointer select-none py-0.5 px-2 text-content-secondary transition-colors;
+
+  &:not(:last-child) {
+    @apply border-e border-tertiary;
+  }
+
+  &:hover {
+    @apply text-content;
+  }
+}
+
+.segmented-control__input:checked + .segmented-control__option {
+  @apply bg-accent text-accent-foreground;
+}
+
+.segmented-control__input:focus-visible + .segmented-control__option {
+  @apply ring-2 ring-inset ring-accent;
+}
