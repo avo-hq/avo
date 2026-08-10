@@ -205,7 +205,7 @@ module Avo
       @model_generator_hook = true
       @send_metadata = true
       @use_stacked_fields = false
-      @use_browser_timezone = false
+      @use_browser_timezone = true
       @default_editor_url = "cursor://file/%{path}"
       @sidebar = {}
       @body_classes = []

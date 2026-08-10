@@ -11,11 +11,14 @@ RSpec.describe "Browser timezone", type: :request do
 
   before do
     login_as admin_user
-    Avo.configuration.use_browser_timezone = true
     allow(Time).to receive(:use_zone).and_call_original
   end
 
-  after { Avo.configuration.use_browser_timezone = false }
+  after { Avo.configuration.use_browser_timezone = true }
+
+  it "is on by default" do
+    expect(Avo.configuration.use_browser_timezone).to be true
+  end
 
   it "renders the request in the cookie's zone" do
     cookies["avo.browser_timezone"] = "Europe/Bucharest"
