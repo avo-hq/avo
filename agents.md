@@ -98,6 +98,16 @@ Guards:
 - Assert slug uniqueness within the set at boot; raise and point the author at `self.param` on conflict.
 - During a transition, also accept the legacy value so bookmarked URLs keep working (`scope.param == p || scope.name == p`); drop the fallback a version later.
 
+## Translations
+
+When you touch translations (any key in `lib/generators/avo/templates/locales/*.yml`), fill in the other languages before declaring done:
+
+```sh
+bundle exec i18n-tasks translate-missing --backend=openai
+```
+
+It needs `OPENAI_API_KEY` in the environment; if it is not set, ask the developer to run the command instead of skipping it.
+
 ## Logging in (development & testing)
 
 The dummy app at `spec/dummy` uses Devise for authentication. Avo is mounted at `/admin` and is wrapped in an `authenticate :user, ->(user) { user.is_admin? }` block, so you need an admin user to reach it.
