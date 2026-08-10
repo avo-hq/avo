@@ -29,8 +29,12 @@ module Avo
     end
 
     def destroy
-      if authorized_to :delete
-        attachment = ActiveStorage::Attachment.find(params[:attachment_id])
+      if attachment_name.blank?
+        flash[:error] = t("avo.failed_to_find_attachment")
+      elsif !authorized_to(:delete)
+        flash[:notice] = t("avo.not_authorized")
+      else
+        attachment = attachment_to_destroy
 
         if attachment.present?
           ActiveRecord::Base.transaction do
@@ -49,10 +53,8 @@ module Avo
             flash[:error] = @record.errors.full_messages.join(", ")
           end
         else
-          t("avo.failed_to_find_attachment")
+          flash[:error] = t("avo.failed_to_find_attachment")
         end
-      else
-        flash[:notice] = t("avo.not_authorized")
       end
 
       respond_to do |format|
@@ -64,8 +66,30 @@ module Avo
 
     private
 
+    # The attachment association named in the URL, validated against the record
+    # it is being requested on. Blank when the name is not an attachment on this
+    # record, which keeps `params[:attachment_name]` out of the policy method
+    # name below.
+    def attachment_name
+      return @attachment_name if defined?(@attachment_name)
+
+      @attachment_name = BaseResource.valid_attachment_name(@record, params[:attachment_name])
+    end
+
+    # Resolve the attachment through the record and association that were
+    # authorized. `params[:attachment_id]` is attacker-controlled and
+    # independent of `params[:id]`, so an unscoped lookup here would let a user
+    # authorized on one record destroy any attachment in the application.
+    def attachment_to_destroy
+      ActiveStorage::Attachment.find_by(
+        id: params[:attachment_id],
+        record: @record,
+        name: attachment_name
+      )
+    end
+
     def authorized_to(action)
-      @resource.authorization.authorize_action("#{action}_#{params[:attachment_name]}?", record: @record, raise_exception: false)
+      @resource.authorization.authorize_action("#{action}_#{attachment_name}?", record: @record, raise_exception: false)
     end
 
     def authorized_to_upload(attachment_name)

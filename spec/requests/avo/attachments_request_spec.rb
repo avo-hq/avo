@@ -96,4 +96,94 @@ RSpec.describe "Attachments", type: :request do
 
     expect(response).to have_http_status(:forbidden)
   end
+
+  describe "DELETE destroy" do
+    # The authorization check runs against the record named by `:id`, while the
+    # attachment to destroy comes from `:attachment_id`. Nothing may allow the
+    # second to point outside the first.
+    let(:other_post) { Post.create!(name: "Other", body: "Post", user: admin_user) }
+
+    def attach(record, name, content)
+      record.public_send(name).attach(
+        io: StringIO.new(content),
+        filename: "#{content}.txt",
+        content_type: "text/plain"
+      )
+
+      ActiveStorage::Attachment.find_by!(record: record, name: name)
+    end
+
+    def destroy_attachment(record, attachment_name, attachment_id)
+      delete "/admin/resources/posts/#{record.to_param}/active_storage_attachments/#{attachment_name}/#{attachment_id}",
+        headers: {"ACCEPT" => "text/vnd.turbo-stream.html"}
+    end
+
+    before { sign_in admin_user }
+
+    it "does not destroy an attachment belonging to another record" do
+      attach(post_record, :cover_photo, "mine")
+      victim = attach(other_post, :cover_photo, "victim")
+
+      expect {
+        destroy_attachment(post_record, "cover_photo", victim.id)
+      }.not_to change { ActiveStorage::Attachment.exists?(victim.id) }.from(true)
+
+      expect(other_post.reload.cover_photo).to be_attached
+    end
+
+    it "does not destroy an attachment belonging to another model" do
+      attach(post_record, :cover_photo, "mine")
+
+      project = create(:project)
+      victim = attach(project, :files, "victim")
+
+      expect {
+        destroy_attachment(post_record, "cover_photo", victim.id)
+      }.not_to change { ActiveStorage::Attachment.exists?(victim.id) }.from(true)
+
+      expect(project.reload.files).to be_attached
+    end
+
+    it "does not destroy an attachment from another field on the same record" do
+      attach(post_record, :cover_photo, "mine")
+      victim = attach(post_record, :audio, "victim")
+
+      expect {
+        destroy_attachment(post_record, "cover_photo", victim.id)
+      }.not_to change { ActiveStorage::Attachment.exists?(victim.id) }.from(true)
+
+      expect(post_record.reload.audio).to be_attached
+    end
+
+    it "does not destroy anything when the attachment name is not an attachment on the record" do
+      mine = attach(post_record, :cover_photo, "mine")
+
+      expect {
+        destroy_attachment(post_record, "not_an_attachment", mine.id)
+      }.not_to change { ActiveStorage::Attachment.exists?(mine.id) }.from(true)
+    end
+
+    it "destroys the attachment when it belongs to the record and the named association" do
+      mine = attach(post_record, :cover_photo, "mine")
+
+      expect {
+        destroy_attachment(post_record, "cover_photo", mine.id)
+      }.to change { ActiveStorage::Attachment.exists?(mine.id) }.from(true).to(false)
+
+      expect(post_record.reload.cover_photo).not_to be_attached
+    end
+
+    it "does not destroy the attachment when the delete policy denies it" do
+      mine = attach(post_record, :cover_photo, "mine")
+
+      allow_any_instance_of(Avo::Services::AuthorizationService)
+        .to receive(:authorize_action)
+        .with("delete_cover_photo?", record: post_record, raise_exception: false)
+        .and_return(false)
+
+      expect {
+        destroy_attachment(post_record, "cover_photo", mine.id)
+      }.not_to change { ActiveStorage::Attachment.exists?(mine.id) }.from(true)
+    end
+  end
 end
