@@ -6,6 +6,11 @@ require "view_component/version"
 # about menus; callers pass the path, label and resolved `active` (a match mode
 # like :inclusive, or a boolean to force it).
 class Avo::Sidebar::LinkComponent < Avo::BaseComponent
+  # The raw Tailwind palette names accepted for the tinted sidebar icon — the
+  # non-semantic subset of Avo::UI::BadgeComponent::VALID_COLORS. Each has a
+  # matching `.sidebar-link--color-<name>` rule in css/sidebar.css.
+  PALETTE_COLORS = %i[red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze unless defined?(PALETTE_COLORS)
+
   prop :label
   prop :path
   prop :active, default: :inclusive do |value|
@@ -19,6 +24,14 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   prop :reserve_icon_space, default: false
   prop :args, kind: :**, default: {}.freeze
   prop :hotkey, default: nil
+  # Resource color: tints only the icon stroke via a CSS modifier; unknown or
+  # blank values normalize to nil, which emits no modifier at all.
+  prop :color, default: nil do |value|
+    next nil if value.blank?
+
+    normalized = value.to_s.to_sym
+    PALETTE_COLORS.include?(normalized) ? normalized : nil
+  end
   prop :variant, default: :default
   prop :bar_class, default: ""
 
@@ -27,9 +40,13 @@ class Avo::Sidebar::LinkComponent < Avo::BaseComponent
   end
 
   def root_css_class
-    return "sidebar-link" unless subitem?
+    return ["sidebar-link", color_class].reject(&:blank?).join(" ") unless subitem?
 
     ["sidebar-subitem", @bar_class].reject(&:blank?).join(" ")
+  end
+
+  def color_class
+    "sidebar-link--color-#{@color}" if @color.present?
   end
 
   # Sub-items don't show icons (for now); top-level links do.

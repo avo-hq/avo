@@ -63,6 +63,47 @@ RSpec.describe Avo::Sidebar::LinkComponent, type: :component do
     end
   end
 
+  describe "resource color modifier" do
+    before do
+      # Same rationale as the external-link rendering block below: the
+      # component-test view context doesn't expose `root_path_without_url`.
+      allow_any_instance_of(described_class).to receive(:is_external?).and_return(true)
+      allow_any_instance_of(described_class).to receive(:root_link?).and_return(false)
+    end
+
+    it "adds the palette modifier to the root element" do
+      render_inline(described_class.new(label: "Projects", path: "/avo/resources/projects", color: :purple))
+
+      expect(page).to have_css("a.sidebar-link.sidebar-link--color-purple")
+    end
+
+    it "emits no color modifier when no color is given" do
+      render_inline(described_class.new(label: "Projects", path: "/avo/resources/projects"))
+
+      expect(page.find("a.sidebar-link")[:class]).not_to include("sidebar-link--color-")
+    end
+
+    it "ignores colors outside the palette whitelist" do
+      render_inline(described_class.new(label: "Projects", path: "/avo/resources/projects", color: :bogus))
+
+      expect(page.find("a.sidebar-link")[:class]).not_to include("sidebar-link--color-")
+    end
+
+    it "accepts string colors" do
+      render_inline(described_class.new(label: "Projects", path: "/avo/resources/projects", color: "teal"))
+
+      expect(page).to have_css("a.sidebar-link.sidebar-link--color-teal")
+    end
+
+    it "keeps the modifier alongside active-state handling" do
+      allow_any_instance_of(described_class).to receive(:is_external?).and_return(false)
+
+      render_inline(described_class.new(label: "Projects", path: "/avo/resources/projects", color: :purple, active: true))
+
+      expect(page).to have_css("a.sidebar-link.active.sidebar-link--color-purple")
+    end
+  end
+
   # Unit 4 / R12: label truncation itself is measured in the browser
   # (spec/system/avo/group_1/sidebar_spec.rb), which also covers the label
   # wrapper, `title` and hotkey badge on a real (internal) resource link. This

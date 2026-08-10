@@ -210,7 +210,31 @@
 
 .sidebar-link__icon-wrapper {
   @apply shrink-0 flex items-center justify-center;
+  color: var(--sidebar-icon-color, currentColor);
 }
+
+/* Resource color — tints only the icon stroke. Each modifier sets a scoped
+   variable that only the icon wrapper consumes; the link's own color, hover
+   and active rules stay untouched. Mixing the 500 shade with a slice of
+   `--color-primary` (same trick as `--badge-bg` in css/components/ui/badge.css)
+   self-adapts the tint in dark mode, where `--color-primary` flips. */
+.sidebar-link--color-red { --sidebar-icon-color: color-mix(in oklab, var(--color-red-500), var(--color-primary) 15%); }
+.sidebar-link--color-orange { --sidebar-icon-color: color-mix(in oklab, var(--color-orange-500), var(--color-primary) 15%); }
+.sidebar-link--color-amber { --sidebar-icon-color: color-mix(in oklab, var(--color-amber-500), var(--color-primary) 15%); }
+.sidebar-link--color-yellow { --sidebar-icon-color: color-mix(in oklab, var(--color-yellow-500), var(--color-primary) 15%); }
+.sidebar-link--color-lime { --sidebar-icon-color: color-mix(in oklab, var(--color-lime-500), var(--color-primary) 15%); }
+.sidebar-link--color-green { --sidebar-icon-color: color-mix(in oklab, var(--color-green-500), var(--color-primary) 15%); }
+.sidebar-link--color-emerald { --sidebar-icon-color: color-mix(in oklab, var(--color-emerald-500), var(--color-primary) 15%); }
+.sidebar-link--color-teal { --sidebar-icon-color: color-mix(in oklab, var(--color-teal-500), var(--color-primary) 15%); }
+.sidebar-link--color-cyan { --sidebar-icon-color: color-mix(in oklab, var(--color-cyan-500), var(--color-primary) 15%); }
+.sidebar-link--color-sky { --sidebar-icon-color: color-mix(in oklab, var(--color-sky-500), var(--color-primary) 15%); }
+.sidebar-link--color-blue { --sidebar-icon-color: color-mix(in oklab, var(--color-blue-500), var(--color-primary) 15%); }
+.sidebar-link--color-indigo { --sidebar-icon-color: color-mix(in oklab, var(--color-indigo-500), var(--color-primary) 15%); }
+.sidebar-link--color-violet { --sidebar-icon-color: color-mix(in oklab, var(--color-violet-500), var(--color-primary) 15%); }
+.sidebar-link--color-purple { --sidebar-icon-color: color-mix(in oklab, var(--color-purple-500), var(--color-primary) 15%); }
+.sidebar-link--color-fuchsia { --sidebar-icon-color: color-mix(in oklab, var(--color-fuchsia-500), var(--color-primary) 15%); }
+.sidebar-link--color-pink { --sidebar-icon-color: color-mix(in oklab, var(--color-pink-500), var(--color-primary) 15%); }
+.sidebar-link--color-rose { --sidebar-icon-color: color-mix(in oklab, var(--color-rose-500), var(--color-primary) 15%); }
 
 /* Reserve same width when group has icons but this link has none (alignment) */
 .sidebar-link__icon-wrapper--placeholder {
