@@ -36,7 +36,7 @@ Each entry is a directory beside this file: `<skill>/SKILL.md`.
 | `avo-menu-icons` | Pick the right Tabler icon and apply it to resources. The menu DSL is `avo-menu`'s own skill |
 | `avo-navigation-search` | Per-resource search, breadcrumbs, keyboard shortcuts, the auto-generated sidebar |
 | `avo-custom-ui` | Custom pages, embedded panels, dynamic/nested forms, ejected views, Stimulus, Tailwind |
-| `avo-i18n` | Translate and localize the admin — labels, locale switching, RTL |
+| `avo-i18n` | Translate and localize the admin — labels, scope/card/dashboard keys, which `avo.*` keys are safe to add, locale switching, RTL |
 | `avo-controllers` | Override per-resource CRUD controller hooks and safely extend Avo's ApplicationController |
 | `avo-engine-internals` | `main_app`/`avo` helpers, `Avo::Current`, `ExecutionContext`, reserved names |
 | `avo-media-library` | Central asset browser and a picker inside rich-text editors |

@@ -1,6 +1,6 @@
 ---
 name: avo-i18n
-description: Translate and localize the Avo admin — resource, action, and field labels, tab and panel titles, field help/placeholder/include_blank text, save-button labels, the interface language, and right-to-left layout — via `config/locales/avo.<locale>.yml`, `self.translation_key`, and `config.locale`. Use when the user wants to translate the admin to another language (French/Spanish/German/Arabic/…), localize or rename resource/field/action labels, translate tab or panel titles, make the admin multilingual, support RTL languages, change or force the admin's interface language, or show a different label per language.
+description: Translate and localize the Avo admin — resource, action, and field labels, scope/card/dashboard titles, tab and panel titles, field help/placeholder/include_blank text, save-button labels, the interface language, and right-to-left layout — via `config/locales/avo.<locale>.yml`, `self.translation_key`, and `config.locale`. Use when the user wants to translate the admin to another language (French/Spanish/German/Arabic/…), localize or rename resource/field/action/scope/card/dashboard labels, translate tab or panel titles, make the admin multilingual, support RTL languages, change or force the admin's interface language, show a different label per language, or work out which keys are safe to add under `avo.`.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -18,6 +18,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 - Docs map (start here to discover pages): https://docs.avohq.io/4.0/docs-map.md
 - Localization (i18n) guide: https://docs.avohq.io/4.0/i18n.md
+- Which `avo.*` keys are reserved and which roots are yours to fill: https://docs.avohq.io/4.0/i18n.md#safe-keys
 - Multi-language URLs guide (locale in the route, e.g. `/de/resources/users`): https://docs.avohq.io/4.0/guides/multi-language-urls.md
 - Multilingual records guide (translating the *data*, not the chrome): https://docs.avohq.io/4.0/guides/multilingual-content.md
 
@@ -196,7 +197,21 @@ en:
         save: "Save the product!"
 ```
 
-### 7. Set or switch the interface language
+### 7. Localize scopes, cards, and dashboards
+
+Three more roots follow the same convention, derived by the **add-on gems** that provide those entities — so they only exist in an app that has the gem installed:
+
+| Entity | Key | Attributes | Derived by |
+| --- | --- | --- | --- |
+| Scope | `avo.scope_translations.<class_path>` | `name`, `description` | `avo-scopes` |
+| Card | `avo.card_translations.<class_path>` | `label`, `description`, `discreet_description` | `avo-dashboards` |
+| Dashboard | `avo.dashboard_translations.<class_path>` | `name`, `description` | `avo-dashboards` |
+
+Namespaced classes use the same slash-joined path as resources (`avo.card_translations.sales/monthly`), `self.translation_key` overrides the derived path, and the class attribute stays the fallback. Detail: https://docs.avohq.io/4.0/i18n.md#localizing-scopes-cards-and-dashboards — and read the gem's own skill before writing the YAML, since each gem owns how its labels resolve.
+
+Don't confuse these with the gems' **own** chrome (the refresh control, the count pill), which lives under `avo.scopes.*` and `avo.cards.*` — deliberately separate namespaces.
+
+### 8. Set or switch the interface language
 
 `config.locale` sets Avo's locale for **Avo requests only** — the rest of the app keeps `config.i18n.default_locale`. Default is `nil` (falls back to the app default):
 
@@ -212,9 +227,27 @@ Two request params switch language on the fly:
 - **`?set_locale=pt-BR`** — sets Avo's default locale process-wide **until the server restarts** (it mutates `Avo.configuration.locale`). Affects every user; use it as a switch, not per-user preference.
 - **`?force_locale=pt-BR`** — sets the locale for that request only, but Avo **keeps the param in every link** while you navigate. Remove it to return to the configured locale. Good for previewing a translation without changing config.
 
-### 8. Right-to-left languages
+### 9. Right-to-left languages
 
 RTL is **automatic** — Avo detects it from the active locale and flips the layout (`dir="rtl"`, mirrored chrome) with no configuration. Built-in RTL locales: `ar`, `he`, `fa`, `ur`, `yi`, `ps`, `sd`, `ku`, `ckb`, `ug`, `dv`. Matching is on the **language segment**, so regional variants like `ar-EG` count as RTL too. To ship an Arabic admin, translate into `avo.ar.yml` and set the locale — the layout follows.
+
+## What you can safely put under `avo.`
+
+Avo's locale files, every add-on gem's, and the app's own deep-merge into **one `avo` tree per locale**, and `config/locales` loads **last**. Overriding Avo's strings is supported — it is most of what this skill does. What silently breaks an app is changing a key's **shape**:
+
+- **Replace a string with a string; never nest beneath one.** A String and a Hash cannot merge, so the file that loads last replaces the other outright — no error, no warning, the label just stops rendering.
+- **Strings that read like namespaces are the live hazard.** `avo.actions`, `avo.resources`, `avo.dashboards`, `avo.dashboard`, `avo.filters`, `avo.pages` and `avo.tools` are labels Avo renders, as are one-word keys like `avo.copy`, `avo.confirm`, `avo.new`, `avo.edit`, `avo.delete`, `avo.save` and `avo.close`. Treat them as taken.
+- **Pluralization hashes are the exception.** A sibling beside `one:`/`other:` under `avo.file`, `avo.record`, `avo.number_of_items` or `avo.x_items_more` is safe — pluralization reads only the plural keys. That is exactly why `avo.resource_translations.<r>` is legitimately both a plural leaf **and** a subtree root carrying `.fields`/`.tabs`/`.panels`/`.save`.
+- **Six derived roots are yours to fill.** `resource_translations`, `action_translations`, `field_translations` (core), `scope_translations` (`avo-scopes`), `card_translations` and `dashboard_translations` (`avo-dashboards`). Avo ships nothing under them.
+- **`avo.filter_translations` is not a root** — no code derives it. Filters have no derived translation root today; localize one by calling `I18n.t` from its `self.name` block with a key of your own choosing.
+
+List what is currently taken, **without** mutating the app:
+
+```bash
+bin/rails runner 'puts I18n.t("avo").select { |_, v| v.is_a?(String) }.keys.sort'
+```
+
+Don't reach for `bin/rails generate avo:locales` just to look — it copies Avo's locale files into `config/locales`, pinning today's wording into the app. Run it only when editable copies are actually wanted. Full rule and the worked collision: https://docs.avohq.io/4.0/i18n.md#safe-keys
 
 ## Key options
 
@@ -228,6 +261,9 @@ RTL is **automatic** — Avo detects it from the active locale and flips the lay
 | `avo.resource_translations.<r>.tabs.<t>` | YAML | Tab title, keyed on the parameterized `title:`. Pin a different key with `translation_key:` on the `tab`. |
 | `avo.resource_translations.<r>.panels.<p>` | YAML | Panel title, same convention as tabs; `translation_key:` on the `panel` overrides it. |
 | `avo.resource_translations.<r>.save` | YAML | Per-resource Save-button text (else global `avo.save`). |
+| `avo.scope_translations.<s>` | YAML | Scope `name`/`description`. Root derived by `avo-scopes`. |
+| `avo.card_translations.<c>` | YAML | Card `label`/`description`/`discreet_description`. Root derived by `avo-dashboards`. |
+| `avo.dashboard_translations.<d>` | YAML | Dashboard `name`/`description`. Root derived by `avo-dashboards`. |
 | `config.locale` | Initializer | Avo's interface language for Avo requests only. Default `nil` → app default. |
 | `?set_locale=` param | URL | Switches Avo's default locale process-wide until restart. |
 | `?force_locale=` param | URL | Switches locale for the current navigation only; sticks in links until removed. |
@@ -239,6 +275,7 @@ RTL is **automatic** — Avo detects it from the active locale and flips the lay
 - **Explicit `translation_key:` on a field bypasses the cascade.** You lose the resource-scoped → shared → humanized fallback and the automatic `help`/`placeholder`/`include_blank` sibling lookup. Only pin a key when you want exactly that key.
 - **Default keys include the namespace.** `Avo::Resources::Galaxy::Planet` → `avo.resource_translations.galaxy/planet`; `Avo::Actions::City::Update` → `avo.action_translations.city/update` (underscored, slash-joined). Match that path in YAML or the lookup misses and you fall back to the humanized name.
 - **Pluralization keys are required.** Resource/field name lookups run `I18n.t(key, count:, default:)`, so provide `one`/`other` (and `zero` where relevant). A bare string can raise `I18n::InvalidPluralizationData` or silently fall back to the computed name.
+- **Nesting under a path Avo holds as a string destroys that string.** The tree deep-merges per locale and the app's `config/locales` loads last, so `avo.dashboards.my_dashboard.name` turns the sidebar's "Dashboards" heading into a Hash and it stops rendering — silently. Use the derived root instead (`avo.dashboard_translations.my_dashboard.name`), and check `I18n.t("avo")` for strings before inventing a namespace.
 - **`set_locale` is global and sticky.** It mutates `Avo.configuration.locale` and persists until the server restarts, affecting all users — it is not a per-user preference. Use `force_locale` for a scoped, reversible switch (it rides along in every link until removed).
 - **RTL is automatic and matches on the language segment.** `ar`, `he`, `fa`, `ur`, `yi`, `ps`, `sd`, `ku`, `ckb`, `ug`, `dv` — and regional variants (`ar-EG`) — flip the layout with no config. Don't hand-roll a direction toggle.
 - **Don't confuse chrome with data.** This skill localizes labels/buttons/help (the admin UI). Translating record *content* is the multilingual-records guide; putting the locale in the URL is the multi-language-URLs guide.
@@ -249,6 +286,6 @@ RTL is **automatic** — Avo detects it from the active locale and flips the lay
 When done, tell the user:
 
 - Which locale file(s) you created or edited (full paths) and any resource/action/field file(s) where you set `translation_key`, plus any generator command run (`bin/rails g avo:locales`).
-- The translation keys you added and the resource/action/field each targets — call out where you relied on the field cascade vs. an explicit `translation_key:`.
+- The translation keys you added and the resource/action/field/scope/card/dashboard each targets — call out where you relied on the field cascade vs. an explicit `translation_key:`.
 - The active-locale change, if any (`config.locale`, or that they can preview with `?force_locale=`), and whether RTL will engage for the chosen language.
 - Anything still needed: add the remaining `one`/`other` plural forms, translate the other bundled strings, restart the server after a `config.locale` change, or move to the multilingual-records / multi-language-URLs guide if the real goal was record content or locale-in-URL.
