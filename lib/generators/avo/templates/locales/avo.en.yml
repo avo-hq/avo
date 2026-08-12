@@ -4,7 +4,7 @@ en:
     action_ran_successfully: Action ran successfully!
     actions: Actions
     add_filter: Add filter
-    all: "All"
+    all: All
     and_x_other_resources: and %{count} other resources
     appearance:
       accent_picker: Select accent color
@@ -109,7 +109,7 @@ en:
     filter_by: Filter by
     filters: Filters
     global_search:
-      direct_match: "Direct match"
+      direct_match: Direct match
       empty_state:
         no_results_for_query: We couldn't find anything matching "%{query}"
         no_results_found: No results found
@@ -125,8 +125,8 @@ en:
         select: Select
       results:
         count_of_total: "%{count} of %{total}"
-      search_results: "Search Results"
-      searching_on: "Searching on:"
+      search_results: Search Results
+      searching_on: 'Searching on:'
       show_all_results_for: Show all results for
     go_back: Go back
     grid_view: Grid view

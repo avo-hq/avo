@@ -4,7 +4,7 @@ ar:
     action_ran_successfully: تم تنفيذ الأمر بنجاح!
     actions: أوامر
     add_filter: إضافة عامل تصفية
-    all: "الكل"
+    all: الكل
     and_x_other_resources: و %{count} موارد أخرى
     appearance:
       accent_picker: لون مميز
@@ -123,7 +123,7 @@ ar:
     filter_by: تصفية حسب
     filters: مرشحات
     global_search:
-      direct_match: "تطابق مباشر"
+      direct_match: تطابق مباشر
       empty_state:
         no_results_for_query: لم نتمكن من العثور على أي شيء يتطابق مع "%{query}"
         no_results_found: لم يتم العثور على نتائج
@@ -139,8 +139,8 @@ ar:
         select: اختيار
       results:
         count_of_total: "%{count} من %{total}"
-      search_results: "نتائج البحث"
-      searching_on: "البحث في:"
+      search_results: نتائج البحث
+      searching_on: 'البحث في:'
       show_all_results_for: عرض جميع النتائج لـ
     go_back: العودة للخلف
     grid_view: عرض الشبكة

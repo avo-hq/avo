@@ -4,7 +4,7 @@ de:
     action_ran_successfully: Aktion erfolgreich durchgeführt!
     actions: Aktionen
     add_filter: Filter hinzufügen
-    all: "Alle"
+    all: Alle
     and_x_other_resources: und %{count} weitere Ressourcen
     appearance:
       accent_picker: Akzentfarbe
@@ -109,7 +109,7 @@ de:
     filter_by: Filtern nach
     filters: Filter
     global_search:
-      direct_match: "Direkter Treffer"
+      direct_match: Direkter Treffer
       empty_state:
         no_results_for_query: Wir konnten nichts finden, das "%{query}" entspricht
         no_results_found: Keine Ergebnisse gefunden
@@ -125,8 +125,8 @@ de:
         select: Auswählen
       results:
         count_of_total: "%{count} von %{total}"
-      search_results: "Suchergebnisse"
-      searching_on: "Suche in:"
+      search_results: Suchergebnisse
+      searching_on: 'Suche in:'
       show_all_results_for: Alle Ergebnisse für anzeigen
     go_back: Zurück
     grid_view: Rasteransicht

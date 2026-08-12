@@ -4,7 +4,7 @@ zh:
     action_ran_successfully: 操作成功执行！
     actions: 操作
     add_filter: 添加筛选器
-    all: "全部"
+    all: 全部
     and_x_other_resources: 和 %{count} 个其他资源
     appearance:
       accent_picker: 强调色
@@ -109,7 +109,7 @@ zh:
     filter_by: 按...筛选
     filters: 筛选器
     global_search:
-      direct_match: "精确匹配"
+      direct_match: 精确匹配
       empty_state:
         no_results_for_query: 我们找不到与 "%{query}" 匹配的任何内容
         no_results_found: 未找到结果
@@ -125,8 +125,8 @@ zh:
         select: 选择
       results:
         count_of_total: "%{count} / %{total}"
-      search_results: "搜索结果"
-      searching_on: "搜索范围："
+      search_results: 搜索结果
+      searching_on: 搜索范围：
       show_all_results_for: 显示所有结果
     go_back: 返回
     grid_view: 网格视图
