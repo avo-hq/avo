@@ -298,7 +298,12 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        run: bundle exec rspec spec/components
+        # spec/lib/avo/locales_shape_spec.rb rides along here rather than in the
+        # i18n job: every example goes through the DatabaseCleaner `around` hook
+        # in spec/support/database_cleaner.rb, so it needs a prepared database
+        # even though the spec itself only reads YAML. This job already creates
+        # one; the i18n job does not.
+        run: bundle exec rspec spec/components spec/lib/avo/locales_shape_spec.rb
 
       - uses: actions/upload-artifact@v4
         with:
