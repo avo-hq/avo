@@ -4,6 +4,7 @@ nn:
     action_ran_successfully: Suksess!
     actions: Handlingar
     add_filter: Legg til filter
+    all: "Alle"
     and_x_other_resources: og %{count} andre ressursar
     appearance:
       accent_picker: Aksentfarge
@@ -110,6 +111,7 @@ nn:
     filter_by: Filtrer etter
     filters: Filter
     global_search:
+      direct_match: "Direkte treff"
       empty_state:
         no_results_for_query: Vi kunne ikke finne noe som matcher "%{query}"
         no_results_found: Ingen resultat funnet
@@ -125,6 +127,8 @@ nn:
         select: Vel
       results:
         count_of_total: "%{count} av %{total}"
+      search_results: "Søkeresultat"
+      searching_on: "Søkjer i:"
       show_all_results_for: Vis alle resultater for
     go_back: Gå tilbake
     grid_view: Gridvisning

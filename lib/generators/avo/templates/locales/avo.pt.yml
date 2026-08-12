@@ -4,6 +4,7 @@ pt:
     action_ran_successfully: Ação executada com sucesso!
     actions: Ações
     add_filter: Adicionar filtro
+    all: "Tudo"
     and_x_other_resources: e %{count} outros recursos
     appearance:
       accent_picker: Cor de Acento
@@ -110,6 +111,7 @@ pt:
     filter_by: Filtrar por
     filters: Filtros
     global_search:
+      direct_match: "Correspondência direta"
       empty_state:
         no_results_for_query: Não conseguimos encontrar nada correspondente a "%{query}"
         no_results_found: Nenhum resultado encontrado
@@ -125,6 +127,8 @@ pt:
         select: Selecionar
       results:
         count_of_total: "%{count} de %{total}"
+      search_results: "Resultados da pesquisa"
+      searching_on: "A pesquisar em:"
       show_all_results_for: Mostrar todos os resultados para
     go_back: Voltar
     grid_view: Visualização em grelha

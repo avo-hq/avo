@@ -4,6 +4,7 @@ zh-TW:
     action_ran_successfully: 操作成功執行！
     actions: 操作
     add_filter: 新增篩選器
+    all: "全部"
     and_x_other_resources: 和 %{count} 個其他資源
     appearance:
       accent_picker: 重點顏色
@@ -108,6 +109,7 @@ zh-TW:
     filter_by: 按...篩選
     filters: 篩選器
     global_search:
+      direct_match: "精確匹配"
       empty_state:
         no_results_for_query: 我們找不到任何與 "%{query}" 匹配的內容
         no_results_found: 未找到結果
@@ -123,6 +125,8 @@ zh-TW:
         select: 選擇
       results:
         count_of_total: "%{count} / %{total}"
+      search_results: "搜尋結果"
+      searching_on: "搜尋範圍："
       show_all_results_for: 顯示所有結果
     go_back: 返回
     grid_view: 網格視圖

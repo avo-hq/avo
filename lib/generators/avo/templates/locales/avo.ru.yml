@@ -4,6 +4,7 @@ ru:
     action_ran_successfully: Действие успешно выполнено!
     actions: Действия
     add_filter: Добавить фильтр
+    all: "Все"
     and_x_other_resources: и %{count} других ресурсов
     appearance:
       accent_picker: Цвет акцента
@@ -112,6 +113,7 @@ ru:
     filter_by: Фильтровать по
     filters: Фильтры
     global_search:
+      direct_match: "Прямое совпадение"
       empty_state:
         no_results_for_query: Мы не смогли найти ничего, соответствующего "%{query}"
         no_results_found: Результатов не найдено
@@ -127,6 +129,8 @@ ru:
         select: Выбрать
       results:
         count_of_total: "%{count} из %{total}"
+      search_results: "Результаты поиска"
+      searching_on: "Поиск по:"
       show_all_results_for: Показать все результаты для
     go_back: Назад
     grid_view: Сетка

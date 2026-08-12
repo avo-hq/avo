@@ -4,6 +4,7 @@ tr:
     action_ran_successfully: Eylem başarıyla gerçekleşti!
     actions: Aksiyonlar
     add_filter: Filtre ekle
+    all: "Tümü"
     and_x_other_resources: ve %{count} diğer kaynak
     appearance:
       accent_picker: Vurgu rengi
@@ -110,6 +111,7 @@ tr:
     filter_by: Tarafından filtre
     filters: Filtreler
     global_search:
+      direct_match: "Doğrudan eşleşme"
       empty_state:
         no_results_for_query: '"%{query}" ile eşleşen hiçbir şey bulamadık'
         no_results_found: Sonuç bulunamadı
@@ -125,6 +127,8 @@ tr:
         select: Seç
       results:
         count_of_total: "%{count} / %{total}"
+      search_results: "Arama sonuçları"
+      searching_on: "Şurada aranıyor:"
       show_all_results_for: Tüm sonuçları göster
     go_back: Geri dön
     grid_view: Grid görünümü

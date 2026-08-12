@@ -4,6 +4,7 @@ ja:
     action_ran_successfully: アクションは正常に実行されました！
     actions: アクション
     add_filter: フィルターの追加
+    all: "すべて"
     and_x_other_resources: その他%{count}件のリソース
     appearance:
       accent_picker: アクセントカラー
@@ -110,6 +111,7 @@ ja:
     filter_by: フィルター条件
     filters: フィルター
     global_search:
+      direct_match: "完全一致"
       empty_state:
         no_results_for_query: '"%{query}" に一致するものが見つかりませんでした'
         no_results_found: 結果が見つかりませんでした
@@ -125,6 +127,8 @@ ja:
         select: 選択
       results:
         count_of_total: "%{count} / %{total}"
+      search_results: "検索結果"
+      searching_on: "検索対象:"
       show_all_results_for: すべての結果を表示
     go_back: 戻る
     grid_view: グリッドビュー
