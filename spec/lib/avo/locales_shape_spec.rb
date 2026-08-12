@@ -54,16 +54,42 @@ module AvoLocaleShape
   # "still needs its exemption" below goes red and tells you to delete this.
   SHAPE_EXEMPT_PATHS = %w[avo.applied].freeze
 
-  # The checked-in shape of `avo.en.yml`. Every comparison below measures the other
-  # eighteen files against en, so nothing in the scan itself pins what en's own
-  # shape is: a string→hash flip applied uniformly to all nineteen files moves the
-  # reference along with its subjects and passes green. This file is the fixed
-  # point that flip has to survive, and it cannot — the diff lands in review.
-  EN_SHAPE_FIXTURE = Avo::Engine.root.join("spec", "fixtures", "locales", "en_shape.txt")
-
-  # The command that rewrites the fixture, quoted verbatim in the failure message
-  # so a maintainer never has to guess at it.
-  REGENERATE_COMMAND = "REGENERATE_EN_SHAPE=1 bundle exec rspec spec/lib/avo/locales_shape_spec.rb"
+  # Every comparison below measures the other eighteen files against en, so nothing
+  # in the scan itself pins what en's own shape is: a string→hash flip applied
+  # uniformly to all nineteen files moves the reference along with its subjects and
+  # passes green. This list is the fixed point that flip has to survive.
+  #
+  # It records the paths en holds as a Hash, and nothing else. That is the whole
+  # hazard — a leaf only becomes interesting when it turns into a hash, which shows
+  # up here as a new entry at whatever depth it happened. Recording the ~209 leaves
+  # too would catch nothing more and would turn every added or deleted UI string
+  # into a red build plus a regeneration step, which is routine work; a guard that
+  # fires on routine work teaches people to silence it, and silencing this one is
+  # exactly the failure it exists to prevent.
+  #
+  # So this list moves only when a namespace is added or removed. That is rare, and
+  # when it happens the diff is one line someone should look at on purpose.
+  EN_HASH_PATHS = %w[
+    avo
+    avo.appearance
+    avo.appearance.accents_list
+    avo.appearance.neutrals_list
+    avo.checkbox_list
+    avo.checkbox_list.hidden_selections
+    avo.file
+    avo.global_search
+    avo.global_search.empty_state
+    avo.global_search.keyboard_hints
+    avo.global_search.results
+    avo.key_value_field
+    avo.media_library
+    avo.nested
+    avo.number_of_items
+    avo.order
+    avo.record
+    avo.search
+    avo.x_items_more
+  ].freeze
 
   # Flattens a parsed locale body into {"avo.save" => :leaf, "avo.file" => :hash,
   # "avo.file.one" => :leaf, …}. A leaf is anything I18n hands back as a value; a
@@ -84,19 +110,9 @@ module AvoLocaleShape
     into
   end
 
-  # One sorted `<path> <leaf|hash>` line per entry. Deliberately line-oriented and
-  # sorted: the fixture is read by whoever reviews the diff, and a reshaped key has
-  # to show up as one line changing rather than as a reordered blob.
-  def self.serialize(shape)
-    shape.sort.map { |path, type| "#{path} #{type}\n" }.join
-  end
-
-  def self.deserialize(text)
-    text.each_line.filter_map do |line|
-      path, type = line.split
-
-      [path, type.to_sym] if path
-    end.to_h
+  # The paths a flattened shape holds as a Hash, sorted — what EN_HASH_PATHS pins.
+  def self.hash_paths(shape)
+    shape.select { |_path, type| type == :hash }.keys.sort
   end
 
   # Paths one locale holds as a leaf in one file and a hash in another. Takes
@@ -334,39 +350,29 @@ RSpec.describe "Avo's shipped locale files" do
   end
 
   # Everything in invariant 3 is measured *against* en, so en's own shape is the one
-  # thing it cannot see. Pinning it to a checked-in file is what stops a sweep that
-  # reshapes all nineteen locales at once from passing green.
-  describe "invariant 3a: avo.en.yml holds the shape checked in beside this spec" do
-    it "matches spec/fixtures/locales/en_shape.txt at every depth" do
-      # Regeneration lives inside the example so the fixture can only ever be
-      # written by the same code that reads it. A separate script would be free to
-      # drift from this format, and a fixture that no longer parses is a guard that
-      # silently stops guarding.
-      if ENV["REGENERATE_EN_SHAPE"]
-        File.write(AvoLocaleShape::EN_SHAPE_FIXTURE, AvoLocaleShape.serialize(reference))
+  # thing it cannot see. Pinning the paths en holds as a Hash is what stops a sweep
+  # that reshapes all nineteen locales at once from passing green.
+  describe "invariant 3a: avo.en.yml nests exactly where this spec says it does" do
+    it "holds a Hash at the paths in EN_HASH_PATHS and nowhere else" do
+      actual = AvoLocaleShape.hash_paths(reference)
 
-        skip "rewrote #{AvoLocaleShape::EN_SHAPE_FIXTURE} — read the diff before committing it"
+      appeared = (actual - AvoLocaleShape::EN_HASH_PATHS).map { |path| "  #{path} — now a Hash, not in the list" }
+      vanished = (AvoLocaleShape::EN_HASH_PATHS - actual).map do |path|
+        "  #{path} — listed as a Hash, now #{reference.fetch(path, "gone")}"
       end
 
-      recorded = AvoLocaleShape.deserialize(File.read(AvoLocaleShape::EN_SHAPE_FIXTURE))
-
-      reshaped = (recorded.keys & reference.keys).sort.filter_map do |path|
-        "  #{path} — #{recorded[path]} in the fixture, #{reference[path]} in avo.en.yml" if recorded[path] != reference[path]
-      end
-      added = (reference.keys - recorded.keys).sort.map { |path| "  #{path} — #{reference[path]}, not in the fixture" }
-      removed = (recorded.keys - reference.keys).sort.map { |path| "  #{path} — #{recorded[path]} in the fixture, gone from avo.en.yml" }
-
-      expect(reshaped + added + removed).to be_empty, lambda {
-        "avo.en.yml no longer has the shape recorded in " \
-          "spec/fixtures/locales/en_shape.txt.\n\n" \
-          "#{(reshaped + added + removed).join("\n")}\n\n" \
-          "A `reshaped` line is the dangerous one: it is a String↔Hash flip in the " \
-          "reference every other locale is measured against, and applying the same " \
-          "flip to all nineteen files hides it from every other example here. If " \
-          "that is what you meant to do, regenerate the fixture so the flip lands " \
-          "in review as a diff someone signs off on:\n\n" \
-          "  #{AvoLocaleShape::REGENERATE_COMMAND}\n\n" \
-          "If it is not, avo.en.yml is wrong. Do not regenerate to make this pass."
+      expect(appeared + vanished).to be_empty, lambda {
+        "avo.en.yml nests somewhere AvoLocaleShape::EN_HASH_PATHS does not.\n\n" \
+          "#{(appeared + vanished).join("\n")}\n\n" \
+          "This is the one thing the other examples cannot see: they measure the " \
+          "eighteen translated files against en, so a String↔Hash flip applied to " \
+          "all nineteen at once moves the reference along with its subjects and " \
+          "passes green. Nesting a key beneath a path Avo ships as a String deletes " \
+          "that String for every app overriding it.\n\n" \
+          "Adding or removing a plain UI string does not reach this list — only a " \
+          "namespace does. If you meant to add or remove one, edit EN_HASH_PATHS in " \
+          "this file so the change lands in review. If you did not, avo.en.yml is " \
+          "wrong; do not edit the list to make this pass."
       }
     end
   end
