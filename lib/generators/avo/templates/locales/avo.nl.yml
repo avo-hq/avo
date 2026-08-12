@@ -4,6 +4,7 @@ nl:
     action_ran_successfully: Actie succesvol uitgevoerd!
     actions: Acties
     add_filter: Filter toevoegen
+    all: Alles
     and_x_other_resources: en %{count} andere bronnen
     appearance:
       accent_picker: Accentkleur
@@ -108,6 +109,7 @@ nl:
     filter_by: Filteren op
     filters: Filters
     global_search:
+      direct_match: Directe overeenkomst
       empty_state:
         no_results_for_query: We konden niets vinden dat overeenkomt met "%{query}"
         no_results_found: Geen resultaten gevonden
@@ -123,6 +125,8 @@ nl:
         select: Selecteren
       results:
         count_of_total: "%{count} van %{total}"
+      search_results: Zoekresultaten
+      searching_on: 'Zoeken in:'
       show_all_results_for: Toon alle resultaten voor
     go_back: Terug
     grid_view: Rasterweergave

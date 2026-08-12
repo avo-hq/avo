@@ -4,6 +4,7 @@ ro:
     action_ran_successfully: Acțiunea a rulat cu succes!
     actions: Acțiuni
     add_filter: Adăugați filtru
+    all: Toate
     and_x_other_resources: plus alte %{count} recorduri
     appearance:
       accent_picker: Culoare accent
@@ -113,6 +114,7 @@ ro:
     filter_by: Filtează după
     filters: Filtre
     global_search:
+      direct_match: Potrivire directă
       empty_state:
         no_results_for_query: Nu am putut găsi nimic care să se potrivească cu "%{query}"
         no_results_found: Nu s-au găsit rezultate
@@ -128,6 +130,8 @@ ro:
         select: Selectează
       results:
         count_of_total: "%{count} din %{total}"
+      search_results: Rezultatele căutării
+      searching_on: 'Se caută în:'
       show_all_results_for: Arată toate rezultatele pentru
     go_back: Înapoi
     grid_view: Vezi sub formă de grid
