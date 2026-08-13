@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class TiptapField < BaseField
+      resizable_editor target: ".tiptap.ProseMirror"
+
       attr_reader :always_show
 
       def initialize(id, **args, &block)

@@ -115,6 +115,8 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
       add_stimulus_attributes_for(@action, attributes)
     end
 
+    add_resizable_editor_attributes(attributes) if @view.form? && @field.resizable_editor?
+
     attributes
   end
 
@@ -135,5 +137,29 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   def render_dash?
     @field.value.blank? && @dash_if_blank
+  end
+
+  private
+
+  def add_resizable_editor_attributes(attributes)
+    controllers = [
+      attributes.delete(:controller),
+      attributes.delete("controller"),
+      "resizable-editor"
+    ].compact_blank.flat_map { |value| value.to_s.split }.uniq
+
+    attributes[:controller] = controllers.join(" ")
+    attributes[:resizable_editor_target_selector_value] = @field.resizable_editor_target_selector
+    attributes[:resizable_editor_storage_key_value] = resizable_editor_storage_key
+  end
+
+  def resizable_editor_storage_key
+    scope = if @action.present?
+      ["actions", @action.to_param, @resource&.route_key]
+    else
+      ["resources", @resource&.route_key || @field.type]
+    end
+
+    [*scope, "fields", @field.id, "height"].compact.join(".")
   end
 end

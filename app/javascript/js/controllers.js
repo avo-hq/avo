@@ -49,6 +49,7 @@ import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
 import RecordSelectorController from './controllers/record_selector_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
+import ResizableEditorController from './controllers/fields/resizable_editor_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceSearchController from './controllers/resource_search_controller'
@@ -141,6 +142,7 @@ application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
+application.register('resizable-editor', ResizableEditorController)
 application.register('tags-field', TagsFieldController)
 application.register('tiptap-field', TiptapFieldController)
 application.register('trix-field', TrixFieldController)
