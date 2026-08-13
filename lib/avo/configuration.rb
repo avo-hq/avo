@@ -205,7 +205,10 @@ module Avo
       @model_generator_hook = true
       @send_metadata = true
       @use_stacked_fields = false
-      @use_browser_timezone = true
+      # Off in the test environment: the first-load cookie handshake soft-reloads
+      # the page through Turbo, which races browser specs (stale nodes, doubled
+      # requests). Apps can still opt in per example.
+      @use_browser_timezone = !Rails.env.test?
       @default_editor_url = "cursor://file/%{path}"
       @sidebar = {}
       @body_classes = []
