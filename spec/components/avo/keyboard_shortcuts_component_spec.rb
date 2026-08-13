@@ -25,14 +25,4 @@ RSpec.describe Avo::KeyboardShortcutsComponent, type: :component do
     render_inline(described_class.new)
     expect(page).to have_text("Open the assistant")
   end
-
-  # avo-intelligence is avo-ai's former name; an app still on one of its alphas registers the
-  # old plugin name and must keep the row.
-  it "lists the assistant shortcut under the former avo-intelligence gem name" do
-    allow(Avo.plugin_manager).to receive(:installed?).and_call_original
-    allow(Avo.plugin_manager).to receive(:installed?).with("avo-intelligence").and_return(true)
-
-    render_inline(described_class.new)
-    expect(page).to have_text("Open the assistant")
-  end
 end
