@@ -1,10 +1,15 @@
 #!/usr/bin/env sh
 
+# Use 3030 if free, otherwise walk up to the next free port.
 PORT="${PORT:-3030}"
+while lsof -nP -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1; do
+  PORT=$((PORT + 1))
+done
 export PORT
+echo "Starting on port $PORT"
 
 if command -v overmind &> /dev/null; then
-  overmind start -f Procfile.dev "$@"
+  overmind start -f Procfile.dev -p "$PORT" "$@"
 else
-  foreman start -f Procfile.dev "$@"
+  foreman start -f Procfile.dev -p "$PORT" "$@"
 fi
