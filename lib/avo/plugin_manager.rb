@@ -82,7 +82,7 @@ module Avo
     # Register a plugin's configuration namespace on Avo::Configuration so host
     # apps configure the plugin from config/initializers/avo.rb:
     #
-    #   Avo.plugin_manager.register_configuration :ai, Avo::Ai::Configuration
+    #   Avo.plugin_manager.register_configuration :ai, Avo::AI::Configuration
     #
     #   Avo.configure do |config|
     #     config.ai.thinking_effort = "medium"
