@@ -6,6 +6,12 @@ module Avo
       module HasResizableEditor
         extend ActiveSupport::Concern
 
+        COMPATIBLE_EDITOR_SELECTORS = {
+          "lexical" => "[contenteditable='true']",
+          "lexxy" => "lexxy-editor > .lexxy-editor__content",
+          "rhino" => "avo-rhino-editor > .trix-content[slot='editor']"
+        }.freeze
+
         included do
           class_attribute :resizable_editor_selector, instance_writer: false, default: nil
         end
@@ -24,7 +30,7 @@ module Avo
         end
 
         def resizable_editor_target_selector
-          self.class.resizable_editor_selector
+          self.class.resizable_editor_selector || COMPATIBLE_EDITOR_SELECTORS[type.to_s]
         end
       end
     end

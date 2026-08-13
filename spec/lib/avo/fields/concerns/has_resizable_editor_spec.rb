@@ -13,6 +13,22 @@ RSpec.describe Avo::Fields::Concerns::HasResizableEditor do
     expect(Avo::Fields::TrixField.new(:body).resizable_editor_target_selector).to eq("trix-editor.trix-content")
   end
 
+  it "supports separately shipped rich text fields without editor-specific controllers" do
+    selectors = {
+      "lexical" => "[contenteditable='true']",
+      "lexxy" => "lexxy-editor > .lexxy-editor__content",
+      "rhino" => "avo-rhino-editor > .trix-content[slot='editor']"
+    }
+
+    selectors.each do |type, selector|
+      field = Avo::Fields::BaseField.new(:body)
+      allow(field).to receive(:type).and_return(type)
+
+      expect(field).to be_resizable_editor
+      expect(field.resizable_editor_target_selector).to eq(selector)
+    end
+  end
+
   it "provides an inheritable opt-in for custom editor fields" do
     custom_field_class = Class.new(Avo::Fields::BaseField) do
       resizable_editor target: ".custom-editor__content"
