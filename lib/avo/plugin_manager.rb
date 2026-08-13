@@ -99,9 +99,12 @@ module Avo
 
       # Guard against a plugin silently shadowing a core option or another
       # plugin's namespace. Re-registering the same namespace with the same
-      # class is fine — boot runs more than once.
+      # class is fine — boot runs more than once. Only methods Avo::Configuration
+      # defines itself count: gems like amazing_print add helpers to every object
+      # (Kernel#ai), and shadowing those on the configuration is harmless.
       existing = @configuration_namespaces[name]
-      if existing.nil? && Avo::Configuration.method_defined?(name)
+      if existing.nil? && Avo::Configuration.method_defined?(name) &&
+          Avo::Configuration.instance_method(name).owner == Avo::Configuration
         raise ArgumentError, "Avo::Configuration already defines ##{name}; pick a different configuration namespace."
       end
       if !existing.nil? && existing != klass

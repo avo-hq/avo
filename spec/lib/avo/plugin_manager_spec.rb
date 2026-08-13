@@ -153,6 +153,15 @@ RSpec.describe Avo::PluginManager do
         .to raise_error(ArgumentError, /already defines/)
     end
 
+    it "allows a namespace that only collides with a method mixed into every object (e.g. amazing_print's Kernel#ai)" do
+      Kernel.module_eval { def my_plugin = nil }
+
+      expect { manager.register_configuration :my_plugin, config_class }.not_to raise_error
+      expect(Avo::Configuration.new.my_plugin).to be_a(config_class)
+    ensure
+      Kernel.module_eval { remove_method :my_plugin }
+    end
+
     it "allows re-registering the same namespace across boots" do
       manager.register_configuration :my_plugin, config_class
 
