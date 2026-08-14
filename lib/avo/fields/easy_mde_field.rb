@@ -1,7 +1,10 @@
 module Avo
   module Fields
     class EasyMdeField < BaseField
+      resizable_editor target: ".CodeMirror"
+
       attr_reader :options
+      attr_reader :always_show
 
       def initialize(id, **args, &block)
         super

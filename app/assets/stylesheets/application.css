@@ -138,7 +138,9 @@
   @import "./css/fields/key_value.css";
   @import "./css/fields/trix.css";
   @import "./css/fields/tiptap.css";
+  @import "./css/fields/resizable-editor.css";
   @import "./css/fields/stars.css";
+  @import "./css/fields/collapsible-content.css";
 
   /* UI 4 */
   @import "./css/components/ui/card.css";
@@ -228,11 +230,6 @@
 
   body.modal-open {
     @apply overflow-hidden;
-  }
-
-  trix-editor {
-    max-height: 320px !important;
-    overflow-y: auto;
   }
 
   dialog#turbo-confirm {

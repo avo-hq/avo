@@ -31,8 +31,6 @@ RSpec.describe "TiptapField", type: :system do
 
         save
 
-        click_on "Show content"
-
         expect(find_field_value_element("description")).to have_text "Works for us!!!"
       end
     end
@@ -45,8 +43,6 @@ RSpec.describe "TiptapField", type: :system do
     context "show" do
       it "displays the products description" do
         visit "/admin/resources/products/#{product.id}"
-
-        click_on "Show content"
 
         expect(find_field_value_element("description")).to have_text ActionView::Base.full_sanitizer.sanitize(description)
       end
@@ -73,7 +69,6 @@ RSpec.describe "TiptapField", type: :system do
         fill_in_tiptap_editor "tiptap_product_description", with: "New example!"
 
         save
-        click_on "Show content"
 
         expect(find_field_value_element("description")).to have_text "New example!"
       end

@@ -52,9 +52,12 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :content_heading, as: :heading, name: "Content fields"
     field :text_value, as: :text
     field :textarea_value, as: :textarea, rows: 4
+    field :lexxy_content, as: :lexxy if defined?(Lexxy)
+    field :rhino_content, as: :rhino
+    field :marksmith_content, as: :marksmith
+    field :trix_content, as: :trix
+    field :tiptap_content, as: :tiptap
     field :code_value, as: :code, language: "ruby", theme: "dracula", line_wrapping: true
     field :easy_mde_content, as: :easy_mde, height: "240px"
-    field :tiptap_content, as: :tiptap
-    field :trix_content, as: :trix
   end
 end

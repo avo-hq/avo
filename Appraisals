@@ -6,6 +6,9 @@
       gem "activestorage", "~> #{rails_version}"
       gem "acts-as-taggable-on"
 
+      # lexxy requires rails >= 8.0.2
+      remove_gem "avo-lexxy_field" if rails_version == "7.1"
+
       if rails_version == "8.0" && ruby_version == "3.3.0"
         gem "view_component", "4.0.0"
       else

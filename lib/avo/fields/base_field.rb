@@ -11,6 +11,7 @@ module Avo
       include Avo::Fields::Concerns::HasFieldName
       include Avo::Fields::Concerns::HasDefault
       include Avo::Fields::Concerns::HasHTMLAttributes
+      include Avo::Fields::Concerns::HasResizableEditor
       include Avo::Fields::Concerns::HandlesFieldArgs
       include Avo::Fields::Concerns::IsReadonly
       include Avo::Fields::Concerns::IsDisabled

@@ -28,6 +28,10 @@
         <div class="flex flex-row items-center group gap-x-1 group/clipboard w-full">
           <% if render_dash? %>
             —
+          <% elsif collapsable? %>
+            <%= render Avo::Fields::Common::CollapsableContentComponent.new do %>
+              <%= content %>
+            <% end %>
           <% else %>
             <%= content %>
           <% end %>
