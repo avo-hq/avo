@@ -1,0 +1,8 @@
+.resizable-editor__viewport {
+  box-sizing: border-box;
+  height: var(--avo-resizable-editor-default-height, 20rem);
+  min-height: var(--avo-resizable-editor-min-height, 11rem);
+  max-width: 100%;
+  overflow-y: auto;
+  resize: vertical;
+}
