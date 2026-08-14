@@ -3,6 +3,7 @@
 class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
 
+  prop :collapsable, default: false
   prop :dash_if_blank, default: true
   prop :data, default: {}.freeze
   prop :density, default: :default
@@ -135,5 +136,9 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   def render_dash?
     @field.value.blank? && @dash_if_blank
+  end
+
+  def collapsable?
+    @collapsable
   end
 end

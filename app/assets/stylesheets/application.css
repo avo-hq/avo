@@ -139,6 +139,7 @@
   @import "./css/fields/trix.css";
   @import "./css/fields/tiptap.css";
   @import "./css/fields/stars.css";
+  @import "./css/fields/collapsible-content.css";
 
   /* UI 4 */
   @import "./css/components/ui/card.css";

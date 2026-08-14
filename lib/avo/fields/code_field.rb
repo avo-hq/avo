@@ -7,6 +7,7 @@ module Avo
       attr_reader :tab_size
       attr_reader :indent_with_tabs
       attr_reader :line_wrapping
+      attr_reader :always_show
 
       def initialize(id, **args, &block)
         hide_on :index
@@ -24,6 +25,7 @@ module Avo
         @tab_size = args[:tab_size].present? ? args[:tab_size] : 2
         @indent_with_tabs = args[:indent_with_tabs].present? ? args[:indent_with_tabs] : false
         @line_wrapping = args[:line_wrapping].present? ? args[:line_wrapping] : true
+        @always_show = args[:always_show] || false
       end
     end
   end

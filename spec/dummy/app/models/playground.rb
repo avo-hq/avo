@@ -45,6 +45,8 @@ class Playground < ApplicationRecord
   has_one_attached :file_attachment
   has_many_attached :files_attachments
   has_rich_text :trix_content
+  has_rich_text :lexxy_content
+  has_rich_text :rhino_content
 
   def avatar_url
     external_image_url.presence || "https://picsum.photos/80"
