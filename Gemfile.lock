@@ -462,7 +462,7 @@ GEM
     mapkick-rb (0.1.5)
     mapkick-static (0.2.1)
     marcel (1.2.1)
-    marksmith (0.5.1)
+    marksmith (0.5.2)
       activesupport
     matrix (0.4.3)
     memory_profiler (1.1.0)

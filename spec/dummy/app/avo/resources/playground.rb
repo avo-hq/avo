@@ -4,27 +4,20 @@ class Avo::Resources::Playground < Avo::BaseResource
   self.includes = []
 
   def fields
-    field :lexxy_content, as: :lexxy
-    field :rhino_content, as: :rhino
-    field :trix_content, as: :trix
-    field :tiptap_content, as: :tiptap
-    field :marksmith_content, as: :marksmith
-    field :code_value, as: :code, language: "ruby", theme: "dracula", line_wrapping: true
-    field :easy_mde_content, as: :easy_mde, height: "240px"
-    # field :preview, as: :preview
-    # field :id, as: :id
-    # field :avatar_url, as: :avatar, name: "Avatar"
-    # field :name, as: :text, required: true
+    field :preview, as: :preview
+    field :id, as: :id
+    field :avatar_url, as: :avatar, name: "Avatar"
+    field :name, as: :text, required: true
 
-    # field :form_heading, as: :heading, name: "Form and scalar fields"
-    # field :hidden_token, as: :hidden
-    # field :password_value, as: :password, revealable: true
-    # field :boolean_value, as: :boolean, as_toggle: true
-    # field :number_value, as: :number, min: 0, max: 100, step: 1
-    # field :date_value, as: :date
-    # field :time_value, as: :time
-    # field :date_time_value, as: :date_time
-    # field :country_value, as: :country, include_blank: "No country"
+    field :form_heading, as: :heading, name: "Form and scalar fields"
+    field :hidden_token, as: :hidden
+    field :password_value, as: :password, revealable: true
+    field :boolean_value, as: :boolean, as_toggle: true
+    field :number_value, as: :number, min: 0, max: 100, step: 1
+    field :date_value, as: :date
+    field :time_value, as: :time
+    field :date_time_value, as: :date_time
+    field :country_value, as: :country, include_blank: "No country"
 
     field :choice_heading, as: :heading, name: "Choice and status fields"
     field :select_value, as: :select, options: Playground::SELECT_OPTIONS
@@ -59,5 +52,12 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :content_heading, as: :heading, name: "Content fields"
     field :text_value, as: :text
     field :textarea_value, as: :textarea, rows: 4
+    field :lexxy_content, as: :lexxy
+    field :rhino_content, as: :rhino
+    field :marksmith_content, as: :marksmith
+    field :trix_content, as: :trix
+    field :tiptap_content, as: :tiptap
+    field :code_value, as: :code, language: "ruby", theme: "dracula", line_wrapping: true
+    field :easy_mde_content, as: :easy_mde, height: "240px"
   end
 end
