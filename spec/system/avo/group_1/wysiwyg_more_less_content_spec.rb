@@ -48,7 +48,7 @@ RSpec.describe "WYSIWYG fields More/Less content", type: :system do
 
     # Released marksmith (<= 0.5.2) doesn't render the collapsable show
     # wrapper yet; drop this once a version with `collapsable:` ships.
-    collapsable_ids = field_ids - (Marksmith::VERSION <= "0.5.2" ? ["marksmith_content"] : [])
+    collapsable_ids = field_ids - ((Marksmith::VERSION <= "0.5.2") ? ["marksmith_content"] : [])
 
     collapsable_ids.each do |field_id|
       wrapper = find("[data-field-id='#{field_id}']")

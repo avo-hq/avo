@@ -65,9 +65,10 @@ Rails.application.configure do
 
   config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
 
-  # Render lookbook previews with Avo's CSS so a11y specs audit the real styles.
+  # Render lookbook previews with Avo's CSS so a11y specs audit the real
+  # styles. Don't override preview_controller here — it leaks into
+  # ViewComponent's render_preview and breaks component preview specs.
   config.lookbook.preview_layout = "component_preview"
-  config.lookbook.preview_controller = "LookbookPreviewController"
 
   config.to_prepare do
     if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
