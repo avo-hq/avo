@@ -1,4 +1,5 @@
-<% button_classes = "font-semibold inline-block pt-3 text-sm" %>
+<%# min-h-6 keeps the link a 24px touch target (WCAG 2.2 AA target-size) %>
+<% button_classes = "font-semibold inline-flex items-center min-h-6 mt-3 text-sm" %>
 <%= content_tag :div,
   class: "w-full",
   data: {

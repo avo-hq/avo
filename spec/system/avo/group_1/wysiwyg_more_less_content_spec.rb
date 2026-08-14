@@ -16,7 +16,9 @@ RSpec.describe "WYSIWYG fields More/Less content", type: :system do
     )
   end
 
-  field_ids = %w[lexxy_content rhino_content trix_content tiptap_content easy_mde_content marksmith_content code_value]
+  # Lexxy requires Rails >= 8.0.2, so the field is absent on the Rails 7.1 appraisals.
+  field_ids = %w[rhino_content trix_content tiptap_content easy_mde_content marksmith_content code_value]
+  field_ids.unshift("lexxy_content") if defined?(Lexxy)
 
   it "mounts a resizable viewport for every editor on edit and persists the height" do
     visit "/admin/resources/playgrounds/#{playground.id}/edit"
@@ -44,7 +46,11 @@ RSpec.describe "WYSIWYG fields More/Less content", type: :system do
   it "collapses every field to a preview and toggles with More/Less content" do
     visit "/admin/resources/playgrounds/#{playground.id}"
 
-    field_ids.each do |field_id|
+    # Released marksmith (<= 0.5.2) doesn't render the collapsable show
+    # wrapper yet; drop this once a version with `collapsable:` ships.
+    collapsable_ids = field_ids - (Marksmith::VERSION <= "0.5.2" ? ["marksmith_content"] : [])
+
+    collapsable_ids.each do |field_id|
       wrapper = find("[data-field-id='#{field_id}']")
 
       within wrapper do

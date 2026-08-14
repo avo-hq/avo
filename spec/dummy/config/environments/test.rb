@@ -65,6 +65,10 @@ Rails.application.configure do
 
   config.i18n.load_path += Dir[Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales", "*.{rb,yml}")]
 
+  # Render lookbook previews with Avo's CSS so a11y specs audit the real styles.
+  config.lookbook.preview_layout = "component_preview"
+  config.lookbook.preview_controller = "LookbookPreviewController"
+
   config.to_prepare do
     if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter)
       ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.create_unlogged_tables = true

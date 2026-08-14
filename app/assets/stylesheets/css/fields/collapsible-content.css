@@ -2,7 +2,8 @@
    The `hidden` class doesn't hide the content — it clips it to a short,
    faded preview that the More/Less content buttons toggle. The height
    animates where `interpolate-size` is supported (instant elsewhere). */
-.field-rich-content {
+.field-rich-content,
+[data-trix-body-target="content"] {
   interpolate-size: allow-keywords;
   overflow: hidden;
   max-height: max-content;
@@ -14,12 +15,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .field-rich-content {
+  .field-rich-content,
+[data-trix-body-target="content"] {
     transition: none;
   }
 }
 
-.field-rich-content.hidden {
+.field-rich-content.hidden,
+[data-trix-body-target="content"].hidden {
   display: block !important;
   max-height: 50px;
   min-height: 0px;

@@ -52,7 +52,7 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :content_heading, as: :heading, name: "Content fields"
     field :text_value, as: :text
     field :textarea_value, as: :textarea, rows: 4
-    field :lexxy_content, as: :lexxy
+    field :lexxy_content, as: :lexxy if defined?(Lexxy)
     field :rhino_content, as: :rhino
     field :marksmith_content, as: :marksmith
     field :trix_content, as: :trix
