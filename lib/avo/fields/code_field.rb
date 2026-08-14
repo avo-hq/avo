@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class CodeField < BaseField
+      resizable_editor target: ".CodeMirror"
+
       attr_reader :language
       attr_reader :theme
       attr_reader :height

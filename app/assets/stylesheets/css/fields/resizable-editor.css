@@ -4,5 +4,11 @@
   min-height: var(--avo-resizable-editor-min-height, 11rem);
   max-width: 100%;
   overflow-y: auto;
-  resize: vertical;
+  /* !important so editor-shipped utilities (marksmith's resize-none and
+     field-sizing-content on its textarea) don't defeat the resize handle. */
+  resize: vertical !important;
+  field-sizing: fixed !important;
+  /* A flex-1 viewport (marksmith's textarea) would size from flex-basis and
+     ignore its height, so pin it. */
+  flex: none !important;
 }

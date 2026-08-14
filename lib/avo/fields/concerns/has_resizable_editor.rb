@@ -9,6 +9,7 @@ module Avo
         COMPATIBLE_EDITOR_SELECTORS = {
           "lexical" => "[contenteditable='true']",
           "lexxy" => "lexxy-editor > .lexxy-editor__content",
+          "markdown" => ".marksmith-textarea",
           "rhino" => "avo-rhino-editor > .trix-content[slot='editor']"
         }.freeze
 

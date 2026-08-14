@@ -18,6 +18,29 @@ RSpec.describe "WYSIWYG fields More/Less content", type: :system do
 
   field_ids = %w[lexxy_content rhino_content trix_content tiptap_content easy_mde_content marksmith_content code_value]
 
+  it "mounts a resizable viewport for every editor on edit and persists the height" do
+    visit "/admin/resources/playgrounds/#{playground.id}/edit"
+
+    field_ids.each do |field_id|
+      expect(page).to have_css("[data-field-id='#{field_id}'] .resizable-editor__viewport", wait: 10)
+    end
+
+    page.execute_script <<~JS
+      const viewport = document.querySelector("[data-field-id='trix_content'] .resizable-editor__viewport")
+      viewport.style.height = "444px"
+      requestAnimationFrame(() => window.dispatchEvent(new Event("pointerup")))
+    JS
+
+    sleep 0.3
+    visit "/admin/resources/playgrounds/#{playground.id}/edit"
+
+    restored = page.evaluate_script <<~JS
+      Math.round(document.querySelector("[data-field-id='trix_content'] .resizable-editor__viewport").getBoundingClientRect().height)
+    JS
+
+    expect(restored).to eq 444
+  end
+
   it "collapses every field to a preview and toggles with More/Less content" do
     visit "/admin/resources/playgrounds/#{playground.id}"
 

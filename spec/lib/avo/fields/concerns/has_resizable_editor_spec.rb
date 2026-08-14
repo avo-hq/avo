@@ -11,11 +11,14 @@ RSpec.describe Avo::Fields::Concerns::HasResizableEditor do
   it "configures the editable viewport for the built-in rich text fields" do
     expect(Avo::Fields::TiptapField.new(:body).resizable_editor_target_selector).to eq(".tiptap.ProseMirror")
     expect(Avo::Fields::TrixField.new(:body).resizable_editor_target_selector).to eq("trix-editor.trix-content")
+    expect(Avo::Fields::EasyMdeField.new(:body).resizable_editor_target_selector).to eq(".CodeMirror")
+    expect(Avo::Fields::CodeField.new(:body).resizable_editor_target_selector).to eq(".CodeMirror")
   end
 
   it "supports separately shipped rich text fields without editor-specific controllers" do
     selectors = {
       "lexical" => "[contenteditable='true']",
+      "markdown" => ".marksmith-textarea",
       "lexxy" => "lexxy-editor > .lexxy-editor__content",
       "rhino" => "avo-rhino-editor > .trix-content[slot='editor']"
     }
