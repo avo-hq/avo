@@ -33,7 +33,7 @@ These fields live in `app/avo/resources/<model>.rb`, the same place as every oth
 - Docs map: https://docs.avohq.io/4.0/docs-map.md
 - Overview & STI: https://docs.avohq.io/4.0/associations.md
 - Belongs to: https://docs.avohq.io/4.0/associations/belongs_to.md
-- Has one: https://docs.avohq.io/4.0/associations/has_one.md
+- Has one (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_one.md
 - Has many (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_many.md
 - Has and belongs to many: https://docs.avohq.io/4.0/associations/has_and_belongs_to_many.md
 - Searchable associations (guide): https://docs.avohq.io/4.0/associations/searchable.md
@@ -124,7 +124,7 @@ Most options are shared across the association fields; a handful are type-specif
 | `allow_via_detaching` | Keeps the field editable when you reached the record *through* that association (which otherwise disables it). |
 | `link_to_record` | `true` makes the Index cell link to the current row's record instead of the associated one. |
 
-### `has_many :through` and `attach_fields`
+### `:through` associations and `attach_fields`
 
 For a join model with its own columns, expose those columns **at attach time** with `attach_fields` (a lambda that declares fields, evaluated against the join model):
 
@@ -138,7 +138,26 @@ field :members,
   }
 ```
 
-The extra fields render inside the attach modal and their values persist on the join row. `attach_fields` **only persists on `has_many :through`** — it exists but is a no-op on a plain `has_many` / HABTM. If the through model is polymorphic, add the type as a hidden field: `field :membership_type, as: :hidden, default: "TheType"`.
+The extra fields render inside the attach modal and their values persist on the join row. `attach_fields` **only persists on a `:through` association** — `has_many :through` and `has_one :through` both have a join record to write to; on a plain `has_many` / `has_one` / HABTM it exists but is a no-op, because there is nowhere for the values to land. If the through model is polymorphic, add the type as a hidden field: `field :membership_type, as: :hidden, default: "TheType"`.
+
+### `has_one :through`
+
+`as: :has_one` works over a join model too, and there's **no `through:` option on the field** — Avo reads it off the Rails association:
+
+```ruby
+# app/models/team.rb
+class Team < ApplicationRecord
+  has_one :admin_membership, -> { where level: :admin }, class_name: "TeamMembership"
+  has_one :admin, through: :admin_membership, source: :user
+end
+```
+
+```ruby
+# app/avo/resources/team.rb
+field :admin, as: :has_one, attach_fields: -> { field :notes, as: :text }
+```
+
+Attach and detach always go **through the association**, so a scope on it is respected: attaching stamps the scope's attributes on the new join record (`level: "admin"` above, without you saying so), and detaching destroys only the join row that association points at — a `level: "member"` row for the same two records is left alone. Attaching over an existing record **replaces** the join record rather than adding a second one, matching how Rails treats a singular association, and `attach_fields` values are written to that same replaced row. `attach_fields` on `has_one :through` needs Avo >= `4.0.25`. Because a singular association owns exactly one join record, a detach is checked against the record named in the URL — on a stale page where someone else has since attached a different record, the detach is a no-op rather than removing whatever is attached now.
 
 ### Searchable associations
 

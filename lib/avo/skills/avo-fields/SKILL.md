@@ -111,6 +111,7 @@ Map the need to an `as:` type. All built-in types are **Community (free)**; the 
 | A hover preview icon on the Index row                  | `:preview`                   | `field :preview, as: :preview` |
 | A currency amount ⚠️                                    | `:money`                     | `field :price, as: :money, currencies: %w[USD EUR]` |
 | A rich-text WYSIWYG editor ⚠️ (recommended)            | `:rhino`                     | `field :body, as: :rhino` |
+| Basecamp's Lexxy editor for Action Text ⚠️              | `:lexxy`                     | `field :body, as: :lexxy` |
 | A GitHub-style Markdown editor ⚠️                       | `:markdown`                  | `field :body, as: :markdown` |
 | A simpler Markdown editor ⚠️                            | `:easy_mde`                  | `field :notes, as: :easy_mde` |
 | The Trix editor (ActionText)                           | `:trix`                      | `field :body, as: :trix` |
@@ -161,6 +162,23 @@ end
 ```
 
 Block fields render **only on Index and Show** (they have no input) and **can't use `sortable: true`** (pass a sort lambda instead). Give them an explicit label string as the first argument.
+
+### Rich-text and code editors
+
+Seven types render an editor rather than a plain input — `rhino`, `lexxy`, `trix`, `markdown`, `easy_mde`, the deprecated `tip_tap`, and `code`. Pick by the format you store and the gem you're willing to add:
+
+| Field | Editor | Stores | Needs |
+| --- | --- | --- | --- |
+| `rhino` | Rhino (TipTap) | HTML | `avo-rhino_field` |
+| `lexxy` | Lexxy (Lexical, by Basecamp) | HTML, **Action Text only** | `avo-lexxy_field`, Rails >= 8.0.2 |
+| `trix` | Trix | HTML | built in |
+| `markdown` | Marksmith (GitHub-style) | Markdown | `marksmith` + `commonmarker` |
+| `easy_mde` | EasyMDE | Markdown | built in |
+| `code` | CodeMirror | source code | built in |
+
+They **behave identically on Show**: full panel width with the label beside the value, and the content collapsed to a short faded preview behind a `More content` / `Less content` toggle. Pass `always_show: true` to skip the collapsing and render it all. All of them are hidden on Index.
+
+On forms every editor's viewport can be dragged taller by its bottom-end handle, and the height is remembered per resource and field in the browser's local storage. A custom editor field opts in from its class with `resizable_editor target: "<css-selector-for-the-scrollable-viewport>"`; the selector is resolved inside the field wrapper after the editor boots, so client-rendered editors work too.
 
 ### Layout inside `def fields`
 

@@ -1,7 +1,7 @@
 {
   "repo": "avo-hq/docs.avohq.io",
   "docs_path": "docs/4.0",
-  "commit": "3350dbef7b2da94b410d6a678f9551e16901411e",
-  "date": "2026-07-28",
+  "commit": "3ffed3f76d9f8d20c8be49b2e48fb176ced7ef9a",
+  "date": "2026-08-17",
   "note": "The docs commit these skills were last indexed from. Run ruby lib/avo/skills/bin/docs_drift.rb to see what changed since, and --update after a refresh."
 }

@@ -175,6 +175,30 @@ query: -> {
 }
 ```
 
+**Only two surfaces accept an Array**, and this is the one case where branching on `search_type` is mandatory rather than an optimization:
+
+| Surface | Array | Relation |
+| --- | --- | --- |
+| Global search (Cmd+K palette and its results page) | yes | yes |
+| Searchable associations | yes | yes |
+| Resource Index search bar | **no** | yes |
+| Kanban board card picker | **no** | yes |
+
+The index and kanban surfaces build a table from database records — sorting, filtering, scoping, paginating — so they need an `ActiveRecord::Relation`. Return the Array only for `:global` and `:association`, and leave the relation as the `else` branch so a surface that doesn't inject `search_type` still gets something usable:
+
+```ruby
+self.search = {
+  query: -> do
+    case search_type
+    when :global, :association
+      [{_id: 1, _label: "Record One", _url: "https://example.com/1"}]
+    else # the Index search bar and the kanban card picker — these require a relation
+      query.ransack(id_eq: params[:q], m: "or").result(distinct: false)
+    end
+  end
+}
+```
+
 ---
 
 ## Breadcrumbs (Community)
@@ -239,6 +263,7 @@ Jump-to-menu-item shortcuts go through the menu `hotkey:` option, or `self.hotke
 - **Ransack v4+ needs an allowlist.** Add `ransackable_attributes` (and often `ransackable_associations`) to any model you search, or the query raises.
 - **`search_type` is undefined on Community-only installs and in the kanban picker.** It's injected by the paid search layer for the index/global/association surfaces only. Guard with `defined?(search_type)`; the kanban picker reads `params[:q]` and detects the board via `params[:for_kanban_board]`.
 - **Custom array-result providers aren't auto-capped.** `config.search_results_count` only applies to relations without their own `.limit()` — cap arrays yourself with `.first(N)`.
+- **An Array returned to the Index search bar fails silently.** Only global search and searchable associations render an Array; the Index and the kanban picker need a relation and raise `NoMethodError: undefined method 'order' for an instance of Array`. Typing in the Index search box hides that error — the request fails and the list just keeps showing the previous, unfiltered rows. Branch on `search_type` so the Array only reaches `:global` and `:association`.
 - **`.limit()` in your `query:` proc always wins** over `config.search_results_count`.
 - **`search_on_type` can't be a lambda.** Any Proc is truthy, so it behaves as `true`; use a plain boolean. (`enabled` and `navigation_section` do accept lambdas.)
 - **`self.description` and search `item` titles can render raw HTML** in adjacent surfaces — never interpolate user-editable content (stored-XSS). See **avo-resources**.

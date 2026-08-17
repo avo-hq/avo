@@ -404,7 +404,7 @@ Avo's build emits Tailwind **v4** syntax. If you have your own Tailwind pipeline
 
 ## Advanced: package as a plugin
 
-Wrap any of the above into a Rails Engine so it's reusable across apps. Register everything from the **`avo_boot`** hook so it runs once on boot; `avo_init` runs on every request.
+Wrap any of the above into a Rails Engine so it's reusable across apps. Register everything from the **`avo_boot`** hook so it runs once on boot; `avo_init` runs on every request. The one exception is `register_configuration`, which has to run *before* the app's initializers — see below.
 
 ```ruby
 # lib/avo/feed_view/engine.rb
@@ -431,7 +431,35 @@ end
 - `register_field(method_name, klass)` — ship a field *type* from a gem (the plugin-author side of **avo-custom-fields**).
 - `register_menu_item(name, &block)` — a custom menu DSL method for `config.main_menu`. Delegates to `avo-menu`; **no-op when avo-menu isn't installed**, so register unconditionally.
 - `mount_engine(klass, at:)` — mount the engine's routes inside Avo.
+- `register_configuration(name, klass)` — add a `config.<name>` namespace to `Avo::Configuration`, backed by an instance of `klass`, so apps configure your plugin from the same `config/initializers/avo.rb` they already have. **Not from `avo_boot`** — see below.
 - `installed?(name)` — adapt to what else is present.
+
+### Let apps configure your plugin
+
+`register_configuration` puts your settings on Avo's own configuration object, so there's no second initializer and no extra constant for an app to remember. `klass` is a plain class you own, free to hold defaults, coerce values, or fall back to an ENV var:
+
+```ruby
+# lib/avo/feed_view/configuration.rb
+class Avo::FeedView::Configuration
+  attr_accessor :items_per_page
+  attr_writer :api_key
+
+  def initialize = @items_per_page = 25
+
+  def api_key = @api_key || ENV["AVO_FEED_VIEW_API_KEY"]
+end
+```
+
+```ruby
+# lib/avo/feed_view/engine.rb — NOT the avo_boot hook
+initializer "avo-feed-view.register_configuration", before: :load_config_initializers do
+  Avo.plugin_manager.register_configuration :feed_view, Avo::FeedView::Configuration
+end
+```
+
+The app then writes `config.feed_view.items_per_page = 50` inside its `Avo.configure` block, and you read it back off `Avo.configuration.feed_view`. Instances are memoized per configuration object, so replacing `Avo.configuration` resets your plugin's config too — handy for a clean slate in tests.
+
+Namespaces are exclusive: `register_configuration` raises `ArgumentError` if the name collides with a method `Avo::Configuration` **defines itself**, or with a namespace another plugin took first. Re-registering the same name with the same class is fine, so a repeated boot is harmless. Only Avo's own options count — a gem that mixes a helper into every object doesn't reserve anything (`amazing_print` defines `Kernel#ai`, so `Avo::Configuration` responds to `ai` wherever it's bundled, and the name is still yours to take).
 
 Assets from library code go through `Avo.asset_manager` (not the app pipeline); Avo injects them but does **not** compile them — ship compiled builds, e.g. served from `app/assets/builds` via a `Rack::Static` middleware.
 
@@ -448,6 +476,7 @@ Assets from library code go through `Avo.asset_manager` (not the app pipeline); 
 - **Tailwind integration silently stays off** unless `tailwindcss-ruby` is present, and — if you pull Tailwind via `tailwindcss-rails` — that gem is **>= 4.0** (on 3.x the integration is disabled even though `tailwindcss-ruby` is there). Symptom: your utility classes don't exist in the admin.
 - **New JS/CSS not loading?** You skipped the asset-pipeline entrypoint. Run `avo:js:install` (or wire `avo.custom.js` manually) — `self.stimulus_controllers` alone loads nothing.
 - **Plugin registration must be inside `ActiveSupport.on_load(:avo_boot)`**, `register_view_type`'s `component:` should be a **string**, and `register_menu_item` is a no-op without `avo-menu`.
+- **`register_configuration` is the exception — `avo_boot` is too late.** The app's `config/initializers/avo.rb` reads the accessor while initializers run, which is *before* Avo boots, so registering any later blows up inside the app's own initializer. Use an engine initializer ordered `before: :load_config_initializers` (or register at require time).
 
 ## Report
 

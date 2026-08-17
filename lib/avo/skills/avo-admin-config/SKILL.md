@@ -1,6 +1,6 @@
 ---
 name: avo-admin-config
-description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, persist filters/pagination across requests, or opt out of usage metadata.
+description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, remove or retune the floating "back to top" button, persist filters/pagination across requests, or opt out of usage metadata.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -42,7 +42,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 ## When this applies
 
-**Explicit (Avo named):** "set `config.app_name`", "change `per_page` in the Avo initializer", "set `default_view_type` to `:grid`", "use `container_width = :full`", "set `resource_default_view = :edit`", "configure `default_editor_url`", "enable `persistence`", "set `body_classes`".
+**Explicit (Avo named):** "set `config.app_name`", "change `per_page` in the Avo initializer", "set `default_view_type` to `:grid`", "use `container_width = :full`", "set `resource_default_view = :edit`", "configure `default_editor_url`", "enable `persistence`", "set `body_classes`", "turn off `back_to_top`".
 
 **Implicit (Rails-shaped, no mention of Avo):** "change how many records show per page in the admin", "rename the admin / change the app name in the top bar", "set the timezone/currency the admin displays", "default the admin list to grid/card view", "make the admin full-width", "clicking a row shouldn't open the record", "skip the show page and go straight to edit", "open the admin's source files in Cursor/VS Code from the UI", "keep the sidebar always open / hide the collapse button", "make the sidebar wider by default", "stop people resizing the sidebar", "send people to a dashboard when they open the admin", "add a CSS class to the `<body>` tag", "make the admin rows denser / tighter", "keep my filters and pagination when I navigate away", "stop the admin from phoning home usage stats".
 
@@ -94,7 +94,10 @@ config.sidebar = {                                        # the sidebar's three 
 }
 config.hide_layout_when_printing = true                   # drop sidebar/navbar/footer when printing
 config.body_classes = "custom-theme compact-layout"       # add classes to <body>; also accepts an Array or a block
+config.back_to_top = { enabled: false }                   # the floating "Back to top" pill; default {enabled: true, threshold: 400}
 ```
+
+`back_to_top` is a hash merged over `{enabled: true, threshold: 400}`, so set only the key you change. The pill sits centered below the navbar and shows once the page is scrolled `threshold` pixels down, hiding again near the top — **scroll direction doesn't matter**. Raise `threshold` to keep it out of the way on long pages; `{enabled: false}` removes it. Its label comes from the `avo.back_to_top` translation key (→ **avo-i18n**).
 
 `config.sidebar` is a hash merged over `{toggle_visible: true, resizable: true, default_width: 256}`, so set only the keys you change. On desktop the sidebar edge is a drag handle: users resize it and the width persists **per browser** (a cookie, not a user preference). `default_width` sets the starting width and is clamped to `200`–`480` — an unparseable value falls back to `256` rather than clamping to the minimum. Both settings apply at `lg` (1024px) and wider only; below that the sidebar is a full-height overlay at the 256px default. A width the user has dragged to wins over `default_width`. The flat `config.sidebar_toggle_visible = false` still works and writes into `config.sidebar[:toggle_visible]`, but the hash is the canonical home.
 
@@ -150,6 +153,7 @@ config.send_metadata = false                              # opt out of usage met
 - **`default_editor_url` defaults to Cursor.** If a user's `</>` icons open Cursor unexpectedly, that's the default — point it at their editor. The icons only render in `development`.
 - **Disable `cache_resources_on_index_view` when fields vary by role.** The index cache key uses the record's `id`/`created_at` and the resource file md5 — **not the current user** — so a resource that shows/hides fields per role (`visibility:`) will serve one user's row layout to another. Turn it off there. For the caching model and cache store, see **avo-performance**; for role-based field visibility, see **avo-authorization**.
 - **Sidebar resizing is a drag-only gesture.** It doesn't satisfy [WCAG 2.2 SC 2.5.7 (Dragging Movements)](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html), so an app working to an AA conformance claim or a VPAT should set `config.sidebar = {resizable: false}`. Related: sidebar labels now truncate with an ellipsis (plus a hover tooltip) instead of wrapping — if a menu relied on long labels wrapping, shorten them or widen the sidebar.
+- **The "Back to top" pill is on by default (since Avo 4.1.4).** It used to be off and to reveal itself only on an upward scroll; now every app that doesn't configure `back_to_top` gets it, and only `threshold` decides when it appears — the direction-aware reveal is gone. If a user asks why a new floating button showed up after an upgrade, that's it: `config.back_to_top = {enabled: false}`.
 - **`click_row_to_view_record` is JS-enhanced.** Making a `<tr>` behave as a link isn't native HTML; Avo does it with JavaScript, which can have side effects. Disabling it (`false`) reserves navigation for the explicit row controls.
 - **Verify before writing.** Option names and defaults drift between versions and several were renamed in Avo 4 — check the docs URLs above or the app's installed `lib/avo/configuration.rb` rather than trusting memory.
 

@@ -187,6 +187,7 @@ Prefer Rails route helpers (with `main_app.` / `avo.`) over hardcoded paths ever
 1. **Key not set on the server.** The most frequent cause. Confirm `config.license_key = ENV["AVO_LICENSE_KEY"]` and that the env var is actually present in **production** (not just locally).
 2. **Check the status page.** Every Avo app exposes `https://yourapp.com/<mount>/avo_private/status` — e.g. `/admin/avo_private/status` if you mounted Avo at `admin`. It shows whether the license authenticated and the raw response from the check server. The viewing user must be an Avo admin.
 3. **Key hidden on the status page.** The key is redacted by default; set `exclude_from_status = []` in the initializer if you need to see it while debugging.
+4. **An amber sidebar indicator is not a license failure.** Green is fine, orange is invalid, **amber is a running trial that needs attention** — either no payment method is on file, or the subscription behind the trial was cancelled. Access continues until the date the status page reports, and the page names which of the two applies. Fix it at [avohq.io/licenses](https://avohq.io/licenses), then press **Refresh license** on the status page: Avo caches the license response, so the app can keep showing older billing state than avohq.io until it re-checks.
 
 → `license-troubleshooting.html`
 
