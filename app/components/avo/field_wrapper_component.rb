@@ -122,11 +122,12 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
   end
 
   def stacked?
-    # Override on the declaration level
-    return @stacked unless @stacked.nil?
-
-    # Fetch it from the field
+    # The field declaration is the user's explicit intent, so it wins over the
+    # layout default a parent component passes in (sidebars, preview, etc.).
     return @field.stacked unless @field.stacked.nil?
+
+    # Fallback to what the rendering component asked for
+    return @stacked unless @stacked.nil?
 
     # Fallback to defaults
     Avo.configuration.field_wrapper_layout == :stacked

@@ -143,7 +143,7 @@ Every field accepts these common options (full list + types at the field-options
 - **`copyable:`** — clipboard icon on Show/Index. Copies the **displayed** (formatted) value.
 - **`link_to_record:`** — make the Index cell a link to the record. Only on `:id`, `:text`, `:gravatar`, and `belongs_to`.
 - **`for_attribute:`** — back the field with a different attribute than its id (lets you show one column two ways).
-- **`width:`** / **`stacked:`** — column width (`25/33/50/66/75/100`; any value <100 auto-stacks) and label-above-value layout.
+- **`width:`** / **`stacked:`** — column width (`25/33/50/66/75/100`; any value <100 auto-stacks) and label-above-value layout. `stacked:` on the field wins everywhere, so `stacked: false` opts out of the auto-stacking and of sidebars/preview stacking too.
 - **`html:`** — attach `style`/`classes`/`data` to the field's wrapper/label/input per view (e.g. right-align a number: `html: {index: {wrapper: {classes: "text-right"}}}`). See the html page.
 
 ### Computed (block) fields
