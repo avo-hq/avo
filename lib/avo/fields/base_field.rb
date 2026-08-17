@@ -117,7 +117,7 @@ module Avo
 
         @width = args[:width] || 100
 
-        if width_option.present? && width_option != 100
+        if @stacked.nil? && width_option.present? && width_option != 100
           @stacked = true
         end
 
