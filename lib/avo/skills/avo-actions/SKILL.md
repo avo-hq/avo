@@ -169,6 +169,30 @@ def handle(query:, fields:, **args)
 end
 ```
 
+#### `belongs_to` fields need a single record
+
+A `belongs_to` field resolves its target model through the current record's association reflection. It works when the action runs from a record's **Show** view or from **Index** with exactly one record selected, because Avo hydrates the action with that record. It does not work when multiple records are selected or on a standalone action, because there is no single record from which to resolve the association.
+
+For a short list, use a select field with lazy options:
+
+```ruby
+field :user_id,
+  as: :select,
+  options: -> { User.order(:name).pluck(:name, :id) }
+```
+
+For a long, searchable list, use a tags field in select mode with [`fetch_values_from`](https://docs.avohq.io/4.0/fields/tags.html#fetch-values-from):
+
+```ruby
+field :user_id,
+  as: :tags,
+  mode: :select,
+  enforce_suggestions: true,
+  fetch_values_from: "/avo/resources/users/action_options"
+```
+
+The endpoint receives the search text in `params[:q]` and must return JSON objects with `value` and `label` keys. In both examples, read the selected ID from `fields[:user_id]` in `handle`.
+
 ### Confirmation modal
 The modal is on by default. Customize its text (each may be a string or a block with access to `resource`, `record`, `view`, `arguments`, `query`), or turn it off for safe actions:
 
