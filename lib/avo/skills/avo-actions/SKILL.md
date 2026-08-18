@@ -181,7 +181,7 @@ field :user_id,
   options: -> { User.order(:name).pluck(:name, :id) }
 ```
 
-For a long, searchable list, use a tags field in select mode with [`fetch_values_from`](https://docs.avohq.io/4.0/fields/tags.html#fetch-values-from):
+For a long, searchable list, use a tags field in select mode with [`fetch_values_from`](https://docs.avohq.io/4.0/fields/tags.html#fetch_values_from):
 
 ```ruby
 field :user_id,
