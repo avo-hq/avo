@@ -103,6 +103,19 @@ RSpec.describe "Filters", type: :system do
     end
   end
 
+  describe "Boolean filter without options" do
+    let(:url) { "/admin/resources/projects?view_type=table" }
+
+    it "shows the translated default empty message" do
+      # With no projects, Avo::Filters::ProjectCountryFilter has no options and
+      # no empty_message set, so the translated default should be displayed.
+      visit url
+      open_filters_menu
+
+      expect(page).to have_css(".filters-section__empty-state", text: "No options available")
+    end
+  end
+
   describe "Boolean filter with default" do
     let!(:user) { create :user }
 
