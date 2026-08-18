@@ -83,6 +83,7 @@ grep -rn "explicit_authorization" "$(bundle show avo)/lib"
 | 404 in the admin | `ActiveRecord::RecordNotFound`; Avo defers to Rails' 404 unless you rescue it | [↓](#404-in-the-admin) |
 | `No valid predicate for combinator` when filtering | `config.ignore_unknown_conditions` is `false` | [↓](#no-valid-predicate-for-combinator-when-filtering) |
 | `undefined method 'xxx_path'` inside an Avo block | Avo is a Rails engine — needs `main_app.` prefix | [↓](#url-helpers-blow-up-inside-avo-blocks) |
+| Index search box does nothing — the unfiltered rows stay | `self.search[:query]` returns an Array; the index needs a relation | [↓](#the-index-search-box-silently-does-nothing) |
 | License won't validate / status page errors | Key not set on the server; check the status page | [↓](#license-wont-validate) |
 | Tests fail after adding/upgrading Avo (`WebMock::NetConnectNotAllowedError`) | v4's outbound license check to `clerk-*.avohq.io` is blocked | [↓](#tests-fail-after-adding-or-upgrading-avo) |
 | `bundle install` can't fetch `avo-*` / 401 / 403 | packager.dev token not seen by Bundler, or a blocked host in sandboxes | [↓](#bundle-install-cant-fetch-avo--gems) |
@@ -182,11 +183,33 @@ end
 
 Prefer Rails route helpers (with `main_app.` / `avo.`) over hardcoded paths everywhere. → `faq.html`
 
+### The index search box silently does nothing
+
+Typing in a resource's index search box leaves the previous, unfiltered rows on screen with no visible error. The request actually failed with `NoMethodError: undefined method 'order' for an instance of Array` — the resource's `self.search[:query]` returns the Array shape used by [custom search providers](https://docs.avohq.io/4.0/search-api.md#custom-search-providers), and the index builds a table from database records, so it needs an `ActiveRecord::Relation` to sort, filter, scope and paginate.
+
+Only **global search** and **searchable associations** render an Array. Branch on `search_type` and keep the relation as the fallback, so any surface that doesn't inject the local still gets a usable query:
+
+```ruby
+self.search = {
+  query: -> do
+    case search_type
+    when :global, :association
+      [{_id: 1, _label: "Record One", _url: "https://example.com/1"}]
+    else # the resource index and the kanban card picker — these require a relation
+      query.ransack(id_eq: params[:q], m: "or").result(distinct: false)
+    end
+  end
+}
+```
+
+→ `search-api.html#custom-search-providers`
+
 ### License won't validate
 
 1. **Key not set on the server.** The most frequent cause. Confirm `config.license_key = ENV["AVO_LICENSE_KEY"]` and that the env var is actually present in **production** (not just locally).
 2. **Check the status page.** Every Avo app exposes `https://yourapp.com/<mount>/avo_private/status` — e.g. `/admin/avo_private/status` if you mounted Avo at `admin`. It shows whether the license authenticated and the raw response from the check server. The viewing user must be an Avo admin.
 3. **Key hidden on the status page.** The key is redacted by default; set `exclude_from_status = []` in the initializer if you need to see it while debugging.
+4. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention: either no payment method is on file, or the subscription behind the trial was cancelled. Access continues until the date the status page reports. Both are fixed on https://avohq.io/licenses (a cancelled subscription must be resumed — adding a payment method won't help), then press **Refresh license** on the status page, since Avo caches the license response between checks.
 
 → `license-troubleshooting.html`
 
@@ -262,6 +285,7 @@ Inventory before editing
 - Many chapters won't apply. Mark each APPLIES / NOT USED / NEEDS REVIEW. Never apply a change for an API the app doesn't use.
 
 Gems first
+- Avo 4 requires Ruby >= 3.2. Check the app's Ruby version and bump it if needed before updating the gems.
 - Update the Gemfile to >= 4.0.0 for `avo` and every `avo-*` gem in use (check for avo-nested, avo-rhino_field, avo-dynamic_filters, etc.), move private gems under the packager.dev source block, run bundle, and boot the app before touching app code.
 - Nested forms now need the separate avo-nested gem — add it if has_many/has_one/habtm use `nested`.
 

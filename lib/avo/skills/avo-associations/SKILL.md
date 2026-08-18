@@ -3,7 +3,7 @@ name: avo-associations
 description: >-
   Wire Active Record relationships into Avo resources as association fields (`field :x, as:
   :belongs_to | :has_one | :has_many | :has_and_belongs_to_many`) inside `def fields`, including
-  polymorphic and `has_many :through` relations, type-to-search pickers, extra join-table fields
+  polymorphic and `has_many :through` / `has_one :through` relations, type-to-search pickers, extra join-table fields
   at attach time, and nested create-in-form. Use when the user wants to link one record to another
   or surface related records — in Avo terms ("add a belongs_to field", "show a has_many panel",
   "make the association searchable", "polymorphic belongs_to", "has_many through with
@@ -33,7 +33,7 @@ These fields live in `app/avo/resources/<model>.rb`, the same place as every oth
 - Docs map: https://docs.avohq.io/4.0/docs-map.md
 - Overview & STI: https://docs.avohq.io/4.0/associations.md
 - Belongs to: https://docs.avohq.io/4.0/associations/belongs_to.md
-- Has one: https://docs.avohq.io/4.0/associations/has_one.md
+- Has one (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_one.md
 - Has many (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_many.md
 - Has and belongs to many: https://docs.avohq.io/4.0/associations/has_and_belongs_to_many.md
 - Searchable associations (guide): https://docs.avohq.io/4.0/associations/searchable.md
@@ -84,6 +84,7 @@ If the request is about a scalar attribute (a string, a number, a file, an enum 
 | `belongs_to :user` | `field :user, as: :belongs_to` |
 | `belongs_to :commentable, polymorphic: true` | `field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]` |
 | `has_one :admin` | `field :admin, as: :has_one` |
+| `has_one :admin, through: :admin_membership` | `field :admin, as: :has_one` — no `through:` option on the field; Avo reads it off the association |
 | `has_many :comments` | `field :comments, as: :has_many` |
 | `has_many :members, through: :memberships` | `field :members, as: :has_many, through: :memberships` |
 | `has_and_belongs_to_many :teams` | `field :teams, as: :has_and_belongs_to_many` |
@@ -124,7 +125,7 @@ Most options are shared across the association fields; a handful are type-specif
 | `allow_via_detaching` | Keeps the field editable when you reached the record *through* that association (which otherwise disables it). |
 | `link_to_record` | `true` makes the Index cell link to the current row's record instead of the associated one. |
 
-### `has_many :through` and `attach_fields`
+### `:through` associations and `attach_fields`
 
 For a join model with its own columns, expose those columns **at attach time** with `attach_fields` (a lambda that declares fields, evaluated against the join model):
 
@@ -138,7 +139,19 @@ field :members,
   }
 ```
 
-The extra fields render inside the attach modal and their values persist on the join row. `attach_fields` **only persists on `has_many :through`** — it exists but is a no-op on a plain `has_many` / HABTM. If the through model is polymorphic, add the type as a hidden field: `field :membership_type, as: :hidden, default: "TheType"`.
+The extra fields render inside the attach modal and their values persist on the join row. `attach_fields` **only persists on a `:through` association** — a plain `has_many` / `has_one` / HABTM has no join record to write to, so it's a no-op there. It works the same way on `has_one :through` (Avo 4.0.25+). If the through model is polymorphic, add the type as a hidden field: `field :membership_type, as: :hidden, default: "TheType"`.
+
+Attach and detach always go through the association itself, so a **scope on the through association is respected**: attaching stamps the scope's attributes on the new join record, and detaching destroys only the join record that association points at, leaving other rows linking the same two records alone.
+
+```ruby
+# app/models/team.rb — attaching writes level: "admin"; detaching won't touch a "member" row
+class Team < ApplicationRecord
+  has_many :admin_memberships, -> { where level: :admin }, class_name: "TeamMembership"
+  has_many :admins, through: :admin_memberships, source: :user
+end
+```
+
+A `has_one :through` behaves like a singular association throughout: attaching over an existing record **replaces** the join record instead of adding a second one, and the detach is checked against the record named in the URL — from a stale page where someone else has since attached a different record, the detach is a no-op rather than removing whatever is attached now.
 
 ### Searchable associations
 
