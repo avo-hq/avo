@@ -107,18 +107,20 @@ class Avo::Resources::Comment < Avo::BaseResource
 end
 ```
 
-Add a message under the resource name with `self.description`, the sidebar icon with `self.icon`, and an image with `self.avatar` (small, on show/forms) or `self.cover` (banner):
+Add a message under the resource name with `self.description`, the sidebar icon with `self.icon`, a tint for that icon with `self.color`, and an image with `self.avatar` (small, on show/forms) or `self.cover` (banner):
 
 ```ruby
 class Avo::Resources::User < Avo::BaseResource
   self.description = "These are the users of the app."
   self.icon = "tabler/outline/user"
+  self.color = :purple
   self.avatar = { source: :avatar, visible_on: [:show, :forms] }
   self.cover  = { source: :cover_photo, size: :md, visible_on: [:show] }
 end
 ```
 
 - `self.description` is rendered as **raw HTML** — never feed it user-editable data (stored-XSS risk). A block gets `record`, `resource`, `view`, `current_user`, `params`.
+- `self.color` takes a Symbol or String from Avo's palette — `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`. It tints the icon **stroke only** (label and hover/active backgrounds stay neutral), adapts to light and dark themes, and an unknown name silently renders the neutral icon. The tint follows the resource to its breadcrumb initials chip and, with Advanced Search installed, to the resource group headers in global search results. A `color:` on the menu entry overrides it.
 - `self.cover`/`self.avatar` were named `cover_photo`/`profile_photo` in Avo 3. A **Symbol** `source:` renders nothing for unpersisted (new) records — use a block if you want a placeholder on `new`/`index`.
 
 Surface small metadata (timestamps, id, a badge/link) next to the title without spending a field, via `self.discreet_information`:
@@ -232,6 +234,7 @@ For STI, send index clicks to the child record with `self.link_to_child_resource
 | `self.title` | Record display name | `self.title = :name` |
 | `self.description` | Message under the name (raw HTML!) | `self.description = "App users."` |
 | `self.icon` | Sidebar icon | `self.icon = "tabler/outline/user"` |
+| `self.color` | Tint for that icon (palette name) | `self.color = :purple` |
 | `self.avatar` / `self.cover` | Small photo / banner | `self.cover = { source: :cover_photo, size: :md }` |
 | `self.discreet_information` | Metadata by the title | `self.discreet_information = :timestamps` |
 | `self.model_class` | Model when not inferable / secondary resource | `self.model_class = "Delayed::Job"` |

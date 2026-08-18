@@ -204,7 +204,7 @@ silent                                           # suppress the default notifica
 | `download data, "file.csv"` | Trigger a file download. **Pair with `self.turbo = false`** for a real file response. |
 | `keep_modal_open` | Keep the modal + user input (show an error and let them retry). |
 | `close_modal` / `do_nothing` | Close the modal, leave the page as-is. |
-| `reload_records(query)` | Refresh only the affected rows/cards. **Index only — not associations.** |
+| `reload_records(query)` | Refresh only the affected rows/cards. Called bare (`reload_records`), it defaults to the records the action ran on. **Index only — not associations.** |
 | `navigate_to_action Other, arguments: {...}` | Chain into another action (see below). |
 | `append_to_response -> { [turbo_stream...] }` | Add your own turbo-stream responses. |
 

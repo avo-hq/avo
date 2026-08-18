@@ -32,6 +32,15 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 ## Workflow
 
+**Know the cascade before you edit anything.** Every label goes through the same four layers, first one with a value wins:
+
+1. **The value at the call site** — `field :dates, name: "Period"`, `card Avo::Cards::UsersMetric, label: "Active users"`.
+2. **The i18n key** — derived as described below, or pinned with `self.translation_key` / `translation_key:`.
+3. **The class attribute** — `self.name`, `self.message`, `self.label`, `self.description` on actions, scopes, cards, dashboards.
+4. **What Avo generates** — the humanized class name or field id, or Avo's own translated string (`avo.run`, `avo.save`, …).
+
+Not every layer exists everywhere (resources have no naming attribute; actions take nothing at the call site) but the order never changes. The consequence that matters: **the locale file beats a class attribute**, which is what lets an app keep English defaults in code and translate over them without touching the class — but a call-site value beats the locale file, so a hardcoded `name:`/`label:` at the declaration is what to remove first when a translation "doesn't apply".
+
 ### 1. Get editable locale files
 
 Avo's locale files live inside the gem and are not copied on install. To edit any Avo-provided string (or add a brand-new language), generate local copies first:
@@ -211,6 +220,8 @@ Namespaced classes use the same slash-joined path as resources (`avo.card_transl
 
 Don't confuse these with the gems' **own** chrome (the refresh control, the count pill), which lives under `avo.scopes.*` and `avo.cards.*` — deliberately separate namespaces.
 
+**A card's per-registration `label:` wins over its translation key.** Unlike actions, a card can be labelled where it's registered (`card Avo::Cards::UsersMetric, label: "Active users"`), and that override is more specific than a per-class key — otherwise a dashboard registering the same card class twice would collapse both to one string. If such an override also needs translating, pass a lambda.
+
 ### 8. Set or switch the interface language
 
 `config.locale` sets Avo's locale for **Avo requests only** — the rest of the app keeps `config.i18n.default_locale`. Default is `nil` (falls back to the app default):
@@ -236,8 +247,10 @@ RTL is **automatic** — Avo detects it from the active locale and flips the lay
 Avo's locale files, every add-on gem's, and the app's own deep-merge into **one `avo` tree per locale**, and `config/locales` loads **last**. Overriding Avo's strings is supported — it is most of what this skill does. What silently breaks an app is changing a key's **shape**:
 
 - **Replace a string with a string; never nest beneath one.** A String and a Hash cannot merge, so the file that loads last replaces the other outright — no error, no warning, the label just stops rendering.
-- **Strings that read like namespaces are the live hazard.** `avo.actions`, `avo.resources`, `avo.dashboards`, `avo.dashboard`, `avo.filters`, `avo.pages` and `avo.tools` are labels Avo renders, as are one-word keys like `avo.copy`, `avo.confirm`, `avo.new`, `avo.edit`, `avo.delete`, `avo.save` and `avo.close`. Treat them as taken.
-- **Pluralization hashes are the exception.** A sibling beside `one:`/`other:` under `avo.file`, `avo.record`, `avo.number_of_items` or `avo.x_items_more` is safe — pluralization reads only the plural keys. That is exactly why `avo.resource_translations.<r>` is legitimately both a plural leaf **and** a subtree root carrying `.fields`/`.tabs`/`.panels`/`.save`.
+- **Strings that read like namespaces are the live hazard.** `avo.actions`, `avo.resources`, `avo.dashboards`, `avo.dashboard`, `avo.filters`, `avo.pages` and `avo.tools` are labels Avo renders, as are one-word keys like `avo.all`, `avo.copy`, `avo.confirm`, `avo.new`, `avo.edit`, `avo.delete`, `avo.reset`, `avo.run`, `avo.view`, `avo.save` and `avo.close`. Treat them as taken.
+- **Avo keeps eight namespaces of its own**: `avo.appearance`, `avo.checkbox_list`, `avo.global_search`, `avo.key_value_field`, `avo.media_library`, `avo.nested`, `avo.order` and `avo.search`. They nest a level or two deeper, and the rule holds at every level — override a string, never nest beneath one.
+- **Pluralization hashes are the exception.** A sibling beside `one:`/`other:` under `avo.file`, `avo.record`, `avo.number_of_items` or `avo.x_items_more` is safe — pluralization reads only the plural keys and ignores everything else. Nested ones exist too (`avo.checkbox_list.hidden_selections`); tell one apart by its **keys** (plural categories), not its depth. That is exactly why `avo.resource_translations.<r>` is legitimately both a plural leaf **and** a subtree root carrying `.fields`/`.tabs`/`.panels`/`.save`.
+- **Pagy's pagination strings are out of scope.** They live in `locales/pagy/` and load through Pagy's own loader, outside the `avo.*` tree — none of this applies to them.
 - **Six derived roots are yours to fill.** `resource_translations`, `action_translations`, `field_translations` (core), `scope_translations` (`avo-scopes`), `card_translations` and `dashboard_translations` (`avo-dashboards`). Avo ships nothing under them.
 - **`avo.filter_translations` is not a root** — no code derives it. Filters have no derived translation root today; localize one by calling `I18n.t` from its `self.name` block with a key of your own choosing.
 
@@ -248,6 +261,22 @@ bin/rails runner 'puts I18n.t("avo").select { |_, v| v.is_a?(String) }.keys.sort
 ```
 
 Don't reach for `bin/rails generate avo:locales` just to look — it copies Avo's locale files into `config/locales`, pinning today's wording into the app. Run it only when editable copies are actually wanted. Full rule and the worked collision: https://docs.avohq.io/4.0/i18n.md#safe-keys
+
+### Add-on gems ship English only
+
+The locale generator covers Avo core. Each add-on keeps its strings under its own namespace inside `avo.*` and ships **English only** — every other language is the app's to supply, in a file per gem or one file carrying all of them (they deep-merge into the same tree).
+
+| Gem | Namespace |
+| --- | --- |
+| Advanced Search | `avo.global_search.*` |
+| Collaboration | `avo.collaboration.*` |
+| Dashboards & Cards | `avo.cards.*` |
+| Dynamic Filters | `avo.dynamic_filters.*` |
+| Forms & Pages | `avo.forms.*` |
+| Intelligence | `avo.intelligence.*` |
+| Scopes | `avo.scopes.*` |
+
+Advanced Search is the exception that needs no locale file: everything it renders is under `avo.global_search.*` or is `avo.all`, and core translates all of them in each bundled locale. Four of those — `avo.global_search.direct_match`, `.search_results`, `.searching_on` and `avo.all` — only reached core's locale files **after 4.1.6**; on `4.1.6` and earlier they fall back to English, so define them in the app's own locale file until it's on a newer Avo.
 
 ## Key options
 
@@ -274,7 +303,7 @@ Don't reach for `bin/rails generate avo:locales` just to look — it copies Avo'
 - **Locale files ship inside the gem — not copied on install.** To edit Avo's own strings or add a language, run `bin/rails g avo:locales` first. For custom labels you only need your own keys under `avo:`; the generator is optional.
 - **Explicit `translation_key:` on a field bypasses the cascade.** You lose the resource-scoped → shared → humanized fallback and the automatic `help`/`placeholder`/`include_blank` sibling lookup. Only pin a key when you want exactly that key.
 - **Default keys include the namespace.** `Avo::Resources::Galaxy::Planet` → `avo.resource_translations.galaxy/planet`; `Avo::Actions::City::Update` → `avo.action_translations.city/update` (underscored, slash-joined). Match that path in YAML or the lookup misses and you fall back to the humanized name.
-- **Pluralization keys are required.** Resource/field name lookups run `I18n.t(key, count:, default:)`, so provide `one`/`other` (and `zero` where relevant). A bare string can raise `I18n::InvalidPluralizationData` or silently fall back to the computed name.
+- **Pluralization keys are required to get a translated name.** Resource/field name lookups run `I18n.t(key, count:, default:)`, so provide `one`/`other` (and `zero` where relevant). A subtree holding no plural key at all raises `I18n::InvalidPluralizationData` — passing `default:` does **not** prevent it — but Avo rescues that and falls back to the humanized name. So a resource key holding only `save:` works fine; you just don't get a translated resource name out of it. Keep `one:`/`other:` beside the nested keys when you want both. Code of your own reading these keys with a `count:` has to add the plural keys or rescue the exception itself.
 - **Nesting under a path Avo holds as a string destroys that string.** The tree deep-merges per locale and the app's `config/locales` loads last, so `avo.dashboards.my_dashboard.name` turns the sidebar's "Dashboards" heading into a Hash and it stops rendering — silently. Use the derived root instead (`avo.dashboard_translations.my_dashboard.name`), and check `I18n.t("avo")` for strings before inventing a namespace.
 - **`set_locale` is global and sticky.** It mutates `Avo.configuration.locale` and persists until the server restarts, affecting all users — it is not a per-user preference. Use `force_locale` for a scoped, reversible switch (it rides along in every link until removed).
 - **RTL is automatic and matches on the language segment.** `ar`, `he`, `fa`, `ur`, `yi`, `ps`, `sd`, `ku`, `ckb`, `ug`, `dv` — and regional variants (`ar-EG`) — flip the layout with no config. Don't hand-roll a direction toggle.
