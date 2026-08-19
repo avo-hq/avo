@@ -52,17 +52,26 @@
         sort_by = field.id
         sort_direction = first_option
       end
-      text_classes = "text-content-secondary tracking-tight leading-tight text-xs font-semibold" %>
+      text_classes = "text-content-secondary tracking-tight leading-tight text-xs font-semibold"
+      table_header_class = field.table_header_class
+      end_aligned = table_header_class.to_s.split.include?("text-end") %>
 
     <%= content_tag :th,
-      class: class_names("relative text-start px-2 py-2 whitespace-nowrap rounded-s", field.table_header_class),
+      class: class_names(
+        "relative px-2 py-2 whitespace-nowrap rounded-s",
+        table_header_class,
+        "text-start": !end_aligned
+      ),
       data: {
         control: "resource-field-th",
         table_header_field_id: field.id,
         table_header_field_type: field.type,
       } do %>
       <%= content_tag :div,
-        class: "relative flex items-center justify-between w-full" do %>
+        class: class_names(
+          "relative flex items-center justify-between w-full",
+          "flex-row-reverse": end_aligned
+        ) do %>
         <% if field.sortable && resource.sorting_supported? %>
           <%
             # url_for(params) picks the alphabetically-first per-resource route,
@@ -71,7 +80,11 @@
             sort_url = "#{request.path}?#{sort_query_params.to_query}"
           %>
           <%= link_to sort_url,
-            class: class_names("flex-1 flex justify-between", text_classes),
+            class: class_names(
+              "flex-1 flex justify-between",
+              text_classes,
+              "flex-row-reverse": end_aligned
+            ),
             'data-turbo-frame': params[:turbo_frame] do %>
             <%= field.table_header_label %>
 

@@ -474,7 +474,11 @@ module Avo
           end
         end
 
-        final_value
+        default_format_value(final_value)
+      end
+
+      def default_format_value(value)
+        value
       end
     end
   end

@@ -137,7 +137,7 @@ class Avo::Resources::Project < Avo::BaseResource
       include_blank: "No country",
       filterable: true,
       summarizable: true
-    field :users_required, as: :number, min: 10, max: 1000000, step: 1, html: {index: {wrapper: {classes: "text-right"}}}, summarizable: true
+    field :users_required, as: :number, min: 10, max: 1000000, step: 1, summarizable: true
     field :started_at, as: :date_time, name: "Started", time_24hr: true, nullable: true,
       relative: true,
       timezone: "EET",
