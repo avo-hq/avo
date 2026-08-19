@@ -26,7 +26,6 @@ RSpec.describe Avo::Fields::NumberField, type: :model do
   describe "format" do
     {
       delimited: [8_419_600, "8,419,600"],
-      currency: [1234, "USD1,234.00"],
       percentage: [12.5, "12.5%"],
       human: [8_419_600, "8.42 Million"]
     }.each do |format, (value, expected)|

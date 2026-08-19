@@ -4,7 +4,6 @@ module Avo
       unless defined?(FORMATTERS)
         FORMATTERS = {
           delimited: :number_with_delimiter,
-          currency: :number_to_currency,
           percentage: :number_to_percentage,
           human: :number_to_human
         }.freeze
@@ -47,8 +46,6 @@ module Avo
 
       def formatter_options
         case format
-        when :currency
-          {unit: Avo.configuration.currency}
         when :percentage
           {strip_insignificant_zeros: true}
         else
