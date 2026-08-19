@@ -183,6 +183,7 @@ Route to them from the table above; do not reimplement their DSL from memory her
 
 - **Basic filter values are always strings.** State is serialized through the URL, so `apply` receives strings and hashes with **stringified keys**. Read `values["is_featured"]`, never `values[:is_featured]`, even if you declared `options` with symbols.
 - **Date-time basic filter range format.** In the default `:range` mode the value arrives as the single string `"2024-08-13 to 2024-08-16"` — split it with `value.split(" to ")`. Set `self.mode = :single` for one value.
+- **`self.empty_message` means something different per filter type.** On a `BooleanFilter` it is the empty-state message when `options` returns nothing (where the name comes from). On a `SelectFilter` it labels the blank option — which is **always rendered**, so a falsy value does not remove it, the label just falls back to `"—"`. On `TextFilter` and `DateTimeFilter` it is the input placeholder. `MultipleSelectFilter` ignores it.
 - **Two "Filters" buttons.** If a resource has *both* basic and dynamic filters and dynamic filters' `always_expanded` is `false`, two `Filters` buttons appear on the index. The default (`always_expanded = true`) renders the dynamic bar inline and avoids the duplicate.
 - **License.** Basic filters are Community. Dynamic filters and scopes are paid add-ons — their DSL is accepted but nothing renders on an install without the gem, so surface that in your report.
 
