@@ -58,17 +58,22 @@ module Avo
       nil
     end
 
-    # Browsers paint only the web image types. Everything else Rails calls an
-    # image -- HEIC straight off an iPhone, TIFF, PSD -- has to go through a
-    # variant, which ActiveStorage renders as PNG. Web images keep serving the
-    # original, so apps without an image processor are unaffected.
+    # The image formats no browser paints: HEIC and HEIF decode in Safari alone,
+    # TIFF and PSD nowhere. Not `ActiveStorage.web_image_content_types` -- that
+    # one picks a variant's output format, and browsers render plenty it leaves
+    # out (AVIF always, WebP unless the app loads Rails 7.2 defaults).
+    UNRENDERABLE_IMAGE_CONTENT_TYPES = %w[image/heic image/heif image/tiff image/vnd.adobe.photoshop].freeze
+
+    # Serves an attachment the browser can't paint through a variant, which
+    # ActiveStorage renders as PNG. Everything else keeps serving the original,
+    # so apps without an image processor are unaffected.
     def safe_image_url(attachment)
       blob = attachment.try(:blob)
 
-      if blob.nil? || ActiveStorage.web_image_content_types.include?(blob.content_type) || !blob.variable?
-        main_app.url_for(attachment)
-      else
+      if blob&.variable? && blob.content_type.in?(UNRENDERABLE_IMAGE_CONTENT_TYPES)
         safe_blob_representation_url(blob.variant({})) || main_app.url_for(attachment)
+      else
+        main_app.url_for(attachment)
       end
     end
 

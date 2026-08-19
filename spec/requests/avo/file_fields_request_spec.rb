@@ -82,5 +82,19 @@ RSpec.describe "File fields", type: :request do
       expect(response.body).to include "/rails/active_storage/blobs/"
       expect(response.body).not_to include "/rails/active_storage/representations/"
     end
+
+    # AVIF is in no Rails release's `web_image_content_types`, yet every current
+    # browser paints it. Converting it would break apps with no image processor.
+    it "serves the original for an image Rails doesn't call a web image" do
+      attach_cover "dummy-image.avif"
+
+      expect(post_record.cover.content_type).to eq "image/avif"
+      expect(ActiveStorage.web_image_content_types).not_to include "image/avif"
+
+      get "/admin/resources/posts/#{post_record.to_param}"
+
+      expect(response.body).to include "/rails/active_storage/blobs/"
+      expect(response.body).not_to include "/rails/active_storage/representations/"
+    end
   end
 end
