@@ -37,7 +37,14 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
   end
 
   def render?
-    record_persisted?
+    record_persisted? && blob_persisted?
+  end
+
+  # A blob is saved only when its record is. After a failed validation the
+  # attachment lives in memory alone, and every URL built from it -- image src,
+  # download link -- dies on `signed_id`. The file isn't attached, so skip it.
+  def blob_persisted?
+    file.nil? || file.blob&.persisted?
   end
 
   # If record is not persistent blob is automatically destroyed otherwise it can be "lost" on storage
