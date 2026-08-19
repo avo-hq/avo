@@ -6,7 +6,7 @@ RSpec.describe "number", type: :feature do
 
     subject do
       visit url
-      find("[data-resource-id='#{project.id}'] [data-field-id='users_required']")
+      find("[data-resource-id='#{project.to_param}'] [data-field-id='users_required']")
     end
 
     describe "with value" do
@@ -27,7 +27,7 @@ RSpec.describe "number", type: :feature do
       it "uses tabular figures for id columns" do
         visit url
 
-        id_cell = find("[data-resource-id='#{project.id}'] [data-field-id='id']")
+        id_cell = find("[data-resource-id='#{project.to_param}'] [data-field-id='id']")
 
         expect(id_cell[:class].split).to include("tabular-nums")
       end
@@ -114,7 +114,7 @@ RSpec.describe "number", type: :feature do
     it "delimits display values and keeps the edit input raw" do
       visit "/admin/resources/cities"
 
-      cell = find("[data-resource-id='#{city.id}'] [data-field-id='population']")
+      cell = find("[data-resource-id='#{city.to_param}'] [data-field-id='population']")
       expect(cell).to have_text("8,419,600")
       expect(cell[:class].split).to include("tabular-nums", "text-end")
 
@@ -148,7 +148,7 @@ RSpec.describe "number", type: :feature do
       expect(header[:class].split).to include("text-end")
       expect(header.all("div").first[:class].split).to include("flex-row-reverse")
       expect(header.find("a")[:class].split).to include("flex-row-reverse")
-      expect(find("[data-resource-id='#{project.id}'] [data-field-id='users_required']")).to have_text("10,000")
+      expect(find("[data-resource-id='#{project.to_param}'] [data-field-id='users_required']")).to have_text("10,000")
     ensure
       Avo::Resources::Project.restore_items_from_backup
     end
