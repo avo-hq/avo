@@ -10,10 +10,27 @@ RSpec.describe "number", type: :feature do
     end
 
     describe "with value" do
-      let(:users_required) { 10 }
+      let(:users_required) { 2026 }
       let!(:project) { create :project, users_required: users_required }
 
-      it { is_expected.to have_text users_required }
+      it "renders a bare number without formatting or end alignment" do
+        expect(subject).to have_text "2026"
+        expect(subject[:class].split).to include("tabular-nums")
+        expect(subject[:class].split).not_to include("text-end")
+
+        header = find("th[data-table-header-field-id='users_required']")
+        expect(header[:class].split).to include("text-start")
+        expect(header[:class].split).not_to include("text-end")
+        expect(header.all("div").first[:class].split).not_to include("flex-row-reverse")
+      end
+
+      it "uses tabular figures for id columns" do
+        visit url
+
+        id_cell = find("[data-resource-id='#{project.id}'] [data-field-id='id']")
+
+        expect(id_cell[:class].split).to include("tabular-nums")
+      end
     end
   end
 
@@ -91,6 +108,52 @@ RSpec.describe "number", type: :feature do
     end
   end
 
+  describe "format" do
+    let!(:city) { create :city, population: 8_419_600 }
+
+    it "delimits display values and keeps the edit input raw" do
+      visit "/admin/resources/cities"
+
+      cell = find("[data-resource-id='#{city.id}'] [data-field-id='population']")
+      expect(cell).to have_text("8,419,600")
+      expect(cell[:class].split).to include("tabular-nums", "text-end")
+
+      header = find("th[data-table-header-field-id='population']")
+      expect(header[:class].split).to include("text-end")
+      expect(header[:class].split).not_to include("text-start")
+      expect(header.all("div").first[:class].split).to include("flex-row-reverse")
+
+      visit "/admin/resources/cities/#{city.id}"
+      expect(find_field_element(:population)).to have_text("8,419,600")
+
+      visit "/admin/resources/cities/#{city.id}/edit"
+      expect(page).to have_field("city_population", with: "8419600")
+
+      fill_in "city_population", with: "8419601"
+      save
+
+      expect(city.reload.population).to eq 8_419_601
+    end
+
+    it "reverses the sortable header layout" do
+      project = create :project, users_required: 10_000
+
+      Avo::Resources::Project.with_temporary_items do
+        field :users_required, as: :number, format: :delimited, sortable: true
+      end
+
+      visit "/admin/resources/projects"
+
+      header = find("th[data-table-header-field-id='users_required']")
+      expect(header[:class].split).to include("text-end")
+      expect(header.all("div").first[:class].split).to include("flex-row-reverse")
+      expect(header.find("a")[:class].split).to include("flex-row-reverse")
+      expect(find("[data-resource-id='#{project.id}'] [data-field-id='users_required']")).to have_text("10,000")
+    ensure
+      Avo::Resources::Project.restore_items_from_backup
+    end
+  end
+
   describe "formats a value based on the specified formatter for that field" do
     let!(:project) { create :project, users_required: 10000 }
 
@@ -123,9 +186,12 @@ RSpec.describe "number", type: :feature do
     end
 
     context "with format_display_using" do
-      it "formats the value of a field on both the index and show pages when the format_display_using formatter is present" do
+      it "overrides format on both the index and show pages" do
         Avo::Resources::Project.with_temporary_items do
-          field :users_required, as: :number, format_display_using: -> { number_with_delimiter value }
+          field :users_required,
+            as: :number,
+            format: :human,
+            format_display_using: -> { number_with_delimiter value }
         end
 
         visit "/admin/resources/projects"

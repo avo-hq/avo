@@ -137,6 +137,7 @@ Every field accepts these common options (full list + types at the field-options
 - **`help:`** / **`label_help:`** — help text (HTML allowed) below the input (forms only) or below the label (every view).
 - **`placeholder:`** — placeholder for empty text-like inputs.
 - **`sortable:`** — makes the Index column sortable. `true` for real columns; a `-> { query.order(...) }` lambda (receives `query` and `direction`) for computed fields.
+- **Number `format:`** — formats `:number` fields on Index and Show with `:delimited`, `:currency`, `:percentage`, or `:human`; forms keep the raw number. A formatted number is end-aligned in tables, while a bare number stays start-aligned for identifier/year-shaped values. `:currency` uses `Avo.configuration.currency`, and Rails i18n controls delimiters and separators. For anything else, use `format_display_using:`.
 - **`format_using:`** — reshape the displayed value. **Runs on form views too**, so branch on the view when the form should stay editable: `format_using: -> { view.form? ? value : value.upcase }`. View-scoped variants exist (`format_display_using`, `format_index_using`, `format_show_using`, `format_form_using`, …) — the most specific one wins, they don't chain.
 - **`update_using:`** — parse the raw form `value` before it's saved.
 - **`nullable:`** / **`null_values:`** — store empty input as `NULL` (optionally define which values count as null).
@@ -144,7 +145,7 @@ Every field accepts these common options (full list + types at the field-options
 - **`link_to_record:`** — make the Index cell a link to the record. Only on `:id`, `:text`, `:gravatar`, and `belongs_to`.
 - **`for_attribute:`** — back the field with a different attribute than its id (lets you show one column two ways).
 - **`width:`** / **`stacked:`** — column width (`25/33/50/66/75/100`; any value <100 auto-stacks) and label-above-value layout. `stacked:` on the field wins everywhere, so `stacked: false` opts out of the auto-stacking and of sidebars/preview stacking too.
-- **`html:`** — attach `style`/`classes`/`data` to the field's wrapper/label/input per view (e.g. right-align a number: `html: {index: {wrapper: {classes: "text-right"}}}`). See the html page.
+- **`html:`** — attach `style`/`classes`/`data` to the field's wrapper/label/input per view (e.g. allow wrapping on Index: `html: {index: {wrapper: {classes: "whitespace-normal"}}}`). See the html page.
 
 ### Computed (block) fields
 
@@ -204,6 +205,7 @@ end
 - **`markdown` was renamed.** The old `markdown` field is now `easy_mde`; the new `markdown` is the Marksmith editor. Don't confuse them.
 - **`required:` and `readonly:` are cosmetic.** Enforce with model validations (`validates :x, presence: true`) and use `disabled:` when you need the value ignored on save.
 - **`format_using:` runs on form views too** — return the raw `value` when `view.form?` so the input stays editable, or use a `format_display_using:`/`format_*_using:` variant.
+- **Number `format:` is display-only** — prefer `field :population, as: :number, format: :delimited` to a custom delimiter proc; a supplied `format_display_using:` or view-specific formatter still wins.
 - **Computed block fields** show only on Index/Show and can't be `sortable: true`.
 - **`visible:` lambdas see `resource.record == nil` on create** — always safe-navigate (`resource.record&.foo`).
 - **`select` takes exactly one of `options:`, `grouped_options:`, or `enum:`** — never combine them.
