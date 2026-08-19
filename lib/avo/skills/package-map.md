@@ -14,6 +14,7 @@ The loader reports what is **installed**, never what is **licensed** — license
 | Gem | Skill | Subjects | More |
 | --- | --- | --- | --- |
 | `avo-advanced_search` | `avo-advanced-search` | Cmd+K global search across resources; searchable association pickers | https://avohq.io/addons/global-search |
+| `avo-ai` | `avo-ai-tools` | AI assistant in the admin — the tools the assistant may call, custom tools, ejecting shipped tools | https://docs.avohq.io/4.0/ai.html |
 | `avo-api` | `avo-rest-api` | JSON REST API over every resource, token auth, per-token permission matrix | https://avohq.io/addons/api |
 | `avo-audit_logging` | `avo-audit-logging` | Who changed and viewed what — timeline, diffs, revert | https://avohq.io/pricing |
 | `avo-authorization` | `avo-authorization` | Pundit policies for resources, actions, associations, files | https://avohq.io/addons/authorization |
