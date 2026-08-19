@@ -5,7 +5,7 @@
   data-boolean-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>">
   <div class="flex items-center">
     <% if filter.options.empty? %>
-      <div class="filters-section__empty-state"><%= filter.class.empty_message %></div>
+      <div class="filters-section__empty-state"><%= filter.class.get_empty_message %></div>
     <% else %>
       <div class="filters-boolean-options">
         <% filter.options.each do |value, label| %>

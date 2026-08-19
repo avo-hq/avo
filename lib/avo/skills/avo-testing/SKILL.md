@@ -176,6 +176,7 @@ Prefer this over a full feature spec whenever the thing under test is the *busin
 - **Constructor `user:` vs handle `current_user:`.** `Avo::BaseAction.new` takes `user:` (also `resource:`, `view:`, optional `record:`/`arguments:`/`query:`), but inside `handle` the same person arrives as `current_user:`. Mirror the docs example — it's an easy mismatch to introduce.
 - **Prefixed helpers forward keyword args only.** `Avo::PrefixedTestHelpers` defines each `avo_*` wrapper as `def avo_x(**args)`, so it works cleanly for keyword-argument helpers (`avo_add_tag(field:, tag:)`). Helpers that take a *positional* argument (e.g. `set_picker_day("…")`) don't carry over as-is — call the bare helper for those, or pass via keywords.
 - **Non-UI first.** Avo's UI helpers assume a JS-capable Capybara driver (flatpickr, Tagify). If a resource/action/field spec doesn't actually need the browser, test the Ruby directly (step 3) — it's faster and won't flake on driver timing.
+- **`use_browser_timezone` is off in the test environment, deliberately.** It defaults to `!Rails.env.test?`, because the first page a browser loads soft-reloads once through Turbo to pick up the detected zone — which races browser specs, asserting against a page about to be replaced. Turn it on explicitly only in a spec that tests the time-zone behavior itself. (Apps on 4.1.4–4.1.7 had it on in test too; `config.use_browser_timezone = !Rails.env.test?` is the fix if system specs there started flaking.)
 
 ## Report
 

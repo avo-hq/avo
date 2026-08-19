@@ -165,15 +165,24 @@ One palette spanning every resource is the `avo-advanced_search` add-on, and its
 
 ### Custom (non-ActiveRecord) providers
 
-Back search with Elasticsearch etc. by returning an **array of hashes** from `query:` instead of a relation:
+Back search with Elasticsearch etc. by returning an **array of hashes** from `query:` instead of a relation. **Only two surfaces render an Array** — global search (the Cmd+K palette and its results page) and searchable associations. The resource Index search bar and the kanban card picker build a table from database records, so they sort, filter, scope and paginate the result and require an `ActiveRecord::Relation`.
+
+So branch on `search_type` and return the Array only where it's rendered, keeping the relation as the **fallback** so a surface that doesn't inject the local still gets a usable query:
 
 ```ruby
 query: -> {
-  [
-    { _id: 1, _label: "Record One", _url: "https://example.com/1", _description: "…", _avatar: "https://…", _avatar_type: :rounded }
-  ].first(config_or_number)   # array results are NOT auto-capped — cap yourself
+  case search_type
+  when :global, :association
+    [
+      { _id: 1, _label: "Record One", _url: "https://example.com/1", _description: "…", _avatar: "https://…", _avatar_type: :rounded }
+    ].first(20)   # array results are NOT auto-capped — cap yourself
+  else # the resource index and the kanban card picker — these require a relation
+    query.ransack(name_cont: params[:q], m: "or").result(distinct: false)
+  end
 }
 ```
+
+Returning an Array to the index raises `NoMethodError: undefined method 'order' for an instance of Array`, and typing in the index search box **hides** that error: the request fails and the list silently keeps showing the previous, unfiltered rows.
 
 ---
 
@@ -202,7 +211,13 @@ class Avo::ToolsController < Avo::ApplicationController
 end
 ```
 
-`add_breadcrumb` options: `title:` (required), `path:` (omit → plain text), `icon:`, `initials:`, `avatar:`. Internal Avo links need the `avo.` prefix (Rails engine path rules).
+`add_breadcrumb` options: `title:` (required), `path:` (omit → plain text), `icon:`, `initials:`, `avatar:`, `color:`. Internal Avo links need the `avo.` prefix (Rails engine path rules).
+
+`color:` tints the crumb's **initials chip** only — the title, the icon, and an image `avatar` are unaffected. It takes a Symbol or String from Avo's palette (`red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`), adapts to light and dark themes, and falls back to the neutral chip on an unknown name. You only pass it by hand on custom crumbs — resource crumbs are tinted from the resource's `self.color` (see **avo-resources**).
+
+```ruby
+add_breadcrumb title: "John Doe", initials: "JD", color: :purple, path: avo.resources_user_path(@user)
+```
 
 ## Keyboard shortcuts (Community)
 
@@ -216,7 +231,9 @@ config.hotkeys = {
 }
 ```
 
-Built-in highlights: `Cmd/Ctrl+K` global search · `Shift+\` toggle sidebar · `B` go back · `/` focus Index search · `C` new record · `A` actions menu · `V T` / `V G` / `V M` switch table/grid/map view. (Full table on the keyboard-shortcuts doc page.)
+Built-in highlights: `Cmd/Ctrl+K` global search · `Cmd/Ctrl+J` open the assistant · `Shift+\` toggle sidebar · `B` go back · `/` focus Index search · `C` new record · `A` actions menu · `V T` / `V G` / `V M` switch table/grid/map view. (Full table on the keyboard-shortcuts doc page.)
+
+`Cmd/Ctrl+J` needs the **Avo AI** add-on; without it the binding doesn't exist and it isn't listed in the `?` modal. It's also the one shortcut that still fires while you're typing in a field — reaching for the assistant mid-edit is the point — though it still follows the `enabled` master switch like everything else.
 
 Add your own on any control with a `data-hotkey` attribute (re-bound on every Turbo navigation):
 

@@ -103,6 +103,19 @@ RSpec.describe "Filters", type: :system do
     end
   end
 
+  describe "Boolean filter without options" do
+    let(:url) { "/admin/resources/projects?view_type=table" }
+
+    it "shows the translated default empty message" do
+      # With no projects, Avo::Filters::ProjectCountryFilter has no options and
+      # no empty_message set, so the translated default should be displayed.
+      visit url
+      open_filters_menu
+
+      expect(page).to have_css(".filters-section__empty-state", text: "No options available")
+    end
+  end
+
   describe "Boolean filter with default" do
     let!(:user) { create :user }
 
@@ -207,7 +220,9 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
-        expect(current_url).not_to include "encoded_filters="
+        # Clearing the last filter keeps the param around, encoding the empty
+        # set, so session persistence can pick up the cleared state.
+        expect(current_url).to include "encoded_filters=e30"
         expect(page).to have_css(".button--disabled", text: "Reset filters")
 
         select "Unpublished", from: "avo_filters_published_status"

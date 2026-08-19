@@ -1,6 +1,6 @@
 ---
 name: avo-admin-config
-description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, persist filters/pagination across requests, or opt out of usage metadata.
+description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, remove or retune the floating "Back to top" button, persist filters/pagination across requests, or opt out of usage metadata.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -94,7 +94,10 @@ config.sidebar = {                                        # the sidebar's three 
 }
 config.hide_layout_when_printing = true                   # drop sidebar/navbar/footer when printing
 config.body_classes = "custom-theme compact-layout"       # add classes to <body>; also accepts an Array or a block
+config.back_to_top = { enabled: false }                   # the floating "Back to top" pill; hash merged over {enabled: true, threshold: 400}
 ```
+
+`back_to_top` is **on by default** since Avo 4.1.4 (it was off before, and only revealed itself on an upward scroll). The pill now shows once the page is scrolled `threshold` pixels down and hides again near the top — scroll direction no longer matters. Like `sidebar`, it's merged over its defaults, so `{enabled: false}` or `{threshold: 1000}` alone is enough. Its label comes from the `avo.back_to_top` i18n key.
 
 `config.sidebar` is a hash merged over `{toggle_visible: true, resizable: true, default_width: 256}`, so set only the keys you change. On desktop the sidebar edge is a drag handle: users resize it and the width persists **per browser** (a cookie, not a user preference). `default_width` sets the starting width and is clamped to `200`–`480` — an unparseable value falls back to `256` rather than clamping to the minimum. Both settings apply at `lg` (1024px) and wider only; below that the sidebar is a full-height overlay at the 256px default. A width the user has dragged to wins over `default_width`. The flat `config.sidebar_toggle_visible = false` still works and writes into `config.sidebar[:toggle_visible]`, but the hash is the canonical home.
 

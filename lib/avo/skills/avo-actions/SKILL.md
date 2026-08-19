@@ -1,6 +1,6 @@
 ---
 name: avo-actions
-description: Build Avo actions — Ruby classes in `app/avo/actions/*.rb`, registered on a resource's `def actions` — that run a custom operation on selected records, a single record, or nothing at all, with optional form fields, a confirmation modal, feedback notifications, custom responses, and multi-step flows. Use when the user wants to let admins bulk-approve these orders, mark selected invoices as paid, add a button to export selected users to CSV, deactivate/ban a user from the admin, send a welcome email to selected records, trigger a background job for these records, add a Publish/Approve button on the post page, add a monthly report button, collect a reason when someone does something, add a confirmation dialog before an operation, or build a multi-step form/wizard in the admin.
+description: Build Avo actions — Ruby classes in `app/avo/actions/*.rb`, registered on a resource's `def actions` — that run a custom operation on selected records, a single record, or nothing at all, with optional form fields, a confirmation modal, feedback notifications, custom responses, and multi-step flows. Use when the user wants to let admins bulk-approve these orders, mark selected invoices as paid, add a button to export selected users to CSV, deactivate/ban a user from the admin, send a welcome email to selected records, trigger a background job for these records, add a Publish/Approve button on the post page, add a monthly report button, collect a reason when someone does something, assign the selected records to a user or other associated record from the modal, add a confirmation dialog before an operation, or build a multi-step form/wizard in the admin.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -35,6 +35,7 @@ Reach for an action when the request is "let admins **do X** to **records** from
 | "Add a Publish/Approve button on the post page", "ban this user" | [Single-record](#single-record) |
 | "A monthly report button", "run this maintenance job", "export everything to CSV" | [Standalone](#standalone-no-records-needed) |
 | "Collect a reason when someone bans a user", "ask for a message before sending" | [With fields](#collect-input-with-fields) |
+| "Assign the selected records to a user", "pick a related record in the modal" | [Picking an associated record](#collect-input-with-fields) |
 | "Add a confirmation dialog", "make it ask before running" (or skip it) | [Confirmation](#confirmation-modal) |
 | "Then download a file / redirect / refresh just the row" | [Responses](#control-what-happens-after) |
 | "A multi-step form / wizard" | [multi-step flow](#multi-step-flows-wizards) |
@@ -152,7 +153,7 @@ end
 ```
 
 ### Collect input with fields
-Define `fields` to render form inputs in the modal; the submitted values arrive as `fields`. Same field DSL as resources. On a single record the fields are hydrated from it; otherwise they're plain inputs.
+Define `fields` to render form inputs in the modal; the submitted values arrive as `fields`. Same field DSL as resources — *most* field types, anyway. On a single record the fields are hydrated from it; otherwise the fields that don't depend on a record render as plain inputs. Association fields are the exception (see below).
 
 ```ruby
 def fields
@@ -168,6 +169,29 @@ def handle(query:, fields:, **args)
   succeed "Done"
 end
 ```
+
+**Picking an associated record.** A `belongs_to` field needs *one* current record to resolve its association, so it only renders when the action was hydrated with a single record — from **Show**, or with exactly one row checked on **Index**. On a multi-record or standalone action there is no current record and the field can't render. Use a plain input instead:
+
+```ruby
+# Short list — a select with the options loaded when the form renders.
+def fields
+  field :user_id,
+    as: :select,
+    options: -> { User.order(:name).pluck(:name, :id) },
+    include_blank: true
+end
+
+# Long list that needs search — a tags field in select mode.
+def fields
+  field :user_id,
+    as: :tags,
+    mode: :select,
+    enforce_suggestions: true,
+    fetch_values_from: "/avo/resources/users/action_options"
+end
+```
+
+`fetch_values_from` points at an endpoint **you** add (a method on an `Avo::ResourcesController` subclass plus a route); it receives the typed text as `params[:q]` and returns objects with `value` and `label` keys. Either way the chosen ID arrives as `fields[:user_id]`.
 
 ### Confirmation modal
 The modal is on by default. Customize its text (each may be a string or a block with access to `resource`, `record`, `view`, `arguments`, `query`), or turn it off for safe actions:
@@ -204,7 +228,7 @@ silent                                           # suppress the default notifica
 | `download data, "file.csv"` | Trigger a file download. **Pair with `self.turbo = false`** for a real file response. |
 | `keep_modal_open` | Keep the modal + user input (show an error and let them retry). |
 | `close_modal` / `do_nothing` | Close the modal, leave the page as-is. |
-| `reload_records(query)` | Refresh only the affected rows/cards. **Index only — not associations.** |
+| `reload_records(query)` | Refresh only the affected rows/cards. Called bare (`reload_records`), it defaults to the records the action ran on. **Index only — not associations.** |
 | `navigate_to_action Other, arguments: {...}` | Chain into another action (see below). |
 | `append_to_response -> { [turbo_stream...] }` | Add your own turbo-stream responses. |
 
@@ -235,6 +259,7 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
     URI.parse(request.referer).query.to_s.include?("hey=ya") ? :yes : :no
   }
   ```
+- **`belongs_to` doesn't render in a bulk or standalone action.** It needs a single current record to resolve the association, which a multi-record or standalone action doesn't have. Reach for `as: :select` (short list) or `as: :tags, mode: :select, fetch_values_from: "..."` (long, searchable) and assign the ID yourself in `handle`.
 - **`reload_records` is Index-only.** It doesn't work on association tables — use `reload` there.
 - **Notification bodies truncate at ~320 characters.** Keep `succeed`/`error` messages short; put long output in a `download` or a redirect.
 - **File downloads need `self.turbo = false`.** Otherwise Turbo intercepts the response and the download won't fire.
