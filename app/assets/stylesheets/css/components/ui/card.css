@@ -39,7 +39,7 @@
   /* offset 1px from the wrapper to match the design */
   padding: calc(var(--spacing) - 1px);
   /* prevent scrollIntoView from shifting the table horizontally by the padding amount */
-  scroll-padding-inline: calc(var(--spacing) );
+  scroll-padding-inline: calc(var(--spacing));
 }
 
 /* for pagination we need the padding to be 4px */
@@ -113,9 +113,9 @@
 /* Card footer - full width so pagination can span edge to edge */
 .card__footer {
   @apply w-full;
-    &:has(.pagination) {
-      @apply p-1 pt-0;
-    }
+  &:has(.pagination) {
+    @apply p-1 pt-0;
+  }
 }
 
 /* Responsive adjustments */

@@ -73,8 +73,16 @@
      content wash; selected is a stronger one. All resolve per-scheme via the
      underlying tokens. */
   --color-row-bg: var(--color-primary);
-  --color-row-bg-hover: color-mix(in oklab, var(--color-primary), var(--color-content) 5%);
-  --color-row-bg-selected: color-mix(in oklab, var(--color-primary), var(--color-content) 12%);
+  --color-row-bg-hover: color-mix(
+    in oklab,
+    var(--color-primary),
+    var(--color-content) 5%
+  );
+  --color-row-bg-selected: color-mix(
+    in oklab,
+    var(--color-primary),
+    var(--color-content) 12%
+  );
 
   --color-scheme: var(--color-white);
   --color-scheme-opposite: var(--color-black);
@@ -168,7 +176,6 @@
   color-scheme: dark;
 }
 
-
 /* Dark mode defaults live in @layer theme — same layer as the @theme block
    above — so the brand override (emitted in @layer base by
    Avo::Configuration::Appearance#brand_css_overrides) can win against these
@@ -199,8 +206,11 @@
     --color-brand-accent: oklch(97.31% 0 89.88);
 
     /* Semantic variables */
-    --color-sidebar-background: color-mix(in oklab, var(--color-background), var(--color-scheme) 14%);
-
+    --color-sidebar-background: color-mix(
+      in oklab,
+      var(--color-background),
+      var(--color-scheme) 14%
+    );
   }
 }
 
