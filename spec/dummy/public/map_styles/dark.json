@@ -1,0 +1,14 @@
+{
+  "version": 8,
+  "name": "spec-dark",
+  "sources": {},
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "rgb(12,12,12)"
+      }
+    }
+  ]
+}

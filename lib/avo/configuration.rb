@@ -13,6 +13,7 @@ module Avo
     attr_writer :hotkeys
     attr_writer :back_to_top
     attr_writer :associations
+    attr_writer :map_view
     # When unset, Tailwind scans Rails.root.join("app"). Each entry is an absolute path or a path relative to Rails.root.
     attr_writer :tailwindcss_content_sources
     attr_accessor :timezone
@@ -140,6 +141,7 @@ module Avo
       @locale = nil
       @currency = "USD"
       @default_view_type = :table
+      @map_view = {}
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
@@ -272,6 +274,18 @@ module Avo
     # `loading` is the cold-start render mode when a field doesn't set its own
     # `loading:` — `:lazy` (loads on reveal) or `:manual` (placeholder + Load
     # button). `auto_load_for` is the manual memory window (see FrameLoadingMode).
+    # Map view, and the `location`/`area` fields that render the same maps.
+    #
+    # `styles` is the light/dark pair Avo renders them with. `nil` resolves to
+    # Mapbox when MAPBOX_ACCESS_TOKEN is set and to OpenFreeMap otherwise — pin
+    # one with `:mapbox` / `:open_free_map`, or pass your own `{light:, dark:}`.
+    # See Avo::MapStyles.
+    unless defined?(MAP_VIEW_DEFAULTS)
+      MAP_VIEW_DEFAULTS = {
+        styles: nil
+      }.freeze
+    end
+
     unless defined?(ASSOCIATIONS_DEFAULTS)
       ASSOCIATIONS_DEFAULTS = {
         lookup_list_limit: 1000,
@@ -295,6 +309,10 @@ module Avo
 
     def back_to_top
       BACK_TO_TOP_DEFAULTS.merge @back_to_top
+    end
+
+    def map_view
+      MAP_VIEW_DEFAULTS.merge @map_view
     end
 
     def associations

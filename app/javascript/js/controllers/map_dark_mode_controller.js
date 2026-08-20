@@ -1,7 +1,16 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
+  static values = { styles: Object }
+
   connect() {
+    // No styles pair means the resource passed its own `style:` through
+    // `mapkick_options`. Avo doesn't retheme a map it didn't style.
+    if (!this.hasStylesValue) return
+
+    // Maps are always built with the light style; nothing has swapped it yet.
+    this.appliedStyle = this.stylesValue.light
+
     this.observer = new MutationObserver(() => this.updateMapStyle())
     this.observer.observe(document.documentElement, {
       attributes: true,
@@ -42,26 +51,31 @@ export default class extends Controller {
   }
 
   updateMapStyle() {
-    const instance = this.mapkickInstance
-    if (!instance?.map) return
+    const map = this.mapkickInstance?.map
+    if (!map) return
 
-    const map = instance.map
-    const style = map.getStyle()
-    if (!style) return
+    // `getStyle()` throws while a style is still loading, and a theme toggle
+    // lands in that window often enough to matter. Wait the load out instead of
+    // dropping the change — nothing else would come along to re-trigger it.
+    if (!map.isStyleLoaded()) {
+      map.once('idle', () => this.updateMapStyle())
+      return
+    }
 
-    const targetStyle = this.isDark
-      ? 'mapbox://styles/mapbox/dark-v11'
-      : 'mapbox://styles/mapbox/light-v11'
+    // A light and a dark style can be indistinguishable once loaded — OpenFreeMap's
+    // pair shares a sprite URL and ships no name — so track what we applied rather
+    // than sniffing it back off the map.
+    const targetStyle = this.isDark ? this.stylesValue.dark : this.stylesValue.light
+    if (targetStyle === this.appliedStyle) return
 
-    // Detect current style from the sprite URL or stylesheet name
-    const styleName = style.name || style.sprite || ''
-    const currentIsDark = /dark/i.test(styleName)
-    if (this.isDark === currentIsDark) return
-
-    // Save custom sources and layers added by Mapkick before the style swap
+    // Save the sources and layers Mapkick added before the style swap wipes them
     const snapshot = this.captureMapkickState(map)
 
-    map.setStyle(targetStyle)
+    this.appliedStyle = targetStyle
+    // `diff: false` forces a full style reload. The default diffing path drops
+    // Mapkick's sources and layers without ever firing `style.load`, so the
+    // markers would vanish with nothing to restore them.
+    map.setStyle(targetStyle, { diff: false })
 
     // Restore sources, layers, and marker images after the new style loads
     map.once('style.load', () => {
@@ -75,10 +89,10 @@ export default class extends Controller {
     const layers = []
     const images = []
 
-    // Capture Mapkick's custom sources (e.g. "objects", "trails", labels)
+    // Mapkick's sources (markers, labels, trails) are the GeoJSON ones; whatever
+    // else is in there belongs to the base map and comes back with the new style.
     for (const [name, source] of Object.entries(style.sources)) {
-      // Skip Mapbox's built-in sources (composite, mapbox-)
-      if (name === 'composite' || name.startsWith('mapbox')) continue
+      if (source.type !== 'geojson') continue
 
       sources[name] = {
         type: source.type,
