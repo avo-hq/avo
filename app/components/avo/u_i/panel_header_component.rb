@@ -3,7 +3,7 @@
 class Avo::UI::PanelHeaderComponent < Avo::BaseComponent
   prop :title
   prop :description
-  prop :size, default: :medium
+  prop :size, default: :md
   prop :url
   prop :target
   prop :index
@@ -14,11 +14,11 @@ class Avo::UI::PanelHeaderComponent < Avo::BaseComponent
   renders_one :controls
   renders_one :discreet_information
 
-  def size_medium?
-    @size == :medium
+  def size_md?
+    @size == :md
   end
 
-  def size_small?
-    @size == :small
+  def size_sm?
+    @size == :sm
   end
 end

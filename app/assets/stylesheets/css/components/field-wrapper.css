@@ -107,7 +107,7 @@
   }
 }
 
-.container-small {
+.container-md {
   .field-wrapper__content-wrapper {
     @apply w-full;
   }

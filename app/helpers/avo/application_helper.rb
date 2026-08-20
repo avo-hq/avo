@@ -241,10 +241,9 @@ module Avo
     end
 
     def container_classes
-      return "container-#{container_width_css_suffix(@container_size.to_sym)}" if @container_size.present?
+      return "container-#{@container_size}" if @container_size.present?
 
-      width = Avo.configuration.container_width.fetch(@view&.to_sym, :large)
-      "container-#{container_width_css_suffix(width)}"
+      "container-#{Avo.configuration.container_width.fetch(@view&.to_sym, :lg)}"
     end
 
     # encode & encrypt params
@@ -334,10 +333,6 @@ module Avo
       extension = Rack::Mime::MIME_TYPES.invert[blob.content_type]
       extension = ".#{extension}" if extension.present? && !extension.start_with?(".")
       "attachment#{extension}"
-    end
-
-    def container_width_css_suffix(width)
-      (width == :full) ? "full-width" : width.to_s
     end
 
     def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)

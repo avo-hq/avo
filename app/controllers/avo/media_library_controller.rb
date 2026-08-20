@@ -3,7 +3,7 @@ module Avo
     include Pagy::Method
 
     before_action :authorize_access!
-    before_action -> { @container_size = "large" }, only: [:edit]
+    before_action -> { @container_size = "lg" }, only: [:edit]
 
     def index
       @attaching = false

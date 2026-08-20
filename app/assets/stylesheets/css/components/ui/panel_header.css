@@ -37,10 +37,10 @@
 }
 
 /* Size variants */
-.header--size-medium {
+.header--size-md {
   /* Default styles already applied */
 }
 
-.header--size-small {
+.header--size-sm {
   /* Small variant uses same structure but can have different spacing if needed */
 }
