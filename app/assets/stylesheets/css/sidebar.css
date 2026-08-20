@@ -518,3 +518,65 @@
 .sidebar-status:hover .sidebar-status__hint {
   @apply block;
 }
+
+/* ================================================ */
+/* Sidebar Flyout — ItemSwitcherComponent           */
+/* BEM: .sidebar-flyout (block)                     */
+/* ================================================ */
+
+/* A parent item's sub-items, shown on hover for as long as they aren't already
+   listed inline (that is, whenever the parent's own page and its children are
+   all closed). The panel is a native popover: the sidebar body scrolls, so an
+   absolutely positioned panel would be clipped by it — the top layer is the
+   only place this can be drawn. Position comes from CSS anchor positioning,
+   with the per-item `anchor-name` written inline by the component. */
+.sidebar-flyout {
+  @apply w-full;
+}
+
+.sidebar-flyout__panel {
+  @apply m-0 p-1 rounded-lg min-w-48;
+  background-color: var(--sidebar-background);
+  border: 1px solid var(--sidebar-border);
+  box-shadow: var(--box-shadow-card);
+  position-area: inline-end span-block-end;
+  position-try-fallbacks: flip-inline, flip-block, flip-block flip-inline;
+  margin-inline-start: 0.25rem;
+
+  /* Mirrors .popover-menu__panel: the panel is display:none while closed, so
+     `allow-discrete` keeps it in the top layer through the leave transition. */
+  opacity: 0;
+  transition:
+    opacity 75ms ease-out,
+    overlay 75ms ease-out allow-discrete,
+    display 75ms ease-out allow-discrete;
+}
+
+.sidebar-flyout__panel:popover-open {
+  opacity: 1;
+}
+
+@starting-style {
+  .sidebar-flyout__panel:popover-open {
+    opacity: 0;
+  }
+}
+
+/* No parent above the list here, so the indent that lines sub-items up under
+   their parent has nothing to line up with — and neither do the connector bars
+   that run back up to it, hover preview included. */
+.sidebar-flyout__panel .sidebar-subitem__items {
+  @apply ps-0;
+}
+
+/* `!important` because the connectors are drawn by a family of hover rules
+   (`:hover`, `:has(~ .sidebar-subitem:hover)`) whose specificity a container
+   class can't out-weigh without restating every one of them here. */
+.sidebar-flyout__panel .sidebar-subitem::before,
+.sidebar-flyout__panel .sidebar-subitem::after {
+  content: none !important;
+}
+
+.sidebar-flyout__panel::backdrop {
+  @apply bg-transparent;
+}
