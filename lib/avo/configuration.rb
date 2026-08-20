@@ -81,11 +81,12 @@ module Avo
         update: :md
       }.freeze
 
-      VALID_CONTAINER_WIDTHS = %i[full lg md].freeze
+      VALID_CONTAINER_WIDTHS = %i[full lg md sm].freeze
 
       # Avo 4.1 renamed the widths onto Tailwind's scale so the vocabulary matches
-      # every other size option (`size: :sm`, `width: :xl`, ...) and leaves room
-      # below `:md`. The old names still work and warn; drop them in Avo 5.
+      # every other size option (`size: :sm`, `width: :xl`, ...). Note `:small`
+      # maps to `:md`, not `:sm` — the rename kept the old width and freed the
+      # narrower names. The old names still work and warn; drop them in Avo 5.
       DEPRECATED_CONTAINER_WIDTHS = {large: :lg, small: :md}.freeze
 
       CONTAINER_WIDTH_GROUPS = {

@@ -25,6 +25,17 @@ RSpec.feature "ContainerWidth", type: :feature do
     end
   end
 
+  describe "symbol :sm — the narrow container" do
+    before { Avo.configuration.container_width = :sm }
+    after { Avo.configuration.container_width = nil }
+
+    context "index" do
+      let(:url) { "/admin/resources/users" }
+      it { is_expected.to include "container-sm" }
+      it { is_expected.not_to include "container-lg" }
+    end
+  end
+
   describe "symbol :full — applies to all views" do
     before { Avo.configuration.container_width = :full }
     after { Avo.configuration.container_width = nil }

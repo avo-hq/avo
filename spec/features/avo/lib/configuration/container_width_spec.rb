@@ -35,6 +35,11 @@ RSpec.describe Avo::Configuration, "#container_width" do
       expect(config.container_width.values.uniq).to eq([:md])
     end
 
+    it "applies :sm to all views" do
+      config.container_width = :sm
+      expect(config.container_width.values.uniq).to eq([:sm])
+    end
+
     it "raises ArgumentError for an invalid symbol" do
       expect { config.container_width = :huge }.to raise_error(ArgumentError)
     end
@@ -119,7 +124,7 @@ RSpec.describe Avo::Configuration, "#container_width" do
       expect(Avo.logger).to have_received(:warn).with(/`:large` is deprecated.*Use `:lg`/)
     end
 
-    it "maps :small to :md and warns" do
+    it "maps :small to :md, not to the new :sm" do
       config.container_width = :small
 
       expect(config.container_width.values.uniq).to eq([:md])

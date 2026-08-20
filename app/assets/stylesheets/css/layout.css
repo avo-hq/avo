@@ -164,6 +164,14 @@
   @apply xl:px-0 xl:w-full xl:max-w-240 xl:mx-auto;
 }
 
+/* Clamps from lg rather than xl (where .container-md clamps): below 1024px the
+   sidebar is an overlay and the content is full-bleed anyway, so waiting for xl
+   would make :sm and :md pixel-identical on every laptop — the widths where a
+   narrow container is most worth asking for. */
+.container-sm {
+  @apply lg:px-0 lg:w-full lg:max-w-180 lg:mx-auto;
+}
+
 .container-full {
   @apply w-full;
 }
