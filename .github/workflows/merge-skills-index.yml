@@ -1,0 +1,36 @@
+name: Merge skills index
+
+# The docs-sync routine opens a PR whenever it re-indexes the shipped skills.
+# When the docs moved but no skill needed rewording, that PR is a one-line
+# bookkeeping bump to `docs-index.json` and nothing else — no reviewer has an
+# opinion on it, so merge it and stop paging humans. A PR that also touches a
+# SKILL.md is left alone: that one really did change what an agent reads.
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - lib/avo/skills/docs-index.json
+
+jobs:
+  merge:
+    # Same-repo branches only — never auto-merge something a fork pushed.
+    if: github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge when the index bump is the only change
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          files=$(gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json files --jq '[.files[].path] | join(",")')
+          if [ "$files" != "lib/avo/skills/docs-index.json" ]; then
+            echo "Touches more than the index ($files) — leaving it for review."
+            exit 0
+          fi
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --squash --delete-branch
