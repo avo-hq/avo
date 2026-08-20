@@ -73,15 +73,21 @@ module Avo
 
     unless defined?(CONTAINER_WIDTH_DEFAULTS)
       CONTAINER_WIDTH_DEFAULTS = {
-        index: :large,
-        show: :small,
-        new: :small,
-        edit: :small,
-        create: :small,
-        update: :small
+        index: :lg,
+        show: :md,
+        new: :md,
+        edit: :md,
+        create: :md,
+        update: :md
       }.freeze
 
-      VALID_CONTAINER_WIDTHS = %i[full large small].freeze
+      VALID_CONTAINER_WIDTHS = %i[full lg md sm].freeze
+
+      # Avo 4.1 renamed the widths onto Tailwind's scale so the vocabulary matches
+      # every other size option (`size: :sm`, `width: :xl`, ...). Note `:small`
+      # maps to `:md`, not `:sm` — the rename kept the old width and freed the
+      # narrower names. The old names still work and warn; drop them in Avo 5.
+      DEPRECATED_CONTAINER_WIDTHS = {large: :lg, small: :md}.freeze
 
       CONTAINER_WIDTH_GROUPS = {
         forms: %i[new edit create update],
@@ -90,17 +96,31 @@ module Avo
       }.freeze
     end
 
+    # Single funnel for every container width that enters Avo — `config.container_width=`
+    # and the controllers' `mark_container_width`. Unknown values pass through untouched
+    # so each caller keeps raising its own ArgumentError.
+    def self.normalize_container_width(value)
+      replacement = DEPRECATED_CONTAINER_WIDTHS[value.respond_to?(:to_sym) ? value.to_sym : value]
+      return value if replacement.nil?
+
+      Avo.logger.warn "[Avo] Container width `:#{value}` is deprecated and will be removed in Avo 5. Use `:#{replacement}` instead."
+      replacement
+    end
+
     def container_width=(value)
       case value
       when NilClass
         @container_width = nil
       when Symbol
+        value = self.class.normalize_container_width(value)
         raise ArgumentError, "Invalid container width: #{value}. Must be one of #{VALID_CONTAINER_WIDTHS}" unless VALID_CONTAINER_WIDTHS.include?(value)
         @container_width = CONTAINER_WIDTH_DEFAULTS.transform_values { value }
       when Hash
         valid_keys = CONTAINER_WIDTH_DEFAULTS.keys + CONTAINER_WIDTH_GROUPS.keys
         invalid_keys = value.keys.reject { |k| valid_keys.include?(k) }
         raise ArgumentError, "Invalid container width keys: #{invalid_keys}. Valid keys: #{valid_keys}" if invalid_keys.any?
+
+        value = value.transform_values { |v| self.class.normalize_container_width(v) }
 
         invalid_values = value.values.reject { |v| VALID_CONTAINER_WIDTHS.include?(v) }
         raise ArgumentError, "Invalid container widths: #{invalid_values}" if invalid_values.any?

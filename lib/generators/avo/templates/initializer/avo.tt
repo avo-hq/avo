@@ -153,7 +153,7 @@ Avo.configure do |config|
   # config.use_browser_timezone = true # set false to render dates/times in the app's configured zone for everyone; off automatically in the test environment
   # config.currency = 'USD'
   # config.hide_layout_when_printing = false
-  # config.container_width = :large # :full, :large, or :small. Hash for per-view: { index: :full, single: :small }
+  # config.container_width = :lg # :full, :lg, :md, or :sm. Hash for per-view: { index: :full, single: :md }
   # config.use_stacked_fields = false
   # Set to false to disable Avo's Tailwind integration even when `tailwindcss-ruby` is installed.
   # config.tailwindcss_integration_enabled = true

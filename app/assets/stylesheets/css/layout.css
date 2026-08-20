@@ -150,21 +150,30 @@
   @apply flex flex-1 flex-col px-0 md:px-2;
 }
 
-.container-large {
+.container-lg {
   @apply 2xl:container 2xl:mx-auto;
 }
 
 /* max-width (not a fixed width) so the container fills the space left of a
    widened sidebar instead of overflowing it, while still capping at 960px on
-   wide viewports. w-full is required: .container-small is a flex item of
+   wide viewports. w-full is required: .container-md is a flex item of
    .main-content (flex flex-col), and per Flexbox §4.2 the auto inline margins
    from mx-auto suppress the default align-self: stretch — without an explicit
    width the item would collapse to its content width. */
-.container-small {
+.container-md {
   @apply xl:px-0 xl:w-full xl:max-w-240 xl:mx-auto;
 }
 
-.container-full-width {
+/* Clamps from md, well before .container-md's xl: waiting would make :sm and :md
+   pixel-identical on every laptop, which is where a narrow container is most
+   worth asking for. The trade is that at exactly 768px the 720px column leaves
+   only 24px a side; it opens up quickly above that, and the alternative was a
+   value that does nothing until 1280px. */
+.container-sm {
+  @apply md:px-0 md:w-full md:max-w-180 md:mx-auto;
+}
+
+.container-full {
   @apply w-full;
 }
 

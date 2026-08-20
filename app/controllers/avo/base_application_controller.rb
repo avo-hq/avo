@@ -250,7 +250,8 @@ module Avo
     end
 
     def mark_container_width(width)
-      raise ArgumentError, "Invalid container width: #{width}. Must be one of #{Avo::Configuration::VALID_CONTAINER_WIDTHS}" unless Avo::Configuration::VALID_CONTAINER_WIDTHS.include?(width.to_sym)
+      width = Avo::Configuration.normalize_container_width(width.to_sym)
+      raise ArgumentError, "Invalid container width: #{width}. Must be one of #{Avo::Configuration::VALID_CONTAINER_WIDTHS}" unless Avo::Configuration::VALID_CONTAINER_WIDTHS.include?(width)
       @container_size = width.to_s
     end
 

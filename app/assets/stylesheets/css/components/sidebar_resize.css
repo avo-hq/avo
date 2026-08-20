@@ -8,7 +8,7 @@
    the sidebar, leaving >= 6px of the 8px `body.os-pc` scroll gutter grabbable.
    The other 13px stop exactly at the earliest interactive box edge in the
    layout: .main-content's start budget is 17px (1px border + 16px padding, since
-   .container-small zeroes the inner 8px at >= xl), but the first breadcrumb
+   .container-md zeroes the inner 8px at >= xl), but the first breadcrumb
    pulls its own 4px of padding back out for optical alignment, so anything
    past +13px starts covering it. sidebar_resize_spec.rb holds that line.
 

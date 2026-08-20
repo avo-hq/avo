@@ -107,7 +107,8 @@
   }
 }
 
-.container-small {
+.container-md,
+.container-sm {
   .field-wrapper__content-wrapper {
     @apply w-full;
   }

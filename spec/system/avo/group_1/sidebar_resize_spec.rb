@@ -1,6 +1,6 @@
 require "rails_helper"
 
-# Unit 1 of the resizable-sidebar feature: make `.container-small` fill the space
+# Unit 1 of the resizable-sidebar feature: make `.container-md` fill the space
 # left of the sidebar (max-width, not a fixed 960px width) so that a widened
 # sidebar no longer overflows show/edit pages.
 #
@@ -11,10 +11,10 @@ require "rails_helper"
 # sidebar host, which flows through the existing (unchanged) derivation:
 #   --sidebar-width -> --sidebar-offset-size -> .main padding-inline-start.
 # When Unit 2 lands, the same scenarios can be re-expressed against a real cookie.
-RSpec.describe "sidebar resize (Unit 1: .container-small)", type: :system do
+RSpec.describe "sidebar resize (Unit 1: .container-md)", type: :system do
   let!(:user) { create :user }
 
-  # `.container-small` is the default container for show/new/edit/create/update.
+  # `.container-md` is the default container for show/new/edit/create/update.
   let(:show_path) { "/admin/resources/users/#{user.slug}" }
 
   # Width of the compiled default spacing scale: max-w-240 -> 240 * 0.25rem = 960px.
@@ -25,7 +25,7 @@ RSpec.describe "sidebar resize (Unit 1: .container-small)", type: :system do
     Capybara.current_session.current_window.resize_to(width, height)
     visit show_path
     # The layout container is always present; wait for it before measuring.
-    expect(page).to have_selector(".container-small", visible: :all)
+    expect(page).to have_selector(".container-md", visible: :all)
   end
 
   # Simulate a widened sidebar. Inline styles outrank stylesheet rules, so this
@@ -68,7 +68,7 @@ RSpec.describe "sidebar resize (Unit 1: .container-small)", type: :system do
 
   def container_width
     page.evaluate_script(
-      "document.querySelector('.container-small').getBoundingClientRect().width"
+      "document.querySelector('.container-md').getBoundingClientRect().width"
     )
   end
 
@@ -78,7 +78,7 @@ RSpec.describe "sidebar resize (Unit 1: .container-small)", type: :system do
   def container_side_gaps
     page.evaluate_script(<<~JS)
       (function () {
-        const c = document.querySelector('.container-small').getBoundingClientRect();
+        const c = document.querySelector('.container-md').getBoundingClientRect();
         const parent = document.querySelector('.main-content');
         const pr = parent.getBoundingClientRect();
         const s = getComputedStyle(parent);
@@ -136,11 +136,11 @@ RSpec.describe "sidebar resize (Unit 1: .container-small)", type: :system do
   # clamped by the Avo-owned max-width the host never wrote. This makes the
   # documented behavior change visible in the suite. Passes only after the fix
   # (the old fixed `width: 960px` gave the host override nothing to clamp against).
-  it "clamps a host `.container-small { width: 1200px }` override to 960px" do
+  it "clamps a host `.container-md { width: 1200px }` override to 960px" do
     visit_show_at(1920, 1080)
     page.execute_script(<<~JS)
       const style = document.createElement('style');
-      style.textContent = '.container-small { width: 1200px; }';
+      style.textContent = '.container-md { width: 1200px; }';
       document.head.appendChild(style);
     JS
 
@@ -440,7 +440,7 @@ RSpec.describe "sidebar resize handle (Unit 5)", type: :system do
   # The permanent invariant, and the reason the strip is 15px rather than the
   # 24px WCAG SC 2.5.8 asks for. It reaches 13px into .main-content, which looks
   # like it has 17px to spare on a show page at >= xl (1px border + 16px padding,
-  # since .container-small zeroes the inner 8px) — but the first breadcrumb pulls
+  # since .container-md zeroes the inner 8px) — but the first breadcrumb pulls
   # its 4px of padding back out for optical alignment, so +13px is the real
   # ceiling. At 24px the strip covered the start edge of every breadcrumb link,
   # panel body and panel button.

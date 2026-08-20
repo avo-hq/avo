@@ -86,7 +86,7 @@ config.pagination = { type: :countless }         # global pagination defaults; s
 
 ```ruby
 config.container_width = :full                            # one width for all views
-config.container_width = { index: :full, show: :small }   # or per view / group alias
+config.container_width = { index: :full, show: :md }      # or per view / group alias
 config.sidebar = {                                        # the sidebar's three knobs, merged over the defaults
   toggle_visible: false,                                  # hide the collapse button → sidebar stays open on desktop (default true)
   resizable: false,                                       # remove the drag-to-resize handle (default true)
@@ -101,7 +101,7 @@ config.back_to_top = { enabled: false }                   # the floating "Back t
 
 `config.sidebar` is a hash merged over `{toggle_visible: true, resizable: true, default_width: 256}`, so set only the keys you change. On desktop the sidebar edge is a drag handle: users resize it and the width persists **per browser** (a cookie, not a user preference). `default_width` sets the starting width and is clamped to `200`–`480` — an unparseable value falls back to `256` rather than clamping to the minimum. Both settings apply at `lg` (1024px) and wider only; below that the sidebar is a full-height overlay at the 256px default. A width the user has dragged to wins over `default_width`. The flat `config.sidebar_toggle_visible = false` still works and writes into `config.sidebar[:toggle_visible]`, but the hash is the canonical home.
 
-`container_width` values are `:large` (default index), `:small` (default show/forms), and `:full`. The hash form accepts individual views (`:index`, `:show`, `:new`, `:edit`, `:create`, `:update`) and group aliases (`:forms`, `:display`, `:single`); a specific key wins over an alias. The `body_classes` block runs in Avo's `ExecutionContext`, so it has `current_user`, `request`, and `params`.
+`container_width` values are `:lg` (default index), `:md` (default show/forms), `:sm` (a 720px narrow container, opt-in) and `:full` — Tailwind's scale, matching every other size option in Avo. The Avo-4.0 names `:large` and `:small` still work, log a deprecation warning, and map to `:lg`/`:md`; note `:small` maps to `:md`, **not** to `:sm`, which is a genuinely narrower container that did not exist before. They go away in Avo 5. The hash form accepts individual views (`:index`, `:show`, `:new`, `:edit`, `:create`, `:update`) and group aliases (`:forms`, `:display`, `:single`); a specific key wins over an alias. The `body_classes` block runs in Avo's `ExecutionContext`, so it has `current_user`, `request`, and `params`.
 
 ### Navigation home and record flow
 
