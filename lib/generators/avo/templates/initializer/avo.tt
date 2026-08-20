@@ -50,6 +50,12 @@ Avo.configure do |config|
   # }.freeze
   # config.model_resource_mapping = {}
   # config.default_view_type = :table
+  # Map tiles for the map view and the `location`/`area` fields. Defaults to
+  # OpenFreeMap (no account needed), or Mapbox when MAPBOX_ACCESS_TOKEN is set.
+  # `styles` accepts :open_free_map, :mapbox, or your own {light:, dark:} pair.
+  # config.map_view = {
+  #   styles: :open_free_map
+  # }
   # config.per_page = 24
   # config.per_page_steps = [12, 24, 48, 72]
   # config.via_per_page = 8

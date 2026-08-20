@@ -3,7 +3,6 @@
 module Avo
   module Fields
     class AreaField < BaseField
-      attr_reader :mapkick_options
       attr_reader :datapoint_options
 
       def initialize(id, **args, &block)
@@ -14,6 +13,14 @@ module Avo
         @geometry = args[:geometry].presence || :polygon # Accepts: `:polygon` or `:multi_polygon`
         @mapkick_options = args[:mapkick_options].presence || {}
         @datapoint_options = args[:datapoint_options].presence || {}
+      end
+
+      def mapkick_options
+        {style: Avo::MapStyles.light}.merge(@mapkick_options)
+      end
+
+      def map_wrapper_data
+        Avo::MapStyles.wrapper_data(custom_style: @mapkick_options[:style])
       end
 
       def map_data

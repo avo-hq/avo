@@ -33,11 +33,16 @@ module Avo
           {
             id: "location-map",
             zoom: @args[:zoom]&.to_i || 15,
-            controls: true
+            controls: true,
+            style: Avo::MapStyles.light
           }
         end
 
         default_options.merge(@args[:mapkick_options] || {})
+      end
+
+      def map_wrapper_data
+        Avo::MapStyles.wrapper_data(custom_style: @args.dig(:mapkick_options, :style))
       end
 
       def value_as_array?

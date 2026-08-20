@@ -196,7 +196,7 @@ Grid has **no per-card HTML-attribute API** — `row_options` is table-only. `ht
 
 ### Map view
 
-Plot records with geospatial data on a Mapbox map. Enable with `self.map_view`.
+Plot records with geospatial data on a map. Enable with `self.map_view`.
 
 ```ruby
 # app/avo/resources/city.rb
@@ -223,7 +223,7 @@ Options:
 - `table` — `{ visible: true|false }`; default renders no adjacent table.
 - `extra_markers` — Proc returning an array of marker hashes for points not backed by records.
 
-**Requirements** (report these): add the **`mapkick-rb`** gem (NOT `mapkick`) to the `Gemfile`, and set a valid `MAPBOX_ACCESS_TOKEN` env var from a [Mapbox](https://account.mapbox.com/auth/signup/) account.
+**Requirements** (report these): add the **`mapkick-rb`** gem (NOT `mapkick`) to the `Gemfile`. That is all — Avo defaults the map to [OpenFreeMap](https://openfreemap.org), which needs no account, no API key and has no request cap. Set a valid `MAPBOX_ACCESS_TOKEN` from a [Mapbox](https://account.mapbox.com/auth/signup/) account only if you want Mapbox styles; Avo then defaults to those instead. Pin a provider with `config.map_view = {styles: :open_free_map}` (or `:mapbox`), or give `styles` a `{light:, dark:}` pair of style URLs.
 
 Make it the default with `self.default_view_type = :map`.
 
@@ -249,6 +249,6 @@ It works out of the box on the table view; nothing to enable on the resource. Th
 
 Tell the user:
 - Which resource file(s) and attribute(s) you changed (`self.table_view`, `self.grid_view`, `self.map_view`, `self.view_types`, `self.default_view_type`, `self.row_controls_config`, or the initializer).
-- Any external requirements: the `mapkick-rb` gem + `MAPBOX_ACCESS_TOKEN` for maps; the Tailwind integration and/or `@source inline(...)` for custom/dynamic classes; `self.includes` additions to avoid N+1.
+- Any external requirements: the `mapkick-rb` gem for maps (`MAPBOX_ACCESS_TOKEN` only if they want Mapbox styles rather than Avo's keyless OpenFreeMap default); the Tailwind integration and/or `@source inline(...)` for custom/dynamic classes; `self.includes` additions to avoid N+1.
 - If you set a `default_view_type`, confirm the matching view is configured/available so the switcher stays consistent.
 - For select-all or custom-view-type requests, note the cross-linked skill (**avo-actions**, **avo-custom-ui**) that carries the rest of the work.

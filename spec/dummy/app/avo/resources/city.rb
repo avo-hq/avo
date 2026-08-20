@@ -45,14 +45,14 @@ class Avo::Resources::City < Avo::BaseResource
       show_on: :preview,
       stored_as: [:latitude, :longitude],
       mapkick_options: {
-        style: "mapbox://styles/mapbox/satellite-v9",
         markers: {color: "#FFC0CB"}
       }
     field :city_center_area,
       as: :area,
       geometry: :polygon,
       mapkick_options: {
-        style: "mapbox://styles/mapbox/satellite-v9",
+        # A style Avo didn't pick: it survives the dark-mode toggle untouched.
+        style: "https://tiles.openfreemap.org/styles/liberty",
         controls: true
       },
       datapoint_options: {
