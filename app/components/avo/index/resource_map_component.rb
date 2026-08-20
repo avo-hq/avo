@@ -80,7 +80,7 @@ module Avo
       end
 
       def resource_mapkick_options
-        map_options[:mapkick_options] || {}
+        {style: Avo::MapStyles.light}.merge(map_options[:mapkick_options] || {})
       end
 
       def render_table?

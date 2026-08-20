@@ -11,6 +11,7 @@ module Avo
     attr_writer :exclude_from_status
     attr_writer :persistence
     attr_writer :resource_row_controls_config
+    attr_writer :map_view
     attr_accessor :timezone
     attr_accessor :per_page
     attr_accessor :per_page_steps
@@ -128,6 +129,7 @@ module Avo
       @column_names_mapping = {}
       @column_types_mapping = {}
       @resource_row_controls_config = {}
+      @map_view = {}
       @model_generator_hook = true
     end
 
@@ -141,6 +143,22 @@ module Avo
 
     def resource_row_controls_config
       RESOURCE_ROW_CONTROLS_CONFIG_DEFAULTS.merge @resource_row_controls_config
+    end
+
+    # Map view, and the `location`/`area` fields that render the same maps.
+    #
+    # `styles` is the light/dark pair Avo renders them with. `nil` resolves to
+    # Mapbox when MAPBOX_ACCESS_TOKEN is set and to OpenFreeMap otherwise — pin
+    # one with `:mapbox` / `:open_free_map`, or pass your own `{light:, dark:}`.
+    # See Avo::MapStyles.
+    unless defined?(MAP_VIEW_DEFAULTS)
+      MAP_VIEW_DEFAULTS = {
+        styles: nil
+      }.freeze
+    end
+
+    def map_view
+      MAP_VIEW_DEFAULTS.merge @map_view
     end
 
     # Authorization is enabled when:

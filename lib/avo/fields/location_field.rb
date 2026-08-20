@@ -31,7 +31,8 @@ module Avo
           {
             id: "location-map",
             zoom: @args[:zoom]&.to_i || 15,
-            controls: true
+            controls: true,
+            style: Avo::MapStyles.light
           }
         end
 
