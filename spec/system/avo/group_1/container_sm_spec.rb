@@ -5,10 +5,12 @@ require "rails_helper"
 # pinned here rather than inferred from the stylesheet:
 #
 #   max-width  720px (max-w-180)  — one step below .container-md's 960px
-#   clamps at  768px (md)         — not xl, where .container-md clamps: below
-#                                   that the sidebar is an overlay and content
-#                                   is full-bleed, so an xl clamp would make
-#                                   :sm and :md identical on every laptop.
+#   clamps at  768px (md)         — deliberately far below .container-md's xl:
+#                                   a late clamp would leave :sm and :md
+#                                   pixel-identical on every laptop, which is
+#                                   where a narrow container is most worth
+#                                   asking for. The trade is that at exactly
+#                                   768px the column leaves 24px a side.
 RSpec.describe "container width :sm", type: :system do
   let!(:user) { create :user }
   let(:show_path) { "/admin/resources/users/#{user.slug}" }
