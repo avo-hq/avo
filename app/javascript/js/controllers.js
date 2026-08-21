@@ -49,6 +49,7 @@ import PersistentModalController from './controllers/persistent_modal_controller
 import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
 import RecordSelectorController from './controllers/record_selector_controller'
+import RevealFieldController from './controllers/fields/reveal_field_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
 import ResizableEditorController from './controllers/fields/resizable_editor_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
@@ -143,6 +144,7 @@ application.register('date-field', DateFieldController)
 application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
+application.register('reveal-field', RevealFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
 application.register('resizable-editor', ResizableEditorController)
 application.register('tags-field', TagsFieldController)
