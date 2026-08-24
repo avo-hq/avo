@@ -15,6 +15,9 @@
     param_key: '<%= Avo::DynamicFilters.configuration.param_key %>'
   }
   <% end %>
+  Avo.configuration.sounds = {
+    mid: '<%= asset_path("avo/mid.wav") %>'
+  }
   Avo.configuration.modal_frame_id = '<%= ::Avo::MODAL_FRAME_ID %>'
   Avo.configuration.stimulus_controllers = []
   Avo.configuration.hotkeys = {
