@@ -248,6 +248,8 @@ export default class extends Controller {
   // explicit user pick — not on hover previews, nor when the system flips the
   // scheme under "auto".
   playPickSound(isDefault) {
+    if (document.documentElement.classList.contains('appearance-muted')) return
+
     const src = window.Avo?.configuration?.sounds?.mid
     if (!src) return
 
@@ -355,6 +357,30 @@ export default class extends Controller {
     const labels = this.hasThemeLabelsValue ? this.themeLabelsValue : {}
     const label = labels[theme] || theme.charAt(0).toUpperCase() + theme.slice(1)
     this.themeLabelTarget.textContent = label
+  }
+
+  // Same shape as setKeyBadges: the preference rides on <html> so CSS can drive
+  // the active state and it survives Turbo navigations, and it lives in
+  // localStorage because it's per-client rather than per-account.
+  setSound(event) {
+    event.preventDefault()
+    const { sound } = event.currentTarget.dataset
+    if (sound !== 'on' && sound !== 'off') return
+
+    const muted = sound === 'off'
+    document.documentElement.classList.toggle('appearance-muted', muted)
+    try {
+      if (muted) {
+        localStorage.setItem('avo:appearance:muted', '1')
+      } else {
+        localStorage.removeItem('avo:appearance:muted')
+      }
+    } catch (e) {
+      // localStorage unavailable (private browsing) — toggle works for the current session only
+    }
+
+    // Confirm unmuting with the sound itself; muting stays quiet.
+    if (!muted) this.playPickSound(false)
   }
 
   // Mirrors the Shift+K hotkey in global_hotkeys.js. CSS handles the active
