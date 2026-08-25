@@ -2,9 +2,13 @@ require "rails_helper"
 
 # Server half of the browser-timezone feature: the browser-timezone Stimulus
 # controller mirrors the viewer's IANA zone into `avo.browser_timezone`, and
-# BaseApplicationController#set_browser_timezone wraps the request in it. The
+# BaseApplicationController#render_to_body renders the response in it. The
 # one-shot `avo.timezone_changed` cookie (set right before the controller's
 # Turbo reload) makes the reloaded page announce the change once via flash.
+#
+# The zone is scoped to rendering only. App code running in the action itself
+# keeps the app's configured zone, so `Time.zone.local` in an action's `handle`
+# still means what it means everywhere else in Rails.
 RSpec.describe "Browser timezone", type: :request do
   let(:admin_user) { create :user, roles: {admin: true} }
   let(:path) { "/admin/failed_to_load" }
@@ -44,6 +48,38 @@ RSpec.describe "Browser timezone", type: :request do
     expect(Array(response.headers["Set-Cookie"]).join).to include("avo.timezone_changed=;")
     get path
     expect(response.body).not_to include("Dates and times are now displayed")
+  end
+
+  # Regression: the zone used to be applied with an `around_action`, which wrapped
+  # the whole request. App code running in the action then silently reinterpreted
+  # `Time.zone`, so a `Time.zone.local` in an action's `handle` built a timestamp
+  # in the viewer's zone instead of the app's. See avo-hq/avo#4703.
+  it "leaves the action on the app's configured zone" do
+    cookies["avo.browser_timezone"] = "Europe/Bucharest"
+
+    zone_in_action = nil
+    allow_any_instance_of(Avo::BaseApplicationController).to receive(:set_view).and_wrap_original do |original, *args|
+      zone_in_action = Time.zone.name
+      original.call(*args)
+    end
+
+    get path
+
+    expect(response).to have_http_status(:ok)
+    expect(zone_in_action).to eq Time.zone.name
+    expect(zone_in_action).not_to eq "Bucharest"
+
+    # Rendering still gets the viewer's zone.
+    expect(Time).to have_received(:use_zone).with(ActiveSupport::TimeZone["Europe/Bucharest"])
+  end
+
+  it "restores the app zone after the response is rendered" do
+    cookies["avo.browser_timezone"] = "Europe/Bucharest"
+    app_zone = Time.zone.name
+
+    get path
+
+    expect(Time.zone.name).to eq app_zone
   end
 
   it "falls back to the app zone on a junk cookie without raising" do
