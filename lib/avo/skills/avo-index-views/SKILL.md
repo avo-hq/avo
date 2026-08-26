@@ -217,7 +217,7 @@ end
 ```
 
 Options:
-- `mapkick_options` — forwarded to the [mapkick gem](https://github.com/ankane/mapkick). Avo sets a default `style` and always controls `height` (any `height` you pass is overwritten).
+- `mapkick_options` — forwarded to the [mapkick gem](https://github.com/ankane/mapkick). Avo sets a default `style` and always controls `height` (any `height` you pass is overwritten). Leaving `style` alone is what buys dark mode: Avo styles the map from a light/dark pair and swaps it as the color scheme changes. Pass your own `style` and that is one style rather than a pair, so Avo stops retheming that map — it stays exactly as you set it, dark mode included.
 - `record_marker` — Proc evaluated per record; must return a hash with `latitude` and `longitude` (optionally `tooltip`, `label`, `color`). Markers missing lat/long are skipped. Default reads `record.coordinates.first`/`.last`. Use this block to source coordinates from anywhere (API, cache), not just the DB.
 - `map` — `{ position: … }` places the map; the table takes the remaining side (`:left`/`:right` side-by-side, `:top`/`:bottom` stacked).
 - `table` — `{ visible: true|false }`; default renders no adjacent table.
