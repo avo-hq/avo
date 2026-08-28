@@ -1,6 +1,6 @@
 ---
 name: avo-admin-config
-description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, remove or retune the floating "Back to top" button, persist filters/pagination across requests, or opt out of usage metadata.
+description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, remove or retune the floating "Back to top" button, persist filters/pagination across requests, change which map tiles the admin's maps use, or opt out of usage metadata.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -42,9 +42,9 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 ## When this applies
 
-**Explicit (Avo named):** "set `config.app_name`", "change `per_page` in the Avo initializer", "set `default_view_type` to `:grid`", "use `container_width = :full`", "set `resource_default_view = :edit`", "configure `default_editor_url`", "enable `persistence`", "set `body_classes`".
+**Explicit (Avo named):** "set `config.app_name`", "change `per_page` in the Avo initializer", "set `default_view_type` to `:grid`", "use `container_width = :full`", "set `resource_default_view = :edit`", "configure `default_editor_url`", "enable `persistence`", "set `body_classes`", "set `config.map_view` / pin the map styles".
 
-**Implicit (Rails-shaped, no mention of Avo):** "change how many records show per page in the admin", "rename the admin / change the app name in the top bar", "set the timezone/currency the admin displays", "default the admin list to grid/card view", "make the admin full-width", "clicking a row shouldn't open the record", "skip the show page and go straight to edit", "open the admin's source files in Cursor/VS Code from the UI", "keep the sidebar always open / hide the collapse button", "make the sidebar wider by default", "stop people resizing the sidebar", "send people to a dashboard when they open the admin", "add a CSS class to the `<body>` tag", "make the admin rows denser / tighter", "keep my filters and pagination when I navigate away", "stop the admin from phoning home usage stats".
+**Implicit (Rails-shaped, no mention of Avo):** "change how many records show per page in the admin", "rename the admin / change the app name in the top bar", "set the timezone/currency the admin displays", "default the admin list to grid/card view", "make the admin full-width", "clicking a row shouldn't open the record", "skip the show page and go straight to edit", "open the admin's source files in Cursor/VS Code from the UI", "keep the sidebar always open / hide the collapse button", "make the sidebar wider by default", "stop people resizing the sidebar", "send people to a dashboard when they open the admin", "add a CSS class to the `<body>` tag", "make the admin rows denser / tighter", "keep my filters and pagination when I navigate away", "use OpenFreeMap instead of Mapbox for the admin's maps / change the map tiles", "stop the admin from phoning home usage stats".
 
 ## Common settings
 
@@ -70,6 +70,7 @@ config.per_page = 24                             # default page size (default 24
 config.per_page_steps = [12, 24, 48, 72]         # options in the per-page picker
 config.via_per_page = 8                          # page size inside has_many association tables
 config.default_view_type = :grid                 # :table (default), :grid, :map, or a custom view type
+config.map_view = { styles: :open_free_map }     # map tiles: :open_free_map, :mapbox, or a {light:, dark:} pair
 config.first_sorting_option = :asc               # direction on first sort click (default :desc)
 config.density = :tight                          # row height: :tight, :normal (default), :relaxed
 config.field_wrapper_layout = :stacked           # label above value everywhere (default :inline)
@@ -81,6 +82,8 @@ config.pagination = { type: :countless }         # global pagination defaults; s
 ```
 
 `default_view_type`, `pagination`, and `density` (on dashboard cards) also exist as per-resource class attributes — set globally here, override per resource. Row-control placement (`resource_row_controls_config`) lives on the table-view docs.
+
+`map_view[:styles]` is the light/dark tile pair Avo renders the map view **and** the `location`/`area` fields with. It defaults to `nil`, which resolves to Mapbox when `MAPBOX_ACCESS_TOKEN` is set and to [OpenFreeMap](https://openfreemap.org) — no account, no API key, no request cap — otherwise. Pin one regardless with `:open_free_map` or `:mapbox`, or pass your own `{light:, dark:}` hash of style URLs. Avo swaps between the pair as the color scheme changes; a single map that sets its own `mapkick_options: {style: …}` is one style rather than a pair, so Avo leaves that map alone in dark mode. Maps still need the `mapkick-rb` gem (see **avo-index-views** and **avo-fields**).
 
 ### Layout
 
