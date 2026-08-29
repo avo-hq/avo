@@ -29,6 +29,7 @@ A handful of these have **resource-level equivalents** — set them globally her
 - Installing, mounting (`root_path`, `prefix_path`), and the license key → **avo-setup**
 - Logos, favicons, colors, theming (`appearance`) → **avo-branding-appearance**
 - Menus, global search, breadcrumbs, keyboard shortcuts (`main_menu`, `global_search`, `set_initial_breadcrumbs`, `hotkeys`) → **avo-navigation-search**
+- Map provider and the light/dark map style pair (`map_view`) → **avo-index-views**
 - Caching internals, cache store, N+1 tuning → **avo-performance**
 - Authorization client and policy wiring → **avo-authorization**
 
