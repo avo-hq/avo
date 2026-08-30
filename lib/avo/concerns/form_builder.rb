@@ -10,9 +10,10 @@ module Avo
           html: {
             novalidate: true,
             data: {
-              controller: "form avo-reactive-fields",
+              controller: ["form avo-reactive-fields", ("webmcp-form" if webmcp?)].compact.join(" "),
               action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
-            }
+            },
+            **webmcp_tool_attributes
           },
           multipart: true, &block
       end
@@ -36,6 +37,28 @@ module Avo
       def is_edit?
         @view.in?(%w[edit update])
       end
+
+      private
+
+      # WebMCP's declarative API: `toolname` + `tooldescription` make the form a tool whose schema is read off the
+      # inputs. No `toolautosubmit`, on purpose — the agent fills, the person reviews and clicks Save.
+      def webmcp_tool_attributes
+        return {} unless webmcp?
+
+        if is_edit?
+          {
+            toolname: "update_#{@resource.class.singular_route_key}",
+            tooldescription: "Update the #{@resource.name} \"#{@resource.record_title}\". Fill in only the fields that should change."
+          }
+        else
+          {
+            toolname: "create_#{@resource.class.singular_route_key}",
+            tooldescription: "Create a new #{@resource.name}."
+          }
+        end
+      end
+
+      def webmcp? = Avo.configuration.webmcp[:enabled]
     end
   end
 end

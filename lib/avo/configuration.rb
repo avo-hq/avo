@@ -14,6 +14,7 @@ module Avo
     attr_writer :back_to_top
     attr_writer :associations
     attr_writer :map_view
+    attr_writer :webmcp
     # When unset, Tailwind scans Rails.root.join("app"). Each entry is an absolute path or a path relative to Rails.root.
     attr_writer :tailwindcss_content_sources
     attr_accessor :timezone
@@ -218,6 +219,7 @@ module Avo
       @column_types_mapping = {}
       @resource_row_controls_config = {}
       @hotkeys = {}
+      @webmcp = {}
       @back_to_top = {}
       @associations = {}
       @global_search = {
@@ -250,6 +252,14 @@ module Avo
       HOTKEYS_DEFAULTS = {
         enabled: true,
         show_key_badges: true
+      }.freeze
+    end
+
+    # WebMCP (document.modelContext): the browser's own agent gets Avo's forms and a search tool. `enabled: false`
+    # announces nothing; nothing leaves the browser either way, and browsers without the API see plain markup.
+    unless defined?(WEBMCP_DEFAULTS)
+      WEBMCP_DEFAULTS = {
+        enabled: true
       }.freeze
     end
 
@@ -329,6 +339,10 @@ module Avo
 
     def back_to_top
       BACK_TO_TOP_DEFAULTS.merge @back_to_top
+    end
+
+    def webmcp
+      WEBMCP_DEFAULTS.merge @webmcp
     end
 
     def map_view

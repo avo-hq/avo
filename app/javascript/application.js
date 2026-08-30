@@ -11,6 +11,7 @@ import { install } from '@github/hotkey'
 import tippy from 'tippy.js'
 
 import { LocalStorageService } from './js/local-storage-service'
+import * as webmcp from './js/webmcp'
 import { attachHotkeyFeedback, installGlobalHotkeys } from './js/global_hotkeys'
 import nearestTopLayer from './js/helpers/top_layer'
 
@@ -29,6 +30,8 @@ function installHotkeys(root = document) {
 Mapkick.use(mapboxgl)
 
 window.Avo.localStorage = new LocalStorageService()
+// Plugins and host apps register their own WebMCP tools through here; see js/webmcp.js.
+window.Avo.webmcp = webmcp
 
 window.Turbolinks = Turbo
 

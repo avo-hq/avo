@@ -109,6 +109,14 @@ Avo.configure do |config|
   #   show_key_badges: true   # Set to false to hide inline kbd badge elements from the UI
   # }
 
+  ## == WebMCP ==
+  # Announce the admin's forms and a search tool to the browser's own AI agent (WebMCP,
+  # document.modelContext). Nothing leaves the browser: the agent runs there, under the
+  # signed-in person's own session and permissions. Set enabled to false to announce nothing.
+  # config.webmcp = {
+  #   enabled: true
+  # }
+
   ## == Sidebar ==
   # config.sidebar = {
   #   # Show the navbar button that collapses the sidebar on desktop. On mobile

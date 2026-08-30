@@ -90,6 +90,7 @@
 
     <%= turbo_frame_tag Avo::MODAL_FRAME_ID %>
     <%= render partial: "avo/partials/alerts" %>
+    <%= render partial: "avo/partials/webmcp" if Avo.configuration.webmcp[:enabled] %>
     <%= render partial: "avo/partials/scripts" %>
     <%= render partial: "avo/partials/confirm_dialog" %>
     <%= render Avo::KeyboardShortcutsComponent.new if Avo.configuration.hotkeys[:enabled] %>

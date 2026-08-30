@@ -40,6 +40,7 @@ Each entry is a directory beside this file: `<skill>/SKILL.md`.
 | `avo-controllers` | Override per-resource CRUD controller hooks and safely extend Avo's ApplicationController |
 | `avo-engine-internals` | `main_app`/`avo` helpers, `Avo::Current`, `ExecutionContext`, reserved names |
 | `avo-media-library` | Central asset browser and a picker inside rich-text editors |
+| `avo-webmcp` | Announce forms and tools to the browser's own AI agent (WebMCP / `document.modelContext`), the `config.webmcp` switch, page tools from plugins |
 
 ## Cross-cutting
 

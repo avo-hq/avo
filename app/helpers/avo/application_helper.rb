@@ -5,6 +5,28 @@ module Avo
 
     def ui = Avo::UIInstance
 
+    # Avo's one imperative WebMCP tool; every other tool is a form and announces itself (Avo::Concerns::FormBuilder).
+    # ponytail: index policies run once more per page, same as the sidebar; memoize per request if it shows.
+    def webmcp_search_tool
+      resources = Avo.resource_manager.get_available_resources(_current_user).select { |resource| resource.search_query.present? }
+      return if resources.empty?
+
+      {
+        name: "search_records",
+        description: "Search one resource's records by text. Returns the matching records with their id, label and the URL of their page, so a record can be found and then opened.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            resource: {type: "string", enum: resources.map(&:route_key), description: "The resource to search — the segment its URLs use."},
+            q: {type: "string", description: "The text to search for."}
+          },
+          required: ["resource", "q"]
+        },
+        # Reads only, and the labels it returns are whatever people typed into the records.
+        annotations: {readOnlyHint: true, untrustedContentHint: true}
+      }
+    end
+
     # The cookie name that remembers an opened manual frame. Derived from the
     # frame's deferred URL (which already encodes resource + record + frame), so
     # the memory is scoped per record + association/tab. Hashed to keep the name

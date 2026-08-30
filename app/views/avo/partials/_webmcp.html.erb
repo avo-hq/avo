@@ -1,0 +1,5 @@
+<%# The search tool, declared for the webmcp-tool controller: `{resource}` is filled from the tool's input and %>
+<%# `q` goes on the query string, so a call is one GET against the search endpoint searchable fields already use. %>
+<% if (tool = webmcp_search_tool) %>
+  <div hidden data-controller="webmcp-tool" data-webmcp-tool-url-value="<%= root_path_without_url %>/avo_api/{resource}/search" data-webmcp-tool-definition-value="<%= tool.to_json %>"></div>
+<% end %>
