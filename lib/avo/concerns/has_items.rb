@@ -202,7 +202,26 @@ module Avo
         items_holder&.items || []
       end
 
+      # Every container asks its children whether they have anything visible, so one
+      # render may call this thousands of times and each call walks the whole subtree.
+      # Memoizing it offers a significant performance boost, particularly for large
+      # resources.
+      #
+      # It can't be a plain `||=` because the contextual items can change throughout a
+      # request lifecycle.
       def visible_items
+        hydration_resource = is_a?(Avo::Resources::Base) ? self : try(:resource)
+        context = [@items_holder, view.to_s.to_sym, hydration_resource.try(:record)]
+
+        unless @visible_items_context&.zip(context)&.all? { |was, now| was.equal?(now) }
+          @visible_items_context = context
+          @visible_items = compute_visible_items
+        end
+
+        @visible_items
+      end
+
+      def compute_visible_items
         items
           .map do |item|
             hydrate_item item
