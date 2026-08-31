@@ -29,9 +29,9 @@ A handful of these have **resource-level equivalents** — set them globally her
 - Installing, mounting (`root_path`, `prefix_path`), and the license key → **avo-setup**
 - Logos, favicons, colors, theming (`appearance`) → **avo-branding-appearance**
 - Menus, global search, breadcrumbs, keyboard shortcuts (`main_menu`, `global_search`, `set_initial_breadcrumbs`, `hotkeys`) → **avo-navigation-search**
-- Map provider and the light/dark map style pair (`map_view`) → **avo-index-views**
 - Caching internals, cache store, N+1 tuning → **avo-performance**
 - Authorization client and policy wiring → **avo-authorization**
+- Map styles / providers (`map_view`) — the map view and the `location`/`area` fields share one setting → **avo-index-views**
 
 ## Docs
 
@@ -165,4 +165,4 @@ When done, tell the user:
 - Any Avo-3 → Avo-4 rename you applied (`container_width`, `resource_default_view`) and the old line it replaced.
 - Follow-ups the change implies: a server restart to reload the initializer; a scalable session store if you enabled `persistence`; disabling `cache_resources_on_index_view` if they gate fields by role.
 - When a setting has a per-resource equivalent (`default_view_type`, `pagination`, `density`), note it so they know they can override it on individual resources.
-- Redirect anything out of scope to the right skill: install/mount/license → **avo-setup**, appearance/theming → **avo-branding-appearance**, menus/search/breadcrumbs/shortcuts → **avo-navigation-search**, caching depth → **avo-performance**, authorization → **avo-authorization**.
+- Redirect anything out of scope to the right skill: install/mount/license → **avo-setup**, appearance/theming → **avo-branding-appearance**, menus/search/breadcrumbs/shortcuts → **avo-navigation-search**, caching depth → **avo-performance**, authorization → **avo-authorization**, map styles (`map_view`) → **avo-index-views**.
