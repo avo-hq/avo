@@ -6,8 +6,8 @@ require "rails_helper"
 # anyway (AVO-1751). Safari is not in CI, so the regression is pinned on the browser-agnostic invariant Safari depends
 # on: the clicked element is still attached when the click finishes dispatching.
 RSpec.describe "Loading button", type: :system do
-  let!(:project) { create :project }
-  let!(:store) { create :store, name: "original name" }
+  let(:project) { create :project }
+  let(:store) { create :store, name: "original name" }
 
   # Only the Save button is rendered with `loading: true`, so this class picks it out without matching on label text.
   let(:save_button_selector) { "button.button--loading" }
@@ -92,13 +92,7 @@ RSpec.describe "Loading button", type: :system do
       expect(project.reload.name).to eq "Renamed from the badge"
     end
 
-    it "still submits with the keyboard shortcut" do
-      visit "/admin/resources/projects/#{project.id}/edit"
-
-      find("input[name='project[name]']").send_keys [:control, :enter]
-
-      expect(page).to have_text "Project was successfully updated"
-    end
+    # The Mod+Enter path submits without a click target at all; avo_cmd_return_to_submits_spec.rb already covers it.
   end
 
   describe "loading state" do
@@ -128,6 +122,20 @@ RSpec.describe "Loading button", type: :system do
       expect(page).to have_selector "#{save_button_selector} .button__label", text: "Save"
       expect(find(save_button_selector)).not_to be_disabled
       expect(store.reload.name).to eq "original name"
+    end
+
+    it "does not stack a second spinner when the button is clicked again" do
+      visit_store_edit
+
+      click_save_label
+      expect_confirmation_dialog
+      find("#turbo-confirm button", text: "No, cancel").click
+      expect(page).not_to have_selector "#{save_button_selector} .button__spinner"
+
+      click_save_label
+      expect_confirmation_dialog
+
+      expect(page).to have_selector "#{save_button_selector} .button__spinner", count: 1
     end
   end
 end
