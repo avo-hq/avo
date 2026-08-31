@@ -5,7 +5,8 @@ module Avo
 
     def ui = Avo::UIInstance
 
-    # Avo's one imperative WebMCP tool; every other tool is a form and announces itself (Avo::Concerns::FormBuilder).
+    # Core's WebMCP tool. Read-only by construction: it is a GET against the search endpoint, and the
+    # write tools are avo-mcp_server's, registered from the gem.
     # ponytail: index policies run once more per page, same as the sidebar; memoize per request if it shows.
     def webmcp_search_tool
       resources = Avo.resource_manager.get_available_resources(_current_user).select { |resource| resource.search_query.present? }
@@ -17,7 +18,10 @@ module Avo
         inputSchema: {
           type: "object",
           properties: {
-            resource: {type: "string", enum: resources.map(&:route_key), description: "The resource to search — the segment its URLs use."},
+            # No enum: the list grows with the panel, and at a hundred resources it is most of the
+            # tool's schema on every page. `list_resources` is where a name comes from, and the
+            # search endpoint refuses anything else.
+            resource: {type: "string", description: "The resource to search — the segment its URLs use, as reported by list_resources."},
             q: {type: "string", description: "The text to search for."}
           },
           required: ["resource", "q"]

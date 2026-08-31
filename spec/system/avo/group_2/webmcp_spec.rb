@@ -4,6 +4,9 @@ require "rails_helper"
 # suite has no document.modelContext: the spec installs a fake that records registrations and honours the
 # abort signal, then drives the app through Turbo — the fake survives a Turbo visit, and a page's tools
 # living exactly as long as the page is the thing being proven.
+#
+# Core registers one tool. A form carries no tool attributes: writes are avo-mcp_server's, and the edit
+# page is visited here only to prove the search tool is dropped and re-registered across a Turbo swap.
 RSpec.describe "WebMCP", type: :system do
   let!(:user) { create :user, first_name: "Adrian", last_name: "Marin" }
 
@@ -39,7 +42,7 @@ RSpec.describe "WebMCP", type: :system do
     expect(log["aborted"]).to eq []
 
     find("a[href*='/admin/resources/users/#{user.to_param}/edit']", match: :first).click
-    expect(page).to have_css "form[toolname='update_user']"
+    expect(page).to have_field "user[first_name]"
     expect(log["aborted"]).to eq ["search_records"]
     expect(log["registered"]).to eq ["search_records", "search_records"]
 
@@ -52,15 +55,5 @@ RSpec.describe "WebMCP", type: :system do
     expect(result["content"].first["type"]).to eq "text"
     payload = JSON.parse(result["content"].first["text"])
     expect(payload.dig("users", "results").first["_url"]).to eq "/admin/resources/users/#{user.to_param}"
-  end
-
-  it "describes the form's parameters with their labels" do
-    visit "/admin/resources/users/#{user.to_param}/edit"
-
-    expect(page).to have_css "form[toolname='update_user']"
-    input = find("input[name='user[first_name]']")
-    expect(input["toolparamdescription"]).to eq "First name"
-    # Hidden inputs carry state, not choices, and stay undescribed.
-    expect(find("form[toolname='update_user'] input[name='_method']", visible: :all)["toolparamdescription"]).to be_nil
   end
 end

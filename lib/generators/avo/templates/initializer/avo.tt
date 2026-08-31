@@ -110,9 +110,10 @@ Avo.configure do |config|
   # }
 
   ## == WebMCP ==
-  # Announce the admin's forms and a search tool to the browser's own AI agent (WebMCP,
-  # document.modelContext). Nothing leaves the browser: the agent runs there, under the
-  # signed-in person's own session and permissions. Set enabled to false to announce nothing.
+  # Announce a search tool to the browser's own AI agent (WebMCP, document.modelContext), and
+  # let gems and your own controllers announce theirs. Nothing leaves the browser: the agent
+  # runs there, under the signed-in person's own session and permissions. Set enabled to false
+  # to announce nothing — including any tool a gem would have registered.
   # config.webmcp = {
   #   enabled: true
   # }

@@ -1,7 +1,7 @@
 // WebMCP: the browser's own AI agent reads tools off the page through `document.modelContext` (Chrome,
 // behind chrome://flags/#enable-webmcp-testing today; `navigator.modelContext` in the origin-trial builds).
-// Avo's forms announce themselves declaratively — `toolname` on the form tag, see
-// Avo::Concerns::FormBuilder — and this is the imperative half, for tools that have no form.
+// Every Avo tool goes through here: core's search tool, avo-mcp_server's write tools, and any a
+// plugin or host app registers. Avo's own forms carry no tool attributes.
 //
 // A registration is scoped to the AbortSignal passed with it, so a tool lives exactly as long as the
 // element that declared it — under Turbo, the page. Pass the signal of a controller aborted in

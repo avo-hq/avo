@@ -73,7 +73,6 @@ import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
-import WebmcpFormController from './controllers/webmcp_form_controller'
 import WebmcpToolController from './controllers/webmcp_tool_controller'
 
 application.register('action', ActionController)
@@ -151,7 +150,6 @@ application.register('tags-field', TagsFieldController)
 application.register('tiptap-field', TiptapFieldController)
 application.register('trix-field', TrixFieldController)
 application.register('stars-field', StarsFieldController)
-application.register('webmcp-form', WebmcpFormController)
 application.register('webmcp-tool', WebmcpToolController)
 
 // Custom controllers
