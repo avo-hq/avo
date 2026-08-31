@@ -47,7 +47,7 @@ RSpec.feature "ConfirmOnSave", type: :feature do
           click_on "No, cancel"
         end
 
-        expect(page).not_to have_selector(".button-spinner")
+        expect(page).not_to have_selector(".button__spinner")
         expect(find_field_value_element("name")).to have_text changed_name
         expect(store.name).to eq(store_name)
       end
