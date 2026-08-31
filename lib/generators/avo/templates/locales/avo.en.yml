@@ -53,6 +53,11 @@ en:
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
       shortcut_badges_show_tooltip: Show keyboard shortcut badges
       show: Show
+      sound: Sound
+      sound_off: 'Off'
+      sound_off_tooltip: Mute appearance sounds
+      sound_on: 'On'
+      sound_on_tooltip: Play a sound when appearance changes
       title: Appearance
     applied: applied
     are_you_sure: Are you sure?
