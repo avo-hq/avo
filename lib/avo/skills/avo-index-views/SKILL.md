@@ -217,7 +217,7 @@ end
 ```
 
 Options:
-- `mapkick_options` — forwarded to the [mapkick gem](https://github.com/ankane/mapkick). Avo sets a default `style` and always controls `height` (any `height` you pass is overwritten).
+- `mapkick_options` — forwarded to the [mapkick gem](https://github.com/ankane/mapkick). Avo sets a default `style` and always controls `height` (any `height` you pass is overwritten). Passing your own `style` here also opts that map out of the automatic light/dark swap (see the gotcha below).
 - `record_marker` — Proc evaluated per record; must return a hash with `latitude` and `longitude` (optionally `tooltip`, `label`, `color`). Markers missing lat/long are skipped. Default reads `record.coordinates.first`/`.last`. Use this block to source coordinates from anywhere (API, cache), not just the DB.
 - `map` — `{ position: … }` places the map; the table takes the remaining side (`:left`/`:right` side-by-side, `:top`/`:bottom` stacked).
 - `table` — `{ visible: true|false }`; default renders no adjacent table.
@@ -242,6 +242,7 @@ It works out of the box on the table view; nothing to enable on the resource. Th
 - **`row_options` blocks run per row, per render.** Preload every association they touch via `self.includes`, or you get an N+1 across every row. Keep blocks cheap.
 - **Dark mode is your responsibility** for user classes — pair `dark:` variants (`bg-blue-50 dark:bg-blue-950/40`) or use Avo's semantic CSS variables via `style:`. For custom backgrounds, use semitransparent values or explicit `hover:` variants so Avo's row hover/selection overlay still shows through.
 - **Map markers need `latitude` + `longitude`.** Records whose `record_marker` returns a hash missing either are silently dropped from the map.
+- **A custom map `style` stays fixed in dark mode.** Avo follows the color scheme and swaps the map between the light and dark styles of the pair it resolved (`config.map_view[:styles]`, or the OpenFreeMap/Mapbox default). `mapkick_options: {style: "..."}` is a single style rather than a pair, so Avo leaves that map exactly as you set it, dark mode included. Want a custom look that still follows the theme? Set the `{light:, dark:}` pair on `config.map_view` instead of a per-map `style`.
 - **Select-all serialization can break on a model `normalizes` proc.** `normalizes :status, with: ->(s) { s }` combined with a filter on that attribute raises `TypeError: no _dump_data is defined for class Proc`, which auto-disables select-all. For apps created before Rails 7.1, set `config.active_record.marshalling_format_version = 7.1` in `config/application.rb`.
 - **Authoring a brand-new custom view type is out of scope.** Timeline/calendar/kanban views are plugin work (ViewComponent + engine registration). Point the user to the **avo-custom-ui** skill and `https://docs.avohq.io/4.0/custom-view-types.md`; here only enable built-in/registered types.
 
