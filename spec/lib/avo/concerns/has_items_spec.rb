@@ -65,5 +65,23 @@ RSpec.describe Avo::Concerns::HasItems do
 
       expect(ids(resource)).to eq [:replaced]
     end
+
+    # `Holder#add_item` appends in place, so neither the holder nor its array
+    # changes identity — only the count says the items moved.
+    it "recomputes when an item is added to the holder it already read" do
+      resource = Avo::Resources::Person.new(view: :show, record: visible).detect_fields
+      expect(ids(resource)).to eq [:name, :only_when_visible, :only_on_show]
+
+      resource.items_holder.field :added_later, as: :text
+
+      expect(ids(resource)).to eq [:name, :only_when_visible, :only_on_show, :added_later]
+    end
+
+    it "hands out a frozen array so a caller can't corrupt the memo" do
+      resource = Avo::Resources::Person.new(view: :show, record: visible).detect_fields
+
+      expect { resource.visible_items.clear }.to raise_error FrozenError
+      expect(ids(resource)).to eq [:name, :only_when_visible, :only_on_show]
+    end
   end
 end
