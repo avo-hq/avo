@@ -92,7 +92,7 @@ Guide sections are headed by version (`## Upgrade to 3.22.0`, `## Upgrade from 3
 
 For each section between your before and after versions:
 
-1. **Inventory first.** Grep for the API the section touches *before* changing anything. Most sections won't apply to a given app.
+1. **Inventory first.** Grep for the API the section touches *before* changing anything — and where the section is about how a label or key resolves, grep `config/locales` too, since the trigger can be a key the app already defines rather than anything in its Ruby. Most sections won't apply to a given app.
 2. Mark it **APPLIES / NOT USED / NEEDS REVIEW** in the log. Never apply a change for an API the app doesn't use.
 3. If it applies, make the edit, then boot the app and re-run the tests.
 4. Commit per section, with the version in the message.
@@ -163,6 +163,7 @@ Check the project's own instructions for how — in this order: `AGENTS.md`, `CL
 - **The update alone is not the upgrade.** Bumping the gems and skipping the guide is the single most common way an admin breaks after an "upgrade" — and the breakage often surfaces days later, in a view nobody opened.
 - **Apply sections oldest → newest.** They're written as a chain; applying 4.0.12's change before 4.0.7's can leave you editing code the earlier section was about to rename.
 - **Silent default flips pass tests.** Sections that change a default (authorization strictness, confirmation modals, expanded filters) break nothing visible in CI and change runtime behavior. Call these out individually.
+- **A section can be triggered by the app's locale files, not its Ruby.** Avo has been moving label resolution so a derived i18n key wins *over* the class attribute — actions in `4.0.17`, then cards, dashboards and scopes in `avo-dashboards` / `avo-scopes` `4.1.2`. Nothing in the app's Ruby changed, so grepping for an API name finds nothing; the trigger is a key the app already defines under `avo.action_translations`, `avo.card_translations`, `avo.dashboard_translations` or `avo.scope_translations`. Where one exists the class attribute stops being read **even when it's a lambda**, which is then never called and computes nothing, with no error. Grep those roots in `config/locales`, and move the collision with `self.translation_key` (or a value at the registration site) rather than deleting the key — **avo-i18n**.
 - **Add-on gems version independently.** `avo-kanban 0.1.17 → 0.1.18` has its own section even when Avo core barely moved. Work the lock diff, not just the core version.
 - **Assets after upgrade.** A GitHub-sourced install ships no precompiled assets — re-run `rake avo:build-assets` or the admin renders unstyled (**avo-setup**).
 - **Don't invent a migration.** If a version's change isn't in the guide or the release notes, stop and ask rather than guessing at the new API.
