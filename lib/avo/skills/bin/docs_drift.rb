@@ -72,7 +72,10 @@ changed = git(docs, "diff", "--name-status", "--no-renames", "#{marker["commit"]
 version = Regexp.escape(File.basename(marker["docs_path"]))
 citations = Dir.glob("#{skills_root}/*/SKILL.md").each_with_object(Hash.new { |h, k| h[k] = [] }) do |path, acc|
   skill = File.basename(File.dirname(path))
-  File.read(path).scan(%r{docs\.avohq\.io/#{version}/([A-Za-z0-9_/-]+)}).flatten.uniq.each do |page|
+  # Read as UTF-8 explicitly: skills are full of em dashes and non-English
+  # examples, and under a C/POSIX locale File.read would tag them US-ASCII and
+  # blow up on the first scan.
+  File.read(path, encoding: "UTF-8").scan(%r{docs\.avohq\.io/#{version}/([A-Za-z0-9_/-]+)}).flatten.uniq.each do |page|
     acc["#{File.basename(page)}.md"] << skill
   end
 end
