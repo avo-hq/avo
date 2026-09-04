@@ -35,7 +35,7 @@ nb:
       hide: Skjul
       light: Lys
       light_tooltip: Lys modus
-      neutrals: Tema
+      neutrals: Nøytral
       neutrals_list:
         brand: Merke
         gray: Grå
@@ -49,6 +49,8 @@ nb:
         zinc: Sink
       neutrals_picker: Nøytralt tema
       schemes: Utseende
+      theme_picker: Velg tema
+      themes: Temaer
       shortcut_badges: Snarveisknapper
       shortcut_badges_hide_tooltip: Skjul snarveisknapper
       shortcut_badges_show_tooltip: Vis snarveisknapper

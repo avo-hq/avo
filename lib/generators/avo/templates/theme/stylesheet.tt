@@ -1,0 +1,69 @@
+/* <%= stylesheet_path %> — the <%= theme_title %> theme.
+ *
+ * Every public token Avo exposes is listed below, commented out, grouped the
+ * way the CSS variables reference groups them. Uncomment the ones this theme
+ * sets and give them a value; leave the rest alone and Avo's defaults apply.
+ *
+ * How the two blocks work:
+ *   - A value set in the light block also applies in dark mode unless the dark
+ *     block sets it again. This file sits in @layer base, which beats Avo's own
+ *     `.dark` defaults (they live in @layer theme), so a light-only value is
+ *     not "light only" — it is the value for both schemes.
+ *   - The dark block therefore only needs the tokens that differ.
+ *
+ * The class name must stay `.avo-theme-<%= theme_id %>`: Avo puts it on <html>
+ * while the theme is active and on the picker's preview tile, and it is how
+ * this theme's tokens are found. Renaming the theme means renaming the class.
+ *
+ * A token marked "inherits from" falls back to the token named when unset, so
+ * setting the source alone is usually enough.
+ */
+@layer base {
+  .avo-theme-<%= theme_id %> {
+    /* ---- Required: a complete theme sets these in both the light and dark blocks ---- */
+<% catalog.required.group_by(&:group).each do |group, tokens| -%>
+
+    /* <%= catalog::GROUPS.fetch(group) %> */
+<% tokens.each do |token| -%>
+    /* <%= token.name %>: ; */ /* <%= token.label %> */
+<% end -%>
+<% end -%>
+
+    /* ---- Optional: refinements on top of the required set ---- */
+<% catalog.grouped.each do |group, tokens| -%>
+<% optional = tokens.reject(&:required?) -%>
+<% next if optional.empty? -%>
+
+    /* <%= catalog::GROUPS.fetch(group) %> */
+<% optional.each do |token| -%>
+    /* <%= token.name %>: ; */ /* <%= token.label %><%= " (inherits from #{token.derives_from})" if token.derives_from %> */
+<% end -%>
+<% end -%>
+  }
+
+  /* Dark scheme. Only the tokens that differ from the light block belong here;
+   * the second selector is for the picker's preview tile. Shape and motion
+   * tokens are scheme-independent, so they are not repeated. */
+  .avo-theme-<%= theme_id %>.dark,
+  .dark .avo-theme-<%= theme_id %> {
+    /* ---- Required: a complete theme sets these in both the light and dark blocks ---- */
+<% catalog.required.group_by(&:group).each do |group, tokens| -%>
+
+    /* <%= catalog::GROUPS.fetch(group) %> */
+<% tokens.each do |token| -%>
+    /* <%= token.name %>: ; */ /* <%= token.label %> */
+<% end -%>
+<% end -%>
+
+    /* ---- Optional: refinements on top of the required set ---- */
+<% catalog.grouped.each do |group, tokens| -%>
+<% optional = tokens.reject { |token| token.required? || token.kind != :color } -%>
+<% next if optional.empty? -%>
+
+    /* <%= catalog::GROUPS.fetch(group) %> */
+<% optional.each do |token| -%>
+    /* <%= token.name %>: ; */ /* <%= token.label %><%= " (inherits from #{token.derives_from})" if token.derives_from %> */
+<% end -%>
+<% end -%>
+  }
+}

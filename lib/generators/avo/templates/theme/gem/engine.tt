@@ -1,0 +1,19 @@
+module Avo
+  module <%= gem_module_name %>
+    # A theme gem is the smallest engine there is. It ships assets and,
+    # optionally, partial overrides under app/views/avo/themes/<%= theme_id %>;
+    # Avo's layout links the stylesheet itself, so nothing here touches
+    # `Avo.asset_manager` or registers a plugin.
+    class Engine < ::Rails::Engine
+      isolate_namespace Avo::<%= gem_module_name %>
+
+      # Propshaft serves engine assets as they are. Sprockets needs the
+      # manifest added to the precompile list.
+      initializer "<%= gem_name %>.assets" do |app|
+        if defined?(Sprockets) && app.config.respond_to?(:assets)
+          app.config.assets.precompile += %w[<%= gem_name %>_manifest.js]
+        end
+      end
+    end
+  end
+end

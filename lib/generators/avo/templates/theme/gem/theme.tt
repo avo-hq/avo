@@ -1,0 +1,29 @@
+# The manifest for the <%= theme_title %> theme. Everything commented out is a
+# derived default; uncomment a line to change it. The look itself lives in
+# <%= stylesheet_path %>.
+#
+# The class is `Avo::<%= gem_module_name %>::Theme`, not `Avo::Themes::<%= theme_class_name %>`:
+# that constant belongs to a host app's own app/avo/themes/<%= theme_id %>.rb.
+# The registry keys themes by id, so the picker sees this one as `:<%= theme_id %>`.
+module Avo
+  module <%= gem_module_name %>
+    class Theme < Avo::BaseTheme
+      self.id = :<%= theme_id %>
+      self.title = "<%= theme_title %>"                 # picker label; defaults to id.titleize
+      self.description = "<%= theme_title %>: describe the look in one line."
+      # self.stylesheet = "avo/themes/<%= theme_id %>"   # asset-pipeline path; default derived from id
+      # self.views = root.join("app/views/avo/themes/<%= theme_id %>") # default derived from the engine root; nil when the dir is absent
+      # self.lock = [:neutral, :accent]                   # hide pickers the theme owns; default []
+      # self.appearance = {                               # brand assets applied while active; default {}
+      #   logo: "avo/themes/<%= theme_id %>/logo.svg",
+      #   logo_dark: "avo/themes/<%= theme_id %>/logo-dark.svg",
+      #   logomark: "avo/themes/<%= theme_id %>/logomark.svg",
+      #   logomark_dark: "avo/themes/<%= theme_id %>/logomark-dark.svg",
+      #   favicon: "avo/themes/<%= theme_id %>/favicon.ico",
+      #   favicon_dark: "avo/themes/<%= theme_id %>/favicon-dark.ico",
+      #   placeholder: "avo/themes/<%= theme_id %>/placeholder.svg",
+      #   chart_colors: %w[#2A9D8F #E9C46A #F4A261 #264653]
+      # }
+    end
+  end
+end

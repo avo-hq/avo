@@ -1,6 +1,31 @@
 <div class="color-scheme-switcher color-scheme-switcher--inline hidden lg:inline-flex"
      data-controller="appearance"
-     data-appearance-theme-labels-value="<%= neutral_labels.to_json %>">
+     data-appearance-theme-labels-value="<%= neutral_labels.to_json %>"
+     data-appearance-appearance-theme-labels-value="<%= offered_themes.to_h { |t| [t.id, t.title] }.to_json %>">
+  <% if show_theme_picker %>
+    <%= render Avo::UI::DropdownComponent.new(
+      classes: "color-scheme-switcher__theme-popover"
+    ) do |component| %>
+      <% component.with_trigger do %>
+        <button type="button"
+                data-action="<%= component.action %>"
+                data-tippy="tooltip"
+                class="color-scheme-switcher__button color-scheme-switcher__button--theme"
+                title="<%= avo_appearance_t("theme_picker") %>">
+          <%= render partial: "avo/partials/theme_tile", locals: {theme: active_theme} if active_theme %>
+          <span class="color-scheme-switcher__text" data-appearance-target="appearanceThemeLabel"><%= active_theme&.title %></span>
+        </button>
+      <% end %>
+      <% component.with_items do %>
+        <%= render Avo::UI::DropdownCardComponent.new(classes: "color-scheme-switcher__theme-popover") do |card| %>
+          <% card.with_body do %>
+            <%= render partial: "avo/partials/theme_options", locals: {offered_themes: offered_themes, active_theme: active_theme, close_on_pick: true} %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
   <% if show_neutral_picker %>
     <%= render Avo::UI::DropdownComponent.new(
       classes: "color-scheme-switcher__theme-popover"
@@ -18,10 +43,10 @@
         <%= render Avo::UI::DropdownCardComponent.new(classes: "color-scheme-switcher__theme-popover") do |card| %>
           <% card.with_body do %>
             <div class="color-scheme-switcher__theme-options"
-                 data-action="mouseleave->appearance#revertTheme">
+                 data-action="mouseleave->appearance#revertNeutral">
               <% appearance.neutrals.each do |theme| %>
                 <button type="button"
-                        data-action="click->appearance#setTheme click->dropdown-menu#close mouseenter->appearance#previewTheme"
+                        data-action="click->appearance#setNeutral click->dropdown-menu#close mouseenter->appearance#previewNeutral"
                         data-theme="<%= theme %>"
                         data-appearance-target="themeOption"
                         class="<%= class_names("color-scheme-switcher__theme-option", "color-scheme-switcher__theme-option--active": theme == active_neutral) %>">

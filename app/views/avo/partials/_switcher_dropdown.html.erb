@@ -1,6 +1,7 @@
 <div class="<%= class_names("color-scheme-switcher color-scheme-switcher--compact", "lg:hidden": appearance.picker_layout == :inline) %>"
      data-controller="appearance"
-     data-appearance-theme-labels-value="<%= neutral_labels.to_json %>">
+     data-appearance-theme-labels-value="<%= neutral_labels.to_json %>"
+     data-appearance-appearance-theme-labels-value="<%= offered_themes.to_h { |t| [t.id, t.title] }.to_json %>">
   <%= render Avo::UI::DropdownComponent.new do |component| %>
     <% component.with_trigger do %>
       <button type="button"
@@ -16,15 +17,22 @@
     <% component.with_items do %>
       <%= render Avo::UI::DropdownCardComponent.new(classes: "color-scheme-switcher__panel") do |card| %>
         <% card.with_body do %>
+          <% if show_theme_picker %>
+            <div class="color-scheme-switcher__section">
+              <div class="color-scheme-switcher__section-label"><%= avo_appearance_t("themes") %></div>
+              <%= render partial: "avo/partials/theme_options", locals: {offered_themes: offered_themes, active_theme: active_theme} %>
+            </div>
+          <% end %>
+
           <% if show_neutral_picker %>
             <div class="color-scheme-switcher__section">
               <div class="color-scheme-switcher__section-label"><%= avo_appearance_t("neutrals") %></div>
               <div class="color-scheme-switcher__theme-options"
-                   data-action="mouseleave->appearance#revertTheme"
+                   data-action="mouseleave->appearance#revertNeutral"
                    data-leftover="<%= appearance.neutrals.size % 3 %>">
                 <% appearance.neutrals.each do |theme| %>
                   <button type="button"
-                          data-action="click->appearance#setTheme mouseenter->appearance#previewTheme"
+                          data-action="click->appearance#setNeutral mouseenter->appearance#previewNeutral"
                           data-theme="<%= theme %>"
                           data-appearance-target="themeOption"
                           class="<%= class_names("color-scheme-switcher__theme-option", "color-scheme-switcher__theme-option--brand": theme == "brand", "color-scheme-switcher__theme-option--active": theme == active_neutral) %>">

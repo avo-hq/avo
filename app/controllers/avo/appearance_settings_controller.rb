@@ -8,7 +8,7 @@ module Avo
       end
 
       payload = params.key?(:appearance_setting) ? params.require(:appearance_setting) : params
-      settings = payload.permit(:color_scheme, :neutral, :accent).to_h.symbolize_keys
+      settings = payload.permit(:color_scheme, :neutral, :accent, :theme).to_h.symbolize_keys
 
       Avo::ExecutionContext.new(
         target: appearance.save_settings_block,

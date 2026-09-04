@@ -1,0 +1,48 @@
+# <%= gem_name %>
+
+The <%= theme_title %> theme for [Avo](https://avohq.io).
+
+<!-- Add a screenshot of the theme here. -->
+
+## Installation
+
+Add the gem to your app's `Gemfile` and run `bundle install`:
+
+```ruby
+gem "<%= gem_name %>"
+```
+
+While developing the theme, point the Gemfile at your checkout instead:
+
+```ruby
+gem "<%= gem_name %>", path: "<%= gem_relative_root %>"
+```
+
+Restart the server, open the appearance picker, and choose "<%= theme_title %>". To make
+it the default, or to limit which themes the picker offers, set `theme` / `themes`
+under `config.appearance` in `config/initializers/avo.rb`.
+
+## Layout
+
+| Path                                                   | Purpose                                                   |
+| ------------------------------------------------------ | --------------------------------------------------------- |
+| `lib/avo/<%= theme_id %>_theme/theme.rb`               | The manifest: `Avo::<%= gem_module_name %>::Theme`        |
+| `app/assets/stylesheets/avo/themes/<%= theme_id %>.css` | The look: tokens scoped to `.avo-theme-<%= theme_id %>`  |
+| `app/views/avo/themes/<%= theme_id %>/`                | Optional partial overrides, mirroring Avo's `app/views`   |
+| `app/assets/images/avo/themes/<%= theme_id %>/`        | Optional logo, favicon, placeholder, backgrounds, fonts   |
+
+To override a partial, copy it from Avo into the views directory above with the
+same relative path, for example `app/views/avo/themes/<%= theme_id %>/avo/partials/_logo.html.erb`.
+
+## Publishing
+
+1. Fill in the author, email, homepage, and license in `<%= gem_name %>.gemspec`, and
+   credit any reused palette or artwork in `NOTICE`.
+2. Build and push:
+
+```bash
+gem build <%= gem_name %>.gemspec
+gem push <%= gem_name %>-0.1.0.gem
+```
+
+Bump `Avo::<%= gem_module_name %>::VERSION` in `lib/avo/<%= theme_id %>_theme/version.rb` before each release.

@@ -1,0 +1,15 @@
+<%# One row per offered theme. Shared by the dropdown panel and the inline pill. %>
+<div class="color-scheme-switcher__theme-list"
+     data-action="mouseleave->appearance#revertAppearanceTheme">
+  <% offered_themes.each do |theme| %>
+    <button type="button"
+            data-action="click->appearance#setAppearanceTheme <%= "click->dropdown-menu#close" if local_assigns[:close_on_pick] %> mouseenter->appearance#previewAppearanceTheme"
+            data-appearance-theme="<%= theme.id %>"
+            data-appearance-target="appearanceThemeOption"
+            title="<%= theme.description %>"
+            class="<%= class_names("color-scheme-switcher__theme-option color-scheme-switcher__theme-option--tile", "color-scheme-switcher__theme-option--active": theme == active_theme) %>">
+      <%= render partial: "avo/partials/theme_tile", locals: {theme: theme} %>
+      <span class="color-scheme-switcher__theme-option-label"><%= theme.title %></span>
+    </button>
+  <% end %>
+</div>

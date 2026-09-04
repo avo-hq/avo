@@ -14,6 +14,9 @@ require "action_text/engine"
 # require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
+# A theme shipped as a gem, loaded by path so the engine discovery path is
+# exercised without adding a Gemfile entry (see vendor/avo-harbor_theme).
+require_relative "../vendor/avo-harbor_theme/lib/avo/harbor_theme"
 
 # Tell spring where the new dummy ap is located
 Spring.application_root = "." if defined?(Spring)

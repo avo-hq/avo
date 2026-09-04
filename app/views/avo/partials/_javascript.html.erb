@@ -42,6 +42,10 @@
     accentLocked: <%= appearance.accent_locked? %>,
     sound: <%= appearance.sound? %>,
     neutrals: <%== appearance.neutrals.as_json %>,
-    accents: <%== appearance.accents.as_json %>
+    accents: <%== appearance.accents.as_json %>,
+    theme: '<%= current_theme&.id %>',
+    themeLocked: <%= appearance.theme_locked? %>,
+    themes: <%== Avo.theme_manager.offered_ids.as_json %>,
+    themesNeedingVisit: <%== Avo.theme_manager.offered.select(&:needs_visit?).map(&:id).as_json %>
   }
 <% end %>

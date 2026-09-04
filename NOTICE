@@ -1,0 +1,13 @@
+Avo ships thirteen built-in themes (lib/avo/builtin_themes.rb). Eight of them
+reuse color palettes from code editor themes, under their licenses. The names
+are used descriptively, to identify the palette.
+
+- Monokai — palette by Wimer Hazenberg (2006). The classic values are reused;
+  this is not Monokai Pro.
+- Dracula — Zeno Rocha and contributors, MIT. https://draculatheme.com
+- Solarized — Ethan Schoonover, MIT. https://ethanschoonover.com/solarized
+- Nord — Sven Greb and contributors, MIT. https://www.nordtheme.com
+- Gruvbox — Pavel Pertsev and contributors, MIT. https://github.com/morhetz/gruvbox
+- One Dark / One Light — the Atom team, MIT. https://github.com/atom/one-dark-syntax
+- Catppuccin — the Catppuccin organization, MIT. https://catppuccin.com
+- Tokyo Night — Enrico Kaiser (enkia), MIT. https://github.com/enkia/tokyo-night-vscode-theme

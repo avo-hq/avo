@@ -1,0 +1,18 @@
+/* Local theme fixture for the dummy app. */
+@layer base {
+  .avo-theme-lagoon {
+    --color-accent: rgb(14, 116, 144);
+    --color-accent-content: rgb(8, 94, 118);
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: rgb(14, 116, 144);
+    --color-navbar-background: rgb(19, 78, 74);
+  }
+
+  .avo-theme-lagoon.dark,
+  .dark .avo-theme-lagoon {
+    --color-accent: rgb(45, 212, 191);
+    --color-accent-content: rgb(94, 234, 212);
+    --color-accent-foreground: rgb(19, 78, 74);
+    --color-brand-accent: rgb(45, 212, 191);
+  }
+}
