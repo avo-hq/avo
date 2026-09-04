@@ -49,12 +49,12 @@ nl:
         zinc: Zink
       neutrals_picker: Neutrale thema
       schemes: Uiterlijk
-      theme_picker: Thema kiezen
-      themes: Thema's
       shortcut_badges: Sneltoets badges
       shortcut_badges_hide_tooltip: Verberg sneltoets badges
       shortcut_badges_show_tooltip: Toon sneltoets badges
       show: Toon
+      theme_picker: Thema kiezen
+      themes: Thema's
       title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?

@@ -49,12 +49,12 @@ ar:
         zinc: زنك
       neutrals_picker: سمة الألوان المحايدة
       schemes: المظهر
-      theme_picker: اختر السمة
-      themes: السمات
       shortcut_badges: شارات الاختصار
       shortcut_badges_hide_tooltip: إخفاء شارات اختصارات لوحة المفاتيح
       shortcut_badges_show_tooltip: عرض شارات اختصارات لوحة المفاتيح
       show: عرض
+      theme_picker: اختر السمة
+      themes: السمات
       title: المظهر
     applied:
       few: applied

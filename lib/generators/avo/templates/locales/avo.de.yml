@@ -49,12 +49,12 @@ de:
         zinc: Zink
       neutrals_picker: Neutrale Themen
       schemes: Erscheinungsbild
-      theme_picker: Thema auswählen
-      themes: Themen
       shortcut_badges: Verknüpfungssymbole
       shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
       shortcut_badges_show_tooltip: Tastenkombinationssymbole anzeigen
       show: Anzeigen
+      theme_picker: Thema auswählen
+      themes: Themen
       title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?

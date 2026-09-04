@@ -49,12 +49,12 @@ pt-BR:
         zinc: Zinco
       neutrals_picker: Tema Neutro
       schemes: Aparência
-      theme_picker: Selecionar tema
-      themes: Temas
       shortcut_badges: Badges de atalho
       shortcut_badges_hide_tooltip: Ocultar badges de atalho do teclado
       shortcut_badges_show_tooltip: Mostrar badges de atalho do teclado
       show: Mostrar
+      theme_picker: Selecionar tema
+      themes: Temas
       title: Aparência
     applied:
       one: aplicado

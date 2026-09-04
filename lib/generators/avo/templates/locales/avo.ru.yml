@@ -49,12 +49,12 @@ ru:
         zinc: Цинк
       neutrals_picker: Нейтральная тема
       schemes: Внешний вид
-      theme_picker: Выбрать тему
-      themes: Темы
       shortcut_badges: Значки ярлыков
       shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
       shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
       show: Показать
+      theme_picker: Выбрать тему
+      themes: Темы
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?

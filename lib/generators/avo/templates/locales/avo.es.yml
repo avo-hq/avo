@@ -49,12 +49,12 @@ es:
         zinc: Zinc
       neutrals_picker: Tema neutro
       schemes: Apariencia
-      theme_picker: Seleccionar tema
-      themes: Temas
       shortcut_badges: Insignias de atajo
       shortcut_badges_hide_tooltip: Ocultar insignias de atajo de teclado
       shortcut_badges_show_tooltip: Mostrar insignias de atajo de teclado
       show: Mostrar
+      theme_picker: Seleccionar tema
+      themes: Temas
       title: Apariencia
     applied:
       one: aplicado

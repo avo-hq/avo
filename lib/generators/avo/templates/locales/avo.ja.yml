@@ -49,12 +49,12 @@ ja:
         zinc: ジンク
       neutrals_picker: ニュートラルテーマ
       schemes: 外観
-      theme_picker: テーマを選択
-      themes: テーマ
       shortcut_badges: ショートカットバッジ
       shortcut_badges_hide_tooltip: キーボードショートカットバッジを非表示
       shortcut_badges_show_tooltip: キーボードショートカットバッジを表示
       show: 表示
+      theme_picker: テーマを選択
+      themes: テーマ
       title: 外観
     applied:
       one: applied

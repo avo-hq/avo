@@ -49,12 +49,12 @@ nn:
         zinc: Sink
       neutrals_picker: Nøytrale tema
       schemes: Utseende
-      theme_picker: Vel tema
-      themes: Tema
       shortcut_badges: Snarveiknappar
       shortcut_badges_hide_tooltip: Skjul snarveiknappar
       shortcut_badges_show_tooltip: Vis snarveiknappar
       show: Vis
+      theme_picker: Vel tema
+      themes: Tema
       title: Utseende
     applied:
       one: applied

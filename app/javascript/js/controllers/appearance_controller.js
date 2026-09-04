@@ -320,8 +320,9 @@ export default class extends Controller {
 
   // Mirrors ThemeManager#default: the configured theme, else the first offered one.
   appearanceDefaultTheme() {
-    const t = this.appearance.theme
-    if (t != null && t !== '') return String(t)
+    // Not `t`: i18n-tasks' scanner reads a bare `t` as a translation call.
+    const configured = this.appearance.theme
+    if (configured != null && configured !== '') return String(configured)
     const themes = this.appearance.themes || []
     return themes.length > 0 ? themes[0] : ''
   }

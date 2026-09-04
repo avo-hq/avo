@@ -49,12 +49,12 @@ en:
         zinc: Zinc
       neutrals_picker: Select neutral color
       schemes: Appearance
-      theme_picker: Select theme
-      themes: Themes
       shortcut_badges: Shortcut badges
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
       shortcut_badges_show_tooltip: Show keyboard shortcut badges
       show: Show
+      theme_picker: Select theme
+      themes: Themes
       title: Appearance
     applied: applied
     are_you_sure: Are you sure?

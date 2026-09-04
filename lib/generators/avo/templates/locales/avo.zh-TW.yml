@@ -49,12 +49,12 @@ zh-TW:
         zinc: 鋅色
       neutrals_picker: 中性色主題
       schemes: 外觀
-      theme_picker: 選擇主題
-      themes: 主題
       shortcut_badges: 快捷鍵徽章
       shortcut_badges_hide_tooltip: 隱藏鍵盤快捷鍵徽章
       shortcut_badges_show_tooltip: 顯示鍵盤快捷鍵徽章
       show: 顯示
+      theme_picker: 選擇主題
+      themes: 主題
       title: 外觀
     applied: 已應用
     are_you_sure: 您確定嗎？
