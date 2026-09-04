@@ -19,7 +19,7 @@
         </ul>
 
         <div class="col-span-6 col-start-7">
-          <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: chart_height, colors: current_appearance.chart_colors %>
+          <%= pie_chart @values_summary, id: "chart-#{@field_id}", legend: false, height: chart_height, colors: (try(:current_appearance) || Avo.configuration.appearance).chart_colors %>
         </div>
       </div>
     <% end %>

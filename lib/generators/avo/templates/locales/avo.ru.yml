@@ -49,8 +49,6 @@ ru:
         zinc: Цинк
       neutrals_picker: Нейтральная тема
       schemes: Внешний вид
-      theme_picker: Выбрать тему
-      themes: Темы
       shortcut_badges: Значки ярлыков
       shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
       shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
@@ -60,6 +58,8 @@ ru:
       sound_off_tooltip: Отключить звуки появления
       sound_on: Вкл.
       sound_on_tooltip: Воспроизводить звук при изменении внешнего вида
+      theme_picker: Выбрать тему
+      themes: Темы
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?

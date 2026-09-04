@@ -49,8 +49,6 @@ fr:
         zinc: Zinc
       neutrals_picker: Thème neutre
       schemes: Apparence
-      theme_picker: Choisir un thème
-      themes: Thèmes
       shortcut_badges: Badges de raccourci
       shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier
       shortcut_badges_show_tooltip: Afficher les badges de raccourci clavier
@@ -60,6 +58,8 @@ fr:
       sound_off_tooltip: Silencieux les sons d'apparence
       sound_on: Activé
       sound_on_tooltip: Jouer un son lors des changements d'apparence
+      theme_picker: Choisir un thème
+      themes: Thèmes
       title: Apparence
     applied:
       one: appliqué

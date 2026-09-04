@@ -49,8 +49,6 @@ nb:
         zinc: Sink
       neutrals_picker: Nøytralt tema
       schemes: Utseende
-      theme_picker: Velg tema
-      themes: Temaer
       shortcut_badges: Snarveisknapper
       shortcut_badges_hide_tooltip: Skjul snarveisknapper
       shortcut_badges_show_tooltip: Vis snarveisknapper
@@ -60,6 +58,8 @@ nb:
       sound_off_tooltip: Demp utseendelyder
       sound_on: På
       sound_on_tooltip: Spill av en lyd når utseendet endres
+      theme_picker: Velg tema
+      themes: Temaer
       title: Utseende
     applied:
       one: applied

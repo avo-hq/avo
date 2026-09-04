@@ -1,4 +1,4 @@
-<% appearance = current_appearance %>
+<% appearance = try(:current_appearance) || Avo.configuration.appearance %>
 
 <%= link_to avo.root_path, class: "logo-placeholder h-full w-full block justify-start" do %>
   <span class="relative hidden h-full sm:block">

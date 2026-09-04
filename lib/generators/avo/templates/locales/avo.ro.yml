@@ -49,8 +49,6 @@ ro:
         zinc: Zinc
       neutrals_picker: Temă neutre
       schemes: Aspect
-      theme_picker: Alege tema
-      themes: Teme
       shortcut_badges: Insignele scurtăturilor
       shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură
       shortcut_badges_show_tooltip: Afișează insignele scurtăturilor de tastatură
@@ -60,6 +58,8 @@ ro:
       sound_off_tooltip: Dezactivează sunetele
       sound_on: Activat
       sound_on_tooltip: Redă sunete când se schimbă setările
+      theme_picker: Alege tema
+      themes: Teme
       title: Aspect
     applied:
       few: aplicate

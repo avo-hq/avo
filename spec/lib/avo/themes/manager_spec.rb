@@ -28,6 +28,18 @@ RSpec.describe Avo::Themes::Manager do
     expect(Avo::Themes::Lagoon.views.to_s).to end_with("spec/dummy/app/views/avo/themes/lagoon")
   end
 
+  it "ignores classes that are no longer the class behind their name" do
+    stale = Class.new(Avo::BaseTheme)
+    stub_const("Avo::Themes::Stale", stale)
+    expect(stale.name).to eq("Avo::Themes::Stale")
+    hide_const("Avo::Themes::Stale")
+
+    fresh = described_class.build
+
+    expect(fresh.find(:stale)).to be_nil
+    expect(Avo::BaseTheme.descendants).to include(stale)
+  end
+
   it "raises when two themes claim one id" do
     fresh = described_class.new
     fresh.register(Avo::BuiltinThemes::Coastal)

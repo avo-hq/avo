@@ -49,8 +49,6 @@ pl:
         zinc: Cynk
       neutrals_picker: Motyw neutralny
       schemes: Wygląd
-      theme_picker: Wybierz motyw
-      themes: Motywy
       shortcut_badges: Ikony skrótów
       shortcut_badges_hide_tooltip: Ukryj ikony skrótów klawiaturowych
       shortcut_badges_show_tooltip: Pokaż ikony skrótów klawiaturowych
@@ -60,6 +58,8 @@ pl:
       sound_off_tooltip: Wyłącz dźwięki zmiany wyglądu
       sound_on: Włącz
       sound_on_tooltip: Odtwarzaj dźwięk, gdy zmienia się wygląd
+      theme_picker: Wybierz motyw
+      themes: Motywy
       title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?

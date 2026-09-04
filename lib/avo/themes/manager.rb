@@ -20,7 +20,7 @@ module Avo
         eager_load_local_themes
 
         candidates = Avo::BuiltinThemes.all + (Avo::BaseTheme.descendants - Avo::BuiltinThemes.all)
-        candidates.reject(&:abstract?).each { |klass| register(klass) }
+        candidates.select { |klass| live?(klass) }.each { |klass| register(klass) }
         self
       end
 
@@ -83,6 +83,18 @@ module Avo
       end
 
       private
+
+      # `descendants` also returns classes that are no longer the class behind
+      # their name: the pre-reload copy in development, or a spec's stubbed
+      # constant after the stub is removed. They would derive the same id as
+      # the live class and trip the duplicate check, so only a class that is
+      # still reachable by its own name (and not anonymous) is a candidate.
+      def live?(klass)
+        return false if klass.abstract?
+        return false if klass.name.blank?
+
+        klass.name.safe_constantize.equal?(klass)
+      end
 
       # Mirrors ResourceManager: the host's `app/avo/themes` is autoloaded under
       # the Avo namespace, so eager loading the namespace surfaces every class

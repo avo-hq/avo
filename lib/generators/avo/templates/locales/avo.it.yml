@@ -49,8 +49,6 @@ it:
         zinc: Zinco
       neutrals_picker: Tema neutro
       schemes: Aspetto
-      theme_picker: Seleziona tema
-      themes: Temi
       shortcut_badges: Badge di scorciatoia
       shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera
       shortcut_badges_show_tooltip: Mostra i badge delle scorciatoie da tastiera
@@ -60,6 +58,8 @@ it:
       sound_off_tooltip: Disattiva i suoni di apparizione
       sound_on: Attivato
       sound_on_tooltip: Riproduci un suono quando cambia l'aspetto
+      theme_picker: Seleziona tema
+      themes: Temi
       title: Aspetto
     applied: applicato
     are_you_sure: Sei sicuro?

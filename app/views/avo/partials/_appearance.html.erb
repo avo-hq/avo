@@ -1,4 +1,4 @@
-<% appearance = current_appearance %>
+<% appearance = try(:current_appearance) || Avo.configuration.appearance %>
 
 <% if appearance.favicon_dark.present? %>
   <%= favicon_link_tag appearance.favicon,
