@@ -528,9 +528,11 @@ inline. Three outputs, one shape.
 
 ### Where it lives and who can open it [decided]
 
-A tool page at `/avo/theme_studio`, linked from the theme section of the
-picker when the current user may open it. Available in **every environment**,
-gated by a block:
+A tool page at **`/avo/themes`** — an index of every installed theme with
+its preview tile, from which a theme opens in the editor or is duplicated as
+the starting point of a new one — linked from the theme section of the picker
+when the current user may open it. Available in **every environment**, gated
+by a block:
 
 ```ruby
 config.appearance = {
