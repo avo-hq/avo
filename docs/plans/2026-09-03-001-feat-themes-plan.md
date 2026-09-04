@@ -57,6 +57,8 @@ remains open is under "Open questions".
   theme locks them.
 - Existing `avo-overrides.css` and `:head` overrides keep their precedence:
   the app always wins over any theme.
+- An admin can build a theme visually, in the running app, and keep it across
+  deploys — the Theme Studio, below.
 
 ## Non-goals
 
@@ -66,8 +68,6 @@ remains open is under "Open questions".
   `avo:eject --component` concern.
 - A themes marketplace or gallery on avohq.io, licensing, or paid themes.
   Themes are MIT-or-whatever gems the author publishes to rubygems.org.
-- A visual theme editor. The authoring surface is CSS (and, per the docs'
-  "let an AI agent do it" section, an agent writing that CSS).
 - Per-theme JavaScript. A theme that needs behavior is a plugin, not a theme.
 - A theme forcing the color scheme. **[decided]** Every theme styles both
   schemes; the scheme picker always works. A dark-native look authors a light
@@ -207,16 +207,21 @@ one line about `font-src` under a strict CSP, not code.
 
 ## Where themes come from
 
-Three sources, one registry, keyed by theme id.
+Four sources, one registry, keyed by theme id.
 
 | Source   | How it is found                                                                                   | Example                                              |
 | -------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | Built-in | Core's own classes under `Avo::BuiltinThemes::*`, always registered first                          | `Avo::BuiltinThemes::Coastal`                        |
 | Local    | `Rails.autoloaders.main.eager_load_namespace(Avo::Themes)` at boot, same as resources and actions  | `app/avo/themes/ocean.rb` → `Avo::Themes::Ocean`     |
 | Gem      | The gem's engine requires its theme class; `Avo::BaseTheme.descendants` picks it up               | `avo-ocean_theme` → `Avo::OceanTheme::Theme`         |
+| Stored   | Rows of the host's `AvoTheme` model, saved by the Theme Studio; read per request (see below)       | slug `acme`, rendered inline                         |
 
 `Avo.theme_manager` is built inside `Avo.boot` after the `:avo_boot` hook (so
 gems have registered) and exposes `all`, `find(id)`, `ids`, `installed?(id)`.
+Stored themes are the one dynamic source: the manager merges them in per
+request (memoized on `Avo::Current`, one query keyed on the store's newest
+`updated_at`), so a theme saved in the studio is in the picker on the next
+page load without a restart.
 Two themes with the same id raise at boot with both class names in the message —
 a silent "last one wins" is exactly how a gem's theme would shadow a local one
 without anyone noticing. Built-ins take part in that check too: a host cannot
@@ -492,6 +497,136 @@ it.
 **`rails g avo:eject --partial :logo --theme ocean`** — copies Avo's partial
 into the theme's views directory instead of `app/views/`.
 
+## Theme Studio [decided]
+
+A visual editor for themes, inside the running admin. Because a theme is
+custom properties on `<html>`, the two expensive halves of an editor — live
+preview and apply — cost nothing: the studio sets a property with
+`documentElement.style.setProperty` and the whole admin behind the panel
+repaints. What has to be built is a form over the token catalog, a renderer,
+and a store.
+
+### One token catalog
+
+`Avo::Themes::TOKENS` is a Ruby list — name, group, kind (`color`, `length`,
+`boolean`, `duration`), label, description, and which token it derives from
+when unset — and it feeds four things that must not drift:
+
+| Consumer                          | Uses the catalog for                                       |
+| --------------------------------- | ---------------------------------------------------------- |
+| `rails g avo:theme` CSS template  | the commented-out list of every token, grouped             |
+| The studio's form                 | groups, inputs, "inherits from …" state, reset             |
+| `Avo::Themes::Renderer`           | turning a tokens hash into the CSS block for a theme       |
+| The built-in token spec           | the required set each built-in must declare                |
+
+`Renderer` is the single place that knows what a theme stylesheet looks like:
+`tokens` (a Hash of `light:` / `dark:` maps) in, the `@layer base {
+.avo-theme-<id> { … } .avo-theme-<id>.dark, .dark .avo-theme-<id> { … } }`
+text out. The generator writes its output to a file with every line commented;
+the studio's file store writes it uncommented; the stored-theme path renders it
+inline. Three outputs, one shape.
+
+### Where it lives and who can open it [decided]
+
+A tool page at `/avo/theme_studio`, linked from the theme section of the
+picker when the current user may open it. Available in **every environment**,
+gated by a block:
+
+```ruby
+config.appearance = {
+  studio: {
+    enabled: true,                                   # default: Rails.env.development?
+    authorize: -> { current_user&.admin? }           # default: -> { Rails.env.development? }
+  }
+}
+```
+
+The block runs through `Avo::ExecutionContext` with `current_user`, like every
+other appearance block. In development with no configuration the studio is
+simply on. In production it is off until both keys are set, and the
+`authorize` block is a trust boundary: whoever passes it can change what every
+admin sees.
+
+### Storage: rows, not files [decided]
+
+Production has no writable app directory, and a file written into a container
+is gone at the next deploy. So the studio saves **stored themes**:
+
+```bash
+rails g avo:theme_store
+# → app/models/avo_theme.rb, db/migrate/…_create_avo_themes.rb
+```
+
+| Column        | Type    | Holds                                                        |
+| ------------- | ------- | ------------------------------------------------------------ |
+| `slug`        | string  | The theme id, unique                                          |
+| `title`       | string  | Picker label                                                  |
+| `description` | text    |                                                               |
+| `base`        | string  | The theme it was started from, for "reset to base"            |
+| `tokens`      | jsonb   | `{ "light": { "--color-accent": "#2a9d8f", … }, "dark": { … } }` |
+| `appearance`  | jsonb   | `chart_colors`, and which attachments are set                 |
+
+plus `has_one_attached` for `logo`, `logo_dark`, `logomark`, `logomark_dark`,
+`favicon`, `favicon_dark`, `placeholder`. Rows live in the app's database and
+attachments in Active Storage's configured service, both of which outlast a
+deploy — the point of the model. Core stays migration-free, as it is for the
+media library: the generator puts the model in the host app.
+
+Two consequences of storing **tokens, not CSS**:
+
+- No free-text CSS ever reaches the database or the page. The renderer emits
+  only catalog tokens with validated values (a color parses as a color, a
+  length as a length), so the `authorize` block guards taste, not injection.
+- A stored theme reopens in the studio exactly as it was saved, with the
+  "inherits" state intact — there is no CSS to parse back.
+
+Stored themes render as one inline `<style>` per theme in the theme slot of
+the layout, nonce'd, cached in `Avo.cache_store` keyed on `updated_at`. No
+asset pipeline, no extra request, and the cascade table holds because the
+renderer wraps them in `@layer base` like everything else.
+
+In development the studio can **also** save to a file — a local theme in
+`app/avo/themes/` and `app/assets/stylesheets/avo/themes/`, the same output
+as the generator — for a theme that is meant to be committed and shipped.
+The Save menu offers "Save to database" when the store exists and "Save as
+file" in development, and says which it did.
+
+Brand assets on a stored theme are blobs, so `current_appearance` learns to
+hand back a blob as well as an asset path, and `_logo`, `_appearance`
+(favicon) and the placeholder resolve either through the existing routable
+blob helper. In development's file save, uploads are copied into the theme's
+asset directory instead.
+
+### What the studio edits [decided]
+
+- **Color tokens**, light and dark, in the catalog's groups: foundations,
+  accent, semantic, chrome. The light/dark tab also switches the page's scheme
+  so the preview shows what is being edited.
+- **Radii and motion knobs**: card radius, navbar notch (radius, enabled,
+  alignment), main content radius, the three speeds.
+- **Brand assets**: file pickers for the seven attachments and a chart color
+  list.
+
+Each token row shows its value, whether it is inherited (from the base theme
+or from the token it derives from), and a reset. Only overridden tokens are
+saved, so an exported theme pins what its author chose and nothing else.
+
+Browsers' color input speaks hex; Avo's tokens are oklch. The studio converts
+both ways in JS (roughly fifty lines) and stores what the user picked.
+
+Not in the first version: a live contrast readout (the built-in contrast spec
+stays the floor), editing partials, and exporting a gem from the UI.
+"Duplicate as file theme, then `--gem`" is the path from a studio theme to a
+gem, and it is two commands.
+
+### Effort
+
+The studio is roughly the size of the core theme feature again: a controller
+and page, a Stimulus controller of a few hundred lines, the renderer, the
+store and its generator, blob-aware appearance helpers, and specs. It is why
+it is phase 2, not phase 1, and why the catalog and renderer are built in
+phase 1 even though the generator alone would not need them as classes.
+
 ## Testing
 
 - **Unit**: `Avo::BaseTheme` derived defaults (`id`, `stylesheet`, `views` nil
@@ -520,15 +655,23 @@ into the theme's views directory instead of `app/views/`.
   `spec/system/avo/group_2/tags_spec.rb`) that `--color-accent` on `<body>`
   resolves to the theme value and that picking a neutral afterwards still
   changes `--color-avo-neutral-500` — the cascade table, proven in a browser.
-- **Generators**: file assertions for both generator modes; the dummy app
-  carries one **gem-shaped** fixture theme under `spec/dummy/vendor/` loaded
-  via `path:` so the gem discovery path is exercised by every request spec, not
-  just described.
+- **Generators**: file assertions for both generator modes and for
+  `avo:theme_store`; the dummy app carries one **gem-shaped** fixture theme
+  under `spec/dummy/vendor/` loaded via `path:` so the gem discovery path is
+  exercised by every request spec, not just described.
+- **Studio**: the renderer round-trips a tokens hash to the exact CSS the
+  generator emits; invalid values are rejected per kind; the `authorize` block
+  gates the page (request spec, 403 without it in production); saving creates
+  a stored theme that appears in the picker on the next request without a
+  restart; a stored theme's logo blob renders in `_logo` while active; the
+  system spec edits the accent in the studio and asserts the computed value on
+  `<body>` changes before saving, then persists after.
 
 ## Docs and skills
 
-- **New** `docs/4.0/themes.md` (guide: pick a built-in, create one, override
-  partials and brand assets, ship as a gem, install one) and
+- **New** `docs/4.0/themes.md` (guide: pick a built-in, create one, build one
+  in the studio, override partials and brand assets, ship as a gem, install
+  one) and
   `docs/4.0/themes-api.md` (the theme class attributes, the three `appearance`
   keys, the built-in table, generator flags) — the guide+reference pair
   `AGENTS.md` asks for above three options. The built-in table gets light and
@@ -551,12 +694,13 @@ into the theme's views directory instead of `app/views/`.
 | Phase | Ships                                                                                                                                                              |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 1     | Layered `:root` knobs; `BaseTheme` + manager; thirteen built-ins in `avo/themes.css`; config keys; layout slots; helper + cookie/database; picker with tiles + JS; `avo:theme` (local and `--gem`); `eject --theme`; brand-asset merge; docs; skill |
-| 2     | The published reference gem from `external/`; docs screenshots of every built-in                                                                                   |
-| 3     | Only on demand: a Themes page on avohq.io; a curated pack gem if the built-in list ever needs trimming                                                              |
+| 2     | Theme Studio: catalog-driven form, renderer, `avo:theme_store`, stored themes in the picker, blob-aware brand assets; the published reference gem from `external/`; docs screenshots of every built-in |
+| 3     | Only on demand: a live contrast readout in the studio; a Themes page on avohq.io; a curated pack gem if the built-in list ever needs trimming                        |
 
 Phase 1 is one avo release, and a large one: the built-in palettes are the
-bulk of the authoring work and the part that needs eyes. Phase 2 needs nothing
-from core beyond phase 1.
+bulk of the authoring work and the part that needs eyes. Phase 2 is a second
+release of about the same size, almost all of it the studio; it builds on
+phase 1's catalog and renderer and needs nothing else from core.
 
 ## Open questions
 
@@ -565,6 +709,11 @@ from core beyond phase 1.
 - **Fonts helper.** `@font-face` by hand plus a docs note covers phase 1. If
   two published themes both ship fonts, a `self.fonts` helper that emits the
   faces and the CSP hint is worth adding.
+- **Studio in production and Turbo.** A stored theme with partials is not
+  possible (rows hold tokens and assets, not ERB), so a studio switch never
+  needs a visit — unless the theme has brand assets, which re-render the logo.
+  Confirm the visit-on-switch rule stays "views or appearance" and does not
+  grow a third case.
 - **Editor theme fidelity.** Upstream palettes name colors for syntax, not for
   admin chrome; mapping "string green" to "success" is taste. The first pass
   is authored once and reviewed as a batch against screenshots, and the
