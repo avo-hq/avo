@@ -35,7 +35,7 @@ zh-TW:
       hide: 隱藏
       light: 淺色
       light_tooltip: 淺色模式
-      neutrals: 主題
+      neutrals: 中性色
       neutrals_list:
         brand: 品牌
         gray: 灰色
@@ -49,6 +49,8 @@ zh-TW:
         zinc: 鋅色
       neutrals_picker: 中性色主題
       schemes: 外觀
+      theme_picker: 選擇主題
+      themes: 主題
       shortcut_badges: 快捷鍵徽章
       shortcut_badges_hide_tooltip: 隱藏鍵盤快捷鍵徽章
       shortcut_badges_show_tooltip: 顯示鍵盤快捷鍵徽章

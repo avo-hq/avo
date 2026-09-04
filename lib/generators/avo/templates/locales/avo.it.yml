@@ -35,7 +35,7 @@ it:
       hide: Nascondi
       light: Chiaro
       light_tooltip: Modalità chiara
-      neutrals: Tema
+      neutrals: Neutro
       neutrals_list:
         brand: Marchio
         gray: Grigio
@@ -49,6 +49,8 @@ it:
         zinc: Zinco
       neutrals_picker: Tema neutro
       schemes: Aspetto
+      theme_picker: Seleziona tema
+      themes: Temi
       shortcut_badges: Badge di scorciatoia
       shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera
       shortcut_badges_show_tooltip: Mostra i badge delle scorciatoie da tastiera

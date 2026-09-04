@@ -25,6 +25,19 @@
     <%= stylesheet_link_tag "avo/dependencies", "data-turbo-track": "reload", as: "style" %>
     <%= render Avo::AssetManager::StylesheetComponent.new asset_manager: Avo.asset_manager %>
     <%= stylesheet_link_tag "avo/application", "data-turbo-track": "reload", as: "style" %>
+
+    <%# appearance_overrides MUST render after the application stylesheet so its inline %>
+    <%# :root / .dark declarations win on equal-specificity cascade. %>
+    <%= render partial: "avo/partials/appearance_overrides" %>
+
+    <%# Themes: the built-ins in one file, then one link per installed local/gem theme. %>
+    <%# After the brand override (same @layer base, later source wins, so a picked theme %>
+    <%# beats a configured brand) and before avo-overrides (unlayered, the app always wins). %>
+    <%= stylesheet_link_tag "avo/themes", "data-turbo-track": "reload", as: "style" %>
+    <% Avo.theme_manager.stylesheets.each do |theme_stylesheet| %>
+      <%= stylesheet_link_tag theme_stylesheet, "data-turbo-track": "reload", as: "style" %>
+    <% end %>
+
     <%= stylesheet_link_tag "avo-overrides", "data-turbo-track": "reload", as: "style" %>
 
     <%= javascript_include_tag "avo/application", "data-turbo-track": "reload", defer: true, nonce: request.content_security_policy_nonce %>
@@ -39,10 +52,6 @@
     <%= render partial: "avo/partials/head" %>
     <%= render partial: "avo/partials/color_theme_override" %>
     <%= render partial: "avo/partials/sidebar_width_override" %>
-
-    <%# appearance_overrides MUST render after the application stylesheet so its inline %>
-    <%# :root / .dark declarations win on equal-specificity cascade. %>
-    <%= render partial: "avo/partials/appearance_overrides" %>
     <%= content_for :head %>
   </head>
 

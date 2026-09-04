@@ -1,11 +1,16 @@
 <% appearance = Avo.configuration.appearance %>
-<% show_neutral_picker = !appearance.neutral_locked? %>
-<% show_accent_picker = !appearance.accent_locked? %>
+<% theme = current_theme %>
+<% show_theme_picker = !appearance.theme_locked? && Avo.theme_manager.offered.size > 1 %>
+<% show_neutral_picker = !appearance.neutral_locked? && !theme&.locks?(:neutral) %>
+<% show_accent_picker = !appearance.accent_locked? && !theme&.locks?(:accent) %>
 <% show_scheme_picker = !appearance.scheme_locked? %>
 <% show_key_badges_toggle = Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges] %>
-<% return unless show_neutral_picker || show_accent_picker || show_scheme_picker || show_key_badges_toggle %>
+<% return unless show_theme_picker || show_neutral_picker || show_accent_picker || show_scheme_picker || show_key_badges_toggle %>
 <% locals = {
      appearance: appearance,
+     show_theme_picker: show_theme_picker,
+     offered_themes: Avo.theme_manager.offered,
+     active_theme: theme,
      show_neutral_picker: show_neutral_picker,
      show_accent_picker: show_accent_picker,
      show_scheme_picker: show_scheme_picker,

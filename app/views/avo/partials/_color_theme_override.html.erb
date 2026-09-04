@@ -37,6 +37,16 @@
         }
       }
 
+      if (!appearance.themeLocked) {
+        var theme = getCookie((Avo.configuration.cookies_key || 'avo') + '.theme');
+        if (theme && (appearance.themes || []).indexOf(theme) !== -1) {
+          Array.from(root.classList).forEach(function(cls) {
+            if (cls.indexOf('avo-theme-') === 0) root.classList.remove(cls);
+          });
+          root.classList.add('avo-theme-' + theme);
+        }
+      }
+
       if (!appearance.accentLocked) {
         var accent = getCookie('accent_color');
         if (accent && accent !== 'brand') {

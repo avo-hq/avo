@@ -35,7 +35,7 @@ es:
       hide: Ocultar
       light: Claro
       light_tooltip: Modo claro
-      neutrals: Tema
+      neutrals: Neutro
       neutrals_list:
         brand: Marca
         gray: Gris
@@ -49,6 +49,8 @@ es:
         zinc: Zinc
       neutrals_picker: Tema neutro
       schemes: Apariencia
+      theme_picker: Seleccionar tema
+      themes: Temas
       shortcut_badges: Insignias de atajo
       shortcut_badges_hide_tooltip: Ocultar insignias de atajo de teclado
       shortcut_badges_show_tooltip: Mostrar insignias de atajo de teclado

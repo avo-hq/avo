@@ -35,7 +35,7 @@ en:
       hide: Hide
       light: Light
       light_tooltip: Light mode
-      neutrals: Theme
+      neutrals: Neutral
       neutrals_list:
         brand: Brand
         gray: Gray
@@ -49,6 +49,8 @@ en:
         zinc: Zinc
       neutrals_picker: Select neutral color
       schemes: Appearance
+      theme_picker: Select theme
+      themes: Themes
       shortcut_badges: Shortcut badges
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
       shortcut_badges_show_tooltip: Show keyboard shortcut badges

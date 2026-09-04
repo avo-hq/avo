@@ -367,3 +367,77 @@
 .accent-theme-rose .color-scheme-switcher__accent-badge-preview--rose {
   @apply inline-block;
 }
+
+/* Theme picker ------------------------------------------------------------ */
+
+.color-scheme-switcher__theme-list {
+  @apply flex flex-col gap-0.5 self-stretch max-h-72 overflow-y-auto;
+}
+
+.color-scheme-switcher__panel .color-scheme-switcher__theme-list {
+  @apply grid grid-cols-2 gap-1;
+}
+
+.color-scheme-switcher__theme-option--tile {
+  @apply min-h-8 px-1.5 py-1 gap-2;
+}
+
+/* The theme popover pill shows the active theme's tile next to its title. */
+.color-scheme-switcher__button--theme .theme-tile {
+  @apply size-auto w-6 h-4 me-1;
+}
+
+/* A miniature window in the theme's own tokens. The element carries
+   `avo-theme-<id>`, so the theme's class-scoped variables apply to it — but a
+   custom property resolves on the element that declares it, and Avo's derived
+   defaults (sidebar from background, content from primary, …) are declared on
+   :root and inherited already resolved. Re-declaring the chain here, in the
+   same layer as those defaults, lets a theme that only sets primitives preview
+   correctly while a theme that sets a derived token explicitly (@layer base)
+   still wins. */
+@layer theme {
+  .theme-tile {
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
+    --color-navbar-background: var(--color-avo-neutral-900);
+    --color-sidebar-background: var(--color-background);
+    --color-main-content-background: var(--color-primary);
+  }
+
+  .dark .theme-tile {
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), var(--color-scheme) 14%);
+  }
+}
+
+.theme-tile {
+  @apply relative grid shrink-0 overflow-hidden rounded border border-tertiary shadow-sm;
+  width: 2.5rem;
+  height: 1.75rem;
+  grid-template-rows: 0.375rem 1fr;
+  grid-template-columns: 0.75rem 1fr;
+  background: var(--color-main-content-background);
+}
+
+.theme-tile__navbar {
+  grid-column: 1 / -1;
+  background: var(--color-navbar-background);
+}
+
+.theme-tile__sidebar {
+  background: var(--color-sidebar-background);
+}
+
+.theme-tile__content {
+  background: var(--color-main-content-background);
+}
+
+.theme-tile__accent {
+  @apply absolute rounded-full;
+  inset-inline-end: 0.3rem;
+  inset-block-end: 0.3rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--color-accent);
+}

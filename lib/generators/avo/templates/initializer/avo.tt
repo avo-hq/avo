@@ -175,9 +175,15 @@ Avo.configure do |config|
   #   logomark_dark: "avo/logomark-dark.png",
   #   favicon: "avo/favicon.ico",
   #   favicon_dark: "avo/favicon-dark.ico",
-  #   lock: [:scheme, :neutral, :accent]
+  #   lock: [:scheme, :neutral, :accent, :theme]
   #   neutrals: [:brand, :neutral, :slate, :olive],
   #   accents: [:brand, :red, :blue, :sky, :purple],
+  #   # Themes: named looks the picker offers. Built in: :paper (the stock look),
+  #   # :coastal, :rose, :sunset, :midnight, :monokai, :dracula, :solarized,
+  #   # :nord, :gruvbox, :one_dark, :catppuccin, :tokyo_night. Add your own with
+  #   # `rails g avo:theme NAME` or by installing an avo-*_theme gem.
+  #   theme: :paper,
+  #   themes: [:paper, :coastal, :midnight],
   #   mode: :static,
   #   neutral: :brand,
   #   accent: :brand,

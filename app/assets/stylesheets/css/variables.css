@@ -132,10 +132,14 @@
   --radius-card-wrapper: var(--radius-lg);
 }
 
-/* Navbar notch knobs live in a plain :root block, not in @theme:
+/* Navbar notch and motion knobs live in a plain :root block, not in @theme:
    --navbar-notch-enabled is read by a style query (Tailwind tree-shakes @theme
    vars not referenced via var(), so it would be stripped), and we keep
-   --navbar-notch-radius alongside it so both notch knobs sit together. */
+   --navbar-notch-radius alongside it so both notch knobs sit together. The
+   block sits in @layer theme with the rest of Avo's defaults so a theme
+   (@layer base, scoped to .avo-theme-*) can override these knobs too; an
+   unlayered override in avo-overrides.css keeps winning as before. */
+@layer theme {
 :root {
   /* Set to `false` to hide the navbar's inverted corner arches (e.g. when the
      navbar and content share a background). */
@@ -163,10 +167,14 @@
   --speed-fast: 90ms;
   --speed-moderate: 150ms;
   --speed-slow: 200ms;
+}
+}
 
-  /* Force native controls (selects, radios, checkboxes, scrollbars, pickers) to
-     follow Avo's appearance instead of the OS. Driven by `.dark` below, which is
-     set in every mode (including Auto), overriding the native dark preference. */
+/* Force native controls (selects, radios, checkboxes, scrollbars, pickers) to
+   follow Avo's appearance instead of the OS. Driven by `.dark` below, which is
+   set in every mode (including Auto), overriding the native dark preference.
+   Unlayered, and paired with the unlayered `.dark` rule right after it. */
+:root {
   color-scheme: light;
 }
 

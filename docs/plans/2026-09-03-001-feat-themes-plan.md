@@ -1,7 +1,7 @@
 ---
 title: "feat: Themes — create, pick, and ship as gems"
 type: feat
-status: active
+status: phase-1-implemented
 date: 2026-09-03
 deepened: 2026-09-04
 ---
@@ -447,20 +447,22 @@ single swatch hides, and it costs no per-theme CSS (see the pitfall above for
 the one rule that makes it correct). In the current scheme, because
 `.dark .avo-theme-<id>` applies. Roughly 40×28px in the rows.
 
-`appearance_controller.js` gains `setTheme`/`previewTheme`/`revertTheme` for the
-theme dimension (the existing methods with those names are the neutral picker's
-and get renamed to `setNeutral`/… in the same change, with the old names kept as
-aliases so ejected partials keep working), `applyThemeClass` swapping
-`avo-theme-*` on `<html>`, and the persist-then-maybe-visit step. A
-`cycleTheme` hotkey is cheap once that exists and follows the neutral/accent
-ones.
+`appearance_controller.js` gains `setAppearanceTheme` / `previewAppearanceTheme`
+/ `revertAppearanceTheme` / `cycleAppearanceTheme` for the theme dimension. The
+existing `setTheme` / `previewTheme` / `revertTheme` are the neutral picker's;
+Avo's own partials now call them as `setNeutral` / `previewNeutral` /
+`revertNeutral`, and the old names stay as aliases so ejected partials keep
+working. `applyAppearanceThemeClass` swaps `avo-theme-*` on `<html>`, and the
+persist step returns the request promise so a switch that needs a re-render
+visits the page once the pick is saved. No hotkey ships in phase 1: `cycleAppearanceTheme`
+exists, and binding it is a one-line follow-up once a free key is agreed.
 
-Strings: `avo.appearance.themes` ("Theme"), `avo.appearance.theme_picker`, and
-the thirteen built-in titles under `avo.appearance.themes_list.*` in core's 19
-locales (editor names stay as-is in every locale; "Paper", "Coastal", "Rose",
-"Sunset", "Midnight" translate). Installed themes' titles come from the class;
-gems ship English, and an author who wants translations passes an `I18n.t`
-call.
+Strings: `avo.appearance.themes` ("Themes") and `avo.appearance.theme_picker`
+in core's 19 locales. The neutral section's label, which read "Theme" before
+there were themes, becomes "Neutral" in every locale. Every theme's title,
+built-ins included, comes from the class — a built-in title is a name
+("Dracula", "Paper"), not a phrase, and stays as-is in every locale. A theme
+author who wants a translated title passes an `I18n.t` call.
 
 ## Configuration
 

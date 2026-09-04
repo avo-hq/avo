@@ -3,25 +3,30 @@ import { patch } from '@rails/request.js'
 import Cookies from 'js-cookie'
 
 export default class extends Controller {
-  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
+  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption', 'appearanceThemeOption', 'appearanceThemeLabel']
 
-  static values = { themeLabels: Object }
+  // themeLabels: the neutral picker's labels (historical name). appearanceThemeLabels: the theme picker's.
+  static values = { themeLabels: Object, appearanceThemeLabels: Object }
 
   connect() {
     this.appearance = window.Avo?.configuration?.appearance || {}
     this.lockedNeutral = this.appearance.neutralLocked ? this.appearance.neutral : null
     this.lockedAccent = this.appearance.accentLocked ? this.appearance.accent : null
     this.lockedScheme = this.appearance.schemeLocked ? this.appearance.scheme : null
+    this.lockedAppearanceTheme = this.appearance.themeLocked ? this.appearance.theme : null
 
     // Read current state from server-rendered <html> classes
     this.currentSchemeValue = this.readCurrentScheme()
     this.currentThemeValue = this.readCurrentNeutral()
     this.currentAccentValue = this.readCurrentAccent()
+    this.currentAppearanceThemeValue = this.readCurrentAppearanceTheme()
 
     // Sync UI controls to match current state (no re-apply needed — classes are already on <html>)
     this.updateThemeLabel()
     this.updateActiveThemeOption()
     this.updateActiveAccentOption()
+    this.updateActiveAppearanceThemeOption()
+    this.updateAppearanceThemeLabel()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -50,6 +55,13 @@ export default class extends Controller {
     return match ? match.replace('accent-theme-', '') : 'brand'
   }
 
+  // The theme dimension (Paper, Coastal, …), distinct from the neutral picker
+  // that historically used "theme" in its method names below.
+  readCurrentAppearanceTheme() {
+    const match = Array.from(document.documentElement.classList).find((cls) => cls.startsWith('avo-theme-'))
+    return match ? match.replace('avo-theme-', '') : this.appearance.theme || null
+  }
+
   disconnect() {
     if (this.mediaQuery && this.mediaQueryListener) {
       this.mediaQuery.removeEventListener('change', this.mediaQueryListener)
@@ -69,7 +81,7 @@ export default class extends Controller {
     this.applyScheme()
   }
 
-  setTheme(event) {
+  setNeutral(event) {
     event.preventDefault()
     if (this.lockedNeutral) return
 
@@ -85,7 +97,7 @@ export default class extends Controller {
     this.updateActiveThemeOption()
   }
 
-  previewTheme(event) {
+  previewNeutral(event) {
     const { theme } = event.currentTarget.dataset
     if (!theme) return
 
@@ -93,9 +105,121 @@ export default class extends Controller {
     this.updateActiveThemeOptionFor(theme)
   }
 
-  revertTheme() {
+  revertNeutral() {
     this.applyTheme()
     this.updateActiveThemeOption()
+  }
+
+  // Historical names of the neutral picker's actions, kept for ejected partials.
+  setTheme(event) { this.setNeutral(event) }
+
+  previewTheme(event) { this.previewNeutral(event) }
+
+  revertTheme() { this.revertNeutral() }
+
+  // --- Theme picker (avo-theme-<id> on <html>) ---
+
+  setAppearanceTheme(event) {
+    event.preventDefault()
+    if (this.lockedAppearanceTheme) return
+
+    const { appearanceTheme } = event.currentTarget.dataset
+    const allowed = this.appearance.themes || []
+    if (!appearanceTheme || !allowed.includes(appearanceTheme)) return
+
+    const previous = this.currentAppearanceThemeValue
+    this.currentAppearanceThemeValue = appearanceTheme
+    this.applyAppearanceThemeClass(appearanceTheme)
+    this.updateActiveAppearanceThemeOption()
+    this.updateAppearanceThemeLabel()
+
+    const persisted = this.persistPreferences('appearanceTheme')
+
+    // A theme with partial overrides or brand assets is rendered by the server,
+    // so a class swap is not enough: re-render the page once the pick is saved.
+    if (this.appearanceThemeNeedsVisit(previous) || this.appearanceThemeNeedsVisit(appearanceTheme)) {
+      Promise.resolve(persisted).then(() => this.revisit())
+    }
+  }
+
+  previewAppearanceTheme(event) {
+    const { appearanceTheme } = event.currentTarget.dataset
+    if (!appearanceTheme) return
+
+    this.applyAppearanceThemeClass(appearanceTheme)
+    this.updateActiveAppearanceThemeOptionFor(appearanceTheme)
+  }
+
+  revertAppearanceTheme() {
+    this.applyAppearanceThemeClass(this.currentAppearanceThemeValue)
+    this.updateActiveAppearanceThemeOption()
+  }
+
+  cycleAppearanceTheme() {
+    if (this.lockedAppearanceTheme) return
+    const allowed = this.appearance.themes || []
+    if (allowed.length === 0) return
+    const previous = this.currentAppearanceThemeValue
+    this.currentAppearanceThemeValue = this.nextValue(allowed, this.currentAppearanceThemeValue)
+    this.applyAppearanceThemeClass(this.currentAppearanceThemeValue)
+    this.updateActiveAppearanceThemeOption()
+    this.updateAppearanceThemeLabel()
+    const persisted = this.persistPreferences('appearanceTheme')
+    if (this.appearanceThemeNeedsVisit(previous) || this.appearanceThemeNeedsVisit(this.currentAppearanceThemeValue)) {
+      Promise.resolve(persisted).then(() => this.revisit())
+    }
+  }
+
+  appearanceThemeNeedsVisit(id) {
+    return !!id && (this.appearance.themesNeedingVisit || []).includes(id)
+  }
+
+  revisit() {
+    if (window.Turbo && typeof window.Turbo.visit === 'function') {
+      window.Turbo.visit(window.location.href, { action: 'replace' })
+    } else {
+      window.location.reload()
+    }
+  }
+
+  applyAppearanceThemeClass(id) {
+    const root = document.documentElement
+    Array.from(root.classList).forEach((cls) => {
+      if (cls.startsWith('avo-theme-')) root.classList.remove(cls)
+    })
+    if (id) root.classList.add(`avo-theme-${id}`)
+  }
+
+  updateActiveAppearanceThemeOption() {
+    this.updateActiveAppearanceThemeOptionFor(this.currentAppearanceThemeValue)
+  }
+
+  updateActiveAppearanceThemeOptionFor(active) {
+    if (!this.hasAppearanceThemeOptionTarget) return
+
+    this.appearanceThemeOptionTargets.forEach((option) => {
+      const { appearanceTheme } = option.dataset
+      if (!appearanceTheme) return
+
+      option.classList.toggle('color-scheme-switcher__theme-option--active', appearanceTheme === active)
+    })
+  }
+
+  updateAppearanceThemeLabel() {
+    if (!this.hasAppearanceThemeLabelTarget) return
+
+    const id = this.currentAppearanceThemeValue
+    const labels = this.hasAppearanceThemeLabelsValue ? this.appearanceThemeLabelsValue : {}
+    this.appearanceThemeLabelTarget.textContent = labels[id] || (id ? id.charAt(0).toUpperCase() + id.slice(1) : '')
+
+    // The pill's tile previews the active theme; retarget its class too.
+    const tile = this.appearanceThemeLabelTarget.parentElement?.querySelector('.theme-tile')
+    if (tile) {
+      Array.from(tile.classList).forEach((cls) => {
+        if (cls.startsWith('avo-theme-')) tile.classList.remove(cls)
+      })
+      if (id) tile.classList.add(`avo-theme-${id}`)
+    }
   }
 
   setAccent(event) {
@@ -160,13 +284,15 @@ export default class extends Controller {
     return list[(idx + 1) % list.length]
   }
 
+  // Returns a promise when persistence is asynchronous (database), so callers
+  // that must re-render afterwards can wait for it.
   persistPreferences(dimension) {
     if (this.appearance.persistence === 'database') {
-      this.patchAppearanceSettings(dimension)
-      return
+      return this.patchAppearanceSettings(dimension)
     }
 
     this.writePreferenceCookie(dimension)
+    return null
   }
 
   writePreferenceCookie(dimension) {
@@ -180,9 +306,24 @@ export default class extends Controller {
       case 'accent':
         this.setPreferenceCookie('accent_color', this.currentAccentValue, this.appearanceDefaultAccent())
         break
+      case 'appearanceTheme':
+        this.setPreferenceCookie(this.appearanceThemeCookieName(), this.currentAppearanceThemeValue, this.appearanceDefaultTheme())
+        break
       default:
         break
     }
+  }
+
+  appearanceThemeCookieName() {
+    return `${window.Avo?.configuration?.cookies_key || 'avo'}.theme`
+  }
+
+  // Mirrors ThemeManager#default: the configured theme, else the first offered one.
+  appearanceDefaultTheme() {
+    const t = this.appearance.theme
+    if (t != null && t !== '') return String(t)
+    const themes = this.appearance.themes || []
+    return themes.length > 0 ? themes[0] : ''
   }
 
   // Match ApplicationHelper#current_* fallbacks so we only drop cookies when the value
@@ -214,7 +355,7 @@ export default class extends Controller {
     const body = this.appearanceSettingsPayload(dimension)
     if (!body) return
 
-    patch(`${window.Avo.configuration.root_path}/appearance_settings`, {
+    return patch(`${window.Avo.configuration.root_path}/appearance_settings`, {
       responseKind: 'json',
       contentType: 'application/json',
       body,
@@ -229,6 +370,8 @@ export default class extends Controller {
         return { neutral: this.currentThemeValue }
       case 'accent':
         return { accent: this.currentAccentValue }
+      case 'appearanceTheme':
+        return { theme: this.currentAppearanceThemeValue }
       default:
         return null
     }

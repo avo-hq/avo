@@ -1,0 +1,17 @@
+/* Gem theme fixture. */
+@layer base {
+  .avo-theme-harbor {
+    --color-accent: rgb(180, 83, 9);
+    --color-accent-content: rgb(146, 64, 14);
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: rgb(180, 83, 9);
+  }
+
+  .avo-theme-harbor.dark,
+  .dark .avo-theme-harbor {
+    --color-accent: rgb(251, 191, 36);
+    --color-accent-content: rgb(252, 211, 77);
+    --color-accent-foreground: rgb(69, 26, 3);
+    --color-brand-accent: rgb(251, 191, 36);
+  }
+}

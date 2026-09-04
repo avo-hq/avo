@@ -35,7 +35,7 @@ de:
       hide: Ausblenden
       light: Hell
       light_tooltip: Heller Modus
-      neutrals: Thema
+      neutrals: Neutral
       neutrals_list:
         brand: Marke
         gray: Grau
@@ -49,6 +49,8 @@ de:
         zinc: Zink
       neutrals_picker: Neutrale Themen
       schemes: Erscheinungsbild
+      theme_picker: Thema auswählen
+      themes: Themen
       shortcut_badges: Verknüpfungssymbole
       shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
       shortcut_badges_show_tooltip: Tastenkombinationssymbole anzeigen
