@@ -18,7 +18,6 @@ module Avo
     before_action :decode_params
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
-    around_action :set_browser_timezone, if: -> { Avo.configuration.use_browser_timezone }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -28,6 +27,7 @@ module Avo
     before_action :set_view
     before_action :set_sidebar_open
     before_action :set_sidebar_width
+    before_action :announce_browser_timezone_change, if: -> { Avo.configuration.use_browser_timezone }
 
     rescue_from Avo::NotAuthorizedError, with: :render_unauthorized
     rescue_from ActiveRecord::RecordInvalid, with: :exception_logger
@@ -52,6 +52,24 @@ module Avo
     # Exposing it as public method
     def turbo_frame_request?
       super
+    end
+
+    # `use_browser_timezone` is a *display* setting, so the viewer's zone is
+    # scoped to template rendering and nothing else. Swapping `Time.zone` for
+    # the whole action (an `around_action`) would also reinterpret app code
+    # running inside the request: `Time.zone.local` in an action's `handle`,
+    # `Date.current` in a scope or a filter, ActiveRecord's time-zone-aware
+    # attribute casting on write, model callbacks. Those all keep meaning "the
+    # app's configured zone", the same as everywhere else in Rails.
+    #
+    # `render_to_body` is the common inner path for both `render` (explicit and
+    # implicit, HTML and Turbo Stream) and `render_to_string`, so wrapping it
+    # covers every template and view component without touching anything else.
+    # Kept public to match the visibility it has on the superclass.
+    def render_to_body(options = {})
+      return super if browser_timezone.nil?
+
+      Time.use_zone(browser_timezone) { super }
     end
 
     private
@@ -281,22 +299,27 @@ module Avo
     end
 
     # The browser-timezone Stimulus controller mirrors the viewer's IANA zone
-    # into a cookie (no HTTP header carries it), so every response renders in
-    # the viewer's local zone. `ActiveSupport::TimeZone[]` validates the
-    # user-controlled cookie — junk lookups return nil and we fall back to the
-    # app zone. The one-shot `timezone_changed` cookie is set right before the
-    # controller's Turbo reload, so the reloaded page announces the change once.
-    def set_browser_timezone(&action)
-      zone = ActiveSupport::TimeZone[cookies["#{Avo::COOKIES_KEY}.browser_timezone"].to_s]
-      return yield if zone.nil?
+    # into a cookie (no HTTP header carries it) so responses can be *rendered*
+    # in the viewer's local zone. `ActiveSupport::TimeZone[]` validates the
+    # user-controlled cookie: junk lookups return nil and we fall back to the
+    # app zone.
+    def browser_timezone
+      return @browser_timezone if defined?(@browser_timezone)
 
-      if cookies.delete("#{Avo::COOKIES_KEY}.timezone_changed").present?
-        flash.now[:notice] = t("avo.timezone_changed",
-          timezone: zone.tzinfo.name,
-          default: "Dates and times are now displayed in your time zone (%{timezone}).")
+      @browser_timezone = if Avo.configuration.use_browser_timezone
+        ActiveSupport::TimeZone[cookies["#{Avo::COOKIES_KEY}.browser_timezone"].to_s]
       end
+    end
 
-      Time.use_zone(zone, &action)
+    # The one-shot `timezone_changed` cookie is set right before the Stimulus
+    # controller's Turbo reload, so the reloaded page announces the change once.
+    def announce_browser_timezone_change
+      return if browser_timezone.nil?
+      return if cookies.delete("#{Avo::COOKIES_KEY}.timezone_changed").blank?
+
+      flash.now[:notice] = t("avo.timezone_changed",
+        timezone: browser_timezone.tzinfo.name,
+        default: "Dates and times are now displayed in your time zone (%{timezone}).")
     end
 
     def set_sidebar_open
