@@ -131,8 +131,16 @@ module Avo
         ActiveSupport.run_load_hooks(:avo_plugin_include, self)
         ActiveSupport.run_load_hooks(:avo_boot, self)
         Avo.plugin_manager.commit_reload
+        # After :avo_boot so theme gems have loaded their classes.
+        @theme_manager = Avo::Themes::Manager.build
       end
       eager_load_actions
+    end
+
+    # The theme registry (Avo::Themes::Manager). Built by boot; lazily built
+    # here for code that runs before boot, such as generators in a console.
+    def theme_manager
+      @theme_manager ||= Avo::Themes::Manager.build
     end
 
     # Runs on each request

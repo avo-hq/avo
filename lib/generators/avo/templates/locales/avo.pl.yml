@@ -35,7 +35,7 @@ pl:
       hide: Ukryj
       light: Jasny
       light_tooltip: Tryb jasny
-      neutrals: Motyw
+      neutrals: Neutralny
       neutrals_list:
         brand: Marka
         gray: Szary
@@ -53,6 +53,8 @@ pl:
       shortcut_badges_hide_tooltip: Ukryj ikony skrótów klawiaturowych
       shortcut_badges_show_tooltip: Pokaż ikony skrótów klawiaturowych
       show: Pokaż
+      theme_picker: Wybierz motyw
+      themes: Motywy
       title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?

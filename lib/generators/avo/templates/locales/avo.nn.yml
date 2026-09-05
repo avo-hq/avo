@@ -35,7 +35,7 @@ nn:
       hide: Skjul
       light: Lys
       light_tooltip: Lysmodus
-      neutrals: Tema
+      neutrals: Nøytral
       neutrals_list:
         brand: Merke
         gray: Grå
@@ -53,6 +53,8 @@ nn:
       shortcut_badges_hide_tooltip: Skjul snarveiknappar
       shortcut_badges_show_tooltip: Vis snarveiknappar
       show: Vis
+      theme_picker: Vel tema
+      themes: Tema
       title: Utseende
     applied:
       one: applied

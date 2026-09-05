@@ -35,7 +35,7 @@ it:
       hide: Nascondi
       light: Chiaro
       light_tooltip: Modalità chiara
-      neutrals: Tema
+      neutrals: Neutro
       neutrals_list:
         brand: Marchio
         gray: Grigio
@@ -53,6 +53,8 @@ it:
       shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera
       shortcut_badges_show_tooltip: Mostra i badge delle scorciatoie da tastiera
       show: Mostra
+      theme_picker: Seleziona tema
+      themes: Temi
       title: Aspetto
     applied: applicato
     are_you_sure: Sei sicuro?

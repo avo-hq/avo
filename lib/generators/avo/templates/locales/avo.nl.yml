@@ -35,7 +35,7 @@ nl:
       hide: Verbergen
       light: Licht
       light_tooltip: Lichtmodus
-      neutrals: Thema
+      neutrals: Neutraal
       neutrals_list:
         brand: Merk
         gray: Grijs
@@ -53,6 +53,8 @@ nl:
       shortcut_badges_hide_tooltip: Verberg sneltoets badges
       shortcut_badges_show_tooltip: Toon sneltoets badges
       show: Toon
+      theme_picker: Thema kiezen
+      themes: Thema's
       title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?

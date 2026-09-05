@@ -6,7 +6,9 @@ class Avo::Configuration::Appearance
     :accent_colors,  # Hash{ color:, content:, foreground: } — three-token brand override (single palette, applied in both light and dark mode)
     :neutrals, # Array[String] — available neutral theme names
     :accents, # Array[String] — available accent color names
-    :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent]
+    :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent, :theme]
+    :theme, # Symbol — default theme id (e.g. :paper, :coastal); nil means the first offered theme
+    :themes, # Array[Symbol] — theme ids the picker offers, in order; nil means every installed theme
     :persistence, # :cookie | :database
     :logo,
     :logo_dark,
@@ -28,7 +30,7 @@ class Avo::Configuration::Appearance
 
     DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
     DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
-    LOCKABLE = %i[scheme neutral accent].freeze
+    LOCKABLE = %i[scheme neutral accent theme].freeze
 
     NEUTRAL_SHADES = [25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].freeze
     ACCENT_TOKENS = [:color, :content, :foreground].freeze
@@ -65,6 +67,8 @@ class Avo::Configuration::Appearance
     @neutrals = Array(config[:neutrals]).map(&:to_s).freeze
     @accents = Array(config[:accents]).map(&:to_s).freeze
     @lock = Array(config[:lock]).map(&:to_sym).freeze
+    @theme = config[:theme]
+    @themes = config[:themes].nil? ? nil : Array(config[:themes]).map(&:to_sym).freeze
     @persistence = config[:persistence]
     @logo = config[:logo]
     @logo_dark = config[:logo_dark]
@@ -80,6 +84,8 @@ class Avo::Configuration::Appearance
 
     validate_picker_layout!(@picker_layout)
     validate_selection!("neutral", @neutral)
+    validate_theme!(@theme)
+    validate_lock!(@lock)
     validate_selection!("accent", @accent)
     validate_color_palette!("neutral_colors", @neutral_colors, NEUTRAL_SHADES, "shades") if @neutral_colors
     validate_color_palette!("accent_colors", @accent_colors, ACCENT_TOKENS, "tokens") if @accent_colors
@@ -92,6 +98,8 @@ class Avo::Configuration::Appearance
   def neutral_locked? = @lock.include?(:neutral)
 
   def accent_locked? = @lock.include?(:accent)
+
+  def theme_locked? = @lock.include?(:theme)
 
   # Returns the neutral name for the data attribute (nil when neutral is unset)
   def neutral_css_class = neutral&.to_s
@@ -164,6 +172,22 @@ class Avo::Configuration::Appearance
     return if PICKER_LAYOUTS.include?(value)
 
     raise ArgumentError, "appearance.picker_layout must be one of #{PICKER_LAYOUTS.inspect}, got #{value.inspect}"
+  end
+
+  # Theme ids are only checked for shape here: gems register their themes
+  # after the initializer runs, so whether the id is installed is the theme
+  # manager's question, answered per request.
+  def validate_theme!(value)
+    return if value.nil? || value.is_a?(Symbol)
+
+    raise ArgumentError, "appearance.theme must be a Symbol (a theme id), got #{value.class}"
+  end
+
+  def validate_lock!(value)
+    unknown = value - LOCKABLE
+    return if unknown.empty?
+
+    raise ArgumentError, "appearance.lock accepts #{LOCKABLE.inspect}, got #{unknown.inspect}"
   end
 
   def validate_selection!(name, value)

@@ -47,7 +47,7 @@
    own body provides the chrome (rounded border, surface). The inner body
    handles padding, layout, and scrollable overflow. */
 .color-scheme-switcher__panel {
-  @apply w-64 lg:w-80;
+  @apply w-64 lg:w-88;
 }
 
 .color-scheme-switcher__panel .dropdown-card__body {
@@ -59,8 +59,17 @@
   @apply flex flex-col gap-1;
 }
 
-.color-scheme-switcher__section + .color-scheme-switcher__section {
+/* Sections hidden by the active theme's locks carry the `hidden` attribute
+   and must not count as a neighbor, or the first visible section would
+   start with a rule. */
+.color-scheme-switcher__section:not([hidden]) ~ .color-scheme-switcher__section:not([hidden]) {
   @apply pt-2 border-t border-tertiary;
+}
+
+/* Inline pill: a wrapper per dimension the appearance controller can hide.
+   `contents` keeps the buttons inside as direct flex items of the pill. */
+.color-scheme-switcher__group {
+  display: contents;
 }
 
 .color-scheme-switcher__section-label {
@@ -184,6 +193,9 @@
   @apply gap-1;
 }
 
+/* Start-aligned so the panel opens in the pill's own direction; the
+   dropdown-menu controller's `flip` option swaps it to end-aligned when that
+   would run off the viewport (the pill sits at the navbar's end). */
 .color-scheme-switcher__theme-popover {
   @apply start-0 end-auto min-w-[160px];
 }
@@ -263,8 +275,10 @@
   background: oklch(63% 0.014 140);
 }
 
+/* One line per option: "Catppuccin Latte" must not wrap under its tile. The
+   popover grows to fit; the compact panel gives the list the room below. */
 .color-scheme-switcher__theme-option-label {
-  @apply leading-none;
+  @apply leading-none whitespace-nowrap;
 }
 
 /* Accent color dropdown */
@@ -366,4 +380,62 @@
 .accent-theme-pink .color-scheme-switcher__accent-badge-preview--pink,
 .accent-theme-rose .color-scheme-switcher__accent-badge-preview--rose {
   @apply inline-block;
+}
+
+/* Theme picker ------------------------------------------------------------ */
+
+.color-scheme-switcher__theme-list {
+  @apply flex flex-col gap-0.5 self-stretch max-h-72 overflow-y-auto;
+}
+
+/* Two columns only where the panel is wide enough for two single-line names;
+   below that the base single column scrolls. */
+.color-scheme-switcher__panel .color-scheme-switcher__theme-list {
+  @apply lg:grid lg:grid-cols-2 gap-1;
+}
+
+.color-scheme-switcher__theme-option--tile {
+  @apply min-h-8 px-1.5 py-1 gap-2;
+}
+
+/* The theme popover pill shows the active theme's tile next to its title. */
+.color-scheme-switcher__button--theme .theme-tile {
+  @apply size-auto w-6 h-4 me-1;
+}
+
+/* The tile re-derives Avo's chained tokens (sidebar from background, …) on
+   itself so a theme that only sets primitives previews correctly. That block
+   lives in css/variables.css, in the top-level @layer theme: this file is
+   imported inside @layer components, where a nested `@layer theme` would
+   become `components.theme` and beat every theme's own @layer base values. */
+
+.theme-tile {
+  @apply relative grid shrink-0 overflow-hidden rounded border border-tertiary shadow-sm;
+  width: 2.5rem;
+  height: 1.75rem;
+  grid-template-rows: 0.375rem 1fr;
+  grid-template-columns: 0.75rem 1fr;
+  background: var(--color-main-content-background);
+}
+
+.theme-tile__navbar {
+  grid-column: 1 / -1;
+  background: var(--color-navbar-background);
+}
+
+.theme-tile__sidebar {
+  background: var(--color-sidebar-background);
+}
+
+.theme-tile__content {
+  background: var(--color-main-content-background);
+}
+
+.theme-tile__accent {
+  @apply absolute rounded-full;
+  inset-inline-end: 0.3rem;
+  inset-block-end: 0.3rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--color-accent);
 }

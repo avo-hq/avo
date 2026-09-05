@@ -35,7 +35,7 @@ zh:
       hide: 隐藏
       light: 浅色
       light_tooltip: 浅色模式
-      neutrals: 主题
+      neutrals: 中性色
       neutrals_list:
         brand: 品牌
         gray: 灰色
@@ -53,6 +53,8 @@ zh:
       shortcut_badges_hide_tooltip: 隐藏键盘快捷键徽章
       shortcut_badges_show_tooltip: 显示键盘快捷键徽章
       show: 显示
+      theme_picker: 选择主题
+      themes: 主题
       title: 外观
     applied: 已应用
     are_you_sure: 您确定吗？

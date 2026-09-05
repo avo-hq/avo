@@ -35,7 +35,7 @@ ru:
       hide: Скрыть
       light: Светлый
       light_tooltip: Светлый режим
-      neutrals: Тема
+      neutrals: Нейтральный
       neutrals_list:
         brand: Бренд
         gray: Серый
@@ -53,6 +53,8 @@ ru:
       shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
       shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
       show: Показать
+      theme_picker: Выбрать тему
+      themes: Темы
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?

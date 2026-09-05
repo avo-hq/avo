@@ -35,7 +35,7 @@ ua:
       hide: Сховати
       light: Світлий
       light_tooltip: Світлий режим
-      neutrals: Тема
+      neutrals: Нейтральний
       neutrals_list:
         brand: Бренд
         gray: Сірий
@@ -53,6 +53,8 @@ ua:
       shortcut_badges_hide_tooltip: Сховати значки клавіатурних ярликів
       shortcut_badges_show_tooltip: Показати значки клавіатурних ярликів
       show: Показати
+      theme_picker: Обрати тему
+      themes: Теми
       title: Зовнішній вигляд
     applied: застосовано
     are_you_sure: Ви впевнені?

@@ -35,7 +35,7 @@ fr:
       hide: Cacher
       light: Clair
       light_tooltip: Mode clair
-      neutrals: Thème
+      neutrals: Neutre
       neutrals_list:
         brand: Marque
         gray: Gris
@@ -53,6 +53,8 @@ fr:
       shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier
       shortcut_badges_show_tooltip: Afficher les badges de raccourci clavier
       show: Afficher
+      theme_picker: Choisir un thème
+      themes: Thèmes
       title: Apparence
     applied:
       one: appliqué

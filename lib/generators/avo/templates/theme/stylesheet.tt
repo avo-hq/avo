@@ -1,0 +1,61 @@
+/* <%= stylesheet_path %> — the <%= theme_title %> theme, drawn for the <%= theme_scheme %> scheme.
+ *
+ * Every public token Avo exposes is listed below, commented out, grouped the
+ * way the CSS variables reference groups them. Uncomment the ones this theme
+ * sets and give them a value; leave the rest alone and Avo's <%= theme_scheme %>-scheme
+ * defaults apply.
+ *
+ * One block, one scheme. Avo forces the <%= theme_scheme %> scheme on <html> while this
+ * theme is active (see `self.scheme` in the theme class), so there is no
+ * `.dark` twin to keep in sync. A look that wants to exist in both schemes is
+ * two themes, e.g. `ocean_light` and `ocean_dark` — that is what the built-ins
+ * do. (The alternative, dropping :scheme from `self.lock` and adding a
+ * `.avo-theme-<%= theme_id %>.dark, .dark .avo-theme-<%= theme_id %> { }` block, is how
+ * Paper-style themes work; it doubles the tokens to maintain.)
+ *
+ * The navbar does not have to be dark. Avo's stock look uses a dark bar, but a
+ * theme sets --color-navbar-background and the --color-navbar-content and
+ * --color-navbar-control-* tokens to whatever reads well: the page ground, a
+ * tint of the accent, a light band with dark ink. Try a few.
+ *
+ * The same goes for the seam between the sidebar and the content panel. The
+ * stock look draws the content as a raised card (--color-main-content-background
+ * on --color-sidebar-background, a --color-main-content-border line, rounded
+ * corners under the navbar's notch). A flush look sets the sidebar and content
+ * to one background, makes --color-main-content-border transparent, and turns
+ * --navbar-notch-enabled off (or sets --main-content-radius to 0). Decide it
+ * per theme; it changes the feel more than any accent does.
+ *
+ * The class name must stay `.avo-theme-<%= theme_id %>`: Avo puts it on <html>
+ * while the theme is active and on the picker's preview tile, and it is how
+ * this theme's tokens are found. Renaming the theme means renaming the class.
+ * Because the tile can sit on a page in the other scheme, set the foundations
+ * (background, primary, ...) explicitly rather than relying on Avo deriving
+ * them from the neutral scale.
+ *
+ * A token marked "inherits from" falls back to the token named when unset, so
+ * setting the source alone is usually enough.
+ */
+@layer base {
+  .avo-theme-<%= theme_id %> {
+    /* ---- Required: a complete theme sets these ---- */
+<% catalog.required.group_by(&:group).each do |group, tokens| -%>
+
+    /* <%= catalog::GROUPS.fetch(group) %> */
+<% tokens.each do |token| -%>
+    /* <%= token.name %>: ; */ /* <%= token.label %> */
+<% end -%>
+<% end -%>
+
+    /* ---- Optional: refinements on top of the required set ---- */
+<% catalog.grouped.each do |group, tokens| -%>
+<% optional = tokens.reject(&:required?) -%>
+<% next if optional.empty? -%>
+
+    /* <%= catalog::GROUPS.fetch(group) %> */
+<% optional.each do |token| -%>
+    /* <%= token.name %>: ; */ /* <%= token.label %><%= " (inherits from #{token.derives_from})" if token.derives_from %> */
+<% end -%>
+<% end -%>
+  }
+}

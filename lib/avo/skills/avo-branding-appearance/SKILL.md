@@ -1,6 +1,6 @@
 ---
 name: avo-branding-appearance
-description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item" — whether or not they name Avo.
+description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "give the admin a coastal/rose/sunset theme", "use the Dracula/Monokai/Nord look", "let users pick a theme", "make our own theme" or "ship our theme as a gem", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item" — whether or not they name Avo.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -15,7 +15,8 @@ Make the Avo admin look like your product — logos, favicon, color scheme, bran
 Files you'll touch, from shallowest to deepest:
 
 - `config/initializers/avo.rb` → `config.appearance = { … }` — logos, favicon, scheme, palettes, picker/lock, persistence, chart colors. **The default answer.**
-- `app/assets/stylesheets/avo-overrides.css` — no-build CSS-variable re-skin (eject with `rails g avo:eject --partial :avo_overrides_css`). Served as-is.
+- `app/avo/themes/<name>.rb` + `app/assets/stylesheets/avo/themes/<name>.css` — a **named theme** (`rails g avo:theme <name> [--scheme dark]`): a finished look, drawn for one scheme, that users pick from the appearance picker; shippable as a gem with `--gem`. Eighteen built-ins ship with Avo (Paper, Coastal, Rose, Sunset, Midnight, Monokai, Dracula, Nord, Solarized Light/Dark, Gruvbox Light/Dark, One Light/Dark, Catppuccin Latte/Mocha, Tokyo Night Day/Night).
+- `app/assets/stylesheets/avo-overrides.css` — no-build CSS-variable re-skin (eject with `rails g avo:eject --partial :avo_overrides_css`). Served as-is, always on, for the whole app.
 - `app/views/avo/partials/_head.html.erb` — inline `<style>` for component variables (eject with `rails g avo:eject --partial :head`).
 - `app/assets/svgs/` — your own SVG icons for menu items / actions.
 - A JSONB column + `load_settings`/`save_settings` procs — only when persisting each user's theme to the database.
@@ -27,6 +28,7 @@ Authoritative docs — fetch on demand, verify option names against them (and th
 - Docs map (discover pages): https://docs.avohq.io/4.0/docs-map.md
 - Theming overview (the ladder): https://docs.avohq.io/4.0/theming.md
 - Appearance guide: https://docs.avohq.io/4.0/appearance.md — API reference (every option, defaults, CSS variables): https://docs.avohq.io/4.0/appearance-api.md
+- Themes guide (built-ins, `rails g avo:theme`, partial overrides, shipping a gem): https://docs.avohq.io/4.0/themes.md — API reference: https://docs.avohq.io/4.0/themes-api.md
 - Icons (Tabler / Heroicons / your own SVGs): https://docs.avohq.io/4.0/icons.md
 - Branding → Appearance (Avo 3 `config.branding` was renamed to `config.appearance` in Avo 4): https://docs.avohq.io/4.0/branding.md
 
@@ -59,7 +61,7 @@ Avo.configure do |config|
 end
 ```
 
-**The top navbar is dark in BOTH light and dark mode** — `logo` always sits on a dark surface, so pick a file that reads on dark. `logo_dark` only swaps when the whole UI is in dark mode, not to fix contrast on the navbar.
+**With the stock look (Paper) the top navbar is dark in BOTH light and dark mode** — `logo` sits on a dark surface, so pick a file that reads on dark. `logo_dark` only swaps when the whole UI is in dark mode, not to fix contrast on the navbar. A theme can recolor the navbar (light, tinted, or the page ground) through the `--color-navbar-*` tokens; the built-in Coastal, Solarized Light, Gruvbox Light, and Catppuccin Latte have light navbars.
 
 ### 2. Color scheme — light / dark / auto
 
@@ -173,7 +175,44 @@ config.appearance = {
 }
 ```
 
-### 7. Deep re-skin — CSS variables (only when `config.appearance` can't reach it)
+### 7. Themes — a named look users can pick, or one you ship
+
+A theme is a named bundle of CSS-variable overrides (plus optional partial overrides and brand assets) that shows up in the appearance picker with a preview tile and is remembered per user (`avo.theme` cookie, or the `:theme` settings key under database persistence). Reach for it when the request names a look ("give it the Dracula theme", "a coastal theme"), wants several looks side by side, or wants a look that can be handed to another app.
+
+**Pick a built-in.** No code: the picker already lists `paper` (the stock look, and the only theme that leaves the neutral/accent/scheme pickers open), then finished looks drawn for one scheme each — light: `coastal`, `rose`, `sunset`, `solarized_light`, `gruvbox_light`, `one_light`, `catppuccin_latte`, `tokyo_night_day`; dark: `midnight`, `monokai`, `dracula`, `nord`, `solarized_dark`, `gruvbox_dark`, `one_dark`, `catppuccin_mocha`, `tokyo_night`. A look that exists in both schemes is two themes; picking a dark one switches the UI to dark and hides the scheme picker. Make one the default, trim the list, or lock it:
+
+```ruby
+config.appearance = {
+  theme: :dracula,                        # default; must be in the offered list
+  themes: [:paper, :dracula, :nord],      # offered, in this order (default: all installed)
+  lock: [:theme]                          # hide the theme picker
+}
+```
+
+**Make one.** `rails g avo:theme <name>` (add `--scheme dark` for a dark look) writes `app/avo/themes/<name>.rb` (`class Avo::Themes::<Name> < Avo::BaseTheme` with `title`/`description`/`scheme`; `id`, `stylesheet`, `views`, `lock`, `appearance` are derived defaults shown commented) and `app/assets/stylesheets/avo/themes/<name>.css` with every token listed, commented, grouped. Uncomment and set what the look needs. The CSS is one block, scoped to `.avo-theme-<name>` inside `@layer base`; Avo forces the theme's scheme on `<html>` while it is active, so there is no `.dark` block to keep in sync:
+
+```css
+@layer base {
+  .avo-theme-ocean {
+    --color-avo-neutral-50: oklch(98% 0.01 240);  /* … all twelve shades … */
+    --color-accent: oklch(60% 0.12 220);
+    --color-accent-content: oklch(50% 0.12 220);
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: oklch(60% 0.12 220);
+    --color-background: var(--color-avo-neutral-50);   /* set the foundations explicitly: the picker tile may sit on a dark page */
+    --color-primary: var(--color-white);
+    --color-navbar-background: oklch(28% 0.06 240);
+  }
+}
+```
+
+Rules that bite: keep the class name; one theme is one scheme — a look wanted in both schemes is two themes (`ocean_light`, `ocean_dark --scheme dark`), the way the built-ins do it; a theme owns the neutral, accent, and scheme pickers by default (`self.lock = [:neutral, :accent, :scheme]`), so the user's picks do not leak in — unlock a dimension only if the stylesheet handles it (unlocking `:scheme` means styling a `.dark` block too); the navbar does not have to be dark — `--color-navbar-background` plus the `--color-navbar-content` / `--color-navbar-control-*` tokens can make it light, tinted, or the page ground, so vary it between themes; decide the sidebar/content seam too — the stock raised-card look (`--color-main-content-background` on `--color-sidebar-background`, a `--color-main-content-border` line, the navbar notch) or a flush look (one background for both, `--color-main-content-border: transparent`, `--navbar-notch-enabled: false`). Restart the server after adding a theme (classes are discovered at boot).
+
+**Partials and brand assets.** `rails g avo:eject --partial :logo --theme <name>` copies a partial into `app/views/avo/themes/<name>/…`; it renders only while the theme is active and wins over an app-ejected copy. `self.appearance = { logo: "…", favicon: "…", placeholder: "…", chart_colors: [...] }` on the theme class swaps brand assets while active (only those keys; colors go in the CSS).
+
+**Ship it.** `rails g avo:theme <name> --gem [--path ../]` writes an `avo-<name>_theme` gem (class `Avo::<Name>Theme::Theme`, engine, manifest, README). Develop with `gem "avo-<name>_theme", path: "../avo-<name>_theme"`, publish with `gem build` / `gem push`; others install with `gem "avo-<name>_theme"` and the theme appears in their picker.
+
+### 8. Deep re-skin — CSS variables (only when `config.appearance` and themes can't reach it)
 
 Navbar background, sidebar surfaces, table row hover/selected, focus ring, and motion speeds aren't routed through Ruby — they're CSS custom properties. Avo's whole look is variable-driven, so overriding a handful re-skins everything with **no build step**. Put light-mode values on `:root`, dark-mode overrides on `.dark`.
 
@@ -205,9 +244,9 @@ The navbar and sidebar expose **scoped** palette contracts on the `.top-navbar` 
 bin/rails generate avo:eject --partial :head
 ```
 
-The full variable list (navbar, sidebar, table, focus ring, motion) with defaults lives in the CSS variables section of `appearance-api.md` — fetch it before writing component-level overrides. For named-theme requests ("coastal", "rose", "80s sunset"), work in `avo-overrides.css` with matching `:root` and `.dark` values.
+The full variable list (navbar, sidebar, table, focus ring, motion) with defaults lives in the CSS variables section of `appearance-api.md` — fetch it before writing component-level overrides. For named-theme requests ("coastal", "rose", "80s sunset"), prefer step 7: a built-in if one matches, else `rails g avo:theme` — `avo-overrides.css` is for always-on, app-wide overrides that no theme should undo.
 
-### 8. Icons (menu items, actions)
+### 9. Icons (menu items, actions)
 
 Anywhere Avo takes an `icon:`, pass a path string. **Prefer Tabler in v4** (`tabler/outline/<name>` or `tabler/filled/<name>`); Heroicons (`heroicons/outline/<name>`, also `solid`/`mini`/`micro`) are legacy-supported. Your own SVGs go in `app/assets/svgs/` and are referenced by filename.
 
@@ -233,7 +272,9 @@ For **populating menu/resource icons at scale** (migrations, whole-sidebar passe
 | `neutral_colors` | Custom 12-shade neutral | Hash of all 12 shades (`25`…`950`) |
 | `accent_colors` | Custom accent | Hash of `:color`, `:content`, `:foreground` |
 | `neutrals` / `accents` | Restrict picker options | Array of **Strings** (no colon) |
-| `lock` | Force values, hide switchers | Array subset of `[:scheme, :neutral, :accent]` |
+| `theme` | Default theme id | **Symbol**, one of the offered themes; default `:paper` |
+| `themes` | Restrict/order the theme picker | Array of Symbols (built-in and installed ids) |
+| `lock` | Force values, hide switchers | Array subset of `[:scheme, :neutral, :accent, :theme]` |
 | `picker_layout` | Navbar switcher layout | `:inline` (default) `:dropdown` |
 | `persistence` | Where picks are stored | `:cookie` (default) `:database` |
 | `load_settings` / `save_settings` | DB persistence blocks | Proc; needs a JSON/JSONB column |
@@ -245,8 +286,11 @@ CSS-only knobs (navbar/sidebar/table/focus/motion variables) are not in this has
 
 - **`neutral:` / `accent:` must be Symbols.** A String or Hash raises `ArgumentError`. Custom colors go through `neutral_colors:` / `accent_colors:`, and you must also set `neutral: :brand` / `accent: :brand` (or list `"brand"` in `neutrals:`/`accents:`) to select the custom palette.
 - **`neutral_colors` needs all 12 shades; `accent_colors` needs all 3 tokens.** A missing or `nil` value raises `ArgumentError`.
-- **The navbar is dark in both modes.** The `logo` must read on a dark surface. `logo_dark` is for whole-UI dark mode, not navbar contrast.
+- **On Paper the navbar is dark in both modes.** The `logo` must read on a dark surface there. `logo_dark` is for whole-UI dark mode, not navbar contrast. A theme may recolor the navbar through the `--color-navbar-*` tokens and flatten the sidebar/content seam through `--color-main-content-border`, `--color-sidebar-background`, and `--navbar-notch-enabled`; the dark bar and the raised content card are defaults, not rules.
+- **A theme is one scheme and owns its pickers.** Do not write a `.dark` block into a generated theme or unlock `:scheme` to "support dark mode" — generate a second theme with `--scheme dark` instead. Do not unlock `:neutral`/`:accent` unless the request is explicitly a Paper-style base the user customizes.
 - **`chart_colors` must be hex.** They're passed straight to Chart.js — `oklch()`/`rgb()` won't work there (even though the palettes accept them).
+- **A theme's CSS must stay scoped to `.avo-theme-<id>` and inside `@layer base`.** A `:root` block in a theme file applies to every theme at once; an unlayered block silently disables the neutral/accent pickers.
+- **Theme ids are Symbols in Ruby, `avo-<name>_theme` in gem names, `Avo::<Name>Theme::Theme` in a gem.** Never define `Avo::Themes::<Name>` from a gem — that constant belongs to the host app's `app/avo/themes/`.
 - **`avo-overrides.css` is served as-is, NOT through the Tailwind build.** Only put plain CSS + variable overrides there — no `@apply`, no arbitrary values. Tailwind directives for your *own* custom UI belong in `app/assets/stylesheets/avo/` (which IS built). See the avo-custom-ui skill.
 - **DB persistence needs a JSONB column and BOTH blocks**, and `save_settings` gets a **partial** `settings` Hash (only the changed keys) — `deep_merge`, never overwrite the whole preferences blob.
 - **`config.branding` was renamed to `config.appearance` in Avo 4.** On a v3 app you may find `config.branding = { … }` — migrate it into `config.appearance`.
