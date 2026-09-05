@@ -180,19 +180,23 @@
 .top-navbar {
   @apply z-400 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
 
+  /* Sourced from the global --color-navbar-* tokens (css/variables.css) so a
+     theme can recolor the whole bar, light or dark, from its own block. The
+     shortcut-badge tokens derive from the control ones rather than from fixed
+     neutral shades for the same reason. */
   --top-navbar-background: var(--color-navbar-background);
-  --top-navbar-content: var(--color-avo-neutral-300);
-  --top-navbar-content-hover: var(--color-avo-neutral-50);
-  --top-navbar-control-background: var(--color-avo-neutral-800);
-  --top-navbar-control-background-hover: var(--color-avo-neutral-700);
-  --top-navbar-control-border: var(--color-avo-neutral-700);
-  --top-navbar-control-content: var(--color-avo-neutral-50);
-  --top-navbar-control-muted: var(--color-avo-neutral-400);
-  --top-navbar-control-shortcut-background: var(--color-avo-neutral-700);
-  --top-navbar-control-shortcut-border: var(--color-avo-neutral-600);
-  --top-navbar-control-shortcut-content: var(--color-avo-neutral-200);
-  --top-navbar-active-background: var(--color-avo-neutral-950);
-  --top-navbar-active-content: var(--color-avo-neutral-50);
+  --top-navbar-content: var(--color-navbar-content);
+  --top-navbar-content-hover: var(--color-navbar-content-hover);
+  --top-navbar-control-background: var(--color-navbar-control-background);
+  --top-navbar-control-background-hover: var(--color-navbar-control-background-hover);
+  --top-navbar-control-border: var(--color-navbar-control-border);
+  --top-navbar-control-content: var(--color-navbar-control-content);
+  --top-navbar-control-muted: var(--color-navbar-control-muted);
+  --top-navbar-control-shortcut-background: var(--color-navbar-control-background-hover);
+  --top-navbar-control-shortcut-border: color-mix(in oklab, var(--color-navbar-control-border), var(--color-navbar-content) 25%);
+  --top-navbar-control-shortcut-content: var(--color-navbar-content);
+  --top-navbar-active-background: var(--color-navbar-active-background);
+  --top-navbar-active-content: var(--color-navbar-active-content);
   --top-navbar-start-notch-offset: 0px;
   --navbar-notch-color: var(--top-navbar-background);
 

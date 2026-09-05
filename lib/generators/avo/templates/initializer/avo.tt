@@ -178,10 +178,14 @@ Avo.configure do |config|
   #   lock: [:scheme, :neutral, :accent, :theme]
   #   neutrals: [:brand, :neutral, :slate, :olive],
   #   accents: [:brand, :red, :blue, :sky, :purple],
-  #   # Themes: named looks the picker offers. Built in: :paper (the stock look),
-  #   # :coastal, :rose, :sunset, :midnight, :monokai, :dracula, :solarized,
-  #   # :nord, :gruvbox, :one_dark, :catppuccin, :tokyo_night. Add your own with
-  #   # `rails g avo:theme NAME` or by installing an avo-*_theme gem.
+  #   # Themes: named looks the picker offers. Built in: :paper (the stock look,
+  #   # and the only one that leaves the neutral/accent/scheme pickers open),
+  #   # :coastal, :rose, :sunset, :midnight, :monokai, :dracula, :nord,
+  #   # :solarized_light, :solarized_dark, :gruvbox_light, :gruvbox_dark,
+  #   # :one_light, :one_dark, :catppuccin_latte, :catppuccin_mocha,
+  #   # :tokyo_night_day, :tokyo_night. Every other theme is drawn for one
+  #   # scheme and owns its palette. Add your own with `rails g avo:theme NAME
+  #   # [--scheme dark]` or by installing an avo-*_theme gem.
   #   theme: :paper,
   #   themes: [:paper, :coastal, :midnight],
   #   mode: :static,

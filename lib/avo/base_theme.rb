@@ -8,11 +8,18 @@ module Avo
   #   class Avo::Themes::Coastal < Avo::BaseTheme
   #     self.title = "Coastal"
   #     self.description = "Soft sand neutrals, sea-glass accents."
+  #     self.scheme = :light
   #   end
   #
   # Every attribute has a default derived from the class name, so the class
   # above is complete: id `:coastal`, stylesheet `avo/themes/coastal`, and a
   # views directory at `app/views/avo/themes/coastal` when it exists.
+  #
+  # A theme owns its whole look by default: it is drawn for one color scheme
+  # (`scheme`, light unless said otherwise) and the neutral, accent, and
+  # scheme pickers are hidden while it is active (`lock`). A theme that wants
+  # to be a base for the user's own picks, the way Paper is, unlocks them and
+  # then has to style both schemes, because the user can switch.
   #
   # Attributes are plain class-level ivars looked up through the superclass
   # chain rather than `class_attribute`, because the derived defaults need to
@@ -27,7 +34,8 @@ module Avo
     # warns.
     unless defined?(APPEARANCE_KEYS)
       APPEARANCE_KEYS = %i[logo logo_dark logomark logomark_dark favicon favicon_dark placeholder chart_colors].freeze
-      LOCKABLE = %i[neutral accent].freeze
+      LOCKABLE = %i[neutral accent scheme].freeze
+      SCHEMES = %i[light dark].freeze
       ID_FORMAT = /\A[a-z][a-z0-9_]*\z/
     end
 
@@ -81,7 +89,29 @@ module Avo
         @views = value.present? ? Pathname.new(value.to_s) : nil
       end
 
-      def lock = inherited_ivar(:@lock) || []
+      # The color scheme the theme is drawn for. It is forced on <html> while
+      # the theme locks `:scheme` (the default), so a dark theme is dark on a
+      # light OS and its stylesheet needs one block, not two.
+      def scheme = inherited_ivar(:@scheme) || :light
+
+      def scheme=(value)
+        value = value.to_s.to_sym
+        raise ArgumentError, "#{name}.scheme accepts #{SCHEMES.inspect}, got #{value.inspect}" unless SCHEMES.include?(value)
+
+        @scheme = value
+      end
+
+      def dark? = scheme == :dark
+
+      # The pickers hidden while the theme is active. Everything by default:
+      # a theme is a finished look, and the neutral, accent, and scheme picks
+      # are what Paper offers instead of a look. Unlock a dimension and the
+      # user's pick applies on top of the theme's stylesheet.
+      def lock
+        return inherited_ivar(:@lock) if inherited_set?(:@lock)
+
+        LOCKABLE
+      end
 
       def lock=(value)
         value = Array(value).map(&:to_sym)
@@ -90,6 +120,8 @@ module Avo
 
         @lock = value.freeze
       end
+
+      def forces_scheme? = locks?(:scheme)
 
       def appearance = inherited_ivar(:@appearance) || {}
 

@@ -9,6 +9,7 @@ module Generators
     # "Gem naming").
     #
     #   rails g avo:theme coastal
+    #   rails g avo:theme midnight --scheme dark
     #   rails g avo:theme coastal --gem --path ../
     class ThemeGenerator < NamedBaseGenerator
       source_root File.expand_path("templates", __dir__)
@@ -26,8 +27,14 @@ module Generators
         type: :string,
         required: false
 
+      class_option :scheme,
+        desc: "The color scheme the theme is drawn for: light or dark. Avo forces it while the theme is active",
+        type: :string,
+        default: "light"
+
       def create
         return invalid_name unless ::Avo::BaseTheme::ID_FORMAT.match?(theme_id)
+        return invalid_scheme unless ::Avo::BaseTheme::SCHEMES.include?(theme_scheme)
 
         options[:gem] ? create_gem : create_local
       end
@@ -42,6 +49,10 @@ module Generators
         def theme_class_name = theme_id.camelize
 
         def theme_title = theme_id.titleize
+
+        def theme_scheme = options[:scheme].to_s.downcase.to_sym
+
+        def dark? = theme_scheme == :dark
 
         def gem_name = "avo-#{theme_id}_theme"
 
@@ -99,6 +110,10 @@ module Generators
         end
 
         def gem_file(path) = File.join(gem_root, path)
+
+        def invalid_scheme
+          say "--scheme must be one of #{::Avo::BaseTheme::SCHEMES.join(", ")}; got #{options[:scheme].inspect}.", :red
+        end
 
         def invalid_name
           say "Theme names must match #{::Avo::BaseTheme::ID_FORMAT.inspect} once underscored; " \

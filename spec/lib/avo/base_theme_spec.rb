@@ -26,8 +26,11 @@ RSpec.describe Avo::BaseTheme do
       expect(klass).not_to be_needs_visit
     end
 
-    it "defaults lock and appearance to empty" do
-      expect(klass.lock).to eq([])
+    it "owns every picker and is drawn for the light scheme by default" do
+      expect(klass.lock).to eq([:neutral, :accent, :scheme])
+      expect(klass.scheme).to eq(:light)
+      expect(klass).to be_forces_scheme
+      expect(klass).not_to be_dark
       expect(klass.appearance).to eq({})
       expect(klass).not_to be_builtin
     end
@@ -75,12 +78,24 @@ RSpec.describe Avo::BaseTheme do
       expect(klass).to be_needs_visit
     end
 
-    it "accepts neutral and accent locks only" do
+    it "accepts neutral, accent, and scheme locks only" do
       klass.lock = [:neutral, "accent"]
       expect(klass.lock).to eq([:neutral, :accent])
       expect(klass.locks?(:neutral)).to be(true)
+      expect(klass).not_to be_forces_scheme
 
-      expect { klass.lock = [:scheme] }.to raise_error(ArgumentError, /accepts/)
+      klass.lock = []
+      expect(klass.lock).to eq([])
+
+      expect { klass.lock = [:theme] }.to raise_error(ArgumentError, /accepts/)
+    end
+
+    it "accepts a light or dark scheme and nothing else" do
+      klass.scheme = "dark"
+      expect(klass.scheme).to eq(:dark)
+      expect(klass).to be_dark
+
+      expect { klass.scheme = :auto }.to raise_error(ArgumentError, /accepts/)
     end
 
     it "accepts brand-asset appearance keys and rejects everything else" do
@@ -94,11 +109,13 @@ RSpec.describe Avo::BaseTheme do
     it "inherits settings through a theme subclass" do
       klass.title = "Parent"
       klass.lock = [:accent]
+      klass.scheme = :dark
       child = stub_const("Avo::Themes::Child", Class.new(klass))
 
       expect(child.id).to eq(:child)
       expect(child.title).to eq("Parent")
       expect(child.lock).to eq([:accent])
+      expect(child.scheme).to eq(:dark)
     end
   end
 end

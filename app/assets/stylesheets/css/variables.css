@@ -110,11 +110,21 @@
      light mode and a subtly tinted surface in dark (see the .dark override). */
   --color-sidebar-background: var(--color-background);
 
-  /* Top navbar background. Kept as the global source for the scoped
-     --top-navbar-background token in layout.css, so existing installs can keep
-     overriding just the navbar background without touching the rest of the
-     navbar palette. */
+  /* Top navbar palette. These are the global sources for the scoped
+     --top-navbar-* tokens in layout.css, so an app or a theme can recolor the
+     navbar from :root or from its .avo-theme-<id> block. The dark bar is
+     Paper's choice, not a rule: a light navbar sets the background to a light
+     tone and the content/control tokens to the theme's own ink. */
   --color-navbar-background: var(--color-avo-neutral-900);
+  --color-navbar-content: var(--color-avo-neutral-300);
+  --color-navbar-content-hover: var(--color-avo-neutral-50);
+  --color-navbar-control-background: var(--color-avo-neutral-800);
+  --color-navbar-control-background-hover: var(--color-avo-neutral-700);
+  --color-navbar-control-border: var(--color-avo-neutral-700);
+  --color-navbar-control-content: var(--color-avo-neutral-50);
+  --color-navbar-control-muted: var(--color-avo-neutral-400);
+  --color-navbar-active-background: var(--color-avo-neutral-950);
+  --color-navbar-active-content: var(--color-avo-neutral-50);
 
   /* Background of the main content panel. Dedicated knob so installs can recolor
      the content surface independently of the primary surface token. Defaults to
@@ -225,6 +235,32 @@
 /* User-pickable theme classes live in @layer components — a HIGHER layer than
    brand override (base), so a user-selected `.neutral-theme-slate` or
    `.accent-theme-orange` still wins over a configured brand color. */
+/* The appearance picker's preview tile: a miniature window in a theme's own
+   tokens. The element carries `avo-theme-<id>`, so the theme's class-scoped
+   variables apply to it — but a custom property resolves on the element that
+   declares it, and the derived defaults above (sidebar from background, main
+   content from primary, …) are declared on :root and inherited already
+   resolved. Re-declaring the chain on the tile, in the same layer as those
+   defaults, lets a theme that only sets primitives preview correctly while a
+   theme that sets a derived token explicitly (@layer base) still wins. It has
+   to be this top-level layer: nested inside a component file's @layer it
+   would become `components.theme` and beat the themes instead. */
+@layer theme {
+  .theme-tile {
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
+    --color-navbar-background: var(--color-avo-neutral-900);
+    --color-sidebar-background: var(--color-background);
+    --color-main-content-background: var(--color-primary);
+  }
+
+  .dark .theme-tile {
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), var(--color-scheme) 14%);
+  }
+}
+
 @layer components {
   .neutral-theme-slate {
     --color-avo-neutral-25: oklch(98.51% 0 89.88);

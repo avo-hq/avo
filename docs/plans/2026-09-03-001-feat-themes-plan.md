@@ -4,7 +4,40 @@ type: feat
 status: phase-1-implemented
 date: 2026-09-03
 deepened: 2026-09-04
+revised: 2026-09-05
 ---
+
+> **Revised 2026-09-05, before merge.** The first cut let every theme style
+> both schemes and left the neutral/accent pickers open on top of it, with a
+> per-theme opt-in lock. Reviewing the result, that was too much machinery for
+> what a theme is. The model shipped instead:
+>
+> - **A theme is a finished look for one scheme.** `BaseTheme#scheme` is
+>   `:light` or `:dark` (default light) and is forced on `<html>` while the
+>   theme is active; the stylesheet is one block, no `.dark` twin.
+> - **A theme owns its pickers by default.** `BaseTheme#lock` defaults to
+>   `[:neutral, :accent, :scheme]`. **Paper is the only built-in that unlocks
+>   all three**; it is the base a user customizes, every other theme is a look.
+> - **Two variants, two themes.** Solarized Light / Dark, Gruvbox Light / Dark,
+>   One Light / Dark, Catppuccin Latte / Mocha, Tokyo Night Day / Night are
+>   separate themes. Monokai, Dracula, and Nord ship dark only (their light
+>   blocks had been derived, not upstream). Eighteen built-ins in all.
+> - **The pickers hide and show on the fly.** The host's `lock:` decides
+>   whether a section is rendered; the active theme's locks only add the
+>   `hidden` attribute, and `appearance_controller.js` toggles it on pick,
+>   forces the theme's scheme, lifts the user's neutral/accent classes while
+>   a theme owns them, and restores them (from `Avo.configuration.appearance
+>   .picks`) on the way back to Paper. Hover preview swaps scheme too.
+> - **The navbar is not required to be dark.** New global
+>   `--color-navbar-content` / `--color-navbar-control-*` /
+>   `--color-navbar-active-*` tokens feed `.top-navbar`, so a theme can
+>   recolor the bar from its block; Coastal, Solarized Light, Gruvbox Light,
+>   and Catppuccin Latte ship with light navbars. The generator's stylesheet
+>   comment and the docs say so explicitly, so an agent varies it.
+> - `rails g avo:theme NAME --scheme light|dark` writes the single block.
+>
+> The sections below describe the first cut where they disagree with this
+> note; the note wins.
 
 # feat: Themes — create, pick, and ship as gems
 

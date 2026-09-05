@@ -1,6 +1,7 @@
-Avo ships thirteen built-in themes (lib/avo/builtin_themes.rb). Eight of them
-reuse color palettes from code editor themes, under their licenses. The names
-are used descriptively, to identify the palette.
+Avo ships eighteen built-in themes (lib/avo/builtin_themes.rb). Thirteen of them
+reuse color palettes from code editor themes, under their licenses, one theme
+per published variant (Solarized Light and Solarized Dark, and so on). The
+names are used descriptively, to identify the palette.
 
 - Monokai — palette by Wimer Hazenberg (2006). The classic values are reused;
   this is not Monokai Pro.

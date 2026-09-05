@@ -2,9 +2,10 @@ require "rails_helper"
 
 # The active theme is resolved per request from lock, pick, config, and the
 # offered list, and it decides the <html> class, the linked stylesheets, the
-# view path, and the brand assets. Fixtures: the dummy app's local theme
-# Lagoon (views + logo + chart colors) and the gem-shaped Harbor theme
-# (vendor/avo-harbor_theme, views + accent lock).
+# view path, the brand assets, and which of the user's other picks apply.
+# Fixtures: the dummy app's local theme Lagoon (views + logo + chart colors,
+# neutral and scheme pickers left open) and the gem-shaped Harbor theme
+# (vendor/avo-harbor_theme, views, dark, owns every picker).
 RSpec.describe "Themes", type: :request do
   let(:admin_user) { create :user, roles: {admin: true} }
   let(:appearance) { Avo.configuration.appearance }
@@ -98,12 +99,50 @@ RSpec.describe "Themes", type: :request do
 
     it "exposes the theme dimension to the JS bridge" do
       cookies["avo.theme"] = "lagoon"
+      cookies["color_scheme"] = "dark"
       get "/admin/resources/users"
 
       expect(response.body).to include("theme: 'lagoon'")
       expect(response.body).to include("themeLocked: false")
       expect(response.body).to match(/themes: \[.*"paper".*"lagoon".*\]/)
       expect(response.body).to match(/themesNeedingVisit: \[.*"harbor".*"lagoon".*\]/)
+      expect(response.body).to match(/themeLocks: \{.*"paper":\[\].*"harbor":\["neutral","accent","scheme"\].*"lagoon":\["accent"\].*\}/)
+      expect(response.body).to match(/themeSchemes: \{.*"harbor":"dark".*\}/)
+      expect(response.body).not_to match(/themeSchemes: \{[^}]*"paper"/)
+      expect(response.body).to match(/picks: \{"scheme":"dark","neutral":"brand","accent":"brand"\}/)
+    end
+  end
+
+  describe "the theme's locks" do
+    it "forces the theme's scheme and drops the neutral and accent picks while it owns them" do
+      cookies["avo.theme"] = "harbor"
+      cookies["theme"] = "slate"
+      cookies["accent_color"] = "orange"
+      cookies["color_scheme"] = "light"
+      get "/admin/resources/users"
+
+      expect(html_classes).to include("avo-theme-harbor", "dark", "scheme-dark")
+      expect(html_classes).not_to include("scheme-light", "neutral-theme-slate", "accent-theme-orange")
+    end
+
+    it "applies the picks a theme leaves open" do
+      cookies["avo.theme"] = "lagoon"
+      cookies["theme"] = "slate"
+      cookies["accent_color"] = "orange"
+      cookies["color_scheme"] = "dark"
+      get "/admin/resources/users"
+
+      expect(html_classes).to include("avo-theme-lagoon", "neutral-theme-slate", "dark", "scheme-dark")
+      expect(html_classes).not_to include("accent-theme-orange")
+    end
+
+    it "keeps the user's picks for the JS bridge even while a theme overrides them" do
+      cookies["avo.theme"] = "harbor"
+      cookies["theme"] = "slate"
+      cookies["color_scheme"] = "light"
+      get "/admin/resources/users"
+
+      expect(response.body).to match(/picks: \{"scheme":"light","neutral":"slate","accent":"brand"\}/)
     end
   end
 
@@ -117,8 +156,28 @@ RSpec.describe "Themes", type: :request do
       end
     end
 
-    it "hides the pickers a theme locks" do
+    # The sections are always rendered (the host's locks decide that), and the
+    # active theme's locks only add `hidden`, so a pick of another theme can
+    # show them again without a reload.
+    it "renders the pickers a theme locks as hidden, and the ones it leaves open as visible" do
       cookies["avo.theme"] = "harbor"
+      get "/admin/resources/users"
+
+      %w[neutralPicker accentPicker schemePicker].each do |target|
+        expect(response.body).to match(/data-appearance-target="#{target}" hidden="hidden"|hidden="hidden" data-appearance-target="#{target}"/), "#{target} should be hidden under Harbor"
+      end
+      expect(response.body).to include("appearance#setAccent")
+
+      cookies["avo.theme"] = "lagoon"
+      get "/admin/resources/users"
+
+      expect(response.body).to match(/data-appearance-target="accentPicker" hidden="hidden"|hidden="hidden" data-appearance-target="accentPicker"/)
+      expect(response.body).not_to match(/data-appearance-target="neutralPicker" hidden|hidden="hidden" data-appearance-target="neutralPicker"/)
+      expect(response.body).not_to match(/data-appearance-target="schemePicker" hidden|hidden="hidden" data-appearance-target="schemePicker"/)
+    end
+
+    it "does not render a picker the host locks at all" do
+      allow(appearance).to receive(:accent_locked?).and_return(true)
       get "/admin/resources/users"
 
       expect(response.body).not_to include("appearance#setAccent")

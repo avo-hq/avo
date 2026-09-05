@@ -59,8 +59,17 @@
   @apply flex flex-col gap-1;
 }
 
-.color-scheme-switcher__section + .color-scheme-switcher__section {
+/* Sections hidden by the active theme's locks carry the `hidden` attribute
+   and must not count as a neighbor, or the first visible section would
+   start with a rule. */
+.color-scheme-switcher__section:not([hidden]) ~ .color-scheme-switcher__section:not([hidden]) {
   @apply pt-2 border-t border-tertiary;
+}
+
+/* Inline pill: a wrapper per dimension the appearance controller can hide.
+   `contents` keeps the buttons inside as direct flex items of the pill. */
+.color-scheme-switcher__group {
+  display: contents;
 }
 
 .color-scheme-switcher__section-label {
@@ -387,29 +396,11 @@
   @apply size-auto w-6 h-4 me-1;
 }
 
-/* A miniature window in the theme's own tokens. The element carries
-   `avo-theme-<id>`, so the theme's class-scoped variables apply to it — but a
-   custom property resolves on the element that declares it, and Avo's derived
-   defaults (sidebar from background, content from primary, …) are declared on
-   :root and inherited already resolved. Re-declaring the chain here, in the
-   same layer as those defaults, lets a theme that only sets primitives preview
-   correctly while a theme that sets a derived token explicitly (@layer base)
-   still wins. */
-@layer theme {
-  .theme-tile {
-    --color-background: var(--color-avo-neutral-50);
-    --color-primary: var(--color-white);
-    --color-navbar-background: var(--color-avo-neutral-900);
-    --color-sidebar-background: var(--color-background);
-    --color-main-content-background: var(--color-primary);
-  }
-
-  .dark .theme-tile {
-    --color-background: var(--color-avo-neutral-900);
-    --color-primary: var(--color-avo-neutral-950);
-    --color-sidebar-background: color-mix(in oklab, var(--color-background), var(--color-scheme) 14%);
-  }
-}
+/* The tile re-derives Avo's chained tokens (sidebar from background, …) on
+   itself so a theme that only sets primitives previews correctly. That block
+   lives in css/variables.css, in the top-level @layer theme: this file is
+   imported inside @layer components, where a nested `@layer theme` would
+   become `components.theme` and beat every theme's own @layer base values. */
 
 .theme-tile {
   @apply relative grid shrink-0 overflow-hidden rounded border border-tertiary shadow-sm;

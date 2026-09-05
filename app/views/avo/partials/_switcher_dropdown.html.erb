@@ -25,7 +25,7 @@
           <% end %>
 
           <% if show_neutral_picker %>
-            <div class="color-scheme-switcher__section">
+            <%= tag.div class: "color-scheme-switcher__section", hidden: theme_hides[:neutral], data: {appearance_target: "neutralPicker"} do %>
               <div class="color-scheme-switcher__section-label"><%= avo_appearance_t("neutrals") %></div>
               <div class="color-scheme-switcher__theme-options"
                    data-action="mouseleave->appearance#revertNeutral"
@@ -41,11 +41,11 @@
                   </button>
                 <% end %>
               </div>
-            </div>
+            <% end %>
           <% end %>
 
           <% if show_accent_picker %>
-            <div class="color-scheme-switcher__section">
+            <%= tag.div class: "color-scheme-switcher__section", hidden: theme_hides[:accent], data: {appearance_target: "accentPicker"} do %>
               <div class="color-scheme-switcher__section-label"><%= avo_appearance_t("accents") %></div>
               <div class="color-scheme-switcher__accent-options"
                    data-action="mouseleave->appearance#revertAccent">
@@ -70,11 +70,11 @@
                   </button>
                 <% end %>
               </div>
-            </div>
+            <% end %>
           <% end %>
 
           <% if show_scheme_picker %>
-            <div class="color-scheme-switcher__section">
+            <%= tag.div class: "color-scheme-switcher__section", hidden: theme_hides[:scheme], data: {appearance_target: "schemePicker"} do %>
               <div class="color-scheme-switcher__section-label"><%= avo_appearance_t("schemes") %></div>
               <div class="color-scheme-switcher__scheme-row">
                 <button type="button"
@@ -105,7 +105,7 @@
                   <span class="color-scheme-switcher__scheme-label"><%= avo_appearance_t("dark") %></span>
                 </button>
               </div>
-            </div>
+            <% end %>
           <% end %>
 
           <% if show_key_badges_toggle %>

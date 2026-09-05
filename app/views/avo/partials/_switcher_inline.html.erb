@@ -26,7 +26,11 @@
     <% end %>
   <% end %>
 
+  <%# Each pill section is wrapped so the appearance controller can hide it
+      while the active theme locks that dimension (display: contents keeps
+      the pill's own gap between the buttons). %>
   <% if show_neutral_picker %>
+    <%= tag.div class: "color-scheme-switcher__group", hidden: theme_hides[:neutral], data: {appearance_target: "neutralPicker"} do %>
     <%= render Avo::UI::DropdownComponent.new(
       classes: "color-scheme-switcher__theme-popover"
     ) do |component| %>
@@ -59,9 +63,11 @@
         <% end %>
       <% end %>
     <% end %>
+    <% end %>
   <% end %>
 
   <% if show_accent_picker %>
+    <%= tag.div class: "color-scheme-switcher__group", hidden: theme_hides[:accent], data: {appearance_target: "accentPicker"} do %>
     <%= render Avo::UI::DropdownComponent.new(
       classes: "color-scheme-switcher__accent-popover"
     ) do |component| %>
@@ -111,9 +117,11 @@
         <% end %>
       <% end %>
     <% end %>
+    <% end %>
   <% end %>
 
   <% if show_scheme_picker %>
+    <%= tag.div class: "color-scheme-switcher__group", hidden: theme_hides[:scheme], data: {appearance_target: "schemePicker"} do %>
     <button type="button"
             data-appearance-target="button"
             data-action="click->appearance#setScheme"
@@ -144,5 +152,6 @@
       <%= svg "tabler/outline/moon", class: "color-scheme-switcher__icon" %>
       <span class="sr-only"><%= avo_appearance_t("dark") %></span>
     </button>
+    <% end %>
   <% end %>
 </div>

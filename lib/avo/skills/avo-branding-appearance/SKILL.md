@@ -15,7 +15,7 @@ Make the Avo admin look like your product — logos, favicon, color scheme, bran
 Files you'll touch, from shallowest to deepest:
 
 - `config/initializers/avo.rb` → `config.appearance = { … }` — logos, favicon, scheme, palettes, picker/lock, persistence, chart colors. **The default answer.**
-- `app/avo/themes/<name>.rb` + `app/assets/stylesheets/avo/themes/<name>.css` — a **named theme** (`rails g avo:theme <name>`): a look users pick from the appearance picker, shippable as a gem with `--gem`. Thirteen built-ins ship with Avo (Paper, Coastal, Rose, Sunset, Midnight, Monokai, Dracula, Solarized, Nord, Gruvbox, One Dark, Catppuccin, Tokyo Night).
+- `app/avo/themes/<name>.rb` + `app/assets/stylesheets/avo/themes/<name>.css` — a **named theme** (`rails g avo:theme <name> [--scheme dark]`): a finished look, drawn for one scheme, that users pick from the appearance picker; shippable as a gem with `--gem`. Eighteen built-ins ship with Avo (Paper, Coastal, Rose, Sunset, Midnight, Monokai, Dracula, Nord, Solarized Light/Dark, Gruvbox Light/Dark, One Light/Dark, Catppuccin Latte/Mocha, Tokyo Night Day/Night).
 - `app/assets/stylesheets/avo-overrides.css` — no-build CSS-variable re-skin (eject with `rails g avo:eject --partial :avo_overrides_css`). Served as-is, always on, for the whole app.
 - `app/views/avo/partials/_head.html.erb` — inline `<style>` for component variables (eject with `rails g avo:eject --partial :head`).
 - `app/assets/svgs/` — your own SVG icons for menu items / actions.
@@ -61,7 +61,7 @@ Avo.configure do |config|
 end
 ```
 
-**The top navbar is dark in BOTH light and dark mode** — `logo` always sits on a dark surface, so pick a file that reads on dark. `logo_dark` only swaps when the whole UI is in dark mode, not to fix contrast on the navbar.
+**With the stock look (Paper) the top navbar is dark in BOTH light and dark mode** — `logo` sits on a dark surface, so pick a file that reads on dark. `logo_dark` only swaps when the whole UI is in dark mode, not to fix contrast on the navbar. A theme can recolor the navbar (light, tinted, or the page ground) through the `--color-navbar-*` tokens; the built-in Coastal, Solarized Light, Gruvbox Light, and Catppuccin Latte have light navbars.
 
 ### 2. Color scheme — light / dark / auto
 
@@ -179,7 +179,7 @@ config.appearance = {
 
 A theme is a named bundle of CSS-variable overrides (plus optional partial overrides and brand assets) that shows up in the appearance picker with a preview tile and is remembered per user (`avo.theme` cookie, or the `:theme` settings key under database persistence). Reach for it when the request names a look ("give it the Dracula theme", "a coastal theme"), wants several looks side by side, or wants a look that can be handed to another app.
 
-**Pick a built-in.** No code: the picker already lists `paper` (the stock look), `coastal`, `rose`, `sunset`, `midnight`, `monokai`, `dracula`, `solarized`, `nord`, `gruvbox`, `one_dark`, `catppuccin`, `tokyo_night`. Make one the default, trim the list, or lock it:
+**Pick a built-in.** No code: the picker already lists `paper` (the stock look, and the only theme that leaves the neutral/accent/scheme pickers open), then finished looks drawn for one scheme each — light: `coastal`, `rose`, `sunset`, `solarized_light`, `gruvbox_light`, `one_light`, `catppuccin_latte`, `tokyo_night_day`; dark: `midnight`, `monokai`, `dracula`, `nord`, `solarized_dark`, `gruvbox_dark`, `one_dark`, `catppuccin_mocha`, `tokyo_night`. A look that exists in both schemes is two themes; picking a dark one switches the UI to dark and hides the scheme picker. Make one the default, trim the list, or lock it:
 
 ```ruby
 config.appearance = {
@@ -189,7 +189,7 @@ config.appearance = {
 }
 ```
 
-**Make one.** `rails g avo:theme <name>` writes `app/avo/themes/<name>.rb` (`class Avo::Themes::<Name> < Avo::BaseTheme` with `title`/`description`; `id`, `stylesheet`, `views`, `lock`, `appearance` are derived defaults shown commented) and `app/assets/stylesheets/avo/themes/<name>.css` with every token listed, commented, grouped. Uncomment and set what the look needs. The CSS is scoped to `.avo-theme-<name>` inside `@layer base`:
+**Make one.** `rails g avo:theme <name>` (add `--scheme dark` for a dark look) writes `app/avo/themes/<name>.rb` (`class Avo::Themes::<Name> < Avo::BaseTheme` with `title`/`description`/`scheme`; `id`, `stylesheet`, `views`, `lock`, `appearance` are derived defaults shown commented) and `app/assets/stylesheets/avo/themes/<name>.css` with every token listed, commented, grouped. Uncomment and set what the look needs. The CSS is one block, scoped to `.avo-theme-<name>` inside `@layer base`; Avo forces the theme's scheme on `<html>` while it is active, so there is no `.dark` block to keep in sync:
 
 ```css
 @layer base {
@@ -199,16 +199,14 @@ config.appearance = {
     --color-accent-content: oklch(50% 0.12 220);
     --color-accent-foreground: var(--color-white);
     --color-brand-accent: oklch(60% 0.12 220);
+    --color-background: var(--color-avo-neutral-50);   /* set the foundations explicitly: the picker tile may sit on a dark page */
+    --color-primary: var(--color-white);
     --color-navbar-background: oklch(28% 0.06 240);
-  }
-  .avo-theme-ocean.dark,
-  .dark .avo-theme-ocean {
-    --color-accent: oklch(75% 0.10 220);
   }
 }
 ```
 
-Rules that bite: keep the class name; a value set in the light block also applies in dark unless the dark block re-sets it; a user's neutral/accent picks still apply on top of a theme — set `self.lock = [:neutral, :accent]` in the theme class when the theme owns its palette. Restart the server after adding a theme (classes are discovered at boot).
+Rules that bite: keep the class name; one theme is one scheme — a look wanted in both schemes is two themes (`ocean_light`, `ocean_dark --scheme dark`), the way the built-ins do it; a theme owns the neutral, accent, and scheme pickers by default (`self.lock = [:neutral, :accent, :scheme]`), so the user's picks do not leak in — unlock a dimension only if the stylesheet handles it (unlocking `:scheme` means styling a `.dark` block too); the navbar does not have to be dark — `--color-navbar-background` plus the `--color-navbar-content` / `--color-navbar-control-*` tokens can make it light, tinted, or the page ground, so vary it between themes. Restart the server after adding a theme (classes are discovered at boot).
 
 **Partials and brand assets.** `rails g avo:eject --partial :logo --theme <name>` copies a partial into `app/views/avo/themes/<name>/…`; it renders only while the theme is active and wins over an app-ejected copy. `self.appearance = { logo: "…", favicon: "…", placeholder: "…", chart_colors: [...] }` on the theme class swaps brand assets while active (only those keys; colors go in the CSS).
 
@@ -288,7 +286,8 @@ CSS-only knobs (navbar/sidebar/table/focus/motion variables) are not in this has
 
 - **`neutral:` / `accent:` must be Symbols.** A String or Hash raises `ArgumentError`. Custom colors go through `neutral_colors:` / `accent_colors:`, and you must also set `neutral: :brand` / `accent: :brand` (or list `"brand"` in `neutrals:`/`accents:`) to select the custom palette.
 - **`neutral_colors` needs all 12 shades; `accent_colors` needs all 3 tokens.** A missing or `nil` value raises `ArgumentError`.
-- **The navbar is dark in both modes.** The `logo` must read on a dark surface. `logo_dark` is for whole-UI dark mode, not navbar contrast.
+- **On Paper the navbar is dark in both modes.** The `logo` must read on a dark surface there. `logo_dark` is for whole-UI dark mode, not navbar contrast. A theme may recolor the navbar through the `--color-navbar-*` tokens; the dark bar is a default, not a rule.
+- **A theme is one scheme and owns its pickers.** Do not write a `.dark` block into a generated theme or unlock `:scheme` to "support dark mode" — generate a second theme with `--scheme dark` instead. Do not unlock `:neutral`/`:accent` unless the request is explicitly a Paper-style base the user customizes.
 - **`chart_colors` must be hex.** They're passed straight to Chart.js — `oklch()`/`rgb()` won't work there (even though the palettes accept them).
 - **A theme's CSS must stay scoped to `.avo-theme-<id>` and inside `@layer base`.** A `:root` block in a theme file applies to every theme at once; an unlayered block silently disables the neutral/accent pickers.
 - **Theme ids are Symbols in Ruby, `avo-<name>_theme` in gem names, `Avo::<Name>Theme::Theme` in a gem.** Never define `Avo::Themes::<Name>` from a gem — that constant belongs to the host app's `app/avo/themes/`.
