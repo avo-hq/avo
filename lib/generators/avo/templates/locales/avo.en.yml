@@ -34,6 +34,7 @@ en:
       dark_tooltip: Dark mode
       hide: Hide
       light: Light
+      light_and_dark: Light & dark
       light_tooltip: Light mode
       neutrals: Neutral
       neutrals_list:

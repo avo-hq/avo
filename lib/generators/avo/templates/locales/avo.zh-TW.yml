@@ -34,6 +34,7 @@ zh-TW:
       dark_tooltip: 深色模式
       hide: 隱藏
       light: 淺色
+      light_and_dark: 淺色和深色
       light_tooltip: 淺色模式
       neutrals: 中性色
       neutrals_list:

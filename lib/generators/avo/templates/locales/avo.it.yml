@@ -34,6 +34,7 @@ it:
       dark_tooltip: Modalità scura
       hide: Nascondi
       light: Chiaro
+      light_and_dark: Chiaro e scuro
       light_tooltip: Modalità chiara
       neutrals: Neutro
       neutrals_list:

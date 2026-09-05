@@ -34,6 +34,7 @@ nn:
       dark_tooltip: Mørkmodus
       hide: Skjul
       light: Lys
+      light_and_dark: Lys og mørk
       light_tooltip: Lysmodus
       neutrals: Nøytral
       neutrals_list:

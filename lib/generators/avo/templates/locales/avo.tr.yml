@@ -34,6 +34,7 @@ tr:
       dark_tooltip: Koyu mod
       hide: Gizle
       light: Açık
+      light_and_dark: Açık ve koyu
       light_tooltip: Açık mod
       neutrals: Nötr
       neutrals_list:

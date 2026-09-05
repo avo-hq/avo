@@ -1,15 +1,27 @@
-<%# One row per offered theme. Shared by the dropdown panel and the inline pill. %>
+<%# Offered themes in three groups: the ones that follow the scheme picker
+    (Paper: no `:scheme` lock, so they style both schemes), then the light-only
+    looks, then the dark-only ones. Shared by the dropdown panel and the inline
+    pill. An empty group is skipped. %>
+<% grouped = offered_themes.group_by { |theme| theme.forces_scheme? ? theme.scheme : :light_and_dark } %>
 <div class="color-scheme-switcher__theme-list"
      data-action="mouseleave->appearance#revertAppearanceTheme">
-  <% offered_themes.each do |theme| %>
-    <button type="button"
-            data-action="click->appearance#setAppearanceTheme <%= "click->dropdown-menu#close" if local_assigns[:close_on_pick] %> mouseenter->appearance#previewAppearanceTheme"
-            data-appearance-theme="<%= theme.id %>"
-            data-appearance-target="appearanceThemeOption"
-            title="<%= theme.description %>"
-            class="<%= class_names("color-scheme-switcher__theme-option color-scheme-switcher__theme-option--tile", "color-scheme-switcher__theme-option--active": theme == active_theme) %>">
-      <%= render partial: "avo/partials/theme_tile", locals: {theme: theme} %>
-      <span class="color-scheme-switcher__theme-option-label"><%= theme.title %></span>
-    </button>
+  <% %i[light_and_dark light dark].each do |group| %>
+    <% next unless grouped[group] %>
+    <div class="color-scheme-switcher__theme-group">
+      <div class="color-scheme-switcher__theme-group-label"><%= avo_appearance_t(group) %></div>
+      <div class="color-scheme-switcher__theme-group-options">
+        <% grouped[group].each do |theme| %>
+          <button type="button"
+                  data-action="click->appearance#setAppearanceTheme <%= "click->dropdown-menu#close" if local_assigns[:close_on_pick] %> mouseenter->appearance#previewAppearanceTheme"
+                  data-appearance-theme="<%= theme.id %>"
+                  data-appearance-target="appearanceThemeOption"
+                  title="<%= theme.description %>"
+                  class="<%= class_names("color-scheme-switcher__theme-option color-scheme-switcher__theme-option--tile", "color-scheme-switcher__theme-option--active": theme == active_theme) %>">
+            <%= render partial: "avo/partials/theme_tile", locals: {theme: theme} %>
+            <span class="color-scheme-switcher__theme-option-label"><%= theme.title %></span>
+          </button>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

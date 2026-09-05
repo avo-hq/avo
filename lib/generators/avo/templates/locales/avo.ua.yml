@@ -34,6 +34,7 @@ ua:
       dark_tooltip: Темний режим
       hide: Сховати
       light: Світлий
+      light_and_dark: Світлий і темний
       light_tooltip: Світлий режим
       neutrals: Нейтральний
       neutrals_list:

@@ -34,6 +34,7 @@ ro:
       dark_tooltip: Mod întunecat
       hide: Ascunde
       light: Deschis
+      light_and_dark: Deschis și întunecat
       light_tooltip: Mod deschis
       neutrals: Neutru
       neutrals_list:

@@ -34,6 +34,7 @@ ar:
       dark_tooltip: وضع الداكن
       hide: إخفاء
       light: فاتح
+      light_and_dark: فاتح وداكن
       light_tooltip: وضع الفاتح
       neutrals: محايد
       neutrals_list:
