@@ -47,7 +47,7 @@
    own body provides the chrome (rounded border, surface). The inner body
    handles padding, layout, and scrollable overflow. */
 .color-scheme-switcher__panel {
-  @apply w-64 lg:w-80;
+  @apply w-64 lg:w-88;
 }
 
 .color-scheme-switcher__panel .dropdown-card__body {
@@ -193,6 +193,9 @@
   @apply gap-1;
 }
 
+/* Start-aligned so the panel opens in the pill's own direction; the
+   dropdown-menu controller's `flip` option swaps it to end-aligned when that
+   would run off the viewport (the pill sits at the navbar's end). */
 .color-scheme-switcher__theme-popover {
   @apply start-0 end-auto min-w-[160px];
 }
@@ -272,8 +275,10 @@
   background: oklch(63% 0.014 140);
 }
 
+/* One line per option: "Catppuccin Latte" must not wrap under its tile. The
+   popover grows to fit; the compact panel gives the list the room below. */
 .color-scheme-switcher__theme-option-label {
-  @apply leading-none;
+  @apply leading-none whitespace-nowrap;
 }
 
 /* Accent color dropdown */
@@ -383,8 +388,10 @@
   @apply flex flex-col gap-0.5 self-stretch max-h-72 overflow-y-auto;
 }
 
+/* Two columns only where the panel is wide enough for two single-line names;
+   below that the base single column scrolls. */
 .color-scheme-switcher__panel .color-scheme-switcher__theme-list {
-  @apply grid grid-cols-2 gap-1;
+  @apply lg:grid lg:grid-cols-2 gap-1;
 }
 
 .color-scheme-switcher__theme-option--tile {

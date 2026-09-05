@@ -8,6 +8,20 @@
   box-shadow: var(--box-shadow-card);
 }
 
+/* Alignment set by the dropdown-menu controller's `flip` option: it opens the
+   panel start-aligned when there is room and end-aligned when the panel would
+   run past the viewport's end edge. Two classes so the rule beats any
+   single-class alignment a component sets on the panel. */
+.dropdown-popover.dropdown-popover--start {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+}
+
+.dropdown-popover.dropdown-popover--end {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
 /* Backdrop - transparent for dropdown (no overlay) */
 .dropdown-popover::backdrop {
   background-color: transparent;
