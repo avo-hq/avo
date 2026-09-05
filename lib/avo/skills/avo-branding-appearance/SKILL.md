@@ -236,7 +236,7 @@ A theme is a named bundle of CSS-variable overrides (plus optional partial overr
 ```ruby
 config.appearance = {
   theme: :dracula,                        # default; must be in the offered list
-  themes: [:paper, :dracula, :nord],      # offered, in this order (default: all installed)
+  themes: [:paper, :dracula, :nord],      # offered, in this order within each group (default: all installed)
   lock: [:theme]                          # hide the theme picker
 }
 ```
@@ -325,7 +325,7 @@ For **populating menu/resource icons at scale** (migrations, whole-sidebar passe
 | `accent_colors` | Custom accent | Hash of `:color`, `:content`, `:foreground` |
 | `neutrals` / `accents` | Restrict picker options | Array of **Strings** (no colon) |
 | `theme` | Default theme id | **Symbol**, one of the offered themes; default `:paper` |
-| `themes` | Restrict/order the theme picker | Array of Symbols (built-in and installed ids) |
+| `themes` | Restrict the theme picker, and order it within each scheme group | Array of Symbols (built-in and installed ids) |
 | `lock` | Force values, hide switchers | Array subset of `[:scheme, :neutral, :accent, :theme]` |
 | `picker_layout` | Navbar switcher layout | `:inline` (default) `:dropdown` |
 | `sound` | Play a sound on picks by default | Boolean; default `true` |

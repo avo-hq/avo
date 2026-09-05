@@ -54,7 +54,8 @@ module Avo
 
       # The themes the picker offers, in order: `config.appearance[:themes]`
       # when set (unknown ids are dropped, so a stale initializer never raises
-      # at render time), every registered theme otherwise.
+      # at render time), every registered theme otherwise. The picker groups
+      # this list by scheme support and keeps the order inside each group.
       def offered
         configured = Avo.configuration.appearance.themes
         return all if configured.blank?
