@@ -130,4 +130,17 @@ class Avo::TabGroupComponent < Avo::BaseComponent
   def tab_active?(tab, current_tab)
     tab.title == current_tab.title
   end
+
+  # A tab's badge is one component instance and the tab bar is rendered once per
+  # panel, so render the badge once and hand every copy the same HTML.
+  # ViewComponent refuses to render an instance twice (ReusedInstanceError).
+  def rendered_badge(tab_item)
+    @rendered_badges ||= {}
+
+    @rendered_badges.fetch(tab_item) do
+      badge = tab_item.badge
+
+      @rendered_badges[tab_item] = badge.respond_to?(:render_in) ? render(badge) : badge
+    end
+  end
 end
