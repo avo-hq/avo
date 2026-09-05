@@ -86,6 +86,37 @@ RSpec.describe "Themes", type: :system do
     expect(page).to have_css("html.avo-theme-paper.neutral-theme-slate")
   end
 
+  it "lists themes in three groups: both schemes, light, dark" do
+    page.driver.resize_window(900, 900)
+    visit avo.resources_users_path
+    open_theme_panel
+
+    groups = all(".color-scheme-switcher__theme-group")
+    expect(groups.map { |g| g.find(".color-scheme-switcher__theme-group-label").text }).to eq(["LIGHT & DARK", "LIGHT", "DARK"])
+    expect(groups[0]).to have_css('[data-appearance-theme="paper"]')
+    expect(groups[1]).to have_css('[data-appearance-theme="coastal"]')
+    expect(groups[1]).to have_no_css('[data-appearance-theme="nord"]')
+    expect(groups[2]).to have_css('[data-appearance-theme="nord"]')
+  end
+
+  it "turns transitions off while previewing and back on afterwards" do
+    page.driver.resize_window(900, 900)
+    visit avo.resources_users_path
+    open_theme_panel
+    # System tests run with reduced motion, which already snaps the checkbox,
+    # so probe with an element that transitions regardless.
+    page.execute_script(%(document.body.insertAdjacentHTML("beforeend", '<div id="probe" style="transition: opacity 1s"></div>')))
+    expect(token("transition-property", selector: "#probe")).to eq("opacity")
+
+    find('[data-appearance-theme="nord"]').hover
+    expect(page).to have_css("html.theme-previewing")
+    expect(token("transition-property", selector: "#probe")).to eq("none")
+
+    find(".color-scheme-switcher__section-label", match: :first).hover
+    expect(page).to have_no_css("html.theme-previewing")
+    expect(token("transition-property", selector: "#probe")).to eq("opacity")
+  end
+
   it "previews a theme on hover, scheme included, and reverts on leave" do
     page.driver.resize_window(900, 900)
     visit avo.resources_users_path

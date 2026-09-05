@@ -183,6 +183,7 @@ export default class extends Controller {
     const { appearanceTheme } = event.currentTarget.dataset
     if (!appearanceTheme) return
 
+    document.documentElement.classList.add('theme-previewing')
     this.applyAppearanceTheme(appearanceTheme)
     this.updateActiveAppearanceThemeOptionFor(appearanceTheme)
   }
@@ -190,6 +191,19 @@ export default class extends Controller {
   revertAppearanceTheme() {
     this.applyAppearanceTheme(this.currentAppearanceThemeValue)
     this.updateActiveAppearanceThemeOption()
+    this.endAppearanceThemePreview()
+  }
+
+  // Transitions are off while a preview is on screen (see .theme-previewing
+  // in color_scheme_switcher.css). They stay off until the last swap has been
+  // styled, or the swap itself would animate: reading offsetWidth forces that
+  // style pass before the class comes off.
+  endAppearanceThemePreview() {
+    const root = document.documentElement
+    if (!root.classList.contains('theme-previewing')) return
+
+    void root.offsetWidth
+    root.classList.remove('theme-previewing')
   }
 
   cycleAppearanceTheme() {
@@ -203,6 +217,7 @@ export default class extends Controller {
     const previous = this.currentAppearanceThemeValue
     this.currentAppearanceThemeValue = id
     this.applyAppearanceTheme(id)
+    this.endAppearanceThemePreview()
     this.syncPickerVisibility(id)
     this.updateActiveAppearanceThemeOption()
     this.updateAppearanceThemeLabel()

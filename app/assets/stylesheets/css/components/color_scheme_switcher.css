@@ -384,13 +384,36 @@
 
 /* Theme picker ------------------------------------------------------------ */
 
+/* Hovering a tile previews its theme across the whole page. Transitions (the
+   checkbox fill, hover backgrounds, …) would smear every swap, so they are
+   off while <html> carries this class; the appearance controller drops it
+   once the pick or the revert has been styled. */
+.theme-previewing *,
+.theme-previewing *::before,
+.theme-previewing *::after {
+  transition: none !important;
+}
+
 .color-scheme-switcher__theme-list {
-  @apply flex flex-col gap-0.5 self-stretch max-h-72 overflow-y-auto;
+  @apply flex flex-col gap-2 self-stretch max-h-72 overflow-y-auto;
+}
+
+/* One group per scheme support: both, light, dark. */
+.color-scheme-switcher__theme-group {
+  @apply flex flex-col gap-0.5;
+}
+
+.color-scheme-switcher__theme-group-label {
+  @apply text-[0.625rem] font-semibold uppercase tracking-wide text-content-secondary px-1.5;
+}
+
+.color-scheme-switcher__theme-group-options {
+  @apply flex flex-col gap-0.5;
 }
 
 /* Two columns only where the panel is wide enough for two single-line names;
    below that the base single column scrolls. */
-.color-scheme-switcher__panel .color-scheme-switcher__theme-list {
+.color-scheme-switcher__panel .color-scheme-switcher__theme-group-options {
   @apply lg:grid lg:grid-cols-2 gap-1;
 }
 
