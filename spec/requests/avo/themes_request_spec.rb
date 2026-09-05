@@ -184,12 +184,15 @@ RSpec.describe "Themes", type: :request do
       expect(response.body).to include("appearance#setNeutral")
     end
 
-    it "offers only the configured list, in order" do
-      allow(appearance).to receive(:themes).and_return([:monokai, :paper])
+    it "offers only the configured list, in that order within each scheme group" do
+      # The picker groups by scheme support (light & dark, light, dark) and
+      # keeps the configured order inside a group, so Paper leads however the
+      # list puts it, and the two dark themes keep their configured order.
+      allow(appearance).to receive(:themes).and_return([:nord, :monokai, :paper])
       get "/admin/resources/users"
 
       ids = response.body.scan(/data-appearance-theme="([a-z_]+)"/).flatten.uniq
-      expect(ids).to eq(%w[monokai paper])
+      expect(ids).to eq(%w[paper nord monokai])
     end
   end
 
