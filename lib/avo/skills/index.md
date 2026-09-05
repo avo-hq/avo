@@ -32,7 +32,7 @@ Each entry is a directory beside this file: `<skill>/SKILL.md`.
 
 | Skill | Covers |
 | --- | --- |
-| `avo-branding-appearance` | Logo, favicon, color scheme, palettes, CSS re-skin, icons |
+| `avo-branding-appearance` | Logo, favicon, color scheme, palettes, fonts, CSS re-skin, icons |
 | `avo-menu-icons` | Pick the right Tabler icon and apply it to resources. The menu DSL is `avo-menu`'s own skill |
 | `avo-navigation-search` | Per-resource search, breadcrumbs, keyboard shortcuts, the auto-generated sidebar |
 | `avo-custom-ui` | Custom pages, embedded panels, dynamic/nested forms, ejected views, Stimulus, Tailwind |
