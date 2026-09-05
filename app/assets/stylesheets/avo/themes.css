@@ -1,11 +1,24 @@
-/* Avo's built-in themes. One class-scoped block per theme, light then dark,
-   inside @layer base so a configured brand (also @layer base, rendered
-   earlier) loses to a picked theme and a user's neutral/accent pick
-   (@layer components) still wins on top. See lib/avo/builtin_themes.rb for
-   the classes and NOTICE for palette attributions. Paper has no block: the
-   defaults in css/variables.css are Paper. */
+/* Avo's built-in themes. One class-scoped block per theme, inside @layer base
+   so a configured brand (also @layer base, rendered earlier) loses to a picked
+   theme and, for the one theme that leaves them open (Paper), a user's
+   neutral/accent pick (@layer components) still wins on top.
+
+   Each theme is drawn for one scheme and Avo forces that scheme on <html>
+   while it is active, so no block here has a .dark twin. Every block sets
+   its own foundations (background, primary, ...) rather than leaning on the
+   :root/.dark derivations, because the picker's preview tile carries the
+   theme class on a page that may be in the other scheme.
+
+   Four of the light themes keep a light navbar. The dark navbar is Paper's
+   choice, not a rule: a theme sets --color-navbar-background and the
+   --color-navbar-content/-control-* tokens to whatever reads well.
+
+   See lib/avo/builtin_themes.rb for the classes and NOTICE for palette
+   attributions. Paper has no block: the defaults in css/variables.css are
+   Paper. */
 
 @layer base {
+  /* Coastal. Light, with a sand navbar: content and controls take the theme's own ink. */
   .avo-theme-coastal {
     --color-avo-neutral-25: oklch(99.7% 0.018 80);
     --color-avo-neutral-50: oklch(98.5% 0.018 80);
@@ -20,24 +33,27 @@
     --color-avo-neutral-900: oklch(27.7% 0.04 225);
     --color-avo-neutral-950: oklch(20.5% 0.04 225);
     --color-brand-neutral-400: oklch(62.7% 0.018 80);
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
     --color-accent: oklch(60% 0.11 195);
     --color-accent-content: oklch(50% 0.11 195);
     --color-accent-foreground: var(--color-white);
-    --color-navbar-background: oklch(32% 0.06 225);
+    --color-brand-accent: oklch(60% 0.11 195);
+    --color-navbar-background: var(--color-avo-neutral-200);
+    --color-navbar-content: var(--color-avo-neutral-700);
+    --color-navbar-content-hover: var(--color-avo-neutral-950);
+    --color-navbar-control-background: var(--color-avo-neutral-50);
+    --color-navbar-control-background-hover: var(--color-avo-neutral-100);
+    --color-navbar-control-border: var(--color-avo-neutral-300);
+    --color-navbar-control-content: var(--color-avo-neutral-950);
+    --color-navbar-control-muted: var(--color-avo-neutral-500);
+    --color-navbar-active-background: var(--color-avo-neutral-300);
+    --color-navbar-active-content: var(--color-avo-neutral-950);
     --color-info: oklch(65% 0.12 225);
     --color-info-content: oklch(52% 0.13 225);
-    --color-brand-accent: oklch(60% 0.11 195);
   }
 
-  .avo-theme-coastal.dark,
-  .dark .avo-theme-coastal {
-    --color-accent: oklch(76% 0.1 195);
-    --color-accent-content: oklch(82% 0.09 195);
-    --color-accent-foreground: oklch(20% 0.04 225);
-    --color-navbar-background: oklch(20% 0.045 225);
-    --color-brand-accent: oklch(76% 0.1 195);
-  }
-
+  /* Rose. Light, deep rose navbar. */
   .avo-theme-rose {
     --color-avo-neutral-25: oklch(99.7% 0.014 355);
     --color-avo-neutral-50: oklch(98.5% 0.014 355);
@@ -52,22 +68,16 @@
     --color-avo-neutral-900: oklch(27.7% 0.03 350);
     --color-avo-neutral-950: oklch(20.5% 0.03 350);
     --color-brand-neutral-400: oklch(62.7% 0.014 355);
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
     --color-accent: oklch(58% 0.21 12);
     --color-accent-content: oklch(50% 0.2 12);
     --color-accent-foreground: var(--color-white);
-    --color-navbar-background: oklch(28% 0.06 350);
     --color-brand-accent: oklch(58% 0.21 12);
+    --color-navbar-background: oklch(28% 0.06 350);
   }
 
-  .avo-theme-rose.dark,
-  .dark .avo-theme-rose {
-    --color-accent: oklch(74% 0.16 8);
-    --color-accent-content: oklch(80% 0.13 8);
-    --color-accent-foreground: oklch(20% 0.05 355);
-    --color-navbar-background: oklch(19% 0.035 350);
-    --color-brand-accent: oklch(74% 0.16 8);
-  }
-
+  /* Sunset. Light, dusk navbar. */
   .avo-theme-sunset {
     --color-avo-neutral-25: oklch(99.7% 0.02 320);
     --color-avo-neutral-50: oklch(98.5% 0.02 320);
@@ -82,24 +92,18 @@
     --color-avo-neutral-900: oklch(27.7% 0.055 305);
     --color-avo-neutral-950: oklch(20.5% 0.055 305);
     --color-brand-neutral-400: oklch(62.7% 0.02 320);
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
     --color-accent: oklch(58% 0.23 350);
     --color-accent-content: oklch(50% 0.22 350);
     --color-accent-foreground: var(--color-white);
+    --color-brand-accent: oklch(58% 0.23 350);
     --color-navbar-background: oklch(27% 0.09 305);
     --color-warning: oklch(72% 0.17 55);
     --color-warning-content: oklch(60% 0.17 50);
-    --color-brand-accent: oklch(58% 0.23 350);
   }
 
-  .avo-theme-sunset.dark,
-  .dark .avo-theme-sunset {
-    --color-accent: oklch(74% 0.18 20);
-    --color-accent-content: oklch(80% 0.15 25);
-    --color-accent-foreground: oklch(18% 0.06 305);
-    --color-navbar-background: oklch(17% 0.06 305);
-    --color-brand-accent: oklch(74% 0.18 20);
-  }
-
+  /* Midnight. Dark. */
   .avo-theme-midnight {
     --color-avo-neutral-25: oklch(99.7% 0.01 265);
     --color-avo-neutral-50: oklch(98.5% 0.01 265);
@@ -114,22 +118,22 @@
     --color-avo-neutral-900: oklch(25.5% 0.05 265);
     --color-avo-neutral-950: oklch(18.5% 0.05 265);
     --color-brand-neutral-400: oklch(62.7% 0.01 265);
-    --color-accent: oklch(55% 0.21 275);
-    --color-accent-content: oklch(48% 0.21 275);
-    --color-accent-foreground: var(--color-white);
-    --color-navbar-background: oklch(20% 0.05 265);
-    --color-brand-accent: oklch(55% 0.21 275);
-  }
-
-  .avo-theme-midnight.dark,
-  .dark .avo-theme-midnight {
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-secondary: var(--color-avo-neutral-800);
+    --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: var(--color-white);
+    --color-content-secondary: var(--color-avo-neutral-300);
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: oklch(75% 0.14 275);
     --color-accent-content: oklch(81% 0.11 275);
     --color-accent-foreground: oklch(17% 0.05 270);
-    --color-navbar-background: oklch(14% 0.04 265);
     --color-brand-accent: oklch(75% 0.14 275);
+    --color-navbar-background: oklch(14% 0.04 265);
   }
 
+  /* Monokai. Dark. The classic 2006 values. */
   .avo-theme-monokai {
     --color-avo-neutral-25: #FCFCFA;
     --color-avo-neutral-50: #F7F7F3;
@@ -144,40 +148,30 @@
     --color-avo-neutral-900: #272822;
     --color-avo-neutral-950: #1E1F1C;
     --color-brand-neutral-400: #8F8F7E;
-    --color-accent: #C4145A;
-    --color-accent-content: #A5114C;
-    --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #272822;
-    --color-success: #6E9B1D;
-    --color-success-content: #5A8016;
-    --color-warning: #C77E00;
-    --color-warning-content: #A66900;
-    --color-danger: #C4145A;
-    --color-danger-content: #A5114C;
-    --color-info: #1E8FB3;
-    --color-info-content: #177591;
-    --color-brand-accent: #C4145A;
-  }
-
-  .avo-theme-monokai.dark,
-  .dark .avo-theme-monokai {
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-secondary: var(--color-avo-neutral-800);
+    --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #F8F8F2;
+    --color-content-secondary: #A6A48F;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: #F92672;
     --color-accent-content: #FF5C96;
     --color-accent-foreground: var(--color-white);
-    --color-content: #F8F8F2;
-    --color-content-secondary: #A6A48F;
+    --color-brand-accent: #F92672;
     --color-navbar-background: #1E1F1C;
     --color-success: #A6E22E;
     --color-success-content: #A6E22E;
+    --color-info: #66D9EF;
+    --color-info-content: #66D9EF;
     --color-warning: #E6DB74;
     --color-warning-content: #FD971F;
     --color-danger: #F92672;
     --color-danger-content: #F92672;
-    --color-info: #66D9EF;
-    --color-info-content: #66D9EF;
-    --color-brand-accent: #F92672;
   }
 
+  /* Dracula. Dark. */
   .avo-theme-dracula {
     --color-avo-neutral-25: #FCFCFD;
     --color-avo-neutral-50: #F7F7FA;
@@ -192,98 +186,30 @@
     --color-avo-neutral-900: #282A36;
     --color-avo-neutral-950: #21222C;
     --color-brand-neutral-400: #8E92AD;
-    --color-accent: #7B3FE4;
-    --color-accent-content: #6A2ED0;
-    --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #282A36;
-    --color-success: #2E9E4F;
-    --color-success-content: #248240;
-    --color-warning: #C98A2E;
-    --color-warning-content: #A97220;
-    --color-danger: #D9363E;
-    --color-danger-content: #B82A31;
-    --color-info: #2A9AB8;
-    --color-info-content: #217E97;
-    --color-brand-accent: #7B3FE4;
-  }
-
-  .avo-theme-dracula.dark,
-  .dark .avo-theme-dracula {
-    --color-accent: #BD93F9;
-    --color-accent-content: #CBA9FA;
-    --color-accent-foreground: #21222C;
-    --color-content: #F8F8F2;
-    --color-content-secondary: #A4ABCC;
-    --color-navbar-background: #191A21;
-    --color-success: #50FA7B;
-    --color-success-content: #50FA7B;
-    --color-warning: #F1FA8C;
-    --color-warning-content: #FFB86C;
-    --color-danger: #FF5555;
-    --color-danger-content: #FF5555;
-    --color-info: #8BE9FD;
-    --color-info-content: #8BE9FD;
-    --color-brand-accent: #BD93F9;
-  }
-
-  .avo-theme-solarized {
-    --color-avo-neutral-25: #FFFCF2;
-    --color-avo-neutral-50: #FDF6E3;
-    --color-avo-neutral-100: #EEE8D5;
-    --color-avo-neutral-200: #E1DAC3;
-    --color-avo-neutral-300: #C4BEA8;
-    --color-avo-neutral-400: #93A1A1;
-    --color-avo-neutral-500: #839496;
-    --color-avo-neutral-600: #657B83;
-    --color-avo-neutral-700: #586E75;
-    --color-avo-neutral-800: #0F4B5A;
-    --color-avo-neutral-900: #073642;
-    --color-avo-neutral-950: #002B36;
-    --color-brand-neutral-400: #93A1A1;
-    --color-primary: #FDF6E3;
-    --color-background: #EEE8D5;
-    --color-secondary: #E8E1CB;
-    --color-tertiary: #DAD3BD;
-    --color-content: #002B36;
-    --color-content-secondary: #657B83;
-    --color-accent: #268BD2;
-    --color-accent-content: #1F76B3;
-    --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #073642;
-    --color-success: #859900;
-    --color-success-content: #6F8000;
-    --color-warning: #B58900;
-    --color-warning-content: #9A7400;
-    --color-danger: #DC322F;
-    --color-danger-content: #BF2B28;
-    --color-info: #2AA198;
-    --color-info-content: #238A82;
-    --color-brand-accent: #268BD2;
-  }
-
-  .avo-theme-solarized.dark,
-  .dark .avo-theme-solarized {
     --color-background: var(--color-avo-neutral-900);
     --color-primary: var(--color-avo-neutral-950);
     --color-secondary: var(--color-avo-neutral-800);
     --color-tertiary: var(--color-avo-neutral-700);
-    --color-accent: #268BD2;
-    --color-accent-content: #4FA3E0;
-    --color-accent-foreground: var(--color-white);
-    --color-content: #EEE8D5;
-    --color-content-secondary: #93A1A1;
-    --color-navbar-background: #00212B;
-    --color-success: #859900;
-    --color-success-content: #9DB300;
-    --color-warning: #B58900;
-    --color-warning-content: #D3A000;
-    --color-danger: #DC322F;
-    --color-danger-content: #E85652;
-    --color-info: #2AA198;
-    --color-info-content: #3BC0B5;
-    --color-brand-accent: #268BD2;
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #F8F8F2;
+    --color-content-secondary: #A4ABCC;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
+    --color-accent: #BD93F9;
+    --color-accent-content: #CBA9FA;
+    --color-accent-foreground: #21222C;
+    --color-brand-accent: #BD93F9;
+    --color-navbar-background: #191A21;
+    --color-success: #50FA7B;
+    --color-success-content: #50FA7B;
+    --color-info: #8BE9FD;
+    --color-info-content: #8BE9FD;
+    --color-warning: #F1FA8C;
+    --color-warning-content: #FFB86C;
+    --color-danger: #FF5555;
+    --color-danger-content: #FF5555;
   }
 
+  /* Nord. Dark. The navbar shares the page ground (nord0). */
   .avo-theme-nord {
     --color-avo-neutral-25: #F9FAFC;
     --color-avo-neutral-50: #ECEFF4;
@@ -298,41 +224,114 @@
     --color-avo-neutral-900: #2E3440;
     --color-avo-neutral-950: #242933;
     --color-brand-neutral-400: #8F9AAF;
-    --color-accent: #5E81AC;
-    --color-accent-content: #4C6E98;
-    --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #2E3440;
-    --color-success: #7FA26A;
-    --color-success-content: #6B8C58;
-    --color-warning: #D3A94E;
-    --color-warning-content: #B08A38;
-    --color-danger: #BF616A;
-    --color-danger-content: #A64F58;
-    --color-info: #81A1C1;
-    --color-info-content: #5E81AC;
-    --color-brand-accent: #5E81AC;
-  }
-
-  .avo-theme-nord.dark,
-  .dark .avo-theme-nord {
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-secondary: var(--color-avo-neutral-800);
+    --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #ECEFF4;
+    --color-content-secondary: #AEB7C8;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: #88C0D0;
     --color-accent-content: #8FBCBB;
     --color-accent-foreground: #2E3440;
-    --color-content: #ECEFF4;
-    --color-content-secondary: #AEB7C8;
-    --color-navbar-background: #242933;
+    --color-brand-accent: #88C0D0;
+    --color-navbar-background: var(--color-avo-neutral-900);
     --color-success: #A3BE8C;
     --color-success-content: #A3BE8C;
+    --color-info: #81A1C1;
+    --color-info-content: #88C0D0;
     --color-warning: #EBCB8B;
     --color-warning-content: #D08770;
     --color-danger: #BF616A;
     --color-danger-content: #BF616A;
-    --color-info: #81A1C1;
-    --color-info-content: #88C0D0;
-    --color-brand-accent: #88C0D0;
   }
 
-  .avo-theme-gruvbox {
+  /* Solarized Light. Light, on base3/base2, with a base2 navbar. */
+  .avo-theme-solarized_light {
+    --color-avo-neutral-25: #FFFCF2;
+    --color-avo-neutral-50: #FDF6E3;
+    --color-avo-neutral-100: #EEE8D5;
+    --color-avo-neutral-200: #E1DAC3;
+    --color-avo-neutral-300: #C4BEA8;
+    --color-avo-neutral-400: #93A1A1;
+    --color-avo-neutral-500: #839496;
+    --color-avo-neutral-600: #657B83;
+    --color-avo-neutral-700: #586E75;
+    --color-avo-neutral-800: #0F4B5A;
+    --color-avo-neutral-900: #073642;
+    --color-avo-neutral-950: #002B36;
+    --color-brand-neutral-400: #93A1A1;
+    --color-background: #EEE8D5;
+    --color-primary: #FDF6E3;
+    --color-secondary: #E8E1CB;
+    --color-tertiary: #DAD3BD;
+    --color-content: #002B36;
+    --color-content-secondary: #657B83;
+    --color-accent: #268BD2;
+    --color-accent-content: #1F76B3;
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: #268BD2;
+    --color-navbar-background: var(--color-avo-neutral-200);
+    --color-navbar-content: var(--color-avo-neutral-700);
+    --color-navbar-content-hover: var(--color-avo-neutral-950);
+    --color-navbar-control-background: var(--color-avo-neutral-50);
+    --color-navbar-control-background-hover: var(--color-avo-neutral-100);
+    --color-navbar-control-border: var(--color-avo-neutral-300);
+    --color-navbar-control-content: var(--color-avo-neutral-950);
+    --color-navbar-control-muted: var(--color-avo-neutral-500);
+    --color-navbar-active-background: var(--color-avo-neutral-300);
+    --color-navbar-active-content: var(--color-avo-neutral-950);
+    --color-success: #859900;
+    --color-success-content: #6F8000;
+    --color-info: #2AA198;
+    --color-info-content: #238A82;
+    --color-warning: #B58900;
+    --color-warning-content: #9A7400;
+    --color-danger: #DC322F;
+    --color-danger-content: #BF2B28;
+  }
+
+  /* Solarized Dark. Dark, on base03/base02. */
+  .avo-theme-solarized_dark {
+    --color-avo-neutral-25: #FFFCF2;
+    --color-avo-neutral-50: #FDF6E3;
+    --color-avo-neutral-100: #EEE8D5;
+    --color-avo-neutral-200: #E1DAC3;
+    --color-avo-neutral-300: #C4BEA8;
+    --color-avo-neutral-400: #93A1A1;
+    --color-avo-neutral-500: #839496;
+    --color-avo-neutral-600: #657B83;
+    --color-avo-neutral-700: #586E75;
+    --color-avo-neutral-800: #0F4B5A;
+    --color-avo-neutral-900: #073642;
+    --color-avo-neutral-950: #002B36;
+    --color-brand-neutral-400: #93A1A1;
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-secondary: var(--color-avo-neutral-800);
+    --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #EEE8D5;
+    --color-content-secondary: #93A1A1;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
+    --color-accent: #268BD2;
+    --color-accent-content: #4FA3E0;
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: #268BD2;
+    --color-navbar-background: #00212B;
+    --color-success: #859900;
+    --color-success-content: #9DB300;
+    --color-info: #2AA198;
+    --color-info-content: #3BC0B5;
+    --color-warning: #B58900;
+    --color-warning-content: #D3A000;
+    --color-danger: #DC322F;
+    --color-danger-content: #E85652;
+  }
+
+  /* Gruvbox Light. Light, cream navbar. */
+  .avo-theme-gruvbox_light {
     --color-avo-neutral-25: #FDF9E6;
     --color-avo-neutral-50: #FBF1C7;
     --color-avo-neutral-100: #F2E5BC;
@@ -346,8 +345,8 @@
     --color-avo-neutral-900: #282828;
     --color-avo-neutral-950: #1D2021;
     --color-brand-neutral-400: #A89984;
-    --color-primary: #FBF1C7;
     --color-background: #F2E5BC;
+    --color-primary: #FBF1C7;
     --color-secondary: #EBDBB2;
     --color-tertiary: #D5C4A1;
     --color-content: #282828;
@@ -355,41 +354,100 @@
     --color-accent: #D65D0E;
     --color-accent-content: #AF3A03;
     --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #3C3836;
+    --color-brand-accent: #D65D0E;
+    --color-navbar-background: var(--color-avo-neutral-200);
+    --color-navbar-content: var(--color-avo-neutral-700);
+    --color-navbar-content-hover: var(--color-avo-neutral-950);
+    --color-navbar-control-background: var(--color-avo-neutral-50);
+    --color-navbar-control-background-hover: var(--color-avo-neutral-100);
+    --color-navbar-control-border: var(--color-avo-neutral-300);
+    --color-navbar-control-content: var(--color-avo-neutral-950);
+    --color-navbar-control-muted: var(--color-avo-neutral-500);
+    --color-navbar-active-background: var(--color-avo-neutral-300);
+    --color-navbar-active-content: var(--color-avo-neutral-950);
     --color-success: #79740E;
     --color-success-content: #79740E;
+    --color-info: #458588;
+    --color-info-content: #076678;
     --color-warning: #B57614;
     --color-warning-content: #B57614;
     --color-danger: #CC241D;
     --color-danger-content: #9D0006;
-    --color-info: #458588;
-    --color-info-content: #076678;
-    --color-brand-accent: #D65D0E;
   }
 
-  .avo-theme-gruvbox.dark,
-  .dark .avo-theme-gruvbox {
+  /* Gruvbox Dark. Dark. */
+  .avo-theme-gruvbox_dark {
+    --color-avo-neutral-25: #FDF9E6;
+    --color-avo-neutral-50: #FBF1C7;
+    --color-avo-neutral-100: #F2E5BC;
+    --color-avo-neutral-200: #EBDBB2;
+    --color-avo-neutral-300: #D5C4A1;
+    --color-avo-neutral-400: #A89984;
+    --color-avo-neutral-500: #928374;
+    --color-avo-neutral-600: #7C6F64;
+    --color-avo-neutral-700: #665C54;
+    --color-avo-neutral-800: #3C3836;
+    --color-avo-neutral-900: #282828;
+    --color-avo-neutral-950: #1D2021;
+    --color-brand-neutral-400: #A89984;
     --color-background: var(--color-avo-neutral-900);
     --color-primary: var(--color-avo-neutral-950);
     --color-secondary: var(--color-avo-neutral-800);
     --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #EBDBB2;
+    --color-content-secondary: #A89984;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: #FE8019;
     --color-accent-content: #FFA24D;
     --color-accent-foreground: #1D2021;
-    --color-content: #EBDBB2;
-    --color-content-secondary: #A89984;
+    --color-brand-accent: #FE8019;
     --color-navbar-background: #1D2021;
     --color-success: #B8BB26;
     --color-success-content: #B8BB26;
+    --color-info: #83A598;
+    --color-info-content: #83A598;
     --color-warning: #FABD2F;
     --color-warning-content: #FABD2F;
     --color-danger: #FB4934;
     --color-danger-content: #FB4934;
-    --color-info: #83A598;
-    --color-info-content: #83A598;
-    --color-brand-accent: #FE8019;
   }
 
+  /* One Light. Light. */
+  .avo-theme-one_light {
+    --color-avo-neutral-25: #FCFCFC;
+    --color-avo-neutral-50: #FAFAFA;
+    --color-avo-neutral-100: #F0F0F0;
+    --color-avo-neutral-200: #E5E5E6;
+    --color-avo-neutral-300: #C9CBD1;
+    --color-avo-neutral-400: #9DA1AB;
+    --color-avo-neutral-500: #696C77;
+    --color-avo-neutral-600: #5C6370;
+    --color-avo-neutral-700: #4B5263;
+    --color-avo-neutral-800: #3E4451;
+    --color-avo-neutral-900: #282C34;
+    --color-avo-neutral-950: #21252B;
+    --color-brand-neutral-400: #9DA1AB;
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
+    --color-content: #383A42;
+    --color-content-secondary: #696C77;
+    --color-accent: #4078F2;
+    --color-accent-content: #2F63D6;
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: #4078F2;
+    --color-navbar-background: #282C34;
+    --color-success: #50A14F;
+    --color-success-content: #3F8A3E;
+    --color-info: #0184BC;
+    --color-info-content: #016A97;
+    --color-warning: #C18401;
+    --color-warning-content: #986A00;
+    --color-danger: #E45649;
+    --color-danger-content: #CA4235;
+  }
+
+  /* One Dark. Dark. */
   .avo-theme-one_dark {
     --color-avo-neutral-25: #FCFCFC;
     --color-avo-neutral-50: #FAFAFA;
@@ -404,43 +462,31 @@
     --color-avo-neutral-900: #282C34;
     --color-avo-neutral-950: #21252B;
     --color-brand-neutral-400: #9DA1AB;
-    --color-content: #383A42;
-    --color-content-secondary: #696C77;
-    --color-accent: #4078F2;
-    --color-accent-content: #2F63D6;
-    --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #282C34;
-    --color-success: #50A14F;
-    --color-success-content: #3F8A3E;
-    --color-warning: #C18401;
-    --color-warning-content: #986A00;
-    --color-danger: #E45649;
-    --color-danger-content: #CA4235;
-    --color-info: #0184BC;
-    --color-info-content: #016A97;
-    --color-brand-accent: #4078F2;
-  }
-
-  .avo-theme-one_dark.dark,
-  .dark .avo-theme-one_dark {
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-secondary: var(--color-avo-neutral-800);
+    --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #ABB2BF;
+    --color-content-secondary: #8B929F;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: #61AFEF;
     --color-accent-content: #7CBDF2;
     --color-accent-foreground: #21252B;
-    --color-content: #ABB2BF;
-    --color-content-secondary: #8B929F;
+    --color-brand-accent: #61AFEF;
     --color-navbar-background: #21252B;
     --color-success: #98C379;
     --color-success-content: #98C379;
+    --color-info: #56B6C2;
+    --color-info-content: #56B6C2;
     --color-warning: #E5C07B;
     --color-warning-content: #D19A66;
     --color-danger: #E06C75;
     --color-danger-content: #E06C75;
-    --color-info: #56B6C2;
-    --color-info-content: #56B6C2;
-    --color-brand-accent: #61AFEF;
   }
 
-  .avo-theme-catppuccin {
+  /* Catppuccin Latte. Light, with a crust-colored navbar, as upstream does it. */
+  .avo-theme-catppuccin_latte {
     --color-avo-neutral-25: #F7F8FB;
     --color-avo-neutral-50: #EFF1F5;
     --color-avo-neutral-100: #E6E9EF;
@@ -454,8 +500,8 @@
     --color-avo-neutral-900: #1E1E2E;
     --color-avo-neutral-950: #181825;
     --color-brand-neutral-400: #9CA0B0;
-    --color-primary: #EFF1F5;
     --color-background: #E6E9EF;
+    --color-primary: #EFF1F5;
     --color-secondary: #DCE0E8;
     --color-tertiary: #CCD0DA;
     --color-content: #4C4F69;
@@ -463,41 +509,102 @@
     --color-accent: #8839EF;
     --color-accent-content: #7226D9;
     --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #1E1E2E;
+    --color-brand-accent: #8839EF;
+    --color-navbar-background: var(--color-avo-neutral-200);
+    --color-navbar-content: var(--color-avo-neutral-700);
+    --color-navbar-content-hover: var(--color-avo-neutral-950);
+    --color-navbar-control-background: var(--color-avo-neutral-50);
+    --color-navbar-control-background-hover: var(--color-avo-neutral-100);
+    --color-navbar-control-border: var(--color-avo-neutral-300);
+    --color-navbar-control-content: var(--color-avo-neutral-950);
+    --color-navbar-control-muted: var(--color-avo-neutral-500);
+    --color-navbar-active-background: var(--color-avo-neutral-300);
+    --color-navbar-active-content: var(--color-avo-neutral-950);
     --color-success: #40A02B;
     --color-success-content: #358523;
+    --color-info: #1E66F5;
+    --color-info-content: #1854CF;
     --color-warning: #DF8E1D;
     --color-warning-content: #BE7717;
     --color-danger: #D20F39;
     --color-danger-content: #B00C30;
-    --color-info: #1E66F5;
-    --color-info-content: #1854CF;
-    --color-brand-accent: #8839EF;
   }
 
-  .avo-theme-catppuccin.dark,
-  .dark .avo-theme-catppuccin {
+  /* Catppuccin Mocha. Dark. */
+  .avo-theme-catppuccin_mocha {
+    --color-avo-neutral-25: #F7F8FB;
+    --color-avo-neutral-50: #EFF1F5;
+    --color-avo-neutral-100: #E6E9EF;
+    --color-avo-neutral-200: #DCE0E8;
+    --color-avo-neutral-300: #BCC0CC;
+    --color-avo-neutral-400: #9CA0B0;
+    --color-avo-neutral-500: #7C7F93;
+    --color-avo-neutral-600: #6C7086;
+    --color-avo-neutral-700: #585B70;
+    --color-avo-neutral-800: #313244;
+    --color-avo-neutral-900: #1E1E2E;
+    --color-avo-neutral-950: #181825;
+    --color-brand-neutral-400: #9CA0B0;
     --color-background: var(--color-avo-neutral-900);
     --color-primary: var(--color-avo-neutral-950);
     --color-secondary: var(--color-avo-neutral-800);
     --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #CDD6F4;
+    --color-content-secondary: #A6ADC8;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: #CBA6F7;
     --color-accent-content: #D5B8F8;
     --color-accent-foreground: #181825;
-    --color-content: #CDD6F4;
-    --color-content-secondary: #A6ADC8;
+    --color-brand-accent: #CBA6F7;
     --color-navbar-background: #11111B;
     --color-success: #A6E3A1;
     --color-success-content: #A6E3A1;
+    --color-info: #89B4FA;
+    --color-info-content: #89DCEB;
     --color-warning: #F9E2AF;
     --color-warning-content: #FAB387;
     --color-danger: #F38BA8;
     --color-danger-content: #F38BA8;
-    --color-info: #89B4FA;
-    --color-info-content: #89DCEB;
-    --color-brand-accent: #CBA6F7;
   }
 
+  /* Tokyo Night Day. Light. */
+  .avo-theme-tokyo_night_day {
+    --color-avo-neutral-25: #F4F5F9;
+    --color-avo-neutral-50: #E9EAF0;
+    --color-avo-neutral-100: #E1E2E7;
+    --color-avo-neutral-200: #D0D5E3;
+    --color-avo-neutral-300: #B4BAD0;
+    --color-avo-neutral-400: #8990B3;
+    --color-avo-neutral-500: #6172B0;
+    --color-avo-neutral-600: #565F89;
+    --color-avo-neutral-700: #414868;
+    --color-avo-neutral-800: #292E42;
+    --color-avo-neutral-900: #1A1B26;
+    --color-avo-neutral-950: #16161E;
+    --color-brand-neutral-400: #8990B3;
+    --color-background: #E1E2E7;
+    --color-primary: #E9EAF0;
+    --color-secondary: #D5D8E5;
+    --color-tertiary: #C4C8DA;
+    --color-content: #343B58;
+    --color-content-secondary: #6172B0;
+    --color-accent: #2E7DE9;
+    --color-accent-content: #2664BF;
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: #2E7DE9;
+    --color-navbar-background: #1A1B26;
+    --color-success: #587539;
+    --color-success-content: #4A622F;
+    --color-info: #007197;
+    --color-info-content: #005E7D;
+    --color-warning: #8C6C3E;
+    --color-warning-content: #745A33;
+    --color-danger: #F52A65;
+    --color-danger-content: #D02256;
+  }
+
+  /* Tokyo Night. Dark. */
   .avo-theme-tokyo_night {
     --color-avo-neutral-25: #F4F5F9;
     --color-avo-neutral-50: #E9EAF0;
@@ -512,47 +619,26 @@
     --color-avo-neutral-900: #1A1B26;
     --color-avo-neutral-950: #16161E;
     --color-brand-neutral-400: #8990B3;
-    --color-primary: #E9EAF0;
-    --color-background: #E1E2E7;
-    --color-secondary: #D5D8E5;
-    --color-tertiary: #C4C8DA;
-    --color-content: #343B58;
-    --color-content-secondary: #6172B0;
-    --color-accent: #2E7DE9;
-    --color-accent-content: #2664BF;
-    --color-accent-foreground: var(--color-white);
-    --color-navbar-background: #1A1B26;
-    --color-success: #587539;
-    --color-success-content: #4A622F;
-    --color-warning: #8C6C3E;
-    --color-warning-content: #745A33;
-    --color-danger: #F52A65;
-    --color-danger-content: #D02256;
-    --color-info: #007197;
-    --color-info-content: #005E7D;
-    --color-brand-accent: #2E7DE9;
-  }
-
-  .avo-theme-tokyo_night.dark,
-  .dark .avo-theme-tokyo_night {
     --color-background: var(--color-avo-neutral-900);
     --color-primary: var(--color-avo-neutral-950);
     --color-secondary: var(--color-avo-neutral-800);
     --color-tertiary: var(--color-avo-neutral-700);
+    --color-quaternary: var(--color-avo-neutral-600);
+    --color-content: #C0CAF5;
+    --color-content-secondary: #9AA5CE;
+    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: #7AA2F7;
     --color-accent-content: #8FB2F8;
     --color-accent-foreground: #16161E;
-    --color-content: #C0CAF5;
-    --color-content-secondary: #9AA5CE;
+    --color-brand-accent: #7AA2F7;
     --color-navbar-background: #16161E;
     --color-success: #9ECE6A;
     --color-success-content: #9ECE6A;
+    --color-info: #7DCFFF;
+    --color-info-content: #7DCFFF;
     --color-warning: #E0AF68;
     --color-warning-content: #FF9E64;
     --color-danger: #F7768E;
     --color-danger-content: #F7768E;
-    --color-info: #7DCFFF;
-    --color-info-content: #7DCFFF;
-    --color-brand-accent: #7AA2F7;
   }
 }

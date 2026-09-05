@@ -1,9 +1,14 @@
 <% appearance = Avo.configuration.appearance %>
 <% theme = current_theme %>
 <% show_theme_picker = !appearance.theme_locked? && Avo.theme_manager.offered.size > 1 %>
-<% show_neutral_picker = !appearance.neutral_locked? && !theme&.locks?(:neutral) %>
-<% show_accent_picker = !appearance.accent_locked? && !theme&.locks?(:accent) %>
+<%# The host's locks decide whether a picker exists at all. The active theme's
+    locks only hide it (the `hidden` attribute, toggled by the appearance
+    controller), because picking another theme can bring it back without a
+    reload. %>
+<% show_neutral_picker = !appearance.neutral_locked? %>
+<% show_accent_picker = !appearance.accent_locked? %>
 <% show_scheme_picker = !appearance.scheme_locked? %>
+<% theme_hides = {neutral: theme&.locks?(:neutral) || false, accent: theme&.locks?(:accent) || false, scheme: theme&.locks?(:scheme) || false} %>
 <% show_key_badges_toggle = Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges] %>
 <%# Hidden by default (Shift+S still toggles the sound). Even when shown, nothing can make a sound
     with every picker locked, so don't offer the mute. %>
@@ -17,6 +22,7 @@
      show_neutral_picker: show_neutral_picker,
      show_accent_picker: show_accent_picker,
      show_scheme_picker: show_scheme_picker,
+     theme_hides: theme_hides,
      show_key_badges_toggle: show_key_badges_toggle,
      show_sound_toggle: show_sound_toggle,
      active_neutral: current_neutral,

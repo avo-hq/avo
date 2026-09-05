@@ -40,7 +40,8 @@ RSpec.feature "theme generator", type: :feature, acquire_lock: :generator do
       expect(content).to include "# self.id = :lagoon"
       expect(content).to include '# self.stylesheet = "avo/themes/lagoon"'
       expect(content).to include '# self.views = root.join("app/views/avo/themes/lagoon")'
-      expect(content).to include "# self.lock = [:neutral, :accent]"
+      expect(content).to include "self.scheme = :light"
+      expect(content).to include "# self.lock = [:neutral, :accent, :scheme]"
       expect(content).to include "# self.appearance = {"
       Avo::BaseTheme::APPEARANCE_KEYS.each do |key|
         expect(content).to include "#   #{key}:"
@@ -53,7 +54,9 @@ RSpec.feature "theme generator", type: :feature, acquire_lock: :generator do
       content = stylesheet.read
       expect(content).to include "@layer base {"
       expect(content).to include ".avo-theme-lagoon {"
-      expect(content).to include ".avo-theme-lagoon.dark,\n  .dark .avo-theme-lagoon {"
+      expect(content.lines.grep(/^\s+\.dark/)).to be_empty
+      expect(content).to include "drawn for the light scheme"
+      expect(content).to include "The navbar does not have to be dark"
 
       Avo::Themes::Catalog.names.each do |token|
         expect(content).to include "/* #{token}: ; */"
@@ -69,6 +72,21 @@ RSpec.feature "theme generator", type: :feature, acquire_lock: :generator do
       declared = stylesheet.read.lines.grep(/^\s*--/)
 
       expect(declared).to be_empty
+    end
+  end
+
+  describe "--scheme" do
+    it "writes a dark theme" do
+      generate "abyss", "--scheme", "dark"
+
+      expect(file("app/avo/themes/abyss.rb").read).to include "self.scheme = :dark"
+      expect(file("app/assets/stylesheets/avo/themes/abyss.css").read).to include "drawn for the dark scheme"
+    end
+
+    it "refuses anything but light or dark" do
+      expect { generate "abyss", "--scheme", "auto", quiet: false }.to output(/--scheme must be one of light, dark/).to_stdout
+
+      expect(file("app/avo/themes")).not_to exist
     end
   end
 
@@ -125,6 +143,7 @@ RSpec.feature "theme generator", type: :feature, acquire_lock: :generator do
       expect(theme).to include "module LagoonTheme"
       expect(theme).to include "class Theme < Avo::BaseTheme"
       expect(theme).to include "self.id = :lagoon"
+      expect(theme).to include "self.scheme = :light"
       expect(theme).not_to include "Avo::Themes::Lagoon <"
     end
 

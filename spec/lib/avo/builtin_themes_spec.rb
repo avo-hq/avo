@@ -1,64 +1,88 @@
 require "rails_helper"
 
-# The thirteen built-ins and the one stylesheet they share. A block that
-# forgets a required token ships a theme that silently inherits the previous
-# theme's value on hover, so the required set is checked per theme here.
+# The eighteen built-ins and the one stylesheet they share. Each theme is one
+# block drawn for one scheme. A block that forgets a required token ships a
+# theme that silently inherits the previous theme's value on hover, and one
+# that forgets its foundations draws a wrong preview tile on a page in the
+# other scheme, so both sets are checked per theme here.
 RSpec.describe Avo::BuiltinThemes do
   let(:css) { Avo::Engine.root.join("app/assets/stylesheets/avo/themes.css").read }
 
-  def block_for(theme, dark: false)
-    selector = dark ? "#{Regexp.escape(".#{theme.css_class}.dark")},\\s*\\.dark\\s+\\.#{Regexp.escape(theme.css_class)}" : Regexp.escape(".#{theme.css_class}")
-    match = css.match(/^  #{selector} \{\n(.*?)\n  \}/m)
+  def block_for(theme)
+    match = css.match(/^  #{Regexp.escape(".#{theme.css_class}")} \{\n(.*?)\n  \}/m)
     match && match[1]
   end
 
-  it "ships thirteen themes with Paper first" do
-    expect(described_class.ids).to eq(%i[paper coastal rose sunset midnight monokai dracula solarized nord gruvbox one_dark catppuccin tokyo_night])
+  it "ships eighteen themes with Paper first" do
+    expect(described_class.ids).to eq(%i[
+      paper coastal rose sunset midnight monokai dracula nord
+      solarized_light solarized_dark gruvbox_light gruvbox_dark one_light one_dark
+      catppuccin_latte catppuccin_mocha tokyo_night_day tokyo_night
+    ])
     expect(described_class.all).to all(be_builtin)
     expect(described_class.all.map(&:stylesheet)).to all(be_nil)
   end
 
-  it "keeps Paper as the defaults: no block in the stylesheet" do
+  it "keeps Paper as the defaults: no block, no locks, the user's scheme" do
     expect(block_for(described_class::Paper)).to be_nil
+    expect(described_class::Paper.lock).to eq([])
+    expect(described_class::Paper).not_to be_forces_scheme
+  end
+
+  it "makes every other theme a finished look: every picker locked, one scheme" do
+    others = described_class.all - [described_class::Paper]
+
+    expect(others.map(&:lock)).to all(eq(Avo::BaseTheme::LOCKABLE))
+    expect(others).to all(be_forces_scheme)
+    expect(others.select(&:dark?).map(&:id)).to eq(%i[midnight monokai dracula nord solarized_dark gruvbox_dark one_dark catppuccin_mocha tokyo_night])
+  end
+
+  it "has no .dark blocks: a theme is drawn for one scheme" do
+    selectors = css.lines.grep(/^\s+\.[\w.-]+.*\{$/).map(&:strip)
+    expect(selectors).to all(match(/\A\.avo-theme-\w+ \{\z/))
   end
 
   described_class.all.reject { |t| t == described_class::Paper }.each do |theme|
     describe theme.title do
-      it "declares every required token in its light block, inside @layer base" do
-        light = block_for(theme)
-        expect(light).to be_present, "no light block for #{theme.css_class}"
+      let(:block) { block_for(theme) }
+
+      it "declares every required token in its block" do
+        expect(block).to be_present, "no block for #{theme.css_class}"
 
         Avo::Themes::Catalog.required.each do |token|
-          expect(light).to include("#{token.name}:"), "#{theme.css_class} light block is missing #{token.name}"
+          expect(block).to include("#{token.name}:"), "#{theme.css_class} is missing #{token.name}"
         end
-        expect(light).to include("--color-brand-accent:")
-        expect(light).to include("--color-brand-neutral-400:")
+        expect(block).to include("--color-brand-accent:")
+        expect(block).to include("--color-brand-neutral-400:")
       end
 
-      it "declares the accent trio in its dark block" do
-        dark = block_for(theme, dark: true)
-        expect(dark).to be_present, "no dark block for #{theme.css_class}"
-
-        %w[--color-accent --color-accent-content --color-accent-foreground --color-brand-accent].each do |name|
-          expect(dark).to include("#{name}:"), "#{theme.css_class} dark block is missing #{name}"
+      it "sets the foundations the preview tile reads, so the tile is right on a page in the other scheme" do
+        %w[--color-background --color-primary --color-navbar-background].each do |name|
+          expect(block).to include("#{name}:"), "#{theme.css_class} is missing #{name}"
         end
       end
 
-      it "re-states the dark foundations for any foundation it sets in light" do
-        light = block_for(theme)
-        dark = block_for(theme, dark: true)
-        %w[--color-primary --color-background --color-secondary --color-tertiary --color-content --color-content-secondary].each do |name|
-          next unless light.include?("#{name}:")
-
-          expect(dark).to include("#{name}:"), "#{theme.css_class} sets #{name} in light but not in dark; the light value would leak into dark mode"
+      it "sets the dark surfaces when dark", if: theme.dark? do
+        %w[--color-secondary --color-tertiary --color-content --color-content-secondary --color-sidebar-background].each do |name|
+          expect(block).to include("#{name}:"), "#{theme.css_class} is dark but does not set #{name}"
         end
       end
     end
   end
 
+  it "keeps a light navbar on a few light themes, with the navbar's own ink" do
+    %i[coastal solarized_light gruvbox_light catppuccin_latte].each do |id|
+      block = block_for(Avo.theme_manager.find(id))
+      expect(block).to include("--color-navbar-background: var(--color-avo-neutral-200);")
+      %w[--color-navbar-content --color-navbar-content-hover --color-navbar-control-background --color-navbar-control-content].each do |name|
+        expect(block).to include("#{name}:"), "#{id} has a light navbar but does not set #{name}"
+      end
+    end
+  end
+
   it "credits every editor palette" do
-    editor_themes = described_class.all.drop(5)
-    expect(editor_themes.map(&:attribution)).to all(be_present)
+    editor_themes = described_class.editor_themes
+    expect(editor_themes.size).to eq(13)
     notice = Avo::Engine.root.join("NOTICE").read
     editor_themes.each { |theme| expect(notice).to include(theme.title.split.first) }
   end

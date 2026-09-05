@@ -5,8 +5,24 @@ import Cookies from 'js-cookie'
 // 2 ** (-5 / 12) — the interval between an explicit pick and the default one.
 const FIVE_SEMITONES_DOWN = 0.7492
 
+// Four dimensions: the theme (Paper, Coastal, …) and, on top of it, the
+// neutral, accent, and scheme picks. A theme owns whichever of the three it
+// locks (all of them, by default): while it is active those pickers are
+// hidden, the user's picks for them are not applied, and a locked scheme is
+// forced. The user's picks are kept, so switching back to a theme that leaves
+// a dimension open (Paper) restores them without a reload.
 export default class extends Controller {
-  static targets = ['button', 'accentOption', 'themeLabel', 'themeOption', 'appearanceThemeOption', 'appearanceThemeLabel']
+  static targets = [
+    'button',
+    'accentOption',
+    'themeLabel',
+    'themeOption',
+    'appearanceThemeOption',
+    'appearanceThemeLabel',
+    'neutralPicker',
+    'accentPicker',
+    'schemePicker',
+  ]
 
   // themeLabels: the neutral picker's labels (historical name). appearanceThemeLabels: the theme picker's.
   static values = { themeLabels: Object, appearanceThemeLabels: Object }
@@ -18,11 +34,14 @@ export default class extends Controller {
     this.lockedScheme = this.appearance.schemeLocked ? this.appearance.scheme : null
     this.lockedAppearanceTheme = this.appearance.themeLocked ? this.appearance.theme : null
 
-    // Read current state from server-rendered <html> classes
-    this.currentSchemeValue = this.readCurrentScheme()
-    this.currentThemeValue = this.readCurrentNeutral()
-    this.currentAccentValue = this.readCurrentAccent()
+    // The user's own picks come from the server (`picks`), because the
+    // classes on <html> already have the active theme's locks applied and
+    // would read back a forced value as the user's choice.
+    const picks = this.appearance.picks || {}
     this.currentAppearanceThemeValue = this.readCurrentAppearanceTheme()
+    this.currentSchemeValue = picks.scheme || this.readCurrentScheme()
+    this.currentThemeValue = picks.neutral || this.readCurrentNeutral()
+    this.currentAccentValue = picks.accent || this.readCurrentAccent()
 
     // Sync UI controls to match current state (no re-apply needed — classes are already on <html>)
     this.updateThemeLabel()
@@ -30,6 +49,7 @@ export default class extends Controller {
     this.updateActiveAccentOption()
     this.updateActiveAppearanceThemeOption()
     this.updateAppearanceThemeLabel()
+    this.syncPickerVisibility()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -71,9 +91,36 @@ export default class extends Controller {
     }
   }
 
+  // --- What the theme owns ---
+
+  themeLocks(id = this.currentAppearanceThemeValue) {
+    return (id && this.appearance.themeLocks && this.appearance.themeLocks[id]) || []
+  }
+
+  themeLocksDimension(dimension, id = this.currentAppearanceThemeValue) {
+    return this.themeLocks(id).includes(dimension)
+  }
+
+  // The scheme a theme forces while it locks the scheme picker, or null.
+  themeForcedScheme(id = this.currentAppearanceThemeValue) {
+    if (!this.themeLocksDimension('scheme', id)) return null
+    return (this.appearance.themeSchemes && this.appearance.themeSchemes[id]) || 'light'
+  }
+
+  // Hide the pickers the active theme owns. Only on a committed pick, never on
+  // hover: the pill would resize under the pointer.
+  syncPickerVisibility(id = this.currentAppearanceThemeValue) {
+    const locks = this.themeLocks(id)
+    if (this.hasNeutralPickerTarget) this.neutralPickerTargets.forEach((el) => { el.hidden = locks.includes('neutral') })
+    if (this.hasAccentPickerTarget) this.accentPickerTargets.forEach((el) => { el.hidden = locks.includes('accent') })
+    if (this.hasSchemePickerTarget) this.schemePickerTargets.forEach((el) => { el.hidden = locks.includes('scheme') })
+  }
+
+  // --- Scheme ---
+
   setScheme(event) {
     event.preventDefault()
-    if (this.lockedScheme) return
+    if (this.lockedScheme || this.themeLocksDimension('scheme')) return
 
     const { scheme } = event.currentTarget.dataset
 
@@ -85,9 +132,11 @@ export default class extends Controller {
     this.playPickSound(this.currentSchemeValue === 'auto')
   }
 
+  // --- Neutral ---
+
   setNeutral(event) {
     event.preventDefault()
-    if (this.lockedNeutral) return
+    if (this.lockedNeutral || this.themeLocksDimension('neutral')) return
 
     const { theme } = event.currentTarget.dataset
     const allowedThemes = this.appearance.neutrals || []
@@ -132,31 +181,19 @@ export default class extends Controller {
     const allowed = this.appearance.themes || []
     if (!appearanceTheme || !allowed.includes(appearanceTheme)) return
 
-    const previous = this.currentAppearanceThemeValue
-    this.currentAppearanceThemeValue = appearanceTheme
-    this.applyAppearanceThemeClass(appearanceTheme)
-    this.updateActiveAppearanceThemeOption()
-    this.updateAppearanceThemeLabel()
-
-    const persisted = this.persistPreferences('appearanceTheme')
-
-    // A theme with partial overrides or brand assets is rendered by the server,
-    // so a class swap is not enough: re-render the page once the pick is saved.
-    if (this.appearanceThemeNeedsVisit(previous) || this.appearanceThemeNeedsVisit(appearanceTheme)) {
-      Promise.resolve(persisted).then(() => this.revisit())
-    }
+    this.commitAppearanceTheme(appearanceTheme)
   }
 
   previewAppearanceTheme(event) {
     const { appearanceTheme } = event.currentTarget.dataset
     if (!appearanceTheme) return
 
-    this.applyAppearanceThemeClass(appearanceTheme)
+    this.applyAppearanceTheme(appearanceTheme)
     this.updateActiveAppearanceThemeOptionFor(appearanceTheme)
   }
 
   revertAppearanceTheme() {
-    this.applyAppearanceThemeClass(this.currentAppearanceThemeValue)
+    this.applyAppearanceTheme(this.currentAppearanceThemeValue)
     this.updateActiveAppearanceThemeOption()
   }
 
@@ -164,15 +201,35 @@ export default class extends Controller {
     if (this.lockedAppearanceTheme) return
     const allowed = this.appearance.themes || []
     if (allowed.length === 0) return
+    this.commitAppearanceTheme(this.nextValue(allowed, this.currentAppearanceThemeValue))
+  }
+
+  commitAppearanceTheme(id) {
     const previous = this.currentAppearanceThemeValue
-    this.currentAppearanceThemeValue = this.nextValue(allowed, this.currentAppearanceThemeValue)
-    this.applyAppearanceThemeClass(this.currentAppearanceThemeValue)
+    this.currentAppearanceThemeValue = id
+    this.applyAppearanceTheme(id)
+    this.syncPickerVisibility(id)
     this.updateActiveAppearanceThemeOption()
     this.updateAppearanceThemeLabel()
+    this.updateActiveThemeOption()
+    this.updateActiveAccentOption()
+
     const persisted = this.persistPreferences('appearanceTheme')
-    if (this.appearanceThemeNeedsVisit(previous) || this.appearanceThemeNeedsVisit(this.currentAppearanceThemeValue)) {
+
+    // A theme with partial overrides or brand assets is rendered by the server,
+    // so a class swap is not enough: re-render the page once the pick is saved.
+    if (this.appearanceThemeNeedsVisit(previous) || this.appearanceThemeNeedsVisit(id)) {
       Promise.resolve(persisted).then(() => this.revisit())
     }
+  }
+
+  // The theme class, plus the three dimensions resolved for that theme: a
+  // locked one takes the theme's value, an open one the user's pick.
+  applyAppearanceTheme(id) {
+    this.applyAppearanceThemeClass(id)
+    this.applyScheme(id)
+    this.applyTheme(id)
+    this.applyAccent(id)
   }
 
   appearanceThemeNeedsVisit(id) {
@@ -227,9 +284,11 @@ export default class extends Controller {
     }
   }
 
+  // --- Accent ---
+
   setAccent(event) {
     event.preventDefault()
-    if (this.lockedAccent) return
+    if (this.lockedAccent || this.themeLocksDimension('accent')) return
 
     const { accent } = event.currentTarget.dataset
     const allowedAccents = this.appearance.accents || []
@@ -258,7 +317,7 @@ export default class extends Controller {
   // Cycle to the next value in a list. Wraps to the first when at the end.
   // Used by the global keyboard shortcuts (see global_hotkeys.js).
   cycleScheme() {
-    if (this.lockedScheme) return
+    if (this.lockedScheme || this.themeLocksDimension('scheme')) return
     this.currentSchemeValue = this.nextValue(['auto', 'light', 'dark'], this.currentSchemeValue)
     this.persistPreferences('scheme')
     this.applyScheme()
@@ -266,7 +325,7 @@ export default class extends Controller {
   }
 
   cycleNeutral() {
-    if (this.lockedNeutral) return
+    if (this.lockedNeutral || this.themeLocksDimension('neutral')) return
     const allowed = this.appearance.neutrals || []
     if (allowed.length === 0) return
     this.currentThemeValue = this.nextValue(allowed, this.currentThemeValue || 'brand')
@@ -278,7 +337,7 @@ export default class extends Controller {
   }
 
   cycleAccent() {
-    if (this.lockedAccent) return
+    if (this.lockedAccent || this.themeLocksDimension('accent')) return
     const allowed = this.appearance.accents || []
     if (allowed.length === 0) return
     this.currentAccentValue = this.nextValue(allowed, this.currentAccentValue || 'brand')
@@ -407,8 +466,11 @@ export default class extends Controller {
     audio.play().catch(() => {})
   }
 
-  applyScheme() {
-    const scheme = this.currentSchemeValue || 'auto'
+  // --- Applying classes to <html> ---
+
+  // The scheme for a theme: the one it forces, else the user's pick.
+  applyScheme(themeId = this.currentAppearanceThemeValue) {
+    const scheme = this.themeForcedScheme(themeId) || this.currentSchemeValue || 'auto'
 
     // Remove all scheme selection classes
     document.documentElement.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto')
@@ -431,8 +493,9 @@ export default class extends Controller {
     }
   }
 
-  applyTheme() {
-    this.applyThemeClass(this.currentThemeValue || 'brand')
+  // The neutral for a theme: none while the theme owns it, else the user's pick.
+  applyTheme(themeId = this.currentAppearanceThemeValue) {
+    this.applyThemeClass(this.themeLocksDimension('neutral', themeId) ? 'brand' : this.currentThemeValue || 'brand')
   }
 
   applyThemeClass(theme) {
@@ -461,8 +524,9 @@ export default class extends Controller {
     })
   }
 
-  applyAccent() {
-    this.applyAccentClass(this.currentAccentValue || 'brand')
+  // The accent for a theme: none while the theme owns it, else the user's pick.
+  applyAccent(themeId = this.currentAppearanceThemeValue) {
+    this.applyAccentClass(this.themeLocksDimension('accent', themeId) ? 'brand' : this.currentAccentValue || 'brand')
   }
 
   applyAccentClass(accent) {

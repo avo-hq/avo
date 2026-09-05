@@ -4,7 +4,7 @@ RSpec.describe Avo::Themes::Manager do
   subject(:manager) { Avo.theme_manager }
 
   it "registers the built-ins first, in their shipped order" do
-    expect(manager.all.first(13)).to eq(Avo::BuiltinThemes.all)
+    expect(manager.all.first(18)).to eq(Avo::BuiltinThemes.all)
     expect(manager.ids.first).to eq(:paper)
   end
 
@@ -16,7 +16,7 @@ RSpec.describe Avo::Themes::Manager do
   end
 
   it "sorts installed themes by title after the built-ins" do
-    expect(manager.all.drop(13)).to eq([Avo::HarborTheme::Theme, Avo::Themes::Lagoon])
+    expect(manager.all.drop(18)).to eq([Avo::HarborTheme::Theme, Avo::Themes::Lagoon])
   end
 
   it "links only non-built-in stylesheets" do
