@@ -209,7 +209,9 @@
     --color-danger-content: #FF5555;
   }
 
-  /* Nord. Dark. The navbar shares the page ground (nord0). */
+  /* Nord. Dark, and flush: navbar, sidebar, and content share the nord0
+     ground, the seam is transparent, and the notch is off. The other
+     built-ins keep the stock raised content card; either is a choice. */
   .avo-theme-nord {
     --color-avo-neutral-25: #F9FAFC;
     --color-avo-neutral-50: #ECEFF4;
@@ -231,12 +233,15 @@
     --color-quaternary: var(--color-avo-neutral-600);
     --color-content: #ECEFF4;
     --color-content-secondary: #AEB7C8;
-    --color-sidebar-background: color-mix(in oklab, var(--color-background), black 14%);
     --color-accent: #88C0D0;
     --color-accent-content: #8FBCBB;
     --color-accent-foreground: #2E3440;
     --color-brand-accent: #88C0D0;
     --color-navbar-background: var(--color-avo-neutral-900);
+    --color-sidebar-background: var(--color-background);
+    --color-main-content-background: var(--color-background);
+    --color-main-content-border: transparent;
+    --navbar-notch-enabled: false;
     --color-success: #A3BE8C;
     --color-success-content: #A3BE8C;
     --color-info: #81A1C1;

@@ -18,6 +18,14 @@
  * --color-navbar-control-* tokens to whatever reads well: the page ground, a
  * tint of the accent, a light band with dark ink. Try a few.
  *
+ * The same goes for the seam between the sidebar and the content panel. The
+ * stock look draws the content as a raised card (--color-main-content-background
+ * on --color-sidebar-background, a --color-main-content-border line, rounded
+ * corners under the navbar's notch). A flush look sets the sidebar and content
+ * to one background, makes --color-main-content-border transparent, and turns
+ * --navbar-notch-enabled off (or sets --main-content-radius to 0). Decide it
+ * per theme; it changes the feel more than any accent does.
+ *
  * The class name must stay `.avo-theme-<%= theme_id %>`: Avo puts it on <html>
  * while the theme is active and on the picker's preview tile, and it is how
  * this theme's tokens are found. Renaming the theme means renaming the class.

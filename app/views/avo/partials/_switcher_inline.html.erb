@@ -4,7 +4,8 @@
      data-appearance-appearance-theme-labels-value="<%= offered_themes.to_h { |t| [t.id, t.title] }.to_json %>">
   <% if show_theme_picker %>
     <%= render Avo::UI::DropdownComponent.new(
-      classes: "color-scheme-switcher__theme-popover"
+      classes: "color-scheme-switcher__theme-popover",
+      wrapper_data: {dropdown_menu_flip_value: true}
     ) do |component| %>
       <% component.with_trigger do %>
         <button type="button"
@@ -32,7 +33,8 @@
   <% if show_neutral_picker %>
     <%= tag.div class: "color-scheme-switcher__group", hidden: theme_hides[:neutral], data: {appearance_target: "neutralPicker"} do %>
     <%= render Avo::UI::DropdownComponent.new(
-      classes: "color-scheme-switcher__theme-popover"
+      classes: "color-scheme-switcher__theme-popover",
+      wrapper_data: {dropdown_menu_flip_value: true}
     ) do |component| %>
       <% component.with_trigger do %>
         <button type="button"
