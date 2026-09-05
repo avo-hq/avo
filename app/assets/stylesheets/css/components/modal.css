@@ -170,14 +170,20 @@
 }
 
 .modal__body-content {
-  @apply w-full min-h-48 rounded-card-wrapper border border-tertiary bg-primary p-4;
+  @apply w-full min-h-48 rounded-card-wrapper border border-tertiary bg-primary;
 }
 
-/* Belongs-to "Create new" embeds an edit form in the modal. Drop the nested
-   panel chrome (background + border) and pad the body so the form breathes.
-   Scoped to match the `.card__body` selector above so the padding wins. */
+/* Belongs-to "Create new" embeds an edit form in the modal. Pad the body so the
+   form breathes, and pad the content panel so the form's panels (and the tab
+   group kept in flow by tabs.css, AVO-1365) sit off its border. Scoped to that
+   modal only: actions and other modals bring their own spacing. Matches the
+   `.card__body` selector above so the body padding wins. */
 .card__body.modal-form-body {
   @apply !p-4;
+
+  > .modal__body-content {
+    @apply p-4;
+  }
 }
 
 .modal__controls {
