@@ -80,6 +80,12 @@ module Avo
       else
         []
       end
+    rescue ActiveRecord::RecordNotFound
+      ids.filter_map do |id|
+        @resource.find_record(id, params: params)
+      rescue ActiveRecord::RecordNotFound
+        nil
+      end
     end
 
     def set_fields

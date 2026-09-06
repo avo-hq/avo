@@ -50,4 +50,21 @@ RSpec.describe "Actions", type: :request do
       expect(flash[:success][:body]).to eq path
     end
   end
+
+  describe "selected records deleted before execution" do
+    it "runs the action for records that still exist" do
+      remaining = create(:user)
+      deleted_id = create(:user).tap(&:destroy!).to_param
+
+      post "/admin/resources/users/actions",
+        params: {
+          action_id: "Avo::Actions::Test::Query",
+          fields: {avo_resource_ids: [remaining.to_param, deleted_id].join(",")}
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(response).to have_http_status(:ok)
+      expect(flash[:success][:body]).to eq "succeed 1 selected"
+    end
+  end
 end
