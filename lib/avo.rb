@@ -102,6 +102,17 @@ module Avo
     end
   end
 
+  # Exception raised when an association field has no matching model association.
+  class MissingAssociationError < StandardError
+    def initialize(model_class, association_name, field)
+      macro = field.type.to_s
+      super(
+        "Failed to find the :#{association_name} association on #{model_class} while rendering the :#{field.id} field.\n" \
+        "Define `#{macro} :#{association_name}` on #{model_class}, or update the Avo field to use an association that exists."
+      )
+    end
+  end
+
   class ResourceNotFoundError < StandardError
     def initialize(resource_name)
       super(

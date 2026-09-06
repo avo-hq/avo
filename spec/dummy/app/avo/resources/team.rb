@@ -154,6 +154,10 @@ class Avo::Resources::Team < Avo::BaseResource
       # Example for error message when resource is missing
       field :locations, as: :has_many
     end
+
+    if params[:show_missing_association_field] == "1"
+      field :ghosts, as: :has_many, use_resource: Avo::Resources::User
+    end
   end
 
   def filters
