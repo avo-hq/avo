@@ -119,6 +119,8 @@ class Avo::Resources::User < Avo::BaseResource
 end
 ```
 
+When `self.description` is unset, Avo also resolves `description` below the resource's translation key. For example, `avo.resource_translations.user.description` supplies the User resource description. An explicit string or block always takes precedence.
+
 - `self.description` is rendered as **raw HTML** — never feed it user-editable data (stored-XSS risk). A block gets `record`, `resource`, `view`, `current_user`, `params`.
 - `self.color` takes a Symbol or String from Avo's palette — `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`. It tints the icon **stroke only** (label and hover/active backgrounds stay neutral), adapts to light and dark themes, and an unknown name silently renders the neutral icon. The tint follows the resource to its breadcrumb initials chip and, with Advanced Search installed, to the resource group headers in global search results. A `color:` on the menu entry overrides it.
 - `self.cover`/`self.avatar` were named `cover_photo`/`profile_photo` in Avo 3. A **Symbol** `source:` renders nothing for unpersisted (new) records — use a block if you want a placeholder on `new`/`index`.

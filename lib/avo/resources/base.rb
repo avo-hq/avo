@@ -729,6 +729,12 @@ module Avo
         }
       end
 
+      def description(additional_attributes = {})
+        return super unless @description.nil? && self.class.description.nil?
+
+        I18n.t("#{translation_key}.description", default: nil)
+      end
+
       def entity_loader(entity)
         instance_variable_get(:"@#{entity.to_s.pluralize}_loader")
       end

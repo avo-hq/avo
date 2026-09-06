@@ -26,7 +26,8 @@ RSpec.feature "i18n", type: :feature do
           resource_translations: {
             product: {
               one: "API Product",
-              other: "API Products"
+              other: "API Products",
+              description: "Manage the API product catalog"
             }
           }
         }
@@ -113,6 +114,12 @@ RSpec.feature "i18n", type: :feature do
   end
 
   describe "resource translation_key" do
+    it "renders the translated resource description when none is configured" do
+      visit avo.resources_products_path
+
+      expect(find(".header__description")).to have_text "Manage the API product catalog"
+    end
+
     it "uses translated resource names verbatim" do
       expect(Avo::Resources::Product.name).to eq "API Product"
       expect(Avo::Resources::Product.plural_name).to eq "API Products"
