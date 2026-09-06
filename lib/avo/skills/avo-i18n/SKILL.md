@@ -262,21 +262,24 @@ bin/rails runner 'puts I18n.t("avo").select { |_, v| v.is_a?(String) }.keys.sort
 
 Don't reach for `bin/rails generate avo:locales` just to look — it copies Avo's locale files into `config/locales`, pinning today's wording into the app. Run it only when editable copies are actually wanted. Full rule and the worked collision: https://docs.avohq.io/4.0/i18n.md#safe-keys
 
-### Add-on gems ship English only
+### Add-on gems mostly ship English only
 
-The locale generator covers Avo core. Each add-on keeps its strings under its own namespace inside `avo.*` and ships **English only** — every other language is the app's to supply, in a file per gem or one file carrying all of them (they deep-merge into the same tree).
+The locale generator covers Avo core. Each add-on keeps its strings under its own namespace inside `avo.*`, and **most ship English only** — every other language is the app's to supply, in a file per gem or one file carrying all of them (they deep-merge into the same tree). A gem that ships more says so on its own Localization page.
 
-| Gem | Namespace |
-| --- | --- |
-| Advanced Search | `avo.global_search.*` |
-| Collaboration | `avo.collaboration.*` |
-| Dashboards & Cards | `avo.cards.*` |
-| Dynamic Filters | `avo.dynamic_filters.*` |
-| Forms & Pages | `avo.forms.*` |
-| Intelligence | `avo.intelligence.*` |
-| Scopes | `avo.scopes.*` |
+| Gem | Namespace | Ships |
+| --- | --- | --- |
+| Advanced Search | `avo.global_search.*` | nothing — core covers it |
+| Collaboration | `avo.collaboration.*` | English only |
+| Dashboards & Cards | `avo.cards.*` | English only |
+| Dynamic Filters | `avo.dynamic_filters.*` | English only |
+| Forms & Pages | `avo.forms.*` | English only |
+| Intelligence | `avo.intelligence.*` | English only |
+| REST API | `avo.api.token.*` | every locale core ships |
+| Scopes | `avo.scopes.*` | English only |
 
 Advanced Search is the exception that needs no locale file: everything it renders is under `avo.global_search.*` or is `avo.all`, and core translates all of them in each bundled locale. Four of those — `avo.global_search.direct_match`, `.search_results`, `.searching_on` and `avo.all` — only reached core's locale files **after 4.1.6**; on `4.1.6` and earlier they fall back to English, so define them in the app's own locale file until it's on a newer Avo.
+
+`avo-api` is the other end of the range: it ships its own tree in every locale core does, so the API tokens panel is translated with no work from the app.
 
 ## Key options
 
