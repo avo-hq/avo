@@ -252,7 +252,7 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
 ## Gotchas
 
 - **`query` is always an array.** Even a single-record action gets `[record]`. Use `query.first` for the one-record case; don't call record methods on `query` directly. `records` is an alias.
-- **Records deleted after selection are omitted.** Another user may delete a checked record before the action request arrives. Avo drops that missing record and still passes every surviving selection to `handle`; action authors do not need to rescue `ActiveRecord::RecordNotFound` for this race.
+- **Records deleted after selection are omitted.** Another user may delete a checked record before the action request arrives. Avo drops that missing record and still passes every surviving selection to `handle`; action authors do not need to rescue `ActiveRecord::RecordNotFound` for this race. `query` can therefore come back **empty** when every selected record is gone — guard with `return error "No record selected" if query.blank?` if that matters.
 - **"My action doesn't show up" is usually the policy.** With Pundit, `act_on?` in the resource's policy gates action visibility (and `authorize` on the action gates it further). Check the policy first. See the **`avo-authorization`** skill.
 - **The modal is a NEW request.** Params from the Index/Show page that opened it are **not** available in `fields`/`handle`. To prefill from the triggering page, parse `request.referer`:
   ```ruby

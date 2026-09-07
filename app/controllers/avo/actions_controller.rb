@@ -80,6 +80,12 @@ module Avo
       else
         []
       end
+    # A record may be deleted between the moment it was checked on the index and
+    # the moment the action is submitted, and the bulk lookup above raises for the
+    # whole batch when that happens. Fall back to the resource's own per-record
+    # lookup so custom `find_record_method`s and FriendlyId keep working, and drop
+    # only the records that are really gone. This is O(n) queries on purpose: it
+    # runs only on the race, never on the happy path.
     rescue ActiveRecord::RecordNotFound
       ids.filter_map do |id|
         @resource.find_record(id, params: params)

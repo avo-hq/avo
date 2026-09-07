@@ -260,7 +260,7 @@ Search (`self.search`), grid/map view types, record reordering, and i18n live on
 - **Two resources, one model → wrong one wins.** Avo resolves the default alphabetically. Set `config.model_resource_mapping` and/or `use_resource:` on associations.
 - **Secondary / namespaced / oddly-named resources need `self.model_class`** (or the matching namespace) or Avo can't infer the model. Namespaced resources whose namespace matches the model's namespace infer automatically.
 - **Array resources are Beta:** no sorting, and `records` re-runs every request. Cache inside `records` for large sets, or move to an HTTP Resource.
-- **`find_record_method` in batch contexts:** `id` arrives as an Array for bulk actions — return a collection (`query.where(...)`) in that branch, not a single record.
+- **`find_record_method` in batch contexts:** `id` arrives as an Array for bulk actions — return a collection (`query.where(...)`) in that branch, not a single record. If that branch raises `ActiveRecord::RecordNotFound` (as `query.find(id)` does when one record was deleted between selection and submit), Avo retries the **scalar** branch once per id and drops the ones that are gone — so keep the scalar branch able to handle every id the array branch receives.
 - **`visible_on_sidebar` only affects the auto-generated menu.** If the app uses the menu editor, control visibility in its `visible` block instead.
 - **Don't re-invent fields/associations here.** Field DSL is the avo-fields skill; `belongs_to`/`has_many`/`use_resource` is avo-associations.
 - **Verify before writing.** Option names drift between versions — check the docs URLs above or the app's installed Avo source rather than trusting memory.
