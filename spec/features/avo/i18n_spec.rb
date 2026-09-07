@@ -120,6 +120,17 @@ RSpec.feature "i18n", type: :feature do
       expect(find(".header__description")).to have_text "Manage the API product catalog"
     end
 
+    it "prefers the translated description over the one set on the resource" do
+      I18n.backend.store_translations(
+        :en,
+        avo: {resource_translations: {person: {description: "API people, translated"}}}
+      )
+
+      visit avo.resources_people_path
+
+      expect(find_all(".header__description").first).to have_text "API people, translated"
+    end
+
     it "uses translated resource names verbatim" do
       expect(Avo::Resources::Product.name).to eq "API Product"
       expect(Avo::Resources::Product.plural_name).to eq "API Products"

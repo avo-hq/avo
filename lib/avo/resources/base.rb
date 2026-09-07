@@ -730,9 +730,10 @@ module Avo
       end
 
       def description(additional_attributes = {})
-        return super unless @description.nil? && self.class.description.nil?
+        translated = t("#{translation_key}.description", default: nil)
+        return translated if translated.present?
 
-        I18n.t("#{translation_key}.description", default: nil)
+        super
       end
 
       def entity_loader(entity)
