@@ -156,6 +156,9 @@ class Avo::Resources::Team < Avo::BaseResource
     end
 
     if params[:show_missing_association_field] == "1"
+      # Example for error message when the model association is missing. Team
+      # has no `has_many :ghosts`; `use_resource` keeps the resource lookup
+      # happy so the missing *association* is what raises, not the resource.
       field :ghosts, as: :has_many, use_resource: Avo::Resources::User
     end
   end

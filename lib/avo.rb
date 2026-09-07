@@ -108,7 +108,8 @@ module Avo
       macro = field.type.to_s
       super(
         "Failed to find the :#{association_name} association on #{model_class} while rendering the :#{field.id} field.\n" \
-        "Define `#{macro} :#{association_name}` on #{model_class}, or update the Avo field to use an association that exists."
+        "Define `#{macro} :#{association_name}` on #{model_class}, or update the Avo field to use an association that exists.\n" \
+        "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/associations.html."
       )
     end
   end
