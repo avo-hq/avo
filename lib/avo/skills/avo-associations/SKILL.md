@@ -160,7 +160,7 @@ Turning a long `belongs_to` / `has_many` picker into a type-to-search field is t
 ## Gotchas
 
 - **Set `inverse_of` on the model association.** Avo relies on it to resolve the reciprocal; missing it causes wrong/empty attach lists and save bugs. Set it on both sides.
-- **The Rails association must exist first.** Adding `field :x, as: :has_many` does nothing if the model has no `has_many :x`.
+- **The Rails association must exist first.** Adding `field :x, as: :has_many` does nothing if the model has no `has_many :x` — the association frame raises `Avo::MissingAssociationError`, naming the model, the field, and the declaration to add (`has_many :orders`).
 - **`has_*` fields are hidden on Edit by default.** Add `show_on: :edit` to surface them on the form. For editing the related record *in* the form (not just displaying it), use `nested` — which needs the `avo-nested` gem.
 - **Attach/detach/create/destroy buttons come from the *target* resource's Pundit policy**, and the method names are **plural, matching the association name**: `attach_users?`, `detach_users?`, `create_users?`, `destroy_users?`, `view_users?`, `show_users?` — *not* the singular `detach_user?`. This is the #1 "why isn't my button showing" cause. Cross-link `avo-authorization`.
 - **`can_create: true` is still vetoed by the policy.** If the target resource's `create?` returns `false`, no create link appears regardless of `can_create`.
