@@ -77,7 +77,7 @@ es:
         description: "Los usuarios de la aplicación"
 ```
 
-`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class.
+`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class. **One sharp edge:** the translation replaces that attribute wholesale, block and all — a resolved key returns before the block is ever evaluated. So don't add this key for a resource whose `self.description` is a block reading `record` or `view`; a static string would silently take its place.
 
 Omit `self.translation_key` and Avo derives it from the class name, **namespace included** — `Avo::Resources::Galaxy::Planet` defaults to `avo.resource_translations.galaxy/planet`. So for a plain resource you often only need the YAML, no Ruby change.
 
@@ -295,6 +295,7 @@ Advanced Search is the other exception that needs no locale file: everything it 
 | `avo.field_translations.<f>` | YAML | Shared field label + `help`/`placeholder`/`include_blank` siblings across all resources. |
 | `avo.resource_translations.<r>.tabs.<t>` | YAML | Tab title, keyed on the parameterized `title:`. Pin a different key with `translation_key:` on the `tab`. |
 | `avo.resource_translations.<r>.panels.<p>` | YAML | Panel title, same convention as tabs; `translation_key:` on the `panel` overrides it. |
+| `avo.resource_translations.<r>.description` | YAML | Resource panel description; beats `self.description`. Replaces the attribute wholesale — don't set it where `self.description` is a block reading `record`/`view`. |
 | `avo.resource_translations.<r>.save` | YAML | Per-resource Save-button text (else global `avo.save`). |
 | `avo.scope_translations.<s>` | YAML | Scope `name`/`description`. Root derived by `avo-scopes`. |
 | `avo.card_translations.<c>` | YAML | Card `label`/`description`/`discreet_description`. Root derived by `avo-dashboards`. |
