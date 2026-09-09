@@ -19,6 +19,14 @@
       } catch (e) {}
     }
 
+    // Same deal for the appearance sound preference, so the switcher's Sound
+    // row paints with the right button already active.
+    try {
+      if (localStorage.getItem('avo:appearance:muted') === '1') {
+        root.classList.add('appearance-muted');
+      }
+    } catch (e) {}
+
     if (appearance.persistence !== 'database') {
       function getCookie(name) {
         var value = '; ' + document.cookie;

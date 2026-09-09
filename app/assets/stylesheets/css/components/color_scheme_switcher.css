@@ -133,6 +133,18 @@
   @apply bg-primary text-content shadow-sm;
 }
 
+/* Inline pill: only the button matching the current mute state is rendered. */
+:root.appearance-muted .color-scheme-switcher__button--sound-on,
+:root:not(.appearance-muted) .color-scheme-switcher__button--sound-off {
+  @apply hidden;
+}
+
+/* Sound buttons - active state mirrors :root.appearance-muted. */
+:root:not(.appearance-muted) .color-scheme-switcher__scheme-button[data-sound="on"],
+:root.appearance-muted .color-scheme-switcher__scheme-button[data-sound="off"] {
+  @apply bg-primary text-content shadow-sm;
+}
+
 .color-scheme-switcher__scheme-label {
   @apply text-xs font-medium leading-none;
 }

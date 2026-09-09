@@ -2,6 +2,9 @@ import { Controller } from '@hotwired/stimulus'
 import { patch } from '@rails/request.js'
 import Cookies from 'js-cookie'
 
+// 2 ** (-5 / 12) — the interval between an explicit pick and the default one.
+const FIVE_SEMITONES_DOWN = 0.7492
+
 export default class extends Controller {
   static targets = ['button', 'accentOption', 'themeLabel', 'themeOption']
 
@@ -67,6 +70,7 @@ export default class extends Controller {
     this.currentSchemeValue = scheme
     this.persistPreferences('scheme')
     this.applyScheme()
+    this.playPickSound(this.currentSchemeValue === 'auto')
   }
 
   setTheme(event) {
@@ -83,6 +87,7 @@ export default class extends Controller {
     this.applyTheme()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
+    this.playPickSound(this.currentThemeValue === 'brand')
   }
 
   previewTheme(event) {
@@ -110,6 +115,7 @@ export default class extends Controller {
     this.currentAccentValue = accent
     this.persistPreferences('accent')
     this.applyAccent()
+    this.playPickSound(this.currentAccentValue === 'brand')
   }
 
   previewAccent(event) {
@@ -132,6 +138,7 @@ export default class extends Controller {
     this.currentSchemeValue = this.nextValue(['auto', 'light', 'dark'], this.currentSchemeValue)
     this.persistPreferences('scheme')
     this.applyScheme()
+    this.playPickSound(this.currentSchemeValue === 'auto')
   }
 
   cycleNeutral() {
@@ -143,6 +150,7 @@ export default class extends Controller {
     this.applyTheme()
     this.updateThemeLabel()
     this.updateActiveThemeOption()
+    this.playPickSound(this.currentThemeValue === 'brand')
   }
 
   cycleAccent() {
@@ -153,6 +161,7 @@ export default class extends Controller {
     this.persistPreferences('accent')
     this.applyAccent()
     this.updateActiveAccentOption()
+    this.playPickSound(this.currentAccentValue === 'brand')
   }
 
   nextValue(list, current) {
@@ -232,6 +241,26 @@ export default class extends Controller {
       default:
         return null
     }
+  }
+
+  // Picking the neutral default ("auto" scheme, "brand" neutral/accent) drops the
+  // sample five semitones, any other pick plays it as recorded. Only fires on an
+  // explicit user pick — not on hover previews, nor when the system flips the
+  // scheme under "auto".
+  playPickSound(isDefault) {
+    if (document.documentElement.classList.contains('appearance-muted')) return
+
+    const src = window.Avo?.configuration?.sounds?.mid
+    if (!src) return
+
+    const audio = new Audio(src)
+    audio.volume = 0.4
+    // preservesPitch defaults to true, which time-stretches instead of
+    // transposing. Turning it off makes playbackRate a plain resample.
+    audio.preservesPitch = false
+    audio.playbackRate = isDefault ? FIVE_SEMITONES_DOWN : 1
+    // Autoplay policies reject before the first user gesture; nothing to do about it.
+    audio.play().catch(() => {})
   }
 
   applyScheme() {
@@ -328,6 +357,30 @@ export default class extends Controller {
     const labels = this.hasThemeLabelsValue ? this.themeLabelsValue : {}
     const label = labels[theme] || theme.charAt(0).toUpperCase() + theme.slice(1)
     this.themeLabelTarget.textContent = label
+  }
+
+  // Same shape as setKeyBadges: the preference rides on <html> so CSS can drive
+  // the active state and it survives Turbo navigations, and it lives in
+  // localStorage because it's per-client rather than per-account.
+  setSound(event) {
+    event.preventDefault()
+    const { sound } = event.currentTarget.dataset
+    if (sound !== 'on' && sound !== 'off') return
+
+    const muted = sound === 'off'
+    document.documentElement.classList.toggle('appearance-muted', muted)
+    try {
+      if (muted) {
+        localStorage.setItem('avo:appearance:muted', '1')
+      } else {
+        localStorage.removeItem('avo:appearance:muted')
+      }
+    } catch (e) {
+      // localStorage unavailable (private browsing) — toggle works for the current session only
+    }
+
+    // Confirm unmuting with the sound itself; muting stays quiet.
+    if (!muted) this.playPickSound(false)
   }
 
   // Mirrors the Shift+K hotkey in global_hotkeys.js. CSS handles the active
