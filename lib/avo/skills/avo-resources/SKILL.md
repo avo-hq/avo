@@ -119,7 +119,7 @@ class Avo::Resources::User < Avo::BaseResource
 end
 ```
 
-Avo also resolves `description` below the resource's translation key — `avo.resource_translations.user.description` supplies the User resource description. Per the cascade, the locale file **wins** and `self.description` is the fallback, so an app can keep an English default in code and translate over it — **avo-i18n**.
+Avo also resolves `description` below the resource's translation key — `avo.resource_translations.user.description` supplies the User resource description. Per the cascade, the locale file **wins** and `self.description` is the fallback, so an app can keep an English default in code and translate over it — **avo-i18n**. The translation replaces the attribute wholesale, so don't add the key for a resource whose `self.description` is a block reading `record` or `view`; a static string would take its place.
 
 - `self.description` is rendered as **raw HTML** — never feed it user-editable data (stored-XSS risk). A block gets `record`, `resource`, `view`, `current_user`, `params`.
 - `self.color` takes a Symbol or String from Avo's palette — `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`. It tints the icon **stroke only** (label and hover/active backgrounds stay neutral), adapts to light and dark themes, and an unknown name silently renders the neutral icon. The tint follows the resource to its breadcrumb initials chip and, with Advanced Search installed, to the resource group headers in global search results. A `color:` on the menu entry overrides it.
