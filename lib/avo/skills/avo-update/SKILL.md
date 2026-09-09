@@ -88,13 +88,13 @@ If a gem didn't move as far as expected, the Gemfile constraint from step 2 is c
 
 Fetch the upgrade guide for the major version you're on (4.x → `upgrade.md`; a jump still inside 3.x → the 3.0 page; **3.x → 4.x → stop and use the Avo 3 → Avo 4 guide instead**, that's a much bigger, chapter-by-chapter job with its own procedure).
 
-Guide sections are headed by version (`## Upgrade to 3.22.0`, `## Upgrade from 3.16.2 to 3.16.3`) or by the change itself when a version only shipped one. Some are per-add-on, naming the gem and its version (an "Upgrade to avo-dashboards 4.0.9" heading), and they're interleaved with core's sections in version order rather than grouped at the end. A version section may hold **several named changes**, each with its own "Action required" note — work them all, not just the first. A `## Unreleased — …` section at the very top describes changes that have landed on `main` but aren't in a released gem yet; skip it unless the app tracks Avo from git. Newest is at the top — **read up, then apply down.**
+Guide sections are headed by version (`## Upgrade to 3.22.0`, `## Upgrade from 3.16.2 to 3.16.3`) or by the change itself when a version only shipped one. Some are per-add-on, naming the gem and its version (an "Upgrade to avo-dashboards 4.0.9" heading), and they're interleaved with core's sections in version order rather than grouped at the end. A **core** version heading can also carry an add-on's breaking changes — `## Upgrade to 4.2.0` is entirely about `avo-api` — so don't skip a core section on the grounds that core barely moved, and don't apply one just because core crossed that version: check which gem each named change is actually about. A version section may hold **several named changes**, each with its own "Action required" note — work them all, not just the first. A `## Unreleased — …` section at the very top describes changes that have landed on `main` but aren't in a released gem yet; skip it unless the app tracks Avo from git. Newest is at the top — **read up, then apply down.**
 
 For each section between your before and after versions:
 
 1. **Inventory first.** Grep for the API the section touches *before* changing anything — and where the section is about how a label or key resolves, grep `config/locales` too, since the trigger can be a key the app already defines rather than anything in its Ruby. Most sections won't apply to a given app.
 2. Mark it **APPLIES / NOT USED / NEEDS REVIEW** in the log. Never apply a change for an API the app doesn't use.
-3. If it applies, make the edit, then boot the app and re-run the tests.
+3. If it applies, make the edit, then boot the app and re-run the tests. A section may call for a **generator and a migration** rather than a code edit — run exactly the generator it names (an add-on's `install` generator usually regenerates and offers to overwrite files the app has customized, which the narrower upgrade generator leaves alone), then `rails db:migrate`.
 4. Commit per section, with the version in the message.
 
 Sections often link a deeper page (i18n, appearance, actions) — fetch and follow it rather than guessing the new API.
