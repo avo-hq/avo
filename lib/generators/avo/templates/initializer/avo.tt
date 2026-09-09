@@ -150,7 +150,7 @@ Avo.configure do |config|
   # config.density = :normal # :tight, :normal, :relaxed
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
-  # config.use_browser_timezone = true # set false to render dates/times in the app's configured zone for everyone; off automatically in the test environment
+  # config.use_browser_timezone = true # render dates/times in each visitor's zone; display only, your code keeps config.timezone. Set false to render the app's configured zone for everyone; off automatically in the test environment
   # config.currency = 'USD'
   # config.hide_layout_when_printing = false
   # config.container_width = :lg # :full, :lg, :md, or :sm. Hash for per-view: { index: :full, single: :md }
