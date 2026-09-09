@@ -94,7 +94,7 @@ For each section between your before and after versions:
 
 1. **Inventory first.** Grep for the API the section touches *before* changing anything — and where the section is about how a label or key resolves, grep `config/locales` too, since the trigger can be a key the app already defines rather than anything in its Ruby. Most sections won't apply to a given app.
 2. Mark it **APPLIES / NOT USED / NEEDS REVIEW** in the log. Never apply a change for an API the app doesn't use.
-3. If it applies, make the edit, then boot the app and re-run the tests.
+3. If it applies, make the change, then boot the app and re-run the tests. **Not every section is a code edit** — some ship a new table and tell you to run a generator and `rails db:migrate`. Run exactly the command the section names: a gem's `install` generator usually pulls in more than the upgrade needs and offers to overwrite files the app has customized, while the narrower generator the section points at leaves them alone.
 4. Commit per section, with the version in the message.
 
 Sections often link a deeper page (i18n, appearance, actions) — fetch and follow it rather than guessing the new API.
