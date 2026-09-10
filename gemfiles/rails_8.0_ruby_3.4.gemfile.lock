@@ -135,8 +135,8 @@ GEM
     avo-record_link_field (0.0.2)
     avo-rhino_field (4.1.0)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1283.0)
-    aws-sdk-core (3.254.1)
+    aws-partitions (1.1284.0)
+    aws-sdk-core (3.255.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -144,11 +144,12 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.130.0)
-      aws-sdk-core (~> 3, >= 3.254.0)
+      rexml (~> 3.4, >= 3.4.2)
+    aws-sdk-kms (1.131.0)
+      aws-sdk-core (~> 3, >= 3.255.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.229.0)
-      aws-sdk-core (~> 3, >= 3.254.1)
+    aws-sdk-s3 (1.231.0)
+      aws-sdk-core (~> 3, >= 3.255.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -177,7 +178,7 @@ GEM
       smart_properties
     bigdecimal (4.1.2)
     bindex (0.8.1)
-    bootsnap (1.25.0)
+    bootsnap (1.26.0)
       msgpack (~> 1.5)
     builder (3.3.0)
     bump (0.10.0)
@@ -221,15 +222,16 @@ GEM
       bigdecimal
       rexml
     crass (1.0.7)
-    css_parser (3.0.0)
+    css_parser (3.1.0)
       addressable
+      base64
       ssrf_filter (~> 1.5)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
     csv (3.3.6)
-    cuprite (0.17)
+    cuprite (0.18)
       capybara (~> 3.0)
-      ferrum (~> 0.17.0)
+      ferrum (~> 0.18.0)
     danger (9.6.1)
       base64 (~> 0.2)
       claide (~> 1.0)
@@ -339,11 +341,10 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.4)
       net-http (~> 0.5)
-    ferrum (0.17.2)
+    ferrum (0.18.0)
       addressable (~> 2.5)
       base64 (~> 0.2)
       concurrent-ruby (~> 1.1)
-      webrick (~> 1.7)
       websocket-driver (~> 0.7)
     ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
@@ -371,7 +372,7 @@ GEM
     gem-release (2.2.4)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
-    git (5.2.0)
+    git (5.4.1)
       activesupport (>= 5.0)
       addressable (~> 2.8)
       process_executer (~> 4.1)
@@ -500,7 +501,7 @@ GEM
     nap (1.1.0)
     net-http (0.9.1)
       uri (>= 0.11.1)
-    net-imap (0.6.6)
+    net-imap (0.6.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -539,7 +540,7 @@ GEM
       json
       uri
       yaml
-    parallel (2.1.0)
+    parallel (2.2.0)
     parallel_tests (5.7.0)
       parallel
     parser (3.3.12.0)
@@ -742,14 +743,14 @@ GEM
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
     securerandom (0.4.1)
-    selenium-webdriver (4.48.0)
+    selenium-webdriver (4.49.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
     sexp_processor (4.17.5)
-    simplecov (1.1.1)
+    simplecov (1.2.0)
     simplecov-cobertura (4.0.0)
       rexml
       simplecov (~> 1.0)
@@ -784,7 +785,7 @@ GEM
     spring (4.7.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
-    ssrf_filter (1.5.0)
+    ssrf_filter (1.6.0)
     standard (1.56.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -842,7 +843,6 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webrick (1.9.2)
     websocket (1.2.11)
     websocket-driver (0.8.2)
       base64
