@@ -84,6 +84,7 @@ grep -rn "explicit_authorization" "$(bundle show avo)/lib"
 | `No valid predicate for combinator` when filtering | `config.ignore_unknown_conditions` is `false` | [↓](#no-valid-predicate-for-combinator-when-filtering) |
 | `undefined method 'xxx_path'` inside an Avo block | Avo is a Rails engine — needs `main_app.` prefix | [↓](#url-helpers-blow-up-inside-avo-blocks) |
 | Index search box does nothing — the unfiltered rows stay | `self.search[:query]` returns an Array; the index needs a relation | [↓](#the-index-search-box-silently-does-nothing) |
+| Custom JS loads but its Stimulus controllers never register | On `4.2.2` only: the gem packaged its own `avo.custom.js` and won that Sprockets logical path | [↓](#custom-javascript-loads-but-never-runs) |
 | License won't validate / status page errors | Key not set on the server; check the status page | [↓](#license-wont-validate) |
 | Tests fail after adding/upgrading Avo (`WebMock::NetConnectNotAllowedError`) | v4's outbound license check to `clerk-*.avohq.io` is blocked | [↓](#tests-fail-after-adding-or-upgrading-avo) |
 | `bundle install` can't fetch `avo-*` / 401 / 403 | packager.dev token not seen by Bundler, or a blocked host in sandboxes | [↓](#bundle-install-cant-fetch-avo--gems) |
@@ -203,6 +204,22 @@ self.search = {
 ```
 
 → `search-api.html#custom-search-providers`
+
+### Custom JavaScript loads but never runs
+
+The app's own `avo.custom.js` is in the page source and returns 200, but the Stimulus controllers it registers never fire. Nothing raises and the log is clean — the served file simply isn't the app's.
+
+**Check the version before reading any of the app's code:**
+
+```bash
+bundle info avo | head -1
+```
+
+`4.2.2` — and only that release — packaged an `avo.custom.js` of its own by mistake. Sprockets keys assets by logical path, an engine's builds directory shares a load path with the host's, and Avo's manifest compiles after the app's, so `javascript_include_tag "avo.custom"` served the gem's file instead of the app's. `bundle update avo` to `4.2.3` or later; nothing in the app needs changing, and `4.2.1` is unaffected.
+
+On any other version this isn't the cause — check that the entrypoint is loaded from the ejected `_head.html.erb` (or `_pre_head.html.erb`) and, with `javascript_include_tag`, that it passes `defer: true` so it runs in the same order as Avo's own scripts.
+
+→ `upgrade.html#skip-version-4-2-2`, `asset-handling.html`
 
 ### License won't validate
 
