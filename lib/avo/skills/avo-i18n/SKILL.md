@@ -77,7 +77,7 @@ es:
         description: "Los usuarios de la aplicación"
 ```
 
-`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class.
+`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class — **including when `self.description` is a block**. A resolved key returns before the block is evaluated, so a description computed from `record` or `view` is silently replaced by the static string, with nothing in the logs. Don't add the key for a resource whose description has to be computed.
 
 Omit `self.translation_key` and Avo derives it from the class name, **namespace included** — `Avo::Resources::Galaxy::Planet` defaults to `avo.resource_translations.galaxy/planet`. So for a plain resource you often only need the YAML, no Ruby change.
 
