@@ -34,8 +34,9 @@ tr:
       dark_tooltip: Koyu mod
       hide: Gizle
       light: Açık
+      light_and_dark: Açık ve koyu
       light_tooltip: Açık mod
-      neutrals: Tema
+      neutrals: Nötr
       neutrals_list:
         brand: Marka
         gray: Gri
@@ -53,6 +54,8 @@ tr:
       shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle
       shortcut_badges_show_tooltip: Klavye kısayolu rozetlerini göster
       show: Göster
+      theme_picker: Tema seç
+      themes: Temalar
       title: Görünüm
     applied:
       one: uygulandı

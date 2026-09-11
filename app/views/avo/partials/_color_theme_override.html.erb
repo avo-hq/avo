@@ -27,37 +27,60 @@
         return null;
       }
 
-      if (!appearance.neutralLocked) {
-        var theme = getCookie('theme');
-        if (theme && theme !== 'brand') {
-          Array.from(root.classList).forEach(function(cls) {
-            if (cls.indexOf('neutral-theme-') === 0) root.classList.remove(cls);
-          });
-          root.classList.add('neutral-theme-' + theme);
+      function removePrefixed(prefix) {
+        Array.from(root.classList).forEach(function(cls) {
+          if (cls.indexOf(prefix) === 0) root.classList.remove(cls);
+        });
+      }
+
+      function setScheme(scheme) {
+        root.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
+        root.classList.add('scheme-' + scheme);
+        if (scheme === 'dark') {
+          root.classList.add('dark');
+        } else if (scheme === 'light') {
+          root.classList.remove('dark');
         }
       }
 
-      if (!appearance.accentLocked) {
+      // The theme comes first: its locks decide whether the other cookies
+      // apply at all, and a theme that owns a dimension forces it.
+      var theme = appearance.theme || null;
+      if (!appearance.themeLocked) {
+        var pickedTheme = getCookie((Avo.configuration.cookies_key || 'avo') + '.theme');
+        if (pickedTheme && (appearance.themes || []).indexOf(pickedTheme) !== -1) {
+          theme = pickedTheme;
+          removePrefixed('avo-theme-');
+          root.classList.add('avo-theme-' + theme);
+        }
+      }
+      var locks = (theme && appearance.themeLocks && appearance.themeLocks[theme]) || [];
+
+      if (locks.indexOf('neutral') !== -1) {
+        removePrefixed('neutral-theme-');
+      } else if (!appearance.neutralLocked) {
+        var neutral = getCookie('theme');
+        if (neutral && neutral !== 'brand') {
+          removePrefixed('neutral-theme-');
+          root.classList.add('neutral-theme-' + neutral);
+        }
+      }
+
+      if (locks.indexOf('accent') !== -1) {
+        removePrefixed('accent-theme-');
+      } else if (!appearance.accentLocked) {
         var accent = getCookie('accent_color');
         if (accent && accent !== 'brand') {
-          Array.from(root.classList).forEach(function(cls) {
-            if (cls.indexOf('accent-theme-') === 0) root.classList.remove(cls);
-          });
+          removePrefixed('accent-theme-');
           root.classList.add('accent-theme-' + accent);
         }
       }
 
-      if (!appearance.schemeLocked) {
+      if (locks.indexOf('scheme') !== -1) {
+        setScheme((appearance.themeSchemes && appearance.themeSchemes[theme]) || 'light');
+      } else if (!appearance.schemeLocked) {
         var scheme = getCookie('color_scheme');
-        if (scheme) {
-          root.classList.remove('scheme-light', 'scheme-dark', 'scheme-auto');
-          root.classList.add('scheme-' + scheme);
-          if (scheme === 'dark') {
-            root.classList.add('dark');
-          } else if (scheme === 'light') {
-            root.classList.remove('dark');
-          }
-        }
+        if (scheme) setScheme(scheme);
       }
     }
 

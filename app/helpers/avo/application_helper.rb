@@ -203,7 +203,7 @@ module Avo
     end
 
     def chart_color(index)
-      colors = Avo.configuration.appearance.chart_colors
+      colors = current_appearance.chart_colors
       colors[index % colors.length]
     end
 
@@ -323,6 +323,45 @@ module Avo
       width unless width == SIDEBAR_WIDTH_DEFAULT
     end
 
+    # The active theme class (an Avo::BaseTheme subclass), resolved like the
+    # other appearance dimensions: lock, then the user's pick (database settings
+    # or the `avo.theme` cookie), then the configured default, then the first
+    # offered theme. A pick is honored only when it names a theme that is both
+    # installed and offered — the cookie is user-controlled input, and that
+    # whitelist is the whole validation (same trust boundary as sidebar_width).
+    def current_theme
+      return @current_theme if defined?(@current_theme)
+
+      appearance = Avo.configuration.appearance
+      manager = Avo.theme_manager
+
+      @current_theme = if appearance.theme_locked?
+        manager.find(appearance.theme) || manager.default
+      else
+        picked = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:theme) : cookies["#{Avo::COOKIES_KEY}.theme"]
+        picked = picked.to_s
+        theme = manager.find(picked) if picked.match?(Avo::BaseTheme::ID_FORMAT) && manager.offered?(picked)
+        theme || manager.default
+      end
+    end
+
+    # The user's own scheme, neutral, and accent picks, resolved without the
+    # active theme's locks (host lock, then pick, then configured default).
+    # The appearance controller keeps these so that switching from a theme
+    # that owns its palette back to one that does not restores the user's
+    # picks instead of the theme's forced values.
+    def appearance_picks
+      {scheme: picked_scheme, neutral: picked_neutral, accent: picked_accent}
+    end
+
+    # The appearance the views render: `config.appearance` with the active
+    # theme's brand assets (logo, favicon, placeholder, chart colors) laid over
+    # it. Everything else on the appearance object is untouched, so callers
+    # that only need policy keep reading Avo.configuration.appearance.
+    def current_appearance
+      @current_appearance ||= Avo::Configuration::ThemedAppearance.new(Avo.configuration.appearance, current_theme&.appearance || {})
+    end
+
     private
 
     # The signed_id is what Active Storage uses to locate the blob; the filename
@@ -359,6 +398,7 @@ module Avo
 
     def html_theme_classes
       classes = []
+      classes << current_theme.css_class if current_theme
       classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
       classes << "accent-theme-#{current_accent}" if current_accent != "brand"
 
@@ -403,7 +443,28 @@ module Avo
       value.to_i.clamp(SIDEBAR_WIDTH_MIN, SIDEBAR_WIDTH_MAX)
     end
 
+    # The three dimensions resolve the same way: the active theme's lock (its
+    # stylesheet owns that dimension, so a stale pick must not leak in), then
+    # the host's lock, then the user's pick, then the configured default.
     def current_neutral
+      return "brand" if current_theme&.locks?(:neutral)
+
+      picked_neutral
+    end
+
+    def current_accent
+      return "brand" if current_theme&.locks?(:accent)
+
+      picked_accent
+    end
+
+    def current_scheme
+      return current_theme.scheme.to_s if current_theme&.forces_scheme?
+
+      picked_scheme
+    end
+
+    def picked_neutral
       appearance = Avo.configuration.appearance
       return appearance.neutral&.to_s || "brand" if appearance.neutral_locked?
 
@@ -411,7 +472,7 @@ module Avo
       value.presence || appearance.neutral&.to_s || "brand"
     end
 
-    def current_accent
+    def picked_accent
       appearance = Avo.configuration.appearance
       return appearance.accent&.to_s || "brand" if appearance.accent_locked?
 
@@ -419,7 +480,7 @@ module Avo
       value.presence || appearance.accent&.to_s || "brand"
     end
 
-    def current_scheme
+    def picked_scheme
       appearance = Avo.configuration.appearance
       return appearance.scheme.to_s if appearance.scheme_locked?
 
