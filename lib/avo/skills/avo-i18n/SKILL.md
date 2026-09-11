@@ -77,7 +77,7 @@ es:
         description: "Los usuarios de la aplicación"
 ```
 
-`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class.
+`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class. The one sharp edge: if `self.description` is a block that reads `record` or `view`, don't add this key for that resource — the translation replaces the block wholesale, including whatever per-record content it was computing.
 
 Omit `self.translation_key` and Avo derives it from the class name, **namespace included** — `Avo::Resources::Galaxy::Planet` defaults to `avo.resource_translations.galaxy/planet`. So for a plain resource you often only need the YAML, no Ruby change.
 
@@ -277,9 +277,12 @@ The locale generator covers Avo core. Each add-on keeps its strings under its ow
 | Dynamic Filters | `avo.dynamic_filters.*` |
 | Forms & Pages | `avo.forms.*` |
 | Intelligence | `avo.intelligence.*` |
+| REST API | `avo.api.token.*` |
 | Scopes | `avo.scopes.*` |
 
 Advanced Search is the exception that needs no locale file: everything it renders is under `avo.global_search.*` or is `avo.all`, and core translates all of them in each bundled locale. Four of those — `avo.global_search.direct_match`, `.search_results`, `.searching_on` and `avo.all` — only reached core's locale files **after 4.1.6**; on `4.1.6` and earlier they fall back to English, so define them in the app's own locale file until it's on a newer Avo.
+
+REST API is the second exception: `avo-api` ships its `avo.api.token.*` tree translated in every locale core does, so the token panel needs no locale file from the app either.
 
 ## Key options
 
@@ -306,6 +309,7 @@ Advanced Search is the exception that needs no locale file: everything it render
 - **Locale files ship inside the gem — not copied on install.** To edit Avo's own strings or add a language, run `bin/rails g avo:locales` first. For custom labels you only need your own keys under `avo:`; the generator is optional.
 - **Explicit `translation_key:` on a field bypasses the cascade.** You lose the resource-scoped → shared → humanized fallback and the automatic `help`/`placeholder`/`include_blank` sibling lookup. Only pin a key when you want exactly that key.
 - **Default keys include the namespace.** `Avo::Resources::Galaxy::Planet` → `avo.resource_translations.galaxy/planet`; `Avo::Actions::City::Update` → `avo.action_translations.city/update` (underscored, slash-joined). Match that path in YAML or the lookup misses and you fall back to the humanized name.
+- **A resource description key clobbers a `record`/`view`-reading block.** `avo.resource_translations.<r>.description` beats `self.description` on the class, same as everywhere else in the cascade — but a block computing per-record text has nothing left to run once the key resolves. Skip the key for that resource.
 - **Pluralization keys are required to get a translated name.** Resource/field name lookups run `I18n.t(key, count:, default:)`, so provide `one`/`other` (and `zero` where relevant). A subtree holding no plural key at all raises `I18n::InvalidPluralizationData` — passing `default:` does **not** prevent it — but Avo rescues that and falls back to the humanized name. So a resource key holding only `save:` works fine; you just don't get a translated resource name out of it. Keep `one:`/`other:` beside the nested keys when you want both. Code of your own reading these keys with a `count:` has to add the plural keys or rescue the exception itself.
 - **Nesting under a path Avo holds as a string destroys that string.** The tree deep-merges per locale and the app's `config/locales` loads last, so `avo.dashboards.my_dashboard.name` turns the sidebar's "Dashboards" heading into a Hash and it stops rendering — silently. Use the derived root instead (`avo.dashboard_translations.my_dashboard.name`), and check `I18n.t("avo")` for strings before inventing a namespace.
 - **`set_locale` is global and sticky.** It mutates `Avo.configuration.locale` and persists until the server restarts, affecting all users — it is not a per-user preference. Use `force_locale` for a scoped, reversible switch (it rides along in every link until removed).
