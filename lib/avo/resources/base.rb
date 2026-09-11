@@ -729,6 +729,13 @@ module Avo
         }
       end
 
+      def description(additional_attributes = {})
+        translated = t("#{translation_key}.description", default: nil)
+        return translated if translated.present?
+
+        super
+      end
+
       def entity_loader(entity)
         instance_variable_get(:"@#{entity.to_s.pluralize}_loader")
       end

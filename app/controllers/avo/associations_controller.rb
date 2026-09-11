@@ -125,6 +125,14 @@ module Avo
 
       return if @reflection.blank? && @field.type == "array"
 
+      if @reflection.blank?
+        raise Avo::MissingAssociationError.new(
+          @record.class,
+          association_from_params,
+          @field
+        )
+      end
+
       # Ensure inverse_of is present on STI
       if !@record.class.descends_from_active_record? && @reflection.inverse_of.blank? && Rails.env.development?
         raise "Avo relies on the 'inverse_of' option to establish the inverse association and perform some specific logic.\n" \

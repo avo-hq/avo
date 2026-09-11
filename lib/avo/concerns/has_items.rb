@@ -202,7 +202,44 @@ module Avo
         items_holder&.items || []
       end
 
+      # Every container asks its children whether they have anything visible, so one
+      # render may call this thousands of times and each call walks the whole subtree.
+      # Memoizing it offers a significant performance boost, particularly for large
+      # resources.
+      #
+      # It can't be a plain `||=` because the contextual items can change throughout a
+      # request lifecycle.
+      #
+      # The context is compared by object identity, so anything *replaced* recomputes.
+      # `items.size` is in there because `Holder#add_item` appends in place: a holder
+      # that gains an item keeps both its own identity and its array's, so the count is
+      # the only cheap signal that the items changed underneath us.
+      #
+      # Request-scoped state (params, context, current_user) is deliberately absent.
+      # `detect_fields` is a `before_action` and assigns a brand-new `Items::Holder`, so
+      # the memo is already cold at the top of every request and none of those can change
+      # within the lifetime of one entry.
       def visible_items
+        hydration_resource = is_a?(Avo::Resources::Base) ? self : try(:resource)
+        context = [@items_holder, items.size, view.to_s.to_sym, hydration_resource.try(:record)]
+
+        unless @visible_items_context&.zip(context)&.all? { |was, now| was.equal?(now) }
+          @visible_items_context = context
+          # Frozen because every caller now shares one array. Without it a caller that
+          # mutates the result silently corrupts every later read instead of failing.
+          @visible_items = compute_visible_items.freeze
+        end
+
+        @visible_items
+      end
+
+      def is_empty?
+        visible_items.blank?
+      end
+
+      private
+
+      def compute_visible_items
         items
           .map do |item|
             hydrate_item item
@@ -268,12 +305,6 @@ module Avo
             !item.is_a?(Avo::Resources::Items::Sidebar)
           end.compact
       end
-
-      def is_empty?
-        visible_items.blank?
-      end
-
-      private
 
       def set_target_to_top(fields)
         fields.each do |field|

@@ -74,7 +74,10 @@ es:
         zero: "usuarios"
         one: "usuario"
         other: "usuarios"
+        description: "Los usuarios de la aplicación"
 ```
+
+`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class.
 
 Omit `self.translation_key` and Avo derives it from the class name, **namespace included** — `Avo::Resources::Galaxy::Planet` defaults to `avo.resource_translations.galaxy/planet`. So for a plain resource you often only need the YAML, no Ruby change.
 
