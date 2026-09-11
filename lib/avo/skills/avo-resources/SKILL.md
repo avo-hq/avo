@@ -119,6 +119,8 @@ class Avo::Resources::User < Avo::BaseResource
 end
 ```
 
+Avo also resolves `description` below the resource's translation key — `avo.resource_translations.user.description` supplies the User resource description. Per the cascade, the locale file **wins** and `self.description` is the fallback, so an app can keep an English default in code and translate over it — **avo-i18n**.
+
 - `self.description` is rendered as **raw HTML** — never feed it user-editable data (stored-XSS risk). A block gets `record`, `resource`, `view`, `current_user`, `params`.
 - `self.color` takes a Symbol or String from Avo's palette — `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`. It tints the icon **stroke only** (label and hover/active backgrounds stay neutral), adapts to light and dark themes, and an unknown name silently renders the neutral icon. The tint follows the resource to its breadcrumb initials chip and, with Advanced Search installed, to the resource group headers in global search results. A `color:` on the menu entry overrides it.
 - `self.cover`/`self.avatar` were named `cover_photo`/`profile_photo` in Avo 3. A **Symbol** `source:` renders nothing for unpersisted (new) records — use a block if you want a placeholder on `new`/`index`.
@@ -260,7 +262,7 @@ Search (`self.search`), grid/map view types, record reordering, and i18n live on
 - **Two resources, one model → wrong one wins.** Avo resolves the default alphabetically. Set `config.model_resource_mapping` and/or `use_resource:` on associations.
 - **Secondary / namespaced / oddly-named resources need `self.model_class`** (or the matching namespace) or Avo can't infer the model. Namespaced resources whose namespace matches the model's namespace infer automatically.
 - **Array resources are Beta:** no sorting, and `records` re-runs every request. Cache inside `records` for large sets, or move to an HTTP Resource.
-- **`find_record_method` in batch contexts:** `id` arrives as an Array for bulk actions — return a collection (`query.where(...)`) in that branch, not a single record.
+- **`find_record_method` in batch contexts:** `id` arrives as an Array for bulk actions — return a collection (`query.where(...)`) in that branch, not a single record. If that branch raises `ActiveRecord::RecordNotFound` (as `query.find(id)` does when one record was deleted between selection and submit), Avo retries the **scalar** branch once per id and drops the ones that are gone — so keep the scalar branch able to handle every id the array branch receives.
 - **`visible_on_sidebar` only affects the auto-generated menu.** If the app uses the menu editor, control visibility in its `visible` block instead.
 - **Don't re-invent fields/associations here.** Field DSL is the avo-fields skill; `belongs_to`/`has_many`/`use_resource` is avo-associations.
 - **Verify before writing.** Option names drift between versions — check the docs URLs above or the app's installed Avo source rather than trusting memory.

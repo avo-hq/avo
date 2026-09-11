@@ -33,8 +33,17 @@ Gem::Specification.new do |spec|
 
   # NOTE: `public/` is rejected below — Avo 4 ships precompiled assets from
   # `app/assets/builds`, and a stale `public/avo-assets` dir was what bloated some builds.
-  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "NOTICE", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js", "safelist.txt"]
+  #
+  # `app/assets/builds` is gitignored and `Dir` does not read .gitignore, so whatever a
+  # releaser's working copy happens to hold there is packaged. Only `app/assets/builds/avo/`
+  # is ours — every build script writes there. 4.2.2 shipped `avo.base.js`, `avo.custom.js`,
+  # `late-registration.js` and `avo.base.css` from the top level: output of the build scripts
+  # as they stood before #3971 moved them into `avo/`, left on one machine since July 2025.
+  # It cost 22MB, and the stray `avo.custom.js` took over that Sprockets logical path in any
+  # host app that had an `avo.custom.js` of its own — silently replacing the host's file.
+  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "NOTICE" "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js", "safelist.txt"]
     .reject { |f| f.start_with?("public/") }
+    .reject { |f| f.start_with?("app/assets/builds/") && !f.start_with?("app/assets/builds/avo/") }
 
   spec.add_dependency "activerecord", ">= 6.1"
   spec.add_dependency "activesupport", ">= 6.1"
