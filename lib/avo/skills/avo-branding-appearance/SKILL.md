@@ -1,6 +1,6 @@
 ---
 name: avo-branding-appearance
-description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item" — whether or not they name Avo.
+description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, fonts, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", "use our own font/typeface", or "use a custom icon for this menu item" — whether or not they name Avo.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -10,7 +10,7 @@ metadata:
 
 # Avo Branding & Appearance
 
-Make the Avo admin look like your product — logos, favicon, color scheme, brand colors, chart colors, and the deeper CSS chrome (navbar, sidebar, tables). Avo gives you a ladder: start with a few lines of Ruby in `config/initializers/avo.rb` (`config.appearance = { … }`, **no build step**), and only drop to CSS or ejected views when the Ruby layer can't express what you want. **Almost every branding request is satisfied by `config.appearance` alone** — reach for CSS last.
+Make the Avo admin look like your product — logos, favicon, color scheme, brand colors, fonts, chart colors, and the deeper CSS chrome (navbar, sidebar, tables). Avo gives you a ladder: start with a few lines of Ruby in `config/initializers/avo.rb` (`config.appearance = { … }`, **no build step**), and only drop to CSS or ejected views when the Ruby layer can't express what you want. **Almost every branding request is satisfied by `config.appearance` alone** — reach for CSS last.
 
 Files you'll touch, from shallowest to deepest:
 
@@ -34,7 +34,7 @@ Authoritative docs — fetch on demand, verify option names against them (and th
 
 **Explicit (Avo named):** "set `config.appearance`", "change Avo's logo / logomark / favicon", "set the Avo accent/neutral palette", "lock the Avo theme", "restrict the appearance picker", "persist Avo appearance to the database", "override Avo CSS variables", "eject the `:head` partial", "set an icon on this Avo menu item".
 
-**Implicit (product-shaped, no mention of Avo):** "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo / a favicon", "the admin should default to dark mode" / "support dark mode", "let users switch themes" / "lock it so they can't", "remember each user's theme across devices", "change the accent/primary color" / "make the buttons blue", "change the sidebar/navbar background color", "give the admin a coastal / rose / 80s-sunset theme", "our admin looks too generic", "change the dashboard chart colors", "use a custom icon for this menu item".
+**Implicit (product-shaped, no mention of Avo):** "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo / a favicon", "the admin should default to dark mode" / "support dark mode", "let users switch themes" / "lock it so they can't", "remember each user's theme across devices", "change the accent/primary color" / "make the buttons blue", "change the sidebar/navbar background color", "give the admin a coastal / rose / 80s-sunset theme", "our admin looks too generic", "change the dashboard chart colors", "use our brand's font in the admin" / "swap the typeface", "use a custom icon for this menu item".
 
 ## Workflow
 
@@ -173,7 +173,21 @@ config.appearance = {
 }
 ```
 
-### 7. Deep re-skin — CSS variables (only when `config.appearance` can't reach it)
+### 7. Change the font
+
+Two Tailwind theme variables carry the interface typeface: `--font-sans` (every screen) and `--font-mono` (code snippets, media library file details). Override either on `:root` in `avo-overrides.css` — no build step, and it re-fonts the whole admin at once:
+
+```css
+/* app/assets/stylesheets/avo-overrides.css */
+:root {
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+```
+
+That's the whole change for a font the visitor's device already has. For a hosted or self-hosted family, load it first — a hosted font's `@import` goes at the **very top** of `avo-overrides.css` (CSS requires imports before any other rule) or its `<link>` tags go in an ejected `:head` partial; a self-hosted one gets a `@font-face` block in `avo-overrides.css` pointing at files under `public/fonts/`. Avo sets text at weights 400, 500, 600, and 700 — load all four (or a variable font covering that range) or the browser synthesizes the missing ones. Full walkthrough with font-service URLs: [Change the font](https://docs.avohq.io/4.0/theming.html#change-the-font).
+
+### 8. Deep re-skin — CSS variables (only when `config.appearance` can't reach it)
 
 Navbar background, sidebar surfaces, table row hover/selected, focus ring, and motion speeds aren't routed through Ruby — they're CSS custom properties. Avo's whole look is variable-driven, so overriding a handful re-skins everything with **no build step**. Put light-mode values on `:root`, dark-mode overrides on `.dark`.
 
@@ -207,7 +221,7 @@ bin/rails generate avo:eject --partial :head
 
 The full variable list (navbar, sidebar, table, focus ring, motion) with defaults lives in the CSS variables section of `appearance-api.md` — fetch it before writing component-level overrides. For named-theme requests ("coastal", "rose", "80s sunset"), work in `avo-overrides.css` with matching `:root` and `.dark` values.
 
-### 8. Icons (menu items, actions)
+### 9. Icons (menu items, actions)
 
 Anywhere Avo takes an `icon:`, pass a path string. **Prefer Tabler in v4** (`tabler/outline/<name>` or `tabler/filled/<name>`); Heroicons (`heroicons/outline/<name>`, also `solid`/`mini`/`micro`) are legacy-supported. Your own SVGs go in `app/assets/svgs/` and are referenced by filename.
 
@@ -239,12 +253,14 @@ For **populating menu/resource icons at scale** (migrations, whole-sidebar passe
 | `load_settings` / `save_settings` | DB persistence blocks | Proc; needs a JSON/JSONB column |
 | `chart_colors` | Dashboard chart palette | Array of **hex** Strings |
 
-CSS-only knobs (navbar/sidebar/table/focus/motion variables) are not in this hash — see step 7 and `appearance-api.md`.
+CSS-only knobs (fonts, navbar/sidebar/table/focus/motion variables) are not in this hash — see steps 7-8 and `appearance-api.md`.
 
 ## Gotchas
 
 - **`neutral:` / `accent:` must be Symbols.** A String or Hash raises `ArgumentError`. Custom colors go through `neutral_colors:` / `accent_colors:`, and you must also set `neutral: :brand` / `accent: :brand` (or list `"brand"` in `neutrals:`/`accents:`) to select the custom palette.
 - **`neutral_colors` needs all 12 shades; `accent_colors` needs all 3 tokens.** A missing or `nil` value raises `ArgumentError`.
+- **Load all four font weights.** Avo sets text at 400, 500, 600, and 700 — load fewer (or a variable font that doesn't cover the range) and the browser synthesizes the missing weights instead of rendering the real ones.
+- **A hosted font's `@import` must be the first rule in `avo-overrides.css`.** CSS requires `@import` before any other rule in the file; put the `--font-sans`/`--font-mono` override below it, not above.
 - **The navbar is dark in both modes.** The `logo` must read on a dark surface. `logo_dark` is for whole-UI dark mode, not navbar contrast.
 - **`chart_colors` must be hex.** They're passed straight to Chart.js — `oklch()`/`rgb()` won't work there (even though the palettes accept them).
 - **`avo-overrides.css` is served as-is, NOT through the Tailwind build.** Only put plain CSS + variable overrides there — no `@apply`, no arbitrary values. Tailwind directives for your *own* custom UI belong in `app/assets/stylesheets/avo/` (which IS built). See the avo-custom-ui skill.
