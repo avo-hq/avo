@@ -34,6 +34,17 @@
     neutralLocked: <%= appearance.neutral_locked? %>,
     accentLocked: <%= appearance.accent_locked? %>,
     neutrals: <%== appearance.neutrals.as_json %>,
-    accents: <%== appearance.accents.as_json %>
+    accents: <%== appearance.accents.as_json %>,
+    theme: '<%= try(:current_theme)&.id %>',
+    themeLocked: <%= appearance.theme_locked? %>,
+    themes: <%== Avo.theme_manager.offered_ids.as_json %>,
+    themesNeedingVisit: <%== Avo.theme_manager.offered.select(&:needs_visit?).map(&:id).as_json %>,
+    // Per theme: the pickers it hides while active, and the scheme it forces
+    // when it hides the scheme picker.
+    themeLocks: <%== Avo.theme_manager.offered.to_h { |t| [t.id, t.lock] }.to_json %>,
+    themeSchemes: <%== Avo.theme_manager.offered.select(&:forces_scheme?).to_h { |t| [t.id, t.scheme] }.to_json %>,
+    // The user's own picks, before the active theme's locks are applied, so a
+    // switch back to a theme that leaves them open restores them.
+    picks: <%== (try(:appearance_picks) || {}).to_json %>
   }
 <% end %>

@@ -303,3 +303,27 @@ RSpec.describe Avo::Configuration::Appearance do
     end
   end
 end
+
+RSpec.describe Avo::Configuration::Appearance, "themes" do
+  it "defaults theme and themes to nil" do
+    appearance = described_class.new
+    expect(appearance.theme).to be_nil
+    expect(appearance.themes).to be_nil
+    expect(appearance).not_to be_theme_locked
+  end
+
+  it "accepts a Symbol theme and an ordered list of theme ids" do
+    appearance = described_class.new(theme: :coastal, themes: [:paper, "coastal"])
+    expect(appearance.theme).to eq(:coastal)
+    expect(appearance.themes).to eq([:paper, :coastal])
+  end
+
+  it "rejects a non-Symbol theme" do
+    expect { described_class.new(theme: "coastal") }.to raise_error(ArgumentError, /appearance.theme must be a Symbol/)
+  end
+
+  it "accepts :theme in lock and rejects unknown lock names" do
+    expect(described_class.new(lock: [:theme])).to be_theme_locked
+    expect { described_class.new(lock: [:font]) }.to raise_error(ArgumentError, /appearance.lock accepts/)
+  end
+end

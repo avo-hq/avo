@@ -34,8 +34,9 @@ ja:
       dark_tooltip: ダークモード
       hide: 非表示
       light: ライト
+      light_and_dark: ライトとダーク
       light_tooltip: ライトモード
-      neutrals: テーマ
+      neutrals: ニュートラル
       neutrals_list:
         brand: ブランド
         gray: グレー
@@ -53,6 +54,8 @@ ja:
       shortcut_badges_hide_tooltip: キーボードショートカットバッジを非表示
       shortcut_badges_show_tooltip: キーボードショートカットバッジを表示
       show: 表示
+      theme_picker: テーマを選択
+      themes: テーマ
       title: 外観
     applied:
       one: applied

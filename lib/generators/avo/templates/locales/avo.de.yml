@@ -34,8 +34,9 @@ de:
       dark_tooltip: Dunkler Modus
       hide: Ausblenden
       light: Hell
+      light_and_dark: Hell & Dunkel
       light_tooltip: Heller Modus
-      neutrals: Thema
+      neutrals: Neutral
       neutrals_list:
         brand: Marke
         gray: Grau
@@ -53,6 +54,8 @@ de:
       shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
       shortcut_badges_show_tooltip: Tastenkombinationssymbole anzeigen
       show: Anzeigen
+      theme_picker: Thema auswählen
+      themes: Themen
       title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?

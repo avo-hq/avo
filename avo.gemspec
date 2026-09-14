@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   # as they stood before #3971 moved them into `avo/`, left on one machine since July 2025.
   # It cost 22MB, and the stray `avo.custom.js` took over that Sprockets logical path in any
   # host app that had an `avo.custom.js` of its own — silently replacing the host's file.
-  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js", "safelist.txt"]
+  spec.files = Dir["{bin,app,config,db,lib,public}/**/*", "Rakefile", "README.md", "NOTICE" "avo.gemspec", "Gemfile", "Gemfile.lock", "tailwind.preset.js", "tailwind.custom.js", "safelist.txt"]
     .reject { |f| f.start_with?("public/") }
     .reject { |f| f.start_with?("app/assets/builds/") && !f.start_with?("app/assets/builds/avo/") }
 
