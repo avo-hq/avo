@@ -210,7 +210,7 @@ end
   - `:lexxy` → `gem "avo-lexxy_field"` (Basecamp's Lexxy editor for Action Text; needs Rails >= 8.0.2)
   - `:markdown` → `gem "marksmith"` + `gem "commonmarker"`
   - `:money` → `gem "avo-money_field"` + `gem "money-rails", "~> 1.12"` (and `monetize :price_cents` on the model)
-  - `:location` / `:area` → `gem "mapkick-rb"` (**not** `mapkick`). No API key needed — Avo defaults these maps to [OpenFreeMap](https://openfreemap.org), switchable with `config.map_view = {styles: …}`. Set `MAPBOX_ACCESS_TOKEN` only to use Mapbox styles, and for `:location` with `static: true` (which also needs `gem "mapkick-static"` and is Mapbox-only).
+  - `:location` / `:area` → `gem "mapkick-rb"` (**not** `mapkick`). No API key needed — Avo defaults these maps to [OpenFreeMap](https://openfreemap.org), switchable with `config.map_view = {styles: …}`. Set `MAPBOX_ACCESS_TOKEN` only to use Mapbox styles, and for `:location` with `static: true` (which also needs `gem "mapkick-static"` and is Mapbox-only). Preview always renders a static map, so it carries the same Mapbox requirement even when `static:` is unset.
   - Reactive fields (`react_on:`) → `gem "avo-reactive_fields"`
   - Some of these gems live on the `packager.dev` source — point the user to the Avo 4 upgrade guide's gems section.
 - **`tip_tap` is deprecated** — use `:rhino` for a WYSIWYG editor.
