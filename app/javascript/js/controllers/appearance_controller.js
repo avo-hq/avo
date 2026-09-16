@@ -251,7 +251,7 @@ export default class extends Controller {
     if (document.documentElement.classList.contains('appearance-muted')) return
 
     const src = window.Avo?.configuration?.sounds?.mid
-    if (!src) return
+    if (!src || typeof Audio === 'undefined') return
 
     const audio = new Audio(src)
     audio.volume = 0.4
