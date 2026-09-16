@@ -183,7 +183,8 @@ Avo.configure do |config|
   #   accent: :brand,
   #   scheme: :auto,
   #   persistence: :database,
-  #   sound: true, # play a sound on picks and show the mute toggle (default: false)
+  #   sound: true, # play a sound on picks by default; Shift+S toggles it per browser
+  #   sound_button: false, # show the mute toggle in the switcher
   #   placeholder: "avo/placeholder.svg",
   #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
   #   load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },

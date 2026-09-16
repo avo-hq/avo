@@ -134,6 +134,20 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_no_css("html.hotkeys-hide-badges")
   end
 
+  it "toggles the appearance-muted class on the html element when pressing Shift+S" do
+    visit "/admin/resources/projects"
+
+    expect(page).to have_no_css("html.appearance-muted")
+
+    dispatch_keydown("S", shift_key: true)
+    expect(page).to have_css("html.appearance-muted")
+    expect(page.evaluate_script("localStorage.getItem('avo:appearance:sound')")).to eq("off")
+
+    dispatch_keydown("S", shift_key: true)
+    expect(page).to have_no_css("html.appearance-muted")
+    expect(page.evaluate_script("localStorage.getItem('avo:appearance:sound')")).to eq("on")
+  end
+
   it "applies kbd--called animation feedback when a hotkey fires" do
     visit "/admin/resources/projects"
 

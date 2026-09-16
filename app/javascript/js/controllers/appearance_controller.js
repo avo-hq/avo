@@ -367,14 +367,21 @@ export default class extends Controller {
     const { sound } = event.currentTarget.dataset
     if (sound !== 'on' && sound !== 'off') return
 
-    const muted = sound === 'off'
+    this.applySound(sound === 'off')
+  }
+
+  // Shift+S (see global_hotkeys.js). The only way to reach the mute when the
+  // developer hides the button.
+  toggleSound() {
+    this.applySound(!document.documentElement.classList.contains('appearance-muted'))
+  }
+
+  applySound(muted) {
     document.documentElement.classList.toggle('appearance-muted', muted)
+    // Stored as an explicit on/off so it overrides the developer's `sound:`
+    // default in either direction. Absent means "use the default".
     try {
-      if (muted) {
-        localStorage.setItem('avo:appearance:muted', '1')
-      } else {
-        localStorage.removeItem('avo:appearance:muted')
-      }
+      localStorage.setItem('avo:appearance:sound', muted ? 'off' : 'on')
     } catch (e) {
       // localStorage unavailable (private browsing) — toggle works for the current session only
     }

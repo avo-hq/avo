@@ -117,6 +117,11 @@ const DIRECT_HOTKEYS = [
     handle: () => callAppearance('cycleAccent'),
   },
   {
+    // Shift+S → toggle the appearance sound
+    match: (e) => e.shiftKey && e.key === 'S',
+    handle: () => callAppearance('toggleSound'),
+  },
+  {
     // Shift+T → focus the screen's main content (table rows, grid cards, or panel
     // fields). From there, Tab dives in and Shift+Tab returns to the page controls.
     match: (e) => e.shiftKey && e.key === 'T' && !!findContentFocus(),
