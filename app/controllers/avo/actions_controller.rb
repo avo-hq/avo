@@ -156,9 +156,8 @@ module Avo
             # Only render the flash messages if the action keeps the modal open
             turbo_stream.avo_flash_alerts
           when :download
-            # Trigger download, removes modal and flash the messages
+            # The download itself is prepended below. Remove the modal and flash the messages.
             [
-              turbo_stream.avo_download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
               turbo_stream.avo_close_modal,
               turbo_stream.avo_flash_alerts
             ]
@@ -195,6 +194,14 @@ module Avo
             Array(turbo_response) + Array(instance_exec(&@action.appended_turbo_streams))
           else
             Array(turbo_response)
+          end
+
+          # Trigger the download first, whatever the response type is. This way an action
+          # can download a file and still reload or redirect the page afterwards.
+          if (file = @response[:download]).present?
+            responses.unshift(
+              turbo_stream.avo_download(content: Base64.encode64(file[:path]), filename: file[:filename])
+            )
           end
 
           render turbo_stream: responses

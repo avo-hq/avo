@@ -219,13 +219,13 @@ silent                                           # suppress the default notifica
 ```
 
 ### Control what happens after
-`handle` also picks the UI response. Default is a full-page `reload`; the last response method called wins:
+`handle` also picks the UI response. Default is a full-page `reload`; the last response method called wins, except `download`, which composes with the others:
 
 | Method | Effect |
 | --- | --- |
 | `reload` | Full-page reload (default). |
 | `redirect_to path` | Redirect elsewhere (accepts `allow_other_host:`, `status:`). |
-| `download data, "file.csv"` | Trigger a file download. **Pair with `self.turbo = false`** for a real file response. |
+| `download data, "file.csv"` | Trigger a file download. On its own it leaves the page as-is; add `reload` (or `redirect_to`) after it to download *and* refresh. **Pair with `self.turbo = false`** for a real file response. |
 | `keep_modal_open` | Keep the modal + user input (show an error and let them retry). |
 | `close_modal` / `do_nothing` | Close the modal, leave the page as-is. |
 | `reload_records(query)` | Refresh only the affected rows/cards. Called bare (`reload_records`), it defaults to the records the action ran on. **Index only — not associations.** |
@@ -264,6 +264,7 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
 - **`reload_records` is Index-only.** It doesn't work on association tables — use `reload` there.
 - **Notification bodies truncate at ~320 characters.** Keep `succeed`/`error` messages short; put long output in a `download` or a redirect.
 - **File downloads need `self.turbo = false`.** Otherwise Turbo intercepts the response and the download won't fire.
+- **`download` alone doesn't refresh the page.** If the action also creates or changes records, call `reload` after it — the two compose.
 - **Standalone actions need `self.standalone = true`** — otherwise they're disabled when nothing is selected.
 - **Select-all silently disabled?** Query serialization failed. A common cause: a model `normalizes` proc, which raises `TypeError: no _dump_data is defined for class Proc` when a filter hits the normalized attribute. Fix in `config/application.rb`:
   ```ruby
