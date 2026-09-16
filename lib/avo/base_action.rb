@@ -313,9 +313,11 @@ module Avo
     end
 
     def download(path, filename)
-      response[:type] = :download
-      response[:path] = path
-      response[:filename] = filename
+      response[:download] = {path: path, filename: filename}
+      # Keep the download out of the response type so it composes with the other
+      # response methods. `download` on its own still closes the modal without
+      # reloading; `download` + `reload` does both.
+      response[:type] ||= :download
 
       self
     end
