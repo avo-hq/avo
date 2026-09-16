@@ -46,6 +46,16 @@ RSpec.describe Avo::Configuration::Appearance do
     it "defaults picker_layout to :inline" do
       expect(appearance.picker_layout).to eq(:inline)
     end
+
+    it "defaults sound to off" do
+      expect(appearance).not_to be_sound
+    end
+  end
+
+  describe "sound" do
+    it "turns on with sound: true" do
+      expect(described_class.new(sound: true)).to be_sound
+    end
   end
 
   describe "picker_layout" do
