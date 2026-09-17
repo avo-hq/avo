@@ -70,6 +70,19 @@ RSpec.describe "Media library edit", type: :request do
       expect(response.body).to include("<td>London, UK</td>")
     end
 
+    it "shows a csv file as raw text on request, with a way back to the table" do
+      blob = create_text_blob("name,city\nAda,\"London, UK\"\n", filename: "people.csv", content_type: "text/csv")
+
+      get "/admin/media-library/#{blob.id}/edit"
+      expect(response.body).to include("/admin/media-library/#{blob.id}/edit?raw=1")
+
+      get "/admin/media-library/#{blob.id}/edit?raw=1"
+
+      expect(response.body).not_to include("media-library-details__preview-table")
+      expect(response.body).to include("Ada,&quot;London, UK&quot;")
+      expect(response.body).to include("View as table")
+    end
+
     it "reads only the start of a large file and says so" do
       stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES", 10)
       blob = create_text_blob("first line\nsecond line\n", filename: "big.txt", content_type: "text/plain")

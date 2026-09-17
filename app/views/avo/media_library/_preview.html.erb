@@ -13,7 +13,9 @@
       <%= video_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-video" %>
     <% elsif (text = media_library_text_preview(blob)) %>
       <div class="media-library-details__preview-text">
-        <% if blob.content_type == "text/csv" && (rows = media_library_csv_rows(text)) %>
+        <%# `rows` stays set in raw mode so the actions below can offer the way back. %>
+        <% rows = media_library_csv_rows(text) if blob.content_type == "text/csv" %>
+        <% if rows && params[:raw].blank? %>
           <table class="media-library-details__preview-table">
             <thead>
               <tr>
@@ -46,6 +48,12 @@
   <% end %>
 
   <div class="media-library-details__actions">
+    <% if rows %>
+      <%= a_link avo.edit_media_library_path(blob, raw: params[:raw].blank? ? 1 : nil), style: :text do %>
+        <%= params[:raw].blank? ? "View raw" : "View as table" %>
+      <% end %>
+    <% end %>
+
     <% if blob_url %>
       <%= a_link blob_url, style: :text, download: true do %>
         Download
