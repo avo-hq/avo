@@ -53,6 +53,11 @@ ro:
       shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură
       shortcut_badges_show_tooltip: Afișează insignele scurtăturilor de tastatură
       show: Afișează
+      sound: Sunet
+      sound_off: Oprit
+      sound_off_tooltip: Dezactivează sunetele
+      sound_on: Activat
+      sound_on_tooltip: Redă sunete când se schimbă setările
       title: Aspect
     applied:
       few: aplicate

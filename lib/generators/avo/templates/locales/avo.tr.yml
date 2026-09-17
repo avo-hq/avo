@@ -53,6 +53,11 @@ tr:
       shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle
       shortcut_badges_show_tooltip: Klavye kısayolu rozetlerini göster
       show: Göster
+      sound: Ses
+      sound_off: Kapalı
+      sound_off_tooltip: Görünüm seslerini kıs
+      sound_on: Açık
+      sound_on_tooltip: Görünüm değiştiğinde ses çal
       title: Görünüm
     applied:
       one: uygulandı

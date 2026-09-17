@@ -53,6 +53,11 @@ es:
       shortcut_badges_hide_tooltip: Ocultar insignias de atajo de teclado
       shortcut_badges_show_tooltip: Mostrar insignias de atajo de teclado
       show: Mostrar
+      sound: Sonido
+      sound_off: Apagar
+      sound_off_tooltip: Silenciar sonidos de apariencia
+      sound_on: Activar
+      sound_on_tooltip: Reproducir un sonido cuando cambian las apariencias
       title: Apariencia
     applied:
       one: aplicado

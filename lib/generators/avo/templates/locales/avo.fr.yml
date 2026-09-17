@@ -53,6 +53,11 @@ fr:
       shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier
       shortcut_badges_show_tooltip: Afficher les badges de raccourci clavier
       show: Afficher
+      sound: Son
+      sound_off: Désactivé
+      sound_off_tooltip: Silencieux les sons d'apparence
+      sound_on: Activé
+      sound_on_tooltip: Jouer un son lors des changements d'apparence
       title: Apparence
     applied:
       one: appliqué

@@ -53,6 +53,11 @@ ru:
       shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
       shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
       show: Показать
+      sound: Звук
+      sound_off: Выкл.
+      sound_off_tooltip: Отключить звуки появления
+      sound_on: Вкл.
+      sound_on_tooltip: Воспроизводить звук при изменении внешнего вида
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?

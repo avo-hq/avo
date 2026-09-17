@@ -19,6 +19,14 @@
       } catch (e) {}
     }
 
+    // Same deal for the appearance sound preference, so the switcher's Sound
+    // row paints with the right button already active. The browser's own
+    // choice wins; the developer's `sound:` config is only the starting point.
+    var soundPreference = null;
+    try { soundPreference = localStorage.getItem('avo:appearance:sound'); } catch (e) {}
+    var muted = soundPreference ? soundPreference === 'off' : appearance.sound === false;
+    if (muted) root.classList.add('appearance-muted');
+
     if (appearance.persistence !== 'database') {
       function getCookie(name) {
         var value = '; ' + document.cookie;
