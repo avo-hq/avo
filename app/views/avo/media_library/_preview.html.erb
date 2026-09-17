@@ -2,8 +2,14 @@
     service/representation URL, so fall back to the placeholder when it can't. %>
 <% blob_url = safe_blob_url(blob) %>
 
+<%# Both set out here, not inside a block below: the frame, the card and the
+    actions all read them. `rows` stays set in raw mode so the actions can offer
+    the way back to the table. %>
+<% text = media_library_text_preview(blob) %>
+<% rows = media_library_csv_rows(text) if text && blob.content_type == "text/csv" %>
+
 <div class="media-library-details__preview-shell">
-  <div class="media-library-details__preview-frame">
+  <%= tag.div class: class_names("media-library-details__preview-frame", "media-library-details__preview-frame--text": text) do %>
     <% representation_url = safe_blob_representation_url(blob.variant(resize_to_limit: [1400, 1400])) if blob.image? %>
     <% if representation_url %>
       <%= image_tag representation_url, class: "media-library-details__preview-image", loading: :lazy %>
@@ -11,35 +17,35 @@
       <%= audio_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-audio" %>
     <% elsif blob.video? && blob_url %>
       <%= video_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-video" %>
-    <% elsif (text = media_library_text_preview(blob)) %>
-      <div class="media-library-details__preview-text">
-        <%# `rows` stays set in raw mode so the actions below can offer the way back. %>
-        <% rows = media_library_csv_rows(text) if blob.content_type == "text/csv" %>
-        <% if rows && params[:raw].blank? %>
-          <table class="media-library-details__preview-table">
-            <thead>
-              <tr>
-                <% rows.first.each do |cell| %><th><%= cell %></th><% end %>
-              </tr>
-            </thead>
-            <tbody>
-              <% rows.drop(1).each do |row| %>
+    <% elsif text %>
+      <%= render ui.card(class: "w-full") do |card| %>
+        <% card.with_body(class: "media-library-details__preview-text") do %>
+          <% if rows && params[:raw].blank? %>
+            <table class="media-library-details__preview-table">
+              <thead>
                 <tr>
-                  <% row.each do |cell| %><td><%= cell %></td><% end %>
+                  <% rows.first.each do |cell| %><th><%= cell %></th><% end %>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
-        <% else %>
-          <pre class="media-library-details__preview-pre"><%= text %></pre>
+              </thead>
+              <tbody>
+                <% rows.drop(1).each do |row| %>
+                  <tr>
+                    <% row.each do |cell| %><td><%= cell %></td><% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <pre class="media-library-details__preview-pre"><%= text %></pre>
+          <% end %>
         <% end %>
-      </div>
+      <% end %>
     <% else %>
       <div class="media-library-details__preview-placeholder">
         <%= svg "tabler/outline/file-text", class: "media-library-details__preview-placeholder-icon" %>
       </div>
     <% end %>
-  </div>
+  <% end %>
 
   <% if text && blob.byte_size > Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>
     <p class="media-library-details__preview-note">
