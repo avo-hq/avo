@@ -470,6 +470,14 @@
     @apply absolute inset-0 flex items-center justify-center;
   }
 
+  /* `visibility`, not the `hidden` attribute: the content has to keep occupying space so the button doesn't collapse
+     around the spinner while it loads. */
+  .button--loading-active .button__label,
+  .button--loading-active .button__icon,
+  .button--loading-active .hotkey-badge {
+    @apply invisible;
+  }
+
   .hotkey-badge {
     @apply -mt-0.5;
   }

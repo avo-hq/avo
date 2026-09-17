@@ -252,7 +252,7 @@ Jump-to-menu-item shortcuts go through the menu `hotkey:` option, or `self.hotke
 - **`all_resources` respects `index?` authorization.** A resource missing from the menu is usually a policy returning false, not a bug.
 - **Menu `action` items must be standalone.** `self.standalone = true` is required (the menu has no selected record); others are skipped with a log warning. Top-level `action` also needs `resource:`; nested it's inherited.
 - **`profile_menu` and `header_menu` render only `link_to`.** `resource`, `dashboard`, `action`, etc. are silently ignored there. The profile menu adds sign-out for you.
-- **`icon:` isn't universal.** It works on `section` and individual items, **not** on `group` or on sub-items nested inside a `resource` block.
+- **`icon:` isn't universal.** It works on `section` and individual items, **not** on `group` or on sub-items nested inside a `resource` or `link_to` block. (`link_to` takes a block for sub-items too, not just `resource` — the parent link stays clickable and Avo forces it active while a child is.)
 - **Ransack v4+ needs an allowlist.** Add `ransackable_attributes` (and often `ransackable_associations`) to any model you search, or the query raises.
 - **`search_type` is undefined on Community-only installs and in the kanban picker.** It's injected by the paid search layer for the index/global/association surfaces only. Guard with `defined?(search_type)`; the kanban picker reads `params[:q]` and detects the board via `params[:for_kanban_board]`.
 - **Custom array-result providers aren't auto-capped.** `config.search_results_count` only applies to relations without their own `.limit()` — cap arrays yourself with `.first(N)`.
