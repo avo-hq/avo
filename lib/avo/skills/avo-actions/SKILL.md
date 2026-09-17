@@ -205,6 +205,7 @@ self.cancel_button_label = "Keep"
 
 self.confirmation = false               # skip the modal, run immediately on click
 self.close_modal_on_backdrop_click = false  # don't lose a filled-in form on a stray click
+self.modal_width = :"4xl"                  # :sm :md :lg :xl (default) :"2xl" :"3xl" :"4xl" :"5xl" :full
 ```
 
 ### Give feedback

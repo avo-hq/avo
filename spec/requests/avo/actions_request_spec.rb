@@ -35,6 +35,28 @@ RSpec.describe "Actions", type: :request do
     end
   end
 
+  describe "modal_width" do
+    around do |example|
+      original = Avo::Actions::ToggleAdmin.modal_width
+      example.run
+      Avo::Actions::ToggleAdmin.modal_width = original
+    end
+
+    it "opens the modal at the component's default width" do
+      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin"}
+
+      expect(response.body).to include('class="modal modal--width-xl')
+    end
+
+    it "opens the modal at the width the action asks for" do
+      Avo::Actions::ToggleAdmin.modal_width = :"4xl"
+
+      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin"}
+
+      expect(response.body).to include('class="modal modal--width-4xl')
+    end
+  end
+
   describe "request object in handle" do
     it "gives the handle method access to the current request" do
       target = create(:user)
