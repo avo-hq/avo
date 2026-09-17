@@ -74,7 +74,10 @@ es:
         zero: "usuarios"
         one: "usuario"
         other: "usuarios"
+        description: "Los usuarios de la aplicación"
 ```
+
+`description` fills the resource's panel description and, per the cascade, beats `self.description` on the class. Skip adding the key when `self.description` is a block that reads `record` or `view` — a static translation replaces it wholesale, losing the per-record/per-view text.
 
 Omit `self.translation_key` and Avo derives it from the class name, **namespace included** — `Avo::Resources::Galaxy::Planet` defaults to `avo.resource_translations.galaxy/planet`. So for a plain resource you often only need the YAML, no Ruby change.
 
@@ -264,7 +267,7 @@ Don't reach for `bin/rails generate avo:locales` just to look — it copies Avo'
 
 ### Add-on gems ship English only
 
-The locale generator covers Avo core. Each add-on keeps its strings under its own namespace inside `avo.*` and ships **English only** — every other language is the app's to supply, in a file per gem or one file carrying all of them (they deep-merge into the same tree).
+The locale generator covers Avo core. Each add-on keeps its strings under its own namespace inside `avo.*`. Most ship **English only** — every other language is the app's to supply, in a file per gem or one file carrying all of them (they deep-merge into the same tree). A gem that ships more says so on its own Localization page: the REST API gem ships its tree in every locale core does, so its token panel is translated with no work from you.
 
 | Gem | Namespace |
 | --- | --- |
@@ -274,7 +277,10 @@ The locale generator covers Avo core. Each add-on keeps its strings under its ow
 | Dynamic Filters | `avo.dynamic_filters.*` |
 | Forms & Pages | `avo.forms.*` |
 | Intelligence | `avo.intelligence.*` |
+| REST API | `avo.api.token.*` (all locales) |
 | Scopes | `avo.scopes.*` |
+
+Override any REST API string the usual way — define the same key in the app's locale file. Its relative-time chips ("3 minutes ago") come from Rails' `datetime.distance_in_words`, which Rails ships in English only: add the [`rails-i18n`](https://github.com/svenfuchs/rails-i18n) gem for translated relative times, or the chips fall back to an exact timestamp.
 
 Advanced Search is the exception that needs no locale file: everything it renders is under `avo.global_search.*` or is `avo.all`, and core translates all of them in each bundled locale. Four of those — `avo.global_search.direct_match`, `.search_results`, `.searching_on` and `avo.all` — only reached core's locale files **after 4.1.6**; on `4.1.6` and earlier they fall back to English, so define them in the app's own locale file until it's on a newer Avo.
 
@@ -289,6 +295,7 @@ Advanced Search is the exception that needs no locale file: everything it render
 | `avo.field_translations.<f>` | YAML | Shared field label + `help`/`placeholder`/`include_blank` siblings across all resources. |
 | `avo.resource_translations.<r>.tabs.<t>` | YAML | Tab title, keyed on the parameterized `title:`. Pin a different key with `translation_key:` on the `tab`. |
 | `avo.resource_translations.<r>.panels.<p>` | YAML | Panel title, same convention as tabs; `translation_key:` on the `panel` overrides it. |
+| `avo.resource_translations.<r>.description` | YAML | Resource panel description; beats `self.description`. Replaces the attribute wholesale — don't set it where `self.description` is a block reading `record`/`view`. |
 | `avo.resource_translations.<r>.save` | YAML | Per-resource Save-button text (else global `avo.save`). |
 | `avo.scope_translations.<s>` | YAML | Scope `name`/`description`. Root derived by `avo-scopes`. |
 | `avo.card_translations.<c>` | YAML | Card `label`/`description`/`discreet_description`. Root derived by `avo-dashboards`. |

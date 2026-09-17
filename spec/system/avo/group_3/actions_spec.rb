@@ -157,6 +157,31 @@ RSpec.describe "Actions", type: :system do
         expect(download.split("/").last).to eq file_name
       end
     end
+
+    context "when the action also calls reload" do
+      let(:content) { "On the fly dummy content." }
+      let(:file_name) { "dummy-content.txt" }
+
+      it "downloads the file and reloads the page" do
+        visit "/admin/resources/users"
+
+        expect(page).not_to have_text "Downloaded"
+
+        click_on "Actions"
+        click_on "Download file"
+        check "fields[create_user_and_reload]"
+        click_on "Run"
+
+        wait_for_download
+
+        expect(downloaded?).to be true
+        expect(download_content).to eq content
+        expect(download.split("/").last).to eq file_name
+
+        # The record the action created shows up without a manual browser reload.
+        expect(page).to have_text "Downloaded"
+      end
+    end
   end
 
   describe "default values" do

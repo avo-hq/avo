@@ -80,6 +80,18 @@ module Avo
       else
         []
       end
+    # A record may be deleted between the moment it was checked on the index and
+    # the moment the action is submitted, and the bulk lookup above raises for the
+    # whole batch when that happens. Fall back to the resource's own per-record
+    # lookup so custom `find_record_method`s and FriendlyId keep working, and drop
+    # only the records that are really gone. This is O(n) queries on purpose: it
+    # runs only on the race, never on the happy path.
+    rescue ActiveRecord::RecordNotFound
+      ids.filter_map do |id|
+        @resource.find_record(id, params: params)
+      rescue ActiveRecord::RecordNotFound
+        nil
+      end
     end
 
     def set_fields
@@ -144,9 +156,8 @@ module Avo
             # Only render the flash messages if the action keeps the modal open
             turbo_stream.avo_flash_alerts
           when :download
-            # Trigger download, removes modal and flash the messages
+            # The download itself is prepended below. Remove the modal and flash the messages.
             [
-              turbo_stream.avo_download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
               turbo_stream.avo_close_modal,
               turbo_stream.avo_flash_alerts
             ]
@@ -183,6 +194,14 @@ module Avo
             Array(turbo_response) + Array(instance_exec(&@action.appended_turbo_streams))
           else
             Array(turbo_response)
+          end
+
+          # Trigger the download first, whatever the response type is. This way an action
+          # can download a file and still reload or redirect the page afterwards.
+          if (file = @response[:download]).present?
+            responses.unshift(
+              turbo_stream.avo_download(content: Base64.encode64(file[:path]), filename: file[:filename])
+            )
           end
 
           render turbo_stream: responses

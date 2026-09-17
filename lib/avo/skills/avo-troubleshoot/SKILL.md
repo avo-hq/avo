@@ -87,6 +87,7 @@ grep -rn "explicit_authorization" "$(bundle show avo)/lib"
 | License won't validate / status page errors | Key not set on the server; check the status page | [↓](#license-wont-validate) |
 | Tests fail after adding/upgrading Avo (`WebMock::NetConnectNotAllowedError`) | v4's outbound license check to `clerk-*.avohq.io` is blocked | [↓](#tests-fail-after-adding-or-upgrading-avo) |
 | `bundle install` can't fetch `avo-*` / 401 / 403 | packager.dev token not seen by Bundler, or a blocked host in sandboxes | [↓](#bundle-install-cant-fetch-avo--gems) |
+| `unknown keyword: quirks_mode` after adding Avo (often in `assets:precompile`) | Adding Avo pulled json 3.x into the lock; ActiveSupport below 8.1 can't use it | [↓](#unknown-keyword-quirks_mode-after-adding-avo) |
 | Exploded / missing icons, or other odd behavior after a version bump | Silent v4 behavior changes and renames | [↓](#v3--v4-upgrade) |
 
 ### A field / resource / action / filter isn't showing
@@ -261,6 +262,36 @@ Paid add-on gems are served from `packager.dev` and need a **Gem Server Token** 
 - **v4 gem split.** In Avo 4 each feature ships as its own add-on gem (`avo-dashboards`, `avo-menu`, `avo-advanced_search`, `avo-authorization`, `avo-record_reordering`, `avo-dynamic_filters`, `avo-nested`, …); the legacy v3 bundle gems (`avo-pro`, `avo-advanced`) are gone. If a feature vanished after upgrading, you likely need to add its specific gem. See the upgrade section.
 
 → `gem-server-authentication.html`
+
+### `unknown keyword: quirks_mode` after adding Avo
+
+The app worked, you added Avo, and now something raises:
+
+```
+ArgumentError: unknown keyword: quirks_mode
+  json-3.x/lib/json/common.rb:… in 'JSON.generate'
+  activesupport-7.x/lib/active_support/json/encoding.rb:… in 'JSONGemEncoder#stringify'
+```
+
+**This is not an Avo bug, and the fix is one line.** Every ActiveSupport below **8.1.0** encodes JSON with `JSON.generate(..., quirks_mode: true)`. **json 3.0 removed that keyword**, so on Rails < 8.1 any ActiveSupport JSON encode raises the moment json 3.x is the resolved version. It commonly surfaces during `assets:precompile` (Propshaft writes its manifest with `to_json`), but it can hit any `to_json` / `render json:` path.
+
+Avo is the trigger, not the cause. Most apps have **no `json` entry in `Gemfile.lock`** — they use the json that ships with Ruby as a default gem (2.x). Avo depends on `pagy`, and pagy declares `json >= 0`; adding Avo materializes `json` into the lock, and Bundler resolves it to the newest release.
+
+Two fixes:
+
+```ruby
+# Gemfile — staying on Rails < 8.1: pin json to what you had before
+gem "json", "< 3"
+```
+
+or upgrade to **Rails 8.1+**, where ActiveSupport no longer passes the keyword and json 3.x is fine.
+
+Confirm which version you resolved, and what dragged it in:
+
+```bash
+bundle list | grep -E "json|activesupport"   # which versions actually resolved
+grep -n -B4 '^      json' Gemfile.lock       # which gem asked for it (expect pagy)
+```
 
 ---
 

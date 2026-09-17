@@ -219,13 +219,13 @@ silent                                           # suppress the default notifica
 ```
 
 ### Control what happens after
-`handle` also picks the UI response. Default is a full-page `reload`; the last response method called wins:
+`handle` also picks the UI response. Default is a full-page `reload`; the last response method called wins, except `download`, which composes with the others:
 
 | Method | Effect |
 | --- | --- |
 | `reload` | Full-page reload (default). |
 | `redirect_to path` | Redirect elsewhere (accepts `allow_other_host:`, `status:`). |
-| `download data, "file.csv"` | Trigger a file download. **Pair with `self.turbo = false`** for a real file response. |
+| `download data, "file.csv"` | Trigger a file download. On its own it leaves the page as-is; add `reload` (or `redirect_to`) after it to download *and* refresh. **Pair with `self.turbo = false`** for a real file response. |
 | `keep_modal_open` | Keep the modal + user input (show an error and let them retry). |
 | `close_modal` / `do_nothing` | Close the modal, leave the page as-is. |
 | `reload_records(query)` | Refresh only the affected rows/cards. Called bare (`reload_records`), it defaults to the records the action ran on. **Index only — not associations.** |
@@ -252,6 +252,7 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
 ## Gotchas
 
 - **`query` is always an array.** Even a single-record action gets `[record]`. Use `query.first` for the one-record case; don't call record methods on `query` directly. `records` is an alias.
+- **Records deleted after selection are omitted.** Another user may delete a checked record before the action request arrives. Avo drops that missing record and still passes every surviving selection to `handle`; action authors do not need to rescue `ActiveRecord::RecordNotFound` for this race. `query` can therefore come back **empty** when every selected record is gone — guard with `return error "No record selected" if query.blank?` if that matters.
 - **"My action doesn't show up" is usually the policy.** With Pundit, `act_on?` in the resource's policy gates action visibility (and `authorize` on the action gates it further). Check the policy first. See the **`avo-authorization`** skill.
 - **The modal is a NEW request.** Params from the Index/Show page that opened it are **not** available in `fields`/`handle`. To prefill from the triggering page, parse `request.referer`:
   ```ruby
@@ -263,6 +264,7 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
 - **`reload_records` is Index-only.** It doesn't work on association tables — use `reload` there.
 - **Notification bodies truncate at ~320 characters.** Keep `succeed`/`error` messages short; put long output in a `download` or a redirect.
 - **File downloads need `self.turbo = false`.** Otherwise Turbo intercepts the response and the download won't fire.
+- **`download` alone doesn't refresh the page.** If the action also creates or changes records, call `reload` after it — the two compose.
 - **Standalone actions need `self.standalone = true`** — otherwise they're disabled when nothing is selected.
 - **Select-all silently disabled?** Query serialization failed. A common cause: a model `normalizes` proc, which raises `TypeError: no _dump_data is defined for class Proc` when a filter hits the normalized attribute. Fix in `config/application.rb`:
   ```ruby
