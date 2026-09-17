@@ -292,6 +292,27 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
   end
 
+  it "opens the new page from the show page using the create hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("c")
+
+    expect(page).to have_current_path("/admin/resources/projects/new", ignore_query: true)
+  end
+
+  # Leaving a half-filled form on a stray keypress is not worth the symmetry with "i".
+  it "does not trigger the create hotkey from the edit page" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}/edit"
+
+    dispatch_keydown("c")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
+  end
+
   it "opens the delete confirmation dialog using the delete hotkey" do
     project = create(:project)
 

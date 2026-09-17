@@ -10,6 +10,12 @@
       <% if (resources_index_path = (resources_path(resource: @resource) rescue nil)) %>
         <meta name="avo:resources-index-path" content="<%= resources_index_path %>">
       <% end %>
+      <%# Same for "c" → new, on show only, and only when the create button would render on the index. %>
+      <% if action_name == "show" && !@resource.resource_type_array? && @resource.authorization.authorize_action(:new, raise_exception: false) %>
+        <% if (resources_new_path = (new_resource_path(resource: @resource) rescue nil)) %>
+          <meta name="avo:resources-new-path" content="<%= resources_new_path %>">
+        <% end %>
+      <% end %>
     <% end %>
 
     <% if !Avo.configuration.turbo[:instant_click] %>
