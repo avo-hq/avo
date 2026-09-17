@@ -3,6 +3,7 @@ require_relative "avo/railtie_dsl"
 
 require "zeitwerk"
 require "net/http"
+require "csv"
 require "active_support/inflector"
 require_relative "avo/version"
 require_relative "avo/tailwind_builder"

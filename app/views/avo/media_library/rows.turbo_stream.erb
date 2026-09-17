@@ -1,0 +1,11 @@
+<% offset = params[:offset].to_i %>
+<% text = media_library_text_preview(@blob, offset: offset) %>
+<% rows, consumed = media_library_csv_rows(text) if text %>
+
+<%= turbo_stream.append "media-library-csv-rows" do %>
+  <%= render partial: "avo/media_library/csv_rows", locals: {rows: rows || []} %>
+<% end %>
+
+<%= turbo_stream.replace "media-library-csv-more" do %>
+  <%= render partial: "avo/media_library/csv_more", locals: {blob: @blob, next_offset: (offset + consumed if rows)} %>
+<% end %>

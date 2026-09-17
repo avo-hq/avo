@@ -39,7 +39,7 @@
 }
 
 .media-library__item-thumbnail-placeholder {
-  @apply relative h-full flex flex-col justify-center items-center w-full bg-content-secondary;
+  @apply relative h-full flex flex-col justify-center items-center w-full;
 }
 
 .media-library__item-thumbnail-placeholder-icon {
@@ -117,6 +117,13 @@
   @apply flex min-h-96 items-center justify-center overflow-hidden rounded-lg bg-primary;
 }
 
+/* A text preview brings its own card, so the frame steps back: no surface
+   and no minimum height, or a short file leaves the card stretched around
+   an empty gap. */
+.media-library-details__preview-frame--text {
+  @apply min-h-0 bg-transparent;
+}
+
 .media-library-details__preview-image {
   @apply max-h-[36rem] w-auto max-w-full rounded-xl object-contain;
 }
@@ -132,6 +139,47 @@
 
 .media-library-details__preview-placeholder-icon {
   @apply size-10 text-content-secondary;
+}
+
+/* The body of the card a text preview sits in: it scrolls inside the card
+   instead of stretching the page. Block, not the card body's flex column,
+   so the table and the pre take the full width. */
+.media-library-details__preview-text {
+  @apply block max-h-[36rem] overflow-auto text-sm text-content;
+}
+
+.media-library-details__preview-pre {
+  @apply p-4 font-mono whitespace-pre-wrap break-words;
+}
+
+.media-library-details__preview-table {
+  /* Separate, not collapsed: collapsed borders leave hairline gaps between
+     sticky header cells. */
+  @apply w-full border-separate border-spacing-0;
+
+  th,
+  td {
+    @apply px-4 py-2 text-start align-top whitespace-nowrap;
+  }
+
+  td {
+    @apply border-t border-tertiary;
+  }
+
+  /* The header row reads as the card's header: .card__header's spacing and
+     .card__title's type, on the card's own surface. Those classes are flex
+     blocks, so they can't sit on table cells themselves. */
+  th {
+    @apply sticky top-0 bg-secondary leading-tight font-medium text-content;
+  }
+}
+
+.media-library-details__preview-more {
+  @apply flex justify-center;
+}
+
+.media-library-details__preview-note {
+  @apply text-center text-sm text-content-secondary;
 }
 
 .media-library-details__actions {
