@@ -25,6 +25,8 @@ module Avo
     class_attribute :turbo
     class_attribute :authorize, default: true
     class_attribute :close_modal_on_backdrop_click, default: true
+    # One of Avo::ModalComponent's widths. The default is the component's own.
+    class_attribute :modal_width, default: :xl
     class_attribute :custom_translation_key
 
     attr_accessor :view
