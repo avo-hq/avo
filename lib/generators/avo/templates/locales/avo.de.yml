@@ -53,6 +53,11 @@ de:
       shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
       shortcut_badges_show_tooltip: Tastenkombinationssymbole anzeigen
       show: Anzeigen
+      sound: Ton
+      sound_off: Aus
+      sound_off_tooltip: Geräusche beim Erscheinen stummschalten
+      sound_on: Ein
+      sound_on_tooltip: Einen Ton abspielen, wenn sich das Erscheinungsbild ändert
       title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?

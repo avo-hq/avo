@@ -53,6 +53,11 @@ it:
       shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera
       shortcut_badges_show_tooltip: Mostra i badge delle scorciatoie da tastiera
       show: Mostra
+      sound: Suono
+      sound_off: Disattivato
+      sound_off_tooltip: Disattiva i suoni di apparizione
+      sound_on: Attivato
+      sound_on_tooltip: Riproduci un suono quando cambia l'aspetto
       title: Aspetto
     applied: applicato
     are_you_sure: Sei sicuro?

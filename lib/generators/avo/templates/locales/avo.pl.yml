@@ -53,6 +53,11 @@ pl:
       shortcut_badges_hide_tooltip: Ukryj ikony skrótów klawiaturowych
       shortcut_badges_show_tooltip: Pokaż ikony skrótów klawiaturowych
       show: Pokaż
+      sound: Dźwięk
+      sound_off: Wyłącz
+      sound_off_tooltip: Wyłącz dźwięki zmiany wyglądu
+      sound_on: Włącz
+      sound_on_tooltip: Odtwarzaj dźwięk, gdy zmienia się wygląd
       title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?
