@@ -13,6 +13,7 @@ PATH
       activesupport (>= 6.1)
       addressable
       avo-icons (>= 0.1.2)
+      csv
       docile
       meta-tags
       pagy (>= 43.0)

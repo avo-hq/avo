@@ -44,6 +44,54 @@ RSpec.describe "Media library edit", type: :request do
     expect(response.body).to include("attachment.jpg")
   end
 
+  describe "text previews" do
+    def create_text_blob(content, filename:, content_type:)
+      ActiveStorage::Blob.create_and_upload!(io: StringIO.new(content), filename: filename, content_type: content_type, identify: false)
+    end
+
+    it "shows a text file's content, escaped" do
+      blob = create_text_blob("# Title\n<script>alert(1)</script>", filename: "notes.md", content_type: "text/markdown")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("media-library-details__preview-pre")
+      expect(response.body).to include("# Title")
+      expect(response.body).to include("&lt;script&gt;alert(1)&lt;/script&gt;")
+      expect(response.body).not_to include("<script>alert(1)</script>")
+    end
+
+    it "shows a csv file as a table" do
+      blob = create_text_blob("name,city\nAda,\"London, UK\"\n", filename: "people.csv", content_type: "text/csv")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("media-library-details__preview-table")
+      expect(response.body).to include("<th>name</th>")
+      expect(response.body).to include("<td>London, UK</td>")
+    end
+
+    it "reads only the start of a large file and says so" do
+      stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES", 10)
+      blob = create_text_blob("first line\nsecond line\n", filename: "big.txt", content_type: "text/plain")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("Preview limited to the first 10 Bytes")
+      expect(response.body).to include("first line")
+      expect(response.body).not_to include("second line")
+    end
+
+    it "falls back to the placeholder when the file is missing from storage" do
+      blob = create_text_blob("hello", filename: "gone.txt", content_type: "text/plain")
+      blob.service.delete(blob.key)
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("media-library-details__preview-placeholder")
+    end
+  end
+
   it "refuses to blank the filename on update (keeps the blob intact)" do
     blob = create_image_blob(filename: "keep.jpg")
 

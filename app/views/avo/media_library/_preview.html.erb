@@ -11,12 +11,39 @@
       <%= audio_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-audio" %>
     <% elsif blob.video? && blob_url %>
       <%= video_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-video" %>
+    <% elsif (text = media_library_text_preview(blob)) %>
+      <div class="media-library-details__preview-text">
+        <% if blob.content_type == "text/csv" && (rows = media_library_csv_rows(text)) %>
+          <table class="media-library-details__preview-table">
+            <thead>
+              <tr>
+                <% rows.first.each do |cell| %><th><%= cell %></th><% end %>
+              </tr>
+            </thead>
+            <tbody>
+              <% rows.drop(1).each do |row| %>
+                <tr>
+                  <% row.each do |cell| %><td><%= cell %></td><% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <pre class="media-library-details__preview-pre"><%= text %></pre>
+        <% end %>
+      </div>
     <% else %>
       <div class="media-library-details__preview-placeholder">
         <%= svg "tabler/outline/file-text", class: "media-library-details__preview-placeholder-icon" %>
       </div>
     <% end %>
   </div>
+
+  <% if text && blob.byte_size > Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>
+    <p class="media-library-details__preview-note">
+      Preview limited to the first <%= number_to_human_size Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>. Download the file to see all of it.
+    </p>
+  <% end %>
 
   <div class="media-library-details__actions">
     <% if blob_url %>

@@ -134,6 +134,32 @@
   @apply size-10 text-content-secondary;
 }
 
+/* Text previews scroll inside the frame instead of stretching the page. */
+.media-library-details__preview-text {
+  @apply max-h-[36rem] w-full self-stretch overflow-auto text-sm text-content;
+}
+
+.media-library-details__preview-pre {
+  @apply p-4 font-mono whitespace-pre-wrap break-words;
+}
+
+.media-library-details__preview-table {
+  @apply w-full border-collapse;
+
+  th,
+  td {
+    @apply border-b border-tertiary px-3 py-2 text-start align-top whitespace-nowrap;
+  }
+
+  th {
+    @apply sticky top-0 bg-secondary font-semibold;
+  }
+}
+
+.media-library-details__preview-note {
+  @apply text-center text-sm text-content-secondary;
+}
+
 .media-library-details__actions {
   @apply flex w-full flex-wrap items-center justify-center gap-3;
 }

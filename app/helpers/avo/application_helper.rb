@@ -58,6 +58,33 @@ module Avo
       nil
     end
 
+    # How much of a text blob the Media Library preview reads from storage.
+    MEDIA_LIBRARY_TEXT_PREVIEW_BYTES = 1.megabyte
+
+    # The start of a text blob, for the Media Library preview. Read server-side
+    # because Active Storage serves text/* as a download, so it can't be framed.
+    # nil when there is nothing to show (not text, empty, or missing in storage).
+    def media_library_text_preview(blob)
+      return unless blob.text? && blob.byte_size.positive?
+
+      # Clamp the range: S3 answers a range past the end of the object with 416.
+      limit = [blob.byte_size, MEDIA_LIBRARY_TEXT_PREVIEW_BYTES].min
+      text = blob.service.download_chunk(blob.key, 0...limit).force_encoding(Encoding::UTF_8).scrub
+      # A cut-off read ends mid-line (and maybe mid-character); drop the partial line.
+      text = text[0...text.rindex("\n")] if limit < blob.byte_size && text.include?("\n")
+      text
+    rescue ActiveStorage::FileNotFoundError
+      nil
+    end
+
+    # Rows for a CSV preview table, or nil when the text doesn't parse as CSV --
+    # the caller falls back to showing it as plain text.
+    def media_library_csv_rows(text)
+      CSV.parse(text, liberal_parsing: true).presence
+    rescue CSV::MalformedCSVError
+      nil
+    end
+
     # The image formats no browser paints: HEIC and HEIF decode in Safari alone,
     # TIFF and PSD nowhere. Not `ActiveStorage.web_image_content_types` -- that
     # one picks a variant's output format, and browsers render plenty it leaves
