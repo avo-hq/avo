@@ -83,6 +83,27 @@ RSpec.describe "Media library edit", type: :request do
       expect(response.body).to include("View as table")
     end
 
+    it "caps the rows of a csv table and says so" do
+      stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS", 2)
+      blob = create_text_blob("name\nrow-one\nrow-two\nrow-three\n", filename: "people.csv", content_type: "text/csv")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("<td>row-two</td>")
+      expect(response.body).not_to include("row-three")
+      expect(response.body).to include("Preview limited to the first 2 rows")
+    end
+
+    it "does not mention a row cap the csv fits within" do
+      stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS", 2)
+      blob = create_text_blob("name\nrow-one\nrow-two\n", filename: "people.csv", content_type: "text/csv")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("<td>row-two</td>")
+      expect(response.body).not_to include("Preview limited")
+    end
+
     it "reads only the start of a large file and says so" do
       stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES", 10)
       blob = create_text_blob("first line\nsecond line\n", filename: "big.txt", content_type: "text/plain")

@@ -77,10 +77,17 @@ module Avo
       nil
     end
 
+    # How many data rows a CSV preview table shows. The byte cap alone doesn't
+    # bound the table: a megabyte of narrow rows is 100k rows and 300k DOM nodes,
+    # which takes the browser seconds to lay out.
+    MEDIA_LIBRARY_CSV_PREVIEW_ROWS = 1000
+
     # Rows for a CSV preview table, or nil when the text doesn't parse as CSV --
-    # the caller falls back to showing it as plain text.
+    # the caller falls back to showing it as plain text. Reads the header, the
+    # rows to show, and one more so the caller can tell there were more; `first`
+    # stops the parser there instead of parsing the whole text.
     def media_library_csv_rows(text)
-      CSV.parse(text, liberal_parsing: true).presence
+      CSV.new(text, liberal_parsing: true).first(MEDIA_LIBRARY_CSV_PREVIEW_ROWS + 2).presence
     rescue CSV::MalformedCSVError
       nil
     end

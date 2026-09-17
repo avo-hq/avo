@@ -7,6 +7,8 @@
     the way back to the table. %>
 <% text = media_library_text_preview(blob) %>
 <% rows = media_library_csv_rows(text) if text && blob.content_type == "text/csv" %>
+<% row_limit = Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS %>
+<% showing_table = rows && params[:raw].blank? %>
 
 <div class="media-library-details__preview-shell">
   <%= tag.div class: class_names("media-library-details__preview-frame", "media-library-details__preview-frame--text": text) do %>
@@ -20,7 +22,7 @@
     <% elsif text %>
       <%= render ui.card(class: "w-full") do |card| %>
         <% card.with_body(class: "media-library-details__preview-text") do %>
-          <% if rows && params[:raw].blank? %>
+          <% if showing_table %>
             <table class="media-library-details__preview-table">
               <thead>
                 <tr>
@@ -28,7 +30,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% rows.drop(1).each do |row| %>
+                <% rows[1, row_limit].each do |row| %>
                   <tr>
                     <% row.each do |cell| %><td><%= cell %></td><% end %>
                   </tr>
@@ -47,7 +49,11 @@
     <% end %>
   <% end %>
 
-  <% if text && blob.byte_size > Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>
+  <% if showing_table && rows.size > row_limit + 1 %>
+    <p class="media-library-details__preview-note">
+      Preview limited to the first <%= number_with_delimiter row_limit %> rows. Download the file to see all of it.
+    </p>
+  <% elsif text && blob.byte_size > Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>
     <p class="media-library-details__preview-note">
       Preview limited to the first <%= number_to_human_size Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>. Download the file to see all of it.
     </p>
