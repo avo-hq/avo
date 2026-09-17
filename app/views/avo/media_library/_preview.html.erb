@@ -6,8 +6,7 @@
     actions all read them. `rows` stays set in raw mode so the actions can offer
     the way back to the table. %>
 <% text = media_library_text_preview(blob) %>
-<% rows = media_library_csv_rows(text) if text && blob.content_type == "text/csv" %>
-<% row_limit = Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS %>
+<% rows, consumed = media_library_csv_rows(text) if text && blob.content_type == "text/csv" %>
 <% showing_table = rows && params[:raw].blank? %>
 
 <div class="media-library-details__preview-shell">
@@ -29,16 +28,17 @@
                   <% rows.first.each do |cell| %><th><%= cell %></th><% end %>
                 </tr>
               </thead>
-              <tbody>
-                <% rows[1, row_limit].each do |row| %>
-                  <tr>
-                    <% row.each do |cell| %><td><%= cell %></td><% end %>
-                  </tr>
-                <% end %>
+              <tbody id="media-library-csv-rows">
+                <%= render partial: "avo/media_library/csv_rows", locals: {rows: rows.drop(1)} %>
               </tbody>
             </table>
           <% else %>
             <pre class="media-library-details__preview-pre"><%= text %></pre>
+          <% end %>
+        <% end %>
+        <% if showing_table %>
+          <% card.with_footer do %>
+            <%= render partial: "avo/media_library/csv_more", locals: {blob: blob, next_offset: consumed} %>
           <% end %>
         <% end %>
       <% end %>
@@ -49,11 +49,8 @@
     <% end %>
   <% end %>
 
-  <% if showing_table && rows.size > row_limit + 1 %>
-    <p class="media-library-details__preview-note">
-      Preview limited to the first <%= number_with_delimiter row_limit %> rows. Download the file to see all of it.
-    </p>
-  <% elsif text && blob.byte_size > Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>
+  <%# A csv table has "load more" instead of a truncation note. %>
+  <% if !showing_table && text && blob.byte_size > Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>
     <p class="media-library-details__preview-note">
       Preview limited to the first <%= number_to_human_size Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>. Download the file to see all of it.
     </p>

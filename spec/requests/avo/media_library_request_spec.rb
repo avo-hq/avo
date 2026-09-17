@@ -83,25 +83,65 @@ RSpec.describe "Media library edit", type: :request do
       expect(response.body).to include("View as table")
     end
 
-    it "caps the rows of a csv table and says so" do
-      stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS", 2)
-      blob = create_text_blob("name\nrow-one\nrow-two\nrow-three\n", filename: "people.csv", content_type: "text/csv")
+    describe "csv paging" do
+      # Multi-byte and quoted content, so a byte offset that was off by a
+      # character or a quote would land mid-row and show up in the next page.
+      let(:csv) { "name,city\nZoë,\"Cluj, RO\"\nrow-two,x\nrow-three,y\nrow-four,z\n" }
+      let(:blob) { create_text_blob(csv, filename: "people.csv", content_type: "text/csv") }
 
-      get "/admin/media-library/#{blob.id}/edit"
+      before { stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS", 3) }
 
-      expect(response.body).to include("<td>row-two</td>")
-      expect(response.body).not_to include("row-three")
-      expect(response.body).to include("Preview limited to the first 2 rows")
-    end
+      it "shows the first page and links to the byte where the next row starts" do
+        get "/admin/media-library/#{blob.id}/edit"
 
-    it "does not mention a row cap the csv fits within" do
-      stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS", 2)
-      blob = create_text_blob("name\nrow-one\nrow-two\n", filename: "people.csv", content_type: "text/csv")
+        expect(response.body).to include("<td>row-two</td>")
+        expect(response.body).not_to include("row-three")
+        expect(response.body).to include("/admin/media-library/#{blob.id}/rows?offset=#{csv.b.index("row-three")}")
+      end
 
-      get "/admin/media-library/#{blob.id}/edit"
+      it "streams the next page from that offset, and stops offering more at the end" do
+        get "/admin/media-library/#{blob.id}/rows", params: {offset: csv.b.index("row-three")}, as: :turbo_stream
 
-      expect(response.body).to include("<td>row-two</td>")
-      expect(response.body).not_to include("Preview limited")
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+        expect(response.body).to include('action="append" target="media-library-csv-rows"')
+        expect(response.body).to include("<td>row-three</td>")
+        expect(response.body).to include("<td>row-four</td>")
+        expect(response.body).not_to include("row-two")
+        expect(response.body).to include('action="replace" target="media-library-csv-more"')
+        expect(response.body).not_to include("Load more rows")
+      end
+
+      it "does not offer more rows for a csv that fits in one page" do
+        small = create_text_blob("name\nrow-one\n", filename: "small.csv", content_type: "text/csv")
+
+        get "/admin/media-library/#{small.id}/edit"
+
+        expect(response.body).to include("<td>row-one</td>")
+        expect(response.body).not_to include("Load more rows")
+      end
+
+      it "picks a row up whole on the next page when a read ends inside its quoted field" do
+        multiline = create_text_blob("name,note\nAda,\"line one\nline two\"\nBob,x\n", filename: "notes.csv", content_type: "text/csv")
+        # 26 bytes ends the first read after "line one", inside Ada's quoted field.
+        stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES", 26)
+
+        get "/admin/media-library/#{multiline.id}/edit"
+
+        expect(response.body).to include("<th>name</th>")
+        expect(response.body).not_to include("line one")
+        expect(response.body).to include("/admin/media-library/#{multiline.id}/rows?offset=10")
+
+        get "/admin/media-library/#{multiline.id}/rows", params: {offset: 10}, as: :turbo_stream
+
+        expect(response.body).to include("<td>line one\nline two</td>")
+      end
+
+      it "shrugs off an offset past the end of the file" do
+        get "/admin/media-library/#{blob.id}/rows", params: {offset: 999_999}, as: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include("Load more rows")
+      end
     end
 
     it "reads only the start of a large file and says so" do
