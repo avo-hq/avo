@@ -1,6 +1,6 @@
 ---
 name: avo-branding-appearance
-description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, fonts, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "use our own font/typeface", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item" — whether or not they name Avo.
+description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, fonts, the appearance-picker sound, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "use our own font/typeface", "turn off / mute the theme-picker sound", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item" — whether or not they name Avo.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -14,7 +14,7 @@ Make the Avo admin look like your product — logos, favicon, color scheme, bran
 
 Files you'll touch, from shallowest to deepest:
 
-- `config/initializers/avo.rb` → `config.appearance = { … }` — logos, favicon, scheme, palettes, picker/lock, persistence, chart colors. **The default answer.**
+- `config/initializers/avo.rb` → `config.appearance = { … }` — logos, favicon, scheme, palettes, picker/lock, sound, persistence, chart colors. **The default answer.**
 - `app/assets/stylesheets/avo-overrides.css` — no-build CSS-variable re-skin, including the font variables (eject with `rails g avo:eject --partial :avo_overrides_css`). Served as-is.
 - `app/views/avo/partials/_head.html.erb` — inline `<style>` for component variables, or `<link>` tags for a hosted font (eject with `rails g avo:eject --partial :head`).
 - `app/assets/svgs/` — your own SVG icons for menu items / actions.
@@ -33,9 +33,9 @@ Authoritative docs — fetch on demand, verify option names against them (and th
 
 ## When this applies
 
-**Explicit (Avo named):** "set `config.appearance`", "change Avo's logo / logomark / favicon", "set the Avo accent/neutral palette", "lock the Avo theme", "restrict the appearance picker", "persist Avo appearance to the database", "override Avo CSS variables", "set `--font-sans` / `--font-mono`", "eject the `:head` partial", "set an icon on this Avo menu item".
+**Explicit (Avo named):** "set `config.appearance`", "change Avo's logo / logomark / favicon", "set the Avo accent/neutral palette", "lock the Avo theme", "restrict the appearance picker", "persist Avo appearance to the database", "override Avo CSS variables", "set `--font-sans` / `--font-mono`", "turn off Avo's appearance-picker sound", "eject the `:head` partial", "set an icon on this Avo menu item".
 
-**Implicit (product-shaped, no mention of Avo):** "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo / a favicon", "the admin should default to dark mode" / "support dark mode", "let users switch themes" / "lock it so they can't", "remember each user's theme across devices", "change the accent/primary color" / "make the buttons blue", "change the sidebar/navbar background color", "use our brand font in the admin" / "change the admin's typeface" / "load a Google font", "give the admin a coastal / rose / 80s-sunset theme", "our admin looks too generic", "change the dashboard chart colors", "use a custom icon for this menu item".
+**Implicit (product-shaped, no mention of Avo):** "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo / a favicon", "the admin should default to dark mode" / "support dark mode", "let users switch themes" / "lock it so they can't", "remember each user's theme across devices", "change the accent/primary color" / "make the buttons blue", "change the sidebar/navbar background color", "use our brand font in the admin" / "change the admin's typeface" / "load a Google font", "there's a clicking sound when I change the theme, turn it off", "give the admin a coastal / rose / 80s-sunset theme", "our admin looks too generic", "change the dashboard chart colors", "use a custom icon for this menu item".
 
 ## Workflow
 
@@ -113,9 +113,9 @@ config.appearance = {
 
 Palette values accept any CSS color string (`oklch()`, `#hex`, `rgb()`, `hsl()`, `var()`). `neutral_colors` and `accent_colors` are independent — set either, both, or neither. Defining the colors only creates the palette; you still need `neutral: :brand` / `accent: :brand` (or `"brand"` listed in `neutrals:`/`accents:`) to actually select it. If the user gives you only one brand color, set `accent_colors` and leave the neutral as a preset like `:slate`.
 
-### 4. Picker exposure — restrict, lock, and switcher layout
+### 4. Picker exposure — restrict, lock, switcher layout, and sound
 
-By default the navbar picker lets users change scheme, neutral, and accent. Trim the options, lock some down, or change the layout:
+By default the navbar picker lets users change scheme, neutral, and accent. Trim the options, lock some down, change the layout, or control the pick sound:
 
 ```ruby
 config.appearance = {
@@ -125,11 +125,15 @@ config.appearance = {
   accents:  %w[brand blue indigo violet],
 
   lock: [:scheme],           # any subset of [:scheme, :neutral, :accent] — hides that switcher, forces the value
-  picker_layout: :inline     # :inline (default; collapses to dropdown on small screens) | :dropdown
+  picker_layout: :inline,    # :inline (default; collapses to dropdown on small screens) | :dropdown
+  sound: true,               # default — play a short sound when a user picks a scheme/neutral/accent
+  sound_button: false        # default — show a mute toggle in the switcher (Shift+S always works either way)
 }
 ```
 
 A value **not** in `lock:` is a default the user can still override. Lock all three to fully pin the theme.
+
+`sound`/`sound_button` only set the **starting** state — each browser can flip it with <kbd>Shift</kbd>+<kbd>S</kbd> or `sound_button`'s mute toggle, and that per-browser choice is stored in `localStorage` and overrides `sound:` on later visits. "Turn off the theme-picker sound" only reaches new/never-toggled browsers this way; there's no server-side way to force it silent for everyone.
 
 ### 5. Persist each user's picks
 
@@ -281,6 +285,8 @@ For **populating menu/resource icons at scale** (migrations, whole-sidebar passe
 | `neutrals` / `accents` | Restrict picker options | Array of **Strings** (no colon) |
 | `lock` | Force values, hide switchers | Array subset of `[:scheme, :neutral, :accent]` |
 | `picker_layout` | Navbar switcher layout | `:inline` (default) `:dropdown` |
+| `sound` | Play a sound on picks by default | Boolean; default `true` |
+| `sound_button` | Show a mute toggle in the switcher | Boolean; default `false` |
 | `persistence` | Where picks are stored | `:cookie` (default) `:database` |
 | `load_settings` / `save_settings` | DB persistence blocks | Proc; needs a JSON/JSONB column |
 | `chart_colors` | Dashboard chart palette | Array of **hex** Strings |
@@ -312,7 +318,7 @@ CSS-only knobs (`--font-sans`/`--font-mono`, navbar/sidebar/table/focus/motion v
 When done, tell the user:
 
 - Which file(s) you edited (full paths) and, for CSS/eject work, which generator command(s) to run (`rails g avo:eject --partial :avo_overrides_css` / `:head`, or the migration).
-- Which `config.appearance` keys you set and why (assets, scheme, palettes, picker/lock, persistence, chart colors), and any CSS variables you overrode (including `--font-sans`/`--font-mono`).
+- Which `config.appearance` keys you set and why (assets, scheme, palettes, picker/lock, sound, persistence, chart colors), and any CSS variables you overrode (including `--font-sans`/`--font-mono`).
 - Which layer of the ladder you used and why you didn't go deeper (Ruby vs `avo-overrides.css` vs ejected `:head`).
 - Anything the user must still do: add the asset files under `app/assets/`, drop self-hosted font files into `public/fonts/` (or allow the hosted font's domain in their CSP), run the migration for DB persistence, or restart the server so initializer changes take effect.
 - For custom palettes, remind them the same scale applies in both light and dark mode, and confirm the `:brand` preset is selected.
