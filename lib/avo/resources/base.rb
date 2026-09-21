@@ -513,19 +513,50 @@ module Avo
         fetch_record_title.to_s
       end
 
+      # Whether this resource may expose `attribute` inside a record title. Core always
+      # answers true; a plugin that restricts what a user may reach overrides this and
+      # answers from its own rules. That is what keeps a restricted attribute out of
+      # global search results, breadcrumbs, record links and the association picker
+      # without teaching each of those surfaces separately — they all render a title.
+      #
+      # Deliberately a question about one attribute rather than a field lookup: a bare
+      # `Resource.new(record:)` is built once per option in a belongs_to lookup list, and
+      # its items holder is empty until `detect_fields` runs, so resolving a title through
+      # the field pipeline would both cost a detection per option and answer nothing on
+      # the resources that never detect.
+      def title_attribute_reachable?(attribute)
+        true
+      end
+
       def fetch_record_title
         return name if @record.nil?
 
         # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the to_param
-        return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.to_param if title.nil?
+        return reachable_title_fallback || @record.to_param if title.nil?
 
         # If the title is a symbol, get the value from the record else execute the block/string
         case title
         when Symbol
-          @record.send title
+          title_attribute_reachable?(title) ? @record.send(title) : @record.to_param
         when Proc
+          # App-authored code. The app's own code is outside this boundary, so the
+          # reachability question is not asked of it.
           Avo::ExecutionContext.new(target: title, resource: self, record: @record).handle
         end
+      end
+
+      # Preserves the original `||` chain exactly — an unreachable candidate is skipped
+      # the same way a blank one is.
+      def reachable_title_fallback
+        reachable_title_attribute(:name) ||
+          reachable_title_attribute(:title) ||
+          reachable_title_attribute(:label)
+      end
+
+      def reachable_title_attribute(attribute)
+        return unless title_attribute_reachable?(attribute)
+
+        @record.try(attribute)
       end
 
       def record_icon
