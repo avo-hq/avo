@@ -13,3 +13,8 @@ jobs:
     uses: avo-hq/support/.github/workflows/create-release.yml@main
     secrets:
       REFRESH_RELEASES_SECRET: ${{ secrets.REFRESH_RELEASES_SECRET }}
+      # Lets the shared workflow ask avo-hq/workspace to announce this release
+      # on the issues it closed — a private repository GITHUB_TOKEN cannot
+      # reach. Absent, the release publishes exactly as before.
+      WORKFLOW_BOT_APP_ID: ${{ secrets.WORKFLOW_BOT_APP_ID }}
+      WORKFLOW_BOT_APP_PRIVATE_KEY: ${{ secrets.WORKFLOW_BOT_APP_PRIVATE_KEY }}

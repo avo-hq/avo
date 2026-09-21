@@ -17,6 +17,8 @@ class Avo::Configuration::Appearance
     :chart_colors,
     :placeholder,
     :picker_layout, # :inline | :dropdown — navbar switcher layout (auto-collapses to dropdown below lg:)
+    :sound, # Boolean — play a sound on picks by default (each browser can override it)
+    :sound_button, # Boolean — show the mute toggle in the switcher
     :load_settings_block,
     :save_settings_block
 
@@ -50,7 +52,9 @@ class Avo::Configuration::Appearance
       neutrals: DEFAULT_NEUTRALS,
       accents: DEFAULT_ACCENTS,
       lock: [],
-      picker_layout: :inline
+      picker_layout: :inline,
+      sound: true,
+      sound_button: false
     }.freeze
   end
 
@@ -75,6 +79,8 @@ class Avo::Configuration::Appearance
     @chart_colors = config[:chart_colors]
     @placeholder = config[:placeholder]
     @picker_layout = config[:picker_layout]
+    @sound = config[:sound]
+    @sound_button = config[:sound_button]
     @load_settings_block = config[:load_settings]
     @save_settings_block = config[:save_settings]
 
@@ -86,6 +92,10 @@ class Avo::Configuration::Appearance
   end
 
   def database_persistence? = persistence == :database
+
+  def sound? = !!@sound
+
+  def sound_button? = !!@sound_button
 
   def scheme_locked? = @lock.include?(:scheme)
 

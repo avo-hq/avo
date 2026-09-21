@@ -44,6 +44,128 @@ RSpec.describe "Media library edit", type: :request do
     expect(response.body).to include("attachment.jpg")
   end
 
+  describe "text previews" do
+    def create_text_blob(content, filename:, content_type:)
+      ActiveStorage::Blob.create_and_upload!(io: StringIO.new(content), filename: filename, content_type: content_type, identify: false)
+    end
+
+    it "shows a text file's content, escaped" do
+      blob = create_text_blob("# Title\n<script>alert(1)</script>", filename: "notes.md", content_type: "text/markdown")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("media-library-details__preview-pre")
+      expect(response.body).to include("# Title")
+      expect(response.body).to include("&lt;script&gt;alert(1)&lt;/script&gt;")
+      expect(response.body).not_to include("<script>alert(1)</script>")
+    end
+
+    it "shows a csv file as a table" do
+      blob = create_text_blob("name,city\nAda,\"London, UK\"\n", filename: "people.csv", content_type: "text/csv")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("media-library-details__preview-table")
+      expect(response.body).to include("<th>name</th>")
+      expect(response.body).to include("<td>London, UK</td>")
+    end
+
+    it "shows a csv file as raw text on request, with a way back to the table" do
+      blob = create_text_blob("name,city\nAda,\"London, UK\"\n", filename: "people.csv", content_type: "text/csv")
+
+      get "/admin/media-library/#{blob.id}/edit"
+      expect(response.body).to include("/admin/media-library/#{blob.id}/edit?raw=1")
+
+      get "/admin/media-library/#{blob.id}/edit?raw=1"
+
+      expect(response.body).not_to include("media-library-details__preview-table")
+      expect(response.body).to include("Ada,&quot;London, UK&quot;")
+      expect(response.body).to include("View as table")
+    end
+
+    describe "csv paging" do
+      # Multi-byte and quoted content, so a byte offset that was off by a
+      # character or a quote would land mid-row and show up in the next page.
+      let(:csv) { "name,city\nZoë,\"Cluj, RO\"\nrow-two,x\nrow-three,y\nrow-four,z\n" }
+      let(:blob) { create_text_blob(csv, filename: "people.csv", content_type: "text/csv") }
+
+      before { stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_CSV_PREVIEW_ROWS", 3) }
+
+      it "shows the first page and links to the byte where the next row starts" do
+        get "/admin/media-library/#{blob.id}/edit"
+
+        expect(response.body).to include("<td>row-two</td>")
+        expect(response.body).not_to include("row-three")
+        expect(response.body).to include("/admin/media-library/#{blob.id}/rows?offset=#{csv.b.index("row-three")}")
+      end
+
+      it "streams the next page from that offset, and stops offering more at the end" do
+        get "/admin/media-library/#{blob.id}/rows", params: {offset: csv.b.index("row-three")}, as: :turbo_stream
+
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+        expect(response.body).to include('action="append" target="media-library-csv-rows"')
+        expect(response.body).to include("<td>row-three</td>")
+        expect(response.body).to include("<td>row-four</td>")
+        expect(response.body).not_to include("row-two")
+        expect(response.body).to include('action="replace" target="media-library-csv-more"')
+        expect(response.body).not_to include("Load more rows")
+      end
+
+      it "does not offer more rows for a csv that fits in one page" do
+        small = create_text_blob("name\nrow-one\n", filename: "small.csv", content_type: "text/csv")
+
+        get "/admin/media-library/#{small.id}/edit"
+
+        expect(response.body).to include("<td>row-one</td>")
+        expect(response.body).not_to include("Load more rows")
+      end
+
+      it "picks a row up whole on the next page when a read ends inside its quoted field" do
+        multiline = create_text_blob("name,note\nAda,\"line one\nline two\"\nBob,x\n", filename: "notes.csv", content_type: "text/csv")
+        # 26 bytes ends the first read after "line one", inside Ada's quoted field.
+        stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES", 26)
+
+        get "/admin/media-library/#{multiline.id}/edit"
+
+        expect(response.body).to include("<th>name</th>")
+        expect(response.body).not_to include("line one")
+        expect(response.body).to include("/admin/media-library/#{multiline.id}/rows?offset=10")
+
+        get "/admin/media-library/#{multiline.id}/rows", params: {offset: 10}, as: :turbo_stream
+
+        expect(response.body).to include("<td>line one\nline two</td>")
+      end
+
+      it "shrugs off an offset past the end of the file" do
+        get "/admin/media-library/#{blob.id}/rows", params: {offset: 999_999}, as: :turbo_stream
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include("Load more rows")
+      end
+    end
+
+    it "reads only the start of a large file and says so" do
+      stub_const("Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES", 10)
+      blob = create_text_blob("first line\nsecond line\n", filename: "big.txt", content_type: "text/plain")
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response.body).to include("Preview limited to the first 10 Bytes")
+      expect(response.body).to include("first line")
+      expect(response.body).not_to include("second line")
+    end
+
+    it "falls back to the placeholder when the file is missing from storage" do
+      blob = create_text_blob("hello", filename: "gone.txt", content_type: "text/plain")
+      blob.service.delete(blob.key)
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("media-library-details__preview-placeholder")
+    end
+  end
+
   it "refuses to blank the filename on update (keeps the blob intact)" do
     blob = create_image_blob(filename: "keep.jpg")
 

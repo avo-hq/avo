@@ -53,6 +53,11 @@ nb:
       shortcut_badges_hide_tooltip: Skjul snarveisknapper
       shortcut_badges_show_tooltip: Vis snarveisknapper
       show: Vis
+      sound: Lyd
+      sound_off: Av
+      sound_off_tooltip: Demp utseendelyder
+      sound_on: På
+      sound_on_tooltip: Spill av en lyd når utseendet endres
       title: Utseende
     applied:
       one: applied
