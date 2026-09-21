@@ -3,6 +3,12 @@
 module Avo
   module Fields
     class LocationField < BaseField
+      # The two columns a location is stored across, when it is stored across two. Read
+      # by anything that has to know which columns back a field — `to_permitted_param`
+      # cannot answer that here, since it yields the field id and a hash rather than the
+      # column names.
+      attr_reader :stored_as
+
       def initialize(id, **args, &block)
         hide_on :index
         super
