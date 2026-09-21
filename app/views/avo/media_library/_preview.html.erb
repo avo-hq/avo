@@ -2,8 +2,15 @@
     service/representation URL, so fall back to the placeholder when it can't. %>
 <% blob_url = safe_blob_url(blob) %>
 
+<%# Both set out here, not inside a block below: the frame, the card and the
+    actions all read them. `rows` stays set in raw mode so the actions can offer
+    the way back to the table. %>
+<% text = media_library_text_preview(blob) %>
+<% rows, consumed = media_library_csv_rows(text) if text && blob.content_type == "text/csv" %>
+<% showing_table = rows && params[:raw].blank? %>
+
 <div class="media-library-details__preview-shell">
-  <div class="media-library-details__preview-frame">
+  <%= tag.div class: class_names("media-library-details__preview-frame", "media-library-details__preview-frame--text": text) do %>
     <% representation_url = safe_blob_representation_url(blob.variant(resize_to_limit: [1400, 1400])) if blob.image? %>
     <% if representation_url %>
       <%= image_tag representation_url, class: "media-library-details__preview-image", loading: :lazy %>
@@ -11,14 +18,51 @@
       <%= audio_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-audio" %>
     <% elsif blob.video? && blob_url %>
       <%= video_tag blob_url, controls: true, preload: false, class: "media-library-details__preview-video" %>
+    <% elsif text %>
+      <%= render ui.card(class: "w-full") do |card| %>
+        <% card.with_body(class: "media-library-details__preview-text") do %>
+          <% if showing_table %>
+            <table class="media-library-details__preview-table">
+              <thead>
+                <tr>
+                  <% rows.first.each do |cell| %><th><%= cell %></th><% end %>
+                </tr>
+              </thead>
+              <tbody id="media-library-csv-rows">
+                <%= render partial: "avo/media_library/csv_rows", locals: {rows: rows.drop(1)} %>
+              </tbody>
+            </table>
+          <% else %>
+            <pre class="media-library-details__preview-pre"><%= text %></pre>
+          <% end %>
+        <% end %>
+        <% if showing_table %>
+          <% card.with_footer do %>
+            <%= render partial: "avo/media_library/csv_more", locals: {blob: blob, next_offset: consumed} %>
+          <% end %>
+        <% end %>
+      <% end %>
     <% else %>
       <div class="media-library-details__preview-placeholder">
         <%= svg "tabler/outline/file-text", class: "media-library-details__preview-placeholder-icon" %>
       </div>
     <% end %>
-  </div>
+  <% end %>
+
+  <%# A csv table has "load more" instead of a truncation note. %>
+  <% if !showing_table && text && blob.byte_size > Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>
+    <p class="media-library-details__preview-note">
+      Preview limited to the first <%= number_to_human_size Avo::ApplicationHelper::MEDIA_LIBRARY_TEXT_PREVIEW_BYTES %>. Download the file to see all of it.
+    </p>
+  <% end %>
 
   <div class="media-library-details__actions">
+    <% if rows %>
+      <%= a_link avo.edit_media_library_path(blob, raw: params[:raw].blank? ? 1 : nil), style: :text do %>
+        <%= params[:raw].blank? ? "View raw" : "View as table" %>
+      <% end %>
+    <% end %>
+
     <% if blob_url %>
       <%= a_link blob_url, style: :text, download: true do %>
         Download

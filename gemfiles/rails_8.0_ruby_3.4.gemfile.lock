@@ -6,13 +6,14 @@ PATH
 PATH
   remote: ..
   specs:
-    avo (4.2.3)
+    avo (4.2.5)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
       avo-icons (>= 0.1.2)
+      csv
       docile
       meta-tags
       pagy (>= 43.0)

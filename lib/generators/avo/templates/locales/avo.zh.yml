@@ -53,6 +53,11 @@ zh:
       shortcut_badges_hide_tooltip: 隐藏键盘快捷键徽章
       shortcut_badges_show_tooltip: 显示键盘快捷键徽章
       show: 显示
+      sound: 声音
+      sound_off: 关闭
+      sound_off_tooltip: 静音外观声音
+      sound_on: 开启
+      sound_on_tooltip: 外观变化时播放声音
       title: 外观
     applied: 已应用
     are_you_sure: 您确定吗？

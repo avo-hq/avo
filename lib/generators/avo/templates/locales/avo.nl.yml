@@ -53,6 +53,11 @@ nl:
       shortcut_badges_hide_tooltip: Verberg sneltoets badges
       shortcut_badges_show_tooltip: Toon sneltoets badges
       show: Toon
+      sound: Geluid
+      sound_off: Uit
+      sound_off_tooltip: Geluiden bij uiterlijk dempen
+      sound_on: Aan
+      sound_on_tooltip: Speel een geluid af wanneer het uiterlijk verandert
       title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?

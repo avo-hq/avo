@@ -35,6 +35,7 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
           shortcut(action: "Delete record", keys: ["D"]),
           shortcut(action: "Edit record", keys: ["E"]),
           shortcut(action: "Open actions", keys: ["A"]),
+          shortcut(action: "Create new record", keys: ["C"]),
           shortcut(action: "Go to index", keys: ["I"])
         ]
       ),
@@ -50,7 +51,8 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         [
           shortcut(action: "Cycle color scheme (auto / light / dark)", keys: ["Shift", "M"]),
           shortcut(action: "Cycle neutral theme", keys: ["Shift", "N"]),
-          shortcut(action: "Cycle accent color", keys: ["Shift", "A"])
+          shortcut(action: "Cycle accent color", keys: ["Shift", "A"]),
+          shortcut(action: "Toggle appearance sound", keys: ["Shift", "S"])
         ]
       ),
       build_section(

@@ -71,6 +71,8 @@ Avo.configure do |config|
   ## == Appearance ==
   config.appearance = {
     picker_layout: :inline, # :inline (default, with mobile auto-collapse) or :dropdown (always compact)
+    sound: true, # play a sound on picks by default; Shift+S toggles it per browser
+    sound_button: false, # show the mute toggle in the switcher (default: false)
     logo: "avo/logo.png",
     logo_dark: "avo/logo-dark.png",
     logomark: "avo/logomark.png",

@@ -21,6 +21,11 @@ module Avo
       add_breadcrumb title: @blob.filename.to_s, path: nil, initials: extract_initials(@blob.filename.to_s)
     end
 
+    # The next page of a csv preview table, appended by the "load more" button.
+    def rows
+      @blob = ActiveStorage::Blob.find(params[:id])
+    end
+
     def extract_initials(filename)
       # Remove file extension
       name_without_ext = File.basename(filename, File.extname(filename))

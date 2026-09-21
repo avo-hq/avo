@@ -58,6 +58,56 @@ module Avo
       nil
     end
 
+    # How much of a text blob the Media Library preview reads from storage at once.
+    MEDIA_LIBRARY_TEXT_PREVIEW_BYTES = 1.megabyte
+
+    # A chunk of a text blob, for the Media Library preview. Read server-side
+    # because Active Storage serves text/* as a download, so it can't be framed.
+    # nil when there is nothing to show (not text, empty, or missing in storage).
+    def media_library_text_preview(blob, offset: 0)
+      return unless blob.text? && blob.byte_size.positive?
+
+      # Clamp the range: S3 answers a range past the end of the object with 416.
+      offset = offset.to_i.clamp(0, blob.byte_size - 1)
+      finish = [blob.byte_size, offset + MEDIA_LIBRARY_TEXT_PREVIEW_BYTES].min
+      text = blob.service.download_chunk(blob.key, offset...finish).force_encoding(Encoding::UTF_8)
+      # Same-width replacements: the csv preview counts bytes to find where the
+      # next page starts, so scrubbing must not change the length.
+      text = text.scrub { |bytes| "?" * bytes.bytesize }
+      # A cut-off read ends mid-line (and maybe mid-character); drop the partial line.
+      text = text[0..text.rindex("\n")] if finish < blob.byte_size && text.include?("\n")
+      text
+    rescue ActiveStorage::FileNotFoundError
+      nil
+    end
+
+    # How many rows a CSV preview table loads at a time. The byte cap alone
+    # doesn't bound the table: a megabyte of narrow rows is 100k rows and 300k
+    # DOM nodes, which takes the browser seconds to lay out.
+    MEDIA_LIBRARY_CSV_PREVIEW_ROWS = 1000
+
+    # One page of a CSV preview: [rows, bytes those rows took up in `text`], or
+    # nil when the text doesn't parse as CSV -- the caller falls back to plain
+    # text. Storage reads byte ranges, not row ranges, so the byte count is what
+    # lets "load more" start the next read exactly where this page ended instead
+    # of re-reading the file from the top.
+    def media_library_csv_rows(text)
+      csv = CSV.new(text, liberal_parsing: true)
+      rows = []
+      consumed = 0
+      begin
+        while rows.size < MEDIA_LIBRARY_CSV_PREVIEW_ROWS && (row = csv.shift)
+          rows << row
+          consumed += csv.line.bytesize
+        end
+      rescue CSV::MalformedCSVError
+        # Usually the read ending inside a quoted multi-line field. Keep the rows
+        # before it: the next page starts at the broken row and reads it whole.
+      end
+
+      [rows, consumed] if rows.any?
+    end
+
     # The image formats no browser paints: HEIC and HEIF decode in Safari alone,
     # TIFF and PSD nowhere. Not `ActiveStorage.web_image_content_types` -- that
     # one picks a variant's output format, and browsers render plenty it leaves

@@ -53,6 +53,11 @@ ua:
       shortcut_badges_hide_tooltip: Сховати значки клавіатурних ярликів
       shortcut_badges_show_tooltip: Показати значки клавіатурних ярликів
       show: Показати
+      sound: Звук
+      sound_off: Вимкнено
+      sound_off_tooltip: Вимкнути звуки появи
+      sound_on: Увімкнено
+      sound_on_tooltip: Відтворювати звук при зміні появи
       title: Зовнішній вигляд
     applied: застосовано
     are_you_sure: Ви впевнені?

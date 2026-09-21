@@ -134,6 +134,20 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_no_css("html.hotkeys-hide-badges")
   end
 
+  it "toggles the appearance-muted class on the html element when pressing Shift+S" do
+    visit "/admin/resources/projects"
+
+    expect(page).to have_no_css("html.appearance-muted")
+
+    dispatch_keydown("S", shift_key: true)
+    expect(page).to have_css("html.appearance-muted")
+    expect(page.evaluate_script("localStorage.getItem('avo:appearance:sound')")).to eq("off")
+
+    dispatch_keydown("S", shift_key: true)
+    expect(page).to have_no_css("html.appearance-muted")
+    expect(page.evaluate_script("localStorage.getItem('avo:appearance:sound')")).to eq("on")
+  end
+
   it "applies kbd--called animation feedback when a hotkey fires" do
     visit "/admin/resources/projects"
 
@@ -276,6 +290,27 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     dispatch_keydown("i")
 
     expect(page).to have_current_path("/admin/resources/projects/#{project.id}")
+  end
+
+  it "opens the new page from the show page using the create hotkey" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}"
+
+    dispatch_keydown("c")
+
+    expect(page).to have_current_path("/admin/resources/projects/new", ignore_query: true)
+  end
+
+  # Leaving a half-filled form on a stray keypress is not worth the symmetry with "i".
+  it "does not trigger the create hotkey from the edit page" do
+    project = create(:project)
+
+    visit "/admin/resources/projects/#{project.id}/edit"
+
+    dispatch_keydown("c")
+
+    expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
   end
 
   it "opens the delete confirmation dialog using the delete hotkey" do
