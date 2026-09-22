@@ -706,12 +706,17 @@ module Avo
     end
 
     def set_pagination_params
-      @index_params[:page] = params[:page] || 1
+      @index_params[:page] = positive_integer_or(params[:page], 1)
+      @index_params[:per_page] = positive_integer_or(params[:per_page].presence || cookies[:per_page], Avo.configuration.per_page)
 
       # If the request includes the 'per_page' parameter, save its value to the cookies
-      cookies[:per_page] = params[:per_page] if params[:per_page].present?
+      cookies[:per_page] = @index_params[:per_page] if params[:per_page].present?
+    end
 
-      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
+    # Pagy raises on anything that is not a positive integer, so fall back when the value is not one.
+    def positive_integer_or(value, fallback)
+      value = value.to_s.to_i
+      value.positive? ? value : fallback
     end
 
     # If we don't get a query object predefined from a child controller like associations, just spin one up.
