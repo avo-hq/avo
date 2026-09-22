@@ -20,6 +20,9 @@ module Avo
       include Avo::Fields::Concerns::DomId
 
       include ActionView::Helpers::UrlHelper
+      # Rails 8.2 extracted link_to, button_to and current_page? into NavigationHelper
+      # (rails/rails#58735). Without it, link_to on a resource is a NoMethodError there.
+      include ActionView::Helpers::NavigationHelper if defined?(ActionView::Helpers::NavigationHelper)
 
       delegate :app, to: ::Avo::Current
       delegate :view_context, to: :app
