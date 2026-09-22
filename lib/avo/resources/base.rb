@@ -4,6 +4,9 @@ module Avo
       extend ActiveSupport::DescendantsTracker
 
       include ActionView::Helpers::UrlHelper
+      # Rails 8.2 extracted link_to, button_to and current_page? into NavigationHelper
+      # (rails/rails#58735). Without it, link_to on a resource is a NoMethodError there.
+      include ActionView::Helpers::NavigationHelper if defined?(ActionView::Helpers::NavigationHelper)
       include Avo::Concerns::HasFieldDiscovery
       include Avo::Concerns::HasItems
       include Avo::Concerns::CanReplaceItems
