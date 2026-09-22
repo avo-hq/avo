@@ -14,17 +14,23 @@ module Avo
       }
 
       class << self
+        # Each array resource keeps its own model class. It starts as a placeholder class and
+        # fetch_records replaces it with the class of the records it builds or finds.
         def model_class
-          @@model_class ||= Avo.const_set(
+          return @model_class if @model_class
+
+          resource_class = self
+
+          Avo.send(:remove_const, class_name) if Avo.const_defined?(class_name, false)
+
+          @model_class = Avo.const_set(
             class_name,
             Class.new do
               include ActiveModel::Model
 
-              class << self
-                def primary_key = nil
-
-                def all = "Avo::Resources::#{class_name}".constantize.new.fetch_records
-              end
+              define_singleton_method(:primary_key) { nil }
+              define_singleton_method(:class_name) { resource_class.class_name }
+              define_singleton_method(:all) { resource_class.new.fetch_records }
             end
           )
         end
@@ -68,21 +74,22 @@ module Avo
         @fetched_records ||= if array_of_records.empty?
           array_of_records
         elsif is_array_of_active_records?(array_of_records)
-          @@model_class = array_of_records.first.class
-          @@model_class.where(id: array_of_records.map(&:id))
+          self.class.model_class = array_of_records.first.class
+          model_class.where(id: array_of_records.map(&:id))
         elsif is_active_record_relation?(array_of_records)
-          @@model_class = array_of_records.try(:model)
+          self.class.model_class = array_of_records.try(:model)
           array_of_records
         elsif is_array_of_store_model?(array_of_records)
-          @@model_class = array_of_records.first.class
+          self.class.model_class = array_of_records.first.class
           return(array_of_records)
         else
           # Dynamically create a class with accessors for all unique keys from the records
           keys = array_of_records.flat_map(&:keys).uniq
+          resource_class = self.class
 
           Avo.send(:remove_const, class_name) if Avo.const_defined?(class_name, false)
 
-          Avo.const_set(
+          custom_class = Avo.const_set(
             class_name,
             Class.new do
               include ActiveModel::Model
@@ -94,13 +101,14 @@ module Avo
                 id
               end
 
-              class << self
-                def class_name = class_name
-              end
+              define_singleton_method(:primary_key) { nil }
+              define_singleton_method(:class_name) { resource_class.class_name }
+              define_singleton_method(:all) { resource_class.new.fetch_records }
             end
           )
 
-          custom_class = "Avo::#{class_name}".constantize
+          # Keep model_class in sync so the records are instances of it
+          resource_class.model_class = custom_class
 
           # Map the records to instances of the dynamically created class
           array_of_records.map do |item|
