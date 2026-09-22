@@ -446,9 +446,9 @@ module Avo
       page_key = "#{pagination_key}.page"
 
       @index_params[:page] = if Avo.configuration.session_persistence_enabled?
-        session[page_key] = params[:page] || session[page_key] || 1
+        session[page_key] = positive_integer_or(params[:page] || session[page_key], 1)
       else
-        params[:page] || 1
+        positive_integer_or(params[:page], 1)
       end
     end
 
@@ -457,9 +457,9 @@ module Avo
       per_page_key = "#{pagination_key}.per_page"
 
       @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
-        session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
+        session[per_page_key] = positive_integer_or(params[:per_page] || session[per_page_key], Avo.configuration.via_per_page)
       else
-        params[:per_page] || Avo.configuration.via_per_page
+        positive_integer_or(params[:per_page], Avo.configuration.via_per_page)
       end
     end
   end
