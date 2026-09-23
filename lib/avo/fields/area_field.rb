@@ -41,6 +41,10 @@ module Avo
       def geometry
         @geometry.to_s.classify
       end
+
+      def tooltip_anchor
+        :block
+      end
     end
   end
 end

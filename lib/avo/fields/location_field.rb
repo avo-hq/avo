@@ -113,6 +113,10 @@ module Avo
           record.send(:"#{database_id}=", value[index])
         end
       end
+
+      def tooltip_anchor
+        :block
+      end
     end
   end
 end

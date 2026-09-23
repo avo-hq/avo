@@ -95,6 +95,8 @@ module Avo
         @autocomplete = args[:autocomplete]
         @help = args[:help]
         @label_help = args[:label_help]
+        @tooltip = args[:tooltip]
+        @label_tooltip = args[:label_tooltip]
         @default = args[:default]
         @visible = args[:visible]
         @html = args[:html]
@@ -228,6 +230,26 @@ module Avo
         return @help unless @help.nil?
 
         translated_option(:help)
+      end
+
+      # Hover text for the value: anchored to the value itself on Index and
+      # Show, to the input on forms. Resolved here rather than in the wrapper
+      # because the Index header renders the label outside any wrapper.
+      def tooltip
+        execute_context(@tooltip.nil? ? translated_option(:tooltip) : @tooltip)
+      end
+
+      # Hover text for the label, on every view and on the Index header.
+      def label_tooltip
+        execute_context(@label_tooltip.nil? ? translated_option(:label_tooltip) : @label_tooltip)
+      end
+
+      # How the value tooltip anchors to the rendered value. `:inline` hugs the
+      # value so the bubble sits over a badge or a date rather than mid-row;
+      # fields whose value fills the row (editors, maps, progress bars) answer
+      # `:block` so the anchor keeps their width instead of collapsing it.
+      def tooltip_anchor
+        :inline
       end
 
       def placeholder

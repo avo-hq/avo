@@ -53,6 +53,7 @@
         sort_direction = first_option
       end
       text_classes = "text-content-secondary tracking-tight leading-tight text-xs font-semibold"
+      label_tooltip = field.label_tooltip
       table_header_class = field.table_header_class
       end_aligned = table_header_class.to_s.split.include?("text-end") %>
 
@@ -86,7 +87,7 @@
               "flex-row-reverse": end_aligned
             ),
             'data-turbo-frame': params[:turbo_frame] do %>
-            <%= field.table_header_label %>
+            <%= render partial: "avo/partials/table_header_label", locals: {field: field, label_tooltip: label_tooltip} %>
 
             <%= render partial: 'avo/partials/sortable_component', locals: {
               field: field,
@@ -95,7 +96,7 @@
           <% end %>
         <% else %>
           <%= content_tag :div, class: text_classes, data: {sortable: false} do %>
-            <%= field.table_header_label %>
+            <%= render partial: "avo/partials/table_header_label", locals: {field: field, label_tooltip: label_tooltip} %>
           <% end %>
         <% end %>
 

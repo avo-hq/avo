@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
+  include Avo::Concerns::HasFieldTooltips
+
   # Vertical padding for each density step. `nil` density falls back to
   # `Avo.configuration.density`.
   DENSITY_PADDING = {

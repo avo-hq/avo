@@ -108,6 +108,8 @@ class Avo::Resources::Project < Avo::BaseResource
       include_blank: false
     field :stage,
       as: :badge,
+      tooltip: -> { "#{record.name} is #{record.stage.to_s.downcase}" if record.stage.present? },
+      label_tooltip: "Where the project is in its lifecycle",
       options: {
         info: ["Discovery"],
         success: :Done,

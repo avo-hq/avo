@@ -29,6 +29,10 @@ module Avo
         @line_wrapping = args[:line_wrapping].present? ? args[:line_wrapping] : true
         @always_show = args[:always_show] || false
       end
+
+      def tooltip_anchor
+        :block
+      end
     end
   end
 end

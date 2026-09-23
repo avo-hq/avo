@@ -7,17 +7,20 @@
     class: label_classes,
     style: label_style,
     data: label_data do %>
-    <span class="self-center">
+    <%= content_tag :span, class: label_text_classes, **tooltip_attributes(label_tooltip) do %>
     <% if @form.present? %>
       <%= @form.label label_for, label %>
     <% else %>
       <%= @field.name %>
     <% end %>
     <% if on_edit? && @field.is_required? %> <span class="text-danger-content ms-1">*</span> <% end %>
+    <% if label_tooltip.present? %>
+      <%= helpers.svg "tabler/outline/info-circle", class: "label-tooltip__icon" %>
+    <% end %>
     <% if label_help.present? %>
       <div class="field-wrapper__label-help"><%== label_help %></div>
     <% end %>
-    </span>
+    <% end %>
   <% end %>
   <%= content_tag :div,
     class: content_classes,
@@ -26,23 +29,25 @@
     <%= tag.div class: "field-wrapper__content-wrapper" do %>
       <% if on_show? %>
         <div class="flex flex-row items-center group gap-x-1 group/clipboard w-full">
-          <% if render_dash? %>
-            —
-          <% elsif collapsable? %>
-            <%= render Avo::Fields::Common::CollapsableContentComponent.new do %>
+          <%= value_tooltip_anchor(block: block_tooltip_anchor?) do %>
+            <% if render_dash? %>
+              —
+            <% elsif collapsable? %>
+              <%= render Avo::Fields::Common::CollapsableContentComponent.new do %>
+                <%= content %>
+              <% end %>
+            <% else %>
               <%= content %>
             <% end %>
-          <% else %>
-            <%= content %>
           <% end %>
           <% if @field.copyable %>
             <%= render Avo::ClipboardComponent.new(value: @field.value) %>
           <% end %>
         </div>
       <% elsif on_edit? %>
-        <div class="field-wrapper__input">
+        <%= content_tag :div, class: "field-wrapper__input", **tooltip_attributes(tooltip) do %>
           <%= content %>
-        </div>
+        <% end %>
         <% if @field.record_errors.include?(@field.id) %>
           <div class="field-wrapper__error"><%= @field.record_errors.full_messages_for(@field.id).to_sentence %></div>
         <% end %>
