@@ -215,4 +215,44 @@ RSpec.describe Avo::Fields::BaseField, type: :model do
       expect(field.plural_name).to eq "Descriptions"
     end
   end
+
+  describe "#tooltip and #label_tooltip" do
+    it "are nil by default" do
+      field = build_field(:title)
+
+      expect(field.tooltip).to be_nil
+      expect(field.label_tooltip).to be_nil
+    end
+
+    it "return strings as given" do
+      field = build_field(:title, tooltip: "Shown on the invoice", label_tooltip: "Public name")
+
+      expect(field.tooltip).to eq "Shown on the invoice"
+      expect(field.label_tooltip).to eq "Public name"
+    end
+
+    it "run blocks with the record, resource, view and field in scope" do
+      field = described_class.new(:title,
+        tooltip: -> { "#{record.class.name} #{field.id} on #{view}" },
+        label_tooltip: -> { "#{resource.route_key} table" })
+        .hydrate(record: Product.new, resource: product_resource, view: Avo::ViewInquirer.new(:index))
+
+      expect(field.tooltip).to eq "Product title on index"
+      expect(field.label_tooltip).to eq "products table"
+    end
+  end
+
+  describe "#tooltip_anchor" do
+    it "hugs the value by default" do
+      expect(build_field(:title).tooltip_anchor).to eq :inline
+    end
+
+    it "fills the row for fields whose value does" do
+      %w[area code easy_mde location progress_bar files].each do |type|
+        field = "Avo::Fields::#{type.camelize}Field".constantize.new(:body)
+
+        expect(field.tooltip_anchor).to eq(:block), "expected #{type} to anchor as a block"
+      end
+    end
+  end
 end

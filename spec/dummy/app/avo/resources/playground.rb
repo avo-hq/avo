@@ -23,7 +23,11 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :select_value, as: :select, options: Playground::SELECT_OPTIONS
     field :multi_select_values, as: :select, multiple: true, options: Playground::MULTI_SELECT_OPTIONS
     field :radio_value, as: :radio, options: Playground::RADIO_OPTIONS
-    field :badge_value, as: :badge, options: Playground::BADGE_OPTIONS
+    field :badge_value,
+      as: :badge,
+      options: Playground::BADGE_OPTIONS,
+      tooltip: -> { "#{field.value.to_s.humanize} since #{record.updated_at&.to_date}" },
+      label_tooltip: "Editorial state of the entry"
     field :status_value,
       as: :status,
       loading_when: Playground::STATUS_LOADING,

@@ -33,6 +33,10 @@ module Avo
 
         record
       end
+
+      def tooltip_anchor
+        :block
+      end
     end
   end
 end

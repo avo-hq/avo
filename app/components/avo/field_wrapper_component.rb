@@ -2,6 +2,7 @@
 
 class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
+  include Avo::Concerns::HasFieldTooltips
 
   prop :collapsable, default: false
   prop :dash_if_blank, default: true
@@ -88,6 +89,16 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   def label_help
     Avo::ExecutionContext.new(target: @label_help || @field.label_help, record: record, resource: @resource, view: @view).handle
+  end
+
+  def label_text_classes
+    class_names("self-center", "label-tooltip": label_tooltip.present?)
+  end
+
+  # Collapsable content fills the row like a block-shaped field does, so its
+  # anchor keeps that width too.
+  def block_tooltip_anchor?
+    collapsable? || @field.tooltip_anchor == :block
   end
 
   def record
