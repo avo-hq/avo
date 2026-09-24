@@ -412,6 +412,9 @@ module Avo
     def checkbox_list_option(record)
       resource = @attachment_resource.new(record:, view: Avo::ViewInquirer.new(:new), params:)
       search_item = (@attachment_resource.fetch_search(:item, record:) || {}).with_indifferent_access
+      # Same split as the global search controller: `record_title` is the fallback, and a
+      # declared `self.search[:item]` supplies title, description and image itself. Those
+      # values are app-authored and outside what a title-attribute rule governs.
       title = search_item[:title] || resource.record_title
 
       {
