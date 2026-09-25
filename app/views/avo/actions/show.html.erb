@@ -40,11 +40,11 @@
       <% if @fields.present? %>
         <div class="description-list border-t border-tertiary">
           <% @fields.each_with_index do |field, index| %>
-            <%= render field
-              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
-              .component_for_view(@view)
-              .new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == 0)
-            %>
+            <% field.hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action) %>
+            <% component = field.component_for_view(@view) %>
+            <%# A display-only field (badge, key/value...) has no form component. Render it as the show view does. %>
+            <% component = field.component_for_view(:show) if component == Avo::BlankFieldComponent %>
+            <%= render component.new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == 0) %>
           <% end %>
         </div>
       <% end %>

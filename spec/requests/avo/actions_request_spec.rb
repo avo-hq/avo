@@ -127,4 +127,47 @@ RSpec.describe "Actions", type: :request do
       expect(flash[:success][:body]).to eq "Post 12345"
     end
   end
+
+  # avo-hq/avo#2190: the controller used to force `view` to :new on both the
+  # action and the resource, so `view` in an action's blocks never said where
+  # the action was started from, and fields hidden on the new view (badge)
+  # never reached the modal.
+  describe "the view the action was started from" do
+    let(:action_id) { "Avo::Actions::Test::ShowView" }
+
+    it "opens the modal with the index view" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to include "view=index resource.view=index"
+    end
+
+    it "opens the modal with the show view" do
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "show"}
+
+      expect(response.body).to include "view=show resource.view=show"
+    end
+
+    it "runs the action with the index view" do
+      post "/admin/resources/reviews/actions",
+        params: {
+          action_id: action_id,
+          resource_view: "index",
+          fields: {avo_resource_ids: "", probe_hidden: "hidden-default"}
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq "view=index resource.view=index probe_hidden=hidden-default"
+    end
+
+    it "renders every declared field, display-only ones included, with defaults prefilled" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to include "Probe badge"
+      expect(response.body).to match(/<input[^>]*name="fields\[probe_hidden\]"[^>]*>/)
+      expect(response.body).to include 'value="hidden-default"'
+      expect(response.body).to include 'value="text-default"'
+    end
+  end
 end

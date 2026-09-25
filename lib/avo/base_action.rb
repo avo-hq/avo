@@ -159,6 +159,15 @@ module Avo
     def fields
     end
 
+    # An action lists its fields itself, so every one of them belongs in the
+    # modal. The show_on/hide_on marks describe resource views, and `view` here
+    # is the one the action was started from, not the modal.
+    def get_fields(**)
+      get_field_definitions
+        .select(&:visible?)
+        .map { |field| field.dup.hydrate(record: @record, view: @view, resource: self) }
+    end
+
     def get_description
       resolve_option(:description)
     end

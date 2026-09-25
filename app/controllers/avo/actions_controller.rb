@@ -18,10 +18,12 @@ module Avo
     layout :choose_layout
 
     def show
-      # Se the view to :new so the default value gets prefilled
+      # The view the modal's fields render in: form components and hidden
+      # inputs. The action and the resource keep the view the action was
+      # started from instead (see `origin_view`).
       @view = Avo::ViewInquirer.new("new")
 
-      @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
+      @resource.hydrate(record: @record, view: origin_view, user: _current_user, params: params)
       @fields = @action.get_fields
 
       build_background_url
@@ -112,8 +114,7 @@ module Avo
         record: @record,
         resource: @resource,
         user: _current_user,
-        # force the action view to in order to render new-related fields (hidden field)
-        view: Avo::ViewInquirer.new(:new),
+        view: origin_view,
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
         query: @query,
         index_query: decrypted_index_query
@@ -123,8 +124,17 @@ module Avo
       @action.fields
     end
 
+    # The view the action was started from: index, show, or edit. The action
+    # link and the modal form both carry it as `resource_view`. A link built by
+    # hand may leave it out, in which case a record id means the show view.
+    def origin_view
+      @origin_view ||= Avo::ViewInquirer.new(
+        action_params[:resource_view].presence || (params[:id].present? ? :show : :index)
+      )
+    end
+
     def action_class
-      @resource.hydrate(view: action_params[:resource_view].presence, user: _current_user, params: params)
+      @resource.hydrate(view: origin_view, user: _current_user, params: params)
 
       registered_action = @resource.find_action(params[:action_id])
 
