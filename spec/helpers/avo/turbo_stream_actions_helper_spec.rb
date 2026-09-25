@@ -45,4 +45,19 @@ RSpec.describe Avo::TurboStreamActionsHelper, type: :helper do
     it { is_expected.to have_css("turbo-stream[action=\"replace\"]") }
     it { is_expected.to have_css("turbo-stream[target=\"#{Avo::MODAL_FRAME_ID}\"]") }
   end
+
+  describe "#avo_update_belongs_to" do
+    subject do
+      helper.avo_update_belongs_to(
+        relation_name: "user",
+        target_name: "post[user_id]",
+        target_record_id: "42",
+        target_resource_label: "Nested User",
+        target_resource_class: "User"
+      )
+    end
+
+    it { is_expected.to have_css('turbo-stream[action="update-belongs-to"][data-relation-name="user"]') }
+    it { is_expected.to have_css('turbo-stream[data-target-name="post[user_id]"][data-target-record-id="42"]') }
+  end
 end
