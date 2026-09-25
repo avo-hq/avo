@@ -186,8 +186,11 @@ module Avo
 
         # For some fields, like belongs_to, the id and database_id differ (user vs user_id).
         # That's why we need to fetch the database_id for when we process the action.
-        action_fields_by_database_id = action_fields.map do |id, value|
-          [value.database_id.to_sym, value]
+        action_fields_by_database_id = action_fields.values.flat_map do |field|
+          # A polymorphic belongs_to submits both `<name>_type` and `<name>_id`, but its database_id only covers the type.
+          database_ids = field.try(:is_polymorphic?) ? field.to_permitted_param : [field.database_id]
+
+          database_ids.map { |database_id| [database_id.to_sym, field] }
         end.to_h
 
         args[:fields].to_unsafe_h.map do |name, value|
