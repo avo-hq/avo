@@ -108,4 +108,23 @@ RSpec.describe "Actions", type: :request do
       expect(flash[:success][:body]).to start_with "0 fish released"
     end
   end
+
+  describe "polymorphic belongs_to field" do
+    it "passes both the type and the id to handle" do
+      review = create(:review)
+
+      post "/admin/resources/reviews/actions",
+        params: {
+          action_id: "Avo::Actions::Test::ShowPolymorphicFields",
+          fields: {
+            avo_resource_ids: review.id.to_s,
+            reviewable_type: "Post",
+            reviewable_id: "12345"
+          }
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq "Post 12345"
+    end
+  end
 end
