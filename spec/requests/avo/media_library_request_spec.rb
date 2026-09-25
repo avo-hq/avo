@@ -201,6 +201,45 @@ RSpec.describe "Media library edit", type: :request do
     expect(blob.metadata["title"]).to eq("Hello")
   end
 
+  describe "attached to" do
+    it "links to the record the blob is attached to" do
+      post = create :post
+      post.cover.attach(create_blob(filename: "cover.txt"))
+
+      get "/admin/media-library/#{post.cover.blob.id}/edit"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("/admin/resources/posts/#{post.to_param}")
+    end
+
+    # https://github.com/avo-hq/avo/issues/3802
+    it "renders when the attached record no longer exists" do
+      post = create :post
+      post.cover.attach(create_blob(filename: "orphan.txt"))
+      blob = post.cover.blob
+      # `delete` skips callbacks, leaving the attachment row pointing at a missing record.
+      post.delete
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Post ##{post.id}")
+      expect(response.body).not_to include("/admin/resources/posts/#{post.to_param}")
+    end
+
+    # A record can exist yet have no Avo resource. Rich text embeds are the common case:
+    # the blob's attachment points at an ActionText::RichText, not at the model with the field.
+    it "renders when the attached record has no Avo resource" do
+      blob = create_blob(filename: "embed.txt")
+      event = create :event, body: %(<action-text-attachment sgid="#{blob.attachable_sgid}"></action-text-attachment>)
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("ActionText::RichText ##{event.body.id}")
+    end
+  end
+
   it "renders the index grid even when a listed blob has a blank filename" do
     broken = create_image_blob
     broken.update_column(:filename, "")
