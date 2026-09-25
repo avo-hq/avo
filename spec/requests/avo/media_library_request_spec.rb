@@ -226,6 +226,18 @@ RSpec.describe "Media library edit", type: :request do
       expect(response.body).to include("Post ##{post.id}")
       expect(response.body).not_to include("/admin/resources/posts/#{post.to_param}")
     end
+
+    # A record can exist yet have no Avo resource. Rich text embeds are the common case:
+    # the blob's attachment points at an ActionText::RichText, not at the model with the field.
+    it "renders when the attached record has no Avo resource" do
+      blob = create_blob(filename: "embed.txt")
+      event = create :event, body: %(<action-text-attachment sgid="#{blob.attachable_sgid}"></action-text-attachment>)
+
+      get "/admin/media-library/#{blob.id}/edit"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("ActionText::RichText ##{event.body.id}")
+    end
   end
 
   it "renders the index grid even when a listed blob has a blank filename" do
