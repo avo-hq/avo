@@ -30,7 +30,12 @@
         <dt class="media-library-details__details-label">Attached to</dt>
         <dd class="media-library-details__details-value media-library-details__attachments">
           <% blob.attachments.each do |attachment| %>
-            <%= link_to record_title(attachment.record), record_path(attachment.record), class: "media-library-details__detail-link" %>
+            <%# The record can be gone while the attachment row stays (deleted with `delete`/`delete_all`, which skip Active Storage's purge callbacks). %>
+            <% if attachment.record.present? %>
+              <%= link_to record_title(attachment.record), record_path(attachment.record), class: "media-library-details__detail-link" %>
+            <% else %>
+              <span><%= attachment.record_type %> #<%= attachment.record_id %></span>
+            <% end %>
           <% end %>
         </dd>
       </div>
