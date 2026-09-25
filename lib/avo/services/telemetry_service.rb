@@ -24,7 +24,10 @@ class Avo::Services::TelemetryService
     def avo_metadata
       resources = Avo.resource_manager.all
       dashboards = Avo::Current.app.dashboard_manager.all
-      field_definitions = resources.map(&:get_field_definitions)
+      # Counting fields across every resource with no user in scope. Declared explicitly so a
+      # consumer that restricts fields per user opts out here rather than inferring it from a
+      # nil user — nil is a legitimate user on the API surface, where restriction must still apply.
+      field_definitions = enumerating_all_resources { resources.map(&:get_field_definitions) }
       fields_count = field_definitions.map(&:count).sum
       fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
 
@@ -67,6 +70,17 @@ class Avo::Services::TelemetryService
       operational
     rescue => error
       "error: #{error.message}"
+    end
+
+    # Marks a block as enumerating every resource without a user, restoring whatever the
+    # surrounding request had set rather than assuming it was unset.
+    def enumerating_all_resources
+      previous = Avo::Current.enumerating_all_resources
+      Avo::Current.enumerating_all_resources = true
+
+      yield
+    ensure
+      Avo::Current.enumerating_all_resources = previous
     end
 
     def other_metadata(type = :actions)

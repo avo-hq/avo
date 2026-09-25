@@ -17,7 +17,7 @@
     aria-modal="true"
     class="modal__card-container"
   >
-    <div class="modal__card" data-<%= ctrl %>-target="card">
+    <div class="modal__card" <%= tag.attributes(data: {"#{ctrl}-target": "card"}) %>>
       <div class="card">
         <div class="card__wrapper">
           <% if has_header? %>

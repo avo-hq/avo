@@ -160,6 +160,10 @@ module Avo
     end
 
     def fetch_result_information(record, resource, item)
+      # `record_title` is the fallback here, not the source: a resource declaring
+      # `self.search[:item]` supplies the title itself, and that block is app-authored.
+      # Anything that governs which attributes a title may expose therefore reaches this
+      # surface through `record_title` only — the item half is the app's own.
       title = item&.dig(:title) || resource.record_title
       highlighted_title = highlight(title&.to_s, CGI.escapeHTML(params[:q] || ""))
 
