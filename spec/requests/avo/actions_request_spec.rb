@@ -169,5 +169,62 @@ RSpec.describe "Actions", type: :request do
       expect(response.body).to include 'value="hidden-default"'
       expect(response.body).to include 'value="text-default"'
     end
+
+    it "keeps the edit view, and every field, when started from a record's edit page" do
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "edit"}
+
+      expect(response.body).to include "view=edit resource.view=edit"
+      # A badge is hidden on a resource's edit form; an action's field list is not a resource form.
+      expect(response.body).to include "Probe badge"
+    end
+
+    it "keeps the index view for a row action, which posts to the record path" do
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to include "view=index resource.view=index"
+    end
+
+    it "derives the view from the route when a hand-built link carries none" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id}
+
+      expect(response.body).to include "view=index resource.view=index"
+
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id}
+
+      expect(response.body).to include "view=show resource.view=show"
+    end
+
+    it "does not trust a view the route cannot back up" do
+      # Without a record in the URL there is no show page to have come from, so a
+      # claimed show origin cannot satisfy an `authorize` block on `view.show?`.
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "show"}
+
+      expect(response.body).to include "view=index resource.view=index"
+
+      post "/admin/resources/reviews/actions",
+        params: {action_id: action_id, resource_view: "show", fields: {avo_resource_ids: "", probe_hidden: "x"}},
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to start_with "view=index resource.view=index"
+
+      # The modal never runs on a form view, whatever the request says.
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "new"}
+
+      expect(response.body).to include "view=show resource.view=show"
+    end
+
+    it "focuses the first input rather than a display-only field" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to match(/<input(?=[^>]*name="fields\[probe_text\]")(?=[^>]*autofocus)[^>]*>/)
+    end
   end
 end

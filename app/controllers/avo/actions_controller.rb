@@ -17,6 +17,8 @@ module Avo
 
     layout :choose_layout
 
+    ORIGIN_VIEWS = %w[index show edit].freeze unless defined?(ORIGIN_VIEWS)
+
     def show
       # The view the modal's fields render in: form components and hidden
       # inputs. The action and the resource keep the view the action was
@@ -125,12 +127,21 @@ module Avo
     end
 
     # The view the action was started from: index, show, or edit. The action
-    # link and the modal form both carry it as `resource_view`. A link built by
-    # hand may leave it out, in which case a record id means the show view.
+    # link and the modal form both carry it as `resource_view`, but that is a
+    # request param, so it is trusted only as far as the route backs it up: a
+    # show or edit page always has a record in the URL, and an index row action
+    # legitimately posts to the record path. Anything else (a hand-built link
+    # without the param, a form view, an arbitrary value) falls back to what the
+    # route implies, so an `authorize` block reading `view` cannot be satisfied
+    # by a crafted request.
     def origin_view
-      @origin_view ||= Avo::ViewInquirer.new(
-        action_params[:resource_view].presence || (params[:id].present? ? :show : :index)
-      )
+      @origin_view ||= begin
+        requested = action_params[:resource_view].to_s
+        route_backed = requested == "index" || (requested.in?(ORIGIN_VIEWS) && params[:id].present?)
+        implied = params[:id].present? ? :show : :index
+
+        Avo::ViewInquirer.new(route_backed ? requested : implied)
+      end
     end
 
     def action_class
