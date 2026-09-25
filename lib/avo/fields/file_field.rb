@@ -25,7 +25,8 @@ module Avo
         final_value = super
 
         # On edit view always show the persisted image. Related: issue#3008
-        if final_value.instance_of?(ActiveStorage::Attached::One) && @view.edit?
+        # Only a pending attachment change (a failed update) differs from the database, so re-find only then.
+        if final_value.instance_of?(ActiveStorage::Attached::One) && @view.edit? && @record.attachment_changes.key?(attribute_id.to_s)
           persisted_record = @resource.find_record(@record.to_param)
           final_value = persisted_record.send(attribute_id)
         end

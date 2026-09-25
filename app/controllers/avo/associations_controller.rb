@@ -18,10 +18,8 @@ module Avo
     layout :choose_layout
 
     def index
-      @parent_resource = @resource.dup
+      @parent_resource, @parent_record = @resource, @record
       @resource = @related_resource
-      @parent_record = @parent_resource.find_record(params[:id], params: params)
-      @parent_resource.hydrate(record: @parent_record)
 
       # When array field the records are fetched from the field block, from the parent record or from the resource def records
       # When other field type, like has_many the @query is directly fetched from the parent record

@@ -12,6 +12,7 @@ RSpec.describe "File fields", type: :request do
   end
 
   let(:project) { Project.create!(name: "Repro", users_required: 10) }
+  let(:post_record) { Post.create!(name: "Hello", body: "World", user: admin_user) }
 
   before { sign_in admin_user }
 
@@ -52,9 +53,43 @@ RSpec.describe "File fields", type: :request do
     expect(response.body).to include "persisted.jpg"
   end
 
-  describe "displaying an image" do
-    let(:post_record) { Post.create!(name: "Hello", body: "World", user: admin_user) }
+  describe "the edit view of a record with a single file" do
+    before do
+      post_record.cover.attach(
+        io: File.open(Rails.root.join("db/seed_files/iphone.jpg")),
+        filename: "persisted-cover.jpg",
+        content_type: "image/jpeg"
+      )
+    end
 
+    it "loads the record once" do
+      allow(Avo::Resources::Post).to receive(:find_record).and_call_original
+
+      get "/admin/resources/posts/#{post_record.to_param}/edit"
+
+      expect(response).to have_http_status :ok
+      expect(response.body).to include "persisted-cover.jpg"
+      expect(Avo::Resources::Post).to have_received(:find_record).once
+    end
+
+    it "keeps rendering the persisted file when the record fails validation with a new one" do
+      put "/admin/resources/posts/#{post_record.to_param}",
+        params: {
+          post: {
+            name: "", # fails the presence validation
+            cover: Rack::Test::UploadedFile.new(Rails.root.join("db/seed_files/dummy-image.jpg"), "image/jpeg")
+          }
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(response).to have_http_status :ok
+      expect(response.body).to include "can&#39;t be blank"
+      expect(response.body).to include "persisted-cover.jpg"
+      expect(response.body).not_to include "dummy-image.jpg"
+    end
+  end
+
+  describe "displaying an image" do
     def attach_cover(filename)
       post_record.cover.attach(
         io: File.open(Rails.root.join("db/seed_files", filename)),
