@@ -24,11 +24,16 @@ export default class extends Controller {
 
   connectModal() {
     this.handleKeydown = this.handleKeydown.bind(this)
+    this.handleSubmitHotkey = this.handleSubmitHotkey.bind(this)
     document.addEventListener('keydown', this.handleKeydown)
+    // On the modal rather than the document so it runs before @github/hotkey's document listener,
+    // which skips events we have already handled (defaultPrevented).
+    this.modalTarget.addEventListener('keydown', this.handleSubmitHotkey)
   }
 
   disconnectModal() {
     document.removeEventListener('keydown', this.handleKeydown)
+    this.modalTarget.removeEventListener('keydown', this.handleSubmitHotkey)
   }
 
   // -- shared actions -------------------------------------------------------
@@ -42,6 +47,28 @@ export default class extends Controller {
     } else {
       this.nudge()
     }
+  }
+
+  // Not left to a `data-hotkey` on the submit button: @github/hotkey ignores keys typed in fields and is
+  // installed on turbo:load / turbo:frame-render only, so a modal a Turbo Stream inserts never gets it.
+  handleSubmitHotkey(event) {
+    if (event.key !== 'Enter' || !(event.metaKey || event.ctrlKey)) return
+    if (event.repeat || event.isComposing || event.defaultPrevented) return
+    if (window.Avo?.configuration?.hotkeys?.enabled === false) return
+    if (!this.isOpen() || !this.isInnermostModalFor(event.target)) return
+
+    const form = this.findForm(event.target)
+    if (!form) return
+
+    // Claim the key even when the submitter is disabled: otherwise the browser's implicit
+    // submission or a hotkey on the page behind the modal would act on it.
+    event.preventDefault()
+
+    const submitter = this.findSubmitter(form)
+    if (submitter?.disabled) return
+
+    this.flashHotkeyBadge(submitter)
+    form.requestSubmit(submitter)
   }
 
   /** Explicit close — wired to buttons (Cancel, the X, etc.). Always closes. */
@@ -83,6 +110,44 @@ export default class extends Controller {
   }
 
   // -- helpers --------------------------------------------------------------
+
+  isInnermostModalFor(element) {
+    const identifier = this.identifier
+    return element.closest?.(`[data-${identifier}-target~="modal"]`) === this.modalTarget
+  }
+
+  // The form being typed in wins; actions and edit-in-modal wrap the modal in their form.
+  findForm(target) {
+    return target.closest('form')
+      ?? this.modalTarget.closest('form')
+      ?? this.modalTarget.querySelector('[data-hotkey="Mod+Enter"]')?.form
+      ?? this.modalTarget.querySelector('form')
+  }
+
+  /**
+   * The button a click would use: the one advertising Cmd+Return, else the last submit button in
+   * the modal's footer (Avo puts the primary action last), else the form's last submit button.
+   */
+  findSubmitter(form) {
+    const selector = 'button[type="submit"], input[type="submit"]'
+    const submitButtons = (root) => Array.from(root?.querySelectorAll(selector) ?? [])
+      .filter((button) => button.form === form)
+
+    const inModal = submitButtons(this.modalTarget)
+
+    return inModal.find((button) => button.matches('[data-hotkey="Mod+Enter"]'))
+      ?? submitButtons(this.modalTarget.querySelector('.modal__controls')).at(-1)
+      ?? inModal.at(-1)
+      ?? submitButtons(form).at(-1)
+  }
+
+  // Same feedback hotkeyFireHandler gives when @github/hotkey fires the button.
+  flashHotkeyBadge(submitter) {
+    submitter?.querySelectorAll('kbd').forEach((kbd) => {
+      kbd.classList.add('kbd--called')
+      kbd.addEventListener('transitionend', () => kbd.classList.remove('kbd--called'), { once: true })
+    })
+  }
 
   addModalOpen() {
     document.body.classList.add('modal-open')
