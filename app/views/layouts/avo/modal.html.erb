@@ -1,4 +1,5 @@
-<%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
+<% modal_frame_id = turbo_frame_request_id.presence || Avo::MODAL_FRAME_ID %>
+<%= turbo_frame_tag modal_frame_id do %>
   <% if params[:via_belongs_to_resource_class].present? %>
     <%# Belongs-to "Create new" flow: the edit component renders its own modal
         (title + footer controls) so the form can wrap the modal natively. %>
@@ -10,4 +11,6 @@
       <% end %>
     <% end %>
   <% end %>
+
+  <%= turbo_frame_tag "#{modal_frame_id}_nested" %>
 <% end %>

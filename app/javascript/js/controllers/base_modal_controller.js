@@ -1,5 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
+const modalStack = []
+
 /**
  * Shared behaviour for both modal strategies (destroy & toggle).
  * Not registered with Stimulus directly — subclasses are.
@@ -29,12 +31,16 @@ export default class extends Controller {
 
   disconnectModal() {
     document.removeEventListener('keydown', this.handleKeydown)
+    this.removeModalOpen()
   }
 
   // -- shared actions -------------------------------------------------------
 
   handleKeydown(event) {
-    if (event.key !== 'Escape' || !this.isOpen()) return
+    if (event.key !== 'Escape' || !this.isOpen() || !this.isTopmost()) return
+
+    event.preventDefault()
+    event.stopImmediatePropagation()
 
     // Escape dismisses, or — when backdrop/Escape closing is disabled — nods "no".
     if (this.closeModalOnBackdropClickValue) {
@@ -85,15 +91,31 @@ export default class extends Controller {
   // -- helpers --------------------------------------------------------------
 
   addModalOpen() {
+    const index = modalStack.indexOf(this.modalTarget)
+    if (index >= 0) modalStack.splice(index, 1)
+
+    modalStack.push(this.modalTarget)
     document.body.classList.add('modal-open')
   }
 
   removeModalOpen() {
-    document.body.classList.remove('modal-open')
+    const index = modalStack.indexOf(this.modalTarget)
+    if (index >= 0) modalStack.splice(index, 1)
+
+    document.body.classList.toggle('modal-open', modalStack.length > 0)
   }
 
   dispatchClose() {
+    this.topmostModal()?.focus()
     document.dispatchEvent(new Event('modal-controller:close'))
+  }
+
+  topmostModal() {
+    return modalStack.at(-1)
+  }
+
+  isTopmost() {
+    return this.topmostModal() === this.modalTarget
   }
 
   // -- subclass contract (override in each strategy) ------------------------

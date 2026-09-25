@@ -66,8 +66,15 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
       resource: target_resource || @field.target_resource,
       via_record_id: resource.record.persisted? ? resource.record.to_param : nil,
       via_belongs_to_resource_class: resource.class.name,
+      via_belongs_to_target_name: target_name,
       **args
     }.compact)
+  end
+
+  def modal_frame_id
+    current_frame_id = helpers.turbo_frame_request_id
+
+    current_frame_id.present? ? "#{current_frame_id}_nested" : Avo::MODAL_FRAME_ID
   end
 
   def modal_args
@@ -92,7 +99,11 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
       reload_belongs_to_field_polymorphic_value: is_polymorphic?,
       reload_belongs_to_field_searchable_value: @field.is_searchable?,
       reload_belongs_to_field_relation_name_value: @field.id,
-      reload_belongs_to_field_target_name_value: "#{form.object_name}[#{@field.id_input_foreign_key}]"
+      reload_belongs_to_field_target_name_value: target_name
     }
+  end
+
+  def target_name
+    "#{form.object_name}[#{@field.id_input_foreign_key}]"
   end
 end

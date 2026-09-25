@@ -3,6 +3,57 @@
 require "rails_helper"
 
 RSpec.describe "Create Via Belongs to", type: :system do
+  context "with nested belongs_to creation" do
+    before do
+      visit "/admin/resources/comments/new"
+      fill_in "comment_body", with: "Preserved comment"
+      select "Post", from: "comment_commentable_type"
+      click_on "Create new post"
+      within("turbo-frame#modal_frame") do
+        fill_in "post_name", with: "Preserved post"
+        click_on "Create new user"
+      end
+    end
+
+    it "creates each record without losing its parent form", :aggregate_failures do
+      expect(page).to have_css(".modal:popover-open", count: 2)
+      expect(page).to have_field("post_name", with: "Preserved post")
+
+      expect do
+        within("turbo-frame#modal_frame_nested") do
+          fill_in "user_email", with: "nested-user@example.com"
+          fill_in "user_first_name", with: "Nested"
+          fill_in "user_last_name", with: "User"
+          fill_in "user_password", with: "password"
+          fill_in "user_password_confirmation", with: "password"
+          click_on "Save"
+        end
+      end.to change(User, :count).by(1)
+
+      expect(page).to have_css("body.modal-open")
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      expect(page).to have_field("post_name", with: "Preserved post")
+      expect(page).to have_select("post_user_id", selected: "Nested User")
+
+      expect do
+        within("turbo-frame#modal_frame") { click_on "Save" }
+      end.to change(Post, :count).by(1)
+
+      expect(page).to have_field("comment_body", with: "Preserved comment")
+      expect(page).to have_select("comment_commentable_id", selected: "Preserved post")
+    end
+
+    it "dismisses only the top dialog with Escape", :aggregate_failures do
+      expect(page).to have_css(".modal:popover-open", count: 2)
+
+      page.execute_script("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))")
+
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      expect(page).to have_field("post_name", with: "Preserved post")
+      expect(page).to have_css("body.modal-open")
+    end
+  end
+
   describe "edit" do
     let(:course_link) { create(:course_link) }
 
