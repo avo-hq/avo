@@ -69,8 +69,4 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   def should_display_invalid_fields_errors?
     (Rails.env.development? || Rails.env.test?) && @resource.invalid_fields.present?
   end
-
-  def has_one_field?
-    field.present? and field.instance_of? Avo::Fields::HasOneField
-  end
 end
