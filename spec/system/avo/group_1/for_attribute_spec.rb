@@ -18,6 +18,43 @@ RSpec.feature "for_attribute option", type: :system do
     end
   end
 
+  describe "belongs_to field" do
+    let!(:other_user) { create :user }
+    let!(:fish) { create :fish, user: user }
+
+    it "renders the association on index" do
+      visit "/admin/resources/fish?view_type=table"
+
+      within find("[data-resource-id='#{fish.to_param}'] [data-field-id='secondary_field_for_user']") do
+        expect(page).to have_link user.name, href: avo.resources_user_path(user)
+      end
+    end
+
+    it "renders the association on show" do
+      visit avo.resources_fish_path(fish)
+
+      expect(find_field_value_element("secondary_field_for_user")).to have_link user.name
+    end
+
+    it "prefills the select on edit" do
+      visit avo.edit_resources_fish_path(fish)
+
+      expect(page).to have_select "fish_user_id", selected: user.name
+    end
+
+    it "changing secondary field persists the association" do
+      visit avo.edit_resources_fish_path(fish)
+
+      select other_user.name, from: "fish_user_id"
+
+      save
+
+      expect(page).to have_text "Fish was successfully updated."
+      expect(find_field_value_element("secondary_field_for_user")).to have_link other_user.name
+      expect(fish.reload.user).to eq other_user
+    end
+  end
+
   describe "association fields" do
     let!(:project) { create :project }
     let!(:reviews) { create_list :review, 6, reviewable: project, user: user }

@@ -30,7 +30,18 @@ class Avo::Resources::Fish < Avo::BaseResource
       only_on: :edit,
       help: "secondary field for name using for_attribute option"
     field :reviews, as: :has_many
-    field :user, as: :belongs_to
+    # A belongs_to field posts the foreign key (fish[user_id]), so two fields for the same
+    # association can not share a form: the regular field is used on new, the `for_attribute`
+    # one on edit. Both render on index and show, where the table drops columns with the same
+    # label, so the names must differ. Keep this one starting with "User": the create-modal specs
+    # click "Create new user" on the edit form. See spec/system/avo/group_1/for_attribute_spec.rb
+    field :user, as: :belongs_to, hide_on: :edit
+    field :secondary_field_for_user,
+      as: :belongs_to,
+      for_attribute: :user,
+      name: "User (for_attribute)",
+      hide_on: :new,
+      help: "secondary field for user using for_attribute option"
     field :type, as: :text, hide_on: :forms
 
     tool Avo::ResourceTools::NestedFishReviews, only_on: :new
