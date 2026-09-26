@@ -258,7 +258,7 @@ module Avo
         else
           reflection_key = polymorphic_as || attribute_id
 
-          reflection_object = record.class.reflect_on_association(reflection_key)
+          reflection_object = get_model_class(record).reflect_on_association(reflection_key)
 
           if (link_to_child_resource || @resource&.link_to_child_resource) && value.present?
             get_resource_by_model_class(value.class.to_s)
