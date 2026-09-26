@@ -816,7 +816,7 @@ module Avo
       end
 
       def record_param
-        @record_param ||= @record.persisted? ? @record.to_param : nil
+        @record_param ||= @record&.persisted? ? @record.to_param : nil
       end
 
       def custom_components
