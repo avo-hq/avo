@@ -186,10 +186,12 @@ module Avo
           @class_name ||= to_s.delete_prefix("Avo::Resources::")
         end
 
-        # MD5 of the resource file and its policy file, so editing either busts
-        # every cached row of the resource. A packed app's files don't change
-        # while it runs, so the digest is computed once per class there; in
-        # development they do, so it is computed on every call.
+        # MD5 of the resource file, its policy file and the installed Avo and
+        # plugin versions (`Avo.cache_version`), so editing either file or
+        # upgrading any gem busts every cached row of the resource. A packed
+        # app's files don't change while it runs, so the digest is computed once
+        # per class there; in development they do, so it is computed on every
+        # call.
         def file_hash
           return compute_file_hash unless Avo::PACKED
 
@@ -210,6 +212,10 @@ module Avo
           if File.file? policy_path
             content_to_be_hashed += File.read(policy_path)
           end
+
+          # The code that renders the row lives in gems too: a new Avo or plugin
+          # version changes the markup without touching either file above.
+          content_to_be_hashed += Avo.cache_version
 
           Digest::MD5.hexdigest(content_to_be_hashed)
         end
