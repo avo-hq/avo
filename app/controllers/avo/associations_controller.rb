@@ -456,11 +456,12 @@ module Avo
     def set_per_page_param
       # avo-resources-project.has_many.avo-resources-user.per_page
       per_page_key = "#{pagination_key}.per_page"
+      default_per_page = @field.per_page || Avo.configuration.via_per_page
 
       @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
-        session[per_page_key] = positive_integer_or(params[:per_page] || session[per_page_key], Avo.configuration.via_per_page)
+        session[per_page_key] = positive_integer_or(params[:per_page] || session[per_page_key], default_per_page)
       else
-        positive_integer_or(params[:per_page], Avo.configuration.via_per_page)
+        positive_integer_or(params[:per_page], default_per_page)
       end
     end
   end
