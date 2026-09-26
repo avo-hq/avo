@@ -29,6 +29,7 @@ module Avo
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
     attr_accessor :cache_resources_on_index_view
+    attr_accessor :index_cache_context
     attr_accessor :context
     attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
@@ -177,6 +178,13 @@ module Avo
       }
       @id_links_to_resource = false
       @cache_resources_on_index_view = Avo::PACKED
+      # Everything an index row's cache key varies by besides the record. Field
+      # `visible:` lambdas, computed fields, grid cards and the row controls all
+      # read the current user, so the user is in the key by default — the record,
+      # not its id, so editing a user's roles busts their rows too. Locale and
+      # tenant are in for the same reason. Resolved through Avo::ExecutionContext,
+      # once per request.
+      @index_cache_context = -> { [current_user, I18n.locale, Avo::Current.tenant_id] }
       @persistence = {
         driver: nil
       }

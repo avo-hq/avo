@@ -186,6 +186,40 @@ module Avo
           @class_name ||= to_s.delete_prefix("Avo::Resources::")
         end
 
+        # MD5 of the resource file, its policy file and the installed Avo and
+        # plugin versions (`Avo.cache_version`), so editing either file or
+        # upgrading any gem busts every cached row of the resource. A packed
+        # app's files don't change while it runs, so the digest is computed once
+        # per class there; in development they do, so it is computed on every
+        # call.
+        def file_hash
+          return compute_file_hash unless Avo::PACKED
+
+          @file_hash ||= compute_file_hash
+        end
+
+        def compute_file_hash
+          content_to_be_hashed = ""
+
+          file_base = class_name.underscore
+          resource_path = Rails.root.join("app", "avo", "resources", "#{file_base}.rb").to_s
+          if File.file? resource_path
+            content_to_be_hashed += File.read(resource_path)
+          end
+
+          # policy file hash
+          policy_path = Rails.root.join("app", "policies", "#{file_base.gsub("_resource", "")}_policy.rb").to_s
+          if File.file? policy_path
+            content_to_be_hashed += File.read(policy_path)
+          end
+
+          # The code that renders the row lives in gems too: a new Avo or plugin
+          # version changes the markup without touching either file above.
+          content_to_be_hashed += Avo.cache_version
+
+          Digest::MD5.hexdigest(content_to_be_hashed)
+        end
+
         # Last segment only — used for display, translation keys, and initials
         def demodulized_class_name
           class_name.demodulize
@@ -654,27 +688,17 @@ module Avo
       end
 
       def file_hash
-        content_to_be_hashed = ""
-
-        file_base = self.class.class_name.underscore
-        resource_path = Rails.root.join("app", "avo", "resources", "#{file_base}.rb").to_s
-        if File.file? resource_path
-          content_to_be_hashed += File.read(resource_path)
-        end
-
-        # policy file hash
-        policy_path = Rails.root.join("app", "policies", "#{file_base.gsub("_resource", "")}_policy.rb").to_s
-        if File.file? policy_path
-          content_to_be_hashed += File.read(policy_path)
-        end
-
-        Digest::MD5.hexdigest(content_to_be_hashed)
+        self.class.file_hash
       end
 
       def file_name
         @file_name ||= self.class.underscore_name.tr(" ", "_")
       end
 
+      # The per-row part of the index cache key: the record, the resource and
+      # policy files, and the parent record when rendered as an association.
+      # Override it to fold in more of the record's own data (an association a
+      # field displays, say). What varies per *viewer* belongs in `cache_context`.
       def cache_hash(parent_record)
         result = [record, file_hash]
 
@@ -683,6 +707,23 @@ module Avo
         end
 
         result
+      end
+
+      # The per-request part of the index cache key — by default the current
+      # user, locale and tenant (`config.index_cache_context`). Override it on a
+      # resource whose lambdas read some other per-request dimension. It cannot
+      # read the record: the view type resolves it once per request and reuses
+      # it for every row.
+      def cache_context
+        Avo::ExecutionContext.new(target: Avo.configuration.index_cache_context, resource: self).handle
+      end
+
+      # The key a view type caches a row under. Composed rather than folded into
+      # `cache_hash` so an app's `cache_hash` override keeps working and cannot
+      # drop the viewer from the key. Pass `cache_context:` to reuse a context
+      # already resolved for the request.
+      def index_cache_key(parent_record, cache_context: self.cache_context)
+        [*cache_hash(parent_record), *cache_context]
       end
 
       # We will not overwrite any attributes that come pre-filled in the record.
