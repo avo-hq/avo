@@ -1,6 +1,6 @@
 ---
 name: avo-performance
-description: Make the Avo admin fast and fix stale or wrong cached rows — pick and force a cache store (config.cache_store, Solid Cache), control index row caching (cache_resources_on_index_view, cache_hash), and bust stale caches. Use when the user wants to speed up the admin, cache admin index rows, or fix caching side-effects — both Avo phrasings ("speed up the Avo admin", "why is the Avo index slow", "set up Solid Cache for Avo", "override cache_hash on a resource", "disable cache_resources_on_index_view") and Rails-shaped ones without Avo ("the admin is slow / the index page takes forever", "speed up the admin", "admin rows don't update after I change a related record", "stale data on the admin list", "admin links point to the old mount path after I moved it", "cache admin index rows"). For N+1 on the index — the single biggest slowness cause — see the self.includes option in avo-resources.
+description: Make the Avo admin fast and fix stale or wrong cached rows — pick and force a cache store (config.cache_store, Solid Cache), control index row caching (cache_resources_on_index_view, index_cache_context, cache_hash), and bust stale caches. Use when the user wants to speed up the admin, cache admin index rows, or fix caching side-effects — both Avo phrasings ("speed up the Avo admin", "why is the Avo index slow", "set up Solid Cache for Avo", "override cache_hash on a resource", "disable cache_resources_on_index_view") and Rails-shaped ones without Avo ("the admin is slow / the index page takes forever", "speed up the admin", "admin rows don't update after I change a related record", "stale data on the admin list", "admin links point to the old mount path after I moved it", "cache admin index rows"). For N+1 on the index — the single biggest slowness cause — see the self.includes option in avo-resources.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -10,7 +10,7 @@ metadata:
 
 # Avo Performance & Caching
 
-Avo leans on the application's cache to speed up the admin, most visibly by caching **each row on the Index view** (and each item on the Grid view). This skill covers the two levers that decide how fast an Avo screen feels: **eliminating N+1 queries** (the biggest cause of a slow index, handled by the sibling **avo-resources** skill) and **caching index rows correctly** so they're fast *and* accurate. The flip side of caching is stale rows — a record that still shows the old value after an associated record changed, or a link that still points at the old mount path — and most requests that land here are really "the admin is slow" or "the admin shows stale data." Cache config is global, in `config/initializers/avo.rb`; per-row cache keys are a resource method (`cache_hash`) at `app/avo/resources/<name>.rb`.
+Avo leans on the application's cache to speed up the admin, most visibly by caching **each item on the Grid view** (table rows are rendered on every request today; caching them is a follow-up). This skill covers the two levers that decide how fast an Avo screen feels: **eliminating N+1 queries** (the biggest cause of a slow index, handled by the sibling **avo-resources** skill) and **caching index rows correctly** so they're fast *and* accurate. The flip side of caching is stale rows — a record that still shows the old value after an associated record changed, or a link that still points at the old mount path — and most requests that land here are really "the admin is slow" or "the admin shows stale data." Cache config is global, in `config/initializers/avo.rb`; the record's part of a row's cache key is a resource method (`cache_hash`) at `app/avo/resources/<name>.rb`, the viewer's part is `config.index_cache_context` (or a resource's `cache_context`).
 
 ## Docs
 
@@ -96,16 +96,35 @@ You only need `config.cache_store` in the Avo initializer (step 3) if you want A
 
 ### 5. Control index row caching
 
-Row caching is on by default everywhere except development. Two knobs:
+Row caching is on by default everywhere except development. Every cached row is keyed on the record **and on the viewer** — the current user record, `I18n.locale` and `Avo::Current.tenant_id` — so a field shown or hidden per role, a computed field reading `current_user`, or a grid card lambda is cached per user and never served to another one. Cached rows expire after a day. Three knobs:
 
 ```ruby
 # config/initializers/avo.rb
 config.cache_resources_on_index_view = false   # disable row caching entirely
+config.index_cache_context = -> { [current_user, I18n.locale, Avo::Current.tenant_id] }   # the default
 ```
 
-- **`cache_resources_on_index_view`** — Boolean. Default: enabled in every environment except development. Turn it off when cached rows would leak the wrong content between requests — most importantly when fields are **shown/hidden per role** (see the Gotchas, and the **avo-admin-config** and **avo-authorization** skills).
+- **`cache_resources_on_index_view`** — Boolean. Default: enabled in every environment except development. You no longer need to turn it off for role-based fields; the viewer is in the key. Turn it off only when a row reads something the key cannot carry (see the Gotchas).
 
-- **`cache_hash(parent_record)`** — the resource method that computes each row's cache key. The default is `[record, file_hash]` (plus the parent record in association tables). `file_hash` is an MD5 of the **resource file and its policy file**, so editing either one auto-busts every cached row for that resource — but a change to the *data* or to an *association* does not, unless you tell it to (step 6 below and the next section). Override it per resource to fold more into the key:
+- **`index_cache_context`** — lambda, resolved through `Avo::ExecutionContext` (`current_user`, `params`, `request`, `context` available) **once per request** and appended to every row's key. Default: `[current_user, I18n.locale, Avo::Current.tenant_id]`. The user *record* goes in, not its id — a role edit touches `updated_at` and busts that user's rows on the spot. Narrow it to share cached rows across users who see identical rows, **only** when nothing a row renders reads the user:
+
+```ruby
+# config/initializers/avo.rb
+config.index_cache_context = -> { [current_user.role, I18n.locale] }
+```
+
+  A resource can override the resolved value with its own `cache_context` method — do that only for a per-request dimension a lambda reads that is *not* the user, e.g. a currency kept in `Avo::Current.context`:
+
+```ruby
+# app/avo/resources/order.rb
+class Avo::Resources::Order < Avo::BaseResource
+  def cache_context
+    [*super, Avo::Current.context[:currency]]
+  end
+end
+```
+
+- **`cache_hash(parent_record)`** — the resource method for the *record's* part of the key. The default is `[record, file_hash]` (plus the parent record in association tables). `file_hash` is an MD5 of the **resource file and its policy file**, so editing either one auto-busts every cached row for that resource — but a change to the *data* or to an *association* does not, unless you tell it to (see *Fixing stale / incorrect cached rows* below). Override it per resource to fold more of the record's data into the key; the viewer stays in the key regardless, because the final key is `index_cache_key(parent_record)` = `[*cache_hash(parent_record), *cache_context]`:
 
 ```ruby
 # app/avo/resources/user.rb
@@ -153,7 +172,7 @@ Keep this in development only — it measurably slows down rendering, so don't l
 
 ## Fixing stale / incorrect cached rows
 
-Because each Index row is cached, a row can lag reality. The usual cases:
+Because each Grid item is cached, a row can lag reality. The usual cases:
 
 - **Row doesn't update when an associated record changes** (e.g. a `Post` row showing a stale comment count after a `Comment` is added). Two fixes, pick one:
   - Add `touch: true` on the child's `belongs_to`, so writing the child touches the parent and moves it out of its cache key:
@@ -175,7 +194,9 @@ These are ordinary Rails caching side-effects, not Avo bugs — the same reasoni
 - **Stale rows when associations change.** A row won't re-render on an associated change by itself → add `belongs_to …, touch: true` on the child, or add the association to the resource's `cache_hash`.
 - **Moving the admin doesn't bust cached links.** Changing `root_path` leaves cached row URLs pointing at the old mount path → `Rails.cache.clear` once, or add `root_path` to `cache_hash`.
 - **Editing the resource or policy file *does* bust the cache automatically** — `file_hash` (part of the default `cache_hash`) hashes both files. So config changes take effect immediately; only *data*/*association* changes need the fixes above.
-- **Turn off row caching when fields depend on the viewer.** If you show/hide or change fields **by role** (per-user visibility, authorization-driven fields), a row cached for one user can be served to another. Set `config.cache_resources_on_index_view = false` — the flag is listed in the **avo-admin-config** skill, and role-based field visibility is the **avo-authorization** skill's territory.
+- **Role-based fields are safe under caching; don't turn it off for them.** The row key is user-scoped by default (`index_cache_context` puts the current user record, locale and tenant in it), so per-role `visible:` lambdas, authorization-driven fields and grid cards are cached per user. Override `cache_context` only for a per-request dimension a lambda reads that is *not* the user. Role-based field visibility itself is the **avo-authorization** skill's territory.
+- **A key can't vary by what it doesn't contain.** A `visible:` or computed field that reads `params` (a query-string flag, a filter value) is served from whichever request cached the row first, under any key. Put the value in `index_cache_context` if it is a small, bounded set; otherwise set `config.cache_resources_on_index_view = false` for that app.
+- **Only the Grid view caches per row today.** Table rows render on every request, so a stale-table complaint is not a cache problem — look at N+1 (step 1) instead.
 - **ViewComponent logging is a dev tool.** Instrumentation slows rendering; enable it to profile, then remove it — never leave it on in production.
 - **Verify before writing.** Option names and defaults drift between versions — confirm against the docs URLs above or the app's installed Avo source (`Avo.cache_store`, `Avo.configuration.cache_resources_on_index_view`) rather than trusting memory.
 
@@ -184,7 +205,7 @@ These are ordinary Rails caching side-effects, not Avo bugs — the same reasoni
 When done, tell the user:
 
 - What you diagnosed — N+1 vs. cold-cache vs. staleness — and how you confirmed it (e.g. `Avo.cache_store.class`, ViewComponent timings, missing `self.includes`).
-- Which files you changed (full paths): the initializer (`config.cache_store`, `config.cache_resources_on_index_view`), any resource `cache_hash` override, model `touch: true`, Solid Cache install/migration.
+- Which files you changed (full paths): the initializer (`config.cache_store`, `config.cache_resources_on_index_view`, `config.index_cache_context`), any resource `cache_hash` or `cache_context` override, model `touch: true`, Solid Cache install/migration.
 - The cache store now in effect and why (default pick vs. forced), plus any commands run (`bundle add`, `solid_cache:install:migrations`, `db:migrate`, `Rails.cache.clear`).
-- For staleness fixes: exactly what now busts the cache (touch, `cache_hash` addition, or a one-time clear) and any change still needed elsewhere (add `self.includes` in avo-resources, disable row caching for role-based fields, run pending migrations).
+- For staleness fixes: exactly what now busts the cache (touch, `cache_hash` addition, or a one-time clear) and any change still needed elsewhere (add `self.includes` in avo-resources, disable row caching for fields that read `params`, run pending migrations).
 - Anything left for the user: restart/redeploy so initializer changes load, warm the cache, or verify the store is reachable in production.

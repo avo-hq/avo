@@ -77,7 +77,8 @@ config.density = :tight                          # row height: :tight, :normal (
 config.field_wrapper_layout = :stacked           # label above value everywhere (default :inline)
 config.click_row_to_view_record = false          # stop the whole row linking to Show (default true)
 config.id_links_to_resource = true               # render id fields as links to the record (default false)
-config.cache_resources_on_index_view = false     # disable per-row index caching (default true)
+config.cache_resources_on_index_view = false     # disable per-row index caching (default: on outside development)
+config.index_cache_context = -> { [current_user.role, I18n.locale] }  # what a row's cache key varies by besides the record (default: current_user record, I18n.locale, Avo::Current.tenant_id)
 config.search_debounce = 300                     # ms to wait after typing before searching (default 300)
 config.pagination = { type: :countless }         # global pagination defaults; same keys as self.pagination
 ```
@@ -156,7 +157,7 @@ config.send_metadata = false                              # opt out of usage met
 - **`resource_default_view` replaces `skip_show_view`.** The old `config.skip_show_view = true` is now `config.resource_default_view = :edit` (default `:show`). This retargets row links, post-create/update redirects, and association links to Edit.
 - **`persistence: { driver: :session }` can overflow the cookie store.** Rails' default cookie session store is capped at 4096 bytes; many stored pagination + filter states raise `ActionDispatch::Cookies::CookieOverflow`. Move to a scalable session store (Redis, Memcache) before enabling it broadly.
 - **`default_editor_url` defaults to Cursor.** If a user's `</>` icons open Cursor unexpectedly, that's the default — point it at their editor. The icons only render in `development`.
-- **Disable `cache_resources_on_index_view` when fields vary by role.** The index cache key uses the record's `id`/`created_at` and the resource file md5 — **not the current user** — so a resource that shows/hides fields per role (`visibility:`) will serve one user's row layout to another. Turn it off there. For the caching model and cache store, see **avo-performance**; for role-based field visibility, see **avo-authorization**.
+- **Row caching is user-scoped; don't disable it for role-based fields.** The index cache key carries the record, the resource/policy file md5 **and** `index_cache_context` — by default the current user record, the locale and the tenant — so a resource that shows/hides fields per role caches a row per user and never serves one user's layout to another. Narrow `index_cache_context` (to a role, say) only when nothing a row renders reads the user; override a resource's `cache_context` only for a per-request dimension a lambda reads that is not the user. A field that reads `params` stays incompatible with caching under any key — that is the one case for `cache_resources_on_index_view = false`. Only the grid view caches per row today. For the caching model and cache store, see **avo-performance**; for role-based field visibility, see **avo-authorization**.
 - **Sidebar resizing is a drag-only gesture.** It doesn't satisfy [WCAG 2.2 SC 2.5.7 (Dragging Movements)](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html), so an app working to an AA conformance claim or a VPAT should set `config.sidebar = {resizable: false}`. Related: sidebar labels now truncate with an ellipsis (plus a hover tooltip) instead of wrapping — if a menu relied on long labels wrapping, shorten them or widen the sidebar.
 - **`click_row_to_view_record` is JS-enhanced.** Making a `<tr>` behave as a link isn't native HTML; Avo does it with JavaScript, which can have side effects. Disabling it (`false`) reserves navigation for the explicit row controls.
 - **Verify before writing.** Option names and defaults drift between versions and several were renamed in Avo 4 — check the docs URLs above or the app's installed `lib/avo/configuration.rb` rather than trusting memory.
@@ -167,6 +168,6 @@ When done, tell the user:
 
 - The exact `config.<name>` lines you added or changed in `config/initializers/avo.rb`, and what each does.
 - Any Avo-3 → Avo-4 rename you applied (`container_width`, `resource_default_view`) and the old line it replaced.
-- Follow-ups the change implies: a server restart to reload the initializer; a scalable session store if you enabled `persistence`; disabling `cache_resources_on_index_view` if they gate fields by role.
+- Follow-ups the change implies: a server restart to reload the initializer; a scalable session store if you enabled `persistence`; a narrowed `index_cache_context` only if they confirmed no row reads the user.
 - When a setting has a per-resource equivalent (`default_view_type`, `pagination`, `density`), note it so they know they can override it on individual resources.
 - Redirect anything out of scope to the right skill: install/mount/license → **avo-setup**, appearance/theming → **avo-branding-appearance**, menus/search/breadcrumbs/shortcuts → **avo-navigation-search**, caching depth → **avo-performance**, authorization → **avo-authorization**, map styles (`map_view`) → **avo-index-views**.
