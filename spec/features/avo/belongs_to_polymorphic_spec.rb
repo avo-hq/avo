@@ -74,7 +74,7 @@ RSpec.feature "belongs_to", type: :feature do
           visit "/admin/resources/comments"
 
           expect(page.body).to have_text "Commentable"
-          expect(field_element_by_resource_id("commentable", comment.id)).to have_link project.name, href: "/admin/resources/projects/#{project.id}"
+          expect(field_element_by_resource_id("commentable", comment.id)).to have_link project.name, href: %r{\A/admin/resources/projects/#{project.id}\?return_to=[^&]+\z}
         end
       end
     end
