@@ -390,8 +390,7 @@ module Avo
         id = type
         type = as
       end
-      field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
-      field = field_klass.new id, form: form, view: view, **args, &block
+      field = Avo::Dsl::FieldParser.new(id: id, as: type.to_sym, form: form, view: view, **args, &block).parse.instance
 
       # Add the form record to the field so all fields have access to it.
       field.hydrate(record: form.object) if form.present?
