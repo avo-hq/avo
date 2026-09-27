@@ -6,6 +6,7 @@ module Avo
       attr_accessor :direct_upload
       attr_accessor :accept
       attr_reader :display_filename
+      attr_reader :lightbox
 
       def initialize(id, **args, &block)
         super
@@ -15,6 +16,13 @@ module Avo
         @direct_upload = args[:direct_upload].present? ? args[:direct_upload] : false
         @accept = args[:accept].present? ? args[:accept] : nil
         @display_filename = args[:display_filename].nil? || args[:display_filename]
+        @lightbox = args[:lightbox].nil? || args[:lightbox]
+      end
+
+      # Images open in an in-page lightbox on the Show view unless the field opts
+      # out with `lightbox: false`. Forms keep their thumbnails plain.
+      def lightbox?
+        lightbox && view.show?
       end
 
       def path

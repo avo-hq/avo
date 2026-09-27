@@ -55,6 +55,37 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
     false
   end
 
+  # Only images open in the lightbox; audio, video and documents keep their players and links.
+  def lightbox?
+    @field.lightbox? && file.representable? && is_image?
+  end
+
+  def preview_label
+    t("avo.preview_item", item: file.filename)
+  end
+
+  def image_arguments
+    {
+      class: "rounded-lg max-w-full h-auto self-start object-cover #{@extra_classes}",
+      loading: :lazy,
+      width: file.metadata["width"],
+      height: file.metadata["height"]
+    }
+  end
+
+  # Marks an element as one of the gallery's lightbox items and hands the
+  # controller the image it opens. The original is linked only when the user
+  # may download the file, matching the download control.
+  def lightbox_item_data
+    {
+      lightbox_target: "item",
+      action: "click->lightbox#open",
+      lightbox_src_param: helpers.safe_image_url(file),
+      lightbox_title_param: file.filename.to_s,
+      lightbox_original_param: (helpers.main_app.url_for(file) if can_download_file?)
+    }.compact
+  end
+
   def document_arguments
     args = {
       class: class_names(

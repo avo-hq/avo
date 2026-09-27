@@ -33,6 +33,7 @@ import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
 import KeyboardShortcutsSearchController from './controllers/keyboard_shortcuts_search_controller'
 import KeyValueController from './controllers/fields/key_value_controller'
+import LightboxController from './controllers/lightbox_controller'
 import LoadingButtonController from './controllers/loading_button_controller'
 import ManualFrameController from './controllers/manual_frame_controller'
 import MapDarkModeController from './controllers/map_dark_mode_controller'
@@ -98,6 +99,7 @@ application.register('input-autofocus', InputAutofocusController)
 application.register('keyboard-shortcuts-search', KeyboardShortcutsSearchController)
 application.register('item-select-all', ItemSelectAllController)
 application.register('item-selector', ItemSelectorController)
+application.register('lightbox', LightboxController)
 application.register('loading-button', LoadingButtonController)
 application.register('manual-frame', ManualFrameController)
 application.register('map-dark-mode', MapDarkModeController)

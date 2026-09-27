@@ -137,6 +137,7 @@ it:
     grid_view: Vista griglia
     hide_content: Nascondi contenuto
     home: Home
+    image_preview: Anteprima immagine
     key_value_field:
       add_row: Aggiungi riga
       delete_row: Elimina riga
@@ -155,6 +156,7 @@ it:
     nested:
       add_new_item: Aggiungi nuovo %{item}
     new: nuovo
+    next_image: Immagine successiva
     next_page: Pagina successiva
     no_cancel: No, annulla
     no_cards_present: Nessuna carta presente
@@ -169,6 +171,7 @@ it:
     oops_nothing_found: Ops! Niente trovato...
     open_in_new_tab: Apri in una nuova scheda
     open_in_your_editor: Apri nel tuo editor
+    open_original: Apri originale
     order:
       higher: Sposta record più in alto
       lower: Sposta record più in basso
@@ -178,6 +181,8 @@ it:
     pages: Pagine
     per_page: Per pagina
     prev_page: Pagina precedente
+    preview_item: Anteprima di %{item}
+    previous_image: Immagine precedente
     record:
       one: record
       other: record

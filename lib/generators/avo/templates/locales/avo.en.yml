@@ -137,6 +137,7 @@ en:
     grid_view: Grid view
     hide_content: Hide content
     home: Home
+    image_preview: Image preview
     key_value_field:
       add_row: Add row
       delete_row: Delete row
@@ -155,6 +156,7 @@ en:
     nested:
       add_new_item: Add new %{item}
     new: new
+    next_image: Next image
     next_page: Next page
     no_cancel: No, cancel
     no_cards_present: No cards present
@@ -169,6 +171,7 @@ en:
     oops_nothing_found: Oops! Nothing found...
     open_in_new_tab: Open in a new tab
     open_in_your_editor: Open in your editor
+    open_original: Open original
     order:
       higher: Move record higher
       lower: Move record lower
@@ -178,6 +181,8 @@ en:
     pages: Pages
     per_page: Per page
     prev_page: Previous page
+    preview_item: Preview %{item}
+    previous_image: Previous image
     record:
       one: record
       other: records

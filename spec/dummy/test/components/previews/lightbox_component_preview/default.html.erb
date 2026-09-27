@@ -1,0 +1,24 @@
+<% enabled = local_assigns.fetch(:enabled, true) %>
+<div style="padding: 2rem;">
+  <%= render Avo::LightboxComponent.new(enabled: enabled) do %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: 1rem;">
+      <% images.each do |image| %>
+        <% if enabled %>
+          <button
+            type="button"
+            class="lightbox__trigger"
+            aria-label="Preview <%= image[:title] %>"
+            data-lightbox-target="item"
+            data-action="click->lightbox#open"
+            data-lightbox-src-param="<%= image[:src] %>"
+            data-lightbox-title-param="<%= image[:title] %>"
+            data-lightbox-original-param="<%= image[:src] %>">
+            <img src="<%= image[:src] %>" alt="" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0.5rem;">
+          </button>
+        <% else %>
+          <img src="<%= image[:src] %>" alt="<%= image[:title] %>" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0.5rem;">
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

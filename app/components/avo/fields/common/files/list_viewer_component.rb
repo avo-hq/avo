@@ -20,6 +20,11 @@ class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
     @component_class = "Avo::Fields::Common::Files::ViewType::#{@view_type.to_s.capitalize}ItemComponent".constantize
   end
 
+  # One lightbox per gallery, and only when there is an image to put in it.
+  def lightbox?
+    @field.lightbox? && @field.value.attachments.any? { |file| file.representable? && file.image? }
+  end
+
   def view_type_component(file)
     @component_class.new(field: @field, resource: @resource, file: file, extra_classes: "aspect-video")
   end
