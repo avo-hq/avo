@@ -139,6 +139,7 @@ pt:
     grid_view: Visualização em grelha
     hide_content: Esconder conteúdo
     home: Início
+    image_preview: Pré-visualização da imagem
     key_value_field:
       add_row: Adicionar linha
       delete_row: Apagar linha
@@ -157,6 +158,7 @@ pt:
     nested:
       add_new_item: Adicionar novo %{item}
     new: novo
+    next_image: Imagem seguinte
     next_page: Próxima página
     no_cancel: Não, cancelar
     no_cards_present: Nenhum cartão presente
@@ -171,6 +173,7 @@ pt:
     oops_nothing_found: Oops! Nada encontrado...
     open_in_new_tab: Abrir em uma nova aba
     open_in_your_editor: Abrir no seu editor
+    open_original: Abrir original
     order:
       higher: Mover recurso para cima
       lower: Mover recuros para baixo
@@ -180,6 +183,8 @@ pt:
     pages: Páginas
     per_page: Por página
     prev_page: Página anterior
+    preview_item: Pré-visualizar %{item}
+    previous_image: Imagem anterior
     record:
       one: registo
       other: registos

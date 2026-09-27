@@ -151,6 +151,7 @@ ar:
     grid_view: عرض الشبكة
     hide_content: إخفاء المحتوى
     home: الصفحة الرئيسية
+    image_preview: معاينة الصورة
     key_value_field:
       add_row: إضافة صف
       delete_row: حذف صف
@@ -169,6 +170,7 @@ ar:
     nested:
       add_new_item: إضافة %{item} جديدة
     new: جديد
+    next_image: الصورة التالية
     next_page: الصفحة التالية
     no_cancel: لا، إلغاء
     no_cards_present: لا توجد بطاقات
@@ -183,6 +185,7 @@ ar:
     oops_nothing_found: عذراً! لم يتم العثور على شيء...
     open_in_new_tab: افتح في علامة تبويب جديدة
     open_in_your_editor: افتح في محررك
+    open_original: فتح الأصل
     order:
       higher: حرك السجل للأعلى
       lower: حرك السجل للأسفل
@@ -192,6 +195,8 @@ ar:
     pages: صفحات
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
+    preview_item: معاينة %{item}
+    previous_image: الصورة السابقة
     record:
       few: سجلات
       many: سجلات

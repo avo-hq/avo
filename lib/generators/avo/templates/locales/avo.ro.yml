@@ -142,6 +142,7 @@ ro:
     grid_view: Vezi sub formă de grid
     hide_content: Ascunde conținutul
     home: Acasă
+    image_preview: Previzualizare imagine
     key_value_field:
       add_row: Adaugă rând
       delete_row: Șterge rând
@@ -160,6 +161,7 @@ ro:
     nested:
       add_new_item: Adaugă noul %{item}
     new: nou
+    next_image: Imaginea următoare
     next_page: Pagina următoare
     no_cancel: Nu, anulează
     no_cards_present: Nici un card găsit
@@ -174,6 +176,7 @@ ro:
     oops_nothing_found: Oups! Nu am găsit rezultate...
     open_in_new_tab: Deschide într-o filă nouă
     open_in_your_editor: Deschideți în editorul dvs.
+    open_original: Deschide originalul
     order:
       higher: Mutați înregistrarea mai sus
       lower: Mutați înregistrarea mai jos
@@ -183,6 +186,8 @@ ro:
     pages: Pagini
     per_page: Pe pagină
     prev_page: Pagina anterioara
+    preview_item: Previzualizează %{item}
+    previous_image: Imaginea anterioară
     record:
       few: înregistrări
       one: înregistrare

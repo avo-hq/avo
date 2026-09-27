@@ -137,6 +137,7 @@ zh-TW:
     grid_view: 網格視圖
     hide_content: 隱藏內容
     home: 首頁
+    image_preview: 圖片預覽
     key_value_field:
       add_row: 新增列
       delete_row: 刪除列
@@ -155,6 +156,7 @@ zh-TW:
     nested:
       add_new_item: 新增 %{item}
     new: 新建
+    next_image: 下一張圖片
     next_page: 下一頁
     no_cancel: 不，取消
     no_cards_present: 沒有卡片
@@ -169,6 +171,7 @@ zh-TW:
     oops_nothing_found: 哎呀！什麼都沒找到...
     open_in_new_tab: 在新分頁中開啟
     open_in_your_editor: 在您的編輯器中打開
+    open_original: 開啟原始檔
     order:
       higher: 將記錄上移
       lower: 將記錄下移
@@ -178,6 +181,8 @@ zh-TW:
     pages: 頁面
     per_page: 每頁顯示
     prev_page: 上一頁
+    preview_item: 預覽 %{item}
+    previous_image: 上一張圖片
     record:
       one: 筆記錄
       other: 筆記錄

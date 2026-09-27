@@ -156,6 +156,7 @@ Every field accepts these common options (full list + types at the field-options
 - **`copyable:`** — clipboard icon on Show/Index. Copies the **displayed** (formatted) value.
 - **`always_show:`** — editor fields only (`trix`, `rhino`, `lexxy`, `markdown`, `easy_mde`, `tip_tap`, `code`). `true` renders the full value on Show instead of the collapsed preview. Defaults to `false`.
 - **`link_to_record:`** — make the Index cell a link to the record. Only on `:id`, `:text`, `:gravatar`, and `belongs_to`.
+- **`lightbox:`** — `:file` and `:files` only. On Show, images open in an in-page lightbox (prev/next, arrow keys, Escape, a link to the original) by default; `lightbox: false` renders the plain image. Non-image files are unaffected.
 - **`for_attribute:`** — back the field with a different attribute than its id (lets you show one column two ways).
 - **`width:`** / **`stacked:`** — column width (`25/33/50/66/75/100`; any value <100 auto-stacks) and label-above-value layout. `stacked:` on the field wins everywhere, so `stacked: false` opts out of the auto-stacking and of sidebars/preview stacking too.
 - **`html:`** — attach `style`/`classes`/`data` to the field's wrapper/label/input per view (e.g. allow wrapping on Index: `html: {index: {wrapper: {classes: "whitespace-normal"}}}`). See the html page.

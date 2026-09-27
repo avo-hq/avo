@@ -137,6 +137,7 @@ nl:
     grid_view: Rasterweergave
     hide_content: Inhoud verbergen
     home: Startpagina
+    image_preview: Afbeeldingsvoorbeeld
     key_value_field:
       add_row: Rij toevoegen
       delete_row: Rij verwijderen
@@ -155,6 +156,7 @@ nl:
     nested:
       add_new_item: Voeg nieuwe %{item} toe
     new: nieuw
+    next_image: Volgende afbeelding
     next_page: Volgende pagina
     no_cancel: Nee, annuleren
     no_cards_present: Geen kaarten aanwezig
@@ -169,6 +171,7 @@ nl:
     oops_nothing_found: Oeps! Niets gevonden...
     open_in_new_tab: Openen in een nieuw tabblad
     open_in_your_editor: Openen in uw editor
+    open_original: Origineel openen
     order:
       higher: Verplaats record omhoog
       lower: Verplaats record omlaag
@@ -178,6 +181,8 @@ nl:
     pages: Pagina's
     per_page: Per pagina
     prev_page: Vorige pagina
+    preview_item: Voorbeeld van %{item}
+    previous_image: Vorige afbeelding
     record:
       one: record
       other: records
