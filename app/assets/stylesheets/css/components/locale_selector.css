@@ -1,0 +1,77 @@
+/* ================================================ */
+/* Locale selector (top navbar)                     */
+/* BEM: .locale-selector (block)                    */
+/* ================================================ */
+
+/* The trigger sits in `.top-navbar__end` beside the appearance switcher's compact
+   trigger and mirrors it: same height, radius, navbar control tokens. */
+.locale-selector__trigger {
+  @apply inline-flex items-center gap-1 h-6 ps-1.5 pe-1 rounded-lg border cursor-pointer;
+  background-color: var(--top-navbar-control-background);
+  border-color: var(--top-navbar-control-border);
+  color: var(--top-navbar-content);
+  transition-property: background-color, color, outline, outline-offset;
+  transition-duration: 150ms, 150ms, 0s, 0s;
+}
+
+.locale-selector__trigger:hover,
+.locale-selector__trigger:focus-visible {
+  background-color: color-mix(in oklab, var(--top-navbar-control-background), var(--top-navbar-content) 12%);
+}
+
+@variant sm {
+  .locale-selector__trigger {
+    @apply h-8 ps-2 pe-1.5;
+  }
+}
+
+.locale-selector__icon {
+  @apply size-4 shrink-0;
+}
+
+/* The code is the at-a-glance answer to "which language am I in"; the icon alone
+   carries the control on phones, where the navbar end is crowded. */
+.locale-selector__code {
+  @apply hidden sm:inline text-xs font-semibold tracking-wide tabular-nums;
+}
+
+.locale-selector__chevron {
+  @apply size-3 opacity-60 shrink-0;
+}
+
+.locale-selector__panel {
+  @apply min-w-56;
+}
+
+.locale-selector__panel .dropdown-menu__list {
+  @apply max-h-[min(22rem,65vh)] overflow-y-auto overflow-x-hidden;
+}
+
+/* button_to wraps each option in a form, so the shared `> :is(a, button)` hover
+   rule never reaches the button; the form steps out of the layout instead. */
+.locale-selector__form {
+  @apply flex w-full;
+}
+
+.locale-selector__item:hover {
+  @apply bg-secondary;
+}
+
+.locale-selector__name {
+  @apply truncate min-w-0;
+}
+
+.locale-selector__item-code {
+  @apply ms-auto ps-3 text-xs font-normal tabular-nums;
+  color: var(--color-content-secondary);
+}
+
+/* Reserves the check's width on every row so the codes line up in one column. */
+.locale-selector__check-slot {
+  @apply inline-flex shrink-0 size-4;
+}
+
+.locale-selector__check {
+  @apply size-4;
+  color: var(--color-accent-content);
+}

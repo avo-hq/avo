@@ -39,6 +39,7 @@
   <div class="top-navbar__end">
     <%= render partial: "avo/partials/header" %>
     <%= render Avo::Notifications::BellComponent.new if Avo.plugin_manager.installed?("avo-notifications") %>
+    <%= render Avo::LocaleSelectorComponent.new if Avo.configuration.locale_selector_enabled? %>
     <%= render partial: "avo/partials/color_scheme_switcher" %>
   </div>
 <% end %>

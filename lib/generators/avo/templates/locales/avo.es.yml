@@ -146,6 +146,7 @@ es:
       key: Clave
       reorder_row: Reordenar fila
       value: Valor
+    language: Idioma
     less_content: Menos contenido
     list_is_empty: La lista está vacía
     load_item: Cargar %{item}

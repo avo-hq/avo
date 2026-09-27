@@ -144,6 +144,7 @@ it:
       key: Chiave
       reorder_row: Riordina riga
       value: Valore
+    language: Lingua
     less_content: Meno contenuti
     list_is_empty: La lista è vuota
     load_item: Carica %{item}

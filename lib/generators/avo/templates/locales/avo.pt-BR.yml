@@ -146,6 +146,7 @@ pt-BR:
       key: Chave
       reorder_row: Reordenar linha
       value: Valor
+    language: Idioma
     less_content: Menos conteúdo
     list_is_empty: Lista vazia
     load_item: Carregar %{item}

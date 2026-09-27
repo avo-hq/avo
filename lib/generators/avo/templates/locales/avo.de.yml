@@ -144,6 +144,7 @@ de:
       key: Schlüssel
       reorder_row: Zeile neu anordnen
       value: Wert
+    language: Sprache
     less_content: Weniger Inhalt
     list_is_empty: Liste ist leer
     load_item: Lade %{item}

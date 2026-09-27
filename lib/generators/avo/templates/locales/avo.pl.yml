@@ -148,6 +148,7 @@ pl:
       key: Klucz
       reorder_row: Zmień kolejność wiersza
       value: Wartość
+    language: Język
     less_content: Pokaż mniej
     list_is_empty: Lista jest pusta
     load_item: Załaduj %{item}

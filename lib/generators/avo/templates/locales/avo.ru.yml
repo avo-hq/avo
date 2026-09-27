@@ -148,6 +148,7 @@ ru:
       key: Ключ
       reorder_row: Перенести строку
       value: Значение
+    language: Язык
     less_content: Меньше контента
     list_is_empty: Список пуст
     load_item: Загрузить %{item}

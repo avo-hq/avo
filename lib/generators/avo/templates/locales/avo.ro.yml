@@ -149,6 +149,7 @@ ro:
       key: Cheie
       reorder_row: Reordonează rând
       value: Valoare
+    language: Limbă
     less_content: Mai puțin conținut
     list_is_empty: Lista este goală
     load_item: Încărcați %{item}
