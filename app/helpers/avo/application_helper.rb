@@ -310,6 +310,16 @@ module Avo
       nil
     end
 
+    # Call it through `helpers.` so the value is memoized on the view context and encrypted once
+    # per request, not once per component (index pages render one link per row).
+    # Inside a turbo frame the URL points at the frame, not the page, so there is nothing to return to.
+    # For example, editing a has_one field should return to the parent page, not the has_one frame.
+    def return_to_current_page
+      return if request.query_parameters.key?("turbo_frame")
+
+      @return_to_current_page ||= e(request.fullpath)
+    end
+
     def wrap_in_modal(content)
       turbo_frame_tag Avo::MODAL_FRAME_ID do
         render(Avo::ModalComponent.new(width: :xl, body_class: "bg-application")) do |c|
