@@ -355,6 +355,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
     @reflection.present? && @resource.record.present?
   end
 
+  def has_one_field?
+    field.present? and field.instance_of? Avo::Fields::HasOneField
+  end
+
   def inverse_of
     current_reflection = @reflection.active_record.reflect_on_all_associations.find do |reflection|
       reflection.name == @reflection.name.to_sym
