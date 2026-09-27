@@ -111,6 +111,7 @@ Most options are shared across the association fields; a handful are type-specif
 | `nested` | Create/edit the related record inline in the parent form. **Requires the `avo-nested` gem.** `nested: true` = `{ on: :forms }`; `limit:` caps rows on `has_many`/HABTM. |
 | `attach_using` | `:checkbox_list` renders the attach modal as a multi-select checkbox list instead of a single-select dropdown (`has_many`, HABTM). |
 | `discreet_pagination` | Hides pagination chrome when there's only one page. |
+| `per_page` | Records per page for this association frame (`has_many`, HABTM, `through:`), e.g. `per_page: 24`. Overrides `config.via_per_page`; a `?per_page=` pick or a session-persisted value still wins. |
 | `hide_search_input` / `hide_filter_button` | Hide the search box / filters button on the association table. |
 | `link_to_child_resource` | STI: link rows to the child resource instead of the parent (see [Gotchas](#gotchas)). |
 | `for_attribute` | Point a differently-named field at the same association (declare it twice with different scopes/names). |
