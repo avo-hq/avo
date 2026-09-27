@@ -1,7 +1,7 @@
 class LocaleSelectorComponentPreview < ViewComponent::Preview
   # Locale Selector Component
   # -------------------------
-  # The "Language" entry of the profile menu. Click it to expand the list of
+  # The language picker in the top navbar. Click it to open the list of
   # languages; each is labeled in its own script and the current one is marked.
   # The list comes from `config.locale_selector` unless `locales` is passed.
   def default

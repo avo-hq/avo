@@ -37,7 +37,6 @@
           <%= render custom_profile_component %>
         <% end %>
         <%= render "avo/partials/profile_menu_extra" %>
-        <%= render Avo::LocaleSelectorComponent.new %>
         <% if can_sign_out_user? %>
           <%= form_with url: helpers.main_app.send(sign_out_path),
             method: sign_out_method,

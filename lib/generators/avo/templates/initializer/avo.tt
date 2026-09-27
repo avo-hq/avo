@@ -43,7 +43,7 @@ Avo.configure do |config|
   # config.locale = 'en-US'
 
   ## == Locale selector ==
-  ## A "Language" entry in the profile menu lets each user pick their own language.
+  ## A language picker in the top navbar lets each user pick their own language.
   ## The choice is stored in a cookie, so it never changes the language for other users.
   ##   true  - list every locale in I18n.available_locales that Avo has translations for (default)
   ##   false - hide the selector

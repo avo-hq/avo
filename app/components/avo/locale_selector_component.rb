@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-# The "Language" entry in the profile menu. Each option submits to
-# Avo::LocalesController, which stores the choice in a per-viewer cookie.
+# The language picker in the top navbar, beside the appearance switcher. Each
+# option submits to Avo::LocalesController, which stores the choice in a
+# per-viewer cookie.
 class Avo::LocaleSelectorComponent < Avo::BaseComponent
   # Defaults to Avo.configuration.locale_selector_locales.
   prop :locales do |value|
@@ -28,11 +29,17 @@ class Avo::LocaleSelectorComponent < Avo::BaseComponent
     Avo::Locales.name_for(locale)
   end
 
-  def panel_id
-    @panel_id ||= "locale-selector-#{SecureRandom.hex(3)}"
+  # Long lists get the dropdown's type-to-filter input.
+  def searchable?
+    locales.size > 8
+  end
+
+  # The short tag shown on the trigger and beside each name: "EN", "PT-BR".
+  def code_for(locale)
+    locale.to_s.upcase
   end
 
   def item_classes(locale)
-    class_names("locale-selector__item", "locale-selector__item--current": current?(locale))
+    class_names("locale-selector__item", "dropdown-menu__item--active": current?(locale))
   end
 end

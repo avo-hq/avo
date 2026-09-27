@@ -236,7 +236,7 @@ Avo.configure do |config|
 end
 ```
 
-Each user can pick their own language from the **Language** entry in the profile menu. The choice lives in a per-browser cookie (`avo.locale`), so it never affects other users. `config.locale_selector` controls it: `true` (default) lists every `I18n.available_locales` entry Avo has translations for, `false` hides it, and an array (`[:en, :ro, :de]`) lists exactly those. It hides itself when fewer than two locales resolve. Precedence per request: `force_locale` > `set_locale` > the selector cookie > `config.locale`.
+Each user can pick their own language from the language picker in the top navbar, beside the appearance switcher. The choice lives in a per-browser cookie (`avo.locale`), so it never affects other users. `config.locale_selector` controls it: `true` (default) lists every `I18n.available_locales` entry Avo has translations for, `false` hides it, and an array (`[:en, :ro, :de]`) lists exactly those. It hides itself when fewer than two locales resolve. Precedence per request: `force_locale` > `set_locale` > the selector cookie > `config.locale`.
 
 Two request params switch language on the fly:
 
@@ -303,7 +303,7 @@ Advanced Search is the exception that needs no locale file: everything it render
 | `avo.card_translations.<c>` | YAML | Card `label`/`description`/`discreet_description`. Root derived by `avo-dashboards`. |
 | `avo.dashboard_translations.<d>` | YAML | Dashboard `name`/`description`. Root derived by `avo-dashboards`. |
 | `config.locale` | Initializer | Avo's interface language for Avo requests only. Default `nil` → app default. |
-| `config.locale_selector` | Initializer | Per-user language picker in the profile menu. `true` (default), `false`, or an array of locales. |
+| `config.locale_selector` | Initializer | Per-user language picker in the top navbar. `true` (default), `false`, or an array of locales. |
 | `?set_locale=` param | URL | Switches Avo's default locale process-wide until restart. |
 | `?force_locale=` param | URL | Switches locale for the current navigation only; sticks in links until removed. |
 | `bin/rails g avo:locales` | Shell | Copies the 19 bundled locale files into `config/locales` for editing. |

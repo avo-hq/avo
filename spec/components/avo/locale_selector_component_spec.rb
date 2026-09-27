@@ -35,9 +35,17 @@ RSpec.describe Avo::LocaleSelectorComponent, type: :component do
   it "marks the current locale" do
     I18n.with_locale(:ro) { render_selector(locales: %w[en ro]) }
 
-    expect(page).to have_css(".locale-selector__trigger", text: "Română")
+    expect(page).to have_css(".locale-selector__trigger[aria-label$=': Română']", text: "RO")
     expect(page).to have_css(".locale-selector__item[aria-current='true']", text: "Română", visible: :all)
     expect(page).not_to have_css(".locale-selector__item[aria-current='true']", text: "English", visible: :all)
+  end
+
+  it "offers a filter input only for long lists" do
+    render_selector(locales: %w[en ro])
+    expect(page).not_to have_css("input[type='search']", visible: :all)
+
+    render_selector(locales: %w[en ro de fr it ja nl pl es])
+    expect(page).to have_css("input[type='search']", visible: :all)
   end
 
   it "posts each choice to the locale endpoint without Turbo" do
