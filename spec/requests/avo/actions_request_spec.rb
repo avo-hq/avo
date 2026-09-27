@@ -128,6 +128,56 @@ RSpec.describe "Actions", type: :request do
     end
   end
 
+  # avo-hq/avo#3848: with several records selected on the index, or none, the
+  # action has no record, and a belongs_to field used to crash the modal.
+  describe "belongs_to field without a single selected record" do
+    let!(:user) { create(:user) }
+    let(:fish_ids) { create_list(:fish, 2).map(&:to_param).join(",") }
+
+    it "opens the modal with several records selected" do
+      get "/admin/resources/fish/actions",
+        params: {
+          action_id: "Avo::Actions::ReleaseFish",
+          fields: {avo_resource_ids: fish_ids}
+        }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<select[^>]*name="fields\[user_id\]"/)
+      expect(response.body).to include "<option value=\"#{user.to_param}\">#{user.name}</option>"
+    end
+
+    it "opens the modal with no record selected" do
+      get "/admin/resources/fish/actions", params: {action_id: "Avo::Actions::ReleaseFish"}
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<select[^>]*name="fields\[user_id\]"/)
+    end
+
+    it "passes the chosen record to handle" do
+      post "/admin/resources/fish/actions",
+        params: {
+          action_id: "Avo::Actions::ReleaseFish",
+          fields: {avo_resource_ids: fish_ids, user_id: user.to_param}
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq "2 fish released with message '' by #{user.name}."
+    end
+
+    it "opens the modal of a polymorphic belongs_to with several records selected" do
+      review_ids = create_list(:review, 2).map(&:to_param).join(",")
+
+      get "/admin/resources/reviews/actions",
+        params: {
+          action_id: "Avo::Actions::Test::ShowPolymorphicFields",
+          fields: {avo_resource_ids: review_ids}
+        }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<select[^>]*name="fields\[reviewable_type\]"/)
+    end
+  end
+
   # avo-hq/avo#2190: the controller used to force `view` to :new on both the
   # action and the resource, so `view` in an action's blocks never said where
   # the action was started from, and fields hidden on the new view (badge)
