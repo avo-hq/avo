@@ -106,7 +106,7 @@ Most options are shared across the association fields; a handful are type-specif
 | `description` | Sub-title text under the panel title. Keep it cheap under `loading: :manual` — the lambda runs on the placeholder too. |
 | `scope` | `-> { query.approved }` — scopes the **rows displayed** in a `has_many`/HABTM table (locals: `query`, `parent`, `resource`, `parent_resource`). |
 | `loading` | `:manual` defers the frame fetch behind a **Load** button (heavy associations); `:lazy` is the default. |
-| `linkable` | Makes the panel title open the association table on its own page. |
+| `linkable` | Adds an open-in-new-tab icon beside the panel title. On `has_many`/HABTM it opens the association table on its own page; on `has_one` it opens the associated record's show page. |
 | `reloadable` | Adds a reload icon on the panel (boolean or a lambda gated on e.g. `current_user.admin?`). |
 | `nested` | Create/edit the related record inline in the parent form. **Requires the `avo-nested` gem.** `nested: true` = `{ on: :forms }`; `limit:` caps rows on `has_many`/HABTM. |
 | `attach_using` | `:checkbox_list` renders the attach modal as a multi-select checkbox list instead of a single-select dropdown (`has_many`, HABTM). |
