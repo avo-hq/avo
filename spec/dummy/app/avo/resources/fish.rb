@@ -29,7 +29,7 @@ class Avo::Resources::Fish < Avo::BaseResource
       for_attribute: :name,
       only_on: :edit,
       help: "secondary field for name using for_attribute option"
-    field :reviews, as: :has_many
+    field :reviews, as: :has_many, per_page: 3
     # A belongs_to field posts the foreign key (fish[user_id]), so two fields for the same
     # association can not share a form: the regular field is used on new, the `for_attribute`
     # one on edit. Both render on index and show, where the table drops columns with the same
