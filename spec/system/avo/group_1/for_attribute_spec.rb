@@ -26,7 +26,7 @@ RSpec.feature "for_attribute option", type: :system do
       visit "/admin/resources/fish?view_type=table"
 
       within find("[data-resource-id='#{fish.to_param}'] [data-field-id='secondary_field_for_user']") do
-        expect(page).to have_link user.name, href: avo.resources_user_path(user)
+        expect(page).to have_link user.name, href: %r{#{Regexp.escape(avo.resources_user_path(user))}\?return_to=[^&]+\z}
       end
     end
 
