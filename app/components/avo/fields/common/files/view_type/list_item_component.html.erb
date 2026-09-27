@@ -6,7 +6,7 @@
     ) do %>
       <% if lightbox? %>
         <%= content_tag :button, type: :button, class: "file-upload-item__action", title: preview_label, data: {**lightbox_item_data, tippy: :tooltip} do %>
-          <%= svg "tabler/outline/eye" %>
+          <%= helpers.svg "tabler/outline/eye" %>
         <% end %>
       <% end %>
       <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: file, resource: @resource) %>

@@ -3,10 +3,10 @@
     <% if file.representable? && is_image? %>
       <% if lightbox? %>
         <%= content_tag :button, type: :button, class: "lightbox__trigger", aria: {label: preview_label}, data: lightbox_item_data do %>
-          <%= image_tag helpers.safe_image_url(file), **image_arguments %>
+          <%= image_tag image_src, **image_arguments %>
         <% end %>
       <% else %>
-        <%= image_tag helpers.safe_image_url(file), **image_arguments %>
+        <%= image_tag image_src, **image_arguments %>
       <% end %>
     <% elsif is_audio? %>
       <%= audio_tag(helpers.main_app.url_for(file), controls: true, preload: false, class: 'w-full') %>

@@ -1,24 +1,24 @@
 <% if @enabled %>
-  <div class="<%= class_names("lightbox-gallery", @classes) %>" data-controller="lightbox">
+  <div class="<%= class_names("lightbox-gallery", @classes) %>" data-controller="image-lightbox">
     <%= content %>
 
-    <%# The dialog fills the viewport, so a click that lands on the dialog element itself is a
-        click off the image and its controls and closes it. Escape is handled by the dialog
-        natively; both paths fire `close`, which the controller uses to tear down. %>
+    <%# The dialog fills the viewport, so a click that both starts and lands on the dialog element
+        itself is a click off the image and its controls and closes it. Escape is handled by the
+        dialog natively; both paths fire `close`, which the controller uses to tear down. %>
     <dialog
       class="lightbox"
       aria-label="<%= t("avo.image_preview") %>"
-      data-lightbox-target="dialog"
-      data-action="click->lightbox#closeOnBackdrop close->lightbox#closed">
+      data-image-lightbox-target="dialog"
+      data-action="pointerdown->image-lightbox#trackPointerDown click->image-lightbox#closeOnBackdrop close->image-lightbox#closed">
       <div class="lightbox__toolbar">
-        <span class="lightbox__counter" data-lightbox-target="counter" hidden></span>
+        <span class="lightbox__counter" data-image-lightbox-target="counter" hidden></span>
         <a
           class="lightbox__action"
           target="_blank"
           rel="noopener noreferrer"
           title="<%= t("avo.open_original") %>"
           aria-label="<%= t("avo.open_original") %>"
-          data-lightbox-target="original"
+          data-image-lightbox-target="original"
           hidden>
           <%= helpers.svg "tabler/outline/external-link", class: "lightbox__icon" %>
         </a>
@@ -27,7 +27,7 @@
           class="lightbox__action"
           title="<%= t("avo.close") %>"
           aria-label="<%= t("avo.close") %>"
-          data-action="click->lightbox#close">
+          data-action="click->image-lightbox#close">
           <%= helpers.svg "tabler/outline/x", class: "lightbox__icon" %>
         </button>
       </div>
@@ -36,23 +36,23 @@
         type="button"
         class="lightbox__nav lightbox__nav--prev"
         aria-label="<%= t("avo.previous_image") %>"
-        data-lightbox-target="prev"
-        data-action="click->lightbox#prev"
+        data-image-lightbox-target="prev"
+        data-action="click->image-lightbox#prev"
         hidden>
         <%= helpers.svg "tabler/outline/chevron-left", class: "lightbox__icon" %>
       </button>
 
       <figure class="lightbox__figure">
-        <img class="lightbox__image" alt="" data-lightbox-target="image">
-        <figcaption class="lightbox__caption" data-lightbox-target="caption"></figcaption>
+        <img class="lightbox__image" alt="" data-image-lightbox-target="image">
+        <figcaption class="lightbox__caption" data-image-lightbox-target="caption" hidden></figcaption>
       </figure>
 
       <button
         type="button"
         class="lightbox__nav lightbox__nav--next"
         aria-label="<%= t("avo.next_image") %>"
-        data-lightbox-target="next"
-        data-action="click->lightbox#next"
+        data-image-lightbox-target="next"
+        data-action="click->image-lightbox#next"
         hidden>
         <%= helpers.svg "tabler/outline/chevron-right", class: "lightbox__icon" %>
       </button>

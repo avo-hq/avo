@@ -52,11 +52,6 @@
   }
 }
 
-/* The page behind stays put while the lightbox is up. */
-body:has(.lightbox[open]) {
-  @apply overflow-hidden;
-}
-
 .lightbox__figure {
   @apply m-0 flex max-h-full max-w-full flex-col items-center gap-3;
 }

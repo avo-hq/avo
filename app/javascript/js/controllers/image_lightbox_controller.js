@@ -9,12 +9,16 @@ import { Controller } from '@hotwired/stimulus'
  * DOM order and wrap around. Escape is the dialog's own — it fires `close`, which #closed
  * listens to — and a click on the dialog's empty area (off the image and its controls) closes
  * as well.
+ *
+ * Registered as `image-lightbox`: avo-ai registers a `lightbox` controller of its own on the
+ * same Stimulus application, and the last registration of an identifier wins.
  */
 export default class extends Controller {
   static targets = ['dialog', 'item', 'image', 'caption', 'counter', 'original', 'prev', 'next']
 
   connect() {
     this.index = 0
+    this.pointerDownOnDialog = false
     this.handleKeydown = this.handleKeydown.bind(this)
     this.close = this.close.bind(this)
     // A dialog left open would be snapshotted open.
@@ -23,7 +27,12 @@ export default class extends Controller {
 
   disconnect() {
     document.removeEventListener('turbo:before-cache', this.close)
-    document.removeEventListener('keydown', this.handleKeydown)
+
+    // Stimulus has already unbound the dialog's `close` action by now, so tear down by hand.
+    if (this.hasDialogTarget && this.dialogTarget.open) {
+      this.dialogTarget.close()
+      this.closed()
+    }
   }
 
   open(event) {
@@ -33,6 +42,9 @@ export default class extends Controller {
     if (this.dialogTarget.open) return
 
     this.dialogTarget.showModal()
+    // showModal() sets neither: the body class is what the global hotkeys and the index row
+    // navigator check before acting, and what locks the page's scroll (see base_modal_controller).
+    document.body.classList.add('modal-open')
     // On the document rather than the dialog: a click on the image moves focus to <body>, and
     // key events then never reach a listener on the dialog.
     document.addEventListener('keydown', this.handleKeydown)
@@ -44,11 +56,20 @@ export default class extends Controller {
 
   // The dialog's `close` event, whether from #close, Escape or the browser.
   closed() {
+    document.body.classList.remove('modal-open')
     document.removeEventListener('keydown', this.handleKeydown)
   }
 
+  // A press that starts on the image and is released over the backdrop dispatches its click to
+  // their common ancestor, the dialog. Remember where the press started so only a click that
+  // both began and ended on the dialog's own area closes it.
+  trackPointerDown(event) {
+    this.pointerDownOnDialog = event.target === this.dialogTarget
+  }
+
   closeOnBackdrop(event) {
-    if (event.target === this.dialogTarget) this.close()
+    if (event.target === this.dialogTarget && this.pointerDownOnDialog) this.close()
+    this.pointerDownOnDialog = false
   }
 
   next() {
@@ -82,14 +103,17 @@ export default class extends Controller {
 
     this.index = (index + items.length) % items.length
     const {
-      lightboxSrcParam: src,
-      lightboxTitleParam: title = '',
-      lightboxOriginalParam: original,
+      imageLightboxSrcParam: src,
+      imageLightboxTitleParam: title = '',
+      imageLightboxOriginalParam: original,
     } = items[this.index].dataset
 
     this.imageTarget.src = src
     this.imageTarget.alt = title
+    // No title (the field hides filenames) means no caption either.
     this.captionTarget.textContent = title
+    this.captionTarget.title = title
+    this.captionTarget.hidden = !title
     this.counterTarget.textContent = `${this.index + 1} / ${items.length}`
 
     // Nothing to cycle through with a single image.

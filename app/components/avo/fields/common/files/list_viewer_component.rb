@@ -22,7 +22,7 @@ class Avo::Fields::Common::Files::ListViewerComponent < Avo::BaseComponent
 
   # One lightbox per gallery, and only when there is an image to put in it.
   def lightbox?
-    @field.lightbox? && @field.value.attachments.any? { |file| file.representable? && file.image? }
+    @field.lightbox? && @field.value.attachments.any? { |file| @field.lightbox_for?(file) }
   end
 
   def view_type_component(file)

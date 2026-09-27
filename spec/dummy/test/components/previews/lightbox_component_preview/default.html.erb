@@ -8,11 +8,11 @@
             type="button"
             class="lightbox__trigger"
             aria-label="Preview <%= image[:title] %>"
-            data-lightbox-target="item"
-            data-action="click->lightbox#open"
-            data-lightbox-src-param="<%= image[:src] %>"
-            data-lightbox-title-param="<%= image[:title] %>"
-            data-lightbox-original-param="<%= image[:src] %>">
+            data-image-lightbox-target="item"
+            data-action="click->image-lightbox#open"
+            data-image-lightbox-src-param="<%= image[:src] %>"
+            data-image-lightbox-title-param="<%= image[:title] %>"
+            data-image-lightbox-original-param="<%= image[:src] %>">
             <img src="<%= image[:src] %>" alt="" style="display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0.5rem;">
           </button>
         <% else %>

@@ -25,6 +25,15 @@ module Avo
         lightbox && view.show?
       end
 
+      # Whether +attachment+ opens in the lightbox: the field allows it and the
+      # attachment is an image the browser can display. Takes the attachment
+      # record, or the `has_one_attached` proxy a file field's value is.
+      def lightbox_for?(attachment)
+        attachment = attachment.attachment if attachment.is_a?(ActiveStorage::Attached::One)
+
+        lightbox? && attachment&.blob.present? && attachment.representable? && attachment.image?
+      end
+
       def view_component_name
         "FilesField"
       end

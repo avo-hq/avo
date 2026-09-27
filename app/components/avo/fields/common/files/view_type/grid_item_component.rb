@@ -57,11 +57,28 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
 
   # Only images open in the lightbox; audio, video and documents keep their players and links.
   def lightbox?
-    @field.lightbox? && file.representable? && is_image?
+    @field.lightbox_for?(file)
   end
 
+  # The trigger's accessible name. Without `display_filename` the filename shows
+  # nowhere else, so it stays out of the label too.
   def preview_label
-    t("avo.preview_item", item: file.filename)
+    @field.display_filename ? t("avo.preview_item", item: file.filename) : t("avo.image_preview")
+  end
+
+  def image_src
+    @image_src ||= helpers.safe_image_url(file)
+  end
+
+  def download_url
+    @download_url ||= helpers.main_app.url_for(file)
+  end
+
+  # One policy check per file: the document link and the lightbox both ask.
+  def can_download_file?
+    return @can_download_file if defined?(@can_download_file)
+
+    @can_download_file = super
   end
 
   def image_arguments
@@ -74,15 +91,16 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
   end
 
   # Marks an element as one of the gallery's lightbox items and hands the
-  # controller the image it opens. The original is linked only when the user
-  # may download the file, matching the download control.
+  # controller the image it opens. The caption follows `display_filename`, and
+  # the original is linked only when the user may download the file, matching
+  # the download control.
   def lightbox_item_data
     {
-      lightbox_target: "item",
-      action: "click->lightbox#open",
-      lightbox_src_param: helpers.safe_image_url(file),
-      lightbox_title_param: file.filename.to_s,
-      lightbox_original_param: (helpers.main_app.url_for(file) if can_download_file?)
+      image_lightbox_target: "item",
+      action: "click->image-lightbox#open",
+      image_lightbox_src_param: image_src,
+      image_lightbox_title_param: (file.filename.to_s if @field.display_filename),
+      image_lightbox_original_param: (download_url if can_download_file?)
     }.compact
   end
 
@@ -99,7 +117,7 @@ class Avo::Fields::Common::Files::ViewType::GridItemComponent < Avo::BaseCompone
     if file.representable? && can_download_file?
       args.merge!(
         {
-          href: helpers.main_app.url_for(file),
+          href: download_url,
           target: "_blank",
           rel: "noopener noreferrer"
         }
