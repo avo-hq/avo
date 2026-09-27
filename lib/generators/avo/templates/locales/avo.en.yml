@@ -144,6 +144,7 @@ en:
       key: Key
       reorder_row: Reorder row
       value: Value
+    language: Language
     less_content: Less content
     list_is_empty: List is empty
     load_item: Load %{item}

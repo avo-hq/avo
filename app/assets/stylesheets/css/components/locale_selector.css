@@ -1,0 +1,46 @@
+/* ================================================ */
+/* Locale selector (profile menu)                   */
+/* BEM: .locale-selector (block)                    */
+/* ================================================ */
+
+/* The trigger and the items are buttons inside `.dropdown-menu__list`, so they
+   pick up the shared menu-item styles; these rules only add the layout. */
+
+.locale-selector {
+  @apply flex flex-col w-full;
+}
+
+.locale-selector__label {
+  @apply truncate min-w-0;
+}
+
+.locale-selector__current {
+  @apply ms-auto truncate min-w-0 font-normal;
+  color: var(--color-content-secondary);
+}
+
+.locale-selector__chevron {
+  @apply shrink-0 size-4;
+  color: var(--color-content-secondary);
+}
+
+.locale-selector__list {
+  @apply ms-5.5 mt-0.5 ps-1 border-s max-h-80 overflow-y-auto;
+  border-color: var(--color-tertiary);
+}
+
+.locale-selector__form {
+  @apply flex w-full;
+}
+
+.locale-selector__name {
+  @apply truncate min-w-0;
+}
+
+.locale-selector__item--current {
+  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+}
+
+.locale-selector__check {
+  @apply ms-auto shrink-0 size-4;
+}

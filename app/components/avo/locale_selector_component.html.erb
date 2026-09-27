@@ -1,0 +1,28 @@
+<div class="locale-selector" data-controller="toggle">
+  <button type="button"
+    class="locale-selector__trigger"
+    aria-controls="<%= panel_id %>"
+    data-action="toggle#togglePanel">
+    <%= helpers.svg "tabler/outline/language", class: "sidebar-icon" %>
+    <span class="locale-selector__label"><%= t("avo.language") %></span>
+    <span class="locale-selector__current"><%= current_name %></span>
+    <%= helpers.svg "tabler/outline/chevron-down", class: "locale-selector__chevron" %>
+  </button>
+  <div id="<%= panel_id %>" class="locale-selector__list" data-toggle-target="panel" hidden>
+    <% locales.each do |locale| %>
+      <%# Turbo Drive keeps the old <html> element, so a Turbo visit would leave
+          `lang` and `dir` on the previous language. A full load re-renders them. %>
+      <%= button_to helpers.avo.locale_path,
+        method: :patch,
+        params: {locale: locale},
+        form_class: "locale-selector__form",
+        form: {data: {turbo: false}},
+        class: item_classes(locale),
+        lang: locale,
+        aria: {current: current?(locale) ? "true" : nil} do %>
+        <span class="locale-selector__name"><%= name_for(locale) %></span>
+        <%= helpers.svg("tabler/outline/check", class: "locale-selector__check") if current?(locale) %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

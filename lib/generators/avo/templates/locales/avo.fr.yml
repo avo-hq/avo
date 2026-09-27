@@ -146,6 +146,7 @@ fr:
       key: Clé
       reorder_row: Réorganiser la ligne
       value: Valeur
+    language: Langue
     less_content: Moins de contenu
     list_is_empty: La liste est vide
     load_item: Charger %{item}

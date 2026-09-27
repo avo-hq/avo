@@ -158,6 +158,7 @@ ar:
       key: المفتاح
       reorder_row: إعادة ترتيب الصف
       value: القيمة
+    language: اللغة
     less_content: محتوى أقل
     list_is_empty: القائمة فارغة
     load_item: تحميل %{item}

@@ -146,6 +146,7 @@ tr:
       key: Anahtar
       reorder_row: Satırı yeniden sırala
       value: Değer
+    language: Dil
     less_content: Daha az içerik
     list_is_empty: Boş liste
     load_item: "%{item} yükle"

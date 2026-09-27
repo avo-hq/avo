@@ -144,6 +144,7 @@ zh:
       key: 键
       reorder_row: 重新排序行
       value: 值
+    language: 语言
     less_content: 内容较少
     list_is_empty: 列表为空
     load_item: 加载 %{item}

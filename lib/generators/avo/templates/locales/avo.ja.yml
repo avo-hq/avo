@@ -146,6 +146,7 @@ ja:
       key: キー
       reorder_row: 行の並べ替え
       value: 値
+    language: 言語
     less_content: コンテンツが少ない
     list_is_empty: リストは空です
     load_item: "%{item}を読み込む"

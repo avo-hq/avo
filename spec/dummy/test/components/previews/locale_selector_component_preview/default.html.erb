@@ -1,0 +1,23 @@
+<div class="flex flex-wrap gap-8 p-6">
+  <div class="flex flex-col gap-2 w-72">
+    <p class="text-sm text-content-secondary">Configured locales</p>
+    <div class="dropdown-menu">
+      <div class="dropdown-menu__group">
+        <div class="dropdown-menu__list">
+          <%= render Avo::LocaleSelectorComponent.new %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2 w-72">
+    <p class="text-sm text-content-secondary">Explicit list, including a right-to-left language</p>
+    <div class="dropdown-menu">
+      <div class="dropdown-menu__group">
+        <div class="dropdown-menu__list">
+          <%= render Avo::LocaleSelectorComponent.new(locales: %w[en ro de ar ja]) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

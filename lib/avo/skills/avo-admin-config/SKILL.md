@@ -60,6 +60,7 @@ config.timezone = "UTC"                          # for date/datetime fields
 config.use_browser_timezone = false              # render everyone in the app's configured zone instead; default true renders each visitor's own zone (cookie-detected, one soft reload + alert). Defaults to false in the test environment — the soft reload races browser specs
 config.currency = "USD"                          # for currency fields
 config.locale   = "en-US"                        # force Avo's UI locale (default: I18n.default_locale)
+config.locale_selector = [:en, :ro]             # profile-menu language picker, stored per user (default: true; false hides it)
 ```
 
 `app_name` defaults to the humanized Rails application class name. To replace the single app-name link with a list of navbar links, that's the **header menu** → **avo-navigation-search**.

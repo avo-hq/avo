@@ -146,6 +146,7 @@ ua:
       key: Ключ
       reorder_row: Змінити порядок рядка
       value: Значення
+    language: Мова
     less_content: Менше вмісту
     list_is_empty: Список порожній
     load_item: Завантажити %{item}

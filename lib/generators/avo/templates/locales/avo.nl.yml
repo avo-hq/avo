@@ -144,6 +144,7 @@ nl:
       key: Sleutel
       reorder_row: Rij herschikken
       value: Waarde
+    language: Taal
     less_content: Minder inhoud
     list_is_empty: Lijst is leeg
     load_item: Laad %{item}

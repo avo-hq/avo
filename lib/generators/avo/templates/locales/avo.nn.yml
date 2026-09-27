@@ -146,6 +146,7 @@ nn:
       key: Nøkkel
       reorder_row: Omorganiser rad
       value: Verdi
+    language: Språk
     less_content: Mindre innhold
     list_is_empty: Lista er tom
     load_item: Last inn %{item}

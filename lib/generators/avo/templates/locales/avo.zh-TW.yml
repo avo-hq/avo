@@ -144,6 +144,7 @@ zh-TW:
       key: 鍵
       reorder_row: 重新排序列
       value: 值
+    language: 語言
     less_content: 內容較少
     list_is_empty: 清單為空
     load_item: 加載 %{item}
