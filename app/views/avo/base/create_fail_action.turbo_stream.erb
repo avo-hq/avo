@@ -1,4 +1,11 @@
-<%= turbo_stream.replace(frame_id(@resource), template: "avo/base/new") %>
+<% modal_frame_id = current_modal_frame_id if params[:via_belongs_to_resource_class].present? %>
+<% if modal_frame_id %>
+  <%# Stacked belongs_to dialogs of one resource all render their form under the same id, so replace the
+      form of the dialog that failed: the one directly inside its own frame. %>
+  <%= turbo_stream.replace_all("turbo-frame##{modal_frame_id} > [id=\"#{frame_id(@resource)}\"]", template: "avo/base/new") %>
+<% else %>
+  <%= turbo_stream.replace(frame_id(@resource), template: "avo/base/new") %>
+<% end %>
 
 <%= turbo_stream.append "alerts" do %>
   <%= render partial: "avo/partials/all_alerts" %>

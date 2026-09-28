@@ -66,8 +66,17 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
       resource: target_resource || @field.target_resource,
       via_record_id: resource.record_param,
       via_belongs_to_resource_class: resource.class.name,
+      via_belongs_to_target_name: target_name,
       **args
     }.compact)
+  end
+
+  # Inside a modal the "Create new" dialog stacks on top of it in the modal's nested frame,
+  # so the form underneath keeps its values. Anywhere else it opens in the page's modal frame.
+  def modal_frame_id
+    current_modal_frame_id = helpers.current_modal_frame_id
+
+    current_modal_frame_id.present? ? "#{current_modal_frame_id}_nested" : Avo::MODAL_FRAME_ID.to_s
   end
 
   def modal_args
@@ -92,7 +101,12 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
       reload_belongs_to_field_polymorphic_value: is_polymorphic?,
       reload_belongs_to_field_searchable_value: @field.is_searchable?,
       reload_belongs_to_field_relation_name_value: @field.id,
-      reload_belongs_to_field_target_name_value: "#{form.object_name}[#{@field.id_input_foreign_key}]"
+      reload_belongs_to_field_target_name_value: target_name,
+      reload_belongs_to_field_frame_id_value: modal_frame_id
     }
+  end
+
+  def target_name
+    "#{form.object_name}[#{@field.id_input_foreign_key}]"
   end
 end

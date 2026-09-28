@@ -9,6 +9,8 @@
   "modal-size-current-width-value": @width,
   "modal-size-current-height-value": @height,
   action: "click->#{ctrl}#closeOnBackdrop",
+  # An ephemeral modal left open would come back open from the Turbo cache.
+  turbo_temporary: (ctrl == "modal") || nil,
   **@data
 } do %>
   <div

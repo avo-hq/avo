@@ -80,4 +80,7 @@
     <% end %>
   <% end %>
 </div>
+
+<%# A belongs_to field's "Create new" dialog stacks here, outside the action's form, so the action keeps its values. %>
+<%= turbo_frame_tag "#{Avo::MODAL_FRAME_ID}_nested" %>
 <% end %>
