@@ -28,6 +28,16 @@ export default class extends Controller {
     }
   }
 
+  // A modal that renders no nested frame (one from a plugin or the host app) cannot stack the dialog,
+  // so it opens in the page's modal frame and replaces that modal, as it did before dialogs stacked.
+  openInExistingFrame(event) {
+    const link = event.currentTarget
+    if (document.getElementById(link.dataset.turboFrame)) return
+
+    link.dataset.turboFrame = window.Avo.configuration.modal_frame_id
+    this.frameIdValue = link.dataset.turboFrame
+  }
+
   updateSearchable(stream) {
     // Update the id component
     this.element.querySelector(`input[name="${CSS.escape(this.targetNameValue)}"][type="hidden"]`).value = stream.dataset.targetRecordId
