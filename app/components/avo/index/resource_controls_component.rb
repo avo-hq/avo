@@ -165,6 +165,9 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     if params[:turbo_frame]
       hidden[:turbo_frame] = params[:turbo_frame]
       hidden[:referrer] = referrer_path
+    else
+      # Keep the filters, sorting and page after a destroy redirects back here.
+      hidden[:referrer] = request.fullpath
     end
 
     hidden.compact
