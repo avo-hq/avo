@@ -11,7 +11,8 @@ RSpec.describe "Attach and attach another", type: :system do
 
     scroll_to find('turbo-frame[id="has_many_field_show_comments"]')
 
-    click_on("Attach comment")
+    # The users frame above can finish loading mid-click and push the button away from the pointer.
+    find_link("Attach comment").trigger("click")
 
     select comments.first.tiny_name, from: "fields_related_id"
 
@@ -21,6 +22,11 @@ RSpec.describe "Attach and attach another", type: :system do
       end
       wait_for_loaded
     }.to change(project.comments, :count).by 1
+
+    # The modal reloads after each attach. Selecting before the fresh form lands would pick on the old one.
+    within '[aria-modal="true"]' do
+      expect(page).to have_select "fields_related_id", selected: I18n.t("avo.choose_an_option")
+    end
 
     select comments.second.tiny_name, from: "fields_related_id"
 
