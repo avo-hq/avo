@@ -13,6 +13,10 @@ module Avo
         type: :array
       }
 
+      # Shows the create, edit and delete controls. The records have no save! or destroy!,
+      # so the resource's controller overrides save_record_action and destroy_record_action.
+      class_attribute :writable, default: false
+
       class << self
         # Each array resource keeps its own model class. It starts as a placeholder class and
         # fetch_records replaces it with the class of the records it builds or finds.
@@ -130,6 +134,11 @@ module Avo
       end
 
       def resource_type_array? = true
+
+      def read_only_array? = !writable
+
+      # Base derives it from ActiveRecord's base_class.
+      def form_scope = class_name.underscore
 
       def sort_by_param = nil
 
