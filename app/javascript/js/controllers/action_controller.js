@@ -1,11 +1,12 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ['resourceIds', 'form', 'selectedAll', 'indexQuery']
+  static targets = ['resourceIds', 'form', 'selectedAll', 'indexQuery', 'destructiveConfirmationInput', 'submitButton']
 
   static values = {
     confirmation: Boolean,
     resourceName: String,
+    destructiveConfirmationText: String,
   }
 
   connect() {
@@ -26,6 +27,10 @@ export default class extends Controller {
     } else {
       this.formTarget.requestSubmit()
     }
+  }
+
+  toggleSubmitButton() {
+    this.submitButtonTarget.disabled = this.destructiveConfirmationInputTarget.value.trim() !== this.destructiveConfirmationTextValue
   }
 
   get resourceIds() {

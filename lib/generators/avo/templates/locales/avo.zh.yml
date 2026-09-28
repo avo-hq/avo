@@ -95,6 +95,7 @@ zh:
     delete: 删除
     delete_file: 删除文件
     delete_item: 删除 %{item}
+    destructive_action_confirmation_text: 删除
     detach_item: 分离 %{item}
     details: 详情
     download: 下载
@@ -222,6 +223,7 @@ zh:
     timezone_changed: 日期和时间现在以您的时区 (%{timezone}) 显示。
     tools: 工具
     'true': 真
+    type_to_confirm_destructive_action_html: 输入 <strong>%{text}</strong> 以确认
     type_to_search: 输入以搜索。
     unauthorized: 未经授权
     undo: 撤销

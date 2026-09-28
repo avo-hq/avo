@@ -97,6 +97,7 @@ fr:
     delete: supprimer
     delete_file: Supprimer le fichier
     delete_item: Supprimer %{item}
+    destructive_action_confirmation_text: supprimer
     detach_item: détacher %{item}
     details: détails
     download: Télécharger
@@ -224,6 +225,7 @@ fr:
     timezone_changed: Les dates et heures sont désormais affichées dans votre fuseau horaire (%{timezone}).
     tools: Outils
     'true': Vrai
+    type_to_confirm_destructive_action_html: Tapez <strong>%{text}</strong> pour confirmer
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
     undo: annuler

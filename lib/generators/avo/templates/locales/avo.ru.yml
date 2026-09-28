@@ -97,6 +97,7 @@ ru:
     delete: удалить
     delete_file: Удалить файл
     delete_item: Удалить %{item}
+    destructive_action_confirmation_text: удалить
     detach_item: Отсоединить %{item}
     details: Детали
     download: Скачать
@@ -228,6 +229,7 @@ ru:
     timezone_changed: Даты и время теперь отображаются в вашем часовом поясе (%{timezone}).
     tools: Инструменты
     'true': Истина
+    type_to_confirm_destructive_action_html: Введите <strong>%{text}</strong> для подтверждения
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить

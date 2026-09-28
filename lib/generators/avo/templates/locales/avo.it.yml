@@ -95,6 +95,7 @@ it:
     delete: Elimina
     delete_file: Elimina file
     delete_item: Elimina %{item}
+    destructive_action_confirmation_text: elimina
     detach_item: Stacca %{item}
     details: Dettagli
     download: Scarica
@@ -222,6 +223,7 @@ it:
     timezone_changed: Le date e gli orari sono ora visualizzati nel tuo fuso orario (%{timezone}).
     tools: Strumenti
     'true': Vero
+    type_to_confirm_destructive_action_html: Digita <strong>%{text}</strong> per confermare
     type_to_search: Digita per cercare.
     unauthorized: Non autorizzato
     undo: Annulla

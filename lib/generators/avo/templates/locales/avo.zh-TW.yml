@@ -95,6 +95,7 @@ zh-TW:
     delete: 刪除
     delete_file: 刪除檔案
     delete_item: 刪除 %{item}
+    destructive_action_confirmation_text: 刪除
     detach_item: 分離 %{item}
     details: 詳細資料
     download: 下載
@@ -222,6 +223,7 @@ zh-TW:
     timezone_changed: 日期和時間現在以您的時區 (%{timezone}) 顯示。
     tools: 工具
     'true': 真
+    type_to_confirm_destructive_action_html: 輸入 <strong>%{text}</strong> 以確認
     type_to_search: 輸入以搜尋。
     unauthorized: 未經授權
     undo: 復原

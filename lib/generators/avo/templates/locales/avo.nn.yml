@@ -97,6 +97,7 @@ nn:
     delete: slett
     delete_file: Slett fil
     delete_item: Slett %{item}
+    destructive_action_confirmation_text: slett
     detach_item: koble frå %{item}
     details: detaljar
     download: Last ned
@@ -224,6 +225,7 @@ nn:
     timezone_changed: Datoar og tidspunkter blir no viste i tidssonen din (%{timezone}).
     tools: Reiskapane
     'true': Sann
+    type_to_confirm_destructive_action_html: Skriv <strong>%{text}</strong> for å stadfeste
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
     undo: angre

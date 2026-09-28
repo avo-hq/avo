@@ -3,9 +3,12 @@
 <% end %>
 
 <%= turbo_frame_tag Avo::MODAL_FRAME_ID do %>
+  <% destructive = @action.destructive? %>
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
-    data-action-confirmation-value="<%= @action.confirmation? %>"
+    <%# A destructive action always asks, even when confirmation is turned off. %>
+    data-action-confirmation-value="<%= @action.confirmation? || destructive %>"
+    data-action-destructive-confirmation-text-value="<%= @action.destructive_confirmation_text if destructive %>"
     data-action-resource-name-value="<%= @resource.model_key %>"
     data-resource-id="<%= params[:id] %>"
     class="hidden text-content"
@@ -53,6 +56,21 @@
           <% end %>
         </div>
       <% end %>
+      <% if destructive %>
+        <div class="flex flex-col gap-2 p-4 border-t border-tertiary">
+          <%= label_tag :destructive_action_confirmation, t("avo.type_to_confirm_destructive_action_html", text: @action.destructive_confirmation_text) %>
+          <%# No name, so the typed text is never sent with the action's fields. %>
+          <%= text_field_tag nil, nil,
+            id: :destructive_action_confirmation,
+            class: input_classes("w-full"),
+            autocomplete: "off",
+            autofocus: first_input.nil?,
+            data: {
+              action_target: :destructiveConfirmationInput,
+              action: "input->action#toggleSubmitButton"
+            } %>
+        </div>
+      <% end %>
 
       <% c.with_controls do %>
         <%= a_button type: :button,
@@ -64,15 +82,17 @@
         <% end %>
         <%= a_button(
           type: :submit,
-          color: :primary,
+          color: destructive ? :red : :primary,
           style: :outline,
           size: :md,
           end_icon: "tabler/outline/arrow-right",
+          disabled: destructive,
           data: {
             target: :submit_action,
+            action_target: :submitButton,
             hotkey: "Mod+Enter"
           },
-          autofocus: first_input.nil?
+          autofocus: first_input.nil? && !destructive
         ) do %>
           <%= @action.confirm_button_label %>
         <% end %>

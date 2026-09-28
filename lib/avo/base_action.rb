@@ -14,6 +14,8 @@ module Avo
     class_attribute :confirm_button_label, default: -> { I18n.t("avo.run") }
     class_attribute :cancel_button_label, default: -> { I18n.t("avo.cancel") }
     class_attribute :confirmation, default: true
+    class_attribute :destructive, default: false
+    class_attribute :destructive_confirmation_text, default: -> { I18n.t("avo.destructive_action_confirmation_text") }
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
       # Hide on the :new view by default
@@ -182,6 +184,10 @@ module Avo
 
     def confirm_button_label
       resolve_option(:confirm_button_label)
+    end
+
+    def destructive_confirmation_text
+      resolve_option(:destructive_confirmation_text)
     end
 
     def handle_action(**args)
@@ -361,6 +367,16 @@ module Avo
     def confirmation?
       Avo::ExecutionContext.new(
         target: confirmation,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments:
+      ).handle
+    end
+
+    def destructive?
+      Avo::ExecutionContext.new(
+        target: destructive,
         action: self,
         resource: @resource,
         view: @view,
