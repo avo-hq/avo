@@ -225,6 +225,7 @@ nl:
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
+    unsaved_changes_warning: Je hebt niet-opgeslagen wijzigingen. Weet je zeker dat je deze pagina wilt verlaten?
     updated_at: Bijgewerkt op
     updated_at_timestamp: Bijgewerkt op %{updated_at}
     view: Bekijken

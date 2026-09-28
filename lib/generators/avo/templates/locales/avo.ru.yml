@@ -231,6 +231,7 @@ ru:
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить
+    unsaved_changes_warning: У вас есть несохранённые изменения. Вы уверены, что хотите покинуть эту страницу?
     updated_at: Обновлено
     updated_at_timestamp: Обновлено в %{updated_at}
     view: Просмотр
