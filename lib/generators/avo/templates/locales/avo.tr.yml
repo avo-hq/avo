@@ -139,12 +139,14 @@ tr:
     grid_view: Grid görünümü
     hide_content: İçeriği gizle
     home: Anasayfa
+    image_preview: Görsel önizleme
     key_value_field:
       add_row: Satır ekle
       delete_row: Satır sil
       key: Anahtar
       reorder_row: Satırı yeniden sırala
       value: Değer
+    language: Dil
     less_content: Daha az içerik
     list_is_empty: Boş liste
     load_item: "%{item} yükle"
@@ -157,6 +159,7 @@ tr:
     nested:
       add_new_item: Yeni %{item} ekle
     new: yeni
+    next_image: Sonraki görsel
     next_page: Sonraki sayfa
     no_cancel: Hayır, iptal et
     no_cards_present: Kart yok
@@ -171,6 +174,7 @@ tr:
     oops_nothing_found: Hata! Hiçbir şey bulunamadı
     open_in_new_tab: Yeni bir sekmede aç
     open_in_your_editor: Editörünüzde açın
+    open_original: Orijinali aç
     order:
       higher: Kaydı yüksekten sırala
       lower: Kaydı düşükten sırala
@@ -180,6 +184,8 @@ tr:
     pages: Sayfalar
     per_page: Sayfa başına
     prev_page: Önceki sayfa
+    preview_item: "%{item} önizlemesi"
+    previous_image: Önceki görsel
     record:
       one: kayıt
       other: kayıtlar

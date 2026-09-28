@@ -137,12 +137,14 @@ de:
     grid_view: Rasteransicht
     hide_content: Inhalt ausblenden
     home: Startseite
+    image_preview: Bildvorschau
     key_value_field:
       add_row: Zeile hinzufügen
       delete_row: Zeile löschen
       key: Schlüssel
       reorder_row: Zeile neu anordnen
       value: Wert
+    language: Sprache
     less_content: Weniger Inhalt
     list_is_empty: Liste ist leer
     load_item: Lade %{item}
@@ -155,6 +157,7 @@ de:
     nested:
       add_new_item: "%{item} hinzufügen"
     new: neu
+    next_image: Nächstes Bild
     next_page: Nächste Seite
     no_cancel: Nein, abbrechen
     no_cards_present: Keine Karten vorhanden
@@ -169,6 +172,7 @@ de:
     oops_nothing_found: Oops! Nichts gefunden...
     open_in_new_tab: In neuem Tab öffnen
     open_in_your_editor: In Ihrem Editor öffnen
+    open_original: Original öffnen
     order:
       higher: Eintrag nach oben verschieben
       lower: Eintrag nach unten verschieben
@@ -178,6 +182,8 @@ de:
     pages: Seiten
     per_page: Pro Seite
     prev_page: Vorherige Seite
+    preview_item: Vorschau von %{item}
+    previous_image: Vorheriges Bild
     record:
       one: Eintrag
       other: Einträge

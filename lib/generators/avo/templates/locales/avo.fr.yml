@@ -139,12 +139,14 @@ fr:
     grid_view: Vue grille
     hide_content: Cacher le contenu
     home: Accueil
+    image_preview: Aperçu de l'image
     key_value_field:
       add_row: Ajouter une ligne
       delete_row: Supprimer une ligne
       key: Clé
       reorder_row: Réorganiser la ligne
       value: Valeur
+    language: Langue
     less_content: Moins de contenu
     list_is_empty: La liste est vide
     load_item: Charger %{item}
@@ -157,6 +159,7 @@ fr:
     nested:
       add_new_item: Ajouter un nouveau %{item}
     new: Nouveau
+    next_image: Image suivante
     next_page: Page suivante
     no_cancel: Non, annuler
     no_cards_present: Aucune carte présente
@@ -171,6 +174,7 @@ fr:
     oops_nothing_found: Oups ! Rien n'a été trouvé...
     open_in_new_tab: Ouvrir dans un nouvel onglet
     open_in_your_editor: Ouvrir dans votre éditeur
+    open_original: Ouvrir l'original
     order:
       higher: Déplacer plus haut
       lower: Déplacer plus bas
@@ -180,6 +184,8 @@ fr:
     pages: Pages
     per_page: Par page
     prev_page: Page précédente
+    preview_item: Aperçu de %{item}
+    previous_image: Image précédente
     record:
       one: enregistrement
       other: enregistrements

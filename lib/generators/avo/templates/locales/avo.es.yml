@@ -139,12 +139,14 @@ es:
     grid_view: Vista en cuardrícula
     hide_content: Ocultar contenido
     home: Inicio
+    image_preview: Vista previa de la imagen
     key_value_field:
       add_row: Añadir fila
       delete_row: Eliminar fila
       key: Clave
       reorder_row: Reordenar fila
       value: Valor
+    language: Idioma
     less_content: Menos contenido
     list_is_empty: La lista está vacía
     load_item: Cargar %{item}
@@ -157,6 +159,7 @@ es:
     nested:
       add_new_item: Agregar nuevo %{item}
     new: nuevo/a
+    next_image: Imagen siguiente
     next_page: Página siguiente
     no_cancel: No, cancelar
     no_cards_present: No hay tarjetas
@@ -171,6 +174,7 @@ es:
     oops_nothing_found: Oops! No se ha encontrado nada...
     open_in_new_tab: Abrir en una nueva pestaña
     open_in_your_editor: Abrir en tu editor
+    open_original: Abrir original
     order:
       higher: Mover arriba
       lower: Mover abajo
@@ -180,6 +184,8 @@ es:
     pages: Páginas
     per_page: Por página
     prev_page: Página anterior
+    preview_item: Vista previa de %{item}
+    previous_image: Imagen anterior
     record:
       one: registro
       other: registros

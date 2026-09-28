@@ -41,8 +41,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_edit_button?
-    # Disable edit for ArrayResources
-    return false if @resource.resource_type_array?
+    return false if @resource.read_only_array?
 
     return authorize_association_for(:edit) if @reflection.present?
 
@@ -50,8 +49,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_destroy_button?
-    # Disable destroy for ArrayResources
-    return false if @resource.resource_type_array?
+    return false if @resource.read_only_array?
 
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
@@ -353,6 +351,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def is_a_related_resource?
     @reflection.present? && @resource.record.present?
+  end
+
+  def has_one_field?
+    field.present? and field.instance_of? Avo::Fields::HasOneField
   end
 
   def inverse_of

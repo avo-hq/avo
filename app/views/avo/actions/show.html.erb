@@ -37,14 +37,19 @@
       <%= form.hidden_field :avo_index_query, 'data-action-target': 'indexQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
       <%= hidden_field_tag :resource_view, params[:resource_view] %>
+      <%# The fields render as a form, so they see the resource on the form view: their stimulus targets and html
+          attributes keep the names they have on an edit form. The action itself keeps the view it was started from. %>
+      <% fields_resource = @resource.dup.tap { |resource| resource.view = @view } %>
+      <%# Focus the first field that renders as an input: a hidden field takes no focus and a display-only one cannot. %>
+      <% first_input = (@fields || []).index { |field| !field.is_a?(Avo::Fields::HiddenField) && field.component_for_view(@view) != Avo::BlankFieldComponent } %>
       <% if @fields.present? %>
         <div class="description-list border-t border-tertiary">
           <% @fields.each_with_index do |field, index| %>
-            <%= render field
-              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
-              .component_for_view(@view)
-              .new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == 0)
-            %>
+            <% field.hydrate(resource: fields_resource, record: @resource.record, user: @resource.user, view: @view, action: @action) %>
+            <% component = field.component_for_view(@view) %>
+            <%# A display-only field (badge, key/value...) has no form component. Render it as the show view does. %>
+            <% component = field.component_for_view(:show) if component == Avo::BlankFieldComponent %>
+            <%= render component.new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == first_input) %>
           <% end %>
         </div>
       <% end %>
@@ -57,16 +62,18 @@
           size: :md do %>
           <%= @action.cancel_button_label %>
         <% end %>
-        <%= a_button type: :submit,
-            color: :primary,
-            style: :outline,
-            size: :md,
-            end_icon: "tabler/outline/arrow-right",
-            data: {
-              target: :submit_action,
-              hotkey: "Mod+Enter",
-            },
-            autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
+        <%= a_button(
+          type: :submit,
+          color: :primary,
+          style: :outline,
+          size: :md,
+          end_icon: "tabler/outline/arrow-right",
+          data: {
+            target: :submit_action,
+            hotkey: "Mod+Enter"
+          },
+          autofocus: first_input.nil?
+        ) do %>
           <%= @action.confirm_button_label %>
         <% end %>
       <% end %>

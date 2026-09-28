@@ -26,6 +26,8 @@ export default class extends Controller {
 
   searchDebounce = 500
 
+  searchCount = 0
+
   debouncedFetch = debouncePromise(fetch, this.searchDebounce)
 
   get suggestionsAreObjects() {
@@ -107,6 +109,8 @@ export default class extends Controller {
         q: query,
       })
 
+      const search = ++that.searchCount
+
       // reset current whitelist
       that.tagify.whitelist = null
       // show the loader animation
@@ -115,6 +119,9 @@ export default class extends Controller {
       // get new whitelist from a request
       that.fetchResults(uri.toString())
         .then((result) => {
+          // The user kept typing while this search was in flight; the newer search fills the dropdown
+          if (search !== that.searchCount) return
+
           that.tagify.settings.whitelist = result // add already-existing tags to the new whitelist array
 
           that.tagify

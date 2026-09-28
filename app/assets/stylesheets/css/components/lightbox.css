@@ -1,0 +1,116 @@
+/* Lightbox — the image preview of a file / files field on the Show view.
+   BEM: .lightbox (block), .lightbox__* (elements), .lightbox__nav--prev / --next (modifiers).
+
+   A native <dialog> in the top layer, sized to the viewport so that any click landing on the
+   dialog element itself (off the image and its controls) closes it — see
+   lightbox_controller#closeOnBackdrop. It sits over a near-black scrim in both color schemes,
+   so its chrome uses the light end of the neutral scale: the content tokens would flip to
+   dark-on-dark in light mode. */
+
+/* The thumbnail that opens the lightbox. Takes the image's place in the grid tile's column. */
+.lightbox__trigger {
+  @apply block max-w-full self-start cursor-zoom-in rounded-lg border-0 bg-transparent p-0 text-start;
+}
+
+.lightbox {
+  /* Reset the UA dialog chrome (fit-content sizing capped below the viewport, auto margins,
+     border, padding, background) so the element is a transparent, full-viewport container. */
+  @apply fixed inset-0 m-0 size-full max-w-none max-h-none overflow-hidden border-0 bg-transparent p-4 sm:p-16;
+
+  color: var(--color-avo-neutral-50);
+}
+
+/* `[open]` lands on every showModal(), so the entrance replays per opening. */
+.lightbox[open] {
+  @apply flex items-center justify-center;
+
+  animation: lightbox-zoom 0.2s ease-out;
+}
+
+.lightbox::backdrop {
+  background-color: color-mix(in oklch, var(--color-avo-neutral-950) 85%, transparent);
+  animation: lightbox-fade 0.2s ease-out;
+}
+
+@keyframes lightbox-zoom {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+@keyframes lightbox-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox[open],
+  .lightbox::backdrop {
+    animation: none;
+  }
+}
+
+.lightbox__figure {
+  @apply m-0 flex max-h-full max-w-full flex-col items-center gap-3;
+}
+
+.lightbox__image {
+  @apply block max-w-full rounded-lg object-contain;
+
+  /* Leaves room for the caption below and the toolbar above. */
+  max-height: calc(100dvh - 10rem);
+}
+
+.lightbox__caption {
+  @apply max-w-full truncate text-sm;
+
+  color: color-mix(in oklch, var(--color-avo-neutral-50) 80%, transparent);
+}
+
+.lightbox__toolbar {
+  @apply absolute top-3 end-3 flex items-center gap-2;
+}
+
+.lightbox__counter {
+  @apply px-2 text-sm tabular-nums;
+}
+
+.lightbox__action,
+.lightbox__nav {
+  @apply flex shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors;
+
+  color: inherit;
+  background-color: color-mix(in oklch, var(--color-avo-neutral-50) 12%, transparent);
+}
+
+.lightbox__action:hover,
+.lightbox__nav:hover {
+  background-color: color-mix(in oklch, var(--color-avo-neutral-50) 24%, transparent);
+}
+
+.lightbox__action {
+  @apply size-9;
+}
+
+.lightbox__nav {
+  @apply absolute top-1/2 size-11 -translate-y-1/2;
+}
+
+.lightbox__nav--prev {
+  @apply start-3;
+}
+
+.lightbox__nav--next {
+  @apply end-3;
+}
+
+.lightbox__icon {
+  @apply size-5;
+}
+
+/* The chevrons point along the reading direction. */
+.lightbox__nav .lightbox__icon {
+  @apply size-6 rtl:rotate-180;
+}
