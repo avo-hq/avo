@@ -263,16 +263,31 @@ module Avo
       @resource.form_scope
     end
 
-    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
+    # Picks the request's locale. `?force_locale=` (set_force_locale, which wraps
+    # this) wins over everything, then `?set_locale=` (kept for backward
+    # compatibility; it changes Avo.configuration.locale for every user until the
+    # process restarts), then the viewer's own choice from the locale selector
+    # cookie, then the configured default.
     def set_avo_locale(&action)
       locale = Avo.configuration.default_locale
 
       if params[:set_locale].present?
         locale = params[:set_locale]
         Avo.configuration.locale = locale
+      elsif (selected_locale = locale_selector_cookie).present?
+        locale = selected_locale
       end
 
       I18n.with_locale(locale, &action)
+    end
+
+    # The cookie is user-controlled, so it only counts when it names a locale
+    # the selector offers. That list is empty when the selector is disabled.
+    def locale_selector_cookie
+      value = cookies[Avo::Locales::COOKIE_NAME].to_s
+      return if value.blank?
+
+      value if Avo.configuration.locale_selector_locales.include?(value)
     end
 
     # Temporary set the locale and reverting at the end of the request.

@@ -1,0 +1,37 @@
+<%= tag.div class: "locale-selector" do %>
+  <%= render Avo::UI::DropdownComponent.new(popover_mode: true, searchable: searchable?, classes: "locale-selector__panel") do |dropdown| %>
+    <% dropdown.with_trigger do %>
+      <button type="button"
+        class="locale-selector__trigger"
+        popovertarget="<%= dropdown.popover_id %>"
+        title="<%= t("avo.language") %>"
+        aria-label="<%= t("avo.language") %>: <%= current_name %>"
+        data-tippy="tooltip">
+        <%= helpers.svg "tabler/outline/language", class: "locale-selector__icon" %>
+        <span class="locale-selector__code" aria-hidden="true"><%= code_for(I18n.locale) %></span>
+        <%= helpers.svg "tabler/outline/chevron-down", class: "locale-selector__chevron" %>
+      </button>
+    <% end %>
+    <% dropdown.with_items do %>
+      <% locales.each do |locale| %>
+        <%# Turbo Drive keeps the old <html> element, so a Turbo visit would leave
+            `lang` and `dir` on the previous language. A full load re-renders them. %>
+        <%= button_to helpers.avo.locale_path,
+          method: :patch,
+          params: {locale: locale},
+          form_class: "locale-selector__form",
+          form: {data: {turbo: false}},
+          class: item_classes(locale),
+          lang: locale,
+          data: {filter_text: "#{name_for(locale)} #{locale}"},
+          aria: {current: current?(locale) ? "true" : nil} do %>
+          <span class="locale-selector__name"><%= name_for(locale) %></span>
+          <span class="locale-selector__item-code"><%= code_for(locale) %></span>
+          <span class="locale-selector__check-slot">
+            <%= helpers.svg("tabler/outline/check", class: "locale-selector__check") if current?(locale) %>
+          </span>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

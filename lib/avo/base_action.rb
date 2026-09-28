@@ -159,6 +159,15 @@ module Avo
     def fields
     end
 
+    # An action lists its fields itself, so every one of them belongs in the
+    # modal. The show_on/hide_on marks describe resource views, and `view` here
+    # is the one the action was started from, not the modal.
+    def get_fields(**)
+      get_field_definitions
+        .select(&:visible?)
+        .map { |field| field.dup.hydrate(record: @record, view: @view, resource: self) }
+    end
+
     def get_description
       resolve_option(:description)
     end
@@ -186,8 +195,11 @@ module Avo
 
         # For some fields, like belongs_to, the id and database_id differ (user vs user_id).
         # That's why we need to fetch the database_id for when we process the action.
-        action_fields_by_database_id = action_fields.map do |id, value|
-          [value.database_id.to_sym, value]
+        action_fields_by_database_id = action_fields.values.flat_map do |field|
+          # A polymorphic belongs_to submits both `<name>_type` and `<name>_id`, but its database_id only covers the type.
+          database_ids = field.try(:is_polymorphic?) ? field.to_permitted_param : [field.database_id]
+
+          database_ids.map { |database_id| [database_id.to_sym, field] }
         end.to_h
 
         args[:fields].to_unsafe_h.map do |name, value|

@@ -139,12 +139,14 @@ ja:
     grid_view: グリッドビュー
     hide_content: 内容を非表示
     home: ホーム
+    image_preview: 画像プレビュー
     key_value_field:
       add_row: 行を追加
       delete_row: 行を削除
       key: キー
       reorder_row: 行の並べ替え
       value: 値
+    language: 言語
     less_content: コンテンツが少ない
     list_is_empty: リストは空です
     load_item: "%{item}を読み込む"
@@ -157,6 +159,7 @@ ja:
     nested:
       add_new_item: 新しい%{item}を追加
     new: 新規
+    next_image: 次の画像
     next_page: 次のページ
     no_cancel: いいえ、キャンセル
     no_cards_present: カードがありません
@@ -171,6 +174,7 @@ ja:
     oops_nothing_found: おっと！ 何も見つかりませんでした...
     open_in_new_tab: 新しいタブで開く
     open_in_your_editor: エディターで開く
+    open_original: 元の画像を開く
     order:
       higher: レコードを上に移動
       lower: レコードを下に移動
@@ -180,6 +184,8 @@ ja:
     pages: ページ
     per_page: ページあたり
     prev_page: 前のページ
+    preview_item: "%{item}をプレビュー"
+    previous_image: 前の画像
     record:
       one: レコード
       other: レコード

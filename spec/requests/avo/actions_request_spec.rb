@@ -108,4 +108,173 @@ RSpec.describe "Actions", type: :request do
       expect(flash[:success][:body]).to start_with "0 fish released"
     end
   end
+
+  describe "polymorphic belongs_to field" do
+    it "passes both the type and the id to handle" do
+      review = create(:review)
+
+      post "/admin/resources/reviews/actions",
+        params: {
+          action_id: "Avo::Actions::Test::ShowPolymorphicFields",
+          fields: {
+            avo_resource_ids: review.id.to_s,
+            reviewable_type: "Post",
+            reviewable_id: "12345"
+          }
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq "Post 12345"
+    end
+  end
+
+  # avo-hq/avo#3848: with several records selected on the index, or none, the
+  # action has no record, and a belongs_to field used to crash the modal.
+  describe "belongs_to field without a single selected record" do
+    let!(:user) { create(:user) }
+    let(:fish_ids) { create_list(:fish, 2).map(&:to_param).join(",") }
+
+    it "opens the modal with several records selected" do
+      get "/admin/resources/fish/actions",
+        params: {
+          action_id: "Avo::Actions::ReleaseFish",
+          fields: {avo_resource_ids: fish_ids}
+        }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<select[^>]*name="fields\[user_id\]"/)
+      expect(response.body).to include "<option value=\"#{user.to_param}\">#{user.name}</option>"
+    end
+
+    it "opens the modal with no record selected" do
+      get "/admin/resources/fish/actions", params: {action_id: "Avo::Actions::ReleaseFish"}
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<select[^>]*name="fields\[user_id\]"/)
+    end
+
+    it "passes the chosen record to handle" do
+      post "/admin/resources/fish/actions",
+        params: {
+          action_id: "Avo::Actions::ReleaseFish",
+          fields: {avo_resource_ids: fish_ids, user_id: user.to_param}
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq "2 fish released with message '' by #{user.name}."
+    end
+
+    it "opens the modal of a polymorphic belongs_to with several records selected" do
+      review_ids = create_list(:review, 2).map(&:to_param).join(",")
+
+      get "/admin/resources/reviews/actions",
+        params: {
+          action_id: "Avo::Actions::Test::ShowPolymorphicFields",
+          fields: {avo_resource_ids: review_ids}
+        }
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<select[^>]*name="fields\[reviewable_type\]"/)
+    end
+  end
+
+  # avo-hq/avo#2190: the controller used to force `view` to :new on both the
+  # action and the resource, so `view` in an action's blocks never said where
+  # the action was started from, and fields hidden on the new view (badge)
+  # never reached the modal.
+  describe "the view the action was started from" do
+    let(:action_id) { "Avo::Actions::Test::ShowView" }
+
+    it "opens the modal with the index view" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to include "view=index resource.view=index"
+    end
+
+    it "opens the modal with the show view" do
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "show"}
+
+      expect(response.body).to include "view=show resource.view=show"
+    end
+
+    it "runs the action with the index view" do
+      post "/admin/resources/reviews/actions",
+        params: {
+          action_id: action_id,
+          resource_view: "index",
+          fields: {avo_resource_ids: "", probe_hidden: "hidden-default"}
+        },
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq "view=index resource.view=index probe_hidden=hidden-default"
+    end
+
+    it "renders every declared field, display-only ones included, with defaults prefilled" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to include "Probe badge"
+      expect(response.body).to match(/<input[^>]*name="fields\[probe_hidden\]"[^>]*>/)
+      expect(response.body).to include 'value="hidden-default"'
+      expect(response.body).to include 'value="text-default"'
+    end
+
+    it "keeps the edit view, and every field, when started from a record's edit page" do
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "edit"}
+
+      expect(response.body).to include "view=edit resource.view=edit"
+      # A badge is hidden on a resource's edit form; an action's field list is not a resource form.
+      expect(response.body).to include "Probe badge"
+    end
+
+    it "keeps the index view for a row action, which posts to the record path" do
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to include "view=index resource.view=index"
+    end
+
+    it "derives the view from the route when a hand-built link carries none" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id}
+
+      expect(response.body).to include "view=index resource.view=index"
+
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id}
+
+      expect(response.body).to include "view=show resource.view=show"
+    end
+
+    it "does not trust a view the route cannot back up" do
+      # Without a record in the URL there is no show page to have come from, so a
+      # claimed show origin cannot satisfy an `authorize` block on `view.show?`.
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "show"}
+
+      expect(response.body).to include "view=index resource.view=index"
+
+      post "/admin/resources/reviews/actions",
+        params: {action_id: action_id, resource_view: "show", fields: {avo_resource_ids: "", probe_hidden: "x"}},
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to start_with "view=index resource.view=index"
+
+      # The modal never runs on a form view, whatever the request says.
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/actions", params: {action_id: action_id, resource_view: "new"}
+
+      expect(response.body).to include "view=show resource.view=show"
+    end
+
+    it "focuses the first input rather than a display-only field" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body).to match(/<input(?=[^>]*name="fields\[probe_text\]")(?=[^>]*autofocus)[^>]*>/)
+    end
+  end
 end

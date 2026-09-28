@@ -27,6 +27,7 @@ import FormController from './controllers/form_controller'
 import GridCoverEmptyStateController from './controllers/grid_cover_empty_state_controller'
 import HeaderMenuController from './controllers/header_menu_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
+import ImageLightboxController from './controllers/image_lightbox_controller'
 import IndexRowNavigatorController from './controllers/index_row_navigator_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
@@ -93,6 +94,7 @@ application.register('form', FormController)
 application.register('grid-cover-empty-state', GridCoverEmptyStateController)
 application.register('header-menu', HeaderMenuController)
 application.register('hidden-input', HiddenInputController)
+application.register('image-lightbox', ImageLightboxController)
 application.register('index-row-navigator', IndexRowNavigatorController)
 application.register('input-autofocus', InputAutofocusController)
 application.register('keyboard-shortcuts-search', KeyboardShortcutsSearchController)

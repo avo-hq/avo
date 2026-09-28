@@ -139,12 +139,14 @@ nb:
     grid_view: Grid visning
     hide_content: Skjul innhold
     home: Hjem
+    image_preview: Forhåndsvisning av bilde
     key_value_field:
       add_row: Legg til rad
       delete_row: Slett rad
       key: Nøkkel
       reorder_row: Omorganiser rad
       value: Verdi
+    language: Språk
     less_content: Mindre innhold
     list_is_empty: Listen er tom
     load_item: Last %{item}
@@ -157,6 +159,7 @@ nb:
     nested:
       add_new_item: Legg til ny %{item}
     new: ny
+    next_image: Neste bilde
     next_page: Neste side
     no_cancel: Nei, avbryt
     no_cards_present: Ingen kort til stede
@@ -171,6 +174,7 @@ nb:
     oops_nothing_found: Oops! Ingen ting funnet...
     open_in_new_tab: Åpne i ny fane
     open_in_your_editor: Åpne i redigeringsprogrammet ditt
+    open_original: Åpne original
     order:
       higher: Flytt elementet høyere
       lower: Flytt elementet lavere
@@ -180,6 +184,8 @@ nb:
     pages: Sider
     per_page: Per side
     prev_page: Forrige side
+    preview_item: Forhåndsvis %{item}
+    previous_image: Forrige bilde
     record:
       one: post
       other: poster

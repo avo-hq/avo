@@ -42,6 +42,16 @@ Avo.configure do |config|
   ## == Localization ==
   # config.locale = 'en-US'
 
+  ## == Locale selector ==
+  ## A language picker in the top navbar lets each user pick their own language.
+  ## The choice is stored in a cookie, so it never changes the language for other users.
+  ##   true  - list every locale in I18n.available_locales that Avo has translations for (default)
+  ##   false - hide the selector
+  ##   array - list exactly these locales
+  # config.locale_selector = true
+  # config.locale_selector = false
+  # config.locale_selector = [:en, :ro, :de]
+
   ## == Resource options ==
   # config.resource_row_controls_config = {
   #   placement: :right,
@@ -81,6 +91,12 @@ Avo.configure do |config|
   #   ActiveSupport::Cache.lookup_store(:solid_cache_store)
   # }
   # config.cache_resources_on_index_view = true
+  ## What an index row's cache key varies by besides the record. The default keys
+  ## rows on the current user (the record, so a role change busts their rows),
+  ## the locale and the tenant. Narrow it to share cached rows across users who
+  ## see the same thing — only do this when nothing a row renders reads the user:
+  # config.index_cache_context = -> { [current_user, I18n.locale, Avo::Current.tenant_id] }
+  # config.index_cache_context = -> { [current_user.role, I18n.locale] }
 
   ## == Turbo options ==
   # config.turbo = -> do

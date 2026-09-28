@@ -130,9 +130,23 @@ module Avo
     attr_reader :field_manager
     delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
+    # A digest of the installed Avo version and of every registered plugin's
+    # name and version. Cached index rows fold it into their key so upgrading
+    # the gem or any plugin busts every row. Rails' template digest would do
+    # that for an ERB template, but ViewComponent templates compile to methods
+    # the digestor cannot see, so a fragment rendered by a component never
+    # picks one up. Computed on first use, after every engine has registered,
+    # and kept for the life of the process: versions don't change while it runs.
+    def cache_version
+      @cache_version ||= Digest::MD5.hexdigest(
+        [Avo::VERSION, *plugin_manager.plugins.map(&:to_s)].sort.join("|")
+      )
+    end
+
     # Runs when the app boots up
     def boot
       @boot_mutex.synchronize do
+        @cache_version = nil
         Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
         @logger = Avo.configuration.logger
         @field_manager = Avo::Fields::FieldManager.build

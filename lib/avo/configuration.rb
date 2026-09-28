@@ -21,6 +21,8 @@ module Avo
     attr_accessor :per_page_steps
     attr_accessor :via_per_page
     attr_accessor :locale
+    # true (every locale the app enables that Avo has translations for), false, or an array of locales.
+    attr_accessor :locale_selector
     attr_accessor :currency
     attr_accessor :default_view_type
     attr_accessor :license_key
@@ -29,6 +31,7 @@ module Avo
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
     attr_accessor :cache_resources_on_index_view
+    attr_accessor :index_cache_context
     attr_accessor :context
     attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
@@ -159,6 +162,7 @@ module Avo
       @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
       @locale = nil
+      @locale_selector = true
       @currency = "USD"
       @default_view_type = :table
       @map_view = {}
@@ -177,6 +181,13 @@ module Avo
       }
       @id_links_to_resource = false
       @cache_resources_on_index_view = Avo::PACKED
+      # Everything an index row's cache key varies by besides the record. Field
+      # `visible:` lambdas, computed fields, grid cards and the row controls all
+      # read the current user, so the user is in the key by default — the record,
+      # not its id, so editing a user's roles busts their rows too. Locale and
+      # tenant are in for the same reason. Resolved through Avo::ExecutionContext,
+      # once per request.
+      @index_cache_context = -> { [current_user, I18n.locale, Avo::Current.tenant_id] }
       @persistence = {
         driver: nil
       }
@@ -473,6 +484,30 @@ module Avo
 
     def default_locale
       @locale || I18n.default_locale
+    end
+
+    # The locales the profile-menu language picker offers, as strings.
+    #   true  -> the app's I18n.available_locales that Avo ships (or the app adds) an `avo` tree for, sorted by code
+    #   false -> none
+    #   array -> exactly those, in that order, minus any the app does not enable
+    # Restricting to I18n.available_locales keeps I18n.with_locale from raising
+    # InvalidLocale for a value that came from a cookie.
+    def locale_selector_locales
+      available = I18n.available_locales.map(&:to_s)
+
+      case @locale_selector
+      when true
+        available.select { |locale| Avo::Locales.translated?(locale) }.sort
+      when false, nil
+        []
+      else
+        Array(@locale_selector).map(&:to_s).uniq.select { |locale| available.include?(locale) }
+      end
+    end
+
+    # The picker only makes sense with a choice to make.
+    def locale_selector_enabled?
+      locale_selector_locales.size >= 2
     end
 
     # Known RTL (Right-to-Left) locale codes

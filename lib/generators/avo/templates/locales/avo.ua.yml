@@ -139,12 +139,14 @@ ua:
     grid_view: Плитка
     hide_content: Приховати вміст
     home: Головна
+    image_preview: Попередній перегляд зображення
     key_value_field:
       add_row: Додати рядок
       delete_row: Видалити рядок
       key: Ключ
       reorder_row: Змінити порядок рядка
       value: Значення
+    language: Мова
     less_content: Менше вмісту
     list_is_empty: Список порожній
     load_item: Завантажити %{item}
@@ -157,6 +159,7 @@ ua:
     nested:
       add_new_item: Add new %{item}
     new: новий
+    next_image: Наступне зображення
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
     no_cards_present: Немає карток
@@ -171,6 +174,7 @@ ua:
     oops_nothing_found: Ой! Нічого не знайдено...
     open_in_new_tab: Відкрити в новій вкладці
     open_in_your_editor: Відкрити у вашому редакторі
+    open_original: Відкрити оригінал
     order:
       higher: Перемістити запис вище
       lower: Перемістити запис нижче
@@ -180,6 +184,8 @@ ua:
     pages: Pages
     per_page: На сторінці
     prev_page: Попередня сторінка
+    preview_item: Попередній перегляд %{item}
+    previous_image: Попереднє зображення
     record:
       few: записи
       many: записів

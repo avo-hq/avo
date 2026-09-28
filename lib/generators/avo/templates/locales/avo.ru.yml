@@ -141,12 +141,14 @@ ru:
     grid_view: Сетка
     hide_content: Скрыть содержимое
     home: Главная
+    image_preview: Предпросмотр изображения
     key_value_field:
       add_row: Добавить строку
       delete_row: Удалить строку
       key: Ключ
       reorder_row: Перенести строку
       value: Значение
+    language: Язык
     less_content: Меньше контента
     list_is_empty: Список пуст
     load_item: Загрузить %{item}
@@ -159,6 +161,7 @@ ru:
     nested:
       add_new_item: Добавить новый %{item}
     new: новый
+    next_image: Следующее изображение
     next_page: Следующая страница
     no_cancel: Нет, отмена
     no_cards_present: Нет карточек
@@ -173,6 +176,7 @@ ru:
     oops_nothing_found: Ой! Ничего не найдено...
     open_in_new_tab: Открыть в новой вкладке
     open_in_your_editor: Открыть в вашем редакторе
+    open_original: Открыть оригинал
     order:
       higher: Переместить запись вверх
       lower: Переместить запись вниз
@@ -182,6 +186,8 @@ ru:
     pages: Страницы
     per_page: На странице
     prev_page: Предыдущая страница
+    preview_item: Предпросмотр %{item}
+    previous_image: Предыдущее изображение
     record:
       few: записи
       many: записей
