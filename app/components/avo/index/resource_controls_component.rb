@@ -161,11 +161,8 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
 
     hidden[:view_type] = params[:view_type] if params[:view_type]
     hidden[:view] = parent_resource&.view&.to_s
-
-    if params[:turbo_frame]
-      hidden[:turbo_frame] = params[:turbo_frame]
-      hidden[:referrer] = referrer_path
-    end
+    hidden[:turbo_frame] = params[:turbo_frame]
+    hidden[:referrer] = referrer_path
 
     hidden.compact
   end
