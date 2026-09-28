@@ -10,8 +10,10 @@ class Avo::Fields::TrixField::EditComponent < Avo::Fields::EditComponent
 
     super
 
+    # A nested form (avo-nested) renders one editor per record of the same resource, so the form index
+    # keeps their ids apart. The new-record template's index is NEW_RECORD, replaced on each clone.
     @input_id = if @resource_name.present?
-      "#{@field.type}_#{@resource_name}_#{@field.id}"
+      [@field.type, @resource_name, form&.index, @field.id].compact.join("_")
     elsif form.present?
       "#{@field.type}_#{form.index}_#{@field.id}"
     end
