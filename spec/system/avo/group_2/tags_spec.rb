@@ -104,6 +104,30 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
+  describe "removing a tag that is also a suggestion (#3564)" do
+    let(:tag_input) { tags_element(find_field_value_element("tags")) }
+
+    after do
+      Avo::Resources::Post.restore_items_from_backup
+    end
+
+    it "lists the removed tag once in the suggestions" do
+      Avo::Resources::Post.with_temporary_items do
+        field :tags, as: :tags, acts_as_taggable_on: :tags, suggestions: ["Coaster", "Dark Ride", "Flat Ride"]
+      end
+      post = create :post, tag_list: ["Dark Ride"]
+
+      visit avo.edit_resources_post_path(post)
+
+      tag_input.find("span[contenteditable]").click
+
+      tag_input.find("tag", text: "Dark Ride").find(".tagify__tag__removeBtn").click
+      expect(page).to have_css(".tagify__dropdown__item", exact_text: "Dark Ride")
+
+      expect(page.all(".tagify__dropdown__item").map(&:text)).to eq ["Coaster", "Dark Ride", "Flat Ride"]
+    end
+  end
+
   describe "without acts_as_taggable" do
     let(:course) { create :course, skills: [] }
     let(:path) { "/admin/resources/courses/#{course.id}/edit" }

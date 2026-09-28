@@ -101,6 +101,27 @@ RSpec.describe "Filters", type: :system do
       expect(current_url).not_to include "encoded_filters="
       expect(page).to have_css(".button--disabled", text: "Reset filters")
     end
+
+    it "keeps the filters after deleting a record from the index" do
+      other_featured_post = create :post, name: "Other featured post", is_featured: true, published_at: nil
+
+      visit url
+      open_filters_menu
+      check "Featured"
+      wait_for_loaded
+
+      expect(page).not_to have_text "Unfeatured post"
+      filtered_url = current_url
+
+      find("[data-control='destroy'][data-resource-id='#{other_featured_post.to_param}']").click
+      find("#turbo-confirm button[value='confirm']").click
+
+      expect(page).to have_text "Record destroyed"
+      expect(page).to have_text "Featured post"
+      expect(page).not_to have_text "Other featured post"
+      expect(page).not_to have_text "Unfeatured post"
+      expect(current_url).to eq filtered_url
+    end
   end
 
   describe "Boolean filter without options" do

@@ -79,7 +79,8 @@ module Avo
       def whitelist_items
         return suggestions.to_json if enforce_suggestions
 
-        (suggestions + field_value).uniq.to_json
+        # Tags and suggestions can be strings or {value:} objects; Tagify compares them by their stringified value
+        (suggestions + field_value).as_json.uniq { |item| (item.is_a?(Hash) ? item["value"] : item).to_s }.to_json
       end
 
       def suggestions
