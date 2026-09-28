@@ -1,6 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-
-const modalStack = []
+import { pushModal, removeModal, topmostModal } from '../helpers/modal_stack'
 
 /**
  * Shared behaviour for both modal strategies (destroy & toggle).
@@ -156,18 +155,11 @@ export default class extends Controller {
   }
 
   addModalOpen() {
-    const index = modalStack.indexOf(this.modalTarget)
-    if (index >= 0) modalStack.splice(index, 1)
-
-    modalStack.push(this.modalTarget)
-    document.body.classList.add('modal-open')
+    pushModal(this.modalTarget)
   }
 
   removeModalOpen() {
-    const index = modalStack.indexOf(this.modalTarget)
-    if (index >= 0) modalStack.splice(index, 1)
-
-    document.body.classList.toggle('modal-open', modalStack.length > 0)
+    removeModal(this.modalTarget)
   }
 
   dispatchClose() {
@@ -176,7 +168,7 @@ export default class extends Controller {
   }
 
   topmostModal() {
-    return modalStack.at(-1)
+    return topmostModal()
   }
 
   isTopmost() {
