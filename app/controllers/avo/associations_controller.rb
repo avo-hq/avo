@@ -355,8 +355,13 @@ module Avo
     def reload_frame_turbo_streams
       turbo_streams = super
 
-      # We want to close the modal if the user wants to add just one record
-      turbo_streams << turbo_stream.avo_close_modal if params[:button] != "attach_another"
+      # Close the modal if the user wants to add just one record, otherwise
+      # reload it so the options reflect the record that was just attached
+      turbo_streams << if params[:button] == "attach_another"
+        turbo_stream.turbo_frame_reload(Avo::MODAL_FRAME_ID)
+      else
+        turbo_stream.avo_close_modal
+      end
 
       turbo_streams
     end
