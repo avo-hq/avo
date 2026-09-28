@@ -24,7 +24,8 @@ module Avo
           attributes = if parsed.is_a? Hash
             get_html_from_hash name, element: element, hash: parsed, view: view
           elsif parsed.is_a? Avo::HTML::Builder
-            get_html_from_block name, element: element, html_builder: parsed, view: view
+            # A block that sets nothing for this element returns nil, which would skip the stimulus targets below.
+            get_html_from_block(name, element: element, html_builder: parsed, view: view) || default_attribute_value(name)
           elsif parsed.nil?
             # Handle empty parsed by returning an empty state
             default_attribute_value name
