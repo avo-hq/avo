@@ -48,6 +48,7 @@ module Avo
       attr_reader :format_new_using
       attr_reader :format_form_using
       attr_reader :autocomplete
+      attr_reader :autofocus
       attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
@@ -93,6 +94,7 @@ module Avo
         @update_using = args[:update_using]
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete]
+        @autofocus = args[:autofocus]
         @help = args[:help]
         @label_help = args[:label_help]
         @tooltip = args[:tooltip]

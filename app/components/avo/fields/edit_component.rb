@@ -22,7 +22,7 @@ class Avo::Fields::EditComponent < Avo::BaseComponent
     @resource = resource
     @stacked = stacked
     @view = Avo::ViewInquirer.new("edit")
-    @autofocus = autofocus
+    @autofocus = autofocus || field&.autofocus
     @full_width = full_width
   end
 

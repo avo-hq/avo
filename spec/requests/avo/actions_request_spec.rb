@@ -276,5 +276,16 @@ RSpec.describe "Actions", type: :request do
 
       expect(response.body).to match(/<input(?=[^>]*name="fields\[probe_text\]")(?=[^>]*autofocus)[^>]*>/)
     end
+
+    it "focuses the field that sets autofocus instead of the first input" do
+      allow_any_instance_of(Avo::Actions::Test::ShowView).to receive(:fields) do |action|
+        action.field :probe_text, as: :text
+        action.field :probe_focus, as: :text, autofocus: true
+      end
+
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body.scan(/<input[^>]*autofocus[^>]*>/)).to contain_exactly(a_string_including('name="fields[probe_focus]"'))
+    end
   end
 end

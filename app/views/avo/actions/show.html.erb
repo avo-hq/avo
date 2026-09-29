@@ -40,8 +40,8 @@
       <%# The fields render as a form, so they see the resource on the form view: their stimulus targets and html
           attributes keep the names they have on an edit form. The action itself keeps the view it was started from. %>
       <% fields_resource = @resource.dup.tap { |resource| resource.view = @view } %>
-      <%# Focus the first field that renders as an input: a hidden field takes no focus and a display-only one cannot. %>
-      <% first_input = (@fields || []).index { |field| !field.is_a?(Avo::Fields::HiddenField) && field.component_for_view(@view) != Avo::BlankFieldComponent } %>
+      <%# Focus the field that asks for it, or else the first field that renders as an input: a hidden field takes no focus and a display-only one cannot. %>
+      <% first_input = (@fields || []).index(&:autofocus) || (@fields || []).index { |field| !field.is_a?(Avo::Fields::HiddenField) && field.component_for_view(@view) != Avo::BlankFieldComponent } %>
       <% if @fields.present? %>
         <div class="description-list border-t border-tertiary">
           <% @fields.each_with_index do |field, index| %>
