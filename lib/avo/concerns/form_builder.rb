@@ -18,9 +18,9 @@ module Avo
           multipart: true, &block
       end
 
-      # A form inside a modal gets closed, not navigated away from.
+      # Off unless the component says otherwise, as not every component that builds the form is the edit view.
       def warn_on_unsaved_changes?
-        Avo.configuration.warn_on_unsaved_changes && !embedded_in_modal?
+        false
       end
 
       def unsaved_changes_values
