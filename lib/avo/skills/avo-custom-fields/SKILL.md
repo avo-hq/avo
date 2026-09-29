@@ -137,6 +137,7 @@ Generated components are plain text fields you replace. Each inherits from an Av
 | `@form` | Edit only | Rails form builder — build inputs with `@form.range_field @field.id`, `@form.text_field @field.id`, etc. |
 | `classes("extra")` | Edit only | Input CSS classes with error state / size / HTML overrides already applied. |
 | `disabled?` | Edit, Show | `true` when readonly **or** disabled — prefer it over `@field.readonly`, it covers both. |
+| `@autofocus` | Edit only | Whether this input should take focus when the form opens: the field's `autofocus:` option, or the caller's override. Pass it to your input (`autofocus: @autofocus`) so the option works on your field. |
 
 ### The field wrapper (why every component starts with it)
 
@@ -160,7 +161,7 @@ Typical customization — a `<progress>` bar on Show, a range slider on Edit:
 <%# edit_component.html.erb %>
 <%= field_wrapper **field_wrapper_args do %>
   <%= @form.range_field @field.id,
-    class: "w-full", disabled: disabled?, min: 0,
+    class: "w-full", disabled: disabled?, autofocus: @autofocus, min: 0,
     max: @field.max, step: @field.step %>
 <% end %>
 ```
