@@ -34,6 +34,13 @@ RSpec.describe "Parent record of a nested view", type: :request do
     expect_via_user
   end
 
+  it "assigns it on create" do
+    post "/admin/resources/posts", params: {post: {name: "Via user"}, via_record_id: user.slug, via_relation: "user", via_relation_class: "User", via_resource_class: "Avo::Resources::User"}
+
+    expect_via_user
+    expect(Post.find_by(name: "Via user").user).to eq user
+  end
+
   it "leaves it unset without a parent record" do
     get "/admin/resources/posts/new"
 

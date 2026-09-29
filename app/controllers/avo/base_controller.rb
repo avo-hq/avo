@@ -140,24 +140,21 @@ module Avo
         # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
-          related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
-          @related_record = related_resource.find_record params[:via_record_id], params: params
+          set_via_record Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
 
-          @record.send(:"#{@reflection.foreign_key}=", @related_record.id)
+          @record.send(:"#{@reflection.foreign_key}=", @via_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
         if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
-          # find the record
-          via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-          @related_record = via_resource.find_record params[:via_record_id], params: params
+          set_via_record Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
           association_name = BaseResource.valid_association_name(@record, params[:via_relation])
 
           if params[:via_association_type] == "has_one"
-            # On has_one scenarios we should switch the @record and @related_record
-            @related_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
+            # On has_one scenarios we should switch the @record and @via_record
+            @via_record.send(:"#{@reflection.parent_reflection.inverse_of.name}=", @record)
           else
-            @record.send(association_name) << @related_record
+            @record.send(association_name) << @via_record
           end
         end
       end
