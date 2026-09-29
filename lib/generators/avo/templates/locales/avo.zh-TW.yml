@@ -225,6 +225,7 @@ zh-TW:
     type_to_search: 輸入以搜尋。
     unauthorized: 未經授權
     undo: 復原
+    unsaved_changes_warning: 您有尚未儲存的變更。確定要離開此頁面嗎？
     updated_at: 更新於
     updated_at_timestamp: 更新於%{updated_at}
     view: 檢視

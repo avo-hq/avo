@@ -74,6 +74,7 @@ import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
+import UnsavedChangesController from './controllers/unsaved_changes_controller'
 
 application.register('action', ActionController)
 application.register('confirm-dialog', ConfirmDialogController)
@@ -136,6 +137,7 @@ application.register('dropdown-menu', DropdownController)
 application.register('popover-menu', PopoverMenuController)
 application.register('sidebar-flyout', SidebarFlyoutController)
 application.register('trix-body', TrixBodyController)
+application.register('unsaved-changes', UnsavedChangesController)
 
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)
