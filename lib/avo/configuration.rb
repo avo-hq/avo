@@ -204,7 +204,7 @@ module Avo
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
       @buttons_on_form_footers = false
-      @warn_on_unsaved_changes = false
+      @warn_on_unsaved_changes = true
       @main_menu = nil
       @profile_menu = nil
       @header_menu = nil

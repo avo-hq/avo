@@ -6,10 +6,11 @@ RSpec.describe "Unsaved changes warning", type: :system do
   let(:warning) { I18n.t("avo.unsaved_changes_warning") }
 
   around do |example|
+    original = Avo.configuration.warn_on_unsaved_changes
     Avo.configuration.warn_on_unsaved_changes = true
     example.run
   ensure
-    Avo.configuration.warn_on_unsaved_changes = false
+    Avo.configuration.warn_on_unsaved_changes = original
   end
 
   # Cuprite clears the input before its first keydown, so click first like a user would.
