@@ -466,10 +466,14 @@ module Avo
       if params[:via_belongs_to_resource_class].present?
         respond_to do |format|
           format.turbo_stream do
+            modal_frame_id = helpers.current_modal_frame_id || Avo::MODAL_FRAME_ID.to_s
+
             render turbo_stream: [
-              turbo_stream.remove(Avo::MODAL_FRAME_ID),
+              turbo_stream.update(modal_frame_id, ""),
               turbo_stream.avo_update_belongs_to(
                 relation_name: params[:via_relation],
+                target_name: params[:via_belongs_to_target_name],
+                frame_id: modal_frame_id,
                 target_record_id: @record.to_param,
                 target_resource_label: @resource.record_title,
                 target_resource_class: @record.class.name

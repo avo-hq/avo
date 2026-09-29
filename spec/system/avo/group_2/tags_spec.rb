@@ -104,6 +104,30 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
+  describe "removing a tag that is also a suggestion (#3564)" do
+    let(:tag_input) { tags_element(find_field_value_element("tags")) }
+
+    after do
+      Avo::Resources::Post.restore_items_from_backup
+    end
+
+    it "lists the removed tag once in the suggestions" do
+      Avo::Resources::Post.with_temporary_items do
+        field :tags, as: :tags, acts_as_taggable_on: :tags, suggestions: ["Coaster", "Dark Ride", "Flat Ride"]
+      end
+      post = create :post, tag_list: ["Dark Ride"]
+
+      visit avo.edit_resources_post_path(post)
+
+      tag_input.find("span[contenteditable]").click
+
+      tag_input.find("tag", text: "Dark Ride").find(".tagify__tag__removeBtn").click
+      expect(page).to have_css(".tagify__dropdown__item", exact_text: "Dark Ride")
+
+      expect(page.all(".tagify__dropdown__item").map(&:text)).to eq ["Coaster", "Dark Ride", "Flat Ride"]
+    end
+  end
+
   describe "without acts_as_taggable" do
     let(:course) { create :course, skills: [] }
     let(:path) { "/admin/resources/courses/#{course.id}/edit" }
@@ -301,6 +325,57 @@ RSpec.describe "Tags", type: :system do
       save
 
       expect(Course.last.skills.map(&:to_i)).to eql(users.pluck(:id))
+    end
+  end
+
+  describe "fetch_values_from when typing during a search (#4103)" do
+    let!(:user) { create :user, first_name: "Bob" }
+    let!(:course) { create :course, skills: [] }
+    let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
+    let(:tags_input) { field_value_slot.find("span[contenteditable]") }
+
+    before do
+      Avo::Resources::Course.with_temporary_items do
+        field :name
+        field :skills,
+          as: :tags,
+          enforce_suggestions: true,
+          suggestions: [{value: "static", label: "Static suggestion"}],
+          fetch_values_from: "/admin/resources/users/get_users",
+          format_using: -> { [] }
+      end
+    end
+
+    after do
+      Avo::Resources::Course.restore_items_from_backup
+    end
+
+    it "ignores the results of a search the user already typed past" do
+      # Hold the "Bo" response in the browser until after the "Box" one has answered
+      page.driver.browser.network.intercept(pattern: "*get_users*")
+      page.driver.browser.on(:request) do |request|
+        if request.url.end_with?("q=Bo")
+          Thread.new do
+            sleep 1
+            request.continue
+          end
+        else
+          request.continue
+        end
+      end
+
+      visit avo.edit_resources_course_path(course)
+
+      tags_input.click
+      type("Bo")
+      sleep 0.6 # past the 500ms debounce, so the "Bo" search is sent
+      type("x")
+
+      sleep 2.5 # let the "Box" search answer, then the held "Bo" one arrive after it
+
+      expect(page).to have_css(".tagify--loading", count: 0)
+      expect(tags_input).to have_text "Box"
+      expect(page).not_to have_css(".tagify__dropdown__item")
     end
   end
 

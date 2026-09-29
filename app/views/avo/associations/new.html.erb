@@ -84,4 +84,7 @@
       <% end %>
     <% end %>
   <% end %>
+
+  <%# A belongs_to attach field's "Create new" dialog stacks here, outside the attach form. %>
+  <%= turbo_frame_tag "#{Avo::MODAL_FRAME_ID}_nested" %>
 <% end %>
