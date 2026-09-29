@@ -44,7 +44,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 - Search guide: https://docs.avohq.io/4.0/search.md — API reference: https://docs.avohq.io/4.0/search-api.md
 - Breadcrumbs: https://docs.avohq.io/4.0/breadcrumbs.md
 - Keyboard shortcuts: https://docs.avohq.io/4.0/keyboard-shortcuts.md
-- Authorization (the `search?` policy method): https://docs.avohq.io/4.0/authorization.md
+- Authorization (the `search?` policy method): https://docs.avohq.io/4.0/authorization-api.md#search
 
 ## When this applies
 
