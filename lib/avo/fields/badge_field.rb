@@ -13,9 +13,9 @@ module Avo
         @icon = args[:icon]
       end
 
-      # Action modals render every declared field, so a badge that was not put on the forms has to stay display-only there.
+      # Action modals render every declared field, so a badge left off the forms must stay display-only there.
       def component_for_view(view = :index)
-        return Avo::BlankFieldComponent if view.to_s.in?(%w[new create edit update]) && !show_on_new && !show_on_edit
+        return Avo::BlankFieldComponent if Avo::ViewInquirer.new(view).form? && !visible_in_view?(view:)
 
         super
       end
