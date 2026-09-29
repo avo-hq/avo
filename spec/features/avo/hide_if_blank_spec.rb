@@ -1,16 +1,17 @@
 require "rails_helper"
 
 RSpec.describe "hide_if_blank", type: :feature do
-  let!(:blank_post) { create :post, name: "Blank post", body: nil }
+  # The blank post is newer, so it is the first row on the index.
   let!(:filled_post) { create :post, name: "Filled post", body: "Some body" }
+  let!(:blank_post) { create :post, name: "Blank post", body: nil }
 
   after { Avo::Resources::Post.restore_items_from_backup }
 
   def body_field(**options)
     Avo::Resources::Post.with_temporary_items do
       field :id, as: :id
-      field :name, as: :text
       field :body, as: :text, **options
+      field :name, as: :text
     end
   end
 
@@ -18,7 +19,7 @@ RSpec.describe "hide_if_blank", type: :feature do
     body_field hide_if_blank: :index
 
     visit "/admin/resources/posts?view_type=table"
-    expect(page).to have_css "table thead th", text: "Body"
+    expect(all("table thead th").map(&:text).reject(&:blank?)).to eq ["Select all", "ID", "Body", "Name"]
 
     filled_post.update!(body: nil)
 

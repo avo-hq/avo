@@ -390,10 +390,13 @@ module Avo
         return false if @hide_if_blank.nil?
 
         views = normalize_views(Array.wrap(@hide_if_blank))
-        # create and update render the new and edit forms again.
-        current_view = {create: :new, update: :edit}.fetch(view&.to_sym, view&.to_sym)
+        return false unless views.include?(:all) || views.include?(view&.to_sym)
 
-        (views.include?(:all) || views.include?(current_view)) && value.blank?
+        # Containers hydrate their items with the view and resource only.
+        hydrate(record: resource.record) if record.nil? && resource.present?
+
+        # Ask a relation with EXISTS instead of loading every row.
+        value.is_a?(ActiveRecord::Relation) ? value.none? : value.blank?
       end
 
       # Used by Avo to fill the record with the default value on :new and :edit views
