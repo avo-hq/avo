@@ -265,7 +265,7 @@ module Avo
       end
 
       def autofocus?
-        Avo::ExecutionContext.new(target: @autofocus, record: record, resource: @resource, view: @view).handle
+        execute_context(@autofocus)
       end
 
       def default_placeholder
