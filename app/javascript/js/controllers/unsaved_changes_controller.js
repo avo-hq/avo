@@ -18,6 +18,8 @@ export default class extends Controller {
     this.element.addEventListener('keydown', this.captureInitialValues, true)
     this.element.addEventListener('turbo:submit-start', this.allowLeaving)
     this.element.addEventListener('turbo:submit-end', this.blockLeavingAfterFailedSubmit)
+    // Turbo stops the submit event of the forms it handles before it gets to the window, so this one only sees native submissions.
+    window.addEventListener('submit', this.allowLeavingOnNativeSubmit)
     document.addEventListener('turbo:before-visit', this.confirmVisit)
     window.addEventListener('beforeunload', this.warnBeforeUnload)
     // Turbo restores back and forward from popstate, which can't be cancelled. The navigate event fires first and can.
@@ -29,6 +31,7 @@ export default class extends Controller {
     this.element.removeEventListener('keydown', this.captureInitialValues, true)
     this.element.removeEventListener('turbo:submit-start', this.allowLeaving)
     this.element.removeEventListener('turbo:submit-end', this.blockLeavingAfterFailedSubmit)
+    window.removeEventListener('submit', this.allowLeavingOnNativeSubmit)
     document.removeEventListener('turbo:before-visit', this.confirmVisit)
     window.removeEventListener('beforeunload', this.warnBeforeUnload)
     window.navigation?.removeEventListener('navigate', this.confirmHistoryTraversal)
@@ -42,6 +45,10 @@ export default class extends Controller {
     this.leaving = true
   }
 
+  allowLeavingOnNativeSubmit = (event) => {
+    if (event.target === this.element && !event.defaultPrevented) this.leaving = true
+  }
+
   blockLeavingAfterFailedSubmit = (event) => {
     if (!event.detail.success) this.leaving = false
   }
@@ -51,7 +58,7 @@ export default class extends Controller {
 
     event.preventDefault()
     if (await Turbo.config.forms.confirm(this.messageValue)) {
-      this.leaving = true
+      this.discardChanges()
       Turbo.visit(event.detail.url)
     }
   }
@@ -70,9 +77,15 @@ export default class extends Controller {
 
     event.preventDefault()
     if (await Turbo.config.forms.confirm(this.messageValue)) {
-      this.leaving = true
+      this.discardChanges()
       window.navigation.traverseTo(event.destination.key)
     }
+  }
+
+  discardChanges() {
+    this.leaving = true
+    // Keeps the discarded values out of Turbo's cache, so coming back loads the form from the server.
+    Turbo.cache.exemptPageFromCache()
   }
 
   get hasUnsavedChanges() {
@@ -83,12 +96,23 @@ export default class extends Controller {
   }
 
   serializeForm() {
+    const { associationInputNames } = this
     // An empty file input yields a new File on every read, with lastModified set to that moment, so only name and size are compared.
-    const formEntries = [...new FormData(this.element)].map(([name, value]) => [
-      name,
-      value instanceof File ? `${value.name}:${value.size}` : value,
-    ])
+    const formEntries = [...new FormData(this.element)]
+      .filter(([name]) => !associationInputNames.has(name))
+      .map(([name, value]) => [
+        name,
+        value instanceof File ? `${value.name}:${value.size}` : value,
+      ])
 
     return JSON.stringify(formEntries)
+  }
+
+  // An association shown on the form loads in a frame and brings its own search and scope inputs, which are not values of the record.
+  get associationInputNames() {
+    // Only the frames inside of the form, which may sit in a frame itself, and only the ones loaded from another URL.
+    const inputs = this.element.querySelectorAll(':scope turbo-frame[src] [name]')
+
+    return new Set([...inputs].map((input) => input.getAttribute('name')))
   }
 }
