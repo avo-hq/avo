@@ -287,5 +287,27 @@ RSpec.describe "Actions", type: :request do
 
       expect(response.body.scan(/<input[^>]*autofocus[^>]*>/)).to contain_exactly(a_string_including('name="fields[probe_focus]"'))
     end
+
+    it "focuses the first input when autofocus is set on a field that renders none" do
+      allow_any_instance_of(Avo::Actions::Test::ShowView).to receive(:fields) do |action|
+        action.field :probe_badge, as: :badge, autofocus: true
+        action.field :probe_text, as: :text
+      end
+
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body.scan(/<input[^>]*autofocus[^>]*>/)).to contain_exactly(a_string_including('name="fields[probe_text]"'))
+    end
+
+    it "decides autofocus with the form's view, as the field renders" do
+      allow_any_instance_of(Avo::Actions::Test::ShowView).to receive(:fields) do |action|
+        action.field :probe_text, as: :text
+        action.field :probe_focus, as: :text, autofocus: -> { view.new? }
+      end
+
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(response.body.scan(/<input[^>]*autofocus[^>]*>/)).to contain_exactly(a_string_including('name="fields[probe_focus]"'))
+    end
   end
 end

@@ -48,7 +48,6 @@ module Avo
       attr_reader :format_new_using
       attr_reader :format_form_using
       attr_reader :autocomplete
-      attr_reader :autofocus
       attr_reader :label_help
       attr_reader :default
       attr_reader :stacked
@@ -263,6 +262,10 @@ module Avo
         end
 
         Avo::ExecutionContext.new(target: target, record: record, resource: @resource, view: @view).handle
+      end
+
+      def autofocus?
+        Avo::ExecutionContext.new(target: @autofocus, record: record, resource: @resource, view: @view).handle
       end
 
       def default_placeholder
