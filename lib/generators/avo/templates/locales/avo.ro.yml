@@ -231,6 +231,7 @@ ro:
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează
+    unsaved_changes_warning: Ai modificări nesalvate. Ești sigur că vrei să părăsești această pagină?
     updated_at: Actualizat la
     updated_at_timestamp: Actualizat la %{updated_at}
     view: vezi

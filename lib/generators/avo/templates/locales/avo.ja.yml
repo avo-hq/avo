@@ -227,6 +227,7 @@ ja:
     type_to_search: 検索する内容を入力してください。
     unauthorized: 許可されていません
     undo: 元に戻す
+    unsaved_changes_warning: 保存されていない変更があります。このページを離れてもよろしいですか？
     updated_at: 更新日時
     updated_at_timestamp: "%{updated_at}で更新"
     view: ビュー

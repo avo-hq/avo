@@ -227,6 +227,7 @@ tr:
     type_to_search: Aramak için yazın.
     unauthorized: Yetkisiz
     undo: geri al
+    unsaved_changes_warning: Kaydedilmemiş değişiklikleriniz var. Bu sayfadan ayrılmak istediğinizden emin misiniz?
     updated_at: Güncelleme tarihi
     updated_at_timestamp: "%{updated_at} tarihinde güncellendi"
     view: Görünüm

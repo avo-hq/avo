@@ -80,8 +80,12 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
       )
     end
 
-    # Remove duplicate header fields based on table_header_label
-    header_fields.uniq!(&:table_header_label)
+    # Rows can drop different fields (visible:, hide_if_blank:), so order the columns
+    # as declared, not by the first row that showed each one.
+    declared_labels = @resource.only_fields(only_root: true).map(&:table_header_label)
+    header_fields = header_fields
+      .uniq(&:table_header_label)
+      .sort_by.with_index { |field, index| [declared_labels.index(field.table_header_label) || declared_labels.size, index] }
 
     # Every row renders its cells against the complete header, which is only
     # known once the last row's fields have been collected.

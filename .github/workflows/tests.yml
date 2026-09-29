@@ -242,7 +242,7 @@ jobs:
             ./spec/examples.txt
 
   # ----------------------------------------------------------------------------
-  # Components specs
+  # Components and unit specs
   # ----------------------------------------------------------------------------
   components:
     name: components (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
@@ -298,12 +298,12 @@ jobs:
 
       - name: Run tests
         id: run_tests
-        # spec/lib/avo/locales_shape_spec.rb rides along here rather than in the
-        # i18n job: every example goes through the DatabaseCleaner `around` hook
-        # in spec/support/database_cleaner.rb, so it needs a prepared database
-        # even though the spec itself only reads YAML. This job already creates
-        # one; the i18n job does not.
-        run: bundle exec rspec spec/components spec/lib/avo/locales_shape_spec.rb
+        # The unit-level spec dirs ride along here: every example goes through
+        # the DatabaseCleaner `around` hook in spec/support/database_cleaner.rb,
+        # so they need a prepared database even when the spec itself touches
+        # none. This job already creates one. A spec dir listed in no job never
+        # runs in CI.
+        run: bundle exec rspec spec/components spec/lib spec/helpers spec/services spec/tasks spec/avo spec/gemspec_spec.rb
 
       - uses: actions/upload-artifact@v4
         with:

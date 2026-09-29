@@ -227,6 +227,7 @@ fr:
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
     undo: annuler
+    unsaved_changes_warning: Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?
     updated_at: Mis à jour à
     updated_at_timestamp: Mis à jour le %{updated_at}
     view: Vue

@@ -227,6 +227,7 @@ nn:
     type_to_search: Søk.
     unauthorized: Ikkje autorisert
     undo: angre
+    unsaved_changes_warning: Du har endringar som ikkje er lagra. Er du sikker på at du vil forlate denne sida?
     updated_at: Oppdatert den
     updated_at_timestamp: Oppdatert den %{updated_at}
     view: Vis
