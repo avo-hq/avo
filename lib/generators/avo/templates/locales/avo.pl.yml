@@ -231,6 +231,7 @@ pl:
     type_to_search: Wpisz, aby wyszukać.
     unauthorized: Brak autoryzacji
     undo: Cofnij
+    unsaved_changes_warning: Masz niezapisane zmiany. Czy na pewno chcesz opuścić tę stronę?
     updated_at: Zaktualizowano o
     updated_at_timestamp: Zaktualizowano o %{updated_at}
     view: Widok

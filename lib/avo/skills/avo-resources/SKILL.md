@@ -276,6 +276,7 @@ For STI, send index clicks to the child record with `self.link_to_child_resource
 | `self.external_link` | Button to a public URL | `-> { main_app.post_path(record) }` |
 | `self.link_to_child_resource` | STI: jump to child on click | `self.link_to_child_resource = true` |
 | `config.buttons_on_form_footers` | Save/Back in form footer (initializer, global) | `config.buttons_on_form_footers = true` |
+| `config.warn_on_unsaved_changes` | Confirm before leaving a New/Edit form with unsaved changes (initializer, global, on by default) | `config.warn_on_unsaved_changes = false` |
 
 Search (`self.search`), grid/map view types, record reordering, and i18n live on their own docs pages — reach for the docs map when a request touches those.
 
@@ -289,6 +290,7 @@ Search (`self.search`), grid/map view types, record reordering, and i18n live on
 - **Array resources are Beta:** no sorting, and `records` re-runs every request. Cache inside `records` for large sets, or move to an HTTP Resource.
 - **`find_record_method` in batch contexts:** `id` arrives as an Array for bulk actions — return a collection (`query.where(...)`) in that branch, not a single record. If that branch raises `ActiveRecord::RecordNotFound` (as `query.find(id)` does when one record was deleted between selection and submit), Avo retries the **scalar** branch once per id and drops the ones that are gone — so keep the scalar branch able to handle every id the array branch receives.
 - **`visible_on_sidebar` only affects the auto-generated menu.** If the app uses the menu editor, control visibility in its `visible` block instead.
+- **System specs that leave an edited form without saving now meet a confirmation dialog.** `config.warn_on_unsaved_changes` is on by default — accept the dialog with `accept_custom_alert { ... }` from `Avo::TestHelpers`, or set the option to `false` in the test environment.
 - **Don't re-invent fields/associations here.** Field DSL is the avo-fields skill; `belongs_to`/`has_many`/`use_resource` is avo-associations.
 - **Verify before writing.** Option names drift between versions — check the docs URLs above or the app's installed Avo source rather than trusting memory.
 

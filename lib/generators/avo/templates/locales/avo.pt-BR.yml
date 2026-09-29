@@ -227,6 +227,7 @@ pt-BR:
     type_to_search: Digite para buscar.
     unauthorized: Não autorizado
     undo: desfazer
+    unsaved_changes_warning: Você tem alterações não salvas. Tem certeza de que deseja sair desta página?
     updated_at: Atualizado em
     updated_at_timestamp: Atualizado em %{updated_at}
     view: Visualizar

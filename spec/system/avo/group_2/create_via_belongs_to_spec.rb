@@ -28,19 +28,20 @@ RSpec.describe "Create Via Belongs to", type: :system do
           fill_in "user_password_confirmation", with: "password"
           click_on "Save"
         end
+        # click_on returns before the save finishes, so wait for the nested dialog to close before counting.
+        expect(page).to have_css(".modal:popover-open", count: 1)
       end.to change(User, :count).by(1)
 
       expect(page).to have_css("body.modal-open")
-      expect(page).to have_css(".modal:popover-open", count: 1)
       expect(page).to have_field("post_name", with: "Preserved post")
       expect(page).to have_select("post_user_id", selected: "Nested User")
 
       expect do
         within("turbo-frame#modal_frame") { click_on "Save" }
+        expect(page).to have_select("comment_commentable_id", selected: "Preserved post")
       end.to change(Post, :count).by(1)
 
       expect(page).to have_field("comment_body", with: "Preserved comment")
-      expect(page).to have_select("comment_commentable_id", selected: "Preserved post")
     end
 
     it "dismisses only the top dialog with Escape", :aggregate_failures do

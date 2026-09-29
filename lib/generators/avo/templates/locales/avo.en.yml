@@ -225,6 +225,7 @@ en:
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo
+    unsaved_changes_warning: You have unsaved changes. Are you sure you want to leave this page?
     updated_at: Updated at
     updated_at_timestamp: Updated at %{updated_at}
     view: View
