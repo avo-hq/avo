@@ -19,6 +19,10 @@ RSpec.feature "ArrayResource", type: :system do
 
       all('button[data-action="alert#close"]').each(&:click)
 
+      within(".pagination__info") do
+        expect(strip_html(page.text)).to eq "1-8 of 20"
+      end
+
       within("nav.pagy.series-nav") do
         click_link("2")
       end
