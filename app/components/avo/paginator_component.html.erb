@@ -30,7 +30,7 @@
   <%# Right: info + navigation grouped pill %>
   <div class="pagination__controls-wrap">
     <div class="pagination__controls">
-      <% if @resource.pagination_type.default? %>
+      <% unless @resource.pagination_type.countless? %>
         <div class="pagination__info">
           <% if @pagy.pages <= 1 %>
             <span><%= formatted_count %> <%= t("avo.record", count: @pagy.count) %></span>
