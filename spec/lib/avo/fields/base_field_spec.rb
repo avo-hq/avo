@@ -255,4 +255,40 @@ RSpec.describe Avo::Fields::BaseField, type: :model do
       end
     end
   end
+
+  describe "#visible? with hide_if_blank" do
+    def field_in(view, record:, **args)
+      described_class.new(:description, **args).hydrate(resource: product_resource, record:, view: Avo::ViewInquirer.new(view))
+    end
+
+    let(:blank_product) { Product.new(description: "") }
+    let(:filled_product) { Product.new(description: "A description") }
+
+    it "hides a blank field in the given view" do
+      expect(field_in(:show, record: blank_product, hide_if_blank: :show).visible?).to be false
+    end
+
+    it "keeps a field with a value" do
+      expect(field_in(:show, record: filled_product, hide_if_blank: :show).visible?).to be true
+    end
+
+    it "keeps a blank field in the other views" do
+      expect(field_in(:index, record: blank_product, hide_if_blank: :show).visible?).to be true
+    end
+
+    it "accepts view groups and :all" do
+      expect(field_in(:index, record: blank_product, hide_if_blank: :display).visible?).to be false
+      expect(field_in(:edit, record: blank_product, hide_if_blank: [:forms]).visible?).to be false
+      expect(field_in(:new, record: blank_product, hide_if_blank: :all).visible?).to be false
+    end
+
+    it "treats create and update like the new and edit forms they render" do
+      expect(field_in(:create, record: blank_product, hide_if_blank: :new).visible?).to be false
+      expect(field_in(:update, record: blank_product, hide_if_blank: :edit).visible?).to be false
+    end
+
+    it "still applies the visible option" do
+      expect(field_in(:show, record: filled_product, hide_if_blank: :show, visible: -> { false }).visible?).to be false
+    end
+  end
 end

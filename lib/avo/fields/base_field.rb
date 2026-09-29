@@ -99,6 +99,7 @@ module Avo
         @label_tooltip = args[:label_tooltip]
         @default = args[:default]
         @visible = args[:visible]
+        @hide_if_blank = args[:hide_if_blank]
         @html = args[:html]
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]
@@ -377,6 +378,22 @@ module Avo
 
       def updatable
         !is_disabled? && visible?
+      end
+
+      def visible?
+        return false if hidden_because_blank?
+
+        super
+      end
+
+      def hidden_because_blank?
+        return false if @hide_if_blank.nil?
+
+        views = normalize_views(Array.wrap(@hide_if_blank))
+        # create and update render the new and edit forms again.
+        current_view = {create: :new, update: :edit}.fetch(view&.to_sym, view&.to_sym)
+
+        (views.include?(:all) || views.include?(current_view)) && value.blank?
       end
 
       # Used by Avo to fill the record with the default value on :new and :edit views
