@@ -18,6 +18,8 @@ module Avo
       class_attribute :writable, default: false
 
       class << self
+        def query_scope(**) = new.fetch_records
+
         # Each array resource keeps its own model class. It starts as a placeholder class and
         # fetch_records replaces it with the class of the records it builds or finds.
         def model_class

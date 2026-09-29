@@ -647,6 +647,9 @@ module Avo
     end
 
     def apply_sorting
+      # Ordering needs a model query. A plain array can't take it, and an HTTP loader sorts on the remote API.
+      return unless @query.respond_to?(:unscope)
+
       sort_by = @index_params[:sort_by].to_sym
       if sort_by != :created_at
         @query = @query.unscope(:order)
@@ -707,7 +710,7 @@ module Avo
       if associated_summary?
         build_association_scope_from_params
       else
-        @resource.class.query_scope
+        @resource.class.query_scope(index_params: @index_params)
       end
     end
 
