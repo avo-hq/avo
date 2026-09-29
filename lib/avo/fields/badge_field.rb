@@ -6,7 +6,8 @@ module Avo
       def initialize(id, **args, &block)
         super
 
-        hide_on [:edit, :new]
+        # A computed badge has no attribute to write the picked value to.
+        hide_on [:edit, :new] unless args[:editable] && !computed
 
         @options = args[:options] || {}
         @style = args[:style]
