@@ -121,4 +121,30 @@ RSpec.describe "Cmd/Ctrl+Return in a modal", type: :system do
     expect(page).to have_select("fish_user_id", selected: User.last.name)
     expect(page).to have_current_path("/admin/resources/fish/#{fish.id}/edit", ignore_query: true)
   end
+
+  it "saves only the top dialog when belongs_to create dialogs are stacked" do
+    visit "/admin/resources/comments/new"
+    select "Post", from: "comment_commentable_type"
+    click_on "Create new post"
+    within("turbo-frame#modal_frame") do
+      fill_in "post_name", with: "Preserved post"
+      click_on "Create new user"
+    end
+
+    within("turbo-frame#modal_frame_nested") do
+      fill_in "user_email", with: "#{SecureRandom.hex(12)}@gmail.com"
+      fill_in "user_first_name", with: "Stacked"
+      fill_in "user_last_name", with: "User"
+      fill_in "user_password", with: "password"
+      fill_in "user_password_confirmation", with: "password"
+    end
+
+    expect {
+      find_field("user_last_name").send_keys([:meta, :enter])
+      expect(page).to have_css(".modal:popover-open", count: 1)
+    }.to change(User, :count).by(1).and change(Post, :count).by(0)
+
+    expect(page).to have_field("post_name", with: "Preserved post")
+    expect(page).to have_select("post_user_id", selected: "Stacked User")
+  end
 end

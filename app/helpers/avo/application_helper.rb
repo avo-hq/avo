@@ -320,6 +320,16 @@ module Avo
       @return_to_current_page ||= e(request.fullpath)
     end
 
+    # The modal level this request renders into, or nil when it does not come from one.
+    # Each belongs_to "Create new" dialog opens in a frame nested in the one below it:
+    # modal_frame, modal_frame_nested, modal_frame_nested_nested... A request from any other
+    # frame (a tab, an association list) is not a modal level, so nothing is stacked on it.
+    def current_modal_frame_id
+      frame_id = turbo_frame_request_id.to_s
+
+      frame_id if frame_id.match?(/\A#{Avo::MODAL_FRAME_ID}(_nested)*\z/o)
+    end
+
     def wrap_in_modal(content)
       turbo_frame_tag Avo::MODAL_FRAME_ID do
         render(Avo::ModalComponent.new(width: :xl, body_class: "bg-application")) do |c|

@@ -82,4 +82,67 @@ RSpec.feature "ArrayResource", type: :feature do
       expect(page).to have_text "La La Land"
     end
   end
+
+  describe "writes" do
+    it "hides the create, edit and delete controls by default" do
+      visit avo.resources_movies_path
+
+      expect(page).not_to have_css "[data-target='create']"
+      expect(page).not_to have_css "[data-target='control:edit']"
+
+      visit avo.resources_movie_path(1)
+
+      expect(page).not_to have_css "[data-target='control:edit']"
+      expect(page).not_to have_css "[data-target='control:destroy']"
+    end
+
+    context "when the resource is writable" do
+      around do |example|
+        Avo::Resources::Movie.writable = true
+        example.run
+      ensure
+        Avo::Resources::Movie.writable = false
+      end
+
+      it "shows the create, edit and delete controls" do
+        visit avo.resources_movies_path
+
+        expect(page).to have_css "[data-target='create']"
+        expect(page).to have_css "[data-target='control:edit']"
+
+        visit avo.resources_movie_path(1)
+
+        expect(page).to have_css "a[href^='/admin/resources/movies/1/edit']"
+        expect(page).to have_css "[data-target='control:destroy']"
+      end
+
+      it "fills a new record from the form for the controller to save" do
+        saved = nil
+        allow_any_instance_of(Avo::MoviesController).to receive(:save_record_action) do |controller|
+          saved = controller.instance_variable_get(:@record)
+          saved.id = 1
+        end
+
+        visit avo.new_resources_movie_path
+        fill_in "movie_name", with: "Heat"
+        click_on "Save"
+
+        expect(saved.name).to eq "Heat"
+      end
+
+      it "fills an existing record from the edit form" do
+        saved = nil
+        allow_any_instance_of(Avo::MoviesController).to receive(:save_record_action) do |controller|
+          saved = controller.instance_variable_get(:@record)
+        end
+
+        visit avo.edit_resources_movie_path(1)
+        fill_in "movie_name", with: "Shawshank"
+        click_on "Save"
+
+        expect(saved.id).to eq 1
+        expect(saved.name).to eq "Shawshank"
+      end
+    end
+  end
 end

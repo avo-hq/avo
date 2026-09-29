@@ -118,8 +118,7 @@
 
   /* Background of the main content panel. Dedicated knob so installs can recolor
      the content surface independently of the primary surface token. Defaults to
-     --color-primary; resolves per-scheme since --color-primary is redefined in
-     .dark. */
+     --color-primary. */
   --color-main-content-background: var(--color-primary);
 
   /* Border between the sidebar and the main content panel. Dedicated knob so
@@ -185,7 +184,11 @@
     /* foundations - Dark Mode */
     --color-background: var(--color-avo-neutral-900);
     --color-foreground: var(--color-avo-neutral-50);
-    --color-primary: var(--color-avo-neutral-950);
+    --color-primary: color-mix(
+      in oklab,
+      var(--color-avo-neutral-950),
+      var(--color-background) 20%
+    );
     --color-secondary: var(--color-avo-neutral-800);
     --color-tertiary: var(--color-avo-neutral-700);
     --color-quaternary: var(--color-avo-neutral-600);
@@ -219,130 +222,157 @@
    `.accent-theme-orange` still wins over a configured brand color. */
 @layer components {
   .neutral-theme-slate {
-    --color-avo-neutral-25: oklch(98.51% 0 89.88);
-    --color-avo-neutral-50: var(--color-slate-50);
-    --color-avo-neutral-100: var(--color-slate-100);
-    --color-avo-neutral-200: var(--color-slate-200);
-    --color-avo-neutral-300: var(--color-slate-300);
-    --color-avo-neutral-400: var(--color-slate-400);
-    --color-avo-neutral-500: var(--color-slate-500);
-    --color-avo-neutral-600: var(--color-slate-600);
-    --color-avo-neutral-700: var(--color-slate-700);
-    --color-avo-neutral-800: var(--color-slate-800);
-    --color-avo-neutral-900: var(--color-slate-900);
-    --color-avo-neutral-950: var(--color-slate-950);
+    --avo-neutral-source-25: var(--color-slate-50);
+    --avo-neutral-source-50: var(--color-slate-50);
+    --avo-neutral-source-100: var(--color-slate-100);
+    --avo-neutral-source-200: var(--color-slate-200);
+    --avo-neutral-source-300: var(--color-slate-300);
+    --avo-neutral-source-400: var(--color-slate-400);
+    --avo-neutral-source-500: var(--color-slate-500);
+    --avo-neutral-source-600: var(--color-slate-600);
+    --avo-neutral-source-700: var(--color-slate-700);
+    --avo-neutral-source-800: var(--color-slate-800);
+    --avo-neutral-source-900: var(--color-slate-900);
+    --avo-neutral-source-950: var(--color-slate-950);
   }
   .neutral-theme-stone {
-    --color-avo-neutral-25: oklch(98.51% 0 89.88);
-    --color-avo-neutral-50: var(--color-stone-50);
-    --color-avo-neutral-100: var(--color-stone-100);
-    --color-avo-neutral-200: var(--color-stone-200);
-    --color-avo-neutral-300: var(--color-stone-300);
-    --color-avo-neutral-400: var(--color-stone-400);
-    --color-avo-neutral-500: var(--color-stone-500);
-    --color-avo-neutral-600: var(--color-stone-600);
-    --color-avo-neutral-700: var(--color-stone-700);
-    --color-avo-neutral-800: var(--color-stone-800);
-    --color-avo-neutral-900: var(--color-stone-900);
-    --color-avo-neutral-950: var(--color-stone-950);
+    --avo-neutral-source-25: var(--color-stone-50);
+    --avo-neutral-source-50: var(--color-stone-50);
+    --avo-neutral-source-100: var(--color-stone-100);
+    --avo-neutral-source-200: var(--color-stone-200);
+    --avo-neutral-source-300: var(--color-stone-300);
+    --avo-neutral-source-400: var(--color-stone-400);
+    --avo-neutral-source-500: var(--color-stone-500);
+    --avo-neutral-source-600: var(--color-stone-600);
+    --avo-neutral-source-700: var(--color-stone-700);
+    --avo-neutral-source-800: var(--color-stone-800);
+    --avo-neutral-source-900: var(--color-stone-900);
+    --avo-neutral-source-950: var(--color-stone-950);
   }
   .neutral-theme-taupe {
-    --color-avo-neutral-25: oklch(98.5% 0.004 70);
-    --color-avo-neutral-50: var(--color-taupe-50);
-    --color-avo-neutral-100: var(--color-taupe-100);
-    --color-avo-neutral-200: var(--color-taupe-200);
-    --color-avo-neutral-300: var(--color-taupe-300);
-    --color-avo-neutral-400: var(--color-taupe-400);
-    --color-avo-neutral-500: var(--color-taupe-500);
-    --color-avo-neutral-600: var(--color-taupe-600);
-    --color-avo-neutral-700: var(--color-taupe-700);
-    --color-avo-neutral-800: var(--color-taupe-800);
-    --color-avo-neutral-900: var(--color-taupe-900);
-    --color-avo-neutral-950: var(--color-taupe-950);
+    --avo-neutral-source-25: var(--color-taupe-50);
+    --avo-neutral-source-50: var(--color-taupe-50);
+    --avo-neutral-source-100: var(--color-taupe-100);
+    --avo-neutral-source-200: var(--color-taupe-200);
+    --avo-neutral-source-300: var(--color-taupe-300);
+    --avo-neutral-source-400: var(--color-taupe-400);
+    --avo-neutral-source-500: var(--color-taupe-500);
+    --avo-neutral-source-600: var(--color-taupe-600);
+    --avo-neutral-source-700: var(--color-taupe-700);
+    --avo-neutral-source-800: var(--color-taupe-800);
+    --avo-neutral-source-900: var(--color-taupe-900);
+    --avo-neutral-source-950: var(--color-taupe-950);
   }
   .neutral-theme-mauve {
-    --color-avo-neutral-25: oklch(98.5% 0.005 310);
-    --color-avo-neutral-50: var(--color-mauve-50);
-    --color-avo-neutral-100: var(--color-mauve-100);
-    --color-avo-neutral-200: var(--color-mauve-200);
-    --color-avo-neutral-300: var(--color-mauve-300);
-    --color-avo-neutral-400: var(--color-mauve-400);
-    --color-avo-neutral-500: var(--color-mauve-500);
-    --color-avo-neutral-600: var(--color-mauve-600);
-    --color-avo-neutral-700: var(--color-mauve-700);
-    --color-avo-neutral-800: var(--color-mauve-800);
-    --color-avo-neutral-900: var(--color-mauve-900);
-    --color-avo-neutral-950: var(--color-mauve-950);
+    --avo-neutral-source-25: var(--color-mauve-50);
+    --avo-neutral-source-50: var(--color-mauve-50);
+    --avo-neutral-source-100: var(--color-mauve-100);
+    --avo-neutral-source-200: var(--color-mauve-200);
+    --avo-neutral-source-300: var(--color-mauve-300);
+    --avo-neutral-source-400: var(--color-mauve-400);
+    --avo-neutral-source-500: var(--color-mauve-500);
+    --avo-neutral-source-600: var(--color-mauve-600);
+    --avo-neutral-source-700: var(--color-mauve-700);
+    --avo-neutral-source-800: var(--color-mauve-800);
+    --avo-neutral-source-900: var(--color-mauve-900);
+    --avo-neutral-source-950: var(--color-mauve-950);
   }
   .neutral-theme-mist {
-    --color-avo-neutral-25: oklch(98.5% 0.004 240);
-    --color-avo-neutral-50: var(--color-mist-50);
-    --color-avo-neutral-100: var(--color-mist-100);
-    --color-avo-neutral-200: var(--color-mist-200);
-    --color-avo-neutral-300: var(--color-mist-300);
-    --color-avo-neutral-400: var(--color-mist-400);
-    --color-avo-neutral-500: var(--color-mist-500);
-    --color-avo-neutral-600: var(--color-mist-600);
-    --color-avo-neutral-700: var(--color-mist-700);
-    --color-avo-neutral-800: var(--color-mist-800);
-    --color-avo-neutral-900: var(--color-mist-900);
-    --color-avo-neutral-950: var(--color-mist-950);
+    --avo-neutral-source-25: var(--color-mist-50);
+    --avo-neutral-source-50: var(--color-mist-50);
+    --avo-neutral-source-100: var(--color-mist-100);
+    --avo-neutral-source-200: var(--color-mist-200);
+    --avo-neutral-source-300: var(--color-mist-300);
+    --avo-neutral-source-400: var(--color-mist-400);
+    --avo-neutral-source-500: var(--color-mist-500);
+    --avo-neutral-source-600: var(--color-mist-600);
+    --avo-neutral-source-700: var(--color-mist-700);
+    --avo-neutral-source-800: var(--color-mist-800);
+    --avo-neutral-source-900: var(--color-mist-900);
+    --avo-neutral-source-950: var(--color-mist-950);
   }
   .neutral-theme-gray {
-    --color-avo-neutral-25: oklch(98.51% 0 89.88);
-    --color-avo-neutral-50: var(--color-gray-50);
-    --color-avo-neutral-100: var(--color-gray-100);
-    --color-avo-neutral-200: var(--color-gray-200);
-    --color-avo-neutral-300: var(--color-gray-300);
-    --color-avo-neutral-400: var(--color-gray-400);
-    --color-avo-neutral-500: var(--color-gray-500);
-    --color-avo-neutral-600: var(--color-gray-600);
-    --color-avo-neutral-700: var(--color-gray-700);
-    --color-avo-neutral-800: var(--color-gray-800);
-    --color-avo-neutral-900: var(--color-gray-900);
-    --color-avo-neutral-950: var(--color-gray-950);
+    --avo-neutral-source-25: var(--color-gray-50);
+    --avo-neutral-source-50: var(--color-gray-50);
+    --avo-neutral-source-100: var(--color-gray-100);
+    --avo-neutral-source-200: var(--color-gray-200);
+    --avo-neutral-source-300: var(--color-gray-300);
+    --avo-neutral-source-400: var(--color-gray-400);
+    --avo-neutral-source-500: var(--color-gray-500);
+    --avo-neutral-source-600: var(--color-gray-600);
+    --avo-neutral-source-700: var(--color-gray-700);
+    --avo-neutral-source-800: var(--color-gray-800);
+    --avo-neutral-source-900: var(--color-gray-900);
+    --avo-neutral-source-950: var(--color-gray-950);
   }
   .neutral-theme-zinc {
-    --color-avo-neutral-25: oklch(98.51% 0 89.88);
-    --color-avo-neutral-50: var(--color-zinc-50);
-    --color-avo-neutral-100: var(--color-zinc-100);
-    --color-avo-neutral-200: var(--color-zinc-200);
-    --color-avo-neutral-300: var(--color-zinc-300);
-    --color-avo-neutral-400: var(--color-zinc-400);
-    --color-avo-neutral-500: var(--color-zinc-500);
-    --color-avo-neutral-600: var(--color-zinc-600);
-    --color-avo-neutral-700: var(--color-zinc-700);
-    --color-avo-neutral-800: var(--color-zinc-800);
-    --color-avo-neutral-900: var(--color-zinc-900);
-    --color-avo-neutral-950: var(--color-zinc-950);
+    --avo-neutral-source-25: var(--color-zinc-50);
+    --avo-neutral-source-50: var(--color-zinc-50);
+    --avo-neutral-source-100: var(--color-zinc-100);
+    --avo-neutral-source-200: var(--color-zinc-200);
+    --avo-neutral-source-300: var(--color-zinc-300);
+    --avo-neutral-source-400: var(--color-zinc-400);
+    --avo-neutral-source-500: var(--color-zinc-500);
+    --avo-neutral-source-600: var(--color-zinc-600);
+    --avo-neutral-source-700: var(--color-zinc-700);
+    --avo-neutral-source-800: var(--color-zinc-800);
+    --avo-neutral-source-900: var(--color-zinc-900);
+    --avo-neutral-source-950: var(--color-zinc-950);
   }
   .neutral-theme-neutral {
-    --color-avo-neutral-25: oklch(98.51% 0 89.88);
-    --color-avo-neutral-50: var(--color-neutral-50);
-    --color-avo-neutral-100: var(--color-neutral-100);
-    --color-avo-neutral-200: var(--color-neutral-200);
-    --color-avo-neutral-300: var(--color-neutral-300);
-    --color-avo-neutral-400: var(--color-neutral-400);
-    --color-avo-neutral-500: var(--color-neutral-500);
-    --color-avo-neutral-600: var(--color-neutral-600);
-    --color-avo-neutral-700: var(--color-neutral-700);
-    --color-avo-neutral-800: var(--color-neutral-800);
-    --color-avo-neutral-900: var(--color-neutral-900);
-    --color-avo-neutral-950: var(--color-neutral-950);
+    --avo-neutral-source-25: var(--color-neutral-50);
+    --avo-neutral-source-50: var(--color-neutral-50);
+    --avo-neutral-source-100: var(--color-neutral-100);
+    --avo-neutral-source-200: var(--color-neutral-200);
+    --avo-neutral-source-300: var(--color-neutral-300);
+    --avo-neutral-source-400: var(--color-neutral-400);
+    --avo-neutral-source-500: var(--color-neutral-500);
+    --avo-neutral-source-600: var(--color-neutral-600);
+    --avo-neutral-source-700: var(--color-neutral-700);
+    --avo-neutral-source-800: var(--color-neutral-800);
+    --avo-neutral-source-900: var(--color-neutral-900);
+    --avo-neutral-source-950: var(--color-neutral-950);
   }
   .neutral-theme-olive {
-    --color-avo-neutral-25: oklch(98.5% 0.005 140);
-    --color-avo-neutral-50: var(--color-olive-50);
-    --color-avo-neutral-100: var(--color-olive-100);
-    --color-avo-neutral-200: var(--color-olive-200);
-    --color-avo-neutral-300: var(--color-olive-300);
-    --color-avo-neutral-400: var(--color-olive-400);
-    --color-avo-neutral-500: var(--color-olive-500);
-    --color-avo-neutral-600: var(--color-olive-600);
-    --color-avo-neutral-700: var(--color-olive-700);
-    --color-avo-neutral-800: var(--color-olive-800);
-    --color-avo-neutral-900: var(--color-olive-900);
-    --color-avo-neutral-950: var(--color-olive-950);
+    --avo-neutral-source-25: var(--color-olive-50);
+    --avo-neutral-source-50: var(--color-olive-50);
+    --avo-neutral-source-100: var(--color-olive-100);
+    --avo-neutral-source-200: var(--color-olive-200);
+    --avo-neutral-source-300: var(--color-olive-300);
+    --avo-neutral-source-400: var(--color-olive-400);
+    --avo-neutral-source-500: var(--color-olive-500);
+    --avo-neutral-source-600: var(--color-olive-600);
+    --avo-neutral-source-700: var(--color-olive-700);
+    --avo-neutral-source-800: var(--color-olive-800);
+    --avo-neutral-source-900: var(--color-olive-900);
+    --avo-neutral-source-950: var(--color-olive-950);
+  }
+
+  /* Keep every selectable neutral theme on Brand's lightness curve while
+     preserving the source palette's chroma and hue at each shade. */
+  :is(
+    .neutral-theme-slate,
+    .neutral-theme-stone,
+    .neutral-theme-gray,
+    .neutral-theme-zinc,
+    .neutral-theme-neutral,
+    .neutral-theme-taupe,
+    .neutral-theme-mauve,
+    .neutral-theme-mist,
+    .neutral-theme-olive
+  ) {
+    --color-avo-neutral-25: oklch(from var(--avo-neutral-source-25) 99.71% c h);
+    --color-avo-neutral-50: oklch(from var(--avo-neutral-source-50) 98.51% c h);
+    --color-avo-neutral-100: oklch(from var(--avo-neutral-source-100) 97.31% c h);
+    --color-avo-neutral-200: oklch(from var(--avo-neutral-source-200) 92.8% c h);
+    --color-avo-neutral-300: oklch(from var(--avo-neutral-source-300) 75.72% c h);
+    --color-avo-neutral-400: oklch(from var(--avo-neutral-source-400) 62.68% c h);
+    --color-avo-neutral-500: oklch(from var(--avo-neutral-source-500) 53.48% c h);
+    --color-avo-neutral-600: oklch(from var(--avo-neutral-source-600) 47.84% c h);
+    --color-avo-neutral-700: oklch(from var(--avo-neutral-source-700) 42.76% c h);
+    --color-avo-neutral-800: oklch(from var(--avo-neutral-source-800) 39.04% c h);
+    --color-avo-neutral-900: oklch(from var(--avo-neutral-source-900) 27.68% c h);
+    --color-avo-neutral-950: oklch(from var(--avo-neutral-source-950) 20.46% c h);
   }
 
   .accent-theme-red {

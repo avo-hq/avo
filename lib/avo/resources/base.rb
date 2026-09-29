@@ -845,6 +845,8 @@ module Avo
 
       def resource_type_array? = false
 
+      def read_only_array? = false
+
       def sort_by_param
         available_columns = model_class.column_names
 

@@ -8,6 +8,7 @@
  */
 
 import { install } from '@github/hotkey'
+import { isUnderStackedModal } from './helpers/modal_stack'
 
 const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
 const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INPUT_SELECTOR)
@@ -184,6 +185,14 @@ function hotkeyFireHandler(event) {
   // sidebar link and navigate. Cancel so hotkeys are inert on non-Avo pages.
   if (!el.isConnected) {
     event.preventDefault()
+    return
+  }
+
+  // A modal with a dialog stacked on it (a belongs_to "Create new") keeps its hotkeys quiet: Escape on
+  // the stacked dialog must not also press the Cancel button of the modal underneath.
+  if (isUnderStackedModal(el)) {
+    event.preventDefault()
+
     return
   }
 

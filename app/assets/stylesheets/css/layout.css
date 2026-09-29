@@ -181,7 +181,10 @@
   @apply z-400 fixed top-0 inset-x-0 w-full shrink-0 pointer-events-none;
 
   --top-navbar-background: var(--color-navbar-background);
-  --top-navbar-content: var(--color-avo-neutral-300);
+  --top-navbar-content: var(
+    --avo-neutral-source-300,
+    var(--color-avo-neutral-300)
+  );
   --top-navbar-content-hover: var(--color-avo-neutral-50);
   --top-navbar-control-background: var(--color-avo-neutral-800);
   --top-navbar-control-background-hover: var(--color-avo-neutral-700);
