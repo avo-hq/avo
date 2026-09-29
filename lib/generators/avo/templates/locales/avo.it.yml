@@ -225,6 +225,7 @@ it:
     type_to_search: Digita per cercare.
     unauthorized: Non autorizzato
     undo: Annulla
+    unsaved_changes_warning: Hai modifiche non salvate. Sei sicuro di voler lasciare questa pagina?
     updated_at: Aggiornato il
     updated_at_timestamp: Aggiornato il %{updated_at}
     view: Visualizza

@@ -227,6 +227,7 @@ pt:
     type_to_search: Escreva para pesquisar.
     unauthorized: Não autorizado
     undo: desfazer
+    unsaved_changes_warning: Tem alterações por guardar. Tem a certeza de que pretende sair desta página?
     updated_at: Atualizado em
     updated_at_timestamp: Atualizado em %{updated_at}
     view: Ver

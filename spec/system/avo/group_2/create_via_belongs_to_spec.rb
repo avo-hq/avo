@@ -3,6 +3,339 @@
 require "rails_helper"
 
 RSpec.describe "Create Via Belongs to", type: :system do
+  context "with nested belongs_to creation" do
+    before do
+      visit "/admin/resources/comments/new"
+      fill_in "comment_body", with: "Preserved comment"
+      select "Post", from: "comment_commentable_type"
+      click_on "Create new post"
+      within("turbo-frame#modal_frame") do
+        fill_in "post_name", with: "Preserved post"
+        click_on "Create new user"
+      end
+    end
+
+    it "creates each record without losing its parent form", :aggregate_failures do
+      expect(page).to have_css(".modal:popover-open", count: 2)
+      expect(page).to have_field("post_name", with: "Preserved post")
+
+      expect do
+        within("turbo-frame#modal_frame_nested") do
+          fill_in "user_email", with: "nested-user@example.com"
+          fill_in "user_first_name", with: "Nested"
+          fill_in "user_last_name", with: "User"
+          fill_in "user_password", with: "password"
+          fill_in "user_password_confirmation", with: "password"
+          click_on "Save"
+        end
+      end.to change(User, :count).by(1)
+
+      expect(page).to have_css("body.modal-open")
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      expect(page).to have_field("post_name", with: "Preserved post")
+      expect(page).to have_select("post_user_id", selected: "Nested User")
+
+      expect do
+        within("turbo-frame#modal_frame") { click_on "Save" }
+      end.to change(Post, :count).by(1)
+
+      expect(page).to have_field("comment_body", with: "Preserved comment")
+      expect(page).to have_select("comment_commentable_id", selected: "Preserved post")
+    end
+
+    it "dismisses only the top dialog with Escape", :aggregate_failures do
+      expect(page).to have_css(".modal:popover-open", count: 2)
+
+      page.execute_script("document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))")
+
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      expect(page).to have_field("post_name", with: "Preserved post")
+      expect(page).to have_css("body.modal-open")
+    end
+  end
+
+  context "when a nested dialog fails validation" do
+    it "re-renders it in its own frame and keeps every form underneath", :aggregate_failures do
+      visit "/admin/resources/comments/new"
+      fill_in "comment_body", with: "Preserved comment"
+      select "Post", from: "comment_commentable_type"
+      click_on "Create new post"
+      within("turbo-frame#modal_frame") do
+        fill_in "post_name", with: "Preserved post"
+        click_on "Create new user"
+      end
+
+      within("turbo-frame#modal_frame_nested") do
+        fill_in "user_email", with: "invalid-nested@example.com"
+        click_on "Save"
+      end
+
+      within("turbo-frame#modal_frame_nested") do
+        expect(page).to have_text "can't be blank"
+        expect(page).to have_field("user_email", with: "invalid-nested@example.com")
+      end
+      expect(page).to have_css(".modal:popover-open", count: 2)
+      expect(page).to have_field("post_name", with: "Preserved post")
+      expect(page).to have_field("comment_body", with: "Preserved comment")
+
+      expect do
+        within("turbo-frame#modal_frame_nested") do
+          fill_in "user_first_name", with: "Second"
+          fill_in "user_last_name", with: "Try"
+          fill_in "user_password", with: "password"
+          fill_in "user_password_confirmation", with: "password"
+          click_on "Save"
+        end
+        expect(page).to have_css(".modal:popover-open", count: 1)
+      end.to change(User, :count).by(1)
+
+      expect(page).to have_select("post_user_id", selected: "Second Try")
+      expect(page).to have_field("post_name", with: "Preserved post")
+    end
+  end
+
+  context "when each dialog closes with its Cancel button" do
+    it "closes one level at a time and unlocks the page after the last one", :aggregate_failures do
+      visit "/admin/resources/comments/new"
+      select "Post", from: "comment_commentable_type"
+      click_on "Create new post"
+      within("turbo-frame#modal_frame") do
+        fill_in "post_name", with: "Preserved post"
+        click_on "Create new user"
+      end
+      expect(page).to have_css(".modal:popover-open", count: 2)
+
+      within("turbo-frame#modal_frame_nested") { click_on "Cancel" }
+
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      expect(page).to have_css("body.modal-open")
+      expect(page).to have_field("post_name", with: "Preserved post")
+      # Focus goes back to the dialog underneath, so Escape and Tab keep working in it.
+      expect(page.evaluate_script("document.activeElement.matches('.modal:popover-open')")).to be true
+
+      within("turbo-frame#modal_frame") { click_on "Cancel" }
+
+      expect(page).not_to have_css(".modal:popover-open")
+      expect(page).not_to have_css("body.modal-open")
+    end
+  end
+
+  # Stacked dialogs of one resource hold fields with the same name and relation, so only the frame
+  # the dialog was opened from tells the field that opened it apart from the one on the page.
+  # A dialog disables the field it was opened through, hence the detour through `another_person`.
+  context "with a belongs_to that references its own resource" do
+    it "selects each new record in the dialog that opened it, three levels deep", :aggregate_failures do
+      visit "/admin/resources/people/new"
+      fill_in "person_name", with: "Level zero"
+      within(field_wrapper(:person)) { click_on "Create new person" }
+
+      within("turbo-frame#modal_frame") do
+        fill_in "person_name", with: "Level one"
+        within(field_wrapper(:another_person)) { click_on "Create new another person" }
+      end
+
+      within("turbo-frame#modal_frame_nested") do
+        fill_in "person_name", with: "Level two"
+        within(field_wrapper(:person)) { click_on "Create new person" }
+      end
+
+      expect(page).to have_css(".modal:popover-open", count: 3)
+
+      expect do
+        within("turbo-frame#modal_frame_nested_nested") do
+          fill_in "person_name", with: "Level three"
+          click_on "Save"
+        end
+        expect(page).to have_css(".modal:popover-open", count: 2)
+      end.to change(Person, :count).by(1)
+
+      expect(selected_person(:person, in_frame: "modal_frame_nested")).to eq "Level three"
+      expect(selected_person(:person, in_frame: nil)).to eq "Choose an option"
+
+      expect do
+        within("turbo-frame#modal_frame_nested") { click_on "Save" }
+        expect(page).to have_css(".modal:popover-open", count: 1)
+      end.to change(Person, :count).by(1)
+
+      expect(selected_person(:another_person, in_frame: "modal_frame")).to eq "Level two"
+      expect(selected_person(:person, in_frame: nil)).to eq "Choose an option"
+
+      expect do
+        within("turbo-frame#modal_frame") { click_on "Save" }
+        expect(page).not_to have_css(".modal:popover-open")
+      end.to change(Person, :count).by(1)
+
+      expect(selected_person(:person, in_frame: nil)).to eq "Level one"
+      expect(page).to have_field("person_name", with: "Level zero")
+    end
+
+    # The selected option of a field in one dialog level (nil for the page), ignoring the levels on top of it.
+    def selected_person(field_id, in_frame:)
+      page.evaluate_script(<<~JS)
+        (() => {
+          const select = Array.from(document.querySelectorAll("[data-field-id='#{field_id}'] select"))
+            .find((element) => (element.closest("turbo-frame[id^='modal_frame']")?.id ?? null) === #{in_frame.to_json})
+          return select?.selectedOptions[0]?.text
+        })()
+      JS
+    end
+  end
+
+  context "from an action's modal" do
+    let!(:fish) { create :fish, name: "the action fish" }
+
+    it "stacks the dialog on the action and selects the new record in it", :aggregate_failures do
+      visit avo.resources_fish_index_path
+      find("tr[data-resource-name=fish][data-record-id='#{fish.id}'] input[type=checkbox]").click
+      open_panel_action(action_name: "Release fish")
+
+      click_on "Create new user"
+
+      expect(page).to have_css(".modal:popover-open", count: 2)
+
+      expect do
+        within("turbo-frame#modal_frame_nested") do
+          fill_in "user_email", with: "action-user@example.com"
+          fill_in "user_first_name", with: "Action"
+          fill_in "user_last_name", with: "User"
+          fill_in "user_password", with: "password"
+          fill_in "user_password_confirmation", with: "password"
+          click_on "Save"
+        end
+        expect(page).to have_css(".modal:popover-open", count: 1)
+      end.to change(User, :count).by(1)
+
+      expect(page).to have_select("fields_user_id", selected: "Action User")
+
+      run_action
+
+      expect(page).to have_text "1 fish released with message '' by Action User."
+    end
+  end
+
+  context "when a dialog stacked on an action is dismissed with Escape" do
+    let!(:fish) { create :fish, name: "the action fish" }
+
+    around do |example|
+      original = Avo.configuration.hotkeys
+      Avo.configuration.hotkeys = {enabled: true, show_key_badges: true}
+      example.run
+      Avo.configuration.hotkeys = original
+    end
+
+    # The action's Cancel button carries an Escape hotkey, which fires from the document.
+    it "closes only the stacked dialog, then the action", :aggregate_failures do
+      visit avo.resources_fish_index_path
+      find("tr[data-resource-name=fish][data-record-id='#{fish.id}'] input[type=checkbox]").click
+      open_panel_action(action_name: "Release fish")
+      select admin.name, from: "fields_user_id"
+      click_on "Create new user"
+      expect(page).to have_css(".modal:popover-open", count: 2)
+
+      find("turbo-frame#modal_frame_nested .modal:popover-open").send_keys(:escape)
+
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      sleep 0.3
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      expect(page).to have_select("fields_user_id", selected: admin.name)
+
+      find(".modal:popover-open").send_keys(:escape)
+
+      expect(page).not_to have_css(".modal:popover-open")
+      expect(page).not_to have_css("body.modal-open")
+    end
+  end
+
+  context "from an attach modal's extra fields" do
+    let!(:store) { create :store }
+    let!(:patron) { create :user }
+
+    before do
+      Avo::Resources::Store.with_temporary_items do
+        field :patrons, as: :has_many, through: :patronships, translation_key: "patrons",
+          attach_fields: -> {
+            field :review, as: :text
+            field :user, as: :belongs_to, use_resource: Avo::Resources::User
+          }
+      end
+    end
+
+    after { Avo::Resources::Store.restore_items_from_backup }
+
+    it "stacks the dialog on the attach modal and keeps it", :aggregate_failures do
+      visit "/admin/resources/stores/#{store.id}"
+      click_on "Attach patron"
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      fill_in id: "fields_review", with: "Kept review"
+
+      within(field_wrapper(:user)) { click_on "Create new user" }
+
+      expect(page).to have_css(".modal:popover-open", count: 2)
+      expect(page).to have_field(id: "fields_review", with: "Kept review")
+
+      expect do
+        within("turbo-frame#modal_frame_nested") do
+          fill_in "user_email", with: "attach-user@example.com"
+          fill_in "user_first_name", with: "Attach"
+          fill_in "user_last_name", with: "User"
+          fill_in "user_password", with: "password"
+          fill_in "user_password_confirmation", with: "password"
+          click_on "Save"
+        end
+        expect(page).to have_css(".modal:popover-open", count: 1)
+      end.to change(User, :count).by(1)
+
+      expect(page).to have_field(id: "fields_review", with: "Kept review")
+      within(field_wrapper(:user)) { expect(page).to have_select(selected: "Attach User") }
+    end
+
+    # A modal from a plugin or the host app may render no nested frame: the link must still open something.
+    it "opens in the page's modal frame when the modal has no nested frame" do
+      visit "/admin/resources/stores/#{store.id}"
+      click_on "Attach patron"
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      page.execute_script("document.getElementById('modal_frame_nested').remove()")
+
+      within(field_wrapper(:user)) { click_on "Create new user" }
+
+      within("turbo-frame#modal_frame") { expect(page).to have_field("user_first_name") }
+      expect(page).to have_css(".modal:popover-open", count: 1)
+      expect(page).to have_current_path("/admin/resources/stores/#{store.id}")
+    end
+  end
+
+  context "when a stacked dialog of the same resource fails validation" do
+    around do |example|
+      Person.validates :name, presence: true
+      example.run
+    ensure
+      Person.clear_validators!
+    end
+
+    # Every level renders its form under the same `frame-person` id.
+    it "re-renders the failed dialog, not the page form", :aggregate_failures do
+      visit "/admin/resources/people/new"
+      fill_in "person_name", with: "Level zero"
+      within(field_wrapper(:person)) { click_on "Create new person" }
+      within("turbo-frame#modal_frame") do
+        fill_in "person_name", with: "Level one"
+        within(field_wrapper(:another_person)) { click_on "Create new another person" }
+      end
+      expect(page).to have_css(".modal:popover-open", count: 2)
+
+      expect do
+        within("turbo-frame#modal_frame_nested") { click_on "Save" }
+        within("turbo-frame#modal_frame_nested") { expect(page).to have_text "can't be blank" }
+      end.not_to change(Person, :count)
+
+      expect(page).to have_css(".modal:popover-open", count: 2)
+      expect(page.evaluate_script("document.querySelector('#person_name').value")).to eq "Level zero"
+      within("turbo-frame#modal_frame") do
+        expect(page).to have_field("person_name", with: "Level one", match: :first)
+      end
+    end
+  end
+
   describe "edit" do
     let(:course_link) { create(:course_link) }
 

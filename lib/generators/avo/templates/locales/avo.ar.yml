@@ -243,6 +243,7 @@ ar:
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
+    unsaved_changes_warning: لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد مغادرة هذه الصفحة؟
     updated_at: تم التحديث في
     updated_at_timestamp: تم التحديث في %{updated_at}
     view: عرض

@@ -71,8 +71,9 @@
                     create_href,
                     class: "inline-block text-sm mt-1",
                     data: {
-                      turbo_frame: Avo::MODAL_FRAME_ID,
-                      turbo_prefetch: false
+                      turbo_frame: modal_frame_id,
+                      turbo_prefetch: false,
+                      action: "reload-belongs-to-field#openInExistingFrame"
                     }
                   %>
                 <% end %>
@@ -113,8 +114,9 @@
           create_path(**modal_args),
           class: "inline-block text-sm mt-1",
           data: {
-            turbo_frame: Avo::MODAL_FRAME_ID,
-            turbo_prefetch: false
+            turbo_frame: modal_frame_id,
+            turbo_prefetch: false,
+            action: "reload-belongs-to-field#openInExistingFrame"
           }
         %>
       <% end %>

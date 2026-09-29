@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import { pushModal, removeModal, topmostModal } from '../helpers/modal_stack'
 
 /**
  * Shared behaviour for both modal strategies (destroy & toggle).
@@ -34,12 +35,16 @@ export default class extends Controller {
   disconnectModal() {
     document.removeEventListener('keydown', this.handleKeydown)
     this.modalTarget.removeEventListener('keydown', this.handleSubmitHotkey)
+    this.removeModalOpen()
   }
 
   // -- shared actions -------------------------------------------------------
 
   handleKeydown(event) {
-    if (event.key !== 'Escape' || !this.isOpen()) return
+    if (event.key !== 'Escape' || !this.isOpen() || !this.isTopmost()) return
+
+    event.preventDefault()
+    event.stopImmediatePropagation()
 
     // Escape dismisses, or — when backdrop/Escape closing is disabled — nods "no".
     if (this.closeModalOnBackdropClickValue) {
@@ -150,15 +155,24 @@ export default class extends Controller {
   }
 
   addModalOpen() {
-    document.body.classList.add('modal-open')
+    pushModal(this.modalTarget)
   }
 
   removeModalOpen() {
-    document.body.classList.remove('modal-open')
+    removeModal(this.modalTarget)
   }
 
   dispatchClose() {
+    this.topmostModal()?.focus()
     document.dispatchEvent(new Event('modal-controller:close'))
+  }
+
+  topmostModal() {
+    return topmostModal()
+  }
+
+  isTopmost() {
+    return this.topmostModal() === this.modalTarget
   }
 
   // -- subclass contract (override in each strategy) ------------------------
