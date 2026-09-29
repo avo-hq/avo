@@ -35,6 +35,12 @@ RSpec.feature "ArrayResource", type: :feature do
       name = find('div[data-field-id="name"] [data-slot="value"]').text
       expect(name).to eq User.first.name
     end
+
+    it "ignores a sort it cannot apply" do
+      visit avo.resources_movies_path(sort_by: "name", sort_direction: "desc")
+
+      expect(page).to have_text "The Shawshank Redemption"
+    end
   end
 
   describe "model class" do
@@ -51,6 +57,11 @@ RSpec.feature "ArrayResource", type: :feature do
 
     it "returns the records from .all" do
       expect(Avo::Resources::Movie.model_class.all.map(&:name)).to include "The Shawshank Redemption"
+    end
+
+    # So any controller can list it, not only Avo::ArrayController.
+    it "answers its records as its query scope" do
+      expect(Avo::Resources::Movie.query_scope.map(&:name)).to include "The Shawshank Redemption"
     end
 
     it "returns the resource class name" do
