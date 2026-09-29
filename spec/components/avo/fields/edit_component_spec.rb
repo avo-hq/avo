@@ -30,5 +30,37 @@ RSpec.describe Avo::Fields::EditComponent, type: :component do
     it "lets the caller turn the field's autofocus off" do
       expect(render_name_input(autofocus: true, component_args: {autofocus: false})["autofocus"]).to be_nil
     end
+
+    describe "on select fields" do
+      before { Avo::Current.resource_manager = Avo::Resources::ResourceManager.build }
+
+      def render_edit(record, field)
+        form = ActionView::Helpers::FormBuilder.new(record.model_name.param_key, record, vc_test_controller.view_context, {})
+        resource = Avo.resource_manager.get_resource_by_model_class(record.class).new(record:, view: :edit)
+        field.hydrate(record:, resource:, view: :edit)
+
+        render_inline(field.component_for_view(:edit).new(field:, form:, resource:))
+      end
+
+      it "focuses the country select" do
+        render_edit(Project.new, Avo::Fields::CountryField.new(:country, autofocus: true))
+
+        expect(page).to have_css("select[name='project[country]'][autofocus]")
+      end
+
+      it "focuses the belongs_to select" do
+        render_edit(Post.new, Avo::Fields::BelongsToField.new(:user, autofocus: true))
+
+        expect(page).to have_css("select[name='post[user_id]'][autofocus]")
+      end
+
+      it "focuses the type select of a polymorphic belongs_to, not the id selects it clones later" do
+        render_edit(Comment.new, Avo::Fields::BelongsToField.new(:commentable, polymorphic_as: :commentable, types: [::Post, ::Project], autofocus: true))
+
+        # Scan the markup: the id selects sit inside <template>s, which the page matchers cannot see into.
+        expect(rendered_content.scan(/<select[^>]*>/).size).to be > 1
+        expect(rendered_content.scan(/<select[^>]*autofocus[^>]*>/)).to contain_exactly(a_string_including('name="comment[commentable_type]"'))
+      end
+    end
   end
 end
