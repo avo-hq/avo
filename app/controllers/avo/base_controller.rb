@@ -113,12 +113,10 @@ module Avo
       @page_title = @resource.default_panel_name.to_s
 
       if is_associated_record?
-        via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
+        set_via_record Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
+        add_breadcrumb title: @via_resource.plural_name, path: resources_path(resource: @via_resource), initials: @via_resource.class.initials, color: @via_resource.class.color
+        add_breadcrumb title: @via_resource.record_title, path: resource_path(record: @via_record, resource: @via_resource), avatar: @via_resource.avatar, initials: @via_resource.initials, color: @via_resource.class.color
 
         add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials, color: @resource.class.color
       else
@@ -442,12 +440,10 @@ module Avo
       last_crumb_args = {}
       # If we're accessing this resource via another resource add the parent to the breadcrumbs.
       if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
+        set_via_record Avo.resource_manager.get_resource(params[:via_resource_class])
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), initials: via_resource.class.initials, color: via_resource.class.color
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
+        add_breadcrumb title: @via_resource.plural_name, path: resources_path(resource: @resource), initials: @via_resource.class.initials, color: @via_resource.class.color
+        add_breadcrumb title: @via_resource.record_title, path: resource_path(record: @via_record, resource: @via_resource), avatar: @via_resource.avatar, initials: @via_resource.initials, color: @via_resource.class.color
 
         last_crumb_args = {
           via_resource_class: params[:via_resource_class],
@@ -743,17 +739,21 @@ module Avo
 
     def add_via_breadcrumbs
       if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
+        set_via_record Avo.resource_manager.get_resource(params[:via_resource_class])
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
+        add_breadcrumb title: @via_resource.plural_name, path: resources_path(resource: @via_resource), initials: @via_resource.class.initials, color: @via_resource.class.color
+        add_breadcrumb title: @via_resource.record_title, path: resource_path(record: @via_record, resource: @via_resource), avatar: @via_resource.avatar, initials: @via_resource.initials, color: @via_resource.class.color
 
         add_breadcrumb title: @resource.plural_name, path: nil, initials: @resource.class.initials, color: @resource.class.color
       else
         add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
       end
+    end
+
+    # Kept on the controller so an action that overrides one of these and calls `super` can read the parent.
+    def set_via_record(via_resource_class)
+      @via_record = via_resource_class.find_record params[:via_record_id], params: params
+      @via_resource = via_resource_class.new record: @via_record
     end
 
     def associated_summary?
