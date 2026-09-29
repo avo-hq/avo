@@ -9,13 +9,8 @@ RSpec.describe Avo::Fields::BadgeField do
     expect(form_visibility(described_class.new(:stage))).to eq [false, false]
   end
 
-  it "shows on the forms when editable" do
-    expect(form_visibility(described_class.new(:stage, editable: true))).to eq [true, true]
-  end
-
-  it "keeps a computed badge off the forms, since there is no attribute to save" do
-    field = described_class.new(:stage, editable: true) { "Done" }
-
-    expect(form_visibility(field)).to eq [false, false]
+  it "follows the visibility options passed to the field" do
+    expect(form_visibility(described_class.new(:stage, show_on: :forms))).to eq [true, true]
+    expect(form_visibility(described_class.new(:stage, only_on: :edit))).to eq [false, true]
   end
 end

@@ -1,6 +1,6 @@
 <%= field_wrapper(**field_wrapper_args) do %>
-  <%# The blank option keeps a record without a value from saving the first option. %>
-  <%= @form.select @field.id, options, {include_blank: true},
+  <%# Without a blank option, a record with no value would save the first one. %>
+  <%= @form.select @field.id, @field.options_for_filter, {include_blank: true},
     class: classes("w-full"),
     data: @field.get_html(:data, view: view, element: :input),
     disabled: disabled?,

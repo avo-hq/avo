@@ -25,7 +25,7 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :radio_value, as: :radio, options: Playground::RADIO_OPTIONS
     field :badge_value,
       as: :badge,
-      editable: true,
+      show_on: :forms,
       options: Playground::BADGE_OPTIONS,
       tooltip: -> { "#{field.value.to_s.humanize} since #{record.updated_at&.to_date}" },
       label_tooltip: "Editorial state of the entry"
