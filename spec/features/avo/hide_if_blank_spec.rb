@@ -7,7 +7,7 @@ RSpec.describe "hide_if_blank", type: :feature do
 
   after { Avo::Resources::Post.restore_items_from_backup }
 
-  def body_field(**options)
+  def body_field(options)
     Avo::Resources::Post.with_temporary_items do
       field :id, as: :id
       field :body, as: :text, **options
