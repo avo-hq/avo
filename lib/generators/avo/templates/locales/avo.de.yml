@@ -225,6 +225,7 @@ de:
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
+    unsaved_changes_warning: Sie haben ungespeicherte Änderungen. Möchten Sie diese Seite wirklich verlassen?
     updated_at: Aktualisiert am
     updated_at_timestamp: Aktualisiert am %{updated_at}
     view: Anzeigen

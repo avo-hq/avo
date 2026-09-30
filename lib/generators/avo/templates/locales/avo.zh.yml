@@ -225,6 +225,7 @@ zh:
     type_to_search: 输入以搜索。
     unauthorized: 未经授权
     undo: 撤销
+    unsaved_changes_warning: 您有未保存的更改。确定要离开此页面吗？
     updated_at: 更新于
     updated_at_timestamp: 更新于%{updated_at}
     view: 查看

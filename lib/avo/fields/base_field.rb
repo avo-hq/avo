@@ -99,6 +99,7 @@ module Avo
         @label_tooltip = args[:label_tooltip]
         @default = args[:default]
         @visible = args[:visible]
+        @hide_if_blank = args[:hide_if_blank]
         @html = args[:html]
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]
@@ -377,6 +378,25 @@ module Avo
 
       def updatable
         !is_disabled? && visible?
+      end
+
+      def visible?
+        return false if hidden_because_blank?
+
+        super
+      end
+
+      def hidden_because_blank?
+        return false if @hide_if_blank.nil?
+
+        views = normalize_views(Array.wrap(@hide_if_blank))
+        return false unless views.include?(:all) || views.include?(view&.to_sym)
+
+        # Containers hydrate their items with the view and resource only.
+        hydrate(record: resource.record) if record.nil? && resource.present?
+
+        # Ask a relation with EXISTS instead of loading every row.
+        value.is_a?(ActiveRecord::Relation) ? value.none? : value.blank?
       end
 
       # Used by Avo to fill the record with the default value on :new and :edit views

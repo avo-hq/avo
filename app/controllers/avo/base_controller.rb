@@ -112,18 +112,7 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
-      if is_associated_record?
-        via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
-
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
-
-        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials, color: @resource.class.color
-      else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
-      end
+      add_via_breadcrumbs
 
       add_breadcrumb title: t("avo.new").humanize
 
@@ -142,17 +131,14 @@ module Avo
         # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
-          related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
-          @related_record = related_resource.find_record params[:via_record_id], params: params
+          @related_record = via_record
 
           @record.send(:"#{@reflection.foreign_key}=", @related_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
         if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
-          # find the record
-          via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-          @related_record = via_resource.find_record params[:via_record_id], params: params
+          @related_record = via_record
           association_name = BaseResource.valid_association_name(@record, params[:via_relation])
 
           if params[:via_association_type] == "has_one"
@@ -439,23 +425,13 @@ module Avo
       @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
       @page_title = @resource.default_panel_name.to_s
 
-      last_crumb_args = {}
-      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
-      if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
+      add_via_breadcrumbs
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), initials: via_resource.class.initials, color: via_resource.class.color
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
-
-        last_crumb_args = {
-          via_resource_class: params[:via_resource_class],
-          via_record_id: params[:via_record_id]
-        }
-        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials, color: @resource.class.color
+      # Keep the record's crumb pointing through the same parent.
+      last_crumb_args = if via_resource.present?
+        {via_resource_class: via_resource.class.to_s, via_record_id: via_resource.record_param}
       else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
+        {}
       end
 
       add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials, color: @resource.class.color
@@ -509,13 +485,7 @@ module Avo
     def after_create_path
       # If this is an associated record return to the association show page
       if is_associated_record?
-        parent_resource = if params[:via_resource_class].present?
-          Avo.resource_manager.get_resource(params[:via_resource_class])
-        else
-          Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-        end
-
-        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
+        return resource_view_path(resource: via_resource_class, resource_id: params[:via_record_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
@@ -677,6 +647,9 @@ module Avo
     end
 
     def apply_sorting
+      # Ordering needs a model query. A plain array can't take it, and an HTTP loader sorts on the remote API.
+      return unless @query.respond_to?(:unscope)
+
       sort_by = @index_params[:sort_by].to_sym
       if sort_by != :created_at
         @query = @query.unscope(:order)
@@ -737,16 +710,45 @@ module Avo
       if associated_summary?
         build_association_scope_from_params
       else
-        @resource.class.query_scope
+        @resource.class.query_scope(index_params: @index_params)
+      end
+    end
+
+    # The parent resource and record the current record is reached through, from the `via_*` params.
+    # e.g. a comment created from a post's has_many panel, or a project edited from a user's page.
+    # Memoized in `@via_resource` and `@via_record` so a custom controller can read them after calling `super`.
+    def via_resource
+      set_via_resource_and_record
+      @via_resource
+    end
+
+    def via_record
+      set_via_resource_and_record
+      @via_record
+    end
+
+    def set_via_resource_and_record
+      return if defined?(@via_record)
+
+      @via_resource = @via_record = nil
+      return if via_resource_class.nil? || params[:via_record_id].blank?
+
+      @via_record = via_resource_class.find_record(params[:via_record_id], params: params)
+      @via_resource = via_resource_class.new(record: @via_record)
+    end
+
+    # `via_resource_class` names the parent resource exactly, while `via_relation_class` only names its model,
+    # which is ambiguous when several resources share one model. So the model is the fallback.
+    def via_resource_class
+      if params[:via_resource_class].present?
+        Avo.resource_manager.get_resource(params[:via_resource_class])
+      elsif params[:via_relation_class].present?
+        Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
       end
     end
 
     def add_via_breadcrumbs
-      if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
-
+      if via_resource.present?
         add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
         add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
 

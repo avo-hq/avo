@@ -123,7 +123,7 @@ module Avo
         # This resolves the scope when doing "where" queries (not find queries)
         #
         # It's used to apply the authorization feature.
-        def query_scope
+        def query_scope(**)
           authorization.apply_policy Avo::ExecutionContext.new(
             target: index_query,
             query: model_class

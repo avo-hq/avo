@@ -229,6 +229,7 @@ ua:
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
     undo: Скасувати
+    unsaved_changes_warning: У вас є незбережені зміни. Ви впевнені, що хочете залишити цю сторінку?
     updated_at: Оновлено
     updated_at_timestamp: Atnaujinta %{updated_at}
     view: Перегляд

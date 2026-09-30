@@ -30,6 +30,8 @@ export default class extends Controller {
       spellChecker: this.componentOptions.spell_checker,
       autoRefresh: { delay: 500 },
       theme: this.resolvedTheme,
+      // Keeps the textarea current while typing, not only on submit, so the unsaved changes check sees edits.
+      forceSync: true,
     }
 
     if (this.view === 'show') {
