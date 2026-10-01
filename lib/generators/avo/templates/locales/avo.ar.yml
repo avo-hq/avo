@@ -105,6 +105,7 @@ ar:
     delete: حذف
     delete_file: حذف الملف
     delete_item: حذف %{item}
+    destructive_action_confirmation_text: حذف
     detach_item: فصل %{item}
     details: تفاصيل
     download: تنزيل
@@ -240,6 +241,7 @@ ar:
     timezone_changed: تُعرض التواريخ والأوقات الآن في منطقتك الزمنية (%{timezone}).
     tools: الأدوات
     'true': صحيح
+    type_to_confirm_destructive_action_html: اكتب <strong>%{text}</strong> للتأكيد
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع

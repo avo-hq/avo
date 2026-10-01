@@ -97,6 +97,7 @@ tr:
     delete: sil
     delete_file: Dosyayı sil
     delete_item: "%{item} öğresini sil"
+    destructive_action_confirmation_text: sil
     detach_item: "%{item} öğesinin ilişkisini kes"
     details: detaylar
     download: İndir
@@ -224,6 +225,7 @@ tr:
     timezone_changed: Tarih ve saatler artık sizin zaman diliminizde (%{timezone}) görüntüleniyor.
     tools: Araçlar
     'true': Doğru
+    type_to_confirm_destructive_action_html: Onaylamak için <strong>%{text}</strong> yazın
     type_to_search: Aramak için yazın.
     unauthorized: Yetkisiz
     undo: geri al

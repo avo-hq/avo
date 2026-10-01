@@ -95,6 +95,7 @@ de:
     delete: löschen
     delete_file: Datei löschen
     delete_item: "%{item} löschen"
+    destructive_action_confirmation_text: löschen
     detach_item: "%{item} abhängen"
     details: Details
     download: Herunterladen
@@ -222,6 +223,7 @@ de:
     timezone_changed: Daten und Zeiten werden jetzt in Ihrer Zeitzone (%{timezone}) angezeigt.
     tools: Werkzeuge
     'true': Wahr
+    type_to_confirm_destructive_action_html: Gib <strong>%{text}</strong> ein, um zu bestätigen
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen

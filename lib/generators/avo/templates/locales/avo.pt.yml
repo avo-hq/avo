@@ -97,6 +97,7 @@ pt:
     delete: apagar
     delete_file: Apagar arquivo
     delete_item: Apagar %{item}
+    destructive_action_confirmation_text: eliminar
     detach_item: separar %{item}
     details: detalhe
     download: Download
@@ -224,6 +225,7 @@ pt:
     timezone_changed: As datas e horários agora são exibidos no seu fuso horário (%{timezone}).
     tools: Ferramentas
     'true': Verdadeiro
+    type_to_confirm_destructive_action_html: Escreva <strong>%{text}</strong> para confirmar
     type_to_search: Escreva para pesquisar.
     unauthorized: Não autorizado
     undo: desfazer

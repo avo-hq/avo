@@ -95,6 +95,7 @@ en:
     delete: delete
     delete_file: Delete file
     delete_item: Delete %{item}
+    destructive_action_confirmation_text: delete
     detach_item: detach %{item}
     details: details
     download: Download
@@ -222,6 +223,7 @@ en:
     timezone_changed: Dates and times are now displayed in your time zone (%{timezone}).
     tools: Tools
     'true': 'True'
+    type_to_confirm_destructive_action_html: Type <strong>%{text}</strong> to confirm
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo

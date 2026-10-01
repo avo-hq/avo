@@ -99,6 +99,7 @@ ro:
     delete: șterge
     delete_file: Șterge fișierul
     delete_item: Șterge %{item}
+    destructive_action_confirmation_text: șterge
     detach_item: detașează %{item}
     details: detalii
     download: Descarcă
@@ -228,6 +229,7 @@ ro:
     timezone_changed: Datele și orele sunt acum afișate în fusul tău orar (%{timezone}).
     tools: Instrumente
     'true': Adevărat
+    type_to_confirm_destructive_action_html: Tastează <strong>%{text}</strong> pentru a confirma
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează

@@ -95,6 +95,7 @@ ua:
     delete: Видалити
     delete_file: Видалити файл
     delete_item: Видалити %{item}
+    destructive_action_confirmation_text: видалити
     detach_item: Відкріпити %{item}
     details: Деталі
     download: Завантажити
@@ -226,6 +227,7 @@ ua:
     timezone_changed: Дати та часи тепер відображаються у вашому часовому поясі (%{timezone}).
     tools: Інструменти
     'true': Істина
+    type_to_confirm_destructive_action_html: Введіть <strong>%{text}</strong> для підтвердження
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
     undo: Скасувати

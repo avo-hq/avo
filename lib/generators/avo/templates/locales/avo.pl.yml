@@ -97,6 +97,7 @@ pl:
     delete: Usuń
     delete_file: Usuń plik
     delete_item: Usuń %{item}
+    destructive_action_confirmation_text: usuń
     detach_item: Odłącz %{item}
     details: Szczegóły
     download: Pobierz
@@ -228,6 +229,7 @@ pl:
     timezone_changed: Daty i czasy są teraz wyświetlane w Twojej strefie czasowej (%{timezone}).
     tools: Narzędzia
     'true': Prawda
+    type_to_confirm_destructive_action_html: Wpisz <strong>%{text}</strong>, aby potwierdzić
     type_to_search: Wpisz, aby wyszukać.
     unauthorized: Brak autoryzacji
     undo: Cofnij

@@ -97,6 +97,7 @@ ja:
     delete: 削除
     delete_file: ファイルを削除
     delete_item: "%{item}を削除"
+    destructive_action_confirmation_text: 削除
     detach_item: "%{item}を切り離す"
     details: 詳細
     download: ダウンロード
@@ -224,6 +225,7 @@ ja:
     timezone_changed: 日付と時刻は現在、あなたのタイムゾーン (%{timezone}) で表示されています。
     tools: ツール
     'true': 真
+    type_to_confirm_destructive_action_html: 確認のため <strong>%{text}</strong> と入力してください
     type_to_search: 検索する内容を入力してください。
     unauthorized: 許可されていません
     undo: 元に戻す

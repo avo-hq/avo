@@ -95,6 +95,7 @@ nl:
     delete: verwijderen
     delete_file: Bestand verwijderen
     delete_item: "%{item} verwijderen"
+    destructive_action_confirmation_text: verwijderen
     detach_item: "%{item} loskoppelen"
     details: Details
     download: Downloaden
@@ -222,6 +223,7 @@ nl:
     timezone_changed: Data en tijden worden nu weergegeven in uw tijdzone (%{timezone}).
     tools: Gereedschappen
     'true': Waar
+    type_to_confirm_destructive_action_html: Typ <strong>%{text}</strong> om te bevestigen
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
