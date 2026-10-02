@@ -123,7 +123,7 @@ Work through these in order — the first two are by far the most common.
 
    → `authorization.html`, `faq.html`
 
-3. **Authorization not wired.** Symptoms also appear when the plumbing is incomplete: the Authorization add-on isn't installed, `current_user_method` isn't set, the Pundit policy doesn't exist, or the server wasn't restarted after any of those. → `faq.html` ("The authorization features are not working")
+3. **Authorization not wired.** Symptoms also appear when the plumbing is incomplete: the Authorization add-on isn't installed, `config.authorization_client` is still `nil` (the generated initializer sets it to `nil`, which turns policies off and lets every signed-in user through — set it to `:pundit`), `current_user_method` isn't set, the Pundit policy doesn't exist, or the server wasn't restarted after any of those. → `faq.html` ("The authorization features are not working")
 
 4. **Server not restarted** after editing the initializer or adding a policy. Restart and re-check before digging deeper.
 
