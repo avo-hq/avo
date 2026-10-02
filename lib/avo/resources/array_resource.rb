@@ -44,6 +44,12 @@ module Avo
 
       def records = []
 
+      # Fetching builds the model class with an accessor per attribute, so a new record can be filled.
+      def new_record
+        fetch_records
+        super
+      end
+
       def find_record(id, query: nil, params: nil)
         fetched_records = fetch_records
 
