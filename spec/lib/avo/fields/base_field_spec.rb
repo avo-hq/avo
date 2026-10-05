@@ -157,6 +157,66 @@ RSpec.describe Avo::Fields::BaseField, type: :model do
     end
   end
 
+  describe "#name with model attribute translations" do
+    around do |example|
+      I18n.with_locale(:en) do
+        I18n.backend.store_translations(
+          :en,
+          activerecord: {
+            attributes: {
+              product: {
+                category: {
+                  one: "Product kind",
+                  other: "Product kinds"
+                }
+              }
+            }
+          },
+          attributes: {
+            sizes: "Available sizes"
+          }
+        )
+
+        example.run
+      end
+    ensure
+      I18n.backend.reload!
+    end
+
+    it "uses the model's activerecord attribute translation" do
+      expect(build_field(:category).name).to eq "Product kind"
+      expect(build_field(:category).plural_name).to eq "Product kinds"
+    end
+
+    it "uses the global attributes translation" do
+      expect(build_field(:sizes).name).to eq "Available sizes"
+    end
+
+    it "keeps the humanized id when the model has no translation" do
+      expect(build_field(:sku_code).name).to eq "Sku code"
+    end
+
+    it "lets an explicit name win" do
+      expect(build_field(:category, name: "Kind").name).to eq "Kind"
+    end
+
+    it "lets an explicit translation_key win" do
+      I18n.backend.store_translations(:en, custom: {category: "Custom category"})
+
+      expect(build_field(:category, translation_key: "custom.category").name).to eq "Custom category"
+    end
+
+    it "lets an avo field translation win" do
+      I18n.backend.store_translations(:en, avo: {resource_translations: {product: {fields: {category: "Avo category"}}}})
+
+      expect(build_field(:category).name).to eq "Avo category"
+    end
+
+    it "skips the lookup when the field has no resource" do
+      expect(described_class.new(:category).name).to eq "Category"
+    end
+  end
+
   describe "#plural_name" do
     around do |example|
       I18n.with_locale(:en) do

@@ -449,7 +449,18 @@ module Avo
           next
         end
 
-        default
+        model_attribute_translation(count:) || default
+      end
+
+      # The blank default stops human_attribute_name from falling back to the humanized
+      # attribute, so only a real activerecord.attributes or attributes translation returns.
+      def model_attribute_translation(count:)
+        return if @translation_key.present?
+
+        model_class = @resource.try(:model_class)
+        return unless model_class.respond_to?(:human_attribute_name)
+
+        model_class.human_attribute_name(@id, count: count, default: "").presence
       end
 
       def translation_lookup_keys
