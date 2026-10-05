@@ -14,6 +14,8 @@ module Avo
     class_attribute :confirm_button_label, default: -> { I18n.t("avo.run") }
     class_attribute :cancel_button_label, default: -> { I18n.t("avo.cancel") }
     class_attribute :confirmation, default: true
+    class_attribute :hide_confirm_button, default: false
+    class_attribute :hide_cancel_button, default: false
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
       # Hide on the :new view by default
@@ -361,6 +363,26 @@ module Avo
     def confirmation?
       Avo::ExecutionContext.new(
         target: confirmation,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments:
+      ).handle
+    end
+
+    def hide_confirm_button?
+      Avo::ExecutionContext.new(
+        target: hide_confirm_button,
+        action: self,
+        resource: @resource,
+        view: @view,
+        arguments:
+      ).handle
+    end
+
+    def hide_cancel_button?
+      Avo::ExecutionContext.new(
+        target: hide_cancel_button,
         action: self,
         resource: @resource,
         view: @view,

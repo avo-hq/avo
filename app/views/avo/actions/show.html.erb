@@ -54,27 +54,36 @@
         </div>
       <% end %>
 
-      <% c.with_controls do %>
-        <%= a_button type: :button,
-          data: { action: 'click->modal#close', **(@action.close_modal_on_backdrop_click ? { hotkey: "Escape" } : {}) },
-          style: :text,
-          color: :primary,
-          size: :md do %>
-          <%= @action.cancel_button_label %>
-        <% end %>
-        <%= a_button(
-          type: :submit,
-          color: :primary,
-          style: :outline,
-          size: :md,
-          end_icon: "tabler/outline/arrow-right",
-          data: {
-            target: :submit_action,
-            hotkey: "Mod+Enter"
-          },
-          autofocus: first_input.nil?
-        ) do %>
-          <%= @action.confirm_button_label %>
+      <% show_cancel_button = !@action.hide_cancel_button? %>
+      <% show_confirm_button = !@action.hide_confirm_button? %>
+      <%# The modal renders its footer whenever the controls slot is set, even if the slot ends up empty. %>
+      <% if show_cancel_button || show_confirm_button %>
+        <% c.with_controls do %>
+          <% if show_cancel_button %>
+            <%= a_button type: :button,
+              data: { action: 'click->modal#close', **(@action.close_modal_on_backdrop_click ? { hotkey: "Escape" } : {}) },
+              style: :text,
+              color: :primary,
+              size: :md do %>
+              <%= @action.cancel_button_label %>
+            <% end %>
+          <% end %>
+          <% if show_confirm_button %>
+            <%= a_button(
+              type: :submit,
+              color: :primary,
+              style: :outline,
+              size: :md,
+              end_icon: "tabler/outline/arrow-right",
+              data: {
+                target: :submit_action,
+                hotkey: "Mod+Enter"
+              },
+              autofocus: first_input.nil?
+            ) do %>
+              <%= @action.confirm_button_label %>
+            <% end %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
