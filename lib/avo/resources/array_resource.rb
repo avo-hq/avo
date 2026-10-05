@@ -14,7 +14,7 @@ module Avo
       }
 
       # Shows the create, edit and delete controls. The records have no save! or destroy!,
-      # so the resource's controller overrides save_record_action and destroy_record_action.
+      # so the resource defines its own save_record and destroy_record.
       class_attribute :writable, default: false
 
       class << self
