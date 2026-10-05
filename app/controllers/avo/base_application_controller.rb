@@ -176,7 +176,7 @@ module Avo
 
     def set_record_to_fill
       @record_to_fill = if @view.new?
-        @resource.model_class.new
+        @resource.new_record
       elsif @view.edit?
         @record
       end
