@@ -159,6 +159,8 @@ end
 
 **Errors raised inside these methods are caught, logged, and added to the record's errors** (`errors.add(:base, ...)`) — which automatically triggers the matching `*_fail_action` and `*_fail_message`. So you don't rescue in here yourself; raising *is* how you signal failure, and the record's validation errors surface in the fail flash.
 
+By default both hooks call the resource: `@resource.save_record(@record)` and `@resource.destroy_record(@record)`, which run `save!` and `destroy!`. When the change belongs to the resource under every controller (a record that is not an Active Record model, like an array resource's), define `save_record(record)` / `destroy_record(record)` on the resource instead.
+
 ### Parent record — the record this one is reached through
 
 When a record is created, shown, or edited through another one (a comment created from a post's comments panel), Avo resolves that parent from the `via_*` params. **Don't re-derive it from `params[:via_relation_class]` / `params[:via_record_id]`** — read what Avo already loaded:
