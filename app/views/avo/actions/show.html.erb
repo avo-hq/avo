@@ -40,12 +40,14 @@
       <%# The fields render as a form, so they see the resource on the form view: their stimulus targets and html
           attributes keep the names they have on an edit form. The action itself keeps the view it was started from. %>
       <% fields_resource = @resource.dup.tap { |resource| resource.view = @view } %>
-      <%# Focus the first field that renders as an input: a hidden field takes no focus and a display-only one cannot. %>
-      <% first_input = (@fields || []).index { |field| !field.is_a?(Avo::Fields::HiddenField) && field.component_for_view(@view) != Avo::BlankFieldComponent } %>
+      <% (@fields || []).each { |field| field.hydrate(resource: fields_resource, record: @resource.record, user: @resource.user, view: @view, action: @action) } %>
+      <%# Focus the first input whose field asks for it, or else the first input: a hidden field takes no focus and a display-only one cannot.
+          The fields are hydrated first so an autofocus block sees the view they render with. %>
+      <% inputs = (@fields || []).each_index.reject { |index| @fields[index].is_a?(Avo::Fields::HiddenField) || @fields[index].component_for_view(@view) == Avo::BlankFieldComponent } %>
+      <% first_input = inputs.find { |index| @fields[index].autofocus? } || inputs.first %>
       <% if @fields.present? %>
         <div class="description-list border-t border-tertiary">
           <% @fields.each_with_index do |field, index| %>
-            <% field.hydrate(resource: fields_resource, record: @resource.record, user: @resource.user, view: @view, action: @action) %>
             <% component = field.component_for_view(@view) %>
             <%# A display-only field (badge, key/value...) has no form component. Render it as the show view does. %>
             <% component = field.component_for_view(:show) if component == Avo::BlankFieldComponent %>

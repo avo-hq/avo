@@ -293,7 +293,7 @@ end
 Avo also adds a default `resource-edit` / `resource-show` / `resource-index` controller per view, and passes each controller a `view` value (`index`/`show`/`edit`/`new`) in the DOM. For every field it emits ready-made Stimulus targets you can hook into:
 
 - **Wrapper:** `data-[controller]-target="[fieldName][FieldType]Wrapper"` → `nameTextWrapperTarget`
-- **Input** (Edit/New): `[fieldName][FieldType]Input` → `nameTextInputTarget`
+- **Input** (Edit/New): `[fieldName][FieldType]Input` → `nameTextInputTarget`. On a polymorphic `belongs_to` both selects get it; a searchable `belongs_to` puts it (and any `html:` `data`) on the hidden input holding the record id, which fires `input`/`change` when a record is picked or cleared.
 
 Attach actions/classes/data to a field's input or wrapper via the `html:` option (see the field-options-api docs) to trigger your controller methods.
 

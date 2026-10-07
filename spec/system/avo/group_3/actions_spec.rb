@@ -762,4 +762,19 @@ RSpec.describe "Actions", type: :system do
   #       end
   #     end
   #   end
+
+  # The modal controller focuses the dialog when it connects, and Turbo focuses the [autofocus] input after
+  # rendering the frame. Only a browser proves that order leaves the cursor in the field that asked for it.
+  it "puts the cursor in the action field that sets autofocus" do
+    create :review
+    allow_any_instance_of(Avo::Actions::Test::ShowView).to receive(:fields) do |action|
+      action.field :probe_text, as: :text
+      action.field :probe_focus, as: :text, autofocus: true
+    end
+
+    visit "/admin/resources/reviews"
+    open_panel_action(action_name: "Show view")
+
+    expect(page).to have_css("input[name='fields[probe_focus]']:focus")
+  end
 end
