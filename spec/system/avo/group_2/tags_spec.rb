@@ -379,6 +379,58 @@ RSpec.describe "Tags", type: :system do
     end
   end
 
+  describe "fetch_values_from in select mode after a value is selected (#3317)" do
+    let!(:bob) { create :user, first_name: "Bob", last_name: "Builder" }
+    let!(:alice) { create :user, first_name: "Alice", last_name: "Smith" }
+    let!(:course) { create :course, skills: [] }
+    let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
+    let(:tags_input) { field_value_slot.find("span[contenteditable]") }
+
+    before do
+      Avo::Resources::Course.with_temporary_items do
+        field :name
+        field :skills,
+          as: :tags,
+          mode: :select,
+          enforce_suggestions: true,
+          close_on_select: true,
+          fetch_values_from: "/admin/resources/users/get_users",
+          format_using: -> { [] }
+      end
+    end
+
+    after do
+      Avo::Resources::Course.restore_items_from_backup
+    end
+
+    it "fetches suggestions again when typing over the selected value" do
+      searched_queries = []
+      page.driver.browser.network.intercept(pattern: "*get_users*")
+      page.driver.browser.on(:request) do |request|
+        searched_queries << URI.decode_www_form(URI(request.url).query.to_s).to_h["q"]
+        request.continue
+      end
+
+      visit avo.edit_resources_course_path(course)
+
+      tags_input.click
+      type("Bob")
+      wait_until { searched_queries.include?("Bob") }
+      wait_for_tags_to_load(field_value_slot)
+      type(:down, :return)
+
+      expect(field_value_slot).to have_css("tag", text: "Bob Builder")
+
+      field_value_slot.find(".tagify__tag-text").click
+      type(*Array.new("Bob Builder".length, :backspace), "Ali")
+
+      wait_until { searched_queries.include?("Ali") }
+      wait_for_tags_to_load(field_value_slot)
+
+      expect(page).to have_css(".tagify__dropdown__item", text: "Alice Smith")
+    end
+  end
+
   describe "mode: :select" do
     let!(:projects) { create_list :project, 2 }
 
