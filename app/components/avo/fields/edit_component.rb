@@ -13,7 +13,7 @@ class Avo::Fields::EditComponent < Avo::BaseComponent
   attr_reader :view
   attr_reader :full_width
 
-  def initialize(field: nil, resource: nil, index: 0, form: nil, stacked: nil, full_width: nil, multiple: false, autofocus: false, **kwargs)
+  def initialize(field: nil, resource: nil, index: 0, form: nil, stacked: nil, full_width: nil, multiple: false, autofocus: nil, **kwargs)
     @field = field
     @form = form
     @index = index
@@ -22,7 +22,7 @@ class Avo::Fields::EditComponent < Avo::BaseComponent
     @resource = resource
     @stacked = stacked
     @view = Avo::ViewInquirer.new("edit")
-    @autofocus = autofocus
+    @autofocus = autofocus.nil? ? field&.autofocus? : autofocus
     @full_width = full_width
   end
 

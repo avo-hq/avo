@@ -17,6 +17,18 @@ def shift_selectable_checkbox_selector
   'input[type="checkbox"][data-action*="record-selector#toggleMultiple"]'
 end
 
+def row_selector(index)
+  %(tr[data-index="#{index}"])
+end
+
+def row_checkbox(index)
+  find(%(#{record_selector_checkbox_selector}[data-index="#{index}"]))
+end
+
+def checked_row_indexes
+  all(record_selector_checkbox_selector).select(&:checked?).map { |checkbox| checkbox[:"data-index"].to_i }.sort
+end
+
 def field_wrapper(field_id, field_type = nil)
   if field_type.present?
     find("[data-field-id='#{field_id}'][data-field-type='#{field_type}']")
