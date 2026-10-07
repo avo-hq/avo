@@ -123,7 +123,7 @@ module Avo
         # This resolves the scope when doing "where" queries (not find queries)
         #
         # It's used to apply the authorization feature.
-        def query_scope
+        def query_scope(**)
           authorization.apply_policy Avo::ExecutionContext.new(
             target: index_query,
             query: model_class
@@ -681,6 +681,14 @@ module Avo
 
         safe_call(:fill_nested_records, record:, permitted_params:) || record
       end
+
+      # On the resource so one that isn't backed by a model can build, save and delete its own records,
+      # under any controller.
+      def new_record = model_class.new
+
+      def save_record(record) = record.save!
+
+      def destroy_record(record) = record.destroy!
 
       def authorization(user: nil)
         current_user = user || Avo::Current.user

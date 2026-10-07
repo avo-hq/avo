@@ -97,7 +97,7 @@ Map the need to an `as:` type. All built-in types are **Community (free)**; the 
 | A date                                                 | `:date`                      | `field :birthday, as: :date` |
 | A date **and** time                                    | `:date_time`                 | `field :published_at, as: :date_time` |
 | A time only                                            | `:time`                      | `field :opens_at, as: :time` |
-| A colored status pill (map value → color)              | `:badge`                     | `field :status, as: :badge, options: {success: "done", warning: "pending"}` |
+| A colored status pill (map value → color)              | `:badge`                     | `field :status, as: :badge, options: {success: "done", warning: "pending"}` — display-only; add `show_on: :forms` to edit it with a select of the option values |
 | A live status dot (loading/failed/success/neutral)     | `:status`                    | `field :state, as: :status, success_when: [:done], loading_when: [:running], failed_when: [:failed]` |
 | A tag input / list                                     | `:tags`                      | `field :skills, as: :tags` |
 | A star rating                                          | `:stars`                     | `field :rating, as: :stars` |

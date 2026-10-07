@@ -19,6 +19,10 @@ RSpec.feature "ArrayResource", type: :system do
 
       all('button[data-action="alert#close"]').each(&:click)
 
+      within(".pagination__info") do
+        expect(strip_html(page.text)).to eq "1-8 of 20"
+      end
+
       within("nav.pagy.series-nav") do
         click_link("2")
       end
@@ -72,6 +76,24 @@ RSpec.feature "ArrayResource", type: :system do
       run_action
 
       expect(page).to have_text("succeed #{movies_count} selected")
+    end
+  end
+
+  describe "pagination info" do
+    it "shows the record count" do
+      visit "#{avo.resources_movies_path}?per_page=24"
+
+      within(".pagination__info") do
+        expect(strip_html(page.text)).to eq "1-24 of 50"
+      end
+    end
+
+    it "shows the record count when everything fits on one page" do
+      visit "#{avo.resources_movies_path}?per_page=72"
+
+      within(".pagination__info") do
+        expect(page).to have_text("50 records")
+      end
     end
   end
 end

@@ -14,10 +14,12 @@ module Avo
       }
 
       # Shows the create, edit and delete controls. The records have no save! or destroy!,
-      # so the resource's controller overrides save_record_action and destroy_record_action.
+      # so the resource defines its own save_record and destroy_record.
       class_attribute :writable, default: false
 
       class << self
+        def query_scope(**) = new.fetch_records
+
         # Each array resource keeps its own model class. It starts as a placeholder class and
         # fetch_records replaces it with the class of the records it builds or finds.
         def model_class
@@ -41,6 +43,12 @@ module Avo
       end
 
       def records = []
+
+      # Fetching builds the model class with an accessor per attribute, so a new record can be filled.
+      def new_record
+        fetch_records
+        super
+      end
 
       def find_record(id, query: nil, params: nil)
         fetched_records = fetch_records

@@ -3,6 +3,10 @@
 /* BEM: .locale-selector (block)                    */
 /* ================================================ */
 
+.locale-selector {
+  @apply inline-flex items-center;
+}
+
 /* The trigger sits in `.top-navbar__end` beside the appearance switcher's compact
    trigger and mirrors it: same height, radius, navbar control tokens. */
 .locale-selector__trigger {
@@ -19,9 +23,9 @@
   background-color: color-mix(in oklab, var(--top-navbar-control-background), var(--top-navbar-content) 12%);
 }
 
-@variant sm {
+@variant lg {
   .locale-selector__trigger {
-    @apply h-8 ps-2 pe-1.5;
+    @apply h-7.5 ps-2 pe-1.5;
   }
 }
 
