@@ -206,7 +206,11 @@ self.cancel_button_label = "Keep"
 self.confirmation = false               # skip the modal, run immediately on click
 self.close_modal_on_backdrop_click = false  # don't lose a filled-in form on a stray click
 self.modal_width = :"4xl"                  # :sm :md :lg :xl (default) :"2xl" :"3xl" :"4xl" :"5xl" :full
+self.hide_confirm_button = true            # drop the Run button (and its Mod+Enter hotkey)
+self.hide_cancel_button = -> { view.index? } # drop the Cancel button (and its Escape hotkey); the X still closes
 ```
+
+`hide_confirm_button` and `hide_cancel_button` take a boolean or a block with access to `resource`, `view` and `arguments`. When both are hidden the modal renders without a footer.
 
 ### Give feedback
 Queue one or more notifications from inside `handle` — call several to stack them. With no explicit feedback Avo shows a generic "Action ran successfully" info alert.

@@ -57,6 +57,67 @@ RSpec.describe "Actions", type: :request do
     end
   end
 
+  # avo-hq/avo#4032
+  describe "hide_confirm_button and hide_cancel_button" do
+    let(:confirm_button) { 'data-target="submit_action"' }
+    let(:cancel_button) { 'data-action="click-&gt;modal#close"' }
+
+    around do |example|
+      original_hide_confirm_button = Avo::Actions::ToggleAdmin.hide_confirm_button
+      original_hide_cancel_button = Avo::Actions::ToggleAdmin.hide_cancel_button
+      example.run
+      Avo::Actions::ToggleAdmin.hide_confirm_button = original_hide_confirm_button
+      Avo::Actions::ToggleAdmin.hide_cancel_button = original_hide_cancel_button
+    end
+
+    it "renders both buttons by default" do
+      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin"}
+
+      expect(response.body).to include confirm_button
+      expect(response.body).to include cancel_button
+    end
+
+    it "hides the confirm button" do
+      Avo::Actions::ToggleAdmin.hide_confirm_button = true
+
+      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin"}
+
+      expect(response.body).not_to include confirm_button
+      expect(response.body).to include cancel_button
+    end
+
+    it "hides the cancel button" do
+      Avo::Actions::ToggleAdmin.hide_cancel_button = true
+
+      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin"}
+
+      expect(response.body).to include confirm_button
+      expect(response.body).not_to include cancel_button
+    end
+
+    it "drops the empty footer when both buttons are hidden" do
+      Avo::Actions::ToggleAdmin.hide_confirm_button = true
+      Avo::Actions::ToggleAdmin.hide_cancel_button = true
+
+      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin"}
+
+      expect(response.body).not_to include "modal__controls"
+    end
+
+    it "resolves a block against the view the action was started from" do
+      Avo::Actions::ToggleAdmin.hide_confirm_button = -> { view.index? }
+      user = create(:user)
+
+      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin", resource_view: "index"}
+
+      expect(response.body).not_to include confirm_button
+
+      get "/admin/resources/users/#{user.to_param}/actions", params: {action_id: "Avo::Actions::ToggleAdmin", resource_view: "show"}
+
+      expect(response.body).to include confirm_button
+    end
+  end
+
   describe "request object in handle" do
     it "gives the handle method access to the current request" do
       target = create(:user)
