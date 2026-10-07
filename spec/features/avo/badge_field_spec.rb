@@ -172,5 +172,15 @@ RSpec.describe "BadgeField", type: :feature do
       # Blank like any other field; `nullable: true` turns it into nil.
       expect(playground.reload.badge_value).to eq ""
     end
+
+    it "keeps a value the options don't list" do
+      playground.update! badge_value: "legacy"
+
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      expect(page).to have_select "playground_badge_value", selected: "legacy"
+      save
+
+      expect(playground.reload.badge_value).to eq "legacy"
+    end
   end
 end

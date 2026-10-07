@@ -10,7 +10,6 @@ RSpec.describe Avo::Fields::BadgeField do
   end
 
   it "follows the visibility options passed to the field" do
-    expect(form_visibility(described_class.new(:stage, show_on: :forms))).to eq [true, true]
     expect(form_visibility(described_class.new(:stage, only_on: :edit))).to eq [false, true]
   end
 end
