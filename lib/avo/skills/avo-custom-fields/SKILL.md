@@ -140,7 +140,17 @@ Generated components are plain text fields you replace. Each inherits from an Av
 
 ### The field wrapper (why every component starts with it)
 
-The first thing each component does is wrap your content in `field_wrapper` (Show/Edit) or `index_field_wrapper` (Index). The wrapper is what makes a custom field look native: it draws the **label, required asterisk, help text, validation error, blank-`—` placeholder**, and applies `stacked` / `full_width` / `density` layout. You render only the *value*; the wrapper renders everything around it. That's why you splat `field_wrapper_args` instead of hand-building the label. Pass extra options alongside it (`field_wrapper **field_wrapper_args, dash_if_blank: false`).
+The first thing each component does is wrap your content in `field_wrapper` (Show/Edit) or `index_field_wrapper` (Index). The wrapper is what makes a custom field look native: it draws the **label, required asterisk, help text, tooltip, validation error, blank-`—` placeholder**, and applies `stacked` / `full_width` / `density` layout. You render only the *value*; the wrapper renders everything around it. That's why you splat `field_wrapper_args` instead of hand-building the label. Pass extra options alongside it (`field_wrapper **field_wrapper_args, dash_if_blank: false`).
+
+`tooltip:` / `label_tooltip:` need no wiring — `BaseField` resolves them and the wrapper renders the hover bubble on every view (plus the label bubble on the Index header) for free. If your field's value fills the row instead of sitting inline (an editor, a map, a progress bar), override `tooltip_anchor` to keep the hover target at the value's full width rather than collapsing to its content:
+
+```ruby
+class Avo::Fields::MyBlockField < Avo::Fields::BaseField
+  def tooltip_anchor
+    :block
+  end
+end
+```
 
 Typical customization — a `<progress>` bar on Show, a range slider on Edit:
 

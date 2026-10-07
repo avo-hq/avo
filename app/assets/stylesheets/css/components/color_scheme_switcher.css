@@ -35,7 +35,7 @@
 
 @media (min-width: theme(--breakpoint-lg)) {
   .color-scheme-switcher__compact-trigger {
-    @apply h-8 ps-2 pe-1.5;
+    @apply h-7.5 ps-2 pe-1.5;
   }
 }
 

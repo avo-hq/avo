@@ -138,13 +138,22 @@ RSpec.feature "Breadcrumbs", type: :feature do
       visit url
 
       expect(breadcrumbs).to have_link "Home"
-      expect(breadcrumbs).to have_link "Users"
+      expect(breadcrumbs).to have_link "Users", href: avo.resources_users_path
       expect(breadcrumbs).to have_link admin.name
       expect(breadcrumbs).to_not have_link "Projects"
       expect(breadcrumbs).to have_text "Projects"
       expect(breadcrumbs).to have_link project.name
       expect(breadcrumbs).to_not have_link "Edit"
       expect(breadcrumbs).to have_text "Edit"
+    end
+
+    # Post and ZPost both map to the Post model, so the breadcrumb must follow the resource class.
+    it "new through a resource that shares its model" do
+      post = create :post
+      url = avo.new_resources_comment_path(via_record_id: post.to_param, via_resource_class: Avo::Resources::ZPost, via_relation: :commentable, via_relation_class: "Post")
+      visit url
+
+      expect(breadcrumbs).to have_link post.name, href: "/admin/resources/z_posts/#{post.slug}"
     end
 
     it "new" do
