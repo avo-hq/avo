@@ -1,15 +1,19 @@
 <%= index_field_wrapper(**field_wrapper_args) do %>
-   <%= content_tag :div, class: "inline-block", data: {
-    controller: "date-field",
-    date_field_view_value: @view,
-    date_field_enable_time_value: true,
-    date_field_format_value: @field.format,
-    date_field_timezone_value: @field.timezone,
-    date_field_picker_format_value: @field.picker_format,
-    date_field_no_calendar_value: true,
-    date_field_relative_value: @field.relative,
-    date_field_field_type_value: "time",
-  } do %>
-    <%= @field.formatted_value %>
+  <%# The date-field controller replaces this div's innerText, so the record link has to wrap it. %>
+  <% formatted_value_tag = capture do %>
+    <%= content_tag :div, class: "inline-block", data: {
+      controller: "date-field",
+      date_field_view_value: @view,
+      date_field_enable_time_value: true,
+      date_field_format_value: @field.format,
+      date_field_timezone_value: @field.timezone,
+      date_field_picker_format_value: @field.picker_format,
+      date_field_no_calendar_value: true,
+      date_field_relative_value: @field.relative,
+      date_field_field_type_value: "time",
+    } do %>
+      <%= @field.formatted_value %>
+    <% end %>
   <% end %>
+  <%= link_to_if @field.link_to_record, formatted_value_tag, resource_view_path %>
 <% end %>
