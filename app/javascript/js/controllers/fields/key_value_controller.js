@@ -434,7 +434,7 @@ export default class extends Controller {
   setSuggestions() {
     try {
       this.suggestions = JSON.parse(this.controllerTarget.dataset.suggestions || '{}')
-    } catch (error) {
+    } catch {
       this.suggestions = {}
     }
   }
