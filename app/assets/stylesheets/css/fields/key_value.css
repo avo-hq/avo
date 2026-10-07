@@ -115,3 +115,16 @@
 .key-value__action-icon--small {
   @apply size-4;
 }
+
+/* Suggestions panel. A manual popover in the top layer, so the table's
+   overflow doesn't clip it. The controller sets its top, left, and width
+   from the focused input. It reuses the dropdown menu styles inside. */
+.key-value__suggestions {
+  @apply fixed m-0 p-0 border-0 bg-transparent overflow-visible;
+  inset: auto;
+}
+
+.key-value__suggestions .dropdown-menu {
+  @apply max-h-60;
+  box-shadow: var(--box-shadow-card);
+}

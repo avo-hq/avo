@@ -36,6 +36,8 @@ module Avo
           end
           @disable_deleting_rows = args[:disable_deleting_rows].present? ? args[:disable_deleting_rows] : false
         end
+
+        @suggestions = args[:suggestions]
       end
 
       def to_permitted_param
@@ -60,6 +62,36 @@ module Avo
           disable_adding_rows: @disable_adding_rows,
           disable_deleting_rows: @disable_deleting_rows
         }
+      end
+
+      # Keys (and optionally values per key) offered as hints while editing.
+      # They are never written to the record unless the user picks them.
+      #
+      #   suggestions: ["Content-Type", "Accept"]
+      #   suggestions: {"Content-Type" => ["application/json", "text/html"]}
+      #   suggestions: -> { {"Content-Type" => ["application/json"]} }
+      #
+      # Always returns a hash of key strings to arrays of value strings.
+      def suggestions
+        @fetched_suggestions ||= begin
+          result = Avo::ExecutionContext.new(target: @suggestions, record: record, resource: @resource, view: @view).handle
+
+          case result
+          when Hash
+            result.to_h { |key, values| [key.to_s, Array.wrap(values).map(&:to_s)] }
+          when Array
+            result.to_h { |key| [key.to_s, []] }
+          else
+            {}
+          end
+        end
+      end
+
+      # Reset the memoized suggestions so a hydrated field evaluates them against the new record
+      def hydrate(...)
+        @fetched_suggestions = nil
+
+        super
       end
 
       def fill_field(record, key, value, _params)

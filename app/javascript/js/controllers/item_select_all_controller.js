@@ -1,4 +1,5 @@
 import { AttributeObserver, Controller } from '@hotwired/stimulus'
+import { setSelection, takeSelection } from '../index_state'
 
 export default class extends Controller {
   static targets = [
@@ -17,15 +18,45 @@ export default class extends Controller {
 
   connect() {
     this.resourceName = this.element.dataset.resourceName
+    // Read it before anything on the page can change the selection and overwrite it.
+    const rememberedIds = takeSelection(this.resourceName, this.stateUrl)
+
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()
+
+    // Wait for the rows' item-selector controllers to connect; they apply the selection.
+    if (rememberedIds.length > 0) {
+      Promise.resolve().then(() => this.restoreSelection(rememberedIds))
+    }
+  }
+
+  // A has-many table pages inside its own frame, so that frame's URL tells its pages apart.
+  get stateUrl() {
+    return this.element.closest('turbo-frame[src]')?.src || window.location.href
+  }
+
+  restoreSelection(ids) {
+    if (!this.element.isConnected) return
+
+    this.itemCheckboxTargets.forEach((checkbox) => {
+      const resourceId = checkbox.closest('[data-resource-id]')?.dataset?.resourceId
+
+      if (checkbox.checked || !ids.includes(resourceId)) return
+
+      // Go through the same handlers as a click so the row, header checkbox and actions follow.
+      checkbox.checked = true
+      checkbox.dispatchEvent(new Event('input', { bubbles: true }))
+    })
   }
 
   elementAttributeValueChanged(element) {
-    if (!this.hasCheckboxTarget) return
-
     // Check if anything is selected.
     const selectedResources = JSON.parse(element.dataset.selectedResources)
+
+    setSelection(this.resourceName, this.stateUrl, selectedResources.map(String))
+
+    if (!this.hasCheckboxTarget) return
+
     // If all are selected, mark the checkbox as checked.
     const rowCount = this.element.querySelectorAll('tbody tr').length
     // Reset the checkbox
