@@ -93,6 +93,7 @@ module Avo
         @update_using = args[:update_using]
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete]
+        @autofocus = args[:autofocus]
         @help = args[:help]
         @label_help = args[:label_help]
         @tooltip = args[:tooltip]
@@ -261,6 +262,10 @@ module Avo
         end
 
         Avo::ExecutionContext.new(target: target, record: record, resource: @resource, view: @view).handle
+      end
+
+      def autofocus?
+        execute_context(@autofocus)
       end
 
       def default_placeholder
