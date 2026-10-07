@@ -5,11 +5,19 @@ import { castBoolean } from '../../helpers/cast_boolean'
 import Sortable from 'sortablejs'
 
 export default class extends Controller {
-  static targets = ['input', 'controller', 'rows']
+  static targets = ['input', 'controller', 'rows', 'suggestions', 'suggestionsList']
 
   fieldValue = []
 
   options = {}
+
+  // Keys mapped to the values suggested for them, e.g. { 'Content-Type': ['application/json'] }
+  suggestions = {}
+
+  // The input the suggestions panel is currently attached to, and the highlighted option in it
+  suggestionsInput = null
+
+  activeSuggestionIndex = -1
 
   get keyInputDisabled() {
     return !this.options.editable || this.options.disable_editing_keys
@@ -25,6 +33,7 @@ export default class extends Controller {
 
   connect() {
     this.setOptions()
+    this.setSuggestions()
 
     try {
       const objectValue = JSON.parse(this.inputTarget.value, (key, value) => {
@@ -44,6 +53,10 @@ export default class extends Controller {
     }
 
     this.updateKeyValueComponent()
+  }
+
+  disconnect() {
+    this.hideSuggestions()
   }
 
   addRow() {
@@ -101,7 +114,12 @@ export default class extends Controller {
   }
 
   focusLastRow() {
-    this.lastRow?.querySelector('.key-value-input-key')?.focus()
+    const input = this.lastRow?.querySelector('.key-value-input-key')
+    if (!input) return
+
+    input.focus()
+    // Stimulus hasn't bound the new row's focus action yet, so open the suggestions here
+    this.showSuggestions({ target: input })
   }
 
   animateLastRow() {
@@ -111,7 +129,11 @@ export default class extends Controller {
     row.classList.add('key-value__row--entering')
     row.addEventListener(
       'animationend',
-      () => row.classList.remove('key-value__row--entering'),
+      () => {
+        row.classList.remove('key-value__row--entering')
+        // The row slid in, so line the suggestions panel up with its final spot
+        this.positionSuggestions()
+      },
       { once: true },
     )
   }
@@ -122,6 +144,7 @@ export default class extends Controller {
     this.fieldValue[index][1] = value
 
     this.updateTextareaInput()
+    this.showSuggestions(event)
   }
 
   keyFieldUpdated(event) {
@@ -130,6 +153,166 @@ export default class extends Controller {
     this.fieldValue[index][0] = value
 
     this.updateTextareaInput()
+    this.showSuggestions(event)
+  }
+
+  get hasSuggestions() {
+    return this.hasSuggestionsTarget && Object.keys(this.suggestions).length > 0
+  }
+
+  suggestionsEnabledFor(id) {
+    return this.hasSuggestions && !this[`${id}InputDisabled`]
+  }
+
+  // Keys not used by another row, or the values suggested for the row's key, that contain what was typed
+  suggestionsFor(input) {
+    const { index } = input.dataset
+    const query = input.value.trim().toLowerCase()
+    let candidates
+
+    if (input.classList.contains('key-value-input-key')) {
+      const usedKeys = this.fieldValue.filter((_, rowIndex) => String(rowIndex) !== index).map(([key]) => key)
+      candidates = Object.keys(this.suggestions).filter((key) => !usedKeys.includes(key))
+    } else {
+      candidates = this.suggestions[this.fieldValue[index]?.[0]] || []
+    }
+
+    return candidates.filter((candidate) => candidate.toLowerCase().includes(query) && candidate !== input.value)
+  }
+
+  showSuggestions(event) {
+    const input = event.target
+    if (!this.hasSuggestions || input.disabled || !input.hasAttribute('aria-controls')) return
+
+    const candidates = this.suggestionsFor(input)
+    if (candidates.length === 0) {
+      this.hideSuggestions()
+
+      return
+    }
+
+    this.suggestionsInput = input
+    this.activeSuggestionIndex = -1
+    this.suggestionsListTarget.setAttribute('aria-label', input.placeholder)
+    this.suggestionsListTarget.innerHTML = candidates.map((candidate, index) => `<div
+      class="dropdown-menu__item key-value__suggestion"
+      role="option"
+      id="${this.suggestionsListTarget.id}-${index}"
+      aria-selected="false"
+      data-value="${this.escapeAttribute(candidate)}"
+      data-action="mousedown->key-value#pickSuggestion"
+    >${this.escapeAttribute(candidate)}</div>`).join('')
+
+    if (!this.suggestionsTarget.matches(':popover-open')) this.suggestionsTarget.showPopover()
+    input.setAttribute('aria-expanded', 'true')
+    this.positionSuggestions()
+    this.#listenForScroll()
+  }
+
+  hideSuggestions() {
+    if (!this.hasSuggestionsTarget) return
+
+    if (this.suggestionsTarget.matches(':popover-open')) this.suggestionsTarget.hidePopover()
+    this.suggestionsInput?.setAttribute('aria-expanded', 'false')
+    this.suggestionsInput?.removeAttribute('aria-activedescendant')
+    this.suggestionsInput = null
+    this.activeSuggestionIndex = -1
+    this.#stopListeningForScroll()
+  }
+
+  // The panel lives in the top layer, so it follows its input by hand while the page scrolls
+  positionSuggestions = () => {
+    if (!this.suggestionsInput) return
+
+    const rect = this.suggestionsInput.getBoundingClientRect()
+    const panel = this.suggestionsTarget
+    const spaceBelow = window.innerHeight - rect.bottom
+    const openUpwards = spaceBelow < panel.offsetHeight + 8 && rect.top > spaceBelow
+
+    panel.style.width = `${rect.width}px`
+    panel.style.left = `${rect.left}px`
+    panel.style.top = openUpwards ? `${rect.top - panel.offsetHeight - 4}px` : `${rect.bottom + 4}px`
+  }
+
+  suggestionsKeydown(event) {
+    if (!this.suggestionsInput || this.suggestionsInput !== event.target) {
+      if (event.key === 'ArrowDown') this.showSuggestions(event)
+
+      return
+    }
+
+    const items = this.suggestionsListTarget.querySelectorAll('[role="option"]')
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault()
+        this.highlightSuggestion((this.activeSuggestionIndex + 1) % items.length)
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        this.highlightSuggestion((this.activeSuggestionIndex - 1 + items.length) % items.length)
+        break
+      case 'Enter':
+        if (this.activeSuggestionIndex < 0) return
+
+        // Don't submit the form while picking a suggestion
+        event.preventDefault()
+        this.selectSuggestion(items[this.activeSuggestionIndex].dataset.value)
+        break
+      case 'Escape':
+        event.preventDefault()
+        event.stopPropagation()
+        this.hideSuggestions()
+        break
+      default:
+    }
+  }
+
+  highlightSuggestion(index) {
+    const items = this.suggestionsListTarget.querySelectorAll('[role="option"]')
+
+    items.forEach((item, itemIndex) => {
+      const active = itemIndex === index
+      item.classList.toggle('dropdown-menu__item--active', active)
+      item.setAttribute('aria-selected', String(active))
+      if (active) {
+        item.scrollIntoView({ block: 'nearest' })
+        this.suggestionsInput.setAttribute('aria-activedescendant', item.id)
+      }
+    })
+
+    this.activeSuggestionIndex = index
+  }
+
+  pickSuggestion(event) {
+    // Keep the focus on the input so it doesn't blur and close the panel first
+    event.preventDefault()
+    this.selectSuggestion(event.currentTarget.dataset.value)
+  }
+
+  // Fill the input as if the user typed the suggestion, then move on to the value when a key was picked
+  selectSuggestion(value) {
+    const input = this.suggestionsInput
+    if (!input) return
+
+    input.value = value
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    this.hideSuggestions()
+
+    if (input.classList.contains('key-value-input-key')) {
+      const valueInput = this.rowsTarget.querySelector(`.key-value-input-value[data-index="${input.dataset.index}"]`)
+      if (valueInput && !valueInput.disabled && valueInput.value === '') valueInput.focus()
+    }
+  }
+
+  #listenForScroll() {
+    window.addEventListener('scroll', this.positionSuggestions, true)
+    window.addEventListener('resize', this.positionSuggestions)
+  }
+
+  #stopListeningForScroll() {
+    window.removeEventListener('scroll', this.positionSuggestions, true)
+    window.removeEventListener('resize', this.positionSuggestions)
   }
 
   updateTextareaInput() {
@@ -143,6 +326,8 @@ export default class extends Controller {
   }
 
   updateKeyValueComponent() {
+    // The rows are rebuilt, so the input the panel points at is about to go away
+    this.hideSuggestions()
     let result = ''
     let index = 0
     this.fieldValue.forEach((row) => {
@@ -189,11 +374,17 @@ export default class extends Controller {
 
   inputCell(id = 'key', index, key, value) {
     const inputValue = id === 'key' ? key : value
+    const suggestionsAttributes = this.suggestionsEnabledFor(id) ? `
+    role="combobox"
+    aria-autocomplete="list"
+    aria-expanded="false"
+    aria-controls="${this.suggestionsListTarget.id}"
+    autocomplete="off"` : ''
 
     return `<div class="key-value__cell key-value__cell--${id}">
   <input
     class="${this.options.inputClasses} key-value__input key-value-input-${id}"
-    data-action="input->key-value#${id}FieldUpdated"
+    data-action="input->key-value#${id}FieldUpdated${suggestionsAttributes ? ' focus->key-value#showSuggestions keydown->key-value#suggestionsKeydown blur->key-value#hideSuggestions' : ''}"${suggestionsAttributes}
     placeholder="${this.options[`${id}_label`]}"
     data-index="${index}"
     ${this[`${id}InputDisabled`] ? "disabled='disabled'" : ''}
@@ -238,6 +429,14 @@ export default class extends Controller {
       >
         <svg class="key-value__action-icon key-value__action-icon--small" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
     </a>`
+  }
+
+  setSuggestions() {
+    try {
+      this.suggestions = JSON.parse(this.controllerTarget.dataset.suggestions || '{}')
+    } catch {
+      this.suggestions = {}
+    }
   }
 
   setOptions() {

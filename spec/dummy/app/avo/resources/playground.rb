@@ -41,7 +41,7 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :boolean_group_values, as: :boolean_group, options: Playground::BOOLEAN_GROUP_OPTIONS
 
     field :structured_heading, as: :heading, name: "Structured and media fields"
-    field :key_value_data, as: :key_value
+    field :key_value_data, as: :key_value, suggestions: Playground::KEY_VALUE_SUGGESTIONS
     field :array_values, as: :array, only_on: [:index, :show] do
       Array.wrap(record.array_values)
     end

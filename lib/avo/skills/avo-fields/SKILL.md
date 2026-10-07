@@ -102,7 +102,7 @@ Map the need to an `as:` type. All built-in types are **Community (free)**; the 
 | A tag input / list                                     | `:tags`                      | `field :skills, as: :tags` |
 | A star rating                                          | `:stars`                     | `field :rating, as: :stars` |
 | A progress bar (slider on forms)                       | `:progress_bar`              | `field :progress, as: :progress_bar` |
-| Editable flat JSON key/value pairs                     | `:key_value`                 | `field :meta, as: :key_value` |
+| Editable flat JSON key/value pairs                     | `:key_value`                 | `field :meta, as: :key_value` — `suggestions: {"Content-Type" => ["application/json"]}` (or an array of keys, or a block) hints keys/values while editing and saves nothing on its own |
 | Structured array data                                  | `:array`                     | `field :items, as: :array` |
 | A code editor (syntax-highlighted)                     | `:code`                      | `field :snippet, as: :code, language: "javascript"` |
 | The record id                                          | `:id`                        | `field :id, as: :id` |
