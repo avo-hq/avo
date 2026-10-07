@@ -88,6 +88,8 @@ config.appearance = {
 
 `neutral:` and `accent:` **must be Symbols** — a String or Hash raises `ArgumentError`.
 
+The built-in neutral presets share one lightness progression and differ only in hue and chroma, so switching presets changes the tint, not the surface/border/text hierarchy. Custom `neutral_colors` are unaffected; don't hardcode `--color-avo-neutral-*` shade values in CSS overrides — use the public appearance variables.
+
 **Custom brand colors** — define your own palette, then select it with the `:brand` preset:
 
 ```ruby
