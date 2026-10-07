@@ -113,6 +113,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: control.title,
       data: {
         hotkey: "b",
+        go_back: true,
         action: ("click->modal#close" if via_belongs_to),
         tippy: control.title ? :tooltip : nil
       }.compact,

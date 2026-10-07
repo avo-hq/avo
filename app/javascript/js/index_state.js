@@ -1,10 +1,23 @@
 // Remembers what the user was doing on an index page (selected rows and scroll position) so it can
-// be put back when they return to it, for example through the "Go back" button on a record page.
-// That button is a regular visit, so Turbo fetches a fresh page instead of restoring its snapshot.
-// State is kept per tab in sessionStorage and keyed by URL, so each combination of filters, sorting
-// and page has its own.
+// be put back when they go back to it: with the browser's Back button, or with the "Go back" link on a
+// record page. That link is a regular visit, so Turbo fetches a fresh page instead of restoring its
+// snapshot. Any other way of reaching the page starts fresh. State is kept per tab in sessionStorage and
+// keyed by URL, so each combination of filters, sorting and page has its own.
 
 const PREFIX = 'avo.index-state'
+
+let goBackClicked = false
+let wentBack = false
+
+document.addEventListener('turbo:click', (event) => {
+  goBackClicked = event.target.matches('[data-go-back]')
+})
+
+// A "restore" visit is the browser's Back or Forward button.
+document.addEventListener('turbo:visit', (event) => {
+  wentBack = event.detail.action === 'restore' || goBackClicked
+  goBackClicked = false
+})
 
 function read(key) {
   try {
@@ -44,7 +57,15 @@ function scrollKey(url) {
   return `${PREFIX}.scroll.${urlKey(url)}`
 }
 
-export function getSelection(resourceName, url) {
+// The rows to select again, handed out only when the user went back to the page. Any other visit forgets
+// them, so a later "Go back" can't bring back a selection the user has since moved on from.
+export function takeSelection(resourceName, url) {
+  if (!wentBack) {
+    remove(selectionKey(resourceName, url))
+
+    return []
+  }
+
   try {
     const ids = JSON.parse(read(selectionKey(resourceName, url)))
 
@@ -79,12 +100,12 @@ export function saveScroll(url, position) {
   write(scrollKey(url), String(position))
 }
 
-// The position is handed out once so later visits to the same URL start at the top as usual.
+// The position is handed out once, and only when the user went back to the page.
 export function takeScroll(url) {
   const key = scrollKey(url)
   const position = parseInt(read(key), 10)
 
   remove(key)
 
-  return Number.isNaN(position) ? null : position
+  return wentBack && !Number.isNaN(position) ? position : null
 }

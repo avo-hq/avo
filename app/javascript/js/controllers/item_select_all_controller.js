@@ -1,5 +1,5 @@
 import { AttributeObserver, Controller } from '@hotwired/stimulus'
-import { getSelection, setSelection } from '../index_state'
+import { setSelection, takeSelection } from '../index_state'
 
 export default class extends Controller {
   static targets = [
@@ -19,7 +19,7 @@ export default class extends Controller {
   connect() {
     this.resourceName = this.element.dataset.resourceName
     // Read it before anything on the page can change the selection and overwrite it.
-    const rememberedIds = getSelection(this.resourceName, this.stateUrl)
+    const rememberedIds = takeSelection(this.resourceName, this.stateUrl)
 
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()

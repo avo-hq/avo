@@ -1,8 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
 import { saveScroll, takeScroll } from '../index_state'
 
-// Brings the user back to where they were on an index page after they visit a record and return
-// with the "Go back" button, which loads a fresh page that would otherwise open at the top.
+// Brings the user back to where they were on an index page when they go back to it, with the browser's
+// Back button or the "Go back" link, which loads a fresh page that would otherwise open at the top.
 export default class extends Controller {
   connect() {
     this.boundSave = this.#save.bind(this)

@@ -1,7 +1,8 @@
 require "rails_helper"
 
-# The "Go back" button on a record page is a regular visit to the index, so the page is rendered from
-# scratch rather than restored from Turbo's cache. The selection and scroll position should survive it.
+# Going back to the index, with the "Go back" button on a record page or the browser's Back button, puts the
+# selection and scroll position back. "Go back" is a regular visit, so the page is rendered from scratch
+# rather than restored from Turbo's cache. Reaching the index any other way starts fresh.
 RSpec.describe "KeepIndexState", type: :system do
   let!(:fishes) { create_list :fish, 24 }
 
@@ -43,24 +44,40 @@ RSpec.describe "KeepIndexState", type: :system do
 
     expect(checked_row_indexes).to be_empty
   end
-end
 
-def open_record_and_go_back(index)
-  find(%(#{row_selector(index)} td[data-field-id="id"] a)).click
-  expect(page).to have_current_path(%r{/admin/resources/fish/\d+})
+  it "keeps the selected rows after the browser's Back button" do
+    row_checkbox(1).click
 
-  find('a[data-hotkey="b"]').click
-  expect(page).to have_current_path("/admin/resources/fish?per_page=24")
-end
+    open_record(20)
+    page.go_back
+    expect(page).to have_current_path("/admin/resources/fish?per_page=24")
 
-def row_selector(index)
-  %(tr[data-index="#{index}"])
-end
+    expect(checked_row_indexes).to eq [1]
+  end
 
-def row_checkbox(index)
-  find(%(#{record_selector_checkbox_selector}[data-index="#{index}"]))
-end
+  it "starts fresh when the index is reached another way, and forgets the selection" do
+    row_checkbox(1).click
 
-def checked_row_indexes
-  all(record_selector_checkbox_selector).select(&:checked?).map { |checkbox| checkbox[:"data-index"].to_i }.sort
+    open_record(20)
+    page.execute_script("Turbo.visit('/admin/resources/fish?per_page=24')")
+    expect(page).to have_current_path("/admin/resources/fish?per_page=24")
+    expect(page).to have_selector record_selector_checkbox_selector, count: fishes.size
+    expect(checked_row_indexes).to be_empty
+
+    open_record_and_go_back(20)
+
+    expect(checked_row_indexes).to be_empty
+  end
+
+  def open_record(index)
+    find(%(#{row_selector(index)} td[data-field-id="id"] a)).click
+    expect(page).to have_current_path(%r{/admin/resources/fish/\d+})
+  end
+
+  def open_record_and_go_back(index)
+    open_record(index)
+
+    find("a[data-go-back]").click
+    expect(page).to have_current_path("/admin/resources/fish?per_page=24")
+  end
 end
