@@ -233,6 +233,8 @@ Not a view type — a table affordance. Checking the header "Select all" checkbo
 
 It works out of the box on the table view; nothing to enable on the resource. The action itself is where the selection is consumed — cross-link the **avo-actions** skill for writing/handling the action. If serialization fails, Avo silently disables select-all rather than crashing (see the `normalizes` gotcha below).
 
+**Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. System specs that expect nothing selected after **Go back** will now find rows checked.
+
 ## Gotchas
 
 - **`view_types` / `default_view_type` must stay in sync with what's registered.** Requesting a view type not in the available list raises an error; rendering one that was never configured raises `Avo::ViewTypeComponentNotFoundError`. If you set `default_view_type = :grid`, make sure grid is actually configured (or in `view_types`).
