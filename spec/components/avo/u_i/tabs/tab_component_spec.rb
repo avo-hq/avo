@@ -138,6 +138,17 @@ RSpec.describe Avo::UI::Tabs::TabComponent, type: :component do
   end
 
   describe "ARIA attributes" do
+    # The id default used to be evaluated against the class, so every tab shared one id
+    # and `aria-controls` pointed at "-panel".
+    it "gives each tab its own id and a matching aria-controls by default" do
+      first_tab = render_inline(described_class.new(label: "A")).css("a[role=tab]").first
+      second_tab = render_inline(described_class.new(label: "B")).css("a[role=tab]").first
+
+      expect(first_tab["id"]).to be_present
+      expect(first_tab["id"]).not_to eq(second_tab["id"])
+      expect(first_tab["aria-controls"]).to eq("#{first_tab["id"]}-panel")
+    end
+
     it "includes proper ARIA attributes" do
       render_component(id: "my-tab", active: true)
 

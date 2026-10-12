@@ -13,13 +13,20 @@ module Avo
         prop :active, default: false
         prop :icon
         prop :href, default: "#"
-        prop :id, default: -> { "tab-#{object_id}" }
+        prop :id
         prop :disabled, default: false
-        prop :aria_controls, default: -> { "#{@id}-panel" }
+        prop :aria_controls
         prop :data, default: {}.freeze
         prop :classes
         prop :title
         prop :badge, default: nil
+
+        # A proc default runs against the class, so `object_id` there is shared by
+        # every tab. Set the per-instance defaults here instead.
+        def after_initialize
+          @id ||= "tab-#{object_id}"
+          @aria_controls ||= "#{@id}-panel"
+        end
 
         private
 
