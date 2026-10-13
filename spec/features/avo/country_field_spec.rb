@@ -74,4 +74,22 @@ RSpec.describe "CountryField", type: :feature do
       end
     end
   end
+
+  describe "with a default value" do
+    before :all do
+      Avo::Resources::Project.with_temporary_items do
+        field :country, as: :country, default: "SE"
+      end
+    end
+
+    after :all do
+      Avo::Resources::Project.restore_items_from_backup
+    end
+
+    it "selects the default country" do
+      visit avo.new_resources_project_path
+
+      expect(page).to have_select "project_country", selected: "Sweden"
+    end
+  end
 end
