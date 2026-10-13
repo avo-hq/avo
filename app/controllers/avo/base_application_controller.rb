@@ -267,12 +267,14 @@ module Avo
     # this) wins over everything, then `?set_locale=` (kept for backward
     # compatibility; it changes Avo.configuration.locale for every user until the
     # process restarts), then the viewer's own choice from the locale selector
-    # cookie, then the configured default.
+    # cookie, then the configured default. Unknown locales in either param are
+    # ignored: a bad `set_locale` would otherwise be stored globally and make
+    # I18n.with_locale raise InvalidLocale on every later request.
     def set_avo_locale(&action)
       locale = Avo.configuration.default_locale
 
-      if params[:set_locale].present?
-        locale = params[:set_locale]
+      if (requested_locale = available_locale(params[:set_locale]))
+        locale = requested_locale
         Avo.configuration.locale = locale
       elsif (selected_locale = locale_selector_cookie).present?
         locale = selected_locale
@@ -292,7 +294,15 @@ module Avo
 
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
-      I18n.with_locale(params[:force_locale], &action)
+      locale = available_locale(params[:force_locale])
+      return yield if locale.nil?
+
+      I18n.with_locale(locale, &action)
+    end
+
+    def available_locale(value)
+      value = value.to_s
+      value if value.present? && I18n.locale_available?(value)
     end
 
     # The browser-timezone Stimulus controller mirrors the viewer's IANA zone
