@@ -42,6 +42,11 @@ module Avo
         @stored_value = super
         @display_code ? @stored_value : countries[@stored_value]
       end
+
+      # The default value is passed in as `value`, which is the country name. The record stores the code.
+      def assign_value(record:, value:)
+        super(record:, value: stored_value)
+      end
     end
   end
 end
