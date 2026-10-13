@@ -115,6 +115,14 @@ RSpec.describe "Locale selector", type: :request do
       expect(html_lang).to eq "ro"
     end
 
+    it "logs a deprecation warning when set_locale is used" do
+      allow(Avo.logger).to receive(:warn)
+
+      get page_path, params: {set_locale: "de"}
+
+      expect(Avo.logger).to have_received(:warn).with(/`\?set_locale=` is deprecated/)
+    end
+
     it "ignores an unknown force_locale" do
       get page_path, params: {force_locale: "zz"}
 
