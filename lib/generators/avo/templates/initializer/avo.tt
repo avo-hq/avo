@@ -52,6 +52,14 @@ Avo.configure do |config|
   # config.locale_selector = false
   # config.locale_selector = [:en, :ro, :de]
 
+  ## == Model attribute translations ==
+  ## A field without name: or translation_key: whose avo.resource_translations / avo.field_translations
+  ## keys are missing reads the model's attribute translation (activerecord.attributes.<model>.<attribute>,
+  ## then attributes.<attribute>) before humanizing its id.
+  ##   true  - read the model's attribute translations (default)
+  ##   false - skip them; the label is the humanized id
+  # config.model_attribute_translations = true
+
   ## == Resource options ==
   # config.resource_row_controls_config = {
   #   placement: :right,

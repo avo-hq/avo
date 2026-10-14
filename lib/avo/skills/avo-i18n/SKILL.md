@@ -35,7 +35,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 **Know the cascade before you edit anything.** Every label goes through the same four layers, first one with a value wins:
 
 1. **The value at the call site** — `field :dates, name: "Period"`, `card Avo::Cards::UsersMetric, label: "Active users"`.
-2. **The i18n key** — derived as described below, or pinned with `self.translation_key` / `translation_key:`.
+2. **The i18n key** — derived as described below, or pinned with `self.translation_key` / `translation_key:`. For a field, the model's own attribute translation (`activerecord.attributes.<model>.<attr>`, then `attributes.<attr>`) is read right after Avo's keys, unless `config.model_attribute_translations = false`.
 3. **The class attribute** — `self.name`, `self.message`, `self.label`, `self.description` on actions, scopes, cards, dashboards.
 4. **What Avo generates** — the humanized class name or field id, or Avo's own translated string (`avo.run`, `avo.save`, …).
 
@@ -116,9 +116,10 @@ When a field has no explicit `translation_key:`, Avo resolves its label through 
 
 1. `avo.resource_translations.<resource>.fields.<field_id>` — resource-scoped; overrides a label for **one** resource.
 2. `avo.field_translations.<field_id>` — shared across every resource using that field id.
-3. Humanized field id — the fallback.
+3. `activerecord.attributes.<model>.<field_id>` (STI parents included), then `attributes.<field_id>` — the model's own attribute translation, the one Rails already uses for form labels and error messages, so a localized app usually needs no Avo key at all. A plain string serves singular and plural alike; give it `one:`/`other:` for a distinct plural. A `belongs_to`/`has_one` field looks up the association name (`user`), not the foreign key (`user_id`). `config.model_attribute_translations = false` in the initializer skips this step.
+4. Humanized field id — the fallback.
 
-Point a field at the shared key explicitly with `translation_key:` (this **bypasses the cascade** entirely):
+Point a field at the shared key explicitly with `translation_key:` (this **bypasses the cascade** entirely; a pinned key that is missing falls to the humanized id, never to the model's translation):
 
 ```ruby
 # app/avo/resources/project.rb
@@ -292,9 +293,10 @@ Advanced Search is the exception that needs no locale file: everything it render
 | --- | --- | --- |
 | `self.translation_key` | Resource class | Maps the resource to `avo.resource_translations.<...>`; changes its label everywhere. Defaults from class name (namespace included). |
 | `self.translation_key` | Action class | Maps the action to `avo.action_translations.<...>` (`name`/`message`/`confirm_button_label`/`cancel_button_label`/`description` sub-keys). |
-| `translation_key:` | Field declaration | Pins the field to one key and **skips the cascade**. Omit to use resource-scoped → shared → humanized. |
+| `translation_key:` | Field declaration | Pins the field to one key and **skips the cascade**. Omit to use resource-scoped → shared → model attribute → humanized. |
 | `avo.resource_translations.<r>.fields.<f>` | YAML | Resource-scoped field label — overrides the shared one for a single resource. |
 | `avo.field_translations.<f>` | YAML | Shared field label + `help`/`placeholder`/`include_blank` siblings across all resources. |
+| `activerecord.attributes.<model>.<f>`, `attributes.<f>` | YAML | The model's attribute translation, read when no Avo field key matches. A plain string, or `one`/`other`. |
 | `avo.resource_translations.<r>.tabs.<t>` | YAML | Tab title, keyed on the parameterized `title:`. Pin a different key with `translation_key:` on the `tab`. |
 | `avo.resource_translations.<r>.panels.<p>` | YAML | Panel title, same convention as tabs; `translation_key:` on the `panel` overrides it. |
 | `avo.resource_translations.<r>.description` | YAML | Resource panel description; beats `self.description`. Replaces the attribute wholesale — don't set it where `self.description` is a block reading `record`/`view`. |
@@ -304,6 +306,7 @@ Advanced Search is the exception that needs no locale file: everything it render
 | `avo.dashboard_translations.<d>` | YAML | Dashboard `name`/`description`. Root derived by `avo-dashboards`. |
 | `config.locale` | Initializer | Avo's interface language for Avo requests only. Default `nil` → app default. |
 | `config.locale_selector` | Initializer | Per-user language picker in the top navbar. `true` (default), `false`, or an array of locales. |
+| `config.model_attribute_translations` | Initializer | Whether field labels fall back to the model's attribute translations. `true` (default) or `false`. |
 | `?set_locale=` param | URL | Deprecated. Switches Avo's default locale process-wide until restart; use the locale selector or `config.locale`. |
 | `?force_locale=` param | URL | Switches locale for the current navigation only; sticks in links until removed. |
 | `bin/rails g avo:locales` | Shell | Copies the 19 bundled locale files into `config/locales` for editing. |
@@ -311,7 +314,7 @@ Advanced Search is the exception that needs no locale file: everything it render
 ## Gotchas
 
 - **Locale files ship inside the gem — not copied on install.** To edit Avo's own strings or add a language, run `bin/rails g avo:locales` first. For custom labels you only need your own keys under `avo:`; the generator is optional.
-- **Explicit `translation_key:` on a field bypasses the cascade.** You lose the resource-scoped → shared → humanized fallback and the automatic `help`/`placeholder`/`include_blank` sibling lookup. Only pin a key when you want exactly that key.
+- **Explicit `translation_key:` on a field bypasses the cascade.** You lose the resource-scoped → shared → model-attribute → humanized fallback and the automatic `help`/`placeholder`/`include_blank` sibling lookup. Only pin a key when you want exactly that key.
 - **Default keys include the namespace.** `Avo::Resources::Galaxy::Planet` → `avo.resource_translations.galaxy/planet`; `Avo::Actions::City::Update` → `avo.action_translations.city/update` (underscored, slash-joined). Match that path in YAML or the lookup misses and you fall back to the humanized name.
 - **Pluralization keys are required to get a translated name.** Resource/field name lookups run `I18n.t(key, count:, default:)`, so provide `one`/`other` (and `zero` where relevant). A subtree holding no plural key at all raises `I18n::InvalidPluralizationData` — passing `default:` does **not** prevent it — but Avo rescues that and falls back to the humanized name. So a resource key holding only `save:` works fine; you just don't get a translated resource name out of it. Keep `one:`/`other:` beside the nested keys when you want both. Code of your own reading these keys with a `count:` has to add the plural keys or rescue the exception itself.
 - **Nesting under a path Avo holds as a string destroys that string.** The tree deep-merges per locale and the app's `config/locales` loads last, so `avo.dashboards.my_dashboard.name` turns the sidebar's "Dashboards" heading into a Hash and it stops rendering — silently. Use the derived root instead (`avo.dashboard_translations.my_dashboard.name`), and check `I18n.t("avo")` for strings before inventing a namespace.

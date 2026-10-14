@@ -61,6 +61,7 @@ config.use_browser_timezone = false              # render everyone in the app's 
 config.currency = "USD"                          # stored for your own code; no built-in field reads it (the Money field takes `currencies:`)
 config.locale   = "en-US"                        # force Avo's UI locale (default: I18n.default_locale)
 config.locale_selector = [:en, :ro]             # profile-menu language picker, stored per user (default: true; false hides it)
+config.model_attribute_translations = false     # field labels stop falling back to the model's activerecord.attributes / attributes keys (default: true)
 ```
 
 `app_name` defaults to the humanized Rails application class name. To replace the single app-name link with a list of navbar links, that's the **header menu** → **avo-navigation-search**.

@@ -139,7 +139,7 @@ Which one to reach for: `rhino` for HTML rich text (or `lexxy` on Rails >= 8.0.2
 
 Every field accepts these common options (full list + types at the field-options-api page). Pass a literal value or, unless noted, a lambda.
 
-- **`name`** — override the label (default is the humanized id). `field :is_available, as: :boolean, name: "Availability"`. For localized apps, translate via i18n instead of hardcoding.
+- **`name`** — override the label (default is the model's attribute translation — `activerecord.attributes.<model>.<attr>`, then `attributes.<attr>` — else the humanized id). `field :is_available, as: :boolean, name: "Availability"`. For localized apps, translate via i18n instead of hardcoding.
 - **Visibility** — `hide_on:`, `show_on:`, `only_on:`, `except_on:` take `:index`, `:show`, `:new`, `:edit`, `:preview` plus shorthands `:forms` (new+edit), `:display` (index+show), and `:all` (only for `hide_on`/`show_on`). Example: `field :notes, as: :textarea, hide_on: [:index, :show]`.
 - **`visible:`** — a lambda for conditional display. It can see `context` and `resource`; the record is `resource.record`. On create the record is `nil`, so **use safe navigation**: `visible: -> { resource.record&.published? }`.
 - **`hide_if_blank:`** — hides the field in the given views while its value is blank; prefer it over a `visible:` lambda that only checks presence. Takes `:index`, `:show`, `:edit`, `:new`, `:forms`, `:display` or `:all`, alone or in an array: `field :stripe_id, as: :text, hide_if_blank: :all`. Blank is Rails `blank?`, so a `false` boolean is hidden too. On Index the column stays while any row on the page has a value. A field that is blank in the database is also hidden on Edit, so it cannot be filled there.

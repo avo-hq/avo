@@ -157,6 +157,80 @@ RSpec.describe Avo::Fields::BaseField, type: :model do
     end
   end
 
+  describe "#name with model attribute translations" do
+    around do |example|
+      I18n.with_locale(:en) do
+        I18n.backend.store_translations(
+          :en,
+          activerecord: {
+            attributes: {
+              product: {
+                category: {
+                  one: "Product kind",
+                  other: "Product kinds"
+                }
+              }
+            }
+          },
+          attributes: {
+            sizes: "Available sizes"
+          }
+        )
+
+        example.run
+      end
+    ensure
+      I18n.backend.reload!
+    end
+
+    it "uses the model's activerecord attribute translation" do
+      expect(build_field(:category).name).to eq "Product kind"
+      expect(build_field(:category).plural_name).to eq "Product kinds"
+    end
+
+    it "uses the global attributes translation" do
+      expect(build_field(:sizes).name).to eq "Available sizes"
+    end
+
+    it "keeps the humanized id when the model has no translation" do
+      expect(build_field(:sku_code).name).to eq "Sku code"
+    end
+
+    it "lets an explicit translation_key win" do
+      I18n.backend.store_translations(:en, custom: {category: "Custom category"})
+
+      expect(build_field(:category, translation_key: "custom.category").name).to eq "Custom category"
+    end
+
+    it "keeps the humanized id when an explicit translation_key is missing" do
+      expect(build_field(:category, translation_key: "custom.missing").name).to eq "Category"
+    end
+
+    # Rails apps label nested attributes with a Hash under attributes.<association>,
+    # which fails pluralization when looked up as this field's own label.
+    it "keeps the humanized id when the attributes key holds a Hash" do
+      I18n.backend.store_translations(:en, attributes: {address: {street: "Street"}})
+
+      expect(build_field(:address).name).to eq "Address"
+    end
+
+    it "skips the lookup when model_attribute_translations is off" do
+      allow(Avo.configuration).to receive(:model_attribute_translations).and_return(false)
+
+      expect(build_field(:category).name).to eq "Category"
+    end
+
+    it "lets an avo field translation win" do
+      I18n.backend.store_translations(:en, avo: {resource_translations: {product: {fields: {category: "Avo category"}}}})
+
+      expect(build_field(:category).name).to eq "Avo category"
+    end
+
+    it "skips the lookup when the field has no resource" do
+      expect(described_class.new(:category).name).to eq "Category"
+    end
+  end
+
   describe "#plural_name" do
     around do |example|
       I18n.with_locale(:en) do
