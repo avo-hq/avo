@@ -136,20 +136,18 @@ export default class extends Controller {
   }
 
   initEdit() {
+    const { locale, ...pickerOptions } = this.pickerOptionsValue
     const options = {
       enableTime: false,
       enableSeconds: false,
       // eslint-disable-next-line camelcase
       time_24hr: this.time24HrValue,
-      locale: {
-        ...flatpickrLocale(),
-        firstDayOfWeek: 0,
-      },
       altInput: true,
       onChange: this.onChange.bind(this),
       onClose: this.onClose.bind(this),
       noCalendar: false,
-      ...this.pickerOptionsValue,
+      ...pickerOptions,
+      locale: { ...flatpickrLocale(), ...locale },
     }
 
     // Set the format of the displayed input field.

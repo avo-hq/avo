@@ -8,14 +8,19 @@ const sundayFirst = (weekdays) => [weekdays[6], ...weekdays.slice(0, 6)]
 export default function flatpickrLocale() {
   const locale = document.documentElement.lang || 'en'
 
-  return {
-    weekdays: {
-      shorthand: sundayFirst(Info.weekdays('short', { locale })),
-      longhand: sundayFirst(Info.weekdays('long', { locale })),
-    },
-    months: {
-      shorthand: Info.months('short', { locale }),
-      longhand: Info.months('long', { locale }),
-    },
+  try {
+    return {
+      weekdays: {
+        shorthand: sundayFirst(Info.weekdays('short', { locale })),
+        longhand: sundayFirst(Info.weekdays('long', { locale })),
+      },
+      months: {
+        shorthand: Info.months('short', { locale }),
+        longhand: Info.months('long', { locale }),
+      },
+    }
+  } catch {
+    // A lang Intl rejects (e.g. en_US) keeps flatpickr's English names.
+    return {}
   }
 }

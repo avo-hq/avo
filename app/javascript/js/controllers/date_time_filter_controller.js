@@ -24,7 +24,12 @@ export default class extends BaseFilterController {
   }
 
   initFlatpickr() {
-    this.pickerInstance = flatpickr(this.inputTarget, { locale: flatpickrLocale(), ...this.pickerOptionsValue })
+    const { locale, ...options } = this.pickerOptionsValue
+
+    this.pickerInstance = flatpickr(this.inputTarget, {
+      ...options,
+      locale: { ...flatpickrLocale(), ...locale },
+    })
   }
 
   clear() {

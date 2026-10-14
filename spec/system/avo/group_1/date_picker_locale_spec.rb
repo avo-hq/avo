@@ -26,7 +26,7 @@ RSpec.describe "Date picker locale", type: :system do
 
       within ".flatpickr-calendar.open" do
         expect(page).to have_css ".flatpickr-monthDropdown-month", text: "fevereiro"
-        expect(page).to have_css ".flatpickr-weekday", text: "seg."
+        expect(page).to have_css ".flatpickr-weekday:first-child", text: "seg."
         expect(page).not_to have_css ".flatpickr-weekday", text: "Mon"
       end
     end
@@ -44,24 +44,6 @@ RSpec.describe "Date picker locale", type: :system do
   end
 
   describe "date time filter" do
-    # The dummy app has no pt translations for the users filters and raises on the missing keys.
-    around do |example|
-      I18n.backend.store_translations(:pt, {
-        avo: {
-          filter_translations: {
-            user_names_filter: {
-              name: "Filtro de nomes",
-              button_label: "Filtrar por nomes"
-            }
-          }
-        }
-      })
-
-      example.run
-    ensure
-      I18n.backend.reload!
-    end
-
     it "shows the weekday names in the app locale" do
       visit avo.resources_users_path(force_locale: :pt)
 
