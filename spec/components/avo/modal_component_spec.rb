@@ -15,4 +15,30 @@ RSpec.describe Avo::ModalComponent, type: :component do
     expect(page).to have_css(".modal[data-controller~='persistent-modal']", visible: :all)
     expect(page).not_to have_css(".modal[data-turbo-temporary]", visible: :all)
   end
+
+  # A dialog with no accessible name is announced as just "dialog"; the title and
+  # description are on screen, so point the dialog at them. `aria-expanded` is a
+  # disclosure attribute and means nothing on a dialog.
+  it "names the dialog by its title and description" do
+    render_inline(described_class.new(title: "Edit user", description: "Change the fields below")) { "Body" }
+
+    dialog = page.find("[role=dialog]", visible: :all)
+    expect(dialog["aria-expanded"]).to be_nil
+    expect(page).to have_css("##{dialog["aria-labelledby"]}", text: "Edit user", visible: :all)
+    expect(page).to have_css("##{dialog["aria-describedby"]}", text: "Change the fields below", visible: :all)
+  end
+
+  it "names the dialog by its heading slot" do
+    render_inline(described_class.new) { |c| c.with_heading { "Release fish" } }
+
+    dialog = page.find("[role=dialog]", visible: :all)
+    expect(dialog["aria-labelledby"]).to be_present
+    expect(page).to have_css("##{dialog["aria-labelledby"]}", text: "Release fish", visible: :all)
+  end
+
+  it "leaves off aria-labelledby and aria-describedby when there is nothing to point at" do
+    render_inline(described_class.new) { "Body" }
+
+    expect(page).to have_css("[role=dialog]:not([aria-labelledby]):not([aria-describedby])", visible: :all)
+  end
 end

@@ -15,6 +15,14 @@ class Avo::ModalComponent < Avo::BaseComponent
   prop :class, default: ""
   prop :data, default: {}.freeze
 
+  def title_id
+    "modal-#{object_id}-title" if @title.present? || heading?
+  end
+
+  def description_id
+    "modal-#{object_id}-description" if @description.present?
+  end
+
   def stimulus_controller
     (@behavior == :persistent) ? "persistent-modal" : "modal"
   end
