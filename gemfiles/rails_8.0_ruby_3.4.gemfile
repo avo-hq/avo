@@ -46,6 +46,7 @@ gem "commonmarker"
 gem "pluggy", path: "../pluggy"
 gem "tzinfo-data", platforms: [:windows, :jruby]
 gem "psych", "< 4"
+gem "json", "< 3"
 
 group :development do
   gem "standard", require: false

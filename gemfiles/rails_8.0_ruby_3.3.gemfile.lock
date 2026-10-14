@@ -926,6 +926,7 @@ DEPENDENCIES
   image_processing (~> 1.12)
   iso
   jsbundling-rails
+  json (< 3)
   launchy
   listen (>= 3.5.1)
   lookbook (>= 2.3.8)
