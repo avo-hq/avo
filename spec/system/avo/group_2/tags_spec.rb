@@ -381,7 +381,6 @@ RSpec.describe "Tags", type: :system do
 
   describe "fetch_values_from in select mode after a value is selected (#3317)" do
     let!(:bob) { create :user, first_name: "Bob", last_name: "Builder" }
-    let!(:alice) { create :user, first_name: "Alice", last_name: "Smith" }
     let!(:course) { create :course, skills: [] }
     let(:field_value_slot) { tags_element(find_field_value_element("skills")) }
     let(:tags_input) { field_value_slot.find("span[contenteditable]") }
@@ -420,6 +419,9 @@ RSpec.describe "Tags", type: :system do
       type(:down, :return)
 
       expect(field_value_slot).to have_css("tag", text: "Bob Builder")
+
+      # Alice did not exist when "Bob" was fetched, so only a new fetch can list her.
+      create :user, first_name: "Alice", last_name: "Smith"
 
       field_value_slot.find(".tagify__tag-text").click
       type(*Array.new("Bob Builder".length, :backspace), "Ali")
