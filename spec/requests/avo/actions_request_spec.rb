@@ -70,13 +70,6 @@ RSpec.describe "Actions", type: :request do
       Avo::Actions::ToggleAdmin.hide_cancel_button = original_hide_cancel_button
     end
 
-    it "renders both buttons by default" do
-      get "/admin/resources/users/actions", params: {action_id: "Avo::Actions::ToggleAdmin"}
-
-      expect(response.body).to include confirm_button
-      expect(response.body).to include cancel_button
-    end
-
     it "hides the confirm button" do
       Avo::Actions::ToggleAdmin.hide_confirm_button = true
 

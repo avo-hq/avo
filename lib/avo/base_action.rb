@@ -371,26 +371,26 @@ module Avo
     end
 
     def hide_confirm_button?
-      Avo::ExecutionContext.new(
-        target: hide_confirm_button,
-        action: self,
-        resource: @resource,
-        view: @view,
-        arguments:
-      ).handle
+      hide_button?(hide_confirm_button)
     end
 
     def hide_cancel_button?
-      Avo::ExecutionContext.new(
-        target: hide_cancel_button,
-        action: self,
-        resource: @resource,
-        view: @view,
-        arguments:
-      ).handle
+      hide_button?(hide_cancel_button)
     end
 
     private
+
+    def hide_button?(option)
+      Avo::ExecutionContext.new(
+        target: option,
+        action: self,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments:,
+        query: @query
+      ).handle
+    end
 
     def translated_option(option)
       I18n.t("#{translation_key}.#{option}", default: nil)
