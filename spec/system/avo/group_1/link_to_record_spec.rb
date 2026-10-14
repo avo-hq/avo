@@ -4,7 +4,7 @@ RSpec.describe "link_to_record on number and date fields", type: :system do
   let!(:playground) { Playground.create!(name: "Linked", number_value: 42, date_value: Date.new(1988, 2, 10), time_value: "16:22:00", date_time_value: Time.utc(1988, 2, 10, 16, 22)) }
   let(:field_ids) { %w[number_value date_value time_value date_time_value] }
 
-  def define_fields(**options)
+  def define_fields(options = {})
     Avo::Resources::Playground.with_temporary_items do
       field :number_value, as: :number, **options
       field :date_value, as: :date, **options
