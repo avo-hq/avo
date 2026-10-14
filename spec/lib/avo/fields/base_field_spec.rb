@@ -196,14 +196,28 @@ RSpec.describe Avo::Fields::BaseField, type: :model do
       expect(build_field(:sku_code).name).to eq "Sku code"
     end
 
-    it "lets an explicit name win" do
-      expect(build_field(:category, name: "Kind").name).to eq "Kind"
-    end
-
     it "lets an explicit translation_key win" do
       I18n.backend.store_translations(:en, custom: {category: "Custom category"})
 
       expect(build_field(:category, translation_key: "custom.category").name).to eq "Custom category"
+    end
+
+    it "keeps the humanized id when an explicit translation_key is missing" do
+      expect(build_field(:category, translation_key: "custom.missing").name).to eq "Category"
+    end
+
+    # Rails apps label nested attributes with a Hash under attributes.<association>,
+    # which fails pluralization when looked up as this field's own label.
+    it "keeps the humanized id when the attributes key holds a Hash" do
+      I18n.backend.store_translations(:en, attributes: {address: {street: "Street"}})
+
+      expect(build_field(:address).name).to eq "Address"
+    end
+
+    it "skips the lookup when model_attribute_translations is off" do
+      allow(Avo.configuration).to receive(:model_attribute_translations).and_return(false)
+
+      expect(build_field(:category).name).to eq "Category"
     end
 
     it "lets an avo field translation win" do

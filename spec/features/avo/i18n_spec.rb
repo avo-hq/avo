@@ -92,6 +92,16 @@ RSpec.feature "i18n", type: :feature do
         expect(page).to have_text("Product title")
       end
     end
+
+    describe "model attribute translations" do
+      it "renders the model's attribute translation when no avo key matches" do
+        I18n.backend.store_translations(:en, activerecord: {attributes: {product: {category: "Product kind"}}})
+
+        visit avo.new_resources_product_path
+
+        expect(page).to have_text("Product kind")
+      end
+    end
   end
 
   describe "save button" do

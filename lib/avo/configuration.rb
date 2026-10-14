@@ -23,6 +23,8 @@ module Avo
     attr_accessor :locale
     # true (every locale the app enables that Avo has translations for), false, or an array of locales.
     attr_accessor :locale_selector
+    # Field labels fall back to the model's attribute translations (activerecord.attributes / attributes).
+    attr_accessor :model_attribute_translations
     attr_accessor :currency
     attr_accessor :default_view_type
     attr_accessor :license_key
@@ -164,6 +166,7 @@ module Avo
       @via_per_page = 8
       @locale = nil
       @locale_selector = true
+      @model_attribute_translations = true
       @currency = "USD"
       @default_view_type = :table
       @map_view = {}
