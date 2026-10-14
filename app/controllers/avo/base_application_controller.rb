@@ -223,6 +223,13 @@ module Avo
 
     def _authenticate!
       instance_eval(&Avo.configuration.authenticate)
+      return if performed?
+
+      # `?set_locale=` changes the locale for every user, so only a request the
+      # authenticate block let through may store it. Kept here, not in its own
+      # callback, so a controller that skips this one cannot store it either.
+      locale = available_locale(params[:set_locale])
+      Avo.configuration.locale = locale if locale
     end
 
     def render_unauthorized(exception)
@@ -259,21 +266,25 @@ module Avo
       @resource.form_scope
     end
 
-    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
+    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param.
+    # Unknown locales are ignored: I18n.with_locale raises InvalidLocale on them.
     def set_avo_locale(&action)
-      locale = Avo.configuration.default_locale
-
-      if params[:set_locale].present?
-        locale = params[:set_locale]
-        Avo.configuration.locale = locale
-      end
+      locale = available_locale(params[:set_locale]) || Avo.configuration.default_locale
 
       I18n.with_locale(locale, &action)
     end
 
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
-      I18n.with_locale(params[:force_locale], &action)
+      locale = available_locale(params[:force_locale])
+      return yield if locale.nil?
+
+      I18n.with_locale(locale, &action)
+    end
+
+    def available_locale(value)
+      value = value.to_s
+      value if value.present? && I18n.locale_available?(value)
     end
 
     def set_sidebar_open
