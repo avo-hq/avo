@@ -13,6 +13,7 @@ RSpec.describe "Locale selector", type: :request do
 
   around do |example|
     original = Avo.configuration.locale_selector
+    Avo.configuration.locale = nil # the dummy initializer sets :en
     example.run
   ensure
     Avo.configuration.locale_selector = original
@@ -97,6 +98,25 @@ RSpec.describe "Locale selector", type: :request do
       expect(response).to have_http_status(:ok)
       expect(html_lang).to eq "en"
       expect(Avo.configuration.locale).to be_nil
+    end
+
+    it "keeps a valid set_locale for later requests" do
+      get page_path, params: {set_locale: "de"}
+      get page_path
+
+      expect(html_lang).to eq "de"
+    end
+
+    it "leaves the global locale alone when Avo's authentication rejects the request" do
+      original = Avo.configuration.authenticate
+      Avo.configuration.authenticate = proc { redirect_to "/" }
+
+      get page_path, params: {set_locale: "de"}
+
+      expect(response).to have_http_status(:redirect)
+      expect(Avo.configuration.locale).to be_nil
+    ensure
+      Avo.configuration.authenticate = original
     end
 
     it "keeps serving requests after an unknown set_locale" do
