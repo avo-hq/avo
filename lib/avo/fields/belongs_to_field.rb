@@ -306,8 +306,9 @@ module Avo
         @can_create && final_target_resource.authorization.authorize_action(:create, raise_exception: false)
       end
 
+      # The select is named after the foreign key, so the label has to be too.
       def form_field_label
-        "#{id}_id"
+        id_input_foreign_key
       end
 
       def polymorphic_form_field_label

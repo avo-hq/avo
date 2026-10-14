@@ -13,6 +13,7 @@ RSpec.describe "Locale selector", type: :request do
 
   around do |example|
     original = Avo.configuration.locale_selector
+    Avo.configuration.locale = nil # the dummy initializer sets :en
     example.run
   ensure
     Avo.configuration.locale_selector = original
@@ -89,6 +90,64 @@ RSpec.describe "Locale selector", type: :request do
       get page_path, params: {set_locale: "de"}
 
       expect(html_lang).to eq "de"
+    end
+
+    it "ignores an unknown set_locale and keeps the global locale" do
+      get page_path, params: {set_locale: "zz"}
+
+      expect(response).to have_http_status(:ok)
+      expect(html_lang).to eq "en"
+      expect(Avo.configuration.locale).to be_nil
+    end
+
+    it "keeps a valid set_locale for later requests" do
+      get page_path, params: {set_locale: "de"}
+      get page_path
+
+      expect(html_lang).to eq "de"
+    end
+
+    it "leaves the global locale alone when Avo's authentication rejects the request" do
+      original = Avo.configuration.authenticate
+      Avo.configuration.authenticate = proc { redirect_to "/" }
+
+      get page_path, params: {set_locale: "de"}
+
+      expect(response).to have_http_status(:redirect)
+      expect(Avo.configuration.locale).to be_nil
+    ensure
+      Avo.configuration.authenticate = original
+    end
+
+    it "keeps serving requests after an unknown set_locale" do
+      get page_path, params: {set_locale: "zz"}
+      login_as admin_user
+      get page_path
+
+      expect(response).to have_http_status(:ok)
+      expect(html_lang).to eq "en"
+    end
+
+    it "falls back to the cookie when set_locale is unknown" do
+      cookies[cookie_name] = "ro"
+      get page_path, params: {set_locale: "zz"}
+
+      expect(html_lang).to eq "ro"
+    end
+
+    it "logs a deprecation warning when set_locale is used" do
+      allow(Avo.logger).to receive(:warn)
+
+      get page_path, params: {set_locale: "de"}
+
+      expect(Avo.logger).to have_received(:warn).with(/`\?set_locale=` is deprecated/)
+    end
+
+    it "ignores an unknown force_locale" do
+      get page_path, params: {force_locale: "zz"}
+
+      expect(response).to have_http_status(:ok)
+      expect(html_lang).to eq "en"
     end
 
     it "ignores a cookie for a locale outside the configured list" do

@@ -5,6 +5,8 @@
       gem "rails", "~> #{rails_version}"
       gem "activestorage", "~> #{rails_version}"
       gem "acts-as-taggable-on"
+      # ActiveSupport before 7.2.4, and every 8.0 release, passes `quirks_mode:` to JSON.generate, which json 3 rejects
+      gem "json", "< 3"
 
       # lexxy requires rails >= 8.0.2
       remove_gem "avo-lexxy_field" if rails_version == "7.1"

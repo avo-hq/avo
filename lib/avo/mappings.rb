@@ -104,12 +104,6 @@ module Avo
         stage: {
           field: "select"
         },
-        budget: {
-          field: "currency"
-        },
-        money: {
-          field: "currency"
-        },
         country: {
           field: "country"
         }
