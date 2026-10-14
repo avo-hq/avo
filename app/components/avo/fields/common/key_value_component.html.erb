@@ -4,6 +4,7 @@
   data-options="<%= @field.options.to_json %>"
   data-input-classes="<%= input_classes %>"
   data-editable="<%= @view.form? %>"
+  data-suggestions="<%= suggestions.to_json if suggestions.present? %>"
 >
   <div class="key-value__table">
     <div class="key-value__header">
@@ -29,6 +30,15 @@
     </div>
     <div class="key-value__body" data-key-value-target="rows"></div>
   </div>
+  <% if suggestions.present? %>
+    <div class="key-value__suggestions" popover="manual" data-key-value-target="suggestions">
+      <div class="dropdown-menu dropdown-menu--scrollable">
+        <div class="dropdown-menu__group">
+          <div class="dropdown-menu__list" role="listbox" id="<%= suggestions_id %>" data-key-value-target="suggestionsList"></div>
+        </div>
+      </div>
+    </div>
+  <% end %>
   <% if @form.present? %>
     <%= @form.text_area @field.id,
       value: @field.parsed_value,

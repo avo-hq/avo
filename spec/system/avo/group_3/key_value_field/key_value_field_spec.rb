@@ -447,4 +447,71 @@ RSpec.describe "KeyValueFields", type: :system do
       end
     end
   end
+
+  describe "with suggestions" do
+    let!(:playground) { Playground.create!(name: "Headers", key_value_data: {"X-Request-Id" => "abc"}) }
+
+    def suggestions_shown
+      find(".key-value__suggestions", visible: true).all("[role='option']").map(&:text)
+    end
+
+    it "suggests keys, then the values for the chosen key" do
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      wait_for_loaded
+
+      key_value_element = find_field_element("key_value_data")
+      key_value_element.find("[data-button='add-row']").click
+
+      # The new row's key input is focused, so the unused suggested keys open right away
+      expect(suggestions_shown).to eq ["Content-Type", "Accept", "Authorization"]
+
+      key_input = key_value_element.all(".key-value-input-key").last
+      key_input.send_keys("acc")
+      expect(suggestions_shown).to eq ["Accept"]
+
+      key_input.send_keys(:backspace, :backspace, :backspace, "cont")
+      find(".key-value__suggestions [role='option']", text: "Content-Type").click
+
+      expect(key_input.value).to eq "Content-Type"
+      value_input = key_value_element.all(".key-value-input-value").last
+      expect(page.evaluate_script("document.activeElement.classList.contains('key-value-input-value')")).to be true
+      expect(suggestions_shown).to eq ["application/json", "text/html"]
+
+      value_input.send_keys(:down, :down, :enter)
+      expect(value_input.value).to eq "text/html"
+      expect(page).to have_no_css(".key-value__suggestions", visible: true)
+
+      save
+
+      expect(playground.reload.key_value_data).to eq({"X-Request-Id" => "abc", "Content-Type" => "text/html"})
+    end
+
+    it "closes with escape and does not suggest a key another row already uses" do
+      playground.update!(key_value_data: {"Accept" => "*/*"})
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      wait_for_loaded
+
+      find_field_element("key_value_data").find("[data-button='add-row']").click
+      expect(suggestions_shown).to eq ["Content-Type", "Authorization"]
+
+      find_field_element("key_value_data").all(".key-value-input-key").last.send_keys(:escape)
+      expect(page).to have_no_css(".key-value__suggestions", visible: true)
+    end
+
+    it "does not save suggestions the user did not fill in" do
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      wait_for_loaded
+
+      save
+
+      expect(page).to have_current_path("/admin/resources/playgrounds/#{playground.id}")
+      expect(playground.reload.key_value_data).to eq({"X-Request-Id" => "abc"})
+    end
+
+    it "does not render suggestions on show" do
+      visit "/admin/resources/playgrounds/#{playground.id}"
+
+      expect(find_field_element("key_value_data")).not_to have_css(".key-value__suggestions", visible: false)
+    end
+  end
 end

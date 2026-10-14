@@ -127,10 +127,10 @@ RSpec.feature "ArrayResource", type: :feature do
         expect(page).to have_css "[data-target='control:destroy']"
       end
 
-      it "fills a new record from the form for the controller to save" do
+      it "fills a new record from the form and hands it to the resource to save" do
         saved = nil
-        allow_any_instance_of(Avo::MoviesController).to receive(:save_record_action) do |controller|
-          saved = controller.instance_variable_get(:@record)
+        allow_any_instance_of(Avo::Resources::Movie).to receive(:save_record) do |_resource, record|
+          saved = record
           saved.id = 1
         end
 
@@ -141,10 +141,10 @@ RSpec.feature "ArrayResource", type: :feature do
         expect(saved.name).to eq "Heat"
       end
 
-      it "fills an existing record from the edit form" do
+      it "fills an existing record from the edit form and hands it to the resource to save" do
         saved = nil
-        allow_any_instance_of(Avo::MoviesController).to receive(:save_record_action) do |controller|
-          saved = controller.instance_variable_get(:@record)
+        allow_any_instance_of(Avo::Resources::Movie).to receive(:save_record) do |_resource, record|
+          saved = record
         end
 
         visit avo.edit_resources_movie_path(1)
@@ -153,6 +153,17 @@ RSpec.feature "ArrayResource", type: :feature do
 
         expect(saved.id).to eq 1
         expect(saved.name).to eq "Shawshank"
+      end
+
+      it "hands the record to the resource to destroy" do
+        destroyed = nil
+        allow_any_instance_of(Avo::Resources::Movie).to receive(:destroy_record) do |_resource, record|
+          destroyed = record
+        end
+
+        page.driver.submit :delete, avo.resources_movie_path(1), {}
+
+        expect(destroyed.id).to eq 1
       end
     end
   end

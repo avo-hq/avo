@@ -682,6 +682,14 @@ module Avo
         safe_call(:fill_nested_records, record:, permitted_params:) || record
       end
 
+      # On the resource so one that isn't backed by a model can build, save and delete its own records,
+      # under any controller.
+      def new_record = model_class.new
+
+      def save_record(record) = record.save!
+
+      def destroy_record(record) = record.destroy!
+
       def authorization(user: nil)
         current_user = user || Avo::Current.user
         Avo::Services::AuthorizationService.new(current_user, record || model_class, policy_class: authorization_policy)

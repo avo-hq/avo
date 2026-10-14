@@ -4,13 +4,20 @@ module Avo
       attr_reader :options
 
       def initialize(id, **args, &block)
-        super
+        hide_on :forms
 
-        hide_on [:edit, :new]
+        super
 
         @options = args[:options] || {}
         @style = args[:style]
         @icon = args[:icon]
+      end
+
+      # Action modals render every declared field, so a badge left off the forms must stay display-only there.
+      def component_for_view(view = :index)
+        return Avo::BlankFieldComponent if Avo::ViewInquirer.new(view).form? && !visible_in_view?(view:)
+
+        super
       end
 
       def options_for_filter

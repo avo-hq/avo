@@ -136,7 +136,7 @@ end
 
 Defaults that carry Turbo behavior:
 
-- **`create_success_action`** — when a record is created through a `belongs_to` modal (`params[:via_belongs_to_resource_class]` present), renders Turbo Streams that close the modal and select the new record in the field; otherwise redirects to `after_create_path` with the success flash. Keep the `super` guard or the "Create new record" flow inside `belongs_to` fields breaks.
+- **`create_success_action`** — when a record is created through a `belongs_to` modal (`params[:via_belongs_to_resource_class]` present), renders Turbo Streams that close that dialog and select the new record in the field that opened it (a "Create new" dialog can open another on top, so the stream clears only the current dialog's frame via `helpers.current_modal_frame_id` and passes `target_name`/`frame_id` to `avo_update_belongs_to`); otherwise redirects to `after_create_path` with the success flash. Keep the `super` guard or the "Create new record" flow inside `belongs_to` fields breaks.
 - **`destroy_success_action`** — when the delete happens inside a Turbo Frame (`params[:turbo_frame]`, e.g. an association list) it reloads that frame via Turbo Streams; otherwise flashes and redirects to `after_destroy_path`. Keep the `super` guard or deleting from association lists breaks.
 - **`create_fail_action` / `update_fail_action`** — flash the fail message and re-render `:new` / `:edit` with `:unprocessable_content` status (`:unprocessable_entity` on Rails < 7.1), plus a `turbo_stream` format.
 - **`destroy_fail_action`** — flashes and renders a `turbo_stream` alert without leaving the page.
@@ -158,6 +158,8 @@ end
 ```
 
 **Errors raised inside these methods are caught, logged, and added to the record's errors** (`errors.add(:base, ...)`) — which automatically triggers the matching `*_fail_action` and `*_fail_message`. So you don't rescue in here yourself; raising *is* how you signal failure, and the record's validation errors surface in the fail flash.
+
+By default both hooks call the resource: `@resource.save_record(@record)` and `@resource.destroy_record(@record)`, which run `save!` and `destroy!`. When the change belongs to the resource under every controller (a record that is not an Active Record model, like an array resource's), define `save_record(record)` / `destroy_record(record)` on the resource instead.
 
 ### Parent record — the record this one is reached through
 

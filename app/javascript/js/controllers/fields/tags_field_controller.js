@@ -101,9 +101,8 @@ export default class extends Controller {
     // coordinates are off by the page scroll offset; correct for that.
     installTagifyTopLayerPositioning(this.tagify)
 
-    function onInput(e) {
+    function fetchSuggestions(query) {
       // Create the URL from which to fetch the values
-      const query = e.detail.value
       const uri = new URI(that.fetchValuesFromValue)
       uri.addSearch({
         q: query,
@@ -126,13 +125,16 @@ export default class extends Controller {
 
           that.tagify
             .loading(false)
-            .dropdown.show(e.detail.value) // render the suggestions dropdown.
+            .dropdown.show(query) // render the suggestions dropdown.
         })
         .catch(() => that.tagify.dropdown.hide())
     }
 
     if (this.fetchValuesFromValue) {
-      this.tagify.on('input', onInput)
+      this.tagify.on('input', (e) => fetchSuggestions(e.detail.value))
+      // Typing over an existing tag (like the selected value in select mode) edits that tag,
+      // and Tagify reports it as "edit:input" instead of "input".
+      this.tagify.on('edit:input', (e) => fetchSuggestions(e.detail.data.newValue))
     }
   }
 

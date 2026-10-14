@@ -237,7 +237,7 @@ module Avo
     end
 
     def save_record_action
-      @record.save!
+      @resource.save_record(@record)
     end
 
     def destroy_model
@@ -247,7 +247,7 @@ module Avo
     end
 
     def destroy_record_action
-      @record.destroy!
+      @resource.destroy_record(@record)
     end
 
     def perform_action_and_record_errors(&block)

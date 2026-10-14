@@ -13,12 +13,7 @@
   turbo_temporary: (ctrl == "modal") || nil,
   **@data
 } do %>
-  <div
-    aria-expanded="true"
-    role="dialog"
-    aria-modal="true"
-    class="modal__card-container"
-  >
+  <%= tag.div role: "dialog", "aria-modal": true, "aria-labelledby": title_id, "aria-describedby": description_id, class: "modal__card-container" do %>
     <div class="modal__card" <%= tag.attributes(data: {"#{ctrl}-target": "card"}) %>>
       <div class="card">
         <div class="card__wrapper">
@@ -28,13 +23,13 @@
                 <div class="flex min-w-0 grow items-center">
                   <div class="flex flex-col items-start gap-0.5">
                     <% if @title.present? || heading? %>
-                      <p class="modal__title">
+                      <p class="modal__title" id="<%= title_id %>">
                         <%= @title.presence || heading %>
                       </p>
                     <% end %>
 
                     <% if @description.present? %>
-                      <p class="card__description">
+                      <p class="card__description" id="<%= description_id %>">
                         <%= @description %>
                       </p>
                     <% end %>
@@ -79,5 +74,5 @@
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>

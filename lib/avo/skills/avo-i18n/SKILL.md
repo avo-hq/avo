@@ -10,7 +10,7 @@ metadata:
 
 # Avo i18n (Localization)
 
-Avo rides on Rails' `I18n`, so localizing the admin is mostly YAML plus a handful of translation-key hooks. Avo ships **19 locale files** (`avo.en.yml` and 18 others) **bundled inside the gem** and auto-loads them into `I18n` — so `bin/rails avo:install` does **not** copy them into the app. Two moving parts do all the work: **translation keys** that map a resource/action/field to a spot in the YAML tree (`self.translation_key`, `translation_key:`), and **the active locale** that decides which language renders (`config.locale`, `set_locale`/`force_locale` params). Everything else — the label cascade, RTL, button labels — falls out of those two.
+Avo rides on Rails' `I18n`, so localizing the admin is mostly YAML plus a handful of translation-key hooks. Avo ships **19 locale files** (`avo.en.yml` and 18 others) **bundled inside the gem** and auto-loads them into `I18n` — so `bin/rails avo:install` does **not** copy them into the app. Two moving parts do all the work: **translation keys** that map a resource/action/field to a spot in the YAML tree (`self.translation_key`, `translation_key:`), and **the active locale** that decides which language renders (`config.locale`, the locale selector, the `force_locale` param). Everything else — the label cascade, RTL, button labels — falls out of those two.
 
 ## Docs
 
@@ -236,11 +236,11 @@ Avo.configure do |config|
 end
 ```
 
-Each user can pick their own language from the language picker in the top navbar, beside the appearance switcher. The choice lives in a per-browser cookie (`avo.locale`), so it never affects other users. `config.locale_selector` controls it: `true` (default) lists every `I18n.available_locales` entry Avo has translations for, `false` hides it, and an array (`[:en, :ro, :de]`) lists exactly those. It hides itself when fewer than two locales resolve. Precedence per request: `force_locale` > `set_locale` > the selector cookie > `config.locale`.
+Each user can pick their own language from the language picker in the top navbar, beside the appearance switcher. The choice lives in a per-browser cookie (`avo.locale`), so it never affects other users. `config.locale_selector` controls it: `true` (default) lists every `I18n.available_locales` entry Avo has translations for, `false` hides it, and an array (`[:en, :ro, :de]`) lists exactly those. It hides itself when fewer than two locales resolve. Precedence per request: `force_locale` > `set_locale` (deprecated) > the selector cookie > `config.locale`.
 
-Two request params switch language on the fly:
+Two request params switch language on the fly. Both ignore a locale missing from `I18n.available_locales`, and the request falls through to the next source.
 
-- **`?set_locale=pt-BR`** — sets Avo's default locale process-wide **until the server restarts** (it mutates `Avo.configuration.locale`). Affects every user; use it as a switch, not per-user preference.
+- **`?set_locale=pt-BR`** — **deprecated**: it logs a warning and will be removed in a future version. It sets Avo's default locale process-wide **until the server restarts** (it mutates `Avo.configuration.locale`), for every user. Don't add it to an app; use the locale selector for a per-user language and `config.locale` for the app-wide one.
 - **`?force_locale=pt-BR`** — sets the locale for that request only, but Avo **keeps the param in every link** while you navigate. Remove it to return to the configured locale. Good for previewing a translation without changing config.
 
 ### 9. Right-to-left languages
@@ -304,7 +304,7 @@ Advanced Search is the exception that needs no locale file: everything it render
 | `avo.dashboard_translations.<d>` | YAML | Dashboard `name`/`description`. Root derived by `avo-dashboards`. |
 | `config.locale` | Initializer | Avo's interface language for Avo requests only. Default `nil` → app default. |
 | `config.locale_selector` | Initializer | Per-user language picker in the top navbar. `true` (default), `false`, or an array of locales. |
-| `?set_locale=` param | URL | Switches Avo's default locale process-wide until restart. |
+| `?set_locale=` param | URL | Deprecated. Switches Avo's default locale process-wide until restart; use the locale selector or `config.locale`. |
 | `?force_locale=` param | URL | Switches locale for the current navigation only; sticks in links until removed. |
 | `bin/rails g avo:locales` | Shell | Copies the 19 bundled locale files into `config/locales` for editing. |
 
@@ -315,7 +315,7 @@ Advanced Search is the exception that needs no locale file: everything it render
 - **Default keys include the namespace.** `Avo::Resources::Galaxy::Planet` → `avo.resource_translations.galaxy/planet`; `Avo::Actions::City::Update` → `avo.action_translations.city/update` (underscored, slash-joined). Match that path in YAML or the lookup misses and you fall back to the humanized name.
 - **Pluralization keys are required to get a translated name.** Resource/field name lookups run `I18n.t(key, count:, default:)`, so provide `one`/`other` (and `zero` where relevant). A subtree holding no plural key at all raises `I18n::InvalidPluralizationData` — passing `default:` does **not** prevent it — but Avo rescues that and falls back to the humanized name. So a resource key holding only `save:` works fine; you just don't get a translated resource name out of it. Keep `one:`/`other:` beside the nested keys when you want both. Code of your own reading these keys with a `count:` has to add the plural keys or rescue the exception itself.
 - **Nesting under a path Avo holds as a string destroys that string.** The tree deep-merges per locale and the app's `config/locales` loads last, so `avo.dashboards.my_dashboard.name` turns the sidebar's "Dashboards" heading into a Hash and it stops rendering — silently. Use the derived root instead (`avo.dashboard_translations.my_dashboard.name`), and check `I18n.t("avo")` for strings before inventing a namespace.
-- **`set_locale` is global and sticky.** It mutates `Avo.configuration.locale` and persists until the server restarts, affecting all users — it is not a per-user preference. For per-user switching use the profile-menu locale selector (`config.locale_selector`); use `force_locale` for a scoped, reversible switch (it rides along in every link until removed).
+- **`set_locale` is deprecated, global and sticky.** It logs a deprecation warning and will be removed in a future version. It mutates `Avo.configuration.locale` and persists until the server restarts, affecting all users — it is not a per-user preference. Don't suggest it. For per-user switching use the top-navbar locale selector (`config.locale_selector`); use `force_locale` for a scoped, reversible switch (it rides along in every link until removed).
 - **RTL is automatic and matches on the language segment.** `ar`, `he`, `fa`, `ur`, `yi`, `ps`, `sd`, `ku`, `ckb`, `ug`, `dv` — and regional variants (`ar-EG`) — flip the layout with no config. Don't hand-roll a direction toggle.
 - **Don't confuse chrome with data.** This skill localizes labels/buttons/help (the admin UI). Translating record *content* is the multilingual-records guide; putting the locale in the URL is the multi-language-URLs guide.
 - **Verify before writing.** Key names and the cascade drift between versions — check the docs URL above or the app's installed Avo source rather than trusting memory.

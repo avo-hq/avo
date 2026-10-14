@@ -206,28 +206,26 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
 end
 ```
 
-Array resources are read-only by default. To add create, edit and delete, set `self.writable = true` and persist the changes in the resource's controller. Avo fills the record from the form, but array records have no `save!` or `destroy!`:
+Array resources are read-only by default. To add create, edit and delete, set `self.writable = true` and define `save_record` and `destroy_record` on the resource. Avo fills the record from the form, but array records have no `save!` or `destroy!`:
 
 ```ruby
 class Avo::Resources::Bookmark < Avo::Resources::ArrayResource
   self.writable = true
 
   def records = BookmarkStore.all # array of hashes with an :id
-end
 
-# app/controllers/avo/bookmarks_controller.rb
-class Avo::BookmarksController < Avo::ArrayController
-  private
-
-  def save_record_action
-    @record.id = BookmarkStore.save(id: @record.id, title: @record.title)
+  # Create and update. Set the id on a new record: Avo redirects to it.
+  def save_record(record)
+    record.id = BookmarkStore.save(id: record.id, title: record.title)
   end
 
-  def destroy_record_action
-    BookmarkStore.destroy(@record.id)
+  def destroy_record(record)
+    BookmarkStore.destroy(record.id)
   end
 end
 ```
+
+Both report success through their return value: return something truthy, or raise to fail. No controller code is needed, so the same two methods serve the panel and the REST API.
 
 The form's params are scoped under the resource name (`bookmark[title]`). The policy still decides who can create, edit and delete.
 

@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import { clearSelections } from '../index_state'
 
 export default class extends Controller {
   static targets = ['resourceIds', 'form', 'selectedAll', 'indexQuery']
@@ -9,6 +10,9 @@ export default class extends Controller {
   }
 
   connect() {
+    // Once an action runs on the selection, coming back to the index shouldn't select those rows again.
+    this.formTarget.addEventListener('submit', () => clearSelections(this.resourceNameValue))
+
     if (this.resourceIdsTarget.value === '') {
       this.resourceIdsTarget.value = this.resourceIds
     }

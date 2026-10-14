@@ -5,7 +5,7 @@
     model_name: @resource.model_name.to_s,
     resource_name: @resource.class.to_s,
     **@resource.stimulus_data_attributes
-  }.tap { |d| d[:controller] = "#{d[:controller]} index-row-navigator" if @reflection.blank? } do %>
+  }.tap { |d| d[:controller] = "#{d[:controller]} index-row-navigator index-scroll" if @reflection.blank? } do %>
 
   <%= render_cards_component %>
 

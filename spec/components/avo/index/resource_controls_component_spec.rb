@@ -1,5 +1,10 @@
 require "rails_helper"
 
+# Renders one custom `action` control the way avo-custom_controls does, without the gem.
+class ActionControlTestComponent < Avo::Index::ResourceControlsComponent
+  def call = render_action(@actions.first)
+end
+
 # `can_detach?` renders the detach control only for collection associations, and
 # it decides that through `is_has_many_association?`. Rails uses the same
 # `ThroughReflection` class for `has_many :through` and `has_one :through`, so
@@ -50,6 +55,23 @@ RSpec.describe Avo::Index::ResourceControlsComponent, type: :component do
       component = build_component(reflection: Team.reflect_on_association(:admin))
 
       expect(component.can_detach?).to be(false)
+    end
+  end
+
+  describe "#render_action" do
+    # Tippy removes `title` when it builds the tooltip, so an icon-only action
+    # (blank label) is left as a link with no accessible name.
+    it "names an icon-only action link with aria-label" do
+      action = Avo::Actions::ToggleInactive.new(record: user, resource: resource, view: Avo::ViewInquirer.new("index"))
+      control = Struct.new(:label, :title, :path, :color, :style, :icon, :icon_class, :size, :action).new(
+        label: "", title: "Toggle inactive", path: "/admin/resources/users/actions/toggle_inactive",
+        color: :gray, style: :icon, icon: "tabler/outline/world-map", icon_class: "", size: :md, action:
+      )
+
+      render_inline(ActionControlTestComponent.new(resource:, reflection: nil, parent_record: nil, parent_resource: nil, view_type: :table, actions: [control]))
+
+      expect(page).to have_css("a[aria-label='Toggle inactive'] svg")
+      expect(page).not_to have_css("a .button__label")
     end
   end
 end

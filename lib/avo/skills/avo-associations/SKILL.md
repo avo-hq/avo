@@ -38,7 +38,7 @@ These fields live in `app/avo/resources/<model>.rb`, the same place as every oth
 - Has and belongs to many: https://docs.avohq.io/4.0/associations/has_and_belongs_to_many.md
 - Searchable associations (guide): https://docs.avohq.io/4.0/associations/searchable.md
 - Searchable associations (API): https://docs.avohq.io/4.0/associations/searchable-api.md
-- Authorization (association buttons & policies): https://docs.avohq.io/4.0/authorization.md#associations
+- Authorization (association buttons & policies): https://docs.avohq.io/4.0/authorization.md#authorize-association-controls
 
 ## When this applies
 

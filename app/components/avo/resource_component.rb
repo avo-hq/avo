@@ -113,6 +113,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: control.title,
       data: {
         hotkey: "b",
+        go_back: true,
         action: ("click->modal#close" if via_belongs_to),
         tippy: control.title ? :tooltip : nil
       }.compact,
@@ -333,6 +334,8 @@ class Avo::ResourceComponent < Avo::BaseComponent
       icon_class: action.icon_class,
       title: action.title,
       size: action.size,
+      # Tippy strips `title` when it builds the tooltip, so an icon-only link needs its own name.
+      aria: action.label.blank? ? {label: action.title.presence || action.action.action_name} : {},
       data: {
         controller: "actions-picker",
         turbo_frame: Avo::MODAL_FRAME_ID,
