@@ -65,12 +65,12 @@ export default class extends Controller {
     const form = this.findForm(event.target)
     if (!form) return
 
-    // Claim the key even when the submitter is disabled: otherwise the browser's implicit
-    // submission or a hotkey on the page behind the modal would act on it.
+    // Claim the key even when the submitter is disabled or hidden (hide_confirm_button): otherwise the
+    // browser's implicit submission or a hotkey on the page behind the modal would act on it.
     event.preventDefault()
 
     const submitter = this.findSubmitter(form)
-    if (submitter?.disabled) return
+    if (!submitter || submitter.disabled) return
 
     this.flashHotkeyBadge(submitter)
     form.requestSubmit(submitter)

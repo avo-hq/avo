@@ -14,6 +14,8 @@ module Avo
     class_attribute :confirm_button_label, default: -> { I18n.t("avo.run") }
     class_attribute :cancel_button_label, default: -> { I18n.t("avo.cancel") }
     class_attribute :confirmation, default: true
+    class_attribute :hide_confirm_button, default: false
+    class_attribute :hide_cancel_button, default: false
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
       # Hide on the :new view by default
@@ -368,7 +370,27 @@ module Avo
       ).handle
     end
 
+    def hide_confirm_button?
+      hide_button?(hide_confirm_button)
+    end
+
+    def hide_cancel_button?
+      hide_button?(hide_cancel_button)
+    end
+
     private
+
+    def hide_button?(option)
+      Avo::ExecutionContext.new(
+        target: option,
+        action: self,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments:,
+        query: @query
+      ).handle
+    end
 
     def translated_option(option)
       I18n.t("#{translation_key}.#{option}", default: nil)

@@ -254,6 +254,34 @@ RSpec.describe "Actions", type: :system do
     end
   end
 
+  # avo-hq/avo#4032
+  describe "action hide_confirm_button" do
+    around do |example|
+      original = Avo::Actions::Test::DoNothing.hide_confirm_button
+      Avo::Actions::Test::DoNothing.hide_confirm_button = true
+      example.run
+      Avo::Actions::Test::DoNothing.hide_confirm_button = original
+    end
+
+    it "does not run the action on Mod+Enter when the confirm button is hidden" do
+      expect(TestBuddy).not_to receive(:hi)
+
+      visit "/admin/resources/users"
+      click_on "Actions"
+      click_on "Do Nothing"
+      expect(page).to have_selector "[role='dialog']"
+      expect(page).not_to have_button "Run"
+
+      # Focus the modal itself, as the submit hotkey listener sits on it rather than on the document.
+      page.execute_script("document.querySelector('.modal:popover-open').focus()")
+      page.driver.browser.keyboard.type([:meta, :enter])
+
+      sleep 0.5
+      expect(page).to have_selector "[role='dialog']"
+      expect(page).not_to have_text "Nothing Done!!"
+    end
+  end
+
   describe "redirects when no confirmation" do
     it "redirects to hey page" do
       visit "/admin/resources/users"

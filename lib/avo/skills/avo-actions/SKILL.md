@@ -206,7 +206,11 @@ self.cancel_button_label = "Keep"
 self.confirmation = false               # skip the modal, run immediately on click
 self.close_modal_on_backdrop_click = false  # don't lose a filled-in form on a stray click
 self.modal_width = :"4xl"                  # :sm :md :lg :xl (default) :"2xl" :"3xl" :"4xl" :"5xl" :full
+self.hide_confirm_button = true            # drop the Run button; Mod+Enter stops submitting too
+self.hide_cancel_button = -> { view.index? } # drop the Cancel button; Escape and the header X still close
 ```
+
+`hide_confirm_button` and `hide_cancel_button` take a boolean or a block with access to `resource`, `record`, `view`, `arguments`, `query`. Hiding Run also disables Mod+Enter, but a form with a single text-like field still submits on Enter (the browser's implicit submission). Hiding Cancel removes only the button: Escape still closes the modal unless `close_modal_on_backdrop_click` is `false`, and the header X always closes it. When both are hidden the modal renders without a footer. Hiding Cancel with `close_modal_on_backdrop_click = false` leaves keyboard users only Run, since the X needs a mouse.
 
 ### Give feedback
 Queue one or more notifications from inside `handle` — call several to stack them. With no explicit feedback Avo shows a generic "Action ran successfully" info alert.
