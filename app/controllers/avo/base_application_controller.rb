@@ -274,7 +274,7 @@ module Avo
       locale = Avo.configuration.default_locale
 
       if params[:set_locale].present?
-        Avo.logger.warn "[Avo] `?set_locale=` is deprecated and will be removed in Avo 5. It changes the locale for every user. Use the locale selector (`config.locale_selector`) or `?force_locale=` instead."
+        Avo.logger.warn "[Avo] `?set_locale=` is deprecated and will be removed in a future version. It changes the locale for every user. Use the locale selector (`config.locale_selector`) or `?force_locale=` instead."
       end
 
       if (requested_locale = available_locale(params[:set_locale]))
