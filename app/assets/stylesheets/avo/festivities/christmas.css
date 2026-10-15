@@ -116,19 +116,24 @@
   }
 
   /* Navbar garland: a dedicated child of <nav class="top-navbar">, a strand
-     straddling the navbar's bottom edge. The navbar is fixed, so it is the
-     containing block. The navbar turns pointer events back on for its direct
-     children, so the garland turns them off again here. */
+     along the navbar's bottom edge. The tile is drawn at 0.8 scale (208x24) so
+     the bulbs end at the edge instead of hanging over the breadcrumbs and the
+     sidebar heading. The navbar is fixed, so it is the containing block and
+     its own stacking context: z-index -1 paints the strand over the navbar
+     background but under the logo and the switcher buttons. The navbar turns
+     pointer events back on for its direct children, so the garland turns them
+     off again here. */
   html.festivity-christmas .festivity-garland {
     display: block;
     position: absolute;
     inset-inline: 0;
-    top: calc(var(--top-navbar-height, 3rem) - 12px);
-    height: 30px;
+    top: calc(var(--top-navbar-height, 3rem) - 24px);
+    height: 24px;
+    z-index: -1;
     pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='30' viewBox='0 0 260 30'%3E%3Cpath d='M0.0 10.2 L5.0 11.0 L10.0 11.8 L15.0 12.5 L20.0 13.3 L25.0 13.9 L30.0 14.6 L35.0 15.1 L40.0 15.6 L45.0 16.0 L50.0 16.4 L55.0 16.6 L60.0 16.8 L65.0 16.8 L70.0 16.8 L75.0 16.6 L80.0 16.4 L85.0 16.0 L90.0 15.6 L95.0 15.1 L100.0 14.6 L105.0 13.9 L110.0 13.3 L115.0 12.5 L120.0 11.8 L125.0 11.0 L130.0 10.2 L135.0 9.4 L140.0 8.6 L145.0 7.9 L150.0 7.1 L155.0 6.5 L160.0 5.8 L165.0 5.3 L170.0 4.8 L175.0 4.4 L180.0 4.0 L185.0 3.8 L190.0 3.6 L195.0 3.6 L200.0 3.6 L205.0 3.8 L210.0 4.0 L215.0 4.4 L220.0 4.8 L225.0 5.3 L230.0 5.8 L235.0 6.5 L240.0 7.1 L245.0 7.9 L250.0 8.6 L255.0 9.4 L260.0 10.2' fill='none' stroke='%232d3a2f' stroke-width='1.3' stroke-opacity='.8'/%3E%3Crect x='11.4' y='11.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='13.0' cy='18.2' rx='2.8' ry='3.6' fill='%23e8433a' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='12.1' cy='17.4' rx='0.8' ry='1.4' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='37.4' y='14.5' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='39.0' cy='22.3' rx='3.4' ry='4.4' fill='%232fbf6f' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='37.9' cy='21.5' rx='1.0' ry='1.8' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='63.4' y='15.8' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='65.0' cy='22.4' rx='2.5' ry='3.2' fill='%23f6c33b' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='64.2' cy='21.6' rx='0.7' ry='1.3' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='89.4' y='14.5' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='91.0' cy='21.9' rx='3.1' ry='4' fill='%233d8ef0' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='90.0' cy='21.1' rx='0.9' ry='1.6' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='115.4' y='11.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='117.0' cy='18.2' rx='2.8' ry='3.6' fill='%23e8433a' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='116.1' cy='17.4' rx='0.8' ry='1.4' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='141.4' y='7.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='143.0' cy='15.0' rx='3.4' ry='4.4' fill='%232fbf6f' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='141.9' cy='14.2' rx='1.0' ry='1.8' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='167.4' y='3.9' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='169.0' cy='10.5' rx='2.5' ry='3.2' fill='%23f6c33b' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='168.2' cy='9.7' rx='0.7' ry='1.3' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='193.4' y='2.6' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='195.0' cy='10.0' rx='3.1' ry='4' fill='%233d8ef0' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='194.0' cy='9.2' rx='0.9' ry='1.6' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='219.4' y='3.9' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='221.0' cy='10.9' rx='2.8' ry='3.6' fill='%23e8433a' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='220.1' cy='10.1' rx='0.8' ry='1.4' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='245.4' y='7.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='247.0' cy='15.0' rx='3.4' ry='4.4' fill='%232fbf6f' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='245.9' cy='14.2' rx='1.0' ry='1.8' fill='%23fff' fill-opacity='.7'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
-    background-size: 260px 30px;
+    background-size: 208px 24px;
   }
 
   /* Glow layers: even bulbs on ::before, odd bulbs on ::after, half a cycle
@@ -139,7 +144,7 @@
     position: absolute;
     inset: 0;
     background-repeat: repeat-x;
-    background-size: 260px 30px;
+    background-size: 208px 24px;
     opacity: 0.35;
     animation: avo-festivity-twinkle 1.8s ease-in-out infinite alternate;
   }
