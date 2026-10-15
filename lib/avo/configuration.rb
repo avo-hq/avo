@@ -99,6 +99,12 @@ module Avo
       # more entry here; there are no year-versioned names like :christmas_2024.
       FESTIVITIES = %i[christmas].freeze
 
+      # The switcher's decorations toggle icons for each festivity: `on` shows
+      # the decorations, `off` hides them.
+      FESTIVITY_ICONS = {
+        christmas: {on: "tabler/outline/christmas-tree", off: "tabler/outline/christmas-tree-off"}
+      }.freeze
+
       CONTAINER_WIDTH_GROUPS = {
         forms: %i[new edit create update],
         display: %i[index show],

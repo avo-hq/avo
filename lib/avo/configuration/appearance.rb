@@ -6,7 +6,7 @@ class Avo::Configuration::Appearance
     :accent_colors,  # Hash{ color:, content:, foreground: } — three-token brand override (single palette, applied in both light and dark mode)
     :neutrals, # Array[String] — available neutral theme names
     :accents, # Array[String] — available accent color names
-    :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent, :festivity]
+    :lock, # Array[Symbol], a subset of [:scheme, :neutral, :accent, :festivity]
     :persistence, # :cookie | :database
     :logo,
     :logo_dark,
@@ -110,6 +110,9 @@ class Avo::Configuration::Appearance
   # year so it carries over to next season: the cookie of this name, or this
   # key in the database settings. Values are "off" / "on".
   def festivity_preference_key(festivity) = "festivity_#{festivity}"
+
+  # Every festivity's preference key, for permitting saved opt-outs.
+  def festivity_preference_keys = Avo::Configuration::FESTIVITIES.map { |festivity| festivity_preference_key(festivity) }
 
   # Returns the neutral name for the data attribute (nil when neutral is unset)
   def neutral_css_class = neutral&.to_s

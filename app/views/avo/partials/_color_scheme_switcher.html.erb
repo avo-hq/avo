@@ -18,6 +18,7 @@
      show_sound_toggle: show_sound_toggle,
      show_festivity_toggle: show_festivity_toggle,
      festivity_label: (avo_appearance_t("festivities_list.#{active_festivity}", default: active_festivity.to_s.humanize) if show_festivity_toggle),
+     festivity_icons: (Avo::Configuration::FESTIVITY_ICONS.fetch(active_festivity) if show_festivity_toggle),
      active_neutral: current_neutral,
      active_accent: current_accent,
      neutral_labels: appearance_neutral_labels(appearance.neutrals)

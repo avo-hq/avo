@@ -50,4 +50,18 @@ RSpec.describe "Avo.configuration.festivity" do
       expect(Avo::Configuration::Appearance.new).not_to be_festivity_locked
     end
   end
+
+  describe "preference keys" do
+    it "names one stored opt-out per festivity" do
+      expect(Avo::Configuration::Appearance.new.festivity_preference_keys).to eq(["festivity_christmas"])
+    end
+  end
+
+  describe "toggle icons" do
+    it "gives every festivity an on and an off icon" do
+      Avo::Configuration::FESTIVITIES.each do |festivity|
+        expect(Avo::Configuration::FESTIVITY_ICONS.fetch(festivity).keys).to contain_exactly(:on, :off)
+      end
+    end
+  end
 end

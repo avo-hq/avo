@@ -121,7 +121,7 @@
             data-tippy="tooltip"
             class="color-scheme-switcher__button color-scheme-switcher__button--festivity-on"
             title="<%= festivity_label %>: <%= avo_appearance_t("hide") %>">
-      <%= svg "tabler/outline/christmas-tree", class: "color-scheme-switcher__icon" %>
+      <%= svg festivity_icons[:on], class: "color-scheme-switcher__icon" %>
       <span class="sr-only"><%= festivity_label %>: <%= avo_appearance_t("hide") %></span>
     </button>
     <button type="button"
@@ -130,7 +130,7 @@
             data-tippy="tooltip"
             class="color-scheme-switcher__button color-scheme-switcher__button--festivity-off"
             title="<%= festivity_label %>: <%= avo_appearance_t("show") %>">
-      <%= svg "tabler/outline/christmas-tree-off", class: "color-scheme-switcher__icon" %>
+      <%= svg festivity_icons[:off], class: "color-scheme-switcher__icon" %>
       <span class="sr-only"><%= festivity_label %>: <%= avo_appearance_t("show") %></span>
     </button>
   <% end %>
