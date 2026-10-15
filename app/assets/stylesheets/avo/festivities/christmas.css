@@ -1,0 +1,171 @@
+/* Christmas festivity: the Evergreen theme plus the navbar garland.
+
+   Linked by the Avo layout only while `config.festivity` resolves to
+   :christmas. Served raw, outside the Tailwind build, so this file is plain
+   CSS: no @apply, no @theme, no Tailwind directives.
+
+   Scoping. Every rule is keyed on `html.festivity-christmas`. The user's
+   "Christmas decorations" opt-out removes that class from <html> and the whole
+   look turns off without a reload, while the file stays linked. The one
+   exception is the `.festivity-garland { display: none }` default below: it
+   keeps the garland element out of the navbar grid once the class is gone.
+
+   Cascade layer (spec open question 2). All rules sit in a top-level layer
+   named `avo-festivity`. Tailwind's build in avo/application declares
+   `theme, base, components, utilities` first, so a layer first named here is
+   ordered after all of them. That puts the festivity above the brand palette
+   (@layer base), the defaults (@layer theme) and users' neutral/accent picks
+   (@layer components), while a host's unlayered avo-overrides.css still wins.
+   The statement below pins that order even if this file is ever loaded first.
+   application.css is not wrapped in any layer and does not need to be.
+
+   Garland artwork (spec open question 1). The SVG tiles are inline data URIs,
+   generated once from the prototype's tile() function (260x30 tile, ten bulbs,
+   #e8433a #2fbf6f #f6c33b #3d8ef0). A raw stylesheet cannot resolve digested
+   asset paths for files under app/assets/svgs, and three small tiles inline
+   cost no extra requests.
+
+   Motion. Only the two glow layers animate, and only their opacity (filter and
+   drop-shadow animations repaint on the main thread every frame). Reduced
+   motion freezes them lit. Print hides the garland on its own, since the
+   navbar's print:hidden only applies with hide_layout_when_printing. */
+
+@layer theme, base, components, utilities, avo-festivity;
+
+@layer avo-festivity {
+  .festivity-garland {
+    display: none;
+  }
+
+  /* Light mode: pine-green neutral ramp (hue 150), holly-red accent. */
+  html.festivity-christmas {
+    --color-avo-neutral-25: oklch(99.2% 0.008 150);
+    --color-avo-neutral-50: oklch(98% 0.016 150);
+    --color-avo-neutral-100: oklch(96% 0.028 150);
+    --color-avo-neutral-200: oklch(90% 0.05 150);
+    --color-avo-neutral-300: oklch(76% 0.08 150);
+    --color-avo-neutral-400: oklch(62% 0.1 150);
+    --color-avo-neutral-500: oklch(52% 0.11 150);
+    --color-avo-neutral-600: oklch(45% 0.11 150);
+    --color-avo-neutral-700: oklch(38% 0.1 150);
+    --color-avo-neutral-800: oklch(32% 0.09 150);
+    --color-avo-neutral-900: oklch(25% 0.08 150);
+    --color-avo-neutral-950: oklch(18% 0.06 150);
+
+    /* red-600 / red-700 / white; the same in dark mode. */
+    --color-accent: oklch(57.7% 0.245 27.325);
+    --color-accent-content: oklch(50.5% 0.213 27.518);
+    --color-accent-foreground: oklch(100% 0 0);
+
+    /* Darker gold: 3.72:1 on white. */
+    --focus-outline-color: oklch(62% 0.14 75);
+
+    --color-navbar-background: oklch(28% 0.09 150);
+    --color-sidebar-background: var(--color-avo-neutral-100);
+  }
+
+  /* Dark mode: ramp steps 25-500 keep their light values. */
+  html.festivity-christmas.dark {
+    --color-avo-neutral-600: oklch(46% 0.1 150);
+    --color-avo-neutral-700: oklch(37% 0.09 150);
+    --color-avo-neutral-800: oklch(29% 0.08 150);
+    --color-avo-neutral-900: oklch(22% 0.07 150);
+    --color-avo-neutral-950: oklch(15% 0.05 150);
+
+    --color-primary: oklch(13% 0.045 150);
+
+    /* White on red-600 is 4.76:1. */
+    --color-accent: oklch(57.7% 0.245 27.325);
+    --color-accent-content: oklch(50.5% 0.213 27.518);
+    --color-accent-foreground: oklch(100% 0 0);
+
+    --focus-outline-color: oklch(85% 0.15 85);
+
+    --color-navbar-background: oklch(20% 0.07 150);
+    --color-sidebar-background: oklch(17% 0.06 150);
+  }
+
+  /* Links read --color-info-content (css/typography.css). It is set on the
+     anchor itself so info alerts and states keep their blue. */
+  html.festivity-christmas a {
+    --color-info-content: oklch(48% 0.14 150); /* 6.08:1 on white */
+  }
+
+  html.festivity-christmas.dark a {
+    --color-info-content: oklch(85% 0.13 150); /* 13.24:1 on the dark panel */
+  }
+
+  /* .badge--neutral uses fixed grays; move it onto the ramp. */
+  html.festivity-christmas .badge--neutral {
+    --badge-bg: var(--color-avo-neutral-100);
+    --badge-text: var(--color-avo-neutral-700);
+    background: var(--badge-bg);
+  }
+
+  html.festivity-christmas.dark .badge--neutral {
+    --badge-bg: var(--color-avo-neutral-800);
+    --badge-text: var(--color-avo-neutral-200);
+  }
+
+  /* Navbar garland: a dedicated child of <nav class="top-navbar">, a strand
+     straddling the navbar's bottom edge. The navbar is fixed, so it is the
+     containing block. The navbar turns pointer events back on for its direct
+     children, so the garland turns them off again here. */
+  html.festivity-christmas .festivity-garland {
+    display: block;
+    position: absolute;
+    inset-inline: 0;
+    top: calc(var(--top-navbar-height, 3rem) - 12px);
+    height: 30px;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='30' viewBox='0 0 260 30'%3E%3Cpath d='M0.0 10.2 L5.0 11.0 L10.0 11.8 L15.0 12.5 L20.0 13.3 L25.0 13.9 L30.0 14.6 L35.0 15.1 L40.0 15.6 L45.0 16.0 L50.0 16.4 L55.0 16.6 L60.0 16.8 L65.0 16.8 L70.0 16.8 L75.0 16.6 L80.0 16.4 L85.0 16.0 L90.0 15.6 L95.0 15.1 L100.0 14.6 L105.0 13.9 L110.0 13.3 L115.0 12.5 L120.0 11.8 L125.0 11.0 L130.0 10.2 L135.0 9.4 L140.0 8.6 L145.0 7.9 L150.0 7.1 L155.0 6.5 L160.0 5.8 L165.0 5.3 L170.0 4.8 L175.0 4.4 L180.0 4.0 L185.0 3.8 L190.0 3.6 L195.0 3.6 L200.0 3.6 L205.0 3.8 L210.0 4.0 L215.0 4.4 L220.0 4.8 L225.0 5.3 L230.0 5.8 L235.0 6.5 L240.0 7.1 L245.0 7.9 L250.0 8.6 L255.0 9.4 L260.0 10.2' fill='none' stroke='%232d3a2f' stroke-width='1.3' stroke-opacity='.8'/%3E%3Crect x='11.4' y='11.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='13.0' cy='18.2' rx='2.8' ry='3.6' fill='%23e8433a' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='12.1' cy='17.4' rx='0.8' ry='1.4' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='37.4' y='14.5' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='39.0' cy='22.3' rx='3.4' ry='4.4' fill='%232fbf6f' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='37.9' cy='21.5' rx='1.0' ry='1.8' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='63.4' y='15.8' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='65.0' cy='22.4' rx='2.5' ry='3.2' fill='%23f6c33b' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='64.2' cy='21.6' rx='0.7' ry='1.3' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='89.4' y='14.5' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='91.0' cy='21.9' rx='3.1' ry='4' fill='%233d8ef0' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='90.0' cy='21.1' rx='0.9' ry='1.6' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='115.4' y='11.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='117.0' cy='18.2' rx='2.8' ry='3.6' fill='%23e8433a' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='116.1' cy='17.4' rx='0.8' ry='1.4' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='141.4' y='7.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='143.0' cy='15.0' rx='3.4' ry='4.4' fill='%232fbf6f' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='141.9' cy='14.2' rx='1.0' ry='1.8' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='167.4' y='3.9' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='169.0' cy='10.5' rx='2.5' ry='3.2' fill='%23f6c33b' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='168.2' cy='9.7' rx='0.7' ry='1.3' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='193.4' y='2.6' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='195.0' cy='10.0' rx='3.1' ry='4' fill='%233d8ef0' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='194.0' cy='9.2' rx='0.9' ry='1.6' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='219.4' y='3.9' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='221.0' cy='10.9' rx='2.8' ry='3.6' fill='%23e8433a' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='220.1' cy='10.1' rx='0.8' ry='1.4' fill='%23fff' fill-opacity='.7'/%3E%3Crect x='245.4' y='7.2' width='3.2' height='3.4' rx='.6' fill='%232d3a2f'/%3E%3Cellipse cx='247.0' cy='15.0' rx='3.4' ry='4.4' fill='%232fbf6f' stroke='%231d2a20' stroke-opacity='.45' stroke-width='.6'/%3E%3Cellipse cx='245.9' cy='14.2' rx='1.0' ry='1.8' fill='%23fff' fill-opacity='.7'/%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-size: 260px 30px;
+  }
+
+  /* Glow layers: even bulbs on ::before, odd bulbs on ::after, half a cycle
+     apart so neighbouring lights twinkle out of step. */
+  html.festivity-christmas .festivity-garland::before,
+  html.festivity-christmas .festivity-garland::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-repeat: repeat-x;
+    background-size: 260px 30px;
+    opacity: 0.35;
+    animation: avo-festivity-twinkle 1.8s ease-in-out infinite alternate;
+  }
+
+  html.festivity-christmas .festivity-garland::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='30' viewBox='0 0 260 30'%3E%3Cdefs%3E%3CradialGradient id='g0'%3E%3Cstop offset='0' stop-color='%23e8433a' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%23e8433a' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='g1'%3E%3Cstop offset='0' stop-color='%232fbf6f' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%232fbf6f' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='g2'%3E%3Cstop offset='0' stop-color='%23f6c33b' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%23f6c33b' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='g3'%3E%3Cstop offset='0' stop-color='%233d8ef0' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%233d8ef0' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='13.0' cy='18.2' r='8.6' fill='url(%23g0)'/%3E%3Ccircle cx='65.0' cy='22.4' r='7.7' fill='url(%23g2)'/%3E%3Ccircle cx='117.0' cy='18.2' r='8.6' fill='url(%23g0)'/%3E%3Ccircle cx='169.0' cy='10.5' r='7.7' fill='url(%23g2)'/%3E%3Ccircle cx='221.0' cy='10.9' r='8.6' fill='url(%23g0)'/%3E%3C/svg%3E");
+  }
+
+  html.festivity-christmas .festivity-garland::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='30' viewBox='0 0 260 30'%3E%3Cdefs%3E%3CradialGradient id='g0'%3E%3Cstop offset='0' stop-color='%23e8433a' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%23e8433a' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='g1'%3E%3Cstop offset='0' stop-color='%232fbf6f' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%232fbf6f' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='g2'%3E%3Cstop offset='0' stop-color='%23f6c33b' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%23f6c33b' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='g3'%3E%3Cstop offset='0' stop-color='%233d8ef0' stop-opacity='.75'/%3E%3Cstop offset='1' stop-color='%233d8ef0' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='39.0' cy='22.3' r='10.6' fill='url(%23g1)'/%3E%3Ccircle cx='91.0' cy='21.9' r='9.6' fill='url(%23g3)'/%3E%3Ccircle cx='143.0' cy='15.0' r='10.6' fill='url(%23g1)'/%3E%3Ccircle cx='195.0' cy='10.0' r='9.6' fill='url(%23g3)'/%3E%3Ccircle cx='247.0' cy='15.0' r='10.6' fill='url(%23g1)'/%3E%3C/svg%3E");
+    animation-delay: 0.9s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.festivity-christmas .festivity-garland::before,
+    html.festivity-christmas .festivity-garland::after {
+      animation: none;
+      opacity: 0.7;
+    }
+  }
+
+  @media print {
+    html.festivity-christmas .festivity-garland {
+      display: none;
+    }
+  }
+}
+
+@keyframes avo-festivity-twinkle {
+  from {
+    opacity: 0.35;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
