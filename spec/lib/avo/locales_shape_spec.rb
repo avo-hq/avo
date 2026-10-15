@@ -73,6 +73,7 @@ module AvoLocaleShape
     avo
     avo.appearance
     avo.appearance.accents_list
+    avo.appearance.festivities_list
     avo.appearance.neutrals_list
     avo.checkbox_list
     avo.checkbox_list.hidden_selections
