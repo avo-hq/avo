@@ -32,6 +32,8 @@ ru:
       auto_tooltip: Авто (системные предпочтения)
       dark: Темный
       dark_tooltip: Темный режим
+      festivities_list:
+        christmas: Рождественские украшения
       hide: Скрыть
       light: Светлый
       light_tooltip: Светлый режим

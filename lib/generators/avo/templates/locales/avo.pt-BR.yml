@@ -32,6 +32,8 @@ pt-BR:
       auto_tooltip: Automático (preferência do sistema)
       dark: Escuro
       dark_tooltip: Modo Escuro
+      festivities_list:
+        christmas: Decorações de Natal
       hide: Ocultar
       light: Claro
       light_tooltip: Modo Claro

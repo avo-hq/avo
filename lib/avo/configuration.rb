@@ -95,6 +95,16 @@ module Avo
       # narrower names. The old names still work and warn; drop them in Avo 5.
       DEPRECATED_CONTAINER_WIDTHS = {large: :lg, small: :md}.freeze
 
+      # Built-in seasonal looks for `config.festivity`. A new festivity is one
+      # more entry here; there are no year-versioned names like :christmas_2024.
+      FESTIVITIES = %i[christmas].freeze
+
+      # The switcher's decorations toggle icons for each festivity: `on` shows
+      # the decorations, `off` hides them.
+      FESTIVITY_ICONS = {
+        christmas: {on: "tabler/outline/christmas-tree", off: "tabler/outline/christmas-tree-off"}
+      }.freeze
+
       CONTAINER_WIDTH_GROUPS = {
         forms: %i[new edit create update],
         display: %i[index show],
@@ -200,6 +210,7 @@ module Avo
         add_breadcrumb title: I18n.t("avo.home").humanize, path: avo.root_path, icon: "tabler/outline/home"
       }
       @hide_layout_when_printing = false
+      @festivity = nil
       @home_path = nil
       @search_debounce = 300
       @view_component_path = "app/components"
@@ -537,6 +548,26 @@ module Avo
       Avo::ExecutionContext.new(target: @explicit_authorization).handle
     end
 
+    # Raises at boot on anything but nil, a known festivity or a lambda. A
+    # lambda can only be checked per request, in `#festivity`.
+    def festivity=(value)
+      unless value.nil? || value.respond_to?(:call) || FESTIVITIES.include?(value)
+        raise ArgumentError, "config.festivity must be #{festivity_values} or a lambda, got #{value.inspect}"
+      end
+
+      @festivity = value
+    end
+
+    # The active festivity for the current request: nil or a FESTIVITIES entry.
+    # An unknown lambda result is logged and treated as nil, never raised.
+    def festivity
+      value = Avo::ExecutionContext.new(target: @festivity).handle
+      return value if value.nil? || FESTIVITIES.include?(value)
+
+      Avo.logger.warn "[Avo] config.festivity returned #{value.inspect}; expected one of #{festivity_values}. Treating it as nil."
+      nil
+    end
+
     def body_classes
       Avo::ExecutionContext.new(target: @body_classes).handle
     end
@@ -588,6 +619,12 @@ module Avo
       Avo::Menu::Builder.parse_menu(&@header_menu).items.select do |item|
         item.is_a?(Avo::Menu::Link)
       end
+    end
+
+    private
+
+    def festivity_values
+      [nil, *FESTIVITIES].map(&:inspect).join(", ")
     end
   end
 

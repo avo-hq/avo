@@ -164,6 +164,23 @@ export default class extends Controller {
     this.playPickSound(this.currentAccentValue === 'brand')
   }
 
+  // "Christmas decorations" on/off. The festivity stylesheet stays linked, so
+  // dropping or re-adding the festivity-<name> class on <html> is all it takes,
+  // with no reload and no change to the Turbo-tracked links.
+  setFestivityDecorations(event) {
+    event.preventDefault()
+    const { festivity, festivityLocked } = this.appearance
+    if (!festivity || festivityLocked) return
+
+    const { festivityDecorations } = event.currentTarget.dataset
+    if (festivityDecorations !== 'on' && festivityDecorations !== 'off') return
+
+    this.currentFestivityValue = festivityDecorations
+    document.documentElement.classList.toggle(`festivity-${festivity}`, festivityDecorations === 'on')
+    this.persistPreferences('festivity')
+    this.playPickSound(festivityDecorations === 'on')
+  }
+
   nextValue(list, current) {
     const idx = list.indexOf(current)
     return list[(idx + 1) % list.length]
@@ -189,6 +206,10 @@ export default class extends Controller {
       case 'accent':
         this.setPreferenceCookie('accent_color', this.currentAccentValue, this.appearanceDefaultAccent())
         break
+      case 'festivity':
+        // A year long, so an opt-out carries over to next season.
+        this.setPreferenceCookie(this.appearance.festivityKey, this.currentFestivityValue, 'on', { expires: 365 })
+        break
       default:
         break
     }
@@ -211,11 +232,11 @@ export default class extends Controller {
     return a != null && a !== '' ? String(a) : 'brand'
   }
 
-  setPreferenceCookie(name, value, defaultValue) {
+  setPreferenceCookie(name, value, defaultValue, attributes = {}) {
     if (value === defaultValue) {
       Cookies.remove(name)
     } else {
-      Cookies.set(name, value)
+      Cookies.set(name, value, attributes)
     }
   }
 
@@ -238,6 +259,8 @@ export default class extends Controller {
         return { neutral: this.currentThemeValue }
       case 'accent':
         return { accent: this.currentAccentValue }
+      case 'festivity':
+        return { [this.appearance.festivityKey]: this.currentFestivityValue }
       default:
         return null
     }

@@ -32,6 +32,8 @@ ua:
       auto_tooltip: Авто (системні налаштування)
       dark: Темний
       dark_tooltip: Темний режим
+      festivities_list:
+        christmas: Різдвяні прикраси
       hide: Сховати
       light: Світлий
       light_tooltip: Світлий режим

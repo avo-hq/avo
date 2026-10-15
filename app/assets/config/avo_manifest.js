@@ -4,3 +4,4 @@
 //= link_tree ../audio
 //= link avo-overrides.css
 //= link avo-overrides.js
+//= link avo/festivities/christmas.css

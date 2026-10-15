@@ -32,6 +32,8 @@ nb:
       auto_tooltip: Auto (systempreferanse)
       dark: Mørk
       dark_tooltip: Mørk modus
+      festivities_list:
+        christmas: Julepynt
       hide: Skjul
       light: Lys
       light_tooltip: Lys modus

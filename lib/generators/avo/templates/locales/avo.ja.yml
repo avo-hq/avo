@@ -32,6 +32,8 @@ ja:
       auto_tooltip: 自動（システム設定）
       dark: ダーク
       dark_tooltip: ダークモード
+      festivities_list:
+        christmas: クリスマスの飾り
       hide: 非表示
       light: ライト
       light_tooltip: ライトモード

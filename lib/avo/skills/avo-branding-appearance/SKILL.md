@@ -1,6 +1,6 @@
 ---
 name: avo-branding-appearance
-description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, fonts, the appearance-picker sound, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "use our own font/typeface", "turn off / mute the theme-picker sound", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item" — whether or not they name Avo.
+description: Brand and theme an Avo admin panel (logos, favicon, color scheme, neutral/accent palettes, fonts, the appearance-picker sound, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons), starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "add Christmas decorations to the admin" or "turn on a holiday theme", "use our own font/typeface", "turn off / mute the theme-picker sound", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item", whether or not they name Avo.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -14,7 +14,7 @@ Make the Avo admin look like your product — logos, favicon, color scheme, bran
 
 Files you'll touch, from shallowest to deepest:
 
-- `config/initializers/avo.rb` → `config.appearance = { … }` — logos, favicon, scheme, palettes, picker/lock, sound, persistence, chart colors. **The default answer.**
+- `config/initializers/avo.rb` → `config.appearance = { … }`: logos, favicon, scheme, palettes, picker/lock, sound, persistence, chart colors. **The default answer.** Seasonal looks are the separate top-level `config.festivity` in the same file.
 - `app/assets/stylesheets/avo-overrides.css` — no-build CSS-variable re-skin, including the font variables (eject with `rails g avo:eject --partial :avo_overrides_css`). Served as-is.
 - `app/views/avo/partials/_head.html.erb` — inline `<style>` for component variables, or `<link>` tags for a hosted font (eject with `rails g avo:eject --partial :head`).
 - `app/assets/svgs/` — your own SVG icons for menu items / actions.
@@ -33,9 +33,9 @@ Authoritative docs — fetch on demand, verify option names against them (and th
 
 ## When this applies
 
-**Explicit (Avo named):** "set `config.appearance`", "change Avo's logo / logomark / favicon", "set the Avo accent/neutral palette", "lock the Avo theme", "restrict the appearance picker", "persist Avo appearance to the database", "override Avo CSS variables", "set `--font-sans` / `--font-mono`", "turn off Avo's appearance-picker sound", "eject the `:head` partial", "set an icon on this Avo menu item".
+**Explicit (Avo named):** "set `config.appearance`", "change Avo's logo / logomark / favicon", "set the Avo accent/neutral palette", "lock the Avo theme", "restrict the appearance picker", "persist Avo appearance to the database", "override Avo CSS variables", "set `--font-sans` / `--font-mono`", "turn off Avo's appearance-picker sound", "set `config.festivity`", "lock the Avo festivity", "eject the `:head` partial", "set an icon on this Avo menu item".
 
-**Implicit (product-shaped, no mention of Avo):** "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo / a favicon", "the admin should default to dark mode" / "support dark mode", "let users switch themes" / "lock it so they can't", "remember each user's theme across devices", "change the accent/primary color" / "make the buttons blue", "change the sidebar/navbar background color", "use our brand font in the admin" / "change the admin's typeface" / "load a Google font", "there's a clicking sound when I change the theme, turn it off", "give the admin a coastal / rose / 80s-sunset theme", "our admin looks too generic", "change the dashboard chart colors", "use a custom icon for this menu item".
+**Implicit (product-shaped, no mention of Avo):** "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo / a favicon", "the admin should default to dark mode" / "support dark mode", "let users switch themes" / "lock it so they can't", "remember each user's theme across devices", "change the accent/primary color" / "make the buttons blue", "change the sidebar/navbar background color", "use our brand font in the admin" / "change the admin's typeface" / "load a Google font", "there's a clicking sound when I change the theme, turn it off", "make the admin festive for Christmas" / "add holiday decorations every December", "give the admin a coastal / rose / 80s-sunset theme", "our admin looks too generic", "change the dashboard chart colors", "use a custom icon for this menu item".
 
 ## Workflow
 
@@ -126,7 +126,7 @@ config.appearance = {
   neutrals: %w[brand slate stone olive],   # subset shown in the picker (Strings, no colon)
   accents:  %w[brand blue indigo violet],
 
-  lock: [:scheme],           # any subset of [:scheme, :neutral, :accent] — hides that switcher, forces the value
+  lock: [:scheme],           # any subset of [:scheme, :neutral, :accent, :festivity]; hides that switcher, forces the value
   picker_layout: :inline,    # :inline (default; collapses to dropdown on small screens) | :dropdown
   sound: true,               # default — play a short sound when a user picks a scheme/neutral/accent
   sound_button: false        # default — show a mute toggle in the switcher (Shift+S always works either way)
@@ -180,7 +180,31 @@ config.appearance = {
 }
 ```
 
-### 7. Change the font
+### 7. Festivity: a seasonal look
+
+`config.festivity` is a **top-level** option (not a `config.appearance` key) that switches on a built-in seasonal look. Today the only festivity is `:christmas`: an evergreen neutral, a holly-red accent and a lit garland under the navbar. It's off by default.
+
+```ruby
+# config/initializers/avo.rb
+Avo.configure do |config|
+  config.festivity = :christmas # nil (default) | :christmas
+
+  # or decide per request; it runs in Avo's execution context (current_user, params, request…)
+  config.festivity = -> { Date.current.month == 12 ? :christmas : nil }
+end
+```
+
+Anything other than `nil`, `:christmas` or a lambda raises `ArgumentError` at boot. A lambda that returns anything else logs a warning and counts as `nil`.
+
+While a festivity is active, users get a "Christmas decorations" toggle in the appearance switcher that turns the look off for them. The opt-out is stored like their other picks (`persistence:`), under the key `festivity_christmas` with the value `"off"`; the cookie lasts a year, so it carries over to next season. To force the look on everyone, lock it, which hides the toggle and ignores any stored opt-out:
+
+```ruby
+config.appearance = {
+  lock: [:festivity]
+}
+```
+
+### 8. Change the font
 
 Avo ships Inter and reads it through one Tailwind theme variable, `--font-sans`, which every screen inherits; monospace text (code snippets, media-library file details) reads `--font-mono`. Override either in `avo-overrides.css` — no build step:
 
@@ -225,7 +249,7 @@ Google Fonts, Bunny Fonts (same library, no tracking), Fontshare, and Adobe Font
 
 Avo sets text at weights 400/500/600/700 — load all four (or a variable font covering that range) or the browser synthesizes the missing ones. Full walkthrough and the font-service URL table: `theming.md#change-the-font`.
 
-### 8. Deep re-skin — CSS variables (only when `config.appearance` can't reach it)
+### 9. Deep re-skin: CSS variables (only when `config.appearance` can't reach it)
 
 Navbar background, sidebar surfaces, table row hover/selected, focus ring, and motion speeds aren't routed through Ruby — they're CSS custom properties. Avo's whole look is variable-driven, so overriding a handful re-skins everything with **no build step**. Put light-mode values on `:root`, dark-mode overrides on `.dark`.
 
@@ -259,7 +283,7 @@ bin/rails generate avo:eject --partial :head
 
 The full variable list (navbar, sidebar, table, focus ring, motion) with defaults lives in the CSS variables section of `appearance-api.md` — fetch it before writing component-level overrides. For named-theme requests ("coastal", "rose", "80s sunset"), work in `avo-overrides.css` with matching `:root` and `.dark` values.
 
-### 9. Icons (menu items, actions)
+### 10. Icons (menu items, actions)
 
 Anywhere Avo takes an `icon:`, pass a path string. **Prefer Tabler in v4** (`tabler/outline/<name>` or `tabler/filled/<name>`); Heroicons (`heroicons/outline/<name>`, also `solid`/`mini`/`micro`) are legacy-supported. Your own SVGs go in `app/assets/svgs/` and are referenced by filename.
 
@@ -285,7 +309,7 @@ For **populating menu/resource icons at scale** (migrations, whole-sidebar passe
 | `neutral_colors` | Custom 12-shade neutral | Hash of all 12 shades (`25`…`950`) |
 | `accent_colors` | Custom accent | Hash of `:color`, `:content`, `:foreground` |
 | `neutrals` / `accents` | Restrict picker options | Array of **Strings** (no colon) |
-| `lock` | Force values, hide switchers | Array subset of `[:scheme, :neutral, :accent]` |
+| `lock` | Force values, hide switchers | Array subset of `[:scheme, :neutral, :accent, :festivity]` |
 | `picker_layout` | Navbar switcher layout | `:inline` (default) `:dropdown` |
 | `sound` | Play a sound on picks by default | Boolean; default `true` |
 | `sound_button` | Show a mute toggle in the switcher | Boolean; default `false` |
@@ -293,7 +317,9 @@ For **populating menu/resource icons at scale** (migrations, whole-sidebar passe
 | `load_settings` / `save_settings` | DB persistence blocks | Proc; needs a JSON/JSONB column |
 | `chart_colors` | Dashboard chart palette | Array of **hex** Strings |
 
-CSS-only knobs (`--font-sans`/`--font-mono`, navbar/sidebar/table/focus/motion variables) are not in this hash — see steps 7–8 and `appearance-api.md`.
+CSS-only knobs (`--font-sans`/`--font-mono`, navbar/sidebar/table/focus/motion variables) are not in this hash; see steps 8–9 and `appearance-api.md`.
+
+Outside the hash: `config.festivity`, the seasonal look, `nil` (default) | `:christmas` | a lambda returning one of those (step 7).
 
 ## Gotchas
 
@@ -303,6 +329,7 @@ CSS-only knobs (`--font-sans`/`--font-mono`, navbar/sidebar/table/focus/motion v
 - **`chart_colors` must be hex.** They're passed straight to Chart.js — `oklch()`/`rgb()` won't work there (even though the palettes accept them).
 - **Load all four font weights (400/500/600/700), or a variable font spanning them.** `--font-sans`/`--font-mono` only point at a family name — if the browser doesn't have a weight it needs, it synthesizes (faux-bolds) it.
 - **A hosted font's `@import` must be the first rule in `avo-overrides.css`.** CSS drops an `@import` that follows any other rule, so the family never loads and the variable falls back silently — put it above the `:root` block. If the app sets a Content Security Policy, allow the font host in `font-src` (and in `style-src` when the stylesheet is fetched from there too).
+- **An active festivity beats the brand palette and users' picks.** While `config.festivity` is on, its neutral and accent replace `neutral`/`accent`, `neutral_colors`/`accent_colors` and whatever users chose in the picker, for everyone who hasn't turned the decorations off. Only an unlayered `avo-overrides.css` still wins over it. If "our brand colors disappeared", check `config.festivity` first.
 - **`avo-overrides.css` is served as-is, NOT through the Tailwind build.** Only put plain CSS + variable overrides there — no `@apply`, no arbitrary values. Tailwind directives for your *own* custom UI belong in `app/assets/stylesheets/avo/` (which IS built). See the avo-custom-ui skill.
 - **DB persistence needs a JSONB column and BOTH blocks**, and `save_settings` gets a **partial** `settings` Hash (only the changed keys) — `deep_merge`, never overwrite the whole preferences blob.
 - **`config.branding` was renamed to `config.appearance` in Avo 4.** On a v3 app you may find `config.branding = { … }` — migrate it into `config.appearance`.
@@ -320,7 +347,7 @@ CSS-only knobs (`--font-sans`/`--font-mono`, navbar/sidebar/table/focus/motion v
 When done, tell the user:
 
 - Which file(s) you edited (full paths) and, for CSS/eject work, which generator command(s) to run (`rails g avo:eject --partial :avo_overrides_css` / `:head`, or the migration).
-- Which `config.appearance` keys you set and why (assets, scheme, palettes, picker/lock, sound, persistence, chart colors), and any CSS variables you overrode (including `--font-sans`/`--font-mono`).
+- Which `config.appearance` keys you set and why (assets, scheme, palettes, picker/lock, sound, persistence, chart colors), and `config.festivity` if you turned on a seasonal look, and any CSS variables you overrode (including `--font-sans`/`--font-mono`).
 - Which layer of the ladder you used and why you didn't go deeper (Ruby vs `avo-overrides.css` vs ejected `:head`).
 - Anything the user must still do: add the asset files under `app/assets/`, drop self-hosted font files into `public/fonts/` (or allow the hosted font's domain in their CSP), run the migration for DB persistence, or restart the server so initializer changes take effect.
 - For custom palettes, remind them the same scale applies in both light and dark mode, and confirm the `:brand` preset is selected.

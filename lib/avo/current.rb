@@ -27,6 +27,10 @@ class Avo::Current < ActiveSupport::CurrentAttributes
 
   attribute :appearance_settings
 
+  # `active_festivity`'s resolved value, boxed in an Array so a resolved nil is
+  # cached too.
+  attribute :boxed_active_festivity
+
   # Which Avo surface this request arrived through: `:ui` for the admin screens, `:api`,
   # `:ai`, `:mcp`. It names the client, not the screen — `view` already means index/show/
   # edit/new, which is a screen within one surface. Consumers that resolve an answer per
@@ -52,6 +56,13 @@ class Avo::Current < ActiveSupport::CurrentAttributes
     self.appearance_settings = {}
     self.interface = :ui
     self.enumerating_all_resources = false
+  end
+
+  # The active festivity for this request (nil or a festivity symbol). A lambda
+  # in `config.festivity` runs on every read of the config, so the layout, the
+  # navbar and the helpers all read it through here to run it once per request.
+  def active_festivity
+    (self.boxed_active_festivity ||= [Avo.configuration.festivity]).first
   end
 
   # Protect from error #<RuntimeError: Missing rack.input> when request is ActionDispatch::Request.empty

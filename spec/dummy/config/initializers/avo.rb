@@ -82,7 +82,7 @@ Avo.configure do |config|
     # scheme: :dark, # :auto, :light, :dark
     # neutral: :olive, # :brand, :slate, :stone or any other tailwind color name
     # accent: :blue, # :neutral, :red, :orange, or any other tailwind color name
-    # lock: [:neutral], # [:scheme, :neutral, :accent]
+    # lock: [:neutral], # [:scheme, :neutral, :accent, :festivity]
     # neutrals: %w[brand mist olive],
     # accents: %w[brand red orange pink rose],
     # Override the brand neutral and accent palettes. Both keys are independent —
@@ -132,8 +132,15 @@ Avo.configure do |config|
     }
   }
 
-  # `lock:` accepts any subset of [:scheme, :neutral, :accent].
+  ## == Festivity ==
+  # A seasonal look over the brand palette and users' picks: nil (default), :christmas,
+  # or a lambda returning one of those, run per request.
+  # config.festivity = :christmas
+  # config.festivity = -> { Date.current.month == 12 ? :christmas : nil }
+
+  # `lock:` accepts any subset of [:scheme, :neutral, :accent, :festivity].
   # - A key in `lock:` hides its switcher and forces the configured value.
+  #   Locking `:festivity` hides the decorations toggle and ignores users' opt-outs.
   # - Anything not in `lock:` is exposed as a switcher, with the configured value as default.
   # - `persistence:` (`:cookie` | `:database`) controls where unlocked user picks are stored.
 

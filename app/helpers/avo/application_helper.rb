@@ -426,6 +426,27 @@ module Avo
       avo_field(id, type, **args, view: view, &block)
     end
 
+    # The festivity configured for this request, resolved once (Avo::Current).
+    # Drives what the page ships: the stylesheet link and the navbar garland.
+    def active_festivity
+      Avo::Current.active_festivity
+    end
+
+    # The festivity this user sees, which puts `festivity-<name>` on <html>:
+    # the active festivity, unless the user turned its decorations off. The
+    # opt-out is stored through `appearance.persistence` under
+    # `Appearance#festivity_preference_key`. Locking `:festivity` ignores it.
+    def current_festivity
+      festivity = active_festivity
+      return festivity if festivity.nil?
+
+      appearance = Avo.configuration.appearance
+      return festivity if appearance.festivity_locked?
+
+      key = appearance.festivity_preference_key(festivity)
+      festivity unless stored_appearance_preference(key.to_sym, key).to_s == "off"
+    end
+
     def html_theme_classes
       classes = []
       classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
@@ -436,6 +457,8 @@ module Avo
       when "light" then classes << "scheme-light"
       else classes << "scheme-auto"
       end
+
+      classes << "festivity-#{current_festivity}" if current_festivity
 
       classes
     end
@@ -476,7 +499,7 @@ module Avo
       appearance = Avo.configuration.appearance
       return appearance.neutral&.to_s || "brand" if appearance.neutral_locked?
 
-      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:neutral) : cookies[:theme]
+      value = stored_appearance_preference(:neutral, :theme)
       value.presence || appearance.neutral&.to_s || "brand"
     end
 
@@ -484,7 +507,7 @@ module Avo
       appearance = Avo.configuration.appearance
       return appearance.accent&.to_s || "brand" if appearance.accent_locked?
 
-      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:accent) : cookies[:accent_color]
+      value = stored_appearance_preference(:accent, :accent_color)
       value.presence || appearance.accent&.to_s || "brand"
     end
 
@@ -492,8 +515,18 @@ module Avo
       appearance = Avo.configuration.appearance
       return appearance.scheme.to_s if appearance.scheme_locked?
 
-      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:color_scheme) : cookies[:color_scheme]
+      value = stored_appearance_preference(:color_scheme, :color_scheme)
       value.presence || appearance.scheme.to_s
+    end
+
+    # A user's stored appearance pick: from their database settings or from a
+    # cookie, per `appearance.persistence`.
+    def stored_appearance_preference(settings_key, cookie_key)
+      if Avo.configuration.appearance.database_persistence?
+        Avo::Current.appearance_settings&.dig(settings_key)
+      else
+        cookies[cookie_key]
+      end
     end
   end
 end

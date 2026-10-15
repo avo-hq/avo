@@ -55,6 +55,12 @@
         }
       }
 
+      // The festivity stylesheet stays linked either way; the opt-out only
+      // drops the festivity-<name> class that scopes its rules.
+      if (appearance.festivity && !appearance.festivityLocked) {
+        root.classList.toggle('festivity-' + appearance.festivity, getCookie(appearance.festivityKey) !== 'off');
+      }
+
       if (!appearance.schemeLocked) {
         var scheme = getCookie('color_scheme');
         if (scheme) {
