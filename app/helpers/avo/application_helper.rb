@@ -426,6 +426,18 @@ module Avo
       avo_field(id, type, **args, view: view, &block)
     end
 
+    # The festivity configured for this request, resolved once (Avo::Current).
+    # Drives what the page ships: the stylesheet link and the navbar garland.
+    def active_festivity
+      Avo::Current.active_festivity
+    end
+
+    # The festivity this user sees, which puts `festivity-<name>` on <html>.
+    # Today it is the active festivity; the user's opt-out narrows it.
+    def current_festivity
+      active_festivity
+    end
+
     def html_theme_classes
       classes = []
       classes << "neutral-theme-#{current_neutral}" if current_neutral != "brand"
@@ -436,6 +448,8 @@ module Avo
       when "light" then classes << "scheme-light"
       else classes << "scheme-auto"
       end
+
+      classes << "festivity-#{current_festivity}" if current_festivity
 
       classes
     end

@@ -42,4 +42,9 @@
     <%= render Avo::LocaleSelectorComponent.new if Avo.configuration.locale_selector_enabled? %>
     <%= render partial: "avo/partials/color_scheme_switcher" %>
   </div>
+
+  <%# Rendered whenever a festivity is active; its stylesheet shows it only under html.festivity-<name>. %>
+  <% if active_festivity %>
+    <div class="festivity-garland" aria-hidden="true"></div>
+  <% end %>
 <% end %>
