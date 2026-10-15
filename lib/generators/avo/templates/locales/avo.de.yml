@@ -32,6 +32,8 @@ de:
       auto_tooltip: Automatisch (Systemeinstellung)
       dark: Dunkel
       dark_tooltip: Dunkler Modus
+      festivities_list:
+        christmas: Weihnachtsdekoration
       hide: Ausblenden
       light: Hell
       light_tooltip: Heller Modus

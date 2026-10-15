@@ -432,10 +432,20 @@ module Avo
       Avo::Current.active_festivity
     end
 
-    # The festivity this user sees, which puts `festivity-<name>` on <html>.
-    # Today it is the active festivity; the user's opt-out narrows it.
+    # The festivity this user sees, which puts `festivity-<name>` on <html>:
+    # the active festivity, unless the user turned its decorations off. The
+    # opt-out is stored through `appearance.persistence` under
+    # `Appearance#festivity_preference_key`. Locking `:festivity` ignores it.
     def current_festivity
-      active_festivity
+      festivity = active_festivity
+      return festivity if festivity.nil?
+
+      appearance = Avo.configuration.appearance
+      return festivity if appearance.festivity_locked?
+
+      key = appearance.festivity_preference_key(festivity)
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(key.to_sym) : cookies[key]
+      festivity unless value.to_s == "off"
     end
 
     def html_theme_classes

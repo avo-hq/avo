@@ -31,6 +31,47 @@ RSpec.describe "Festivity rendering", type: :request do
 
       expect(response.body).to match(%r{<nav\b[^>]*top-navbar.*<div class="festivity-garland" aria-hidden="true"></div>}m)
     end
+
+    context "when the user has opted out" do
+      before { admin_user.update!(avo_preferences: {"appearance" => {"festivity_christmas" => "off"}}) }
+
+      it "keeps the stylesheet link but leaves the class off <html>" do
+        get "/admin/failed_to_load"
+
+        expect(response.body).to match(festivity_link)
+        expect(html_tag).not_to include("festivity-christmas")
+      end
+
+      it "reads the opt-out from the cookie under cookie persistence" do
+        allow(Avo.configuration.appearance).to receive(:persistence).and_return(:cookie)
+        cookies["festivity_christmas"] = "off"
+
+        get "/admin/failed_to_load"
+
+        expect(response.body).to match(festivity_link)
+        expect(html_tag).not_to include("festivity-christmas")
+      end
+
+      it "offers the toggle to turn the decorations back on" do
+        get "/admin/failed_to_load"
+
+        expect(response.body).to include('data-festivity-decorations="on"')
+      end
+    end
+
+    context "when :festivity is locked" do
+      before do
+        allow(Avo.configuration.appearance).to receive(:festivity_locked?).and_return(true)
+        admin_user.update!(avo_preferences: {"appearance" => {"festivity_christmas" => "off"}})
+      end
+
+      it "ignores the opt-out and renders no toggle" do
+        get "/admin/failed_to_load"
+
+        expect(html_tag).to include("festivity-christmas")
+        expect(response.body).not_to include("data-festivity-decorations")
+      end
+    end
   end
 
   context "when the festivity is nil" do
@@ -43,6 +84,7 @@ RSpec.describe "Festivity rendering", type: :request do
       expect(response.body).not_to match(festivity_link)
       expect(html_tag).not_to include("festivity-")
       expect(response.body).not_to include("festivity-garland")
+      expect(response.body).not_to include("data-festivity-decorations")
     end
   end
 

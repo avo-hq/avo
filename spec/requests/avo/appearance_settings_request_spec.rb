@@ -49,6 +49,13 @@ RSpec.describe "AppearanceSettings", type: :request do
         expect(response).to have_http_status(:ok)
         expect(saved_settings).to eq({color_scheme: "dark"})
       end
+
+      it "passes a festivity opt-out, keyed by festivity name" do
+        patch "/admin/appearance_settings", params: {festivity_christmas: "off"}, as: :json
+
+        expect(response).to have_http_status(:ok)
+        expect(saved_settings).to eq({festivity_christmas: "off"})
+      end
     end
   end
 end

@@ -32,6 +32,8 @@ ar:
       auto_tooltip: تلقائي (تفضيل النظام)
       dark: داكن
       dark_tooltip: وضع الداكن
+      festivities_list:
+        christmas: زينة عيد الميلاد
       hide: إخفاء
       light: فاتح
       light_tooltip: وضع الفاتح

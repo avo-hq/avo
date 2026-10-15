@@ -113,6 +113,28 @@
     </button>
   <% end %>
 
+  <% if show_festivity_toggle %>
+    <%# Both render; CSS shows whichever matches the festivity class on :root. %>
+    <button type="button"
+            data-action="click->appearance#setFestivityDecorations"
+            data-festivity-decorations="off"
+            data-tippy="tooltip"
+            class="color-scheme-switcher__button color-scheme-switcher__button--festivity-on"
+            title="<%= festivity_label %>: <%= avo_appearance_t("hide") %>">
+      <%= svg "tabler/outline/christmas-tree", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only"><%= festivity_label %>: <%= avo_appearance_t("hide") %></span>
+    </button>
+    <button type="button"
+            data-action="click->appearance#setFestivityDecorations"
+            data-festivity-decorations="on"
+            data-tippy="tooltip"
+            class="color-scheme-switcher__button color-scheme-switcher__button--festivity-off"
+            title="<%= festivity_label %>: <%= avo_appearance_t("show") %>">
+      <%= svg "tabler/outline/christmas-tree-off", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only"><%= festivity_label %>: <%= avo_appearance_t("show") %></span>
+    </button>
+  <% end %>
+
   <% if show_scheme_picker %>
     <button type="button"
             data-appearance-target="button"

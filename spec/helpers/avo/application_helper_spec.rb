@@ -358,6 +358,62 @@ RSpec.describe Avo::ApplicationHelper do
       end
     end
 
+    describe "#current_festivity" do
+      before do
+        allow(Avo::Current).to receive(:active_festivity).and_return(:christmas)
+        allow(appearance).to receive(:database_persistence?).and_return(false)
+        allow(helper).to receive(:cookies).and_return({})
+      end
+
+      it "is the active festivity when the user has not opted out" do
+        expect(helper.send(:current_festivity)).to eq(:christmas)
+      end
+
+      it "is nil when no festivity is active" do
+        allow(Avo::Current).to receive(:active_festivity).and_return(nil)
+        allow(helper).to receive(:cookies).and_return({"festivity_christmas" => "on"})
+
+        expect(helper.send(:current_festivity)).to be_nil
+      end
+
+      it "honours a cookie opt-out" do
+        allow(helper).to receive(:cookies).and_return({"festivity_christmas" => "off"})
+
+        expect(helper.send(:current_festivity)).to be_nil
+      end
+
+      it "honours a database opt-out" do
+        allow(appearance).to receive(:database_persistence?).and_return(true)
+        Avo::Current.appearance_settings = {festivity_christmas: "off"}
+
+        expect(helper.send(:current_festivity)).to be_nil
+      end
+
+      it "keeps the festivity when the database says it is back on" do
+        allow(appearance).to receive(:database_persistence?).and_return(true)
+        Avo::Current.appearance_settings = {festivity_christmas: "on"}
+
+        expect(helper.send(:current_festivity)).to eq(:christmas)
+      end
+
+      context "when :festivity is locked" do
+        before { allow(appearance).to receive(:festivity_locked?).and_return(true) }
+
+        it "ignores a cookie opt-out" do
+          allow(helper).to receive(:cookies).and_return({"festivity_christmas" => "off"})
+
+          expect(helper.send(:current_festivity)).to eq(:christmas)
+        end
+
+        it "ignores a database opt-out" do
+          allow(appearance).to receive(:database_persistence?).and_return(true)
+          Avo::Current.appearance_settings = {festivity_christmas: "off"}
+
+          expect(helper.send(:current_festivity)).to eq(:christmas)
+        end
+      end
+    end
+
     describe "#current_scheme" do
       context "when scheme is locked" do
         before do

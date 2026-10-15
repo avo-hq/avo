@@ -106,6 +106,11 @@ class Avo::Configuration::Appearance
   # Hides the festivity opt-out toggle and ignores any stored opt-out.
   def festivity_locked? = @lock.include?(:festivity)
 
+  # Where a user's festivity opt-out is stored, by festivity name and with no
+  # year so it carries over to next season: the cookie of this name, or this
+  # key in the database settings. Values are "off" / "on".
+  def festivity_preference_key(festivity) = "festivity_#{festivity}"
+
   # Returns the neutral name for the data attribute (nil when neutral is unset)
   def neutral_css_class = neutral&.to_s
 

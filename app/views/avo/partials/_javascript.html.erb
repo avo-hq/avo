@@ -37,6 +37,9 @@
     neutralLocked: <%= appearance.neutral_locked? %>,
     accentLocked: <%= appearance.accent_locked? %>,
     sound: <%= appearance.sound? %>,
+    festivity: '<%= active_festivity %>',
+    festivityKey: '<%= appearance.festivity_preference_key(active_festivity) if active_festivity %>',
+    festivityLocked: <%= appearance.festivity_locked? %>,
     neutrals: <%== appearance.neutrals.as_json %>,
     accents: <%== appearance.accents.as_json %>
   }

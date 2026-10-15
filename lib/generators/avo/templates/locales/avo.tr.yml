@@ -32,6 +32,8 @@ tr:
       auto_tooltip: Otomatik (sistem tercihi)
       dark: Koyu
       dark_tooltip: Koyu mod
+      festivities_list:
+        christmas: Noel süsleri
       hide: Gizle
       light: Açık
       light_tooltip: Açık mod

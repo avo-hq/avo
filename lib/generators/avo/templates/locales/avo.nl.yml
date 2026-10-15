@@ -32,6 +32,8 @@ nl:
       auto_tooltip: Automatisch (systeemvoorkeur)
       dark: Donker
       dark_tooltip: Donkermodus
+      festivities_list:
+        christmas: Kerstversiering
       hide: Verbergen
       light: Licht
       light_tooltip: Lichtmodus

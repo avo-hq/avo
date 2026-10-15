@@ -32,6 +32,8 @@ zh-TW:
       auto_tooltip: 自動（系統偏好）
       dark: 深色
       dark_tooltip: 深色模式
+      festivities_list:
+        christmas: 聖誕裝飾
       hide: 隱藏
       light: 淺色
       light_tooltip: 淺色模式

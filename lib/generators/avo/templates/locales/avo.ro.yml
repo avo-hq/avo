@@ -32,6 +32,8 @@ ro:
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
       dark_tooltip: Mod întunecat
+      festivities_list:
+        christmas: Decorațiuni de Crăciun
       hide: Ascunde
       light: Deschis
       light_tooltip: Mod deschis

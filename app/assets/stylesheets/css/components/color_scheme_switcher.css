@@ -145,6 +145,18 @@
   @apply bg-primary text-content shadow-sm;
 }
 
+/* Festivity decorations - state mirrors the festivity-<name> class on :root,
+   which is the only festivity- class <html> carries. */
+:root[class*="festivity-"] .color-scheme-switcher__button--festivity-off,
+:root:not([class*="festivity-"]) .color-scheme-switcher__button--festivity-on {
+  @apply hidden;
+}
+
+:root[class*="festivity-"] .color-scheme-switcher__scheme-button[data-festivity-decorations="on"],
+:root:not([class*="festivity-"]) .color-scheme-switcher__scheme-button[data-festivity-decorations="off"] {
+  @apply bg-primary text-content shadow-sm;
+}
+
 .color-scheme-switcher__scheme-label {
   @apply text-xs font-medium leading-none;
 }
