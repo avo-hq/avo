@@ -6,7 +6,7 @@ class Avo::Configuration::Appearance
     :accent_colors,  # Hash{ color:, content:, foreground: } — three-token brand override (single palette, applied in both light and dark mode)
     :neutrals, # Array[String] — available neutral theme names
     :accents, # Array[String] — available accent color names
-    :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent]
+    :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent, :festivity]
     :persistence, # :cookie | :database
     :logo,
     :logo_dark,
@@ -30,7 +30,7 @@ class Avo::Configuration::Appearance
 
     DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
     DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
-    LOCKABLE = %i[scheme neutral accent].freeze
+    LOCKABLE = %i[scheme neutral accent festivity].freeze
 
     NEUTRAL_SHADES = [25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].freeze
     ACCENT_TOKENS = [:color, :content, :foreground].freeze
@@ -102,6 +102,9 @@ class Avo::Configuration::Appearance
   def neutral_locked? = @lock.include?(:neutral)
 
   def accent_locked? = @lock.include?(:accent)
+
+  # Hides the festivity opt-out toggle and ignores any stored opt-out.
+  def festivity_locked? = @lock.include?(:festivity)
 
   # Returns the neutral name for the data attribute (nil when neutral is unset)
   def neutral_css_class = neutral&.to_s
