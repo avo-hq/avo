@@ -95,16 +95,24 @@
     --color-info-content: oklch(85% 0.13 150); /* 13.24:1 on the dark panel */
   }
 
-  /* .badge--neutral uses fixed grays; move it onto the ramp. */
+  /* .badge--neutral uses fixed grays; move it onto the ramp. Only the badge's
+     own tokens change, so badge.css still mixes the subtle tint and the solid
+     fill (white text on a fill derived from --badge-text). */
   html.festivity-christmas .badge--neutral {
-    --badge-bg: var(--color-avo-neutral-100);
+    --badge-bg: var(--color-avo-neutral-400);
     --badge-text: var(--color-avo-neutral-700);
-    background: var(--badge-bg);
   }
 
-  html.festivity-christmas.dark .badge--neutral {
-    --badge-bg: var(--color-avo-neutral-800);
+  /* Dark subtle badges need light text; solid ones keep the dark text token
+     so their fill stays dark enough for white text. */
+  html.festivity-christmas.dark .badge--neutral:not(.badge--solid) {
     --badge-text: var(--color-avo-neutral-200);
+  }
+
+  /* Navbar text reads --avo-neutral-source-300 first (css/layout.css), which
+     a user's neutral pick sets. Point it at the Evergreen ramp instead. */
+  html.festivity-christmas .top-navbar {
+    --top-navbar-content: var(--color-avo-neutral-300);
   }
 
   /* Navbar garland: a dedicated child of <nav class="top-navbar">, a strand
