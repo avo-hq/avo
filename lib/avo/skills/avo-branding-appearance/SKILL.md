@@ -1,6 +1,6 @@
 ---
 name: avo-branding-appearance
-description: Brand and theme an Avo admin panel — logos, favicon, color scheme, neutral/accent palettes, fonts, the appearance-picker sound, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons — starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "add Christmas decorations to the admin" or "turn on a holiday theme", "use our own font/typeface", "turn off / mute the theme-picker sound", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item" — whether or not they name Avo.
+description: Brand and theme an Avo admin panel: logos, favicon, color scheme, neutral/accent palettes, fonts, the appearance-picker sound, chart colors, per-user theme persistence, deep CSS re-skinning, and menu/action icons, starting from the no-build `config.appearance` path in `config/initializers/avo.rb`. Use when the user wants to "brand the admin with our logo and colors", "make the admin match our brand", "add our company logo", "add a favicon", "make the admin default to / support dark mode", "let users switch themes" or "lock the theme", "remember each user's theme", "change the accent/primary color" or "make the buttons blue", "change the sidebar/navbar background", "add Christmas decorations to the admin" or "turn on a holiday theme", "use our own font/typeface", "turn off / mute the theme-picker sound", "give the admin a coastal/rose/sunset theme", "our admin looks too generic", "change the dashboard chart colors", or "use a custom icon for this menu item", whether or not they name Avo.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -14,7 +14,7 @@ Make the Avo admin look like your product — logos, favicon, color scheme, bran
 
 Files you'll touch, from shallowest to deepest:
 
-- `config/initializers/avo.rb` → `config.appearance = { … }` — logos, favicon, scheme, palettes, picker/lock, sound, persistence, chart colors. **The default answer.** Seasonal looks are the separate top-level `config.festivity` in the same file.
+- `config/initializers/avo.rb` → `config.appearance = { … }`: logos, favicon, scheme, palettes, picker/lock, sound, persistence, chart colors. **The default answer.** Seasonal looks are the separate top-level `config.festivity` in the same file.
 - `app/assets/stylesheets/avo-overrides.css` — no-build CSS-variable re-skin, including the font variables (eject with `rails g avo:eject --partial :avo_overrides_css`). Served as-is.
 - `app/views/avo/partials/_head.html.erb` — inline `<style>` for component variables, or `<link>` tags for a hosted font (eject with `rails g avo:eject --partial :head`).
 - `app/assets/svgs/` — your own SVG icons for menu items / actions.
@@ -126,7 +126,7 @@ config.appearance = {
   neutrals: %w[brand slate stone olive],   # subset shown in the picker (Strings, no colon)
   accents:  %w[brand blue indigo violet],
 
-  lock: [:scheme],           # any subset of [:scheme, :neutral, :accent, :festivity] — hides that switcher, forces the value
+  lock: [:scheme],           # any subset of [:scheme, :neutral, :accent, :festivity]; hides that switcher, forces the value
   picker_layout: :inline,    # :inline (default; collapses to dropdown on small screens) | :dropdown
   sound: true,               # default — play a short sound when a user picks a scheme/neutral/accent
   sound_button: false        # default — show a mute toggle in the switcher (Shift+S always works either way)
@@ -180,7 +180,7 @@ config.appearance = {
 }
 ```
 
-### 7. Festivity — a seasonal look
+### 7. Festivity: a seasonal look
 
 `config.festivity` is a **top-level** option (not a `config.appearance` key) that switches on a built-in seasonal look. Today the only festivity is `:christmas`: an evergreen neutral, a holly-red accent and a lit garland under the navbar. It's off by default.
 
@@ -189,7 +189,7 @@ config.appearance = {
 Avo.configure do |config|
   config.festivity = :christmas # nil (default) | :christmas
 
-  # or decide per request — runs in Avo's execution context (current_user, params, request…)
+  # or decide per request; it runs in Avo's execution context (current_user, params, request…)
   config.festivity = -> { Date.current.month == 12 ? :christmas : nil }
 end
 ```
@@ -249,7 +249,7 @@ Google Fonts, Bunny Fonts (same library, no tracking), Fontshare, and Adobe Font
 
 Avo sets text at weights 400/500/600/700 — load all four (or a variable font covering that range) or the browser synthesizes the missing ones. Full walkthrough and the font-service URL table: `theming.md#change-the-font`.
 
-### 9. Deep re-skin — CSS variables (only when `config.appearance` can't reach it)
+### 9. Deep re-skin: CSS variables (only when `config.appearance` can't reach it)
 
 Navbar background, sidebar surfaces, table row hover/selected, focus ring, and motion speeds aren't routed through Ruby — they're CSS custom properties. Avo's whole look is variable-driven, so overriding a handful re-skins everything with **no build step**. Put light-mode values on `:root`, dark-mode overrides on `.dark`.
 
@@ -317,9 +317,9 @@ For **populating menu/resource icons at scale** (migrations, whole-sidebar passe
 | `load_settings` / `save_settings` | DB persistence blocks | Proc; needs a JSON/JSONB column |
 | `chart_colors` | Dashboard chart palette | Array of **hex** Strings |
 
-CSS-only knobs (`--font-sans`/`--font-mono`, navbar/sidebar/table/focus/motion variables) are not in this hash — see steps 8–9 and `appearance-api.md`.
+CSS-only knobs (`--font-sans`/`--font-mono`, navbar/sidebar/table/focus/motion variables) are not in this hash; see steps 8–9 and `appearance-api.md`.
 
-Outside the hash: `config.festivity` — seasonal look, `nil` (default) | `:christmas` | a lambda returning one of those (step 7).
+Outside the hash: `config.festivity`, the seasonal look, `nil` (default) | `:christmas` | a lambda returning one of those (step 7).
 
 ## Gotchas
 
