@@ -37,6 +37,10 @@ class Comment < ApplicationRecord
     ["body", "commentable_id", "commentable_type", "created_at", "id", "posted_at", "updated_at", "user_id"]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
+
   def key_value
     @key_value ||= {
       key_value_1: 0,

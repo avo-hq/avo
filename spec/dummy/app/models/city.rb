@@ -60,4 +60,8 @@ class City < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "description", "features", "id", "image_url", "is_capital", "metadata", "name", "population", "status", "tiny_description", "updated_at"]
   end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
 end

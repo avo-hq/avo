@@ -44,4 +44,8 @@ class Fish < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     ["created_at", "id", "name", "type", "updated_at", "user_id"]
   end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
 end
