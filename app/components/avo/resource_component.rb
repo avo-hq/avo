@@ -327,7 +327,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return if !can_see_the_actions_button?
     return if !action.action.visible_in_view(parent_resource: @parent_resource)
 
-    a_link action.path,
+    a_link Avo::Services::URIService.parse(action.path).append_query(via_related_name_query).to_s,
       color: action.color,
       style: action.style,
       icon: action.icon,
@@ -346,7 +346,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         # When action has record present behave as standalone and keep always active.
         "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
         disabled: action.action.disabled?,
-        resource_name: action.action.resource.model_key
+        resource_name: resource_name_for(action.action.resource)
       } do
       action.label
     end

@@ -28,9 +28,22 @@ module Avo
     alias_method :edit_field_wrapper, :field_wrapper
     alias_method :show_field_wrapper, :field_wrapper
 
+    # An action modal is not an association request, so action links carry the field id as `via_related_name`.
+    def resource_name_for(resource)
+      resource.resource_name_for(association: params[:related_name] || params[:via_related_name])
+    end
+
+    def resource_body_content_id(resource)
+      "#{resource_name_for(resource)}_body_content"
+    end
+
+    def via_related_name_query
+      {via_related_name: params[:related_name]}.compact
+    end
+
     def item_selector_data_attributes(resource, controller: "")
       {
-        resource_name: resource.model_key,
+        resource_name: resource_name_for(resource),
         resource_id: resource.record.to_param,
         controller: "item-selector #{controller}"
       }
