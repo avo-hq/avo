@@ -43,7 +43,10 @@ export default class extends Controller {
   }
 
   visitRecord(event) {
-    if (event.type !== 'click') {
+    // Middle click fires `auxclick` with `button === 1`.
+    const isMiddleClick = event.type === 'auxclick' && event.button === 1
+
+    if (event.type !== 'click' && !isMiddleClick) {
       return
     }
 
@@ -71,7 +74,7 @@ export default class extends Controller {
       return
     }
 
-    if (event.metaKey || event.ctrlKey || row.dataset.visitTarget === '_blank') {
+    if (isMiddleClick || event.metaKey || event.ctrlKey || row.dataset.visitTarget === '_blank') {
       this.#visitInNewTab(url)
     } else {
       this.#visitInSameTab(url)
