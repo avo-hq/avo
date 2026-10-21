@@ -371,10 +371,14 @@ module Avo
     end
 
     def set_actions
+      # Index actions run on the selected rows. In a has_many panel @record is the
+      # parent record, and passing it would keep every action enabled with no row selected.
+      record = @record unless @view.index?
+
       @actions = @resource
         .get_actions
         .map do |action_bag|
-          action_bag[:class].new(record: @record, resource: @resource, view: @view, **action_bag.except(:class))
+          action_bag[:class].new(record:, resource: @resource, view: @view, **action_bag.except(:class))
         end
         .select do |action|
           action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
