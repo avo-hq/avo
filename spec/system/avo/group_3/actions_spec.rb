@@ -35,6 +35,27 @@ RSpec.describe "Actions", type: :system do
       end
     end
 
+    context "has_many" do
+      it "disables non-standalone actions until a record is selected" do
+        team = create :team, team_members: [user]
+        visit "/admin/resources/teams/#{team.id}"
+
+        scroll_to team_members_frame = find('turbo-frame[id="has_many_field_show_team_members"]')
+
+        within team_members_frame do
+          click_on "Actions"
+
+          expect(page.find("a", text: "Toggle inactive")["data-disabled"]).to eq "true"
+          expect(page.find("a", text: "Dummy action")["data-disabled"]).to eq "false"
+
+          check "Select item"
+          click_on "Actions"
+
+          expect(page.find("a", text: "Toggle inactive")["data-disabled"]).to eq "false"
+        end
+      end
+    end
+
     context "show" do
       it "does not find an action on show" do
         visit "/admin/resources/users/#{user.id}"
