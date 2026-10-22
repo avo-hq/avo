@@ -40,6 +40,17 @@ RSpec.describe Avo::Fields::KeyValueField, type: :model do
     end
   end
 
+  describe "#fill_field" do
+    it "accepts the value as a hash" do
+      record = Struct.new(:meta).new({})
+      field = described_class.new(:meta)
+
+      field.fill_field(record, :meta, ActionController::Parameters.new(foo: "bar").permit!, {})
+
+      expect(record.meta).to eq({"foo" => "bar"})
+    end
+  end
+
   describe "#fill_field with disabled parts" do
     let(:record) { Struct.new(:meta).new({"foo" => "bar", "hey" => "hi"}) }
 

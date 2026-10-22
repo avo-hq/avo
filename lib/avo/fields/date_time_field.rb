@@ -37,7 +37,8 @@ module Avo
 
         return record if value.blank?
 
-        utc_value = ActiveSupport::TimeZone.new("UTC").local_to_utc(Time.parse(value))
+        # Read as UTC unless the value names its own offset
+        utc_value = ActiveSupport::TimeZone.new("UTC").parse(value)
 
         record.send(:"#{id}=", utc_value)
 
