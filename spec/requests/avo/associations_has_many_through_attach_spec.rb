@@ -54,4 +54,42 @@ RSpec.describe "Associations attach has_many through", type: :request do
       expect(StorePatron.find_by(store: store, user: user).review).to eq("Great paper towels")
     end
   end
+
+  context "with a belongs_to attach field" do
+    let(:store) { create :store }
+    let(:referrer) { create :user }
+
+    before do
+      Avo::Resources::Store.with_temporary_items do
+        field :patrons, as: :has_many, through: :patronships, attach_fields: -> {
+          field :review, as: :text
+          field :referrer, as: :belongs_to
+        }
+      end
+    end
+
+    after { Avo::Resources::Store.restore_items_from_backup }
+
+    def attach_patron(referrer_id)
+      post "/admin/resources/stores/#{store.id}/patrons",
+        params: {fields: {related_id: user.id, review: "Great paper towels", referrer_id:}, view: "show"},
+        as: :turbo_stream
+    end
+
+    it "renders the field's foreign key and writes it onto the join record" do
+      get "/admin/resources/stores/#{store.id}/patrons/new"
+      expect(Capybara.string(response.body)).to have_select("fields[referrer_id]")
+
+      attach_patron(referrer.to_param)
+
+      expect(StorePatron.find_by(store:, user:)).to have_attributes(review: "Great paper towels", referrer:)
+    end
+
+    it "fails the attach on the field when the value matches no record" do
+      expect { attach_patron("no-such-user") }.not_to change(StorePatron, :count)
+
+      expect(flash[:error]).to eq("Failed to attach User")
+      expect(response.body).to include("Referrer is invalid")
+    end
+  end
 end

@@ -95,6 +95,10 @@ module Avo
             attach_record(association_name, attachment_record)
           end
         end
+      rescue Avo::Fields::BelongsToField::TargetNotFound => error
+        # Worded on the join record, which owns the fields; `@record` has no attribute to put them on
+        join_record = @reflection.through_reflection.klass.new
+        error.field_ids.each { |field_id| @record.errors.add(:base, ActiveModel::Error.new(join_record, field_id, :invalid).full_message) }
       end
     end
 
@@ -282,15 +286,19 @@ module Avo
     end
 
     def additional_params
-      @additional_params ||= params[:fields].slice(*@attach_fields&.map(&:id))
+      @additional_params ||= params[:fields].slice(*@resource.fields_by_param(Array(@attach_fields)).compact.keys)
     end
 
     def set_attach_fields
       @attach_fields = if @field.attach_fields.present?
+        # Attach fields describe the join record, so a belongs_to among them finds its association there
+        join_record = @reflection.through_reflection&.klass&.new
+
         Avo::FieldsExecutionContext.new(target: @field.attach_fields)
           .detect_fields
           .items_holder
           .items
+          .each { |field| field.hydrate(record: join_record) }
       end
     end
 
