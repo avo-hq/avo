@@ -101,9 +101,10 @@ module Avo
           new_value = {}
         end
 
-        # Try to cast the new values to the same class as the original value
         old_key_value_hash = record.send(key)
+        new_value = apply_disabled_options(new_value, old_key_value_hash, record)
 
+        # Try to cast the new values to the same class as the original value
         if old_key_value_hash.is_a?(Hash)
           old_key_value_hash.transform_keys!(&:to_s)
 
@@ -132,6 +133,24 @@ module Avo
         record.send(:"#{key}=", new_value)
 
         record
+      end
+
+      private
+
+      # The inputs are only disabled in the browser, so hold the submitted value to the same rules
+      def apply_disabled_options(submitted, stored, record)
+        return submitted unless @disable_adding_rows || @disable_deleting_rows || @disable_editing_values
+
+        # The new form shows the default when there's no stored value, so that's what the user started from
+        stored = computed_default_value if stored.nil? && record.try(:new_record?)
+        submitted = {} unless submitted.is_a?(Hash)
+        stored = stored.is_a?(Hash) ? stored.transform_keys(&:to_s) : {}
+
+        submitted = submitted.select { |key, _| stored.key?(key) } if @disable_adding_rows
+        submitted = submitted.merge(stored.except(*submitted.keys)) if @disable_deleting_rows
+        submitted = submitted.to_h { |key, _| [key, stored.fetch(key, "")] } if @disable_editing_values
+
+        submitted
       end
     end
   end
