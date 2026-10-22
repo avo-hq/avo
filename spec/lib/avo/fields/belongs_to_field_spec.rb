@@ -32,5 +32,11 @@ RSpec.describe Avo::Fields::BelongsToField, type: :model do
 
       expect(post.user_id).to be_nil
     end
+
+    it "raises RecordNotFound when the target's finder returns nothing" do
+      allow(user_resource).to receive(:find_record).and_return(nil)
+
+      expect { field.fill_field(post, :user_id, "missing", {}) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 end

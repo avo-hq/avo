@@ -213,7 +213,7 @@ module Avo
             record.send(:"#{polymorphic_as}_id=", nil)
           else
             target = target_resource(record:, polymorphic_model_class: value.safe_constantize)
-            record_id = target.find_record(id_from_param, query: scoped_target_query(target, record, for_find: true)).id
+            record_id = find_target!(target, record, id_from_param).id
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
@@ -222,7 +222,7 @@ module Avo
           record_id = if value.blank?
             value
           else
-            target.find_record(value, query: scoped_target_query(target, record, for_find: true)).send(reflection.association_primary_key)
+            find_target!(target, record, value).send(reflection.association_primary_key)
           end
 
           record.send(:"#{key}=", record_id)
@@ -331,6 +331,12 @@ module Avo
       end
 
       private
+
+      # A custom finder can answer nil (`find_by`) where the default one raises, so raise for it
+      def find_target!(target, record, id)
+        target.find_record(id, query: scoped_target_query(target, record, for_find: true)) ||
+          raise(ActiveRecord::RecordNotFound.new("Couldn't find #{target.model_class.name} with '#{id}'", target.model_class.name))
+      end
 
       def scoped_target_query(resource, parent_record, for_find: false)
         resource_class = resource.is_a?(Class) ? resource : resource.class
