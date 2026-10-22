@@ -53,6 +53,21 @@ RSpec.describe "File fields", type: :request do
     expect(response.body).to include "persisted.jpg"
   end
 
+  # Nothing else changes, so the record's save is the only thing that persists the new file
+  it "adds a new file to the persisted ones on an edit that changes nothing else" do
+    project.files.attach(
+      io: File.open(Rails.root.join("db/seed_files/dummy-image.jpg")),
+      filename: "persisted.jpg",
+      content_type: "image/jpeg"
+    )
+
+    put "/admin/resources/projects/#{project.to_param}",
+      params: {project: {files: [Rack::Test::UploadedFile.new(Rails.root.join("db/seed_files/dummy-image.jpg"), "image/jpeg")]}}
+
+    expect(response).to have_http_status :redirect
+    expect(project.reload.files.count).to eq 2
+  end
+
   describe "the edit view of a record with a single file" do
     before do
       post_record.cover.attach(
