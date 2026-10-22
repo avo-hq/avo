@@ -16,5 +16,12 @@ RSpec.describe Avo::Fields::DateTimeField, type: :model do
 
       expect(record.starts_at).to eq Time.utc(2026, 10, 22, 10)
     end
+
+    it "refuses a value it can't read as a date, rather than clearing the column" do
+      record.starts_at = Time.utc(2026, 1, 1)
+
+      expect { field.fill_field(record, :starts_at, "soon", {}) }.to raise_error(ArgumentError)
+      expect(record.starts_at).to eq Time.utc(2026, 1, 1)
+    end
   end
 end

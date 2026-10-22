@@ -37,8 +37,8 @@ module Avo
 
         return record if value.blank?
 
-        # Read as UTC unless the value names its own offset
-        utc_value = ActiveSupport::TimeZone.new("UTC").parse(value)
+        # Read as UTC unless the value names its own offset. `parse` answers nil for text that isn't a date
+        utc_value = ActiveSupport::TimeZone.new("UTC").parse(value) || raise(ArgumentError, "Invalid date: #{value.inspect}")
 
         record.send(:"#{id}=", utc_value)
 
