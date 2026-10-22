@@ -210,7 +210,8 @@ self.search = {
 1. **Key not set on the server.** The most frequent cause. Confirm `config.license_key = ENV["AVO_LICENSE_KEY"]` and that the env var is actually present in **production** (not just locally).
 2. **Check the status page.** Every Avo app exposes `https://yourapp.com/<mount>/avo_private/status` — e.g. `/admin/avo_private/status` if you mounted Avo at `admin`. It shows whether the license authenticated and the raw response from the check server. The viewing user must be an Avo admin.
 3. **Key hidden on the status page.** The key is redacted by default; set `exclude_from_status = []` in the initializer if you need to see it while debugging.
-4. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention: either no payment method is on file, or the subscription behind the trial was cancelled. Access continues until the date the status page reports. Both are fixed on https://avohq.io/licenses (a cancelled subscription must be resumed — adding a payment method won't help), then press **Refresh license** on the status page, since Avo caches the license response between checks.
+4. **The key was rotated.** A license key replaced from https://avohq.io/licenses stops working at once; apps keep running on their last check for a while, then report the license invalid until the new `config.license_key` is deployed to every environment.
+5. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention: either no payment method is on file, or the subscription behind the trial was cancelled. Access continues until the date the status page reports. Both are fixed on https://avohq.io/licenses (a cancelled subscription must be resumed — adding a payment method won't help), then press **Refresh license** on the status page, since Avo caches the license response between checks.
 
 → `license-troubleshooting.html`
 
@@ -259,6 +260,7 @@ Paid add-on gems are served from `packager.dev` and need a **Gem Server Token** 
 
 - **`.env` does not work.** Bundler does not load `.env`, so putting the token there silently fails. Use a real environment variable (via `export`, the host's env settings, CI secrets, or a Docker/Kamal build secret).
 - **403 Forbidden inside a sandbox / cloud agent** (Claude Code cloud, Cursor background agents, restricted egress). If the token *is* set correctly, a 403 usually means a **network allowlist is blocking `packager.dev`**, not bad auth. Add `packager.dev` to the environment's allowed hosts and retry.
+- **Token was rotated.** A Gem Server Token replaced from https://avohq.io/licenses stops working immediately, so a previously working `bundle install` starts failing with 401/403 until `BUNDLE_PACKAGER__DEV` (or the bundle config) holds the new one on developer machines, CI and Docker builds.
 - **v4 gem split.** In Avo 4 each feature ships as its own add-on gem (`avo-dashboards`, `avo-menu`, `avo-advanced_search`, `avo-authorization`, `avo-record_reordering`, `avo-dynamic_filters`, `avo-nested`, …); the legacy v3 bundle gems (`avo-pro`, `avo-advanced`) are gone. If a feature vanished after upgrading, you likely need to add its specific gem. See the upgrade section.
 
 → `gem-server-authentication.html`
