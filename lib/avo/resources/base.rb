@@ -695,6 +695,7 @@ module Avo
 
       def fill_record(record, permitted_params, extra_params: [], fields: nil)
         fields_by_key = fields.present? ? fields.index_by { |field| field.id.to_s } : fields_by_param
+        unresolved = []
 
         # Write each field once, whichever of its params arrived. A param left out keeps the record's current value.
         permitted_params.keys.filter_map { |key| fields_by_key[key.to_s] }.uniq.each do |field|
@@ -703,6 +704,9 @@ module Avo
           key = (fields.present? ? field.id : field.database_id).to_s
 
           record = field.fill_field record, key, params[key], params
+        rescue Avo::Fields::BelongsToField::TargetNotFound => error
+          # Raised once every field is filled, so the form that shows the error keeps the user's other edits
+          unresolved << error
         end
 
         # Write the user configured extra params to the record
@@ -715,7 +719,14 @@ module Avo
           record.assign_attributes extra_attributes
         end
 
-        safe_call(:fill_nested_records, record:, permitted_params:) || record
+        record = safe_call(:fill_nested_records, record:, permitted_params:) || record
+
+        if unresolved.any?
+          unresolved.first.field_ids = unresolved.map(&:field_id)
+          raise unresolved.first
+        end
+
+        record
       end
 
       # On the resource so one that isn't backed by a model can build, save and delete its own records,
