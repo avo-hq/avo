@@ -76,9 +76,9 @@ RSpec.feature "for_attribute option", type: :system do
       within even_reviews_frame do
         reviews.each do |review|
           if review.id % 2 == 0
-            find("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
+            find("[data-resource-name='even_reviews'][data-resource-id='#{review.id}']")
           else
-            expect(page).not_to have_selector("[data-resource-name='reviews'][data-resource-id='#{review.id}']")
+            expect(page).not_to have_selector("[data-resource-name='even_reviews'][data-resource-id='#{review.id}']")
           end
         end
       end

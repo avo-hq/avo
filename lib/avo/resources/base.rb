@@ -348,6 +348,10 @@ module Avo
         "#{model_key}_index"
       end
 
+      def resource_name_for(association: nil)
+        association.presence || model_key
+      end
+
       def initialize(record: nil, view: nil, user: nil, params: nil)
         @view = Avo::ViewInquirer.new(view) if view.present?
         @user = user if user.present?

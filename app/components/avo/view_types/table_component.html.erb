@@ -1,13 +1,13 @@
-<turbo-frame id="<%= "#{@resource.model_key}_list" %>" target="_top" class="relative w-full">
+<turbo-frame id="<%= list_frame_id %>" target="_top" class="relative w-full">
   <div
     class="card relative w-full"
     data-component-name="<%= self.class.to_s.underscore %>"
     data-controller="item-select-all"
-    data-resource-name="<%= @resource.model_key %>"
+    data-resource-name="<%= resource_name_for(@resource) %>"
     data-item-select-all-selected-all-value="false"
     data-item-select-all-selected-all-query-value="<%= encrypted_query %>"
     data-item-select-all-page-count-value="<%= @pagy.pages %>"
-    data-selected-resources-name="<%= @resource.model_key %>"
+    data-selected-resources-name="<%= resource_name_for(@resource) %>"
     data-selected-resources="[]"
   >
     <div class="card__wrapper mac-styled-scrollbar overflow-auto">

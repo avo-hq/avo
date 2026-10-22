@@ -104,7 +104,7 @@ module Avo
 
     def action_params
       @action_params ||= params.permit(
-        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, :resource_view, fields: {}
+        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, :resource_view, :via_related_name, fields: {}
       )
     end
 

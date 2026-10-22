@@ -68,7 +68,7 @@ module Avo
             }
 
             render turbo_stream: [
-              turbo_stream.replace("#{@resource.model_key}_body_content") do
+              turbo_stream.replace(helpers.resource_body_content_id(@resource)) do
                 Avo::Current.view_context.render Avo::ResourceListingComponent.new(
                   **common_args,
                   turbo_frame: params[:turbo_frame],
