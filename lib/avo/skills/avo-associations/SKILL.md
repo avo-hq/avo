@@ -168,6 +168,7 @@ Turning a long `belongs_to` / `has_many` picker into a type-to-search field is t
 - **A `belongs_to` field is disabled when you arrive through that same association.** Editing a Comment reached via a Post's comments panel disables the `post` field. Set `allow_via_detaching: true` to re-enable it.
 - **`polymorphic_as` and `types` are a pair** — using one without the other raises. `types` is an array of model classes (`[::Post, ::Project]`), matching a `polymorphic: true` `belongs_to`.
 - **`attach_scope` does not filter listed rows**, only the attach picker. To hide rows from a `has_many`/HABTM table, use `scope` or a Pundit policy scope.
+- **Build `attach_scope` on `query` to keep the policy scope.** `query` arrives already narrowed by the target's policy scope. A fresh relation (`-> { ::User.all }`) widens past it on purpose: on a `belongs_to`, both the dropdown and the save accept every record it returns.
 - **STI child resources must set `self.model_class`.** When a parent class and STI children share a table, give each child resource `self.model_class = "SuperUser"` so Avo maps it correctly. To route association rows / index clicks to the child resource instead of the parent, use `self.link_to_child_resource = true` on the parent resource or `link_to_child_resource:` on the field.
 - **Searchable can look "broken" but be misconfigured** — no query source means an empty picker, not an error. And it's a paid add-on.
 
