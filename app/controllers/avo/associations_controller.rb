@@ -12,6 +12,7 @@ module Avo
     before_action :set_attachment_record, only: [:create, :destroy]
     before_action :set_attach_fields, only: [:new, :create]
     before_action :authorize_index_action, only: :index
+    before_action :authorize_show_action, only: :show
     before_action :authorize_attach_action, only: [:new, :create]
     before_action :authorize_detach_action, only: :destroy
 
@@ -201,6 +202,11 @@ module Avo
 
     def authorize_index_action
       authorize_if_defined "view_#{@field.id}?"
+    end
+
+    def authorize_show_action
+      authorize_if_defined "view_#{@field.id}?"
+      @related_authorization.set_record(@related_record).authorize_action :show
     end
 
     def authorize_attach_action
