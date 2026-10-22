@@ -57,6 +57,17 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+      # A value that matches no record the field may attach, which a form shows on the field.
+      # A RecordNotFound, so code that already rescues one keeps working.
+      class TargetNotFound < ActiveRecord::RecordNotFound
+        attr_reader :field_id
+
+        def initialize(message, model, id, field_id:)
+          @field_id = field_id
+          super(message, model, nil, id)
+        end
+      end
+
       include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
 
@@ -331,10 +342,11 @@ module Avo
 
       private
 
-      # A custom finder can answer nil (`find_by`) where the default one raises, so raise for it
+      # Whether the finder raises (`find`) or answers nil (`find_by`), the field raises TargetNotFound
       def find_target!(target, record, id)
-        target.find_record(id, query: scoped_target_query(target, record, for_find: true)) ||
-          raise(ActiveRecord::RecordNotFound.new("Couldn't find #{target.model_class.name} with '#{id}'", target.model_class.name))
+        target.find_record(id, query: scoped_target_query(target, record, for_find: true)) || raise(ActiveRecord::RecordNotFound)
+      rescue ActiveRecord::RecordNotFound
+        raise TargetNotFound.new("Couldn't find #{target.model_class.name} with '#{id}'", target.model_class.name, id, field_id: self.id)
       end
 
       def scoped_target_query(resource, parent_record, for_find: false)

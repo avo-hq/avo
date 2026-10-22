@@ -231,6 +231,9 @@ module Avo
     end
 
     def save_record
+      # Saving runs the validations, which would clear an error that filling the record left on it
+      return false if @record.errors.any?
+
       perform_action_and_record_errors do
         save_record_action
       end
