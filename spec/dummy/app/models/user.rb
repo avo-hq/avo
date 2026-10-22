@@ -84,6 +84,10 @@ class User < ApplicationRecord
     ["active", "birthday", "created_at", "custom_css", "email", "encrypted_password", "first_name", "id", "last_name", "remember_created_at", "reset_password_sent_at", "reset_password_token", "roles", "slug", "team_id", "updated_at"]
   end
 
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
+
   # Simulate accounts association
   def accounts
     [
