@@ -24,6 +24,11 @@ module Avo
       def fill_field(record, _, values, _)
         new_value = {}
 
+        # The form submits the checked options, a JSON request body or a tool can submit option => checked
+        if values.respond_to?(:each_pair)
+          values = values.to_h.select { |_, checked| ActiveModel::Type::Boolean.new.cast(checked) }.keys.map(&:to_s)
+        end
+
         # Reject empty values passed by hidden inputs
         values.reject! { |value| value == "" }
 

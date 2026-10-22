@@ -10,5 +10,14 @@ RSpec.describe Avo::Fields::BooleanGroupField, type: :model do
 
       expect(record.roles).to eq({"writer" => true, :admin => true, :manager => false})
     end
+
+    it "accepts the options as a hash of option to checked" do
+      record = Struct.new(:roles).new({})
+      field = described_class.new(:roles, options: {admin: "Administrator", manager: "Manager"})
+
+      field.fill_field(record, :roles, {"admin" => true, "manager" => "false"}, {})
+
+      expect(record.roles).to eq({admin: true, manager: false})
+    end
   end
 end

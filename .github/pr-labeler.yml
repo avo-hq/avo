@@ -1,7 +1,7 @@
 Feature: ["feature/*", "feat/*", "*feature/*", "*feat/*"]
 Enhancement: ["enhancement/*", "*enhancement/*"]
 Fix: ["fix/*", "*fix/*", "*bugfix/*"]
-Chore: ["chore/*", "*chore/*"]
+Chore: ["chore/*", "*chore/*", "docs-sync"]
 Test: ["test/*", "*test/*"]
 Docs: ["docs/*", "*docs/*"]
 Refactor: ["refactor/*", "refact/*", "*refactor/*", "*refact/*"]
