@@ -319,6 +319,37 @@ module Avo
           ).handle
         end
 
+        # The records `ids` name, each the way `find_record` finds one: by its `to_param`, through
+        # `find_record_method`. One entry per id, in order, nil where an id names no record in `query`.
+        #
+        # The finder is asked for the whole set first, then once per id it did not name: a finder
+        # that takes one id at a time, or a missing record.
+        def find_records(ids, query: nil, params: nil)
+          query ||= find_scope
+          ids = ids.map(&:to_s)
+
+          found = begin
+            ids.many? ? Array.wrap(find_record(ids.uniq, query:, params:)).index_by { |record| record.to_param.to_s } : {}
+          rescue
+            {}
+          end
+
+          (ids - found.keys).each do |id|
+            found[id] = find_record(id, query:, params:)
+          rescue ActiveRecord::ActiveRecordError, RangeError, ArgumentError, TypeError
+            nil
+          end
+
+          # Avo's own finder reads through `query`. A custom one may ignore it, so only what `query`
+          # also holds is kept.
+          unless find_record_method.equal?(Avo::Resources::Base.find_record_method)
+            in_query = query.where(model_class.primary_key => found.values.compact.map(&:id)).index_by(&:id)
+            found.transform_values! { |record| record if in_query.key?(record&.id) }
+          end
+
+          ids.map { |id| found[id] }
+        end
+
         def search_query
           search.dig(:query)
         end
@@ -335,7 +366,7 @@ module Avo
       delegate :plural_name, to: :class
       delegate :underscore_name, to: :class
       delegate :to_param, to: :class
-      delegate :find_record, to: :class
+      delegate :find_record, :find_records, to: :class
       delegate :model_key, to: :class
       delegate :translation_key, to: :class
       delegate :tab, to: :items_holder

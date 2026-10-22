@@ -161,6 +161,14 @@ RSpec.describe "Actions", type: :request do
       expect(response).to have_http_status(:ok)
       expect(flash[:success][:body]).to start_with "0 fish released"
     end
+
+    it "runs the action for the records still in an array resource's list" do
+      post "/admin/resources/movies/actions",
+        params: {action_id: "Avo::Actions::Test::Query", fields: {avo_resource_ids: "3,1,999"}},
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+
+      expect(flash[:success][:body]).to eq "succeed 2 selected"
+    end
   end
 
   describe "polymorphic belongs_to field" do
