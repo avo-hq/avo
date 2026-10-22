@@ -12,7 +12,7 @@ module Avo
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, only: [:create, :update]
-    # Don't run base authorizations for associations
+    # AssociationsController authorizes each of its actions itself, so a new action needs its own check
     before_action :authorize_base_action, except: :preview, if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
 

@@ -150,7 +150,7 @@ module Avo
       @related_record = if @field.is_a? Avo::Fields::HasOneField
         @record.send association_name
       else
-        @related_resource.find_record params[:related_id], query: @record.send(association_name), params: params
+        @related_resource.find_record params[:related_id], query: @related_authorization.apply_policy(@record.send(association_name)), params: params
       end
       @related_resource.hydrate(record: @related_record)
     end
