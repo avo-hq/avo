@@ -697,9 +697,10 @@ module Avo
         fields_by_key = fields.present? ? fields_by_param(fields) : fields_by_param
         unresolved = []
 
-        # Write each field once, whichever of its params arrived. A param left out keeps the record's current value.
+        # Write each field once, whichever of its params arrived. A param left out keeps the record's current value,
+        # except a polymorphic id, which its field keeps only under the current type.
         permitted_params.keys.filter_map { |key| fields_by_key[key.to_s] }.uniq.each do |field|
-          left_out = fields_by_key.filter_map { |key, owner| key if owner == field && !permitted_params.key?(key) && record.respond_to?(key) }
+          left_out = fields_by_key.filter_map { |key, owner| key if owner == field && !permitted_params.key?(key) && record.respond_to?(key) && key != field.try(:id_input_foreign_key) }
           params = permitted_params.reverse_merge(left_out.index_with { |key| record.public_send(key) })
           key = field.database_id.to_s
 
