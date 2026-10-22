@@ -53,12 +53,7 @@ module Avo
       @resource.hydrate(record: @record)
 
       if @field.present? && !@field.is_searchable?
-        query = @related_authorization.apply_policy @attachment_class
-
-        # Add the association scope to the query scope
-        if @field.attach_scope.present?
-          query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
-        end
+        query = attachable_query
 
         @options = if attach_using_checkbox_list?
           checkbox_list_options(query)
@@ -150,13 +145,10 @@ module Avo
     end
 
     def set_attachment_record
-      if action_name == "create"
-        @attachment_records = attachment_ids.map do |id|
-          @related_resource.find_record id, params: params
-        end
-        @attachment_record = @attachment_records.first
+      @attachment_record = if action_name == "create"
+        attachment_records.first
       else
-        @attachment_record = @related_resource.find_record attachment_id, params: params
+        @related_resource.find_record attachment_id, params: params
       end
     end
 
@@ -174,10 +166,23 @@ module Avo
       Array(attachment_id).reject(&:blank?)
     end
 
+    # Whether the finder raises (`find`) or answers nil (`find_by`), a refused id raises like a missing one
     def attachment_records
-      @attachment_records ||= attachment_ids.map do |id|
-        @related_resource.find_record id, params: params
+      @attachment_records ||= begin
+        query = attachable_query
+
+        attachment_ids.map do |id|
+          @related_resource.find_record(id, query:, params:) || raise(ActiveRecord::RecordNotFound, "Couldn't find #{@attachment_class} with '#{id}'")
+        end
       end
+    end
+
+    # What the attach picker offers, and so the only records the save accepts
+    def attachable_query
+      query = @related_authorization.apply_policy @attachment_class
+      return query if @field.attach_scope.blank?
+
+      Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
     end
 
     def reflection_class
