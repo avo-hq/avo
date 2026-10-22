@@ -39,4 +39,16 @@ RSpec.describe Avo::Fields::BelongsToField, type: :model do
       expect { field.fill_field(post, :user_id, "missing", {}) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  describe "#target_resource" do
+    before { Avo::Current.resource_manager = Avo::Resources::ResourceManager.build }
+
+    it "answers each polymorphic type with its own resource, not the first one asked about" do
+      field = described_class.new(:commentable, polymorphic_as: :commentable, types: [::Post, ::Project])
+
+      field.target_resource(polymorphic_model_class: ::Post)
+
+      expect(field.target_resource(polymorphic_model_class: ::Project).model_class).to eq ::Project
+    end
+  end
 end

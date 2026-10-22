@@ -247,14 +247,13 @@ module Avo
       end
 
       def target_resource(record: @record, polymorphic_model_class: value&.class)
+        # Each polymorphic type has its own resource, so that answer can't be memoized
+        if is_polymorphic? && use_resource.blank?
+          return polymorphic_model_class.present? ? get_resource_by_model_class(polymorphic_model_class) : nil
+        end
+
         @target_resource ||= if use_resource.present?
           use_resource
-        elsif is_polymorphic?
-          if polymorphic_model_class.present?
-            get_resource_by_model_class(polymorphic_model_class)
-          else
-            return nil
-          end
         else
           reflection_key = polymorphic_as || attribute_id
 
