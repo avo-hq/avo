@@ -193,6 +193,9 @@ module Avo
 
       @record = @resource.fill_record(@record_to_fill, cast_nullable(model_params), extra_params: extra_params)
       assign_default_value_to_disabled_fields if @view.create?
+    rescue Avo::Fields::BelongsToField::TargetNotFound => error
+      @record = @record_to_fill
+      @record.errors.add(error.field_id, :invalid)
     end
 
     def is_attach_action?
