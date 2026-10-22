@@ -96,7 +96,8 @@ module Avo
 
       def fill_field(record, key, value, _params)
         begin
-          new_value = JSON.parse(value)
+          # The form submits a JSON string, a JSON request body or a tool submits the hash itself
+          new_value = value.is_a?(String) ? JSON.parse(value) : value.to_h.stringify_keys
         rescue
           new_value = {}
         end

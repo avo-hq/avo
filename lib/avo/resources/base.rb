@@ -656,12 +656,14 @@ module Avo
       end
 
       def fill_record(record, permitted_params, extra_params: [], fields: nil)
+        fields_by_id = fields_by_database_id if fields.blank?
+
         # Write the field values
         permitted_params.each do |key, value|
           field = if fields.present?
             fields.find { |f| f.id == key.to_sym }
           else
-            fields_by_database_id[key]
+            fields_by_id[key]
           end
 
           next unless field.present?
