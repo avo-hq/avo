@@ -646,33 +646,32 @@ module Avo
         end
       end
 
-      # Map the received params to their actual fields
-      # 'resource' argument is used on avo-advanced, don't remove
-      def fields_by_database_id(resource: self)
-        resource.get_field_definitions
-          .reject do |field|
-            field.computed
-          end
-          .map do |field|
-            [field.database_id.to_s, field]
-          end
+      # Every form param, mapped to the field that writes it: each non-computed field's params, and each
+      # top-level `extra_params` name, which no field writes (nil). A field hidden from the form keeps its
+      # params, as a resource tool can render it. When several fields take one param (a field declared
+      # once per view), the one this form shows to this user writes it. `fields` narrows the candidates.
+      def fields_by_param(fields = get_field_definitions)
+        form = Avo::ViewInquirer.new(view).form?
+        shown, hidden = fields.reject(&:computed).partition { |field| form && field.visible_in_view?(view:) && field.visible? }
+        extra = Array.wrap(self.class.extra_params).select { |param| param.is_a?(Symbol) || param.is_a?(String) }
+
+        # Shown fields last, so they win a param they share
+        (hidden + shown)
+          .flat_map { |field| flatten_keys(Array.wrap(field.to_permitted_param)).map { |param| [param.to_s, field] } }
           .to_h
+          .merge(extra.to_h { |param| [param.to_s, nil] }) { |_param, field| field }
       end
 
       def fill_record(record, permitted_params, extra_params: [], fields: nil)
-        fields_by_id = fields_by_database_id if fields.blank?
+        fields_by_key = fields.present? ? fields.index_by { |field| field.id.to_s } : fields_by_param
 
-        # Write the field values
-        permitted_params.each do |key, value|
-          field = if fields.present?
-            fields.find { |f| f.id == key.to_sym }
-          else
-            fields_by_id[key]
-          end
+        # Write each field once, whichever of its params arrived. A param left out keeps the record's current value.
+        permitted_params.keys.filter_map { |key| fields_by_key[key.to_s] }.uniq.each do |field|
+          left_out = fields_by_key.filter_map { |key, owner| key if owner == field && !permitted_params.key?(key) && record.respond_to?(key) }
+          params = permitted_params.reverse_merge(left_out.index_with { |key| record.public_send(key) })
+          key = (fields.present? ? field.id : field.database_id).to_s
 
-          next unless field.present?
-
-          record = field.fill_field record, key, value, permitted_params
+          record = field.fill_field record, key, params[key], params
         end
 
         # Write the user configured extra params to the record
