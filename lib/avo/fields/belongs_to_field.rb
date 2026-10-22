@@ -61,9 +61,12 @@ module Avo
       # A RecordNotFound, so code that already rescues one keeps working.
       class TargetNotFound < ActiveRecord::RecordNotFound
         attr_reader :field_id
+        # This field and every other one the same fill could not resolve, so a form shows them all
+        attr_accessor :field_ids
 
         def initialize(message, model, id, field_id:)
           @field_id = field_id
+          @field_ids = [field_id]
           super(message, model, nil, id)
         end
       end
