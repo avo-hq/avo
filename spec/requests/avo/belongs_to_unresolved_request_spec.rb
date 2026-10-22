@@ -30,4 +30,17 @@ RSpec.describe "Belongs to value that matches no record", type: :request do
     expect(page).to have_field("post[status]", with: "published")
     expect(post_record.reload).to have_attributes(name: "Before", user: admin_user, status: "draft")
   end
+
+  it "saves no file uploaded with it" do
+    project = create :project, user: admin_user
+
+    # files is declared after user, and nothing else in the request changes the record
+    patch "/admin/resources/projects/#{project.to_param}", params: {project: {
+      user_id: "no-such-user",
+      files: [Rack::Test::UploadedFile.new(Rails.root.join("db/seed_files/dummy-image.jpg"), "image/jpeg")]
+    }}
+
+    expect(response).to have_http_status(422)
+    expect(project.reload.files).to be_empty
+  end
 end
