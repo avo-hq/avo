@@ -56,6 +56,12 @@ export default class extends Controller {
       options.mode = this.modeValue // null or "select"
     }
 
+    if (this.modeValue === 'select') {
+      // Pasted text becomes the search query, like typed text. Tagify's default turns it straight into a tag,
+      // which enforce_suggestions rejects, so the paste was lost.
+      options.pasteAsTags = false
+    }
+
     if (this.suggestionsAreObjects) {
       options = merge(options, {
         tagTextProp: 'label',
@@ -135,6 +141,15 @@ export default class extends Controller {
       // Typing over an existing tag (like the selected value in select mode) edits that tag,
       // and Tagify reports it as "edit:input" instead of "input".
       this.tagify.on('edit:input', (e) => fetchSuggestions(e.detail.data.newValue))
+      // With pasteAsTags off, Tagify fills the input on paste without firing "input"
+      if (!this.tagify.settings.pasteAsTags) {
+        this.tagify.on('paste', (e) => fetchSuggestions(e.detail.pastedText))
+      }
+      // Pasting into a tag being edited fires neither; by the time it bubbles here Tagify has inserted the text
+      this.tagify.DOM.scope.addEventListener('paste', (e) => {
+        const editableTagText = e.target.closest(`.${this.tagify.settings.classNames.tagText}`)
+        if (editableTagText) fetchSuggestions(editableTagText.textContent)
+      })
     }
   }
 
