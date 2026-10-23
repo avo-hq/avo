@@ -84,7 +84,7 @@ end
 
 The keyword arguments:
 
-- `query` — the selected record(s). **Always an array**, even for a single record (`records` is an alias).
+- `query` — the selected record(s). **An array**, in the order the records were selected, even for a single record (`records` is an alias). **Select all** across pages passes a relation instead, so iterate with `query.each`/`query.map` and don't rely on array-only or relation-only methods.
 - `fields` — values submitted through the action's form fields (see below).
 - `current_user` — the authenticated user.
 - `resource` — the Avo resource instance that triggered the action.
@@ -258,7 +258,7 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
 
 ## Gotchas
 
-- **`query` is always an array.** Even a single-record action gets `[record]`. Use `query.first` for the one-record case; don't call record methods on `query` directly. `records` is an alias.
+- **`query` is an array** (a relation only on Select all across pages). Even a single-record action gets `[record]`; relation methods like `update_all`, `where` or `find_each` aren't available on it, so iterate, or use `Model.where(id: query.map(&:id))`. Use `query.first` for the one-record case; don't call record methods on `query` directly. `records` is an alias.
 - **Records deleted after selection are omitted.** Another user may delete a checked record before the action request arrives. Avo drops that missing record and still passes every surviving selection to `handle`; action authors do not need to rescue `ActiveRecord::RecordNotFound` for this race. `query` can therefore come back **empty** when every selected record is gone — guard with `return error "No record selected" if query.blank?` if that matters.
 - **"My action doesn't show up" is usually the policy.** With Pundit, `act_on?` in the resource's policy gates action visibility (and `authorize` on the action gates it further). Check the policy first. See the **`avo-authorization`** skill.
 - **`view` is the view the action was started from.** In `authorize`, `visible`, the modal text blocks, `fields`, and `handle`, `view` (and `resource.view`) is `index`, `show`, or `edit` — the page the user opened the action from — both while the modal renders and while the action runs. It is never `new`; the modal is not a view. It arrives with the request and is checked against the route (`show` and `edit` need a record in the URL), so use it to adapt behavior (`reload_records if view.index?`), never as the only gate on who may run the action: gate people on `current_user`, and single-versus-bulk on `query.size` or `record`.
