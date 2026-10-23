@@ -11,7 +11,7 @@ module Avo
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
-    # Don't run base authorizations for associations
+    # AssociationsController authorizes each of its actions itself, so a new action needs its own check
     before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
 
@@ -68,7 +68,7 @@ module Avo
             }
 
             render turbo_stream: [
-              turbo_stream.replace("#{@resource.model_key}_body_content") do
+              turbo_stream.replace(helpers.resource_body_content_id(@resource)) do
                 Avo::Current.view_context.render Avo::ResourceListingComponent.new(
                   **common_args,
                   turbo_frame: params[:turbo_frame],
@@ -231,6 +231,9 @@ module Avo
     end
 
     def save_record
+      # Saving runs the validations, which would clear an error that filling the record left on it
+      return false if @record.errors.any?
+
       perform_action_and_record_errors do
         save_record_action
       end

@@ -55,12 +55,15 @@ module Avo
 
         return super(id, query: fetched_records, params:) if is_active_record_relation?(fetched_records)
 
-        # Id is Array when find record is called from actions controller
-        if id.is_a?(Array)
-          fetched_records.select { |record| id.map(&:to_s).include?(record.id.to_s) }
-        else
-          fetched_records.find { |record| record.id.to_s == id.to_s }
-        end
+        fetched_records.find { |record| record.id.to_s == id.to_s }
+      end
+
+      def find_records(ids, query: nil, params: nil)
+        fetched_records = fetch_records
+
+        return super(ids, query: fetched_records, params:) if is_active_record_relation?(fetched_records)
+
+        ids.map { |id| fetched_records.find { |record| record.id.to_s == id.to_s } }
       end
 
       def fetch_records(array_of_records = nil)

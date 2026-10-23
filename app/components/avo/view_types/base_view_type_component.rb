@@ -12,6 +12,10 @@ class Avo::ViewTypes::BaseViewTypeComponent < Avo::BaseComponent
   prop :turbo_frame
   prop :index_params
 
+  def list_frame_id
+    "#{resource_name_for(@resource)}_list"
+  end
+
   def paginator_component
     Avo::PaginatorComponent.new(
       pagy: @pagy,

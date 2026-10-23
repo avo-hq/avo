@@ -57,6 +57,20 @@ module Avo
     # - is_disabled?
 
     class BelongsToField < BaseField
+      # A value that matches no record the field may attach, which a form shows on the field.
+      # A RecordNotFound, so code that already rescues one keeps working.
+      class TargetNotFound < ActiveRecord::RecordNotFound
+        attr_reader :field_id
+        # This field and every other one the same fill could not resolve, so a form shows them all
+        attr_accessor :field_ids
+
+        def initialize(message, model, id, field_id:)
+          @field_id = field_id
+          @field_ids = [field_id]
+          super(message, model, nil, id)
+        end
+      end
+
       include Avo::Fields::Concerns::IsSearchable
       include Avo::Fields::Concerns::UseResource
 
@@ -213,7 +227,7 @@ module Avo
             record.send(:"#{polymorphic_as}_id=", nil)
           else
             target = target_resource(record:, polymorphic_model_class: value.safe_constantize)
-            record_id = target.find_record(id_from_param, query: scoped_target_query(target, record, for_find: true)).id
+            record_id = find_target!(target, record, id_from_param).id
 
             record.send(:"#{polymorphic_as}_id=", record_id)
           end
@@ -222,7 +236,7 @@ module Avo
           record_id = if value.blank?
             value
           else
-            target.find_record(value, query: scoped_target_query(target, record, for_find: true)).send(reflection.association_primary_key)
+            find_target!(target, record, value).send(reflection.association_primary_key)
           end
 
           record.send(:"#{key}=", record_id)
@@ -247,14 +261,13 @@ module Avo
       end
 
       def target_resource(record: @record, polymorphic_model_class: value&.class)
+        # Each polymorphic type has its own resource, so that answer can't be memoized
+        if is_polymorphic? && use_resource.blank?
+          return polymorphic_model_class.present? ? get_resource_by_model_class(polymorphic_model_class) : nil
+        end
+
         @target_resource ||= if use_resource.present?
           use_resource
-        elsif is_polymorphic?
-          if polymorphic_model_class.present?
-            get_resource_by_model_class(polymorphic_model_class)
-          else
-            return nil
-          end
         else
           reflection_key = polymorphic_as || attribute_id
 
@@ -331,6 +344,13 @@ module Avo
       end
 
       private
+
+      # Whether the finder raises (`find`) or answers nil (`find_by`), the field raises TargetNotFound
+      def find_target!(target, record, id)
+        target.find_record(id, query: scoped_target_query(target, record, for_find: true)) || raise(ActiveRecord::RecordNotFound)
+      rescue ActiveRecord::RecordNotFound
+        raise TargetNotFound.new("Couldn't find #{target.model_class.name} with '#{id}'", target.model_class.name, id, field_id: self.id)
+      end
 
       def scoped_target_query(resource, parent_record, for_find: false)
         resource_class = resource.is_a?(Class) ? resource : resource.class

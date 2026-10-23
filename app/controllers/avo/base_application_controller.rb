@@ -152,7 +152,7 @@ module Avo
       @related_record = if @field.is_a? Avo::Fields::HasOneField
         @record.send association_name
       else
-        @related_resource.find_record params[:related_id], query: @record.send(association_name), params: params
+        @related_resource.find_record params[:related_id], query: @related_authorization.apply_policy(@record.send(association_name)), params: params
       end
       @related_resource.hydrate(record: @related_record)
     end
@@ -193,6 +193,9 @@ module Avo
 
       @record = @resource.fill_record(@record_to_fill, cast_nullable(model_params), extra_params: extra_params)
       assign_default_value_to_disabled_fields if @view.create?
+    rescue Avo::Fields::BelongsToField::TargetNotFound => error
+      @record = @record_to_fill
+      error.field_ids.each { |field_id| @record.errors.add(field_id, :invalid) }
     end
 
     def is_attach_action?

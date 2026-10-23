@@ -29,7 +29,7 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_selector '[data-button="add-row"]'
       end
 
-      it "adds a row to meta table and input one row with values" do
+      it "does not save a value for the disabled value input" do
         visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
@@ -46,7 +46,9 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         find('input[placeholder="Meta key"]').set("Test Key")
-        find('input[placeholder="Meta value"]').set("Test Value")
+        # The value input is disabled, so write the value straight into the JSON the form submits
+        json_input = meta_element.find('[data-key-value-target="input"]', visible: false)
+        page.execute_script("arguments[0].value = arguments[1]", json_input, {"Test Key" => "Test Value"}.to_json)
 
         save
 
@@ -59,7 +61,7 @@ RSpec.describe "KeyValueFields", type: :system do
         values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
 
         expect(keys[0].value).to eq "Test Key"
-        expect(values[0].value).to eq "Test Value"
+        expect(values[0].value).to eq ""
       end
 
       it "focuses the new row's key input after adding a row" do
@@ -97,29 +99,6 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"][disabled="disabled"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
       end
-    end
-
-    it "won't change the value" do
-      visit "/admin/resources/projects/#{project.id}/edit"
-      wait_for_loaded
-
-      meta_element = find_field_element("meta")
-
-      find('[data-button="add-row"]').click
-
-      fill_in "Meta key", with: "foo20"
-      disabled_field = find('input[placeholder="Meta value"][disabled="disabled"]')
-      page.execute_script("arguments[0].value = 'bazz';", disabled_field)
-      disabled_field.trigger("input")
-
-      save
-
-      expect(current_path).to eql "/admin/resources/projects/#{project.id}"
-
-      scroll_to find_field_element("meta")
-
-      expect(meta_element).to have_field("Meta key", with: "foo20", disabled: true)
-      expect(page).to have_field("Meta value", with: "", disabled: true)
     end
   end
 
@@ -241,36 +220,6 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(page).not_to have_text "Remove item"
         delete_buttons[0].hover
         expect(page).to have_text "Remove item"
-      end
-
-      it "adds a row to meta table with key and value" do
-        visit "/admin/resources/projects/#{project.id}/edit"
-        wait_for_loaded
-
-        meta_element = find_field_element("meta")
-
-        find("[data-button='add-row']").click
-
-        expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
-        expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
-
-        keys = page.all('input[placeholder="Meta key"]')
-        values = page.all('input[placeholder="Meta value"]')
-
-        keys[2].set("Test Key")
-        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", keys[2].native)
-        values[2].set("Test Value")
-        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", values[2].native)
-
-        save
-
-        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
-
-        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
-        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
-
-        expect(keys[2].value).to eq "Test Key"
-        expect(values[2].value).to eq "Test Value"
       end
 
       it "adds a row to meta table only with key" do

@@ -45,8 +45,9 @@ module Avo
       def fill_field(record, key, value, params)
         return record unless record.methods.include? key.to_sym
 
-        # attach files in one call to avoid index_active_storage_attachments_uniqueness violation
-        record.send(key).attach(value.compact_blank)
+        # `attach` without its immediate save on a persisted record, so the files are saved with the record and a form
+        # that fails saves none. One assignment avoids an index_active_storage_attachments_uniqueness violation.
+        record.public_send(:"#{key}=", record.public_send(key).blobs + value.compact_blank)
 
         record
       end

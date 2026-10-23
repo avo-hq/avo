@@ -20,9 +20,10 @@ RSpec.describe Avo::Index::TableRowComponent, type: :component do
       index: 0,
       row_selector_checked: false
     )
-    # `click_row_to_view_record` calls `helpers` (only available inside render).
-    # Disable it for component-method-level tests that don't go through render.
+    # `click_row_to_view_record` and `resource_name_for` read `helpers` and `params` (only available inside render).
+    # Stub them for component-method-level tests that don't go through render.
     allow(component).to receive(:click_row_to_view_record).and_return(false)
+    allow(component).to receive(:resource_name_for).and_return(resource.model_key)
     component
   end
 

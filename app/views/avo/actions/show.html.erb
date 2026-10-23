@@ -6,7 +6,7 @@
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
     data-action-confirmation-value="<%= @action.confirmation? %>"
-    data-action-resource-name-value="<%= @resource.model_key %>"
+    data-action-resource-name-value="<%= resource_name_for(@resource) %>"
     data-resource-id="<%= params[:id] %>"
     class="hidden text-content"
   >

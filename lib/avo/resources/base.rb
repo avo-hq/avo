@@ -319,6 +319,37 @@ module Avo
           ).handle
         end
 
+        # The records `ids` name, each the way `find_record` finds one: by its `to_param`, through
+        # `find_record_method`. One entry per id, in order, nil where an id names no record in `query`.
+        #
+        # The finder is asked for the whole set first, then once per id it did not name: a finder
+        # that takes one id at a time, or a missing record.
+        def find_records(ids, query: nil, params: nil)
+          query ||= find_scope
+          ids = ids.map(&:to_s)
+
+          found = begin
+            ids.many? ? Array.wrap(find_record(ids.uniq, query:, params:)).index_by { |record| record.to_param.to_s } : {}
+          rescue
+            {}
+          end
+
+          (ids - found.keys).each do |id|
+            found[id] = find_record(id, query:, params:)
+          rescue ActiveRecord::ActiveRecordError, RangeError, ArgumentError, TypeError
+            nil
+          end
+
+          # Avo's own finder reads through `query`. A custom one may ignore it, so only what `query`
+          # also holds is kept.
+          unless find_record_method.equal?(Avo::Resources::Base.find_record_method)
+            in_query = query.where(model_class.primary_key => found.values.compact.map(&:id)).index_by(&:id)
+            found.transform_values! { |record| record if in_query.key?(record&.id) }
+          end
+
+          ids.map { |id| found[id] }
+        end
+
         def search_query
           search.dig(:query)
         end
@@ -335,7 +366,7 @@ module Avo
       delegate :plural_name, to: :class
       delegate :underscore_name, to: :class
       delegate :to_param, to: :class
-      delegate :find_record, to: :class
+      delegate :find_record, :find_records, to: :class
       delegate :model_key, to: :class
       delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
@@ -346,6 +377,10 @@ module Avo
 
       def index_view_frame
         "#{model_key}_index"
+      end
+
+      def resource_name_for(association: nil)
+        association.presence || model_key
       end
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
@@ -642,31 +677,36 @@ module Avo
         end
       end
 
-      # Map the received params to their actual fields
-      # 'resource' argument is used on avo-advanced, don't remove
-      def fields_by_database_id(resource: self)
-        resource.get_field_definitions
-          .reject do |field|
-            field.computed
-          end
-          .map do |field|
-            [field.database_id.to_s, field]
-          end
+      # Every form param, mapped to the field that writes it: each non-computed field's params, and each
+      # top-level `extra_params` name, which no field writes (nil). A field hidden from the form keeps its
+      # params, as a resource tool can render it. When several fields take one param (a field declared
+      # once per view), the one this form shows to this user writes it. `fields` narrows the candidates.
+      def fields_by_param(fields = get_field_definitions)
+        form = Avo::ViewInquirer.new(view).form?
+        shown, hidden = fields.reject(&:computed).partition { |field| form && field.visible_in_view?(view:) && field.visible? }
+        extra = Array.wrap(self.class.extra_params).select { |param| param.is_a?(Symbol) || param.is_a?(String) }
+
+        # Shown fields last, so they win a param they share
+        (hidden + shown)
+          .flat_map { |field| flatten_keys(Array.wrap(field.to_permitted_param)).map { |param| [param.to_s, field] } }
           .to_h
+          .merge(extra.to_h { |param| [param.to_s, nil] }) { |_param, field| field }
       end
 
       def fill_record(record, permitted_params, extra_params: [], fields: nil)
-        # Write the field values
-        permitted_params.each do |key, value|
-          field = if fields.present?
-            fields.find { |f| f.id == key.to_sym }
-          else
-            fields_by_database_id[key]
-          end
+        fields_by_key = fields.present? ? fields.index_by { |field| field.id.to_s } : fields_by_param
+        unresolved = []
 
-          next unless field.present?
+        # Write each field once, whichever of its params arrived. A param left out keeps the record's current value.
+        permitted_params.keys.filter_map { |key| fields_by_key[key.to_s] }.uniq.each do |field|
+          left_out = fields_by_key.filter_map { |key, owner| key if owner == field && !permitted_params.key?(key) && record.respond_to?(key) }
+          params = permitted_params.reverse_merge(left_out.index_with { |key| record.public_send(key) })
+          key = (fields.present? ? field.id : field.database_id).to_s
 
-          record = field.fill_field record, key, value, permitted_params
+          record = field.fill_field record, key, params[key], params
+        rescue Avo::Fields::BelongsToField::TargetNotFound => error
+          # Raised once every field is filled, so the form that shows the error keeps the user's other edits
+          unresolved << error
         end
 
         # Write the user configured extra params to the record
@@ -679,7 +719,14 @@ module Avo
           record.assign_attributes extra_attributes
         end
 
-        safe_call(:fill_nested_records, record:, permitted_params:) || record
+        record = safe_call(:fill_nested_records, record:, permitted_params:) || record
+
+        if unresolved.any?
+          unresolved.first.field_ids = unresolved.map(&:field_id)
+          raise unresolved.first
+        end
+
+        record
       end
 
       # On the resource so one that isn't backed by a model can build, save and delete its own records,

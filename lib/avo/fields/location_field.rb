@@ -86,7 +86,7 @@ module Avo
           record.send(:"#{longitude_field}=", value[longitude_field])
           record
         else
-          super(record, key, value.split(","), params)
+          super(record, key, value.is_a?(Array) ? value : value.split(","), params)
         end
       end
 
