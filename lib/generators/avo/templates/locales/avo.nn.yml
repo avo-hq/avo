@@ -244,5 +244,4 @@ nn:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, eg er sikker
     you_cant_upload_new_resource: Du kan ikkje laste opp filer til Trix-editoren før du lagrar ressursen.
-    you_havent_set_attachment_key: Du har ikkje sett ein `attachment_key` til dette Trix-feltet.
     you_missed_something_check_form: Her manglar du noko. Ver venleg og sjekk skjemaet.
