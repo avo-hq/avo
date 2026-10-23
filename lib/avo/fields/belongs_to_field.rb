@@ -218,6 +218,16 @@ module Avo
         if polymorphic_as.present?
           valid_model_class = valid_polymorphic_class params[:"#{polymorphic_as}_type"]
 
+          # A type sent without its id keeps the current record. A new type can't take the current id, which names a record only
+          # under its own type. With no current id (a create through a parent fills it in later), the type is set as before.
+          if valid_model_class.present? && !params.key?(id_input_foreign_key)
+            return record if valid_model_class.to_s == record.public_send(type_input_foreign_key)
+
+            if record.public_send(id_input_foreign_key).present?
+              raise TargetNotFound.new("Couldn't find #{valid_model_class} without #{id_input_foreign_key}", valid_model_class.name, nil, field_id: id)
+            end
+          end
+
           record.send(:"#{polymorphic_as}_type=", valid_model_class)
 
           # If the type is blank, reset the id too.
