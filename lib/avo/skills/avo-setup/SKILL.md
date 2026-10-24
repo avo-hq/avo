@@ -90,7 +90,7 @@ RAILS_GROUPS=avo BUNDLE_WITH=avo bundle install
 
 ### 3. Authenticate the private gem server (paid add-ons only)
 
-The token is the **Gem Server Token** from https://avohq.io/dashboard. It authenticates bundler to `packager.dev`. Skip this step entirely for Community.
+The token is the **Gem Server Token** from https://avohq.io/licenses. It authenticates bundler to `packager.dev`. Skip this step entirely for Community.
 
 **Local machine** — store it in bundler's global config (bundler picks it up automatically, no Gemfile change):
 
@@ -274,6 +274,7 @@ end
 - **Nested mount = two easy mistakes.** For `/uk/admin`: `config.root_path` must be **only the last segment** (`/admin`, never `/uk/admin`), and `mount_avo` must be the **last** thing in the scope, after any custom-tool routes — otherwise the engine swallows them.
 - **`api_only` must be `false`.** An API-only app has no session/flash/views; Avo can't render. Flip it (or follow the api-only guide) before installing.
 - **GitHub installs don't ship assets.** Install from GitHub and you must `rake avo:build-assets` yourself and hook it into `assets:precompile`, or the admin renders unstyled/broken in production.
+- **Rotating credentials breaks deploys until they're replaced.** If a key or token may have leaked, an account admin clicks **Rotate** next to it on https://avohq.io/licenses (optionally both at once). The old value stops working immediately: a rotated gem-server token fails every `bundle install` that fetches paid gems until `BUNDLE_PACKAGER__DEV` is updated on dev machines, CI and Docker builds (running apps are unaffected); a rotated license key leaves apps reporting an invalid license after their last check until the new `config.license_key` is deployed to every environment.
 - **One license per production URL.** A key authorizes a single app on a single production URL; staging/dev/test don't consume licenses. A second production URL needs its own license.
 - **Add-on gems must sit inside the `packager.dev` `source` block** — that's where the private gems resolve from; `avo` itself stays outside it (rubygems.org).
 - **Verify before writing.** Option and path names drift between versions — check the docs URLs above or the app's installed Avo source rather than trusting memory.

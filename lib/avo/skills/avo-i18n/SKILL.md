@@ -241,7 +241,7 @@ Each user can pick their own language from the language picker in the top navbar
 
 Two request params switch language on the fly. Both ignore a locale missing from `I18n.available_locales`, and the request falls through to the next source.
 
-- **`?set_locale=pt-BR`** — **deprecated**: it logs a warning and will be removed in a future version. It sets Avo's default locale process-wide **until the server restarts** (it mutates `Avo.configuration.locale`), for every user. Don't add it to an app; use the locale selector for a per-user language and `config.locale` for the app-wide one.
+- **`?set_locale=pt-BR`** — **deprecated**: it logs a warning and will be removed in a future version. It sets Avo's default locale process-wide **until the server restarts** (it mutates `Avo.configuration.locale`), for every user. Since `4.3.1` Avo stores it only after the `authenticate_with` block lets the request through (earlier versions stored it before authenticating, so an unauthenticated request could switch everyone's language). Don't add it to an app; use the locale selector for a per-user language and `config.locale` for the app-wide one.
 - **`?force_locale=pt-BR`** — sets the locale for that request only, but Avo **keeps the param in every link** while you navigate. Remove it to return to the configured locale. Good for previewing a translation without changing config.
 
 ### 9. Right-to-left languages
