@@ -146,7 +146,8 @@ module Avo
         end
 
         def valid_attachment_name(record, association_name)
-          association_name if record.class.reflect_on_attachment(association_name).present?
+          # The model's own name, not the request's, so `send` never sees user input.
+          record.class.reflect_on_attachment(association_name)&.name&.to_s
         end
 
         def get_available_models

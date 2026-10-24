@@ -23,7 +23,6 @@ export default class extends Controller {
     isActionText: Boolean,
     uploadWarning: String,
     attachmentDisableWarning: String,
-    attachmentKeyWarning: String,
   }
 
   get rootPath() {
@@ -33,8 +32,9 @@ export default class extends Controller {
   get uploadUrl() {
     // Parse the current URL
     const url = new URI(window.location.origin)
-    // Build the trix field path
-    url.path(`${this.rootPath.path()}/avo_api/resources/${this.resourceNameValue}/${this.resourceIdValue}/attachments`)
+    // Build the trix field path. New records have no id yet.
+    const recordPath = this.resourceIdValue ? `/${this.resourceIdValue}` : ''
+    url.path(`${this.rootPath.path()}/avo_api/resources/${this.resourceNameValue}${recordPath}/attachments`)
     // Add the params back
     url.query(this.rootPath.query())
 
@@ -136,19 +136,10 @@ export default class extends Controller {
         return
       }
 
-      // Prevent file uploads for resources that haven't been saved yet.
-      if (!this.resourceIdValue) {
+      // An `attachment_key` attaches the upload to the record, so the record has to be saved first.
+      if (this.attachmentKeyValue && !this.resourceIdValue) {
         event.preventDefault()
         alert(this.uploadWarningValue)
-
-        return
-      }
-
-      // Prevent file uploads for fields without an attachment key.
-      // When is rich text, attachment key is not needed.
-      if (!this.isActionTextValue && !this.attachmentKeyValue) {
-        event.preventDefault()
-        alert(this.attachmentKeyWarningValue)
       }
     }
   }
@@ -192,6 +183,8 @@ export default class extends Controller {
           href: response.href,
         }
 
+        // Action Text resolves attachments by sgid; without it non-image files render as missing.
+        if (this.isActionTextValue) attributes.sgid = response.sgid
         if (this.hideAttachmentFilenameValue) attributes.filename = null
         if (this.hideAttachmentFilesizeValue) attributes.filesize = null
         if (this.hideAttachmentUrlValue) attributes.href = null

@@ -42,9 +42,6 @@ RSpec.describe "TrixField", type: :system do
 
         attachment_disable_message = find("[data-trix-field-attachment-disable-warning-value]")[:"data-trix-field-attachment-disable-warning-value"]
         expect(attachment_disable_message).to eq I18n.t("avo.this_field_has_attachments_disabled")
-
-        attachment_key_warning_message = find("[data-trix-field-attachment-key-warning-value]")[:"data-trix-field-attachment-key-warning-value"]
-        expect(attachment_key_warning_message).to eq I18n.t("avo.you_havent_set_attachment_key")
       end
     end
   end
@@ -123,6 +120,22 @@ RSpec.describe "TrixField", type: :system do
 
         expect(find_field_value_element("body")).to have_text "New example!"
       end
+    end
+  end
+
+  describe "Action Text attachments" do
+    it "uploads a file on the New form and keeps it attached to the saved record" do
+      visit "/admin/resources/playgrounds/new"
+
+      page.execute_script(<<~JS)
+        document.querySelector("trix-editor").editor.insertFile(new File(["%PDF-1.4"], "report.pdf", {type: "application/pdf"}))
+      JS
+      expect(page).to have_css("trix-editor figure[data-trix-attachment*='sgid']")
+
+      save
+
+      expect(Playground.last.trix_content.embeds.map { |embed| embed.filename.to_s }).to eq ["report.pdf"]
+      expect(find_field_value_element("trix_content")).to have_text "report.pdf"
     end
   end
 
