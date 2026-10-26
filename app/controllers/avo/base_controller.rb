@@ -754,6 +754,49 @@ module Avo
       end
     end
 
+    # A parent policy that defines `create_{association}?` and allows it is an explicit intent to create records
+    # through that association, so it overrides a denying `create?` on the record's own policy (avo-hq/avo#2653).
+    def authorize_base_action
+      super
+    rescue Avo::NotAuthorizedError
+      raise unless create_authorized_through_association?
+    end
+
+    def create_authorized_through_association?
+      return @create_authorized_through_association if defined?(@create_authorized_through_association)
+
+      @create_authorized_through_association =
+        action_name.in?(%w[new create]) &&
+        params[:via_belongs_to_resource_class].blank? &&
+        via_record.present? &&
+        via_parent_associations.any? do |association|
+          method_name = :"create_#{association.name}?"
+          authorization = via_resource.authorization(user: _current_user)
+
+          authorization.has_method?(method_name, raise_exception: false) &&
+            authorization.authorize_action(method_name, record: via_record, raise_exception: false)
+        end
+    end
+    helper_method :create_authorized_through_association?
+
+    # `via_relation` names the association on the record being created that `create` uses to attach it to the parent.
+    # The parent's side is whichever of its associations is the inverse of that one.
+    def via_parent_associations
+      child_association = @resource.model_class.reflect_on_association(params[:via_relation])
+      return [] if child_association.nil?
+
+      via_record.class.reflect_on_all_associations.select do |association|
+        association == safe_inverse_of(child_association) || safe_inverse_of(association) == child_association
+      end
+    end
+
+    # A polymorphic or misconfigured association raises when asked for its inverse, which only means it has none here.
+    def safe_inverse_of(association)
+      association.inverse_of
+    rescue
+      nil
+    end
+
     def add_via_breadcrumbs
       if via_resource.present?
         add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
