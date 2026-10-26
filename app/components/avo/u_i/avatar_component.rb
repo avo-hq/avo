@@ -1,12 +1,12 @@
 class Avo::UI::AvatarComponent < Avo::BaseComponent
-  SIZES = %w[large medium small tiny].freeze
+  SIZES = %w[lg md sm xs].freeze
   SHAPES = %w[rounded square].freeze
   THEMES = %w[default orange yellow green teal blue purple].freeze
   TYPES = %w[avatar placeholder initials].freeze
 
   def initialize(
     type: "placeholder",
-    size: "large",
+    size: "lg",
     shape: "rounded",
     theme: "default",
     initials: nil,

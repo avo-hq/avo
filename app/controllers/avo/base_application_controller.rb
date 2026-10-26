@@ -18,6 +18,7 @@ module Avo
     before_action :decode_params
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
+    around_action :set_browser_timezone, if: -> { Avo.configuration.use_browser_timezone }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -151,7 +152,7 @@ module Avo
       @related_record = if @field.is_a? Avo::Fields::HasOneField
         @record.send association_name
       else
-        @related_resource.find_record params[:related_id], query: @record.send(association_name), params: params
+        @related_resource.find_record params[:related_id], query: @related_authorization.apply_policy(@record.send(association_name)), params: params
       end
       @related_resource.hydrate(record: @related_record)
     end
@@ -175,7 +176,7 @@ module Avo
 
     def set_record_to_fill
       @record_to_fill = if @view.new?
-        @resource.model_class.new
+        @resource.new_record
       elsif @view.edit?
         @record
       end
@@ -192,6 +193,9 @@ module Avo
 
       @record = @resource.fill_record(@record_to_fill, cast_nullable(model_params), extra_params: extra_params)
       assign_default_value_to_disabled_fields if @view.create?
+    rescue Avo::Fields::BelongsToField::TargetNotFound => error
+      @record = @record_to_fill
+      error.field_ids.each { |field_id| @record.errors.add(field_id, :invalid) }
     end
 
     def is_attach_action?
@@ -224,6 +228,13 @@ module Avo
 
     def _authenticate!
       instance_eval(&Avo.configuration.authenticate)
+      return if performed?
+
+      # `?set_locale=` changes the locale for every user, so only a request the
+      # authenticate block let through may store it. Kept here, not in its own
+      # callback, so a controller that skips this one cannot store it either.
+      locale = available_locale(params[:set_locale])
+      Avo.configuration.locale = locale if locale
     end
 
     def render_unauthorized(exception)
@@ -249,7 +260,8 @@ module Avo
     end
 
     def mark_container_width(width)
-      raise ArgumentError, "Invalid container width: #{width}. Must be one of #{Avo::Configuration::VALID_CONTAINER_WIDTHS}" unless Avo::Configuration::VALID_CONTAINER_WIDTHS.include?(width.to_sym)
+      width = Avo::Configuration.normalize_container_width(width.to_sym)
+      raise ArgumentError, "Invalid container width: #{width}. Must be one of #{Avo::Configuration::VALID_CONTAINER_WIDTHS}" unless Avo::Configuration::VALID_CONTAINER_WIDTHS.include?(width)
       @container_size = width.to_s
     end
 
@@ -261,21 +273,69 @@ module Avo
       @resource.form_scope
     end
 
-    # Sets the locale set in avo.rb initializer or if to something that the user set using the `?set_locale=pt-BR` param
+    # Picks the request's locale. `?force_locale=` (set_force_locale, which wraps
+    # this) wins over everything, then `?set_locale=` (kept for backward
+    # compatibility; once authenticated, _authenticate! also stores it in
+    # Avo.configuration.locale for every user until the process restarts), then
+    # the viewer's own choice from the locale selector
+    # cookie, then the configured default. Unknown locales in either param are
+    # ignored: a bad `set_locale` would otherwise be stored globally and make
+    # I18n.with_locale raise InvalidLocale on every later request.
     def set_avo_locale(&action)
       locale = Avo.configuration.default_locale
 
       if params[:set_locale].present?
-        locale = params[:set_locale]
-        Avo.configuration.locale = locale
+        Avo.logger.warn "[Avo] `?set_locale=` is deprecated and will be removed in a future version. It changes the locale for every user. Use the locale selector (`config.locale_selector`) or `?force_locale=` instead."
+      end
+
+      if (requested_locale = available_locale(params[:set_locale]))
+        locale = requested_locale
+      elsif (selected_locale = locale_selector_cookie).present?
+        locale = selected_locale
       end
 
       I18n.with_locale(locale, &action)
     end
 
+    # The cookie is user-controlled, so it only counts when it names a locale
+    # the selector offers. That list is empty when the selector is disabled.
+    def locale_selector_cookie
+      value = cookies[Avo::Locales::COOKIE_NAME].to_s
+      return if value.blank?
+
+      value if Avo.configuration.locale_selector_locales.include?(value)
+    end
+
     # Temporary set the locale and reverting at the end of the request.
     def set_force_locale(&action)
-      I18n.with_locale(params[:force_locale], &action)
+      locale = available_locale(params[:force_locale])
+      return yield if locale.nil?
+
+      I18n.with_locale(locale, &action)
+    end
+
+    def available_locale(value)
+      value = value.to_s
+      value if value.present? && I18n.locale_available?(value)
+    end
+
+    # The browser-timezone Stimulus controller mirrors the viewer's IANA zone
+    # into a cookie (no HTTP header carries it), so every response renders in
+    # the viewer's local zone. `ActiveSupport::TimeZone[]` validates the
+    # user-controlled cookie — junk lookups return nil and we fall back to the
+    # app zone. The one-shot `timezone_changed` cookie is set right before the
+    # controller's Turbo reload, so the reloaded page announces the change once.
+    def set_browser_timezone(&action)
+      zone = ActiveSupport::TimeZone[cookies["#{Avo::COOKIES_KEY}.browser_timezone"].to_s]
+      return yield if zone.nil?
+
+      if cookies.delete("#{Avo::COOKIES_KEY}.timezone_changed").present?
+        flash.now[:notice] = t("avo.timezone_changed",
+          timezone: zone.tzinfo.name,
+          default: "Dates and times are now displayed in your time zone (%{timezone}).")
+      end
+
+      Time.use_zone(zone, &action)
     end
 
     def set_sidebar_open

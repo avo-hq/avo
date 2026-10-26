@@ -1,0 +1,15 @@
+<div class="flex flex-wrap gap-8 p-6">
+  <div class="flex flex-col gap-2">
+    <p class="text-sm text-content-secondary">Configured locales (filterable list)</p>
+    <div class="flex items-center gap-3">
+      <%= render Avo::LocaleSelectorComponent.new %>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <p class="text-sm text-content-secondary">Explicit list, including a right-to-left language</p>
+    <div class="flex items-center gap-3">
+      <%= render Avo::LocaleSelectorComponent.new(locales: %w[en ro de ar ja]) %>
+    </div>
+  </div>
+</div>

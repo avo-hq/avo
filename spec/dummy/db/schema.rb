@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_30_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_22_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -184,6 +184,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_30_120000) do
     t.json "key_value_data", default: {}
     t.float "latitude"
     t.float "longitude"
+    t.text "marksmith_content"
     t.string "multi_select_values", default: [], array: true
     t.string "name"
     t.integer "number_value"
@@ -268,6 +269,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_30_120000) do
 
   create_table "store_patrons", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.integer "referrer_id"
     t.string "review"
     t.integer "store_id"
     t.datetime "updated_at", null: false

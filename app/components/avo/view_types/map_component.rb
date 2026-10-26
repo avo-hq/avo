@@ -68,17 +68,14 @@ class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
   end
 
   def resource_mapkick_options
-    options = map_options[:mapkick_options] || {}
+    (map_options[:mapkick_options] || {}).merge(
+      height: horizontal_layout? ? "100%" : "26rem",
+      style: custom_style || Avo::MapStyles.light
+    )
+  end
 
-    options[:height] = if horizontal_layout?
-      "100%"
-    else
-      "26rem"
-    end
-
-    options[:style] ||= "mapbox://styles/mapbox/light-v11"
-
-    options
+  def map_wrapper_data
+    Avo::MapStyles.wrapper_data(custom_style:)
   end
 
   def render_table?
@@ -98,6 +95,10 @@ class Avo::ViewTypes::MapComponent < Avo::ViewTypes::BaseViewTypeComponent
 
   def map_options
     @resource.map_view || {}
+  end
+
+  def custom_style
+    map_options.dig(:mapkick_options, :style)
   end
 
   def marker_proc

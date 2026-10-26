@@ -4,6 +4,7 @@ fr:
     action_ran_successfully: L'action s'est exécutée avec succès !
     actions: Actions
     add_filter: Ajouter un filtre
+    all: Tout
     and_x_other_resources: et %{count} autres ressources
     appearance:
       accent_picker: Couleur d'accent
@@ -52,6 +53,11 @@ fr:
       shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier
       shortcut_badges_show_tooltip: Afficher les badges de raccourci clavier
       show: Afficher
+      sound: Son
+      sound_off: Désactivé
+      sound_off_tooltip: Silencieux les sons d'apparence
+      sound_on: Activé
+      sound_on_tooltip: Jouer un son lors des changements d'apparence
       title: Apparence
     applied:
       one: appliqué
@@ -110,6 +116,7 @@ fr:
     filter_by: Filtrer par
     filters: Filtres
     global_search:
+      direct_match: Correspondance directe
       empty_state:
         no_results_for_query: Nous n'avons trouvé aucun élément correspondant à "%{query}"
         no_results_found: Aucun résultat trouvé
@@ -125,17 +132,21 @@ fr:
         select: Sélectionner
       results:
         count_of_total: "%{count} sur %{total}"
+      search_results: Résultats de recherche
+      searching_on: 'Recherche dans :'
       show_all_results_for: Afficher tous les résultats pour
     go_back: Retourner en arrière
     grid_view: Vue grille
     hide_content: Cacher le contenu
     home: Accueil
+    image_preview: Aperçu de l'image
     key_value_field:
       add_row: Ajouter une ligne
       delete_row: Supprimer une ligne
       key: Clé
       reorder_row: Réorganiser la ligne
       value: Valeur
+    language: Langue
     less_content: Moins de contenu
     list_is_empty: La liste est vide
     load_item: Charger %{item}
@@ -148,6 +159,7 @@ fr:
     nested:
       add_new_item: Ajouter un nouveau %{item}
     new: Nouveau
+    next_image: Image suivante
     next_page: Page suivante
     no_cancel: Non, annuler
     no_cards_present: Aucune carte présente
@@ -162,6 +174,7 @@ fr:
     oops_nothing_found: Oups ! Rien n'a été trouvé...
     open_in_new_tab: Ouvrir dans un nouvel onglet
     open_in_your_editor: Ouvrir dans votre éditeur
+    open_original: Ouvrir l'original
     order:
       higher: Déplacer plus haut
       lower: Déplacer plus bas
@@ -171,6 +184,8 @@ fr:
     pages: Pages
     per_page: Par page
     prev_page: Page précédente
+    preview_item: Aperçu de %{item}
+    previous_image: Image précédente
     record:
       one: enregistrement
       other: enregistrements
@@ -206,11 +221,13 @@ fr:
     switch_to_view: Passez à la vue %{view_type}
     table_view: Vue table
     this_field_has_attachments_disabled: Ce champ a les pièces jointes désactivées.
+    timezone_changed: Les dates et heures sont désormais affichées dans votre fuseau horaire (%{timezone}).
     tools: Outils
     'true': Vrai
     type_to_search: Type à rechercher.
     unauthorized: Non autorisé
     undo: annuler
+    unsaved_changes_warning: Vous avez des modifications non enregistrées. Voulez-vous vraiment quitter cette page ?
     updated_at: Mis à jour à
     updated_at_timestamp: Mis à jour le %{updated_at}
     view: Vue

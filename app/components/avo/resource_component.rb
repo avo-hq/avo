@@ -41,8 +41,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_edit_button?
-    # Disable edit for ArrayResources
-    return false if @resource.resource_type_array?
+    return false if @resource.read_only_array?
 
     return authorize_association_for(:edit) if @reflection.present?
 
@@ -50,8 +49,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def can_see_the_destroy_button?
-    # Disable destroy for ArrayResources
-    return false if @resource.resource_type_array?
+    return false if @resource.read_only_array?
 
     @resource.authorization.authorize_action(:destroy, raise_exception: false)
   end
@@ -115,6 +113,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       title: control.title,
       data: {
         hotkey: "b",
+        go_back: true,
         action: ("click->modal#close" if via_belongs_to),
         tippy: control.title ? :tooltip : nil
       }.compact,
@@ -328,13 +327,15 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return if !can_see_the_actions_button?
     return if !action.action.visible_in_view(parent_resource: @parent_resource)
 
-    a_link action.path,
+    a_link Avo::Services::URIService.parse(action.path).append_query(via_related_name_query).to_s,
       color: action.color,
       style: action.style,
       icon: action.icon,
       icon_class: action.icon_class,
       title: action.title,
       size: action.size,
+      # Tippy strips `title` when it builds the tooltip, so an icon-only link needs its own name.
+      aria: action.label.blank? ? {label: action.title.presence || action.action.action_name} : {},
       data: {
         controller: "actions-picker",
         turbo_frame: Avo::MODAL_FRAME_ID,
@@ -345,7 +346,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         # When action has record present behave as standalone and keep always active.
         "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
         disabled: action.action.disabled?,
-        resource_name: action.action.resource.model_key
+        resource_name: resource_name_for(action.action.resource)
       } do
       action.label
     end
@@ -353,6 +354,10 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def is_a_related_resource?
     @reflection.present? && @resource.record.present?
+  end
+
+  def has_one_field?
+    field.present? and field.instance_of? Avo::Fields::HasOneField
   end
 
   def inverse_of

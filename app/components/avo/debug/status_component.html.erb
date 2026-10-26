@@ -46,7 +46,14 @@
               <ul>
                 <li>Avo <%= Avo::VERSION %></li>
                 <% Avo.plugin_manager.plugins.each do |plugin| %>
-                  <li><%= plugin.name %> - <%= plugin.version %></li>
+                  <li>
+                    <% if plugin.gem_name.present? %>
+                      <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "underline" %>
+                    <% else %>
+                      <%= plugin.name %>
+                    <% end %>
+                    - <%= plugin.version %>
+                  </li>
                 <% end %>
               </ul>
             </div>

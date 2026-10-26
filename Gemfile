@@ -87,6 +87,10 @@ gem "net-smtp", require: false
 # =============================================================================
 gem "avo-money_field"
 gem "avo-record_link_field"
+gem "avo-lexxy_field"
+gem "avo-rhino_field"
+gem "marksmith"
+gem "commonmarker"
 gem "pluggy", path: "./pluggy"
 
 # =============================================================================

@@ -14,6 +14,8 @@ module Avo
     class_attribute :confirm_button_label, default: -> { I18n.t("avo.run") }
     class_attribute :cancel_button_label, default: -> { I18n.t("avo.cancel") }
     class_attribute :confirmation, default: true
+    class_attribute :hide_confirm_button, default: false
+    class_attribute :hide_cancel_button, default: false
     class_attribute :standalone, default: false
     class_attribute :visible, default: -> {
       # Hide on the :new view by default
@@ -25,6 +27,8 @@ module Avo
     class_attribute :turbo
     class_attribute :authorize, default: true
     class_attribute :close_modal_on_backdrop_click, default: true
+    # One of Avo::ModalComponent's widths. The default is the component's own.
+    class_attribute :modal_width, default: :xl
     class_attribute :custom_translation_key
 
     attr_accessor :view
@@ -157,6 +161,15 @@ module Avo
     def fields
     end
 
+    # An action lists its fields itself, so every one of them belongs in the
+    # modal. The show_on/hide_on marks describe resource views, and `view` here
+    # is the one the action was started from, not the modal.
+    def get_fields(**)
+      get_field_definitions
+        .select(&:visible?)
+        .map { |field| field.dup.hydrate(record: @record, view: @view, resource: self) }
+    end
+
     def get_description
       resolve_option(:description)
     end
@@ -184,8 +197,11 @@ module Avo
 
         # For some fields, like belongs_to, the id and database_id differ (user vs user_id).
         # That's why we need to fetch the database_id for when we process the action.
-        action_fields_by_database_id = action_fields.map do |id, value|
-          [value.database_id.to_sym, value]
+        action_fields_by_database_id = action_fields.values.flat_map do |field|
+          # A polymorphic belongs_to submits both `<name>_type` and `<name>_id`, but its database_id only covers the type.
+          database_ids = field.try(:is_polymorphic?) ? field.to_permitted_param : [field.database_id]
+
+          database_ids.map { |database_id| [database_id.to_sym, field] }
         end.to_h
 
         args[:fields].to_unsafe_h.map do |name, value|
@@ -313,9 +329,11 @@ module Avo
     end
 
     def download(path, filename)
-      response[:type] = :download
-      response[:path] = path
-      response[:filename] = filename
+      response[:download] = {path: path, filename: filename}
+      # Keep the download out of the response type so it composes with the other
+      # response methods. `download` on its own still closes the modal without
+      # reloading; `download` + `reload` does both.
+      response[:type] ||= :download
 
       self
     end
@@ -352,7 +370,27 @@ module Avo
       ).handle
     end
 
+    def hide_confirm_button?
+      hide_button?(hide_confirm_button)
+    end
+
+    def hide_cancel_button?
+      hide_button?(hide_cancel_button)
+    end
+
     private
+
+    def hide_button?(option)
+      Avo::ExecutionContext.new(
+        target: option,
+        action: self,
+        resource: @resource,
+        record: @record,
+        view: @view,
+        arguments:,
+        query: @query
+      ).handle
+    end
 
     def translated_option(option)
       I18n.t("#{translation_key}.#{option}", default: nil)

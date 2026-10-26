@@ -188,10 +188,10 @@ RSpec.describe Avo::ApplicationHelper do
   end
 
   describe "#container_classes" do
-    it "falls back to large for unrecognized views" do
+    it "falls back to lg for unrecognized views" do
       helper.instance_variable_set(:@view, "preview")
 
-      expect(helper.container_classes).to eq("container-large")
+      expect(helper.container_classes).to eq("container-lg")
     end
   end
 

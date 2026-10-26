@@ -4,6 +4,9 @@ module Avo
       extend ActiveSupport::DescendantsTracker
 
       include ActionView::Helpers::UrlHelper
+      # Rails 8.2 extracted link_to, button_to and current_page? into NavigationHelper
+      # (rails/rails#58735). Without it, link_to on a resource is a NoMethodError there.
+      include ActionView::Helpers::NavigationHelper if defined?(ActionView::Helpers::NavigationHelper)
       include Avo::Concerns::HasFieldDiscovery
       include Avo::Concerns::HasItems
       include Avo::Concerns::CanReplaceItems
@@ -76,6 +79,7 @@ module Avo
       class_attribute :confirm_on_save, default: false
       class_attribute :visible_on_sidebar, default: true
       class_attribute :hotkey, default: nil
+      class_attribute :color, default: nil
       class_attribute :index_query, default: -> {
         query
       }
@@ -119,7 +123,7 @@ module Avo
         # This resolves the scope when doing "where" queries (not find queries)
         #
         # It's used to apply the authorization feature.
-        def query_scope
+        def query_scope(**)
           authorization.apply_policy Avo::ExecutionContext.new(
             target: index_query,
             query: model_class
@@ -180,6 +184,40 @@ module Avo
 
         def class_name
           @class_name ||= to_s.delete_prefix("Avo::Resources::")
+        end
+
+        # MD5 of the resource file, its policy file and the installed Avo and
+        # plugin versions (`Avo.cache_version`), so editing either file or
+        # upgrading any gem busts every cached row of the resource. A packed
+        # app's files don't change while it runs, so the digest is computed once
+        # per class there; in development they do, so it is computed on every
+        # call.
+        def file_hash
+          return compute_file_hash unless Avo::PACKED
+
+          @file_hash ||= compute_file_hash
+        end
+
+        def compute_file_hash
+          content_to_be_hashed = ""
+
+          file_base = class_name.underscore
+          resource_path = Rails.root.join("app", "avo", "resources", "#{file_base}.rb").to_s
+          if File.file? resource_path
+            content_to_be_hashed += File.read(resource_path)
+          end
+
+          # policy file hash
+          policy_path = Rails.root.join("app", "policies", "#{file_base.gsub("_resource", "")}_policy.rb").to_s
+          if File.file? policy_path
+            content_to_be_hashed += File.read(policy_path)
+          end
+
+          # The code that renders the row lives in gems too: a new Avo or plugin
+          # version changes the markup without touching either file above.
+          content_to_be_hashed += Avo.cache_version
+
+          Digest::MD5.hexdigest(content_to_be_hashed)
         end
 
         # Last segment only — used for display, translation keys, and initials
@@ -281,6 +319,39 @@ module Avo
           ).handle
         end
 
+        def custom_find_record_method? = !find_record_method.equal?(Avo::Resources::Base.find_record_method)
+
+        # The records `ids` name, each the way `find_record` finds one: by its `to_param`, through
+        # `find_record_method`. One entry per id, in order, nil where an id names no record in `query`.
+        #
+        # The finder is asked for the whole set first, then once per id it did not name: a finder
+        # that takes one id at a time, or a missing record.
+        def find_records(ids, query: nil, params: nil)
+          query ||= find_scope
+          ids = ids.map(&:to_s)
+
+          found = begin
+            ids.many? ? Array.wrap(find_record(ids.uniq, query:, params:)).index_by { |record| record.to_param.to_s } : {}
+          rescue
+            {}
+          end
+
+          (ids - found.keys).each do |id|
+            found[id] = find_record(id, query:, params:)
+          rescue ActiveRecord::ActiveRecordError, RangeError, ArgumentError, TypeError
+            nil
+          end
+
+          # Avo's own finder reads through `query`. A custom one may ignore it, so only what `query`
+          # also holds is kept.
+          if custom_find_record_method?
+            in_query = query.where(model_class.primary_key => found.values.compact.map(&:id)).index_by(&:id)
+            found.transform_values! { |record| record if in_query.key?(record&.id) }
+          end
+
+          ids.map { |id| found[id] }
+        end
+
         def search_query
           search.dig(:query)
         end
@@ -297,7 +368,7 @@ module Avo
       delegate :plural_name, to: :class
       delegate :underscore_name, to: :class
       delegate :to_param, to: :class
-      delegate :find_record, to: :class
+      delegate :find_record, :find_records, to: :class
       delegate :model_key, to: :class
       delegate :translation_key, to: :class
       delegate :tab, to: :items_holder
@@ -308,6 +379,10 @@ module Avo
 
       def index_view_frame
         "#{model_key}_index"
+      end
+
+      def resource_name_for(association: nil)
+        association.presence || model_key
       end
 
       def initialize(record: nil, view: nil, user: nil, params: nil)
@@ -512,19 +587,50 @@ module Avo
         fetch_record_title.to_s
       end
 
+      # Whether this resource may expose `attribute` inside a record title. Core always
+      # answers true; a plugin that restricts what a user may reach overrides this and
+      # answers from its own rules. That is what keeps a restricted attribute out of
+      # global search results, breadcrumbs, record links and the association picker
+      # without teaching each of those surfaces separately — they all render a title.
+      #
+      # Deliberately a question about one attribute rather than a field lookup: a bare
+      # `Resource.new(record:)` is built once per option in a belongs_to lookup list, and
+      # its items holder is empty until `detect_fields` runs, so resolving a title through
+      # the field pipeline would both cost a detection per option and answer nothing on
+      # the resources that never detect.
+      def title_attribute_reachable?(attribute)
+        true
+      end
+
       def fetch_record_title
         return name if @record.nil?
 
         # Get the title from the record if title is not set, try to get the name, title or label, or fallback to the to_param
-        return @record.try(:name) || @record.try(:title) || @record.try(:label) || @record.to_param if title.nil?
+        return reachable_title_fallback || @record.to_param if title.nil?
 
         # If the title is a symbol, get the value from the record else execute the block/string
         case title
         when Symbol
-          @record.send title
+          title_attribute_reachable?(title) ? @record.send(title) : @record.to_param
         when Proc
+          # App-authored code. The app's own code is outside this boundary, so the
+          # reachability question is not asked of it.
           Avo::ExecutionContext.new(target: title, resource: self, record: @record).handle
         end
+      end
+
+      # Preserves the original `||` chain exactly — an unreachable candidate is skipped
+      # the same way a blank one is.
+      def reachable_title_fallback
+        reachable_title_attribute(:name) ||
+          reachable_title_attribute(:title) ||
+          reachable_title_attribute(:label)
+      end
+
+      def reachable_title_attribute(attribute)
+        return unless title_attribute_reachable?(attribute)
+
+        @record.try(attribute)
       end
 
       def record_icon
@@ -573,31 +679,37 @@ module Avo
         end
       end
 
-      # Map the received params to their actual fields
-      # 'resource' argument is used on avo-advanced, don't remove
-      def fields_by_database_id(resource: self)
-        resource.get_field_definitions
-          .reject do |field|
-            field.computed
-          end
-          .map do |field|
-            [field.database_id.to_s, field]
-          end
+      # Every form param, mapped to the field that writes it: each non-computed field's params, and each
+      # top-level `extra_params` name, which no field writes (nil). A field hidden from the form keeps its
+      # params, as a resource tool can render it. When several fields take one param (a field declared
+      # once per view), the one this form shows to this user writes it. `fields` narrows the candidates.
+      def fields_by_param(fields = get_field_definitions)
+        form = Avo::ViewInquirer.new(view).form?
+        shown, hidden = fields.reject(&:computed).partition { |field| form && field.visible_in_view?(view:) && field.visible? }
+        extra = Array.wrap(self.class.extra_params).select { |param| param.is_a?(Symbol) || param.is_a?(String) }
+
+        # Shown fields last, so they win a param they share
+        (hidden + shown)
+          .flat_map { |field| flatten_keys(Array.wrap(field.to_permitted_param)).map { |param| [param.to_s, field] } }
           .to_h
+          .merge(extra.to_h { |param| [param.to_s, nil] }) { |_param, field| field }
       end
 
       def fill_record(record, permitted_params, extra_params: [], fields: nil)
-        # Write the field values
-        permitted_params.each do |key, value|
-          field = if fields.present?
-            fields.find { |f| f.id == key.to_sym }
-          else
-            fields_by_database_id[key]
-          end
+        fields_by_key = fields.present? ? fields_by_param(fields) : fields_by_param
+        unresolved = []
 
-          next unless field.present?
+        # Write each field once, whichever of its params arrived. A param left out keeps the record's current value,
+        # except a polymorphic id, which its field keeps only under the current type.
+        permitted_params.keys.filter_map { |key| fields_by_key[key.to_s] }.uniq.each do |field|
+          left_out = fields_by_key.filter_map { |key, owner| key if owner == field && !permitted_params.key?(key) && record.respond_to?(key) && key != field.try(:id_input_foreign_key) }
+          params = permitted_params.reverse_merge(left_out.index_with { |key| record.public_send(key) })
+          key = field.database_id.to_s
 
-          record = field.fill_field record, key, value, permitted_params
+          record = field.fill_field record, key, params[key], params
+        rescue Avo::Fields::BelongsToField::TargetNotFound => error
+          # Raised once every field is filled, so the form that shows the error keeps the user's other edits
+          unresolved << error
         end
 
         # Write the user configured extra params to the record
@@ -610,8 +722,23 @@ module Avo
           record.assign_attributes extra_attributes
         end
 
-        safe_call(:fill_nested_records, record:, permitted_params:) || record
+        record = safe_call(:fill_nested_records, record:, permitted_params:) || record
+
+        if unresolved.any?
+          unresolved.first.field_ids = unresolved.map(&:field_id)
+          raise unresolved.first
+        end
+
+        record
       end
+
+      # On the resource so one that isn't backed by a model can build, save and delete its own records,
+      # under any controller.
+      def new_record = model_class.new
+
+      def save_record(record) = record.save!
+
+      def destroy_record(record) = record.destroy!
 
       def authorization(user: nil)
         current_user = user || Avo::Current.user
@@ -619,27 +746,17 @@ module Avo
       end
 
       def file_hash
-        content_to_be_hashed = ""
-
-        file_base = self.class.class_name.underscore
-        resource_path = Rails.root.join("app", "avo", "resources", "#{file_base}.rb").to_s
-        if File.file? resource_path
-          content_to_be_hashed += File.read(resource_path)
-        end
-
-        # policy file hash
-        policy_path = Rails.root.join("app", "policies", "#{file_base.gsub("_resource", "")}_policy.rb").to_s
-        if File.file? policy_path
-          content_to_be_hashed += File.read(policy_path)
-        end
-
-        Digest::MD5.hexdigest(content_to_be_hashed)
+        self.class.file_hash
       end
 
       def file_name
         @file_name ||= self.class.underscore_name.tr(" ", "_")
       end
 
+      # The per-row part of the index cache key: the record, the resource and
+      # policy files, and the parent record when rendered as an association.
+      # Override it to fold in more of the record's own data (an association a
+      # field displays, say). What varies per *viewer* belongs in `cache_context`.
       def cache_hash(parent_record)
         result = [record, file_hash]
 
@@ -648,6 +765,23 @@ module Avo
         end
 
         result
+      end
+
+      # The per-request part of the index cache key — by default the current
+      # user, locale and tenant (`config.index_cache_context`). Override it on a
+      # resource whose lambdas read some other per-request dimension. It cannot
+      # read the record: the view type resolves it once per request and reuses
+      # it for every row.
+      def cache_context
+        Avo::ExecutionContext.new(target: Avo.configuration.index_cache_context, resource: self).handle
+      end
+
+      # The key a view type caches a row under. Composed rather than folded into
+      # `cache_hash` so an app's `cache_hash` override keeps working and cannot
+      # drop the viewer from the key. Pass `cache_context:` to reuse a context
+      # already resolved for the request.
+      def index_cache_key(parent_record, cache_context: self.cache_context)
+        [*cache_hash(parent_record), *cache_context]
       end
 
       # We will not overwrite any attributes that come pre-filled in the record.
@@ -728,12 +862,19 @@ module Avo
         }
       end
 
+      def description(additional_attributes = {})
+        translated = t("#{translation_key}.description", default: nil)
+        return translated if translated.present?
+
+        super
+      end
+
       def entity_loader(entity)
         instance_variable_get(:"@#{entity.to_s.pluralize}_loader")
       end
 
       def record_param
-        @record_param ||= @record.persisted? ? @record.to_param : nil
+        @record_param ||= @record&.persisted? ? @record.to_param : nil
       end
 
       def custom_components
@@ -761,6 +902,8 @@ module Avo
       end
 
       def resource_type_array? = false
+
+      def read_only_array? = false
 
       def sort_by_param
         available_columns = model_class.column_names

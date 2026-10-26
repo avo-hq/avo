@@ -7,7 +7,7 @@ RSpec.describe Avo::UI::AvatarComponent, type: :component do
 
       expect(result).to have_css(".cado-avatar")
       expect(result).to have_css(".cado-avatar--placeholder")
-      expect(result).to have_css(".cado-avatar--large")
+      expect(result).to have_css(".cado-avatar--lg")
       expect(result).to have_css(".cado-avatar--rounded")
     end
 

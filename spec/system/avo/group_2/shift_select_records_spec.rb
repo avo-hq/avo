@@ -92,15 +92,3 @@ end
 def in_table(position, &block)
   within all("[data-controller~='record-selector']")[position], &block
 end
-
-def row_selector(index)
-  %(tr[data-index="#{index}"])
-end
-
-def row_checkbox(index)
-  find(%(#{record_selector_checkbox_selector}[data-index="#{index}"]))
-end
-
-def checked_row_indexes
-  all(record_selector_checkbox_selector).select(&:checked?).map { |checkbox| checkbox[:"data-index"].to_i }.sort
-end

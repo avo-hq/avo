@@ -41,6 +41,17 @@ jobs:
         # ruby/setup-ruby with bundler-cache runs Bundler in a frozen/deployment-like mode.
         # This step intentionally changes the Gemfile.lock, so we must unfreeze Bundler here.
         bundle config set frozen false
+
+        # The test app runs Rails 7.1, and every ActiveSupport below 8.1.0 calls
+        # JSON.generate(..., quirks_mode: true) in its JSON encoder. json 3.0 removed that
+        # keyword, so any such encode raises `ArgumentError: unknown keyword: quirks_mode` —
+        # which here kills `assets:precompile` inside Propshaft's manifest writer.
+        #
+        # The app's own lockfile has no json entry (it uses Ruby's default json 2.x), but
+        # adding Avo pulls pagy in, and pagy declares `json >= 0`. That materializes json
+        # into the lock, where Bundler resolves it to 3.x. Pin it below 3 so the resolution
+        # matches what the app had before Avo was added.
+        bundle add "json" --version "< 3" --skip-install
         bundle add "avo" --git='https://github.com/avo-hq/avo.git' --ref="${{ github.sha }}"
         bundle install
         bin/rails generate avo:install

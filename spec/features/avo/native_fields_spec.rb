@@ -23,6 +23,16 @@ RSpec.feature "NativeFields", type: :feature do
     expect(page).to have_select "city[status]", options: ["Open", "Closed", "Quarantine"], selected: city.status
   end
 
+  it "renders fields registered by plugins" do
+    city.update!(status: :Closed)
+
+    visit avo.edit_resources_city_path(city, show_native_fields: 1)
+
+    expect(page).to have_checked_field "city_status_closed", visible: :all
+    expect(page).to have_unchecked_field "city_status_open", visible: :all
+    expect(page).to have_unchecked_field "city_status_quarantine", visible: :all
+  end
+
   it "updates the record through the custom fields" do
     visit avo.edit_resources_city_path(city)
 

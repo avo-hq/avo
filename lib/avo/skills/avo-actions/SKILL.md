@@ -1,6 +1,6 @@
 ---
 name: avo-actions
-description: Build Avo actions — Ruby classes in `app/avo/actions/*.rb`, registered on a resource's `def actions` — that run a custom operation on selected records, a single record, or nothing at all, with optional form fields, a confirmation modal, feedback notifications, custom responses, and multi-step flows. Use when the user wants to let admins bulk-approve these orders, mark selected invoices as paid, add a button to export selected users to CSV, deactivate/ban a user from the admin, send a welcome email to selected records, trigger a background job for these records, add a Publish/Approve button on the post page, add a monthly report button, collect a reason when someone does something, add a confirmation dialog before an operation, or build a multi-step form/wizard in the admin.
+description: Build Avo actions — Ruby classes in `app/avo/actions/*.rb`, registered on a resource's `def actions` — that run a custom operation on selected records, a single record, or nothing at all, with optional form fields, a confirmation modal, feedback notifications, custom responses, and multi-step flows. Use when the user wants to let admins bulk-approve these orders, mark selected invoices as paid, add a button to export selected users to CSV, deactivate/ban a user from the admin, send a welcome email to selected records, trigger a background job for these records, add a Publish/Approve button on the post page, add a monthly report button, collect a reason when someone does something, assign the selected records to a user or other associated record from the modal, add a confirmation dialog before an operation, or build a multi-step form/wizard in the admin.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -35,6 +35,7 @@ Reach for an action when the request is "let admins **do X** to **records** from
 | "Add a Publish/Approve button on the post page", "ban this user" | [Single-record](#single-record) |
 | "A monthly report button", "run this maintenance job", "export everything to CSV" | [Standalone](#standalone-no-records-needed) |
 | "Collect a reason when someone bans a user", "ask for a message before sending" | [With fields](#collect-input-with-fields) |
+| "Assign the selected records to a user", "pick a related record in the modal" | [Picking an associated record](#collect-input-with-fields) |
 | "Add a confirmation dialog", "make it ask before running" (or skip it) | [Confirmation](#confirmation-modal) |
 | "Then download a file / redirect / refresh just the row" | [Responses](#control-what-happens-after) |
 | "A multi-step form / wizard" | [multi-step flow](#multi-step-flows-wizards) |
@@ -152,7 +153,7 @@ end
 ```
 
 ### Collect input with fields
-Define `fields` to render form inputs in the modal; the submitted values arrive as `fields`. Same field DSL as resources. On a single record the fields are hydrated from it; otherwise they're plain inputs.
+Define `fields` to render form inputs in the modal; the submitted values arrive as `fields`. Same field DSL as resources — *most* field types, anyway. On a single record the fields are hydrated from it; otherwise the fields that don't depend on a record render as plain inputs. Association fields are the exception (see below).
 
 ```ruby
 def fields
@@ -169,6 +170,29 @@ def handle(query:, fields:, **args)
 end
 ```
 
+**Picking an associated record.** A `belongs_to` field needs *one* current record to resolve its association, so it only renders when the action was hydrated with a single record — from **Show**, or with exactly one row checked on **Index**. On a multi-record or standalone action there is no current record and the field can't render. Use a plain input instead:
+
+```ruby
+# Short list — a select with the options loaded when the form renders.
+def fields
+  field :user_id,
+    as: :select,
+    options: -> { User.order(:name).pluck(:name, :id) },
+    include_blank: true
+end
+
+# Long list that needs search — a tags field in select mode.
+def fields
+  field :user_id,
+    as: :tags,
+    mode: :select,
+    enforce_suggestions: true,
+    fetch_values_from: "/avo/resources/users/action_options"
+end
+```
+
+`fetch_values_from` points at an endpoint **you** add (a method on an `Avo::ResourcesController` subclass plus a route); it receives the typed text as `params[:q]` and returns objects with `value` and `label` keys. Either way the chosen ID arrives as `fields[:user_id]`.
+
 ### Confirmation modal
 The modal is on by default. Customize its text (each may be a string or a block with access to `resource`, `record`, `view`, `arguments`, `query`), or turn it off for safe actions:
 
@@ -181,7 +205,12 @@ self.cancel_button_label = "Keep"
 
 self.confirmation = false               # skip the modal, run immediately on click
 self.close_modal_on_backdrop_click = false  # don't lose a filled-in form on a stray click
+self.modal_width = :"4xl"                  # :sm :md :lg :xl (default) :"2xl" :"3xl" :"4xl" :"5xl" :full
+self.hide_confirm_button = true            # drop the Run button; Mod+Enter stops submitting too
+self.hide_cancel_button = -> { view.index? } # drop the Cancel button; Escape and the header X still close
 ```
+
+`hide_confirm_button` and `hide_cancel_button` take a boolean or a block with access to `resource`, `record`, `view`, `arguments`, `query`. Hiding Run also disables Mod+Enter, but a form with a single text-like field still submits on Enter (the browser's implicit submission). Hiding Cancel removes only the button: Escape still closes the modal unless `close_modal_on_backdrop_click` is `false`, and the header X always closes it. When both are hidden the modal renders without a footer. Hiding Cancel with `close_modal_on_backdrop_click = false` leaves keyboard users only Run, since the X needs a mouse.
 
 ### Give feedback
 Queue one or more notifications from inside `handle` — call several to stack them. With no explicit feedback Avo shows a generic "Action ran successfully" info alert.
@@ -195,16 +224,16 @@ silent                                           # suppress the default notifica
 ```
 
 ### Control what happens after
-`handle` also picks the UI response. Default is a full-page `reload`; the last response method called wins:
+`handle` also picks the UI response. Default is a full-page `reload`; the last response method called wins, except `download`, which composes with the others:
 
 | Method | Effect |
 | --- | --- |
 | `reload` | Full-page reload (default). |
 | `redirect_to path` | Redirect elsewhere (accepts `allow_other_host:`, `status:`). |
-| `download data, "file.csv"` | Trigger a file download. **Pair with `self.turbo = false`** for a real file response. |
+| `download data, "file.csv"` | Trigger a file download. On its own it leaves the page as-is; add `reload` (or `redirect_to`) after it to download *and* refresh. **Pair with `self.turbo = false`** for a real file response. |
 | `keep_modal_open` | Keep the modal + user input (show an error and let them retry). |
 | `close_modal` / `do_nothing` | Close the modal, leave the page as-is. |
-| `reload_records(query)` | Refresh only the affected rows/cards. **Index only — not associations.** |
+| `reload_records(query)` | Refresh only the affected rows/cards. Called bare (`reload_records`), it defaults to the records the action ran on. **Index only — not associations.** |
 | `navigate_to_action Other, arguments: {...}` | Chain into another action (see below). |
 | `append_to_response -> { [turbo_stream...] }` | Add your own turbo-stream responses. |
 
@@ -225,19 +254,26 @@ link_to resource.record.name, path, data: data
 ### Run on all matching records (select all)
 When an index spans multiple pages, checking "Select all" offers to select **every matching record across all pages**, not just the visible ones. Avo serializes the (encrypted) query and rebuilds it in the action, so `handle`'s `query` covers the whole filtered set. This works out of the box — no code — but see the gotcha below if it silently disables itself.
 
+**Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. System specs that expect nothing selected after **Go back** will now find rows checked.
+
 ## Gotchas
 
 - **`query` is always an array.** Even a single-record action gets `[record]`. Use `query.first` for the one-record case; don't call record methods on `query` directly. `records` is an alias.
+- **Records deleted after selection are omitted.** Another user may delete a checked record before the action request arrives. Avo drops that missing record and still passes every surviving selection to `handle`; action authors do not need to rescue `ActiveRecord::RecordNotFound` for this race. `query` can therefore come back **empty** when every selected record is gone — guard with `return error "No record selected" if query.blank?` if that matters.
 - **"My action doesn't show up" is usually the policy.** With Pundit, `act_on?` in the resource's policy gates action visibility (and `authorize` on the action gates it further). Check the policy first. See the **`avo-authorization`** skill.
+- **`view` is the view the action was started from.** In `authorize`, `visible`, the modal text blocks, `fields`, and `handle`, `view` (and `resource.view`) is `index`, `show`, or `edit` — the page the user opened the action from — both while the modal renders and while the action runs. It is never `new`; the modal is not a view. It arrives with the request and is checked against the route (`show` and `edit` need a record in the URL), so use it to adapt behavior (`reload_records if view.index?`), never as the only gate on who may run the action: gate people on `current_user`, and single-versus-bulk on `query.size` or `record`.
+- **Every field in `fields` renders in the modal.** `hide_on`/`show_on` marks are for resource views and are ignored here. A field with a form component (text, select, hidden...) renders as an input; a display-only field (badge, key/value) renders read-only, as on Show. The one mark that counts: a badge declared with `show_on: :forms` renders as a select. The modal focuses its first input; a field with `autofocus: true` takes the focus instead (avo-fields lists the fields that support it). Use it to show context next to the inputs.
 - **The modal is a NEW request.** Params from the Index/Show page that opened it are **not** available in `fields`/`handle`. To prefill from the triggering page, parse `request.referer`:
   ```ruby
   field :source, as: :hidden, default: -> {
     URI.parse(request.referer).query.to_s.include?("hey=ya") ? :yes : :no
   }
   ```
+- **`belongs_to` doesn't render in a bulk or standalone action.** It needs a single current record to resolve the association, which a multi-record or standalone action doesn't have. Reach for `as: :select` (short list) or `as: :tags, mode: :select, fetch_values_from: "..."` (long, searchable) and assign the ID yourself in `handle`.
 - **`reload_records` is Index-only.** It doesn't work on association tables — use `reload` there.
 - **Notification bodies truncate at ~320 characters.** Keep `succeed`/`error` messages short; put long output in a `download` or a redirect.
 - **File downloads need `self.turbo = false`.** Otherwise Turbo intercepts the response and the download won't fire.
+- **`download` alone doesn't refresh the page.** If the action also creates or changes records, call `reload` after it — the two compose.
 - **Standalone actions need `self.standalone = true`** — otherwise they're disabled when nothing is selected.
 - **Select-all silently disabled?** Query serialization failed. A common cause: a model `normalizes` proc, which raises `TypeError: no _dump_data is defined for class Proc` when a filter hits the normalized attribute. Fix in `config/application.rb`:
   ```ruby

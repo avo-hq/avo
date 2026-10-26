@@ -35,6 +35,27 @@ RSpec.describe "Actions", type: :system do
       end
     end
 
+    context "has_many" do
+      it "disables non-standalone actions until a record is selected" do
+        team = create :team, team_members: [user]
+        visit "/admin/resources/teams/#{team.id}"
+
+        scroll_to team_members_frame = find('turbo-frame[id="has_many_field_show_team_members"]')
+
+        within team_members_frame do
+          click_on "Actions"
+
+          expect(page.find("a", text: "Toggle inactive")["data-disabled"]).to eq "true"
+          expect(page.find("a", text: "Dummy action")["data-disabled"]).to eq "false"
+
+          check "Select item"
+          click_on "Actions"
+
+          expect(page.find("a", text: "Toggle inactive")["data-disabled"]).to eq "false"
+        end
+      end
+    end
+
     context "show" do
       it "does not find an action on show" do
         visit "/admin/resources/users/#{user.id}"
@@ -157,6 +178,31 @@ RSpec.describe "Actions", type: :system do
         expect(download.split("/").last).to eq file_name
       end
     end
+
+    context "when the action also calls reload" do
+      let(:content) { "On the fly dummy content." }
+      let(:file_name) { "dummy-content.txt" }
+
+      it "downloads the file and reloads the page" do
+        visit "/admin/resources/users"
+
+        expect(page).not_to have_text "Downloaded"
+
+        click_on "Actions"
+        click_on "Download file"
+        check "fields[create_user_and_reload]"
+        click_on "Run"
+
+        wait_for_download
+
+        expect(downloaded?).to be true
+        expect(download_content).to eq content
+        expect(download.split("/").last).to eq file_name
+
+        # The record the action created shows up without a manual browser reload.
+        expect(page).to have_text "Downloaded"
+      end
+    end
   end
 
   describe "default values" do
@@ -226,6 +272,34 @@ RSpec.describe "Actions", type: :system do
       find("body").native.send_keys(:escape)
 
       expect(page).to have_selector '[data-controller~="modal"]'
+    end
+  end
+
+  # avo-hq/avo#4032
+  describe "action hide_confirm_button" do
+    around do |example|
+      original = Avo::Actions::Test::DoNothing.hide_confirm_button
+      Avo::Actions::Test::DoNothing.hide_confirm_button = true
+      example.run
+      Avo::Actions::Test::DoNothing.hide_confirm_button = original
+    end
+
+    it "does not run the action on Mod+Enter when the confirm button is hidden" do
+      expect(TestBuddy).not_to receive(:hi)
+
+      visit "/admin/resources/users"
+      click_on "Actions"
+      click_on "Do Nothing"
+      expect(page).to have_selector "[role='dialog']"
+      expect(page).not_to have_button "Run"
+
+      # Focus the modal itself, as the submit hotkey listener sits on it rather than on the document.
+      page.execute_script("document.querySelector('.modal:popover-open').focus()")
+      page.driver.browser.keyboard.type([:meta, :enter])
+
+      sleep 0.5
+      expect(page).to have_selector "[role='dialog']"
+      expect(page).not_to have_text "Nothing Done!!"
     end
   end
 
@@ -737,4 +811,19 @@ RSpec.describe "Actions", type: :system do
   #       end
   #     end
   #   end
+
+  # The modal controller focuses the dialog when it connects, and Turbo focuses the [autofocus] input after
+  # rendering the frame. Only a browser proves that order leaves the cursor in the field that asked for it.
+  it "puts the cursor in the action field that sets autofocus" do
+    create :review
+    allow_any_instance_of(Avo::Actions::Test::ShowView).to receive(:fields) do |action|
+      action.field :probe_text, as: :text
+      action.field :probe_focus, as: :text, autofocus: true
+    end
+
+    visit "/admin/resources/reviews"
+    open_panel_action(action_name: "Show view")
+
+    expect(page).to have_css("input[name='fields[probe_focus]']:focus")
+  end
 end

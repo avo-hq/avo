@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class TrixField < BaseField
+      resizable_editor target: "trix-editor.trix-content"
+
       attr_reader :always_show
       attr_reader :attachment_key
       attr_reader :hide_attachment_filename

@@ -2,7 +2,9 @@
 
 class Avo::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasResourceStimulusControllers
+  include Avo::Concerns::HasFieldTooltips
 
+  prop :collapsable, default: false
   prop :dash_if_blank, default: true
   prop :data, default: {}.freeze
   prop :density, default: :default
@@ -89,6 +91,16 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     Avo::ExecutionContext.new(target: @label_help || @field.label_help, record: record, resource: @resource, view: @view).handle
   end
 
+  def label_text_classes
+    class_names("self-center", "label-tooltip": label_tooltip.present?)
+  end
+
+  # Collapsable content fills the row like a block-shaped field does, so its
+  # anchor keeps that width too.
+  def block_tooltip_anchor?
+    collapsable? || @field.tooltip_anchor == :block
+  end
+
   def record
     @resource.present? ? @resource.record : nil
   end
@@ -115,15 +127,18 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
       add_stimulus_attributes_for(@action, attributes)
     end
 
+    add_resizable_editor_attributes(attributes) if @view.form? && @field.resizable_editor?
+
     attributes
   end
 
   def stacked?
-    # Override on the declaration level
-    return @stacked unless @stacked.nil?
-
-    # Fetch it from the field
+    # The field declaration is the user's explicit intent, so it wins over the
+    # layout default a parent component passes in (sidebars, preview, etc.).
     return @field.stacked unless @field.stacked.nil?
+
+    # Fallback to what the rendering component asked for
+    return @stacked unless @stacked.nil?
 
     # Fallback to defaults
     Avo.configuration.field_wrapper_layout == :stacked
@@ -135,5 +150,33 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   def render_dash?
     @field.value.blank? && @dash_if_blank
+  end
+
+  def collapsable?
+    @collapsable
+  end
+
+  private
+
+  def add_resizable_editor_attributes(attributes)
+    controllers = [
+      attributes.delete(:controller),
+      attributes.delete("controller"),
+      "resizable-editor"
+    ].compact_blank.flat_map { |value| value.to_s.split }.uniq
+
+    attributes[:controller] = controllers.join(" ")
+    attributes[:resizable_editor_target_selector_value] = @field.resizable_editor_target_selector
+    attributes[:resizable_editor_storage_key_value] = resizable_editor_storage_key
+  end
+
+  def resizable_editor_storage_key
+    scope = if @action.present?
+      ["actions", @action.to_param, @resource&.route_key]
+    else
+      ["resources", @resource&.route_key || @field.type]
+    end
+
+    [*scope, "fields", @field.id, "height"].compact.join(".")
   end
 end

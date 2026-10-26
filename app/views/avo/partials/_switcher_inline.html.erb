@@ -88,6 +88,31 @@
     <% end %>
   <% end %>
 
+  <% if show_sound_toggle %>
+    <%# Both render; CSS shows whichever matches :root.appearance-muted, so this
+        reads as one mute button that reflects the current state. %>
+    <button type="button"
+            data-appearance-target="button"
+            data-action="click->appearance#setSound"
+            data-sound="off"
+            data-tippy="tooltip"
+            class="color-scheme-switcher__button color-scheme-switcher__button--sound-on"
+            title="<%= avo_appearance_t("sound_off_tooltip") %>">
+      <%= svg "tabler/outline/volume", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only"><%= avo_appearance_t("sound_off_tooltip") %></span>
+    </button>
+    <button type="button"
+            data-appearance-target="button"
+            data-action="click->appearance#setSound"
+            data-sound="on"
+            data-tippy="tooltip"
+            class="color-scheme-switcher__button color-scheme-switcher__button--sound-off"
+            title="<%= avo_appearance_t("sound_on_tooltip") %>">
+      <%= svg "tabler/outline/volume-off", class: "color-scheme-switcher__icon" %>
+      <span class="sr-only"><%= avo_appearance_t("sound_on_tooltip") %></span>
+    </button>
+  <% end %>
+
   <% if show_scheme_picker %>
     <button type="button"
             data-appearance-target="button"

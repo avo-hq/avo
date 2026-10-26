@@ -4,6 +4,7 @@ en:
     action_ran_successfully: Action ran successfully!
     actions: Actions
     add_filter: Add filter
+    all: All
     and_x_other_resources: and %{count} other resources
     appearance:
       accent_picker: Select accent color
@@ -52,6 +53,11 @@ en:
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
       shortcut_badges_show_tooltip: Show keyboard shortcut badges
       show: Show
+      sound: Sound
+      sound_off: 'Off'
+      sound_off_tooltip: Mute appearance sounds
+      sound_on: 'On'
+      sound_on_tooltip: Play a sound when appearance changes
       title: Appearance
     applied: applied
     are_you_sure: Are you sure?
@@ -108,6 +114,7 @@ en:
     filter_by: Filter by
     filters: Filters
     global_search:
+      direct_match: Direct match
       empty_state:
         no_results_for_query: We couldn't find anything matching "%{query}"
         no_results_found: No results found
@@ -123,17 +130,21 @@ en:
         select: Select
       results:
         count_of_total: "%{count} of %{total}"
+      search_results: Search Results
+      searching_on: 'Searching on:'
       show_all_results_for: Show all results for
     go_back: Go back
     grid_view: Grid view
     hide_content: Hide content
     home: Home
+    image_preview: Image preview
     key_value_field:
       add_row: Add row
       delete_row: Delete row
       key: Key
       reorder_row: Reorder row
       value: Value
+    language: Language
     less_content: Less content
     list_is_empty: List is empty
     load_item: Load %{item}
@@ -146,6 +157,7 @@ en:
     nested:
       add_new_item: Add new %{item}
     new: new
+    next_image: Next image
     next_page: Next page
     no_cancel: No, cancel
     no_cards_present: No cards present
@@ -160,6 +172,7 @@ en:
     oops_nothing_found: Oops! Nothing found...
     open_in_new_tab: Open in a new tab
     open_in_your_editor: Open in your editor
+    open_original: Open original
     order:
       higher: Move record higher
       lower: Move record lower
@@ -169,6 +182,8 @@ en:
     pages: Pages
     per_page: Per page
     prev_page: Previous page
+    preview_item: Preview %{item}
+    previous_image: Previous image
     record:
       one: record
       other: records
@@ -204,11 +219,13 @@ en:
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
     this_field_has_attachments_disabled: This field has attachments disabled.
+    timezone_changed: Dates and times are now displayed in your time zone (%{timezone}).
     tools: Tools
     'true': 'True'
     type_to_search: Type to search.
     unauthorized: Unauthorized
     undo: undo
+    unsaved_changes_warning: You have unsaved changes. Are you sure you want to leave this page?
     updated_at: Updated at
     updated_at_timestamp: Updated at %{updated_at}
     view: View

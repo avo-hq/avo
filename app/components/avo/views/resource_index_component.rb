@@ -32,8 +32,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   # The Create button is dependent on the new? policy method.
   # The create? should be called only when the user clicks the Save button so the developers gets access to the params from the form.
   def can_see_the_create_button?
-    # Disable creation for ArrayResources
-    return false if @resource.resource_type_array?
+    return false if @resource.read_only_array?
 
     return authorize_association_for(:create) if @reflection.present?
 
@@ -222,6 +221,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
 
   def header_visible?
     search_query_present? || filters_present? || has_many_view_types? || has_dynamic_filters? || show_search_input || can_render_scopes?
+  end
+
+  # The search box and the filter and view buttons share one row. Header content like scopes or an always-expanded
+  # filter bar can show the header without any of them, and the empty row would still take the header's gap.
+  def show_toolbar_row?
+    show_search_input || show_dynamic_filters_button? || (filters_present? && !field&.hide_filter_button) || has_many_view_types?
   end
 
   def has_dynamic_filters?

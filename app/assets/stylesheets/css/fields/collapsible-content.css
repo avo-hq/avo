@@ -1,0 +1,31 @@
+/* Collapsed state for Avo::Fields::Common::CollapsableContentComponent.
+   The `hidden` class doesn't hide the content — it clips it to a short,
+   faded preview that the More/Less content buttons toggle. The height
+   animates where `interpolate-size` is supported (instant elsewhere). */
+.field-rich-content,
+[data-trix-body-target="content"] {
+  interpolate-size: allow-keywords;
+  overflow: hidden;
+  max-height: max-content;
+  /* Same gradient shape as the collapsed state so the fade interpolates
+     instead of popping in. */
+  -webkit-mask-image: linear-gradient(to bottom, black 100%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 100%, transparent 100%);
+  transition: max-height 300ms ease-in-out, -webkit-mask-image 300ms ease-in-out, mask-image 300ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-rich-content,
+[data-trix-body-target="content"] {
+    transition: none;
+  }
+}
+
+.field-rich-content.hidden,
+[data-trix-body-target="content"].hidden {
+  display: block !important;
+  max-height: 50px;
+  min-height: 0px;
+  -webkit-mask-image: linear-gradient(to bottom, black 30px, transparent 50px);
+  mask-image: linear-gradient(to bottom, black 30px, transparent 50px);
+}

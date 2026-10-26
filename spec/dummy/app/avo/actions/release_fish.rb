@@ -6,7 +6,7 @@ class Avo::Actions::ReleaseFish < Avo::BaseAction
 
   def fields
     field :message, as: :trix, help: "Tell the fish something before releasing."
-    field :user, as: :belongs_to, searchable: true, visible: -> { resource.record.present? }
+    field :user, as: :belongs_to, searchable: true
   end
 
   def handle(records:, fields:, **)

@@ -3,6 +3,7 @@ require_relative "avo/railtie_dsl"
 
 require "zeitwerk"
 require "net/http"
+require "csv"
 require "active_support/inflector"
 require_relative "avo/version"
 require_relative "avo/tailwind_builder"
@@ -102,6 +103,18 @@ module Avo
     end
   end
 
+  # Exception raised when an association field has no matching model association.
+  class MissingAssociationError < StandardError
+    def initialize(model_class, association_name, field)
+      macro = field.type.to_s
+      super(
+        "Failed to find the :#{association_name} association on #{model_class} while rendering the :#{field.id} field.\n" \
+        "Define `#{macro} :#{association_name}` on #{model_class}, or update the Avo field to use an association that exists.\n" \
+        "More info on https://docs.avohq.io/#{Avo::VERSION[0]}.0/associations.html."
+      )
+    end
+  end
+
   class ResourceNotFoundError < StandardError
     def initialize(resource_name)
       super(
@@ -117,9 +130,23 @@ module Avo
     attr_reader :field_manager
     delegate :app, :error_manager, :tool_manager, :resource_manager, to: Avo::Current
 
+    # A digest of the installed Avo version and of every registered plugin's
+    # name and version. Cached index rows fold it into their key so upgrading
+    # the gem or any plugin busts every row. Rails' template digest would do
+    # that for an ERB template, but ViewComponent templates compile to methods
+    # the digestor cannot see, so a fragment rendered by a component never
+    # picks one up. Computed on first use, after every engine has registered,
+    # and kept for the life of the process: versions don't change while it runs.
+    def cache_version
+      @cache_version ||= Digest::MD5.hexdigest(
+        [Avo::VERSION, *plugin_manager.plugins.map(&:to_s)].sort.join("|")
+      )
+    end
+
     # Runs when the app boots up
     def boot
       @boot_mutex.synchronize do
+        @cache_version = nil
         Turbo::Streams::TagBuilder.prepend(Avo::TurboStreamActionsHelper)
         @logger = Avo.configuration.logger
         @field_manager = Avo::Fields::FieldManager.build

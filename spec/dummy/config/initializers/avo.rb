@@ -43,14 +43,13 @@ Avo.configure do |config|
 
   ## == Customization ==
   config.id_links_to_resource = true
-  # config.container_width = :small
+  # config.container_width = :md
   config.use_stacked_fields = false
   config.buttons_on_form_footers = false
   config.resource_default_view = :show
   config.search_debounce = 300
   # config.field_wrapper_layout = :stacked
   config.click_row_to_view_record = true
-  config.back_to_top = {enabled: true}
 
   config.turbo = {
     instant_click: true
@@ -72,6 +71,8 @@ Avo.configure do |config|
   ## == Appearance ==
   config.appearance = {
     picker_layout: :inline, # :inline (default, with mobile auto-collapse) or :dropdown (always compact)
+    sound: true, # play a sound on picks by default; Shift+S toggles it per browser
+    sound_button: false, # show the mute toggle in the switcher (default: false)
     logo: "avo/logo.png",
     logo_dark: "avo/logo-dark.png",
     logomark: "avo/logomark.png",

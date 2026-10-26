@@ -6,7 +6,7 @@
   <div
     data-controller="<%= ["action", @action.get_stimulus_controllers].join(" ") %>"
     data-action-confirmation-value="<%= @action.confirmation? %>"
-    data-action-resource-name-value="<%= @resource.model_key %>"
+    data-action-resource-name-value="<%= resource_name_for(@resource) %>"
     data-resource-id="<%= params[:id] %>"
     class="hidden text-content"
   >
@@ -21,7 +21,7 @@
         **@action.class.form_data_attributes,
       } do |form|
     %>
-    <%= render Avo::ModalComponent.new(close_modal_on_backdrop_click: @action.close_modal_on_backdrop_click, description: @action.get_description) do |c| %>
+    <%= render Avo::ModalComponent.new(width: @action.modal_width, close_modal_on_backdrop_click: @action.close_modal_on_backdrop_click, description: @action.get_description) do |c| %>
       <% c.with_heading do %>
         <%= @action.action_name %>
         <% if Rails.env.development? %>
@@ -37,40 +37,61 @@
       <%= form.hidden_field :avo_index_query, 'data-action-target': 'indexQuery' %>
       <%= form.hidden_field :arguments, value: params[:arguments] %>
       <%= hidden_field_tag :resource_view, params[:resource_view] %>
+      <%# The fields render as a form, so they see the resource on the form view: their stimulus targets and html
+          attributes keep the names they have on an edit form. The action itself keeps the view it was started from. %>
+      <% fields_resource = @resource.dup.tap { |resource| resource.view = @view } %>
+      <% (@fields || []).each { |field| field.hydrate(resource: fields_resource, record: @resource.record, user: @resource.user, view: @view, action: @action) } %>
+      <%# Focus the first input whose field asks for it, or else the first input: a hidden field takes no focus and a display-only one cannot.
+          The fields are hydrated first so an autofocus block sees the view they render with. %>
+      <% inputs = (@fields || []).each_index.reject { |index| @fields[index].is_a?(Avo::Fields::HiddenField) || @fields[index].component_for_view(@view) == Avo::BlankFieldComponent } %>
+      <% first_input = inputs.find { |index| @fields[index].autofocus? } || inputs.first %>
       <% if @fields.present? %>
         <div class="description-list border-t border-tertiary">
           <% @fields.each_with_index do |field, index| %>
-            <%= render field
-              .hydrate(resource: @resource, record: @resource.record, user: @resource.user, view: @view, action: @action)
-              .component_for_view(@view)
-              .new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == 0)
-            %>
+            <% component = field.component_for_view(@view) %>
+            <%# A display-only field (badge, key/value...) has no form component. Render it as the show view does. %>
+            <% component = field.component_for_view(:show) if component == Avo::BlankFieldComponent %>
+            <%= render component.new(field: field, resource: @resource, index: index, form: form, full_width: true, autofocus: index == first_input) %>
           <% end %>
         </div>
       <% end %>
 
-      <% c.with_controls do %>
-        <%= a_button type: :button,
-          data: { action: 'click->modal#close', **(@action.close_modal_on_backdrop_click ? { hotkey: "Escape" } : {}) },
-          style: :text,
-          color: :primary,
-          size: :md do %>
-          <%= @action.cancel_button_label %>
-        <% end %>
-        <%= a_button type: :submit,
-            color: :primary,
-            style: :outline,
-            size: :md,
-            end_icon: "tabler/outline/arrow-right",
-            data: {
-              target: :submit_action,
-              hotkey: "Mod+Enter",
-            },
-            autofocus: @fields.reject { |field| field.is_a?(Avo::Fields::HiddenField) }.empty? do %>
-          <%= @action.confirm_button_label %>
+      <% show_cancel_button = !@action.hide_cancel_button? %>
+      <% show_confirm_button = !@action.hide_confirm_button? %>
+      <%# The modal renders its footer whenever the controls slot is set, even if the slot ends up empty. %>
+      <% if show_cancel_button || show_confirm_button %>
+        <% c.with_controls do %>
+          <% if show_cancel_button %>
+            <%= a_button type: :button,
+              data: { action: 'click->modal#close', **(@action.close_modal_on_backdrop_click ? { hotkey: "Escape" } : {}) },
+              style: :text,
+              color: :primary,
+              size: :md do %>
+              <%= @action.cancel_button_label %>
+            <% end %>
+          <% end %>
+          <% if show_confirm_button %>
+            <%= a_button(
+              type: :submit,
+              color: :primary,
+              style: :outline,
+              size: :md,
+              end_icon: "tabler/outline/arrow-right",
+              data: {
+                target: :submit_action,
+                hotkey: "Mod+Enter"
+              },
+              autofocus: first_input.nil?
+            ) do %>
+              <%= @action.confirm_button_label %>
+            <% end %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
 </div>
+
+<%# A belongs_to field's "Create new" dialog stacks here, outside the action's form, so the action keeps its values. %>
+<%= turbo_frame_tag "#{Avo::MODAL_FRAME_ID}_nested" %>
 <% end %>

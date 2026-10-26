@@ -1,6 +1,6 @@
 ---
 name: avo-fields
-description: Add or change fields in an Avo resource's `def fields` — pick the `as:` type, set options (required, default, help, visibility, formatting), and use computed and view-specific fields. Use when the user wants to add a field to an Avo resource, or — said without naming Avo — "add a status field to the Project model", "make the email field required", "show the user's avatar", "add a dropdown for order status", "the price should display as currency", "add a rich-text editor for the body", "hide the notes field on the index page", "add a star rating", "make the name column sortable", "show a badge for the order state", or "add a color picker / date picker / progress bar to a model". For belongs_to / has_many / has_one and other association fields, use the avo-associations skill instead.
+description: Add or change fields in an Avo resource's `def fields` — pick the `as:` type, set options (required, default, help, visibility, formatting), and use computed and view-specific fields. Use when the user wants to add a field to an Avo resource, or — said without naming Avo — "add a status field to the Project model", "make the email field required", "show the user's avatar", "add a dropdown for order status", "the price should display as currency", "add a rich-text editor for the body", "the markdown editor is too short / make it taller", "show the whole body on the show page instead of the More content preview", "hide the notes field on the index page", "add a star rating", "make the name column sortable", "show a badge for the order state", or "add a color picker / date picker / progress bar to a model". For belongs_to / has_many / has_one and other association fields, use the avo-associations skill instead.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community; some field types need companion gems (see Gotchas)
@@ -97,12 +97,12 @@ Map the need to an `as:` type. All built-in types are **Community (free)**; the 
 | A date                                                 | `:date`                      | `field :birthday, as: :date` |
 | A date **and** time                                    | `:date_time`                 | `field :published_at, as: :date_time` |
 | A time only                                            | `:time`                      | `field :opens_at, as: :time` |
-| A colored status pill (map value → color)              | `:badge`                     | `field :status, as: :badge, options: {success: "done", warning: "pending"}` |
+| A colored status pill (map value → color)              | `:badge`                     | `field :status, as: :badge, options: {success: "done", warning: "pending"}` — display-only; add `show_on: :forms` to edit it with a select of the option values |
 | A live status dot (loading/failed/success/neutral)     | `:status`                    | `field :state, as: :status, success_when: [:done], loading_when: [:running], failed_when: [:failed]` |
 | A tag input / list                                     | `:tags`                      | `field :skills, as: :tags` |
 | A star rating                                          | `:stars`                     | `field :rating, as: :stars` |
 | A progress bar (slider on forms)                       | `:progress_bar`              | `field :progress, as: :progress_bar` |
-| Editable flat JSON key/value pairs                     | `:key_value`                 | `field :meta, as: :key_value` |
+| Editable flat JSON key/value pairs                     | `:key_value`                 | `field :meta, as: :key_value` — `suggestions: {"Content-Type" => ["application/json"]}` (or an array of keys, or a block) hints keys/values while editing and saves nothing on its own |
 | Structured array data                                  | `:array`                     | `field :items, as: :array` |
 | A code editor (syntax-highlighted)                     | `:code`                      | `field :snippet, as: :code, language: "javascript"` |
 | The record id                                          | `:id`                        | `field :id, as: :id` |
@@ -111,6 +111,7 @@ Map the need to an `as:` type. All built-in types are **Community (free)**; the 
 | A hover preview icon on the Index row                  | `:preview`                   | `field :preview, as: :preview` |
 | A currency amount ⚠️                                    | `:money`                     | `field :price, as: :money, currencies: %w[USD EUR]` |
 | A rich-text WYSIWYG editor ⚠️ (recommended)            | `:rhino`                     | `field :body, as: :rhino` |
+| Basecamp's Lexxy editor (Action Text) ⚠️                | `:lexxy`                     | `field :body, as: :lexxy` |
 | A GitHub-style Markdown editor ⚠️                       | `:markdown`                  | `field :body, as: :markdown` |
 | A simpler Markdown editor ⚠️                            | `:easy_mde`                  | `field :notes, as: :easy_mde` |
 | The Trix editor (ActionText)                           | `:trix`                      | `field :body, as: :trix` |
@@ -124,27 +125,43 @@ Map the need to an `as:` type. All built-in types are **Community (free)**; the 
 
 For anything relationship-shaped ("show the user's posts", "attach an author") use the **avo-associations** skill.
 
+### The editor fields behave alike
+
+`trix`, `rhino`, `lexxy`, `markdown`, `easy_mde`, `tip_tap` and `code` render different editors on forms but share one Show and form behavior, so switching between them doesn't change how records read:
+
+- **On Show** the value is clipped to a short, faded preview with a `More content` link that expands it and a `Less content` link that collapses it back. Pass `always_show: true` to render the full value instead. `code` and `easy_mde` joined this in Avo **4.1.10** — before that they rendered in full.
+- **On forms** the editor sits in a viewport that opens 20rem tall, scrolls its overflow, and can be dragged taller or shorter by its bottom-end handle. The height is remembered in the browser's local storage per mount path, resource/action and field. Change the two heights globally by defining `--avo-resizable-editor-default-height` and `--avo-resizable-editor-min-height` on `:root` in a stylesheet registered with Avo's asset manager — there is no per-field option.
+- Since **4.1.10** the `code` field's `height:` option applies on Show only; on forms the resizable viewport wins.
+
+Which one to reach for: `rhino` for HTML rich text (or `lexxy` on Rails >= 8.0.2), `trix` for a zero-dependency default, `markdown` (Marksmith) for markdown, `code` for source. `tip_tap` is deprecated in favor of `rhino`.
+
 ## Key options
 
 Every field accepts these common options (full list + types at the field-options-api page). Pass a literal value or, unless noted, a lambda.
 
-- **`name`** — override the label (default is the humanized id). `field :is_available, as: :boolean, name: "Availability"`. For localized apps, translate via i18n instead of hardcoding.
+- **`name`** — override the label (default is the model's attribute translation — `activerecord.attributes.<model>.<attr>`, then `attributes.<attr>` — else the humanized id). `field :is_available, as: :boolean, name: "Availability"`. For localized apps, translate via i18n instead of hardcoding.
 - **Visibility** — `hide_on:`, `show_on:`, `only_on:`, `except_on:` take `:index`, `:show`, `:new`, `:edit`, `:preview` plus shorthands `:forms` (new+edit), `:display` (index+show), and `:all` (only for `hide_on`/`show_on`). Example: `field :notes, as: :textarea, hide_on: [:index, :show]`.
 - **`visible:`** — a lambda for conditional display. It can see `context` and `resource`; the record is `resource.record`. On create the record is `nil`, so **use safe navigation**: `visible: -> { resource.record&.published? }`.
+- **`hide_if_blank:`** — hides the field in the given views while its value is blank; prefer it over a `visible:` lambda that only checks presence. Takes `:index`, `:show`, `:edit`, `:new`, `:forms`, `:display` or `:all`, alone or in an array: `field :stripe_id, as: :text, hide_if_blank: :all`. Blank is Rails `blank?`, so a `false` boolean is hidden too. On Index the column stays while any row on the page has a value. A field that is blank in the database is also hidden on Edit, so it cannot be filled there.
 - **`required:`** — adds an asterisk (cosmetic only; Avo adds it automatically when the model has a presence validator). Real enforcement is model validation.
 - **`disabled:`** vs **`readonly:`** — both render the input disabled on forms. `disabled:` **also ignores the value on save** (safe against DOM tampering). `readonly:` is UI-only — a user can re-enable it and submit; don't rely on it for protection.
 - **`default:`** — pre-fills the New form (and action modals): `default: -> { Time.current }`.
 - **`help:`** / **`label_help:`** — help text (HTML allowed) below the input (forms only) or below the label (every view).
+- **`tooltip:`** / **`label_tooltip:`** — hover bubble (HTML allowed) on the value (badge/text on Index and Show, the input on forms) or on the label (every view, plus the Index header, with an info icon as the cue). String or block; the block gets `record`, `resource`, `view`, `field`, and returning `nil` renders no tooltip. `record` is `nil` for `label_tooltip` on the Index header. Prefer over `help:`/`label_help:` when the context matters only on demand: `tooltip: -> { "Revoked at #{record.revoked_at}" if record.revoked_at? }`.
 - **`placeholder:`** — placeholder for empty text-like inputs.
+- **`autofocus:`** — puts the cursor in the field when the New/Edit form or an action modal opens: `autofocus: true`, or `autofocus: -> { view.new? }` for New only. In an action modal it replaces the default first-input focus; if several fields set it, the first one on the page wins. Honored by `text`, `textarea`, `number`, `password`, `select`, `status`, `boolean`, `code`, `easy_mde`, `area`, `external_image`, `file`, `files`, `progress_bar`, `country`, non-searchable `belongs_to` (a polymorphic one focuses its type select) and fields generated with `avo:field`; every other field ignores it. Only set it on one of those: in an action modal, a field that ignores it leaves nothing focused. A readonly/disabled field or one in a tab that isn't open can't take focus. It is also ignored in nested association forms, in reactive (`react_on`) re-renders, and in the action card of an Avo AI chat, which keep focus where the surrounding form or chat composer put it.
 - **`sortable:`** — makes the Index column sortable. `true` for real columns; a `-> { query.order(...) }` lambda (receives `query` and `direction`) for computed fields.
-- **`format_using:`** — reshape the displayed value. **Runs on form views too**, so branch on the view when the form should stay editable: `format_using: -> { view.form? ? value : value.upcase }`. View-scoped variants exist (`format_display_using`, `format_index_using`, `format_show_using`, `format_form_using`, …) — the most specific one wins, they don't chain.
+- **Number `format:`** — formats `:number` fields on Index and Show with `:delimited`, `:percentage`, or `:human`; forms keep the raw number. A formatted number is end-aligned in tables, while a bare number stays start-aligned for identifier/year-shaped values. Rails i18n controls delimiters and separators. For money use the `:money` field, and for anything else `format_display_using:`.
+- **`format_using:`** — reshape the displayed value. **Runs on form views too**, so branch on the view when the form should stay editable: `format_using: -> { view.form? ? value : value.upcase }`. View-scoped variants exist (`format_display_using`, `format_index_using`, `format_show_using`, `format_form_using`, …) — the most specific one wins, they don't chain. Rails view helpers are callable directly inside the block — `-> { number_to_currency(value) }`, no `view_context` receiver.
 - **`update_using:`** — parse the raw form `value` before it's saved.
 - **`nullable:`** / **`null_values:`** — store empty input as `NULL` (optionally define which values count as null).
 - **`copyable:`** — clipboard icon on Show/Index. Copies the **displayed** (formatted) value.
-- **`link_to_record:`** — make the Index cell a link to the record. Only on `:id`, `:text`, `:gravatar`, and `belongs_to`.
+- **`always_show:`** — editor fields only (`trix`, `rhino`, `lexxy`, `markdown`, `easy_mde`, `tip_tap`, `code`). `true` renders the full value on Show instead of the collapsed preview. Defaults to `false`.
+- **`link_to_record:`** — make the Index cell a link to the record. Only on `:id`, `:text`, `:number`, `:date`, `:date_time`, `:time`, `:gravatar`, `:file`, `:external_image`, and `belongs_to`.
+- **`lightbox:`** — `:file` and `:files` only. On Show, images open in an in-page lightbox (prev/next, arrow keys, Escape, a link to the original) by default; `lightbox: false` renders the plain image. Non-image files are unaffected.
 - **`for_attribute:`** — back the field with a different attribute than its id (lets you show one column two ways).
-- **`width:`** / **`stacked:`** — column width (`25/33/50/66/75/100`; any value <100 auto-stacks) and label-above-value layout.
-- **`html:`** — attach `style`/`classes`/`data` to the field's wrapper/label/input per view (e.g. right-align a number: `html: {index: {wrapper: {classes: "text-right"}}}`). See the html page.
+- **`width:`** / **`stacked:`** — column width (`25/33/50/66/75/100`; any value <100 auto-stacks) and label-above-value layout. `stacked:` on the field wins everywhere, so `stacked: false` opts out of the auto-stacking and of sidebars/preview stacking too.
+- **`html:`** — attach `style`/`classes`/`data` to the field's wrapper/label/input per view (e.g. allow wrapping on Index: `html: {index: {wrapper: {classes: "whitespace-normal"}}}`). See the html page.
 
 ### Computed (block) fields
 
@@ -194,15 +211,18 @@ end
 
 - **Gem-gated types break without their companion gem** (the field silently fails to render or raises). If the user asks for one, tell them to add the gem:
   - `:rhino` → `gem "avo-rhino_field"`
+  - `:lexxy` → `gem "avo-lexxy_field"` (Basecamp's Lexxy editor for Action Text; needs Rails >= 8.0.2)
   - `:markdown` → `gem "marksmith"` + `gem "commonmarker"`
   - `:money` → `gem "avo-money_field"` + `gem "money-rails", "~> 1.12"` (and `monetize :price_cents` on the model)
-  - `:location` / `:area` → `gem "mapkick-rb"` (**not** `mapkick`) + `MAPBOX_ACCESS_TOKEN` env var
+  - `:location` / `:area` → `gem "mapkick-rb"` (**not** `mapkick`). No API key needed — Avo defaults these maps to [OpenFreeMap](https://openfreemap.org), switchable with `config.map_view = {styles: …}`. Set `MAPBOX_ACCESS_TOKEN` only to use Mapbox styles, and for `:location` with `static: true` (which also needs `gem "mapkick-static"` and is Mapbox-only). Preview always renders a static map, so it carries the same Mapbox requirement even when `static:` is unset.
   - Reactive fields (`react_on:`) → `gem "avo-reactive_fields"`
   - Some of these gems live on the `packager.dev` source — point the user to the Avo 4 upgrade guide's gems section.
 - **`tip_tap` is deprecated** — use `:rhino` for a WYSIWYG editor.
+- **`always_show` on `markdown` needs `marksmith` >= 0.6.0.** The collapsed preview is rendered by the Marksmith editor itself; on older versions the field always shows its full content and the option has nothing to do.
 - **`markdown` was renamed.** The old `markdown` field is now `easy_mde`; the new `markdown` is the Marksmith editor. Don't confuse them.
 - **`required:` and `readonly:` are cosmetic.** Enforce with model validations (`validates :x, presence: true`) and use `disabled:` when you need the value ignored on save.
 - **`format_using:` runs on form views too** — return the raw `value` when `view.form?` so the input stays editable, or use a `format_display_using:`/`format_*_using:` variant.
+- **Number `format:` is display-only** — prefer `field :population, as: :number, format: :delimited` to a custom delimiter proc; a supplied `format_display_using:` or view-specific formatter still wins.
 - **Computed block fields** show only on Index/Show and can't be `sortable: true`.
 - **`visible:` lambdas see `resource.record == nil` on create** — always safe-navigate (`resource.record&.foo`).
 - **`select` takes exactly one of `options:`, `grouped_options:`, or `enum:`** — never combine them.

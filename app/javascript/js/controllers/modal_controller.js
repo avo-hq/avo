@@ -17,18 +17,16 @@ export default class extends BaseModalController {
 
   disconnect() {
     this.disconnectModal()
-    this.removeModalOpen()
+    this.topmostModal()?.focus()
   }
 
   // -- strategy implementation ----------------------------------------------
 
   isOpen() {
-    return true // if the element is in the DOM it's open
+    return this.modalTarget.matches(':popover-open')
   }
 
   closeModal() {
-    this.removeModalOpen()
-
     const remove = () => {
       window.clearTimeout(timer)
       this.modalTarget.removeEventListener('transitionend', remove)

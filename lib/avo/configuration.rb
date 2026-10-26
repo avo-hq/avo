@@ -13,6 +13,7 @@ module Avo
     attr_writer :hotkeys
     attr_writer :back_to_top
     attr_writer :associations
+    attr_writer :map_view
     # When unset, Tailwind scans Rails.root.join("app"). Each entry is an absolute path or a path relative to Rails.root.
     attr_writer :tailwindcss_content_sources
     attr_accessor :timezone
@@ -20,6 +21,10 @@ module Avo
     attr_accessor :per_page_steps
     attr_accessor :via_per_page
     attr_accessor :locale
+    # true (every locale the app enables that Avo has translations for), false, or an array of locales.
+    attr_accessor :locale_selector
+    # Field labels fall back to the model's attribute translations (activerecord.attributes / attributes).
+    attr_accessor :model_attribute_translations
     attr_accessor :currency
     attr_accessor :default_view_type
     attr_accessor :license_key
@@ -28,6 +33,7 @@ module Avo
     attr_accessor :current_user
     attr_accessor :id_links_to_resource
     attr_accessor :cache_resources_on_index_view
+    attr_accessor :index_cache_context
     attr_accessor :context
     attr_accessor :hide_layout_when_printing
     attr_accessor :initial_breadcrumbs
@@ -39,6 +45,7 @@ module Avo
     attr_accessor :raise_error_on_missing_policy
     attr_accessor :global_search
     attr_accessor :buttons_on_form_footers
+    attr_accessor :warn_on_unsaved_changes
     attr_accessor :main_menu
     attr_accessor :profile_menu
     attr_accessor :header_menu
@@ -63,6 +70,7 @@ module Avo
     attr_accessor :model_generator_hook
     attr_accessor :send_metadata
     attr_accessor :use_stacked_fields
+    attr_accessor :use_browser_timezone
     attr_accessor :default_editor_url
     attr_writer :body_classes
     attr_writer :sidebar
@@ -71,15 +79,21 @@ module Avo
 
     unless defined?(CONTAINER_WIDTH_DEFAULTS)
       CONTAINER_WIDTH_DEFAULTS = {
-        index: :large,
-        show: :small,
-        new: :small,
-        edit: :small,
-        create: :small,
-        update: :small
+        index: :lg,
+        show: :md,
+        new: :md,
+        edit: :md,
+        create: :md,
+        update: :md
       }.freeze
 
-      VALID_CONTAINER_WIDTHS = %i[full large small].freeze
+      VALID_CONTAINER_WIDTHS = %i[full lg md sm].freeze
+
+      # Avo 4.1 renamed the widths onto Tailwind's scale so the vocabulary matches
+      # every other size option (`size: :sm`, `width: :xl`, ...). Note `:small`
+      # maps to `:md`, not `:sm` — the rename kept the old width and freed the
+      # narrower names. The old names still work and warn; drop them in Avo 5.
+      DEPRECATED_CONTAINER_WIDTHS = {large: :lg, small: :md}.freeze
 
       CONTAINER_WIDTH_GROUPS = {
         forms: %i[new edit create update],
@@ -88,17 +102,31 @@ module Avo
       }.freeze
     end
 
+    # Single funnel for every container width that enters Avo — `config.container_width=`
+    # and the controllers' `mark_container_width`. Unknown values pass through untouched
+    # so each caller keeps raising its own ArgumentError.
+    def self.normalize_container_width(value)
+      replacement = DEPRECATED_CONTAINER_WIDTHS[value.respond_to?(:to_sym) ? value.to_sym : value]
+      return value if replacement.nil?
+
+      Avo.logger.warn "[Avo] Container width `:#{value}` is deprecated and will be removed in Avo 5. Use `:#{replacement}` instead."
+      replacement
+    end
+
     def container_width=(value)
       case value
       when NilClass
         @container_width = nil
       when Symbol
+        value = self.class.normalize_container_width(value)
         raise ArgumentError, "Invalid container width: #{value}. Must be one of #{VALID_CONTAINER_WIDTHS}" unless VALID_CONTAINER_WIDTHS.include?(value)
         @container_width = CONTAINER_WIDTH_DEFAULTS.transform_values { value }
       when Hash
         valid_keys = CONTAINER_WIDTH_DEFAULTS.keys + CONTAINER_WIDTH_GROUPS.keys
         invalid_keys = value.keys.reject { |k| valid_keys.include?(k) }
         raise ArgumentError, "Invalid container width keys: #{invalid_keys}. Valid keys: #{valid_keys}" if invalid_keys.any?
+
+        value = value.transform_values { |v| self.class.normalize_container_width(v) }
 
         invalid_values = value.values.reject { |v| VALID_CONTAINER_WIDTHS.include?(v) }
         raise ArgumentError, "Invalid container widths: #{invalid_values}" if invalid_values.any?
@@ -137,8 +165,11 @@ module Avo
       @per_page_steps = [12, 24, 48, 72]
       @via_per_page = 8
       @locale = nil
+      @locale_selector = true
+      @model_attribute_translations = true
       @currency = "USD"
       @default_view_type = :table
+      @map_view = {}
       @license_key = nil
       @current_user = proc {}
       @authenticate = proc {}
@@ -154,6 +185,13 @@ module Avo
       }
       @id_links_to_resource = false
       @cache_resources_on_index_view = Avo::PACKED
+      # Everything an index row's cache key varies by besides the record. Field
+      # `visible:` lambdas, computed fields, grid cards and the row controls all
+      # read the current user, so the user is in the key by default — the record,
+      # not its id, so editing a user's roles busts their rows too. Locale and
+      # tenant are in for the same reason. Resolved through Avo::ExecutionContext,
+      # once per request.
+      @index_cache_context = -> { [current_user, I18n.locale, Avo::Current.tenant_id] }
       @persistence = {
         driver: nil
       }
@@ -169,6 +207,7 @@ module Avo
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
       @buttons_on_form_footers = false
+      @warn_on_unsaved_changes = true
       @main_menu = nil
       @profile_menu = nil
       @header_menu = nil
@@ -204,6 +243,10 @@ module Avo
       @model_generator_hook = true
       @send_metadata = true
       @use_stacked_fields = false
+      # Off in the test environment: the first-load cookie handshake soft-reloads
+      # the page through Turbo, which races browser specs (stale nodes, doubled
+      # requests). Apps can still opt in per example.
+      @use_browser_timezone = !Rails.env.test?
       @default_editor_url = "cursor://file/%{path}"
       @sidebar = {}
       @body_classes = []
@@ -227,11 +270,11 @@ module Avo
     end
 
     # "Back to top" pill. `enabled` toggles it; `threshold` is how many pixels
-    # the page must be scrolled down before an upward scroll reveals it.
+    # the page must be scrolled down before it shows up.
     unless defined?(BACK_TO_TOP_DEFAULTS)
       BACK_TO_TOP_DEFAULTS = {
-        enabled: false,
-        threshold: 64
+        enabled: true,
+        threshold: 400
       }.freeze
     end
 
@@ -267,6 +310,18 @@ module Avo
     # `loading` is the cold-start render mode when a field doesn't set its own
     # `loading:` — `:lazy` (loads on reveal) or `:manual` (placeholder + Load
     # button). `auto_load_for` is the manual memory window (see FrameLoadingMode).
+    # Map view, and the `location`/`area` fields that render the same maps.
+    #
+    # `styles` is the light/dark pair Avo renders them with. `nil` resolves to
+    # Mapbox when MAPBOX_ACCESS_TOKEN is set and to OpenFreeMap otherwise — pin
+    # one with `:mapbox` / `:open_free_map`, or pass your own `{light:, dark:}`.
+    # See Avo::MapStyles.
+    unless defined?(MAP_VIEW_DEFAULTS)
+      MAP_VIEW_DEFAULTS = {
+        styles: nil
+      }.freeze
+    end
+
     unless defined?(ASSOCIATIONS_DEFAULTS)
       ASSOCIATIONS_DEFAULTS = {
         lookup_list_limit: 1000,
@@ -290,6 +345,10 @@ module Avo
 
     def back_to_top
       BACK_TO_TOP_DEFAULTS.merge @back_to_top
+    end
+
+    def map_view
+      MAP_VIEW_DEFAULTS.merge @map_view
     end
 
     def associations
@@ -430,6 +489,30 @@ module Avo
 
     def default_locale
       @locale || I18n.default_locale
+    end
+
+    # The locales the profile-menu language picker offers, as strings.
+    #   true  -> the app's I18n.available_locales that Avo ships (or the app adds) an `avo` tree for, sorted by code
+    #   false -> none
+    #   array -> exactly those, in that order, minus any the app does not enable
+    # Restricting to I18n.available_locales keeps I18n.with_locale from raising
+    # InvalidLocale for a value that came from a cookie.
+    def locale_selector_locales
+      available = I18n.available_locales.map(&:to_s)
+
+      case @locale_selector
+      when true
+        available.select { |locale| Avo::Locales.translated?(locale) }.sort
+      when false, nil
+        []
+      else
+        Array(@locale_selector).map(&:to_s).uniq.select { |locale| available.include?(locale) }
+      end
+    end
+
+    # The picker only makes sense with a choice to make.
+    def locale_selector_enabled?
+      locale_selector_locales.size >= 2
     end
 
     # Known RTL (Right-to-Left) locale codes

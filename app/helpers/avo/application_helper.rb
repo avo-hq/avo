@@ -58,6 +58,75 @@ module Avo
       nil
     end
 
+    # How much of a text blob the Media Library preview reads from storage at once.
+    MEDIA_LIBRARY_TEXT_PREVIEW_BYTES = 1.megabyte
+
+    # A chunk of a text blob, for the Media Library preview. Read server-side
+    # because Active Storage serves text/* as a download, so it can't be framed.
+    # nil when there is nothing to show (not text, empty, or missing in storage).
+    def media_library_text_preview(blob, offset: 0)
+      return unless blob.text? && blob.byte_size.positive?
+
+      # Clamp the range: S3 answers a range past the end of the object with 416.
+      offset = offset.to_i.clamp(0, blob.byte_size - 1)
+      finish = [blob.byte_size, offset + MEDIA_LIBRARY_TEXT_PREVIEW_BYTES].min
+      text = blob.service.download_chunk(blob.key, offset...finish).force_encoding(Encoding::UTF_8)
+      # Same-width replacements: the csv preview counts bytes to find where the
+      # next page starts, so scrubbing must not change the length.
+      text = text.scrub { |bytes| "?" * bytes.bytesize }
+      # A cut-off read ends mid-line (and maybe mid-character); drop the partial line.
+      text = text[0..text.rindex("\n")] if finish < blob.byte_size && text.include?("\n")
+      text
+    rescue ActiveStorage::FileNotFoundError
+      nil
+    end
+
+    # How many rows a CSV preview table loads at a time. The byte cap alone
+    # doesn't bound the table: a megabyte of narrow rows is 100k rows and 300k
+    # DOM nodes, which takes the browser seconds to lay out.
+    MEDIA_LIBRARY_CSV_PREVIEW_ROWS = 1000
+
+    # One page of a CSV preview: [rows, bytes those rows took up in `text`], or
+    # nil when the text doesn't parse as CSV -- the caller falls back to plain
+    # text. Storage reads byte ranges, not row ranges, so the byte count is what
+    # lets "load more" start the next read exactly where this page ended instead
+    # of re-reading the file from the top.
+    def media_library_csv_rows(text)
+      csv = CSV.new(text, liberal_parsing: true)
+      rows = []
+      consumed = 0
+      begin
+        while rows.size < MEDIA_LIBRARY_CSV_PREVIEW_ROWS && (row = csv.shift)
+          rows << row
+          consumed += csv.line.bytesize
+        end
+      rescue CSV::MalformedCSVError
+        # Usually the read ending inside a quoted multi-line field. Keep the rows
+        # before it: the next page starts at the broken row and reads it whole.
+      end
+
+      [rows, consumed] if rows.any?
+    end
+
+    # The image formats no browser paints: HEIC and HEIF decode in Safari alone,
+    # TIFF and PSD nowhere. Not `ActiveStorage.web_image_content_types` -- that
+    # one picks a variant's output format, and browsers render plenty it leaves
+    # out (AVIF always, WebP unless the app loads Rails 7.2 defaults).
+    UNRENDERABLE_IMAGE_CONTENT_TYPES = %w[image/heic image/heif image/tiff image/vnd.adobe.photoshop].freeze
+
+    # Serves an attachment the browser can't paint through a variant, which
+    # ActiveStorage renders as PNG. Everything else keeps serving the original,
+    # so apps without an image processor are unaffected.
+    def safe_image_url(attachment)
+      blob = attachment.try(:blob)
+
+      if blob&.variable? && blob.content_type.in?(UNRENDERABLE_IMAGE_CONTENT_TYPES)
+        safe_blob_representation_url(blob.variant({})) || main_app.url_for(attachment)
+      else
+        main_app.url_for(attachment)
+      end
+    end
+
     def safe_blob_representation_url(representation)
       blob = representation.blob
 
@@ -222,10 +291,9 @@ module Avo
     end
 
     def container_classes
-      return "container-#{container_width_css_suffix(@container_size.to_sym)}" if @container_size.present?
+      return "container-#{@container_size}" if @container_size.present?
 
-      width = Avo.configuration.container_width.fetch(@view&.to_sym, :large)
-      "container-#{container_width_css_suffix(width)}"
+      "container-#{Avo.configuration.container_width.fetch(@view&.to_sym, :lg)}"
     end
 
     # encode & encrypt params
@@ -240,6 +308,26 @@ module Avo
       Avo::Services::EncryptionService.decrypt(message: decoded, purpose: :return_to, serializer: Marshal)
     rescue
       nil
+    end
+
+    # Call it through `helpers.` so the value is memoized on the view context and encrypted once
+    # per request, not once per component (index pages render one link per row).
+    # Inside a turbo frame the URL points at the frame, not the page, so there is nothing to return to.
+    # For example, editing a has_one field should return to the parent page, not the has_one frame.
+    def return_to_current_page
+      return if request.query_parameters.key?("turbo_frame")
+
+      @return_to_current_page ||= e(request.fullpath)
+    end
+
+    # The modal level this request renders into, or nil when it does not come from one.
+    # Each belongs_to "Create new" dialog opens in a frame nested in the one below it:
+    # modal_frame, modal_frame_nested, modal_frame_nested_nested... A request from any other
+    # frame (a tab, an association list) is not a modal level, so nothing is stacked on it.
+    def current_modal_frame_id
+      frame_id = turbo_frame_request_id.to_s
+
+      frame_id if frame_id.match?(/\A#{Avo::MODAL_FRAME_ID}(_nested)*\z/o)
     end
 
     def wrap_in_modal(content)
@@ -317,17 +405,12 @@ module Avo
       "attachment#{extension}"
     end
 
-    def container_width_css_suffix(width)
-      (width == :full) ? "full-width" : width.to_s
-    end
-
     def avo_field(type = nil, id = nil, as: nil, view: :show, form: nil, component_options: {}, **args, &block)
       if as.present?
         id = type
         type = as
       end
-      field_klass = "Avo::Fields::#{type.to_s.camelize}Field".safe_constantize
-      field = field_klass.new id, form: form, view: view, **args, &block
+      field = Avo::Dsl::FieldParser.new(id: id, as: type.to_sym, form: form, view: view, **args, &block).parse.instance
 
       # Add the form record to the field so all fields have access to it.
       field.hydrate(record: form.object) if form.present?

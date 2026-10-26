@@ -8,7 +8,8 @@
         url: item.path,
         icon: item.icon,
         avatar: item.avatar,
-        initials: item.initials
+        initials: item.initials,
+        color: item.respond_to?(:color) ? item.color : nil
       ) %>
 
       <% unless is_last %>

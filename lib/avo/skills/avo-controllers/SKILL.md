@@ -1,6 +1,6 @@
 ---
 name: avo-controllers
-description: Override the per-resource CRUD controller hooks Avo generates (redirect paths, flash messages, custom responses, save/destroy behavior) and safely extend Avo's private ApplicationController. Use when the user wants to redirect somewhere else after creating/updating/deleting in the admin, change the "successfully created/updated" flash message, soft-delete or archive instead of destroying, swap `@record.save!` for a service object, run code before every admin request, set a `Current` attribute or tenant per admin request, override `fill_record`, or fix `ActionDispatch::MissingController`. Covers `Avo::CoursesController < Avo::ResourcesController`, the `avo:controller` generator, `after_create_path`/`after_update_path`/`after_destroy_path`, `*_success_message`/`*_fail_message`, `create_/update_/destroy_success_action`/`*_fail_action`, `save_record_action`/`destroy_record_action`, and extending `Avo::ApplicationController` with a concern in `to_prepare`.
+description: Override the per-resource CRUD controller hooks Avo generates (redirect paths, flash messages, custom responses, save/destroy behavior) and safely extend Avo's private ApplicationController. Use when the user wants to redirect somewhere else after creating/updating/deleting in the admin, change the "successfully created/updated" flash message, soft-delete or archive instead of destroying, swap `@record.save!` for a service object, run code before every admin request, set a `Current` attribute or tenant per admin request, override `fill_record`, read `@via_record` after `super`, or fix `ActionDispatch::MissingController`. Covers `Avo::CoursesController < Avo::ResourcesController`, the `avo:controller` generator, `after_create_path`/`after_update_path`/`after_destroy_path`, `*_success_message`/`*_fail_message`, `create_/update_/destroy_success_action`/`*_fail_action`, `save_record_action`/`destroy_record_action`, and extending `Avo::ApplicationController` with a concern in `to_prepare`.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -32,7 +32,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every me
 
 **Explicit (Avo named):** "override the `Courses` controller", "override `after_create_path`/`after_update_path`/`after_destroy_path`", "change `create_success_message`", "override `save_record_action` / `destroy_record_action`", "generate a controller with `avo:controller`", "set `config.resource_parent_controller`", "extend `Avo::ApplicationController`", "override `fill_record`".
 
-**Implicit (Rails/product-shaped, no mention of Avo):** "redirect somewhere else after saving/creating/deleting in the admin", "send the user to the dashboard after they create a record", "change the 'successfully created' message", "soft-delete instead of destroying in the admin", "archive instead of delete", "run a service object when I save instead of `save!`", "run code before every admin request", "set a `Current` attribute on each admin request", "set the tenant / add multitenancy in the admin", "customize what happens after I save a record", "I get `ActionDispatch::MissingController` when I open a resource".
+**Implicit (Rails/product-shaped, no mention of Avo):** "redirect somewhere else after saving/creating/deleting in the admin", "send the user to the dashboard after they create a record", "change the 'successfully created' message", "soft-delete instead of destroying in the admin", "archive instead of delete", "run a service object when I save instead of `save!`", "run code before every admin request", "set a `Current` attribute on each admin request", "set the tenant / add multitenancy in the admin", "customize what happens after I save a record", "prefill the new record from the parent it was created from", "I get `ActionDispatch::MissingController` when I open a resource".
 
 ## Workflow
 
@@ -136,7 +136,7 @@ end
 
 Defaults that carry Turbo behavior:
 
-- **`create_success_action`** — when a record is created through a `belongs_to` modal (`params[:via_belongs_to_resource_class]` present), renders Turbo Streams that close the modal and select the new record in the field; otherwise redirects to `after_create_path` with the success flash. Keep the `super` guard or the "Create new record" flow inside `belongs_to` fields breaks.
+- **`create_success_action`** — when a record is created through a `belongs_to` modal (`params[:via_belongs_to_resource_class]` present), renders Turbo Streams that close that dialog and select the new record in the field that opened it (a "Create new" dialog can open another on top, so the stream clears only the current dialog's frame via `helpers.current_modal_frame_id` and passes `target_name`/`frame_id` to `avo_update_belongs_to`); otherwise redirects to `after_create_path` with the success flash. Keep the `super` guard or the "Create new record" flow inside `belongs_to` fields breaks.
 - **`destroy_success_action`** — when the delete happens inside a Turbo Frame (`params[:turbo_frame]`, e.g. an association list) it reloads that frame via Turbo Streams; otherwise flashes and redirects to `after_destroy_path`. Keep the `super` guard or deleting from association lists breaks.
 - **`create_fail_action` / `update_fail_action`** — flash the fail message and re-render `:new` / `:edit` with `:unprocessable_content` status (`:unprocessable_entity` on Rails < 7.1), plus a `turbo_stream` format.
 - **`destroy_fail_action`** — flashes and renders a `turbo_stream` alert without leaving the page.
@@ -158,6 +158,27 @@ end
 ```
 
 **Errors raised inside these methods are caught, logged, and added to the record's errors** (`errors.add(:base, ...)`) — which automatically triggers the matching `*_fail_action` and `*_fail_message`. So you don't rescue in here yourself; raising *is* how you signal failure, and the record's validation errors surface in the fail flash.
+
+By default both hooks call the resource: `@resource.save_record(@record)` and `@resource.destroy_record(@record)`, which run `save!` and `destroy!`. When the change belongs to the resource under every controller (a record that is not an Active Record model, like an array resource's), define `save_record(record)` / `destroy_record(record)` on the resource instead.
+
+### Parent record — the record this one is reached through
+
+When a record is created, shown, or edited through another one (a comment created from a post's comments panel), Avo resolves that parent from the `via_*` params. **Don't re-derive it from `params[:via_relation_class]` / `params[:via_record_id]`** — read what Avo already loaded:
+
+```ruby
+class Avo::CommentsController < Avo::ResourcesController
+  def new
+    super
+
+    @record.body = "Re: #{@via_record.name}" if @via_record.is_a?(Post)
+  end
+end
+```
+
+- **`@via_record` / `@via_resource`** — set after `super` in `new`, `show`, and `edit`. `nil` when there is no parent.
+- **`via_record` / `via_resource`** — the same values from any other hook (`create`, `after_create_path`, ...); they look the parent up on first use.
+- The resource comes from `params[:via_resource_class]`, falling back to the model in `params[:via_relation_class]`, so it's right even when several resources share one model. The record goes through that resource's `find_record_method`, so slugs and prefixed ids resolve.
+- Requires Avo 4.2.11 or later. On older versions these are `nil`/undefined; check the installed `Avo::BaseController` before relying on them.
 
 ## Extending `Avo::ApplicationController`
 

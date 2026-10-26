@@ -137,10 +137,21 @@ Generated components are plain text fields you replace. Each inherits from an Av
 | `@form` | Edit only | Rails form builder — build inputs with `@form.range_field @field.id`, `@form.text_field @field.id`, etc. |
 | `classes("extra")` | Edit only | Input CSS classes with error state / size / HTML overrides already applied. |
 | `disabled?` | Edit, Show | `true` when readonly **or** disabled — prefer it over `@field.readonly`, it covers both. |
+| `@autofocus` | Edit only | Whether this input should take focus when the form opens: the field's `autofocus:` option, or the caller's override. Pass it to your input (`autofocus: @autofocus`) so the option works on your field. |
 
 ### The field wrapper (why every component starts with it)
 
-The first thing each component does is wrap your content in `field_wrapper` (Show/Edit) or `index_field_wrapper` (Index). The wrapper is what makes a custom field look native: it draws the **label, required asterisk, help text, validation error, blank-`—` placeholder**, and applies `stacked` / `full_width` / `density` layout. You render only the *value*; the wrapper renders everything around it. That's why you splat `field_wrapper_args` instead of hand-building the label. Pass extra options alongside it (`field_wrapper **field_wrapper_args, dash_if_blank: false`).
+The first thing each component does is wrap your content in `field_wrapper` (Show/Edit) or `index_field_wrapper` (Index). The wrapper is what makes a custom field look native: it draws the **label, required asterisk, help text, tooltip, validation error, blank-`—` placeholder**, and applies `stacked` / `full_width` / `density` layout. You render only the *value*; the wrapper renders everything around it. That's why you splat `field_wrapper_args` instead of hand-building the label. Pass extra options alongside it (`field_wrapper **field_wrapper_args, dash_if_blank: false`).
+
+`tooltip:` / `label_tooltip:` need no wiring — `BaseField` resolves them and the wrapper renders the hover bubble on every view (plus the label bubble on the Index header) for free. If your field's value fills the row instead of sitting inline (an editor, a map, a progress bar), override `tooltip_anchor` to keep the hover target at the value's full width rather than collapsing to its content:
+
+```ruby
+class Avo::Fields::MyBlockField < Avo::Fields::BaseField
+  def tooltip_anchor
+    :block
+  end
+end
+```
 
 Typical customization — a `<progress>` bar on Show, a range slider on Edit:
 
@@ -160,16 +171,54 @@ Typical customization — a `<progress>` bar on Show, a range slider on Edit:
 <%# edit_component.html.erb %>
 <%= field_wrapper **field_wrapper_args do %>
   <%= @form.range_field @field.id,
-    class: "w-full", disabled: disabled?, min: 0,
+    class: "w-full", disabled: disabled?, autofocus: @autofocus, min: 0,
     max: @field.max, step: @field.step %>
 <% end %>
 ```
 
 Index uses `index_field_wrapper` the same way.
 
+### Collapse long content on Show
+
+For a field that renders something tall — rich text, a rendered document, a long listing — pass `collapsable: true` to the wrapper. Avo clips the value to a short, faded preview with a `More content` link that expands it and a `Less content` link that collapses it back: the same wrapper every built-in editor field uses, so your field reads like the native ones. It only reveals the toggle when the content is actually taller than the preview, and it applies on **Show only** — the wrapper ignores it on Index and Edit.
+
+Give users a way out by accepting an `always_show` option on the field and passing it through inverted:
+
+```ruby
+# app/avo/fields/color_picker_field.rb
+class Avo::Fields::ColorPickerField < Avo::Fields::BaseField
+  attr_reader :always_show
+
+  def initialize(id, **args, &block)
+    super
+    @always_show = args[:always_show] || false
+  end
+end
+```
+
+```erb
+<%# app/components/avo/fields/color_picker_field/show_component.html.erb %>
+<%= field_wrapper(**field_wrapper_args, collapsable: !@field.always_show) do %>
+  <div style="background-color: <%= @field.value %>"><%= @field.value %></div>
+<% end %>
+```
+
+### Make an editor field resizable
+
+If the field renders an editor on forms, declare the CSS selector of its scrollable viewport on the field class. Avo makes that element vertically resizable with a drag handle and remembers the height per field in the browser's local storage:
+
+```ruby
+# app/avo/fields/my_editor_field.rb
+class Avo::Fields::MyEditorField < Avo::Fields::BaseField
+  resizable_editor target: ".my-editor__content"
+end
+```
+
+The selector is resolved inside the field wrapper *after* the editor boots, so client-rendered editors work too.
+
 ### Pre-built Stimulus controllers
 
-Avo bundles reusable controllers so you don't have to ship JS for common patterns — e.g. `hidden-input`, which collapses content behind a "Show content" trigger (as the Trix field does). Wire it in ERB: put `data-controller="hidden-input"` on a wrapper, add a link with `data: { action: "click->hidden-input#showContent" }`, and mark the collapsible div with `data-hidden-input-target="content"`. See the custom-fields doc for the full markup.
+Avo bundles reusable controllers so you don't have to ship JS for common patterns — e.g. `hidden-input`, a **one-way** reveal that hides content behind a trigger and makes no assumptions about how tall it is (for the height-aware two-way version, use `collapsable` above). Wire it in ERB: put `data-controller="hidden-input"` on a wrapper, add a link with `data: { action: "click->hidden-input#showContent" }`, and mark the collapsible div with `data-hidden-input-target="content"` plus the `hidden` class when `always_show` is `false`. See the custom-fields doc for the full markup.
 
 ## Gotchas
 

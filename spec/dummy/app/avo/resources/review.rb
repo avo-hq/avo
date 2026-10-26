@@ -53,4 +53,9 @@ class Avo::Resources::Review < Avo::BaseResource
       polymorphic_help: "Select the polymorphic type",
       help: "For the review with the ID of 1 the scope is modified. Please check the code under <code>review_resource.rb</code>"
   end
+
+  def actions
+    action Avo::Actions::Test::ShowPolymorphicFields
+    action Avo::Actions::Test::ShowView
+  end
 end

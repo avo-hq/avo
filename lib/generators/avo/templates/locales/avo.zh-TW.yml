@@ -4,6 +4,7 @@ zh-TW:
     action_ran_successfully: 操作成功執行！
     actions: 操作
     add_filter: 新增篩選器
+    all: 全部
     and_x_other_resources: 和 %{count} 個其他資源
     appearance:
       accent_picker: 重點顏色
@@ -52,6 +53,11 @@ zh-TW:
       shortcut_badges_hide_tooltip: 隱藏鍵盤快捷鍵徽章
       shortcut_badges_show_tooltip: 顯示鍵盤快捷鍵徽章
       show: 顯示
+      sound: 聲音
+      sound_off: 關
+      sound_off_tooltip: 靜音外觀聲音
+      sound_on: 開
+      sound_on_tooltip: 當外觀變更時播放聲音
       title: 外觀
     applied: 已應用
     are_you_sure: 您確定嗎？
@@ -108,6 +114,7 @@ zh-TW:
     filter_by: 按...篩選
     filters: 篩選器
     global_search:
+      direct_match: 精確匹配
       empty_state:
         no_results_for_query: 我們找不到任何與 "%{query}" 匹配的內容
         no_results_found: 未找到結果
@@ -123,17 +130,21 @@ zh-TW:
         select: 選擇
       results:
         count_of_total: "%{count} / %{total}"
+      search_results: 搜尋結果
+      searching_on: 搜尋範圍：
       show_all_results_for: 顯示所有結果
     go_back: 返回
     grid_view: 網格視圖
     hide_content: 隱藏內容
     home: 首頁
+    image_preview: 圖片預覽
     key_value_field:
       add_row: 新增列
       delete_row: 刪除列
       key: 鍵
       reorder_row: 重新排序列
       value: 值
+    language: 語言
     less_content: 內容較少
     list_is_empty: 清單為空
     load_item: 加載 %{item}
@@ -146,6 +157,7 @@ zh-TW:
     nested:
       add_new_item: 新增 %{item}
     new: 新建
+    next_image: 下一張圖片
     next_page: 下一頁
     no_cancel: 不，取消
     no_cards_present: 沒有卡片
@@ -160,6 +172,7 @@ zh-TW:
     oops_nothing_found: 哎呀！什麼都沒找到...
     open_in_new_tab: 在新分頁中開啟
     open_in_your_editor: 在您的編輯器中打開
+    open_original: 開啟原始檔
     order:
       higher: 將記錄上移
       lower: 將記錄下移
@@ -169,6 +182,8 @@ zh-TW:
     pages: 頁面
     per_page: 每頁顯示
     prev_page: 上一頁
+    preview_item: 預覽 %{item}
+    previous_image: 上一張圖片
     record:
       one: 筆記錄
       other: 筆記錄
@@ -204,11 +219,13 @@ zh-TW:
     switch_to_view: 切換到 %{view_type} 視圖
     table_view: 表格視圖
     this_field_has_attachments_disabled: 此欄位已禁用附件。
+    timezone_changed: 日期和時間現在以您的時區 (%{timezone}) 顯示。
     tools: 工具
     'true': 真
     type_to_search: 輸入以搜尋。
     unauthorized: 未經授權
     undo: 復原
+    unsaved_changes_warning: 您有尚未儲存的變更。確定要離開此頁面嗎？
     updated_at: 更新於
     updated_at_timestamp: 更新於%{updated_at}
     view: 檢視

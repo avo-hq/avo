@@ -7,6 +7,7 @@ import AttachmentsController from './controllers/attachments_controller'
 import BackToTopController from './controllers/back_to_top_controller'
 import BelongsToFieldController from './controllers/fields/belongs_to_field_controller'
 import BooleanFilterController from './controllers/boolean_filter_controller'
+import BrowserTimezoneController from './controllers/browser_timezone_controller'
 import CheckboxListFieldController from './controllers/fields/checkbox_list_field_controller'
 import ClearInputController from './controllers/fields/clear_input_controller'
 import CodeFieldController from './controllers/fields/code_field_controller'
@@ -19,13 +20,16 @@ import DateTimeFilterController from './controllers/date_time_filter_controller'
 import DistributionChartController from './controllers/distribution_chart_controller'
 import DropdownController from './controllers/dropdown_menu_controller'
 import PopoverMenuController from './controllers/popover_menu_controller'
+import SidebarFlyoutController from './controllers/sidebar_flyout_controller'
 import EasyMdeController from './controllers/fields/easy_mde_controller'
 import FilterController from './controllers/filter_controller'
 import FormController from './controllers/form_controller'
 import GridCoverEmptyStateController from './controllers/grid_cover_empty_state_controller'
 import HeaderMenuController from './controllers/header_menu_controller'
 import HiddenInputController from './controllers/hidden_input_controller'
+import ImageLightboxController from './controllers/image_lightbox_controller'
 import IndexRowNavigatorController from './controllers/index_row_navigator_controller'
+import IndexScrollController from './controllers/index_scroll_controller'
 import InputAutofocusController from './controllers/input_autofocus_controller'
 import ItemSelectAllController from './controllers/item_select_all_controller'
 import ItemSelectorController from './controllers/item_selector_controller'
@@ -48,6 +52,7 @@ import PreviewController from './controllers/preview_controller'
 import ProgressBarFieldController from './controllers/fields/progress_bar_field_controller'
 import RecordSelectorController from './controllers/record_selector_controller'
 import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_to_field_controller'
+import ResizableEditorController from './controllers/fields/resizable_editor_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
 import ResourceSearchController from './controllers/resource_search_controller'
@@ -70,6 +75,7 @@ import TiptapFieldController from './controllers/fields/tiptap_field_controller'
 import ToggleController from './controllers/toggle_controller'
 import TrixBodyController from './controllers/trix_body_controller'
 import TrixFieldController from './controllers/fields/trix_field_controller'
+import UnsavedChangesController from './controllers/unsaved_changes_controller'
 
 application.register('action', ActionController)
 application.register('confirm-dialog', ConfirmDialogController)
@@ -78,6 +84,7 @@ application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('back-to-top', BackToTopController)
 application.register('boolean-filter', BooleanFilterController)
+application.register('browser-timezone', BrowserTimezoneController)
 application.register('clear-input', ClearInputController)
 application.register('appearance', AppearanceController)
 application.register('appearance-preview', AppearancePreviewController)
@@ -89,7 +96,9 @@ application.register('form', FormController)
 application.register('grid-cover-empty-state', GridCoverEmptyStateController)
 application.register('header-menu', HeaderMenuController)
 application.register('hidden-input', HiddenInputController)
+application.register('image-lightbox', ImageLightboxController)
 application.register('index-row-navigator', IndexRowNavigatorController)
+application.register('index-scroll', IndexScrollController)
 application.register('input-autofocus', InputAutofocusController)
 application.register('keyboard-shortcuts-search', KeyboardShortcutsSearchController)
 application.register('item-select-all', ItemSelectAllController)
@@ -128,7 +137,9 @@ application.register('tippy', TippyController)
 application.register('toggle', ToggleController)
 application.register('dropdown-menu', DropdownController)
 application.register('popover-menu', PopoverMenuController)
+application.register('sidebar-flyout', SidebarFlyoutController)
 application.register('trix-body', TrixBodyController)
+application.register('unsaved-changes', UnsavedChangesController)
 
 // Field controllers
 application.register('belongs-to-field', BelongsToFieldController)
@@ -139,6 +150,7 @@ application.register('easy-mde', EasyMdeController)
 application.register('key-value', KeyValueController)
 application.register('progress-bar-field', ProgressBarFieldController)
 application.register('reload-belongs-to-field', ReloadBelongsToFieldController)
+application.register('resizable-editor', ResizableEditorController)
 application.register('tags-field', TagsFieldController)
 application.register('tiptap-field', TiptapFieldController)
 application.register('trix-field', TrixFieldController)

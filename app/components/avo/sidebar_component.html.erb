@@ -21,7 +21,7 @@
               <%= render Avo::Sidebar::HeadingComponent.new title: t('avo.dashboards'), icon: "tabler/outline/layout-dashboard" %>
 
               <% dashboards.sort_by { |r| r.navigation_label }.each do |dashboard| %>
-                <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: helpers.avo_dashboards.dashboard_path(dashboard), hotkey: dashboard.try(:hotkey).presence %>
+                <%= render Avo::Sidebar::LinkComponent.new label: dashboard.navigation_label, path: helpers.avo_dashboards.dashboard_path(dashboard), hotkey: dashboard.try(:hotkey).presence, color: dashboard.try(:color) %>
               <% end %>
             </div>
           <% end %>
@@ -30,7 +30,7 @@
             <%= render Avo::Sidebar::HeadingComponent.new title: t('avo.resources'), icon: "tabler/outline/topology-star-3" %>
 
             <% resources.sort_by { |r| r.navigation_label }.each do |resource| %>
-              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon, hotkey: resource.try(:hotkey).presence %>
+              <%= render Avo::Sidebar::LinkComponent.new label: resource.navigation_label, path: helpers.resources_path(resource: resource), icon: resource.icon, hotkey: resource.try(:hotkey).presence, color: resource.try(:color) %>
             <% end %>
           </div>
 

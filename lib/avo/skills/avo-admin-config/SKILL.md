@@ -1,6 +1,6 @@
 ---
 name: avo-admin-config
-description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, persist filters/pagination across requests, or opt out of usage metadata.
+description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, remove or retune the floating "Back to top" button, persist filters/pagination across requests, choose which map tiles the admin renders, or opt out of usage metadata.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -31,6 +31,7 @@ A handful of these have **resource-level equivalents** — set them globally her
 - Menus, global search, breadcrumbs, keyboard shortcuts (`main_menu`, `global_search`, `set_initial_breadcrumbs`, `hotkeys`) → **avo-navigation-search**
 - Caching internals, cache store, N+1 tuning → **avo-performance**
 - Authorization client and policy wiring → **avo-authorization**
+- Map styles / providers (`map_view`) — the map view and the `location`/`area` fields share one setting → **avo-index-views**
 
 ## Docs
 
@@ -42,9 +43,9 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 ## When this applies
 
-**Explicit (Avo named):** "set `config.app_name`", "change `per_page` in the Avo initializer", "set `default_view_type` to `:grid`", "use `container_width = :full`", "set `resource_default_view = :edit`", "configure `default_editor_url`", "enable `persistence`", "set `body_classes`".
+**Explicit (Avo named):** "set `config.app_name`", "change `per_page` in the Avo initializer", "set `default_view_type` to `:grid`", "use `container_width = :full`", "set `resource_default_view = :edit`", "configure `default_editor_url`", "enable `persistence`", "set `body_classes`", "set `config.map_view` styles".
 
-**Implicit (Rails-shaped, no mention of Avo):** "change how many records show per page in the admin", "rename the admin / change the app name in the top bar", "set the timezone/currency the admin displays", "default the admin list to grid/card view", "make the admin full-width", "clicking a row shouldn't open the record", "skip the show page and go straight to edit", "open the admin's source files in Cursor/VS Code from the UI", "keep the sidebar always open / hide the collapse button", "make the sidebar wider by default", "stop people resizing the sidebar", "send people to a dashboard when they open the admin", "add a CSS class to the `<body>` tag", "make the admin rows denser / tighter", "keep my filters and pagination when I navigate away", "stop the admin from phoning home usage stats".
+**Implicit (Rails-shaped, no mention of Avo):** "change how many records show per page in the admin", "rename the admin / change the app name in the top bar", "set the timezone/currency the admin displays", "default the admin list to grid/card view", "make the admin full-width", "clicking a row shouldn't open the record", "skip the show page and go straight to edit", "open the admin's source files in Cursor/VS Code from the UI", "keep the sidebar always open / hide the collapse button", "make the sidebar wider by default", "stop people resizing the sidebar", "send people to a dashboard when they open the admin", "add a CSS class to the `<body>` tag", "make the admin rows denser / tighter", "keep my filters and pagination when I navigate away", "use different map tiles / stop the admin's maps needing a Mapbox key", "stop the admin from phoning home usage stats".
 
 ## Common settings
 
@@ -56,8 +57,11 @@ Every option below is a `config.<name>` assignment inside `Avo.configure`. Most 
 config.app_name = "Avocadelicious"              # navbar label next to the logo
 config.app_name = -> { I18n.t "app_name" }      # block form for dynamic/i18n names
 config.timezone = "UTC"                          # for date/datetime fields
-config.currency = "USD"                          # for currency fields
+config.use_browser_timezone = false              # render everyone in the app's configured zone instead; default true renders each visitor's own zone (cookie-detected, one soft reload + alert). Defaults to false in the test environment — the soft reload races browser specs
+config.currency = "USD"                          # stored for your own code; no built-in field reads it (the Money field takes `currencies:`)
 config.locale   = "en-US"                        # force Avo's UI locale (default: I18n.default_locale)
+config.locale_selector = [:en, :ro]             # profile-menu language picker, stored per user (default: true; false hides it)
+config.model_attribute_translations = false     # field labels stop falling back to the model's activerecord.attributes / attributes keys (default: true)
 ```
 
 `app_name` defaults to the humanized Rails application class name. To replace the single app-name link with a list of navbar links, that's the **header menu** → **avo-navigation-search**.
@@ -69,23 +73,27 @@ config.per_page = 24                             # default page size (default 24
 config.per_page_steps = [12, 24, 48, 72]         # options in the per-page picker
 config.via_per_page = 8                          # page size inside has_many association tables
 config.default_view_type = :grid                 # :table (default), :grid, :map, or a custom view type
+config.map_view = { styles: :open_free_map }     # map tiles for the map view and the location/area fields
 config.first_sorting_option = :asc               # direction on first sort click (default :desc)
 config.density = :tight                          # row height: :tight, :normal (default), :relaxed
 config.field_wrapper_layout = :stacked           # label above value everywhere (default :inline)
 config.click_row_to_view_record = false          # stop the whole row linking to Show (default true)
 config.id_links_to_resource = true               # render id fields as links to the record (default false)
-config.cache_resources_on_index_view = false     # disable per-row index caching (default true)
+config.cache_resources_on_index_view = false     # disable per-row index caching (default: on outside development)
+config.index_cache_context = -> { [current_user.role, I18n.locale] }  # what a row's cache key varies by besides the record (default: current_user record, I18n.locale, Avo::Current.tenant_id)
 config.search_debounce = 300                     # ms to wait after typing before searching (default 300)
 config.pagination = { type: :countless }         # global pagination defaults; same keys as self.pagination
 ```
 
 `default_view_type`, `pagination`, and `density` (on dashboard cards) also exist as per-resource class attributes — set globally here, override per resource. Row-control placement (`resource_row_controls_config`) lives on the table-view docs.
 
+`config.map_view` sets the tiles every Avo map renders with — the map view and the `location`/`area` fields alike. Its one key is `styles:`, which takes `:open_free_map`, `:mapbox`, or your own `{light:, dark:}` pair of style URLs; left unset it resolves to Mapbox when `MAPBOX_ACCESS_TOKEN` is set and to OpenFreeMap otherwise, so maps work with no account and no API key. Avo swaps the pair as the color scheme changes. Don't confuse it with the resource-level `self.map_view`, which is a different hash entirely (`mapkick_options`, `record_marker`, layout) — see **avo-index-views**.
+
 ### Layout
 
 ```ruby
 config.container_width = :full                            # one width for all views
-config.container_width = { index: :full, show: :small }   # or per view / group alias
+config.container_width = { index: :full, show: :md }      # or per view / group alias
 config.sidebar = {                                        # the sidebar's three knobs, merged over the defaults
   toggle_visible: false,                                  # hide the collapse button → sidebar stays open on desktop (default true)
   resizable: false,                                       # remove the drag-to-resize handle (default true)
@@ -93,11 +101,14 @@ config.sidebar = {                                        # the sidebar's three 
 }
 config.hide_layout_when_printing = true                   # drop sidebar/navbar/footer when printing
 config.body_classes = "custom-theme compact-layout"       # add classes to <body>; also accepts an Array or a block
+config.back_to_top = { enabled: false }                   # the floating "Back to top" pill; hash merged over {enabled: true, threshold: 400}
 ```
+
+`back_to_top` is **on by default** since Avo 4.1.4 (it was off before, and only revealed itself on an upward scroll). The pill now shows once the page is scrolled `threshold` pixels down and hides again near the top — scroll direction no longer matters. Like `sidebar`, it's merged over its defaults, so `{enabled: false}` or `{threshold: 1000}` alone is enough. Its label comes from the `avo.back_to_top` i18n key.
 
 `config.sidebar` is a hash merged over `{toggle_visible: true, resizable: true, default_width: 256}`, so set only the keys you change. On desktop the sidebar edge is a drag handle: users resize it and the width persists **per browser** (a cookie, not a user preference). `default_width` sets the starting width and is clamped to `200`–`480` — an unparseable value falls back to `256` rather than clamping to the minimum. Both settings apply at `lg` (1024px) and wider only; below that the sidebar is a full-height overlay at the 256px default. A width the user has dragged to wins over `default_width`. The flat `config.sidebar_toggle_visible = false` still works and writes into `config.sidebar[:toggle_visible]`, but the hash is the canonical home.
 
-`container_width` values are `:large` (default index), `:small` (default show/forms), and `:full`. The hash form accepts individual views (`:index`, `:show`, `:new`, `:edit`, `:create`, `:update`) and group aliases (`:forms`, `:display`, `:single`); a specific key wins over an alias. The `body_classes` block runs in Avo's `ExecutionContext`, so it has `current_user`, `request`, and `params`.
+`container_width` values are `:lg` (default index), `:md` (default show/forms), `:sm` (a 720px narrow container, opt-in) and `:full` — Tailwind's scale, matching every other size option in Avo. The Avo-4.0 names `:large` and `:small` still work, log a deprecation warning, and map to `:lg`/`:md`; note `:small` maps to `:md`, **not** to `:sm`, which is a genuinely narrower container that did not exist before. They go away in Avo 5. The hash form accepts individual views (`:index`, `:show`, `:new`, `:edit`, `:create`, `:update`) and group aliases (`:forms`, `:display`, `:single`); a specific key wins over an alias. The `body_classes` block runs in Avo's `ExecutionContext`, so it has `current_user`, `request`, and `params`.
 
 ### Navigation home and record flow
 
@@ -144,10 +155,11 @@ config.send_metadata = false                              # opt out of usage met
 ## Gotchas
 
 - **`container_width` replaces the Avo-3 booleans.** `config.full_width_container = true` → `config.container_width = :full`; `config.full_width_index_view = true` → `config.container_width = { index: :full }`; `full_width_container = false` → just remove the line. It raises `ArgumentError` on an unknown width or hash key.
+- **The container's CSS classes were renamed too, and those are *not* aliased.** `:large`/`:small` in the initializer keep working, but the classes Avo emits changed with them: `.container-large` → `.container-lg`, `.container-small` → `.container-md`, `.container-full-width` → `.container-full` (plus a new `.container-sm`). An app that styles Avo's container in its own CSS silently stops matching until those selectors are renamed — nothing warns about it, because the deprecation only covers the config value.
 - **`resource_default_view` replaces `skip_show_view`.** The old `config.skip_show_view = true` is now `config.resource_default_view = :edit` (default `:show`). This retargets row links, post-create/update redirects, and association links to Edit.
 - **`persistence: { driver: :session }` can overflow the cookie store.** Rails' default cookie session store is capped at 4096 bytes; many stored pagination + filter states raise `ActionDispatch::Cookies::CookieOverflow`. Move to a scalable session store (Redis, Memcache) before enabling it broadly.
 - **`default_editor_url` defaults to Cursor.** If a user's `</>` icons open Cursor unexpectedly, that's the default — point it at their editor. The icons only render in `development`.
-- **Disable `cache_resources_on_index_view` when fields vary by role.** The index cache key uses the record's `id`/`created_at` and the resource file md5 — **not the current user** — so a resource that shows/hides fields per role (`visibility:`) will serve one user's row layout to another. Turn it off there. For the caching model and cache store, see **avo-performance**; for role-based field visibility, see **avo-authorization**.
+- **Row caching is user-scoped; don't disable it for role-based fields.** The index cache key carries the record, the resource/policy file md5 **and** `index_cache_context` — by default the current user record, the locale and the tenant — so a resource that shows/hides fields per role caches a row per user and never serves one user's layout to another. Narrow `index_cache_context` (to a role, say) only when nothing a row renders reads the user; override a resource's `cache_context` only for a per-request dimension a lambda reads that is not the user. A field that reads `params` stays incompatible with caching under any key — that is the one case for `cache_resources_on_index_view = false`. Only the grid view caches per row today. For the caching model and cache store, see **avo-performance**; for role-based field visibility, see **avo-authorization**.
 - **Sidebar resizing is a drag-only gesture.** It doesn't satisfy [WCAG 2.2 SC 2.5.7 (Dragging Movements)](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html), so an app working to an AA conformance claim or a VPAT should set `config.sidebar = {resizable: false}`. Related: sidebar labels now truncate with an ellipsis (plus a hover tooltip) instead of wrapping — if a menu relied on long labels wrapping, shorten them or widen the sidebar.
 - **`click_row_to_view_record` is JS-enhanced.** Making a `<tr>` behave as a link isn't native HTML; Avo does it with JavaScript, which can have side effects. Disabling it (`false`) reserves navigation for the explicit row controls.
 - **Verify before writing.** Option names and defaults drift between versions and several were renamed in Avo 4 — check the docs URLs above or the app's installed `lib/avo/configuration.rb` rather than trusting memory.
@@ -158,6 +170,6 @@ When done, tell the user:
 
 - The exact `config.<name>` lines you added or changed in `config/initializers/avo.rb`, and what each does.
 - Any Avo-3 → Avo-4 rename you applied (`container_width`, `resource_default_view`) and the old line it replaced.
-- Follow-ups the change implies: a server restart to reload the initializer; a scalable session store if you enabled `persistence`; disabling `cache_resources_on_index_view` if they gate fields by role.
+- Follow-ups the change implies: a server restart to reload the initializer; a scalable session store if you enabled `persistence`; a narrowed `index_cache_context` only if they confirmed no row reads the user.
 - When a setting has a per-resource equivalent (`default_view_type`, `pagination`, `density`), note it so they know they can override it on individual resources.
-- Redirect anything out of scope to the right skill: install/mount/license → **avo-setup**, appearance/theming → **avo-branding-appearance**, menus/search/breadcrumbs/shortcuts → **avo-navigation-search**, caching depth → **avo-performance**, authorization → **avo-authorization**.
+- Redirect anything out of scope to the right skill: install/mount/license → **avo-setup**, appearance/theming → **avo-branding-appearance**, menus/search/breadcrumbs/shortcuts → **avo-navigation-search**, caching depth → **avo-performance**, authorization → **avo-authorization**, map styles (`map_view`) → **avo-index-views**.

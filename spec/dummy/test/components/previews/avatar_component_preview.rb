@@ -29,7 +29,7 @@ class AvatarComponentPreview < ViewComponent::Preview
 
   # Interactive avatar with customizable options
   # @param type select { choices: [placeholder, avatar, initials] } "Avatar type"
-  # @param size select { choices: [large, medium, small, tiny] } "Avatar size"
+  # @param size select { choices: [lg, md, sm, xs] } "Avatar size"
   # @param shape select { choices: [rounded, square] } "Avatar shape"
   # @param theme select { choices: [default, orange, yellow, green, teal, blue, purple] } "Color theme"
   # @param initials text "Initials text (for initials type)"
@@ -37,7 +37,7 @@ class AvatarComponentPreview < ViewComponent::Preview
   # @param alt_text text "Alt text for image"
   def playground(
     type: "initials",
-    size: "large",
+    size: "lg",
     shape: "rounded",
     theme: "blue",
     initials: "JD",
@@ -80,12 +80,12 @@ class AvatarComponentPreview < ViewComponent::Preview
   # Theme showcase with personalization
   # @param user_initials text "Your initials"
   # @param show_names toggle "Show theme names"
-  # @param avatar_size select { choices: [large, medium, small, tiny] } "Avatar size"
+  # @param avatar_size select { choices: [lg, md, sm, xs] } "Avatar size"
   # @param avatar_shape select { choices: [rounded, square] } "Avatar shape"
   def theme_showcase(
     user_initials: "A",
     show_names: true,
-    avatar_size: "large",
+    avatar_size: "lg",
     avatar_shape: "rounded"
   )
     render_with_template(
@@ -101,11 +101,11 @@ class AvatarComponentPreview < ViewComponent::Preview
 
   # Custom avatar gallery
   # @param custom_images textarea "Custom image URLs (one per line)"
-  # @param gallery_size select { choices: [large, medium, small, tiny] } "Gallery avatar size"
+  # @param gallery_size select { choices: [lg, md, sm, xs] } "Gallery avatar size"
   # @param gallery_shape select { choices: [rounded, square] } "Gallery avatar shape"
   def custom_gallery(
     custom_images: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face\nhttps://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=400&h=400&fit=crop&crop=face\nhttps://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face\nhttps://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face",
-    gallery_size: "medium",
+    gallery_size: "md",
     gallery_shape: "rounded"
   )
     render_with_template(

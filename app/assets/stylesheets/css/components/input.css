@@ -206,6 +206,15 @@
     background-position: left var(--input-icon-offset) center;
   }
 
+  /* The component-layer rules above re-apply text-content and a full-contrast
+     chevron, overriding the base-layer disabled style. Keep this rule after
+     the .dark chevron rule so it wins in both modes. */
+  select:not([multiple]):disabled {
+    @apply text-content-secondary;
+    /* Chevron: content-secondary-ish gray, readable in light and dark */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E");
+  }
+
   /* The base reset sets `overflow: hidden` on every select, which clips the
      options past the visible rows and leaves no way to scroll to them. */
   select[multiple] {

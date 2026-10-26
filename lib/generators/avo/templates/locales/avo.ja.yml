@@ -4,6 +4,7 @@ ja:
     action_ran_successfully: アクションは正常に実行されました！
     actions: アクション
     add_filter: フィルターの追加
+    all: すべて
     and_x_other_resources: その他%{count}件のリソース
     appearance:
       accent_picker: アクセントカラー
@@ -52,6 +53,11 @@ ja:
       shortcut_badges_hide_tooltip: キーボードショートカットバッジを非表示
       shortcut_badges_show_tooltip: キーボードショートカットバッジを表示
       show: 表示
+      sound: 音
+      sound_off: オフ
+      sound_off_tooltip: 外観音をミュート
+      sound_on: オン
+      sound_on_tooltip: 外観が変わるときに音を再生
       title: 外観
     applied:
       one: applied
@@ -110,6 +116,7 @@ ja:
     filter_by: フィルター条件
     filters: フィルター
     global_search:
+      direct_match: 完全一致
       empty_state:
         no_results_for_query: '"%{query}" に一致するものが見つかりませんでした'
         no_results_found: 結果が見つかりませんでした
@@ -125,17 +132,21 @@ ja:
         select: 選択
       results:
         count_of_total: "%{count} / %{total}"
+      search_results: 検索結果
+      searching_on: '検索対象:'
       show_all_results_for: すべての結果を表示
     go_back: 戻る
     grid_view: グリッドビュー
     hide_content: 内容を非表示
     home: ホーム
+    image_preview: 画像プレビュー
     key_value_field:
       add_row: 行を追加
       delete_row: 行を削除
       key: キー
       reorder_row: 行の並べ替え
       value: 値
+    language: 言語
     less_content: コンテンツが少ない
     list_is_empty: リストは空です
     load_item: "%{item}を読み込む"
@@ -148,6 +159,7 @@ ja:
     nested:
       add_new_item: 新しい%{item}を追加
     new: 新規
+    next_image: 次の画像
     next_page: 次のページ
     no_cancel: いいえ、キャンセル
     no_cards_present: カードがありません
@@ -162,6 +174,7 @@ ja:
     oops_nothing_found: おっと！ 何も見つかりませんでした...
     open_in_new_tab: 新しいタブで開く
     open_in_your_editor: エディターで開く
+    open_original: 元の画像を開く
     order:
       higher: レコードを上に移動
       lower: レコードを下に移動
@@ -171,6 +184,8 @@ ja:
     pages: ページ
     per_page: ページあたり
     prev_page: 前のページ
+    preview_item: "%{item}をプレビュー"
+    previous_image: 前の画像
     record:
       one: レコード
       other: レコード
@@ -206,11 +221,13 @@ ja:
     switch_to_view: "%{view_type}ビューに切り替える"
     table_view: テーブルビュー
     this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。
+    timezone_changed: 日付と時刻は現在、あなたのタイムゾーン (%{timezone}) で表示されています。
     tools: ツール
     'true': 真
     type_to_search: 検索する内容を入力してください。
     unauthorized: 許可されていません
     undo: 元に戻す
+    unsaved_changes_warning: 保存されていない変更があります。このページを離れてもよろしいですか？
     updated_at: 更新日時
     updated_at_timestamp: "%{updated_at}で更新"
     view: ビュー

@@ -4,6 +4,7 @@ ar:
     action_ran_successfully: تم تنفيذ الأمر بنجاح!
     actions: أوامر
     add_filter: إضافة عامل تصفية
+    all: الكل
     and_x_other_resources: و %{count} موارد أخرى
     appearance:
       accent_picker: لون مميز
@@ -52,6 +53,11 @@ ar:
       shortcut_badges_hide_tooltip: إخفاء شارات اختصارات لوحة المفاتيح
       shortcut_badges_show_tooltip: عرض شارات اختصارات لوحة المفاتيح
       show: عرض
+      sound: صوت
+      sound_off: إيقاف
+      sound_off_tooltip: كتم أصوات المظهر
+      sound_on: تشغيل
+      sound_on_tooltip: تشغيل صوت عند تغيير المظهر
       title: المظهر
     applied:
       few: applied
@@ -122,6 +128,7 @@ ar:
     filter_by: تصفية حسب
     filters: مرشحات
     global_search:
+      direct_match: تطابق مباشر
       empty_state:
         no_results_for_query: لم نتمكن من العثور على أي شيء يتطابق مع "%{query}"
         no_results_found: لم يتم العثور على نتائج
@@ -137,17 +144,21 @@ ar:
         select: اختيار
       results:
         count_of_total: "%{count} من %{total}"
+      search_results: نتائج البحث
+      searching_on: 'البحث في:'
       show_all_results_for: عرض جميع النتائج لـ
     go_back: العودة للخلف
     grid_view: عرض الشبكة
     hide_content: إخفاء المحتوى
     home: الصفحة الرئيسية
+    image_preview: معاينة الصورة
     key_value_field:
       add_row: إضافة صف
       delete_row: حذف صف
       key: المفتاح
       reorder_row: إعادة ترتيب الصف
       value: القيمة
+    language: اللغة
     less_content: محتوى أقل
     list_is_empty: القائمة فارغة
     load_item: تحميل %{item}
@@ -160,6 +171,7 @@ ar:
     nested:
       add_new_item: إضافة %{item} جديدة
     new: جديد
+    next_image: الصورة التالية
     next_page: الصفحة التالية
     no_cancel: لا، إلغاء
     no_cards_present: لا توجد بطاقات
@@ -174,6 +186,7 @@ ar:
     oops_nothing_found: عذراً! لم يتم العثور على شيء...
     open_in_new_tab: افتح في علامة تبويب جديدة
     open_in_your_editor: افتح في محررك
+    open_original: فتح الأصل
     order:
       higher: حرك السجل للأعلى
       lower: حرك السجل للأسفل
@@ -183,6 +196,8 @@ ar:
     pages: صفحات
     per_page: لكل صفحة
     prev_page: الصفحة السابقة
+    preview_item: معاينة %{item}
+    previous_image: الصورة السابقة
     record:
       few: سجلات
       many: سجلات
@@ -222,11 +237,13 @@ ar:
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
+    timezone_changed: تُعرض التواريخ والأوقات الآن في منطقتك الزمنية (%{timezone}).
     tools: الأدوات
     'true': صحيح
     type_to_search: اكتب للبحث.
     unauthorized: غير مصرح به
     undo: تراجع
+    unsaved_changes_warning: لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد مغادرة هذه الصفحة؟
     updated_at: تم التحديث في
     updated_at_timestamp: تم التحديث في %{updated_at}
     view: عرض

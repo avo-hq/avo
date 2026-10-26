@@ -15,7 +15,7 @@ module Avo
         helper_method :add_breadcrumb, :avo_breadcrumbs
       end
 
-      Crumb = Data.define(:title, :path, :avatar, :initials, :icon) unless defined?(Crumb)
+      Crumb = Data.define(:title, :path, :avatar, :initials, :icon, :color) unless defined?(Crumb)
 
       class Builder
         extend PropInitializer::Properties
@@ -26,8 +26,8 @@ module Avo
         def breadcrumbs = context.avo_breadcrumbs
       end
 
-      def add_breadcrumb(title: nil, path: nil, avatar: nil, initials: nil, icon: nil)
-        avo_breadcrumbs << Crumb.new(title:, path:, avatar:, initials:, icon:)
+      def add_breadcrumb(title: nil, path: nil, avatar: nil, initials: nil, icon: nil, color: nil)
+        avo_breadcrumbs << Crumb.new(title:, path:, avatar:, initials:, icon:, color:)
       end
 
       def avo_breadcrumbs

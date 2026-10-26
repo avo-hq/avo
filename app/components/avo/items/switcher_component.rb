@@ -58,6 +58,10 @@ class Avo::Items::SwitcherComponent < Avo::ResourceComponent
     @reflection.present?
   end
 
+  def linkable?
+    in_reflection? && has_one_field? && field.linkable?
+  end
+
   def tab_group_component
     Avo::TabGroupComponent.new(
       resource: @resource,

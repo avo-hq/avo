@@ -4,19 +4,19 @@
 }
 
 /* Size variants */
-.cado-avatar--large {
+.cado-avatar--lg {
   @apply size-20;
 }
 
-.cado-avatar--medium {
+.cado-avatar--md {
   @apply size-12;
 }
 
-.cado-avatar--small {
+.cado-avatar--sm {
   @apply size-8;
 }
 
-.cado-avatar--tiny {
+.cado-avatar--xs {
   @apply size-5;
 }
 
@@ -25,16 +25,16 @@
   @apply rounded-full;
 }
 
-.cado-avatar--square.cado-avatar--large {
+.cado-avatar--square.cado-avatar--lg {
   @apply rounded-2xl;
 }
 
-.cado-avatar--square.cado-avatar--medium {
+.cado-avatar--square.cado-avatar--md {
   @apply rounded-xl;
 }
 
-.cado-avatar--square.cado-avatar--small,
-.cado-avatar--square.cado-avatar--tiny {
+.cado-avatar--square.cado-avatar--sm,
+.cado-avatar--square.cado-avatar--xs {
   @apply rounded-md;
 }
 
@@ -111,18 +111,18 @@
 }
 
 /* Font sizes for different avatar sizes */
-.cado-avatar--large .cado-avatar__initials {
+.cado-avatar--lg .cado-avatar__initials {
   @apply text-2xl leading-8 w-8;
 }
 
-.cado-avatar--medium .cado-avatar__initials {
+.cado-avatar--md .cado-avatar__initials {
   @apply text-lg leading-6 w-6;
 }
 
-.cado-avatar--small .cado-avatar__initials {
+.cado-avatar--sm .cado-avatar__initials {
   @apply text-sm leading-6;
 }
 
-.cado-avatar--tiny .cado-avatar__initials {
+.cado-avatar--xs .cado-avatar__initials {
   @apply text-tiny leading-4;
 }

@@ -14,15 +14,17 @@
         %>
       </div>
     <% end %>
-    <%= content_tag :div, class: class_names(
-      "py-4 rounded-2xl max-w-full",
-      {
-        "flex flex-col space-y-2": @view_type == :list,
-        "relative grid xs:grid-cols-2 @sm:grid-cols-2 @xl:grid-cols-3 @2xl:grid-cols-4 @4xl:grid-cols-5 @6xl:grid-cols-6 @7xl:grid-cols-7 @8xl:grid-cols-8 gap-6": @view_type == :grid
-      }
-    ) do %>
-      <% @field.value.attachments.each do |file| %>
-        <%= render view_type_component(file) %>
+    <%= render Avo::LightboxComponent.new(enabled: lightbox?) do %>
+      <%= content_tag :div, class: class_names(
+        "py-4 rounded-2xl max-w-full",
+        {
+          "flex flex-col space-y-2": @view_type == :list,
+          "relative grid xs:grid-cols-2 @sm:grid-cols-2 @xl:grid-cols-3 @2xl:grid-cols-4 @4xl:grid-cols-5 @6xl:grid-cols-6 @7xl:grid-cols-7 @8xl:grid-cols-8 gap-6": @view_type == :grid
+        }
+      ) do %>
+        <% @field.value.attachments.each do |file| %>
+          <%= render view_type_component(file) %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

@@ -27,7 +27,8 @@ class Avo::PhotoObject
 
       # On edit view, prefer the persisted attachment to avoid rendering
       # temporary/unpersisted direct-upload values after a failed update.
-      if value.instance_of?(ActiveStorage::Attached::One) && view&.edit?
+      # Only a pending attachment change differs from the database, so re-find only then.
+      if value.instance_of?(ActiveStorage::Attached::One) && view&.edit? && record.attachment_changes.key?(options[:source].to_s)
         value = @resource.find_record(record.to_param).send(options[:source])
       end
 

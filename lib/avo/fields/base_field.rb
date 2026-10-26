@@ -11,6 +11,7 @@ module Avo
       include Avo::Fields::Concerns::HasFieldName
       include Avo::Fields::Concerns::HasDefault
       include Avo::Fields::Concerns::HasHTMLAttributes
+      include Avo::Fields::Concerns::HasResizableEditor
       include Avo::Fields::Concerns::HandlesFieldArgs
       include Avo::Fields::Concerns::IsReadonly
       include Avo::Fields::Concerns::IsDisabled
@@ -19,6 +20,9 @@ module Avo
       include Avo::Fields::Concerns::DomId
 
       include ActionView::Helpers::UrlHelper
+      # Rails 8.2 extracted link_to, button_to and current_page? into NavigationHelper
+      # (rails/rails#58735). Without it, link_to on a resource is a NoMethodError there.
+      include ActionView::Helpers::NavigationHelper if defined?(ActionView::Helpers::NavigationHelper)
 
       delegate :app, to: ::Avo::Current
       delegate :view_context, to: :app
@@ -89,10 +93,14 @@ module Avo
         @update_using = args[:update_using]
         @placeholder = args[:placeholder]
         @autocomplete = args[:autocomplete]
+        @autofocus = args[:autofocus]
         @help = args[:help]
         @label_help = args[:label_help]
+        @tooltip = args[:tooltip]
+        @label_tooltip = args[:label_tooltip]
         @default = args[:default]
         @visible = args[:visible]
+        @hide_if_blank = args[:hide_if_blank]
         @html = args[:html]
         @view = Avo::ViewInquirer.new(args[:view])
         @value = args[:value]
@@ -116,7 +124,7 @@ module Avo
 
         @width = args[:width] || 100
 
-        if width_option.present? && width_option != 100
+        if @stacked.nil? && width_option.present? && width_option != 100
           @stacked = true
         end
 
@@ -226,6 +234,26 @@ module Avo
         translated_option(:help)
       end
 
+      # Hover text for the value: anchored to the value itself on Index and
+      # Show, to the input on forms. Resolved here rather than in the wrapper
+      # because the Index header renders the label outside any wrapper.
+      def tooltip
+        execute_context(@tooltip.nil? ? translated_option(:tooltip) : @tooltip)
+      end
+
+      # Hover text for the label, on every view and on the Index header.
+      def label_tooltip
+        execute_context(@label_tooltip.nil? ? translated_option(:label_tooltip) : @label_tooltip)
+      end
+
+      # How the value tooltip anchors to the rendered value. `:inline` hugs the
+      # value so the bubble sits over a badge or a date rather than mid-row;
+      # fields whose value fills the row (editors, maps, progress bars) answer
+      # `:block` so the anchor keeps their width instead of collapsing it.
+      def tooltip_anchor
+        :inline
+      end
+
       def placeholder
         target = if !@placeholder.nil?
           @placeholder
@@ -234,6 +262,10 @@ module Avo
         end
 
         Avo::ExecutionContext.new(target: target, record: record, resource: @resource, view: @view).handle
+      end
+
+      def autofocus?
+        execute_context(@autofocus)
       end
 
       def default_placeholder
@@ -353,6 +385,25 @@ module Avo
         !is_disabled? && visible?
       end
 
+      def visible?
+        return false if hidden_because_blank?
+
+        super
+      end
+
+      def hidden_because_blank?
+        return false if @hide_if_blank.nil?
+
+        views = normalize_views(Array.wrap(@hide_if_blank))
+        return false unless views.include?(:all) || views.include?(view&.to_sym)
+
+        # Containers hydrate their items with the view and resource only.
+        hydrate(record: resource.record) if record.nil? && resource.present?
+
+        # Ask a relation with EXISTS instead of loading every row.
+        value.is_a?(ActiveRecord::Relation) ? value.none? : value.blank?
+      end
+
       # Used by Avo to fill the record with the default value on :new and :edit views
       def assign_value(record:, value:)
         id = (type == "belongs_to") ? foreign_key : database_id
@@ -403,7 +454,22 @@ module Avo
           next
         end
 
-        default
+        model_attribute_translation(count:) || default
+      end
+
+      # The blank default stops human_attribute_name from falling back to the humanized
+      # attribute, so only a real activerecord.attributes or attributes translation returns.
+      # It also keeps a miss from raising under config.i18n.raise_on_missing_translations = :strict.
+      def model_attribute_translation(count:)
+        return if @translation_key.present? || !Avo.configuration.model_attribute_translations
+
+        model_class = @resource.try(:model_class)
+        return unless model_class.respond_to?(:human_attribute_name)
+
+        model_class.human_attribute_name(@id, count: count, default: "").presence
+      rescue I18n::InvalidPluralizationData
+        # A Hash under attributes.<id> (Rails' nested-attribute labels) is not this field's label.
+        nil
       end
 
       def translation_lookup_keys
@@ -473,7 +539,11 @@ module Avo
           end
         end
 
-        final_value
+        default_format_value(final_value)
+      end
+
+      def default_format_value(value)
+        value
       end
     end
   end

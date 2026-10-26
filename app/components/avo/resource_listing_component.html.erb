@@ -1,4 +1,4 @@
-<%= content_tag :div, id: "#{@resource.model_key}_body_content" do %>
+<%= content_tag :div, id: resource_body_content_id(@resource) do %>
   <%= render Avo::SearchOverlayComponent.new %>
 
   <% if @resources.present? %>

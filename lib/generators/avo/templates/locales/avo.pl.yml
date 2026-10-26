@@ -4,6 +4,7 @@ pl:
     action_ran_successfully: Akcja została pomyślnie wykonana!
     actions: Akcje
     add_filter: Dodaj filtr
+    all: Wszystko
     and_x_other_resources: i %{count} innych zasobów
     appearance:
       accent_picker: Kolor akcentu
@@ -52,6 +53,11 @@ pl:
       shortcut_badges_hide_tooltip: Ukryj ikony skrótów klawiaturowych
       shortcut_badges_show_tooltip: Pokaż ikony skrótów klawiaturowych
       show: Pokaż
+      sound: Dźwięk
+      sound_off: Wyłącz
+      sound_off_tooltip: Wyłącz dźwięki zmiany wyglądu
+      sound_on: Włącz
+      sound_on_tooltip: Odtwarzaj dźwięk, gdy zmienia się wygląd
       title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?
@@ -112,6 +118,7 @@ pl:
     filter_by: Filtruj według
     filters: Filtry
     global_search:
+      direct_match: Bezpośrednie dopasowanie
       empty_state:
         no_results_for_query: Nie mogliśmy znaleźć niczego pasującego do "%{query}"
         no_results_found: Nie znaleziono wyników
@@ -127,17 +134,21 @@ pl:
         select: Wybierz
       results:
         count_of_total: "%{count} z %{total}"
+      search_results: Wyniki wyszukiwania
+      searching_on: 'Szukanie w:'
       show_all_results_for: Pokaż wszystkie wyniki dla
     go_back: Wróć
     grid_view: Widok siatki
     hide_content: Ukryj zawartość
     home: Strona główna
+    image_preview: Podgląd obrazu
     key_value_field:
       add_row: Dodaj wiersz
       delete_row: Usuń wiersz
       key: Klucz
       reorder_row: Zmień kolejność wiersza
       value: Wartość
+    language: Język
     less_content: Pokaż mniej
     list_is_empty: Lista jest pusta
     load_item: Załaduj %{item}
@@ -150,6 +161,7 @@ pl:
     nested:
       add_new_item: Dodaj nowy %{item}
     new: nowy
+    next_image: Następny obraz
     next_page: Następna strona
     no_cancel: Nie, anuluj
     no_cards_present: Brak kart
@@ -164,6 +176,7 @@ pl:
     oops_nothing_found: Ups! Nic nie znaleziono...
     open_in_new_tab: Otwórz w nowej karcie
     open_in_your_editor: Otwórz w swoim edytorze
+    open_original: Otwórz oryginał
     order:
       higher: Przenieś rekord wyżej
       lower: Przenieś rekord niżej
@@ -173,6 +186,8 @@ pl:
     pages: Strony
     per_page: Na stronie
     prev_page: Poprzednia strona
+    preview_item: Podgląd %{item}
+    previous_image: Poprzedni obraz
     record:
       few: rekordy
       many: rekordów
@@ -210,11 +225,13 @@ pl:
     switch_to_view: Przełącz na widok %{view_type}
     table_view: Widok tabelaryczny
     this_field_has_attachments_disabled: Załączniki są wyłączone dla tego pola.
+    timezone_changed: Daty i czasy są teraz wyświetlane w Twojej strefie czasowej (%{timezone}).
     tools: Narzędzia
     'true': Prawda
     type_to_search: Wpisz, aby wyszukać.
     unauthorized: Brak autoryzacji
     undo: Cofnij
+    unsaved_changes_warning: Masz niezapisane zmiany. Czy na pewno chcesz opuścić tę stronę?
     updated_at: Zaktualizowano o
     updated_at_timestamp: Zaktualizowano o %{updated_at}
     view: Widok

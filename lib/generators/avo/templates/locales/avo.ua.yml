@@ -4,6 +4,7 @@ ua:
     action_ran_successfully: Дія успішно виконана!
     actions: Дії
     add_filter: Додати фільтр
+    all: Усе
     and_x_other_resources: і ще %{count} інших ресурсів
     appearance:
       accent_picker: Колір акценту
@@ -52,6 +53,11 @@ ua:
       shortcut_badges_hide_tooltip: Сховати значки клавіатурних ярликів
       shortcut_badges_show_tooltip: Показати значки клавіатурних ярликів
       show: Показати
+      sound: Звук
+      sound_off: Вимкнено
+      sound_off_tooltip: Вимкнути звуки появи
+      sound_on: Увімкнено
+      sound_on_tooltip: Відтворювати звук при зміні появи
       title: Зовнішній вигляд
     applied: застосовано
     are_you_sure: Ви впевнені?
@@ -110,6 +116,7 @@ ua:
     filter_by: Фільтрувати за
     filters: Фільтри
     global_search:
+      direct_match: Пряме співпадіння
       empty_state:
         no_results_for_query: We couldn't find anything matching "%{query}"
         no_results_found: No results found
@@ -125,17 +132,21 @@ ua:
         select: Вибрати
       results:
         count_of_total: "%{count} of %{total}"
+      search_results: Результати пошуку
+      searching_on: 'Пошук у:'
       show_all_results_for: Show all results for
     go_back: Назад
     grid_view: Плитка
     hide_content: Приховати вміст
     home: Головна
+    image_preview: Попередній перегляд зображення
     key_value_field:
       add_row: Додати рядок
       delete_row: Видалити рядок
       key: Ключ
       reorder_row: Змінити порядок рядка
       value: Значення
+    language: Мова
     less_content: Менше вмісту
     list_is_empty: Список порожній
     load_item: Завантажити %{item}
@@ -148,6 +159,7 @@ ua:
     nested:
       add_new_item: Add new %{item}
     new: новий
+    next_image: Наступне зображення
     next_page: Наступна сторінка
     no_cancel: Ні, скасувати
     no_cards_present: Немає карток
@@ -162,6 +174,7 @@ ua:
     oops_nothing_found: Ой! Нічого не знайдено...
     open_in_new_tab: Відкрити в новій вкладці
     open_in_your_editor: Відкрити у вашому редакторі
+    open_original: Відкрити оригінал
     order:
       higher: Перемістити запис вище
       lower: Перемістити запис нижче
@@ -171,6 +184,8 @@ ua:
     pages: Pages
     per_page: На сторінці
     prev_page: Попередня сторінка
+    preview_item: Попередній перегляд %{item}
+    previous_image: Попереднє зображення
     record:
       few: записи
       many: записів
@@ -208,11 +223,13 @@ ua:
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.
+    timezone_changed: Дати та часи тепер відображаються у вашому часовому поясі (%{timezone}).
     tools: Інструменти
     'true': Істина
     type_to_search: Введіть для пошуку.
     unauthorized: Не авторизовано
     undo: Скасувати
+    unsaved_changes_warning: У вас є незбережені зміни. Ви впевнені, що хочете залишити цю сторінку?
     updated_at: Оновлено
     updated_at_timestamp: Atnaujinta %{updated_at}
     view: Перегляд

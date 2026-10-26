@@ -4,6 +4,7 @@ tr:
     action_ran_successfully: Eylem başarıyla gerçekleşti!
     actions: Aksiyonlar
     add_filter: Filtre ekle
+    all: Tümü
     and_x_other_resources: ve %{count} diğer kaynak
     appearance:
       accent_picker: Vurgu rengi
@@ -52,6 +53,11 @@ tr:
       shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle
       shortcut_badges_show_tooltip: Klavye kısayolu rozetlerini göster
       show: Göster
+      sound: Ses
+      sound_off: Kapalı
+      sound_off_tooltip: Görünüm seslerini kıs
+      sound_on: Açık
+      sound_on_tooltip: Görünüm değiştiğinde ses çal
       title: Görünüm
     applied:
       one: uygulandı
@@ -110,6 +116,7 @@ tr:
     filter_by: Tarafından filtre
     filters: Filtreler
     global_search:
+      direct_match: Doğrudan eşleşme
       empty_state:
         no_results_for_query: '"%{query}" ile eşleşen hiçbir şey bulamadık'
         no_results_found: Sonuç bulunamadı
@@ -125,17 +132,21 @@ tr:
         select: Seç
       results:
         count_of_total: "%{count} / %{total}"
+      search_results: Arama sonuçları
+      searching_on: 'Şurada aranıyor:'
       show_all_results_for: Tüm sonuçları göster
     go_back: Geri dön
     grid_view: Grid görünümü
     hide_content: İçeriği gizle
     home: Anasayfa
+    image_preview: Görsel önizleme
     key_value_field:
       add_row: Satır ekle
       delete_row: Satır sil
       key: Anahtar
       reorder_row: Satırı yeniden sırala
       value: Değer
+    language: Dil
     less_content: Daha az içerik
     list_is_empty: Boş liste
     load_item: "%{item} yükle"
@@ -148,6 +159,7 @@ tr:
     nested:
       add_new_item: Yeni %{item} ekle
     new: yeni
+    next_image: Sonraki görsel
     next_page: Sonraki sayfa
     no_cancel: Hayır, iptal et
     no_cards_present: Kart yok
@@ -162,6 +174,7 @@ tr:
     oops_nothing_found: Hata! Hiçbir şey bulunamadı
     open_in_new_tab: Yeni bir sekmede aç
     open_in_your_editor: Editörünüzde açın
+    open_original: Orijinali aç
     order:
       higher: Kaydı yüksekten sırala
       lower: Kaydı düşükten sırala
@@ -171,6 +184,8 @@ tr:
     pages: Sayfalar
     per_page: Sayfa başına
     prev_page: Önceki sayfa
+    preview_item: "%{item} önizlemesi"
+    previous_image: Önceki görsel
     record:
       one: kayıt
       other: kayıtlar
@@ -206,11 +221,13 @@ tr:
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
     this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.
+    timezone_changed: Tarih ve saatler artık sizin zaman diliminizde (%{timezone}) görüntüleniyor.
     tools: Araçlar
     'true': Doğru
     type_to_search: Aramak için yazın.
     unauthorized: Yetkisiz
     undo: geri al
+    unsaved_changes_warning: Kaydedilmemiş değişiklikleriniz var. Bu sayfadan ayrılmak istediğinizden emin misiniz?
     updated_at: Güncelleme tarihi
     updated_at_timestamp: "%{updated_at} tarihinde güncellendi"
     view: Görünüm

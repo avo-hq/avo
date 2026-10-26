@@ -1,8 +1,8 @@
 <%= tag.div class: class_names(
   @class,
   "header",
-  "header--size-medium": size_medium?,
-  "header--size-small": size_small?
+  "header--size-md": size_md?,
+  "header--size-sm": size_sm?
 ), data: { "item-index": @index, component: component_name }.compact_blank do %>
   <div class="header__main">
     <div class="header__content">

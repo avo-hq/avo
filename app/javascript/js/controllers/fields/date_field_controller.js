@@ -2,6 +2,7 @@ import '../../helpers/flatpickr_top_layer'
 import { Controller } from '@hotwired/stimulus'
 import { DateTime } from 'luxon'
 import flatpickr from 'flatpickr'
+import flatpickrLocale from '../../helpers/flatpickr_locale'
 
 // Get the DateTime with the TZ offset applied.
 function universalTimestamp(timestampStr) {
@@ -135,19 +136,18 @@ export default class extends Controller {
   }
 
   initEdit() {
+    const { locale, ...pickerOptions } = this.pickerOptionsValue
     const options = {
       enableTime: false,
       enableSeconds: false,
       // eslint-disable-next-line camelcase
       time_24hr: this.time24HrValue,
-      locale: {
-        firstDayOfWeek: 0,
-      },
       altInput: true,
       onChange: this.onChange.bind(this),
       onClose: this.onClose.bind(this),
       noCalendar: false,
-      ...this.pickerOptionsValue,
+      ...pickerOptions,
+      locale: { ...flatpickrLocale(), ...locale },
     }
 
     // Set the format of the displayed input field.

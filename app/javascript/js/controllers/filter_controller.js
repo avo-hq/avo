@@ -81,12 +81,10 @@ export default class extends Controller {
         return obj
       }, {})
 
-    let encodedFilters
-
-    // Encode the filters and their values
-    if (filtered && Object.keys(filtered).length > 0) {
-      encodedFilters = this.encode(filtered)
-    }
+    // Encode the filters and their values. The empty set is encoded too, so
+    // the backend can tell "the user cleared the filters" apart from "the URL
+    // carries no filters" and overwrite the session-persisted value.
+    const encodedFilters = this.encode(filtered)
 
     this.navigateToURLWithFilters(encodedFilters)
   }

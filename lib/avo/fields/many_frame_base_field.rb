@@ -7,7 +7,8 @@ module Avo
       attr_reader :scope,
         :hide_search_input,
         :hide_filter_button,
-        :discreet_pagination
+        :discreet_pagination,
+        :per_page
 
       def initialize(id, **args, &block)
         args[:updatable] = false
@@ -31,6 +32,7 @@ module Avo
         @hide_search_input = args[:hide_search_input]
         @hide_filter_button = args[:hide_filter_button]
         @discreet_pagination = args[:discreet_pagination]
+        @per_page = args[:per_page]
       end
 
       private

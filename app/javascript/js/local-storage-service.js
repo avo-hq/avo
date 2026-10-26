@@ -6,14 +6,26 @@ export class LocalStorageService {
   }
 
   get(key) {
-    return window.localStorage.getItem(this.prefixedKey(key))
+    try {
+      return window.localStorage.getItem(this.prefixedKey(key))
+    } catch {
+      return null
+    }
   }
 
   set(key, value) {
-    return window.localStorage.setItem(this.prefixedKey(key), value)
+    try {
+      return window.localStorage.setItem(this.prefixedKey(key), value)
+    } catch {
+      return null
+    }
   }
 
   remove(key) {
-    return window.localStorage.removeItem(this.prefixedKey(key))
+    try {
+      return window.localStorage.removeItem(this.prefixedKey(key))
+    } catch {
+      return null
+    }
   }
 }

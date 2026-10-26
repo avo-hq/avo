@@ -4,6 +4,7 @@ zh:
     action_ran_successfully: 操作成功执行！
     actions: 操作
     add_filter: 添加筛选器
+    all: 全部
     and_x_other_resources: 和 %{count} 个其他资源
     appearance:
       accent_picker: 强调色
@@ -52,6 +53,11 @@ zh:
       shortcut_badges_hide_tooltip: 隐藏键盘快捷键徽章
       shortcut_badges_show_tooltip: 显示键盘快捷键徽章
       show: 显示
+      sound: 声音
+      sound_off: 关闭
+      sound_off_tooltip: 静音外观声音
+      sound_on: 开启
+      sound_on_tooltip: 外观变化时播放声音
       title: 外观
     applied: 已应用
     are_you_sure: 您确定吗？
@@ -108,6 +114,7 @@ zh:
     filter_by: 按...筛选
     filters: 筛选器
     global_search:
+      direct_match: 精确匹配
       empty_state:
         no_results_for_query: 我们找不到与 "%{query}" 匹配的任何内容
         no_results_found: 未找到结果
@@ -123,17 +130,21 @@ zh:
         select: 选择
       results:
         count_of_total: "%{count} / %{total}"
+      search_results: 搜索结果
+      searching_on: 搜索范围：
       show_all_results_for: 显示所有结果
     go_back: 返回
     grid_view: 网格视图
     hide_content: 隐藏内容
     home: 主页
+    image_preview: 图片预览
     key_value_field:
       add_row: 添加行
       delete_row: 删除行
       key: 键
       reorder_row: 重新排序行
       value: 值
+    language: 语言
     less_content: 内容较少
     list_is_empty: 列表为空
     load_item: 加载 %{item}
@@ -146,6 +157,7 @@ zh:
     nested:
       add_new_item: 添加新 %{item}
     new: 新建
+    next_image: 下一张图片
     next_page: 下一页
     no_cancel: 不，取消
     no_cards_present: 没有卡片
@@ -160,6 +172,7 @@ zh:
     oops_nothing_found: 哎呀！什么都没找到...
     open_in_new_tab: 在新标签页中打开
     open_in_your_editor: 在您的编辑器中打开
+    open_original: 打开原图
     order:
       higher: 将记录上移
       lower: 将记录下移
@@ -169,6 +182,8 @@ zh:
     pages: 页面
     per_page: 每页显示
     prev_page: 上一页
+    preview_item: 预览 %{item}
+    previous_image: 上一张图片
     record:
       one: 条记录
       other: 条记录
@@ -204,11 +219,13 @@ zh:
     switch_to_view: 切换到 %{view_type} 视图
     table_view: 表格视图
     this_field_has_attachments_disabled: 此字段已禁用附件。
+    timezone_changed: 日期和时间现在以您的时区 (%{timezone}) 显示。
     tools: 工具
     'true': 真
     type_to_search: 输入以搜索。
     unauthorized: 未经授权
     undo: 撤销
+    unsaved_changes_warning: 您有未保存的更改。确定要离开此页面吗？
     updated_at: 更新于
     updated_at_timestamp: 更新于%{updated_at}
     view: 查看

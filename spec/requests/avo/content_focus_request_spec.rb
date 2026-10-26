@@ -30,7 +30,7 @@ RSpec.describe "Shift+T content focus anchor", type: :request do
 
     get "/admin/resources/projects/#{project.id}"
 
-    expect(response.body).to match(/class="panel__body" data-content-focus tabindex=-1/)
+    expect(response.body).to match(/class="panel__body" data-content-focus="" tabindex="-1"/)
   end
 
   it "marks the panel body as the content-focus anchor on edit" do
@@ -38,7 +38,7 @@ RSpec.describe "Shift+T content focus anchor", type: :request do
 
     get "/admin/resources/projects/#{project.id}/edit"
 
-    expect(response.body).to match(/class="panel__body" data-content-focus tabindex=-1/)
+    expect(response.body).to match(/class="panel__body" data-content-focus="" tabindex="-1"/)
   end
 
   it "marks the media library grid as the content-focus anchor on the standalone library" do
@@ -66,7 +66,7 @@ RSpec.describe "Shift+T content focus anchor", type: :request do
 
     get "/admin/media-library/#{blob.id}/edit"
 
-    expect(response.body).to match(/class="panel__body" data-content-focus tabindex=-1/)
+    expect(response.body).to match(/class="panel__body" data-content-focus="" tabindex="-1"/)
   end
 
   it "redirects a media library blob show to its edit page" do

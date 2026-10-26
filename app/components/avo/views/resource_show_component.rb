@@ -50,11 +50,7 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
       {}
     end
 
-    # Return to the current url if it doesn't include turbo_frame
-    # When coming from a turbo frame, we don't want to return to that exact frame
-    # for example when editing a has_one field we want to return to the parent frame
-    # not the frame of the has_one field.
-    args[:return_to] = e(request.fullpath) unless request.url.include?("turbo_frame=")
+    args[:return_to] = helpers.return_to_current_page
 
     helpers.edit_resource_path(record: @resource.record, resource: @resource, **args)
   end
@@ -68,9 +64,5 @@ class Avo::Views::ResourceShowComponent < Avo::ResourceComponent
   # In development and test environments we should show the invalid field errors
   def should_display_invalid_fields_errors?
     (Rails.env.development? || Rails.env.test?) && @resource.invalid_fields.present?
-  end
-
-  def has_one_field?
-    field.present? and field.instance_of? Avo::Fields::HasOneField
   end
 end

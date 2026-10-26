@@ -12,6 +12,10 @@ class Avo::ViewTypes::BaseViewTypeComponent < Avo::BaseComponent
   prop :turbo_frame
   prop :index_params
 
+  def list_frame_id
+    "#{resource_name_for(@resource)}_list"
+  end
+
   def paginator_component
     Avo::PaginatorComponent.new(
       pagy: @pagy,
@@ -20,7 +24,8 @@ class Avo::ViewTypes::BaseViewTypeComponent < Avo::BaseComponent
       resource: @resource,
       parent_record: @parent_record,
       parent_resource: @parent_resource,
-      discreet_pagination: field&.discreet_pagination
+      discreet_pagination: field&.discreet_pagination,
+      field_per_page: field&.per_page
     )
   end
 end

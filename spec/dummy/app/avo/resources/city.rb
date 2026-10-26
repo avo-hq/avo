@@ -45,14 +45,14 @@ class Avo::Resources::City < Avo::BaseResource
       show_on: :preview,
       stored_as: [:latitude, :longitude],
       mapkick_options: {
-        style: "mapbox://styles/mapbox/satellite-v9",
         markers: {color: "#FFC0CB"}
       }
     field :city_center_area,
       as: :area,
       geometry: :polygon,
       mapkick_options: {
-        style: "mapbox://styles/mapbox/satellite-v9",
+        # A style Avo didn't pick: it survives the dark-mode toggle untouched.
+        style: "https://tiles.openfreemap.org/styles/liberty",
         controls: true
       },
       datapoint_options: {
@@ -86,7 +86,7 @@ class Avo::Resources::City < Avo::BaseResource
 
         link_to resource.record.name, path, data: data
       end
-      field :population, as: :number, filterable: true, format_display_using: -> { number_with_delimiter(value, delimiter: ".") }
+      field :population, as: :number, filterable: true, format: :delimited
       field :is_capital, as: :boolean, filterable: true, nil_as_indeterminate: true
       field :features, as: :key_value
       field :image_url, as: :external_image

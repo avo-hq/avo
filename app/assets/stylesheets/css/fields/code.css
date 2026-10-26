@@ -1,6 +1,11 @@
 /* Base CodeMirror surface */
 .CodeMirror {
   @apply border border-tertiary rounded-b-lg bg-primary text-content p-0 min-h-auto;
+}
+
+/* The height pin would beat the inline height the resize handle sets, so it
+   only applies when the editor is not a resizable viewport. */
+.CodeMirror:not(.resizable-editor__viewport) {
   height: var(--height) !important;
 }
 

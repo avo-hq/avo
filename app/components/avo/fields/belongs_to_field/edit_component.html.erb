@@ -19,7 +19,8 @@
             action: "change->belongs-to-field#changeType #{field_html_action}",
             'belongs-to-field-target': "select",
           },
-          disabled: disabled
+          disabled: disabled,
+          autofocus: @autofocus
         }
         %>
         <%
@@ -71,8 +72,9 @@
                     create_href,
                     class: "inline-block text-sm mt-1",
                     data: {
-                      turbo_frame: Avo::MODAL_FRAME_ID,
-                      turbo_prefetch: false
+                      turbo_frame: modal_frame_id,
+                      turbo_prefetch: false,
+                      action: "reload-belongs-to-field#openInExistingFrame"
                     }
                   %>
                 <% end %>
@@ -97,7 +99,8 @@
           class: classes("w-full"),
           data: @field.get_html(:data, view: view, element: :input),
           disabled: disabled,
-          style: @field.get_html(:style, view: view, element: :input)
+          style: @field.get_html(:style, view: view, element: :input),
+          autofocus: @autofocus
         }
       %>
       <%
@@ -113,8 +116,9 @@
           create_path(**modal_args),
           class: "inline-block text-sm mt-1",
           data: {
-            turbo_frame: Avo::MODAL_FRAME_ID,
-            turbo_prefetch: false
+            turbo_frame: modal_frame_id,
+            turbo_prefetch: false,
+            action: "reload-belongs-to-field#openInExistingFrame"
           }
         %>
       <% end %>

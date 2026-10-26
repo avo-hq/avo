@@ -1,0 +1,9 @@
+<%# Always rendered, button or not: it is the target "load more" replaces.
+    `next_offset` is the byte where the next unread row starts. %>
+<div id="media-library-csv-more" class="media-library-details__preview-more">
+  <% if next_offset && next_offset < blob.byte_size %>
+    <%= a_link avo.rows_media_library_path(blob, offset: next_offset), style: :text, data: {turbo_stream: true} do %>
+      Load more rows
+    <% end %>
+  <% end %>
+</div>

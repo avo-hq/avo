@@ -42,6 +42,24 @@ Avo.configure do |config|
   ## == Localization ==
   # config.locale = 'en-US'
 
+  ## == Locale selector ==
+  ## A language picker in the top navbar lets each user pick their own language.
+  ## The choice is stored in a cookie, so it never changes the language for other users.
+  ##   true  - list every locale in I18n.available_locales that Avo has translations for (default)
+  ##   false - hide the selector
+  ##   array - list exactly these locales
+  # config.locale_selector = true
+  # config.locale_selector = false
+  # config.locale_selector = [:en, :ro, :de]
+
+  ## == Model attribute translations ==
+  ## A field without name: or translation_key: whose avo.resource_translations / avo.field_translations
+  ## keys are missing reads the model's attribute translation (activerecord.attributes.<model>.<attribute>,
+  ## then attributes.<attribute>) before humanizing its id.
+  ##   true  - read the model's attribute translations (default)
+  ##   false - skip them; the label is the humanized id
+  # config.model_attribute_translations = true
+
   ## == Resource options ==
   # config.resource_row_controls_config = {
   #   placement: :right,
@@ -50,6 +68,12 @@ Avo.configure do |config|
   # }.freeze
   # config.model_resource_mapping = {}
   # config.default_view_type = :table
+  # Map tiles for the map view and the `location`/`area` fields. Defaults to
+  # OpenFreeMap (no account needed), or Mapbox when MAPBOX_ACCESS_TOKEN is set.
+  # `styles` accepts :open_free_map, :mapbox, or your own {light:, dark:} pair.
+  # config.map_view = {
+  #   styles: :open_free_map
+  # }
   # config.per_page = 24
   # config.per_page_steps = [12, 24, 48, 72]
   # config.via_per_page = 8
@@ -75,6 +99,12 @@ Avo.configure do |config|
   #   ActiveSupport::Cache.lookup_store(:solid_cache_store)
   # }
   # config.cache_resources_on_index_view = true
+  ## What an index row's cache key varies by besides the record. The default keys
+  ## rows on the current user (the record, so a role change busts their rows),
+  ## the locale and the tenant. Narrow it to share cached rows across users who
+  ## see the same thing — only do this when nothing a row renders reads the user:
+  # config.index_cache_context = -> { [current_user, I18n.locale, Avo::Current.tenant_id] }
+  # config.index_cache_context = -> { [current_user.role, I18n.locale] }
 
   ## == Turbo options ==
   # config.turbo = -> do
@@ -144,9 +174,10 @@ Avo.configure do |config|
   # config.density = :normal # :tight, :normal, :relaxed
   # config.app_name = 'Avocadelicious'
   # config.timezone = 'UTC'
+  # config.use_browser_timezone = true # set false to render dates/times in the app's configured zone for everyone; off automatically in the test environment
   # config.currency = 'USD'
   # config.hide_layout_when_printing = false
-  # config.container_width = :large # :full, :large, or :small. Hash for per-view: { index: :full, single: :small }
+  # config.container_width = :lg # :full, :lg, :md, or :sm. Hash for per-view: { index: :full, single: :md }
   # config.use_stacked_fields = false
   # Set to false to disable Avo's Tailwind integration even when `tailwindcss-ruby` is installed.
   # config.tailwindcss_integration_enabled = true
@@ -154,6 +185,8 @@ Avo.configure do |config|
   # config.view_component_path = "app/components"
   # config.display_license_request_timeout_error = true
   # config.buttons_on_form_footers = true
+  # Set to false to stop asking for confirmation before leaving a form with unsaved changes.
+  # config.warn_on_unsaved_changes = true
   # config.field_wrapper_layout = true
   # config.resource_parent_controller = "Avo::ResourcesController"
   # config.first_sorting_option = :desc # :desc or :asc
@@ -176,6 +209,8 @@ Avo.configure do |config|
   #   accent: :brand,
   #   scheme: :auto,
   #   persistence: :database,
+  #   sound: true, # play a sound on picks by default; Shift+S toggles it per browser
+  #   sound_button: false, # show the mute toggle in the switcher
   #   placeholder: "avo/placeholder.svg",
   #   chart_colors: ["#0B8AE2", "#34C683", "#2AB1EE", "#34C6A8"],
   #   load_settings: -> { current_user&.avo_preferences&.dig("appearance")&.symbolize_keys || {} },

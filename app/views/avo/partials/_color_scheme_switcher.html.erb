@@ -3,6 +3,9 @@
 <% show_accent_picker = !appearance.accent_locked? %>
 <% show_scheme_picker = !appearance.scheme_locked? %>
 <% show_key_badges_toggle = Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges] %>
+<%# Hidden by default (Shift+S still toggles the sound). Even when shown, nothing can make a sound
+    with every picker locked, so don't offer the mute. %>
+<% show_sound_toggle = appearance.sound_button? && (show_neutral_picker || show_accent_picker || show_scheme_picker) %>
 <% return unless show_neutral_picker || show_accent_picker || show_scheme_picker || show_key_badges_toggle %>
 <% locals = {
      appearance: appearance,
@@ -10,6 +13,7 @@
      show_accent_picker: show_accent_picker,
      show_scheme_picker: show_scheme_picker,
      show_key_badges_toggle: show_key_badges_toggle,
+     show_sound_toggle: show_sound_toggle,
      active_neutral: current_neutral,
      active_accent: current_accent,
      neutral_labels: appearance_neutral_labels(appearance.neutrals)

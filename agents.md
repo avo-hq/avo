@@ -108,6 +108,16 @@ Guards:
 
 **Static counts are a lower bound, not a census.** A field declared in a loop counts once, a field behind a conditional counts always, and resources shipped by a gem are invisible. A field wired by a symbol that a gem registers (`as: :money`) is counted, but not recognized as custom, since that would need a registry of gem field types we do not have.
 
+## Translations
+
+When you touch translations (any key in `lib/generators/avo/templates/locales/*.yml`), fill in the other languages before declaring done:
+
+```sh
+bundle exec i18n-tasks translate-missing --backend=openai
+```
+
+It needs `OPENAI_API_KEY` in the environment; if it is not set, ask the developer to run the command instead of skipping it.
+
 ## Logging in (development & testing)
 
 The dummy app at `spec/dummy` uses Devise for authentication. Avo is mounted at `/admin` and is wrapped in an `authenticate :user, ->(user) { user.is_admin? }` block, so you need an admin user to reach it.

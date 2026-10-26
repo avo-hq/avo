@@ -7,13 +7,17 @@ export default class extends Controller {
     searchable: Boolean,
     targetName: String,
     relationName: String,
+    // The frame this field's "Create new" dialog opens in. Stacked dialogs can hold fields with the
+    // same name (a self-referencing belongs_to), so the frame tells the field that opened the dialog apart.
+    frameId: String,
   }
 
   beforeStreamRender(event) {
-    const { relationName } = event.target.dataset
-    if (event.target.action !== 'update-belongs-to' || this.relationNameValue !== relationName) {
-      return false
-    }
+    const { relationName, targetName, frameId } = event.target.dataset
+    if (event.target.action !== 'update-belongs-to' || this.relationNameValue !== relationName) return
+    // Streams built without them (an overridden `create_success_action`) update every field for the relation.
+    if (targetName && this.targetNameValue !== targetName) return
+    if (frameId && this.frameIdValue !== frameId) return
 
     event.detail.render = (stream) => {
       if (this.searchableValue) {
@@ -24,15 +28,25 @@ export default class extends Controller {
     }
   }
 
+  // A modal that renders no nested frame (one from a plugin or the host app) cannot stack the dialog,
+  // so it opens in the page's modal frame and replaces that modal, as it did before dialogs stacked.
+  openInExistingFrame(event) {
+    const link = event.currentTarget
+    if (document.getElementById(link.dataset.turboFrame)) return
+
+    link.dataset.turboFrame = window.Avo.configuration.modal_frame_id
+    this.frameIdValue = link.dataset.turboFrame
+  }
+
   updateSearchable(stream) {
     // Update the id component
-    document.querySelector(`input[name="${this.targetNameValue}"][type="hidden"]`).value = stream.dataset.targetRecordId
+    this.element.querySelector(`input[name="${CSS.escape(this.targetNameValue)}"][type="hidden"]`).value = stream.dataset.targetRecordId
     // Update the label
-    document.querySelector(`input[name="${this.targetNameValue}"][type="text"]`).value = stream.dataset.targetResourceLabel
+    this.element.querySelector(`input[name="${CSS.escape(this.targetNameValue)}"][type="text"]`).value = stream.dataset.targetResourceLabel
   }
 
   updateNonSearchable(stream) {
-    const select = document.querySelector(`select[name="${this.targetNameValue}"]`)
+    const select = this.element.querySelector(`select[name="${CSS.escape(this.targetNameValue)}"]`)
     const option = document.createElement('option')
     option.value = stream.dataset.targetRecordId
     option.text = stream.dataset.targetResourceLabel

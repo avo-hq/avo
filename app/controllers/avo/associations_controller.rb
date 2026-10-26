@@ -12,32 +12,15 @@ module Avo
     before_action :set_attachment_record, only: [:create, :destroy]
     before_action :set_attach_fields, only: [:new, :create]
     before_action :authorize_index_action, only: :index
+    before_action :authorize_show_action, only: :show
     before_action :authorize_attach_action, only: [:new, :create]
     before_action :authorize_detach_action, only: :destroy
 
     layout :choose_layout
 
     def index
-      @parent_resource = @resource.dup
+      @parent_resource, @parent_record = @resource, @record
       @resource = @related_resource
-      @parent_record = @parent_resource.find_record(params[:id], params: params)
-      @parent_resource.hydrate(record: @parent_record)
-
-      # When array field the records are fetched from the field block, from the parent record or from the resource def records
-      # When other field type, like has_many the @query is directly fetched from the parent record
-      # Don't apply policy on array type since it can return an array of hashes where `.all` and other methods used on policy will fail.
-      @query = if @field.type == "array"
-        @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block, record: @parent_record).handle || @parent_record.try(@field.id))
-      else
-        association_query_scope(
-          parent_resource: @parent_resource,
-          parent_record: @parent_record,
-          association_name: association_from_params,
-          authorization: @related_authorization,
-          resource: @resource,
-          field_association_name: params[:related_name]
-        )
-      end
 
       super
     end
@@ -54,12 +37,7 @@ module Avo
       @resource.hydrate(record: @record)
 
       if @field.present? && !@field.is_searchable?
-        query = @related_authorization.apply_policy @attachment_class
-
-        # Add the association scope to the query scope
-        if @field.attach_scope.present?
-          query = Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
-        end
+        query = attachable_query
 
         @options = if attach_using_checkbox_list?
           checkbox_list_options(query)
@@ -101,6 +79,10 @@ module Avo
             attach_record(association_name, attachment_record)
           end
         end
+      rescue Avo::Fields::BelongsToField::TargetNotFound => error
+        # Worded on the join record, which owns the fields; `@record` has no attribute to put them on
+        join_record = @reflection.through_reflection.klass.new
+        error.field_ids.each { |field_id| @record.errors.add(:base, ActiveModel::Error.new(join_record, field_id, :invalid).full_message) }
       end
     end
 
@@ -120,10 +102,38 @@ module Avo
 
     private
 
+    # Base's index calls it once the pagination params are set, so an array field can fetch only the page shown.
+    def set_query
+      # When array field the records are fetched from the field block, from the parent record or from the resource def records
+      # When other field type, like has_many the @query is directly fetched from the parent record
+      # Don't apply policy on array type since it can return an array of hashes where `.all` and other methods used on policy will fail.
+      @query = if @field.type == "array"
+        @resource.index_params = @index_params
+        @resource.fetch_records(@resource.records_from_field(@field, @parent_record))
+      else
+        association_query_scope(
+          parent_resource: @parent_resource,
+          parent_record: @parent_record,
+          association_name: association_from_params,
+          authorization: @related_authorization,
+          resource: @resource,
+          field_association_name: params[:related_name]
+        )
+      end
+    end
+
     def set_reflection
       @reflection = @record.class.try(:reflect_on_association, association_from_params)
 
       return if @reflection.blank? && @field.type == "array"
+
+      if @reflection.blank?
+        raise Avo::MissingAssociationError.new(
+          @record.class,
+          association_from_params,
+          @field
+        )
+      end
 
       # Ensure inverse_of is present on STI
       if !@record.class.descends_from_active_record? && @reflection.inverse_of.blank? && Rails.env.development?
@@ -143,13 +153,10 @@ module Avo
     end
 
     def set_attachment_record
-      if action_name == "create"
-        @attachment_records = attachment_ids.map do |id|
-          @related_resource.find_record id, params: params
-        end
-        @attachment_record = @attachment_records.first
+      @attachment_record = if action_name == "create"
+        attachment_records.first
       else
-        @attachment_record = @related_resource.find_record attachment_id, params: params
+        @related_resource.find_record attachment_id, params: params
       end
     end
 
@@ -167,10 +174,23 @@ module Avo
       Array(attachment_id).reject(&:blank?)
     end
 
+    # Whether the finder raises (`find`) or answers nil (`find_by`), a refused id raises like a missing one
     def attachment_records
-      @attachment_records ||= attachment_ids.map do |id|
-        @related_resource.find_record id, params: params
+      @attachment_records ||= begin
+        query = attachable_query
+
+        attachment_ids.map do |id|
+          @related_resource.find_record(id, query:, params:) || raise(ActiveRecord::RecordNotFound, "Couldn't find #{@attachment_class} with '#{id}'")
+        end
       end
+    end
+
+    # What the attach picker offers, and so the only records the save accepts
+    def attachable_query
+      query = @related_authorization.apply_policy @attachment_class
+      return query if @field.attach_scope.blank?
+
+      Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
     end
 
     def reflection_class
@@ -195,6 +215,11 @@ module Avo
 
     def authorize_index_action
       authorize_if_defined "view_#{@field.id}?"
+    end
+
+    def authorize_show_action
+      authorize_if_defined "view_#{@field.id}?"
+      @related_authorization.set_record(@related_record).authorize_action :show
     end
 
     def authorize_attach_action
@@ -265,15 +290,19 @@ module Avo
     end
 
     def additional_params
-      @additional_params ||= params[:fields].slice(*@attach_fields&.map(&:id))
+      @additional_params ||= params[:fields].slice(*@resource.fields_by_param(Array(@attach_fields)).compact.keys)
     end
 
     def set_attach_fields
       @attach_fields = if @field.attach_fields.present?
+        # Attach fields describe the join record, so a belongs_to among them finds its association there
+        join_record = @reflection.through_reflection&.klass&.new
+
         Avo::FieldsExecutionContext.new(target: @field.attach_fields)
           .detect_fields
           .items_holder
           .items
+          .each { |field| field.hydrate(record: join_record) }
       end
     end
 
@@ -349,8 +378,13 @@ module Avo
     def reload_frame_turbo_streams
       turbo_streams = super
 
-      # We want to close the modal if the user wants to add just one record
-      turbo_streams << turbo_stream.avo_close_modal if params[:button] != "attach_another"
+      # Close the modal if the user wants to add just one record, otherwise
+      # reload it so the options reflect the record that was just attached
+      turbo_streams << if params[:button] == "attach_another"
+        turbo_stream.turbo_frame_reload(Avo::MODAL_FRAME_ID)
+      else
+        turbo_stream.avo_close_modal
+      end
 
       turbo_streams
     end
@@ -404,6 +438,9 @@ module Avo
     def checkbox_list_option(record)
       resource = @attachment_resource.new(record:, view: Avo::ViewInquirer.new(:new), params:)
       search_item = (@attachment_resource.fetch_search(:item, record:) || {}).with_indifferent_access
+      # Same split as the global search controller: `record_title` is the fallback, and a
+      # declared `self.search[:item]` supplies title, description and image itself. Those
+      # values are app-authored and outside what a title-attribute rule governs.
       title = search_item[:title] || resource.record_title
 
       {
@@ -438,20 +475,21 @@ module Avo
       page_key = "#{pagination_key}.page"
 
       @index_params[:page] = if Avo.configuration.session_persistence_enabled?
-        session[page_key] = params[:page] || session[page_key] || 1
+        session[page_key] = positive_integer_or(params[:page] || session[page_key], 1)
       else
-        params[:page] || 1
+        positive_integer_or(params[:page], 1)
       end
     end
 
     def set_per_page_param
       # avo-resources-project.has_many.avo-resources-user.per_page
       per_page_key = "#{pagination_key}.per_page"
+      default_per_page = @field.per_page || Avo.configuration.via_per_page
 
       @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
-        session[per_page_key] = params[:per_page] || session[per_page_key] || Avo.configuration.via_per_page
+        session[per_page_key] = positive_integer_or(params[:per_page] || session[per_page_key], default_per_page)
       else
-        params[:per_page] || Avo.configuration.via_per_page
+        positive_integer_or(params[:per_page], default_per_page)
       end
     end
   end

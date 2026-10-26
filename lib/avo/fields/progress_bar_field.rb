@@ -14,6 +14,10 @@ module Avo
         @display_value = args[:display_value] || false
         @value_suffix = args[:value_suffix] || nil
       end
+
+      def tooltip_anchor
+        :block
+      end
     end
   end
 end

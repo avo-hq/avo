@@ -4,6 +4,11 @@
       title: file.filename.to_s,
       size_label: helpers.number_to_human_size(file.byte_size),
     ) do %>
+      <% if lightbox? %>
+        <%= content_tag :button, type: :button, class: "file-upload-item__action", title: preview_label, data: {**lightbox_item_data, tippy: :tooltip} do %>
+          <%= helpers.svg "tabler/outline/eye" %>
+        <% end %>
+      <% end %>
       <%= render Avo::Fields::Common::Files::ControlsComponent.new(field: @field, file: file, resource: @resource) %>
     <% end %>
   <% end %>

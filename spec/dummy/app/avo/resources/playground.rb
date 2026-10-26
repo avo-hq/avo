@@ -23,7 +23,12 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :select_value, as: :select, options: Playground::SELECT_OPTIONS
     field :multi_select_values, as: :select, multiple: true, options: Playground::MULTI_SELECT_OPTIONS
     field :radio_value, as: :radio, options: Playground::RADIO_OPTIONS
-    field :badge_value, as: :badge, options: Playground::BADGE_OPTIONS
+    field :badge_value,
+      as: :badge,
+      show_on: :forms,
+      options: Playground::BADGE_OPTIONS,
+      tooltip: -> { "#{field.value.to_s.humanize} since #{record.updated_at&.to_date}" },
+      label_tooltip: "Editorial state of the entry"
     field :status_value,
       as: :status,
       loading_when: Playground::STATUS_LOADING,
@@ -36,7 +41,7 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :boolean_group_values, as: :boolean_group, options: Playground::BOOLEAN_GROUP_OPTIONS
 
     field :structured_heading, as: :heading, name: "Structured and media fields"
-    field :key_value_data, as: :key_value
+    field :key_value_data, as: :key_value, suggestions: Playground::KEY_VALUE_SUGGESTIONS
     field :array_values, as: :array, only_on: [:index, :show] do
       Array.wrap(record.array_values)
     end
@@ -52,9 +57,12 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :content_heading, as: :heading, name: "Content fields"
     field :text_value, as: :text
     field :textarea_value, as: :textarea, rows: 4
+    field :lexxy_content, as: :lexxy if defined?(Lexxy)
+    field :rhino_content, as: :rhino
+    field :marksmith_content, as: :marksmith
+    field :trix_content, as: :trix
+    field :tiptap_content, as: :tiptap
     field :code_value, as: :code, language: "ruby", theme: "dracula", line_wrapping: true
     field :easy_mde_content, as: :easy_mde, height: "240px"
-    field :tiptap_content, as: :tiptap
-    field :trix_content, as: :trix
   end
 end

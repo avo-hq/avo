@@ -4,6 +4,7 @@ ru:
     action_ran_successfully: Действие успешно выполнено!
     actions: Действия
     add_filter: Добавить фильтр
+    all: Все
     and_x_other_resources: и %{count} других ресурсов
     appearance:
       accent_picker: Цвет акцента
@@ -52,6 +53,11 @@ ru:
       shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
       shortcut_badges_show_tooltip: Показать значки клавиатурных ярлыков
       show: Показать
+      sound: Звук
+      sound_off: Выкл.
+      sound_off_tooltip: Отключить звуки появления
+      sound_on: Вкл.
+      sound_on_tooltip: Воспроизводить звук при изменении внешнего вида
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?
@@ -112,6 +118,7 @@ ru:
     filter_by: Фильтровать по
     filters: Фильтры
     global_search:
+      direct_match: Прямое совпадение
       empty_state:
         no_results_for_query: Мы не смогли найти ничего, соответствующего "%{query}"
         no_results_found: Результатов не найдено
@@ -127,17 +134,21 @@ ru:
         select: Выбрать
       results:
         count_of_total: "%{count} из %{total}"
+      search_results: Результаты поиска
+      searching_on: 'Поиск по:'
       show_all_results_for: Показать все результаты для
     go_back: Назад
     grid_view: Сетка
     hide_content: Скрыть содержимое
     home: Главная
+    image_preview: Предпросмотр изображения
     key_value_field:
       add_row: Добавить строку
       delete_row: Удалить строку
       key: Ключ
       reorder_row: Перенести строку
       value: Значение
+    language: Язык
     less_content: Меньше контента
     list_is_empty: Список пуст
     load_item: Загрузить %{item}
@@ -150,6 +161,7 @@ ru:
     nested:
       add_new_item: Добавить новый %{item}
     new: новый
+    next_image: Следующее изображение
     next_page: Следующая страница
     no_cancel: Нет, отмена
     no_cards_present: Нет карточек
@@ -164,6 +176,7 @@ ru:
     oops_nothing_found: Ой! Ничего не найдено...
     open_in_new_tab: Открыть в новой вкладке
     open_in_your_editor: Открыть в вашем редакторе
+    open_original: Открыть оригинал
     order:
       higher: Переместить запись вверх
       lower: Переместить запись вниз
@@ -173,6 +186,8 @@ ru:
     pages: Страницы
     per_page: На странице
     prev_page: Предыдущая страница
+    preview_item: Предпросмотр %{item}
+    previous_image: Предыдущее изображение
     record:
       few: записи
       many: записей
@@ -210,11 +225,13 @@ ru:
     switch_to_view: Переключиться на вид %{view_type}
     table_view: Таблица
     this_field_has_attachments_disabled: Для этого поля прикрепления отключены.
+    timezone_changed: Даты и время теперь отображаются в вашем часовом поясе (%{timezone}).
     tools: Инструменты
     'true': Истина
     type_to_search: Поиск...
     unauthorized: Не авторизован
     undo: Отменить
+    unsaved_changes_warning: У вас есть несохранённые изменения. Вы уверены, что хотите покинуть эту страницу?
     updated_at: Обновлено
     updated_at_timestamp: Обновлено в %{updated_at}
     view: Просмотр

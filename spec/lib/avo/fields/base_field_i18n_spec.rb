@@ -13,7 +13,9 @@ RSpec.describe Avo::Fields::BaseField, "field-adjacent i18n" do
               other: "Date ranges",
               help: "EN Help",
               placeholder: "EN Placeholder",
-              include_blank: "EN Blank"
+              include_blank: "EN Blank",
+              tooltip: "EN Tooltip",
+              label_tooltip: "EN Label tooltip"
             }
           },
           resource_translations: {
@@ -37,7 +39,9 @@ RSpec.describe Avo::Fields::BaseField, "field-adjacent i18n" do
               other: "Datumsbereiche",
               help: "DE Help",
               placeholder: "DE Placeholder",
-              include_blank: "DE Blank"
+              include_blank: "DE Blank",
+              tooltip: "DE Tooltip",
+              label_tooltip: "DE Label tooltip"
             }
           }
         }
@@ -155,6 +159,28 @@ RSpec.describe Avo::Fields::BaseField, "field-adjacent i18n" do
       field = select_field(include_blank: true)
 
       expect(field.include_blank).to eq "EN Placeholder"
+    end
+  end
+
+  describe "#tooltip and #label_tooltip" do
+    it "resolve from translation_key when no option is given" do
+      field = text_field
+
+      I18n.with_locale(:en) do
+        expect(field.tooltip).to eq "EN Tooltip"
+        expect(field.label_tooltip).to eq "EN Label tooltip"
+      end
+      I18n.with_locale(:de) do
+        expect(field.tooltip).to eq "DE Tooltip"
+        expect(field.label_tooltip).to eq "DE Label tooltip"
+      end
+    end
+
+    it "prefer explicit options over translations" do
+      field = text_field(tooltip: "Explicit tooltip", label_tooltip: -> { "Block label tooltip" })
+
+      expect(field.tooltip).to eq "Explicit tooltip"
+      expect(field.label_tooltip).to eq "Block label tooltip"
     end
   end
 end

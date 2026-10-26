@@ -2,8 +2,8 @@
   <% if field.static_map?(params) %>
     <%= field.render_map(params) %>
   <% else %>
-    <div class="w-full" data-controller="map-dark-mode">
+    <%= tag.div class: "w-full", data: field.map_wrapper_data do %>
       <%= field.render_map(params) %>
-    </div>
+    <% end %>
   <% end %>
 <% end %>

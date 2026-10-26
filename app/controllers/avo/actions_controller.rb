@@ -17,11 +17,15 @@ module Avo
 
     layout :choose_layout
 
+    ORIGIN_VIEWS = %w[index show edit].freeze unless defined?(ORIGIN_VIEWS)
+
     def show
-      # Se the view to :new so the default value gets prefilled
+      # The view the modal's fields render in: form components and hidden
+      # inputs. The action and the resource keep the view the action was
+      # started from instead (see `origin_view`).
       @view = Avo::ViewInquirer.new("new")
 
-      @resource.hydrate(record: @record, view: @view, user: _current_user, params: params)
+      @resource.hydrate(record: @record, view: origin_view, user: _current_user, params: params)
       @fields = @action.get_fields
 
       build_background_url
@@ -74,12 +78,13 @@ module Avo
       end
     end
 
+    # A record may be deleted between the moment it was checked on the index and
+    # the moment the action is submitted. Only the records that are really gone drop out.
     def find_records_from_resource_ids
-      if (ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []).any?
-        @resource.find_record(ids, params: params)
-      else
-        []
-      end
+      ids = action_params[:fields]&.dig(:avo_resource_ids)&.split(",") || []
+      return [] if ids.empty?
+
+      @resource.find_records(ids, params: params).compact.uniq
     end
 
     def set_fields
@@ -88,7 +93,7 @@ module Avo
 
     def action_params
       @action_params ||= params.permit(
-        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, :resource_view, fields: {}
+        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, :resource_view, :via_related_name, fields: {}
       )
     end
 
@@ -100,8 +105,7 @@ module Avo
         record: @record,
         resource: @resource,
         user: _current_user,
-        # force the action view to in order to render new-related fields (hidden field)
-        view: Avo::ViewInquirer.new(:new),
+        view: origin_view,
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
         query: @query,
         index_query: decrypted_index_query
@@ -111,8 +115,26 @@ module Avo
       @action.fields
     end
 
+    # The view the action was started from: index, show, or edit. The action
+    # link and the modal form both carry it as `resource_view`, but that is a
+    # request param, so it is trusted only as far as the route backs it up: a
+    # show or edit page always has a record in the URL, and an index row action
+    # legitimately posts to the record path. Anything else (a hand-built link
+    # without the param, a form view, an arbitrary value) falls back to what the
+    # route implies, so an `authorize` block reading `view` cannot be satisfied
+    # by a crafted request.
+    def origin_view
+      @origin_view ||= begin
+        requested = action_params[:resource_view].to_s
+        route_backed = requested == "index" || (requested.in?(ORIGIN_VIEWS) && params[:id].present?)
+        implied = params[:id].present? ? :show : :index
+
+        Avo::ViewInquirer.new(route_backed ? requested : implied)
+      end
+    end
+
     def action_class
-      @resource.hydrate(view: action_params[:resource_view].presence, user: _current_user, params: params)
+      @resource.hydrate(view: origin_view, user: _current_user, params: params)
 
       registered_action = @resource.find_action(params[:action_id])
 
@@ -144,9 +166,8 @@ module Avo
             # Only render the flash messages if the action keeps the modal open
             turbo_stream.avo_flash_alerts
           when :download
-            # Trigger download, removes modal and flash the messages
+            # The download itself is prepended below. Remove the modal and flash the messages.
             [
-              turbo_stream.avo_download(content: Base64.encode64(@response[:path]), filename: @response[:filename]),
               turbo_stream.avo_close_modal,
               turbo_stream.avo_flash_alerts
             ]
@@ -183,6 +204,14 @@ module Avo
             Array(turbo_response) + Array(instance_exec(&@action.appended_turbo_streams))
           else
             Array(turbo_response)
+          end
+
+          # Trigger the download first, whatever the response type is. This way an action
+          # can download a file and still reload or redirect the page afterwards.
+          if (file = @response[:download]).present?
+            responses.unshift(
+              turbo_stream.avo_download(content: Base64.encode64(file[:path]), filename: file[:filename])
+            )
           end
 
           render turbo_stream: responses

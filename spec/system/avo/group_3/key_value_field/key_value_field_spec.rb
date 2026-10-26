@@ -29,7 +29,7 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_selector '[data-button="add-row"]'
       end
 
-      it "adds a row to meta table and input one row with values" do
+      it "does not save a value for the disabled value input" do
         visit "/admin/resources/projects/#{project.id}/edit"
         wait_for_loaded
 
@@ -46,7 +46,9 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).to have_selector '[data-button="delete-row"]'
 
         find('input[placeholder="Meta key"]').set("Test Key")
-        find('input[placeholder="Meta value"]').set("Test Value")
+        # The value input is disabled, so write the value straight into the JSON the form submits
+        json_input = meta_element.find('[data-key-value-target="input"]', visible: false)
+        page.execute_script("arguments[0].value = arguments[1]", json_input, {"Test Key" => "Test Value"}.to_json)
 
         save
 
@@ -59,7 +61,7 @@ RSpec.describe "KeyValueFields", type: :system do
         values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
 
         expect(keys[0].value).to eq "Test Key"
-        expect(values[0].value).to eq "Test Value"
+        expect(values[0].value).to eq ""
       end
 
       it "focuses the new row's key input after adding a row" do
@@ -97,29 +99,6 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(meta_element).not_to have_selector 'input[placeholder="Meta key"][disabled="disabled"]'
         expect(meta_element).not_to have_selector 'input[placeholder="Meta value"][disabled="disabled"]'
       end
-    end
-
-    it "won't change the value" do
-      visit "/admin/resources/projects/#{project.id}/edit"
-      wait_for_loaded
-
-      meta_element = find_field_element("meta")
-
-      find('[data-button="add-row"]').click
-
-      fill_in "Meta key", with: "foo20"
-      disabled_field = find('input[placeholder="Meta value"][disabled="disabled"]')
-      page.execute_script("arguments[0].value = 'bazz';", disabled_field)
-      disabled_field.trigger("input")
-
-      save
-
-      expect(current_path).to eql "/admin/resources/projects/#{project.id}"
-
-      scroll_to find_field_element("meta")
-
-      expect(meta_element).to have_field("Meta key", with: "foo20", disabled: true)
-      expect(page).to have_field("Meta value", with: "", disabled: true)
     end
   end
 
@@ -241,36 +220,6 @@ RSpec.describe "KeyValueFields", type: :system do
         expect(page).not_to have_text "Remove item"
         delete_buttons[0].hover
         expect(page).to have_text "Remove item"
-      end
-
-      it "adds a row to meta table with key and value" do
-        visit "/admin/resources/projects/#{project.id}/edit"
-        wait_for_loaded
-
-        meta_element = find_field_element("meta")
-
-        find("[data-button='add-row']").click
-
-        expect(meta_element).to have_selector 'input[placeholder="Meta key"]'
-        expect(meta_element).to have_selector 'input[placeholder="Meta value"]'
-
-        keys = page.all('input[placeholder="Meta key"]')
-        values = page.all('input[placeholder="Meta value"]')
-
-        keys[2].set("Test Key")
-        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", keys[2].native)
-        values[2].set("Test Value")
-        page.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }))", values[2].native)
-
-        save
-
-        expect(current_path).to eql "/admin/resources/projects/#{project.id}"
-
-        keys = page.all('input[placeholder="Meta key"][disabled="disabled"]')
-        values = page.all('input[placeholder="Meta value"][disabled="disabled"]')
-
-        expect(keys[2].value).to eq "Test Key"
-        expect(values[2].value).to eq "Test Value"
       end
 
       it "adds a row to meta table only with key" do
@@ -445,6 +394,73 @@ RSpec.describe "KeyValueFields", type: :system do
 
         save
       end
+    end
+  end
+
+  describe "with suggestions" do
+    let!(:playground) { Playground.create!(name: "Headers", key_value_data: {"X-Request-Id" => "abc"}) }
+
+    def suggestions_shown
+      find(".key-value__suggestions", visible: true).all("[role='option']").map(&:text)
+    end
+
+    it "suggests keys, then the values for the chosen key" do
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      wait_for_loaded
+
+      key_value_element = find_field_element("key_value_data")
+      key_value_element.find("[data-button='add-row']").click
+
+      # The new row's key input is focused, so the unused suggested keys open right away
+      expect(suggestions_shown).to eq ["Content-Type", "Accept", "Authorization"]
+
+      key_input = key_value_element.all(".key-value-input-key").last
+      key_input.send_keys("acc")
+      expect(suggestions_shown).to eq ["Accept"]
+
+      key_input.send_keys(:backspace, :backspace, :backspace, "cont")
+      find(".key-value__suggestions [role='option']", text: "Content-Type").click
+
+      expect(key_input.value).to eq "Content-Type"
+      value_input = key_value_element.all(".key-value-input-value").last
+      expect(page.evaluate_script("document.activeElement.classList.contains('key-value-input-value')")).to be true
+      expect(suggestions_shown).to eq ["application/json", "text/html"]
+
+      value_input.send_keys(:down, :down, :enter)
+      expect(value_input.value).to eq "text/html"
+      expect(page).to have_no_css(".key-value__suggestions", visible: true)
+
+      save
+
+      expect(playground.reload.key_value_data).to eq({"X-Request-Id" => "abc", "Content-Type" => "text/html"})
+    end
+
+    it "closes with escape and does not suggest a key another row already uses" do
+      playground.update!(key_value_data: {"Accept" => "*/*"})
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      wait_for_loaded
+
+      find_field_element("key_value_data").find("[data-button='add-row']").click
+      expect(suggestions_shown).to eq ["Content-Type", "Authorization"]
+
+      find_field_element("key_value_data").all(".key-value-input-key").last.send_keys(:escape)
+      expect(page).to have_no_css(".key-value__suggestions", visible: true)
+    end
+
+    it "does not save suggestions the user did not fill in" do
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      wait_for_loaded
+
+      save
+
+      expect(page).to have_current_path("/admin/resources/playgrounds/#{playground.id}")
+      expect(playground.reload.key_value_data).to eq({"X-Request-Id" => "abc"})
+    end
+
+    it "does not render suggestions on show" do
+      visit "/admin/resources/playgrounds/#{playground.id}"
+
+      expect(find_field_element("key_value_data")).not_to have_css(".key-value__suggestions", visible: false)
     end
   end
 end

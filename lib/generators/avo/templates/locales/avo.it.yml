@@ -4,6 +4,7 @@ it:
     action_ran_successfully: L'azione è stata eseguita con successo!
     actions: Azioni
     add_filter: Aggiungi filtro
+    all: Tutto
     and_x_other_resources: e altri %{count} risorse
     appearance:
       accent_picker: Colore accento
@@ -52,6 +53,11 @@ it:
       shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera
       shortcut_badges_show_tooltip: Mostra i badge delle scorciatoie da tastiera
       show: Mostra
+      sound: Suono
+      sound_off: Disattivato
+      sound_off_tooltip: Disattiva i suoni di apparizione
+      sound_on: Attivato
+      sound_on_tooltip: Riproduci un suono quando cambia l'aspetto
       title: Aspetto
     applied: applicato
     are_you_sure: Sei sicuro?
@@ -108,6 +114,7 @@ it:
     filter_by: Filtra per
     filters: Filtri
     global_search:
+      direct_match: Corrispondenza diretta
       empty_state:
         no_results_for_query: Non siamo riusciti a trovare nulla che corrisponda a "%{query}"
         no_results_found: Nessun risultato trovato
@@ -123,17 +130,21 @@ it:
         select: Seleziona
       results:
         count_of_total: "%{count} di %{total}"
+      search_results: Risultati della ricerca
+      searching_on: 'Ricerca in:'
       show_all_results_for: Mostra tutti i risultati per
     go_back: Torna indietro
     grid_view: Vista griglia
     hide_content: Nascondi contenuto
     home: Home
+    image_preview: Anteprima immagine
     key_value_field:
       add_row: Aggiungi riga
       delete_row: Elimina riga
       key: Chiave
       reorder_row: Riordina riga
       value: Valore
+    language: Lingua
     less_content: Meno contenuti
     list_is_empty: La lista è vuota
     load_item: Carica %{item}
@@ -146,6 +157,7 @@ it:
     nested:
       add_new_item: Aggiungi nuovo %{item}
     new: nuovo
+    next_image: Immagine successiva
     next_page: Pagina successiva
     no_cancel: No, annulla
     no_cards_present: Nessuna carta presente
@@ -160,6 +172,7 @@ it:
     oops_nothing_found: Ops! Niente trovato...
     open_in_new_tab: Apri in una nuova scheda
     open_in_your_editor: Apri nel tuo editor
+    open_original: Apri originale
     order:
       higher: Sposta record più in alto
       lower: Sposta record più in basso
@@ -169,6 +182,8 @@ it:
     pages: Pagine
     per_page: Per pagina
     prev_page: Pagina precedente
+    preview_item: Anteprima di %{item}
+    previous_image: Immagine precedente
     record:
       one: record
       other: record
@@ -204,11 +219,13 @@ it:
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella
     this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.
+    timezone_changed: Le date e gli orari sono ora visualizzati nel tuo fuso orario (%{timezone}).
     tools: Strumenti
     'true': Vero
     type_to_search: Digita per cercare.
     unauthorized: Non autorizzato
     undo: Annulla
+    unsaved_changes_warning: Hai modifiche non salvate. Sei sicuro di voler lasciare questa pagina?
     updated_at: Aggiornato il
     updated_at_timestamp: Aggiornato il %{updated_at}
     view: Visualizza

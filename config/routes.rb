@@ -4,12 +4,15 @@ Avo::Engine.routes.draw do
   get "resources", to: redirect(Avo.configuration.root_path), as: :avo_resources_redirect
   get "dashboards", to: redirect(Avo.configuration.root_path), as: :avo_dashboards_redirect
 
-  resources :media_library, only: [:index, :show, :edit, :update, :destroy], path: "media-library"
+  resources :media_library, only: [:index, :show, :edit, :update, :destroy], path: "media-library" do
+    get :rows, on: :member
+  end
   get "attach-media", to: "media_library#attach"
 
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
 
   patch "appearance_settings", to: "appearance_settings#update"
+  patch "locale", to: "locales#update", as: :locale
 
   scope "avo_api", as: "avo_api" do
     # Only used for searchable fields

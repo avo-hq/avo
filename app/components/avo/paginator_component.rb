@@ -12,6 +12,7 @@ class Avo::PaginatorComponent < Avo::BaseComponent
   end
   prop :index_params
   prop :discreet_pagination
+  prop :field_per_page
 
   def change_items_per_page_url(option)
     if @parent_record.present?
@@ -39,7 +40,7 @@ class Avo::PaginatorComponent < Avo::BaseComponent
       options = [*Avo.configuration.per_page_steps, Avo.configuration.per_page.to_i, @index_params[:per_page].to_i]
 
       if @parent_record.present?
-        options.prepend Avo.configuration.via_per_page
+        options.prepend(@field_per_page || Avo.configuration.via_per_page)
       end
 
       options.sort.uniq

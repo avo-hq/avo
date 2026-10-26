@@ -4,6 +4,7 @@ nl:
     action_ran_successfully: Actie succesvol uitgevoerd!
     actions: Acties
     add_filter: Filter toevoegen
+    all: Alles
     and_x_other_resources: en %{count} andere bronnen
     appearance:
       accent_picker: Accentkleur
@@ -52,6 +53,11 @@ nl:
       shortcut_badges_hide_tooltip: Verberg sneltoets badges
       shortcut_badges_show_tooltip: Toon sneltoets badges
       show: Toon
+      sound: Geluid
+      sound_off: Uit
+      sound_off_tooltip: Geluiden bij uiterlijk dempen
+      sound_on: Aan
+      sound_on_tooltip: Speel een geluid af wanneer het uiterlijk verandert
       title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?
@@ -108,6 +114,7 @@ nl:
     filter_by: Filteren op
     filters: Filters
     global_search:
+      direct_match: Directe overeenkomst
       empty_state:
         no_results_for_query: We konden niets vinden dat overeenkomt met "%{query}"
         no_results_found: Geen resultaten gevonden
@@ -123,17 +130,21 @@ nl:
         select: Selecteren
       results:
         count_of_total: "%{count} van %{total}"
+      search_results: Zoekresultaten
+      searching_on: 'Zoeken in:'
       show_all_results_for: Toon alle resultaten voor
     go_back: Terug
     grid_view: Rasterweergave
     hide_content: Inhoud verbergen
     home: Startpagina
+    image_preview: Afbeeldingsvoorbeeld
     key_value_field:
       add_row: Rij toevoegen
       delete_row: Rij verwijderen
       key: Sleutel
       reorder_row: Rij herschikken
       value: Waarde
+    language: Taal
     less_content: Minder inhoud
     list_is_empty: Lijst is leeg
     load_item: Laad %{item}
@@ -146,6 +157,7 @@ nl:
     nested:
       add_new_item: Voeg nieuwe %{item} toe
     new: nieuw
+    next_image: Volgende afbeelding
     next_page: Volgende pagina
     no_cancel: Nee, annuleren
     no_cards_present: Geen kaarten aanwezig
@@ -160,6 +172,7 @@ nl:
     oops_nothing_found: Oeps! Niets gevonden...
     open_in_new_tab: Openen in een nieuw tabblad
     open_in_your_editor: Openen in uw editor
+    open_original: Origineel openen
     order:
       higher: Verplaats record omhoog
       lower: Verplaats record omlaag
@@ -169,6 +182,8 @@ nl:
     pages: Pagina's
     per_page: Per pagina
     prev_page: Vorige pagina
+    preview_item: Voorbeeld van %{item}
+    previous_image: Vorige afbeelding
     record:
       one: record
       other: records
@@ -204,11 +219,13 @@ nl:
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave
     this_field_has_attachments_disabled: Bijlagen zijn uitgeschakeld voor dit veld.
+    timezone_changed: Data en tijden worden nu weergegeven in uw tijdzone (%{timezone}).
     tools: Gereedschappen
     'true': Waar
     type_to_search: Typ om te zoeken.
     unauthorized: Niet geautoriseerd
     undo: Ongedaan maken
+    unsaved_changes_warning: Je hebt niet-opgeslagen wijzigingen. Weet je zeker dat je deze pagina wilt verlaten?
     updated_at: Bijgewerkt op
     updated_at_timestamp: Bijgewerkt op %{updated_at}
     view: Bekijken

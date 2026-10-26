@@ -35,7 +35,7 @@
 
 @media (min-width: theme(--breakpoint-lg)) {
   .color-scheme-switcher__compact-trigger {
-    @apply h-8 ps-2 pe-1.5;
+    @apply h-7.5 ps-2 pe-1.5;
   }
 }
 
@@ -130,6 +130,18 @@
 /* Shortcut badge buttons - active state mirrors :root.hotkeys-hide-badges. */
 :root:not(.hotkeys-hide-badges) .color-scheme-switcher__scheme-button[data-key-badges="show"],
 :root.hotkeys-hide-badges .color-scheme-switcher__scheme-button[data-key-badges="hide"] {
+  @apply bg-primary text-content shadow-sm;
+}
+
+/* Inline pill: only the button matching the current mute state is rendered. */
+:root.appearance-muted .color-scheme-switcher__button--sound-on,
+:root:not(.appearance-muted) .color-scheme-switcher__button--sound-off {
+  @apply hidden;
+}
+
+/* Sound buttons - active state mirrors :root.appearance-muted. */
+:root:not(.appearance-muted) .color-scheme-switcher__scheme-button[data-sound="on"],
+:root.appearance-muted .color-scheme-switcher__scheme-button[data-sound="off"] {
   @apply bg-primary text-content shadow-sm;
 }
 

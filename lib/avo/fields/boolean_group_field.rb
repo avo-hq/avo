@@ -24,6 +24,11 @@ module Avo
       def fill_field(record, _, values, _)
         new_value = {}
 
+        # The form submits the checked options, a JSON request body or a tool can submit option => checked
+        if values.respond_to?(:each_pair)
+          values = values.to_h.select { |_, checked| ActiveModel::Type::Boolean.new.cast(checked) }.keys.map(&:to_s)
+        end
+
         # Reject empty values passed by hidden inputs
         values.reject! { |value| value == "" }
 
@@ -32,8 +37,12 @@ module Avo
           new_value[key] = values.include? key.to_s
         end
 
-        # Don't override existing values unless specified in options
-        record.send(:"#{id}=", (record.send(id) || {}).merge(new_value))
+        # Don't override existing values unless specified in options.
+        # Drop the stored copy of each option first: a json column hands its keys back as Strings while options are
+        # usually Symbols, and a Hash holding both makes json 3 raise "detected duplicate key".
+        option_keys = new_value.keys.map(&:to_s)
+        stored_value = (record.send(id) || {}).reject { |key, _| option_keys.include?(key.to_s) }
+        record.send(:"#{id}=", stored_value.merge(new_value))
 
         record
       end

@@ -27,13 +27,31 @@ class Avo::Current < ActiveSupport::CurrentAttributes
 
   attribute :appearance_settings
 
+  # Which Avo surface this request arrived through: `:ui` for the admin screens, `:api`,
+  # `:ai`, `:mcp`. It names the client, not the screen — `view` already means index/show/
+  # edit/new, which is a screen within one surface. Consumers that resolve an answer per
+  # user can differ per surface without a second declaration.
+  attribute :interface
+
+  # Set by the callers that map over every resource with no user in scope — this gem's
+  # telemetry, and avo-licensing's debug service. Consumers that restrict what a user may
+  # reach read this to opt out explicitly, so the exemption can never be inferred from a
+  # nil user (which is a legitimate state on the API surface).
+  attribute :enumerating_all_resources
+
   # Rails 7.1 CurrentAttributes#attribute is only `def attribute(*names)` — no `default:` keyword.
   # `attribute :x, default: {}` is passed as a second positional `{ default: {} }`, so `names.map(&:to_sym)` raises.
-  resets { self.appearance_settings = {} }
+  resets do
+    self.appearance_settings = {}
+    self.interface = :ui
+    self.enumerating_all_resources = false
+  end
 
   def initialize
     super
     self.appearance_settings = {}
+    self.interface = :ui
+    self.enumerating_all_resources = false
   end
 
   # Protect from error #<RuntimeError: Missing rack.input> when request is ActionDispatch::Request.empty

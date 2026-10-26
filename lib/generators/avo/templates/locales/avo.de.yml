@@ -4,6 +4,7 @@ de:
     action_ran_successfully: Aktion erfolgreich durchgeführt!
     actions: Aktionen
     add_filter: Filter hinzufügen
+    all: Alle
     and_x_other_resources: und %{count} weitere Ressourcen
     appearance:
       accent_picker: Akzentfarbe
@@ -52,6 +53,11 @@ de:
       shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
       shortcut_badges_show_tooltip: Tastenkombinationssymbole anzeigen
       show: Anzeigen
+      sound: Ton
+      sound_off: Aus
+      sound_off_tooltip: Geräusche beim Erscheinen stummschalten
+      sound_on: Ein
+      sound_on_tooltip: Einen Ton abspielen, wenn sich das Erscheinungsbild ändert
       title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?
@@ -108,6 +114,7 @@ de:
     filter_by: Filtern nach
     filters: Filter
     global_search:
+      direct_match: Direkter Treffer
       empty_state:
         no_results_for_query: Wir konnten nichts finden, das "%{query}" entspricht
         no_results_found: Keine Ergebnisse gefunden
@@ -123,17 +130,21 @@ de:
         select: Auswählen
       results:
         count_of_total: "%{count} von %{total}"
+      search_results: Suchergebnisse
+      searching_on: 'Suche in:'
       show_all_results_for: Alle Ergebnisse für anzeigen
     go_back: Zurück
     grid_view: Rasteransicht
     hide_content: Inhalt ausblenden
     home: Startseite
+    image_preview: Bildvorschau
     key_value_field:
       add_row: Zeile hinzufügen
       delete_row: Zeile löschen
       key: Schlüssel
       reorder_row: Zeile neu anordnen
       value: Wert
+    language: Sprache
     less_content: Weniger Inhalt
     list_is_empty: Liste ist leer
     load_item: Lade %{item}
@@ -146,6 +157,7 @@ de:
     nested:
       add_new_item: "%{item} hinzufügen"
     new: neu
+    next_image: Nächstes Bild
     next_page: Nächste Seite
     no_cancel: Nein, abbrechen
     no_cards_present: Keine Karten vorhanden
@@ -160,6 +172,7 @@ de:
     oops_nothing_found: Oops! Nichts gefunden...
     open_in_new_tab: In neuem Tab öffnen
     open_in_your_editor: In Ihrem Editor öffnen
+    open_original: Original öffnen
     order:
       higher: Eintrag nach oben verschieben
       lower: Eintrag nach unten verschieben
@@ -169,6 +182,8 @@ de:
     pages: Seiten
     per_page: Pro Seite
     prev_page: Vorherige Seite
+    preview_item: Vorschau von %{item}
+    previous_image: Vorheriges Bild
     record:
       one: Eintrag
       other: Einträge
@@ -204,11 +219,13 @@ de:
     switch_to_view: Wechseln zur %{view_type}-Ansicht
     table_view: Tabellenansicht
     this_field_has_attachments_disabled: Für dieses Feld sind Anhänge deaktiviert.
+    timezone_changed: Daten und Zeiten werden jetzt in Ihrer Zeitzone (%{timezone}) angezeigt.
     tools: Werkzeuge
     'true': Wahr
     type_to_search: Tippen, um zu suchen.
     unauthorized: Nicht autorisiert
     undo: Rückgängig machen
+    unsaved_changes_warning: Sie haben ungespeicherte Änderungen. Möchten Sie diese Seite wirklich verlassen?
     updated_at: Aktualisiert am
     updated_at_timestamp: Aktualisiert am %{updated_at}
     view: Anzeigen

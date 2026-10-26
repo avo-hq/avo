@@ -20,14 +20,18 @@ module Avo
       turbo_stream_action_tag :turbo_reload
     end
 
-    def avo_update_belongs_to(relation_name:, target_record_id:, target_resource_label:, target_resource_class:)
+    # `target_name` and `frame_id` narrow the update to the field that opened the dialog: the input's name,
+    # and the frame the dialog was opened in. Without them every field for `relation_name` is updated.
+    def avo_update_belongs_to(relation_name:, target_record_id:, target_resource_label:, target_resource_class:, target_name: nil, frame_id: nil)
       turbo_stream_action_tag "update-belongs-to",
         data: {
           relation_name: relation_name,
+          target_name: target_name,
+          frame_id: frame_id,
           target_record_id: target_record_id,
           target_resource_label: target_resource_label,
           target_resource_class: target_resource_class
-        }
+        }.compact
     end
   end
 end

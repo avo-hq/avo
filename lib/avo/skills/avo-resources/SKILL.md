@@ -107,18 +107,22 @@ class Avo::Resources::Comment < Avo::BaseResource
 end
 ```
 
-Add a message under the resource name with `self.description`, the sidebar icon with `self.icon`, and an image with `self.avatar` (small, on show/forms) or `self.cover` (banner):
+Add a message under the resource name with `self.description`, the sidebar icon with `self.icon`, a tint for that icon with `self.color`, and an image with `self.avatar` (small, on show/forms) or `self.cover` (banner):
 
 ```ruby
 class Avo::Resources::User < Avo::BaseResource
   self.description = "These are the users of the app."
   self.icon = "tabler/outline/user"
+  self.color = :purple
   self.avatar = { source: :avatar, visible_on: [:show, :forms] }
   self.cover  = { source: :cover_photo, size: :md, visible_on: [:show] }
 end
 ```
 
+Avo also resolves `description` below the resource's translation key — `avo.resource_translations.user.description` supplies the User resource description. Per the cascade, the locale file **wins** and `self.description` is the fallback, so an app can keep an English default in code and translate over it — **avo-i18n**. Skip that locale key on a resource whose `self.description` is a block reading `record`/`view`: a resolved translation is a static string and replaces the block wholesale.
+
 - `self.description` is rendered as **raw HTML** — never feed it user-editable data (stored-XSS risk). A block gets `record`, `resource`, `view`, `current_user`, `params`.
+- `self.color` takes a Symbol or String from Avo's palette — `red`, `orange`, `amber`, `yellow`, `lime`, `green`, `emerald`, `teal`, `cyan`, `sky`, `blue`, `indigo`, `violet`, `purple`, `fuchsia`, `pink`, `rose`. It tints the icon **stroke only** (label and hover/active backgrounds stay neutral), adapts to light and dark themes, and an unknown name silently renders the neutral icon. The tint follows the resource to its breadcrumb initials chip and, with Advanced Search installed, to the resource group headers in global search results. A `color:` on the menu entry overrides it.
 - `self.cover`/`self.avatar` were named `cover_photo`/`profile_photo` in Avo 3. A **Symbol** `source:` renders nothing for unpersisted (new) records — use a block if you want a placeholder on `new`/`index`.
 
 Surface small metadata (timestamps, id, a badge/link) next to the title without spending a field, via `self.discreet_information`:
@@ -202,7 +206,44 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
 end
 ```
 
-Array resources are **Beta**: sorting is not supported, and the array is rebuilt on every request (cache inside `records` if it gets heavy). For external-API-backed data, prefer an [HTTP Resource](https://docs.avohq.io/4.0/http-resource.md).
+For a source that can return one page by itself (a cache, a search index, a store of the app's own), fetch only the page shown. Inside `records`, `page` and `per_page` are the index's page and page size (`nil` outside an index). Return `{records:, count:}` (that page and the total across pages) and Avo shows the page as it is instead of slicing it. Also set `find_record_method`: Avo holds only that page, so show, edit and actions on selected rows find their record through it. It may return a hash. An `as: :array` field's block gets the same `page` / `per_page` and can return the same hash.
+
+```ruby
+class Avo::Resources::Bookmark < Avo::Resources::ArrayResource
+  self.find_record_method = -> { BookmarkStore.find(id) }
+
+  def records
+    {records: BookmarkStore.page(page, per: per_page), count: BookmarkStore.count}
+  end
+end
+```
+
+"Select all matching" is hidden on such a resource, since only one page is loaded.
+
+Array resources are read-only by default. To add create, edit and delete, set `self.writable = true` and define `save_record` and `destroy_record` on the resource. Avo fills the record from the form, but array records have no `save!` or `destroy!`:
+
+```ruby
+class Avo::Resources::Bookmark < Avo::Resources::ArrayResource
+  self.writable = true
+
+  def records = BookmarkStore.all # array of hashes with an :id
+
+  # Create and update. Set the id on a new record: Avo redirects to it.
+  def save_record(record)
+    record.id = BookmarkStore.save(id: record.id, title: record.title)
+  end
+
+  def destroy_record(record)
+    BookmarkStore.destroy(record.id)
+  end
+end
+```
+
+Both report success through their return value: return something truthy, or raise to fail. No controller code is needed, so the same two methods serve the panel and the REST API.
+
+The form's params are scoped under the resource name (`bookmark[title]`). The policy still decides who can create, edit and delete.
+
+Array resources are **Beta**: sorting is not supported, and the array is rebuilt on every request (cache inside `records` if it gets heavy, or paginate at the source as above). For external-API-backed data, use an [HTTP Resource](https://docs.avohq.io/4.0/http-resource.md), not an array resource.
 
 ### 7. Sidebar, shortcuts, external links, and multiple resources per model
 
@@ -232,6 +273,7 @@ For STI, send index clicks to the child record with `self.link_to_child_resource
 | `self.title` | Record display name | `self.title = :name` |
 | `self.description` | Message under the name (raw HTML!) | `self.description = "App users."` |
 | `self.icon` | Sidebar icon | `self.icon = "tabler/outline/user"` |
+| `self.color` | Tint for that icon (palette name) | `self.color = :purple` |
 | `self.avatar` / `self.cover` | Small photo / banner | `self.cover = { source: :cover_photo, size: :md }` |
 | `self.discreet_information` | Metadata by the title | `self.discreet_information = :timestamps` |
 | `self.model_class` | Model when not inferable / secondary resource | `self.model_class = "Delayed::Job"` |
@@ -246,6 +288,7 @@ For STI, send index clicks to the child record with `self.link_to_child_resource
 | `self.external_link` | Button to a public URL | `-> { main_app.post_path(record) }` |
 | `self.link_to_child_resource` | STI: jump to child on click | `self.link_to_child_resource = true` |
 | `config.buttons_on_form_footers` | Save/Back in form footer (initializer, global) | `config.buttons_on_form_footers = true` |
+| `config.warn_on_unsaved_changes` | Confirm before leaving a New/Edit form with unsaved changes (initializer, global, on by default) | `config.warn_on_unsaved_changes = false` |
 
 Search (`self.search`), grid/map view types, record reordering, and i18n live on their own docs pages — reach for the docs map when a request touches those.
 
@@ -257,8 +300,9 @@ Search (`self.search`), grid/map view types, record reordering, and i18n live on
 - **Two resources, one model → wrong one wins.** Avo resolves the default alphabetically. Set `config.model_resource_mapping` and/or `use_resource:` on associations.
 - **Secondary / namespaced / oddly-named resources need `self.model_class`** (or the matching namespace) or Avo can't infer the model. Namespaced resources whose namespace matches the model's namespace infer automatically.
 - **Array resources are Beta:** no sorting, and `records` re-runs every request. Cache inside `records` for large sets, or move to an HTTP Resource.
-- **`find_record_method` in batch contexts:** `id` arrives as an Array for bulk actions — return a collection (`query.where(...)`) in that branch, not a single record.
+- **`find_record_method` in batch contexts:** `id` arrives as an Array for bulk actions — return a collection (`query.where(...)`) in that branch, not a single record. For every id that branch doesn't return (it raised, as `query.find(id)` does when one record was deleted between selection and submit, or it takes one id at a time), Avo retries the **scalar** branch once per id and drops the ones that are gone — so keep the scalar branch able to handle every id the array branch receives. In a batch, a custom finder's records are kept only when `query` also holds them, so ignoring it can't reach past the policy scope; a single lookup (Show, Edit, `belongs_to`) uses the finder's answer as-is, so keep reading through `query`. In your own code, `Avo::Resources::Post.find_records(ids, query:)` does the same lookup: one entry per id, in order, `nil` where none.
 - **`visible_on_sidebar` only affects the auto-generated menu.** If the app uses the menu editor, control visibility in its `visible` block instead.
+- **System specs that leave an edited form without saving now meet a confirmation dialog.** `config.warn_on_unsaved_changes` is on by default — accept the dialog with `accept_custom_alert { ... }` from `Avo::TestHelpers`, or set the option to `false` in the test environment.
 - **Don't re-invent fields/associations here.** Field DSL is the avo-fields skill; `belongs_to`/`has_many`/`use_resource` is avo-associations.
 - **Verify before writing.** Option names drift between versions — check the docs URLs above or the app's installed Avo source rather than trusting memory.
 

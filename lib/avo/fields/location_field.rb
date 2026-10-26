@@ -3,6 +3,12 @@
 module Avo
   module Fields
     class LocationField < BaseField
+      # The two columns a location is stored across, when it is stored across two. Read
+      # by anything that has to know which columns back a field — `to_permitted_param`
+      # cannot answer that here, since it yields the field id and a hash rather than the
+      # column names.
+      attr_reader :stored_as
+
       def initialize(id, **args, &block)
         hide_on :index
         super
@@ -33,11 +39,16 @@ module Avo
           {
             id: "location-map",
             zoom: @args[:zoom]&.to_i || 15,
-            controls: true
+            controls: true,
+            style: Avo::MapStyles.light
           }
         end
 
         default_options.merge(@args[:mapkick_options] || {})
+      end
+
+      def map_wrapper_data
+        Avo::MapStyles.wrapper_data(custom_style: @args.dig(:mapkick_options, :style))
       end
 
       def value_as_array?
@@ -75,7 +86,7 @@ module Avo
           record.send(:"#{longitude_field}=", value[longitude_field])
           record
         else
-          super(record, key, value.split(","), params)
+          super(record, key, value.is_a?(Array) ? value : value.split(","), params)
         end
       end
 
@@ -107,6 +118,10 @@ module Avo
         @stored_as.each_with_index do |database_id, index|
           record.send(:"#{database_id}=", value[index])
         end
+      end
+
+      def tooltip_anchor
+        :block
       end
     end
   end

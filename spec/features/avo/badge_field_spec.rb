@@ -148,4 +148,39 @@ RSpec.describe "BadgeField", type: :feature do
       end
     end
   end
+
+  describe "editable" do
+    let!(:playground) { Playground.create! name: "Badge", badge_value: "review" }
+
+    it "picks the value from a select of the configured options" do
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+
+      expect(page).to have_select "playground_badge_value", selected: "review", options: ["", "draft", "review", "published", "archived"]
+
+      select "published", from: "playground_badge_value"
+      save
+
+      expect(playground.reload.badge_value).to eq "published"
+    end
+
+    it "does not save the first option for a record without a value" do
+      playground.update! badge_value: nil
+
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      save
+
+      # Blank like any other field; `nullable: true` turns it into nil.
+      expect(playground.reload.badge_value).to eq ""
+    end
+
+    it "keeps a value the options don't list" do
+      playground.update! badge_value: "legacy"
+
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      expect(page).to have_select "playground_badge_value", selected: "legacy"
+      save
+
+      expect(playground.reload.badge_value).to eq "legacy"
+    end
+  end
 end

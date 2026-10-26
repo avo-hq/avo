@@ -6,6 +6,12 @@
   @apply flex self-start items-center shrink-0 w-full px-4 font-medium text-content text-sm md:w-52 min-h-10;
 }
 
+/* Rails' field_error_proc wraps an errored label in a block div, which would push the
+   required asterisk onto its own line. */
+.field-wrapper__label .field_with_errors {
+  @apply inline;
+}
+
 .field-wrapper__help {
   @apply text-content-secondary mt-2 text-xs leading-4;
 }
@@ -107,7 +113,8 @@
   }
 }
 
-.container-small {
+.container-md,
+.container-sm {
   .field-wrapper__content-wrapper {
     @apply w-full;
   }

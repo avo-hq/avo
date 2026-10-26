@@ -35,7 +35,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 Avo needs, in the target app:
 
-- Rails **>= 6.1**, Ruby **>= 3.1**.
+- Rails **>= 6.1**, Ruby **>= 3.2** (the gemspec enforces it — an older Ruby fails at `bundle install`).
 - `config.api_only` **= false** (an API-only app has no views/session/flash for Avo to render — see the docs map's api-only guide).
 - `propshaft` **or** `sprockets` in the Gemfile.
 - A `secret_key_base` (from `ENV["SECRET_KEY_BASE"]`, credentials, or secrets).
@@ -220,6 +220,8 @@ end
 A license authorizes **one app, one production URL** (`Rails.env.production?`). Non-production environments — development, staging, test, QA — need no extra license. To hide the "license request timed out" badge, set `config.display_license_request_timeout_error = false`.
 
 Verify at the **status page**: `https://yourapp.com/<mount-path>/avo_private/status` (e.g. `.../avo/avo_private/status` or `.../admin/avo_private/status`). It shows whether the license authenticated and what the checking server returned; the key is masked unless you set `config.exclude_from_status = []`. The viewing user must be an Avo admin. Deep failure diagnosis (unlicensed after deploy, timeouts, test-suite blocking the check host) is the **avo-troubleshoot** skill.
+
+**Trials are full licenses.** Every add-on a trial covers behaves exactly as it does on a paid license while the trial runs — nothing is gated or degraded. The **Avo Status** indicator in the sidebar footer is green when all is well, **amber** when a trial needs attention, and orange when the license is invalid. Amber is not a failure; it means either no payment method is on file (access stops on the trial's end date) or the subscription behind the trial was cancelled (access stops on the cancellation date, and adding a payment method won't change that — the subscription has to be resumed). Both are fixed on https://avohq.io/licenses, and the status page names which one applies. Avo caches the license response between checks, so press **Refresh license** on the status page afterwards or the app keeps showing the older billing state. Trial state needs `avo-licensing` **4.0.10+**; the amber indicator needs Avo **4.0.20+** (an older Avo renders an uncolored dot rather than breaking).
 
 ### 7. (Optional) Append your own routes inside the engine
 

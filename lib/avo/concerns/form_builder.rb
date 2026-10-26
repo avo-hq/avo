@@ -10,11 +10,33 @@ module Avo
           html: {
             novalidate: true,
             data: {
-              controller: "form avo-reactive-fields",
-              action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit"
+              controller: ["form", "avo-reactive-fields", ("unsaved-changes" if warn_on_unsaved_changes?)].compact.join(" "),
+              action: "keydown.ctrl+enter->form#submit keydown.meta+enter->form#submit",
+              **unsaved_changes_values,
+              **reactive_fields_values
             }
           },
           multipart: true, &block
+      end
+
+      # Off unless the component says otherwise, as not every component that builds the form is the edit view.
+      def warn_on_unsaved_changes?
+        false
+      end
+
+      def unsaved_changes_values
+        return {} unless warn_on_unsaved_changes?
+
+        {
+          unsaved_changes_message_value: t("avo.unsaved_changes_warning"),
+          # A form re-rendered with errors holds values that were never saved.
+          unsaved_changes_changed_on_load_value: @resource.record.errors.any?
+        }
+      end
+
+      # avo-reactive_fields fills this in with the inputs its fields react on.
+      def reactive_fields_values
+        {}
       end
 
       def form_url

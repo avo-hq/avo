@@ -41,8 +41,18 @@
       <% end %>
     <% end %>
 
-    <% if Rails.env.development? %>
-      <% header.with_title_slot do %>
+    <% header.with_title_slot do %>
+      <% if linkable? %>
+        <%= render Avo::DiscreetInformationComponent.new(
+          icon: "tabler/outline/external-link",
+          as: :icon,
+          url: helpers.resource_path(record: @resource.record, resource: @resource),
+          target: :_blank,
+          title: t("avo.open_in_new_tab")
+        ) %>
+      <% end %>
+
+      <% if Rails.env.development? %>
         <%= render Avo::DiscreetInformationComponent.new(
           as: :icon,
           title: t('avo.open_in_your_editor'),

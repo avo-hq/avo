@@ -30,7 +30,14 @@
         <dt class="media-library-details__details-label">Attached to</dt>
         <dd class="media-library-details__details-value media-library-details__attachments">
           <% blob.attachments.each do |attachment| %>
-            <%= link_to record_title(attachment.record), record_path(attachment.record), class: "media-library-details__detail-link" %>
+            <%# The record can be gone while the attachment row stays (deleted with `delete`/`delete_all`, which skip Active Storage's purge callbacks),
+                or it can be a model with no Avo resource (a rich text embed points at ActionText::RichText). Link only when there's a resource to link to. %>
+            <% record = attachment.record %>
+            <% if record.present? && Avo.resource_manager.get_resource_by_model_class(record.class).present? %>
+              <%= link_to record_title(record), record_path(record), class: "media-library-details__detail-link" %>
+            <% else %>
+              <span><%= attachment.record_type %> #<%= attachment.record_id %></span>
+            <% end %>
           <% end %>
         </dd>
       </div>

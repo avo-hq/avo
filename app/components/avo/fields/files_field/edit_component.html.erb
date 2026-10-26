@@ -6,7 +6,7 @@
     <div data-controller="clear-input">
       <%= render Avo::UI::FileUploadInputComponent.new(
         id: upload_input_id,
-        description: @field.accept.present? ? "Accepts #{@field.accept}" : "Accepts .jpg and .png",
+        description: @field.accept.present? ? "Accepts #{@field.accept}" : nil,
         disabled: disabled?,
       ) do %>
         <%= @form.file_field @field.id,

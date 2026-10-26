@@ -35,5 +35,173 @@ RSpec.feature "ArrayResource", type: :feature do
       name = find('div[data-field-id="name"] [data-slot="value"]').text
       expect(name).to eq User.first.name
     end
+
+    it "ignores a sort it cannot apply" do
+      visit avo.resources_movies_path(sort_by: "name", sort_direction: "desc")
+
+      expect(page).to have_text "The Shawshank Redemption"
+    end
+  end
+
+  describe "paginated at the source" do
+    before do
+      movies = Avo::Resources::Movie.new.records
+
+      allow_any_instance_of(Avo::Resources::Movie).to receive(:records) do |resource|
+        {records: movies.slice((resource.page - 1) * resource.per_page, resource.per_page), count: movies.size}
+      end
+    end
+
+    it "fetches only the page shown and paginates with the count the source reports" do
+      visit avo.resources_movies_path(per_page: 12, page: 3)
+
+      expect(page).to have_text "The Social Network"
+      expect(page).not_to have_text "The Shawshank Redemption"
+      within(".pagination__info") do
+        expect(strip_html(page.text)).to eq "25-36 of 50"
+      end
+      expect(page).to have_css "[data-item-select-all-selected-all-query-value='select_all_disabled']"
+    end
+  end
+
+  describe "with a find_record_method" do
+    before do
+      allow(Avo::Resources::Movie).to receive(:find_record_method).and_return(-> { {id: id.to_i, name: "Movie #{id}", release_date: "2001-01-01", fun_fact: nil} })
+    end
+
+    it "shows a record that records does not return" do
+      visit avo.resources_movie_path(51)
+
+      expect(page).to have_text "Movie 51"
+    end
+
+    it "finds each selected record through it" do
+      expect(Avo::Resources::Movie.new.find_records(%w[51 52]).map(&:name)).to eq ["Movie 51", "Movie 52"]
+    end
+  end
+
+  describe "model class" do
+    # YARD, a development dependency, adds Module#class_name. Host apps don't have it, and it
+    # hides a missing class_name on the generated model class, so remove it for these examples.
+    around do |example|
+      yard_class_name = Module.instance_method(:class_name) if Module.method_defined?(:class_name)
+      Module.send(:remove_method, :class_name) if yard_class_name
+
+      example.run
+    ensure
+      Module.send(:define_method, :class_name, yard_class_name) if yard_class_name
+    end
+
+    it "returns the records from .all" do
+      expect(Avo::Resources::Movie.model_class.all.map(&:name)).to include "The Shawshank Redemption"
+    end
+
+    # So any controller can list it, not only Avo::ArrayController.
+    it "answers its records as its query scope" do
+      expect(Avo::Resources::Movie.query_scope.map(&:name)).to include "The Shawshank Redemption"
+    end
+
+    it "returns the resource class name" do
+      expect(Avo::Resources::Movie.model_class.class_name).to eq "Movie"
+    end
+
+    it "builds records that are instances of model_class" do
+      resource = Avo::Resources::Movie.new
+      records = resource.fetch_records
+
+      expect(records).to all(be_a(resource.model_class))
+      expect(records.first.class.class_name).to eq "Movie"
+      expect(records.first.class.all.map(&:id)).to eq records.map(&:id)
+    end
+
+    it "is not shared between array resources" do
+      Avo::Resources::Attendee.new.fetch_records
+
+      expect(Avo::Resources::Attendee.model_class).to eq User
+      expect(Avo::Resources::Movie.model_class).not_to eq User
+    end
+
+    it "renders the show page when the policy scope calls scope.all" do
+      # Pundit's default Scope#resolve is `scope.all`
+      allow_any_instance_of(Avo::Services::AuthorizationService).to receive(:apply_policy) { |_service, query| query.all }
+
+      visit avo.resources_movie_path(28)
+
+      expect(page).to have_text "La La Land"
+    end
+  end
+
+  describe "writes" do
+    it "hides the create, edit and delete controls by default" do
+      visit avo.resources_movies_path
+
+      expect(page).not_to have_css "[data-target='create']"
+      expect(page).not_to have_css "[data-target='control:edit']"
+
+      visit avo.resources_movie_path(1)
+
+      expect(page).not_to have_css "[data-target='control:edit']"
+      expect(page).not_to have_css "[data-target='control:destroy']"
+    end
+
+    context "when the resource is writable" do
+      around do |example|
+        Avo::Resources::Movie.writable = true
+        example.run
+      ensure
+        Avo::Resources::Movie.writable = false
+      end
+
+      it "shows the create, edit and delete controls" do
+        visit avo.resources_movies_path
+
+        expect(page).to have_css "[data-target='create']"
+        expect(page).to have_css "[data-target='control:edit']"
+
+        visit avo.resources_movie_path(1)
+
+        expect(page).to have_css "a[href^='/admin/resources/movies/1/edit']"
+        expect(page).to have_css "[data-target='control:destroy']"
+      end
+
+      it "fills a new record from the form and hands it to the resource to save" do
+        saved = nil
+        allow_any_instance_of(Avo::Resources::Movie).to receive(:save_record) do |_resource, record|
+          saved = record
+          saved.id = 1
+        end
+
+        visit avo.new_resources_movie_path
+        fill_in "movie_name", with: "Heat"
+        click_on "Save"
+
+        expect(saved.name).to eq "Heat"
+      end
+
+      it "fills an existing record from the edit form and hands it to the resource to save" do
+        saved = nil
+        allow_any_instance_of(Avo::Resources::Movie).to receive(:save_record) do |_resource, record|
+          saved = record
+        end
+
+        visit avo.edit_resources_movie_path(1)
+        fill_in "movie_name", with: "Shawshank"
+        click_on "Save"
+
+        expect(saved.id).to eq 1
+        expect(saved.name).to eq "Shawshank"
+      end
+
+      it "hands the record to the resource to destroy" do
+        destroyed = nil
+        allow_any_instance_of(Avo::Resources::Movie).to receive(:destroy_record) do |_resource, record|
+          destroyed = record
+        end
+
+        page.driver.submit :delete, avo.resources_movie_path(1), {}
+
+        expect(destroyed.id).to eq 1
+      end
+    end
   end
 end

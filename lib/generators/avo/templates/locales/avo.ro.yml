@@ -4,6 +4,7 @@ ro:
     action_ran_successfully: Acțiunea a rulat cu succes!
     actions: Acțiuni
     add_filter: Adăugați filtru
+    all: Toate
     and_x_other_resources: plus alte %{count} recorduri
     appearance:
       accent_picker: Culoare accent
@@ -52,6 +53,11 @@ ro:
       shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură
       shortcut_badges_show_tooltip: Afișează insignele scurtăturilor de tastatură
       show: Afișează
+      sound: Sunet
+      sound_off: Oprit
+      sound_off_tooltip: Dezactivează sunetele
+      sound_on: Activat
+      sound_on_tooltip: Redă sunete când se schimbă setările
       title: Aspect
     applied:
       few: aplicate
@@ -113,6 +119,7 @@ ro:
     filter_by: Filtează după
     filters: Filtre
     global_search:
+      direct_match: Potrivire directă
       empty_state:
         no_results_for_query: Nu am putut găsi nimic care să se potrivească cu "%{query}"
         no_results_found: Nu s-au găsit rezultate
@@ -128,17 +135,21 @@ ro:
         select: Selectează
       results:
         count_of_total: "%{count} din %{total}"
+      search_results: Rezultatele căutării
+      searching_on: 'Se caută în:'
       show_all_results_for: Arată toate rezultatele pentru
     go_back: Înapoi
     grid_view: Vezi sub formă de grid
     hide_content: Ascunde conținutul
     home: Acasă
+    image_preview: Previzualizare imagine
     key_value_field:
       add_row: Adaugă rând
       delete_row: Șterge rând
       key: Cheie
       reorder_row: Reordonează rând
       value: Valoare
+    language: Limbă
     less_content: Mai puțin conținut
     list_is_empty: Lista este goală
     load_item: Încărcați %{item}
@@ -151,6 +162,7 @@ ro:
     nested:
       add_new_item: Adaugă noul %{item}
     new: nou
+    next_image: Imaginea următoare
     next_page: Pagina următoare
     no_cancel: Nu, anulează
     no_cards_present: Nici un card găsit
@@ -165,6 +177,7 @@ ro:
     oops_nothing_found: Oups! Nu am găsit rezultate...
     open_in_new_tab: Deschide într-o filă nouă
     open_in_your_editor: Deschideți în editorul dvs.
+    open_original: Deschide originalul
     order:
       higher: Mutați înregistrarea mai sus
       lower: Mutați înregistrarea mai jos
@@ -174,6 +187,8 @@ ro:
     pages: Pagini
     per_page: Pe pagină
     prev_page: Pagina anterioara
+    preview_item: Previzualizează %{item}
+    previous_image: Imaginea anterioară
     record:
       few: înregistrări
       one: înregistrare
@@ -210,11 +225,13 @@ ro:
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
     this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
+    timezone_changed: Datele și orele sunt acum afișate în fusul tău orar (%{timezone}).
     tools: Instrumente
     'true': Adevărat
     type_to_search: Caută aici...
     unauthorized: Neautorizat
     undo: Anulează
+    unsaved_changes_warning: Ai modificări nesalvate. Ești sigur că vrei să părăsești această pagină?
     updated_at: Actualizat la
     updated_at_timestamp: Actualizat la %{updated_at}
     view: vezi

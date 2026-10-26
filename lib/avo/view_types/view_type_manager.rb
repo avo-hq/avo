@@ -40,24 +40,26 @@ module Avo
 
       private
 
+      # Names, not constants: plugins register view types from Avo.boot, and loading a component there loads
+      # Action View while the app initializes, which Rails 8.2 flags (rails/rails#57224).
       def register_defaults
         register :table,
-          component: Avo::ViewTypes::TableComponent,
+          component: "Avo::ViewTypes::TableComponent",
           icon: "tabler/outline/layout-list",
           active_icon: "tabler/filled/layout-list"
 
         register :grid,
-          component: Avo::ViewTypes::GridComponent,
+          component: "Avo::ViewTypes::GridComponent",
           icon: "tabler/outline/layout-grid",
           active_icon: "tabler/filled/layout-grid"
 
         register :map,
-          component: Avo::ViewTypes::MapComponent,
+          component: "Avo::ViewTypes::MapComponent",
           icon: "tabler/outline/compass",
           active_icon: "tabler/filled/compass"
 
         register :list,
-          component: Avo::ViewTypes::TableComponent,
+          component: "Avo::ViewTypes::TableComponent",
           icon: "tabler/outline/layout-list",
           active_icon: "tabler/filled/layout-list"
       end

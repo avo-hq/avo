@@ -93,7 +93,8 @@ module Avo
             :string
           end
 
-          merge_values_as(as: values_type, values: values)
+          # A blank data hash still needs to be a Hash so the stimulus targets get merged in.
+          merge_values_as(as: values_type, values: values) || default_attribute_value(name)
         end
 
         def get_html_from_hash(name = nil, element:, hash:, view:)

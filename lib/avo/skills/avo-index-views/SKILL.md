@@ -196,7 +196,7 @@ Grid has **no per-card HTML-attribute API** — `row_options` is table-only. `ht
 
 ### Map view
 
-Plot records with geospatial data on a Mapbox map. Enable with `self.map_view`.
+Plot records with geospatial data on a map. Enable with `self.map_view`.
 
 ```ruby
 # app/avo/resources/city.rb
@@ -217,13 +217,13 @@ end
 ```
 
 Options:
-- `mapkick_options` — forwarded to the [mapkick gem](https://github.com/ankane/mapkick). Avo sets a default `style` and always controls `height` (any `height` you pass is overwritten).
+- `mapkick_options` — forwarded to the [mapkick gem](https://github.com/ankane/mapkick). Avo sets a default `style` and always controls `height` (any `height` you pass is overwritten). Passing your own `style` here also opts that map out of the automatic light/dark swap (see the gotcha below).
 - `record_marker` — Proc evaluated per record; must return a hash with `latitude` and `longitude` (optionally `tooltip`, `label`, `color`). Markers missing lat/long are skipped. Default reads `record.coordinates.first`/`.last`. Use this block to source coordinates from anywhere (API, cache), not just the DB.
 - `map` — `{ position: … }` places the map; the table takes the remaining side (`:left`/`:right` side-by-side, `:top`/`:bottom` stacked).
 - `table` — `{ visible: true|false }`; default renders no adjacent table.
 - `extra_markers` — Proc returning an array of marker hashes for points not backed by records.
 
-**Requirements** (report these): add the **`mapkick-rb`** gem (NOT `mapkick`) to the `Gemfile`, and set a valid `MAPBOX_ACCESS_TOKEN` env var from a [Mapbox](https://account.mapbox.com/auth/signup/) account.
+**Requirements** (report these): add the **`mapkick-rb`** gem (NOT `mapkick`) to the `Gemfile`. That is all — Avo defaults the map to [OpenFreeMap](https://openfreemap.org), which needs no account, no API key and has no request cap. Set a valid `MAPBOX_ACCESS_TOKEN` from a [Mapbox](https://account.mapbox.com/auth/signup/) account only if you want Mapbox styles; Avo then defaults to those instead. Pin a provider with `config.map_view = {styles: :open_free_map}` (or `:mapbox`), or give `styles` a `{light:, dark:}` pair of style URLs.
 
 Make it the default with `self.default_view_type = :map`.
 
@@ -232,6 +232,8 @@ Make it the default with `self.default_view_type = :map`.
 Not a view type — a table affordance. Checking the header "Select all" checkbox and confirming "select all matching" lets an action run on **every record the current query matches**, across all pages, not just the visible page. Avo serializes (and encrypts) the whole query — filters, sorting, scopes — and reconstructs it inside the action.
 
 It works out of the box on the table view; nothing to enable on the resource. The action itself is where the selection is consumed — cross-link the **avo-actions** skill for writing/handling the action. If serialization fails, Avo silently disables select-all rather than crashing (see the `normalizes` gotcha below).
+
+**Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. System specs that expect nothing selected after **Go back** will now find rows checked.
 
 ## Gotchas
 
@@ -242,6 +244,7 @@ It works out of the box on the table view; nothing to enable on the resource. Th
 - **`row_options` blocks run per row, per render.** Preload every association they touch via `self.includes`, or you get an N+1 across every row. Keep blocks cheap.
 - **Dark mode is your responsibility** for user classes — pair `dark:` variants (`bg-blue-50 dark:bg-blue-950/40`) or use Avo's semantic CSS variables via `style:`. For custom backgrounds, use semitransparent values or explicit `hover:` variants so Avo's row hover/selection overlay still shows through.
 - **Map markers need `latitude` + `longitude`.** Records whose `record_marker` returns a hash missing either are silently dropped from the map.
+- **A custom map `style` stays fixed in dark mode.** Avo follows the color scheme and swaps the map between the light and dark styles of the pair it resolved (`config.map_view[:styles]`, or the OpenFreeMap/Mapbox default). `mapkick_options: {style: "..."}` is a single style rather than a pair, so Avo leaves that map exactly as you set it, dark mode included. Want a custom look that still follows the theme? Set the `{light:, dark:}` pair on `config.map_view` instead of a per-map `style`.
 - **Select-all serialization can break on a model `normalizes` proc.** `normalizes :status, with: ->(s) { s }` combined with a filter on that attribute raises `TypeError: no _dump_data is defined for class Proc`, which auto-disables select-all. For apps created before Rails 7.1, set `config.active_record.marshalling_format_version = 7.1` in `config/application.rb`.
 - **Authoring a brand-new custom view type is out of scope.** Timeline/calendar/kanban views are plugin work (ViewComponent + engine registration). Point the user to the **avo-custom-ui** skill and `https://docs.avohq.io/4.0/custom-view-types.md`; here only enable built-in/registered types.
 
@@ -249,6 +252,6 @@ It works out of the box on the table view; nothing to enable on the resource. Th
 
 Tell the user:
 - Which resource file(s) and attribute(s) you changed (`self.table_view`, `self.grid_view`, `self.map_view`, `self.view_types`, `self.default_view_type`, `self.row_controls_config`, or the initializer).
-- Any external requirements: the `mapkick-rb` gem + `MAPBOX_ACCESS_TOKEN` for maps; the Tailwind integration and/or `@source inline(...)` for custom/dynamic classes; `self.includes` additions to avoid N+1.
+- Any external requirements: the `mapkick-rb` gem for maps (`MAPBOX_ACCESS_TOKEN` only if they want Mapbox styles rather than Avo's keyless OpenFreeMap default); the Tailwind integration and/or `@source inline(...)` for custom/dynamic classes; `self.includes` additions to avoid N+1.
 - If you set a `default_view_type`, confirm the matching view is configured/available so the switcher stays consistent.
 - For select-all or custom-view-type requests, note the cross-linked skill (**avo-actions**, **avo-custom-ui**) that carries the rest of the work.

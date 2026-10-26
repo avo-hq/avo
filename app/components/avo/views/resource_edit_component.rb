@@ -58,6 +58,11 @@ class Avo::Views::ResourceEditComponent < Avo::ResourceComponent
     params[:via_belongs_to_resource_class].present?
   end
 
+  # A form inside a modal gets closed, not navigated away from.
+  def warn_on_unsaved_changes?
+    Avo.configuration.warn_on_unsaved_changes && !embedded_in_modal?
+  end
+
   # Renders the form panels. When embedded in a modal the panel header is
   # dropped — its title and controls live in the modal chrome instead.
   def render_form_items(form)

@@ -1,10 +1,9 @@
 <%= field_wrapper(**field_wrapper_args, full_width: true) do %>
   <% if field.value.present? %>
-    <div class="w-full" data-controller="map-dark-mode">
+    <%= tag.div class: "w-full", data: field.map_wrapper_data do %>
       <%= area_map field.map_data, **field.mapkick_options %>
-    </div>
+    <% end %>
   <% else %>
     —
   <% end %>
 <% end %>
-

@@ -3,7 +3,7 @@ name: avo-associations
 description: >-
   Wire Active Record relationships into Avo resources as association fields (`field :x, as:
   :belongs_to | :has_one | :has_many | :has_and_belongs_to_many`) inside `def fields`, including
-  polymorphic and `has_many :through` relations, type-to-search pickers, extra join-table fields
+  polymorphic and `has_many :through` / `has_one :through` relations, type-to-search pickers, extra join-table fields
   at attach time, and nested create-in-form. Use when the user wants to link one record to another
   or surface related records — in Avo terms ("add a belongs_to field", "show a has_many panel",
   "make the association searchable", "polymorphic belongs_to", "has_many through with
@@ -33,12 +33,12 @@ These fields live in `app/avo/resources/<model>.rb`, the same place as every oth
 - Docs map: https://docs.avohq.io/4.0/docs-map.md
 - Overview & STI: https://docs.avohq.io/4.0/associations.md
 - Belongs to: https://docs.avohq.io/4.0/associations/belongs_to.md
-- Has one: https://docs.avohq.io/4.0/associations/has_one.md
+- Has one (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_one.md
 - Has many (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_many.md
 - Has and belongs to many: https://docs.avohq.io/4.0/associations/has_and_belongs_to_many.md
 - Searchable associations (guide): https://docs.avohq.io/4.0/associations/searchable.md
 - Searchable associations (API): https://docs.avohq.io/4.0/associations/searchable-api.md
-- Authorization (association buttons & policies): https://docs.avohq.io/4.0/authorization.md#associations
+- Authorization (association buttons & policies): https://docs.avohq.io/4.0/authorization.md#authorize-association-controls
 
 ## When this applies
 
@@ -84,6 +84,7 @@ If the request is about a scalar attribute (a string, a number, a file, an enum 
 | `belongs_to :user` | `field :user, as: :belongs_to` |
 | `belongs_to :commentable, polymorphic: true` | `field :commentable, as: :belongs_to, polymorphic_as: :commentable, types: [::Post, ::Project]` |
 | `has_one :admin` | `field :admin, as: :has_one` |
+| `has_one :admin, through: :admin_membership` | `field :admin, as: :has_one` — no `through:` option on the field; Avo reads it off the association |
 | `has_many :comments` | `field :comments, as: :has_many` |
 | `has_many :members, through: :memberships` | `field :members, as: :has_many, through: :memberships` |
 | `has_and_belongs_to_many :teams` | `field :teams, as: :has_and_belongs_to_many` |
@@ -105,11 +106,12 @@ Most options are shared across the association fields; a handful are type-specif
 | `description` | Sub-title text under the panel title. Keep it cheap under `loading: :manual` — the lambda runs on the placeholder too. |
 | `scope` | `-> { query.approved }` — scopes the **rows displayed** in a `has_many`/HABTM table (locals: `query`, `parent`, `resource`, `parent_resource`). |
 | `loading` | `:manual` defers the frame fetch behind a **Load** button (heavy associations); `:lazy` is the default. |
-| `linkable` | Makes the panel title open the association table on its own page. |
+| `linkable` | Adds an open-in-new-tab icon beside the panel title. On `has_many`/HABTM it opens the association table on its own page; on `has_one` it opens the associated record's show page. |
 | `reloadable` | Adds a reload icon on the panel (boolean or a lambda gated on e.g. `current_user.admin?`). |
 | `nested` | Create/edit the related record inline in the parent form. **Requires the `avo-nested` gem.** `nested: true` = `{ on: :forms }`; `limit:` caps rows on `has_many`/HABTM. |
 | `attach_using` | `:checkbox_list` renders the attach modal as a multi-select checkbox list instead of a single-select dropdown (`has_many`, HABTM). |
 | `discreet_pagination` | Hides pagination chrome when there's only one page. |
+| `per_page` | Records per page for this association frame (`has_many`, HABTM, `through:`), e.g. `per_page: 24`. Overrides `config.via_per_page`; a `?per_page=` pick or a session-persisted value still wins. |
 | `hide_search_input` / `hide_filter_button` | Hide the search box / filters button on the association table. |
 | `link_to_child_resource` | STI: link rows to the child resource instead of the parent (see [Gotchas](#gotchas)). |
 | `for_attribute` | Point a differently-named field at the same association (declare it twice with different scopes/names). |
@@ -124,7 +126,7 @@ Most options are shared across the association fields; a handful are type-specif
 | `allow_via_detaching` | Keeps the field editable when you reached the record *through* that association (which otherwise disables it). |
 | `link_to_record` | `true` makes the Index cell link to the current row's record instead of the associated one. |
 
-### `has_many :through` and `attach_fields`
+### `:through` associations and `attach_fields`
 
 For a join model with its own columns, expose those columns **at attach time** with `attach_fields` (a lambda that declares fields, evaluated against the join model):
 
@@ -138,7 +140,19 @@ field :members,
   }
 ```
 
-The extra fields render inside the attach modal and their values persist on the join row. `attach_fields` **only persists on `has_many :through`** — it exists but is a no-op on a plain `has_many` / HABTM. If the through model is polymorphic, add the type as a hidden field: `field :membership_type, as: :hidden, default: "TheType"`.
+The extra fields render inside the attach modal and their values persist on the join row. `attach_fields` **only persists on a `:through` association** — a plain `has_many` / `has_one` / HABTM has no join record to write to, so it's a no-op there. It works the same way on `has_one :through` (Avo 4.0.25+). If the through model is polymorphic, add the type as a hidden field: `field :membership_type, as: :hidden, default: "TheType"`.
+
+Attach and detach always go through the association itself, so a **scope on the through association is respected**: attaching stamps the scope's attributes on the new join record, and detaching destroys only the join record that association points at, leaving other rows linking the same two records alone.
+
+```ruby
+# app/models/team.rb — attaching writes level: "admin"; detaching won't touch a "member" row
+class Team < ApplicationRecord
+  has_many :admin_memberships, -> { where level: :admin }, class_name: "TeamMembership"
+  has_many :admins, through: :admin_memberships, source: :user
+end
+```
+
+A `has_one :through` behaves like a singular association throughout: attaching over an existing record **replaces** the join record instead of adding a second one, and the detach is checked against the record named in the URL — from a stale page where someone else has since attached a different record, the detach is a no-op rather than removing whatever is attached now.
 
 ### Searchable associations
 
@@ -147,13 +161,14 @@ Turning a long `belongs_to` / `has_many` picker into a type-to-search field is t
 ## Gotchas
 
 - **Set `inverse_of` on the model association.** Avo relies on it to resolve the reciprocal; missing it causes wrong/empty attach lists and save bugs. Set it on both sides.
-- **The Rails association must exist first.** Adding `field :x, as: :has_many` does nothing if the model has no `has_many :x`.
+- **The Rails association must exist first.** Adding `field :x, as: :has_many` does nothing if the model has no `has_many :x` — the association panel raises `Avo::MissingAssociationError`, naming the model, the field, and the declaration to add (`has_many :orders`). The cause is either side: the model genuinely lacks the association, or the field name doesn't match the one the model declares (`field :comments` against a `has_many :post_comments`). The **`array`** field is the one exception — it renders a panel deliberately not backed by an association, so it never raises this.
 - **`has_*` fields are hidden on Edit by default.** Add `show_on: :edit` to surface them on the form. For editing the related record *in* the form (not just displaying it), use `nested` — which needs the `avo-nested` gem.
 - **Attach/detach/create/destroy buttons come from the *target* resource's Pundit policy**, and the method names are **plural, matching the association name**: `attach_users?`, `detach_users?`, `create_users?`, `destroy_users?`, `view_users?`, `show_users?` — *not* the singular `detach_user?`. This is the #1 "why isn't my button showing" cause. Cross-link `avo-authorization`.
 - **`can_create: true` is still vetoed by the policy.** If the target resource's `create?` returns `false`, no create link appears regardless of `can_create`.
 - **A `belongs_to` field is disabled when you arrive through that same association.** Editing a Comment reached via a Post's comments panel disables the `post` field. Set `allow_via_detaching: true` to re-enable it.
 - **`polymorphic_as` and `types` are a pair** — using one without the other raises. `types` is an array of model classes (`[::Post, ::Project]`), matching a `polymorphic: true` `belongs_to`.
 - **`attach_scope` does not filter listed rows**, only the attach picker. To hide rows from a `has_many`/HABTM table, use `scope` or a Pundit policy scope.
+- **Build `attach_scope` on `query` to keep the policy scope.** `query` arrives already narrowed by the target's policy scope. A fresh relation (`-> { ::User.all }`) widens past it on purpose. On every association the save accepts exactly the records the picker offers, so a record outside the `attach_scope` is refused like a missing one.
 - **STI child resources must set `self.model_class`.** When a parent class and STI children share a table, give each child resource `self.model_class = "SuperUser"` so Avo maps it correctly. To route association rows / index clicks to the child resource instead of the parent, use `self.link_to_child_resource = true` on the parent resource or `link_to_child_resource:` on the field.
 - **Searchable can look "broken" but be misconfigured** — no query source means an empty picker, not an error. And it's a paid add-on.
 

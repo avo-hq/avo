@@ -25,6 +25,10 @@ pt:
         confirm_button_label: "Alternar"
         cancel_button_label: "Cancelar"
         description: "Alterna o estado inativo do utilizador"
+    filter_translations:
+      user_names_filter:
+        name: "Filtro de nomes"
+        button_label: "Filtrar por nomes"
   test:
     translation_key:
       course:

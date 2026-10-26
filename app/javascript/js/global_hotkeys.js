@@ -8,6 +8,7 @@
  */
 
 import { install } from '@github/hotkey'
+import { isUnderStackedModal } from './helpers/modal_stack'
 
 const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
 const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INPUT_SELECTOR)
@@ -17,9 +18,19 @@ const findResourceTable = () => document.querySelector(RESOURCE_TABLE_SELECTOR)
 
 // The resource's index path is exposed via a <meta> tag only on show/edit pages,
 // letting the "i" hotkey return to the listing from a single record.
-const findResourcesIndexPath = () => {
-  const path = document.querySelector('meta[name="avo:resources-index-path"]')?.getAttribute('content')
-  return path && path.length ? path : null
+const findMetaPath = (name) => document.querySelector(`meta[name="${name}"]`)?.getAttribute('content') || null
+const findResourcesIndexPath = () => findMetaPath('avo:resources-index-path')
+
+// Same idea for "c": show pages have no create button to hang a data-hotkey on, so the
+// layout names the new path here — and only when the user is allowed to create.
+const findResourcesNewPath = () => findMetaPath('avo:resources-new-path')
+
+const visit = (path) => {
+  if (window.Turbo) {
+    window.Turbo.visit(path)
+  } else {
+    window.location.assign(path)
+  }
 }
 
 // The content-focus point is the entry into each screen's main content: the
@@ -91,15 +102,13 @@ const DIRECT_HOTKEYS = [
   {
     // i → return to the resource's index page (from a show/edit page).
     match: (e) => e.key === 'i' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !isModalOpen() && !!findResourcesIndexPath(),
-    handle: () => {
-      const path = findResourcesIndexPath()
-      if (!path) return
-      if (window.Turbo) {
-        window.Turbo.visit(path)
-      } else {
-        window.location.assign(path)
-      }
-    },
+    handle: () => visit(findResourcesIndexPath()),
+  },
+  {
+    // c → the resource's new page (from a show page). On an index the create button's own
+    // data-hotkey handles "c"; the meta tag is absent there, so the two never both fire.
+    match: (e) => e.key === 'c' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !isModalOpen() && !!findResourcesNewPath(),
+    handle: () => visit(findResourcesNewPath()),
   },
   {
     // Shift+M → cycle appearance scheme (auto → light → dark → …)
@@ -115,6 +124,11 @@ const DIRECT_HOTKEYS = [
     // Shift+A → cycle accent color (brand → red → orange → …)
     match: (e) => e.shiftKey && e.key === 'A',
     handle: () => callAppearance('cycleAccent'),
+  },
+  {
+    // Shift+S → toggle the appearance sound
+    match: (e) => e.shiftKey && e.key === 'S',
+    handle: () => callAppearance('toggleSound'),
   },
   {
     // Shift+T → focus the screen's main content (table rows, grid cards, or panel
@@ -171,6 +185,14 @@ function hotkeyFireHandler(event) {
   // sidebar link and navigate. Cancel so hotkeys are inert on non-Avo pages.
   if (!el.isConnected) {
     event.preventDefault()
+    return
+  }
+
+  // A modal with a dialog stacked on it (a belongs_to "Create new") keeps its hotkeys quiet: Escape on
+  // the stacked dialog must not also press the Cancel button of the modal underneath.
+  if (isUnderStackedModal(el)) {
+    event.preventDefault()
+
     return
   }
 

@@ -9,6 +9,14 @@ RSpec.describe Avo::TurboStreamActionsHelper, type: :helper do
     @view_context = helper
   end
 
+  # Avo.boot prepends this into Turbo's TagBuilder, which never reloads. A reloadable copy would
+  # be prepended again on every development reload, stacking stale copies in its ancestors.
+  it "is not reloaded" do
+    path = described_class.instance_method(:avo_download).source_location.first
+
+    expect(Rails.autoloaders.main.dirs.find { |dir| path.start_with?("#{dir}/") }).to be_nil
+  end
+
   describe "#avo_download" do
     subject do
       helper.avo_download(content:, filename:)
@@ -44,5 +52,38 @@ RSpec.describe Avo::TurboStreamActionsHelper, type: :helper do
 
     it { is_expected.to have_css("turbo-stream[action=\"replace\"]") }
     it { is_expected.to have_css("turbo-stream[target=\"#{Avo::MODAL_FRAME_ID}\"]") }
+  end
+
+  describe "#avo_update_belongs_to" do
+    subject do
+      helper.avo_update_belongs_to(
+        relation_name: "user",
+        target_name: "post[user_id]",
+        frame_id: "modal_frame_nested",
+        target_record_id: "42",
+        target_resource_label: "Nested User",
+        target_resource_class: "User"
+      )
+    end
+
+    it { is_expected.to have_css('turbo-stream[action="update-belongs-to"][data-relation-name="user"]') }
+    it { is_expected.to have_css('turbo-stream[data-target-name="post[user_id]"][data-target-record-id="42"]') }
+    it { is_expected.to have_css('turbo-stream[data-frame-id="modal_frame_nested"]') }
+
+    # The signature a copied `create_success_action` override calls: it still renders, unscoped.
+    context "without a target name or frame" do
+      subject do
+        helper.avo_update_belongs_to(
+          relation_name: "user",
+          target_record_id: "42",
+          target_resource_label: "Nested User",
+          target_resource_class: "User"
+        )
+      end
+
+      it { is_expected.to have_css('turbo-stream[action="update-belongs-to"][data-relation-name="user"]') }
+      it { is_expected.not_to have_css("turbo-stream[data-target-name]") }
+      it { is_expected.not_to have_css("turbo-stream[data-frame-id]") }
+    end
   end
 end

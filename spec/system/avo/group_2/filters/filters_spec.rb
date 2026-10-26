@@ -101,6 +101,40 @@ RSpec.describe "Filters", type: :system do
       expect(current_url).not_to include "encoded_filters="
       expect(page).to have_css(".button--disabled", text: "Reset filters")
     end
+
+    it "keeps the filters after deleting a record from the index" do
+      other_featured_post = create :post, name: "Other featured post", is_featured: true, published_at: nil
+
+      visit url
+      open_filters_menu
+      check "Featured"
+      wait_for_loaded
+
+      expect(page).not_to have_text "Unfeatured post"
+      filtered_url = current_url
+
+      find("[data-control='destroy'][data-resource-id='#{other_featured_post.to_param}']").click
+      find("#turbo-confirm button[value='confirm']").click
+
+      expect(page).to have_text "Record destroyed"
+      expect(page).to have_text "Featured post"
+      expect(page).not_to have_text "Other featured post"
+      expect(page).not_to have_text "Unfeatured post"
+      expect(current_url).to eq filtered_url
+    end
+  end
+
+  describe "Boolean filter without options" do
+    let(:url) { "/admin/resources/projects?view_type=table" }
+
+    it "shows the translated default empty message" do
+      # With no projects, Avo::Filters::ProjectCountryFilter has no options and
+      # no empty_message set, so the translated default should be displayed.
+      visit url
+      open_filters_menu
+
+      expect(page).to have_css(".filters-section__empty-state", text: "No options available")
+    end
   end
 
   describe "Boolean filter with default" do
@@ -207,7 +241,9 @@ RSpec.describe "Filters", type: :system do
         expect(page).to have_text "Published post"
         expect(page).to have_text "Unpublished post"
         expect(page).to have_select "avo_filters_published_status", selected: "Published or unpublished", options: ["Published or unpublished", "Published", "Unpublished"]
-        expect(current_url).not_to include "encoded_filters="
+        # Clearing the last filter keeps the param around, encoding the empty
+        # set, so session persistence can pick up the cleared state.
+        expect(current_url).to include "encoded_filters=e30"
         expect(page).to have_css(".button--disabled", text: "Reset filters")
 
         select "Unpublished", from: "avo_filters_published_status"

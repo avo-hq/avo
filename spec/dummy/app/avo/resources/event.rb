@@ -51,8 +51,8 @@ class Avo::Resources::Event < Avo::BaseResource
 
     # this field demonstrated how one can use the array field to display an arbitrary array of objects as a "has_many field"
     field :attendees, as: :array do
-      # This is testing that array block can access the record.something
-      record.attendees_from_block
+      # This is testing that array block can access the record.something and the page shown
+      record.attendees_from_block(page:, per_page:)
     end
   end
 end

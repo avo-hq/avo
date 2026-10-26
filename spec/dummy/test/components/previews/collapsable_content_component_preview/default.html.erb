@@ -1,0 +1,22 @@
+<div class="flex flex-col gap-8 p-8">
+  <div>
+    <h2 class="font-bold mb-2">Long content, collapsed to a preview with More/Less toggle</h2>
+    <%= render Avo::Fields::Common::CollapsableContentComponent.new do %>
+      <div class="trix-content">
+        <h1>A title</h1>
+        <% 12.times do %>
+          <p>Some rich text content that is long enough to be clipped to a faded preview.</p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <h2 class="font-bold mb-2">Short content (buttons stay hidden)</h2>
+    <%= render Avo::Fields::Common::CollapsableContentComponent.new do %>
+      <div class="trix-content">
+        <p>One short line.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

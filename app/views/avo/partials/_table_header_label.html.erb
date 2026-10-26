@@ -1,0 +1,10 @@
+<%# The label alone unless the field declares `label_tooltip:`; then the text and
+    its cue share one anchor, so hovering either shows the bubble. %>
+<% if label_tooltip.present? %>
+  <%= content_tag :span, class: "label-tooltip", title: label_tooltip, data: {tippy: :tooltip} do %>
+    <%= field.table_header_label %>
+    <%= svg "tabler/outline/info-circle", class: "label-tooltip__icon" %>
+  <% end %>
+<% else %>
+  <%= field.table_header_label %>
+<% end %>

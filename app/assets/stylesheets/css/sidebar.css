@@ -210,6 +210,52 @@
 
 .sidebar-link__icon-wrapper {
   @apply shrink-0 flex items-center justify-center;
+  color: var(--sidebar-icon-color, currentColor);
+}
+
+/* Resource color: tints only the icon stroke. Each modifier sets a scoped
+   variable that only the icon wrapper consumes; the link's own color, hover
+   and active rules stay untouched. Light theme uses the 600 shade (700 for
+   the yellow family, which cannot reach 3:1 non-text contrast on the light
+   sidebar otherwise); dark theme overrides to the 400 shade below. */
+.sidebar-link--color-red { --sidebar-icon-color: var(--color-red-600); }
+.sidebar-link--color-orange { --sidebar-icon-color: var(--color-orange-600); }
+.sidebar-link--color-amber { --sidebar-icon-color: var(--color-amber-700); }
+.sidebar-link--color-yellow { --sidebar-icon-color: var(--color-yellow-700); }
+.sidebar-link--color-lime { --sidebar-icon-color: var(--color-lime-700); }
+.sidebar-link--color-green { --sidebar-icon-color: var(--color-green-600); }
+.sidebar-link--color-emerald { --sidebar-icon-color: var(--color-emerald-600); }
+.sidebar-link--color-teal { --sidebar-icon-color: var(--color-teal-600); }
+.sidebar-link--color-cyan { --sidebar-icon-color: var(--color-cyan-600); }
+.sidebar-link--color-sky { --sidebar-icon-color: var(--color-sky-600); }
+.sidebar-link--color-blue { --sidebar-icon-color: var(--color-blue-600); }
+.sidebar-link--color-indigo { --sidebar-icon-color: var(--color-indigo-600); }
+.sidebar-link--color-violet { --sidebar-icon-color: var(--color-violet-600); }
+.sidebar-link--color-purple { --sidebar-icon-color: var(--color-purple-600); }
+.sidebar-link--color-fuchsia { --sidebar-icon-color: var(--color-fuchsia-600); }
+.sidebar-link--color-pink { --sidebar-icon-color: var(--color-pink-600); }
+.sidebar-link--color-rose { --sidebar-icon-color: var(--color-rose-600); }
+
+/* Dark theme: lift the tints to the 400 shade so they stay legible on the
+   dark sidebar background. */
+.dark {
+  .sidebar-link--color-red { --sidebar-icon-color: var(--color-red-400); }
+  .sidebar-link--color-orange { --sidebar-icon-color: var(--color-orange-400); }
+  .sidebar-link--color-amber { --sidebar-icon-color: var(--color-amber-400); }
+  .sidebar-link--color-yellow { --sidebar-icon-color: var(--color-yellow-400); }
+  .sidebar-link--color-lime { --sidebar-icon-color: var(--color-lime-400); }
+  .sidebar-link--color-green { --sidebar-icon-color: var(--color-green-400); }
+  .sidebar-link--color-emerald { --sidebar-icon-color: var(--color-emerald-400); }
+  .sidebar-link--color-teal { --sidebar-icon-color: var(--color-teal-400); }
+  .sidebar-link--color-cyan { --sidebar-icon-color: var(--color-cyan-400); }
+  .sidebar-link--color-sky { --sidebar-icon-color: var(--color-sky-400); }
+  .sidebar-link--color-blue { --sidebar-icon-color: var(--color-blue-400); }
+  .sidebar-link--color-indigo { --sidebar-icon-color: var(--color-indigo-400); }
+  .sidebar-link--color-violet { --sidebar-icon-color: var(--color-violet-400); }
+  .sidebar-link--color-purple { --sidebar-icon-color: var(--color-purple-400); }
+  .sidebar-link--color-fuchsia { --sidebar-icon-color: var(--color-fuchsia-400); }
+  .sidebar-link--color-pink { --sidebar-icon-color: var(--color-pink-400); }
+  .sidebar-link--color-rose { --sidebar-icon-color: var(--color-rose-400); }
 }
 
 /* Reserve same width when group has icons but this link has none (alignment) */
@@ -471,4 +517,66 @@
 
 .sidebar-status:hover .sidebar-status__hint {
   @apply block;
+}
+
+/* ================================================ */
+/* Sidebar Flyout — ItemSwitcherComponent           */
+/* BEM: .sidebar-flyout (block)                     */
+/* ================================================ */
+
+/* A parent item's sub-items, shown on hover for as long as they aren't already
+   listed inline (that is, whenever the parent's own page and its children are
+   all closed). The panel is a native popover: the sidebar body scrolls, so an
+   absolutely positioned panel would be clipped by it — the top layer is the
+   only place this can be drawn. Position comes from CSS anchor positioning,
+   with the per-item `anchor-name` written inline by the component. */
+.sidebar-flyout {
+  @apply w-full;
+}
+
+.sidebar-flyout__panel {
+  @apply m-0 p-1 rounded-lg min-w-48;
+  background-color: var(--sidebar-background);
+  border: 1px solid var(--sidebar-border);
+  box-shadow: var(--box-shadow-card);
+  position-area: inline-end span-block-end;
+  position-try-fallbacks: flip-inline, flip-block, flip-block flip-inline;
+  margin-inline-start: 0.25rem;
+
+  /* Mirrors .popover-menu__panel: the panel is display:none while closed, so
+     `allow-discrete` keeps it in the top layer through the leave transition. */
+  opacity: 0;
+  transition:
+    opacity 75ms ease-out,
+    overlay 75ms ease-out allow-discrete,
+    display 75ms ease-out allow-discrete;
+}
+
+.sidebar-flyout__panel:popover-open {
+  opacity: 1;
+}
+
+@starting-style {
+  .sidebar-flyout__panel:popover-open {
+    opacity: 0;
+  }
+}
+
+/* No parent above the list here, so the indent that lines sub-items up under
+   their parent has nothing to line up with — and neither do the connector bars
+   that run back up to it, hover preview included. */
+.sidebar-flyout__panel .sidebar-subitem__items {
+  @apply ps-0;
+}
+
+/* `!important` because the connectors are drawn by a family of hover rules
+   (`:hover`, `:has(~ .sidebar-subitem:hover)`) whose specificity a container
+   class can't out-weigh without restating every one of them here. */
+.sidebar-flyout__panel .sidebar-subitem::before,
+.sidebar-flyout__panel .sidebar-subitem::after {
+  content: none !important;
+}
+
+.sidebar-flyout__panel::backdrop {
+  @apply bg-transparent;
 }

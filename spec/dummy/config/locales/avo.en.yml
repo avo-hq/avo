@@ -135,6 +135,7 @@ en:
     skip_to_sidebar: Skip to sidebar
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
+    timezone_changed: Dates and times are now displayed in your time zone (%{timezone}).
     tools: Tools
     type_to_search: Type to search.
     unauthorized: Unauthorized

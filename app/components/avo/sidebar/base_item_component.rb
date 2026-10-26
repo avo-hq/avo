@@ -32,6 +32,6 @@ class Avo::Sidebar::BaseItemComponent < Avo::BaseComponent
       result[:menu_key_param] = key
       result[:menu_default_collapsed_state] = collapsed ? "collapsed" : "expanded"
     end
-    result
+    result.merge(item.data || {})
   end
 end

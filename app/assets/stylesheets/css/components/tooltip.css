@@ -36,3 +36,24 @@
   @apply hidden;
 }
 
+/* Anchors for the field `tooltip:` option. Inline hugs the value so the bubble
+   sits over a badge or a date rather than over the row; block keeps the width
+   of values that fill the row (editors, maps, progress bars). */
+.tooltip-anchor {
+  @apply min-w-0 max-w-full;
+}
+
+.tooltip-anchor--inline {
+  @apply inline-block;
+}
+
+.tooltip-anchor--block {
+  @apply block w-full;
+}
+
+/* The cue that marks a label as hoverable, for the `label_tooltip:` option.
+   Sized off the label's own text so it fits the Show label and the smaller
+   Index header alike. */
+.label-tooltip__icon {
+  @apply inline-block size-[1em] ms-1 align-[-0.125em] text-content-secondary;
+}

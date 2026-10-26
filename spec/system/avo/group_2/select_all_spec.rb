@@ -111,6 +111,8 @@ RSpec.describe "SelectAll", type: :system do
 
           visit url
 
+          expect(page).not_to have_css(".pagination__info")
+
           within("nav.pagy.series-nav") do
             expect(page).to have_css("[aria-current='page']", text: "1")
             expect(page).to have_css("a", text: "2")

@@ -26,6 +26,8 @@ export default class extends Controller {
 
   searchDebounce = 500
 
+  searchCount = 0
+
   debouncedFetch = debouncePromise(fetch, this.searchDebounce)
 
   get suggestionsAreObjects() {
@@ -52,6 +54,12 @@ export default class extends Controller {
 
     if (this.modeValue) {
       options.mode = this.modeValue // null or "select"
+    }
+
+    if (this.modeValue === 'select') {
+      // Pasted text becomes the search query, like typed text. Tagify's default turns it straight into a tag,
+      // which enforce_suggestions rejects, so the paste was lost.
+      options.pasteAsTags = false
     }
 
     if (this.suggestionsAreObjects) {
@@ -99,13 +107,14 @@ export default class extends Controller {
     // coordinates are off by the page scroll offset; correct for that.
     installTagifyTopLayerPositioning(this.tagify)
 
-    function onInput(e) {
+    function fetchSuggestions(query) {
       // Create the URL from which to fetch the values
-      const query = e.detail.value
       const uri = new URI(that.fetchValuesFromValue)
       uri.addSearch({
         q: query,
       })
+
+      const search = ++that.searchCount
 
       // reset current whitelist
       that.tagify.whitelist = null
@@ -115,18 +124,39 @@ export default class extends Controller {
       // get new whitelist from a request
       that.fetchResults(uri.toString())
         .then((result) => {
+          // The user kept typing while this search was in flight; the newer search fills the dropdown
+          if (search !== that.searchCount) return
+
           that.tagify.settings.whitelist = result // add already-existing tags to the new whitelist array
 
           that.tagify
             .loading(false)
-            .dropdown.show(e.detail.value) // render the suggestions dropdown.
+            .dropdown.show(query) // render the suggestions dropdown.
         })
         .catch(() => that.tagify.dropdown.hide())
     }
 
     if (this.fetchValuesFromValue) {
-      this.tagify.on('input', onInput)
+      this.tagify.on('input', (e) => fetchSuggestions(e.detail.value))
+      // Typing over an existing tag (like the selected value in select mode) edits that tag,
+      // and Tagify reports it as "edit:input" instead of "input".
+      this.tagify.on('edit:input', (e) => fetchSuggestions(e.detail.data.newValue))
+      // With pasteAsTags off, Tagify fills the input on paste without firing "input"
+      if (!this.tagify.settings.pasteAsTags) {
+        this.tagify.on('paste', (e) => fetchSuggestions(e.detail.pastedText))
+      }
     }
+
+    // Runs after Tagify inserted text pasted into a tag being edited
+    this.tagify.DOM.scope.addEventListener('paste', (e) => {
+      const editableTagText = e.target.closest(`.${this.tagify.settings.classNames.tagText}`)
+      if (!editableTagText) return
+
+      // Tagify leaves the pasted text selected, so the next Backspace or keystroke wiped all of it
+      window.getSelection().collapseToEnd()
+      // Neither "input" nor "edit:input" fires for this paste
+      if (this.fetchValuesFromValue) fetchSuggestions(editableTagText.textContent)
+    })
   }
 
   fetchResults(endpoint) {

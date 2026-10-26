@@ -2,10 +2,11 @@
 
 class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
   include Avo::ApplicationHelper
+
   attr_reader :pagy, :query
 
   def before_render
-    @header_fields, @table_row_components = cache_table_rows
+    @header_fields, @table_row_components = generate_table_row_components
   end
 
   # ARIA grid affordances and the row-navigator binding are only added on
@@ -24,6 +25,9 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
   end
 
   def encrypted_query
+    # A page cut by its source is all that is held, so there is nothing to select across pages
+    return :select_all_disabled if @query.is_a?(Avo::Resources::ArrayResource::Page)
+
     # TODO: move this to the resource where we can apply the adapter pattern
     if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
       @query = @query.result
@@ -50,23 +54,12 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
     end
   end
 
-  def cache_table_rows
-    # Cache the execution of the following block if caching is enabled in Avo configuration
-    cache_if Avo.configuration.cache_resources_on_index_view, @resource.cache_hash(@parent_record), expires_in: 1.day do
-      header_fields, table_row_components = generate_table_row_components
-
-      # Create an array of header field labels used for each row to render values on the right column
-      header_fields_ids = header_fields.map(&:table_header_label)
-
-      # Assign header field IDs to each TableRowComponent
-      # We assign it here because only complete header fields array after last table row.
-      table_row_components.map { |table_row_component| table_row_component.header_fields = header_fields_ids }
-
-      # Return header fields and table row components
-      return [header_fields, table_row_components]
-    end
-  end
-
+  # Table rows are not fragment-cached. A `cache_if` wrapped this until it was
+  # removed: a `return` inside its block unwound past Action View's
+  # `write_fragment`, so nothing was ever written, and a hit would have handed
+  # back an HTML string where the components are expected. Caching the table per
+  # row under `Avo::Resources::Base#index_cache_key`, as the grid view does, is a
+  # follow-up.
   def generate_table_row_components
     # Initialize arrays to hold header fields and table row components
     header_fields = []
@@ -90,8 +83,17 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
       )
     end
 
-    # Remove duplicate header fields based on table_header_label
-    header_fields.uniq!(&:table_header_label)
+    # Rows can drop different fields (visible:, hide_if_blank:), so order the columns
+    # as declared, not by the first row that showed each one.
+    declared_labels = @resource.only_fields(only_root: true).map(&:table_header_label)
+    header_fields = header_fields
+      .uniq(&:table_header_label)
+      .sort_by.with_index { |field, index| [declared_labels.index(field.table_header_label) || declared_labels.size, index] }
+
+    # Every row renders its cells against the complete header, which is only
+    # known once the last row's fields have been collected.
+    header_fields_ids = header_fields.map(&:table_header_label)
+    table_row_components.each { |table_row_component| table_row_component.header_fields = header_fields_ids }
 
     [header_fields, table_row_components]
   end

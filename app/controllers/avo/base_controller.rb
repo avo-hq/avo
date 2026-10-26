@@ -11,7 +11,7 @@ module Avo
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
-    # Don't run base authorizations for associations
+    # AssociationsController authorizes each of its actions itself, so a new action needs its own check
     before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
 
@@ -24,10 +24,10 @@ module Avo
       if @reflection.present? && !turbo_frame_request?
         # A good rule of thumb is that the resource name entry (Users) gets just the initials
         # The record name gets initials and avatar
-        add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials
-        add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar
+        add_breadcrumb title: @record.class.to_s.pluralize, path: resources_path(resource: @parent_resource), initials: @parent_resource.class.initials, color: @parent_resource.class.color
+        add_breadcrumb title: @parent_resource.record_title, path: resource_path(record: @record, resource: @parent_resource), initials: @parent_resource.initials, avatar: @parent_resource.avatar, color: @parent_resource.class.color
       end
-      add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
+      add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials, color: @resource.class.color
 
       set_applied_filters
       set_index_params
@@ -68,7 +68,7 @@ module Avo
             }
 
             render turbo_stream: [
-              turbo_stream.replace("#{@resource.model_key}_body_content") do
+              turbo_stream.replace(helpers.resource_body_content_id(@resource)) do
                 Avo::Current.view_context.render Avo::ResourceListingComponent.new(
                   **common_args,
                   turbo_frame: params[:turbo_frame],
@@ -97,7 +97,7 @@ module Avo
 
       add_via_breadcrumbs
 
-      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: @resource.record_title, path: nil, avatar: @resource.avatar, initials: @resource.initials, color: @resource.class.color
       add_breadcrumb title: I18n.t("avo.details").upcase_first, path: nil
 
       set_component_for __method__
@@ -112,18 +112,7 @@ module Avo
 
       @page_title = @resource.default_panel_name.to_s
 
-      if is_associated_record?
-        via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
-
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
-
-        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
-      else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
-      end
+      add_via_breadcrumbs
 
       add_breadcrumb title: t("avo.new").humanize
 
@@ -142,17 +131,14 @@ module Avo
         # Fills in the required info for belongs_to and has_many
         # Get the foreign key and set it to the id we received in the params
         if @reflection.is_a?(ActiveRecord::Reflection::BelongsToReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasManyReflection)
-          related_resource = Avo.resource_manager.get_resource_by_model_class params[:via_relation_class]
-          @related_record = related_resource.find_record params[:via_record_id], params: params
+          @related_record = via_record
 
           @record.send(:"#{@reflection.foreign_key}=", @related_record.id)
         end
 
         # For when working with has_one, has_one_through, has_many_through, has_and_belongs_to_many, polymorphic
         if @reflection.is_a?(ActiveRecord::Reflection::ThroughReflection) || @reflection.is_a?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
-          # find the record
-          via_resource = Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-          @related_record = via_resource.find_record params[:via_record_id], params: params
+          @related_record = via_record
           association_name = BaseResource.valid_association_name(@record, params[:via_relation])
 
           if params[:via_association_type] == "has_one"
@@ -168,8 +154,8 @@ module Avo
       saved = save_record
       @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:new), user: _current_user)
 
-      add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
-      add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
+      add_breadcrumb title: t("avo.new").humanize, path: nil, avatar: @resource.avatar, initials: @resource.initials, color: @resource.class.color
       set_actions
 
       set_component_for :edit
@@ -245,13 +231,16 @@ module Avo
     end
 
     def save_record
+      # Saving runs the validations, which would clear an error that filling the record left on it
+      return false if @record.errors.any?
+
       perform_action_and_record_errors do
         save_record_action
       end
     end
 
     def save_record_action
-      @record.save!
+      @resource.save_record(@record)
     end
 
     def destroy_model
@@ -261,7 +250,7 @@ module Avo
     end
 
     def destroy_record_action
-      @record.destroy!
+      @resource.destroy_record(@record)
     end
 
     def perform_action_and_record_errors(&block)
@@ -385,10 +374,14 @@ module Avo
     end
 
     def set_actions
+      # Index actions run on the selected rows. In a has_many panel @record is the
+      # parent record, and passing it would keep every action enabled with no row selected.
+      record = @record unless @view.index?
+
       @actions = @resource
         .get_actions
         .map do |action_bag|
-          action_bag[:class].new(record: @record, resource: @resource, view: @view, **action_bag.except(:class))
+          action_bag[:class].new(record:, resource: @resource, view: @view, **action_bag.except(:class))
         end
         .select do |action|
           action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)
@@ -416,7 +409,7 @@ module Avo
       # Go through all filters
       @resource.get_filters
         .select do |filter|
-          filter[:class].instance_methods(false).include? :react
+          filter[:class].method_defined?(:react, false)
         end
         .each do |filter|
           # Run the react method if it's present
@@ -439,26 +432,16 @@ module Avo
       @resource = @resource.hydrate(record: @record, view: Avo::ViewInquirer.new(:edit), user: _current_user)
       @page_title = @resource.default_panel_name.to_s
 
-      last_crumb_args = {}
-      # If we're accessing this resource via another resource add the parent to the breadcrumbs.
-      if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
+      add_via_breadcrumbs
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: @resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
-
-        last_crumb_args = {
-          via_resource_class: params[:via_resource_class],
-          via_record_id: params[:via_record_id]
-        }
-        add_breadcrumb title: @resource.plural_name, initials: @resource.class.initials
+      # Keep the record's crumb pointing through the same parent.
+      last_crumb_args = if via_resource.present?
+        {via_resource_class: via_resource.class.to_s, via_record_id: via_resource.record_param}
       else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
+        {}
       end
 
-      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials
+      add_breadcrumb title: @resource.record_title, path: resource_path(record: @resource.record, resource: @resource, **last_crumb_args), avatar: @resource.avatar, initials: @resource.initials, color: @resource.class.color
       add_breadcrumb title: t("avo.edit").humanize
     end
 
@@ -466,10 +449,14 @@ module Avo
       if params[:via_belongs_to_resource_class].present?
         respond_to do |format|
           format.turbo_stream do
+            modal_frame_id = helpers.current_modal_frame_id || Avo::MODAL_FRAME_ID.to_s
+
             render turbo_stream: [
-              turbo_stream.remove(Avo::MODAL_FRAME_ID),
+              turbo_stream.update(modal_frame_id, ""),
               turbo_stream.avo_update_belongs_to(
                 relation_name: params[:via_relation],
+                target_name: params[:via_belongs_to_target_name],
+                frame_id: modal_frame_id,
                 target_record_id: @record.to_param,
                 target_resource_label: @resource.record_title,
                 target_resource_class: @record.class.name
@@ -505,13 +492,7 @@ module Avo
     def after_create_path
       # If this is an associated record return to the association show page
       if is_associated_record?
-        parent_resource = if params[:via_resource_class].present?
-          Avo.resource_manager.get_resource(params[:via_resource_class])
-        else
-          Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
-        end
-
-        return resource_view_path(resource: parent_resource, resource_id: params[:via_record_id])
+        return resource_view_path(resource: via_resource_class, resource_id: params[:via_record_id])
       end
 
       redirect_path_from_resource_option(:after_create_path) || resource_view_response_path
@@ -611,7 +592,7 @@ module Avo
 
     # Set pagy locale from params or from avo configuration, if both nil locale = "en"
     def set_pagy_locale
-      @pagy_locale = locale.to_s || Avo.configuration.default_locale || "en"
+      @pagy_locale = locale.to_s
       Pagy::I18n.locale = @pagy_locale if defined?(Pagy::I18n) && Pagy::I18n.respond_to?(:locale=)
     end
 
@@ -673,6 +654,9 @@ module Avo
     end
 
     def apply_sorting
+      # Ordering needs a model query. A plain array can't take it, and an HTTP loader sorts on the remote API.
+      return unless @query.respond_to?(:unscope)
+
       sort_by = @index_params[:sort_by].to_sym
       if sort_by != :created_at
         @query = @query.unscope(:order)
@@ -706,15 +690,20 @@ module Avo
     end
 
     def set_pagination_params
-      @index_params[:page] = params[:page] || 1
+      @index_params[:page] = positive_integer_or(params[:page], 1)
+      @index_params[:per_page] = positive_integer_or(params[:per_page].presence || cookies[:per_page], Avo.configuration.per_page)
 
       # If the request includes the 'per_page' parameter, save its value to the cookies
-      cookies[:per_page] = params[:per_page] if params[:per_page].present?
-
-      @index_params[:per_page] = cookies[:per_page] || Avo.configuration.per_page
+      cookies[:per_page] = @index_params[:per_page] if params[:per_page].present?
     end
 
-    # If we don't get a query object predefined from a child controller like associations, just spin one up.
+    # Pagy raises on anything that is not a positive integer, so fall back when the value is not one.
+    def positive_integer_or(value, fallback)
+      value = value.to_s.to_i
+      value.positive? ? value : fallback
+    end
+
+    # Spins up the index query unless one is predefined. AssociationsController overrides it to start from the parent record.
     # `base_index_query` is association-aware so the charts controller can reuse the same starting point.
     def set_query
       @query ||= base_index_query
@@ -728,22 +717,51 @@ module Avo
       if associated_summary?
         build_association_scope_from_params
       else
-        @resource.class.query_scope
+        @resource.class.query_scope(index_params: @index_params)
+      end
+    end
+
+    # The parent resource and record the current record is reached through, from the `via_*` params.
+    # e.g. a comment created from a post's has_many panel, or a project edited from a user's page.
+    # Memoized in `@via_resource` and `@via_record` so a custom controller can read them after calling `super`.
+    def via_resource
+      set_via_resource_and_record
+      @via_resource
+    end
+
+    def via_record
+      set_via_resource_and_record
+      @via_record
+    end
+
+    def set_via_resource_and_record
+      return if defined?(@via_record)
+
+      @via_resource = @via_record = nil
+      return if via_resource_class.nil? || params[:via_record_id].blank?
+
+      @via_record = via_resource_class.find_record(params[:via_record_id], params: params)
+      @via_resource = via_resource_class.new(record: @via_record)
+    end
+
+    # `via_resource_class` names the parent resource exactly, while `via_relation_class` only names its model,
+    # which is ambiguous when several resources share one model. So the model is the fallback.
+    def via_resource_class
+      if params[:via_resource_class].present?
+        Avo.resource_manager.get_resource(params[:via_resource_class])
+      elsif params[:via_relation_class].present?
+        Avo.resource_manager.get_resource_by_model_class(params[:via_relation_class])
       end
     end
 
     def add_via_breadcrumbs
-      if params[:via_resource_class].present? && params[:via_record_id].present?
-        via_resource = Avo.resource_manager.get_resource(params[:via_resource_class])
-        via_record = via_resource.find_record params[:via_record_id], params: params
-        via_resource = via_resource.new record: via_record
+      if via_resource.present?
+        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials, color: via_resource.class.color
+        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials, color: via_resource.class.color
 
-        add_breadcrumb title: via_resource.plural_name, path: resources_path(resource: via_resource), initials: via_resource.class.initials
-        add_breadcrumb title: via_resource.record_title, path: resource_path(record: via_record, resource: via_resource), avatar: via_resource.avatar, initials: via_resource.initials
-
-        add_breadcrumb title: @resource.plural_name, path: nil, initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: nil, initials: @resource.class.initials, color: @resource.class.color
       else
-        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials
+        add_breadcrumb title: @resource.plural_name, path: resources_path(resource: @resource), initials: @resource.class.initials, color: @resource.class.color
       end
     end
 
