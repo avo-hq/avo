@@ -431,6 +431,36 @@ RSpec.describe "Tags", type: :system do
 
       expect(page).to have_css(".tagify__dropdown__item", text: "Alice Smith")
     end
+
+    it "searches with pasted text, in the empty field and over the selected value" do
+      searched_queries = []
+      page.driver.browser.network.intercept(pattern: "*get_users*")
+      page.driver.browser.on(:request) do |request|
+        searched_queries << URI.decode_www_form(URI(request.url).query.to_s).to_h["q"]
+        request.continue
+      end
+
+      visit avo.edit_resources_course_path(course)
+
+      tags_input.click
+      paste_into_focused_element("Bob")
+      wait_until { searched_queries.include?("Bob") }
+      wait_for_tags_to_load(field_value_slot)
+      type(:down, :return)
+
+      expect(field_value_slot).to have_css("tag", text: "Bob Builder")
+
+      create :user, first_name: "Alice", last_name: "Smith"
+
+      field_value_slot.find(".tagify__tag-text").click
+      page.execute_script("document.execCommand('selectAll')")
+      paste_into_focused_element("Ali")
+
+      wait_until { searched_queries.include?("Ali") }
+      wait_for_tags_to_load(field_value_slot)
+
+      expect(page).to have_css(".tagify__dropdown__item", text: "Alice Smith")
+    end
   end
 
   describe "mode: :select" do
@@ -527,6 +557,14 @@ def wait_for_tags_to_load(element, time = Capybara.default_max_wait_time)
   Timeout.timeout(time) do
     sleep(0.05) while element[:class].to_s.include?(klass)
   end
+end
+
+def paste_into_focused_element(text)
+  page.execute_script(<<~JS, text)
+    const clipboardData = new DataTransfer()
+    clipboardData.setData("text/plain", arguments[0])
+    document.activeElement.dispatchEvent(new ClipboardEvent("paste", {clipboardData, bubbles: true, cancelable: true}))
+  JS
 end
 
 def tags_element(parent)
