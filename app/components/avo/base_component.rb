@@ -48,6 +48,10 @@ class Avo::BaseComponent < ViewComponent::Base
           tag.abbr("CTRL", title: "CTRL", class: "no-underline os-mac:hidden")
         ])
       end
+    when "control"
+      tag.kbd("CTRL")
+    when "meta"
+      tag.kbd("⌘")
     when "enter", "return"
       tag.kbd("↵")
     when "escape"

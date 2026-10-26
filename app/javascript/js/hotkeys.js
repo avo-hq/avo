@@ -7,6 +7,7 @@
 import { SequenceTracker, eventToHotkeyString, normalizeHotkey } from '@github/hotkey'
 
 const MODIFIER_KEYS = ['Control', 'Alt', 'Meta', 'Shift']
+const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 
 // Shifted punctuation depends on the layout: some browsers report Shift+/ as key "/" instead of "?".
 // Matching the physical key too keeps the "?" and "Shift+|" defaults working on non-US keyboards.
@@ -67,14 +68,21 @@ function modifiersOf({ ctrlKey, altKey, metaKey, shiftKey }) {
   return { ctrlKey, altKey, metaKey, shiftKey }
 }
 
+// A chord without Control, Alt or Meta is a key the user may be typing, so it fires only outside fields, the
+// way core's single-letter shortcuts do. A chord with one reaches fields on purpose (Cmd+J mid-edit).
+const typingTarget = (event) => event.target instanceof Element && !!event.target.closest(TYPING_SELECTOR)
+const hasModifier = (chord) => /(^|\+)(Control|Alt|Meta)\+/.test(chord)
+
 export function matchesHotkey(event, hotkey) {
   if (!hotkey) return false
 
   const path = tracker.path
   const chords = currentChords(event)
+  const typing = typingTarget(event)
 
   return parse(hotkey).some((sequence) => {
     const last = sequence[sequence.length - 1]
+    if (typing && !hasModifier(last)) return false
     if (!chords.includes(last)) return false
     if (sequence.length === 1) return true
 
