@@ -101,7 +101,7 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
   def with_plugin_shortcuts(core_sections)
     plugin_entries = Avo::Hotkeys.entries - Avo::Hotkeys.core_entries
 
-    plugin_entries.group_by(&:section).each do |title, entries|
+    plugin_entries.group_by { |entry| entry.section.presence || "Other" }.each do |title, entries|
       section = core_sections.find { |core_section| core_section[:title] == title }
       section ||= build_section(title, []).tap { |new_section| core_sections << new_section }
       section[:shortcuts].concat(entries.filter_map { |entry| bound(entry.id) })
@@ -146,7 +146,7 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
   def render_key(key)
     return platform_modifier_key if key == "Mod"
     return tag.kbd("Ctrl") if key == "Control"
-    return tag.kbd("Cmd") if key == "Meta"
+    return tag.kbd("⌘") if key == "Meta"
 
     tag.kbd(KEY_LABELS.fetch(key.downcase, (key.length == 1) ? key.upcase : key))
   end

@@ -9,7 +9,7 @@
 
 import { install } from '@github/hotkey'
 import { isUnderStackedModal } from './helpers/modal_stack'
-import { keyFor, matches } from './hotkeys'
+import { isTypingTarget, keyFor, matches, matchesHotkey } from './hotkeys'
 
 const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
 const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INPUT_SELECTOR)
@@ -168,7 +168,6 @@ const DIRECT_HOTKEYS = [
   },
 ]
 
-const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 
 // hotkey-fire is dispatched with { cancelable: true } but NOT { bubbles: true },
 // so it never reaches a document-level listener. Must be registered on each element.
@@ -247,12 +246,26 @@ export function installGlobalHotkeys() {
 
   document.addEventListener('keydown', (event) => {
     if (event.defaultPrevented || event.repeat) return
-    if (event.target instanceof Element && event.target.closest(TYPING_SELECTOR)) return
 
     const entry = DIRECT_HOTKEYS.find(({ match }) => match(event))
     if (entry) {
       event.preventDefault()
       entry.handle()
     }
+  })
+
+  // @github/hotkey keeps data-hotkey elements quiet while a field has focus. The matcher lets a chord with
+  // a modifier reach fields everywhere else, so fire the element here in that one case; a bare key still
+  // fails the matcher. Last visible match wins, as the library picks its last-registered element.
+  document.addEventListener('keydown', (event) => {
+    if (event.defaultPrevented || event.repeat || !isTypingTarget(event)) return
+
+    const el = Array.from(document.querySelectorAll('[data-hotkey]'))
+      .filter((candidate) => candidate.getClientRects().length && matchesHotkey(event, candidate.getAttribute('data-hotkey')))
+      .at(-1)
+    if (!el) return
+
+    event.preventDefault()
+    el.dispatchEvent(new CustomEvent('hotkey-fire', { cancelable: true }))
   })
 }

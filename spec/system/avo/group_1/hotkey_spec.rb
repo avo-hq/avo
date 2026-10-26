@@ -120,6 +120,29 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_css(".hotkey", visible: :hidden)
   end
 
+  # Mod is Cmd on macOS and Ctrl elsewhere, so press whichever the browser's platform expects.
+  it "fires a shortcut rebound to a modifier chord from inside a field, like a plugin's would" do
+    Avo.configuration.hotkeys = {bindings: {"shortcuts.toggle": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+    search_input.click
+    search_input.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    expect(page).to have_text("Keyboard shortcuts")
+  end
+
+  it "fires a button's data-hotkey from inside a field when its chord has a modifier" do
+    Avo.configuration.hotkeys = {bindings: {"resource.new": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+    search_input.click
+    search_input.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    expect(page).to have_current_path("/admin/resources/projects/new", ignore_query: true)
+  end
+
   it "toggles the hotkeys-hide-badges class on the html element when pressing Shift+K" do
     visit "/admin/resources/projects"
 

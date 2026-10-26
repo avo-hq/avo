@@ -73,7 +73,6 @@ export default class extends Controller {
 
     this.handleToggleShortcut = (event) => {
       if (event.repeat || event.defaultPrevented) return
-      if (event.target?.closest('input, textarea, select, [contenteditable]')) return
       if (!matches(event, 'sidebar.toggle')) return
 
       event.preventDefault()

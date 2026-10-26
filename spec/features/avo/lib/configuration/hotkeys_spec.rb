@@ -89,6 +89,12 @@ RSpec.describe Avo::Configuration, "#hotkeys" do
       expect { Avo::Hotkeys.validate! }.to raise_error(ArgumentError, /conflict/)
     end
 
+    it "refuses an explicit Meta+Enter, which is Mod+Enter on macOS" do
+      bind("resource.actions": "Meta+Enter")
+
+      expect { Avo::Hotkeys.validate! }.to raise_error(ArgumentError, /reserved/)
+    end
+
     it "refuses the locked Escape and Mod+Enter keys" do
       bind("record.edit": "j,Escape")
 

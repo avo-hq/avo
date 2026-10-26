@@ -55,13 +55,18 @@ module Avo
         bindings[id.to_s]
       end
 
+      # Resolved once per config hash and plugin set: key_for runs for every button on a page, twice per
+      # index row. Both inputs are compared by identity, so a boot (new plugin set) or a reassigned
+      # config.hotkeys refreshes it and a hash mutated in place does not.
       def bindings
-        overrides = Avo.configuration.hotkeys[:bindings].to_h.transform_keys(&:to_s)
+        source = Avo.configuration.hotkeys[:bindings]
+        plugins = Avo.plugin_manager.plugins
+        return @bindings.last if @bindings && @bindings[0].equal?(source) && @bindings[1].equal?(plugins)
 
-        entries.to_h do |entry|
-          key = overrides.fetch(entry.id, entry.default)
-          [entry.id, key.presence]
-        end
+        overrides = source.to_h.transform_keys(&:to_s)
+        resolved = entries.to_h { |entry| [entry.id, overrides.fetch(entry.id, entry.default).presence] }
+        @bindings = [source, plugins, resolved]
+        resolved
       end
 
       def entry(id, default, label, section: nil, scopes: [:global])
@@ -120,8 +125,8 @@ module Avo
       end
 
       def validate_conflicts!
-        bound = bindings.filter_map { |id, key| [find(id), parse(key)] if key }
-        locked = LOCKED_KEYS.flat_map { |key| parse(key) }
+        bound = bindings.filter_map { |id, key| [find(id), comparable(parse(key))] if key }
+        locked = LOCKED_KEYS.flat_map { |key| comparable(parse(key)) }
 
         bound.each do |entry, sequences|
           sequences.each do |sequence|
@@ -142,6 +147,13 @@ module Avo
             raise ArgumentError,
               "Hotkeys \"#{entry.id}\" and \"#{other.id}\" conflict: #{reason} #{long.join(" ")}."
           end
+        end
+      end
+
+      # Meta and Control each stand in for Mod on one platform, so the checks treat all three as one key.
+      def comparable(sequences)
+        sequences.map do |chords|
+          chords.map { |chord| sort_modifiers(chord.split("+").map { |part| part.in?(%w[Control Meta]) ? "Mod" : part }.uniq.join("+")) }
         end
       end
 

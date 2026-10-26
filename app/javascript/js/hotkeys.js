@@ -70,7 +70,7 @@ function modifiersOf({ ctrlKey, altKey, metaKey, shiftKey }) {
 
 // A chord without Control, Alt or Meta is a key the user may be typing, so it fires only outside fields, the
 // way core's single-letter shortcuts do. A chord with one reaches fields on purpose (Cmd+J mid-edit).
-const typingTarget = (event) => event.target instanceof Element && !!event.target.closest(TYPING_SELECTOR)
+export const isTypingTarget = (event) => event.target instanceof Element && !!event.target.closest(TYPING_SELECTOR)
 const hasModifier = (chord) => /(^|\+)(Control|Alt|Meta)\+/.test(chord)
 
 export function matchesHotkey(event, hotkey) {
@@ -78,7 +78,7 @@ export function matchesHotkey(event, hotkey) {
 
   const path = tracker.path
   const chords = currentChords(event)
-  const typing = typingTarget(event)
+  const typing = isTypingTarget(event)
 
   return parse(hotkey).some((sequence) => {
     const last = sequence[sequence.length - 1]
