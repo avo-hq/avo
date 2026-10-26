@@ -29,7 +29,7 @@ class Event < ApplicationRecord
   end
 
   # This is testing that array block can access the record.something
-  # The attendees panel asks for one page and gets it with the total, as a paginated API answers.
+  # The attendees panel asks for one page and gets it with the total, as a paginated source answers.
   # The show page reached through the panel asks for no page and gets the full list to find in.
   def attendees_from_block(page: nil, per_page: nil)
     attendees = [
