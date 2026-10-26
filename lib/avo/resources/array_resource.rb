@@ -17,8 +17,24 @@ module Avo
       # so the resource defines its own save_record and destroy_record.
       class_attribute :writable, default: false
 
+      # A page a paginated source already cut, with the total it reported. Pagy reads the total from
+      # `count` and takes the records through `offset` and `limit` as they are, instead of slicing them.
+      unless defined?(Page)
+        Page = Data.define(:records, :count) do
+          include Enumerable
+
+          def each(&) = records.each(&)
+
+          def offset(_) = self
+
+          def limit(_) = records
+        end
+      end
+
+      attr_writer :index_params
+
       class << self
-        def query_scope(**) = new.fetch_records
+        def query_scope(index_params: nil, **) = new.tap { _1.index_params = index_params }.fetch_records
 
         # Each array resource keeps its own model class. It starts as a placeholder class and
         # fetch_records replaces it with the class of the records it builds or finds.
@@ -44,6 +60,17 @@ module Avo
 
       def records = []
 
+      # The index page shown and its size, so `records` can fetch only that page. nil outside an index.
+      def page = @index_params&.dig(:page)
+
+      def per_page = @index_params&.dig(:per_page)
+
+      # What an Array field shows for `record`: its block's result, which can read the page shown,
+      # or else the record's method of the same name.
+      def records_from_field(field, record)
+        Avo::ExecutionContext.new(target: field.block, record:, page:, per_page:).handle || record.try(field.id)
+      end
+
       # Fetching builds the model class with an accessor per attribute, so a new record can be filled.
       def new_record
         fetch_records
@@ -51,6 +78,8 @@ module Avo
       end
 
       def find_record(id, query: nil, params: nil)
+        return find_with_custom_finder([id], params:).first if self.class.custom_find_record_method?
+
         fetched_records = fetch_records
 
         return super(id, query: fetched_records, params:) if is_active_record_relation?(fetched_records)
@@ -59,6 +88,8 @@ module Avo
       end
 
       def find_records(ids, query: nil, params: nil)
+        return find_with_custom_finder(ids, params:) if self.class.custom_find_record_method?
+
         fetched_records = fetch_records
 
         return super(ids, query: fetched_records, params:) if is_active_record_relation?(fetched_records)
@@ -81,12 +112,59 @@ module Avo
 
           association_field = find_association_field(resource: via_resource, association: route_key)
 
-          records_from_field_or_record = Avo::ExecutionContext.new(target: association_field.block, record: via_record).handle || via_record.try(route_key)
-
-          array_of_records = records_from_field_or_record || array_of_records
+          array_of_records = records_from_field(association_field, via_record) || array_of_records
         end
 
-        @fetched_records ||= if array_of_records.empty?
+        # A paginated source returns its page with the total, as `{records:, count:}`
+        @fetched_records ||= if array_of_records.is_a?(Hash)
+          Page.new(records: cast_records(array_of_records[:records]), count: array_of_records[:count])
+        else
+          cast_records(array_of_records)
+        end
+      end
+
+      def is_array_of_active_records?(array_of_records = records)
+        @is_array_of_active_records ||= array_of_records.all? { |element| element.is_a?(ActiveRecord::Base) }
+      end
+
+      def is_active_record_relation?(array_of_records = records)
+        @is_active_record_relation ||= array_of_records.is_a?(ActiveRecord::Relation)
+      end
+
+      def is_array_of_store_model?(array_of_records = records)
+        @is_array_of_store_model ||= defined?(StoreModel::Model) && array_of_records.all? { |element| element.is_a?(StoreModel::Model) }
+      end
+
+      def resource_type_array? = true
+
+      def read_only_array? = !writable
+
+      # Base derives it from ActiveRecord's base_class.
+      def form_scope = class_name.underscore
+
+      def sort_by_param = nil
+
+      def sorting_supported? = false
+
+      private
+
+      # A paginated source holds one page, so a custom finder fetches each record by itself.
+      # `query` is fetched only if the finder reads it, as one on an Active Record backed resource does.
+      def find_with_custom_finder(ids, params:)
+        resource = self
+        found = ids.map do |id|
+          context = Avo::ExecutionContext.new(target: find_record_method, id:, params:, model_class:)
+          context.define_singleton_method(:query) { resource.fetch_records }
+          context.handle
+        end
+
+        # The hashes share one model class, as the records from `records` do
+        cast = cast_records(found.grep(Hash))
+        found.map { |record| record.is_a?(Hash) ? cast.shift : record }
+      end
+
+      def cast_records(array_of_records)
+        if array_of_records.empty?
           array_of_records
         elsif is_array_of_active_records?(array_of_records)
           self.class.model_class = array_of_records.first.class
@@ -96,7 +174,7 @@ module Avo
           array_of_records
         elsif is_array_of_store_model?(array_of_records)
           self.class.model_class = array_of_records.first.class
-          return(array_of_records)
+          array_of_records
         else
           # Dynamically create a class with accessors for all unique keys from the records
           keys = array_of_records.flat_map(&:keys).uniq
@@ -131,29 +209,6 @@ module Avo
           end
         end
       end
-
-      def is_array_of_active_records?(array_of_records = records)
-        @is_array_of_active_records ||= array_of_records.all? { |element| element.is_a?(ActiveRecord::Base) }
-      end
-
-      def is_active_record_relation?(array_of_records = records)
-        @is_active_record_relation ||= array_of_records.is_a?(ActiveRecord::Relation)
-      end
-
-      def is_array_of_store_model?(array_of_records = records)
-        @is_array_of_store_model ||= defined?(StoreModel::Model) && array_of_records.all? { |element| element.is_a?(StoreModel::Model) }
-      end
-
-      def resource_type_array? = true
-
-      def read_only_array? = !writable
-
-      # Base derives it from ActiveRecord's base_class.
-      def form_scope = class_name.underscore
-
-      def sort_by_param = nil
-
-      def sorting_supported? = false
     end
   end
 end

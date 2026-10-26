@@ -319,6 +319,8 @@ module Avo
           ).handle
         end
 
+        def custom_find_record_method? = !find_record_method.equal?(Avo::Resources::Base.find_record_method)
+
         # The records `ids` name, each the way `find_record` finds one: by its `to_param`, through
         # `find_record_method`. One entry per id, in order, nil where an id names no record in `query`.
         #
@@ -342,7 +344,7 @@ module Avo
 
           # Avo's own finder reads through `query`. A custom one may ignore it, so only what `query`
           # also holds is kept.
-          unless find_record_method.equal?(Avo::Resources::Base.find_record_method)
+          if custom_find_record_method?
             in_query = query.where(model_class.primary_key => found.values.compact.map(&:id)).index_by(&:id)
             found.transform_values! { |record| record if in_query.key?(record&.id) }
           end

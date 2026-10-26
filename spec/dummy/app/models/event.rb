@@ -29,8 +29,10 @@ class Event < ApplicationRecord
   end
 
   # This is testing that array block can access the record.something
-  def attendees_from_block
-    [
+  # The attendees panel asks for one page and gets it with the total, as a paginated API answers.
+  # The show page reached through the panel asks for no page and gets the full list to find in.
+  def attendees_from_block(page: nil, per_page: nil)
+    attendees = [
       {id: 1, name: "John Doe", role: "Software Developer", organization: "TechCorp"},
       {id: 2, name: "Jane Smith", role: "Data Scientist", organization: "DataPros"},
       {id: 3, name: "Emily Davis", role: "Product Manager", organization: "Startup Inc."},
@@ -52,5 +54,8 @@ class Event < ApplicationRecord
       {id: 19, name: "Ella Thompson", role: "Software Architect", organization: "CodeVision"},
       {id: 20, name: "Alexander Scott", role: "Solutions Consultant", organization: "Innovate Consulting"}
     ]
+    return attendees if page.nil?
+
+    {records: attendees.slice((page - 1) * per_page, per_page), count: attendees.size}
   end
 end

@@ -43,6 +43,43 @@ RSpec.feature "ArrayResource", type: :feature do
     end
   end
 
+  describe "paginated at the source" do
+    before do
+      movies = Avo::Resources::Movie.new.records
+
+      allow_any_instance_of(Avo::Resources::Movie).to receive(:records) do |resource|
+        {records: movies.slice((resource.page - 1) * resource.per_page, resource.per_page), count: movies.size}
+      end
+    end
+
+    it "fetches only the page shown and paginates with the count the source reports" do
+      visit avo.resources_movies_path(per_page: 12, page: 3)
+
+      expect(page).to have_text "The Social Network"
+      expect(page).not_to have_text "The Shawshank Redemption"
+      within(".pagination__info") do
+        expect(strip_html(page.text)).to eq "25-36 of 50"
+      end
+      expect(page).to have_css "[data-item-select-all-selected-all-query-value='select_all_disabled']"
+    end
+  end
+
+  describe "with a find_record_method" do
+    before do
+      allow(Avo::Resources::Movie).to receive(:find_record_method).and_return(-> { {id: id.to_i, name: "Movie #{id}", release_date: "2001-01-01", fun_fact: nil} })
+    end
+
+    it "shows a record that records does not return" do
+      visit avo.resources_movie_path(51)
+
+      expect(page).to have_text "Movie 51"
+    end
+
+    it "finds each selected record through it" do
+      expect(Avo::Resources::Movie.new.find_records(%w[51 52]).map(&:name)).to eq ["Movie 51", "Movie 52"]
+    end
+  end
+
   describe "model class" do
     # YARD, a development dependency, adds Module#class_name. Host apps don't have it, and it
     # hides a missing class_name on the generated model class, so remove it for these examples.
