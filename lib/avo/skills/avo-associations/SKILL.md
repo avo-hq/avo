@@ -100,7 +100,7 @@ Most options are shared across the association fields; a handful are type-specif
 | Option | What it does |
 | --- | --- |
 | `searchable` | Replaces the `<select>` / attach picker with a type-as-you-search input. **Paid add-on** + needs a query source — see [Searchable](#searchable-associations). |
-| `attach_scope` | `-> { query.non_admins }` — scopes the records offered in the **attach modal / dropdown** (locals: `query`, `parent`). Note: does *not* filter the listed rows of a `has_many`/HABTM — use `scope` or a Pundit policy scope for that. |
+| `attach_scope` | `-> { query.non_admins }` — scopes the records offered in the **attach modal / dropdown** (locals: `query`, `parent`). Note: does *not* filter the listed rows of a `has_many`/HABTM — those follow the listed resource's policy scope, then `scope` on top. |
 | `use_resource` | Render/redirect through a different resource, e.g. `use_resource: Avo::Resources::PhotoComment` (class or string). |
 | `name` | Overrides the panel/label text (`has_many`, HABTM). Also achievable via [field i18n](https://docs.avohq.io/4.0/i18n.md). |
 | `description` | Sub-title text under the panel title. Keep it cheap under `loading: :manual` — the lambda runs on the placeholder too. |
@@ -167,7 +167,7 @@ Turning a long `belongs_to` / `has_many` picker into a type-to-search field is t
 - **`can_create: true` is still vetoed by the policy.** If the target resource's `create?` returns `false`, no create link appears regardless of `can_create`.
 - **A `belongs_to` field is disabled when you arrive through that same association.** Editing a Comment reached via a Post's comments panel disables the `post` field. Set `allow_via_detaching: true` to re-enable it.
 - **`polymorphic_as` and `types` are a pair** — using one without the other raises. `types` is an array of model classes (`[::Post, ::Project]`), matching a `polymorphic: true` `belongs_to`.
-- **`attach_scope` does not filter listed rows**, only the attach picker. To hide rows from a `has_many`/HABTM table, use `scope` or a Pundit policy scope.
+- **`attach_scope` does not filter listed rows**, only the attach picker. The listed resource's policy scope already filters `has_many`/HABTM panel rows (a `has_one` panel isn't filtered); use `scope` only to narrow further, and don't re-apply the policy scope through it.
 - **Build `attach_scope` on `query` to keep the policy scope.** `query` arrives already narrowed by the target's policy scope. A fresh relation (`-> { ::User.all }`) widens past it on purpose. On every association the save accepts exactly the records the picker offers, so a record outside the `attach_scope` is refused like a missing one.
 - **STI child resources must set `self.model_class`.** When a parent class and STI children share a table, give each child resource `self.model_class = "SuperUser"` so Avo maps it correctly. To route association rows / index clicks to the child resource instead of the parent, use `self.link_to_child_resource = true` on the parent resource or `link_to_child_resource:` on the field.
 - **Searchable can look "broken" but be misconfigured** — no query source means an empty picker, not an error. And it's a paid add-on.
