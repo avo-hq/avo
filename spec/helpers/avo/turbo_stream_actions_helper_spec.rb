@@ -9,6 +9,14 @@ RSpec.describe Avo::TurboStreamActionsHelper, type: :helper do
     @view_context = helper
   end
 
+  # Avo.boot prepends this into Turbo's TagBuilder, which never reloads. A reloadable copy would
+  # be prepended again on every development reload, stacking stale copies in its ancestors.
+  it "is not reloaded" do
+    path = described_class.instance_method(:avo_download).source_location.first
+
+    expect(Rails.autoloaders.main.dirs.find { |dir| path.start_with?("#{dir}/") }).to be_nil
+  end
+
   describe "#avo_download" do
     subject do
       helper.avo_download(content:, filename:)
