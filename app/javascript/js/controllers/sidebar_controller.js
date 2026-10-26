@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import Cookies from 'js-cookie'
+import { matches } from '../hotkeys'
 
 // Detect whether an element is in view inside a parent element.
 // Original here: https://gist.github.com/jjmu15/8646226
@@ -73,9 +74,7 @@ export default class extends Controller {
     this.handleToggleShortcut = (event) => {
       if (event.repeat || event.defaultPrevented) return
       if (event.target?.closest('input, textarea, select, [contenteditable]')) return
-      // Shift+\ — use event.code so layout differences (Shift+\ → "|" on US) don't matter.
-      if (!event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) return
-      if (event.code !== 'Backslash') return
+      if (!matches(event, 'sidebar.toggle')) return
 
       event.preventDefault()
       this.toggleSidebarForViewport()

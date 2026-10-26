@@ -33,6 +33,10 @@ RSpec.describe Avo::UI::SearchInputComponent, type: :component do
     end
 
     it "renders shortcut suffix when shortcut is :cmd_k" do
+      plugin = Avo::Plugin.new(name: "avo-advanced_search", priority: 10)
+        .register_hotkey(:open, default: "Mod+k", label: "Focus Global Search", section: "Navigation")
+      allow(Avo.plugin_manager).to receive(:plugins).and_return([plugin])
+
       render_inline(described_class.new(name: "q", shortcut: :cmd_k))
 
       expect(page).to have_css(".search-input__suffix")

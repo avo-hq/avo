@@ -32,6 +32,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus'
+import { matchesHotkey } from '../hotkeys'
 
 const TYPING_SELECTOR = 'input, textarea, select, [contenteditable]'
 
@@ -244,7 +245,8 @@ export default class extends Controller {
     if (!focusedRow) return false
 
     // The hotkey is now on the focused row (added by syncRowHotkeys)
-    const control = focusedRow.querySelector(`[data-hotkey="${event.key}"]`)
+    const control = Array.from(focusedRow.querySelectorAll('[data-hotkey]'))
+      .find((element) => matchesHotkey(event, element.getAttribute('data-hotkey')))
     if (!control) return false
 
     event.preventDefault()

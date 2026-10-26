@@ -20,12 +20,8 @@ class Avo::BaseComponent < ViewComponent::Base
   def hotkey_badge(hotkey, **html_options)
     return unless Avo.configuration.hotkeys[:enabled] && Avo.configuration.hotkeys[:show_key_badges]
 
-    # `@github/hotkey` uses:
-    # - `+` for modifier combos (e.g. "Mod+Enter")
-    # - spaces for sequences/alternatives (e.g. "g n" or "Meta+Enter Control+Enter")
-    #
-    # Render key parts for the badge, mapping supported modifiers to OS-aware glyphs.
-    keys = hotkey.to_s.split(/[+\s]+/).reject(&:blank?)
+    # Aliases ("j,ArrowDown") would crowd the button, so the badge shows the first one only.
+    keys = Avo::Hotkeys.parse(hotkey).first.to_a.flat_map { |chord| chord.split("+") }
 
     first_key = keys.first
     return if first_key.blank?

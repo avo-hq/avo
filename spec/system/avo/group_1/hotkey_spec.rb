@@ -623,6 +623,41 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     end
   end
 
+  context "when the developer rebinds shortcuts" do
+    around do |example|
+      original = Avo.configuration.hotkeys
+      Avo.configuration.hotkeys = {bindings: {"record.edit": "Shift+E", "index.next_row": "g j"}}
+      example.run
+      Avo.configuration.hotkeys = original
+    end
+
+    it "fires the edit button on the new key and shows it in the badge" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      expect(page).to have_css("[data-hotkey='Shift+E'] .hotkey-badge", text: "SHIFT")
+      expect(page).to have_no_css("[data-hotkey='e']")
+
+      dispatch_keydown("E", shift_key: true)
+
+      expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
+    end
+
+    it "matches a rebound sequence on a direct listener and ignores the old key" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+
+      dispatch_keydown("g")
+      dispatch_keydown("j")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+    end
+  end
+
   context "when hotkeys are disabled via config" do
     around do |example|
       original = Avo.configuration.hotkeys

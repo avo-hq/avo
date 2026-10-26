@@ -1,14 +1,15 @@
 /**
- * Global (non-element) keyboard shortcuts.
- * Add new entries to HOTKEYS to register more.
+ * Global (non-element) keyboard shortcuts. Each entry names a registry ID from Avo::Hotkeys; the
+ * key itself comes from config.hotkeys[:bindings].
  *
  * Two registries:
- *   - ELEMENT_HOTKEYS: handled via @github/hotkey (supports sequences like "r r r")
- *   - DIRECT_HOTKEYS: custom keydown listeners for keys needing cross-browser normalization
+ *   - ELEMENT_HOTKEYS: handled via @github/hotkey
+ *   - DIRECT_HOTKEYS: keydown listeners that need a condition (a page element, no open modal)
  */
 
 import { install } from '@github/hotkey'
 import { isUnderStackedModal } from './helpers/modal_stack'
+import { keyFor, matches } from './hotkeys'
 
 const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
 const findResourceSearchInput = () => document.querySelector(RESOURCE_SEARCH_INPUT_SELECTOR)
@@ -17,11 +18,11 @@ const RESOURCE_TABLE_SELECTOR = '[data-index-row-navigator-target="table"]'
 const findResourceTable = () => document.querySelector(RESOURCE_TABLE_SELECTOR)
 
 // The resource's index path is exposed via a <meta> tag only on show/edit pages,
-// letting the "i" hotkey return to the listing from a single record.
+// letting the go-to-index hotkey return to the listing from a single record.
 const findMetaPath = (name) => document.querySelector(`meta[name="${name}"]`)?.getAttribute('content') || null
 const findResourcesIndexPath = () => findMetaPath('avo:resources-index-path')
 
-// Same idea for "c": show pages have no create button to hang a data-hotkey on, so the
+// Same idea for the create hotkey: show pages have no create button to hang a data-hotkey on, so the
 // layout names the new path here — and only when the user is allowed to create.
 const findResourcesNewPath = () => findMetaPath('avo:resources-new-path')
 
@@ -39,7 +40,7 @@ const visit = (path) => {
 const CONTENT_FOCUS_SELECTOR = '[data-content-focus]'
 
 // Tabbed show/edit views render every panel with data-content-focus, but inactive
-// tab panels stay in the DOM with a hidden class. Skip those so Shift+T lands on
+// tab panels stay in the DOM with a hidden class. Skip those so the focus hotkey lands on
 // the content the user is actually viewing.
 const isVisibleContentFocus = (element) => {
   if (!element) return false
@@ -52,7 +53,7 @@ const isModalOpen = () => document.body.classList.contains('modal-open')
 
 const findContentFocus = () => {
   // Show/edit panel bodies stay in the layout behind open modals (e.g. attach
-  // media). Without this guard, Shift+T would focus obscured page content.
+  // media). Without this guard, the focus hotkey would focus obscured page content.
   if (isModalOpen()) return null
 
   return Array.from(document.querySelectorAll(CONTENT_FOCUS_SELECTOR)).find(isVisibleContentFocus) ?? null
@@ -68,10 +69,10 @@ function callAppearance(method) {
   controller?.[method]?.()
 }
 
-// Use @github/hotkey for sequences and standard combos.
+// Use @github/hotkey for shortcuts with no page condition.
 const ELEMENT_HOTKEYS = [
   {
-    hotkey: 'r r r',
+    id: 'navigation.reload',
     handle: () => {
       window.reloadScrollTop = document.querySelector('.scrollable-wrapper')?.scrollTop
       window.StreamActions.turbo_reload()
@@ -79,82 +80,77 @@ const ELEMENT_HOTKEYS = [
   },
 ]
 
-// Use direct listeners for keys where event.key varies across browsers/layouts.
+// Direct listeners, matched by ./hotkeys so overrides, aliases and sequences apply here too.
 const DIRECT_HOTKEYS = [
   {
-    // Shift+/ → "?" on US layouts, but some browsers expose key:"Slash"+shiftKey instead.
-    match: (e) => e.key === '?' || (e.shiftKey && e.code === 'Slash'),
+    // Toggle the keyboard shortcuts modal.
+    match: (e) => matches(e, 'shortcuts.toggle'),
     handle: () => document.dispatchEvent(new Event('persistent-modal:toggle')),
   },
   {
-    // "/" → focus the resource search input on index pages.
-    match: (e) => e.key === '/'
-      && !e.shiftKey
-      && !e.metaKey
-      && !e.ctrlKey
-      && !e.altKey
-      && !!findResourceSearchInput(),
+    // Focus the resource search input on index pages.
+    match: (e) => matches(e, 'index.focus_search') && !!findResourceSearchInput(),
     handle: () => {
       const input = findResourceSearchInput()
       if (input) input.focus()
     },
   },
   {
-    // i → return to the resource's index page (from a show/edit page).
-    match: (e) => e.key === 'i' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !isModalOpen() && !!findResourcesIndexPath(),
+    // Return to the resource's index page (from a show/edit page).
+    match: (e) => matches(e, 'resource.go_to_index') && !isModalOpen() && !!findResourcesIndexPath(),
     handle: () => visit(findResourcesIndexPath()),
   },
   {
-    // c → the resource's new page (from a show page). On an index the create button's own
-    // data-hotkey handles "c"; the meta tag is absent there, so the two never both fire.
-    match: (e) => e.key === 'c' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !isModalOpen() && !!findResourcesNewPath(),
+    // The resource's new page (from a show page). On an index the create button's own data-hotkey
+    // handles the same key; the meta tag is absent there, so the two never both fire.
+    match: (e) => matches(e, 'resource.new') && !isModalOpen() && !!findResourcesNewPath(),
     handle: () => visit(findResourcesNewPath()),
   },
   {
-    // Shift+M → cycle appearance scheme (auto → light → dark → …)
-    match: (e) => e.shiftKey && e.key === 'M',
+    // Cycle appearance scheme (auto → light → dark → …)
+    match: (e) => matches(e, 'appearance.cycle_scheme'),
     handle: () => callAppearance('cycleScheme'),
   },
   {
-    // Shift+N → cycle neutral theme (brand → slate → stone → …)
-    match: (e) => e.shiftKey && e.key === 'N',
+    // Cycle neutral theme (brand → slate → stone → …)
+    match: (e) => matches(e, 'appearance.cycle_neutral'),
     handle: () => callAppearance('cycleNeutral'),
   },
   {
-    // Shift+A → cycle accent color (brand → red → orange → …)
-    match: (e) => e.shiftKey && e.key === 'A',
+    // Cycle accent color (brand → red → orange → …)
+    match: (e) => matches(e, 'appearance.cycle_accent'),
     handle: () => callAppearance('cycleAccent'),
   },
   {
-    // Shift+S → toggle the appearance sound
-    match: (e) => e.shiftKey && e.key === 'S',
+    // Toggle the appearance sound
+    match: (e) => matches(e, 'appearance.toggle_sound'),
     handle: () => callAppearance('toggleSound'),
   },
   {
-    // Shift+T → focus the screen's main content (table rows, grid cards, or panel
+    // Focus the screen's main content (table rows, grid cards, or panel
     // fields). From there, Tab dives in and Shift+Tab returns to the page controls.
-    match: (e) => e.shiftKey && e.key === 'T' && !!findContentFocus(),
+    match: (e) => matches(e, 'navigation.focus_content') && !!findContentFocus(),
     handle: () => findContentFocus()?.focus({ preventScroll: true }),
   },
   {
-    // j → focus the resource table AND move to the next row (Gmail/GitHub style)
-    match: (e) => e.key === 'j' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !!findResourceTable(),
+    // Focus the resource table AND move to the next row (Gmail/GitHub style)
+    match: (e) => matches(e, 'index.next_row') && !!findResourceTable(),
     handle: () => {
       findResourceTable()?.focus({ preventScroll: true })
       document.dispatchEvent(new CustomEvent('avo:advance-resource-table', { detail: { direction: 'next' } }))
     },
   },
   {
-    // k → focus the resource table AND move to the previous row
-    match: (e) => e.key === 'k' && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey && !!findResourceTable(),
+    // Focus the resource table AND move to the previous row
+    match: (e) => matches(e, 'index.previous_row') && !!findResourceTable(),
     handle: () => {
       findResourceTable()?.focus({ preventScroll: true })
       document.dispatchEvent(new CustomEvent('avo:advance-resource-table', { detail: { direction: 'previous' } }))
     },
   },
   {
-    // Shift+K → toggle kbd badge visibility (only when developer config allows badges)
-    match: (e) => e.shiftKey && e.key === 'K'
+    // Toggle kbd badge visibility (only when developer config allows badges)
+    match: (e) => matches(e, 'hotkeys.toggle_badges')
       && window.Avo?.configuration?.hotkeys?.showKeyBadges !== false,
     handle: () => {
       document.documentElement.classList.toggle('hotkeys-hide-badges')
@@ -237,7 +233,10 @@ export function installGlobalHotkeys() {
     }
   })
 
-  ELEMENT_HOTKEYS.forEach(({ hotkey, handle }) => {
+  ELEMENT_HOTKEYS.forEach(({ id, handle }) => {
+    const hotkey = keyFor(id)
+    if (!hotkey) return
+
     const el = document.createElement('span')
     el.addEventListener('hotkey-fire', (event) => {
       event.preventDefault()
