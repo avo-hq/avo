@@ -59,6 +59,15 @@
             </div>
           </div>
         </div>
+        <% if Avo::IN_DEVELOPMENT %>
+          <div class="col-span-2 relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4">
+            <div class="flex justify-between w-full">
+              <div class="font-semibold">Telemetry</div>
+              <div class="text-sm text-content-secondary">The payload sent to HQ. Shown only when AVO_IN_DEVELOPMENT=1.</div>
+            </div>
+            <pre class="text-xs overflow-x-auto"><%= telemetry_json %></pre>
+          </div>
+        <% end %>
       </div>
     <% end %>
   <% end %>

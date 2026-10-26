@@ -21,8 +21,9 @@ module Avo
           cache_store.write(cache_key, {reported_at: Time.now}, expires_in: CACHE_TIME)
 
           perform_request(request_info)
-        rescue
-          # Silently swallow all errors
+        rescue Exception # standard:disable Lint/RescueException
+          # Silently swallow all errors. Exception, not StandardError: this runs in its own thread, and
+          # in an app that sets Thread.abort_on_exception a SystemStackError here would kill the process.
         end
 
         private

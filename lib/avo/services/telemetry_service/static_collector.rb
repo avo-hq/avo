@@ -119,7 +119,8 @@ module Avo
           visitor = FileVisitor.new
           Prism.parse_file(path).value.accept(visitor)
           visitor.to_result(kind, path)
-        rescue SystemCallError, Prism::ParseError
+        rescue
+          # One unreadable or oddly shaped file drops out of the counts; it never takes the rest with it.
           nil
         end
 
@@ -200,7 +201,7 @@ module Avo
           visitor = ConfigVisitor.new
           Prism.parse_file(initializer).value.accept(visitor)
           visitor.resource_names
-        rescue SystemCallError, Prism::ParseError
+        rescue
           []
         end
 

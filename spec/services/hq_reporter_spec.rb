@@ -156,6 +156,12 @@ RSpec.describe Avo::Services::HqReporter do
 
         expect { described_class.report(request_info) }.not_to raise_error
       end
+
+      it "swallows errors outside StandardError too" do
+        stub_request(:post, endpoint).to_raise(SystemStackError.new("stack level too deep"))
+
+        expect { described_class.report(request_info) }.not_to raise_error
+      end
     end
   end
 end

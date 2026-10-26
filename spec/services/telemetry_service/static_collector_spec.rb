@@ -356,6 +356,20 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
     end
   end
 
+  context "when one file trips up the visitor" do
+    it "drops that file and still counts the rest" do
+      calls = 0
+      allow_any_instance_of(described_class::FileVisitor).to receive(:to_result).and_wrap_original do |original, *args|
+        calls += 1
+        raise NoMethodError, "unexpected node" if args.last.to_s.end_with?("comment.rb")
+        original.call(*args)
+      end
+
+      expect(metadata[:resources_count]).to eq(1)
+      expect(calls).to be > 1
+    end
+  end
+
   context "when app/avo does not exist" do
     subject(:metadata) { described_class.new(File.join(@app_root, "nope")).collect }
 

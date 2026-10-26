@@ -31,6 +31,8 @@ class Avo::Services::TelemetryService
 
     def structural_metadata
       StaticCollector.new(Rails.root).collect
+    rescue => error
+      {structural_error: error.class.name}
     end
 
     def runtime_metadata
