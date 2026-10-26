@@ -143,6 +143,39 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_current_path("/admin/resources/projects/new", ignore_query: true)
   end
 
+  # Badges carry the click feedback, so without them the in-field path has to click the button itself.
+  it "fires a button's modifier chord from inside a field when key badges are hidden" do
+    Avo.configuration.hotkeys = {show_key_badges: false, bindings: {"resource.new": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+    search_input.click
+    search_input.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    expect(page).to have_current_path("/admin/resources/projects/new", ignore_query: true)
+  end
+
+  it "does not fire a page button from a field inside an open modal" do
+    Avo.configuration.hotkeys = {bindings: {"resource.new": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    dispatch_keydown("?", code: "Slash", shift_key: true)
+    modal_search = find(".hotkey__search-input")
+    modal_search.click
+    page.execute_script(<<~JS)
+      window.__pageButtonClicked = false
+      document.querySelector('[data-hotkey="Mod+/"]').addEventListener("click", (event) => {
+        event.preventDefault()
+        window.__pageButtonClicked = true
+      })
+    JS
+    modal_search.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    # The page path clicks two animation frames later, so give it time before asserting it never came.
+    sleep 0.5
+    expect(page.evaluate_script("window.__pageButtonClicked")).to be(false)
+  end
+
   it "toggles the hotkeys-hide-badges class on the html element when pressing Shift+K" do
     visit "/admin/resources/projects"
 

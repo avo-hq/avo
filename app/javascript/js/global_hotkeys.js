@@ -8,7 +8,7 @@
  */
 
 import { install } from '@github/hotkey'
-import { isUnderStackedModal } from './helpers/modal_stack'
+import { isUnderStackedModal, topmostModal } from './helpers/modal_stack'
 import { isTypingTarget, keyFor, matches, matchesHotkey } from './hotkeys'
 
 const RESOURCE_SEARCH_INPUT_SELECTOR = '[data-resource-search-target="input"]'
@@ -260,12 +260,15 @@ export function installGlobalHotkeys() {
   document.addEventListener('keydown', (event) => {
     if (event.defaultPrevented || event.repeat || !isTypingTarget(event)) return
 
-    const el = Array.from(document.querySelectorAll('[data-hotkey]'))
+    // An open modal owns the keyboard: the page behind it (an edit form's Save) must not fire from its fields.
+    const root = topmostModal() ?? document
+    const el = Array.from(root.querySelectorAll('[data-hotkey]'))
       .filter((candidate) => candidate.getClientRects().length && matchesHotkey(event, candidate.getAttribute('data-hotkey')))
       .at(-1)
     if (!el) return
 
     event.preventDefault()
-    el.dispatchEvent(new CustomEvent('hotkey-fire', { cancelable: true }))
+    // Same contract as @github/hotkey: click unless a hotkey-fire listener cancelled the event.
+    if (el.dispatchEvent(new CustomEvent('hotkey-fire', { cancelable: true }))) el.click()
   })
 }
