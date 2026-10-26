@@ -206,6 +206,20 @@ class Avo::Resources::Movie < Avo::Resources::ArrayResource
 end
 ```
 
+For a source that can return one page by itself (a cache, a search index, a store of the app's own), fetch only the page shown. Inside `records`, `page` and `per_page` are the index's page and page size (`nil` outside an index). Return `{records:, count:}` (that page and the total across pages) and Avo shows the page as it is instead of slicing it. Also set `find_record_method`: Avo holds only that page, so show, edit and actions on selected rows find their record through it. It may return a hash. An `as: :array` field's block gets the same `page` / `per_page` and can return the same hash.
+
+```ruby
+class Avo::Resources::Bookmark < Avo::Resources::ArrayResource
+  self.find_record_method = -> { BookmarkStore.find(id) }
+
+  def records
+    {records: BookmarkStore.page(page, per: per_page), count: BookmarkStore.count}
+  end
+end
+```
+
+"Select all matching" is hidden on such a resource, since only one page is loaded.
+
 Array resources are read-only by default. To add create, edit and delete, set `self.writable = true` and define `save_record` and `destroy_record` on the resource. Avo fills the record from the form, but array records have no `save!` or `destroy!`:
 
 ```ruby
@@ -229,7 +243,7 @@ Both report success through their return value: return something truthy, or rais
 
 The form's params are scoped under the resource name (`bookmark[title]`). The policy still decides who can create, edit and delete.
 
-Array resources are **Beta**: sorting is not supported, and the array is rebuilt on every request (cache inside `records` if it gets heavy). For external-API-backed data, prefer an [HTTP Resource](https://docs.avohq.io/4.0/http-resource.md).
+Array resources are **Beta**: sorting is not supported, and the array is rebuilt on every request (cache inside `records` if it gets heavy, or paginate at the source as above). For external-API-backed data, use an [HTTP Resource](https://docs.avohq.io/4.0/http-resource.md), not an array resource.
 
 ### 7. Sidebar, shortcuts, external links, and multiple resources per model
 
