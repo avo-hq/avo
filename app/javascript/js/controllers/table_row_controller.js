@@ -1,19 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  connect() {
-    this.isSelecting = false
-    this.boundHandleMouseDown = this.#handleMouseDown.bind(this)
-    this.boundHandleMouseMove = this.#handleMouseMove.bind(this)
-    this.element.addEventListener('mousedown', this.boundHandleMouseDown)
-    this.element.addEventListener('mousemove', this.boundHandleMouseMove)
-  }
-
-  disconnect() {
-    this.element.removeEventListener('mousedown', this.boundHandleMouseDown)
-    this.element.removeEventListener('mousemove', this.boundHandleMouseMove)
-  }
-
   anchor = null
 
   mouseEntered(event) {
@@ -43,11 +30,13 @@ export default class extends Controller {
   }
 
   visitRecord(event) {
-    if (event.type !== 'click') {
+    const isMiddleClick = event.type === 'auxclick' && event.button === 1
+
+    if (event.type !== 'click' && !isMiddleClick) {
       return
     }
 
-    if (this.#isTextSelected()) {
+    if (window.getSelection().toString().length > 0) {
       return
     }
 
@@ -55,13 +44,11 @@ export default class extends Controller {
     const isShiftPressed = event.shiftKey
     // We won't navigate if the user clicks on the item selector cell
     const isItemSelector = event.target.closest('.item-selector-cell')
-    // We won't navigate if the user clicks on a link or button
-    const isLinkOrButton = event.target.closest('a, button')
-    // We won't navigate if the user clicks on a checkbox
-    const isCheckbox = event.target.closest('input[type="checkbox"]')
+    // Leave links and form controls to their own handlers and native browser behavior.
+    const isInteractive = event.target.closest('a, button, input, select, textarea, label, [contenteditable]')
 
-    if (isShiftPressed || isLinkOrButton || isCheckbox || isItemSelector) {
-      return // Don't navigate if a link or button is clicked
+    if (isShiftPressed || isInteractive || isItemSelector) {
+      return
     }
 
     const row = event.target.closest('[data-visit-path]')
@@ -71,31 +58,12 @@ export default class extends Controller {
       return
     }
 
-    if (event.metaKey || event.ctrlKey || row.dataset.visitTarget === '_blank') {
+    if (isMiddleClick || event.metaKey || event.ctrlKey || row.dataset.visitTarget === '_blank') {
+      event.preventDefault()
       this.#visitInNewTab(url)
     } else {
       this.#visitInSameTab(url)
     }
-  }
-
-  #handleMouseDown() {
-    this.isSelecting = false
-  }
-
-  #handleMouseMove(event) {
-    if (event.buttons === 1) { // Left mouse button is being held
-      this.isSelecting = true
-    }
-  }
-
-  #isTextSelected() {
-    if (this.isSelecting || window.getSelection().toString().length > 0) {
-      this.isSelecting = false
-
-      return true
-    }
-
-    return false
   }
 
   #visitInSameTab(url) {
@@ -103,6 +71,6 @@ export default class extends Controller {
   }
 
   #visitInNewTab(url) {
-    window.open(url, '_blank').focus()
+    window.open(url, '_blank', 'noopener,noreferrer')
   }
 }

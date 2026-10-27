@@ -82,7 +82,7 @@ class Avo::Index::TableRowComponent < Avo::BaseComponent
         parent_record: @parent_record,
         parent_or_child_resource: parent_or_child_resource
       ),
-      action: "click->table-row#visitRecord keydown.enter->table-row#visitRecord keydown.space->table-row#visitRecord mouseenter->table-row#mouseEntered mouseleave->table-row#mouseLeft"
+      action: "click->table-row#visitRecord auxclick->table-row#visitRecord keydown.enter->table-row#visitRecord keydown.space->table-row#visitRecord mouseenter->table-row#mouseEntered mouseleave->table-row#mouseLeft"
     }
   end
 end
