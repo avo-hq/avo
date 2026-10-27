@@ -38,6 +38,12 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
           action Avo::Actions::Publish
           filter Avo::Filters::ByStatus
         end
+
+        def scopes
+          remove_scope_all
+          scope Avo::Scopes::Published, default: true
+          scope Avo::Scopes::Drafts
+        end
       end
     RUBY
 
@@ -47,6 +53,10 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
           field :id, as: :id
           field :body, as: :text
           action Avo::Actions::Publish
+        end
+
+        def scopes
+          scope Avo::Scopes::Published
         end
       end
     RUBY
@@ -101,6 +111,13 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
   it "counts distinct wired filters and averages total wirings" do
     expect(metadata[:filters_count]).to eq(1)
     expect(metadata[:filters_per_resource]).to eq("0.5")
+  end
+
+  it "counts distinct wired scopes and the resources that remove the All scope" do
+    # Published is on both resources, Drafts on one -> distinct 2, total 3 over 2 resources.
+    expect(metadata[:scopes_count]).to eq(2)
+    expect(metadata[:scopes_per_resource]).to eq("1.5")
+    expect(metadata[:resources_without_scope_all_count]).to eq(1)
   end
 
   it "reports zero dashboards when none are defined" do

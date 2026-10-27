@@ -95,6 +95,9 @@ module Avo
             actions_per_resource: average(total_wired(resources, :actions), resources_count),
             filters_count: distinct_count(resources, :filters),
             filters_per_resource: average(total_wired(resources, :filters), resources_count),
+            scopes_count: distinct_count(resources, :scopes),
+            scopes_per_resource: average(total_wired(resources, :scopes), resources_count),
+            resources_without_scope_all_count: resources.count(&:removes_scope_all),
             boards_count: resources.count { |r| board?(r) },
             tools_count: files.count { |f| f.kind == :tool },
             forms_count: forms.size,
@@ -151,6 +154,8 @@ module Avo
             file.custom_field_types.merge(concern.custom_field_types)
             file.actions.concat(concern.actions)
             file.filters.concat(concern.filters)
+            file.scopes.concat(concern.scopes)
+            file.removes_scope_all ||= concern.removes_scope_all
             file.kanban_view ||= concern.kanban_view
           end
 
@@ -349,6 +354,8 @@ module Avo
               @custom_field_types = Set.new
               @actions = []
               @filters = []
+              @scopes = []
+              @removes_scope_all = false
               @includes = []
               @namespace = []
             end
@@ -383,6 +390,8 @@ module Avo
                 when :field then record_field(node)
                 when :action then @actions << first_constant_argument(node)
                 when :filter then @filters << first_constant_argument(node)
+                when :scope then @scopes << first_constant_argument(node)
+                when :remove_scope_all then @removes_scope_all = true
                 when :include then @includes.concat(constant_arguments(node))
                 end
               end
@@ -414,6 +423,8 @@ module Avo
                 custom_field_types: @custom_field_types,
                 actions: @actions,
                 filters: @filters,
+                scopes: @scopes.compact,
+                removes_scope_all: @removes_scope_all,
                 includes: @includes.compact
               )
             end
@@ -533,7 +544,7 @@ module Avo
 
         unless const_defined?(:Result)
           Result = Struct.new(:kind, :path, :class_name, :model_class, :kanban_view, :fields_count,
-            :field_types, :custom_field_types, :actions, :filters, :includes)
+            :field_types, :custom_field_types, :actions, :filters, :scopes, :removes_scope_all, :includes)
         end
       end
     end
