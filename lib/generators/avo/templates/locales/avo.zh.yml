@@ -76,6 +76,7 @@ zh:
       hidden_selections:
         one: 1 个选项因搜索而隐藏
         other: "%{count} 个选项因搜索而隐藏"
+    checking_dependents: 正在检查相关记录...
     choose_a_country: 选择一个国家
     choose_an_option: 选择一个选项
     choose_item: 选择 %{item}
@@ -95,6 +96,7 @@ zh:
     delete: 删除
     delete_file: 删除文件
     delete_item: 删除 %{item}
+    destroy_also_deletes: 这也将删除%{records}。
     detach_item: 分离 %{item}
     details: 详情
     download: 下载

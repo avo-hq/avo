@@ -76,6 +76,7 @@ de:
       hidden_selections:
         one: 1 ausgewählte Option durch die Suche ausgeblendet
         other: "%{count} ausgewählte Optionen durch die Suche ausgeblendet"
+    checking_dependents: Verknüpfte Datensätze werden geprüft...
     choose_a_country: Land auswählen
     choose_an_option: Option auswählen
     choose_item: "%{item} auswählen"
@@ -95,6 +96,7 @@ de:
     delete: löschen
     delete_file: Datei löschen
     delete_item: "%{item} löschen"
+    destroy_also_deletes: Dadurch werden auch %{records} gelöscht.
     detach_item: "%{item} abhängen"
     details: Details
     download: Herunterladen

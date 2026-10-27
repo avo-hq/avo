@@ -78,6 +78,7 @@ tr:
       hidden_selections:
         one: 1 seçilen seçenek arama tarafından gizlendi
         other: "%{count} seçilen seçenek arama tarafından gizlendi"
+    checking_dependents: İlgili kayıtlar kontrol ediliyor...
     choose_a_country: Bir ülke seç
     choose_an_option: Bir seçenek seç
     choose_item: "%{item} seçin"
@@ -97,6 +98,7 @@ tr:
     delete: sil
     delete_file: Dosyayı sil
     delete_item: "%{item} öğresini sil"
+    destroy_also_deletes: 'Bu işlem ayrıca şunları da silecek: %{records}.'
     detach_item: "%{item} öğesinin ilişkisini kes"
     details: detaylar
     download: İndir

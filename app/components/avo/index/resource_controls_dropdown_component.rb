@@ -35,6 +35,7 @@ class Avo::Index::ResourceControlsDropdownComponent < Avo::Index::ResourceContro
     link_to delete_path, **control_link_options(control, target: "destroy", control_key: :destroy,
       turbo_frame: params[:turbo_frame],
       turbo_confirm: control.confirmation_message,
+      dependents_url: dependents_path,
       turbo_method: :delete) do
       concat svg("tabler/outline/trash")
       concat control_title_without_resource(control.title)

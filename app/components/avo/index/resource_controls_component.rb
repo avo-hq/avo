@@ -120,6 +120,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
       data: {
         turbo_frame: params[:turbo_frame],
         turbo_confirm: control.confirmation_message,
+        dependents_url: dependents_path,
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,

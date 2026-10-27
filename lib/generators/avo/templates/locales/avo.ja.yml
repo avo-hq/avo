@@ -78,6 +78,7 @@ ja:
       hidden_selections:
         one: 検索によって隠された1つの選択肢
         other: 検索によって隠された%{count}の選択肢
+    checking_dependents: 関連レコードを確認しています...
     choose_a_country: 国を選択
     choose_an_option: オプションを選択
     choose_item: "%{item}を選択"
@@ -97,6 +98,7 @@ ja:
     delete: 削除
     delete_file: ファイルを削除
     delete_item: "%{item}を削除"
+    destroy_also_deletes: "%{records}も削除されます。"
     detach_item: "%{item}を切り離す"
     details: 詳細
     download: ダウンロード

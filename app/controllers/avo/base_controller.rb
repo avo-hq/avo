@@ -6,13 +6,13 @@ module Avo
 
     before_action :set_resource_name
     before_action :set_resource
-    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
+    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview, :dependents]
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
     before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
     # AssociationsController authorizes each of its actions itself, so a new action needs its own check
-    before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
+    before_action :authorize_base_action, except: [:preview, :search, :dependents], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
 
     before_action :set_modal_params
@@ -209,6 +209,14 @@ module Avo
       end
 
       render layout: params[:turbo_frame].blank?
+    end
+
+    # The delete confirmation asks for this when it opens, so it answers only to users who may destroy the record.
+    def dependents
+      authorize_action @record, :destroy
+
+      summary = Avo::Services::DependentsService.new(@record).summary
+      render json: {message: summary && t("avo.destroy_also_deletes", records: summary)}
     end
 
     def search

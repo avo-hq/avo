@@ -76,6 +76,7 @@ ua:
       hidden_selections:
         one: 1 вибрана опція прихована за пошуком
         other: "%{count} вибраних опцій приховано за пошуком"
+    checking_dependents: Перевірка пов'язаних записів...
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію
     choose_item: Виберіть %{item}
@@ -95,6 +96,7 @@ ua:
     delete: Видалити
     delete_file: Видалити файл
     delete_item: Видалити %{item}
+    destroy_also_deletes: 'Це також видалить: %{records}.'
     detach_item: Відкріпити %{item}
     details: Деталі
     download: Завантажити

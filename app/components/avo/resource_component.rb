@@ -199,6 +199,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       data: {
         **data_attrs,
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
+        dependents_url: dependents_path,
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
@@ -350,6 +351,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
       } do
       action.label
     end
+  end
+
+  # The confirm dialog fetches this when it opens, so rendering a list of records runs no dependents queries.
+  def dependents_path
+    return unless Avo::Services::DependentsService.applies_to?(@resource.record)
+
+    helpers.avo.send :"dependents_resources_#{@resource.singular_route_key}_path", @resource.record
   end
 
   def is_a_related_resource?

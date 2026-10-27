@@ -78,6 +78,7 @@ pl:
         many: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
         one: 1 wybrana opcja ukryta przez wyszukiwanie
         other: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
+    checking_dependents: Sprawdzanie powiązanych rekordów...
     choose_a_country: Wybierz kraj
     choose_an_option: Wybierz opcję
     choose_item: Wybierz %{item}
@@ -97,6 +98,7 @@ pl:
     delete: Usuń
     delete_file: Usuń plik
     delete_item: Usuń %{item}
+    destroy_also_deletes: 'Spowoduje to również usunięcie: %{records}.'
     detach_item: Odłącz %{item}
     details: Szczegóły
     download: Pobierz
