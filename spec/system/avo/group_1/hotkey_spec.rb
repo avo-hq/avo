@@ -108,6 +108,17 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_css(".hotkey", visible: :hidden)
   end
 
+  it "highlights the searched text in the keyboard shortcuts panel" do
+    visit "/admin/resources/projects"
+
+    dispatch_keydown("?", code: "Slash", shift_key: true)
+    find(".hotkey__search-input").fill_in(with: "Row")
+
+    highlighted = page.evaluate_script("[...CSS.highlights.get('hotkey-search')].map((range) => range.toString())")
+    expect(highlighted).to include("row")
+    expect(highlighted.map(&:downcase).uniq).to eq(["row"])
+  end
+
   it "does not open the keyboard shortcuts panel while typing in a search field" do
     visit "/admin/resources/projects"
 
