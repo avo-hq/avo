@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version = Avo::VERSION
   spec.authors = ["Adrian Marin", "Mihai Marin", "Paul Bob"]
   spec.email = ["hi@avohq.io"]
-  spec.homepage = "https://avohq.io"
+  spec.homepage = "https://avohq.io/gems/avo"
   spec.summary = "Admin panel framework and Content Management System for Ruby on Rails."
   spec.description = "Avo is a very custom Content Management System for Ruby on Rails that saves engineers and teams months of development time by building user interfaces and logic using configuration rather than traditional coding; When configuration is not enough, you can fallback to familiar Ruby on Rails code."
   spec.license = "LGPL-3.0"
@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
     spec.metadata["bug_tracker_uri"] = "https://github.com/avo-hq/avo/issues"
     spec.metadata["changelog_uri"] = "https://avohq.io/releases"
     spec.metadata["documentation_uri"] = "https://docs.avohq.io"
-    spec.metadata["homepage_uri"] = "https://avohq.io"
+    spec.metadata["homepage_uri"] = spec.homepage
     spec.metadata["source_code_uri"] = "https://github.com/avo-hq/avo"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \

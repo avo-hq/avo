@@ -25,6 +25,9 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
   end
 
   def encrypted_query
+    # A page cut by its source is all that is held, so there is nothing to select across pages
+    return :select_all_disabled if @query.is_a?(Avo::Resources::ArrayResource::Page)
+
     # TODO: move this to the resource where we can apply the adapter pattern
     if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
       @query = @query.result

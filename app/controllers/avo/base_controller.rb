@@ -703,7 +703,7 @@ module Avo
       value.positive? ? value : fallback
     end
 
-    # If we don't get a query object predefined from a child controller like associations, just spin one up.
+    # Spins up the index query unless one is predefined. AssociationsController overrides it to start from the parent record.
     # `base_index_query` is association-aware so the charts controller can reuse the same starting point.
     def set_query
       @query ||= base_index_query

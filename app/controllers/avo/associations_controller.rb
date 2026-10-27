@@ -22,22 +22,6 @@ module Avo
       @parent_resource, @parent_record = @resource, @record
       @resource = @related_resource
 
-      # When array field the records are fetched from the field block, from the parent record or from the resource def records
-      # When other field type, like has_many the @query is directly fetched from the parent record
-      # Don't apply policy on array type since it can return an array of hashes where `.all` and other methods used on policy will fail.
-      @query = if @field.type == "array"
-        @resource.fetch_records(Avo::ExecutionContext.new(target: @field.block, record: @parent_record).handle || @parent_record.try(@field.id))
-      else
-        association_query_scope(
-          parent_resource: @parent_resource,
-          parent_record: @parent_record,
-          association_name: association_from_params,
-          authorization: @related_authorization,
-          resource: @resource,
-          field_association_name: params[:related_name]
-        )
-      end
-
       super
     end
 
@@ -117,6 +101,26 @@ module Avo
     end
 
     private
+
+    # Base's index calls it once the pagination params are set, so an array field can fetch only the page shown.
+    def set_query
+      # When array field the records are fetched from the field block, from the parent record or from the resource def records
+      # When other field type, like has_many the @query is directly fetched from the parent record
+      # Don't apply policy on array type since it can return an array of hashes where `.all` and other methods used on policy will fail.
+      @query = if @field.type == "array"
+        @resource.index_params = @index_params
+        @resource.fetch_records(@resource.records_from_field(@field, @parent_record))
+      else
+        association_query_scope(
+          parent_resource: @parent_resource,
+          parent_record: @parent_record,
+          association_name: association_from_params,
+          authorization: @related_authorization,
+          resource: @resource,
+          field_association_name: params[:related_name]
+        )
+      end
+    end
 
     def set_reflection
       @reflection = @record.class.try(:reflect_on_association, association_from_params)
