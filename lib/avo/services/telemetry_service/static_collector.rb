@@ -74,9 +74,10 @@ module Avo
 
           files = parse_files
           concerns = files.select { |f| f.kind == :concern }
-          files.each { |file| absorb_concerns(file, concerns) }
+          configured = configured_resources(files)
+          (files + configured).each { |file| absorb_concerns(file, concerns) }
 
-          resources = files.select { |f| f.kind == :resource } + configured_resources(files)
+          resources = files.select { |f| f.kind == :resource } + configured
           forms = files.select { |f| f.kind == :form }
           custom_field_types = custom_field_types_from(files)
 
@@ -207,11 +208,12 @@ module Avo
 
         # `Avo::Resources::UserProfile` -> the app/ file that declares it.
         # Candidates come from the file name (Zeitwerk's own rule); parsing
-        # confirms the match so a same-named class elsewhere can't slip in.
+        # confirms the full name, so app/models/user.rb (`User`) never stands
+        # in for `Avo::Resources::User`.
         def resource_path_for(name)
+          name = name.delete_prefix("::")
           Array(app_files_by_basename[name.split("::").last.underscore]).find do |path|
-            declared = parse(path, :resource)&.class_name
-            declared == name || declared.to_s.split("::").last == name.split("::").last
+            parse(path, :resource)&.class_name == name
           end
         end
 
@@ -298,191 +300,220 @@ module Avo
           sprintf("%0.01f", count / (divisor + 0.0))
         end
 
-        # Reads `config.resources = [...]` out of the Avo initializer. Entries
-        # may be constants or strings; both name a resource class.
-        class ConfigVisitor < Prism::Visitor
-          attr_reader :resource_names
+        # The visitors subclass Prism::Visitor, and Avo eager-loads lib/ at boot,
+        # so on a Ruby without Prism they must not be defined at all; `collect`
+        # returns early there and never reaches them.
+        if defined?(Prism)
+          # Reads `config.resources = [...]` out of the Avo initializer. Entries
+          # may be constants or strings; both name a resource class.
+          class ConfigVisitor < Prism::Visitor
+            attr_reader :resource_names
 
-          def initialize
-            @resource_names = []
-          end
-
-          def visit_call_node(node)
-            if node.name == :resources= && (array = node.arguments&.arguments&.first).is_a?(Prism::ArrayNode)
-              @resource_names.concat(array.elements.filter_map { |element| constant_or_string(element) })
+            def initialize
+              @resource_names = []
             end
 
-            super
-          end
+            def visit_call_node(node)
+              if node.name == :resources= && (array = node.arguments&.arguments&.first).is_a?(Prism::ArrayNode)
+                @resource_names.concat(array.elements.filter_map { |element| constant_or_string(element) })
+              end
 
-          private
+              super
+            end
 
-          def constant_or_string(node)
-            case node
-            when Prism::StringNode then node.unescaped.presence
-            when Prism::ConstantReadNode, Prism::ConstantPathNode then Naming.constant_name(node)
+            private
+
+            def constant_or_string(node)
+              case node
+              when Prism::StringNode then node.unescaped.presence
+              when Prism::ConstantReadNode, Prism::ConstantPathNode then Naming.constant_name(node)
+              end
             end
           end
-        end
 
-        # One parsed file's tally. Walks the AST counting the receiverless DSL
-        # calls (`field`, `action`, `filter`) and capturing the class shape.
-        class FileVisitor < Prism::Visitor
-          attr_reader :class_name
+          # One parsed file's tally. Walks the AST counting the receiverless DSL
+          # calls (`field`, `action`, `filter`) and capturing the class shape.
+          class FileVisitor < Prism::Visitor
+            attr_reader :class_name
 
-          def initialize
-            @class_name = nil
-            @model_class = nil
-            @kanban_view = false
-            @fields_count = 0
-            @field_types = Hash.new(0)
-            @custom_field_types = Set.new
-            @actions = []
-            @filters = []
-            @includes = []
-          end
+            def initialize
+              @class_name = nil
+              @model_class = nil
+              @kanban_view = false
+              @fields_count = 0
+              @field_types = Hash.new(0)
+              @custom_field_types = Set.new
+              @actions = []
+              @filters = []
+              @includes = []
+              @namespace = []
+            end
 
-          # `class Avo::Fields::ColorPickerField < ...` — record the first
-          # (outermost) class name; used to identify app-defined custom fields.
-          def visit_class_node(node)
-            @class_name ||= Naming.constant_name(node.constant_path)
-            super
-          end
-
-          # Concerns are modules, and they carry fields worth counting.
-          def visit_module_node(node)
-            @class_name ||= Naming.constant_name(node.constant_path)
-            super
-          end
-
-          # The DSL methods are calls with no explicit receiver:
-          #   field :name, as: :text   /   action Avo::Actions::Export
-          # We also note resource-level config used to detect kanban boards:
-          #   self.model_class = "Avo::Kanban::Board"   /   self.kanban_view = …
-          def visit_call_node(node)
-            if node.receiver.nil?
-              case node.name
-              when :field then record_field(node)
-              when :action then @actions << first_constant_argument(node)
-              when :filter then @filters << first_constant_argument(node)
-              when :include then @includes.concat(constant_arguments(node))
+            # Records the full name of the file's entity, so both
+            # `class Avo::Resources::User` and `module Avo; module Resources;
+            # class User` give "Avo::Resources::User". A module whose body is
+            # just another module or class is only a namespace wrapper; the
+            # first class, or the first module with code of its own, wins.
+            def visit_class_node(node)
+              within_namespace(node) do
+                @class_name ||= @namespace.join("::")
+                super
               end
             end
 
-            case node.name
-            when :model_class= then @model_class = string_or_constant_argument(node)
-            when :kanban_view, :kanban_view= then @kanban_view = true
+            # Concerns are modules, and they carry fields worth counting.
+            def visit_module_node(node)
+              within_namespace(node) do
+                @class_name ||= @namespace.join("::") unless namespace_wrapper?(node)
+                super
+              end
             end
 
-            super
-          end
+            # The DSL methods are calls with no explicit receiver:
+            #   field :name, as: :text   /   action Avo::Actions::Export
+            # We also note resource-level config used to detect kanban boards:
+            #   self.model_class = "Avo::Kanban::Board"   /   self.kanban_view = …
+            def visit_call_node(node)
+              if node.receiver.nil?
+                case node.name
+                when :field then record_field(node)
+                when :action then @actions << first_constant_argument(node)
+                when :filter then @filters << first_constant_argument(node)
+                when :include then @includes.concat(constant_arguments(node))
+                end
+              end
 
-          # Catches `def self.kanban_view` / `def kanban_view`.
-          def visit_def_node(node)
-            @kanban_view = true if node.name == :kanban_view
-            super
-          end
+              case node.name
+              when :model_class= then @model_class = string_or_constant_argument(node)
+              when :kanban_view, :kanban_view= then @kanban_view = true
+              end
 
-          # Returns a struct-like result tagged with the file's classification.
-          def to_result(kind, path = nil)
-            Result.new(
-              kind: kind,
-              path: path,
-              class_name: @class_name,
-              model_class: @model_class,
-              kanban_view: @kanban_view,
-              fields_count: @fields_count,
-              field_types: @field_types,
-              custom_field_types: @custom_field_types,
-              actions: @actions,
-              filters: @filters,
-              includes: @includes.compact,
-              resolved: false
-            )
-          end
-
-          private
-
-          # A bare `field` with no arguments is not a declaration — it is the
-          # block-local field object being read (`"#{field.id}": …`). Only a
-          # call that names something can declare one.
-          def record_field(node)
-            return if node.arguments&.arguments.blank?
-
-            @fields_count += 1
-
-            as = as_argument(node)
-            type = field_type(as)
-            return if type.nil?
-
-            @field_types[type] += 1
-            @custom_field_types << type if custom_field_class?(as)
-          end
-
-          # `field :x, as: :text` and `field :x, as: MyField` are both valid —
-          # FieldParser branches on Symbol vs Class. A class contributes the
-          # same type name the runtime would report: `RadioField` -> "radio".
-          # With no `as:` at all, Avo defaults to :text. A computed `as:` stays
-          # unknown: the field is counted, its type can't be.
-          def field_type(as)
-            case as
-            when nil then DEFAULT_FIELD_TYPE
-            when Prism::SymbolNode then as.unescaped.to_sym
-            when Prism::ConstantReadNode, Prism::ConstantPathNode then class_field_type(as)
-            end
-          end
-
-          # A class-valued `as:` is a custom field unless it points back into
-          # Avo's own namespace.
-          def custom_field_class?(as)
-            return false unless as.is_a?(Prism::ConstantReadNode) || as.is_a?(Prism::ConstantPathNode)
-
-            !Naming.constant_name(as).to_s.delete_prefix("::").start_with?(CORE_FIELD_NAMESPACE)
-          end
-
-          def class_field_type(as)
-            name = Naming.constant_name(as).to_s.split("::").last.to_s
-            name.delete_suffix("Field").underscore.presence&.to_sym
-          end
-
-          def as_argument(node)
-            args = node.arguments&.arguments or return nil
-            hash = args.find { |a| a.is_a?(Prism::KeywordHashNode) || a.is_a?(Prism::HashNode) }
-            return nil unless hash
-
-            pair = hash.elements.find do |element|
-              element.is_a?(Prism::AssocNode) &&
-                element.key.is_a?(Prism::SymbolNode) &&
-                element.key.unescaped == "as"
+              super
             end
 
-            pair&.value
-          end
-
-          # `action Avo::Actions::Export` -> "Avo::Actions::Export". Returns nil
-          # for dynamic wirings we can't name (counted by the caller as present
-          # only when nameable, to keep `uniq` meaningful).
-          def first_constant_argument(node)
-            arg = node.arguments&.arguments&.first
-            return nil unless arg.is_a?(Prism::ConstantReadNode) || arg.is_a?(Prism::ConstantPathNode)
-
-            Naming.constant_name(arg)
-          end
-
-          # `include A, B` takes any number of modules.
-          def constant_arguments(node)
-            Array(node.arguments&.arguments).filter_map do |arg|
-              Naming.constant_name(arg) if arg.is_a?(Prism::ConstantReadNode) || arg.is_a?(Prism::ConstantPathNode)
+            # Catches `def self.kanban_view` / `def kanban_view`.
+            def visit_def_node(node)
+              @kanban_view = true if node.name == :kanban_view
+              super
             end
-          end
 
-          # The value of `self.model_class = …`, whether a string literal
-          # (`"Avo::Kanban::Board"`) or a constant (`Avo::Kanban::Board`).
-          def string_or_constant_argument(node)
-            arg = node.arguments&.arguments&.first
-            case arg
-            when Prism::StringNode then arg.unescaped
-            when Prism::ConstantReadNode, Prism::ConstantPathNode then Naming.constant_name(arg)
+            # Returns a struct-like result tagged with the file's classification.
+            def to_result(kind, path = nil)
+              Result.new(
+                kind: kind,
+                path: path,
+                class_name: @class_name,
+                model_class: @model_class,
+                kanban_view: @kanban_view,
+                fields_count: @fields_count,
+                field_types: @field_types,
+                custom_field_types: @custom_field_types,
+                actions: @actions,
+                filters: @filters,
+                includes: @includes.compact,
+                resolved: false
+              )
+            end
+
+            private
+
+            # `::Foo` resets to the top level; otherwise the name nests.
+            def within_namespace(node)
+              name = Naming.constant_name(node.constant_path).to_s
+              saved = @namespace
+              @namespace = name.start_with?("::") ? [name.delete_prefix("::")] : @namespace + [name]
+              yield
+            ensure
+              @namespace = saved
+            end
+
+            def namespace_wrapper?(node)
+              statements = node.body
+              statements.is_a?(Prism::StatementsNode) && statements.body.size == 1 &&
+                (statements.body.first.is_a?(Prism::ModuleNode) || statements.body.first.is_a?(Prism::ClassNode))
+            end
+
+            # A bare `field` with no arguments is not a declaration — it is the
+            # block-local field object being read (`"#{field.id}": …`). Only a
+            # call that names something can declare one.
+            def record_field(node)
+              return if node.arguments&.arguments.blank?
+
+              @fields_count += 1
+
+              as = as_argument(node)
+              type = field_type(as)
+              return if type.nil?
+
+              @field_types[type] += 1
+              @custom_field_types << type if custom_field_class?(as)
+            end
+
+            # `field :x, as: :text` and `field :x, as: MyField` are both valid —
+            # FieldParser branches on Symbol vs Class. A class contributes the
+            # same type name the runtime would report: `RadioField` -> "radio".
+            # With no `as:` at all, Avo defaults to :text. A computed `as:` stays
+            # unknown: the field is counted, its type can't be.
+            def field_type(as)
+              case as
+              when nil then DEFAULT_FIELD_TYPE
+              when Prism::SymbolNode then as.unescaped.to_sym
+              when Prism::ConstantReadNode, Prism::ConstantPathNode then class_field_type(as)
+              end
+            end
+
+            # A class-valued `as:` is a custom field unless it points back into
+            # Avo's own namespace.
+            def custom_field_class?(as)
+              return false unless as.is_a?(Prism::ConstantReadNode) || as.is_a?(Prism::ConstantPathNode)
+
+              !Naming.constant_name(as).to_s.delete_prefix("::").start_with?(CORE_FIELD_NAMESPACE)
+            end
+
+            def class_field_type(as)
+              name = Naming.constant_name(as).to_s.split("::").last.to_s
+              name.delete_suffix("Field").underscore.presence&.to_sym
+            end
+
+            def as_argument(node)
+              args = node.arguments&.arguments or return nil
+              hash = args.find { |a| a.is_a?(Prism::KeywordHashNode) || a.is_a?(Prism::HashNode) }
+              return nil unless hash
+
+              pair = hash.elements.find do |element|
+                element.is_a?(Prism::AssocNode) &&
+                  element.key.is_a?(Prism::SymbolNode) &&
+                  element.key.unescaped == "as"
+              end
+
+              pair&.value
+            end
+
+            # `action Avo::Actions::Export` -> "Avo::Actions::Export". Returns nil
+            # for dynamic wirings we can't name (counted by the caller as present
+            # only when nameable, to keep `uniq` meaningful).
+            def first_constant_argument(node)
+              arg = node.arguments&.arguments&.first
+              return nil unless arg.is_a?(Prism::ConstantReadNode) || arg.is_a?(Prism::ConstantPathNode)
+
+              Naming.constant_name(arg)
+            end
+
+            # `include A, B` takes any number of modules.
+            def constant_arguments(node)
+              Array(node.arguments&.arguments).filter_map do |arg|
+                Naming.constant_name(arg) if arg.is_a?(Prism::ConstantReadNode) || arg.is_a?(Prism::ConstantPathNode)
+              end
+            end
+
+            # The value of `self.model_class = …`, whether a string literal
+            # (`"Avo::Kanban::Board"`) or a constant (`Avo::Kanban::Board`).
+            def string_or_constant_argument(node)
+              arg = node.arguments&.arguments&.first
+              case arg
+              when Prism::StringNode then arg.unescaped
+              when Prism::ConstantReadNode, Prism::ConstantPathNode then Naming.constant_name(arg)
+              end
             end
           end
         end

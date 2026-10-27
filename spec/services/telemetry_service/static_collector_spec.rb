@@ -1,6 +1,7 @@
 require "rails_helper"
 require "fileutils"
 require "tmpdir"
+require "open3"
 
 RSpec.describe Avo::Services::TelemetryService::StaticCollector do
   # Builds a throwaway app root so the assertions stay deterministic and
@@ -359,6 +360,100 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
     it "does not double-count one already found under app/avo" do
       # Post is listed in the initializer and lives in app/avo/resources.
       expect(metadata[:field_types]["textarea"]).to eq(1)
+    end
+  end
+
+  context "with a concern and a field declared inside nested modules" do
+    before do
+      write "concerns/stamps.rb", <<~RUBY
+        module Avo
+          module Concerns
+            module Stamps
+              def fields
+                field :created_at, as: :date_time
+              end
+            end
+          end
+        end
+      RUBY
+
+      write "fields/stars_field.rb", <<~RUBY
+        module Avo
+          module Fields
+            class StarsField < BaseField; end
+          end
+        end
+      RUBY
+
+      write "resources/review.rb", <<~RUBY
+        class Avo::Resources::Review < Avo::BaseResource
+          include Avo::Concerns::Stamps
+
+          def fields
+            field :rating, as: :stars
+          end
+        end
+      RUBY
+    end
+
+    it "resolves them by their full name, not the outer module" do
+      expect(metadata[:field_types]["date_time"]).to eq(1)
+      # color_picker from the base fixture, plus stars.
+      expect(metadata[:custom_fields_count]).to eq(2)
+    end
+  end
+
+  context "with a configured resource that shares its name with a model" do
+    before do
+      write_app_file "config/initializers/avo.rb", <<~RUBY
+        Avo.configure { |config| config.resources = [Avo::Resources::Widget] }
+      RUBY
+
+      # Globbed before app/resources/widget.rb.
+      write_app_file "app/models/widget.rb", "class Widget < ApplicationRecord; end"
+
+      write_app_file "app/resources/widget.rb", <<~RUBY
+        class Avo::Resources::Widget < Avo::BaseResource
+          include Avo::Concerns::Stamps
+
+          def fields
+            field :name, as: :text
+          end
+        end
+      RUBY
+
+      write "concerns/stamps.rb", <<~RUBY
+        module Avo::Concerns::Stamps
+          def fields
+            field :created_at, as: :date_time
+          end
+        end
+      RUBY
+    end
+
+    it "counts the resource, with its concern, and not the model" do
+      expect(metadata[:resources_count]).to eq(3)
+      expect(metadata[:fields_count]).to eq(8)
+      expect(metadata[:field_types]["date_time"]).to eq(1)
+    end
+  end
+
+  context "on a Ruby without Prism" do
+    it "loads, and collects nothing" do
+      script = <<~RUBY
+        module Kernel
+          alias_method :original_require, :require
+          def require(name) = (name == "prism") ? raise(LoadError) : original_require(name)
+        end
+        load ARGV.fetch(0)
+        print Avo::Services::TelemetryService::StaticCollector.new(Dir.pwd).collect.inspect
+      RUBY
+      source = Avo::Engine.root.join("lib/avo/services/telemetry_service/static_collector.rb").to_s
+
+      output, status = Open3.capture2e(RbConfig.ruby, "-e", script, source)
+
+      expect(status).to be_success, output
+      expect(output).to eq("{}")
     end
   end
 
