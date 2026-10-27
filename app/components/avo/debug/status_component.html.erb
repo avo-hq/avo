@@ -2,28 +2,28 @@
   <%= render ui.panel(title: 'Avo Status', description: 'Use this page to debug your Avo instance.') do |panel| %>
     <% panel.with_card do %>
       <div class="grid gap-4 grid-cols-2">
-        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
+        <div class="relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4 h-full">
           <div class="flex justify-between w-full">
             <div class="font-semibold">License info</div>
           </div>
           <div class="flex flex-col flex-1">
             <div>
               <div class="text-xl font-semibold">
-                <span class="text-green-700 text-xl">
+                <span class="text-success-content text-xl">
                   <%= helpers.svg "tabler/outline/rosette-discount-check", class: "h-5 inline -mt-1 relative" %> <span>Community</span>
                 </span> license
               </div>
               <div class="mt-4">
                 <dl>
                   <% information_items.each do |key, value| %>
-                    <dt><%= key.humanize %></dt>
+                    <dt class="text-content-secondary"><%= key.humanize %></dt>
                     <dd><%= value %></dd>
                   <% end %>
                 </dl>
               </div>
-              <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-sm">
-                <div class="font-semibold text-blue-800 mb-2">Ready to level up?</div>
-                <p class="text-sm text-blue-700 mb-4">
+              <div class="mt-6 p-4 bg-tertiary border border-info rounded-sm">
+                <div class="font-semibold text-info-content mb-2">Ready to level up?</div>
+                <p class="text-sm text-info-content mb-4">
                   Visit the link below, select your license, and head to the <strong>Upgrade</strong> section to get started.
                 </p>
                 <%= a_link 'https://avohq.io/licenses',
@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
+        <div class="relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4 h-full">
           <div class="flex justify-between w-full">
             <div class="font-semibold">Plugins</div>
           </div>
@@ -59,6 +59,15 @@
             </div>
           </div>
         </div>
+        <% if Avo::IN_DEVELOPMENT %>
+          <div class="col-span-2 relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4">
+            <div class="flex justify-between w-full">
+              <div class="font-semibold">Telemetry</div>
+              <div class="text-sm text-content-secondary">The payload sent to HQ. Shown only when AVO_IN_DEVELOPMENT=1.</div>
+            </div>
+            <pre class="text-xs overflow-x-auto"><%= telemetry_json %></pre>
+          </div>
+        <% end %>
       </div>
     <% end %>
   <% end %>

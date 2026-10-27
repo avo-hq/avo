@@ -18,6 +18,13 @@ class Avo::Debug::StatusComponent < Avo::BaseComponent
     }.stringify_keys.except(*Avo.configuration.exclude_from_status)
   end
 
+  def telemetry_json
+    request_info = {host: Avo::Current.request&.host, port: Avo::Current.request&.port}
+    JSON.pretty_generate(Avo::Services::HqReporter.payload(request_info))
+  rescue => error
+    "Failed to build the telemetry payload: #{error.class}: #{error.message}"
+  end
+
   def cache_operational
     icon, color = if Avo::Services::TelemetryService.cache_operational?
       ["tabler/outline/circle-check", "text-green-500"]
