@@ -1,160 +1,155 @@
 # frozen_string_literal: true
 
 class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
+  KEY_LABELS = {
+    "enter" => "↵",
+    "return" => "↵",
+    "escape" => "Esc",
+    "arrowup" => "↑",
+    "arrowdown" => "↓",
+    "arrowleft" => "←",
+    "arrowright" => "→",
+    "plus" => "+"
+  }.freeze
+
   def sections
     @sections ||= [
       build_section(
         "Navigation",
         [
-          shortcut(action: "Show keyboard shortcuts", keys: ["?"]),
-          shortcut(action: "Focus Global Search", keys: {mac: ["Cmd", "K"], other: ["Ctrl", "K"]}),
-          shortcut(action: "Focus page content", keys: ["Shift", "T"]),
-          shortcut(action: "Toggle sidebar", keys: ["Shift", "\\"]),
-          shortcut(action: "Close modal", keys: ["Esc"]),
-          shortcut(
-            action: "Navigate options in the modal",
-            any_of: [["↑"], ["↓"]],
-            keys_aria_label: "Up arrow or down arrow"
-          ),
-          shortcut(action: "Go back", keys: ["B"]),
-          shortcut(action: "Toggle keyboard shortcut badges", keys: ["Shift", "K"]),
-          *assistant_shortcuts
+          bound("shortcuts.toggle"),
+          bound("navigation.focus_content"),
+          bound("sidebar.toggle"),
+          fixed("Close modal", "Escape"),
+          fixed("Navigate options in the modal", "ArrowUp,ArrowDown", keys_aria_label: "Up arrow or down arrow"),
+          bound("navigation.go_back"),
+          bound("navigation.reload"),
+          bound("hotkeys.toggle_badges")
         ]
       ),
       build_section(
         "Edit view",
         [
-          shortcut(action: "Submit form", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
-          shortcut(action: "Unfocus field", keys: ["Esc"]),
-          shortcut(action: "Go to index", keys: ["I"])
+          fixed("Submit form", "Mod+Enter"),
+          fixed("Unfocus field", "Escape"),
+          bound("resource.go_to_index")
         ]
       ),
       build_section(
         "Show view",
         [
-          shortcut(action: "Delete record", keys: ["D"]),
-          shortcut(action: "Edit record", keys: ["E"]),
-          shortcut(action: "Open actions", keys: ["A"]),
-          shortcut(action: "Create new record", keys: ["C"]),
-          shortcut(action: "Go to index", keys: ["I"])
+          bound("record.delete"),
+          bound("record.edit"),
+          bound("resource.actions"),
+          bound("resource.new"),
+          bound("resource.go_to_index")
         ]
       ),
       build_section(
         "Action",
         [
-          shortcut(action: "Run action", keys: {mac: ["Cmd", "↵"], other: ["Ctrl", "↵"]}),
-          shortcut(action: "Cancel action", keys: ["Esc"])
+          fixed("Run action", "Mod+Enter"),
+          fixed("Cancel action", "Escape")
         ]
       ),
       build_section(
         "Appearance",
         [
-          shortcut(action: "Cycle color scheme (auto / light / dark)", keys: ["Shift", "M"]),
-          shortcut(action: "Cycle neutral theme", keys: ["Shift", "N"]),
-          shortcut(action: "Cycle accent color", keys: ["Shift", "A"]),
-          shortcut(action: "Toggle appearance sound", keys: ["Shift", "S"])
+          bound("appearance.cycle_scheme"),
+          bound("appearance.cycle_neutral"),
+          bound("appearance.cycle_accent"),
+          bound("appearance.toggle_sound")
         ]
       ),
       build_section(
         "Index view",
         [
-          shortcut(action: "Focus search", keys: ["/"]),
-          shortcut(action: "Create new record", keys: ["C"]),
-          shortcut(action: "Open actions", keys: ["A"]),
-          shortcut(
-            action: "Focus table and move to next / previous row",
-            any_of: [["J"], ["K"]],
-            keys_aria_label: "J or K"
-          ),
-          shortcut(
-            action: "Navigate rows (when table is focused)",
-            any_of: [["↑"], ["↓"]],
-            keys_aria_label: "Up arrow or down arrow"
-          ),
-          shortcut(action: "Open record", keys: ["↵"]),
-          shortcut(action: "Select / deselect row", keys: ["Space"]),
-          shortcut(action: "Clear row focus / deselect rows", keys: ["Esc"]),
-          shortcut(action: "Table view", keys: ["V", "T"]),
-          shortcut(action: "Grid view", keys: ["V", "G"]),
-          shortcut(action: "Map view", keys: ["V", "M"])
+          bound("index.focus_search"),
+          bound("resource.new"),
+          bound("resource.actions"),
+          bound("index.next_row"),
+          bound("index.previous_row"),
+          fixed("Navigate rows (when table is focused)", "ArrowUp,ArrowDown", keys_aria_label: "Up arrow or down arrow"),
+          fixed("Open record", "Enter"),
+          fixed("Select / deselect row", "Space"),
+          fixed("Clear row focus / deselect rows", "Escape"),
+          bound("index.view_table"),
+          bound("index.view_grid"),
+          bound("index.view_map")
         ]
       )
-    ]
+    ].then { |core_sections| with_plugin_shortcuts(core_sections) }
+      .reject { |section| section[:shortcuts].empty? }
   end
 
   def render_shortcut_keys(shortcut)
-    if shortcut[:any_of].present?
-      render_shortcut_alternatives(shortcut[:any_of])
-    else
-      render_chord(shortcut[:keys])
-    end
+    aliases = Avo::Hotkeys.parse(shortcut[:hotkey])
+
+    helpers.safe_join(
+      aliases.flat_map.with_index do |sequence, index|
+        [
+          (tag.span("or", class: "hotkey__or", aria: {hidden: true}) if index.positive?),
+          *sequence.map { |chord| render_chord(chord) }
+        ].compact
+      end
+    )
   end
 
   private
 
-  # avo-ai binds Cmd/Ctrl+J itself (its chat bar listens for the keydown directly, so it
-  # fires from inside a field too). Core has no assistant to open, so the modal only lists it when
-  # the gem is installed.
-  def assistant_shortcuts
-    return [] unless Avo.plugin_manager.installed?("avo-ai")
+  # Plugins name the section their shortcuts belong to; a section core doesn't have is added at the end.
+  def with_plugin_shortcuts(core_sections)
+    plugin_entries = Avo::Hotkeys.entries - Avo::Hotkeys.core_entries
 
-    [shortcut(action: "Open the assistant", keys: {mac: ["Cmd", "J"], other: ["Ctrl", "J"]})]
+    plugin_entries.group_by { |entry| entry.section.presence || "Other" }.each do |title, entries|
+      section = core_sections.find { |core_section| core_section[:title] == title }
+      section ||= build_section(title, []).tap { |new_section| core_sections << new_section }
+      section[:shortcuts].concat(entries.filter_map { |entry| bound(entry.id) })
+    end
+
+    core_sections
   end
 
   def build_section(title, shortcuts)
     {
       id: "hotkey-group-#{title.parameterize.underscore}",
       title: title,
-      shortcuts: shortcuts
+      shortcuts: shortcuts.compact
     }
   end
 
-  def shortcut(action:, keys: nil, any_of: nil, keys_aria_label: nil)
-    {
-      action: action,
-      keys: keys,
-      any_of: any_of,
-      keys_aria_label: keys_aria_label
-    }
+  # A disabled binding returns nil so the row disappears from the modal.
+  def bound(id)
+    hotkey = Avo::Hotkeys.key_for(id)
+    return if hotkey.nil?
+
+    # An alias binding ("j,ArrowDown") shows its first alternative here, as the badges do.
+    {action: Avo::Hotkeys.find(id).label, hotkey: Avo::Hotkeys.parse(hotkey).first.join(" "), keys_aria_label: nil}
   end
 
-  def render_shortcut_alternatives(chords)
-    helpers.safe_join(
-      chords.flat_map.with_index do |chord, index|
-        [
-          (tag.span("or", class: "hotkey__or", aria: {hidden: true}) if index.positive?),
-          render_chord(chord)
-        ].compact
-      end
-    )
+  def fixed(action, hotkey, keys_aria_label: nil)
+    {action:, hotkey:, keys_aria_label:}
   end
 
   def render_chord(chord)
     tag.span class: "hotkey__combo" do
-      helpers.safe_join(chord_fragments(chord))
+      helpers.safe_join(
+        chord.split("+").flat_map.with_index do |key, index|
+          [
+            (tag.span("+", class: "hotkey__key-separator") if index.positive?),
+            render_key(key)
+          ].compact
+        end
+      )
     end
   end
 
-  def chord_fragments(chord)
-    return platform_split_fragments(chord) if platform_split_chord?(chord)
+  def render_key(key)
+    return platform_modifier_key if key == "Mod"
+    return tag.kbd("Ctrl") if key == "Control"
+    return tag.kbd("⌘") if key == "Meta"
 
-    key_fragments(Array(chord))
-  end
-
-  def platform_split_fragments(chord)
-    [
-      platform_modifier_key,
-      *key_fragments(chord[:mac].drop(1), leading_separator: true)
-    ]
-  end
-
-  def key_fragments(keys, leading_separator: false)
-    keys.flat_map.with_index do |key, index|
-      [
-        (tag.span("+", class: "hotkey__key-separator") if leading_separator || index.positive?),
-        tag.kbd(key)
-      ].compact
-    end
+    tag.kbd(KEY_LABELS.fetch(key.downcase, (key.length == 1) ? key.upcase : key))
   end
 
   def platform_modifier_key
@@ -164,14 +159,5 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
         tag.abbr("CTRL", title: "CTRL", class: "no-underline os-mac:hidden")
       ])
     end
-  end
-
-  def platform_split_chord?(chord)
-    chord.is_a?(Hash) &&
-      chord[:mac].is_a?(Array) &&
-      chord[:other].is_a?(Array) &&
-      chord[:mac].size == chord[:other].size &&
-      chord[:mac].first.to_s == "Cmd" &&
-      chord[:other].first.to_s == "Ctrl"
   end
 end

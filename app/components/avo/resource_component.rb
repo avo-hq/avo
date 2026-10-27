@@ -112,7 +112,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       title: control.title,
       data: {
-        hotkey: "b",
+        hotkey: Avo::Hotkeys.key_for("navigation.go_back"),
         go_back: true,
         action: ("click->modal#close" if via_belongs_to),
         tippy: control.title ? :tooltip : nil
@@ -142,13 +142,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # the list fresh from this row's own hydrated resource instead of reusing it.
     actions = as_index_row_control ? row_actions : @actions
 
-    # Actions button hotkey "a" on the main index, show and edit pages (non-nested,
-    # not an index row). The index component doesn't carry a @view, so detect it by
-    # class; show renders through the switcher and edit directly, both of which do
-    # carry a @view, so detect those by view.
-    hotkey = "a" if @reflection.nil? && !as_index_row_control && (
+    # Actions button hotkey on index rows (ActionsComponent hands it to the index-row-navigator) and on the
+    # main index, show and edit pages. The index component carries no @view, so it is detected by class.
+    hotkey = Avo::Hotkeys.key_for("resource.actions") if as_index_row_control || (@reflection.nil? && (
       instance_of?(Avo::Views::ResourceIndexComponent) || @view&.show? || @view&.edit?
-    )
+    ))
 
     render Avo::ActionsComponent.new(
       actions:,
@@ -188,7 +186,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # Same as edit button: prevents @github/hotkey from registering all row buttons at once.
     is_row_control = row_controls_context?
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
-    data_attrs = {hotkey_attr => "d"}
+    data_attrs = {hotkey_attr => Avo::Hotkeys.key_for("record.delete")}
 
     a_link destroy_path,
       style: :text,
@@ -239,7 +237,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # which would cause the "last-registered wins" problem.
     is_row_control = row_controls_context?
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
-    data_attrs = {hotkey_attr => "e"}
+    data_attrs = {hotkey_attr => Avo::Hotkeys.key_for("record.edit")}
 
     a_link edit_path,
       color: :accent,
@@ -271,7 +269,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_create_button(control)
     return unless can_see_the_create_button?
 
-    hotkey = "c" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+    hotkey = Avo::Hotkeys.key_for("resource.new") if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
 
     a_link create_path,
       color: :accent,

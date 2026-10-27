@@ -22,7 +22,8 @@
   Avo.configuration.stimulus_controllers = []
   Avo.configuration.hotkeys = {
     enabled: <%= Avo.configuration.hotkeys[:enabled] %>,
-    showKeyBadges: <%= Avo.configuration.hotkeys[:show_key_badges] %>
+    showKeyBadges: <%= Avo.configuration.hotkeys[:show_key_badges] %>,
+    bindings: <%== Avo::Hotkeys.bindings.to_json %>
   }
   Avo.configuration.media_library = {
     enabled: <%= Avo::MediaLibrary.configuration.enabled? %>,
