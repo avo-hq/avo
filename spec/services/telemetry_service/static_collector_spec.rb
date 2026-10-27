@@ -328,6 +328,25 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
       expect(metadata[:field_types]["date_time"]).to eq(2)
       expect(metadata[:fields_count]).to eq(10)
     end
+
+    context "when another resource includes the nested concern directly first" do
+      before do
+        # Globbed before invoice.rb and receipt.rb.
+        write "resources/archive.rb", <<~RUBY
+          class Avo::Resources::Archive < Avo::BaseResource
+            include Avo::Concerns::Stamped
+            include Avo::Concerns::Auditable
+          end
+        RUBY
+      end
+
+      it "still gives every resource the nested concern's fields, once each" do
+        # Archive, Invoice and Receipt each get audited_by + stamped_at.
+        expect(metadata[:field_types]["text"]).to eq(5)
+        expect(metadata[:field_types]["date_time"]).to eq(3)
+        expect(metadata[:fields_count]).to eq(12)
+      end
+    end
   end
 
   context "with resources registered through config.resources" do

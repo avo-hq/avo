@@ -75,7 +75,7 @@ module Avo
           files = parse_files
           concerns = files.select { |f| f.kind == :concern }
           configured = configured_resources(files)
-          (files + configured).each { |file| absorb_concerns(file, concerns) }
+          (files + configured).each { |file| absorb_concerns(file, concerns) unless file.kind == :concern }
 
           resources = files.select { |f| f.kind == :resource } + configured
           forms = files.select { |f| f.kind == :form }
@@ -141,20 +141,11 @@ module Avo
 
         # A concern's fields and actions belong to every resource that includes
         # it — at runtime they were part of the resource, so they count here
-        # too. Concerns may include other concerns; each is resolved once, and
-        # `resolved` keeps a shared concern from folding its own nested counts
-        # in twice.
-        def absorb_concerns(file, concerns, seen = Set.new)
-          return file if file.resolved
-
-          file.resolved = true
-
-          file.includes.each do |name|
-            concern = find_concern(concerns, name)
-            next if concern.nil? || concern.equal?(file) || !seen.add?(concern.class_name)
-
-            absorb_concerns(concern, concerns, seen)
-
+        # too. Each concern the file reaches, directly or through other
+        # concerns, adds its own counts exactly once. Concerns are never
+        # modified, so one resource's includes can't change what another sees.
+        def absorb_concerns(file, concerns)
+          included_concerns(file, concerns).each do |concern|
             file.fields_count += concern.fields_count
             concern.field_types.each { |type, count| file.field_types[type] += count }
             file.custom_field_types.merge(concern.custom_field_types)
@@ -164,6 +155,19 @@ module Avo
           end
 
           file
+        end
+
+        # By identity: two concerns with identical bodies are still two concerns.
+        # `found` also stops include cycles.
+        def included_concerns(file, concerns, found = Set.new.compare_by_identity)
+          file.includes.each do |name|
+            concern = find_concern(concerns, name)
+            next if concern.nil? || concern.equal?(file) || !found.add?(concern)
+
+            included_concerns(concern, concerns, found)
+          end
+
+          found
         end
 
         # `include Avo::Concerns::Sluggable` may name the module in full or rely
@@ -410,8 +414,7 @@ module Avo
                 custom_field_types: @custom_field_types,
                 actions: @actions,
                 filters: @filters,
-                includes: @includes.compact,
-                resolved: false
+                includes: @includes.compact
               )
             end
 
@@ -530,7 +533,7 @@ module Avo
 
         unless const_defined?(:Result)
           Result = Struct.new(:kind, :path, :class_name, :model_class, :kanban_view, :fields_count,
-            :field_types, :custom_field_types, :actions, :filters, :includes, :resolved)
+            :field_types, :custom_field_types, :actions, :filters, :includes)
         end
       end
     end
