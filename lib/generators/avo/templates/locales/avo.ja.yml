@@ -246,5 +246,4 @@ ja:
     x_records_selected_from_page_html: このページから<span class="font-bold">%{selected}</span>個のレコードが選択されました
     yes_confirm: はい、私は確信しています
     you_cant_upload_new_resource: リソースを保存するまで、Trixエディタにファイルをアップロードすることはできません。
-    you_havent_set_attachment_key: このTrixフィールドに`attachment_key`が設定されていません。
     you_missed_something_check_form: 何か見落としているかもしれません。フォームを確認してください。

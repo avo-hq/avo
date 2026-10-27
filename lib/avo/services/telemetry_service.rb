@@ -1,106 +1,90 @@
+# What we collect, and the rules for adding a metric, live in one place:
+# https://linear.app/avo-hq/document/avo-telemetry-what-we-collect-28974df26d42
 class Avo::Services::TelemetryService
   class << self
-    def telemetry_info
-      {
-        # license_key: Avo.configuration.license_key,
-        avo_version: Avo::VERSION,
-        rails_version: Rails::VERSION::STRING,
-        ruby_version: RUBY_VERSION,
-        environment: Rails.env,
-        # ip: current_request&.ip,
-        # host: current_request&.host,
-        # port: current_request&.port,
-        app_name: app_name,
-        avo_metadata: avo_metadata,
-      }
-    end
-
     def app_name
       Rails.application.class.to_s.split("::").first
     rescue
       nil
     end
 
+    # A stable, anonymous id per install, so HQ can tell apart apps that share
+    # a name or have no license key. An HMAC of a fixed label keyed with
+    # secret_key_base: one-way, unrelated to Rails' cookie and encryption keys,
+    # and, unlike key_generator, independent of the app's hash digest setting,
+    # so upgrading load_defaults doesn't change it. Without a secret it falls
+    # back to a random id kept in Avo's cache.
+    def install_id
+      secret = Rails.application.secret_key_base
+      secret.present? ? OpenSSL::HMAC.hexdigest("SHA256", secret, "avo-telemetry-install-id")[0, 32] : cached_install_id
+    rescue
+      cached_install_id
+    end
+
+    def cached_install_id
+      Avo.cache_store.fetch("avo.telemetry.install_id") { SecureRandom.hex(16) }
+    rescue
+      nil
+    end
+
+    # The structural counts (resources, fields, field types, actions, filters)
+    # are gathered statically with Prism — no boot, no resource instantiation,
+    # no user code. The runtime-only values (menus, cache, config) are read
+    # here, where the live objects are already on hand.
     def avo_metadata
-      resources = Avo.resource_manager.all
-      dashboards = Avo::Current.app.dashboard_manager.all
-      # Counting fields across every resource with no user in scope. Declared explicitly so a
-      # consumer that restricts fields per user opts out here rather than inferring it from a
-      # nil user — nil is a legitimate user on the API surface, where restriction must still apply.
-      field_definitions = enumerating_all_resources { resources.map(&:get_field_definitions) }
-      fields_count = field_definitions.map(&:count).sum
-      fields_per_resource = sprintf("%0.01f", fields_count / (resources.count + 0.0))
+      structural_metadata.merge(runtime_metadata)
+    end
 
-      field_types = {}
-      custom_fields_count = 0
-      field_definitions.each do |fields|
-        fields.each do |field|
-          field_types[field.type] ||= 0
-          field_types[field.type] += 1
+    def structural_metadata
+      StaticCollector.new(Rails.root).collect
+    rescue => error
+      {structural_error: error.class.name}
+    end
 
-          custom_fields_count += 1 if field.custom?
-        end
-      end
-
+    def runtime_metadata
       {
-        resources_count: resources.count,
-        dashboards_count: dashboards.count,
-        fields_count: fields_count,
-        fields_per_resource: fields_per_resource,
-        custom_fields_count: custom_fields_count,
-        field_types: field_types,
-        **other_metadata(:actions),
-        **other_metadata(:filters),
         main_menu_present: Avo.configuration.main_menu.present?,
         profile_menu_present: Avo.configuration.profile_menu.present?,
         cache_store: Avo.cache_store&.class&.to_s,
         cache_operational: cache_operational?,
+        plugins: plugins_metadata,
         **config_metadata
       }
-      # rescue => error
-      #   {
-      #     error: error.message
-      #   }
     end
 
+    # The Avo ecosystem gems actually registered with the plugin manager (a
+    # subset of installed gems — only those that booted), with their resolved
+    # gem name and version.
+    def plugins_metadata
+      Avo.plugin_manager.all.map do |plugin|
+        {
+          name: plugin.gem_name || plugin.name.to_s,
+          version: plugin.version
+        }
+      end
+    rescue
+      []
+    end
+
+    # Only the exception class leaves the app: cache client messages carry hosts,
+    # ports and connection URLs.
     def cache_operational?
       Avo.cache_store.write("avo-test-cache", "test_value")
-      operational = Avo.cache_store.read("avo-test-cache") == "test_value"
-      Avo.cache_store.delete("avo-test-cache")
-      operational
+      Avo.cache_store.read("avo-test-cache") == "test_value"
     rescue => error
-      "error: #{error.message}"
-    end
-
-    # Marks a block as enumerating every resource without a user, restoring whatever the
-    # surrounding request had set rather than assuming it was unset.
-    def enumerating_all_resources
-      previous = Avo::Current.enumerating_all_resources
-      Avo::Current.enumerating_all_resources = true
-
-      yield
+      "error: #{error.class.name}"
     ensure
-      Avo::Current.enumerating_all_resources = previous
-    end
-
-    def other_metadata(type = :actions)
-      resources = Avo.resource_manager.all
-
-      types = resources.map(&:"get_#{type}")
-      type_count = types.flatten.uniq.count
-      type_per_resource = sprintf("%0.01f", types.map(&:count).sum / (resources.count + 0.0))
-
-      {
-        "#{type}_count": type_count,
-        "#{type}_per_resource": type_per_resource
-      }
+      begin
+        Avo.cache_store.delete("avo-test-cache")
+      rescue
+        nil
+      end
     end
 
     def config_metadata
       {
         config: {
-          root_path: Avo.configuration.root_path,
-          app_name: Avo.configuration.app_name
+          root_path: Avo.configuration.root_path
         }
       }
     end

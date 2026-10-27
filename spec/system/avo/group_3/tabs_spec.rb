@@ -238,6 +238,31 @@ RSpec.describe "Tabs", type: :system do
     Avo.configuration.persistence = {driver: nil}
   end
 
+  it "keeps the sorting on tab when back is used the first time after switching tabs" do
+    visit avo.resources_user_path user
+
+    find('a[data-selected="false"][data-tabs-tab-name-param="Projects"]').click
+    lowest_id = projects.map(&:id).min
+
+    within("#has_and_belongs_to_many_field_show_projects") do
+      find("thead a", text: "ID").click
+      expect(page).to have_css("thead a[href*='sort_direction=asc']", text: "ID")
+      find("thead a", text: "ID").click
+      expect(page).to have_css("tbody tr[data-resource-id]:first-child[data-resource-id='#{lowest_id}']")
+      find("tr[data-resource-id='#{lowest_id}'] a[aria-label='View project']").click
+    end
+    wait_for_loaded
+
+    page.go_back
+    wait_for_loaded
+
+    scroll_to find('a[data-tabs-tab-name-param="Projects"]')
+    within("#has_and_belongs_to_many_field_show_projects") do
+      expect(page).to have_css("tr[data-resource-id]", count: 8)
+      expect(page).to have_css("tbody tr[data-resource-id]:first-child[data-resource-id='#{lowest_id}']")
+    end
+  end
+
   let!(:person) { create :person }
 
   it "lazy_load" do

@@ -1,0 +1,22 @@
+<div class="relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4 h-full">
+  <div class="flex justify-between w-full">
+    <div class="font-semibold">Plugins</div>
+  </div>
+  <div class="flex flex-col flex-1">
+    <div>
+      <ul>
+        <li>Avo <%= Avo::VERSION %></li>
+        <% Avo.plugin_manager.plugins.each do |plugin| %>
+          <li>
+            <% if plugin.gem_name.present? %>
+              <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "underline" %>
+            <% else %>
+              <%= plugin.name %>
+            <% end %>
+            - <%= plugin.version %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -19,6 +19,7 @@ module Avo
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
     around_action :set_browser_timezone, if: -> { Avo.configuration.use_browser_timezone }
+    around_action :render_action_text_with_main_app, if: -> { defined?(ActionText::Content) }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -350,6 +351,15 @@ module Avo
     # nothing when it is nil.
     def set_sidebar_width
       @sidebar_width = sidebar_width
+    end
+
+    # Action Text renders attachments with the current controller, whose engine router can't build Active Storage
+    # URLs ("Can't resolve image into URL"), so render them the way the host app would.
+    def render_action_text_with_main_app(&action)
+      renderer_class = defined?(::ApplicationController) ? ::ApplicationController : ActionController::Base
+      renderer = renderer_class.renderer.new(http_host: request.host_with_port, https: request.ssl?)
+
+      ActionText::Content.with_renderer(renderer, &action)
     end
 
     # Set the current host for ActiveStorage

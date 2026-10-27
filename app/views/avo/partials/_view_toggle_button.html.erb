@@ -1,7 +1,5 @@
 <% if available_view_types.count > 1 %>
-  <%
-    view_type_hotkeys = { table: "v t", grid: "v g", map: "v m" }
-  %>
+  <% view_type_hotkeys = {table: Avo::Hotkeys.key_for("index.view_table"), grid: Avo::Hotkeys.key_for("index.view_grid"), map: Avo::Hotkeys.key_for("index.view_map")} %>
   <div class="flex">
     <div class="button-group">
       <% available_view_types.each do |type| %>

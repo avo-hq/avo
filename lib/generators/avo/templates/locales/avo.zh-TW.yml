@@ -244,5 +244,4 @@ zh-TW:
     x_records_selected_from_page_html: 在本頁中共選擇了 <span class="font-bold">%{selected}</span> 筆記錄
     yes_confirm: 是的，確認
     you_cant_upload_new_resource: 在保存資源之前，您無法將檔案上傳到 Trix 編輯器。
-    you_havent_set_attachment_key: 您尚未為此 Trix 欄位設定 `attachment_key`。
     you_missed_something_check_form: 您可能漏掉了一些內容，請檢查表單。

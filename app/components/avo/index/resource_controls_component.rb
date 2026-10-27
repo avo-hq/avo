@@ -87,6 +87,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :edit,
         "resource-id": @resource.record_param,
         tippy: "tooltip",
+        hotkey_original: Avo::Hotkeys.key_for("record.edit")
       }
   end
 
@@ -126,6 +127,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
         "resource-id": @resource.record_param,
+        hotkey_original: Avo::Hotkeys.key_for("record.delete")
       }
   end
 
@@ -165,6 +167,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     if params[:turbo_frame]
       hidden[:turbo_frame] = params[:turbo_frame]
       hidden[:referrer] = referrer_path
+      hidden[:refresh_on_destroy] = true if field&.refresh_on_destroy
     else
       # Keep the filters, sorting and page after a destroy redirects back here.
       hidden[:referrer] = request.fullpath

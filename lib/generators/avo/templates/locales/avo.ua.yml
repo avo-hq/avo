@@ -248,5 +248,4 @@ ua:
     x_records_selected_from_page_html: Вибрано <span class="font-bold">%{selected}</span> записів на цій сторінці
     yes_confirm: Так, підтверджую
     you_cant_upload_new_resource: Ви не можете завантажувати файли в редактор Trix, поки не збережете ресурс.
-    you_havent_set_attachment_key: Ви не встановили `attachment_key` для цього поля Trix.
     you_missed_something_check_form: Можливо, ви щось пропустили. Перевірте форму.

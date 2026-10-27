@@ -244,5 +244,4 @@ de:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> Einträge auf dieser Seite ausgewählt
     yes_confirm: Ja, ich bin sicher
     you_cant_upload_new_resource: Du kannst keine Dateien in den Trix-Editor hochladen, bis die Ressource gespeichert ist.
-    you_havent_set_attachment_key: Du hast keinen `attachment_key` für dieses Trix-Feld festgelegt.
     you_missed_something_check_form: Sie haben möglicherweise etwas übersehen. Bitte überprüfen Sie das Formular.

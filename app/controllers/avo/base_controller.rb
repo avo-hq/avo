@@ -548,7 +548,8 @@ module Avo
       respond_to do |format|
         if params[:turbo_frame]
           format.turbo_stream do
-            render turbo_stream: reload_frame_turbo_streams
+            # The parent page can show values derived from the association, like a counter, that a frame reload misses.
+            render turbo_stream: params[:refresh_on_destroy] ? turbo_stream.avo_turbo_reload : reload_frame_turbo_streams
           end
         else
           format.html { redirect_to after_destroy_path }
