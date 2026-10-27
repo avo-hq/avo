@@ -58,7 +58,7 @@ export default class extends Controller {
     }
 
     attachments.forEach((attachment) => {
-      const { path, blob } = attachment
+      const { path, blob, sgid } = attachment
 
       const payload = {
         url: path,
@@ -66,6 +66,8 @@ export default class extends Controller {
         contentType: blob.content_type,
         previewable: true,
       }
+
+      if (this.isActionTextValue) payload.sgid = sgid
 
       this.#injectAttachment(payload, event)
     })

@@ -137,6 +137,21 @@ RSpec.describe "TrixField", type: :system do
       expect(Playground.last.trix_content.embeds.map { |embed| embed.filename.to_s }).to eq ["report.pdf"]
       expect(find_field_value_element("trix_content")).to have_text "report.pdf"
     end
+
+    it "keeps a file inserted from the media library attached to the saved record" do
+      blob = ActiveStorage::Blob.create_and_upload!(io: StringIO.new("%PDF-1.4"), filename: "library.pdf", content_type: "application/pdf")
+      playground = Playground.create!
+
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      find("[data-trix-field-target='controller'] a[href*='attach-media']").click
+      find("[data-blob-id='#{blob.id}']").click
+      expect(page).to have_css("trix-editor figure[data-trix-attachment*='sgid']")
+
+      save
+
+      expect(playground.reload.trix_content.embeds.map { |embed| embed.filename.to_s }).to eq ["library.pdf"]
+      expect(find_field_value_element("trix_content")).to have_text "library.pdf"
+    end
   end
 
   describe "trix field with disabled/readonly set to true" do
