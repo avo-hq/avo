@@ -19,7 +19,8 @@ class Avo::Debug::StatusComponent < Avo::BaseComponent
   end
 
   def telemetry_json
-    JSON.pretty_generate(Avo::Services::TelemetryService.telemetry_info)
+    request_info = {host: Avo::Current.request&.host, port: Avo::Current.request&.port}
+    JSON.pretty_generate(Avo::Services::HqReporter.payload(request_info))
   rescue => error
     "Failed to build the telemetry payload: #{error.class}: #{error.message}"
   end

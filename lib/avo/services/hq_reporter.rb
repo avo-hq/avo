@@ -26,33 +26,6 @@ module Avo
           # in an app that sets Thread.abort_on_exception a SystemStackError here would kill the process.
         end
 
-        private
-
-        def should_report?
-          return false unless Rails.env.production?
-          return false if Avo.plugin_manager.installed?("avo-licensing")
-          return false if already_reported?
-
-          true
-        end
-
-        def already_reported?
-          cached = cache_store.read(cache_key)
-          return false unless cached.present?
-
-          # Handle cache stores that don't auto-expire
-          reported_at = cached[:reported_at] || cached["reported_at"]
-          return false unless reported_at
-
-          Time.parse(reported_at.to_s) > Time.now - CACHE_TIME
-        rescue
-          false
-        end
-
-        def cache_store
-          Avo.configuration.cache_store
-        end
-
         def payload(request_info)
           result = {
             license_key: Avo.configuration.license_key,
@@ -81,6 +54,33 @@ module Avo
           end
 
           result
+        end
+
+        private
+
+        def should_report?
+          return false unless Rails.env.production?
+          return false if Avo.plugin_manager.installed?("avo-licensing")
+          return false if already_reported?
+
+          true
+        end
+
+        def already_reported?
+          cached = cache_store.read(cache_key)
+          return false unless cached.present?
+
+          # Handle cache stores that don't auto-expire
+          reported_at = cached[:reported_at] || cached["reported_at"]
+          return false unless reported_at
+
+          Time.parse(reported_at.to_s) > Time.now - CACHE_TIME
+        rescue
+          false
+        end
+
+        def cache_store
+          Avo.configuration.cache_store
         end
 
         def perform_request(request_info)

@@ -2,21 +2,6 @@
 # https://linear.app/avo-hq/document/avo-telemetry-what-we-collect-28974df26d42
 class Avo::Services::TelemetryService
   class << self
-    def telemetry_info
-      {
-        # license_key: Avo.configuration.license_key,
-        avo_version: Avo::VERSION,
-        rails_version: Rails::VERSION::STRING,
-        ruby_version: RUBY_VERSION,
-        environment: Rails.env,
-        # host: current_request&.host,
-        # port: current_request&.port,
-        app_name: app_name,
-        install_id: install_id,
-        avo_metadata: avo_metadata,
-      }
-    end
-
     def app_name
       Rails.application.class.to_s.split("::").first
     rescue
