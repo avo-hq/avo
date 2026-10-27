@@ -29,7 +29,7 @@
   <% end %>
   <%= render_resource_slot :before_header %>
   <%= render_resource_slot :header do %>
-    <%= render ui.panel_header(title:, description: @resource.description, index:) do |header| %>
+    <%= render ui.panel_header(description: @resource.description, index:) do |header| %>
       <% header.with_before_title do %>
         <%= render_resource_slot :before_title %>
       <% end %>

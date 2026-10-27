@@ -150,6 +150,36 @@ RSpec.describe "Resource index slots", type: :request do
     end
   end
 
+  it "computes a built-in title only when its replacement preserves it, and only once" do
+    components = Avo::Resources::Project.components
+    title_source = -> { raise "The replaced title must not be computed" }
+    custom_index = Class.new(Avo::Views::ResourceIndexComponent) do
+      define_method(:title) { title_source.call }
+    end
+    stub_const("Avo::Views::SlotTitleIndexComponent", custom_index)
+    Avo::Resources::Project.components = components.merge(resource_index_component: custom_index)
+    preserve_default = false
+    Avo::Resources::Project.index_slot(:title, replace: true) do
+      tag.span(preserve_default ? default_content.call : "Replacement title", id: "lazy-title")
+    end
+
+    get "/admin/resources/projects"
+
+    expect(response).to have_http_status(:ok)
+    expect(Nokogiri::HTML(response.body).at_css("#lazy-title").text).to eq("Replacement title")
+
+    sequence = 0
+    title_source = -> { "Default title #{sequence += 1}" }
+    preserve_default = true
+
+    get "/admin/resources/projects"
+
+    expect(response).to have_http_status(:ok)
+    expect(Nokogiri::HTML(response.body).at_css("#lazy-title").text).to eq("Default title 1")
+  ensure
+    Avo::Resources::Project.components = components
+  end
+
   it "skips defaults and nested hooks when replacing a header but retains its surrounding hooks" do
     Avo::Resources::Project.index_slot(:before_header) { tag.p("Before header") }
     Avo::Resources::Project.index_slot(:after_header) { tag.p("After header") }

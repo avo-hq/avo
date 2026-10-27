@@ -92,6 +92,45 @@ RSpec.describe "Resource show and form slots", type: :request do
     expect(Nokogiri::HTML(response.body).at_css("form #wrapped-form #wrapped-body #shared-title").text).to eq("Shared title")
   end
 
+  it "computes single-record titles only when preserved by a replacement, and only once" do
+    components = Avo::Resources::Project.components
+    title_source = -> { raise "The replaced title must not be computed" }
+    custom_components = [Avo::Views::ResourceShowComponent, Avo::Views::ResourceEditComponent].map do |base|
+      custom = Class.new(base) { define_method(:title) { title_source.call } }
+      stub_const("#{base.name}WithSlotTitle", custom)
+      custom
+    end
+    Avo::Resources::Project.components = components.merge(
+      resource_show_component: custom_components.first,
+      resource_edit_component: custom_components.last,
+      resource_new_component: custom_components.last
+    )
+
+    {show: project.to_param, edit: "#{project.to_param}/edit", new: "new"}.each do |view, path|
+      title_source = -> { raise "The replaced title must not be computed" }
+      preserve_default = false
+      Avo::Resources::Project.view_slot(view, :title, replace: true) do
+        tag.span(preserve_default ? default_content.call : "Replacement title", id: "lazy-title")
+      end
+
+      get "/admin/resources/projects/#{path}"
+
+      expect(response).to have_http_status(:ok)
+      expect(Nokogiri::HTML(response.body).at_css("#lazy-title").text).to eq("Replacement title")
+
+      sequence = 0
+      title_source = -> { "Default title #{sequence += 1}" }
+      preserve_default = true
+
+      get "/admin/resources/projects/#{path}"
+
+      expect(response).to have_http_status(:ok)
+      expect(Nokogiri::HTML(response.body).at_css("#lazy-title").text).to eq("Default title 1")
+    end
+  ensure
+    Avo::Resources::Project.components = components
+  end
+
   it "lets a replacement skip nested defaults, while retaining surrounding additions and form transport" do
     Avo::Resources::Project.form_slot(:before_form) { tag.p("Before", id: "outer-before") }
     Avo::Resources::Project.form_slot(:after_form) { tag.p("After", id: "outer-after") }
