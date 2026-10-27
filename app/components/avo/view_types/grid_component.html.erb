@@ -10,6 +10,7 @@
       resource_name: resource_name_for(@resource),
       selected_resources_name: resource_name_for(@resource),
       selected_resources: [],
+      item_select_all_selected_all_query_value: encrypted_query,
       **(@reflection.present? ? {} : {"content-focus": ""}),
       **(try(:drag_reorder_data_attributes) || {})
     } do %>

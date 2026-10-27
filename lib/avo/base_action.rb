@@ -41,6 +41,7 @@ module Avo
     attr_reader :appended_turbo_streams
     attr_reader :records_to_reload
     attr_reader :query
+    attr_reader :index_query
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -130,7 +131,8 @@ module Avo
           record: @record,
           view: @view,
           arguments: @arguments,
-          query: @query
+          query: @query,
+          index_query: @index_query
         ).handle
       end
 
@@ -388,7 +390,8 @@ module Avo
         record: @record,
         view: @view,
         arguments:,
-        query: @query
+        query: @query,
+        index_query: @index_query
       ).handle
     end
 
@@ -406,7 +409,8 @@ module Avo
         record: @record,
         view: @view,
         arguments: @arguments,
-        query: @query
+        query: @query,
+        index_query: @index_query
       ).handle
     end
 

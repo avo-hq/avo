@@ -24,6 +24,10 @@ export default class extends Controller {
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()
 
+    // The action links carry the index query from the start, so an action's fields and messages can read it
+    // even when nothing is selected.
+    this.updateLinks('resourceIds')
+
     // Wait for the rows' item-selector controllers to connect; they apply the selection.
     if (rememberedIds.length > 0) {
       Promise.resolve().then(() => this.restoreSelection(rememberedIds))
@@ -151,9 +155,11 @@ export default class extends Controller {
           url.searchParams.set('fields[avo_resource_ids]', resourceIds)
           url.searchParams.set('fields[avo_selected_all]', 'false')
         } else if (param === 'selectedQuery') {
-          const selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
-          url.searchParams.set('fields[avo_index_query]', selectedQuery)
           url.searchParams.set('fields[avo_selected_all]', 'true')
+        }
+
+        if (this.indexQueryAvailable()) {
+          url.searchParams.set('fields[avo_index_query]', this.selectedAllQueryValue)
         }
 
         link.href = url.toString()
@@ -179,6 +185,11 @@ export default class extends Controller {
 
   // True if there are more pages available and if query encryption run successfully
   selectAllEnabled() {
-    return this.pageCountValue > 1 && this.selectedAllQueryValue !== 'select_all_disabled'
+    return this.pageCountValue > 1 && this.indexQueryAvailable()
+  }
+
+  // A view type renders 'select_all_disabled' when it can't encrypt the query, and a custom one may render none
+  indexQueryAvailable() {
+    return this.selectedAllQueryValue !== '' && this.selectedAllQueryValue !== 'select_all_disabled'
   }
 }
