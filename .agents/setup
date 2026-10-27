@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# Prepares a fresh Amp orb for Avo development: installs the orb-only
+# prerequisites (system packages, Postgres, Ruby via mise), then hands off to
+# bin/setup --fast for gems, Yarn packages, databases, and assets.
+# Idempotent: a warm run (stale snapshot) only re-checks and refreshes.
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+step() {
+  local label="$1"
+  shift
+  echo "==> $label"
+  local started=$SECONDS
+  "$@"
+  echo "    ($label took $((SECONDS - started))s)"
+}
+
+export DEBIAN_FRONTEND=noninteractive
+export AVO_LICENSE_KEY="${AVO_LICENSE_KEY:-license_123}"
+
+install_system_packages() {
+  local missing=()
+  for pkg in postgresql libpq-dev libvips42 build-essential libyaml-dev lsof; do
+    dpkg -s "$pkg" >/dev/null 2>&1 || missing+=("$pkg")
+  done
+  if ((${#missing[@]})); then
+    sudo apt-get update -qq
+    sudo apt-get install -y -qq "${missing[@]}"
+  else
+    echo "    all system packages present"
+  fi
+}
+
+start_postgres() {
+  local conf_dir
+  conf_dir="$(ls -d /etc/postgresql/*/main | sort -V | tail -1)"
+
+  # Trust local connections as user `postgres` with no password, matching
+  # spec/dummy/config/database.yml defaults.
+  if ! sudo grep -q "^# avo-orb-trust" "$conf_dir/pg_hba.conf"; then
+    sudo tee "$conf_dir/pg_hba.conf" >/dev/null <<'EOF'
+# avo-orb-trust: development-only orb configuration
+local   all all                trust
+host    all all 127.0.0.1/32   trust
+host    all all ::1/128        trust
+EOF
+  fi
+
+  # Ephemeral sandbox: prefer speed over durability.
+  sudo tee "$conf_dir/conf.d/avo-orb.conf" >/dev/null <<'EOF'
+fsync = off
+synchronous_commit = off
+full_page_writes = off
+EOF
+
+  sudo systemctl enable --quiet postgresql
+  sudo systemctl restart postgresql
+  for _ in $(seq 1 30); do
+    pg_isready -q -h localhost -U postgres && return 0
+    sleep 1
+  done
+  echo "Postgres did not become ready" >&2
+  return 1
+}
+
+install_ruby() {
+  if [[ ! -x "$HOME/.local/bin/mise" ]]; then
+    curl -fsSL https://mise.run | MISE_QUIET=1 sh
+  fi
+  mise trust --quiet "$repo_root/mise.toml"
+  mise install --yes
+}
+
+persist_shell_env() {
+  local marker="# avo: mise shims and dev defaults"
+  if ! grep -Fqx "$marker" "$HOME/.bash_profile" 2>/dev/null; then
+    cat >>"$HOME/.bash_profile" <<EOF
+
+$marker
+case ":\$PATH:" in
+  *":\$HOME/.local/share/mise/shims:"*) ;;
+  *) export PATH="\$HOME/.local/bin:\$HOME/.local/share/mise/shims:\$PATH" ;;
+esac
+export AVO_LICENSE_KEY="\${AVO_LICENSE_KEY:-license_123}"
+EOF
+  fi
+}
+
+# Gems, Yarn packages, .env.test, fast-seeded dev DB, test schema, and assets.
+run_bin_setup() {
+  bundle config set --local jobs "$(nproc)" >/dev/null
+  bin/setup --fast
+}
+
+write_agent_guidance() {
+  mkdir -p "$HOME/.config/amp"
+  local guidance="$HOME/.config/amp/AGENTS.md"
+  local marker="# Avo orb notes"
+  if ! grep -Fqx "$marker" "$guidance" 2>/dev/null; then
+    cat >>"$guidance" <<'EOF'
+
+# Avo orb notes
+
+- `.agents/setup` already installed Ruby (mise), gems, Yarn packages, Postgres (systemd), the dev/test databases, and built assets.
+- `AVO_LICENSE_KEY=license_123` is exported in login shells; Postgres trusts `postgres` on localhost.
+- Run the app with `amp orb services ensure` (see `.amp/services.yaml`), not `bin/dev`. Log in at `/users/sign_in` with `hi@avohq.io` / `secreto`.
+- Rebuild assets with `yarn build:js`, `yarn build:custom-js`, `yarn build:css` when not running the watcher services.
+EOF
+  fi
+}
+
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+step "System packages" install_system_packages
+step "Postgres" start_postgres
+step "Ruby toolchain" install_ruby
+step "Shell environment" persist_shell_env
+step "bin/setup --fast" run_bin_setup
+step "Agent guidance" write_agent_guidance
+
+echo "==> Avo orb setup complete"
