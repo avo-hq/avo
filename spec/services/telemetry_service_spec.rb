@@ -45,8 +45,7 @@ RSpec.describe Avo::Services::TelemetryService do
     it "changes with the app's secret and contains none of it" do
       app_id = described_class.install_id
       secret = "a1b2c3d4" * 16
-      allow(Rails.application).to receive(:key_generator)
-        .and_return(ActiveSupport::KeyGenerator.new(secret, iterations: 1000))
+      allow(Rails.application).to receive(:secret_key_base).and_return(secret)
 
       other_id = described_class.install_id
 
@@ -55,10 +54,35 @@ RSpec.describe Avo::Services::TelemetryService do
       expect(secret).not_to include(other_id)
     end
 
-    it "returns nil instead of raising when there is no secret" do
-      allow(Rails.application).to receive(:key_generator).and_raise(ArgumentError)
+    it "survives a change of the app's key generator digest (load_defaults upgrades)" do
+      app_id = described_class.install_id
+      allow(ActiveSupport::KeyGenerator).to receive(:hash_digest_class).and_return(OpenSSL::Digest::SHA1)
+      allow(Rails.application).to receive(:key_generator)
+        .and_return(ActiveSupport::KeyGenerator.new(Rails.application.secret_key_base, hash_digest_class: OpenSSL::Digest::SHA1))
 
-      expect(described_class.install_id).to be_nil
+      expect(described_class.install_id).to eq(app_id)
+    end
+
+    context "when the app has no secret_key_base" do
+      let(:cache) { ActiveSupport::Cache::MemoryStore.new }
+
+      before do
+        allow(Rails.application).to receive(:secret_key_base).and_raise(ArgumentError, "Missing secret_key_base")
+        allow(Avo).to receive(:cache_store).and_return(cache)
+      end
+
+      it "falls back to a random id that it keeps in Avo's cache" do
+        id = described_class.install_id
+
+        expect(id).to match(/\A\h{32}\z/)
+        expect(described_class.install_id).to eq(id)
+      end
+
+      it "returns nil when the cache fails too" do
+        allow(cache).to receive(:fetch).and_raise(Errno::ECONNREFUSED)
+
+        expect(described_class.install_id).to be_nil
+      end
     end
   end
 

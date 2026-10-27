@@ -24,12 +24,20 @@ class Avo::Services::TelemetryService
     end
 
     # A stable, anonymous id per install, so HQ can tell apart apps that share
-    # a name or have no license key. Derived one-way from secret_key_base with
-    # a salt only this uses (unrelated to Rails' cookie and encryption keys),
-    # then hashed again: nothing about the secret can be recovered from it.
+    # a name or have no license key. An HMAC of a fixed label keyed with
+    # secret_key_base: one-way, unrelated to Rails' cookie and encryption keys,
+    # and, unlike key_generator, independent of the app's hash digest setting,
+    # so upgrading load_defaults doesn't change it. Without a secret it falls
+    # back to a random id kept in Avo's cache.
     def install_id
-      key = Rails.application.key_generator.generate_key("avo-telemetry-install-id", 32)
-      Digest::SHA256.hexdigest(key)[0, 32]
+      secret = Rails.application.secret_key_base
+      secret.present? ? OpenSSL::HMAC.hexdigest("SHA256", secret, "avo-telemetry-install-id")[0, 32] : cached_install_id
+    rescue
+      cached_install_id
+    end
+
+    def cached_install_id
+      Avo.cache_store.fetch("avo.telemetry.install_id") { SecureRandom.hex(16) }
     rescue
       nil
     end
