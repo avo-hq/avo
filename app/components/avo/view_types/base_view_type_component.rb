@@ -1,5 +1,6 @@
 class Avo::ViewTypes::BaseViewTypeComponent < Avo::BaseComponent
   extend PropInitializer::Properties
+  include Avo::RendersViewSlots
 
   prop :resources
   prop :resource

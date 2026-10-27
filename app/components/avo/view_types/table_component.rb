@@ -5,10 +5,6 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
 
   attr_reader :pagy, :query
 
-  def before_render
-    @header_fields, @table_row_components = generate_table_row_components
-  end
-
   # ARIA grid affordances and the row-navigator binding are only added on
   # top-level index pages. On a parent record's show view (where @reflection
   # is present), the has-many table is not keyboard-navigable as a grid, so

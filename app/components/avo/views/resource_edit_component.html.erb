@@ -8,33 +8,64 @@
     selected_resources: [@resource.record_param],
     **@resource.stimulus_data_attributes
   } do %>
-  <%= render_cards_component %>
+  <%= render_resource_slot :before_cards %>
+  <%= render_resource_slot(:cards) { render_cards_component } %>
+  <%= render_resource_slot :after_cards %>
+
+  <%= render_resource_slot :before_form %>
 
   <%= build_form do |form| %>
+    <% @form = form %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
 
-    <% if embedded_in_modal? %>
-      <%# The form wraps the modal so the footer submit button posts natively. %>
-      <%= render Avo::ModalComponent.new(title: title, width: :"4xl", body_class: "modal-form-body") do |c| %>
-        <% c.with_controls do %>
-          <% @resource.render_edit_controls.each do |control| %>
-            <%= render_control control %>
+    <%= render_resource_slot :form do %>
+      <% if embedded_in_modal? %>
+        <%# The form wraps the modal so the footer submit button posts natively. %>
+        <%= render Avo::ModalComponent.new(width: :"4xl", body_class: "modal-form-body") do |c| %>
+          <% c.with_heading do %>
+            <%= render_resource_slot :before_title %>
+            <%= render_resource_slot(:title) { title } %>
+            <%= render_resource_slot :after_title %>
+          <% end %>
+
+          <% c.with_controls do %>
+            <%= render_resource_slot :before_controls %>
+
+            <%= render_resource_slot :controls do %>
+              <% @resource.render_edit_controls.each do |control| %>
+                <%= render_control control %>
+              <% end %>
+            <% end %>
+
+            <%= render_resource_slot :after_controls %>
+          <% end %>
+
+          <%= content_tag :div, class: "panel-spacer" do %>
+            <%= render_resource_slot :before_body %>
+            <%= render_resource_slot(:body) { render_form_items(form) } %>
+            <%= render_resource_slot :after_body %>
           <% end %>
         <% end %>
+      <% else %>
+        <%= content_tag :div, class: "panel-spacer" do %>
+          <%= render_resource_slot :before_body %>
+          <%= render_resource_slot(:body) { render_form_items(form) } %>
+          <%= render_resource_slot :after_body %>
 
-        <%= content_tag :div, render_form_items(form), class: "panel-spacer" %>
-      <% end %>
-    <% else %>
-      <%= content_tag :div, class: "panel-spacer" do %>
-        <%= render_form_items(form) %>
+          <% if Avo.configuration.buttons_on_form_footers %>
+            <%= render ui.panel do |panel| %>
+              <% panel.with_footer do %>
+                <%= render ui.panel_header do |header| %>
+                  <% header.with_controls do %>
+                    <%= render_resource_slot :before_controls %>
 
-        <% if Avo.configuration.buttons_on_form_footers %>
-          <%= render ui.panel do |panel| %>
-            <% panel.with_footer do %>
-              <%= render ui.panel_header do |header| %>
-                <% header.with_controls do %>
-                  <% @resource.render_edit_controls.each do |control| %>
-                    <%= render_control control %>
+                    <%= render_resource_slot :controls do %>
+                      <% @resource.render_edit_controls.each do |control| %>
+                        <%= render_control control %>
+                      <% end %>
+                    <% end %>
+
+                    <%= render_resource_slot :after_controls %>
                   <% end %>
                 <% end %>
               <% end %>
@@ -43,5 +74,9 @@
         <% end %>
       <% end %>
     <% end %>
+
+    <% @form = nil %>
   <% end %>
+
+  <%= render_resource_slot :after_form %>
 <% end %>

@@ -6,9 +6,9 @@
     resource_name: @resource.class.to_s,
     **@resource.stimulus_data_attributes
   }.tap { |d| d[:controller] = "#{d[:controller]} index-row-navigator index-scroll" if @reflection.blank? } do %>
-
-  <%= render_cards_component %>
-
+  <%= render_index_slot :before_cards %>
+  <%= render_index_slot(:cards) { render_cards_component } %>
+  <%= render_index_slot :after_cards %>
   <%= render ui.panel(
       cover: resource.cover,
       class: "w-full",
@@ -17,111 +17,136 @@
         controller: "resource-search",
         "resource-search-debounce-value": Avo.configuration.search_debounce.to_s,
         "resource-search-url-value": request.fullpath
-      },
+      }
     ) do |panel| %>
-      <% if @resource.cover.present? %>
-        <% panel.with_cover do %>
-          <%= render Avo::CoverComponent.new cover: @resource.cover %>
-        <% end %>
-      <% end %>
-
-    <% panel.with_header do %>
-      <%= render ui.panel_header(
-        title:,
-        description:
-      ) do |header| %>
-        <% header.with_title_slot do %>
-          <% if reloadable? %>
-            <%= render Avo::DiscreetInformationComponent.new(
-              icon: "tabler/outline/refresh",
-              as: :icon,
-              title: t("avo.reload"),
-              classes: "cursor-pointer",
-              data: {controller: "panel-refresh", action: "click->panel-refresh#refresh"}
-            ) %>
-          <% end %>
-
-          <% if linkable? %>
-            <%= render Avo::DiscreetInformationComponent.new(
-              icon: "tabler/outline/external-link",
-              as: :icon,
-              url: field.frame_url(add_turbo_frame: false),
-              target: :_blank,
-              title: t("avo.open_in_new_tab")
-            ) %>
-          <% end %>
-
-          <% if Rails.env.development? %>
-            <%= render Avo::DiscreetInformationComponent.new(
-              as: :icon,
-              title: t("avo.open_in_your_editor"),
-              url: helpers.editor_file_path(@resource),
-              icon: "tabler/outline/code"
-            ) %>
-          <% end %>
-        <% end %>
-
-        <% header.with_controls do %>
-          <% @resource.render_index_controls(item: singular_resource_name).each do |control| %>
-            <%= render_control control %>
-          <% end %>
-        <% end %>
+    <% if @resource.cover.present? %>
+      <% panel.with_cover do %>
+        <%= render Avo::CoverComponent.new cover: @resource.cover %>
       <% end %>
     <% end %>
-
+    <% panel.with_header do %>
+      <%= render_index_slot :before_header %>
+      <%= render_index_slot :header do %>
+        <%= render ui.panel_header(
+          description:
+        ) do |header| %>
+          <% header.with_before_title do %>
+            <%= render_index_slot :before_title %>
+          <% end %>
+          <% header.with_title_content do %>
+            <%= render_index_slot(:title) { title } %>
+          <% end %>
+          <% header.with_title_slot do %>
+            <%= render_index_slot :after_title %>
+            <% if reloadable? %>
+              <%= render Avo::DiscreetInformationComponent.new(
+                icon: "tabler/outline/refresh",
+                as: :icon,
+                title: t("avo.reload"),
+                classes: "cursor-pointer",
+                data: {
+                  controller: "panel-refresh",
+                  action: "click->panel-refresh#refresh"
+                }
+              ) %>
+            <% end %>
+            <% if linkable? %>
+              <%= render Avo::DiscreetInformationComponent.new(
+                icon: "tabler/outline/external-link",
+                as: :icon,
+                url: field.frame_url(add_turbo_frame: false),
+                target: :_blank,
+                title: t("avo.open_in_new_tab")
+              ) %>
+            <% end %>
+            <% if Rails.env.development? %>
+              <%= render Avo::DiscreetInformationComponent.new(
+                as: :icon,
+                title: t("avo.open_in_your_editor"),
+                url: helpers.editor_file_path(@resource),
+                icon: "tabler/outline/code"
+              ) %>
+            <% end %>
+          <% end %>
+          <% header.with_controls do %>
+            <% @resource.render_index_controls(item: singular_resource_name).each do |control| %>
+              <%= render_control control %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= render_index_slot :after_header %>
+    <% end %>
     <% panel.with_body do %>
       <% if !lazy_load_index_view? || index_view_loaded? %>
         <% index_view_content = capture do %>
-          <% if header_visible? %>
-            <div class="relative flex flex-col gap-y-4 z-20">
-              <div class="flex flex-col gap-y-4">
-                <%= render scopes_list if can_render_scopes? %>
-
-                <% if show_toolbar_row? %>
-                  <div class="flex flex-col xs:flex-row xs:justify-between gap-4">
-                    <div class="flex w-64 items-center">
-                      <% if show_search_input %>
-                        <%= render ui.search_input(
-                          name: "q",
-                          value: params[:q],
-                          id: nil,
-                          placeholder: t("avo.search.placeholder"),
-                          shortcut: :slash,
-                          data: {
-                            action: "input->resource-search#search keydown->resource-search#blurOnEscape",
-                            "resource-search-target": "input"
-                          }
-                        ) %>
-                      <% end %>
+          <%= render_index_slot :before_toolbar %>
+          <%= render_index_slot :toolbar do %>
+            <% if header_visible? %>
+              <div class="relative flex flex-col gap-y-4 z-20">
+                <div class="flex flex-col gap-y-4">
+                  <%= render scopes_list if can_render_scopes? %>
+                  <% if show_toolbar_row? %>
+                    <div class="flex flex-col xs:flex-row xs:justify-between gap-4">
+                      <div class="flex w-64 items-center">
+                        <% if show_search_input %>
+                          <%= render ui.search_input(
+                            name: "q",
+                            value: params[:q],
+                            id: nil,
+                            placeholder: t("avo.search.placeholder"),
+                            shortcut: :slash,
+                            data: {
+                              action:
+                                "input->resource-search#search keydown->resource-search#blurOnEscape",
+                              "resource-search-target": "input"
+                            }
+                          ) %>
+                        <% end %>
+                      </div>
+                      <div
+                        class="
+                          flex items-center justify-between space-x-3 rtl:space-x-reverse justify-self-end
+                          xs:justify-end
+                        ">
+                        <% if show_dynamic_filters_button? %>
+                          <div class="index-missing-resources:hidden">
+                            <%= render_dynamic_filters_button %>
+                          </div>
+                        <% end %>
+                        <% unless field&.hide_filter_button %>
+                          <%= render Avo::FiltersComponent.new filters: @filters,
+                                                               resource: @resource,
+                                                               applied_filters: @applied_filters,
+                                                               parent_record: @parent_record,
+                                                               parent_resource: @parent_resource %>
+                        <% end %>
+                        <%= render partial: "avo/partials/view_toggle_button",
+                                   locals: {
+                                     available_view_types: @resource.available_view_types,
+                                     view_type: @resource.view_type,
+                                     turbo_frame: @turbo_frame
+                                   } %>
+                      </div>
                     </div>
-
-                    <div class="flex items-center justify-between space-x-3 rtl:space-x-reverse justify-self-end xs:justify-end">
-                      <% if show_dynamic_filters_button? %>
-                        <div class="index-missing-resources:hidden">
-                          <%= render_dynamic_filters_button %>
-                        </div>
-                      <% end %>
-
-                      <% unless field&.hide_filter_button %>
-                        <%= render Avo::FiltersComponent.new filters: @filters, resource: @resource, applied_filters: @applied_filters, parent_record: @parent_record, parent_resource: @parent_resource %>
-                      <% end %>
-
-                      <%= render partial: "avo/partials/view_toggle_button", locals: {available_view_types: @resource.available_view_types, view_type: @resource.view_type, turbo_frame: @turbo_frame} %>
-                    </div>
-                  </div>
-                <% end %>
-
-                <% if has_dynamic_filters? %>
-                  <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource, turbo_frame: @turbo_frame, dynamic_filters_component_id: dynamic_filters_component_id, parent_record: @parent_record, parent_resource: @parent_resource %>
-                <% end %>
+                  <% end %>
+                  <% if has_dynamic_filters? %>
+                    <%= render Avo::DynamicFilters::FiltersComponent.new resource: resource,
+                                                                         turbo_frame: @turbo_frame,
+                                                                         dynamic_filters_component_id: dynamic_filters_component_id,
+                                                                         parent_record: @parent_record,
+                                                                         parent_resource: @parent_resource %>
+                  <% end %>
+                </div>
               </div>
-            </div>
+            <% end %>
           <% end %>
-
-        <%= render Avo::ResourceListingComponent.new(**resource_content_components_common_args) %>
+          <%= render_index_slot :after_toolbar %>
+          <%= render Avo::ResourceListingComponent.new(
+            **resource_content_components_common_args
+          ) %>
         <% end %>
       <% end %>
-
       <% if lazy_load_index_view? %>
         <%= turbo_frame_tag @resource.index_view_frame, **index_view_frame_args do %>
           <% if index_view_loaded? %>

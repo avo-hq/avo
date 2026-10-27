@@ -17,6 +17,12 @@
       )) %>
     </div>
   <% else %>
-    <%= helpers.empty_state by_association: params[:related_name].present? %>
+    <%= render_index_slot :before_collection %>
+    <%= render_index_slot :collection do %>
+      <%= render_index_slot :before_records %>
+      <%= render_index_slot(:records) { helpers.empty_state by_association: params[:related_name].present? } %>
+      <%= render_index_slot :after_records %>
+    <% end %>
+    <%= render_index_slot :after_collection %>
   <% end %>
 <% end %>
