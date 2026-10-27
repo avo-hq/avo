@@ -76,6 +76,7 @@ en:
       hidden_selections:
         one: 1 selected option hidden by search
         other: "%{count} selected options hidden by search"
+    checking_dependents: Checking related records...
     choose_a_country: Choose a country
     choose_an_option: Choose an option
     choose_item: Choose %{item}
@@ -95,6 +96,7 @@ en:
     delete: delete
     delete_file: Delete file
     delete_item: Delete %{item}
+    destroy_also_deletes: This will also delete %{records}.
     detach_item: detach %{item}
     details: details
     download: Download

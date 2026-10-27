@@ -76,6 +76,7 @@ zh-TW:
       hidden_selections:
         one: 1 個選項因搜尋而隱藏
         other: "%{count} 個選項因搜尋而隱藏"
+    checking_dependents: 正在檢查相關記錄...
     choose_a_country: 選擇一個國家
     choose_an_option: 選擇一個選項
     choose_item: 選擇 %{item}
@@ -95,6 +96,7 @@ zh-TW:
     delete: 刪除
     delete_file: 刪除檔案
     delete_item: 刪除 %{item}
+    destroy_also_deletes: 這也會刪除%{records}。
     detach_item: 分離 %{item}
     details: 詳細資料
     download: 下載

@@ -76,6 +76,7 @@ it:
       hidden_selections:
         one: 1 opzione selezionata nascosta dalla ricerca
         other: "%{count} opzioni selezionate nascoste dalla ricerca"
+    checking_dependents: Verifica dei record correlati...
     choose_a_country: Scegli un paese
     choose_an_option: Scegli un'opzione
     choose_item: Scegli %{item}
@@ -95,6 +96,7 @@ it:
     delete: Elimina
     delete_file: Elimina file
     delete_item: Elimina %{item}
+    destroy_also_deletes: Questo eliminerà anche %{records}.
     detach_item: Stacca %{item}
     details: Dettagli
     download: Scarica

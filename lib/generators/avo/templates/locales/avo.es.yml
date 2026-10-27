@@ -78,6 +78,7 @@ es:
       hidden_selections:
         one: 1 opción seleccionada oculta por la búsqueda
         other: "%{count} opciones seleccionadas ocultas por la búsqueda"
+    checking_dependents: Comprobando registros relacionados...
     choose_a_country: Elige un país
     choose_an_option: Elige una opción
     choose_item: Elige %{item}
@@ -97,6 +98,7 @@ es:
     delete: eliminar
     delete_file: Eliminar fichero
     delete_item: Eliminar %{item}
+    destroy_also_deletes: Esto también eliminará %{records}.
     detach_item: separar %{item}
     details: detalles
     download: Descargar

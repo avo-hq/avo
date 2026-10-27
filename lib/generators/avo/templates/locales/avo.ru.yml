@@ -78,6 +78,7 @@ ru:
         many: "%{count} выбранных вариантов скрыто по запросу"
         one: 1 выбранный вариант скрыт по запросу
         other: "%{count} выбранных вариантов скрыто по запросу"
+    checking_dependents: Проверка связанных записей...
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
     choose_item: Выбрать %{item}
@@ -97,6 +98,7 @@ ru:
     delete: удалить
     delete_file: Удалить файл
     delete_item: Удалить %{item}
+    destroy_also_deletes: 'Это также удалит: %{records}.'
     detach_item: Отсоединить %{item}
     details: Детали
     download: Скачать

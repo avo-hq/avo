@@ -24,6 +24,7 @@ sorted_resources.each do |resource|
 
         member do
           get :preview
+          get :dependents
           post :new
           put :edit
         end

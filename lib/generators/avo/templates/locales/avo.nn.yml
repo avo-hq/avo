@@ -78,6 +78,7 @@ nn:
       hidden_selections:
         one: 1 vald alternativ skjult av søk
         other: "%{count} valde alternativ skjult av søk"
+    checking_dependents: Sjekkar relaterte postar...
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ
     choose_item: Vel %{item}
@@ -97,6 +98,7 @@ nn:
     delete: slett
     delete_file: Slett fil
     delete_item: Slett %{item}
+    destroy_also_deletes: Dette vil òg slette %{records}.
     detach_item: koble frå %{item}
     details: detaljar
     download: Last ned

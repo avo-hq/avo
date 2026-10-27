@@ -76,6 +76,7 @@ nl:
       hidden_selections:
         one: 1 geselecteerde optie verborgen door zoekopdracht
         other: "%{count} geselecteerde opties verborgen door zoekopdracht"
+    checking_dependents: Gerelateerde records controleren...
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
     choose_item: Kies %{item}
@@ -95,6 +96,7 @@ nl:
     delete: verwijderen
     delete_file: Bestand verwijderen
     delete_item: "%{item} verwijderen"
+    destroy_also_deletes: Hiermee worden ook %{records} verwijderd.
     detach_item: "%{item} loskoppelen"
     details: Details
     download: Downloaden
