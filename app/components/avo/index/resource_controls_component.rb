@@ -87,6 +87,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :edit,
         "resource-id": @resource.record_param,
         tippy: "tooltip",
+        hotkey_original: Avo::Hotkeys.key_for("record.edit")
       }
   end
 
@@ -125,6 +126,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         control: :destroy,
         tippy: control.title ? :tooltip : nil,
         "resource-id": @resource.record_param,
+        hotkey_original: Avo::Hotkeys.key_for("record.delete")
       }
   end
 

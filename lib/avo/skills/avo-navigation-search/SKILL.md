@@ -239,7 +239,7 @@ config.hotkeys = {
 
 Every shortcut has a stable ID (`shortcuts.toggle`, `record.edit`, `index.next_row`, `ai.toggle_assistant`...; the full table is on the keyboard-shortcuts-api docs page). Boot raises on a misspelled ID, on two shortcuts sharing a key on the same page, and on `Escape` or `Mod+Enter`, which stay fixed.
 
-Built-in highlights: `Cmd/Ctrl+K` global search · `Cmd/Ctrl+J` open the assistant · `Shift+\` toggle sidebar · `B` go back · `/` focus Index search · `C` new record · `A` actions menu · `V T` / `V G` / `V M` switch table/grid/map view. (Full table on the keyboard-shortcuts doc page.)
+Built-in highlights: `Cmd/Ctrl+K` global search · `Cmd/Ctrl+J` open the assistant · `Shift+\` toggle sidebar · `B` go back · `/` focus Index search · `C` new record · `A` actions menu · `V T` / `V G` / `V M` switch table/grid/map view · on an Index row focused with `J`/`K`, `E` edits it, `D` deletes it and `A` opens its actions list (when its row controls have one), under the same `record.edit` / `record.delete` / `resource.actions` IDs. (Full table on the keyboard-shortcuts doc page.)
 
 `Cmd+J` (macOS) / `Ctrl+J` (elsewhere) needs the **Avo AI** add-on; without it the `ai.toggle_assistant` ID doesn't exist and it isn't listed in the `?` modal. Its chord has a modifier, so it fires while you're typing in a field — reaching for the assistant mid-edit is the point — and it follows the `enabled` master switch like everything else.
 

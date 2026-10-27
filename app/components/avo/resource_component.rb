@@ -142,13 +142,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # the list fresh from this row's own hydrated resource instead of reusing it.
     actions = as_index_row_control ? row_actions : @actions
 
-    # Actions button hotkey on the main index, show and edit pages (non-nested,
-    # not an index row). The index component doesn't carry a @view, so detect it by
-    # class; show renders through the switcher and edit directly, both of which do
-    # carry a @view, so detect those by view.
-    hotkey = Avo::Hotkeys.key_for("resource.actions") if @reflection.nil? && !as_index_row_control && (
+    # Actions button hotkey on index rows (ActionsComponent hands it to the index-row-navigator) and on the
+    # main index, show and edit pages. The index component carries no @view, so it is detected by class.
+    hotkey = Avo::Hotkeys.key_for("resource.actions") if as_index_row_control || (@reflection.nil? && (
       instance_of?(Avo::Views::ResourceIndexComponent) || @view&.show? || @view&.edit?
-    )
+    ))
 
     render Avo::ActionsComponent.new(
       actions:,

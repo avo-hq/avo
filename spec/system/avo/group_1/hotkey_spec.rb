@@ -661,6 +661,30 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
     end
 
+    it "edits the focused row's record with e" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+      dispatch_keydown("j")
+      focused_id = find("tr.table-row.is-keyboard-focused")["data-resource-id"]
+      dispatch_keydown("e")
+
+      expect(page).to have_current_path("/admin/resources/projects/#{focused_id}/edit", ignore_query: true)
+    end
+
+    it "asks to delete the focused row's record with d" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+      dispatch_keydown("d")
+
+      expect(page).to have_css("dialog#turbo-confirm[open]", visible: true)
+    end
+
     it "does not expose the table as a grid on a show view's has-many table" do
       project = create(:project)
       create(:comment, commentable: project)
@@ -711,6 +735,21 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       dispatch_keydown("g")
       dispatch_keydown("j")
       expect(page).to have_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "edits the focused row's record on the rebound key" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("g")
+      dispatch_keydown("j")
+      focused_id = find("tr.table-row.is-keyboard-focused")["data-resource-id"]
+      dispatch_keydown("e")
+      expect(page).to have_current_path("/admin/resources/projects", ignore_query: true)
+
+      dispatch_keydown("E", shift_key: true)
+      expect(page).to have_current_path("/admin/resources/projects/#{focused_id}/edit", ignore_query: true)
     end
   end
 

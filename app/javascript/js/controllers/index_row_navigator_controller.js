@@ -44,6 +44,7 @@ export default class extends Controller {
     // connect(), so binding in connect() would register the unbound prototype
     // method as the blur listener.
     this.handleKeydown = this.handleKeydown.bind(this)
+    this.handleRowHotkey = this.handleRowHotkey.bind(this)
     this.handleDropdownOpen = this.handleDropdownOpen.bind(this)
     this.handleAdvanceRequest = this.handleAdvanceRequest.bind(this)
     this.handleTableBlur = this.handleTableBlur.bind(this)
@@ -54,6 +55,8 @@ export default class extends Controller {
     this.hotkeysEnabled = window.Avo?.configuration?.hotkeys?.enabled !== false
 
     document.addEventListener('keydown', this.handleKeydown)
+    // Capture phase, so the focused row's "a" beats the header's actions button bound to the same key.
+    document.addEventListener('keydown', this.handleRowHotkey, true)
     document.addEventListener('dropdown-menu:open', this.handleDropdownOpen)
     document.addEventListener('avo:advance-resource-table', this.handleAdvanceRequest)
 
@@ -71,6 +74,7 @@ export default class extends Controller {
 
   disconnect() {
     document.removeEventListener('keydown', this.handleKeydown)
+    document.removeEventListener('keydown', this.handleRowHotkey, true)
     document.removeEventListener('dropdown-menu:open', this.handleDropdownOpen)
     document.removeEventListener('avo:advance-resource-table', this.handleAdvanceRequest)
   }
@@ -106,26 +110,23 @@ export default class extends Controller {
     if (rows.length) this.clearFocus(rows)
   }
 
+  ignoresKeydown(event) {
+    if (event.defaultPrevented) return true
+    if (document.body.classList.contains('modal-open')) return true
+    if (document.body.classList.contains('dropdown-open')) return true
+    if (event.target.closest(TYPING_SELECTOR)) return true
+
+    // All keys require the table to have focus. This frees ↑/↓ for
+    // browser scrolling when the user hasn't engaged the table.
+    return !this.tableHasFocus()
+  }
+
   handleKeydown(event) {
-    if (event.defaultPrevented) return
-    if (document.body.classList.contains('modal-open')) return
-    if (document.body.classList.contains('dropdown-open')) return
-    if (event.target.closest(TYPING_SELECTOR)) return
+    if (this.ignoresKeydown(event)) return
     if (event.repeat && (event.key === 'Enter' || event.key === 'Escape' || event.key === ' ')) return
 
     const rows = this.rows()
     if (!rows.length) return
-
-    // All navigation keys require the table to have focus. This frees ↑/↓ for
-    // browser scrolling when the user hasn't engaged the table.
-    if (!this.tableHasFocus()) return
-
-    // Check for row hotkeys when a row is focused (only when hotkeys are enabled)
-    if (this.hotkeysEnabled && this.currentIndex !== -1) {
-      if (this.handleRowHotkey(event, rows)) {
-        return
-      }
-    }
 
     // Only handle navigation keys below
     if (!['ArrowDown', 'ArrowUp', 'Enter', 'Escape', ' '].includes(event.key)) return
@@ -240,20 +241,20 @@ export default class extends Controller {
     })
   }
 
-  handleRowHotkey(event, rows) {
-    const focusedRow = rows[this.currentIndex]
-    if (!focusedRow) return false
+  handleRowHotkey(event) {
+    if (!this.hotkeysEnabled || this.currentIndex === -1 || this.ignoresKeydown(event)) return
+
+    const focusedRow = this.rows()[this.currentIndex]
+    if (!focusedRow) return
 
     // The hotkey is now on the focused row (added by syncRowHotkeys)
     const control = Array.from(focusedRow.querySelectorAll('[data-hotkey]'))
       .find((element) => matchesHotkey(event, element.getAttribute('data-hotkey')))
-    if (!control) return false
+    if (!control) return
 
     event.preventDefault()
     event.stopImmediatePropagation() // Prevent @github/hotkey library from firing
     control.click()
-
-    return true
   }
 
   clearFocus(rows) {
