@@ -74,7 +74,7 @@ export const isTypingTarget = (event) => event.target instanceof Element && !!ev
 const hasModifier = (chord) => /(^|\+)(Control|Alt|Meta)\+/.test(chord)
 
 export function matchesHotkey(event, hotkey) {
-  if (!hotkey) return false
+  if (!hotkey || window.Avo?.configuration?.hotkeys?.enabled === false) return false
 
   const path = tracker.path
   const chords = currentChords(event)

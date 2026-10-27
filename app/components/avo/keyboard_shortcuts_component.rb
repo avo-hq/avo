@@ -123,7 +123,8 @@ class Avo::KeyboardShortcutsComponent < Avo::BaseComponent
     hotkey = Avo::Hotkeys.key_for(id)
     return if hotkey.nil?
 
-    {action: Avo::Hotkeys.find(id).label, hotkey:, keys_aria_label: nil}
+    # An alias binding ("j,ArrowDown") shows its first alternative here, as the badges do.
+    {action: Avo::Hotkeys.find(id).label, hotkey: Avo::Hotkeys.parse(hotkey).first.join(" "), keys_aria_label: nil}
   end
 
   def fixed(action, hotkey, keys_aria_label: nil)

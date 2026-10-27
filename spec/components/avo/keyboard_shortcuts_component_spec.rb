@@ -48,6 +48,19 @@ RSpec.describe Avo::KeyboardShortcutsComponent, type: :component do
     Avo.configuration.hotkeys = original
   end
 
+  it "shows the first alternative of an alias binding, as the badges do" do
+    original = Avo.configuration.hotkeys
+    Avo.configuration.hotkeys = {bindings: {"index.next_row": "j,ArrowDown"}}
+
+    render_inline(described_class.new)
+
+    row = page.find(".hotkey__row", text: "Focus table and move to next row")
+    expect(row).to have_css("kbd", text: "J")
+    expect(row).not_to have_css("kbd", text: "↓")
+  ensure
+    Avo.configuration.hotkeys = original
+  end
+
   it "shows the overridden key and drops disabled shortcuts" do
     original = Avo.configuration.hotkeys
     Avo.configuration.hotkeys = {bindings: {"record.edit": "Shift+E", "record.delete": false}}
