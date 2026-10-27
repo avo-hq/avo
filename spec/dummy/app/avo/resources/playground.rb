@@ -43,7 +43,7 @@ class Avo::Resources::Playground < Avo::BaseResource
     field :structured_heading, as: :heading, name: "Structured and media fields"
     field :key_value_data, as: :key_value, suggestions: Playground::KEY_VALUE_SUGGESTIONS
     field :array_values, as: :array, only_on: [:index, :show] do
-      Array.wrap(record.array_values)
+      Array.wrap(record.array_values).each_with_index.map { |value, index| {id: index + 1, value:} }
     end
     field :external_image_url, as: :external_image
     field :gravatar_email, as: :gravatar, size: 48
