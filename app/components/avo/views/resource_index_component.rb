@@ -3,6 +3,7 @@
 class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   include Avo::ResourcesHelper
   include Avo::ApplicationHelper
+  include Avo::RendersIndexSlots
 
   prop :resource
   prop :resources

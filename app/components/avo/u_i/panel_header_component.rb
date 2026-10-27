@@ -9,6 +9,8 @@ class Avo::UI::PanelHeaderComponent < Avo::BaseComponent
   prop :index
   prop :class
 
+  renders_one :before_title
+  renders_one :title_content
   renders_one :title_slot
   renders_one :avatar
   renders_one :controls
