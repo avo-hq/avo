@@ -2,6 +2,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
   include Avo::Concerns::RequestMethods
   include Avo::Concerns::HasResourceStimulusControllers
+  include Avo::RendersViewSlots
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels

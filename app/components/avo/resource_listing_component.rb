@@ -1,5 +1,5 @@
 class Avo::ResourceListingComponent < Avo::BaseComponent
-  include Avo::RendersIndexSlots
+  include Avo::RendersViewSlots
 
   prop :resources
   prop :resource

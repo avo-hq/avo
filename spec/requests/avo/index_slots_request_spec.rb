@@ -314,8 +314,8 @@ RSpec.describe "Resource index slots", type: :request do
   end
 
   it "rejects unknown positions and missing blocks when registering an addition" do
-    expect { Avo::Resources::Project.view_slot(:show, :after_header) {} }
-      .to raise_error(ArgumentError, /Unsupported slot view :show/)
+    expect { Avo::Resources::Project.view_slot(:unknown, :after_header) {} }
+      .to raise_error(ArgumentError, /Unsupported slot view :unknown/)
     expect { Avo::Resources::Project.index_slot(:after_pagniation) {} }
       .to raise_error(ArgumentError, /Unknown index slot :after_pagniation/)
     expect { Avo::Resources::Project.index_slot(:after_header) }
