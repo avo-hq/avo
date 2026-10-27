@@ -13,6 +13,7 @@
       data-selected-resources="[]">
       <%= render_index_slot :before_records %>
       <%= render_index_slot :records do %>
+        <% @header_fields, @table_row_components = generate_table_row_components %>
         <div class="card__wrapper mac-styled-scrollbar overflow-auto">
           <% if @pagy.pages > 1 %>
             <div

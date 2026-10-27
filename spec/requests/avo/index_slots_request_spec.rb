@@ -209,6 +209,58 @@ RSpec.describe "Resource index slots", type: :request do
     expect(frame.at_css("table, .card__footer")).to be_nil
   end
 
+  %i[collection records].each do |region|
+    it "prepares table rows only when the #{region} replacement preserves them, and only once" do
+      create :project, name: "Lazy project"
+      components = Avo::Resources::Project.components
+      prepare_row = -> { raise "Replaced table rows must not be prepared" }
+      custom_row = Class.new(Avo::Index::TableRowComponent) do
+        define_method(:initialize) do |**kwargs|
+          @preparation = prepare_row.call
+          super(**kwargs)
+        end
+
+        def merged_tr_attributes
+          attributes = super
+          attributes.merge(data: attributes[:data].merge(preparation: @preparation))
+        end
+      end
+      stub_const("Avo::Index::SlotLazyTableRowComponent", custom_row)
+      Avo::Resources::Project.components = components.merge("Avo::Index::TableRowComponent" => custom_row)
+      preserve_default = false
+      Avo::Resources::Project.index_slot(region, replace: true) do
+        if preserve_default
+          content = default_content.call
+          default_content.call
+          tag.section(content, id: "lazy-records")
+        else
+          tag.p("Replacement records", id: "lazy-records")
+        end
+      end
+
+      get "/admin/resources/projects"
+
+      expect(response).to have_http_status(:ok)
+      expect(Nokogiri::HTML(response.body).at_css("#lazy-records").text).to eq("Replacement records")
+
+      sequence = 0
+      prepare_row = -> { sequence += 1 }
+      preserve_default = true
+
+      2.times do |index|
+        get "/admin/resources/projects"
+
+        expect(response).to have_http_status(:ok)
+        rows = Nokogiri::HTML(response.body).css("#lazy-records tbody tr")
+        expect(rows.size).to eq(1)
+        expect(rows.first.text).to include("Lazy project")
+        expect(rows.first["data-preparation"]).to eq((index + 1).to_s)
+      end
+    ensure
+      Avo::Resources::Project.components = components
+    end
+  end
+
   it "replaces empty records inside a preserved collection without rendering pagination" do
     Avo::Resources::Project.view_slot(:index, :collection, replace: true) do
       tag.section(default_content.call, id: "custom-collection")
