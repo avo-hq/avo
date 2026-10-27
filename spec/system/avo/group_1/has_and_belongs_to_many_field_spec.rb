@@ -100,20 +100,21 @@ RSpec.describe "HasAndBelongsToManyField", type: :system do
         project.users << user
       end
 
+      # The project's other panels are empty and show "No related record found" too, so look inside the users panel.
       it "detaches the user" do
+        users_panel = "#has_and_belongs_to_many_field_show_users"
         subject
 
-        expect(page).not_to have_text "No related record found"
+        expect(page).to have_css("#{users_panel} [data-resource-id='#{user.to_param}']")
 
         expect {
           accept_custom_alert do
-            find("[data-resource-name='users'][data-resource-id='#{user.to_param}'] [data-control='detach']").click
+            find("#{users_panel} [data-resource-id='#{user.to_param}'] [data-control='detach']").click
           end
-          sleep 0.1
+          expect(page).to have_css(users_panel, text: "No related record found")
         }.to change(project.users, :count).by(-1)
 
         expect(current_path).to eql "/admin/resources/projects/#{project.id}"
-        expect(page).to have_text "No related record found"
       end
     end
   end
