@@ -76,12 +76,13 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
     expect(metadata[:fields_per_resource]).to eq("3.0")
   end
 
-  it "breaks down field types with string keys, sorted by count" do
+  it "breaks down field types with string keys, hiding app-defined type names" do
+    # color_picker is defined under app/avo/fields, so its name stays in the app.
     expect(metadata[:field_types]).to eq(
       "id" => 2,
       "text" => 2,
       "textarea" => 1,
-      "color_picker" => 1
+      "custom_1" => 1
     )
   end
 
@@ -209,8 +210,13 @@ RSpec.describe Avo::Services::TelemetryService::StaticCollector do
     end
 
     it "derives the type from the class name, as the runtime does" do
-      expect(metadata[:field_types]["radio"]).to eq(1)
       expect(metadata[:field_types]["textarea"]).to eq(2)
+    end
+
+    it "reports a class outside Avo's namespace under an anonymous key" do
+      # color_picker (app/avo/fields) and the Pluggy radio class are both custom.
+      expect(metadata[:field_types]).not_to include("radio", "color_picker")
+      expect(metadata[:field_types].slice("custom_1", "custom_2")).to eq("custom_1" => 1, "custom_2" => 1)
     end
 
     it "counts a class outside Avo's namespace as custom" do

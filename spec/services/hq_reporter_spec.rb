@@ -36,9 +36,14 @@ RSpec.describe Avo::Services::HqReporter do
         stub = stub_request(:post, endpoint)
           .with { |request|
             body = JSON.parse(request.body)
-            body["ip"] == "127.0.0.1" &&
-              body["host"] == "localhost" &&
-              body["port"] == 3000
+            body["host"] == "localhost" &&
+              body["port"] == 3000 &&
+              # The visitor's IP never leaves the app.
+              !body.key?("ip") &&
+              # The app name is sent once, at the top level, not again in the metadata.
+              body["app_name"].present? &&
+              body["install_id"] == Avo::Services::TelemetryService.install_id &&
+              !body["avo_metadata"]["config"].key?("app_name")
           }
           .to_return(status: 200, body: "{}")
 
@@ -54,6 +59,21 @@ RSpec.describe Avo::Services::HqReporter do
             body["avo_version"] == Avo::VERSION &&
               body["rails_version"] == Rails::VERSION::STRING &&
               body["ruby_version"] == RUBY_VERSION
+          }
+          .to_return(status: 200, body: "{}")
+
+        described_class.report(request_info)
+
+        expect(stub).to have_been_requested
+      end
+
+      it "sends only the exception class when building the metadata fails" do
+        allow(Avo::Services::TelemetryService).to receive(:avo_metadata)
+          .and_raise(RuntimeError, "Error connecting to Redis on 10.0.4.12:6379")
+        stub = stub_request(:post, endpoint)
+          .with { |request|
+            JSON.parse(request.body)["avo_metadata"]["error_message"] == "RuntimeError" &&
+              !request.body.include?("10.0.4.12") && !request.body.include?("6379")
           }
           .to_return(status: 200, body: "{}")
 

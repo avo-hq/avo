@@ -15,7 +15,7 @@ RSpec.describe Avo::Services::TelemetryService do
       expect(metadata).to include(
         :main_menu_present, :profile_menu_present, :cache_store, :cache_operational, :plugins, :config
       )
-      expect(metadata[:config]).to include(:root_path, :app_name)
+      expect(metadata[:config]).to eq(root_path: Avo.configuration.root_path)
     end
 
     it "collects statically from the app root" do
@@ -31,6 +31,69 @@ RSpec.describe Avo::Services::TelemetryService do
       expect(metadata[:resources_count]).to be > 0
       expect(metadata[:field_types]).to be_a(Hash)
       expect(metadata[:cache_operational]).to be(true).or be_a(String)
+    end
+  end
+
+  describe ".install_id" do
+    it "is a stable 32-character hex id" do
+      id = described_class.install_id
+
+      expect(id).to match(/\A\h{32}\z/)
+      expect(described_class.install_id).to eq(id)
+    end
+
+    it "changes with the app's secret and contains none of it" do
+      app_id = described_class.install_id
+      secret = "a1b2c3d4" * 16
+      allow(Rails.application).to receive(:key_generator)
+        .and_return(ActiveSupport::KeyGenerator.new(secret, iterations: 1000))
+
+      other_id = described_class.install_id
+
+      expect(other_id).to match(/\A\h{32}\z/)
+      expect(other_id).not_to eq(app_id)
+      expect(secret).not_to include(other_id)
+    end
+
+    it "returns nil instead of raising when there is no secret" do
+      allow(Rails.application).to receive(:key_generator).and_raise(ArgumentError)
+
+      expect(described_class.install_id).to be_nil
+    end
+  end
+
+  describe ".cache_operational?" do
+    let(:cache) { ActiveSupport::Cache::MemoryStore.new }
+    let(:connection_error) { "Error connecting to Redis on 10.0.4.12:6379" }
+
+    before { allow(Avo).to receive(:cache_store).and_return(cache) }
+
+    it "returns true for a working cache and leaves no test key behind" do
+      expect(described_class.cache_operational?).to be(true)
+      expect(cache.exist?("avo-test-cache")).to be(false)
+    end
+
+    it "reports only the exception class when write raises" do
+      allow(cache).to receive(:write).and_raise(Errno::ECONNREFUSED, connection_error)
+
+      result = described_class.cache_operational?
+
+      expect(result).to eq("error: Errno::ECONNREFUSED")
+      expect(result).not_to include("10.0.4.12")
+      expect(result).not_to include("6379")
+    end
+
+    it "deletes the test key when read raises after a successful write" do
+      allow(cache).to receive(:read).and_raise(RuntimeError, connection_error)
+
+      expect(described_class.cache_operational?).to eq("error: RuntimeError")
+      expect(cache.exist?("avo-test-cache")).to be(false)
+    end
+
+    it "does not raise when the cleanup delete raises" do
+      allow(cache).to receive(:delete).and_raise(RuntimeError, connection_error)
+
+      expect(described_class.cache_operational?).to be(true)
     end
   end
 

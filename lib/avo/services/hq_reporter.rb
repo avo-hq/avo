@@ -14,7 +14,7 @@ module Avo
         end
 
         # Fire and forget - call this from a thread
-        # request_info should be a hash with :ip, :host, :port keys
+        # request_info should be a hash with :host, :port keys
         def report(request_info = {})
           return unless should_report?
 
@@ -60,10 +60,10 @@ module Avo
             rails_version: Rails::VERSION::STRING,
             ruby_version: RUBY_VERSION,
             environment: Rails.env,
-            ip: request_info[:ip],
             host: request_info[:host],
             port: request_info[:port],
-            app_name: app_name
+            app_name: app_name,
+            install_id: Avo::Services::TelemetryService.install_id
           }
 
           if Avo.configuration.send_metadata
@@ -71,7 +71,8 @@ module Avo
               result[:avo_metadata] = Avo::Services::TelemetryService.avo_metadata
             rescue => e
               result[:avo_metadata] = {
-                error_message: e.message,
+                # The class only: an exception message can carry hosts, paths or credentials.
+                error_message: e.class.name,
                 error: "Failed to generate the Avo metadata"
               }
             end

@@ -89,7 +89,7 @@ module Avo
             fields_count: fields_count,
             fields_per_resource: average(fields_count, resources_count),
             custom_fields_count: custom_fields_count(resources, custom_field_types),
-            field_types: field_types(resources),
+            field_types: field_types(resources, custom_field_types),
             actions_count: distinct_count(resources, :actions),
             actions_per_resource: average(total_wired(resources, :actions), resources_count),
             filters_count: distinct_count(resources, :filters),
@@ -253,16 +253,30 @@ module Avo
         def custom_fields_count(resources, custom_field_types)
           resources.sum do |resource|
             resource.field_types.sum do |type, count|
-              (custom_field_types.include?(type.to_s) || resource.custom_field_types.include?(type)) ? count : 0
+              custom_type?(resource, type, custom_field_types) ? count : 0
             end
           end
         end
 
+        def custom_type?(resource, type, custom_field_types)
+          custom_field_types.include?(type.to_s) || resource.custom_field_types.include?(type)
+        end
+
         # Keys are strings to match the runtime `field.type` (e.g. "text").
-        def field_types(resources)
+        # A custom type is named by the app, so it leaves as `custom_1`,
+        # `custom_2`, … (most used first) instead of its own name.
+        def field_types(resources, custom_field_types)
           merged = Hash.new(0)
-          resources.each { |r| r.field_types.each { |type, count| merged[type.to_s] += count } }
-          merged.sort_by { |_, count| -count }.to_h
+          resources.each do |resource|
+            resource.field_types.each do |type, count|
+              merged[[custom_type?(resource, type, custom_field_types), type.to_s]] += count
+            end
+          end
+
+          custom_index = 0
+          merged.sort_by { |(_, type), count| [-count, type] }.to_h do |(custom, type), count|
+            [custom ? "custom_#{custom_index += 1}" : type, count]
+          end
         end
 
         # Distinct wired classes across all resources (e.g. the same action used

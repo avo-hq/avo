@@ -100,6 +100,8 @@ Guards:
 
 ## Telemetry
 
+**What we collect is listed in [Avo telemetry: what we collect](https://linear.app/avo-hq/document/avo-telemetry-what-we-collect-28974df26d42) on Linear.** Add a metric there before adding it to the collector, and keep the list out of this repo.
+
 `Avo::Services::TelemetryService.avo_metadata` is two halves: `structural_metadata`, parsed out of `app/avo` with Prism, and `runtime_metadata` (menus, cache, config, plugins), read from live objects.
 
 **Structural counts never read live Avo objects.** `HqReporter.report` runs inside `Thread.new` (see `InitializesAvo#init_app`), and `Avo::Current` is an `ActiveSupport::CurrentAttributes`, which is per-thread. In that thread `Avo::Current.resource_manager` and `Avo::Current.app` are both nil. The pre-4.x runtime collector raised on every single call for exactly that reason, plus two more: it read `Avo::Current.app.dashboard_manager` (nil since dashboards moved to the avo-dashboards gem) and called `get_field_definitions` / `get_actions`, which are instance methods, on resource *classes*. HQ received nothing but error payloads. `Avo.plugin_manager` is safe to read there: it is a module-level memo, not a `Current` attribute.
