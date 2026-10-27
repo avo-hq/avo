@@ -30,13 +30,13 @@ export default class extends Controller {
   }
 
   visitRecord(event) {
-    const isMiddleClick = event.type === 'auxclick' && event.button === 1
+    const isMiddleClick = ['mousedown', 'auxclick'].includes(event.type) && event.button === 1
 
     if (event.type !== 'click' && !isMiddleClick) {
       return
     }
 
-    if (window.getSelection().toString().length > 0) {
+    if (!isMiddleClick && window.getSelection().toString().length > 0) {
       return
     }
 
@@ -55,6 +55,13 @@ export default class extends Controller {
     const url = row?.dataset?.visitPath
 
     if (!row || !url) {
+      return
+    }
+
+    // Cancel autoscroll/paste on button down, but open the tab only on release.
+    if (event.type === 'mousedown') {
+      event.preventDefault()
+
       return
     }
 

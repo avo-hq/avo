@@ -34,9 +34,22 @@ RSpec.describe "Table row navigation", type: :system do
     expect(page.evaluate_script("window.getSelection().toString()")).to include fish.name
   end
 
-  it "opens a middle-clicked row in a new tab without navigating the index" do
+  it "opens a middle-clicked row despite existing text selection and cancels middle-button defaults" do
+    name_cell.execute_script(<<~JS)
+      const range = document.createRange()
+      range.selectNodeContents(this)
+      window.getSelection().removeAllRanges()
+      window.getSelection().addRange(range)
+      document.addEventListener('mousedown', (event) => {
+        window.middleMouseDownPrevented = event.defaultPrevented
+      }, {once: true})
+    JS
+
+    expect(page.evaluate_script("window.getSelection().toString()")).to include fish.name
     x, y = name_cell.evaluate_script("[this.getBoundingClientRect().x + 2, this.getBoundingClientRect().y + 2]")
     tab = window_opened_by { page.driver.browser.mouse.click(x: x, y: y, button: :middle) }
+
+    expect(page.evaluate_script("window.middleMouseDownPrevented")).to be true
 
     within_window(tab) do
       expect(page).to have_current_path "/admin/resources/fish/#{fish.to_param}"
