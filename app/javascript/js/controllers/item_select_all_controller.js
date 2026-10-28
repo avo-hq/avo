@@ -1,6 +1,8 @@
 import { AttributeObserver, Controller } from '@hotwired/stimulus'
 import { setSelection, takeSelection } from '../index_state'
 
+const MAX_ACTION_URL_LENGTH = 6000
+
 export default class extends Controller {
   static targets = [
     'itemCheckbox',
@@ -23,6 +25,10 @@ export default class extends Controller {
 
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()
+
+    // The action links carry the index query from the start, so an action's fields and messages can read it
+    // even when nothing is selected.
+    this.updateLinks('resourceIds')
 
     // Wait for the rows' item-selector controllers to connect; they apply the selection.
     if (rememberedIds.length > 0) {
@@ -151,9 +157,17 @@ export default class extends Controller {
           url.searchParams.set('fields[avo_resource_ids]', resourceIds)
           url.searchParams.set('fields[avo_selected_all]', 'false')
         } else if (param === 'selectedQuery') {
-          const selectedQuery = this.element.dataset.itemSelectAllSelectedAllQueryValue
-          url.searchParams.set('fields[avo_index_query]', selectedQuery)
           url.searchParams.set('fields[avo_selected_all]', 'true')
+        }
+
+        if (this.indexQueryAvailable()) {
+          url.searchParams.set('fields[avo_index_query]', this.selectedAllQueryValue)
+
+          // Puma and nginx reject request lines around 8-10 KB. Only select all needs the query to open the
+          // modal; without it, the modal texts see no index_query and handle still gets it from the form.
+          if (param !== 'selectedQuery' && url.toString().length > MAX_ACTION_URL_LENGTH) {
+            url.searchParams.delete('fields[avo_index_query]')
+          }
         }
 
         link.href = url.toString()
@@ -179,6 +193,11 @@ export default class extends Controller {
 
   // True if there are more pages available and if query encryption run successfully
   selectAllEnabled() {
-    return this.pageCountValue > 1 && this.selectedAllQueryValue !== 'select_all_disabled'
+    return this.pageCountValue > 1 && this.indexQueryAvailable()
+  }
+
+  // A view type renders 'select_all_disabled' when it can't encrypt the query, and a custom one may render none
+  indexQueryAvailable() {
+    return this.selectedAllQueryValue !== '' && this.selectedAllQueryValue !== 'select_all_disabled'
   }
 }

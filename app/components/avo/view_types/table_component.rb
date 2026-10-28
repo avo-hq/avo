@@ -24,20 +24,6 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
     }
   end
 
-  def encrypted_query
-    # A page cut by its source is all that is held, so there is nothing to select across pages
-    return :select_all_disabled if @query.is_a?(Avo::Resources::ArrayResource::Page)
-
-    # TODO: move this to the resource where we can apply the adapter pattern
-    if Module.const_defined?("Ransack::Search") && @query.instance_of?(Ransack::Search)
-      @query = @query.result
-    end
-
-    Avo::Services::EncryptionService.encrypt(message: @query, purpose: :select_all, serializer: Marshal)
-  rescue
-    disable_select_all
-  end
-
   def selected_page_label
     if @resource.pagination_type.countless?
       t "avo.x_records_selected_from_page_html", selected: @pagy.in
@@ -96,19 +82,5 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
     table_row_components.each { |table_row_component| table_row_component.header_fields = header_fields_ids }
 
     [header_fields, table_row_components]
-  end
-
-  private
-
-  def disable_select_all
-    if Rails.env.development?
-      Avo.error_manager.add({
-        url: "https://docs.avohq.io/4.0/select-all.html#serialization-known-issues",
-        target: "_blank",
-        message: "An error occurred while serializing the query object. The Select All feature has been disabled because it depends on successful query serialization. For more details and troubleshooting steps, click here."
-      })
-    end
-
-    :select_all_disabled
   end
 end
