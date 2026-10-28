@@ -249,7 +249,8 @@ module Avo
       flash[:notice] = t "avo.not_authorized"
 
       redirect_url = if request.referrer.blank? || (request.referrer == request.url)
-        root_url
+        # Through Avo's route proxy: in a plugin engine's controller, `root_url` reads the engine's routes.
+        avo.root_url
       else
         request.referrer
       end

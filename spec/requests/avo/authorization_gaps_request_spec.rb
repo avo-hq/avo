@@ -9,10 +9,10 @@ RSpec.describe "Authorization gaps", type: :request do
 
   before { login_as admin_user, scope: :user }
 
-  # Stands in for a policy client: raises Avo::NotAuthorizedError when the block returns true for (action, service).
+  # Stands in for a policy client: raises Avo::NotAuthorizedError when the block returns true for (action, service, record).
   def deny_when(&denied)
     allow_any_instance_of(Avo::Services::AuthorizationService).to receive(:authorize_action).and_wrap_original do |original, action, *args, **kwargs|
-      raise Avo::NotAuthorizedError if denied.call(action.to_s.delete_suffix("?").to_sym, original.receiver)
+      raise Avo::NotAuthorizedError if denied.call(action.to_s.delete_suffix("?").to_sym, original.receiver, kwargs[:record] || original.receiver.record)
 
       original.call(action, *args, **kwargs)
     end
@@ -52,6 +52,62 @@ RSpec.describe "Authorization gaps", type: :request do
       put "/admin/resources/posts/#{own_post.to_param}", params: {post: {name: "Renamed"}}
 
       expect(own_post.reload.name).to eq "Renamed"
+    end
+  end
+
+  describe "actions" do
+    let(:allowed_post) { create :post, published_at: nil }
+    let(:denied_post) { create :post, published_at: nil }
+
+    before { deny_when { |action, _service, record| action == :act_on && record == denied_post } }
+
+    def toggle_published(*posts)
+      post "/admin/resources/posts/actions",
+        params: {action_id: "Avo::Actions::TogglePublished", fields: {avo_resource_ids: posts.map(&:to_param).join(",")}},
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+    end
+
+    it "refuses a run that includes a record act_on? denies" do
+      toggle_published(allowed_post, denied_post)
+
+      expect(response).to have_http_status :redirect
+      expect([allowed_post, denied_post].map { |record| record.reload.published_at }).to eq [nil, nil]
+    end
+
+    it "runs on the records act_on? allows" do
+      toggle_published(allowed_post)
+
+      expect(allowed_post.reload.published_at).to be_present
+    end
+  end
+
+  # A plugin engine's controllers inherit Avo's but generate URLs against the engine's own routes.
+  describe "a refusal inside a plugin engine" do
+    before do
+      stub_const("Avo::RefusalSpec", Module.new)
+      Avo::RefusalSpec.module_eval <<~RUBY, __FILE__, __LINE__ + 1
+        class Engine < ::Rails::Engine
+          isolate_namespace Avo::RefusalSpec
+          routes.draw { get "refusal", to: "refusals#show" }
+        end
+
+        class RefusalsController < ::Avo::ApplicationController
+          def show = raise(Avo::NotAuthorizedError)
+        end
+      RUBY
+
+      Rails.application.routes.disable_clear_and_finalize = true
+      Rails.application.routes.draw { mount Avo::RefusalSpec::Engine, at: "/refusal_spec" }
+    ensure
+      Rails.application.routes.disable_clear_and_finalize = false
+    end
+
+    after { Rails.application.reload_routes! }
+
+    it "redirects to Avo's root when there is no referrer" do
+      get "/refusal_spec/refusal"
+
+      expect(response).to redirect_to "http://www.example.com/admin/"
     end
   end
 
