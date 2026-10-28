@@ -6,13 +6,14 @@ module Avo
 
     before_action :set_resource_name
     before_action :set_resource
-    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview]
+    before_action :set_record, only: [:show, :edit, :destroy, :update, :preview, :dependents]
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
-    before_action :fill_record, if: -> { action_name.in?(["create", "update"]) || params["react_on"].present? }
+    before_action :authorize_record_before_fill, only: [:edit, :update], if: :filling_record?
+    before_action :fill_record, if: :filling_record?
     # AssociationsController authorizes each of its actions itself, so a new action needs its own check
-    before_action :authorize_base_action, except: [:preview, :search], if: -> { controller_name != "associations" }
+    before_action :authorize_base_action, except: [:preview, :search, :dependents], if: -> { controller_name != "associations" }
     before_action :set_pagy_locale, only: :index
 
     before_action :set_modal_params
@@ -211,6 +212,14 @@ module Avo
       render layout: params[:turbo_frame].blank?
     end
 
+    # The delete confirmation asks for this when it opens, so it answers only to users who may destroy the record.
+    def dependents
+      authorize_action @record, :destroy
+
+      summary = Avo::Services::DependentsService.new(@record).summary
+      render json: {message: summary && t("avo.destroy_also_deletes", records: summary)}
+    end
+
     def search
       # Do not remove this method, it is implemented on avo-pro
       # Just a placeholder to avoid:
@@ -223,6 +232,16 @@ module Avo
     end
 
     private
+
+    # `authorize_base_action` runs after filling, so a policy can check the submitted values. An existing
+    # record is also authorized as loaded, or submitting a new owner would make it pass an owner-only policy.
+    def authorize_record_before_fill
+      authorize_action @record
+    end
+
+    def filling_record?
+      action_name.in?(["create", "update"]) || params["react_on"].present?
+    end
 
     def unprocessable_status
       # :unprocessable_content was added in Rails 7.1
@@ -540,7 +559,8 @@ module Avo
       respond_to do |format|
         if params[:turbo_frame]
           format.turbo_stream do
-            render turbo_stream: reload_frame_turbo_streams
+            # The parent page can show values derived from the association, like a counter, that a frame reload misses.
+            render turbo_stream: params[:refresh_on_destroy] ? turbo_stream.avo_turbo_reload : reload_frame_turbo_streams
           end
         else
           format.html { redirect_to after_destroy_path }
@@ -715,7 +735,7 @@ module Avo
     # share one source of truth.
     def base_index_query
       if associated_summary?
-        build_association_scope_from_params
+        build_association_scope_from_params(resource: @resource, authorization: @resource.authorization(user: _current_user))
       else
         @resource.class.query_scope(index_params: @index_params)
       end
@@ -767,21 +787,6 @@ module Avo
 
     def associated_summary?
       params[:via_record_id].present? && params[:via_resource_class].present? && (params[:association_name].present? || params[:related_name].present?)
-    end
-
-    def build_association_scope_from_params
-      parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
-      @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
-      @parent_resource = parent_resource_class.new(record: @parent_record, view: Avo::ViewInquirer.new("show"))
-      @parent_resource.detect_fields
-
-      association_query_scope(
-        parent_resource: @parent_resource,
-        parent_record: @parent_record,
-        association_name: params[:association_name] || params[:related_name],
-        authorization: @resource.authorization(user: _current_user),
-        resource: @resource
-      )
     end
 
     def association_query_scope(

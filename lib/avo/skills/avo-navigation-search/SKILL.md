@@ -221,19 +221,27 @@ add_breadcrumb title: "John Doe", initials: "JD", color: :purple, path: avo.reso
 
 ## Keyboard shortcuts (Community)
 
-All shortcuts are on by default; each bound control shows a small `<kbd>` badge, and `?` opens the reference modal for the current page. Shortcuts never fire while typing in an input/textarea/select/contenteditable.
+All shortcuts are on by default; each bound control shows a small `<kbd>` badge, and `?` opens the reference modal for the current page. A shortcut without Cmd/Ctrl or Alt never fires while typing in an input/textarea/select/contenteditable; a chord with one does.
 
 ```ruby
 # config/initializers/avo.rb
 config.hotkeys = {
   enabled: true,          # master switch
-  show_key_badges: true   # inline <kbd> badges next to buttons/links
+  show_key_badges: true,  # inline <kbd> badges next to buttons/links
+  bindings: {             # rebind or disable any shortcut by ID (@github/hotkey format; Mod = Cmd on macOS, Ctrl elsewhere)
+    "record.edit": "Shift+E",
+    "record.delete": false,
+    "index.next_row": "j,ArrowDown",
+    "advanced_search.open": "Mod+/"  # add-on IDs are ignored when the add-on isn't installed
+  }
 }
 ```
 
-Built-in highlights: `Cmd/Ctrl+K` global search · `Cmd/Ctrl+J` open the assistant · `Shift+\` toggle sidebar · `B` go back · `/` focus Index search · `C` new record · `A` actions menu · `V T` / `V G` / `V M` switch table/grid/map view. (Full table on the keyboard-shortcuts doc page.)
+Every shortcut has a stable ID (`shortcuts.toggle`, `record.edit`, `index.next_row`, `ai.toggle_assistant`...; the full table is on the keyboard-shortcuts-api docs page). Boot raises on a misspelled ID, on two shortcuts sharing a key on the same page, and on `Escape` or `Mod+Enter`, which stay fixed.
 
-`Cmd/Ctrl+J` needs the **Avo AI** add-on; without it the binding doesn't exist and it isn't listed in the `?` modal. It's also the one shortcut that still fires while you're typing in a field — reaching for the assistant mid-edit is the point — though it still follows the `enabled` master switch like everything else.
+Built-in highlights: `Cmd/Ctrl+K` global search · `Cmd/Ctrl+J` open the assistant · `Shift+\` toggle sidebar · `B` go back · `/` focus Index search · `C` new record · `A` actions menu · `V T` / `V G` / `V M` switch table/grid/map view · on an Index row focused with `J`/`K`, `E` edits it, `D` deletes it and `A` opens its actions list (when its row controls have one), under the same `record.edit` / `record.delete` / `resource.actions` IDs. (Full table on the keyboard-shortcuts doc page.)
+
+`Cmd+J` (macOS) / `Ctrl+J` (elsewhere) needs the **Avo AI** add-on; without it the `ai.toggle_assistant` ID doesn't exist and it isn't listed in the `?` modal. Its chord has a modifier, so it fires while you're typing in a field — reaching for the assistant mid-edit is the point — and it follows the `enabled` master switch like everything else.
 
 Add your own on any control with a `data-hotkey` attribute (re-bound on every Turbo navigation):
 

@@ -76,6 +76,7 @@ ua:
       hidden_selections:
         one: 1 вибрана опція прихована за пошуком
         other: "%{count} вибраних опцій приховано за пошуком"
+    checking_dependents: Перевірка пов'язаних записів...
     choose_a_country: Виберіть країну
     choose_an_option: Виберіть опцію
     choose_item: Виберіть %{item}
@@ -95,6 +96,7 @@ ua:
     delete: Видалити
     delete_file: Видалити файл
     delete_item: Видалити %{item}
+    destroy_also_deletes: 'Це також видалить: %{records}.'
     detach_item: Відкріпити %{item}
     details: Деталі
     download: Завантажити
@@ -246,5 +248,4 @@ ua:
     x_records_selected_from_page_html: Вибрано <span class="font-bold">%{selected}</span> записів на цій сторінці
     yes_confirm: Так, підтверджую
     you_cant_upload_new_resource: Ви не можете завантажувати файли в редактор Trix, поки не збережете ресурс.
-    you_havent_set_attachment_key: Ви не встановили `attachment_key` для цього поля Trix.
     you_missed_something_check_form: Можливо, ви щось пропустили. Перевірте форму.

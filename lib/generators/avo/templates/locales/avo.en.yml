@@ -76,6 +76,7 @@ en:
       hidden_selections:
         one: 1 selected option hidden by search
         other: "%{count} selected options hidden by search"
+    checking_dependents: Checking related records...
     choose_a_country: Choose a country
     choose_an_option: Choose an option
     choose_item: Choose %{item}
@@ -95,6 +96,7 @@ en:
     delete: delete
     delete_file: Delete file
     delete_item: Delete %{item}
+    destroy_also_deletes: This will also delete %{records}.
     detach_item: detach %{item}
     details: details
     download: Download
@@ -242,5 +244,4 @@ en:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records selected on this page
     yes_confirm: Yes, I'm sure
     you_cant_upload_new_resource: You can't upload files into the Trix editor until you save the resource.
-    you_havent_set_attachment_key: You haven't set an `attachment_key` to this Trix field.
     you_missed_something_check_form: You might have missed something. Please check the form.

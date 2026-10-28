@@ -76,6 +76,7 @@ it:
       hidden_selections:
         one: 1 opzione selezionata nascosta dalla ricerca
         other: "%{count} opzioni selezionate nascoste dalla ricerca"
+    checking_dependents: Verifica dei record correlati...
     choose_a_country: Scegli un paese
     choose_an_option: Scegli un'opzione
     choose_item: Scegli %{item}
@@ -95,6 +96,7 @@ it:
     delete: Elimina
     delete_file: Elimina file
     delete_item: Elimina %{item}
+    destroy_also_deletes: Questo eliminerà anche %{records}.
     detach_item: Stacca %{item}
     details: Dettagli
     download: Scarica
@@ -242,5 +244,4 @@ it:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> record selezionati su questa pagina
     yes_confirm: Sì, sono sicuro
     you_cant_upload_new_resource: Non puoi caricare file nell'editor Trix finché non salvi la risorsa.
-    you_havent_set_attachment_key: Non hai impostato un `attachment_key` per questo campo Trix.
     you_missed_something_check_form: Potresti aver dimenticato qualcosa. Controlla il modulo.

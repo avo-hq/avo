@@ -108,6 +108,17 @@ RSpec.describe "Keyboard shortcuts", type: :system do
     expect(page).to have_css(".hotkey", visible: :hidden)
   end
 
+  it "highlights the searched text in the keyboard shortcuts panel" do
+    visit "/admin/resources/projects"
+
+    dispatch_keydown("?", code: "Slash", shift_key: true)
+    find(".hotkey__search-input").fill_in(with: "Row")
+
+    highlighted = page.evaluate_script("[...CSS.highlights.get('hotkey-search')].map((range) => range.toString())")
+    expect(highlighted).to include("row")
+    expect(highlighted.map(&:downcase).uniq).to eq(["row"])
+  end
+
   it "does not open the keyboard shortcuts panel while typing in a search field" do
     visit "/admin/resources/projects"
 
@@ -118,6 +129,62 @@ RSpec.describe "Keyboard shortcuts", type: :system do
 
     expect(search_input.value).to include("?")
     expect(page).to have_css(".hotkey", visible: :hidden)
+  end
+
+  # Mod is Cmd on macOS and Ctrl elsewhere, so press whichever the browser's platform expects.
+  it "fires a shortcut rebound to a modifier chord from inside a field, like a plugin's would" do
+    Avo.configuration.hotkeys = {bindings: {"shortcuts.toggle": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+    search_input.click
+    search_input.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    expect(page).to have_text("Keyboard shortcuts")
+  end
+
+  it "fires a button's data-hotkey from inside a field when its chord has a modifier" do
+    Avo.configuration.hotkeys = {bindings: {"resource.new": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+    search_input.click
+    search_input.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    expect(page).to have_current_path("/admin/resources/projects/new", ignore_query: true)
+  end
+
+  # Badges carry the click feedback, so without them the in-field path has to click the button itself.
+  it "fires a button's modifier chord from inside a field when key badges are hidden" do
+    Avo.configuration.hotkeys = {show_key_badges: false, bindings: {"resource.new": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    search_input = find("[data-resource-search-target='input']")
+    search_input.click
+    search_input.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    expect(page).to have_current_path("/admin/resources/projects/new", ignore_query: true)
+  end
+
+  it "does not fire a page button from a field inside an open modal" do
+    Avo.configuration.hotkeys = {bindings: {"resource.new": "Mod+/"}}
+    visit "/admin/resources/projects"
+
+    dispatch_keydown("?", code: "Slash", shift_key: true)
+    modal_search = find(".hotkey__search-input")
+    modal_search.click
+    page.execute_script(<<~JS)
+      window.__pageButtonClicked = false
+      document.querySelector('[data-hotkey="Mod+/"]').addEventListener("click", (event) => {
+        event.preventDefault()
+        window.__pageButtonClicked = true
+      })
+    JS
+    modal_search.send_keys([(Gem::Platform.local.os == "darwin") ? :meta : :control, "/"])
+
+    # The page path clicks two animation frames later, so give it time before asserting it never came.
+    sleep 0.5
+    expect(page.evaluate_script("window.__pageButtonClicked")).to be(false)
   end
 
   it "toggles the hotkeys-hide-badges class on the html element when pressing Shift+K" do
@@ -605,6 +672,30 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
     end
 
+    it "edits the focused row's record with e" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+      dispatch_keydown("j")
+      focused_id = find("tr.table-row.is-keyboard-focused")["data-resource-id"]
+      dispatch_keydown("e")
+
+      expect(page).to have_current_path("/admin/resources/projects/#{focused_id}/edit", ignore_query: true)
+    end
+
+    it "asks to delete the focused row's record with d" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+      dispatch_keydown("d")
+
+      expect(page).to have_css("dialog#turbo-confirm[open]", visible: true)
+    end
+
     it "does not expose the table as a grid on a show view's has-many table" do
       project = create(:project)
       create(:comment, commentable: project)
@@ -620,6 +711,56 @@ RSpec.describe "Keyboard shortcuts", type: :system do
       dispatch_keydown("T", shift_key: true)
 
       expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+    end
+  end
+
+  context "when the developer rebinds shortcuts" do
+    around do |example|
+      original = Avo.configuration.hotkeys
+      Avo.configuration.hotkeys = {bindings: {"record.edit": "Shift+E", "index.next_row": "g j"}}
+      example.run
+      Avo.configuration.hotkeys = original
+    end
+
+    it "fires the edit button on the new key and shows it in the badge" do
+      project = create(:project)
+
+      visit "/admin/resources/projects/#{project.id}"
+
+      expect(page).to have_css("[data-hotkey='Shift+E'] .hotkey-badge", text: "SHIFT")
+      expect(page).to have_no_css("[data-hotkey='e']")
+
+      dispatch_keydown("E", shift_key: true)
+
+      expect(page).to have_current_path("/admin/resources/projects/#{project.id}/edit", ignore_query: true)
+    end
+
+    it "matches a rebound sequence on a direct listener and ignores the old key" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("j")
+      expect(page).to have_no_css("tr.table-row.is-keyboard-focused")
+
+      dispatch_keydown("g")
+      dispatch_keydown("j")
+      expect(page).to have_css("tr.table-row.is-keyboard-focused")
+    end
+
+    it "edits the focused row's record on the rebound key" do
+      create_list(:project, 3)
+
+      visit "/admin/resources/projects"
+
+      dispatch_keydown("g")
+      dispatch_keydown("j")
+      focused_id = find("tr.table-row.is-keyboard-focused")["data-resource-id"]
+      dispatch_keydown("e")
+      expect(page).to have_current_path("/admin/resources/projects", ignore_query: true)
+
+      dispatch_keydown("E", shift_key: true)
+      expect(page).to have_current_path("/admin/resources/projects/#{focused_id}/edit", ignore_query: true)
     end
   end
 

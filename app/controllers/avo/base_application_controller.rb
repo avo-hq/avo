@@ -19,6 +19,7 @@ module Avo
     around_action :set_avo_locale
     around_action :set_force_locale, if: -> { params[:force_locale].present? }
     around_action :set_browser_timezone, if: -> { Avo.configuration.use_browser_timezone }
+    around_action :render_action_text_with_main_app, if: -> { defined?(ActionText::Content) }
     before_action :init_app
     before_action :set_active_storage_current_host
     before_action :set_resource_name
@@ -150,7 +151,7 @@ module Avo
     def set_related_record
       association_name = BaseResource.valid_association_name(@record, params[:related_name])
       @related_record = if @field.is_a? Avo::Fields::HasOneField
-        @record.send association_name
+        @related_authorization.apply_policy(@record.association(association_name).scope).take!
       else
         @related_resource.find_record params[:related_id], query: @related_authorization.apply_policy(@record.send(association_name)), params: params
       end
@@ -226,6 +227,13 @@ module Avo
       @authorization.set_record(class_to_authorize).authorize_action action_to_authorize.to_sym
     end
 
+    # Records listed through a parent's association field are that field's panel, so they are listed
+    # with the panel's resource and policy, or another resource's policy scope would filter them.
+    def authorize_via_association(field, resource_class)
+      raise ActiveRecord::RecordNotFound unless field && resource_class == (field.use_resource || field.target_resource)
+      raise Avo::NotAuthorizedError unless field.authorized?
+    end
+
     def _authenticate!
       instance_eval(&Avo.configuration.authenticate)
       return if performed?
@@ -237,16 +245,21 @@ module Avo
       Avo.configuration.locale = locale if locale
     end
 
+    # With nowhere to go back to, the refusal renders here: redirecting to the root loops when the
+    # home page is the one refused.
     def render_unauthorized(exception)
-      flash[:notice] = t "avo.not_authorized"
-
-      redirect_url = if request.referrer.blank? || (request.referrer == request.url)
-        root_url
-      else
-        request.referrer
+      if request.referrer.present? && request.referrer != request.url
+        flash[:notice] = t "avo.not_authorized"
+        return redirect_to(request.referrer)
       end
 
-      redirect_to(redirect_url)
+      respond_to do |format|
+        format.html do
+          Avo.error_manager.add t("avo.not_authorized")
+          render html: "", layout: "avo/application", status: :forbidden
+        end
+        format.any { head :forbidden }
+      end
     end
 
     def set_authorization
@@ -350,6 +363,15 @@ module Avo
     # nothing when it is nil.
     def set_sidebar_width
       @sidebar_width = sidebar_width
+    end
+
+    # Action Text renders attachments with the current controller, whose engine router can't build Active Storage
+    # URLs ("Can't resolve image into URL"), so render them the way the host app would.
+    def render_action_text_with_main_app(&action)
+      renderer_class = defined?(::ApplicationController) ? ::ApplicationController : ActionController::Base
+      renderer = renderer_class.renderer.new(http_host: request.host_with_port, https: request.ssl?)
+
+      ActionText::Content.with_renderer(renderer, &action)
     end
 
     # Set the current host for ActiveStorage

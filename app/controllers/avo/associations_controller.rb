@@ -94,6 +94,9 @@ module Avo
       elsif has_many_reflection?
         @record.send(association_name).delete @attachment_record
       else
+        # `detach_*?` authorized the record in the URL, so only that one may be detached.
+        raise ActiveRecord::RecordNotFound unless @record.send(association_name) == @attachment_record
+
         @record.send(:"#{association_name}=", nil)
       end
 

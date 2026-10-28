@@ -76,6 +76,7 @@ zh-TW:
       hidden_selections:
         one: 1 個選項因搜尋而隱藏
         other: "%{count} 個選項因搜尋而隱藏"
+    checking_dependents: 正在檢查相關記錄...
     choose_a_country: 選擇一個國家
     choose_an_option: 選擇一個選項
     choose_item: 選擇 %{item}
@@ -95,6 +96,7 @@ zh-TW:
     delete: 刪除
     delete_file: 刪除檔案
     delete_item: 刪除 %{item}
+    destroy_also_deletes: 這也會刪除%{records}。
     detach_item: 分離 %{item}
     details: 詳細資料
     download: 下載
@@ -242,5 +244,4 @@ zh-TW:
     x_records_selected_from_page_html: 在本頁中共選擇了 <span class="font-bold">%{selected}</span> 筆記錄
     yes_confirm: 是的，確認
     you_cant_upload_new_resource: 在保存資源之前，您無法將檔案上傳到 Trix 編輯器。
-    you_havent_set_attachment_key: 您尚未為此 Trix 欄位設定 `attachment_key`。
     you_missed_something_check_form: 您可能漏掉了一些內容，請檢查表單。

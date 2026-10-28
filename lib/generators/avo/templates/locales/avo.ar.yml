@@ -86,6 +86,7 @@ ar:
         other: "%{count} خيار محدد مخفي بواسطة البحث"
         two: خياران محددان مخفيان بواسطة البحث
         zero: لا توجد خيارات محددة مخفية بواسطة البحث
+    checking_dependents: جارٍ التحقق من السجلات المرتبطة...
     choose_a_country: اختر دولة
     choose_an_option: اختر خيارًا
     choose_item: اختر %{item}
@@ -105,6 +106,7 @@ ar:
     delete: حذف
     delete_file: حذف الملف
     delete_item: حذف %{item}
+    destroy_also_deletes: سيؤدي هذا أيضًا إلى حذف %{records}.
     detach_item: فصل %{item}
     details: تفاصيل
     download: تنزيل
@@ -260,5 +262,4 @@ ar:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> السجلات المختارة في هذه الصفحة
     yes_confirm: نعم، أنا متأكد
     you_cant_upload_new_resource: لا يمكنك تحميل الملفات في محرر Trix حتى تحفظ السجل.
-    you_havent_set_attachment_key: لم تقم بتعيين `attachment_key` لهذا الحقل Trix.
     you_missed_something_check_form: ربما نسيت شيئًا، يرجى التحقق من البيانات.

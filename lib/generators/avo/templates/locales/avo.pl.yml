@@ -78,6 +78,7 @@ pl:
         many: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
         one: 1 wybrana opcja ukryta przez wyszukiwanie
         other: "%{count} wybranych opcji ukrytych przez wyszukiwanie"
+    checking_dependents: Sprawdzanie powiązanych rekordów...
     choose_a_country: Wybierz kraj
     choose_an_option: Wybierz opcję
     choose_item: Wybierz %{item}
@@ -97,6 +98,7 @@ pl:
     delete: Usuń
     delete_file: Usuń plik
     delete_item: Usuń %{item}
+    destroy_also_deletes: 'Spowoduje to również usunięcie: %{records}.'
     detach_item: Odłącz %{item}
     details: Szczegóły
     download: Pobierz
@@ -248,5 +250,4 @@ pl:
     x_records_selected_from_page_html: Wybrano <span class="font-bold">%{selected}</span> rekordów z tej strony
     yes_confirm: Tak, potwierdzam
     you_cant_upload_new_resource: Nie możesz przesyłać plików do edytora Trix, dopóki nie zapiszesz zasobu.
-    you_havent_set_attachment_key: Nie ustawiłeś `attachment_key` dla tego pola Trix.
     you_missed_something_check_form: Możliwe, że coś przeoczyłeś. Sprawdź formularz.

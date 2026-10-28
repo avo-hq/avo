@@ -80,6 +80,7 @@ ro:
         few: "%{count} opțiuni selectate ascunse de căutare"
         one: 1 opțiune selectată ascunsă de căutare
         other: "%{count} de opțiuni selectate ascunse de căutare"
+    checking_dependents: Se verifică înregistrările asociate...
     choose_a_country: Alege o țară
     choose_an_option: Alege o opțiune
     choose_item: Alege %{item}
@@ -99,6 +100,7 @@ ro:
     delete: șterge
     delete_file: Șterge fișierul
     delete_item: Șterge %{item}
+    destroy_also_deletes: Aceasta va șterge și %{records}.
     detach_item: detașează %{item}
     details: detalii
     download: Descarcă
@@ -248,5 +250,4 @@ ro:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> selectate
     yes_confirm: Da, sunt sigur
     you_cant_upload_new_resource: Nu poți încărca fișiere în editorul Trix până când nu salvezi resursa.
-    you_havent_set_attachment_key: Trebuie să setezi o `attachment_key` pentru acest câmp Trix.
     you_missed_something_check_form: S-ar putea să fi omis ceva. Vă rugăm să verificați formularul.

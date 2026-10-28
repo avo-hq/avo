@@ -78,6 +78,7 @@ fr:
       hidden_selections:
         one: 1 option sélectionnée cachée par la recherche
         other: "%{count} options sélectionnées cachées par la recherche"
+    checking_dependents: Vérification des enregistrements liés...
     choose_a_country: Sélectionnez un pays
     choose_an_option: Sélectionnez une option
     choose_item: Choisir %{item}
@@ -97,6 +98,7 @@ fr:
     delete: supprimer
     delete_file: Supprimer le fichier
     delete_item: Supprimer %{item}
+    destroy_also_deletes: Cela supprimera également %{records}.
     detach_item: détacher %{item}
     details: détails
     download: Télécharger
@@ -244,5 +246,4 @@ fr:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> éléments sélectionnés de cette page
     yes_confirm: Oui, je suis sûr
     you_cant_upload_new_resource: Vous ne pouvez pas télécharger de fichiers dans l'éditeur Trix tant que vous n'avez pas enregistré la ressource.
-    you_havent_set_attachment_key: Vous devez définir une `attachment_key` pour ce champ Trix.
     you_missed_something_check_form: Vous avez peut-être oublié quelque chose. Veuillez vérifier le formulaire

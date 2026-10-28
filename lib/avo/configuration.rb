@@ -265,7 +265,8 @@ module Avo
     unless defined?(HOTKEYS_DEFAULTS)
       HOTKEYS_DEFAULTS = {
         enabled: true,
-        show_key_badges: true
+        show_key_badges: true,
+        bindings: {}
       }.freeze
     end
 

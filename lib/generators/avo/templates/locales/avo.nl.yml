@@ -76,6 +76,7 @@ nl:
       hidden_selections:
         one: 1 geselecteerde optie verborgen door zoekopdracht
         other: "%{count} geselecteerde opties verborgen door zoekopdracht"
+    checking_dependents: Gerelateerde records controleren...
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
     choose_item: Kies %{item}
@@ -95,6 +96,7 @@ nl:
     delete: verwijderen
     delete_file: Bestand verwijderen
     delete_item: "%{item} verwijderen"
+    destroy_also_deletes: Hiermee worden ook %{records} verwijderd.
     detach_item: "%{item} loskoppelen"
     details: Details
     download: Downloaden
@@ -242,5 +244,4 @@ nl:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> records geselecteerd op deze pagina
     yes_confirm: Ja, ik weet het zeker
     you_cant_upload_new_resource: Je kunt geen bestanden uploaden in de Trix-editor totdat je de bron hebt opgeslagen.
-    you_havent_set_attachment_key: Je hebt geen `attachment_key` ingesteld voor dit Trix-veld.
     you_missed_something_check_form: U heeft mogelijk iets gemist. Controleer het formulier.
