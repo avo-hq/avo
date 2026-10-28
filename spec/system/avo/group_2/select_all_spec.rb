@@ -123,6 +123,9 @@ RSpec.describe "SelectAll", type: :system do
         open_panel_action(action_name: "Release fish")
 
         expect(page).to have_text "Matching the filters: #{spec_salmon_number}"
+
+        run_action
+        expect(page).to have_text "1 fish released"
       end
 
       it "counts every filtered record when a standalone action runs with nothing selected" do

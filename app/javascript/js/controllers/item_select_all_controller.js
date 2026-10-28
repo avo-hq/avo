@@ -1,6 +1,8 @@
 import { AttributeObserver, Controller } from '@hotwired/stimulus'
 import { setSelection, takeSelection } from '../index_state'
 
+const MAX_ACTION_URL_LENGTH = 6000
+
 export default class extends Controller {
   static targets = [
     'itemCheckbox',
@@ -160,6 +162,12 @@ export default class extends Controller {
 
         if (this.indexQueryAvailable()) {
           url.searchParams.set('fields[avo_index_query]', this.selectedAllQueryValue)
+
+          // Puma and nginx reject request lines around 8-10 KB. Only select all needs the query to open the
+          // modal; without it, the modal texts see no index_query and handle still gets it from the form.
+          if (param !== 'selectedQuery' && url.toString().length > MAX_ACTION_URL_LENGTH) {
+            url.searchParams.delete('fields[avo_index_query]')
+          }
         }
 
         link.href = url.toString()
