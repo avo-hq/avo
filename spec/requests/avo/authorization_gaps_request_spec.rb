@@ -103,6 +103,12 @@ RSpec.describe "Authorization gaps", type: :request do
 
       expect(response).to redirect_to "http://www.example.com/admin/resources/users"
     end
+
+    it "renders 403 when the page they came from is the one refused" do
+      get "/admin/resources/projects", headers: {"Referer" => "http://www.example.com/admin/resources/projects"}
+
+      expect(response).to have_http_status :forbidden
+    end
   end
 
   # A plugin engine's controllers inherit Avo's but generate URLs against the engine's own routes.
