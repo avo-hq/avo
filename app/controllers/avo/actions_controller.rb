@@ -71,7 +71,7 @@ module Avo
     def set_query
       # If the user selected all records, use the decrypted index query
       # Otherwise, find the records from the resource ids
-      @query = if action_params[:fields]&.dig(:avo_selected_all) == "true"
+      @query = if selected_all?
         decrypted_index_query
       else
         find_records_from_resource_ids
@@ -252,8 +252,23 @@ module Avo
       end
     end
 
+    def selected_all?
+      action_params[:fields]&.dig(:avo_selected_all) == "true"
+    end
+
     def verify_authorization
-      raise Avo::NotAuthorizedError.new unless @action.authorized?
+      raise Avo::NotAuthorizedError.new unless @action.authorized? && act_on_authorized?
+    end
+
+    # The Actions button asks `act_on?`, so the run asks it too, of every record it names: the one in
+    # the URL and the selected ids. With none, the model class stands in, as on the index. A select-all
+    # run is the index query the button already allowed, and is not loaded here to ask it row by row.
+    def act_on_authorized?
+      records = [@record, *(@query unless selected_all?)].compact
+
+      (records.presence || [@resource.model_class]).all? do |record|
+        @resource.authorization.authorize_action(:act_on, record:, raise_exception: false)
+      end
     end
   end
 end

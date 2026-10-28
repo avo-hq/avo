@@ -9,10 +9,14 @@ RSpec.describe "Authorization gaps", type: :request do
 
   before { login_as admin_user, scope: :user }
 
-  # Stands in for a policy client: raises Avo::NotAuthorizedError when the block returns true for (action, service).
+  # Stands in for a policy client: denies when the block returns true for (action, service, record).
   def deny_when(&denied)
     allow_any_instance_of(Avo::Services::AuthorizationService).to receive(:authorize_action).and_wrap_original do |original, action, *args, **kwargs|
-      raise Avo::NotAuthorizedError if denied.call(action.to_s.delete_suffix("?").to_sym, original.receiver)
+      if denied.call(action.to_s.delete_suffix("?").to_sym, original.receiver, kwargs[:record] || original.receiver.record)
+        next false if kwargs[:raise_exception] == false
+
+        raise Avo::NotAuthorizedError
+      end
 
       original.call(action, *args, **kwargs)
     end
@@ -27,14 +31,14 @@ RSpec.describe "Authorization gaps", type: :request do
     it "refuses an update that makes the record pass its policy by changing it" do
       put "/admin/resources/posts/#{post_record.to_param}", params: {post: {user_id: admin_user.id, name: "Mine now"}}
 
-      expect(response).to have_http_status :redirect
+      expect(response).to have_http_status :forbidden
       expect(post_record.reload).to have_attributes(user_id: other_user.id, name: "Theirs")
     end
 
     it "refuses a reactive edit form the same way" do
       put "/admin/resources/posts/#{post_record.to_param}/edit", params: {react_on: "user", post: {user_id: admin_user.id}}
 
-      expect(response).to have_http_status :redirect
+      expect(response).to have_http_status :forbidden
     end
 
     it "still checks the submitted values" do
@@ -55,13 +59,95 @@ RSpec.describe "Authorization gaps", type: :request do
     end
   end
 
+  describe "actions" do
+    let(:allowed_post) { create :post, published_at: nil }
+    let(:denied_post) { create :post, published_at: nil }
+
+    before { deny_when { |action, _service, record| action == :act_on && record == denied_post } }
+
+    def toggle_published(*posts)
+      post "/admin/resources/posts/actions",
+        params: {action_id: "Avo::Actions::TogglePublished", fields: {avo_resource_ids: posts.map(&:to_param).join(",")}},
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+    end
+
+    it "refuses a run that includes a record act_on? denies" do
+      toggle_published(allowed_post, denied_post)
+
+      expect(response).to have_http_status :forbidden
+      expect([allowed_post, denied_post].map { |record| record.reload.published_at }).to eq [nil, nil]
+    end
+
+    it "runs on the records act_on? allows" do
+      toggle_published(allowed_post)
+
+      expect(allowed_post.reload.published_at).to be_present
+    end
+  end
+
+  describe "a refusal" do
+    # The dummy's home page is the projects index.
+    before { deny_when { |action, _service, record| action == :index && record == Project } }
+
+    it "renders 403 when going back would loop to the refused home page" do
+      get "/admin/"
+      # Not follow_redirect!, which sends the redirecting URL as the Referer. A browser keeps the original (none).
+      get response.location
+
+      expect(response).to have_http_status :forbidden
+      expect(response.body).to include "You are not authorized to perform this action."
+    end
+
+    it "sends the user back to the page they came from" do
+      get "/admin/resources/projects", headers: {"Referer" => "http://www.example.com/admin/resources/users"}
+
+      expect(response).to redirect_to "http://www.example.com/admin/resources/users"
+    end
+
+    it "renders 403 when the page they came from is the one refused" do
+      get "/admin/resources/projects", headers: {"Referer" => "http://www.example.com/admin/resources/projects"}
+
+      expect(response).to have_http_status :forbidden
+    end
+  end
+
+  # A plugin engine's controllers inherit Avo's but generate URLs against the engine's own routes.
+  describe "a refusal inside a plugin engine" do
+    before do
+      stub_const("Avo::RefusalSpec", Module.new)
+      Avo::RefusalSpec.module_eval <<~RUBY, __FILE__, __LINE__ + 1
+        class Engine < ::Rails::Engine
+          isolate_namespace Avo::RefusalSpec
+          routes.draw { get "refusal", to: "refusals#show" }
+        end
+
+        class RefusalsController < ::Avo::ApplicationController
+          def show = raise(Avo::NotAuthorizedError)
+        end
+      RUBY
+
+      Rails.application.routes.disable_clear_and_finalize = true
+      Rails.application.routes.draw { mount Avo::RefusalSpec::Engine, at: "/refusal_spec" }
+    ensure
+      Rails.application.routes.disable_clear_and_finalize = false
+    end
+
+    after { Rails.application.reload_routes! }
+
+    it "renders 403" do
+      get "/refusal_spec/refusal"
+
+      expect(response).to have_http_status :forbidden
+    end
+  end
+
   describe "distribution chart" do
     it "refuses a chart of a resource whose index the policy denies" do
       deny_when { |action, _service| action == :index }
 
       get "/admin/posts/status/distribution_chart"
 
-      expect(response).to have_http_status :redirect
+      expect(response).to have_http_status :forbidden
     end
   end
 
@@ -110,7 +196,7 @@ RSpec.describe "Authorization gaps", type: :request do
 
           get path.call("posts", admin_user)
 
-          expect(response).to have_http_status :redirect
+          expect(response).to have_http_status :forbidden
         end
       end
     end

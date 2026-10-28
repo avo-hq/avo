@@ -245,16 +245,21 @@ module Avo
       Avo.configuration.locale = locale if locale
     end
 
+    # With nowhere to go back to, the refusal renders here: redirecting to the root loops when the
+    # home page is the one refused.
     def render_unauthorized(exception)
-      flash[:notice] = t "avo.not_authorized"
-
-      redirect_url = if request.referrer.blank? || (request.referrer == request.url)
-        root_url
-      else
-        request.referrer
+      if request.referrer.present? && request.referrer != request.url
+        flash[:notice] = t "avo.not_authorized"
+        return redirect_to(request.referrer)
       end
 
-      redirect_to(redirect_url)
+      respond_to do |format|
+        format.html do
+          Avo.error_manager.add t("avo.not_authorized")
+          render html: "", layout: "avo/application", status: :forbidden
+        end
+        format.any { head :forbidden }
+      end
     end
 
     def set_authorization
