@@ -151,7 +151,7 @@ module Avo
     def set_related_record
       association_name = BaseResource.valid_association_name(@record, params[:related_name])
       @related_record = if @field.is_a? Avo::Fields::HasOneField
-        @record.send association_name
+        @related_authorization.apply_policy(@record.association(association_name).scope).take!
       else
         @related_resource.find_record params[:related_id], query: @related_authorization.apply_policy(@record.send(association_name)), params: params
       end
@@ -225,6 +225,13 @@ module Avo
       action_to_authorize = action || action_name
 
       @authorization.set_record(class_to_authorize).authorize_action action_to_authorize.to_sym
+    end
+
+    # Records listed through a parent's association field are that field's panel, so they are listed
+    # with the panel's resource and policy, or another resource's policy scope would filter them.
+    def authorize_via_association(field, resource_class)
+      raise ActiveRecord::RecordNotFound unless field && resource_class == (field.use_resource || field.target_resource)
+      raise Avo::NotAuthorizedError unless field.authorized?
     end
 
     def _authenticate!

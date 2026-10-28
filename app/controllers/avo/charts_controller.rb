@@ -1,11 +1,5 @@
 module Avo
   class ChartsController < Avo::BaseController
-    # Summarizable charts reuse the index query pipeline (including policy scope via
-    # `query_scope`). They were never meant to require `distribution_chart?` /
-    # `distribution_chart_full?` policy methods — those only surfaced once
-    # `explicit_authorization` defaulted to true.
-    skip_before_action :authorize_base_action, only: [:distribution_chart, :distribution_chart_full]
-
     before_action :validate_summarizable_field
 
     def distribution_chart
@@ -44,6 +38,14 @@ module Avo
     end
 
     private
+
+    # Summarizable charts reuse the index query pipeline, so they ask the index policy, or on an
+    # association page the parent's `view_<association>?`, which the association scope asks. They were
+    # never meant to require `distribution_chart?` / `distribution_chart_full?` policy methods — those
+    # only surfaced once `explicit_authorization` defaulted to true.
+    def authorize_base_action
+      authorize_action @resource.model_class, :index unless associated_summary?
+    end
 
     # Field IDs aren't unique (forms vs. index variants), so match on summarizable too.
     def validate_summarizable_field
