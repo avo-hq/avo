@@ -43,7 +43,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 - Menu editor guide: https://docs.avohq.io/4.0/menu-editor.md — API reference: https://docs.avohq.io/4.0/menu-editor-api.md
 - Search guide: https://docs.avohq.io/4.0/search.md — API reference: https://docs.avohq.io/4.0/search-api.md
 - Breadcrumbs: https://docs.avohq.io/4.0/breadcrumbs.md
-- Keyboard shortcuts: https://docs.avohq.io/4.0/keyboard-shortcuts.md
+- Keyboard shortcuts: https://docs.avohq.io/4.0/keyboard-shortcuts.md — API reference (`bindings`, shortcut IDs, hotkey syntax): https://docs.avohq.io/4.0/keyboard-shortcuts-api.md
 - Authorization (the `search?` policy method): https://docs.avohq.io/4.0/authorization-api.md#search
 
 ## When this applies
