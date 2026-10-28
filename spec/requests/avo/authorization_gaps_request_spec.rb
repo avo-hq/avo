@@ -9,10 +9,14 @@ RSpec.describe "Authorization gaps", type: :request do
 
   before { login_as admin_user, scope: :user }
 
-  # Stands in for a policy client: raises Avo::NotAuthorizedError when the block returns true for (action, service, record).
+  # Stands in for a policy client: denies when the block returns true for (action, service, record).
   def deny_when(&denied)
     allow_any_instance_of(Avo::Services::AuthorizationService).to receive(:authorize_action).and_wrap_original do |original, action, *args, **kwargs|
-      raise Avo::NotAuthorizedError if denied.call(action.to_s.delete_suffix("?").to_sym, original.receiver, kwargs[:record] || original.receiver.record)
+      if denied.call(action.to_s.delete_suffix("?").to_sym, original.receiver, kwargs[:record] || original.receiver.record)
+        next false if kwargs[:raise_exception] == false
+
+        raise Avo::NotAuthorizedError
+      end
 
       original.call(action, *args, **kwargs)
     end
@@ -27,14 +31,14 @@ RSpec.describe "Authorization gaps", type: :request do
     it "refuses an update that makes the record pass its policy by changing it" do
       put "/admin/resources/posts/#{post_record.to_param}", params: {post: {user_id: admin_user.id, name: "Mine now"}}
 
-      expect(response).to have_http_status :redirect
+      expect(response).to have_http_status :forbidden
       expect(post_record.reload).to have_attributes(user_id: other_user.id, name: "Theirs")
     end
 
     it "refuses a reactive edit form the same way" do
       put "/admin/resources/posts/#{post_record.to_param}/edit", params: {react_on: "user", post: {user_id: admin_user.id}}
 
-      expect(response).to have_http_status :redirect
+      expect(response).to have_http_status :forbidden
     end
 
     it "still checks the submitted values" do
@@ -70,7 +74,7 @@ RSpec.describe "Authorization gaps", type: :request do
     it "refuses a run that includes a record act_on? denies" do
       toggle_published(allowed_post, denied_post)
 
-      expect(response).to have_http_status :redirect
+      expect(response).to have_http_status :forbidden
       expect([allowed_post, denied_post].map { |record| record.reload.published_at }).to eq [nil, nil]
     end
 
@@ -78,6 +82,26 @@ RSpec.describe "Authorization gaps", type: :request do
       toggle_published(allowed_post)
 
       expect(allowed_post.reload.published_at).to be_present
+    end
+  end
+
+  describe "a refusal" do
+    # The dummy's home page is the projects index.
+    before { deny_when { |action, _service, record| action == :index && record == Project } }
+
+    it "renders 403 when going back would loop to the refused home page" do
+      get "/admin/"
+      # Not follow_redirect!, which sends the redirecting URL as the Referer. A browser keeps the original (none).
+      get response.location
+
+      expect(response).to have_http_status :forbidden
+      expect(response.body).to include "You are not authorized to perform this action."
+    end
+
+    it "sends the user back to the page they came from" do
+      get "/admin/resources/projects", headers: {"Referer" => "http://www.example.com/admin/resources/users"}
+
+      expect(response).to redirect_to "http://www.example.com/admin/resources/users"
     end
   end
 
@@ -104,10 +128,10 @@ RSpec.describe "Authorization gaps", type: :request do
 
     after { Rails.application.reload_routes! }
 
-    it "redirects to Avo's root when there is no referrer" do
+    it "renders 403" do
       get "/refusal_spec/refusal"
 
-      expect(response).to redirect_to "http://www.example.com/admin/"
+      expect(response).to have_http_status :forbidden
     end
   end
 
@@ -117,7 +141,7 @@ RSpec.describe "Authorization gaps", type: :request do
 
       get "/admin/posts/status/distribution_chart"
 
-      expect(response).to have_http_status :redirect
+      expect(response).to have_http_status :forbidden
     end
   end
 
@@ -166,7 +190,7 @@ RSpec.describe "Authorization gaps", type: :request do
 
           get path.call("posts", admin_user)
 
-          expect(response).to have_http_status :redirect
+          expect(response).to have_http_status :forbidden
         end
       end
     end

@@ -33,7 +33,7 @@ RSpec.describe "Associations show", type: :request do
 
     get has_many_path
 
-    expect(response).to have_http_status :redirect
+    expect(response).to have_http_status :forbidden
   end
 
   it "refuses a has_one related record its show policy denies" do
@@ -41,7 +41,7 @@ RSpec.describe "Associations show", type: :request do
 
     get "/admin/resources/users/#{admin_user.to_param}/post/#{post_record.to_param}"
 
-    expect(response).to have_http_status :redirect
+    expect(response).to have_http_status :forbidden
   end
 
   it "does not find a has_one related record outside the related policy scope" do
