@@ -67,6 +67,8 @@ RSpec.feature Avo::SearchController, type: :controller do
         q: "course"
       }
       expect(JSON.parse(res.body)["courses"]["count"]).to eq 8
+    ensure
+      Avo::Resources::Post.search.delete(:results_count)
     end
   end
 end

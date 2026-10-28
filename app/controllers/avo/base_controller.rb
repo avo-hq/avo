@@ -11,6 +11,7 @@ module Avo
     before_action :set_record_to_fill, only: [:new, :edit, :create, :update]
     before_action :detect_fields
     before_action :set_edit_title_and_breadcrumbs, only: [:edit, :update]
+    before_action :authorize_record_before_fill, only: :update
     before_action :fill_record, only: [:create, :update]
     # AssociationsController authorizes each of its actions itself, so a new action needs its own check
     before_action :authorize_base_action, except: :preview, if: -> { controller_name != "associations" }
@@ -220,6 +221,12 @@ module Avo
     end
 
     private
+
+    # `authorize_base_action` runs after filling, so a policy can check the submitted values. An existing
+    # record is also authorized as loaded, or submitting a new owner would make it pass an owner-only policy.
+    def authorize_record_before_fill
+      authorize_action @record
+    end
 
     def save_record
       perform_action_and_record_errors do

@@ -2,6 +2,10 @@ require_dependency "avo/base_controller"
 
 module Avo
   class ChartsController < BaseController
+    # A chart summarizes the resource's index, or on an association page the association's panel,
+    # which `association_scope` authorizes.
+    before_action -> { authorize_action @resource.model_class, :index }, unless: :is_associated_summary
+
     def distribution_chart
       @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
 
@@ -34,11 +38,10 @@ module Avo
 
       parent_resource.detect_fields
 
-      association_name = BaseResource.valid_association_name(parent_record, params[:association_name])
+      parent_field = find_association_field(resource: parent_resource, association: params[:association_name])
+      authorize_via_association parent_field, @resource.class
 
-      parent_field = find_association_field(resource: parent_resource, association: association_name)
-
-      association_query = parent_resource.authorization.apply_policy parent_record.send(association_name)
+      association_query = @resource.authorization.apply_policy parent_record.send(parent_field.association_name)
 
       if parent_field.scope.present?
         association_query = Avo::ExecutionContext.new(
