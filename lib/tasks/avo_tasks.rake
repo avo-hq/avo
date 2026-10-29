@@ -6,9 +6,9 @@ task "avo:update" => :environment do
   lockfile = Bundler.default_lockfile.to_s
 
   if push
-    status, result = Open3.capture2("git", "status", "--porcelain", "--untracked-files=all")
+    status, result = Open3.capture2("git", "status", "--porcelain", "--untracked-files=no")
     abort "[Avo->] AVO_UPDATE_PUSH requires a Git repository." unless result.success?
-    abort "[Avo->] AVO_UPDATE_PUSH requires a clean Git working tree." unless status.empty?
+    abort "[Avo->] AVO_UPDATE_PUSH requires no changes to tracked files." unless status.empty?
     unless system("git", "rev-parse", "--verify", "@{upstream}", out: File::NULL, err: File::NULL)
       abort "[Avo->] AVO_UPDATE_PUSH requires a branch with an existing upstream."
     end

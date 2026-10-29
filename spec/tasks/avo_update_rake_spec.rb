@@ -4,8 +4,8 @@ require "rake"
 require "tmpdir"
 
 RSpec.describe "avo:update" do
-  def git(*args)
-    output, error, status = Open3.capture3("git", *args)
+  def git(*)
+    output, error, status = Open3.capture3("git", *)
     raise error unless status.success?
     output.strip
   end
@@ -93,14 +93,33 @@ RSpec.describe "avo:update" do
     end
   end
 
-  ["unstaged", "staged", "untracked"].each do |state|
+  ["unstaged", "staged"].each do |state|
     it "rejects #{state} changes before updating" do
-      File.write((state == "untracked") ? "new.txt" : "other.txt", "existing work\n")
+      File.write("other.txt", "existing work\n")
       git("add", "other.txt") if state == "staged"
 
-      expect { update }.to raise_error(SystemExit, /clean Git working tree/)
+      expect { update }.to raise_error(SystemExit, /no changes to tracked files/)
       expect(File.read("Gemfile.lock")).to eq("original lockfile\n")
       expect(remote_head).to eq(@initial_head)
+    end
+  end
+
+  [true, false].each do |tracked_lockfile|
+    it "allows untracked files with a #{tracked_lockfile ? "tracked" : "untracked"} lockfile" do
+      unless tracked_lockfile
+        git("rm", "--cached", "Gemfile.lock")
+        git("commit", "-m", "Untrack lockfile")
+        git("push")
+      end
+      File.write("new.txt", "untracked work\n")
+
+      expect { update }.not_to raise_error
+
+      expect(git("diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD")).to eq("Gemfile.lock")
+      expect(git("show", "HEAD:Gemfile.lock")).to eq("updated lockfile")
+      expect(remote_head).to eq(git("rev-parse", "HEAD"))
+      expect(File.read("new.txt")).to eq("untracked work\n")
+      expect(git("status", "--porcelain")).to eq("?? new.txt")
     end
   end
 
