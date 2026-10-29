@@ -210,7 +210,7 @@ self.search = {
 1. **Key not set on the server.** The most frequent cause. Confirm `config.license_key = ENV["AVO_LICENSE_KEY"]` and that the env var is actually present in **production** (not just locally).
 2. **Check the status page.** Every Avo app exposes `https://yourapp.com/<mount>/avo_private/status` — e.g. `/admin/avo_private/status` if you mounted Avo at `admin`. It shows whether the license authenticated and the raw response from the check server. The viewing user must be an Avo admin.
 3. **Key hidden on the status page.** The key is redacted by default; set `exclude_from_status = []` in the initializer if you need to see it while debugging.
-4. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention. Access continues until the date the status page reports. Each case is fixed on https://avohq.io/licenses:
+4. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention, and the status page shows an **Action needed** tag above the license name. Access continues until the date the status page reports. Each case is fixed on https://avohq.io/licenses:
    - No payment method is on file: add one.
    - The subscription behind the trial was cancelled: resume it. A payment method won't help.
    - An Avo 4 trial runs beside an Avo 3 subscription: press **Migrate to Avo 4** before the trial's end date, or Avo 4 stops working in the app when the trial ends (the Avo 3 license stays active, so the app can move back to Avo 3). A payment method won't help. An older `avo-licensing` shows add-a-payment-method steps for this case; migrating is still the fix.
