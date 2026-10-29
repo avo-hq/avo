@@ -213,7 +213,7 @@ self.search = {
 4. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention. Access continues until the date the status page reports. Each case is fixed on https://avohq.io/licenses:
    - No payment method is on file: add one.
    - The subscription behind the trial was cancelled: resume it. A payment method won't help.
-   - An Avo 4 trial runs beside an Avo 3 subscription: press **Migrate to Avo 4** before the trial's end date, or the app goes back to Avo 3. A payment method won't help. An older `avo-licensing` shows add-a-payment-method steps for this case; migrating is still the fix.
+   - An Avo 4 trial runs beside an Avo 3 subscription: press **Migrate to Avo 4** before the trial's end date, or Avo 4 stops working in the app when the trial ends (the Avo 3 license stays active, so the app can move back to Avo 3). A payment method won't help. An older `avo-licensing` shows add-a-payment-method steps for this case; migrating is still the fix.
 
    Then press **Refresh license** on the status page, since Avo caches the license response between checks.
 
