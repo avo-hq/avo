@@ -24,22 +24,6 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
     }
   end
 
-  def selected_page_label
-    if @resource.pagination_type.countless?
-      t "avo.x_records_selected_from_page_html", selected: @pagy.in
-    else
-      t "avo.x_records_selected_from_a_total_of_x_html", selected: @pagy.in, count: @pagy.count
-    end
-  end
-
-  def selected_all_label
-    if @resource.pagination_type.countless?
-      t "avo.records_selected_from_all_pages_html"
-    else
-      t "avo.x_records_selected_from_all_pages_html", count: @pagy.count
-    end
-  end
-
   # Table rows are not fragment-cached. A `cache_if` wrapped this until it was
   # removed: a `return` inside its block unwound past Action View's
   # `write_fragment`, so nothing was ever written, and a hit would have handed

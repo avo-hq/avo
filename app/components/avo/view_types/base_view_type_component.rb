@@ -29,6 +29,22 @@ class Avo::ViewTypes::BaseViewTypeComponent < Avo::BaseComponent
     )
   end
 
+  def selected_page_label
+    if @resource.pagination_type.countless?
+      t "avo.x_records_selected_from_page_html", selected: @pagy.in
+    else
+      t "avo.x_records_selected_from_a_total_of_x_html", selected: @pagy.in, count: @pagy.count
+    end
+  end
+
+  def selected_all_label
+    if @resource.pagination_type.countless?
+      t "avo.records_selected_from_all_pages_html"
+    else
+      t "avo.x_records_selected_from_all_pages_html", count: @pagy.count
+    end
+  end
+
   def encrypted_query
     # A page cut by its source is all that is held, so there is nothing to select across pages
     return :select_all_disabled if @query.is_a?(Avo::Resources::ArrayResource::Page)

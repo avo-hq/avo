@@ -1,24 +1,75 @@
 <turbo-frame id="<%= list_frame_id %>" target="_top" class="relative flex w-full flex-col @container">
-  <%# The reorder gem brings its own stimulus controller; both have to connect on the wrapper. %>
-  <% reorder_data = try(:drag_reorder_data_attributes) || {} %>
-  <%# tabindex=-1 makes the wrapper a Shift+T focus anchor (top-level grids only, %>
-  <%# never a has-many grid on a show page); from here Tab steps through the cards. %>
+  <%# The selection controller wraps the bar and the cards. The reorder gem sorts the grid wrapper's children, %>
+  <%# so the bar can't sit inside it. %>
   <%= content_tag :div,
-    class: "grid-wrapper",
-    tabindex: (@reflection.present? ? nil : "-1"),
+    class: "flex w-full flex-col gap-3",
     data: {
-      component_name: self.class.to_s.underscore,
-      controller: ["item-select-all", reorder_data[:controller]].compact.join(" "),
+      controller: "item-select-all",
       resource_name: resource_name_for(@resource),
-      selected_resources_name: resource_name_for(@resource),
-      selected_resources: [],
+      item_select_all_selected_all_value: false,
       item_select_all_selected_all_query_value: encrypted_query,
-      **(@reflection.present? ? {} : {"content-focus": ""}),
-      **reorder_data.except(:controller)
+      item_select_all_page_count_value: @pagy.pages,
+      selected_resources_name: resource_name_for(@resource),
+      selected_resources: []
     } do %>
-    <% @resources.each_with_index do |resource, index| %>
-      <% cache_if Avo.configuration.cache_resources_on_index_view, resource.index_cache_key(@parent_record, cache_context:), expires_in: 1.day do %>
-        <%= render(resource.resolve_component(Avo::Index::GridItemComponent).new(resource: resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: actions)) %>
+    <% if @resource.record_selector %>
+      <div class="flex min-h-7 flex-wrap items-center gap-x-3 gap-y-1 px-2 text-sm" data-component-name="avo/view_types/grid_select_all">
+        <%= content_tag :label, class: "flex items-center gap-2 cursor-pointer text-content-secondary" do %>
+          <%= tag :input,
+            type: "checkbox",
+            name: t("avo.select_all"),
+            autocomplete: :off,
+            data: {
+              action: "input->item-select-all#toggle",
+              item_select_all_target: "checkbox"
+            } %>
+          <%= t "avo.select_all" %>
+        <% end %>
+
+        <% if @pagy.pages > 1 %>
+          <div class="hidden border-s border-tertiary ps-3" data-item-select-all-target="selectAllOverlay">
+            <div data-item-select-all-target="unselectedMessage">
+              <%= selected_page_label %>
+
+              <%= a_link request.url,
+                size: :xs,
+                color: :primary,
+                class: "relative -top-[0.1rem] ms-2 cursor-pointer text-primary-500",
+                data: {action: "click->item-select-all#selectAll"} do %>
+                <%= t "avo.select_all_matching" %>
+              <% end %>
+            </div>
+
+            <div class="hidden" data-item-select-all-target="selectedMessage">
+              <%= selected_all_label %>
+
+              <%= a_link request.url,
+                size: :xs,
+                color: :primary,
+                class: "relative -top-[0.1rem] ms-2 cursor-pointer text-primary-500",
+                data: {action: "click->item-select-all#selectAll"} do %>
+                <%= t("avo.undo").humanize %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# tabindex=-1 makes the wrapper a Shift+T focus anchor (top-level grids only, %>
+    <%# never a has-many grid on a show page); from here Tab steps through the cards. %>
+    <%= content_tag :div,
+      class: "grid-wrapper",
+      tabindex: (@reflection.present? ? nil : "-1"),
+      data: {
+        component_name: self.class.to_s.underscore,
+        **(@reflection.present? ? {} : {"content-focus": ""}),
+        **(try(:drag_reorder_data_attributes) || {})
+      } do %>
+      <% @resources.each_with_index do |resource, index| %>
+        <% cache_if Avo.configuration.cache_resources_on_index_view, resource.index_cache_key(@parent_record, cache_context:), expires_in: 1.day do %>
+          <%= render(resource.resolve_component(Avo::Index::GridItemComponent).new(resource: resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: actions)) %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

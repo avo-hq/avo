@@ -76,6 +76,33 @@ RSpec.describe "SelectAll", type: :system do
     end
   end
 
+  describe "on the grid view" do
+    let!(:url) { "/admin/resources/fish?per_page=#{per_page}&view_type=grid" }
+
+    it "releases the fish from the selected page" do
+      visit url
+
+      check_select_all
+      expect_all_message
+
+      release_fish
+
+      expect(page).to have_text "#{per_page} fish released with message '' by ."
+    end
+
+    it "releases all fishes" do
+      visit url
+
+      check_select_all
+      click_on "Select all matching"
+      expect_all_matching_message
+
+      release_fish
+
+      expect(page).to have_text "#{total_fish} fish released with message '' by ."
+    end
+  end
+
   describe "with applied filters" do
     context "select all" do
       it "releases all fish from applied filter" do
