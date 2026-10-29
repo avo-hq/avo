@@ -1,5 +1,19 @@
-desc "Runs the update command for all Avo gems."
+require "open3"
+
+desc "Updates all Avo gems; set AVO_UPDATE_PUSH=1 to commit Gemfile.lock and push."
 task "avo:update" => :environment do
+  push = ENV["AVO_UPDATE_PUSH"] == "1"
+  lockfile = Bundler.default_lockfile.to_s
+
+  if push
+    status, result = Open3.capture2("git", "status", "--porcelain", "--untracked-files=no")
+    abort "[Avo->] AVO_UPDATE_PUSH requires a Git repository." unless result.success?
+    abort "[Avo->] AVO_UPDATE_PUSH requires no changes to tracked files." unless status.empty?
+    unless system("git", "rev-parse", "--verify", "@{upstream}", out: File::NULL, err: File::NULL)
+      abort "[Avo->] AVO_UPDATE_PUSH requires a branch with an existing upstream."
+    end
+  end
+
   # Start with avo core (it doesn't register itself as a plugin), then resolve
   # every registered plugin to its real gem name. Plugins register under
   # nicknames (e.g. `avo-rhino_field` registers as `:rhino`), so we ask each
@@ -20,7 +34,21 @@ task "avo:update" => :environment do
   # `bundle exec` settings (BUNDLE_GEMFILE, BUNDLE_FROZEN/--deployment, RUBYOPT),
   # which can make the update silently refuse. Exported credentials survive
   # because they're part of the original env Bundler snapshotted at boot.
-  Bundler.with_original_env { system cmd }
+  abort "[Avo->] Gem update failed; nothing committed or pushed." unless Bundler.with_original_env { system cmd }
+
+  if push
+    abort "[Avo->] Could not stage #{lockfile}; nothing pushed." unless system("git", "add", "--", lockfile)
+    _, result = Open3.capture2("git", "diff", "--cached", "--quiet", "--", lockfile)
+    if result.success?
+      puts "[Avo->] Gemfile.lock is unchanged; nothing committed or pushed."
+      next
+    end
+    abort "[Avo->] Could not inspect Gemfile.lock; nothing pushed." unless result.exitstatus == 1
+    unless system("git", "commit", "--only", "-m", "Update Avo gems", "--", lockfile)
+      abort "[Avo->] Commit failed; nothing pushed."
+    end
+    abort "[Avo->] Push failed; the update commit is available locally." unless system("git", "push")
+  end
 end
 
 desc "Builds Avo (just assets for now)"
