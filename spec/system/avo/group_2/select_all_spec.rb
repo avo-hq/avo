@@ -99,6 +99,54 @@ RSpec.describe "SelectAll", type: :system do
       end
     end
 
+    # avo-hq/avo#3711
+    context "an action's message reads the index query" do
+      around do |example|
+        actions = [Avo::Actions::ReleaseFish, Avo::Actions::Sub::DummyAction]
+        original_messages = actions.map(&:message)
+        actions.each { |action| action.message = -> { "Matching the filters: #{index_query.count}" } }
+        example.run
+        actions.zip(original_messages).each { |action, message| action.message = message }
+      end
+
+      before do
+        visit url
+
+        open_filters_menu
+        fill_in "avo_filters_name_filter", with: "Spec Salmon"
+        click_on "Filter by name"
+        wait_for_loaded
+      end
+
+      it "counts every filtered record while only one is selected" do
+        find(:css, record_selector_checkbox_selector, match: :first).set(true)
+        open_panel_action(action_name: "Release fish")
+
+        expect(page).to have_text "Matching the filters: #{spec_salmon_number}"
+
+        run_action
+        expect(page).to have_text "1 fish released"
+      end
+
+      it "counts every filtered record when a standalone action runs with nothing selected" do
+        open_panel_action(action_name: "Dummy action")
+
+        expect(page).to have_text "Matching the filters: #{spec_salmon_number}"
+      end
+
+      context "on the grid view" do
+        let!(:url) { "/admin/resources/fish?per_page=#{per_page}&view_type=grid" }
+
+        it "counts every filtered record when a standalone action runs with nothing selected" do
+          expect(page).to have_css "[data-component-name='avo/index/grid_item_component']"
+
+          open_panel_action(action_name: "Dummy action")
+
+          expect(page).to have_text "Matching the filters: #{spec_salmon_number}"
+        end
+      end
+    end
+
     describe "countless resource" do
       context "select all" do
         it "display contless messages" do

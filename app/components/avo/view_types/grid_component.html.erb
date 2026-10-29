@@ -1,4 +1,6 @@
 <turbo-frame id="<%= list_frame_id %>" target="_top" class="relative flex w-full flex-col @container">
+  <%# The reorder gem brings its own stimulus controller; both have to connect on the wrapper. %>
+  <% reorder_data = try(:drag_reorder_data_attributes) || {} %>
   <%# tabindex=-1 makes the wrapper a Shift+T focus anchor (top-level grids only, %>
   <%# never a has-many grid on a show page); from here Tab steps through the cards. %>
   <%= content_tag :div,
@@ -6,12 +8,13 @@
     tabindex: (@reflection.present? ? nil : "-1"),
     data: {
       component_name: self.class.to_s.underscore,
-      controller: "item-select-all",
+      controller: ["item-select-all", reorder_data[:controller]].compact.join(" "),
       resource_name: resource_name_for(@resource),
       selected_resources_name: resource_name_for(@resource),
       selected_resources: [],
+      item_select_all_selected_all_query_value: encrypted_query,
       **(@reflection.present? ? {} : {"content-focus": ""}),
-      **(try(:drag_reorder_data_attributes) || {})
+      **reorder_data.except(:controller)
     } do %>
     <% @resources.each_with_index do |resource, index| %>
       <% cache_if Avo.configuration.cache_resources_on_index_view, resource.index_cache_key(@parent_record, cache_context:), expires_in: 1.day do %>
