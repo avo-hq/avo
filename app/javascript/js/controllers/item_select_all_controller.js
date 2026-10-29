@@ -64,7 +64,8 @@ export default class extends Controller {
     if (!this.hasCheckboxTarget) return
 
     // If all are selected, mark the checkbox as checked.
-    const rowCount = this.element.querySelectorAll('tbody tr').length
+    // Table rows and grid cards both carry an item checkbox.
+    const rowCount = this.itemCheckboxTargets.length
     // Reset the checkbox
     this.checkboxTarget.indeterminate = false
     this.checkboxTarget.checked = false
