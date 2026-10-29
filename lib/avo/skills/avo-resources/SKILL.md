@@ -183,6 +183,7 @@ Validation and errors need **no Avo config** — Avo runs your model's validatio
 - `errors.add(:age, "must be over 18.")` → inline under the `age` field.
 - `errors.add(:base, "…")` (or an error whose attribute has no field on the form) → alert banner at the top.
 - Non-validation exceptions during save/destroy (FK constraint on delete, `after_save` failure) are caught, added as a `:base` alert, and shown gracefully instead of 500-ing. Developers additionally see the backtrace (gated on `Avo::Current.user_is_developer?`).
+- **Delete confirmation names dependents** (4.3.8+). Nothing to configure: Avo reads the model's `dependent:` associations and adds "This will also delete 3 books and 12 reviews." under "Are you sure?", only for users allowed to delete. `:destroy`/`:destroy_async` are followed down every level; `:delete`/`:delete_all` are counted but not followed; `:nullify`, `:restrict_with_*`, DB `ON DELETE CASCADE`, `through`, polymorphic `belongs_to` and composite keys are not counted. A custom `confirmation_message` on `delete_button` is kept, with the line below it.
 
 ### 6. Array (non-database) resources
 

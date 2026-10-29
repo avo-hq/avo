@@ -210,6 +210,10 @@ en:
         save: "Save the product!"
 ```
 
+### 6b. Localize the delete confirmation
+
+In 4.3.8+ the delete dialog names dependent records ("This will also delete 3 books."). Each association is named by the model's attribute translation `activerecord.attributes.<model>.<association>` with `one:`/`other:` keys; without it the humanized, pluralized association name is used. The surrounding sentence comes from `avo.destroy_also_deletes` and `avo.checking_dependents`.
+
 ### 7. Localize scopes, cards, and dashboards
 
 Three more roots follow the same convention, derived by the **add-on gems** that provide those entities — so they only exist in an app that has the gem installed:

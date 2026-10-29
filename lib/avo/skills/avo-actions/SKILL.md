@@ -89,6 +89,7 @@ The keyword arguments:
 - `current_user` — the authenticated user.
 - `resource` — the Avo resource instance that triggered the action.
 - `request` — the current `ActionDispatch::Request` (add `request:` to the signature to use it).
+- `index_query` — not a keyword argument; read it as a method. The Index query with filters, scopes, search and sort applied, before pagination, whatever was selected. Use it for standalone "export everything I filtered" actions. It is `nil` on Show/Edit, when the filters match nothing, on array resources that paginate at the source, and when the query can't be serialized, so write `index_query&.count`. Also available in `fields` and the modal text blocks (`nil` while `name` renders in the dropdown).
 
 ### 3. Register it on the resource
 
@@ -194,7 +195,7 @@ end
 `fetch_values_from` points at an endpoint **you** add (a method on an `Avo::ResourcesController` subclass plus a route); it receives the typed text as `params[:q]` and returns objects with `value` and `label` keys. Either way the chosen ID arrives as `fields[:user_id]`.
 
 ### Confirmation modal
-The modal is on by default. Customize its text (each may be a string or a block with access to `resource`, `record`, `view`, `arguments`, `query`), or turn it off for safe actions:
+The modal is on by default. Customize its text (each may be a string or a block with access to `resource`, `record`, `view`, `arguments`, `query`, `index_query`), or turn it off for safe actions:
 
 ```ruby
 self.name = "Release fish"
@@ -210,7 +211,7 @@ self.hide_confirm_button = true            # drop the Run button; Mod+Enter stop
 self.hide_cancel_button = -> { view.index? } # drop the Cancel button; Escape and the header X still close
 ```
 
-`hide_confirm_button` and `hide_cancel_button` take a boolean or a block with access to `resource`, `record`, `view`, `arguments`, `query`. Hiding Run also disables Mod+Enter, but a form with a single text-like field still submits on Enter (the browser's implicit submission). Hiding Cancel removes only the button: Escape still closes the modal unless `close_modal_on_backdrop_click` is `false`, and the header X always closes it. When both are hidden the modal renders without a footer. Hiding Cancel with `close_modal_on_backdrop_click = false` leaves keyboard users only Run, since the X needs a mouse.
+`hide_confirm_button` and `hide_cancel_button` take a boolean or a block with access to `resource`, `record`, `view`, `arguments`, `query`, `index_query`. Hiding Run also disables Mod+Enter, but a form with a single text-like field still submits on Enter (the browser's implicit submission). Hiding Cancel removes only the button: Escape still closes the modal unless `close_modal_on_backdrop_click` is `false`, and the header X always closes it. When both are hidden the modal renders without a footer. Hiding Cancel with `close_modal_on_backdrop_click = false` leaves keyboard users only Run, since the X needs a mouse.
 
 ### Give feedback
 Queue one or more notifications from inside `handle` — call several to stack them. With no explicit feedback Avo shows a generic "Action ran successfully" info alert.
