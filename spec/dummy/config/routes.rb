@@ -16,8 +16,6 @@ Rails.application.routes.draw do
         get "users/get_users", to: "users#get_users"
       end
 
-      put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
-
       get "custom_tool", to: "tools#custom_tool", as: :custom_tool
     end
 

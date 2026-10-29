@@ -238,6 +238,10 @@ ar:
     sort_reset: إعادة تهيئة الترتيب
     switch_to_view: التبديل إلى عرض %{view_type}
     table_view: عرض الجدول
+    tenancy:
+      missing_description: لم ينتمِ مستخدمك إلى أي حساب بعد. اطلب من مسؤول إضافتك إلى واحد.
+      missing_title: لا يوجد حساب لعرضه
+      switch_label: 'تبديل الحساب. الحساب الحالي: %{title}'
     this_field_has_attachments_disabled: هذا الحقل لديه المرفقات معطلة.
     timezone_changed: تُعرض التواريخ والأوقات الآن في منطقتك الزمنية (%{timezone}).
     tools: الأدوات

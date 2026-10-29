@@ -224,6 +224,10 @@ ua:
     sort_reset: Atstatyti rūšiavimą
     switch_to_view: Перейти до виду %{view_type}
     table_view: Таблиця
+    tenancy:
+      missing_description: Ваш користувач ще не належить жодному обліковому запису. Попросіть адміністратора додати вас до одного.
+      missing_title: Немає облікового запису для відображення
+      switch_label: 'Переключити обліковий запис. Поточний обліковий запис: %{title}'
     this_field_has_attachments_disabled: Прикріплення для цього поля вимкнено.
     timezone_changed: Дати та часи тепер відображаються у вашому часовому поясі (%{timezone}).
     tools: Інструменти

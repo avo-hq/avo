@@ -220,6 +220,10 @@ nl:
     sort_reset: Sortering resetten
     switch_to_view: Schakelen naar %{view_type}-weergave
     table_view: Tabelweergave
+    tenancy:
+      missing_description: Je gebruiker behoort nog niet tot een account. Vraag een beheerder om je aan een account toe te voegen.
+      missing_title: Geen account om weer te geven
+      switch_label: 'Wissel van account. Huidig account: %{title}'
     this_field_has_attachments_disabled: Bijlagen zijn uitgeschakeld voor dit veld.
     timezone_changed: Data en tijden worden nu weergegeven in uw tijdzone (%{timezone}).
     tools: Gereedschappen

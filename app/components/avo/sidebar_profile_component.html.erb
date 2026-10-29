@@ -22,6 +22,15 @@
       <% end %>
     </div>
   </div>
+  <% if @show_status %>
+    <%= link_to helpers.avo.avo_private_status_path,
+      class: "sidebar-status",
+      title: "Avo Status",
+      aria: {label: "Avo Status: #{Avo.app_status}"},
+      data: {tippy: "tooltip"} do %>
+      <span class="sidebar-status__indicator sidebar-status__indicator--<%= Avo.app_status %>"></span>
+    <% end %>
+  <% end %>
   <div class="sidebar-profile__actions">
     <%= render Avo::UI::DropdownComponent.new(popover_mode: true, classes: "sidebar-profile__dropdown") do |component| %>
       <% component.with_trigger do %>

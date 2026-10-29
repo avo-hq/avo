@@ -516,6 +516,36 @@ module Avo
       locale_selector_locales.size >= 2
     end
 
+    attr_reader :tenancy
+
+    # `tenants:` returns the accounts the current user may act for, as a relation. Every tenant lookup goes
+    # through it, so an id from the session or the URL can only ever resolve to an account the user belongs to.
+    def tenancy=(value)
+      @tenancy = nil
+      return if value.nil?
+
+      unknown = value.keys - %i[tenants strategy title]
+      raise ArgumentError, "Unknown config.tenancy keys: #{unknown.join(", ")}. Known keys: tenants, strategy, title." if unknown.any?
+      raise ArgumentError, "config.tenancy needs a `tenants:` lambda that returns the current user's accounts." unless value[:tenants].respond_to?(:call)
+
+      strategy = value.fetch(:strategy, :session).to_sym
+      raise ArgumentError, "config.tenancy strategy must be :session or :route, got #{strategy.inspect}." unless strategy.in?(%i[session route])
+
+      @tenancy = {title: :name, **value, strategy:}
+    end
+
+    def tenancy_enabled?
+      @tenancy.present?
+    end
+
+    def session_tenancy?
+      tenancy_enabled? && @tenancy[:strategy] == :session
+    end
+
+    def tenant_title(tenant)
+      tenant.public_send(@tenancy&.dig(:title) || :name)
+    end
+
     # Known RTL (Right-to-Left) locale codes
     RTL_LOCALES = %w[ar he fa ur yi ps sd ku ckb ug dv].freeze unless defined?(RTL_LOCALES)
 

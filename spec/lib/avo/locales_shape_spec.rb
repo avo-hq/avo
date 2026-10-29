@@ -88,6 +88,7 @@ module AvoLocaleShape
     avo.order
     avo.record
     avo.search
+    avo.tenancy
     avo.x_items_more
   ].freeze
 

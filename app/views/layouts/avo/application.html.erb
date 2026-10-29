@@ -67,7 +67,7 @@
       <%= render partial: "avo/partials/back_to_top" if Avo.configuration.back_to_top[:enabled] %>
 
       <div id="main-sidebar" tabindex="-1" class="hidden lg:flex">
-        <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open %>
+        <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open, resource: @resource %>
       </div>
 
       <%# Immediately after the sidebar wrapper: after every nav link and both %>
@@ -76,7 +76,7 @@
       <%= render partial: "avo/partials/sidebar_resize_handle" if Avo.configuration.sidebar[:resizable] %>
 
       <div class="flex lg:hidden">
-        <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open, for_mobile: true %>
+        <%= render Avo::SidebarComponent.new sidebar_open: @sidebar_open, for_mobile: true, resource: @resource %>
       </div>
 
       <main id="main-content" class="main-content" tabindex="-1">

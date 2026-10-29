@@ -28,6 +28,15 @@ Avo.configure do |config|
     }
   end
   config.locale = :en
+
+  ## == Multitenancy ==
+  # Off in the test suite, where most users belong to no team and would get the "no account" page.
+  # spec/requests/avo/tenancy_request_spec.rb turns it on.
+  unless Rails.env.test?
+    config.tenancy = {
+      tenants: -> { current_user.teams }
+    }
+  end
   # config.raise_error_on_missing_policy = true
   config.authorization_client = nil
   # config.authorization_client = "Avo::Services::AuthorizationClients::ExtraPunditClient"

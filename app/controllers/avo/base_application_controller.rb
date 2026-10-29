@@ -13,6 +13,7 @@ module Avo
     include Avo::Concerns::Breadcrumbs
     include Avo::Concerns::FindAssociationField
     include Avo::Concerns::PrivateAccess
+    include Avo::Concerns::Tenancy
 
     protect_from_forgery with: :exception
     before_action :decode_params
@@ -24,6 +25,7 @@ module Avo
     before_action :set_active_storage_current_host
     before_action :set_resource_name
     before_action :_authenticate!
+    before_action :set_tenant
     before_action :set_authorization
     before_action :add_initial_breadcrumbs
     before_action :set_view
