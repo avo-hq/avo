@@ -67,7 +67,8 @@
         **(try(:drag_reorder_data_attributes) || {})
       } do %>
       <% @resources.each_with_index do |resource, index| %>
-        <% cache_if Avo.configuration.cache_resources_on_index_view, resource.index_cache_key(@parent_record, cache_context:), expires_in: 1.day do %>
+        <%# Rails can't digest a component's template, so the Avo version in the key busts cards after an upgrade. %>
+        <% cache_if Avo.configuration.cache_resources_on_index_view, ["avo/grid_item", Avo::VERSION, *resource.index_cache_key(@parent_record, cache_context:)], expires_in: 1.day, skip_digest: true do %>
           <%= render(resource.resolve_component(Avo::Index::GridItemComponent).new(resource: resource, reflection: @reflection, parent_record: @parent_record, parent_resource: @parent_resource, actions: actions)) %>
         <% end %>
       <% end %>
