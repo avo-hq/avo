@@ -155,7 +155,8 @@ pl:
     list_is_empty: Lista jest pusta
     load_item: Załaduj %{item}
     loading: Ładowanie
-    lookup_list_capped: Wyświetlono tylko pierwsze %{count} rekordów. Ustaw to pole jako wyszukiwalne, aby znaleźć pozostałe.
+    lookup_list_capped: Wyświetlono tylko pierwsze %{count} rekordów.
+    lookup_list_capped_link: Ustaw to pole jako wyszukiwalne, aby znaleźć pozostałe.
     media_library:
       title: Biblioteka mediów
     more: Więcej

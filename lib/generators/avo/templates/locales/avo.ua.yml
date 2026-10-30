@@ -153,7 +153,8 @@ ua:
     list_is_empty: Список порожній
     load_item: Завантажити %{item}
     loading: Завантаження
-    lookup_list_capped: Показано лише перші %{count} записів. Зробіть це поле доступним для пошуку, щоб знайти решту.
+    lookup_list_capped: Показано лише перші %{count} записів.
+    lookup_list_capped_link: Зробіть це поле доступним для пошуку, щоб знайти решту.
     media_library:
       title: Медіатека
     more: Ще

@@ -153,7 +153,8 @@ tr:
     list_is_empty: Boş liste
     load_item: "%{item} yükle"
     loading: Yükleniyor
-    lookup_list_capped: Yalnızca ilk %{count} kayıt listelenir. Geri kalanını bulmak için bu alanı aranabilir yapın.
+    lookup_list_capped: Yalnızca ilk %{count} kayıt listelenir.
+    lookup_list_capped_link: Geri kalanını bulmak için bu alanı aranabilir yapın.
     media_library:
       title: Ortam Kütüphanesi
     more: Daha fazla

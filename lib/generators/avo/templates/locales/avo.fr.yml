@@ -153,7 +153,8 @@ fr:
     list_is_empty: La liste est vide
     load_item: Charger %{item}
     loading: Chargement
-    lookup_list_capped: Seuls les %{count} premiers enregistrements sont affichés. Rendez ce champ recherchable pour trouver les autres.
+    lookup_list_capped: Seuls les %{count} premiers enregistrements sont affichés.
+    lookup_list_capped_link: Rendez ce champ recherchable pour trouver les autres.
     media_library:
       title: Bibliothèque multimédia
     more: Plus

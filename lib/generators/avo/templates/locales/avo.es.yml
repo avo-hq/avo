@@ -153,7 +153,8 @@ es:
     list_is_empty: La lista está vacía
     load_item: Cargar %{item}
     loading: Cargando
-    lookup_list_capped: Solo se muestran los primeros %{count} registros. Haz que este campo admita búsqueda para encontrar el resto.
+    lookup_list_capped: Solo se muestran los primeros %{count} registros.
+    lookup_list_capped_link: Haz que este campo admita búsqueda para encontrar el resto.
     media_library:
       title: Biblioteca de medios
     more: Más

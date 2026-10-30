@@ -165,7 +165,8 @@ ar:
     list_is_empty: القائمة فارغة
     load_item: تحميل %{item}
     loading: جاري التحميل
-    lookup_list_capped: يتم عرض أول %{count} سجل فقط. اجعل هذا الحقل قابلاً للبحث للعثور على البقية.
+    lookup_list_capped: يتم عرض أول %{count} سجل فقط.
+    lookup_list_capped_link: اجعل هذا الحقل قابلاً للبحث للعثور على البقية.
     media_library:
       title: مكتبة الوسائط
     more: المزيد

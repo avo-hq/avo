@@ -437,7 +437,8 @@ RSpec.describe "Create Via Belongs to", type: :system do
       it "limits select options and says so under the select" do
         visit "/admin/resources/course_links/new"
         expect(page).to have_select "course_link_course_id", options: ["Choose an option", course.name]
-        expect(page).to have_text "Only the first 1 records are listed. Make this field searchable to find the rest."
+        expect(page).to have_text "Only the first 1 records are listed."
+        expect(page).to have_link "Make this field searchable to find the rest.", href: "https://docs.avohq.io/4.0/associations/searchable.html"
       end
 
       it "preselects a via record that is past the limit" do
@@ -494,7 +495,8 @@ RSpec.describe "Create Via Belongs to", type: :system do
       it "limits select options" do
         visit "/admin/resources/comments/new"
         expect(page).to have_select "comment_user_id", options: ["Choose an option", user.name]
-        expect(page).to have_text "Only the first 1 records are listed. Make this field searchable to find the rest."
+        expect(page).to have_text "Only the first 1 records are listed."
+        expect(page).to have_link "Make this field searchable to find the rest.", href: "https://docs.avohq.io/4.0/associations/searchable.html"
       end
     end
   end
