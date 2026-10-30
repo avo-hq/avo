@@ -10,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Adrian Marin", "Mihai Marin", "Paul Bob"]
   spec.email = ["hi@avohq.io"]
   spec.homepage = "https://avohq.io/gems/avo"
-  spec.summary = "Admin panel framework and Content Management System for Ruby on Rails."
-  spec.description = "Avo is a very custom Content Management System for Ruby on Rails that saves engineers and teams months of development time by building user interfaces and logic using configuration rather than traditional coding; When configuration is not enough, you can fallback to familiar Ruby on Rails code."
+  spec.summary = "Admin panel framework for Ruby on Rails."
+  spec.description = "Avo is an admin panel framework for Ruby on Rails. Build admins, internal tools, dashboards and back offices in plain Ruby inside your own Rails app, with resources, actions, filters and Pundit authorization that also govern the API, the CLI and the MCP server your AI agents use. The core is free and open source; paid add-ons are priced per app with unlimited users."
   spec.license = "LGPL-3.0"
   spec.licenses = ["LGPL-3.0", "Commercial"]
 
