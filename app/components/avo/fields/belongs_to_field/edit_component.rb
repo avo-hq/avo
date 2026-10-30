@@ -88,11 +88,18 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     }
   end
 
-  def lookup_list_capped_help
-    safe_join([
-      t("avo.lookup_list_capped"),
-      link_to(t("avo.lookup_list_capped_link"), "https://docs.avohq.io/4.0/associations/searchable.html", target: "_blank", rel: "noopener", class: "underline")
-    ], tag.br)
+  def lookup_list_capped_notice
+    tag.div class: "field-wrapper__help flex items-start gap-1" do
+      safe_join([
+        helpers.svg("tabler/outline/alert-triangle", class: "size-4 shrink-0 text-danger-content"),
+        tag.div do
+          safe_join([
+            t("avo.lookup_list_capped"),
+            link_to(t("avo.lookup_list_capped_link"), "https://docs.avohq.io/4.0/associations/searchable.html", target: "_blank", rel: "noopener", class: "underline")
+          ], tag.br)
+        end
+      ])
+    end
   end
 
   private

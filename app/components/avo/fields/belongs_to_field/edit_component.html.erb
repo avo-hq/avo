@@ -63,7 +63,7 @@
                   <%= @form.hidden_field @field.id_input_foreign_key %>
                 <% end %>
                 <% if @field.lookup_list_capped?(type) %>
-                  <div class="field-wrapper__help"><%= lookup_list_capped_help %></div>
+                  <%= lookup_list_capped_notice %>
                 <% end %>
               <% end %>
               <% target_resource_for_type = Avo.resource_manager.get_resource_by_model_class(type.to_s) %>
@@ -112,7 +112,7 @@
         <%= @form.hidden_field @field.id_input_foreign_key %>
       <% end %>
       <% if @field.lookup_list_capped? %>
-        <div class="field-wrapper__help"><%= lookup_list_capped_help %></div>
+        <%= lookup_list_capped_notice %>
       <% end %>
     <% end %>
     <% if field.can_create? %>
