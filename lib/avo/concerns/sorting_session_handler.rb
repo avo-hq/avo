@@ -6,12 +6,19 @@ module Avo
       def restore_sorting
         return unless Avo.configuration.persist?(:sorting)
 
-        if params[:reset_sorting]
-          session.delete(sorting_session_key)
-        elsif params[:sort_by]
+        # A sort link built right after a reset still carries the reset flag, so the sort wins over the flag.
+        if params[:sort_by].present?
           session[sorting_session_key] = {"sort_by" => params[:sort_by], "sort_direction" => params[:sort_direction]}
+        elsif params[:reset_sorting]
+          session.delete(sorting_session_key)
         elsif (sorting = session[sorting_session_key])
-          params[:sort_by], params[:sort_direction] = sorting.values_at("sort_by", "sort_direction")
+          # A field the resource dropped or stopped sorting by would otherwise come back on every visit, with no
+          # header left to reset it from.
+          if @resource.get_field(sorting["sort_by"])&.sortable
+            params[:sort_by], params[:sort_direction] = sorting.values_at("sort_by", "sort_direction")
+          else
+            session.delete(sorting_session_key)
+          end
         end
       end
 

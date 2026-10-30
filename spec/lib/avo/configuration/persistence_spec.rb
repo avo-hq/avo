@@ -6,6 +6,7 @@ RSpec.describe "Avo.configuration.persistence" do
   around do |example|
     original = Avo.configuration.persistence
     example.run
+  ensure
     Avo.configuration.persistence = original
   end
 
@@ -24,7 +25,7 @@ RSpec.describe "Avo.configuration.persistence" do
     expect(Avo.configuration.persist?(:selection)).to be true
   end
 
-  it "resolves a proc once per lookup" do
+  it "reads the keys from a proc" do
     Avo.configuration.persistence = -> { {driver: :session, selection: false} }
 
     expect(Avo.configuration.persist?(:selection)).to be false

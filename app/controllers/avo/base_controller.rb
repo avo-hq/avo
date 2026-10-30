@@ -718,8 +718,12 @@ module Avo
         page_key = "#{@resource.class.to_s.parameterize}.page"
         per_page_key = "#{@resource.class.to_s.parameterize}.per_page"
 
-        @index_params[:page] = session[page_key] = positive_integer_or(params[:page] || session[page_key], 1)
-        @index_params[:per_page] = session[per_page_key] = positive_integer_or(params[:per_page].presence || session[per_page_key], Avo.configuration.per_page)
+        # Only a choice goes into the session; a plain visit must not grow the cookie or overwrite one.
+        session[page_key] = positive_integer_or(params[:page], 1) if params[:page].present?
+        session[per_page_key] = positive_integer_or(params[:per_page], Avo.configuration.per_page) if params[:per_page].present?
+
+        @index_params[:page] = positive_integer_or(session[page_key], 1)
+        @index_params[:per_page] = positive_integer_or(session[per_page_key], Avo.configuration.per_page)
 
         return
       end

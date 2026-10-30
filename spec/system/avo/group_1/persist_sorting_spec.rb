@@ -14,6 +14,7 @@ RSpec.describe "Persist sorting", type: :system do
 
   def sort_name_ascending
     first('svg[data-tippy-content="Sort descending"]').click
+    expect(page).to have_current_path(/sort_direction=desc/)
     first('svg[data-tippy-content="Sort ascending"]').click
     expect(page).to have_current_path(/sort_direction=asc/)
   end
@@ -44,6 +45,20 @@ RSpec.describe "Persist sorting", type: :system do
       visit url
       expect(first_row_name).to eq "Zed"
       expect(page).not_to have_css 'svg[data-tippy-content="Reset sorting"]'
+    end
+
+    # The reset flag stays in the address bar, and the sort links are built from it.
+    it "remembers a sort picked right after a reset" do
+      visit url
+      sort_name_ascending
+      first('svg[data-tippy-content="Reset sorting"]').click
+      expect(page).to have_current_path(/reset_sorting/)
+
+      sort_name_ascending
+      expect(page).not_to have_current_path(/reset_sorting/)
+
+      visit url
+      expect(first_row_name).to eq "Alpha"
     end
   end
 

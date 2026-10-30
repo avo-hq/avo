@@ -13,6 +13,7 @@ export default class extends Controller {
   ]
 
   static values = {
+    page: Number,
     pageCount: Number,
     selectedAll: Boolean,
     selectedAllQuery: String,
@@ -21,7 +22,7 @@ export default class extends Controller {
   connect() {
     this.resourceName = this.element.dataset.resourceName
     // Read it before anything on the page can change the selection and overwrite it.
-    const rememberedIds = takeSelection(this.resourceName, this.stateUrl)
+    const rememberedIds = takeSelection(this.resourceName, this.stateUrl, this.pageValue)
 
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()
@@ -59,7 +60,7 @@ export default class extends Controller {
     // Check if anything is selected.
     const selectedResources = JSON.parse(element.dataset.selectedResources)
 
-    setSelection(this.resourceName, this.stateUrl, selectedResources.map(String))
+    setSelection(this.resourceName, this.stateUrl, this.pageValue, selectedResources.map(String))
 
     if (!this.hasCheckboxTarget) return
 

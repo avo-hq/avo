@@ -53,6 +53,7 @@ RSpec.describe "Persist Filters", type: :system do
       around(:each) do |example|
         Avo.configuration.persistence = {driver: :session, filters: false}
         example.run
+      ensure
         Avo.configuration.persistence = {driver: nil}
       end
 

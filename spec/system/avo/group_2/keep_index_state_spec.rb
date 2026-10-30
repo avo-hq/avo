@@ -89,6 +89,23 @@ RSpec.describe "KeepIndexState", type: :system do
 
       expect(checked_row_indexes).to eq [1, 3]
     end
+
+    # The page is remembered too, so a plain visit lands on the page the rows were selected on, without it
+    # in the URL.
+    it "keeps the rows selected on a later page" do
+      visit "/admin/resources/fish?per_page=12&page=2"
+      expect(page).to have_selector record_selector_checkbox_selector, count: 12
+
+      row_checkbox(2).click
+
+      open_record(5)
+      page.execute_script("Turbo.visit('/admin/resources/fish')")
+      expect(page).to have_current_path("/admin/resources/fish")
+      expect(page).to have_selector record_selector_checkbox_selector, count: 12
+
+      expect(page).to have_css "nav.pagy.series-nav [aria-current='page']", text: "2"
+      expect(checked_row_indexes).to eq [2]
+    end
   end
 
   context "with session persistence but selection turned off" do
