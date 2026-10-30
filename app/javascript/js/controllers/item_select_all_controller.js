@@ -22,7 +22,7 @@ export default class extends Controller {
   connect() {
     this.resourceName = this.element.dataset.resourceName
     // Read it before anything on the page can change the selection and overwrite it.
-    const rememberedIds = takeSelection(this.resourceName, this.stateUrl, this.pageValue)
+    const rememberedIds = takeSelection(this.resourceName, this.stateUrl, this.page)
 
     this.selectedResourcesObserver = new AttributeObserver(this.element, 'data-selected-resources', this)
     this.selectedResourcesObserver.start()
@@ -40,6 +40,14 @@ export default class extends Controller {
   // A has-many table pages inside its own frame, so that frame's URL tells its pages apart.
   get stateUrl() {
     return this.element.closest('turbo-frame[src]')?.src || window.location.href
+  }
+
+  // An ejected table template from before the page value existed falls back to the URL's page, so its
+  // selections still stay apart per page instead of all sharing page 0.
+  get page() {
+    if (this.hasPageValue) return this.pageValue
+
+    return parseInt(new URL(this.stateUrl, window.location.href).searchParams.get('page'), 10) || 1
   }
 
   restoreSelection(ids) {
@@ -60,7 +68,7 @@ export default class extends Controller {
     // Check if anything is selected.
     const selectedResources = JSON.parse(element.dataset.selectedResources)
 
-    setSelection(this.resourceName, this.stateUrl, this.pageValue, selectedResources.map(String))
+    setSelection(this.resourceName, this.stateUrl, this.page, selectedResources.map(String))
 
     if (!this.hasCheckboxTarget) return
 

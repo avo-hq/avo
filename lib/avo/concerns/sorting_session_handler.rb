@@ -13,8 +13,9 @@ module Avo
           session.delete(sorting_session_key)
         elsif (sorting = session[sorting_session_key])
           # A field the resource dropped or stopped sorting by would otherwise come back on every visit, with no
-          # header left to reset it from.
-          if @resource.get_field(sorting["sort_by"])&.sortable
+          # header left to reset it from. Any declaration of the id counts: a resource may declare the same id
+          # once per view, with only the index one sortable.
+          if @resource.get_field_definitions.any? { |f| f.id.to_s == sorting["sort_by"].to_s && f.sortable }
             params[:sort_by], params[:sort_direction] = sorting.values_at("sort_by", "sort_direction")
           else
             session.delete(sorting_session_key)
