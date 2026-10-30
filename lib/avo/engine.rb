@@ -109,8 +109,9 @@ module Avo
     end
 
     initializer "avo.reloader" do |app|
+      # No execute at boot: the watcher records its timestamps when built, and Rails has already run the host's
+      # avo.rb. Executing here evaluated it again, and in Avo development all of lib/avo a second time.
       Avo::Reloader.new.tap do |reloader|
-        reloader.execute
         app.reloaders << reloader
         app.reloader.to_run { reloader.execute }
       end
