@@ -69,6 +69,48 @@ RSpec.describe "KeepIndexState", type: :system do
     expect(checked_row_indexes).to be_empty
   end
 
+  context "with session persistence" do
+    around do |example|
+      Avo.configuration.persistence = {driver: :session}
+      example.run
+    ensure
+      Avo.configuration.persistence = {driver: nil}
+    end
+
+    it "keeps the selected rows whichever way the index is reached" do
+      row_checkbox(1).click
+      row_checkbox(3).click
+
+      open_record(20)
+      # The sidebar link carries no query params, unlike the URL the rows were selected on.
+      page.execute_script("Turbo.visit('/admin/resources/fish')")
+      expect(page).to have_current_path("/admin/resources/fish")
+      expect(page).to have_selector record_selector_checkbox_selector, count: fishes.size
+
+      expect(checked_row_indexes).to eq [1, 3]
+    end
+  end
+
+  context "with session persistence but selection turned off" do
+    around do |example|
+      Avo.configuration.persistence = {driver: :session, selection: false}
+      example.run
+    ensure
+      Avo.configuration.persistence = {driver: nil}
+    end
+
+    it "starts fresh when the index is reached another way" do
+      row_checkbox(1).click
+
+      open_record(20)
+      page.execute_script("Turbo.visit('/admin/resources/fish?per_page=24')")
+      expect(page).to have_current_path("/admin/resources/fish?per_page=24")
+      expect(page).to have_selector record_selector_checkbox_selector, count: fishes.size
+
+      expect(checked_row_indexes).to be_empty
+    end
+  end
+
   def open_record(index)
     find(%(#{row_selector(index)} td[data-field-id="id"] a)).click
     expect(page).to have_current_path(%r{/admin/resources/fish/\d+})

@@ -1,6 +1,7 @@
 module Avo
   class BaseController < Avo::ApplicationController
     include Avo::Concerns::FiltersSessionHandler
+    include Avo::Concerns::SortingSessionHandler
     include Avo::Concerns::AssociationQueryScope
     include Avo::Concerns::SafeCall
 
@@ -377,6 +378,8 @@ module Avo
     end
 
     def set_sorting_params
+      restore_sorting
+
       @index_params[:sort_by] = params[:sort_by] || @resource.sort_by_param
       @index_params[:sort_direction] = params[:sort_direction] || @resource.default_sort_direction
     end
@@ -710,6 +713,17 @@ module Avo
     end
 
     def set_pagination_params
+      if Avo.configuration.persist?(:pagination)
+        # avo-resources-user.page and avo-resources-user.per_page
+        page_key = "#{@resource.class.to_s.parameterize}.page"
+        per_page_key = "#{@resource.class.to_s.parameterize}.per_page"
+
+        @index_params[:page] = session[page_key] = positive_integer_or(params[:page] || session[page_key], 1)
+        @index_params[:per_page] = session[per_page_key] = positive_integer_or(params[:per_page].presence || session[per_page_key], Avo.configuration.per_page)
+
+        return
+      end
+
       @index_params[:page] = positive_integer_or(params[:page], 1)
       @index_params[:per_page] = positive_integer_or(params[:per_page].presence || cookies[:per_page], Avo.configuration.per_page)
 

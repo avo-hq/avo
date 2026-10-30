@@ -49,6 +49,28 @@ RSpec.describe "Persist Filters", type: :system do
       end
     end
 
+    context "session persistence enabled with filters turned off" do
+      around(:each) do |example|
+        Avo.configuration.persistence = {driver: :session, filters: false}
+        example.run
+        Avo.configuration.persistence = {driver: nil}
+      end
+
+      it "doesn't persist filters by name" do
+        visit url
+        expect(page).to have_text("2 records")
+
+        open_filters_menu
+        fill_in "avo_filters_name_filter", with: "With Members"
+        click_on "Filter by name"
+        wait_for_loaded
+        expect(page).to have_text("1 record")
+
+        visit url
+        expect(page).to have_text("2 records")
+      end
+    end
+
     context "cache resource filter disabled" do
       it "doesn't persist filters by name" do
         visit url
