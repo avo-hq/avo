@@ -156,7 +156,7 @@ ro:
     list_is_empty: Lista este goală
     load_item: Încărcați %{item}
     loading: Se incarcă
-    lookup_list_capped: Nu toate înregistrările sunt afișate aici.
+    lookup_list_capped: Prea multe opțiuni pentru a fi afișate în acest formular.
     lookup_list_capped_link: Fă acest câmp căutabil ca să le găsești pe celelalte.
     media_library:
       title: Bibliotecă media

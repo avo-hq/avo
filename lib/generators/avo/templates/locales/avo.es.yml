@@ -153,7 +153,7 @@ es:
     list_is_empty: La lista está vacía
     load_item: Cargar %{item}
     loading: Cargando
-    lookup_list_capped: Aquí no se muestran todos los registros.
+    lookup_list_capped: Hay demasiadas opciones para mostrarlas en este formulario.
     lookup_list_capped_link: Haz que este campo admita búsqueda para encontrar el resto.
     media_library:
       title: Biblioteca de medios
