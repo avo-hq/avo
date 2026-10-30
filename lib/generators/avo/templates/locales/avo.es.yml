@@ -222,6 +222,10 @@ es:
     sort_reset: Restablecer ordenación
     switch_to_view: Cambiar a la vista %{view_type}
     table_view: Vista en tabla
+    tenancy:
+      missing_description: Tu usuario aún no pertenece a ninguna cuenta. Pide a un administrador que te agregue a una.
+      missing_title: No hay cuenta para mostrar
+      switch_label: 'Cambiar de cuenta. Cuenta actual: %{title}'
     this_field_has_attachments_disabled: Este campo tiene los adjuntos deshabilitados.
     timezone_changed: Las fechas y horas ahora se muestran en su zona horaria (%{timezone}).
     tools: Herramientas

@@ -220,6 +220,10 @@ zh:
     sort_reset: 重置排序
     switch_to_view: 切换到 %{view_type} 视图
     table_view: 表格视图
+    tenancy:
+      missing_description: 您的用户尚未属于任何帐户。请向管理员请求将您添加到一个帐户中。
+      missing_title: 没有帐户可显示
+      switch_label: 切换帐户。当前帐户：%{title}
     this_field_has_attachments_disabled: 此字段已禁用附件。
     timezone_changed: 日期和时间现在以您的时区 (%{timezone}) 显示。
     tools: 工具

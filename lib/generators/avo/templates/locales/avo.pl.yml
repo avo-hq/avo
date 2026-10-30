@@ -226,6 +226,10 @@ pl:
     sort_reset: Resetuj sortowanie
     switch_to_view: Przełącz na widok %{view_type}
     table_view: Widok tabelaryczny
+    tenancy:
+      missing_description: Twój użytkownik nie należy jeszcze do żadnego konta. Poproś administratora o dodanie cię do jednego.
+      missing_title: Brak konta do wyświetlenia
+      switch_label: 'Zmień konto. Bieżące konto: %{title}'
     this_field_has_attachments_disabled: Załączniki są wyłączone dla tego pola.
     timezone_changed: Daty i czasy są teraz wyświetlane w Twojej strefie czasowej (%{timezone}).
     tools: Narzędzia

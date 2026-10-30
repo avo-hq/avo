@@ -220,6 +220,10 @@ it:
     sort_reset: Reimposta ordinamento
     switch_to_view: Passa a vista %{view_type}
     table_view: Vista tabella
+    tenancy:
+      missing_description: Il tuo utente non appartiene ancora a nessun account. Chiedi a un amministratore di aggiungerti a uno.
+      missing_title: Nessun account da mostrare
+      switch_label: 'Cambia account. Account attuale: %{title}'
     this_field_has_attachments_disabled: Gli allegati sono disabilitati per questo campo.
     timezone_changed: Le date e gli orari sono ora visualizzati nel tuo fuso orario (%{timezone}).
     tools: Strumenti

@@ -231,7 +231,7 @@ Add custom controllers/actions to Avo's own router — open the engine's routes 
 # config/routes.rb
 if defined? ::Avo
   Avo::Engine.routes.draw do
-    put "switch_accounts/:id", to: "switch_accounts#update", as: :switch_account
+    get "stats", to: "stats#index", as: :stats
 
     scope :resources do
       get "courses/cities", to: "courses#cities"   # extra route on a resource controller
@@ -241,11 +241,10 @@ end
 ```
 
 ```ruby
-# app/controllers/avo/switch_accounts_controller.rb
-class Avo::SwitchAccountsController < Avo::ApplicationController
-  def update
-    session[:tenant_id] = params[:id]
-    redirect_back fallback_location: root_path
+# app/controllers/avo/stats_controller.rb
+class Avo::StatsController < Avo::ApplicationController
+  def index
+    render json: {users: User.count}
   end
 end
 ```

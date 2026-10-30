@@ -222,6 +222,10 @@ ja:
     sort_reset: ソートをリセット
     switch_to_view: "%{view_type}ビューに切り替える"
     table_view: テーブルビュー
+    tenancy:
+      missing_description: あなたのユーザーはまだどのアカウントにも属していません。管理者にお願いして、あなたをアカウントに追加してもらってください。
+      missing_title: 表示するアカウントはありません
+      switch_label: 'アカウントを切り替えます。現在のアカウント: %{title}'
     this_field_has_attachments_disabled: このフィールドには添付ファイルが無効になっています。
     timezone_changed: 日付と時刻は現在、あなたのタイムゾーン (%{timezone}) で表示されています。
     tools: ツール

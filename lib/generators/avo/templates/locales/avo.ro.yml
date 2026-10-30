@@ -226,6 +226,10 @@ ro:
     sort_reset: Resetare sortare
     switch_to_view: Comutați la vizualizarea %{view_type}
     table_view: Vezi sub formă de tabel
+    tenancy:
+      missing_description: Utilizatorul tău nu aparține încă niciunui cont. Cere unui administrator să te adauge la unul.
+      missing_title: Niciun cont de afișat
+      switch_label: 'Schimbă contul. Contul curent: %{title}'
     this_field_has_attachments_disabled: Acest câmp are atașamente dezactivate.
     timezone_changed: Datele și orele sunt acum afișate în fusul tău orar (%{timezone}).
     tools: Instrumente

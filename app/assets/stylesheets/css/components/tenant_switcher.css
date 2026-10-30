@@ -1,0 +1,79 @@
+/* ================================================ */
+/* Tenant switcher (sidebar footer)                 */
+/* BEM: .tenant-switcher (block)                    */
+/* ================================================ */
+
+/* Takes the slot the Avo Status box used to fill, with its padding and the theme's border token. */
+.tenant-switcher {
+  @apply block p-4 pb-0;
+}
+
+.tenant-switcher .popover-menu {
+  @apply block w-full;
+}
+
+.tenant-switcher__trigger {
+  @apply flex items-center gap-2 w-full px-3 py-2 border rounded-sm text-sm cursor-pointer text-start;
+  border-color: var(--sidebar-status-border);
+  color: var(--sidebar-content);
+  transition-property: background-color, outline, outline-offset;
+  transition-duration: 150ms, 0s, 0s;
+}
+
+.tenant-switcher__trigger:hover,
+.tenant-switcher__trigger:focus-visible {
+  @apply bg-secondary;
+}
+
+.tenant-switcher__icon {
+  @apply size-4 shrink-0;
+}
+
+.tenant-switcher__title {
+  @apply flex-1 truncate min-w-0 font-medium;
+}
+
+.tenant-switcher__chevron {
+  @apply size-4 opacity-60 shrink-0;
+}
+
+/* Opens upward from the bottom of the sidebar, as wide as the trigger. */
+.tenant-switcher__panel {
+  @apply mt-0 mb-1;
+  position-area: top span-right;
+  width: anchor-size(width);
+  min-width: 14rem;
+  transform: translateY(0.25rem);
+}
+
+@starting-style {
+  .tenant-switcher__panel:popover-open {
+    transform: translateY(0.25rem);
+  }
+}
+
+.tenant-switcher__panel .dropdown-menu__list {
+  @apply max-h-[min(22rem,65vh)] overflow-y-auto overflow-x-hidden;
+}
+
+/* button_to wraps each option in a form, so the form steps out of the layout. */
+.tenant-switcher__form {
+  @apply flex w-full;
+}
+
+.tenant-switcher__item:hover {
+  @apply bg-secondary;
+}
+
+.tenant-switcher__name {
+  @apply truncate min-w-0;
+}
+
+.tenant-switcher__check-slot {
+  @apply inline-flex shrink-0 size-4 ms-auto ps-3 box-content;
+}
+
+.tenant-switcher__check {
+  @apply size-4;
+  color: var(--color-accent-content);
+}

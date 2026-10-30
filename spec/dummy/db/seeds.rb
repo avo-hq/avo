@@ -130,6 +130,10 @@ teams.each do |team|
   end
 end
 
+# The admin works in two teams so the account switcher shows in the sidebar.
+admin = User.find_by!(email: "hi@avohq.io")
+teams.first(2).each { |team| team.team_members << admin unless team.team_members.include?(admin) }
+
 puts "Assigning users and comments to projects"
 
 projects.each do |project|

@@ -222,6 +222,10 @@ nn:
     sort_reset: Nullstill sortering
     switch_to_view: Bytt til %{view_type} vis
     table_view: Tabellvisning
+    tenancy:
+      missing_description: Brukaren din høyrer ikkje til noko konto enno. Be ein administrator om å legge deg til ein.
+      missing_title: Ingen konto å vise
+      switch_label: 'Bytt konto. Noverande konto: %{title}'
     this_field_has_attachments_disabled: Dette feltet har vedlegg deaktivert.
     timezone_changed: Datoar og tidspunkter blir no viste i tidssonen din (%{timezone}).
     tools: Reiskapane

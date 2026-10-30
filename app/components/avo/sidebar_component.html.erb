@@ -63,15 +63,10 @@
       </div>
     </div>
     <div class="sidebar__footer">
-      <% if can_access_private_status? %>
-        <div class="sidebar-status">
-          <%= link_to helpers.avo.avo_private_status_path, class: "sidebar-status__link" do %>
-            <span>Avo Status</span>
-            <span><div class="sidebar-status__indicator sidebar-status__indicator--<%= Avo.app_status %>"></div></span>
-          <% end %>
-        </div>
+      <% if Avo.configuration.session_tenancy? %>
+        <%= render Avo::TenantSwitcherComponent.new(tenants: helpers.allowed_tenants, current: Avo::Current.tenant, resource: @resource) %>
       <% end %>
-      <%= render Avo::SidebarProfileComponent.new user: helpers._current_user %>
+      <%= render Avo::SidebarProfileComponent.new user: helpers._current_user, show_status: can_access_private_status? %>
     </div>
   </div>
 <% end %>

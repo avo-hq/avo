@@ -2120,6 +2120,7 @@ COPY public.team_memberships (id, created_at, level, team_id, updated_at, user_i
 42	2026-05-22 10:13:34.720744	beginner	4	2026-05-22 10:13:34.729515	50
 43	2026-05-22 10:13:34.731999	intermediate	4	2026-05-22 10:13:34.734577	22
 44	2026-05-22 10:13:34.736381	advanced	4	2026-05-22 10:13:34.7388	27
+45	2026-05-22 10:13:34.740000	beginner	2	2026-05-22 10:13:34.740000	39
 \.
 
 
@@ -2310,7 +2311,7 @@ SELECT pg_catalog.setval('public.tags_id_seq', 4, true);
 -- Name: team_memberships_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.team_memberships_id_seq', 44, true);
+SELECT pg_catalog.setval('public.team_memberships_id_seq', 45, true);
 
 
 --

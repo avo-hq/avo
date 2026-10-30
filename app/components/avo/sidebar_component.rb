@@ -5,6 +5,8 @@ class Avo::SidebarComponent < Avo::BaseComponent
 
   prop :sidebar_open, default: false
   prop :for_mobile, default: false
+  # The page's resource, so an account switch lands on its index.
+  prop :resource
 
   def dashboards
     return [] unless Avo.plugin_manager.installed?("avo-dashboards")

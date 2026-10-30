@@ -39,6 +39,14 @@ Avo.configure do |config|
   config.authorization_client = nil
   # config.explicit_authorization = true
 
+  ## == Multitenancy ==
+  ## Return the accounts the current user may act for, as a relation. Avo resolves
+  ## Avo::Current.tenant from it on every request and adds an account switcher to the sidebar.
+  ## Scope your resources by Avo::Current.tenant. https://docs.avohq.io/4.0/multitenancy.html
+  # config.tenancy = {
+  #   tenants: -> { current_user.accounts }
+  # }
+
   ## == Localization ==
   # config.locale = 'en-US'
 

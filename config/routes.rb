@@ -13,6 +13,7 @@ Avo::Engine.routes.draw do
 
   patch "appearance_settings", to: "appearance_settings#update"
   patch "locale", to: "locales#update", as: :locale
+  patch "tenant", to: "tenants#update", as: :switch_tenant
 
   scope "avo_api", as: "avo_api" do
     # Only used for searchable fields

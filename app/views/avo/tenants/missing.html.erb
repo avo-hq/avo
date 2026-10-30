@@ -1,0 +1,18 @@
+<%# Standalone on purpose: the full layout runs the app's menus and header, which may read a nil tenant as "every account". %>
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" dir="<%= text_direction %>">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= t("avo.tenancy.missing_title") %></title>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "avo/application", as: "style" %>
+  </head>
+  <body class="bg-background">
+    <main class="flex min-h-dvh items-center justify-center p-6">
+      <div class="state" role="alert">
+        <h1 class="state__message text-base font-semibold text-content"><%= t("avo.tenancy.missing_title") %></h1>
+        <p class="state__note text-center font-normal"><%= t("avo.tenancy.missing_description") %></p>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<div class="flex flex-wrap gap-8 p-6">
+  <div class="flex flex-col gap-2">
+    <p class="text-sm text-content-secondary">Three accounts</p>
+    <div class="flex items-center gap-3">
+      <%= render Avo::TenantSwitcherComponent.new(tenants:, current: tenants.first) %>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <p class="text-sm text-content-secondary">Long current title (truncated)</p>
+    <div class="flex items-center gap-3">
+      <%= render Avo::TenantSwitcherComponent.new(tenants:, current: tenants.last) %>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <p class="text-sm text-content-secondary">Many accounts (filterable list)</p>
+    <div class="flex items-center gap-3">
+      <%= render Avo::TenantSwitcherComponent.new(tenants: many, current: many[4]) %>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <p class="text-sm text-content-secondary">One account (renders nothing)</p>
+    <div class="flex items-center gap-3">
+      <%= render Avo::TenantSwitcherComponent.new(tenants: tenants.first(1), current: tenants.first) %>
+    </div>
+  </div>
+</div>

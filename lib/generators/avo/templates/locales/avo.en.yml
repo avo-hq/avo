@@ -220,6 +220,10 @@ en:
     sort_reset: Reset sorting
     switch_to_view: Switch to %{view_type} view
     table_view: Table view
+    tenancy:
+      missing_description: Your user does not belong to any account yet. Ask an administrator to add you to one.
+      missing_title: No account to show
+      switch_label: 'Switch account. Current account: %{title}'
     this_field_has_attachments_disabled: This field has attachments disabled.
     timezone_changed: Dates and times are now displayed in your time zone (%{timezone}).
     tools: Tools

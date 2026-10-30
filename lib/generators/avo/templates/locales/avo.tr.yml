@@ -222,6 +222,10 @@ tr:
     sort_reset: Sıralamayı sıfırla
     switch_to_view: "%{view_type} görünümüne kay"
     table_view: Tablo görünümü
+    tenancy:
+      missing_description: Kullanıcınız henüz hiçbir hesaba ait değil. Sizi bir hesaba eklemesi için bir yöneticiden yardım isteyin.
+      missing_title: Gösterilecek hesap yok
+      switch_label: 'Hesap değiştir. Mevcut hesap: %{title}'
     this_field_has_attachments_disabled: Bu alanın ekleri devre dışı bırakıldı.
     timezone_changed: Tarih ve saatler artık sizin zaman diliminizde (%{timezone}) görüntüleniyor.
     tools: Araçlar
