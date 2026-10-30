@@ -17,6 +17,7 @@ RSpec.feature "Field Sorting", type: :system do
 
       first('svg[data-tippy-content="Reset sorting"]').click
       expect(page).not_to have_current_path(/sort_direction=/)
+      expect(page).not_to have_current_path(/reset_sorting/)
     end
   end
 end

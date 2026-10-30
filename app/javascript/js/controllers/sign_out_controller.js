@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import { clearIndexState } from '../index_state'
 
 export default class extends Controller {
   static targets = ['element']
@@ -19,6 +20,7 @@ export default class extends Controller {
     // eslint-disable-next-line no-alert
     if (window.confirm(this.confirmValue)) {
       window.Turbo.cache.clear()
+      clearIndexState()
 
       this.element.submit()
     }

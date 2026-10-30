@@ -24,6 +24,55 @@ RSpec.feature "Pagination", type: :system do
     end
   end
 
+  describe "session persistence" do
+    let!(:posts) { create_list(:post, 3) }
+
+    def current_page_number
+      find("nav.pagy.series-nav [aria-current='page']").text
+    end
+
+    context "when pagination persists" do
+      around do |example|
+        Avo.configuration.persistence = {driver: :session}
+        example.run
+      ensure
+        Avo.configuration.persistence = {driver: nil}
+      end
+
+      it "brings the page and per_page back on a plain visit" do
+        visit "/admin/resources/posts?view_type=table&per_page=1&page=3"
+        wait_for_loaded
+        expect(current_page_number).to eq "3"
+
+        visit "/admin/resources/posts?view_type=table"
+        wait_for_loaded
+
+        expect(current_page_number).to eq "3"
+        expect(page).to have_css "tr[data-record-id]", count: 1
+      end
+    end
+
+    context "when pagination persistence is turned off" do
+      around do |example|
+        Avo.configuration.persistence = {driver: :session, pagination: false}
+        example.run
+      ensure
+        Avo.configuration.persistence = {driver: nil}
+      end
+
+      it "starts from the first page on a plain visit" do
+        visit "/admin/resources/posts?view_type=table&per_page=1&page=3"
+        wait_for_loaded
+        expect(current_page_number).to eq "3"
+
+        visit "/admin/resources/posts?view_type=table"
+        wait_for_loaded
+
+        expect(current_page_number).to eq "1"
+      end
+    end
+  end
+
   describe "info copy for single-page results" do
     it "renders '1 record' when only one record exists" do
       Post.destroy_all

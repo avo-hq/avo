@@ -1,10 +1,15 @@
 // Remembers what the user was doing on an index page (selected rows and scroll position) so it can
 // be put back when they go back to it: with the browser's Back button, or with the "Go back" link on a
 // record page. That link is a regular visit, so Turbo fetches a fresh page instead of restoring its
-// snapshot. Any other way of reaching the page starts fresh. State is kept per tab in sessionStorage and
-// keyed by URL, so each combination of filters, sorting and page has its own.
+// snapshot. Any other way of reaching the page starts fresh, unless `config.persistence` keeps the selection:
+// then every visit puts it back. State is kept per tab in sessionStorage and keyed by URL, so each
+// combination of filters, sorting and page has its own.
 
 const PREFIX = 'avo.index-state'
+
+function selectionPersisted() {
+  return window.Avo?.configuration?.persistence?.selection === true
+}
 
 let goBackClicked = false
 let wentBack = false
@@ -49,7 +54,16 @@ function urlKey(url) {
   return `${pathname}${search}`
 }
 
-function selectionKey(resourceName, url) {
+// A persisted selection has to survive the sidebar link, which carries none of the query params the sort and
+// filter links do, so only the page tells its keys apart. The server picks the page (a remembered one when the
+// URL has none), so it is the rendered page, not the URL's, that goes into the key.
+function selectionKey(resourceName, url, page) {
+  if (selectionPersisted()) {
+    const { pathname } = new URL(url, window.location.href)
+
+    return `${PREFIX}.selection.${resourceName}.${pathname}?page=${page}`
+  }
+
   return `${PREFIX}.selection.${resourceName}.${urlKey(url)}`
 }
 
@@ -59,15 +73,15 @@ function scrollKey(url) {
 
 // The rows to select again, handed out only when the user went back to the page. Any other visit forgets
 // them, so a later "Go back" can't bring back a selection the user has since moved on from.
-export function takeSelection(resourceName, url) {
-  if (!wentBack) {
-    remove(selectionKey(resourceName, url))
+export function takeSelection(resourceName, url, page) {
+  if (!wentBack && !selectionPersisted()) {
+    remove(selectionKey(resourceName, url, page))
 
     return []
   }
 
   try {
-    const ids = JSON.parse(read(selectionKey(resourceName, url)))
+    const ids = JSON.parse(read(selectionKey(resourceName, url, page)))
 
     return Array.isArray(ids) ? ids.map(String) : []
   } catch {
@@ -75,11 +89,22 @@ export function takeSelection(resourceName, url) {
   }
 }
 
-export function setSelection(resourceName, url, ids) {
+export function setSelection(resourceName, url, page, ids) {
   if (ids.length > 0) {
-    write(selectionKey(resourceName, url), JSON.stringify(ids))
+    write(selectionKey(resourceName, url, page), JSON.stringify(ids))
   } else {
-    remove(selectionKey(resourceName, url))
+    remove(selectionKey(resourceName, url, page))
+  }
+}
+
+// Someone else may sign in next in the same tab, so signing out forgets everything remembered here.
+export function clearIndexState() {
+  try {
+    Object.keys(window.sessionStorage)
+      .filter((key) => key.startsWith(PREFIX))
+      .forEach((key) => window.sessionStorage.removeItem(key))
+  } catch {
+    // Same as above.
   }
 }
 

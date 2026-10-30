@@ -39,6 +39,23 @@ RSpec.describe "HasManyPerPage", type: :feature do
         expect(page).to have_css "tr[data-record-id]", count: 4
       end
     end
+
+    context "with session persistence but pagination turned off" do
+      around do |example|
+        Avo.configuration.persistence = {driver: :session, pagination: false}
+        example.run
+      ensure
+        Avo.configuration.persistence = {driver: nil}
+      end
+
+      it "forgets the per_page param" do
+        visit "/admin/resources/fish/#{fish.id}/reviews?turbo_frame=has_many_field_show_reviews&per_page=4"
+        visit "/admin/resources/fish/#{fish.id}/reviews?turbo_frame=has_many_field_show_reviews"
+        wait_for_loaded
+
+        expect(page).to have_css "tr[data-record-id]", count: 3
+      end
+    end
   end
 
   context "when the field does not set per_page" do
