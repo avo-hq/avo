@@ -132,18 +132,16 @@ module Avo
       end
 
       def values_for_type(model = nil)
-        resource = target_resource
-        resource = Avo.resource_manager.get_resource_by_model_class model if model.present?
+        resource, records, _capped = lookup_list(model)
 
-        query = scoped_target_query(resource, get_record)
-
-        lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
-
-        query.all.limit(lookup_list_limit).map do |record|
+        records.map do |record|
           [resource.new(record: record).record_title, record.to_param]
-        end.tap do |options|
-          options << t("avo.more_records_available") if options.size == lookup_list_limit
         end
+      end
+
+      # True when there are more records than the select lists
+      def lookup_list_capped?(model = nil)
+        lookup_list(model).last
       end
 
       def database_value
@@ -360,6 +358,25 @@ module Avo
         target.find_record(id, query: scoped_target_query(target, record, for_find: true)) || raise(ActiveRecord::RecordNotFound)
       rescue ActiveRecord::RecordNotFound
         raise TargetNotFound.new("Couldn't find #{target.model_class.name} with '#{id}'", target.model_class.name, id, field_id: self.id)
+      end
+
+      # The records the select lists, capped at the lookup limit. The current value is
+      # always among them, even when it's past the limit, so the select shows it selected.
+      def lookup_list(model = nil)
+        @lookup_lists ||= {}
+        @lookup_lists[model] ||= begin
+          resource = model.present? ? Avo.resource_manager.get_resource_by_model_class(model) : target_resource
+          lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
+
+          records = scoped_target_query(resource, get_record).all.limit(lookup_list_limit + 1).to_a
+          capped = records.size > lookup_list_limit
+          records = records.first(lookup_list_limit)
+
+          current = value if value.present? && (model.blank? || value.is_a?(model))
+          records.unshift(current) if current.present? && records.exclude?(current)
+
+          [resource, records, capped]
+        end
       end
 
       def scoped_target_query(resource, parent_record, for_find: false)

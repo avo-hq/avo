@@ -151,6 +151,8 @@ nl:
     list_is_empty: Lijst is leeg
     load_item: Laad %{item}
     loading: Laden...
+    lookup_list_capped: Te veel opties om in dit formulier te tonen.
+    lookup_list_capped_link: Maak dit veld doorzoekbaar om de rest te vinden.
     media_library:
       title: Mediabibliotheek
     more: Meer

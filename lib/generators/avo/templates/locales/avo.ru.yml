@@ -155,6 +155,8 @@ ru:
     list_is_empty: Список пуст
     load_item: Загрузить %{item}
     loading: Загрузка...
+    lookup_list_capped: Слишком много вариантов, чтобы показать их в этой форме.
+    lookup_list_capped_link: Сделайте это поле доступным для поиска, чтобы найти остальные.
     media_library:
       title: Медиатека
     more: Ещё
