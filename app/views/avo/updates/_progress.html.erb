@@ -1,0 +1,52 @@
+<% restarting = local_assigns[:restarting] %>
+<% state = Avo::Services::Updater.state %>
+<%= turbo_frame_tag "avo_updates", class: "status-page__updates" do %>
+  <% if restarting %>
+    <p class="status-page__updates-text">Restarting the app. Reload this page in a few seconds.</p>
+  <% elsif state == :running %>
+    <div class="status-page__updates-row" data-controller="poll-frame" data-poll-frame-url-value="<%= avo.updates_progress_path %>">
+      <%= render ui.badge(label: "Updating", color: :info, icon: "tabler/outline/loader-2") %>
+      <span class="status-page__updates-text">Running <code>bin/rails avo:update</code>...</span>
+    </div>
+  <% else %>
+    <div class="status-page__updates-row">
+      <% if state == :succeeded %>
+        <%= render ui.badge(label: "Updated", color: :success, icon: "tabler/outline/circle-check") %>
+        <span class="status-page__updates-text">Restart the app to load the new versions.</span>
+      <% elsif state == :failed %>
+        <%= render ui.badge(label: "Update failed", color: :danger, icon: "tabler/outline/circle-x") %>
+        <span class="status-page__updates-text">Nothing changed. The output is below.</span>
+      <% elsif Avo::Services::Updater.allowed? %>
+        <span class="status-page__updates-text">Updates Avo and every Avo gem with <code>bin/rails avo:update</code>.</span>
+      <% else %>
+        <span class="status-page__updates-text">Run <code>bin/rails avo:update</code> in development to update Avo and every Avo gem.</span>
+      <% end %>
+      <div class="status-page__updates-actions">
+        <%= a_link avo.updates_path, style: :outline, color: :gray, size: :sm, data: {turbo_frame: "_top"} do %>
+          What's new
+        <% end %>
+        <% if Avo::Services::Updater.allowed? %>
+          <% if state == :succeeded %>
+            <%= form_with url: avo.restart_after_updates_path do %>
+              <%= a_button type: :submit, style: :primary, color: :blue, size: :sm, icon: "tabler/outline/refresh" do %>
+                Restart app
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= form_with url: avo.run_updates_path do %>
+              <%= a_button type: :submit, style: (state == :failed) ? :outline : :primary, color: :blue, size: :sm, icon: "tabler/outline/download" do %>
+                <%= (state == :failed) ? "Try again" : "Update all" %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <% if state.in?([:running, :succeeded, :failed]) && !restarting %>
+    <details class="status-page__telemetry" <%= "open" if state.in?([:running, :failed]) %>>
+      <summary class="status-page__telemetry-summary">Output</summary>
+      <pre class="status-page__telemetry-payload"><%= Avo::Services::Updater.log.presence || "Waiting for output..." %></pre>
+    </details>
+  <% end %>
+<% end %>

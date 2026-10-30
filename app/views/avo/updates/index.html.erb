@@ -1,0 +1,52 @@
+<% content_for :page_title, "Updates" %>
+<%= render ui.panel(title: "Updates", description: "Release notes for Avo and your Avo gems, oldest first.") do |panel| %>
+  <% panel.with_controls do %>
+    <%= a_link avo.status_path, style: :outline, color: :gray, size: :sm, icon: "tabler/outline/arrow-left" do %>
+      Status
+    <% end %>
+  <% end %>
+  <% panel.with_body do %>
+    <% if @releases.empty? %>
+      <%= render ui.card(padded: true) do |card| %>
+        <% card.with_body do %>
+          <p class="updates-page__empty">Everything is up to date, or the release notes couldn't be loaded from avohq.io.</p>
+        <% end %>
+      <% end %>
+    <% else %>
+      <ol class="updates-page">
+        <% @releases.each do |release| %>
+          <% installed = installed?(release) %>
+          <li>
+            <%= render ui.card(padded: true) do |card| %>
+              <% card.with_body do %>
+                <article class="updates-page__release">
+                  <header class="updates-page__header">
+                    <h3 class="updates-page__title">
+                      <%= link_to "#{release["gem"]} #{release["version"]}", release["url"], target: "_blank", rel: "noopener" %>
+                    </h3>
+                    <% if installed %>
+                      <%= render ui.badge(label: "Installed", color: :success) %>
+                    <% else %>
+                      <%= render ui.badge(label: "Available", color: :warning) %>
+                    <% end %>
+                    <% if release["released_at"].present? %>
+                      <time class="updates-page__date" datetime="<%= release["released_at"] %>"><%= Time.zone.parse(release["released_at"]).to_date.to_fs(:long) %></time>
+                    <% end %>
+                  </header>
+                  <% if release["name"].present? && release["name"].exclude?(release["version"]) %>
+                    <p class="updates-page__name"><%= release["name"] %></p>
+                  <% end %>
+                  <% if release["body_html"].present? || release["body"].present? %>
+                    <div class="updates-page__body">
+                      <%= sanitize(release["body_html"].presence || simple_format(release["body"])) %>
+                    </div>
+                  <% end %>
+                </article>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ol>
+    <% end %>
+  <% end %>
+<% end %>

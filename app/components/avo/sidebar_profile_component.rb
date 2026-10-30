@@ -2,6 +2,7 @@
 
 class Avo::SidebarProfileComponent < Avo::BaseComponent
   prop :user
+  prop :show_status, default: false
 
   delegate :main_app, to: :helpers
 
