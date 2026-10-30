@@ -90,9 +90,9 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
 
   def lookup_list_capped_help
     safe_join([
-      t("avo.lookup_list_capped", count: Avo.configuration.associations[:lookup_list_limit]),
+      t("avo.lookup_list_capped"),
       link_to(t("avo.lookup_list_capped_link"), "https://docs.avohq.io/4.0/associations/searchable.html", target: "_blank", rel: "noopener", class: "underline")
-    ], " ")
+    ], tag.br)
   end
 
   private

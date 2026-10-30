@@ -151,7 +151,7 @@ de:
     list_is_empty: Liste ist leer
     load_item: Lade %{item}
     loading: Lade...
-    lookup_list_capped: Nur die ersten %{count} Datensätze werden angezeigt.
+    lookup_list_capped: Hier werden nicht alle Datensätze angezeigt.
     lookup_list_capped_link: Mach dieses Feld durchsuchbar, um den Rest zu finden.
     media_library:
       title: Medienbibliothek

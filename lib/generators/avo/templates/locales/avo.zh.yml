@@ -151,7 +151,7 @@ zh:
     list_is_empty: 列表为空
     load_item: 加载 %{item}
     loading: 加载中...
-    lookup_list_capped: 仅列出前 %{count} 条记录。
+    lookup_list_capped: 此处并未列出所有记录。
     lookup_list_capped_link: 将此字段设为可搜索即可找到其余记录。
     media_library:
       title: 媒体库

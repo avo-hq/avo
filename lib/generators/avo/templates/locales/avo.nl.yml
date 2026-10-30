@@ -151,7 +151,7 @@ nl:
     list_is_empty: Lijst is leeg
     load_item: Laad %{item}
     loading: Laden...
-    lookup_list_capped: Alleen de eerste %{count} records worden getoond.
+    lookup_list_capped: Niet alle records worden hier getoond.
     lookup_list_capped_link: Maak dit veld doorzoekbaar om de rest te vinden.
     media_library:
       title: Mediabibliotheek

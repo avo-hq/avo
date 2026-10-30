@@ -153,7 +153,7 @@ ja:
     list_is_empty: リストは空です
     load_item: "%{item}を読み込む"
     loading: 読み込み中
-    lookup_list_capped: 最初の%{count}件のみ表示しています。
+    lookup_list_capped: ここにはすべてのレコードが表示されているわけではありません。
     lookup_list_capped_link: 残りを探すには、このフィールドを検索可能にしてください。
     media_library:
       title: メディアライブラリ

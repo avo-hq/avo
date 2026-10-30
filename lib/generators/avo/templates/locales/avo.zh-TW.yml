@@ -151,7 +151,7 @@ zh-TW:
     list_is_empty: 清單為空
     load_item: 加載 %{item}
     loading: 載入中...
-    lookup_list_capped: 僅列出前 %{count} 筆記錄。
+    lookup_list_capped: 此處並未列出所有記錄。
     lookup_list_capped_link: 將此欄位設為可搜尋即可找到其餘記錄。
     media_library:
       title: 媒體庫

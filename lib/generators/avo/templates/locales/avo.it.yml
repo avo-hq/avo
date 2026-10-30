@@ -151,7 +151,7 @@ it:
     list_is_empty: La lista è vuota
     load_item: Carica %{item}
     loading: Caricamento in corso
-    lookup_list_capped: Vengono mostrati solo i primi %{count} record.
+    lookup_list_capped: Qui non sono elencati tutti i record.
     lookup_list_capped_link: Rendi questo campo ricercabile per trovare gli altri.
     media_library:
       title: Libreria multimediale
