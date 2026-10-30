@@ -88,6 +88,10 @@ class Avo::Fields::BelongsToField::EditComponent < Avo::Fields::EditComponent
     }
   end
 
+  def lookup_list_capped_help
+    t("avo.lookup_list_capped", count: Avo.configuration.associations[:lookup_list_limit])
+  end
+
   private
 
   def visit_through_association?

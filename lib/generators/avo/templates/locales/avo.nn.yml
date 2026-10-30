@@ -153,6 +153,7 @@ nn:
     list_is_empty: Lista er tom
     load_item: Last inn %{item}
     loading: Lastar
+    lookup_list_capped: Berre dei første %{count} postane blir viste. Gjer dette feltet søkbart for å finne resten.
     media_library:
       title: Media bibliotek
     more: Meir

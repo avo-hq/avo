@@ -434,10 +434,21 @@ RSpec.describe "Create Via Belongs to", type: :system do
       before { Avo.configuration.associations_lookup_list_limit = 1 }
       after { Avo.configuration.associations_lookup_list_limit = 1000 }
 
-      it "limits select options" do
+      it "limits select options and says so under the select" do
         visit "/admin/resources/course_links/new"
-        expect(page).to have_select "course_link_course_id", options: ["Choose an option", course.name, "There are more records available."]
-        expect(page).to have_selector 'option[disabled="disabled"][value="There are more records available."]'
+        expect(page).to have_select "course_link_course_id", options: ["Choose an option", course.name]
+        expect(page).to have_text "Only the first 1 records are listed. Make this field searchable to find the rest."
+      end
+
+      it "preselects a via record that is past the limit" do
+        visit "/admin/resources/course_links/new?via_record_id=#{exceeded_course.to_param}&via_relation=course&via_relation_class=Course&via_resource_class=Avo::Resources::Course"
+        expect(page).to have_select "course_link_course_id", selected: exceeded_course.name, disabled: true
+      end
+
+      it "keeps a saved value that is past the limit selected on edit" do
+        course_link = create :course_link, course: exceeded_course
+        visit "/admin/resources/course_links/#{course_link.to_param}/edit"
+        expect(page).to have_select "course_link_course_id", selected: exceeded_course.name
       end
     end
   end
@@ -482,8 +493,8 @@ RSpec.describe "Create Via Belongs to", type: :system do
 
       it "limits select options" do
         visit "/admin/resources/comments/new"
-        expect(page).to have_select "comment_user_id", options: ["Choose an option", user.name, "There are more records available."]
-        expect(page).to have_selector 'option[disabled="disabled"][value="There are more records available."]'
+        expect(page).to have_select "comment_user_id", options: ["Choose an option", user.name]
+        expect(page).to have_text "Only the first 1 records are listed. Make this field searchable to find the rest."
       end
     end
   end

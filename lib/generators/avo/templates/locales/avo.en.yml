@@ -151,6 +151,7 @@ en:
     list_is_empty: List is empty
     load_item: Load %{item}
     loading: Loading
+    lookup_list_capped: Only the first %{count} records are listed. Make this field searchable to find the rest.
     media_library:
       title: Media Library
     more: More

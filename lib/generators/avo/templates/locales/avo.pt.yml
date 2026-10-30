@@ -153,6 +153,7 @@ pt:
     list_is_empty: Lista vazia
     load_item: Carregar %{item}
     loading: A carregar
+    lookup_list_capped: Apenas os primeiros %{count} registos são listados. Torne este campo pesquisável para encontrar os restantes.
     media_library:
       title: Biblioteca de Mídia
     more: Mais
