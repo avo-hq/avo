@@ -7,6 +7,8 @@ module Avo
       include Avo::Concerns::HasDescription
       include Avo::Concerns::FrameLoadingMode
 
+      attr_reader :before_attach, :after_attach, :before_detach, :after_detach
+
       def initialize(id, **args, &block)
         super
 
@@ -15,6 +17,10 @@ module Avo
         @linkable = args[:linkable]
         @description = args[:description]
         @loading = args[:loading]
+        @before_attach = args[:before_attach]
+        @after_attach = args[:after_attach]
+        @before_detach = args[:before_detach]
+        @after_detach = args[:after_detach]
       end
 
       def field_resource
