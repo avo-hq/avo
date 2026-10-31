@@ -73,9 +73,16 @@ module Avo
         return false
       end
 
-      perform_action_and_record_errors do
+      # Attaching to a singular association swaps out the current record, which is a detach of its own
+      replaced_record = @record.send(association_name) unless @reflection.collection?
+      replaced_record = nil if replaced_record.in?(attachment_records)
+
+      attached = perform_action_and_record_errors do
         @record.transaction do
+          run_field_hook :before_detach, replaced_record if replaced_record.present?
+
           attachment_records.each do |attachment_record|
+            run_field_hook :before_attach, attachment_record
             attach_record(association_name, attachment_record)
           end
         end
@@ -84,21 +91,46 @@ module Avo
         join_record = @reflection.through_reflection.klass.new
         error.field_ids.each { |field_id| @record.errors.add(:base, ActiveModel::Error.new(join_record, field_id, :invalid).full_message) }
       end
+
+      # After the commit, so a notification never reports an attach that was rolled back
+      if attached
+        run_field_hook :after_detach, replaced_record if replaced_record.present?
+        attachment_records.each { |attachment_record| run_field_hook :after_attach, attachment_record }
+      end
+
+      attached
     end
 
     def destroy
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if through_reflection?
-        join_record&.destroy!
-      elsif has_many_reflection?
-        @record.send(association_name).delete @attachment_record
-      else
+      # A stale page or an edited URL can name a record that isn't attached. Detaching it would delete it on a
+      # `dependent: :destroy` has_many and report a detach to the hooks, so leave it alone.
+      unless attached_record?(association_name)
         # `detach_*?` authorized the record in the URL, so only that one may be detached.
-        raise ActiveRecord::RecordNotFound unless @record.send(association_name) == @attachment_record
+        raise ActiveRecord::RecordNotFound unless through_reflection? || has_many_reflection?
 
-        @record.send(:"#{association_name}=", nil)
+        return destroy_success_action
       end
+
+      detached = @record.transaction do
+        run_field_hook :before_detach, @attachment_record
+
+        if through_reflection?
+          join_record&.destroy!
+        elsif has_many_reflection?
+          @record.send(association_name).delete @attachment_record
+        else
+          @record.send(:"#{association_name}=", nil)
+        end
+
+        true
+      end
+
+      # `transaction` swallows ActiveRecord::Rollback, so a detach a hook vetoed that way must not report success
+      return destroy_fail_action unless detached
+
+      run_field_hook :after_detach, @attachment_record
 
       destroy_success_action
     end
@@ -194,6 +226,23 @@ module Avo
       return query if @field.attach_scope.blank?
 
       Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
+    end
+
+    def attached_record?(association_name)
+      if through_reflection?
+        join_record.present?
+      elsif has_many_reflection?
+        @record.send(association_name).include?(@attachment_record)
+      else
+        @record.send(association_name) == @attachment_record
+      end
+    end
+
+    def run_field_hook(name, attachment_record)
+      hook = @field.try(name)
+      return if hook.nil?
+
+      Avo::ExecutionContext.new(target: hook, parent: @record, record: attachment_record, resource: @resource, field: @field).handle
     end
 
     def reflection_class
@@ -413,6 +462,15 @@ module Avo
         else
           format.html { redirect_to params[:referrer] || resource_view_response_path }
         end
+      end
+    end
+
+    def destroy_fail_action
+      flash[:error] = t("avo.failed")
+
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.append("alerts", partial: "avo/partials/all_alerts") }
+        format.html { redirect_to params[:referrer] || resource_view_response_path }
       end
     end
 
