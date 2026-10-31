@@ -1,0 +1,163 @@
+/* Status page: /status. BEM block .status-page */
+
+.status-page {
+  @apply grid grid-cols-1 gap-4 items-start;
+
+  @variant lg {
+    @apply grid-cols-2;
+  }
+
+  /* .card stretches by default; a short card would show an empty band. */
+  > * {
+    @apply self-start;
+  }
+}
+
+.status-page__wide {
+  @variant lg {
+    @apply col-span-2;
+  }
+}
+
+.status-page__license {
+  @apply flex flex-col items-start gap-4 w-full;
+}
+
+/* Overrides the global `dl` grid, which expects dt/dd as direct children. */
+.status-page__details {
+  @apply block w-full text-sm divide-y divide-tertiary;
+}
+
+.status-page__detail {
+  @apply grid grid-cols-[7rem_1fr] gap-4 py-2;
+
+  @variant sm {
+    @apply grid-cols-[10rem_1fr];
+  }
+
+  &:first-child {
+    @apply pt-0;
+  }
+
+  &:last-child {
+    @apply pb-0;
+  }
+}
+
+.status-page__detail-label {
+  @apply font-normal text-content-secondary;
+}
+
+.status-page__detail-value {
+  @apply col-start-auto text-content min-w-0 break-words tabular-nums;
+}
+
+.status-page__detail-empty {
+  @apply text-content-secondary;
+}
+
+.status-page__upgrade {
+  @apply flex flex-wrap items-center justify-between gap-3 px-3 py-2 w-full;
+}
+
+.status-page__upgrade-text {
+  @apply text-sm text-content-secondary;
+}
+
+.status-page__plugins {
+  @apply w-full text-sm divide-y divide-tertiary;
+}
+
+.status-page__plugin {
+  @apply flex items-center justify-between gap-4 px-4 py-2.5;
+}
+
+.status-page__plugin-link {
+  @apply text-content underline underline-offset-2 decoration-tertiary;
+
+  &:hover {
+    @apply decoration-current;
+  }
+}
+
+.status-page__plugin-version {
+  @apply inline-flex items-center gap-1.5 text-content-secondary tabular-nums;
+}
+
+.status-page__plugin-badge {
+  @apply inline-flex;
+}
+
+.status-page__plugin-badge--latest {
+  color: var(--color-success-content);
+}
+
+.status-page__plugin-badge--behind {
+  color: var(--color-warning-content);
+}
+
+.status-page__updates {
+  @apply block w-full;
+}
+
+.status-page__updates-row {
+  @apply flex flex-wrap items-center gap-3 px-3 py-2;
+}
+
+.status-page__updates-text {
+  @apply grow text-sm text-content-secondary;
+}
+
+.status-page__updates-actions {
+  @apply flex items-center gap-2;
+}
+
+.status-page__telemetry {
+  @apply w-full text-sm;
+}
+
+.status-page__telemetry-summary {
+  @apply cursor-pointer px-4 py-2.5 text-content select-none;
+}
+
+.status-page__telemetry-payload {
+  @apply max-h-96 overflow-auto border-t border-tertiary p-4 text-xs text-content;
+}
+
+/* Updates page: /updates. BEM block .updates-page */
+
+.updates-page {
+  @apply flex flex-col gap-4;
+}
+
+.updates-page__empty {
+  @apply text-sm text-content-secondary;
+}
+
+.updates-page__release {
+  @apply flex flex-col gap-2 w-full;
+}
+
+.updates-page__header {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.updates-page__title {
+  @apply text-base font-semibold text-content;
+}
+
+.updates-page__date {
+  @apply ms-auto text-sm text-content-secondary tabular-nums;
+}
+
+.updates-page__name {
+  @apply text-sm text-content-secondary;
+}
+
+.updates-page__body {
+  @apply prose prose-sm max-w-none text-content;
+
+  @variant dark {
+    @apply prose-invert;
+  }
+}

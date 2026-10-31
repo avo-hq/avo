@@ -148,7 +148,7 @@ config.associations = {                                   # global association d
 config.turbo = -> { { instant_click: true } }             # Turbo behavior inside Avo
 config.default_url_options = [:account_id]                # params appended to every generated path (route multitenancy)
 config.logger = -> { ActiveSupport::Logger.new(Rails.root.join("log", "avo.log")) }
-config.exclude_from_status = ["license_key", "ip"]        # items hidden on /avo_private/status (license_key hidden by default)
+config.exclude_from_status = ["license_key", "ip"]        # items hidden on /status (license_key hidden by default)
 config.send_metadata = false                              # opt out of usage metadata (Community licenses only)
 ```
 

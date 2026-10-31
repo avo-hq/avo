@@ -145,6 +145,8 @@ RSpec.configure do |config|
   config.filter_gems_from_backtrace("capybara", "cuprite", "ferrum")
 
   config.before(:example) { Rails.cache.clear }
+  # The status page asks avohq.io for the latest gem versions; specs never reach it.
+  config.before(:example) { stub_request(:get, %r{\Ahttps://avohq\.io/(gems|releases)\.json}).to_return(status: 503) }
 
   DownloadHelpers.ensure_directory_exists
 

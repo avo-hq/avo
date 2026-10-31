@@ -208,7 +208,7 @@ self.search = {
 ### License won't validate
 
 1. **Key not set on the server.** The most frequent cause. Confirm `config.license_key = ENV["AVO_LICENSE_KEY"]` and that the env var is actually present in **production** (not just locally).
-2. **Check the status page.** Every Avo app exposes `https://yourapp.com/<mount>/avo_private/status` — e.g. `/admin/avo_private/status` if you mounted Avo at `admin`. It shows whether the license authenticated and the raw response from the check server. The viewing user must be an Avo admin.
+2. **Check the status page.** Every Avo app exposes `https://yourapp.com/<mount>/status` — e.g. `/admin/status` if you mounted Avo at `admin`. It shows whether the license authenticated and the raw response from the check server. The viewing user must be an Avo admin.
 3. **Key hidden on the status page.** The key is redacted by default; set `exclude_from_status = []` in the initializer if you need to see it while debugging.
 4. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention, and the status page shows an **Action needed before <date>** tag below the license name, the date being when access stops. Access continues until the date the status page reports. Each case is fixed on https://avohq.io/licenses:
    - No payment method is on file: add one.
