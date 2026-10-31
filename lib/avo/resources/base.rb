@@ -142,7 +142,8 @@ module Avo
         end
 
         def valid_association_name(record, association_name)
-          association_name if record.class.reflect_on_association(association_name).present?
+          # The model's own name, not the request's, so `send` never sees user input.
+          record.class.reflect_on_association(association_name)&.name&.to_s
         end
 
         def valid_attachment_name(record, association_name)
