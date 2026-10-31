@@ -84,11 +84,12 @@ end
 
 The keyword arguments:
 
-- `query` — the selected record(s). **Always an array**, even for a single record (`records` is an alias).
+- `query` — the selected record(s). **An array**, in the order the records were selected, even for a single record (`records` is an alias). **Select all** across pages passes a relation instead, so iterate with `query.each`/`query.map` and don't rely on array-only or relation-only methods.
 - `fields` — values submitted through the action's form fields (see below).
 - `current_user` — the authenticated user.
 - `resource` — the Avo resource instance that triggered the action.
 - `request` — the current `ActionDispatch::Request` (add `request:` to the signature to use it).
+- `index_query` — not a keyword argument; read it as a method. The Index query with filters, scopes, search and sort applied, before pagination, whatever was selected. Use it for standalone "export everything I filtered" actions. It is `nil` on Show/Edit, when the filters match nothing, on array resources that paginate at the source, and when the query can't be serialized, so write `index_query&.count`. Also available in `fields` and the modal text blocks (`nil` while `name` renders in the dropdown).
 
 ### 3. Register it on the resource
 
@@ -194,7 +195,7 @@ end
 `fetch_values_from` points at an endpoint **you** add (a method on an `Avo::ResourcesController` subclass plus a route); it receives the typed text as `params[:q]` and returns objects with `value` and `label` keys. Either way the chosen ID arrives as `fields[:user_id]`.
 
 ### Confirmation modal
-The modal is on by default. Customize its text (each may be a string or a block with access to `resource`, `record`, `view`, `arguments`, `query`), or turn it off for safe actions:
+The modal is on by default. Customize its text (each may be a string or a block with access to `resource`, `record`, `view`, `arguments`, `query`, `index_query`), or turn it off for safe actions:
 
 ```ruby
 self.name = "Release fish"
@@ -210,7 +211,7 @@ self.hide_confirm_button = true            # drop the Run button; Mod+Enter stop
 self.hide_cancel_button = -> { view.index? } # drop the Cancel button; Escape and the header X still close
 ```
 
-`hide_confirm_button` and `hide_cancel_button` take a boolean or a block with access to `resource`, `record`, `view`, `arguments`, `query`. Hiding Run also disables Mod+Enter, but a form with a single text-like field still submits on Enter (the browser's implicit submission). Hiding Cancel removes only the button: Escape still closes the modal unless `close_modal_on_backdrop_click` is `false`, and the header X always closes it. When both are hidden the modal renders without a footer. Hiding Cancel with `close_modal_on_backdrop_click = false` leaves keyboard users only Run, since the X needs a mouse.
+`hide_confirm_button` and `hide_cancel_button` take a boolean or a block with access to `resource`, `record`, `view`, `arguments`, `query`, `index_query`. Hiding Run also disables Mod+Enter, but a form with a single text-like field still submits on Enter (the browser's implicit submission). Hiding Cancel removes only the button: Escape still closes the modal unless `close_modal_on_backdrop_click` is `false`, and the header X always closes it. When both are hidden the modal renders without a footer. Hiding Cancel with `close_modal_on_backdrop_click = false` leaves keyboard users only Run, since the X needs a mouse.
 
 ### Give feedback
 Queue one or more notifications from inside `handle` — call several to stack them. With no explicit feedback Avo shows a generic "Action ran successfully" info alert.
@@ -258,7 +259,7 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
 
 ## Gotchas
 
-- **`query` is always an array.** Even a single-record action gets `[record]`. Use `query.first` for the one-record case; don't call record methods on `query` directly. `records` is an alias.
+- **`query` is an array** (a relation only on Select all across pages). Even a single-record action gets `[record]`; relation methods like `update_all`, `where` or `find_each` aren't available on it, so iterate, or use `Model.where(id: query.map(&:id))`. Use `query.first` for the one-record case; don't call record methods on `query` directly. `records` is an alias.
 - **Records deleted after selection are omitted.** Another user may delete a checked record before the action request arrives. Avo drops that missing record and still passes every surviving selection to `handle`; action authors do not need to rescue `ActiveRecord::RecordNotFound` for this race. `query` can therefore come back **empty** when every selected record is gone — guard with `return error "No record selected" if query.blank?` if that matters.
 - **"My action doesn't show up", or is refused, is usually the policy.** With Pundit, `act_on?` in the resource's policy gates the Actions dropdown and every run: Avo asks it of the record in the URL and of each selected record (of the model class when there are none, and for a "Select all" run), and one refusal refuses the whole run. An action started from an association panel shows under the parent's `act_on_<assoc>?`, but still runs only on children whose own `act_on?` allows it. `authorize` on the action gates it further. Check the policy first. See the **`avo-authorization`** skill.
 - **`view` is the view the action was started from.** In `authorize`, `visible`, the modal text blocks, `fields`, and `handle`, `view` (and `resource.view`) is `index`, `show`, or `edit` — the page the user opened the action from — both while the modal renders and while the action runs. It is never `new`; the modal is not a view. It arrives with the request and is checked against the route (`show` and `edit` need a record in the URL), so use it to adapt behavior (`reload_records if view.index?`), never as the only gate on who may run the action: gate people on `current_user`, and single-versus-bulk on `query.size` or `record`.
