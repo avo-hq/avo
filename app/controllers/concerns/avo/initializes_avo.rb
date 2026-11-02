@@ -12,7 +12,8 @@ module Avo
       load_appearance_settings
 
       # Fire and forget HQ reporting
-      request_info = {ip: request.ip, host: request.host, port: request.port}
+      # No request.ip: that is the visitor's address, which is personal data.
+      request_info = {host: request.host, port: request.port}
       Thread.new { Avo::Services::HqReporter.report(request_info) }
     end
 

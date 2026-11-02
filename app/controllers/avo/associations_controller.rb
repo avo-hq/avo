@@ -73,9 +73,19 @@ module Avo
         return false
       end
 
-      perform_action_and_record_errors do
+      # Each id would replace the one before, skipping the detach hooks of the current record when it is among them
+      return false if !@reflection.collection? && attachment_records.many?
+
+      # Attaching to a singular association swaps out the current record, which is a detach of its own
+      replaced_record = @record.send(association_name) unless @reflection.collection?
+      replaced_record = nil if replaced_record.in?(attachment_records)
+
+      attached = perform_action_and_record_errors do
         @record.transaction do
+          run_field_hook :before_detach, replaced_record if replaced_record.present?
+
           attachment_records.each do |attachment_record|
+            run_field_hook :before_attach, attachment_record
             attach_record(association_name, attachment_record)
           end
         end
@@ -84,18 +94,46 @@ module Avo
         join_record = @reflection.through_reflection.klass.new
         error.field_ids.each { |field_id| @record.errors.add(:base, ActiveModel::Error.new(join_record, field_id, :invalid).full_message) }
       end
+
+      # After the commit, so a notification never reports an attach that was rolled back
+      if attached
+        run_field_hook :after_detach, replaced_record if replaced_record.present?
+        attachment_records.each { |attachment_record| run_field_hook :after_attach, attachment_record }
+      end
+
+      attached
     end
 
     def destroy
       association_name = BaseResource.valid_association_name(@record, @field.for_attribute || params[:related_name])
 
-      if through_reflection?
-        join_record&.destroy!
-      elsif has_many_reflection?
-        @record.send(association_name).delete @attachment_record
-      else
-        @record.send(:"#{association_name}=", nil)
+      # A stale page or an edited URL can name a record that isn't attached. Detaching it would delete it on a
+      # `dependent: :destroy` has_many and report a detach to the hooks, so leave it alone.
+      unless attached_record?(association_name)
+        # Collections kept answering success here before; a has_one with another record attached raised, and still does
+        raise ActiveRecord::RecordNotFound unless through_reflection? || has_many_reflection?
+
+        return destroy_success_action
       end
+
+      detached = @record.transaction do
+        run_field_hook :before_detach, @attachment_record
+
+        if through_reflection?
+          join_record&.destroy!
+        elsif has_many_reflection?
+          @record.send(association_name).delete @attachment_record
+        else
+          @record.send(:"#{association_name}=", nil)
+        end
+
+        true
+      end
+
+      # `transaction` swallows ActiveRecord::Rollback, so a detach a hook vetoed that way must not report success
+      return destroy_fail_action unless detached
+
+      run_field_hook :after_detach, @attachment_record
 
       destroy_success_action
     end
@@ -191,6 +229,23 @@ module Avo
       return query if @field.attach_scope.blank?
 
       Avo::ExecutionContext.new(target: @field.attach_scope, query: query, parent: @record).handle
+    end
+
+    def attached_record?(association_name)
+      if through_reflection?
+        join_record.present?
+      elsif has_many_reflection?
+        @record.send(association_name).include?(@attachment_record)
+      else
+        @record.send(association_name) == @attachment_record
+      end
+    end
+
+    def run_field_hook(name, attachment_record)
+      hook = @field.try(name)
+      return if hook.nil?
+
+      Avo::ExecutionContext.new(target: hook, parent: @record, record: attachment_record, resource: @resource, field: @field).handle
     end
 
     def reflection_class
@@ -321,7 +376,8 @@ module Avo
       if collection_through_reflection? && additional_params.present?
         new_join_record(attachment_record).save!
       elsif has_many_reflection? || collection_through_reflection?
-        @record.send(association_name) << attachment_record
+        # A plain has_many saves the child with `save` and swallows the rollback, so `<<` returns nil instead of raising
+        raise ActiveRecord::RecordInvalid, attachment_record unless @record.send(association_name) << attachment_record
       else
         @record.send(:"#{association_name}=", attachment_record)
         @record.save!
@@ -413,6 +469,16 @@ module Avo
       end
     end
 
+    # Base's version answers only turbo_stream, and a detach can also come from a plain link
+    def destroy_fail_action
+      flash[:error] = destroy_fail_message
+
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.avo_flash_alerts }
+        format.html { redirect_to params[:referrer] || resource_view_response_path }
+      end
+    end
+
     def select_options(query)
       lookup_list_limit = Avo.configuration.associations[:lookup_list_limit]
 
@@ -474,7 +540,7 @@ module Avo
       # avo-resources-project.has_many.avo-resources-user.page
       page_key = "#{pagination_key}.page"
 
-      @index_params[:page] = if Avo.configuration.session_persistence_enabled?
+      @index_params[:page] = if Avo.configuration.persist?(:pagination)
         session[page_key] = positive_integer_or(params[:page] || session[page_key], 1)
       else
         positive_integer_or(params[:page], 1)
@@ -486,7 +552,7 @@ module Avo
       per_page_key = "#{pagination_key}.per_page"
       default_per_page = @field.per_page || Avo.configuration.via_per_page
 
-      @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
+      @index_params[:per_page] = if Avo.configuration.persist?(:pagination)
         session[per_page_key] = positive_integer_or(params[:per_page] || session[per_page_key], default_per_page)
       else
         positive_integer_or(params[:per_page], default_per_page)

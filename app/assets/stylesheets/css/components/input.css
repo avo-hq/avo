@@ -298,6 +298,23 @@
     );
   }
 
+  /* SHIFT needs more room than a single-key badge on both platforms. */
+  .search-input__input.search-input__input--with-three-key-shortcut {
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) * 4 +
+      var(--input-icon-gap) * 5
+    );
+  }
+
+  body.os-pc .search-input__input.search-input__input--with-three-key-shortcut {
+    padding-inline-end: calc(
+      var(--input-icon-offset) +
+      var(--input-icon-size) * 5 +
+      var(--input-icon-gap) * 6
+    );
+  }
+
   /* Suffix (shortcut) */
   .search-input__suffix {
     @apply absolute inset-y-0 end-0 flex items-center text-content-secondary pointer-events-none z-10 gap-1;

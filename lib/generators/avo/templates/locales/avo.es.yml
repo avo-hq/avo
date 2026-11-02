@@ -78,6 +78,7 @@ es:
       hidden_selections:
         one: 1 opción seleccionada oculta por la búsqueda
         other: "%{count} opciones seleccionadas ocultas por la búsqueda"
+    checking_dependents: Comprobando registros relacionados...
     choose_a_country: Elige un país
     choose_an_option: Elige una opción
     choose_item: Elige %{item}
@@ -97,6 +98,7 @@ es:
     delete: eliminar
     delete_file: Eliminar fichero
     delete_item: Eliminar %{item}
+    destroy_also_deletes: Esto también eliminará %{records}.
     detach_item: separar %{item}
     details: detalles
     download: Descargar
@@ -151,6 +153,8 @@ es:
     list_is_empty: La lista está vacía
     load_item: Cargar %{item}
     loading: Cargando
+    lookup_list_capped: Hay demasiadas opciones para mostrarlas en este formulario.
+    lookup_list_capped_link: Haz que este campo admita búsqueda para encontrar el resto.
     media_library:
       title: Biblioteca de medios
     more: Más

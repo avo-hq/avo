@@ -1,0 +1,29 @@
+<%= render ui.card(title: "Plugins") do |card| %>
+  <% card.with_body do %>
+    <ul class="status-page__plugins">
+      <li class="status-page__plugin">
+        <span>Avo</span>
+        <span class="status-page__plugin-version">
+          <%= Avo::VERSION %>
+          <%= version_badge("avo", Avo::VERSION) %>
+        </span>
+      </li>
+      <% plugins.each do |plugin| %>
+        <li class="status-page__plugin">
+          <% if plugin.gem_name.present? %>
+            <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "status-page__plugin-link" %>
+          <% else %>
+            <span><%= plugin.name %></span>
+          <% end %>
+          <span class="status-page__plugin-version">
+            <%= plugin.version %>
+            <%= version_badge(plugin.gem_name, plugin.version) %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% card.with_footer do %>
+    <%= render partial: "avo/updates/progress" %>
+  <% end %>
+<% end %>

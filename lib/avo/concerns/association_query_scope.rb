@@ -36,11 +36,14 @@ module Avo
           view: Avo::ViewInquirer.new("show")
         )
         @parent_resource.detect_fields
+        field = find_association_field(resource: @parent_resource, association: params[:association_name] || params[:related_name])
+        authorize_via_association field, resource.class
 
         association_query_scope(
           parent_resource: @parent_resource,
           parent_record: @parent_record,
-          association_name: params[:association_name] || params[:related_name],
+          association_name: field.association_name,
+          field_association_name: field.id,
           authorization: authorization,
           resource: resource
         )

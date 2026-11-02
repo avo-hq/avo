@@ -210,6 +210,10 @@ en:
         save: "Save the product!"
 ```
 
+### 6b. Localize the delete confirmation
+
+The delete dialog names dependent records ("This will also delete 3 books."). Each association is named by the model's attribute translation `activerecord.attributes.<model>.<association>` with `one:`/`other:` keys; without it the humanized, pluralized association name is used. The surrounding sentence comes from `avo.destroy_also_deletes` and `avo.checking_dependents`.
+
 ### 7. Localize scopes, cards, and dashboards
 
 Three more roots follow the same convention, derived by the **add-on gems** that provide those entities — so they only exist in an app that has the gem installed:
@@ -241,7 +245,7 @@ Each user can pick their own language from the language picker in the top navbar
 
 Two request params switch language on the fly. Both ignore a locale missing from `I18n.available_locales`, and the request falls through to the next source.
 
-- **`?set_locale=pt-BR`** — **deprecated**: it logs a warning and will be removed in a future version. It sets Avo's default locale process-wide **until the server restarts** (it mutates `Avo.configuration.locale`), for every user. Don't add it to an app; use the locale selector for a per-user language and `config.locale` for the app-wide one.
+- **`?set_locale=pt-BR`** — **deprecated**: it logs a warning and will be removed in a future version. It sets Avo's default locale process-wide **until the server restarts** (it mutates `Avo.configuration.locale`), for every user. Avo stores it only after the `authenticate_with` block lets the request through. Don't add it to an app; use the locale selector for a per-user language and `config.locale` for the app-wide one.
 - **`?force_locale=pt-BR`** — sets the locale for that request only, but Avo **keeps the param in every link** while you navigate. Remove it to return to the configured locale. Good for previewing a translation without changing config.
 
 ### 9. Right-to-left languages

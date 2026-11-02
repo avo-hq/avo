@@ -8,7 +8,8 @@ module Avo
         :hide_search_input,
         :hide_filter_button,
         :discreet_pagination,
-        :per_page
+        :per_page,
+        :refresh_on_destroy
 
       def initialize(id, **args, &block)
         args[:updatable] = false
@@ -33,6 +34,7 @@ module Avo
         @hide_filter_button = args[:hide_filter_button]
         @discreet_pagination = args[:discreet_pagination]
         @per_page = args[:per_page]
+        @refresh_on_destroy = args[:refresh_on_destroy]
       end
 
       private

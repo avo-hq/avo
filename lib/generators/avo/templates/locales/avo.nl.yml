@@ -76,6 +76,7 @@ nl:
       hidden_selections:
         one: 1 geselecteerde optie verborgen door zoekopdracht
         other: "%{count} geselecteerde opties verborgen door zoekopdracht"
+    checking_dependents: Gerelateerde records controleren...
     choose_a_country: Kies een land
     choose_an_option: Kies een optie
     choose_item: Kies %{item}
@@ -95,6 +96,7 @@ nl:
     delete: verwijderen
     delete_file: Bestand verwijderen
     delete_item: "%{item} verwijderen"
+    destroy_also_deletes: Hiermee worden ook %{records} verwijderd.
     detach_item: "%{item} loskoppelen"
     details: Details
     download: Downloaden
@@ -149,6 +151,8 @@ nl:
     list_is_empty: Lijst is leeg
     load_item: Laad %{item}
     loading: Laden...
+    lookup_list_capped: Te veel opties om in dit formulier te tonen.
+    lookup_list_capped_link: Maak dit veld doorzoekbaar om de rest te vinden.
     media_library:
       title: Mediabibliotheek
     more: Meer
