@@ -1,11 +1,11 @@
 /* ================================================ */
-/* Tenant switcher (sidebar footer)                 */
+/* Tenant switcher (sidebar profile row)            */
 /* BEM: .tenant-switcher (block)                    */
 /* ================================================ */
 
-/* Takes the slot the Avo Status box used to fill, with its padding and the theme's border token. */
+/* px-2 + the trigger's px-2 and the matching py keep the row's geometry identical to the plain profile row. */
 .tenant-switcher {
-  @apply block p-4 pb-0;
+  @apply relative block px-2 py-1;
 }
 
 .tenant-switcher .popover-menu {
@@ -13,47 +13,93 @@
 }
 
 .tenant-switcher__trigger {
-  @apply flex items-center gap-2 w-full px-3 py-2 border rounded-sm text-sm cursor-pointer text-start;
-  border-color: var(--sidebar-status-border);
+  @apply flex items-center gap-2 w-full px-2 py-1 rounded-lg text-sm leading-5 cursor-pointer text-start;
   color: var(--sidebar-content);
   transition-property: background-color, outline, outline-offset;
   transition-duration: 150ms, 0s, 0s;
 }
 
 .tenant-switcher__trigger:hover,
-.tenant-switcher__trigger:focus-visible {
-  @apply bg-secondary;
+.tenant-switcher__trigger:focus-visible,
+.tenant-switcher__trigger:has(+ :popover-open) {
+  background-color: var(--sidebar-link-hover-background);
 }
 
-.tenant-switcher__icon {
-  @apply size-4 shrink-0;
+.tenant-switcher .cado-avatar {
+  @apply shrink-0;
+}
+
+/* Same size and radius as the avatar on the plain profile row. */
+.tenant-switcher__trigger .cado-avatar {
+  @apply size-8.5 rounded-lg;
+}
+
+.tenant-switcher__trigger .cado-avatar__initials {
+  @apply font-semibold tracking-tighter;
+}
+
+.tenant-switcher__text {
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+/* Keeps the names clear of the status alert that floats over the row. */
+.tenant-switcher:has(.sidebar-status--alert) .tenant-switcher__text {
+  @apply pe-10;
+}
+
+/* A sibling of the trigger, because a link can't sit inside a button. Floats where the plain row has it. */
+.tenant-switcher .sidebar-status--alert {
+  @apply absolute top-1/2 -translate-y-1/2 end-16.5;
 }
 
 .tenant-switcher__title {
-  @apply flex-1 truncate min-w-0 font-medium;
+  @apply truncate font-medium;
 }
 
+/* The margin centers it over the profile menu's dots. */
 .tenant-switcher__chevron {
   @apply size-4 opacity-60 shrink-0;
+  margin-inline-end: 9px;
 }
 
-/* Opens upward from the bottom of the sidebar, as wide as the trigger. */
+/* Pairs with .sidebar-profile__dropdown, so this is the plain profile menu with accounts on top. It starts at the
+   row's edge instead of the dots, and that edge follows the text direction so a wide menu never leaves the screen. */
 .tenant-switcher__panel {
-  @apply mt-0 mb-1;
-  position-area: top span-right;
-  width: anchor-size(width);
-  min-width: 14rem;
-  transform: translateY(0.25rem);
+  min-width: anchor-size(width);
 }
 
-@starting-style {
-  .tenant-switcher__panel:popover-open {
-    transform: translateY(0.25rem);
+@variant sm {
+  .tenant-switcher__panel.sidebar-profile__dropdown {
+    position-area: block-start span-inline-end;
   }
 }
 
+/* Each part scrolls on its own, so the accounts and the profile actions together never outgrow the screen. */
 .tenant-switcher__panel .dropdown-menu__list {
-  @apply max-h-[min(22rem,65vh)] overflow-y-auto overflow-x-hidden;
+  @apply max-h-[min(22rem,40vh)] overflow-y-auto overflow-x-hidden;
+}
+
+.tenant-switcher__panel .dropdown-menu__footer {
+  @apply max-h-[40vh] overflow-y-auto overflow-x-hidden;
+}
+
+/* The footer keeps profile actions out of the search, but they look as they do in the plain menu. */
+.tenant-switcher__panel .dropdown-menu__footer :is(a, button) {
+  @apply font-medium text-content;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--color-row-bg-hover);
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    @media (forced-colors: active) {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
+    }
+  }
 }
 
 /* button_to wraps each option in a form, so the form steps out of the layout. */

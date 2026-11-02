@@ -32,6 +32,23 @@ RSpec.describe "Tenancy", type: :request do
     expect(current_tenant_title).to eq "Google"
   end
 
+  it "merges accounts and profile actions into one menu, and keeps the plain profile row for a single account" do
+    get page_path
+    body = Nokogiri::HTML(response.body)
+
+    expect(body.at_css(".tenant-switcher__trigger .sidebar-profile__subtitle").text).to eq user.name
+    expect(body.at_css(".tenant-switcher .dropdown-menu__footer form[action='/users/sign_out']")).to be_present
+    expect(body.at_css(".sidebar-profile")).to be_nil
+
+    TeamMembership.where(user:, team: [google, amazon]).delete_all
+
+    get page_path
+    body = Nokogiri::HTML(response.body)
+
+    expect(body.at_css(".sidebar-profile form[action='/users/sign_out']")).to be_present
+    expect(body.at_css(".tenant-switcher")).to be_nil
+  end
+
   it "answers a foreign and an unknown id the same way and keeps the current team" do
     patch "/admin/tenant", params: {id: foreign.id}
     foreign_response = [response.status, response.body]

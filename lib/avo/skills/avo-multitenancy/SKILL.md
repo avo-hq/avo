@@ -12,7 +12,7 @@ metadata:
 
 Multitenancy adds a layer just below authentication: a signed-in user acts *on behalf of a tenant*, an `Account`, a `Team`, an `Organization`. The job is to answer one question on every request, **which tenant is the current user acting for?**, without ever letting a user reach a tenant they don't belong to, and then to scope Avo's data to it.
 
-Avo does this itself through **`config.tenancy`**. The app returns the accounts the current user may act for; Avo resolves `Avo::Current.tenant` / `tenant_id` on every request (after authentication, before authorization and resource queries), renders an account switcher at the bottom of the sidebar and handles switching. Do not hand-roll a `set_tenant` concern or a switch controller when `config.tenancy` fits.
+Avo does this itself through **`config.tenancy`**. The app returns the accounts the current user may act for; Avo resolves `Avo::Current.tenant` / `tenant_id` on every request (after authentication, before authorization and resource queries), turns the sidebar's profile row into an account switcher and handles switching. Do not hand-roll a `set_tenant` concern or a switch controller when `config.tenancy` fits.
 
 Authentication ("who is signed in") is the layer *above* this: the **avo-authentication** skill. `current_user` must resolve before Avo can look up the user's accounts.
 
@@ -66,7 +66,7 @@ That is the whole session-based setup. Avo then:
 - stores the pick in the session together with the user who made it, so signing in as someone else (or impersonating) never inherits it;
 - re-checks membership on every request and falls back to the user's first account when the stored one is gone;
 - fails closed: a user with no accounts gets a "No account to show" page (`403`), never the admin with a `nil` tenant;
-- renders the switcher at the bottom of the sidebar (hidden when the user has one account). Switching is a CSRF-protected `PATCH` to the engine's `switch_tenant` route, answers `404` for an id outside `tenants:`, clears saved filters and page numbers, does a full page load and lands on the current resource's index or the Avo root;
+- turns the sidebar's profile row into the switcher, with accounts and profile actions in one menu (the plain profile row stays when the user has one account). Switching is a CSRF-protected `PATCH` to the engine's `switch_tenant` route, answers `404` for an id outside `tenants:`, clears saved filters and page numbers, does a full page load and lands on the current resource's index or the Avo root;
 - emits `ActiveSupport::Notifications` event `switch_tenant.avo` with `user:`, `from:` and `to:` for audit logs.
 
 ### 2. Route strategy (tenant in the URL)

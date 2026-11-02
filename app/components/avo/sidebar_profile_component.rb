@@ -3,8 +3,19 @@
 class Avo::SidebarProfileComponent < Avo::BaseComponent
   prop :user
   prop :show_status, default: false
+  prop :tenant_switcher
 
   delegate :main_app, to: :helpers
+
+  # Apps without session tenancy, and users with one account, keep the plain profile row.
+  def switches_tenant?
+    @tenant_switcher&.render?
+  end
+
+  # A healthy status stays in the menu; a trial at risk or an invalid license must be seen without opening it.
+  def status_alert?
+    @show_status && Avo.app_status != :ok
+  end
 
   def avatar
     if @user.respond_to?(:avatar) && @user.avatar.present?

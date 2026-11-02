@@ -63,10 +63,7 @@
       </div>
     </div>
     <div class="sidebar__footer">
-      <% if Avo.configuration.session_tenancy? %>
-        <%= render Avo::TenantSwitcherComponent.new(tenants: helpers.allowed_tenants, current: Avo::Current.tenant, resource: @resource) %>
-      <% end %>
-      <%= render Avo::SidebarProfileComponent.new user: helpers._current_user, show_status: can_access_private_status? %>
+      <%= render Avo::SidebarProfileComponent.new user: helpers._current_user, show_status: can_access_private_status?, tenant_switcher: tenant_switcher %>
     </div>
   </div>
 <% end %>

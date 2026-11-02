@@ -8,6 +8,12 @@ class Avo::SidebarComponent < Avo::BaseComponent
   # The page's resource, so an account switch lands on its index.
   prop :resource
 
+  def tenant_switcher
+    return unless Avo.configuration.session_tenancy?
+
+    Avo::TenantSwitcherComponent.new(tenants: helpers.allowed_tenants, current: Avo::Current.tenant, resource: @resource)
+  end
+
   def dashboards
     return [] unless Avo.plugin_manager.installed?("avo-dashboards")
 

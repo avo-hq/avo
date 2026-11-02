@@ -484,13 +484,13 @@
 /* BEM: .sidebar-status (block)                     */
 /* ================================================ */
 
-/* Just the dot, between the user's name and the profile menu. */
+/* The dot on the profile menu's status row, in the same column as the other rows' icons. */
 .sidebar-status {
-  @apply inline-flex items-center justify-center shrink-0 size-6 rounded-full;
+  @apply inline-flex items-center justify-center shrink-0 size-4;
 }
 
-.sidebar-status:focus-visible {
-  outline: 2px solid var(--color-accent-content);
+.sidebar-status--alert {
+  @apply size-6 rounded-full;
 }
 
 .sidebar-status__indicator {
@@ -507,15 +507,6 @@
 
 .sidebar-status__indicator--warning {
   @apply bg-amber-400;
-}
-
-.sidebar-status__hint {
-  @apply absolute text-xs hidden text-center w-full -ms-4;
-  color: var(--sidebar-content-secondary);
-}
-
-.sidebar-status:hover .sidebar-status__hint {
-  @apply block;
 }
 
 /* ================================================ */

@@ -91,9 +91,9 @@
   @apply size-full object-cover object-center bg-cover bg-center bg-no-repeat;
 }
 
-/* Initials text styling */
+/* Physical left on purpose: translate does not flip in RTL, so start-1/2 pushed the initials off-center. */
 .cado-avatar__initials {
-  @apply absolute top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium leading-none text-center whitespace-nowrap overflow-hidden text-ellipsis;
+  @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium leading-none text-center whitespace-nowrap overflow-hidden text-ellipsis;
 }
 
 /* Initials text colors */

@@ -5,6 +5,29 @@ RSpec.describe Avo::SidebarProfileComponent, type: :component do
     allow_message_expectations_on_nil
   end
 
+  it "lists Avo Status in the profile menu, not on the row" do
+    with_controller_class Avo::BaseController do
+      render_inline(described_class.new(user: nil, show_status: true))
+
+      expect(page).to have_css ".popover-menu__panel a", text: "Avo Status", visible: :all
+      expect(page).not_to have_css ".sidebar-profile > .sidebar-status"
+    end
+  end
+
+  it "puts a status that needs attention on the row, on the plain row and the account row alike" do
+    allow(Avo).to receive(:app_status).and_return(:warning)
+    tenants = [Struct.new(:id, :name).new(1, "Apple"), Struct.new(:id, :name).new(2, "Google")]
+
+    with_controller_class Avo::BaseController do
+      render_inline(described_class.new(user: nil, show_status: true))
+      expect(page).to have_css ".sidebar-profile > a.sidebar-status .sidebar-status__indicator--warning"
+
+      switcher = Avo::TenantSwitcherComponent.new(tenants:, current: tenants.first)
+      render_inline(described_class.new(user: nil, show_status: true, tenant_switcher: switcher))
+      expect(page).to have_css ".tenant-switcher > a.sidebar-status .sidebar-status__indicator--warning"
+    end
+  end
+
   describe "destroy_user_session_path" do
     context "with default configuration" do
       it "renders sign out link" do
