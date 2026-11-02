@@ -24,11 +24,25 @@ RSpec.describe "Status page updates", type: :request do
 
     get "/admin/updates"
 
-    expect(response.body).to match(/999\.0\.0.*Available.*#{Regexp.escape(Avo::VERSION)}.*Installed/mo)
+    expect(response.body).to match(/Available.*999\.0\.0.*Installed.*#{Regexp.escape(Avo::VERSION)}/mo)
     expect(response.body).to include("<p>Shipped</p>").and include("Coming").and include("<p>GitHub notes</p>")
     expect(response.body).not_to include("<script>alert(1)</script>")
     expect(response.body).to include("/admin/updates?page=2")
-    expect(response.body).not_to include("Newer")
+    expect(response.body).not_to match(/>\s*Newer\s*</)
+  end
+
+  it "offers Update all only when a release is available" do
+    allow(Avo::Services::Updater).to receive(:allowed?).and_return(true)
+    allow(Avo::Services::GemVersions).to receive(:releases).and_return(
+      {"releases" => [{"gem" => "avo", "version" => "999.0.0"}], "next_page" => nil},
+      {"releases" => [{"gem" => "avo", "version" => Avo::VERSION}], "next_page" => nil}
+    )
+
+    get "/admin/updates"
+    expect(response.body).to include("Update all")
+
+    get "/admin/updates"
+    expect(response.body).not_to include("Update all")
   end
 
   it "asks HQ again after an empty answer instead of keeping it for an hour" do

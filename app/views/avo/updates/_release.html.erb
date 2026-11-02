@@ -1,0 +1,26 @@
+<details class="updates-page__release" <%= "open" if open %>>
+  <summary class="updates-page__summary">
+    <h3 class="updates-page__title">
+      <%= release["gem"] %>
+      <span class="updates-page__version"><%= release["version"] %></span>
+    </h3>
+    <% if release["released_at"].present? %>
+      <time class="updates-page__date" datetime="<%= release["released_at"] %>"><%= Time.zone.parse(release["released_at"]).to_date.to_fs(:long) %></time>
+    <% end %>
+    <%= svg "tabler/outline/chevron-down", class: "updates-page__chevron" %>
+  </summary>
+  <div class="updates-page__content">
+    <% if release["name"].present? && release["name"].exclude?(release["version"]) %>
+      <p class="updates-page__name"><%= release["name"] %></p>
+    <% end %>
+    <%# The hand-written announcement first, then the GitHub notes, as on the release's own page. %>
+    <% %w[body description].each do |notes| %>
+      <% if release["#{notes}_html"].present? || release[notes].present? %>
+        <div class="updates-page__notes">
+          <%= sanitize(release["#{notes}_html"].presence || simple_format(release[notes])) %>
+        </div>
+      <% end %>
+    <% end %>
+    <%= link_to "Full release page", release["url"], target: "_blank", rel: "noopener", class: "updates-page__link" %>
+  </div>
+</details>

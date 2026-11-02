@@ -134,32 +134,132 @@
   @apply text-sm text-content-secondary;
 }
 
-.updates-page__release {
-  @apply flex flex-col gap-2 w-full;
+/* Keeps a row's hover background inside the card's rounded corners. */
+.updates-page .card__body {
+  overflow: clip;
 }
 
-.updates-page__header {
-  @apply flex flex-wrap items-center gap-2;
+.updates-page__actions {
+  @apply w-full border-b border-tertiary;
+}
+
+/* Lines up with the release rows below it. */
+.updates-page__actions .status-page__updates-row {
+  @apply px-4 py-3;
+}
+
+/* The same frame sits on the status page, and it can't tell which page it reloaded into. */
+.updates-page__actions .status-page__whats-new {
+  display: none;
+}
+
+.updates-page__release {
+  @apply block w-full;
+}
+
+.updates-page__release + .updates-page__release {
+  @apply border-t border-tertiary;
+}
+
+.updates-page__summary {
+  @apply flex items-center gap-3 px-4 py-3 cursor-pointer list-none;
+  transition: background-color 150ms ease-out;
+}
+
+.updates-page__summary::-webkit-details-marker {
+  display: none;
+}
+
+.updates-page__summary:hover {
+  @apply bg-secondary;
+}
+
+.updates-page__summary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
 }
 
 .updates-page__title {
-  @apply text-base font-semibold text-content;
+  @apply min-w-0 text-sm font-semibold text-content;
+}
+
+.updates-page__version {
+  @apply ms-1 font-normal text-content-secondary tabular-nums;
 }
 
 .updates-page__date {
-  @apply ms-auto text-sm text-content-secondary tabular-nums;
+  @apply ms-auto shrink-0 text-sm text-content-secondary tabular-nums;
+}
+
+.updates-page__chevron {
+  @apply size-4 shrink-0 text-content-secondary;
+  transition: transform 150ms ease-out;
+}
+
+.updates-page__release[open] .updates-page__chevron {
+  transform: rotate(180deg);
+}
+
+.updates-page__content {
+  @apply flex flex-col gap-3 px-4 pt-1 pb-4;
 }
 
 .updates-page__name {
   @apply text-sm text-content-secondary;
 }
 
-.updates-page__body {
-  @apply prose prose-sm max-w-none text-content;
+.updates-page__notes {
+  @apply prose prose-sm text-content;
+  max-width: 70ch;
 
   @variant dark {
     @apply prose-invert;
   }
+
+  /* Core releases open with "Release notes" and a link that sometimes names the wrong version.
+     The summary and the link below already say it, and every other release skips the preamble. */
+  > h2:first-child:has(+ p),
+  > h2:first-child:has(+ p) + p {
+    display: none;
+  }
+
+  > h2:first-child:has(+ p) + p + * {
+    @apply mt-0;
+  }
+
+  h2,
+  h3 {
+    @apply mt-5 mb-1.5 text-sm font-semibold text-content;
+  }
+
+  > :first-child {
+    @apply mt-0;
+  }
+
+  /* Authors and PR numbers trail every line, so they step back from the change itself. */
+  a {
+    @apply font-normal text-content-secondary;
+  }
+
+  a:hover {
+    @apply text-content;
+  }
+
+  ul {
+    @apply my-0;
+  }
+
+  li {
+    @apply my-1;
+  }
+}
+
+.updates-page__link {
+  @apply self-start text-sm text-content-secondary underline underline-offset-2;
+}
+
+.updates-page__link:hover {
+  @apply text-content;
 }
 
 .updates-page__pagination {

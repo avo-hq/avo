@@ -12,45 +12,26 @@
           <p class="updates-page__empty">No release notes to show. avohq.io may be unreachable, so try again in a bit.</p>
         <% end %>
       <% end %>
-    <% else %>
-      <ol class="updates-page">
-        <% @releases.each do |release| %>
-          <% installed = installed?(release) %>
-          <li>
-            <%= render ui.card(padded: true) do |card| %>
-              <% card.with_body do %>
-                <article class="updates-page__release">
-                  <header class="updates-page__header">
-                    <h3 class="updates-page__title">
-                      <%= link_to "#{release["gem"]} #{release["version"]}", release["url"], target: "_blank", rel: "noopener" %>
-                    </h3>
-                    <% if installed %>
-                      <%= render ui.badge(label: "Installed", color: :success) %>
-                    <% else %>
-                      <%= render ui.badge(label: "Available", color: :warning) %>
-                    <% end %>
-                    <% if release["released_at"].present? %>
-                      <time class="updates-page__date" datetime="<%= release["released_at"] %>"><%= Time.zone.parse(release["released_at"]).to_date.to_fs(:long) %></time>
-                    <% end %>
-                  </header>
-                  <% if release["name"].present? && release["name"].exclude?(release["version"]) %>
-                    <p class="updates-page__name"><%= release["name"] %></p>
-                  <% end %>
-                  <%# The hand-written announcement first, then the GitHub notes, as on the release's own page. %>
-                  <% %w[body description].each do |notes| %>
-                    <% if release["#{notes}_html"].present? || release[notes].present? %>
-                      <div class="updates-page__body">
-                        <%= sanitize(release["#{notes}_html"].presence || simple_format(release[notes])) %>
-                      </div>
-                    <% end %>
-                  <% end %>
-                </article>
-              <% end %>
-            <% end %>
-          </li>
-        <% end %>
-      </ol>
     <% end %>
+    <div class="updates-page">
+      <% if @available_releases.any? %>
+        <%= render ui.card(title: "Available", description: "Newer than what this app runs.") do |card| %>
+          <% card.with_body do %>
+            <div class="updates-page__actions">
+              <%= render partial: "avo/updates/progress" %>
+            </div>
+            <%= render partial: "avo/updates/release", collection: @available_releases, as: :release, locals: {open: true} %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if @installed_releases.any? %>
+        <%= render ui.card(title: "Installed") do |card| %>
+          <% card.with_body do %>
+            <%= render partial: "avo/updates/release", collection: @installed_releases, as: :release, locals: {open: false} %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
     <% if @page > 1 || @next_page %>
       <nav class="updates-page__pagination" aria-label="Release notes pages">
         <% if @page > 1 %>

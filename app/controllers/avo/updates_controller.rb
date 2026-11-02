@@ -3,13 +3,13 @@ module Avo
     before_action :authenticate_developer_or_admin!
     # Running bundler and restarting the server from a web request is only safe on a developer's machine.
     before_action :require_updater, only: [:run, :restart]
-    helper_method :installed?
 
     def index
       @installed = Avo::Services::GemVersions.installed
       @page = [params[:page].to_i, 1].max
       changelog = Avo::Services::GemVersions.releases(page: @page)
       @releases = changelog["releases"]
+      @installed_releases, @available_releases = @releases.partition { |release| installed?(release) }
       @next_page = changelog["next_page"]
     end
 
