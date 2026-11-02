@@ -9,27 +9,34 @@ module Avo
         end
 
         def start
-          return false if running?
+          # Held until the pid is written, so a double submit can't start a second bundle update on the same lockfile.
+          File.open(dir.sub_ext(".lock"), File::CREAT | File::RDWR) do |lock|
+            lock.flock(File::LOCK_EX)
+            return false if running?
 
-          FileUtils.rm_rf(dir)
-          FileUtils.mkdir_p(dir)
+            FileUtils.rm_rf(dir)
+            FileUtils.mkdir_p(dir)
 
-          # The shell records the exit status, which a detached child's parent can't collect.
-          pid = Bundler.with_original_env do
-            Process.spawn(
-              "sh", "-c", 'bin/rails avo:update > "$1" 2>&1; echo $? > "$2"', "sh", log_path.to_s, exit_path.to_s,
-              chdir: Rails.root.to_s, pgroup: true
-            )
+            # The shell records the exit status, which a detached child's parent can't collect.
+            pid = Bundler.with_original_env do
+              Process.spawn(
+                "sh", "-c", 'bin/rails avo:update > "$1" 2>&1; echo $? > "$2"', "sh", log_path.to_s, exit_path.to_s,
+                chdir: Rails.root.to_s, pgroup: true
+              )
+            end
+            Process.detach(pid)
+            File.write(dir.join("pid"), pid)
           end
-          Process.detach(pid)
-          File.write(dir.join("pid"), pid)
           true
         end
 
         # :idle, :running, :succeeded or :failed
         def state
           return :idle unless dir.join("pid").exist?
-          return :running unless exit_path.exist?
+
+          # Checked before the exit status: a run that ends between the two reads still reports how it ended.
+          alive = process_alive?
+          return alive ? :running : :failed unless exit_path.exist?
 
           (exit_path.read.strip == "0") ? :succeeded : :failed
         end
@@ -40,10 +47,18 @@ module Avo
 
         # Puma's tmp_restart plugin, which Rails' generated puma.rb loads, restarts the server when this file is touched.
         def restart
+          FileUtils.rm_rf(dir)
           FileUtils.touch(Rails.root.join("tmp", "restart.txt"))
         end
 
         private
+
+        def process_alive?
+          Process.getpgid(dir.join("pid").read.to_i)
+          true
+        rescue Errno::ESRCH
+          false
+        end
 
         def dir = Rails.root.join("tmp", "avo_update")
 

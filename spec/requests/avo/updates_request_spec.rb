@@ -3,7 +3,15 @@ require "rails_helper"
 RSpec.describe "Status page updates", type: :request do
   let(:admin_user) { create :user, roles: {admin: true} }
 
-  before { login_as admin_user }
+  # The dummy app's tmp/ is shared with a running dev server, whose update these specs must not wipe.
+  let(:update_dir) { Pathname.new(Dir.mktmpdir) }
+
+  before do
+    login_as admin_user
+    allow(Avo::Services::Updater).to receive(:dir).and_return(update_dir)
+  end
+
+  after { FileUtils.rm_rf(update_dir) }
 
   it "flags Avo as behind when HQ has a newer release" do
     allow(Avo::Services::GemVersions).to receive(:latest).and_return("avo" => "999.0.0")
@@ -67,15 +75,48 @@ RSpec.describe "Status page updates", type: :request do
 
   it "starts avo:update in the background in development and reports progress" do
     allow(Avo::Services::Updater).to receive(:allowed?).and_return(true)
-    allow(Process).to receive(:spawn).and_return(12345)
+    allow(Process).to receive(:spawn).and_return(Process.pid)
     allow(Process).to receive(:detach)
-    FileUtils.rm_rf(Rails.root.join("tmp", "avo_update"))
 
     post "/admin/updates/run"
 
     expect(Process).to have_received(:spawn).with("sh", "-c", a_string_including("bin/rails avo:update"), any_args)
     expect(response.body).to include("Updating", "poll-frame")
-  ensure
-    FileUtils.rm_rf(Rails.root.join("tmp", "avo_update"))
+  end
+
+  it "starts one update when two requests arrive together" do
+    allow(Process).to receive(:spawn) do
+      sleep 0.05
+      Process.pid
+    end
+    allow(Process).to receive(:detach)
+
+    2.times.map { Thread.new { Avo::Services::Updater.start } }.each(&:join)
+
+    expect(Process).to have_received(:spawn).once
+  end
+
+  it "offers Update all again after restarting from a finished update" do
+    allow(Avo::Services::Updater).to receive(:allowed?).and_return(true)
+    allow(FileUtils).to receive(:touch)
+    File.write(update_dir.join("pid"), Process.pid)
+    File.write(update_dir.join("exit_status"), "0")
+
+    post "/admin/updates/restart"
+    get "/admin/updates/progress"
+
+    expect(response.body).to include("Update all")
+    expect(response.body).not_to include("Restart app")
+  end
+
+  it "reports a run that died without an exit status as failed, so the page stops waiting" do
+    dead_pid = Process.spawn("true")
+    Process.wait(dead_pid)
+    File.write(update_dir.join("pid"), dead_pid)
+
+    get "/admin/updates/progress"
+
+    expect(response.body).to include("Update failed")
+    expect(response.body).not_to include("poll-frame")
   end
 end

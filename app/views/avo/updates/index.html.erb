@@ -40,7 +40,7 @@
           <% end %>
         <% end %>
         <% if @next_page %>
-          <%= a_link avo.updates_path(page: @next_page), style: :outline, color: :gray, size: :sm, end_icon: "tabler/outline/arrow-right" do %>
+          <%= a_link avo.updates_path(page: @next_page), style: :outline, color: :gray, size: :sm, class: "updates-page__older", end_icon: "tabler/outline/arrow-right" do %>
             Older
           <% end %>
         <% end %>

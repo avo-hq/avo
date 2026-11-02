@@ -216,17 +216,6 @@
     @apply prose-invert;
   }
 
-  /* Core releases open with "Release notes" and a link that sometimes names the wrong version.
-     The summary and the link below already say it, and every other release skips the preamble. */
-  > h2:first-child:has(+ p),
-  > h2:first-child:has(+ p) + p {
-    display: none;
-  }
-
-  > h2:first-child:has(+ p) + p + * {
-    @apply mt-0;
-  }
-
   h2,
   h3 {
     @apply mt-5 mb-1.5 text-sm font-semibold text-content;
@@ -266,7 +255,7 @@
   @apply flex justify-between gap-2 mt-4;
 }
 
-/* An "Older" link on its own still sits at the end. */
-.updates-page__pagination > :last-child {
+/* An "Older" link on its own still sits at the end, and a lone "Newer" stays at the start. */
+.updates-page__older {
   @apply ms-auto;
 }
