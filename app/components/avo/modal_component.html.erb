@@ -23,9 +23,9 @@
                 <div class="flex min-w-0 grow items-center">
                   <div class="flex flex-col items-start gap-0.5">
                     <% if @title.present? || heading? %>
-                      <p class="modal__title" id="<%= title_id %>">
+                      <div class="modal__title" id="<%= title_id %>">
                         <%= @title.presence || heading %>
-                      </p>
+                      </div>
                     <% end %>
 
                     <% if @description.present? %>
