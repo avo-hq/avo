@@ -161,3 +161,12 @@
     @apply prose-invert;
   }
 }
+
+.updates-page__pagination {
+  @apply flex justify-between gap-2 mt-4;
+}
+
+/* An "Older" link on its own still sits at the end. */
+.updates-page__pagination > :last-child {
+  @apply ms-auto;
+}

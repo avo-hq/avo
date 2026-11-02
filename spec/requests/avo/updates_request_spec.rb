@@ -13,17 +13,34 @@ RSpec.describe "Status page updates", type: :request do
     expect(response.body).to include("status-page__plugin-badge--behind", "Behind: 999.0.0 is available")
   end
 
-  it "lists release notes oldest first, marking what is installed" do
-    allow(Avo::Services::GemVersions).to receive(:releases_since).and_return([
-      {"gem" => "avo", "version" => Avo::VERSION, "released_at" => "2026-01-01T00:00:00Z", "body_html" => "<p>Shipped</p><script>alert(1)</script>"},
-      {"gem" => "avo", "version" => "999.0.0", "released_at" => "2026-02-01T00:00:00Z", "body" => "Coming"}
-    ])
+  it "lists the release history newest first, marking what is installed, and pages to older notes" do
+    allow(Avo::Services::GemVersions).to receive(:releases).with(page: 1).and_return(
+      "releases" => [
+        {"gem" => "avo", "version" => "999.0.0", "released_at" => "2026-02-01T00:00:00Z", "body" => "Coming", "description_html" => "<p>GitHub notes</p>"},
+        {"gem" => "avo", "version" => Avo::VERSION, "released_at" => "2026-01-01T00:00:00Z", "body_html" => "<p>Shipped</p><script>alert(1)</script>"}
+      ],
+      "next_page" => 2
+    )
 
     get "/admin/updates"
 
-    expect(response.body).to match(/#{Regexp.escape(Avo::VERSION)}.*Installed.*999\.0\.0.*Available/mo)
-    expect(response.body).to include("<p>Shipped</p>").and include("Coming")
+    expect(response.body).to match(/999\.0\.0.*Available.*#{Regexp.escape(Avo::VERSION)}.*Installed/mo)
+    expect(response.body).to include("<p>Shipped</p>").and include("Coming").and include("<p>GitHub notes</p>")
     expect(response.body).not_to include("<script>alert(1)</script>")
+    expect(response.body).to include("/admin/updates?page=2")
+    expect(response.body).not_to include("Newer")
+  end
+
+  it "asks HQ again after an empty answer instead of keeping it for an hour" do
+    allow(Rails.env).to receive(:test?).and_return(false)
+    allow(Avo).to receive(:cache_store).and_return(ActiveSupport::Cache::MemoryStore.new)
+    stub_request(:get, %r{\Ahttps://avohq\.io/releases\.json}).to_return(
+      {body: {releases: []}.to_json},
+      {body: {releases: [{gem: "avo", version: "999.0.0"}], next_page: nil}.to_json}
+    )
+
+    expect(Avo::Services::GemVersions.releases["releases"]).to be_empty
+    expect(Avo::Services::GemVersions.releases["releases"].first["version"]).to eq("999.0.0")
   end
 
   it "refuses to run the update outside development" do

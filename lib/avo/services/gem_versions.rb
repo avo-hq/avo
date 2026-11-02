@@ -20,7 +20,7 @@ module Avo
         # {"avo" => "4.3.9", ...}, or {} when HQ can't be reached.
         def latest
           Avo.cache_store.fetch("avo.gem_versions.latest", expires_in: CACHE_TIME, skip_nil: true) do
-            fetch("/gems.json")&.dig("gems")&.to_h { |gem| [gem["name"], gem["version"]] }
+            fetch("/gems.json")&.dig("gems")&.to_h { |gem| [gem["name"], gem["version"]] }.presence
           end || {}
         end
 
@@ -31,18 +31,22 @@ module Avo
           true
         end
 
-        # Every release newer than the given {gem => version}, oldest first. [] when HQ can't be reached.
-        def releases_since(versions)
-          query = versions.map { |gem_name, version| ["gems[#{gem_name}]", version] }.sort
+        # One page of the installed gems' release history, newest first: {"releases" => [...], "next_page" => 2 or nil}.
+        def releases(page: 1)
+          query = [["gems", installed.keys.sort.join(",")], ["page", page]]
 
           Avo.cache_store.fetch("avo.gem_versions.releases.#{Digest::SHA256.hexdigest(query.to_s)}", expires_in: CACHE_TIME, skip_nil: true) do
-            fetch("/releases.json", query)&.dig("releases")
-          end || []
+            # An empty answer isn't kept, so the page recovers as soon as HQ has the notes.
+            fetch("/releases.json", query).then { |changelog| changelog if changelog&.dig("releases").present? }
+          end || {"releases" => [], "next_page" => nil}
         end
 
         private
 
         def fetch(path, query = [])
+          # Test suites (Avo's, its gems', a host's) render the status page too, and must not reach the network.
+          return if Rails.env.test?
+
           uri = URI("#{HOST}#{path}")
           uri.query = URI.encode_www_form(query) if query.any?
 

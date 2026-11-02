@@ -7,7 +7,10 @@ module Avo
 
     def index
       @installed = Avo::Services::GemVersions.installed
-      @releases = Avo::Services::GemVersions.releases_since(Avo::Services::Updater.versions_before || @installed)
+      @page = [params[:page].to_i, 1].max
+      changelog = Avo::Services::GemVersions.releases(page: @page)
+      @releases = changelog["releases"]
+      @next_page = changelog["next_page"]
     end
 
     def progress

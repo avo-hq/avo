@@ -1,5 +1,5 @@
 <% content_for :page_title, "Updates" %>
-<%= render ui.panel(title: "Updates", description: "Release notes for Avo and your Avo gems, oldest first.") do |panel| %>
+<%= render ui.panel(title: "Updates", description: "Release notes for Avo and your Avo gems, newest first.") do |panel| %>
   <% panel.with_controls do %>
     <%= a_link avo.status_path, style: :outline, color: :gray, size: :sm, icon: "tabler/outline/arrow-left" do %>
       Status
@@ -9,7 +9,7 @@
     <% if @releases.empty? %>
       <%= render ui.card(padded: true) do |card| %>
         <% card.with_body do %>
-          <p class="updates-page__empty">Everything is up to date, or the release notes couldn't be loaded from avohq.io.</p>
+          <p class="updates-page__empty">No release notes to show. avohq.io may be unreachable, so try again in a bit.</p>
         <% end %>
       <% end %>
     <% else %>
@@ -36,10 +36,13 @@
                   <% if release["name"].present? && release["name"].exclude?(release["version"]) %>
                     <p class="updates-page__name"><%= release["name"] %></p>
                   <% end %>
-                  <% if release["body_html"].present? || release["body"].present? %>
-                    <div class="updates-page__body">
-                      <%= sanitize(release["body_html"].presence || simple_format(release["body"])) %>
-                    </div>
+                  <%# The hand-written announcement first, then the GitHub notes, as on the release's own page. %>
+                  <% %w[body description].each do |notes| %>
+                    <% if release["#{notes}_html"].present? || release[notes].present? %>
+                      <div class="updates-page__body">
+                        <%= sanitize(release["#{notes}_html"].presence || simple_format(release[notes])) %>
+                      </div>
+                    <% end %>
                   <% end %>
                 </article>
               <% end %>
@@ -47,6 +50,20 @@
           </li>
         <% end %>
       </ol>
+    <% end %>
+    <% if @page > 1 || @next_page %>
+      <nav class="updates-page__pagination" aria-label="Release notes pages">
+        <% if @page > 1 %>
+          <%= a_link avo.updates_path(page: @page - 1), style: :outline, color: :gray, size: :sm, icon: "tabler/outline/arrow-left" do %>
+            Newer
+          <% end %>
+        <% end %>
+        <% if @next_page %>
+          <%= a_link avo.updates_path(page: @next_page), style: :outline, color: :gray, size: :sm, end_icon: "tabler/outline/arrow-right" do %>
+            Older
+          <% end %>
+        <% end %>
+      </nav>
     <% end %>
   <% end %>
 <% end %>

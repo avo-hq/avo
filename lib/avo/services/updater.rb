@@ -13,8 +13,6 @@ module Avo
 
           FileUtils.rm_rf(dir)
           FileUtils.mkdir_p(dir)
-          # The versions before the run, so the updates page can list what the run brought in.
-          File.write(dir.join("from.json"), GemVersions.installed.to_json)
 
           # The shell records the exit status, which a detached child's parent can't collect.
           pid = Bundler.with_original_env do
@@ -39,11 +37,6 @@ module Avo
         def running? = state == :running
 
         def log = log_path.exist? ? log_path.read : ""
-
-        # The versions installed before the last run, or nil when nothing ran.
-        def versions_before
-          JSON.parse(dir.join("from.json").read) if dir.join("from.json").exist?
-        end
 
         # Puma's tmp_restart plugin, which Rails' generated puma.rb loads, restarts the server when this file is touched.
         def restart
