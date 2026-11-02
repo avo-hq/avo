@@ -4,8 +4,8 @@
   data-controller="actions-picker"
   data-actions-picker-enabled-class="text-content hover:bg-secondary"
   data-actions-picker-disabled-class="cursor-wait text-content/60"
-  data-resource-name="<%= @resource.class.to_s %>"
-  <% if @resource.record.present? %>
+  data-resource-name="<%= @resource.class.to_s if @resource %>"
+  <% if @resource&.record.present? %>
     data-record-id="<%= @resource.record_param %>"
   <% end %>
 >
@@ -20,7 +20,7 @@
         icon_class: @icon_class,
         popovertarget: component.popover_id,
         data: {
-          actions_dropdown_button: @resource.model_key,
+          actions_dropdown_button: @resource&.model_key,
           tippy: "tooltip",
           tippy_content: @title,
           **(@hotkey.present? ? (@as_index_row_control ? {hotkey_original: @hotkey} : {hotkey: @hotkey}) : {})
