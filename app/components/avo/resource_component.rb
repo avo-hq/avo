@@ -2,6 +2,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
   include Avo::Concerns::RequestMethods
   include Avo::Concerns::HasResourceStimulusControllers
+  include Avo::Concerns::RendersControls
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
@@ -81,10 +82,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
       .map do |sidebar|
         sidebar.hydrate(view: view, resource: resource)
       end
-  end
-
-  def render_control(control)
-    send :"render_#{control.type}", control
   end
 
   def render_cards_component
@@ -300,26 +297,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def row_controls_context?
     is_a?(Avo::Index::ResourceControlsComponent)
-  end
-
-  def render_link_to(link)
-    # Anything outside CONTROL_OPTIONS is a plain HTML attribute (rel:, id:…) and
-    # rides ButtonComponent's `prop :args, kind: :**` wildcard onto the <a> tag.
-    a_link link.path,
-      **link.args.except(*Avo::Resources::Controls::BaseControl::CONTROL_OPTIONS),
-      color: link.color,
-      style: link.style,
-      icon: link.icon,
-      icon_class: link.icon_class,
-      title: link.title, target: link.target,
-      class: link.classes,
-      size: link.size,
-      data: {
-        **link.data,
-        tippy: link.title ? :tooltip : nil,
-      } do
-      link.label
-    end
   end
 
   def render_action(action)
