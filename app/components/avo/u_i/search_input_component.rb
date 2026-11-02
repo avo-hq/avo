@@ -6,11 +6,15 @@ class Avo::UI::SearchInputComponent < Avo::BaseComponent
   prop :value
   prop :placeholder
   prop :disabled, default: false
-  prop :shortcut, default: nil  # :slash or :cmd_k
+  prop :shortcut, default: nil  # :slash, :cmd_k or :cmd_shift_k
   prop :classes
   prop :data, default: -> { {} }
 
-  SHORTCUT_HOTKEYS = {slash: "index.focus_search", cmd_k: "advanced_search.open"}.freeze
+  SHORTCUT_HOTKEYS = {
+    slash: "index.focus_search",
+    cmd_k: "advanced_search.open",
+    cmd_shift_k: "advanced_search.focus_results"
+  }.freeze
 
   def shortcut_hotkey
     Avo::Hotkeys.key_for(SHORTCUT_HOTKEYS[@shortcut]) if @shortcut
