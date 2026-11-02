@@ -31,9 +31,13 @@ Avo::Engine.routes.draw do
     draw(:dynamic_routes)
   end
 
-  scope "/avo_private", as: "avo_private" do
-    get "/status", to: "debug#status", as: "status"
-  end
+  get "status", to: "debug#status", as: "status"
+  get "updates", to: "updates#index", as: "updates"
+  get "updates/progress", to: "updates#progress", as: "updates_progress"
+  post "updates/run", to: "updates#run", as: "run_updates"
+  post "updates/restart", to: "updates#restart", as: "restart_after_updates"
+  # The old address is bookmarked and linked from released gems (avo-licensing), so it keeps its helper and redirects.
+  get "avo_private/status", to: redirect("status", status: 301), as: "avo_private_status"
 
   if Rails.env.development? || Rails.env.staging? || Rails.env.test?
     scope "/avo_private", as: "avo_private" do

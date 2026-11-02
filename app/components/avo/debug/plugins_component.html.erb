@@ -1,22 +1,29 @@
-<div class="relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4 h-full">
-  <div class="flex justify-between w-full">
-    <div class="font-semibold">Plugins</div>
-  </div>
-  <div class="flex flex-col flex-1">
-    <div>
-      <ul>
-        <li>Avo <%= Avo::VERSION %></li>
-        <% Avo.plugin_manager.plugins.each do |plugin| %>
-          <li>
-            <% if plugin.gem_name.present? %>
-              <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "underline" %>
-            <% else %>
-              <%= plugin.name %>
-            <% end %>
-            - <%= plugin.version %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-</div>
+<%= render ui.card(title: "Plugins") do |card| %>
+  <% card.with_body do %>
+    <ul class="status-page__plugins">
+      <li class="status-page__plugin">
+        <span>Avo</span>
+        <span class="status-page__plugin-version">
+          <%= Avo::VERSION %>
+          <%= version_badge("avo", Avo::VERSION) %>
+        </span>
+      </li>
+      <% plugins.each do |plugin| %>
+        <li class="status-page__plugin">
+          <% if plugin.gem_name.present? %>
+            <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "status-page__plugin-link" %>
+          <% else %>
+            <span><%= plugin.name %></span>
+          <% end %>
+          <span class="status-page__plugin-version">
+            <%= plugin.version %>
+            <%= version_badge(plugin.gem_name, plugin.version) %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% card.with_footer do %>
+    <%= render partial: "avo/updates/progress" %>
+  <% end %>
+<% end %>

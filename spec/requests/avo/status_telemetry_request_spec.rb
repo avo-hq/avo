@@ -9,7 +9,7 @@ RSpec.describe "Status page telemetry", type: :request do
     stub_const("Avo::IN_DEVELOPMENT", true)
     allow(Avo.configuration).to receive(:license_key).and_return("test-license-key")
 
-    get "/admin/avo_private/status"
+    get "/admin/status"
 
     expect(response.body).to include("Telemetry", "resources_count", "test-license-key", "install_id")
   end
@@ -17,8 +17,15 @@ RSpec.describe "Status page telemetry", type: :request do
   it "hides it from apps that install Avo" do
     stub_const("Avo::IN_DEVELOPMENT", false)
 
-    get "/admin/avo_private/status"
+    get "/admin/status"
 
     expect(response.body).not_to include("resources_count")
+  end
+
+  it "redirects the old /avo_private/status address" do
+    get "/admin/avo_private/status"
+
+    expect(response).to redirect_to("/admin/status")
+    expect(response).to have_http_status(:moved_permanently)
   end
 end
