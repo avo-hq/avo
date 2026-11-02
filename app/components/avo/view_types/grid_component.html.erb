@@ -1,24 +1,21 @@
 <turbo-frame
   id="<%= list_frame_id %>"
   target="_top"
-  class="relative flex w-full flex-col @container">
+  class="relative flex w-full flex-col @container"
+  data-controller="item-select-all"
+  data-resource-name="<%= resource_name_for(@resource) %>"
+  data-item-select-all-selected-all-value="false"
+  data-item-select-all-selected-all-query-value="<%= encrypted_query %>"
+  data-item-select-all-page-count-value="<%= @pagy.pages %>"
+  data-item-select-all-page-value="<%= @pagy.page %>"
+  data-selected-resources-name="<%= resource_name_for(@resource) %>"
+  data-selected-resources="[]">
   <%= render_index_slot :before_collection %>
   <%= render_index_slot :collection do %>
     <%= render_index_slot :before_records %>
     <%= render_index_slot :records do %>
       <%# Keep the selection bar outside the grid wrapper whose children can be reordered. %>
-      <%= content_tag :div,
-        class: "flex w-full flex-col gap-3",
-        data: {
-          controller: "item-select-all",
-          resource_name: resource_name_for(@resource),
-          item_select_all_selected_all_value: false,
-          item_select_all_selected_all_query_value: encrypted_query,
-          item_select_all_page_count_value: @pagy.pages,
-          item_select_all_page_value: @pagy.page,
-          selected_resources_name: resource_name_for(@resource),
-          selected_resources: []
-        } do %>
+      <%= content_tag :div, class: "flex w-full flex-col gap-3" do %>
         <% if @resource.record_selector %>
           <div class="flex min-h-7 flex-wrap items-center gap-x-3 gap-y-1 px-2 text-sm" data-component-name="avo/view_types/grid_select_all">
             <%= content_tag :label, class: "flex items-center gap-2 cursor-pointer text-content-secondary" do %>

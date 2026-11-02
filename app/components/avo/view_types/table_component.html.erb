@@ -1,17 +1,20 @@
-<turbo-frame id="<%= list_frame_id %>" target="_top" class="relative w-full">
+<turbo-frame
+  id="<%= list_frame_id %>"
+  target="_top"
+  class="relative w-full"
+  data-controller="item-select-all"
+  data-resource-name="<%= resource_name_for(@resource) %>"
+  data-item-select-all-selected-all-value="false"
+  data-item-select-all-selected-all-query-value="<%= encrypted_query %>"
+  data-item-select-all-page-count-value="<%= @pagy.pages %>"
+  data-item-select-all-page-value="<%= @pagy.page %>"
+  data-selected-resources-name="<%= resource_name_for(@resource) %>"
+  data-selected-resources="[]">
   <%= render_index_slot :before_collection %>
   <%= render_index_slot :collection do %>
     <div
       class="card relative w-full"
-      data-component-name="<%= self.class.to_s.underscore %>"
-      data-controller="item-select-all"
-      data-resource-name="<%= resource_name_for(@resource) %>"
-      data-item-select-all-selected-all-value="false"
-      data-item-select-all-selected-all-query-value="<%= encrypted_query %>"
-      data-item-select-all-page-count-value="<%= @pagy.pages %>"
-      data-item-select-all-page-value="<%= @pagy.page %>"
-      data-selected-resources-name="<%= resource_name_for(@resource) %>"
-      data-selected-resources="[]">
+      data-component-name="<%= self.class.to_s.underscore %>">
       <%= render_index_slot :before_records %>
       <%= render_index_slot :records do %>
         <% @header_fields, @table_row_components = generate_table_row_components %>
