@@ -255,7 +255,7 @@ link_to resource.record.name, path, data: data
 ### Run on all matching records (select all)
 When an index spans multiple pages, checking "Select all" offers to select **every matching record across all pages**, not just the visible ones. Avo serializes the (encrypted) query and rebuilds it in the action, so `handle`'s `query` covers the whole filtered set. This works out of the box — no code — but see the gotcha below if it silently disables itself.
 
-**Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. System specs that expect nothing selected after **Go back** will now find rows checked.
+**Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. With `config.persistence = { driver: :session }` (4.3.11+) the selection is kept per page rather than per URL and comes back however you reach the index; turn it off with `selection: false`. System specs that expect nothing selected after **Go back** will now find rows checked.
 
 ## Gotchas
 
