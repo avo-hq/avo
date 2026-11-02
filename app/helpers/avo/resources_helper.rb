@@ -1,19 +1,5 @@
 module Avo
   module ResourcesHelper
-    def resource_table(resources, resource)
-      render partial: "avo/partials/resource_table", locals: {
-        resources: resources,
-        resource: resource
-      }
-    end
-
-    def resource_grid(resources, resource)
-      render partial: "avo/partials/resource_grid", locals: {
-        resources: resources,
-        resource: resource
-      }
-    end
-
     def index_field_wrapper(**args, &block)
       render Index::FieldWrapperComponent.new(**args) do
         capture(&block)

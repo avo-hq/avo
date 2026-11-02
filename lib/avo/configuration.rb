@@ -193,7 +193,11 @@ module Avo
       # once per request.
       @index_cache_context = -> { [current_user, I18n.locale, Avo::Current.tenant_id] }
       @persistence = {
-        driver: nil
+        driver: nil,
+        pagination: true,
+        filters: true,
+        sorting: true,
+        selection: true
       }
       @context = proc {}
       @initial_breadcrumbs = proc {
@@ -572,6 +576,12 @@ module Avo
 
     def session_persistence_enabled?
       persistence[:driver] == :session
+    end
+
+    # Each kind of UI state (`pagination`, `filters`, `sorting`, `selection`) persists while the driver is on,
+    # unless its key is set to false next to the driver.
+    def persist?(key)
+      session_persistence_enabled? && persistence.fetch(key, true) != false
     end
 
     def mount_avo_engines=(...)

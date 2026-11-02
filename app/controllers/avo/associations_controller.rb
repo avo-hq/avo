@@ -477,7 +477,7 @@ module Avo
       # avo-resources-project.has_many.avo-resources-user.page
       page_key = "#{pagination_key}.page"
 
-      @index_params[:page] = if Avo.configuration.session_persistence_enabled?
+      @index_params[:page] = if Avo.configuration.persist?(:pagination)
         session[page_key] = positive_integer_or(params[:page] || session[page_key], 1)
       else
         positive_integer_or(params[:page], 1)
@@ -489,7 +489,7 @@ module Avo
       per_page_key = "#{pagination_key}.per_page"
       default_per_page = @field.per_page || Avo.configuration.via_per_page
 
-      @index_params[:per_page] = if Avo.configuration.session_persistence_enabled?
+      @index_params[:per_page] = if Avo.configuration.persist?(:pagination)
         session[per_page_key] = positive_integer_or(params[:per_page] || session[per_page_key], default_per_page)
       else
         positive_integer_or(params[:per_page], default_per_page)
