@@ -201,6 +201,20 @@ RSpec.describe "Resource show and form slots", type: :request do
     expect(dialog.at_css(".modal__controls #modal-controls button[type='submit']")).to be_present
   end
 
+  it "keeps the belongs-to modal dialog and close button when a form replacement omits the default" do
+    Avo::Resources::Project.form_slot(:form, replace: true) { form.text_field(:name, id: "modal-replacement") }
+
+    get "/admin/resources/projects/new",
+      params: {modal_layout: true, via_belongs_to_resource_class: "Avo::Resources::Comment", via_relation: "commentable"},
+      headers: {"Turbo-Frame" => "modal_frame_nested"}
+
+    expect(response).to have_http_status(:ok)
+    dialog = Nokogiri::HTML(response.body).at_css("form [role='dialog']")
+    expect(dialog).to be_present
+    expect(dialog.at_css("button[data-action='click->modal#closeModal']")).to be_present
+    expect(dialog.at_css("input#modal-replacement")).to be_present
+  end
+
   it "rejects regions belonging to another view and duplicate replacements through either API" do
     expect { Avo::Resources::Project.show_slot(:before_form) {} }.to raise_error(ArgumentError, /Unknown show slot/)
     expect { Avo::Resources::Project.form_slot(:before_records) {} }.to raise_error(ArgumentError, /Unknown form slot/)

@@ -18,35 +18,37 @@
     <% @form = form %>
     <%= render Avo::ReferrerParamsComponent.new back_path: back_path %>
 
-    <%= render_resource_slot :form do %>
-      <% if embedded_in_modal? %>
-        <%# The form wraps the modal so the footer submit button posts natively. %>
-        <%= render Avo::ModalComponent.new(width: :"4xl", body_class: "modal-form-body") do |c| %>
-          <% c.with_heading do %>
-            <%= render_resource_slot :before_title %>
-            <%= render_resource_slot(:title) { title } %>
-            <%= render_resource_slot :after_title %>
-          <% end %>
+    <% if embedded_in_modal? %>
+      <%# The form wraps the modal so the footer submit button posts natively. %>
+      <%= render Avo::ModalComponent.new(width: :"4xl", body_class: "modal-form-body") do |c| %>
+        <% c.with_heading do %>
+          <%= render_resource_slot :before_title %>
+          <%= render_resource_slot(:title) { title } %>
+          <%= render_resource_slot :after_title %>
+        <% end %>
 
-          <% c.with_controls do %>
-            <%= render_resource_slot :before_controls %>
+        <% c.with_controls do %>
+          <%= render_resource_slot :before_controls %>
 
-            <%= render_resource_slot :controls do %>
-              <% @resource.render_edit_controls.each do |control| %>
-                <%= render_control control %>
-              <% end %>
+          <%= render_resource_slot :controls do %>
+            <% @resource.render_edit_controls.each do |control| %>
+              <%= render_control control %>
             <% end %>
-
-            <%= render_resource_slot :after_controls %>
           <% end %>
 
+          <%= render_resource_slot :after_controls %>
+        <% end %>
+
+        <%= render_resource_slot :form do %>
           <%= content_tag :div, class: "panel-spacer" do %>
             <%= render_resource_slot :before_body %>
             <%= render_resource_slot(:body) { render_form_items(form) } %>
             <%= render_resource_slot :after_body %>
           <% end %>
         <% end %>
-      <% else %>
+      <% end %>
+    <% else %>
+      <%= render_resource_slot :form do %>
         <%= content_tag :div, class: "panel-spacer" do %>
           <%= render_resource_slot :before_body %>
           <%= render_resource_slot(:body) { render_form_items(form) } %>
