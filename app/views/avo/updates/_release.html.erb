@@ -4,8 +4,8 @@
       <%= release["gem"] %>
       <span class="updates-page__version"><%= release["version"] %></span>
     </h3>
-    <% if release["released_at"].present? %>
-      <time class="updates-page__date" datetime="<%= release["released_at"] %>"><%= Time.zone.parse(release["released_at"]).to_date.to_fs(:long) %></time>
+    <% if (date = release_date(release)) %>
+      <time class="updates-page__date" datetime="<%= date.iso8601 %>"><%= date.to_fs(:long) %></time>
     <% end %>
     <%= svg "tabler/outline/chevron-down", class: "updates-page__chevron" %>
   </summary>

@@ -39,6 +39,22 @@ RSpec.describe "Status page updates", type: :request do
     expect(response.body).not_to match(/>\s*Newer\s*</)
   end
 
+  it "shows a release's UTC date in every time zone, and no date when HQ sends a bad one" do
+    allow(Avo::Services::GemVersions).to receive(:releases).and_return(
+      "releases" => [
+        {"gem" => "avo", "version" => "999.0.0", "released_at" => "2026-02-01T00:00:00Z"},
+        {"gem" => "avo", "version" => "998.0.0", "released_at" => "not a date"}
+      ],
+      "next_page" => nil
+    )
+
+    Time.use_zone("Pacific Time (US & Canada)") { get "/admin/updates" }
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("February 01, 2026").and include("998.0.0")
+    expect(response.body).not_to include("January 31, 2026")
+  end
+
   it "offers Update all only when a release is available" do
     allow(Avo::Services::Updater).to receive(:allowed?).and_return(true)
     allow(Avo::Services::GemVersions).to receive(:releases).and_return(
