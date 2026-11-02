@@ -141,7 +141,7 @@ end
 
 ### 6. The sign-out link
 
-The sign-out item lives in the sidebar footer's three-dots menu. Avo shows it automatically if your app responds to `destroy_user_session_path` (the Devise default). Otherwise it's hidden until you name the path. Two knobs:
+The sign-out item lives in the sidebar footer's profile menu. Avo shows it automatically if your app responds to `destroy_user_session_path` (the Devise default). Otherwise it's hidden until you name the path. Two knobs:
 
 ```ruby
 # config/initializers/avo.rb
