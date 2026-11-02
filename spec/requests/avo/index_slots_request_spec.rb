@@ -261,6 +261,25 @@ RSpec.describe "Resource index slots", type: :request do
     end
   end
 
+  it "gives a table subclass with its own template the prepared rows" do
+    create :project, name: "Custom table project"
+    components = Avo::Resources::Project.components
+    custom_table = Class.new(Avo::ViewTypes::TableComponent) do
+      def call
+        safe_join(@table_row_components.map { |table_row_component| render table_row_component })
+      end
+    end
+    stub_const("Avo::ViewTypes::SlotCustomTableComponent", custom_table)
+    Avo::Resources::Project.components = components.merge("Avo::ViewTypes::TableComponent" => custom_table)
+
+    get "/admin/resources/projects"
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Custom table project")
+  ensure
+    Avo::Resources::Project.components = components
+  end
+
   it "replaces empty records inside a preserved collection without rendering pagination" do
     Avo::Resources::Project.view_slot(:index, :collection, replace: true) do
       tag.section(default_content.call, id: "custom-collection")

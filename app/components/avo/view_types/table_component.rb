@@ -5,6 +5,18 @@ class Avo::ViewTypes::TableComponent < Avo::ViewTypes::BaseViewTypeComponent
 
   attr_reader :pagy, :query
 
+  # A replacement may never call its default, so its rows wait for the template. Host subclasses
+  # with their own template read the ivars directly, so without a replacement they are set up front.
+  def before_render
+    return if @resource.index_slot_replacements.key?(:records) || @resource.index_slot_replacements.key?(:collection)
+
+    prepare_table_rows
+  end
+
+  def prepare_table_rows
+    @header_fields, @table_row_components = generate_table_row_components unless @table_row_components
+  end
+
   # ARIA grid affordances and the row-navigator binding are only added on
   # top-level index pages. On a parent record's show view (where @reflection
   # is present), the has-many table is not keyboard-navigable as a grid, so
