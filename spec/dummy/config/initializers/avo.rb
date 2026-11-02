@@ -1,3 +1,6 @@
+# Counted by spec/lib/avo/boot_spec.rb: this file must run once per boot.
+ENV["AVO_DUMMY_INITIALIZER_RUNS"] = (ENV["AVO_DUMMY_INITIALIZER_RUNS"].to_i + 1).to_s
+
 Avo.configure do |config|
   ## == Base configs ==
   config.root_path = "/admin"

@@ -2,13 +2,13 @@ module Avo
   module Concerns
     module FiltersSessionHandler
       def reset_filters
-        return unless Avo.configuration.session_persistence_enabled?
+        return unless Avo.configuration.persist?(:filters)
 
         session.delete(filters_session_key)
       end
 
       def fetch_filters
-        return filters_from_params unless Avo.configuration.session_persistence_enabled?
+        return filters_from_params unless Avo.configuration.persist?(:filters)
 
         (filters_from_params && save_filters_to_session) || filters_from_session
       end

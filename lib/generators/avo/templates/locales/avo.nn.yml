@@ -153,6 +153,8 @@ nn:
     list_is_empty: Lista er tom
     load_item: Last inn %{item}
     loading: Lastar
+    lookup_list_capped: For mange alternativ til å visast i dette skjemaet.
+    lookup_list_capped_link: Gjer dette feltet søkbart for å finne resten.
     media_library:
       title: Media bibliotek
     more: Meir
