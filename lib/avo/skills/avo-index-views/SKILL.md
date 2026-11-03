@@ -239,7 +239,7 @@ It works out of the box on the table view; nothing to enable on the resource. Th
 
 ## Index slots
 
-Add content around a region of the Index, or wrap, replace or hide it, without ejecting. The regions are `cards`, `header`, `title`, `toolbar`, `collection`, `records` and `pagination`. Additions use `before_<region>` / `after_<region>`; `replace: true` takes the bare region name, and `default_content.call` returns Avo's built-in content inside that block.
+Add content around a region of the Index, or wrap, replace or hide it, without ejecting. The regions are `cards`, `header`, `title`, `controls`, `toolbar`, `collection`, `records` and `pagination`. Additions use `before_<region>` / `after_<region>`; `replace: true` takes the bare region name, and `default_content.call` returns Avo's built-in content inside that block.
 
 ```ruby
 # app/avo/resources/project.rb

@@ -251,12 +251,12 @@ Use Avo's own ViewComponents instead of hand-rolled `<div>`s — they keep custo
 
 Add content to a region of a resource's Index, Show, Edit or New view, or wrap, replace or hide that region, from the resource class. The rest of the view stays Avo's and keeps receiving updates, so try this before [ejecting](#eject-views).
 
-| Method                               | Regions                                                                      |
-| ------------------------------------ | ---------------------------------------------------------------------------- |
-| `index_slot`                         | `cards`, `header`, `title`, `toolbar`, `collection`, `records`, `pagination` |
-| `show_slot`                          | `cards`, `header`, `title`, `controls`, `body`                               |
-| `edit_slot`, `new_slot`              | `cards`, `header`, `title`, `controls`, `body`, `form`                       |
-| `form_slot` (shared by Edit and New) | `cards`, `header`, `title`, `controls`, `body`, `form`                       |
+| Method                               | Regions                                                                                  |
+| ------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `index_slot`                         | `cards`, `header`, `title`, `controls`, `toolbar`, `collection`, `records`, `pagination` |
+| `show_slot`                          | `cards`, `header`, `title`, `controls`, `body`                                           |
+| `edit_slot`, `new_slot`              | `cards`, `header`, `title`, `controls`, `body`, `form`                                   |
+| `form_slot` (shared by Edit and New) | `cards`, `header`, `title`, `controls`, `body`, `form`                                   |
 
 `view_slot(view, position, replace: false)` is the generic form, with `:index`, `:show`, `:edit`, `:new` or `:form` as the view. Don't confuse the `form_slot` method, which targets both form views, with the `:form` region, which is the content inside the form tag.
 
@@ -293,7 +293,7 @@ end
 **Block context:** `resource`, `record`, `view`, `form`, `resources`, `query`, `pagy`, `parent_record`, `parent_resource`, `view_type`, plus view helpers such as `tag`, `render` and `safe_join`, and `current_user` and `params`.
 
 - On Edit and New, `view` stays `edit` / `new` even after a failed save, so `view.new?` works.
-- `form` is the Rails form builder inside the form. It is `nil` on Index and Show, and in `cards`, `before_form` and `after_form` hooks, which sit outside the form tag.
+- `form` is the Rails form builder inside the form. It is `nil` on Index and Show, and in `cards`, `before_form` and `after_form` hooks, which sit outside the form tag. In a belongs-to creation modal, `before_form` and `after_form` move inside the dialog, and so inside the form, and receive the builder: don't render a nested form or `button_to` from them.
 - `resources` holds the current page's hydrated Avo resources, not model records. Use `resources.map(&:record)` for the models.
 
 The block's return value is the output. Plain strings are escaped, and `nil` renders nothing.
@@ -525,6 +525,7 @@ Assets from library code go through `Avo.asset_manager` (not the app pipeline); 
 - **The toolbar doesn't refresh on live search.** Put a summary that follows the search in a `collection`, `records` or `pagination` hook.
 - **On a lazy index (`self.index_view_loading = :lazy`), `cards` and `header` hooks run before `resources`, `query` and `pagy` are loaded.** Put data-dependent content in `toolbar`, `collection`, `records` or `pagination` hooks.
 - **In the belongs-to create modal, header hooks don't run.** Title, body and controls hooks do.
+- **A `TableComponent` subclass with its own template must call `prepare_table_rows` if its resource replaces `:records` or `:collection`.** Avo skips row preparation for those resources, so `@table_row_components` and `@header_fields` are `nil` until that call.
 - **Slots only fire where the template calls them.** An ejected or custom component has to keep its `render_index_slot` / `render_resource_slot` calls, and custom view types have to adopt `render_index_slot`.
 - **The `form` builder in a slot doesn't permit anything.** An input for a non-field attribute still needs `self.extra_params`.
 - **The no-`mount_avo` fallback route is NOT behind auth.** A custom-tool route inside `mount_avo` inherits Avo's authentication. But if `config/routes.rb` has no `mount_avo` at all, the generator appends a standalone `Avo::Engine.routes.draw` block that is **unprotected** — secure it yourself.
