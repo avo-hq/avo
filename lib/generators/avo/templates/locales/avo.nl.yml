@@ -32,6 +32,11 @@ nl:
       auto_tooltip: Automatisch (systeemvoorkeur)
       dark: Donker
       dark_tooltip: Donkermodus
+      densities:
+        normal: Normaal
+        relaxed: Ontspannen
+        tight: Strak
+      density: Dichtheid
       hide: Verbergen
       light: Licht
       light_and_dark: Licht en donker
@@ -49,6 +54,12 @@ nl:
         taupe: Taupe
         zinc: Zink
       neutrals_picker: Neutrale thema
+      roundness: Rondheid
+      roundnesses:
+        normal: Normaal
+        relaxed: Ontspannen
+        square: Vierkant
+        tight: Strak
       schemes: Uiterlijk
       shortcut_badges: Sneltoets badges
       shortcut_badges_hide_tooltip: Verberg sneltoets badges

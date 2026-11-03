@@ -32,6 +32,11 @@ fr:
       auto_tooltip: Automatique (préférence système)
       dark: Sombre
       dark_tooltip: Mode sombre
+      densities:
+        normal: Normal
+        relaxed: Détendu
+        tight: Serré
+      density: Densité
       hide: Cacher
       light: Clair
       light_and_dark: Clair et sombre
@@ -49,6 +54,12 @@ fr:
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Thème neutre
+      roundness: Rondeur
+      roundnesses:
+        normal: Normal
+        relaxed: Détendu
+        square: Carré
+        tight: Serré
       schemes: Apparence
       shortcut_badges: Badges de raccourci
       shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier

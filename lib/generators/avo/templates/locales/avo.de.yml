@@ -32,6 +32,11 @@ de:
       auto_tooltip: Automatisch (Systemeinstellung)
       dark: Dunkel
       dark_tooltip: Dunkler Modus
+      densities:
+        normal: Normal
+        relaxed: Entspannt
+        tight: Eng
+      density: Dichte
       hide: Ausblenden
       light: Hell
       light_and_dark: Hell & Dunkel
@@ -49,6 +54,12 @@ de:
         taupe: Taupe
         zinc: Zink
       neutrals_picker: Neutrale Themen
+      roundness: Rundheit
+      roundnesses:
+        normal: Normal
+        relaxed: Entspannt
+        square: Quadrat
+        tight: Eng
       schemes: Erscheinungsbild
       shortcut_badges: Verknüpfungssymbole
       shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden

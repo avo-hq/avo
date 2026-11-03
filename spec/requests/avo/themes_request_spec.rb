@@ -21,6 +21,90 @@ RSpec.describe "Themes", type: :request do
     response.body[/<html[^>]*class="([^"]*)"/, 1].to_s.split
   end
 
+  it "leaves themes inactive unless opted in, even with a saved theme" do
+    allow(appearance).to receive(:themes_enabled?).and_return(false)
+    cookies["avo.theme"] = "lagoon"
+    cookies["color_scheme"] = "dark"
+    cookies["theme"] = "slate"
+    get "/admin/resources/users"
+
+    expect(html_classes.grep(/avo-theme-/)).to be_empty
+    expect(html_classes).to include("dark", "neutral-theme-slate")
+    expect(response.body).not_to include("avo/themes", "data-appearance-theme=", 'data-theme-partial="lagoon"')
+  end
+
+  describe "density" do
+    it "inherits the legacy global setting and accepts valid user picks" do
+      allow(Avo.configuration).to receive(:density).and_return(:relaxed)
+      get "/admin/resources/users"
+      expect(html_classes).to include("density-relaxed")
+
+      cookies["avo.density"] = "tight"
+      get "/admin/resources/users"
+      expect(html_classes).to include("density-tight")
+
+      cookies["avo.density"] = "invalid"
+      get "/admin/resources/users"
+      expect(html_classes).to include("density-relaxed")
+    end
+
+    it "ignores saved density and hides its control when the picker is disabled or locked" do
+      cookies["avo.density"] = "tight"
+      [
+        Avo::Configuration::Appearance.new(density: :relaxed),
+        Avo::Configuration::Appearance.new(density: :relaxed, density_picker: true, lock: [:density])
+      ].each do |configuration|
+        allow(Avo.configuration).to receive(:appearance).and_return(configuration)
+        get "/admin/resources/users"
+        expect(html_classes).to include("density-relaxed")
+        expect(response.body).not_to include('data-appearance-target="densityOption"')
+      end
+    end
+
+    it "loads density from database preferences rather than cookies" do
+      allow(appearance).to receive_messages(database_persistence?: true, load_settings_block: -> { {density: "relaxed"} })
+      cookies["avo.density"] = "tight"
+      get "/admin/resources/users"
+      expect(html_classes).to include("density-relaxed")
+    end
+  end
+
+  describe "roundness" do
+    it "uses the configured default, accepts saved choices and rejects unknown values" do
+      allow(appearance).to receive(:roundness).and_return(:relaxed)
+      get "/admin/resources/users"
+      expect(html_classes).to include("roundness-relaxed")
+
+      cookies["avo.roundness"] = "square"
+      get "/admin/resources/users"
+      expect(html_classes).to include("roundness-square")
+
+      cookies["avo.roundness"] = "invalid"
+      get "/admin/resources/users"
+      expect(html_classes).to include("roundness-relaxed")
+    end
+
+    it "ignores saved choices and hides the control when disabled or locked" do
+      cookies["avo.roundness"] = "square"
+      [
+        Avo::Configuration::Appearance.new(roundness: :tight),
+        Avo::Configuration::Appearance.new(roundness: :tight, roundness_picker: true, lock: [:roundness])
+      ].each do |configuration|
+        allow(Avo.configuration).to receive(:appearance).and_return(configuration)
+        get "/admin/resources/users"
+        expect(html_classes).to include("roundness-tight")
+        expect(response.body).not_to include('data-appearance-target="roundnessOption"')
+      end
+    end
+
+    it "loads database choices instead of cookies" do
+      allow(appearance).to receive_messages(database_persistence?: true, load_settings_block: -> { {roundness: "relaxed"} })
+      cookies["avo.roundness"] = "square"
+      get "/admin/resources/users"
+      expect(html_classes).to include("roundness-relaxed")
+    end
+  end
+
   describe "resolution" do
     it "lands on Paper with no pick and no configuration" do
       get "/admin/resources/users"

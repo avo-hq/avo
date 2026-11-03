@@ -32,6 +32,11 @@ tr:
       auto_tooltip: Otomatik (sistem tercihi)
       dark: Koyu
       dark_tooltip: Koyu mod
+      densities:
+        normal: Normal
+        relaxed: Rahat
+        tight: Sıkı
+      density: Yoğunluk
       hide: Gizle
       light: Açık
       light_and_dark: Açık ve koyu
@@ -49,6 +54,12 @@ tr:
         taupe: Taupe
         zinc: Çinko
       neutrals_picker: Nötr tema
+      roundness: Yuvarlaklık
+      roundnesses:
+        normal: Normal
+        relaxed: Rahat
+        square: Kare
+        tight: Sıkı
       schemes: Görünüm
       shortcut_badges: Kısayol rozetleri
       shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle

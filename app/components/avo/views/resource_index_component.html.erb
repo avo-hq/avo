@@ -87,11 +87,11 @@
           <%= render_index_slot :before_toolbar %>
           <%= render_index_slot :toolbar do %>
             <% if header_visible? %>
-              <div class="relative flex flex-col gap-y-4 z-20">
-                <div class="flex flex-col gap-y-4">
+              <div class="relative flex flex-col gap-y-(--panel-gap) z-20">
+                <div class="flex flex-col gap-y-(--panel-gap)">
                   <%= render scopes_list if can_render_scopes? %>
                   <% if show_toolbar_row? %>
-                    <div class="flex flex-col xs:flex-row xs:justify-between gap-4">
+                    <div class="flex flex-col xs:flex-row xs:justify-between gap-(--panel-gap)">
                       <div class="flex w-64 items-center">
                         <% if show_search_input %>
                           <%= render ui.search_input(
@@ -110,7 +110,7 @@
                       </div>
                       <div
                         class="
-                          flex items-center justify-between space-x-3 rtl:space-x-reverse justify-self-end
+                          flex items-center justify-between gap-(--header-gap) justify-self-end
                           xs:justify-end
                         ">
                         <% if show_dynamic_filters_button? %>
@@ -160,7 +160,7 @@
           <% end %>
         <% end %>
       <% else %>
-        <div class="relative flex flex-col gap-y-4">
+        <div class="relative flex flex-col gap-y-(--panel-gap)">
           <%= index_view_content %>
         </div>
       <% end %>

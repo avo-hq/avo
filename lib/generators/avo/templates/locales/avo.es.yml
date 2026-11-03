@@ -32,6 +32,11 @@ es:
       auto_tooltip: Automático (preferencia del sistema)
       dark: Oscuro
       dark_tooltip: Modo oscuro
+      densities:
+        normal: Normal
+        relaxed: Relajado
+        tight: Apretado
+      density: Densidad
       hide: Ocultar
       light: Claro
       light_and_dark: Claro y oscuro
@@ -49,6 +54,12 @@ es:
         taupe: Topo
         zinc: Zinc
       neutrals_picker: Tema neutro
+      roundness: Redondez
+      roundnesses:
+        normal: Normal
+        relaxed: Relajado
+        square: Cuadrado
+        tight: Ajustado
       schemes: Apariencia
       shortcut_badges: Insignias de atajo
       shortcut_badges_hide_tooltip: Ocultar insignias de atajo de teclado

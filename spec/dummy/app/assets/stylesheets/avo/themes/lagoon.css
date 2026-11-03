@@ -6,6 +6,9 @@
     --color-accent-foreground: var(--color-white);
     --color-brand-accent: rgb(14, 116, 144);
     --color-navbar-background: rgb(19, 78, 74);
+    --main-content-background-image: linear-gradient(135deg, rgb(14 116 144 / 12%), transparent 65%);
+    --font-sans: Georgia, serif;
+    --control-font-size: 1rem;
   }
 
   .avo-theme-lagoon.dark,

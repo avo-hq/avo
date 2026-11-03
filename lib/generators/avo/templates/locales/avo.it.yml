@@ -32,6 +32,11 @@ it:
       auto_tooltip: Automatico (preferenza di sistema)
       dark: Scuro
       dark_tooltip: Modalità scura
+      densities:
+        normal: Normale
+        relaxed: Rilassato
+        tight: Stretto
+      density: Densità
       hide: Nascondi
       light: Chiaro
       light_and_dark: Chiaro e scuro
@@ -49,6 +54,12 @@ it:
         taupe: Taupe
         zinc: Zinco
       neutrals_picker: Tema neutro
+      roundness: Rotondità
+      roundnesses:
+        normal: Normale
+        relaxed: Rilassato
+        square: Quadrato
+        tight: Stretto
       schemes: Aspetto
       shortcut_badges: Badge di scorciatoia
       shortcut_badges_hide_tooltip: Nascondi i badge delle scorciatoie da tastiera

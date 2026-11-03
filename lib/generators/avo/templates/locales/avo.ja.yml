@@ -32,6 +32,11 @@ ja:
       auto_tooltip: 自動（システム設定）
       dark: ダーク
       dark_tooltip: ダークモード
+      densities:
+        normal: ノーマル
+        relaxed: リラックス
+        tight: タイト
+      density: 密度
       hide: 非表示
       light: ライト
       light_and_dark: ライトとダーク
@@ -49,6 +54,12 @@ ja:
         taupe: トープ
         zinc: ジンク
       neutrals_picker: ニュートラルテーマ
+      roundness: 丸み
+      roundnesses:
+        normal: ノーマル
+        relaxed: リラックス
+        square: 四角
+        tight: タイト
       schemes: 外観
       shortcut_badges: ショートカットバッジ
       shortcut_badges_hide_tooltip: キーボードショートカットバッジを非表示

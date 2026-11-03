@@ -1,5 +1,5 @@
 .panel {
-  @apply flex flex-col gap-y-4 w-full;
+  @apply flex flex-col gap-y-(--panel-gap) w-full;
 }
 
 .panel__header {
@@ -12,7 +12,7 @@
 
 .panel__content {
   --panel-sidebar-width: calc(var(--spacing) * 84);
-  @apply relative grid gap-4 w-full;
+  @apply relative grid gap-(--panel-gap) w-full;
   grid-template-columns: minmax(0, 1fr);
 }
 
@@ -26,7 +26,7 @@
    render flush, borders touching. Matches the panel's own `gap-y-4` rhythm.
    Adjacent-sibling scoped so a lone card stays flush with the panel. */
 .panel__body > .card + .card {
-  @apply mt-4;
+  @apply mt-(--panel-gap);
 }
 
 /* Shift+T anchors focus on the panel body. Mirror the table view's focus state:

@@ -22,6 +22,8 @@ export default class extends Controller {
     'neutralPicker',
     'accentPicker',
     'schemePicker',
+    'densityOption',
+    'roundnessOption',
   ]
 
   // themeLabels: the neutral picker's labels (historical name). appearanceThemeLabels: the theme picker's.
@@ -50,6 +52,8 @@ export default class extends Controller {
     this.updateActiveAppearanceThemeOption()
     this.updateAppearanceThemeLabel()
     this.syncPickerVisibility()
+    this.updateDensityOptions()
+    this.updateRoundnessOptions()
 
     // Watch for live changes when the user has "auto" as the default setting
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -66,6 +70,90 @@ export default class extends Controller {
     if (root.classList.contains('scheme-dark')) return 'dark'
     if (root.classList.contains('scheme-light')) return 'light'
     return 'auto'
+  }
+
+  setDensity(event) {
+    event.preventDefault()
+    const { density } = event.currentTarget.dataset
+    if (!this.appearance.densityPicker || !['tight', 'normal', 'relaxed'].includes(density)) return
+
+    this.densityBeforePreview = null
+    this.applyDensity(density)
+    this.persistPreferences('density')
+    document.dispatchEvent(new CustomEvent('avo:density-changed'))
+  }
+
+  previewDensity(event) {
+    const { density } = event.currentTarget.dataset
+    if (!this.appearance.densityPicker || !['tight', 'normal', 'relaxed'].includes(density)) return
+
+    this.densityBeforePreview ??= this.readCurrentDensity()
+    this.applyDensity(density)
+  }
+
+  revertDensity() {
+    if (!this.densityBeforePreview) return
+
+    this.applyDensity(this.densityBeforePreview)
+    this.densityBeforePreview = null
+  }
+
+  applyDensity(density) {
+    document.documentElement.classList.remove('density-tight', 'density-normal', 'density-relaxed')
+    document.documentElement.classList.add(`density-${density}`)
+    this.updateDensityOptions()
+  }
+
+  readCurrentDensity() {
+    return ['tight', 'normal', 'relaxed'].find((density) => document.documentElement.classList.contains(`density-${density}`)) || 'normal'
+  }
+
+  updateDensityOptions() {
+    this.densityOptionTargets.forEach((option) => {
+      option.setAttribute('aria-pressed', String(option.dataset.density === this.readCurrentDensity()))
+    })
+  }
+
+  setRoundness(event) {
+    event.preventDefault()
+    const { roundness } = event.currentTarget.dataset
+    if (!this.appearance.roundnessPicker || !['square', 'tight', 'normal', 'relaxed'].includes(roundness)) return
+
+    this.roundnessBeforePreview = null
+    this.applyRoundness(roundness)
+    this.persistPreferences('roundness')
+    document.dispatchEvent(new CustomEvent('avo:roundness-changed'))
+  }
+
+  previewRoundness(event) {
+    const { roundness } = event.currentTarget.dataset
+    if (!this.appearance.roundnessPicker || !['square', 'tight', 'normal', 'relaxed'].includes(roundness)) return
+
+    this.roundnessBeforePreview ??= this.readCurrentRoundness()
+    this.applyRoundness(roundness)
+  }
+
+  revertRoundness() {
+    if (!this.roundnessBeforePreview) return
+
+    this.applyRoundness(this.roundnessBeforePreview)
+    this.roundnessBeforePreview = null
+  }
+
+  applyRoundness(roundness) {
+    document.documentElement.classList.remove('roundness-square', 'roundness-tight', 'roundness-normal', 'roundness-relaxed')
+    document.documentElement.classList.add(`roundness-${roundness}`)
+    this.updateRoundnessOptions()
+  }
+
+  readCurrentRoundness() {
+    return ['square', 'tight', 'normal', 'relaxed'].find((roundness) => document.documentElement.classList.contains(`roundness-${roundness}`)) || 'normal'
+  }
+
+  updateRoundnessOptions() {
+    this.roundnessOptionTargets.forEach((option) => {
+      option.setAttribute('aria-pressed', String(option.dataset.roundness === this.readCurrentRoundness()))
+    })
   }
 
   readCurrentNeutral() {
@@ -86,6 +174,8 @@ export default class extends Controller {
   }
 
   disconnect() {
+    this.revertDensity()
+    this.revertRoundness()
     if (this.mediaQuery && this.mediaQueryListener) {
       this.mediaQuery.removeEventListener('change', this.mediaQueryListener)
     }
@@ -392,6 +482,12 @@ export default class extends Controller {
       case 'appearanceTheme':
         this.setPreferenceCookie(this.appearanceThemeCookieName(), this.currentAppearanceThemeValue, this.appearanceDefaultTheme())
         break
+      case 'density':
+        this.setPreferenceCookie(`${window.Avo.configuration.cookies_key || 'avo'}.density`, this.readCurrentDensity(), this.appearance.density)
+        break
+      case 'roundness':
+        this.setPreferenceCookie(`${window.Avo.configuration.cookies_key || 'avo'}.roundness`, this.readCurrentRoundness(), this.appearance.roundness)
+        break
       default:
         break
     }
@@ -456,6 +552,10 @@ export default class extends Controller {
         return { accent: this.currentAccentValue }
       case 'appearanceTheme':
         return { theme: this.currentAppearanceThemeValue }
+      case 'density':
+        return { density: this.readCurrentDensity() }
+      case 'roundness':
+        return { roundness: this.readCurrentRoundness() }
       default:
         return null
     }

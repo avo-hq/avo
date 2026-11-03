@@ -1,0 +1,14 @@
+<div class="color-scheme-switcher__scheme-row color-scheme-switcher__roundness-options" role="group" aria-label="<%= avo_appearance_t("roundness") %>" data-action="mouseleave->appearance#revertRoundness">
+  <% Avo::Configuration::Appearance::ROUNDNESSES.each do |roundness| %>
+    <button type="button"
+            class="color-scheme-switcher__scheme-button"
+            data-action="mouseenter->appearance#previewRoundness click->appearance#setRoundness<%= " click->dropdown-menu#close" if local_assigns[:close_on_pick] %>"
+            data-roundness="<%= roundness %>"
+            data-appearance-target="roundnessOption"
+            title="<%= avo_appearance_t("roundnesses.#{roundness}") %>"
+            aria-pressed="<%= current_roundness == roundness.to_s %>">
+      <span class="color-scheme-switcher__roundness-preview color-scheme-switcher__roundness-preview--<%= roundness %>" aria-hidden="true"></span>
+      <span class="color-scheme-switcher__scheme-label"><%= avo_appearance_t("roundnesses.#{roundness}") %></span>
+    </button>
+  <% end %>
+</div>

@@ -9,6 +9,11 @@ class Avo::Configuration::Appearance
     :lock, # Array[Symbol] — subset of [:scheme, :neutral, :accent, :theme]
     :theme, # Symbol — default theme id (e.g. :paper, :coastal); nil means the first offered theme
     :themes, # Array[Symbol] — theme ids the picker offers, in order; nil means every installed theme
+    :themes_enabled, # Boolean — opt in to beta themes
+    :density, # :tight | :normal | :relaxed; nil inherits config.density
+    :density_picker, # Boolean — allow users to change density
+    :roundness, # :square | :tight | :normal | :relaxed
+    :roundness_picker, # Boolean — allow users to change roundness
     :persistence, # :cookie | :database
     :logo,
     :logo_dark,
@@ -32,7 +37,9 @@ class Avo::Configuration::Appearance
 
     DEFAULT_NEUTRALS = %w[brand slate stone gray zinc neutral taupe mauve mist olive].freeze
     DEFAULT_ACCENTS = %w[brand red orange amber yellow lime green emerald teal cyan sky blue indigo violet purple fuchsia pink rose].freeze
-    LOCKABLE = %i[scheme neutral accent theme].freeze
+    LOCKABLE = %i[scheme neutral accent theme density roundness].freeze
+    DENSITIES = %i[tight normal relaxed].freeze
+    ROUNDNESSES = %i[square tight normal relaxed].freeze
 
     NEUTRAL_SHADES = [25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].freeze
     ACCENT_TOKENS = [:color, :content, :foreground].freeze
@@ -55,6 +62,10 @@ class Avo::Configuration::Appearance
       accents: DEFAULT_ACCENTS,
       lock: [],
       picker_layout: :inline,
+      themes_enabled: false,
+      density_picker: false,
+      roundness: :normal,
+      roundness_picker: false,
       sound: true,
       sound_button: false
     }.freeze
@@ -73,6 +84,11 @@ class Avo::Configuration::Appearance
     @lock = Array(config[:lock]).map(&:to_sym).freeze
     @theme = config[:theme]
     @themes = config[:themes].nil? ? nil : Array(config[:themes]).map(&:to_sym).freeze
+    @themes_enabled = config[:themes_enabled]
+    @density = config[:density]
+    @density_picker = config[:density_picker]
+    @roundness = config[:roundness]
+    @roundness_picker = config[:roundness_picker]
     @persistence = config[:persistence]
     @logo = config[:logo]
     @logo_dark = config[:logo_dark]
@@ -91,6 +107,12 @@ class Avo::Configuration::Appearance
     validate_picker_layout!(@picker_layout)
     validate_selection!("neutral", @neutral)
     validate_theme!(@theme)
+    if @density && !DENSITIES.include?(@density)
+      raise ArgumentError, "appearance.density must be one of #{DENSITIES.inspect}, got #{@density.inspect}"
+    end
+    unless ROUNDNESSES.include?(@roundness)
+      raise ArgumentError, "appearance.roundness must be one of #{ROUNDNESSES.inspect}, got #{@roundness.inspect}"
+    end
     validate_lock!(@lock)
     validate_selection!("accent", @accent)
     validate_color_palette!("neutral_colors", @neutral_colors, NEUTRAL_SHADES, "shades") if @neutral_colors
@@ -110,6 +132,12 @@ class Avo::Configuration::Appearance
   def accent_locked? = @lock.include?(:accent)
 
   def theme_locked? = @lock.include?(:theme)
+
+  def themes_enabled? = !!@themes_enabled
+
+  def density_picker? = !!@density_picker && !@lock.include?(:density)
+
+  def roundness_picker? = !!@roundness_picker && !@lock.include?(:roundness)
 
   # Returns the neutral name for the data attribute (nil when neutral is unset)
   def neutral_css_class = neutral&.to_s

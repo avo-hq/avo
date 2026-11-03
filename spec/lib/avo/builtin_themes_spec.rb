@@ -1,6 +1,6 @@
 require "rails_helper"
 
-# The eighteen built-ins and the one stylesheet they share. Each theme is one
+# The twenty built-ins and the one stylesheet they share. Each theme is one
 # block drawn for one scheme. A block that forgets a required token ships a
 # theme that silently inherits the previous theme's value on hover, and one
 # that forgets its foundations draws a wrong preview tile on a page in the
@@ -13,11 +13,11 @@ RSpec.describe Avo::BuiltinThemes do
     match && match[1]
   end
 
-  it "ships eighteen themes with Paper first" do
+  it "ships twenty themes with Paper first" do
     expect(described_class.ids).to eq(%i[
       paper coastal rose sunset midnight monokai dracula nord
       solarized_light solarized_dark gruvbox_light gruvbox_dark one_light one_dark
-      catppuccin_latte catppuccin_mocha tokyo_night_day tokyo_night
+      catppuccin_latte catppuccin_mocha tokyo_night_day tokyo_night redaction playfair_display
     ])
     expect(described_class.all).to all(be_builtin)
     expect(described_class.all.map(&:stylesheet)).to all(be_nil)

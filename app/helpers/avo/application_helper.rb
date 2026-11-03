@@ -400,6 +400,7 @@ module Avo
     # installed and offered — the cookie is user-controlled input, and that
     # whitelist is the whole validation (same trust boundary as sidebar_width).
     def current_theme
+      return nil unless Avo.configuration.appearance.themes_enabled?
       return @current_theme if defined?(@current_theme)
 
       appearance = Avo.configuration.appearance
@@ -415,11 +416,28 @@ module Avo
       end
     end
 
-    # The user's own scheme, neutral, and accent picks, resolved without the
-    # active theme's locks (host lock, then pick, then configured default).
-    # The appearance controller keeps these so that switching from a theme
-    # that owns its palette back to one that does not restores the user's
-    # picks instead of the theme's forced values.
+    def default_density
+      value = Avo.configuration.appearance.density || Avo.configuration.density
+      Avo::Configuration::Appearance::DENSITIES.map(&:to_s).include?(value.to_s) ? value.to_s : "normal"
+    end
+
+    def current_density
+      appearance = Avo.configuration.appearance
+      return default_density unless appearance.density_picker?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:density) : cookies["#{Avo::COOKIES_KEY}.density"]
+      Avo::Configuration::Appearance::DENSITIES.map(&:to_s).include?(value.to_s) ? value.to_s : default_density
+    end
+
+    def current_roundness
+      appearance = Avo.configuration.appearance
+      return appearance.roundness.to_s unless appearance.roundness_picker?
+
+      value = appearance.database_persistence? ? Avo::Current.appearance_settings&.dig(:roundness) : cookies["#{Avo::COOKIES_KEY}.roundness"]
+      Avo::Configuration::Appearance::ROUNDNESSES.map(&:to_s).include?(value.to_s) ? value.to_s : appearance.roundness.to_s
+    end
+
+    # Keep the user's own picks so switching back to Paper restores them.
     def appearance_picks
       {scheme: picked_scheme, neutral: picked_neutral, accent: picked_accent}
     end

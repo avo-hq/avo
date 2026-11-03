@@ -30,6 +30,16 @@ module Avo
       self.description = "Sand surfaces, a sand navbar, sea-glass accent."
     end
 
+    class Redaction < Base
+      self.title = "Redaction 50"
+      self.description = "Neutral surfaces with Redaction 50 serif headings."
+    end
+
+    class PlayfairDisplay < Base
+      self.title = "Playfair Display"
+      self.description = "Neutral surfaces with Playfair Display headings and descriptions."
+    end
+
     class Rose < Base
       self.title = "Rose"
       self.description = "Warm blush neutrals, deep rose navbar, rich rose accent."
@@ -140,7 +150,8 @@ module Avo
         GruvboxLight, GruvboxDark,
         OneLight, OneDark,
         CatppuccinLatte, CatppuccinMocha,
-        TokyoNightDay, TokyoNight
+        TokyoNightDay, TokyoNight,
+        Redaction, PlayfairDisplay
       ].freeze
     end
 

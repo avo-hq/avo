@@ -17,7 +17,59 @@
    attributions. Paper has no block: the defaults in css/variables.css are
    Paper. */
 
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Redaction+50&display=swap");
+
 @layer base {
+  /* Typography-only themes: keep the stock neutral palette and body font. */
+  .avo-theme-redaction {
+    --font-heading: "Redaction 50", Georgia, serif;
+    --color-avo-neutral-25: oklch(99.71% 0 89.88);
+    --color-avo-neutral-50: oklch(98.51% 0 89.88);
+    --color-avo-neutral-100: oklch(97.31% 0 89.88);
+    --color-avo-neutral-200: oklch(92.8% 0 89.88);
+    --color-avo-neutral-300: oklch(75.72% 0 89.88);
+    --color-avo-neutral-400: oklch(62.68% 0 89.88);
+    --color-avo-neutral-500: oklch(53.48% 0 89.88);
+    --color-avo-neutral-600: oklch(47.84% 0 89.88);
+    --color-avo-neutral-700: oklch(42.76% 0 89.88);
+    --color-avo-neutral-800: oklch(39.04% 0 89.88);
+    --color-avo-neutral-900: oklch(27.68% 0 89.88);
+    --color-avo-neutral-950: oklch(20.46% 0 89.88);
+    --color-brand-neutral-400: var(--color-avo-neutral-400);
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
+    --color-navbar-background: var(--color-avo-neutral-900);
+    --color-accent: var(--color-avo-neutral-800);
+    --color-accent-content: var(--color-avo-neutral-950);
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: var(--color-accent);
+  }
+
+  .avo-theme-playfair_display {
+    --font-heading: "Playfair Display", Georgia, serif;
+    --font-description: var(--font-heading);
+    --color-avo-neutral-25: oklch(99.71% 0 89.88);
+    --color-avo-neutral-50: oklch(98.51% 0 89.88);
+    --color-avo-neutral-100: oklch(97.31% 0 89.88);
+    --color-avo-neutral-200: oklch(92.8% 0 89.88);
+    --color-avo-neutral-300: oklch(75.72% 0 89.88);
+    --color-avo-neutral-400: oklch(62.68% 0 89.88);
+    --color-avo-neutral-500: oklch(53.48% 0 89.88);
+    --color-avo-neutral-600: oklch(47.84% 0 89.88);
+    --color-avo-neutral-700: oklch(42.76% 0 89.88);
+    --color-avo-neutral-800: oklch(39.04% 0 89.88);
+    --color-avo-neutral-900: oklch(27.68% 0 89.88);
+    --color-avo-neutral-950: oklch(20.46% 0 89.88);
+    --color-brand-neutral-400: var(--color-avo-neutral-400);
+    --color-background: var(--color-avo-neutral-50);
+    --color-primary: var(--color-white);
+    --color-navbar-background: var(--color-avo-neutral-900);
+    --color-accent: var(--color-avo-neutral-800);
+    --color-accent-content: var(--color-avo-neutral-950);
+    --color-accent-foreground: var(--color-white);
+    --color-brand-accent: var(--color-accent);
+  }
+
   /* Coastal. Light, with a sand navbar: content and controls take the theme's own ink. */
   .avo-theme-coastal {
     --color-avo-neutral-25: oklch(99.7% 0.018 80);

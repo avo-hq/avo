@@ -32,6 +32,11 @@ zh-TW:
       auto_tooltip: 自動（系統偏好）
       dark: 深色
       dark_tooltip: 深色模式
+      densities:
+        normal: 正常
+        relaxed: 放鬆
+        tight: 緊繃
+      density: 密度
       hide: 隱藏
       light: 淺色
       light_and_dark: 淺色和深色
@@ -49,6 +54,12 @@ zh-TW:
         taupe: 灰褐
         zinc: 鋅色
       neutrals_picker: 中性色主題
+      roundness: 圓形
+      roundnesses:
+        normal: 正常
+        relaxed: 放鬆
+        square: 方形
+        tight: 緊身
       schemes: 外觀
       shortcut_badges: 快捷鍵徽章
       shortcut_badges_hide_tooltip: 隱藏鍵盤快捷鍵徽章

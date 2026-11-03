@@ -1,15 +1,16 @@
 /* Main breaking point: md */
 
 .header {
-  @apply flex flex-col gap-2 items-start justify-center pe-0 py-0;
+  @apply flex flex-col items-start justify-center pe-0 py-0;
+  gap: calc(var(--header-gap) * 2 / 3);
 }
 
 .header__main {
-  @apply flex flex-col md:flex-row gap-4 items-center w-full;
+  @apply flex flex-col md:flex-row gap-(--panel-gap) items-center w-full;
 }
 
 .header__content {
-  @apply w-full flex gap-3 items-center grow shrink basis-0;
+  @apply w-full flex gap-(--header-gap) items-center grow shrink basis-0;
 }
 
 .header__avatar {
@@ -17,23 +18,30 @@
 }
 
 .header__text {
-  @apply flex flex-col gap-0.5 items-start grow shrink basis-0 min-h-px min-w-px not-italic;
+  @apply flex flex-col items-start grow shrink basis-0 min-h-px min-w-px not-italic;
+  gap: calc(var(--header-gap) / 6);
 }
 
 .header__title {
-  @apply flex gap-2 font-medium leading-6 overflow-ellipsis w-full text-xl text-content;
+  @apply flex font-medium overflow-ellipsis w-full text-content;
+  gap: calc(var(--header-gap) * 2 / 3);
+  font-size: var(--header-title-font-size);
+  line-height: var(--header-title-line-height);
+  font-family: var(--font-heading);
 }
 
 .header__description {
   @apply font-normal text-sm leading-5 w-full text-content-secondary grow;
+  font-family: var(--font-description);
 }
 
 .header__controls {
-  @apply w-full md:w-auto flex gap-3 items-center cursor-pointer shrink-0 flex-wrap justify-center md:justify-end;
+  @apply w-full md:w-auto flex gap-(--header-gap) items-center cursor-pointer shrink-0 flex-wrap justify-center md:justify-end;
 }
 
 .header__discreet-information {
   @apply flex justify-start gap-x-2.5 gap-y-1 items-start w-full flex-wrap;
+  margin-top: calc(var(--header-gap) * 2 / 3);
 }
 
 /* Size variants */

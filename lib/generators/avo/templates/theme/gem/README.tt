@@ -18,6 +18,8 @@ While developing the theme, point the Gemfile at your checkout instead:
 gem "<%= gem_name %>", path: "<%= gem_relative_root %>"
 ```
 
+Enable beta themes with `themes_enabled: true` under `config.appearance` in
+`config/initializers/avo.rb`. Themes are disabled by default.
 Restart the server, open the appearance picker, and choose "<%= theme_title %>". To make
 it the default, or to limit which themes the picker offers, set `theme` / `themes`
 under `config.appearance` in `config/initializers/avo.rb`.

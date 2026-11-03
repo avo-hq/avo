@@ -195,6 +195,11 @@ Avo.configure do |config|
 
   ## == Appearance ==
   # config.appearance = {
+  #   themes_enabled: false, # opt in to beta themes with true
+  #   density: :normal, # :tight, :normal, :relaxed; defaults to config.density
+  #   density_picker: false, # allow each user to choose; lock: [:density] pins the default
+  #   roundness: :normal, # :square, :tight, :normal, :relaxed
+  #   roundness_picker: false, # allow each user to choose; lock: [:roundness] pins the default
   #   logo: "avo/logo.png",
   #   logo_dark: "avo/logo-dark.png",
   #   logomark: "avo/logomark.png",

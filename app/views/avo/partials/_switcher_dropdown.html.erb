@@ -1,8 +1,9 @@
 <div class="<%= class_names("color-scheme-switcher color-scheme-switcher--compact", "lg:hidden": appearance.picker_layout == :inline) %>"
      data-controller="appearance"
+     data-action="avo:density-changed@document->appearance#updateDensityOptions avo:roundness-changed@document->appearance#updateRoundnessOptions"
      data-appearance-theme-labels-value="<%= neutral_labels.to_json %>"
      data-appearance-appearance-theme-labels-value="<%= offered_themes.to_h { |t| [t.id, t.title] }.to_json %>">
-  <%= render Avo::UI::DropdownComponent.new do |component| %>
+  <%= render Avo::UI::DropdownComponent.new(data: {action: "close->appearance#revertDensity close->appearance#revertRoundness"}) do |component| %>
     <% component.with_trigger do %>
       <button type="button"
               data-action="<%= component.action %>"
@@ -106,6 +107,20 @@
                 </button>
               </div>
             <% end %>
+          <% end %>
+
+          <% if show_density_picker %>
+            <div class="color-scheme-switcher__section">
+              <div class="color-scheme-switcher__section-label"><%= avo_appearance_t("density") %></div>
+              <%= render partial: "avo/partials/density_options" %>
+            </div>
+          <% end %>
+
+          <% if show_roundness_picker %>
+            <div class="color-scheme-switcher__section">
+              <div class="color-scheme-switcher__section-label"><%= avo_appearance_t("roundness") %></div>
+              <%= render partial: "avo/partials/roundness_options" %>
+            </div>
           <% end %>
 
           <% if show_sound_toggle %>

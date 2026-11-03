@@ -32,6 +32,11 @@ nb:
       auto_tooltip: Auto (systempreferanse)
       dark: Mørk
       dark_tooltip: Mørk modus
+      densities:
+        normal: Normal
+        relaxed: Avslappet
+        tight: Tett
+      density: Tetthet
       hide: Skjul
       light: Lys
       light_and_dark: Lys og mørk
@@ -49,6 +54,12 @@ nb:
         taupe: Taupe
         zinc: Sink
       neutrals_picker: Nøytralt tema
+      roundness: Rundhet
+      roundnesses:
+        normal: Normal
+        relaxed: Avslappet
+        square: Firkantet
+        tight: Tett
       schemes: Utseende
       shortcut_badges: Snarveisknapper
       shortcut_badges_hide_tooltip: Skjul snarveisknapper

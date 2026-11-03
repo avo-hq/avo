@@ -32,6 +32,11 @@ zh:
       auto_tooltip: 自动（系统偏好）
       dark: 深色
       dark_tooltip: 深色模式
+      densities:
+        normal: 正常
+        relaxed: 放松
+        tight: 紧绷
+      density: 密度
       hide: 隐藏
       light: 浅色
       light_and_dark: 浅色和深色
@@ -49,6 +54,12 @@ zh:
         taupe: 灰褐
         zinc: 锌色
       neutrals_picker: 中性色主题
+      roundness: 圆形
+      roundnesses:
+        normal: 正常
+        relaxed: 放松
+        square: 方形
+        tight: 紧身
       schemes: 外观
       shortcut_badges: 快捷键徽章
       shortcut_badges_hide_tooltip: 隐藏键盘快捷键徽章

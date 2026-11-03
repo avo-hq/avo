@@ -10,8 +10,29 @@ RSpec.describe Avo::Configuration::Appearance do
       expect(appearance.scheme).to eq(:auto)
     end
 
+    it "requires opting in to themes and the density picker" do
+      expect(appearance).not_to be_themes_enabled
+      expect(appearance).not_to be_density_picker
+      expect(appearance.density).to be_nil
+      expect(described_class.new(themes_enabled: true, density_picker: true)).to be_themes_enabled
+    end
+
+    it "allows a density default and lets the host lock it" do
+      expect(described_class.new(density: :tight, density_picker: true)).to be_density_picker
+      expect(described_class.new(density: :relaxed, density_picker: true, lock: [:density])).not_to be_density_picker
+      expect { described_class.new(density: :compact) }.to raise_error(ArgumentError, /appearance.density/)
+    end
+
     it "defaults to cookie persistence" do
       expect(appearance.persistence).to eq(:cookie)
+    end
+
+    it "preserves normal roundness by default and supports an optional locked picker" do
+      expect(appearance.roundness).to eq(:normal)
+      expect(appearance).not_to be_roundness_picker
+      expect(described_class.new(roundness: :square, roundness_picker: true)).to be_roundness_picker
+      expect(described_class.new(roundness: :tight, roundness_picker: true, lock: [:roundness])).not_to be_roundness_picker
+      expect { described_class.new(roundness: :pill) }.to raise_error(ArgumentError, /appearance.roundness/)
     end
 
     it "defaults neutral and accent to nil" do

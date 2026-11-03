@@ -3,8 +3,8 @@
 class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   include Avo::Concerns::HasFieldTooltips
 
-  # Vertical padding for each density step. `nil` density falls back to
-  # `Avo.configuration.density`.
+  # Explicit field density wins over the global CSS token. With nil, the
+  # layout's density (appearance preference or config.density) applies live.
   DENSITY_PADDING = {
     tight: "py-2",
     normal: "py-4",
@@ -47,6 +47,8 @@ class Avo::Index::FieldWrapperComponent < Avo::BaseComponent
   end
 
   def density_padding_class
-    DENSITY_PADDING[(@density || Avo.configuration.density)&.to_sym] || DENSITY_PADDING[:normal]
+    return "index-field-wrapper--padded" if @density.nil?
+
+    DENSITY_PADDING[@density.to_sym] || DENSITY_PADDING[:normal]
   end
 end

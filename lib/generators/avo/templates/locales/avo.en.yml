@@ -32,6 +32,17 @@ en:
       auto_tooltip: Auto (system preference)
       dark: Dark
       dark_tooltip: Dark mode
+      densities:
+        normal: Normal
+        relaxed: Relaxed
+        tight: Tight
+      density: Density
+      roundness: Roundness
+      roundnesses:
+        square: Square
+        tight: Tight
+        normal: Normal
+        relaxed: Relaxed
       hide: Hide
       light: Light
       light_and_dark: Light & dark

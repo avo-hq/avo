@@ -32,6 +32,11 @@ ro:
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
       dark_tooltip: Mod întunecat
+      densities:
+        normal: Normal
+        relaxed: Relaxat
+        tight: Strâns
+      density: Densitate
       hide: Ascunde
       light: Deschis
       light_and_dark: Deschis și întunecat
@@ -49,6 +54,12 @@ ro:
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Temă neutre
+      roundness: Rotunjime
+      roundnesses:
+        normal: Normal
+        relaxed: Relaxat
+        square: Pătrat
+        tight: Strâns
       schemes: Aspect
       shortcut_badges: Insignele scurtăturilor
       shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură

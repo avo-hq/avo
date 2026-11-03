@@ -82,6 +82,7 @@ module Generators
           template "theme/stylesheet.tt", stylesheet_path
 
           say "\nNext steps:", :green
+          say "  Enable beta themes with themes_enabled: true in config.appearance.", :green
           say "  1. Restart the server so Avo registers the theme.", :green
           say "  2. Open the appearance picker and choose \"#{theme_title}\".", :green
           say "  3. Override a partial inside the theme with:", :green
@@ -102,6 +103,7 @@ module Generators
           template "theme/gem/NOTICE.tt", gem_file("NOTICE")
 
           say "\nNext steps:", :green
+          say "  Enable beta themes with themes_enabled: true in config.appearance.", :green
           say "  1. Add the gem to your Gemfile (the path: option is for local development):", :green
           say "     gem \"#{gem_name}\", path: \"#{gem_relative_root}\"", :green
           say "  2. Run bundle install and restart the server.", :green

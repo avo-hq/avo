@@ -32,6 +32,11 @@ ua:
       auto_tooltip: Авто (системні налаштування)
       dark: Темний
       dark_tooltip: Темний режим
+      densities:
+        normal: Нормальний
+        relaxed: Розслаблений
+        tight: Тісний
+      density: Щільність
       hide: Сховати
       light: Світлий
       light_and_dark: Світлий і темний
@@ -49,6 +54,12 @@ ua:
         taupe: Taupe
         zinc: Цинк
       neutrals_picker: Нейтральна тема
+      roundness: Округлість
+      roundnesses:
+        normal: Нормальний
+        relaxed: Розслаблений
+        square: Квадрат
+        tight: Щільний
       schemes: Зовнішній вигляд
       shortcut_badges: Значки ярликів
       shortcut_badges_hide_tooltip: Сховати значки клавіатурних ярликів

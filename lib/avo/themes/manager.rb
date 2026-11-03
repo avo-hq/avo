@@ -57,6 +57,8 @@ module Avo
       # at render time), every registered theme otherwise. The picker groups
       # this list by scheme support and keeps the order inside each group.
       def offered
+        return [] unless Avo.configuration.appearance.themes_enabled?
+
         configured = Avo.configuration.appearance.themes
         return all if configured.blank?
 
@@ -72,6 +74,8 @@ module Avo
       # else Paper. A `theme:` left out of `themes:` is a misconfiguration the
       # picker cannot show, so it does not win here either.
       def default
+        return nil unless Avo.configuration.appearance.themes_enabled?
+
         configured = Avo.configuration.appearance.theme
         (configured && offered?(configured) && find(configured)) || offered.first || find(:paper)
       end
@@ -80,6 +84,8 @@ module Avo
       # picker order. Built-ins are served from one file (`avo/themes`), so they
       # are excluded here and the layout links that file itself.
       def stylesheets
+        return [] unless Avo.configuration.appearance.themes_enabled?
+
         all.reject(&:builtin?).filter_map(&:stylesheet).uniq
       end
 

@@ -7,6 +7,73 @@ deepened: 2026-09-04
 revised: 2026-09-05
 ---
 
+## Beta opt-in and styling contract
+
+Themes are disabled by default. Enable them with
+`config.appearance = {themes_enabled: true}`. When disabled, no theme
+stylesheets, assets, partial overrides, or saved theme choices apply. Existing
+neutral, accent, and light/dark controls still work.
+
+Density builds on #4645 and AVO-1524. `config.density` still supplies the default;
+`config.appearance[:density]` overrides it. Both accept `:tight`, `:normal`, and
+`:relaxed`. Set `density_picker: true` to let users choose live, using the same
+cookie/database persistence as other appearance settings. Add `:density` to
+`lock:` to force the configured default and hide the control. User choices are
+ignored when the picker is disabled. Density changes table padding, form and
+definition-list field spacing, grid gaps and card padding, panel gaps,
+sidebar links/groups, page padding, breadcrumb spacing, and header/toolbar
+gaps. Page titles use 18/20/22px at tight/normal/relaxed density, with matching
+line heights. Explicit per-field density and compact preview layouts keep
+their own spacing. Body text and icons keep their sizes. Existing button size
+classes gain 2px less padding in Tight and 2px more in Relaxed; explicit padding
+modifiers still take precedence.
+
+The root uses `density-tight`, `density-normal`, or `density-relaxed` classes.
+Tailwind variants with those same names are available to app code, for example
+`density-tight:gap-2 density-relaxed:gap-6`, or `@variant density-tight` in CSS.
+
+The inline density trigger opens an icon-and-label button group in a dropdown,
+using the color picker's card treatment. Selecting an option closes it. In the
+compact appearance panel the same group stays visible after a pick.
+
+Roundness is independent of density: `roundness:` accepts `:square`, `:tight`,
+`:normal` (default), or `:relaxed`. Enable its picker with `roundness_picker: true`
+and pin it with `lock: [:roundness]`. The corresponding `roundness-*` Tailwind
+variants are available to app code. Normal preserves current radii, and explicit
+circles and pills stay round. Relaxed cards have an 18px outer and 14px inner
+radius. Both density and roundness preview on hover, revert on exit or dropdown
+close, and save only on click through cookie or database persistence.
+
+Redaction 50 and Playfair Display are built-in heading-font themes. Both keep
+the stock neutral palette and body font, changing `--font-heading` for page
+titles and HTML headings. Playfair Display also styles page-header descriptions.
+The fonts load from Google Fonts, with credits in NOTICE. A strict CSP must allow
+`https://fonts.googleapis.com` in `style-src` and `https://fonts.gstatic.com` in
+`font-src`.
+
+AVO-1530 customization points live in `Avo::Themes::Catalog`; the theme generator
+lists them in its stylesheet. Themes can override individual spacing tokens,
+Tailwind typography tokens (`--font-sans`, `--text-sm`, `--text-base`), and default
+input sizing (`--control-padding-block`, `--control-font-size`,
+`--control-line-height`). Explicit small/large input variants keep their sizes.
+
+Backgrounds belong to the theme, not a user background picker. Solid colors use
+`--color-main-content-background` and `--color-sidebar-background`. Images and
+gradients use `--main-content-background-image` and `--sidebar-background-image`.
+Main content also exposes size, position, and repeat tokens. For example, inside
+a generated theme's class:
+
+```css
+--main-content-background-image: linear-gradient(135deg, #e0f2fe, transparent);
+--main-content-background-size: cover;
+--font-sans: Georgia, serif;
+--panel-gap: 1.25rem;
+```
+
+Theme declarations stay in `@layer base`; unlayered `avo-overrides.css` remains
+the host app's final say. Themes may set a fixed spacing token or multiply it
+by `var(--density-factor)` to preserve user density choices.
+
 > **Revised 2026-09-05, before merge.** The first cut let every theme style
 > both schemes and left the neutral/accent pickers open on top of it, with a
 > per-theme opt-in lock. Reviewing the result, that was too much machinery for

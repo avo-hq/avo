@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!-- ✨ Built with Avo • https://www.avohq.io/ -->
-<html lang="<%= I18n.locale %>" dir="<%= text_direction %>" class="<%= class_names(*html_theme_classes) %>">
+<html lang="<%= I18n.locale %>" dir="<%= text_direction %>" class="<%= class_names(*html_theme_classes, "density-#{current_density}", "roundness-#{current_roundness}") %>">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -39,9 +39,11 @@
     <%# Themes: the built-ins in one file, then one link per installed local/gem theme. %>
     <%# After the brand override (same @layer base, later source wins, so a picked theme %>
     <%# beats a configured brand) and before avo-overrides (unlayered, the app always wins). %>
-    <%= stylesheet_link_tag "avo/themes", "data-turbo-track": "reload", as: "style" %>
-    <% Avo.theme_manager.stylesheets.each do |theme_stylesheet| %>
-      <%= stylesheet_link_tag theme_stylesheet, "data-turbo-track": "reload", as: "style" %>
+    <% if Avo.configuration.appearance.themes_enabled? %>
+      <%= stylesheet_link_tag "avo/themes", "data-turbo-track": "reload", as: "style" %>
+      <% Avo.theme_manager.stylesheets.each do |theme_stylesheet| %>
+        <%= stylesheet_link_tag theme_stylesheet, "data-turbo-track": "reload", as: "style" %>
+      <% end %>
     <% end %>
 
     <%= stylesheet_link_tag "avo-overrides", "data-turbo-track": "reload", as: "style" %>

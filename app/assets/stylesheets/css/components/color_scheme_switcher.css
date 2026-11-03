@@ -124,6 +124,44 @@
   @apply flex items-stretch gap-1 p-1 rounded-md bg-secondary;
 }
 
+.color-scheme-switcher__density-popover {
+  @apply min-w-56;
+}
+
+.color-scheme-switcher__roundness-popover {
+  @apply min-w-64;
+}
+
+.color-scheme-switcher__density-popover .dropdown-card__body,
+.color-scheme-switcher__roundness-popover .dropdown-card__body {
+  @apply p-1;
+}
+
+/* Standalone density uses the card surface, like the accent color grid.
+   The unified dropdown keeps its inset scheme-row background. */
+.color-scheme-switcher__density-popover .color-scheme-switcher__scheme-row,
+.color-scheme-switcher__roundness-popover .color-scheme-switcher__scheme-row {
+  @apply p-0 bg-transparent;
+}
+
+.color-scheme-switcher__roundness-preview {
+  @apply size-4 border border-current;
+}
+
+/* Fixed previews show the choices, not the currently selected radius scale. */
+.color-scheme-switcher__roundness-preview--square { border-radius: 0; }
+.color-scheme-switcher__roundness-preview--tight { border-radius: 2px; }
+.color-scheme-switcher__roundness-preview--normal { border-radius: 4px; }
+.color-scheme-switcher__roundness-preview--relaxed { border-radius: 6px; }
+
+.color-scheme-switcher__roundness-options .color-scheme-switcher__scheme-button {
+  @apply min-w-0 px-0.5;
+}
+
+.color-scheme-switcher__roundness-options .color-scheme-switcher__scheme-label {
+  @apply max-w-full truncate;
+}
+
 .color-scheme-switcher__scheme-button {
   @apply flex-1 inline-flex flex-col items-center justify-center gap-1 px-2 py-1.5 rounded-md;
   @apply text-content-secondary hover:bg-tertiary transition-all duration-150;
@@ -132,7 +170,8 @@
 
 .scheme-light .color-scheme-switcher__scheme-button[data-scheme="light"],
 .scheme-dark .color-scheme-switcher__scheme-button[data-scheme="dark"],
-.scheme-auto .color-scheme-switcher__scheme-button[data-scheme="auto"] {
+.scheme-auto .color-scheme-switcher__scheme-button[data-scheme="auto"],
+.color-scheme-switcher__scheme-button[aria-pressed="true"] {
   @apply bg-primary text-content shadow-sm;
 }
 
