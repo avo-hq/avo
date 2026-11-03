@@ -11,10 +11,10 @@ module Avo
         end
       end
 
-      def initialize(message:, purpose:, **kwargs)
+      def initialize(message:, purpose:, **)
         @message = message
         @purpose = purpose
-        @crypt = ActiveSupport::MessageEncryptor.new(encryption_key, **kwargs)
+        @crypt = ActiveSupport::MessageEncryptor.new(encryption_key, **)
       end
 
       def encrypt

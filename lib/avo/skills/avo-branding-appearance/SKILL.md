@@ -296,9 +296,9 @@ The navbar and sidebar expose **scoped** palette contracts on the `.top-navbar` 
 bin/rails generate avo:eject --partial :head
 ```
 
-The full variable list (navbar, sidebar, table, focus ring, motion) with defaults lives in the CSS variables section of `appearance-api.md` — fetch it before writing component-level overrides. For named-theme requests ("coastal", "rose", "80s sunset"), prefer step 7: a built-in if one matches, else `rails g avo:theme` — `avo-overrides.css` is for always-on, app-wide overrides that no theme should undo.
+The full variable list (navbar, sidebar, table, focus ring, motion) with defaults lives in the CSS variables section of `appearance-api.md`; fetch it before writing component-level overrides. For named-theme requests ("coastal", "rose", "80s sunset"), prefer step 8: a built-in if one matches, else `rails g avo:theme`. `avo-overrides.css` is for always-on, app-wide overrides that no theme should undo.
 
-### 9. Icons (menu items, actions)
+### 10. Icons (menu items, actions)
 
 Anywhere Avo takes an `icon:`, pass a path string. **Prefer Tabler in v4** (`tabler/outline/<name>` or `tabler/filled/<name>`); Heroicons (`heroicons/outline/<name>`, also `solid`/`mini`/`micro`) are legacy-supported. Your own SVGs go in `app/assets/svgs/` and are referenced by filename.
 

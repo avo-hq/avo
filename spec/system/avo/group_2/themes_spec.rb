@@ -27,6 +27,9 @@ RSpec.describe "Themes", type: :system do
 
   it "applies a theme, forces its scheme, and remembers the pick" do
     paper_accent = token("--color-accent")
+    page.execute_script("document.documentElement.classList.add('neutral-theme-slate')")
+    slate_neutral = token("--color-avo-neutral-500")
+    page.execute_script("document.documentElement.classList.remove('neutral-theme-slate')")
 
     # The class alone changes the resolved tokens; a neutral pick in @layer
     # components still beats it, which is what lets Paper-style themes leave
@@ -35,7 +38,7 @@ RSpec.describe "Themes", type: :system do
     expect(token("--color-accent")).not_to eq(paper_accent)
     dracula_accent = token("--color-accent")
     page.execute_script("document.documentElement.classList.add('neutral-theme-slate')")
-    expect(token("--color-avo-neutral-500")).to eq(token("--color-slate-500"))
+    expect(token("--color-avo-neutral-500")).to eq(slate_neutral)
     expect(token("--color-accent")).to eq(dracula_accent)
     page.execute_script("document.documentElement.classList.remove('avo-theme-dracula', 'neutral-theme-slate')")
 

@@ -12,7 +12,7 @@ module Avo
     include Avo::TestHelpers
 
     Avo::TestHelpers.public_instance_methods.each do |method|
-      define_method("avo_#{method}") do |**args|
+      define_method(:"avo_#{method}") do |**args|
         send(method, **args)
       end
     end

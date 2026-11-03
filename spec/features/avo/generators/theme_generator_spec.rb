@@ -108,7 +108,10 @@ RSpec.feature "theme generator", type: :feature, acquire_lock: :generator do
   describe "--gem" do
     let(:gem_root) { file("avo-lagoon_theme") }
 
-    before { generate "lagoon", "--gem" }
+    before do
+      stub_const("Avo::VERSION", "9.8.7")
+      generate "lagoon", "--gem"
+    end
 
     it "lays out a publishable engine gem next to the app" do
       %w[
@@ -133,7 +136,7 @@ RSpec.feature "theme generator", type: :feature, acquire_lock: :generator do
 
       expect(gemspec).to include 'spec.name = "avo-lagoon_theme"'
       expect(gemspec).to include "spec.version = Avo::LagoonTheme::VERSION"
-      expect(gemspec).to include 'spec.add_dependency "avo", ">= 4.2"'
+      expect(gemspec).to include 'spec.add_dependency "avo", ">= 9.8"'
       expect(gem_root.join("lib/avo/lagoon_theme/version.rb").read).to include 'VERSION = "0.1.0"'
     end
 

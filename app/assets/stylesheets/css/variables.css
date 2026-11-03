@@ -116,7 +116,7 @@
      Paper's choice, not a rule: a light navbar sets the background to a light
      tone and the content/control tokens to the theme's own ink. */
   --color-navbar-background: var(--color-avo-neutral-900);
-  --color-navbar-content: var(--color-avo-neutral-300);
+  --color-navbar-content: var(--avo-neutral-source-300, var(--color-avo-neutral-300));
   --color-navbar-content-hover: var(--color-avo-neutral-50);
   --color-navbar-control-background: var(--color-avo-neutral-800);
   --color-navbar-control-background-hover: var(--color-avo-neutral-700);
