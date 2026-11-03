@@ -36,8 +36,9 @@ module Avo
 
       def append_query(params)
         params = if params.is_a? Hash
+          # Escape each pair so values with `&`, `+`, spaces or nested hashes survive the round trip
           params.map do |key, value|
-            "#{key}=#{value}"
+            value.to_query(key)
           end
         else
           {}

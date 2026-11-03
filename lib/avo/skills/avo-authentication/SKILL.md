@@ -106,7 +106,7 @@ If the user mentions the Rails 8 scaffold (or you see `Current.user` + an `Authe
 
 Avo ships two deliberately minimal roles, resolved by calling a method on the `current_user`:
 
-- `is_admin?` → the user can reach the private **Avo Status** page (`/avo_private/status`, under your mount path) and sees its sidebar link in production.
+- `is_admin?` → the user can reach the private **Avo Status** page (`/status`, under your mount path) and sees its sidebar link in production.
 - `is_developer?` → same Status-page access, **plus** full backtraces on non-validation errors (e.g. an API call that blows up during save) instead of a generic "Something went wrong".
 
 Check them yourself anywhere with `Avo::Current.user_is_admin?` / `Avo::Current.user_is_developer?`. Point Avo at differently-named predicate methods via the initializer:
@@ -177,7 +177,7 @@ So "add a logout button to the admin" = pick whichever of these matches an exist
 - **Identifying the user ≠ locking the door.** `current_user_method` only tells Avo *who* someone is; it does not keep anyone out. You still need `authenticate :user` (routes) or `authenticate_with` (initializer). It's easy to wire up `current_user` and leave the admin wide open.
 - **`authenticate_with` can't see your app's controller.** Avo's `ApplicationController` does not inherit from the app's `ApplicationController`, so app helper methods/concerns are unavailable inside the block — write the logic inline, or extend Avo's controller via **avo-controllers**.
 - **Rails 8 scaffold is custom auth.** It needs all three steps (current user via `Current.user`, `sign_out_path_name = :session_path`, and ejecting the controller to `include Authentication` + `prepend_before_action :require_authentication`). Steps 1–2 without step 3 leave the admin unguarded.
-- **Roles are minimal by design.** `is_admin?` / `is_developer?` gate only the `/avo_private/status` page and developer backtraces — they are **not** resource-level authorization. Don't reach for them to hide records or actions; that's policies.
+- **Roles are minimal by design.** `is_admin?` / `is_developer?` gate only the `/status` page and developer backtraces — they are **not** resource-level authorization. Don't reach for them to hide records or actions; that's policies.
 - **"Avo user" in the widget** means the user object responds to none of `name` / `email` / `email_address`. Add one of those methods to the model, not any Avo config.
 - **Sign-out hidden?** The path helper must actually exist and accept `DELETE`. Confirm with `bin/rails routes` before setting `sign_out_path_name` / `current_user_resource_name`; `sign_out_path_name` wins if both are set.
 - **Verify before writing.** Config names drift between versions — check the docs URLs above or the app's installed Avo source (`Avo::Configuration`) rather than trusting memory.

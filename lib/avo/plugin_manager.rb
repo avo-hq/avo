@@ -50,7 +50,9 @@ module Avo
       # (e.g. `:rhino` for `avo-rhino_field`), so the name alone isn't enough.
       registered_from = caller_locations(1, 1)&.first&.path
 
-      @building_plugins << Plugin.new(name:, priority: priority, registered_from: registered_from)
+      plugin = Plugin.new(name:, priority: priority, registered_from: registered_from)
+      @building_plugins << plugin
+      plugin
     end
 
     def register_view_type(name, component:, icon:, active_icon:, translation_key: nil)

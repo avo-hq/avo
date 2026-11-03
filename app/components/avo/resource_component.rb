@@ -2,6 +2,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   include Avo::Concerns::ChecksAssocAuthorization
   include Avo::Concerns::RequestMethods
   include Avo::Concerns::HasResourceStimulusControllers
+  include Avo::Concerns::RendersControls
 
   attr_reader :fields_by_panel
   attr_reader :has_one_panels
@@ -83,10 +84,6 @@ class Avo::ResourceComponent < Avo::BaseComponent
       end
   end
 
-  def render_control(control)
-    send :"render_#{control.type}", control
-  end
-
   def render_cards_component
     if Avo.plugin_manager.installed?("avo-dashboards")
       render Avo::CardsComponent.new cards: @resource.detect_cards.visible_cards, classes: "pb-4 sm:grid-cols-3"
@@ -112,7 +109,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       style: :text,
       title: control.title,
       data: {
-        hotkey: "b",
+        hotkey: Avo::Hotkeys.key_for("navigation.go_back"),
         go_back: true,
         action: ("click->modal#close" if via_belongs_to),
         tippy: control.title ? :tooltip : nil
@@ -142,27 +139,17 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # the list fresh from this row's own hydrated resource instead of reusing it.
     actions = as_index_row_control ? row_actions : @actions
 
-    # Actions button hotkey "a" on the main index, show and edit pages (non-nested,
-    # not an index row). The index component doesn't carry a @view, so detect it by
-    # class; show renders through the switcher and edit directly, both of which do
-    # carry a @view, so detect those by view.
-    hotkey = "a" if @reflection.nil? && !as_index_row_control && (
+    # Actions button hotkey on index rows (ActionsComponent hands it to the index-row-navigator) and on the
+    # main index, show and edit pages. The index component carries no @view, so it is detected by class.
+    hotkey = Avo::Hotkeys.key_for("resource.actions") if as_index_row_control || (@reflection.nil? && (
       instance_of?(Avo::Views::ResourceIndexComponent) || @view&.show? || @view&.edit?
-    )
+    ))
 
     render Avo::ActionsComponent.new(
       actions:,
       resource: @resource,
       view: @view,
-      exclude: actions_list.exclude,
-      include: actions_list.include,
-      style: actions_list.style,
-      color: actions_list.color,
-      label: actions_list.label,
-      size: actions_list.size,
-      icon: actions_list.icon,
-      icon_class: actions_list.icon_class,
-      title: actions_list.title,
+      **actions_list_args(actions_list),
       as_row_control:,
       as_index_row_control:,
       hotkey: hotkey
@@ -188,7 +175,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # Same as edit button: prevents @github/hotkey from registering all row buttons at once.
     is_row_control = row_controls_context?
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
-    data_attrs = {hotkey_attr => "d"}
+    data_attrs = {hotkey_attr => Avo::Hotkeys.key_for("record.delete")}
 
     a_link destroy_path,
       style: :text,
@@ -199,6 +186,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
       data: {
         **data_attrs,
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
+        dependents_url: dependents_path,
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
@@ -239,7 +227,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
     # which would cause the "last-registered wins" problem.
     is_row_control = row_controls_context?
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
-    data_attrs = {hotkey_attr => "e"}
+    data_attrs = {hotkey_attr => Avo::Hotkeys.key_for("record.edit")}
 
     a_link edit_path,
       color: :accent,
@@ -271,7 +259,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_create_button(control)
     return unless can_see_the_create_button?
 
-    hotkey = "c" if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
+    hotkey = Avo::Hotkeys.key_for("resource.new") if instance_of?(Avo::Views::ResourceIndexComponent) && @reflection.nil?
 
     a_link create_path,
       color: :accent,
@@ -303,53 +291,11 @@ class Avo::ResourceComponent < Avo::BaseComponent
     is_a?(Avo::Index::ResourceControlsComponent)
   end
 
-  def render_link_to(link)
-    # Anything outside CONTROL_OPTIONS is a plain HTML attribute (rel:, id:…) and
-    # rides ButtonComponent's `prop :args, kind: :**` wildcard onto the <a> tag.
-    a_link link.path,
-      **link.args.except(*Avo::Resources::Controls::BaseControl::CONTROL_OPTIONS),
-      color: link.color,
-      style: link.style,
-      icon: link.icon,
-      icon_class: link.icon_class,
-      title: link.title, target: link.target,
-      class: link.classes,
-      size: link.size,
-      data: {
-        **link.data,
-        tippy: link.title ? :tooltip : nil,
-      } do
-      link.label
-    end
-  end
+  # The confirm dialog fetches this when it opens, so rendering a list of records runs no dependents queries.
+  def dependents_path
+    return unless Avo::Services::DependentsService.applies_to?(@resource.record)
 
-  def render_action(action)
-    return if !can_see_the_actions_button?
-    return if !action.action.visible_in_view(parent_resource: @parent_resource)
-
-    a_link Avo::Services::URIService.parse(action.path).append_query(via_related_name_query).to_s,
-      color: action.color,
-      style: action.style,
-      icon: action.icon,
-      icon_class: action.icon_class,
-      title: action.title,
-      size: action.size,
-      # Tippy strips `title` when it builds the tooltip, so an icon-only link needs its own name.
-      aria: action.label.blank? ? {label: action.title.presence || action.action.action_name} : {},
-      data: {
-        controller: "actions-picker",
-        turbo_frame: Avo::MODAL_FRAME_ID,
-        action_name: action.action.action_name,
-        tippy: action.title ? :tooltip : nil,
-        action: "click->actions-picker#visitAction",
-        turbo_prefetch: false,
-        # When action has record present behave as standalone and keep always active.
-        "actions-picker-target": (action.action.standalone || action.action.record.present?) ? "standaloneAction" : "resourceAction",
-        disabled: action.action.disabled?,
-        resource_name: resource_name_for(action.action.resource)
-      } do
-      action.label
-    end
+    helpers.avo.send :"dependents_resources_#{@resource.singular_route_key}_path", @resource.record
   end
 
   def is_a_related_resource?

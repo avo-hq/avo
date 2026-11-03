@@ -158,6 +158,7 @@ module Avo
         ActiveSupport.run_load_hooks(:avo_plugin_include, self)
         ActiveSupport.run_load_hooks(:avo_boot, self)
         Avo.plugin_manager.commit_reload
+        Avo::Hotkeys.validate!
       end
       eager_load_actions
     end

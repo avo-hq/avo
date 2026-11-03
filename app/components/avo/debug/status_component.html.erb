@@ -1,65 +1,44 @@
-<div class="flex flex-col">
-  <%= render ui.panel(title: 'Avo Status', description: 'Use this page to debug your Avo instance.') do |panel| %>
-    <% panel.with_card do %>
-      <div class="grid gap-4 grid-cols-2">
-        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
-          <div class="flex justify-between w-full">
-            <div class="font-semibold">License info</div>
+<%= render ui.panel(title: "Avo Status", description: "Use this page to debug your Avo instance.") do |panel| %>
+  <% panel.with_body do %>
+    <div class="status-page">
+      <%= render ui.card(title: "License", padded: true) do |card| %>
+        <% card.with_body do %>
+          <div class="status-page__license">
+            <%= render ui.badge(label: "Community", color: :success, icon: "tabler/outline/rosette-discount-check") %>
+            <dl class="status-page__details">
+              <% information_items.each do |key, value| %>
+                <div class="status-page__detail">
+                  <dt class="status-page__detail-label"><%= key.humanize %></dt>
+                  <dd class="status-page__detail-value"><%= value.presence || tag.span("Not set", class: "status-page__detail-empty") %></dd>
+                </div>
+              <% end %>
+            </dl>
           </div>
-          <div class="flex flex-col flex-1">
-            <div>
-              <div class="text-xl font-semibold">
-                <span class="text-green-700 text-xl">
-                  <%= helpers.svg "tabler/outline/rosette-discount-check", class: "h-5 inline -mt-1 relative" %> <span>Community</span>
-                </span> license
-              </div>
-              <div class="mt-4">
-                <dl>
-                  <% information_items.each do |key, value| %>
-                    <dt><%= key.humanize %></dt>
-                    <dd><%= value %></dd>
-                  <% end %>
-                </dl>
-              </div>
-              <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-sm">
-                <div class="font-semibold text-blue-800 mb-2">Ready to level up?</div>
-                <p class="text-sm text-blue-700 mb-4">
-                  Visit the link below, select your license, and head to the <strong>Upgrade</strong> section to get started.
-                </p>
-                <%= a_link 'https://avohq.io/licenses',
-                  style: :primary,
-                  color: :blue,
-                  target: '_blank',
-                  icon: 'tabler/outline/external-link' do %>
-                  Get started!
-                <% end %>
-              </div>
-            </div>
+        <% end %>
+        <% card.with_footer do %>
+          <div class="status-page__upgrade">
+            <p class="status-page__upgrade-text">
+              Need more? Pick your license, then open its <strong>Upgrade</strong> section.
+            </p>
+            <%= a_link "https://avohq.io/licenses", style: :primary, color: :blue, size: :sm, target: "_blank", icon: "tabler/outline/external-link" do %>
+              View licenses
+            <% end %>
           </div>
-        </div>
-        <div class="relative flex flex-col bg-white rounded-sm shadow-panel p-4 space-y-4 h-full">
-          <div class="flex justify-between w-full">
-            <div class="font-semibold">Plugins</div>
-          </div>
-          <div class="flex flex-col flex-1">
-            <div>
-              <ul>
-                <li>Avo <%= Avo::VERSION %></li>
-                <% Avo.plugin_manager.plugins.each do |plugin| %>
-                  <li>
-                    <% if plugin.gem_name.present? %>
-                      <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "underline" %>
-                    <% else %>
-                      <%= plugin.name %>
-                    <% end %>
-                    - <%= plugin.version %>
-                  </li>
-                <% end %>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
+        <% end %>
+      <% end %>
+
+      <%= render Avo::Debug::PluginsComponent.new %>
+
+      <% if Avo::IN_DEVELOPMENT %>
+        <%= render ui.card(title: "Telemetry", description: "The payload sent to HQ. Shown only when AVO_IN_DEVELOPMENT=1.", class: "status-page__wide") do |card| %>
+          <% card.with_body do %>
+            <details class="status-page__telemetry">
+              <summary class="status-page__telemetry-summary">Show payload</summary>
+              <pre class="status-page__telemetry-payload"><%= telemetry_json %></pre>
+            </details>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-</div>
+<% end %>

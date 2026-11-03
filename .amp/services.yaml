@@ -1,0 +1,14 @@
+services:
+  web:
+    command: bin/rails server -b 0.0.0.0 -p "$PORT"
+    health: /users/sign_in
+    portal:
+      url: /admin
+      title: Avo admin
+      description: Sign in with hi@avohq.io / secreto.
+  js:
+    command: yarn build:js --watch=forever
+  cjs:
+    command: yarn build:custom-js --watch=forever
+  css:
+    command: yarn build:css --watch=always

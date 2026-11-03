@@ -83,7 +83,8 @@ export default class extends Controller {
     const blob = JSON.parse(item.dataset.mediaLibraryBlobParam)
     const path = item.dataset.mediaLibraryPathParam
     const url = item.dataset.mediaLibraryUrlParam
+    const sgid = item.dataset.mediaLibrarySgidParam
 
-    return { blob, path, url }
+    return { blob, path, url, sgid }
   }
 }

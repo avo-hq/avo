@@ -5,7 +5,7 @@
       style: :text,
       title: t("avo.go_back"),
       data: {
-        hotkey: "b",
+        hotkey: Avo::Hotkeys.key_for("navigation.go_back"),
         tippy: :tooltip
       } do %>
       <%= t("avo.go_back") %>

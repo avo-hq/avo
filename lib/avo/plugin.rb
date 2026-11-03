@@ -16,6 +16,22 @@ module Avo
       "#{name}-#{version}"
     end
 
+    def hotkeys
+      @hotkeys ||= []
+    end
+
+    # The namespace comes from the gem name (avo-dynamic_filters => dynamic_filters) rather than the
+    # plugin, so it can't drift from the gem the way some locale roots did, or shadow core's IDs.
+    def register_hotkey(action, default:, label:, section:, scopes: [:global])
+      namespace = name.to_s.delete_prefix("avo-")
+      if Avo::Hotkeys.core_namespaces.include?(namespace)
+        raise ArgumentError, "Plugin #{name} can't register hotkeys: \"#{namespace}\" is a core hotkey namespace."
+      end
+
+      hotkeys << Avo::Hotkeys.entry("#{namespace}.#{action}", default, label, section:, scopes:)
+      self
+    end
+
     # The real gem name this plugin ships in (e.g. `avo-rhino_field`), as opposed
     # to the nickname it registered under (e.g. `:rhino`). Resolved by matching
     # the file that called `register` against the gems in the bundle, so it works

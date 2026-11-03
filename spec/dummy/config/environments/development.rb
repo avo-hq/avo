@@ -87,4 +87,6 @@ Rails.application.configure do
   config.lookbook.preview_layout = "component_preview"
   config.lookbook.preview_controller = "LookbookPreviewController"
   config.hosts << ".ngrok-free.app"
+  # Amp orb portals serve the app from generated hostnames.
+  config.hosts.clear if ENV["AMP_ORB"]
 end

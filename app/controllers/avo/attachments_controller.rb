@@ -2,10 +2,10 @@ module Avo
   class AttachmentsController < Avo::ApplicationController
     before_action :set_resource_name, only: [:destroy, :create]
     before_action :set_resource, only: [:destroy, :create]
-    before_action :set_record, only: [:destroy, :create]
+    before_action :set_record, only: [:destroy, :create], if: -> { params[:id].present? }
 
     def create
-      association_name = BaseResource.valid_attachment_name(@record, params[:attachment_key])
+      association_name = BaseResource.valid_attachment_name(@record, params[:attachment_key]) if @record.present?
 
       if association_name
         return render_upload_unauthorized unless authorized_to_upload(association_name)
@@ -22,7 +22,9 @@ module Avo
 
       render json: {
         url: main_app.url_for(blob),
-        href: main_app.url_for(blob)
+        href: main_app.url_for(blob),
+        # Defined only when the app loads Action Text.
+        sgid: blob.try(:attachable_sgid)
       }
     end
 
@@ -94,8 +96,11 @@ module Avo
       @resource.authorization.authorize_action("upload_#{attachment_name}?", record: @record, raise_exception: false)
     end
 
+    # Without an id the upload comes from the New form, so it needs the same permission as creating the record.
     def authorized_to_trix_upload?
-      @resource.authorization.authorize_action("update?", record: @record, raise_exception: false)
+      action = @record.present? ? "update?" : "create?"
+
+      @resource.authorization.authorize_action(action, record: @record || @resource.model_class, raise_exception: false)
     end
 
     def render_upload_unauthorized

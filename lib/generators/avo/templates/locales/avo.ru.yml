@@ -78,6 +78,7 @@ ru:
         many: "%{count} выбранных вариантов скрыто по запросу"
         one: 1 выбранный вариант скрыт по запросу
         other: "%{count} выбранных вариантов скрыто по запросу"
+    checking_dependents: Проверка связанных записей...
     choose_a_country: Выберите страну
     choose_an_option: Выберите опцию
     choose_item: Выбрать %{item}
@@ -97,6 +98,7 @@ ru:
     delete: удалить
     delete_file: Удалить файл
     delete_item: Удалить %{item}
+    destroy_also_deletes: 'Это также удалит: %{records}.'
     detach_item: Отсоединить %{item}
     details: Детали
     download: Скачать
@@ -153,6 +155,8 @@ ru:
     list_is_empty: Список пуст
     load_item: Загрузить %{item}
     loading: Загрузка...
+    lookup_list_capped: Слишком много вариантов, чтобы показать их в этой форме.
+    lookup_list_capped_link: Сделайте это поле доступным для поиска, чтобы найти остальные.
     media_library:
       title: Медиатека
     more: Ещё
@@ -248,5 +252,4 @@ ru:
     x_records_selected_from_page_html: Выбрано <span class="font-bold">%{selected}</span> записей на этой странице
     yes_confirm: Да, уверен
     you_cant_upload_new_resource: Вы не можете загружать файлы в редактор Trix, пока не сохраните ресурс.
-    you_havent_set_attachment_key: Вы не установили `attachment_key` для этого поля Trix.
     you_missed_something_check_form: Возможно, вы что-то упустили. Пожалуйста, проверьте форму.

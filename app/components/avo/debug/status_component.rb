@@ -18,13 +18,18 @@ class Avo::Debug::StatusComponent < Avo::BaseComponent
     }.stringify_keys.except(*Avo.configuration.exclude_from_status)
   end
 
-  def cache_operational
-    icon, color = if Avo::Services::TelemetryService.cache_operational?
-      ["tabler/outline/circle-check", "text-green-500"]
-    else
-      ["tabler/outline/circle-x", "text-red-500"]
-    end
+  def telemetry_json
+    request_info = {host: Avo::Current.request&.host, port: Avo::Current.request&.port}
+    JSON.pretty_generate(Avo::Services::HqReporter.payload(request_info))
+  rescue => error
+    "Failed to build the telemetry payload: #{error.class}: #{error.message}"
+  end
 
-    helpers.svg(icon, class: "h-5 inline -mt-1 relative #{color}")
+  def cache_operational
+    if Avo::Services::TelemetryService.cache_operational?
+      render ui.badge(label: "Operational", color: :success, icon: "tabler/outline/circle-check")
+    else
+      render ui.badge(label: "Not working", color: :danger, icon: "tabler/outline/circle-x")
+    end
   end
 end

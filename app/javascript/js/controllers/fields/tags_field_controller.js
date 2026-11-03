@@ -145,12 +145,18 @@ export default class extends Controller {
       if (!this.tagify.settings.pasteAsTags) {
         this.tagify.on('paste', (e) => fetchSuggestions(e.detail.pastedText))
       }
-      // Pasting into a tag being edited fires neither; by the time it bubbles here Tagify has inserted the text
-      this.tagify.DOM.scope.addEventListener('paste', (e) => {
-        const editableTagText = e.target.closest(`.${this.tagify.settings.classNames.tagText}`)
-        if (editableTagText) fetchSuggestions(editableTagText.textContent)
-      })
     }
+
+    // Runs after Tagify inserted text pasted into a tag being edited
+    this.tagify.DOM.scope.addEventListener('paste', (e) => {
+      const editableTagText = e.target.closest(`.${this.tagify.settings.classNames.tagText}`)
+      if (!editableTagText) return
+
+      // Tagify leaves the pasted text selected, so the next Backspace or keystroke wiped all of it
+      window.getSelection().collapseToEnd()
+      // Neither "input" nor "edit:input" fires for this paste
+      if (this.fetchValuesFromValue) fetchSuggestions(editableTagText.textContent)
+    })
   }
 
   fetchResults(endpoint) {

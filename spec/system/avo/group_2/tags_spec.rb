@@ -461,6 +461,24 @@ RSpec.describe "Tags", type: :system do
 
       expect(page).to have_css(".tagify__dropdown__item", text: "Alice Smith")
     end
+
+    it "deletes one character with Backspace after pasting over the selected value" do
+      visit avo.edit_resources_course_path(course)
+
+      tags_input.click
+      type("Bob")
+      wait_for_tags_to_load(field_value_slot)
+      type(:down, :return)
+      expect(field_value_slot).to have_css("tag", text: "Bob Builder")
+
+      tag_text = field_value_slot.find(".tagify__tag-text")
+      tag_text.click
+      page.execute_script("document.execCommand('selectAll')")
+      paste_into_focused_element("Ali")
+      type(:backspace)
+
+      expect(tag_text).to have_text(/\AAl\z/)
+    end
   end
 
   describe "mode: :select" do

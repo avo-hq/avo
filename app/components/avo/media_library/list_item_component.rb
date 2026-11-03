@@ -23,6 +23,8 @@ module Avo
           action: "click->media-library#selectItem"
         }.tap do |result|
           if @attaching
+            # Action Text resolves attachments by sgid; defined only when the app loads Action Text.
+            result[:media_library_sgid_param] = blob.try(:attachable_sgid)
             result[:turbo_frame] = Avo::MEDIA_LIBRARY_ITEM_DETAILS_FRAME_ID
             result[:turbo_prefetch] = false
           else

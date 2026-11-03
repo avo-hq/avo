@@ -223,6 +223,12 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     search_query_present? || filters_present? || has_many_view_types? || has_dynamic_filters? || show_search_input || can_render_scopes?
   end
 
+  # The search box and the filter and view buttons share one row. Header content like scopes or an always-expanded
+  # filter bar can show the header without any of them, and the empty row would still take the header's gap.
+  def show_toolbar_row?
+    show_search_input || show_dynamic_filters_button? || (filters_present? && !field&.hide_filter_button) || has_many_view_types?
+  end
+
   def has_dynamic_filters?
     Avo.avo_dynamic_filters_installed? && @resource.has_filters?
   end

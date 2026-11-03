@@ -97,6 +97,53 @@ RSpec.describe "Attachments", type: :request do
     expect(response).to have_http_status(:forbidden)
   end
 
+  describe "Trix uploads into Action Text" do
+    before { sign_in admin_user }
+
+    def upload_to(path, file)
+      post path, params: {file: file, filename: file.original_filename, key: "trixKey"}, headers: {"ACCEPT" => "application/json"}
+    end
+
+    it "accepts an upload from the New form, before the record exists" do
+      upload = build_upload(content: "%PDF-1.4", original_filename: "report.pdf", content_type: "application/pdf")
+
+      expect {
+        upload_to "/admin/avo_api/resources/playgrounds/attachments", upload
+      }.to change { ActiveStorage::Blob.count }.by(1)
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "denies an upload from the New form when create? is false" do
+      allow_any_instance_of(Avo::Services::AuthorizationService)
+        .to receive(:authorize_action)
+        .with("create?", record: Playground, raise_exception: false)
+        .and_return(false)
+
+      upload = build_upload(content: "%PDF-1.4", original_filename: "report.pdf", content_type: "application/pdf")
+
+      expect {
+        upload_to "/admin/avo_api/resources/playgrounds/attachments", upload
+      }.not_to change { ActiveStorage::Blob.count }
+
+      expect(response).to have_http_status(:forbidden)
+    end
+
+    it "returns an sgid that renders the uploaded file on the show page" do
+      playground = Playground.create!
+      upload = Rack::Test::UploadedFile.new(Rails.root.join("public/apple-touch-icon.png"), "image/png")
+
+      upload_to "/admin/avo_api/resources/playgrounds/#{playground.id}/attachments", upload
+      sgid = response.parsed_body["sgid"]
+      playground.update!(trix_content: %(<action-text-attachment sgid="#{sgid}"></action-text-attachment>))
+
+      get "/admin/resources/playgrounds/#{playground.id}"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("/rails/active_storage/representations/")
+    end
+  end
+
   describe "DELETE destroy" do
     # The authorization check runs against the record named by `:id`, while the
     # attachment to destroy comes from `:attachment_id`. Nothing may allow the

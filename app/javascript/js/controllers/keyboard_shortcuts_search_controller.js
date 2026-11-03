@@ -33,6 +33,7 @@ export default class extends Controller {
     const query = this.inputTarget.value.trim().toLowerCase()
 
     let anyVisible = false
+    const ranges = []
 
     this.sectionTargets.forEach((section) => {
       let sectionHasMatch = false
@@ -41,6 +42,7 @@ export default class extends Controller {
         const match = query === '' || this.searchText(row).includes(query)
         row.hidden = !match
         if (match) sectionHasMatch = true
+        if (match && query) ranges.push(...this.matchRanges(row, query))
       })
 
       section.hidden = !sectionHasMatch
@@ -48,6 +50,27 @@ export default class extends Controller {
     })
 
     if (this.hasEmptyTarget) this.emptyTarget.hidden = anyVisible || query === ''
+
+    // The CSS Custom Highlight API paints the matches without touching the row markup. Browsers without it
+    // still filter, just unhighlighted.
+    if (window.CSS?.highlights) CSS.highlights.set('hotkey-search', new Highlight(...ranges))
+  }
+
+  // Only the action label is highlighted: key badges are split across <kbd> tags and read as glyphs.
+  matchRanges(row, query) {
+    const text = row.querySelector('.hotkey__action')?.firstChild
+    if (text?.nodeType !== Node.TEXT_NODE) return []
+
+    const ranges = []
+    const haystack = text.textContent.toLowerCase()
+    for (let index = haystack.indexOf(query); index !== -1; index = haystack.indexOf(query, index + query.length)) {
+      const range = new Range()
+      range.setStart(text, index)
+      range.setEnd(text, index + query.length)
+      ranges.push(range)
+    }
+
+    return ranges
   }
 
   // Escape clears a non-empty query before the modal handles it as a close.

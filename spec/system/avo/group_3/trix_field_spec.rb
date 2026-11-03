@@ -42,9 +42,6 @@ RSpec.describe "TrixField", type: :system do
 
         attachment_disable_message = find("[data-trix-field-attachment-disable-warning-value]")[:"data-trix-field-attachment-disable-warning-value"]
         expect(attachment_disable_message).to eq I18n.t("avo.this_field_has_attachments_disabled")
-
-        attachment_key_warning_message = find("[data-trix-field-attachment-key-warning-value]")[:"data-trix-field-attachment-key-warning-value"]
-        expect(attachment_key_warning_message).to eq I18n.t("avo.you_havent_set_attachment_key")
       end
     end
   end
@@ -123,6 +120,37 @@ RSpec.describe "TrixField", type: :system do
 
         expect(find_field_value_element("body")).to have_text "New example!"
       end
+    end
+  end
+
+  describe "Action Text attachments" do
+    it "uploads a file on the New form and keeps it attached to the saved record" do
+      visit "/admin/resources/playgrounds/new"
+
+      page.execute_script(<<~JS)
+        document.querySelector("trix-editor").editor.insertFile(new File(["%PDF-1.4"], "report.pdf", {type: "application/pdf"}))
+      JS
+      expect(page).to have_css("trix-editor figure[data-trix-attachment*='sgid']")
+
+      save
+
+      expect(Playground.last.trix_content.embeds.map { |embed| embed.filename.to_s }).to eq ["report.pdf"]
+      expect(find_field_value_element("trix_content")).to have_text "report.pdf"
+    end
+
+    it "keeps a file inserted from the media library attached to the saved record" do
+      blob = ActiveStorage::Blob.create_and_upload!(io: StringIO.new("%PDF-1.4"), filename: "library.pdf", content_type: "application/pdf")
+      playground = Playground.create!
+
+      visit "/admin/resources/playgrounds/#{playground.id}/edit"
+      find("[data-trix-field-target='controller'] a[href*='attach-media']").click
+      find("[data-blob-id='#{blob.id}']").click
+      expect(page).to have_css("trix-editor figure[data-trix-attachment*='sgid']")
+
+      save
+
+      expect(playground.reload.trix_content.embeds.map { |embed| embed.filename.to_s }).to eq ["library.pdf"]
+      expect(find_field_value_element("trix_content")).to have_text "library.pdf"
     end
   end
 

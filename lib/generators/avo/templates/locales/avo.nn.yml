@@ -78,6 +78,7 @@ nn:
       hidden_selections:
         one: 1 vald alternativ skjult av søk
         other: "%{count} valde alternativ skjult av søk"
+    checking_dependents: Sjekkar relaterte postar...
     choose_a_country: Vel eit land
     choose_an_option: Vel eit alternativ
     choose_item: Vel %{item}
@@ -97,6 +98,7 @@ nn:
     delete: slett
     delete_file: Slett fil
     delete_item: Slett %{item}
+    destroy_also_deletes: Dette vil òg slette %{records}.
     detach_item: koble frå %{item}
     details: detaljar
     download: Last ned
@@ -151,6 +153,8 @@ nn:
     list_is_empty: Lista er tom
     load_item: Last inn %{item}
     loading: Lastar
+    lookup_list_capped: For mange alternativ til å visast i dette skjemaet.
+    lookup_list_capped_link: Gjer dette feltet søkbart for å finne resten.
     media_library:
       title: Media bibliotek
     more: Meir
@@ -244,5 +248,4 @@ nn:
     x_records_selected_from_page_html: <span class="font-bold">%{selected}</span> poster valgt på denne siden
     yes_confirm: Ja, eg er sikker
     you_cant_upload_new_resource: Du kan ikkje laste opp filer til Trix-editoren før du lagrar ressursen.
-    you_havent_set_attachment_key: Du har ikkje sett ein `attachment_key` til dette Trix-feltet.
     you_missed_something_check_form: Her manglar du noko. Ver venleg og sjekk skjemaet.

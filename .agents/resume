@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Runs on every orb wake: make sure Postgres (systemd-managed) is up.
+set -euo pipefail
+
+sudo systemctl start postgresql
+for _ in $(seq 1 8); do
+  pg_isready -q -h localhost -U postgres && exit 0
+  sleep 1
+done
+echo "Postgres is not accepting connections" >&2
+exit 1

@@ -132,6 +132,7 @@ module Avo
 
     # This scope is applied if the search is being performed on a has_many association
     def apply_has_many_scope
+      authorize_via_association field, resource
       association_name = BaseResource.valid_association_name(parent, params[:via_association_id])
 
       # Get association records

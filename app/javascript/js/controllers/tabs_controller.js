@@ -60,10 +60,18 @@ export default class extends Controller {
     const u = new URL(window.location)
     u.searchParams.set(this.groupParam(groupId), encodeURIComponent(tabName))
     window.Turbo.navigator.history.replace({ href: u.pathname + u.search })
+    this.syncTurboCacheLocation()
 
     window.Avo.localStorage.set(key, tabName)
 
     this.switchTab(tabName)
+  }
+
+  // Turbo caches the page under the URL it last rendered, not the one we just replaced, so browser back missed the
+  // cache and reloaded the tab frames without their sort and page (#3344). Guarded because the property is internal.
+  syncTurboCacheLocation() {
+    const view = window.Turbo?.session?.view
+    if (view && 'lastRenderedLocation' in view) view.lastRenderedLocation = new URL(window.location.href)
   }
 
   // Swap panels, morphing the active tab indicator (the accent bar under

@@ -90,7 +90,7 @@ RAILS_GROUPS=avo BUNDLE_WITH=avo bundle install
 
 ### 3. Authenticate the private gem server (paid add-ons only)
 
-The token is the **Gem Server Token** from https://avohq.io/dashboard. It authenticates bundler to `packager.dev`. Skip this step entirely for Community.
+The token is the **Gem Server Token** from https://avohq.io/licenses. It authenticates bundler to `packager.dev`. Skip this step entirely for Community.
 
 **Local machine** — store it in bundler's global config (bundler picks it up automatically, no Gemfile change):
 
@@ -219,9 +219,9 @@ end
 
 A license authorizes **one app, one production URL** (`Rails.env.production?`). Non-production environments — development, staging, test, QA — need no extra license. To hide the "license request timed out" badge, set `config.display_license_request_timeout_error = false`.
 
-Verify at the **status page**: `https://yourapp.com/<mount-path>/avo_private/status` (e.g. `.../avo/avo_private/status` or `.../admin/avo_private/status`). It shows whether the license authenticated and what the checking server returned; the key is masked unless you set `config.exclude_from_status = []`. The viewing user must be an Avo admin. Deep failure diagnosis (unlicensed after deploy, timeouts, test-suite blocking the check host) is the **avo-troubleshoot** skill.
+Verify at the **status page**: `https://yourapp.com/<mount-path>/status` (e.g. `.../avo/status` or `.../admin/status`). It shows whether the license authenticated and what the checking server returned; the key is masked unless you set `config.exclude_from_status = []`. The viewing user must be an Avo admin. Deep failure diagnosis (unlicensed after deploy, timeouts, test-suite blocking the check host) is the **avo-troubleshoot** skill.
 
-**Trials are full licenses.** Every add-on a trial covers behaves exactly as it does on a paid license while the trial runs — nothing is gated or degraded. The **Avo Status** indicator in the sidebar footer is green when all is well, **amber** when a trial needs attention, and orange when the license is invalid. Amber is not a failure; it means either no payment method is on file (access stops on the trial's end date) or the subscription behind the trial was cancelled (access stops on the cancellation date, and adding a payment method won't change that — the subscription has to be resumed). Both are fixed on https://avohq.io/licenses, and the status page names which one applies. Avo caches the license response between checks, so press **Refresh license** on the status page afterwards or the app keeps showing the older billing state. Trial state needs `avo-licensing` **4.0.10+**; the amber indicator needs Avo **4.0.20+** (an older Avo renders an uncolored dot rather than breaking).
+**Trials are full licenses.** Every add-on a trial covers behaves exactly as it does on a paid license while the trial runs — nothing is gated or degraded. The **Avo Status** indicator in the sidebar footer is green when all is well, **amber** when a trial needs attention, and orange when the license is invalid. Amber is not a failure: the status page names why, and the fix is on https://avohq.io/licenses. The **avo-troubleshoot** skill lists each case and its fix. Avo caches the license response between checks, so press **Refresh license** on the status page afterwards or the app keeps showing the older billing state. Trial state needs `avo-licensing` **4.0.10+**; the amber indicator needs Avo **4.0.20+** (an older Avo renders an uncolored dot rather than breaking).
 
 ### 7. (Optional) Append your own routes inside the engine
 
@@ -274,6 +274,7 @@ end
 - **Nested mount = two easy mistakes.** For `/uk/admin`: `config.root_path` must be **only the last segment** (`/admin`, never `/uk/admin`), and `mount_avo` must be the **last** thing in the scope, after any custom-tool routes — otherwise the engine swallows them.
 - **`api_only` must be `false`.** An API-only app has no session/flash/views; Avo can't render. Flip it (or follow the api-only guide) before installing.
 - **GitHub installs don't ship assets.** Install from GitHub and you must `rake avo:build-assets` yourself and hook it into `assets:precompile`, or the admin renders unstyled/broken in production.
+- **Rotating credentials breaks deploys until they're replaced.** If a key or token may have leaked, an account admin clicks **Rotate** next to it on https://avohq.io/licenses (optionally both at once). The old value stops working immediately: a rotated gem-server token fails every `bundle install` that fetches paid gems until `BUNDLE_PACKAGER__DEV` is updated on dev machines, CI and Docker builds (running apps are unaffected); a rotated license key leaves apps reporting an invalid license after their last check until the new `config.license_key` is deployed to every environment.
 - **One license per production URL.** A key authorizes a single app on a single production URL; staging/dev/test don't consume licenses. A second production URL needs its own license.
 - **Add-on gems must sit inside the `packager.dev` `source` block** — that's where the private gems resolve from; `avo` itself stays outside it (rubygems.org).
 - **Verify before writing.** Option and path names drift between versions — check the docs URLs above or the app's installed Avo source rather than trusting memory.

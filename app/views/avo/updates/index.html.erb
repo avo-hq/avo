@@ -1,0 +1,50 @@
+<% content_for :page_title, "Updates" %>
+<%= render ui.panel(title: "Updates", description: "Release notes for Avo and your Avo gems, newest first.") do |panel| %>
+  <% panel.with_controls do %>
+    <%= a_link avo.status_path, style: :outline, color: :gray, size: :sm, icon: "tabler/outline/arrow-left" do %>
+      Status
+    <% end %>
+  <% end %>
+  <% panel.with_body do %>
+    <% if @releases.empty? %>
+      <%= render ui.card(padded: true) do |card| %>
+        <% card.with_body do %>
+          <p class="updates-page__empty">No release notes to show. avohq.io may be unreachable, so try again in a bit.</p>
+        <% end %>
+      <% end %>
+    <% end %>
+    <div class="updates-page">
+      <% if @available_releases.any? %>
+        <%= render ui.card(title: "Available", description: "Newer than what this app runs.") do |card| %>
+          <% card.with_body do %>
+            <div class="updates-page__actions">
+              <%= render partial: "avo/updates/progress" %>
+            </div>
+            <%= render partial: "avo/updates/release", collection: @available_releases, as: :release, locals: {open: true} %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if @installed_releases.any? %>
+        <%= render ui.card(title: "Installed") do |card| %>
+          <% card.with_body do %>
+            <%= render partial: "avo/updates/release", collection: @installed_releases, as: :release, locals: {open: false} %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <% if @page > 1 || @next_page %>
+      <nav class="updates-page__pagination" aria-label="Release notes pages">
+        <% if @page > 1 %>
+          <%= a_link avo.updates_path(page: @page - 1), style: :outline, color: :gray, size: :sm, icon: "tabler/outline/arrow-left" do %>
+            Newer
+          <% end %>
+        <% end %>
+        <% if @next_page %>
+          <%= a_link avo.updates_path(page: @next_page), style: :outline, color: :gray, size: :sm, class: "updates-page__older", end_icon: "tabler/outline/arrow-right" do %>
+            Older
+          <% end %>
+        <% end %>
+      </nav>
+    <% end %>
+  <% end %>
+<% end %>

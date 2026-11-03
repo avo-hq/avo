@@ -41,6 +41,7 @@ module Avo
     attr_reader :appended_turbo_streams
     attr_reader :records_to_reload
     attr_reader :query
+    attr_reader :index_query
 
     # TODO: find a differnet way to delegate this to the uninitialized Current variable
     delegate :context, to: Avo::Current
@@ -130,7 +131,8 @@ module Avo
           record: @record,
           view: @view,
           arguments: @arguments,
-          query: @query
+          query: @query,
+          index_query: @index_query
         ).handle
       end
 
@@ -215,13 +217,17 @@ module Avo
         {}
       end
 
+      # Only on a dashboard, so a `handle` written with strict keywords keeps working on resources.
+      dashboard_args = (@view == :dashboard) ? {dashboard: args[:resource]} : {}
+
       handle(
         fields: processed_fields.with_indifferent_access,
         current_user: args[:current_user],
         resource: args[:resource],
         records: args[:query],
         query: args[:query],
-        request: args[:request]
+        request: args[:request],
+        **dashboard_args
       )
 
       self
@@ -352,8 +358,9 @@ module Avo
       @appended_turbo_streams = turbo_stream
     end
 
+    # A dashboard's action belongs to that dashboard, as a show page's belongs to its record: there's nothing to select.
     def enabled?
-      self.class.standalone || @record&.to_param.present?
+      self.class.standalone || @record&.to_param.present? || @view == :dashboard
     end
 
     def disabled?
@@ -388,7 +395,8 @@ module Avo
         record: @record,
         view: @view,
         arguments:,
-        query: @query
+        query: @query,
+        index_query: @index_query
       ).handle
     end
 
@@ -406,7 +414,8 @@ module Avo
         record: @record,
         view: @view,
         arguments: @arguments,
-        query: @query
+        query: @query,
+        index_query: @index_query
       ).handle
     end
 

@@ -98,6 +98,18 @@ Guards:
 - Assert slug uniqueness within the set at boot; raise and point the author at `self.param` on conflict.
 - During a transition, also accept the legacy value so bookmarked URLs keep working (`scope.param == p || scope.name == p`); drop the fallback a version later.
 
+## Telemetry
+
+**What we collect is listed in [Avo telemetry: what we collect](https://linear.app/avo-hq/document/avo-telemetry-what-we-collect-28974df26d42) on Linear.** Add a metric there before adding it to the collector, and keep the list out of this repo.
+
+`Avo::Services::TelemetryService.avo_metadata` is two halves: `structural_metadata`, parsed out of `app/avo` with Prism, and `runtime_metadata` (menus, cache, config, plugins), read from live objects.
+
+**Structural counts never read live Avo objects.** `HqReporter.report` runs inside `Thread.new` (see `InitializesAvo#init_app`), and `Avo::Current` is an `ActiveSupport::CurrentAttributes`, which is per-thread. In that thread `Avo::Current.resource_manager` and `Avo::Current.app` are both nil. The pre-4.x runtime collector raised on every single call for exactly that reason, plus two more: it read `Avo::Current.app.dashboard_manager` (nil since dashboards moved to the avo-dashboards gem) and called `get_field_definitions` / `get_actions`, which are instance methods, on resource *classes*. HQ received nothing but error payloads. `Avo.plugin_manager` is safe to read there: it is a module-level memo, not a `Current` attribute.
+
+**Prism is used but stays out of `avo.gemspec`.** It has shipped as a default gem since Ruby 3.3 (0.19.0 there, 1.5.1 on 3.4, 1.8.1 on 4.0), and default gems remain requirable under Bundler with no Gemfile entry. Declaring it would force every user through a 635 KB download and a roughly 12 second native-extension build for a parser already in their Ruby. Keep the `rescue LoadError` around the require and the `return {} unless defined?(Prism)` in `StaticCollector`: Ruby 3.2 has no prism, and distro-packaged Rubies sometimes split default gems into separate OS packages. Collector output is identical on 0.19.0 and 1.9.0, so no version floor is needed.
+
+**Static counts are a lower bound, not a census.** A field declared in a loop counts once, a field behind a conditional counts always, and resources shipped by a gem are invisible. A field wired by a symbol that a gem registers (`as: :money`) is counted, but not recognized as custom, since that would need a registry of gem field types we do not have.
+
 ## Translations
 
 When you touch translations (any key in `lib/generators/avo/templates/locales/*.yml`), fill in the other languages before declaring done:
@@ -156,6 +168,12 @@ builds, running the server) is NOT done by the update script — do it yourself.
 ```
 sudo pg_ctlcluster 16 main start
 ```
+
+### The license key
+The commands below pass `AVO_LICENSE_KEY=license_123`. That is not a valid key. It only works here because
+nothing in avo core needs a paid feature. The paid gems (dynamic filters, dashboards, kanban, and the rest) do,
+so for them use a real key from the environment and never override it with `license_123`: their specs fail with
+no mention of the license.
 
 ### First-time / after-schema-change database setup
 The dev DB and test DB are part of the snapshot, but if missing or stale:
@@ -223,7 +241,8 @@ installing `eslint@6.8.0` (plus matching plugins) at job time before linting
 (see `.github/workflows/lint.yml`). Do not "fix" this by changing the pinned version.
 
 ### Tests
-Tests run against `RAILS_ENV=test` with `AVO_LICENSE_KEY=license_123`.
+Tests run against `RAILS_ENV=test` with `AVO_LICENSE_KEY=license_123` (see "The license key" above for
+why that value is enough for avo core and nothing else).
 ```
 bin/test            # everything (slow)
 bin/test unit       # feature + controller + component (fast)

@@ -6,7 +6,8 @@
       @classes,
       "search-input__input",
       "search-input__input--with-shortcut": @shortcut == :slash,
-      "search-input__input--with-two-key-shortcut": @shortcut == :cmd_k
+      "search-input__input--with-two-key-shortcut": @shortcut == :cmd_k,
+      "search-input__input--with-three-key-shortcut": @shortcut == :cmd_shift_k
     ),
     disabled: @disabled,
     autocomplete: "off",
@@ -17,17 +18,7 @@
     <%= helpers.svg "tabler/outline/search" %>
   </span>
 
-  <% if @shortcut == :slash %>
-    <span class="search-input__suffix hotkey-badge" aria-hidden="true">
-      <kbd>/</kbd>
-    </span>
-  <% elsif @shortcut == :cmd_k %>
-    <span class="search-input__suffix hotkey-badge" aria-hidden="true">
-      <kbd>
-        <abbr title="Command" class="no-underline os-pc:hidden">⌘</abbr>
-        <abbr title="CTRL" class="no-underline os-mac:hidden">CTRL</abbr>
-      </kbd>
-      <kbd>K</kbd>
-    </span>
+  <% if shortcut_hotkey %>
+    <%= hotkey_badge(shortcut_hotkey, class: "search-input__suffix", aria: {hidden: true}) %>
   <% end %>
 <% end %>

@@ -31,6 +31,13 @@ tags.tagify .tagify__input {
   }
 }
 
+/* The loader reuses the input's ::after, which Tagify positions absolutely for its suggestion hint;
+   laying it out inline lets vertical-align center it on the text. */
+tags.tagify.tagify--loading .tagify__input::after {
+  position: static;
+  display: inline-block;
+}
+
 tags.tagify.tagify--focus {
   outline: var(--focus-outline);
   outline-offset: var(--focus-outline-offset);

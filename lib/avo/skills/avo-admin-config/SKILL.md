@@ -138,7 +138,8 @@ config.set_context do                                     # attach a payload to 
   { params: request.params }
 end
 
-config.persistence = { driver: :session }                # keep association pagination + static filters across requests
+config.persistence = { driver: :session }                # keep pagination, filters, sort and row selection across requests
+# config.persistence = { driver: :session, sorting: false, selection: false }  # 4.3.11+: turn kinds off next to the driver (keys: pagination, filters, sorting, selection; all default true)
 
 config.associations = {                                   # global association defaults (set only what you change)
   lookup_list_limit: 1000,
@@ -148,8 +149,8 @@ config.associations = {                                   # global association d
 config.turbo = -> { { instant_click: true } }             # Turbo behavior inside Avo
 config.default_url_options = [:account_id]                # params appended to every generated path (route multitenancy)
 config.logger = -> { ActiveSupport::Logger.new(Rails.root.join("log", "avo.log")) }
-config.exclude_from_status = ["license_key", "ip"]        # items hidden on /avo_private/status (license_key hidden by default)
-config.send_metadata = false                              # opt out of usage metadata (Community licenses only)
+config.exclude_from_status = ["license_key", "ip"]        # items hidden on /status (license_key hidden by default)
+config.send_metadata = false                              # opt out of the usage report (Community licenses only; paid tiers always send it with the license check)
 ```
 
 ## Gotchas
@@ -157,7 +158,7 @@ config.send_metadata = false                              # opt out of usage met
 - **`container_width` replaces the Avo-3 booleans.** `config.full_width_container = true` → `config.container_width = :full`; `config.full_width_index_view = true` → `config.container_width = { index: :full }`; `full_width_container = false` → just remove the line. It raises `ArgumentError` on an unknown width or hash key.
 - **The container's CSS classes were renamed too, and those are *not* aliased.** `:large`/`:small` in the initializer keep working, but the classes Avo emits changed with them: `.container-large` → `.container-lg`, `.container-small` → `.container-md`, `.container-full-width` → `.container-full` (plus a new `.container-sm`). An app that styles Avo's container in its own CSS silently stops matching until those selectors are renamed — nothing warns about it, because the deprecation only covers the config value.
 - **`resource_default_view` replaces `skip_show_view`.** The old `config.skip_show_view = true` is now `config.resource_default_view = :edit` (default `:show`). This retargets row links, post-create/update redirects, and association links to Edit.
-- **`persistence: { driver: :session }` can overflow the cookie store.** Rails' default cookie session store is capped at 4096 bytes; many stored pagination + filter states raise `ActionDispatch::Cookies::CookieOverflow`. Move to a scalable session store (Redis, Memcache) before enabling it broadly.
+- **`persistence: { driver: :session }` can overflow the cookie store.** Rails' default cookie session store is capped at 4096 bytes; many stored pagination, filter and sort states raise `ActionDispatch::Cookies::CookieOverflow`. Move to a scalable session store (Redis, Memcache) before enabling it broadly.
 - **`default_editor_url` defaults to Cursor.** If a user's `</>` icons open Cursor unexpectedly, that's the default — point it at their editor. The icons only render in `development`.
 - **Row caching is user-scoped; don't disable it for role-based fields.** The index cache key carries the record, the resource/policy file md5 **and** `index_cache_context` — by default the current user record, the locale and the tenant — so a resource that shows/hides fields per role caches a row per user and never serves one user's layout to another. Narrow `index_cache_context` (to a role, say) only when nothing a row renders reads the user; override a resource's `cache_context` only for a per-request dimension a lambda reads that is not the user. A field that reads `params` stays incompatible with caching under any key — that is the one case for `cache_resources_on_index_view = false`. Only the grid view caches per row today. For the caching model and cache store, see **avo-performance**; for role-based field visibility, see **avo-authorization**.
 - **Sidebar resizing is a drag-only gesture.** It doesn't satisfy [WCAG 2.2 SC 2.5.7 (Dragging Movements)](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html), so an app working to an AA conformance claim or a VPAT should set `config.sidebar = {resizable: false}`. Related: sidebar labels now truncate with an ellipsis (plus a hover tooltip) instead of wrapping — if a menu relied on long labels wrapping, shorten them or widen the sidebar.

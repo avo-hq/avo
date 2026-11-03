@@ -49,6 +49,11 @@
   @apply text-sm;
 }
 
+::highlight(hotkey-search) {
+  background-color: color-mix(in oklab, var(--color-warning) 40%, transparent);
+  color: var(--color-content);
+}
+
 .hotkey__keys {
   @apply flex shrink-0 flex-wrap items-center justify-end gap-x-1.5 gap-y-1.5 pt-0.5;
 }

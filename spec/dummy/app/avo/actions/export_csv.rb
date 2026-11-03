@@ -19,7 +19,7 @@ class Avo::Actions::ExportCsv < Avo::BaseAction
     # records = resource.model_class.all if records.blank?
 
     if records.blank?
-      inform "@index_query.count: #{@index_query.count}"
+      inform "@index_query.count: #{@index_query&.count.to_i}"
       return error "No record selected"
     end
 

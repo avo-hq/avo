@@ -13,16 +13,63 @@ RSpec.describe Avo::KeyboardShortcutsComponent, type: :component do
     expect(page).to have_text("CTRL")
   end
 
-  # The assistant shortcut belongs to avo-ai, so the modal must not advertise a key
-  # nothing is listening for when the gem isn't installed.
-  it "lists the assistant shortcut only when avo-ai is installed" do
+  # Plugin shortcuts come from the plugin's registration, so the modal never advertises a key nothing listens for.
+  it "lists a plugin shortcut only when the plugin registered it" do
     render_inline(described_class.new)
     expect(page).not_to have_text("Open the assistant")
 
-    allow(Avo.plugin_manager).to receive(:installed?).and_call_original
-    allow(Avo.plugin_manager).to receive(:installed?).with("avo-ai").and_return(true)
+    plugin = Avo::Plugin.new(name: "avo-ai", priority: 10)
+      .register_hotkey(:toggle_assistant, default: "Mod+j", label: "Open the assistant", section: "Navigation")
+    allow(Avo.plugin_manager).to receive(:plugins).and_return([plugin])
 
     render_inline(described_class.new)
-    expect(page).to have_text("Open the assistant")
+    expect(page).to have_css(".hotkey__row", text: "Open the assistant")
+  end
+
+  it "lists a plugin shortcut registered without a section under Other" do
+    plugin = Avo::Plugin.new(name: "avo-ai", priority: 10)
+      .register_hotkey(:toggle_assistant, default: "Mod+j", label: "Open the assistant", section: nil)
+    allow(Avo.plugin_manager).to receive(:plugins).and_return([plugin])
+
+    render_inline(described_class.new)
+
+    expect(page).to have_css("#hotkey-group-other", text: "Other")
+    expect(page).to have_css(".hotkey__row", text: "Open the assistant")
+  end
+
+  it "shows an explicit Meta with the same symbol as Mod" do
+    original = Avo.configuration.hotkeys
+    Avo.configuration.hotkeys = {bindings: {"record.edit": "Meta+E"}}
+
+    render_inline(described_class.new)
+
+    expect(page).to have_css(".hotkey__row", text: /Edit record\s*⌘\s*\+\s*E/)
+  ensure
+    Avo.configuration.hotkeys = original
+  end
+
+  it "shows the first alternative of an alias binding, as the badges do" do
+    original = Avo.configuration.hotkeys
+    Avo.configuration.hotkeys = {bindings: {"index.next_row": "j,ArrowDown"}}
+
+    render_inline(described_class.new)
+
+    row = page.find(".hotkey__row", text: "Focus table and move to next row")
+    expect(row).to have_css("kbd", text: "J")
+    expect(row).not_to have_css("kbd", text: "↓")
+  ensure
+    Avo.configuration.hotkeys = original
+  end
+
+  it "shows the overridden key and drops disabled shortcuts" do
+    original = Avo.configuration.hotkeys
+    Avo.configuration.hotkeys = {bindings: {"record.edit": "Shift+E", "record.delete": false}}
+
+    render_inline(described_class.new)
+
+    expect(page).to have_css(".hotkey__row", text: /Edit record\s*Shift\s*\+\s*E/)
+    expect(page).not_to have_text("Delete record")
+  ensure
+    Avo.configuration.hotkeys = original
   end
 end

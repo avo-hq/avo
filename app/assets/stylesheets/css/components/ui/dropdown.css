@@ -141,23 +141,35 @@
   }
 
   &:hover {
-    @apply bg-secondary text-content;
+    @apply text-content;
+    background-color: var(--color-row-bg-hover);
   }
 }
 
 .dropdown-menu__list > :is(a, button):hover {
-  @apply bg-secondary;
+  background-color: var(--color-row-bg-hover);
 }
 
+/* Hover, the active row and the keyboard-focused row share one fill, no ring. The fill is the focus
+   indicator, so forced-colors mode gets its ring back below. */
 .dropdown-menu__item--active {
-  background: color-mix(in oklab, var(--color-secondary), var(--color-content) 5%);
+  background-color: var(--color-row-bg-hover);
 }
 
 .dropdown-menu__item:focus-visible,
 .dropdown-menu__list > :is(a, button):focus-visible,
 .dropdown-menu__list form > :is(a, button):focus-visible {
-  @apply bg-primary;
-  outline-offset: var(--focus-outline-offset-inset);
+  background-color: var(--color-row-bg-hover);
+  outline: none;
+}
+
+@media (forced-colors: active) {
+  .dropdown-menu__item:focus-visible,
+  .dropdown-menu__list > :is(a, button):focus-visible,
+  .dropdown-menu__list form > :is(a, button):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
 }
 
 /* ==========================================================================

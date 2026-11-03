@@ -86,3 +86,6 @@ brakeman_results.html
 spec/dummy/.agents/
 spec/dummy/.claude/
 spec/dummy/.cursor/
+
+# Amp orb portal state
+.amp/portals/
