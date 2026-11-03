@@ -4,13 +4,15 @@ description: >-
   Build custom UI inside an Avo admin panel and the JS/CSS/Tailwind plumbing behind it —
   standalone custom-tool pages (route + controller + sidebar item), resource tools embedded in a
   record's Show/Edit view, Avo's native ViewComponents (a_button/a_link, ui.panel, ui.card,
-  ui.description_list), ejecting Avo's own partials and components, Stimulus controllers, dynamic
+  ui.description_list), view slots that add to, wrap or hide regions of resource views,
+  ejecting Avo's own partials and components, Stimulus controllers, dynamic
   and dependent forms, custom CSS/JS through the asset pipeline, the TailwindCSS integration, and
   packaging any of it as an Avo plugin. Use when the user wants a custom admin page, a dashboard
-  widget or panel on a record page, extra form inputs that aren't columns, a nested form,
-  cascading or dependent selects, a field toggled by another field, their own JavaScript or
-  Stimulus controller in the admin, to override how a view renders, to style a custom tool to
-  match the admin, or to package a customization as a reusable plugin.
+  widget or panel on a record page, a notice above the index table or a badge beside a title, extra
+  form inputs that aren't columns, a nested form, cascading or dependent selects, a field toggled
+  by another field, their own JavaScript or Stimulus controller in the admin, to override how a
+  view renders, to style a custom tool to match the admin, or to package a customization as a
+  reusable plugin.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -20,18 +22,19 @@ metadata:
 
 # Avo Custom UI
 
-Everything about building **your own UI inside an Avo admin** and the asset plumbing behind it: standalone pages, embedded record widgets, Avo's reusable components, ejecting Avo's markup, Stimulus/dynamic forms, custom CSS/JS, the Tailwind integration, and packaging it all as a plugin.
+Everything about building **your own UI inside an Avo admin** and the asset plumbing behind it: standalone pages, embedded record widgets, Avo's reusable components, view slots, ejecting Avo's markup, Stimulus/dynamic forms, custom CSS/JS, the Tailwind integration, and packaging it all as a plugin.
 
 Two things to fix before writing any code:
 
-- **Which surface?** A **standalone page** (own route + sidebar item) is a [custom tool](#custom-tools). A widget **on an existing record's Show/Edit** is a [resource tool](#resource-tools). Rendering Avo's *existing* markup differently is an [eject](#eject-views). A *new field type* is a different skill (see Gotchas).
-- **Everything here is Community.** Custom tools, resource tools, ejecting, JS/Stimulus, and the Tailwind integration need no paid gem.
+- **Which surface?** A **standalone page** (own route + sidebar item) is a [custom tool](#custom-tools). A widget **on an existing record's Show/Edit** is a [resource tool](#resource-tools). Adding to, wrapping, replacing or hiding a *region* of Index, Show, Edit or New is a [view slot](#view-slots). Changing Avo's markup *inside* a region (a table row, a field, the sidebar, the layout) is an [eject](#eject-views). A *new field type* is a different skill (see Gotchas).
+- **Everything here is Community.** Custom tools, resource tools, view slots, ejecting, JS/Stimulus, and the Tailwind integration need no paid gem.
 
 **Docs** — fetch on demand with WebFetch; prefer the raw `.md` (clean, no HTML). Read the page before implementing anything non-trivial in that area.
 
 - Docs map (find any other page): https://docs.avohq.io/4.0/docs-map.md
 - Custom tools (standalone pages): https://docs.avohq.io/4.0/custom-tools.md
 - Resource tools (embedded partials + custom form inputs): https://docs.avohq.io/4.0/resource-tools.md
+- View slots: https://docs.avohq.io/4.0/slots.md
 - Eject views: https://docs.avohq.io/4.0/eject-views.md
 - Native components — button: https://docs.avohq.io/4.0/native-components/avo-button-component.md · panel: https://docs.avohq.io/4.0/native-components/avo-panel-component.md · card: https://docs.avohq.io/4.0/native-components/avo-card-component.md
 - JavaScript & Stimulus: https://docs.avohq.io/4.0/javascript.md
@@ -47,7 +50,8 @@ Two things to fix before writing any code:
 | "Embed a custom panel/widget on the record page", "show related stats on the post's Show view" | [Resource tools](#resource-tools) |
 | "Add extra inputs to the edit form that aren't columns", "build a nested form", "write a Hash/array attribute from the form" | [Resource tools → custom form inputs](#custom-form-inputs-and-nested-forms) |
 | "Style my custom tool like the rest of Avo", "buttons/cards that match the admin", "dark-mode-ready markup" | [Native components](#native-components) |
-| "Override how Avo renders the index table", "change a view's markup", "customize the sidebar/layout partial" | [Eject views](#eject-views) |
+| "Add a notice above the index table", "put a badge next to the title", "wrap the form in a section", "hide the toolbar", "replace the index table with my own partial" | [View slots](#view-slots) |
+| "Change the markup of a table row", "change a view's markup inside a region", "customize the sidebar/layout partial" | [Eject views](#eject-views) |
 | "Add my own JS/CSS to the admin", "add a Stimulus controller to a resource" | [JavaScript & Stimulus](#javascript--stimulus) + [Assets & Tailwind](#assets--tailwind) |
 | "When country changes reload cities", "cascading/dependent selects", "make the form dynamic" | [dependent selects](#dependent-selects-cascading-dropdowns) |
 | "Toggle/disable a field based on another field" | [pre-made toggle/disable](#pre-made-toggledisable-no-js) |
@@ -243,9 +247,60 @@ Use Avo's own ViewComponents instead of hand-rolled `<div>`s — they keep custo
 
 **Prefer built-in options over utility classes.** `padded: true` gives the card body Avo's exact standard padding — reach for it instead of adding your own `px-*`/`py-*`. `title:` / `description:` build the header for you. Inside a `ui.panel`, use its `with_card` slot rather than nesting a `ui.card` yourself. The card body ships **unpadded** by default (so tables/scrollers sit flush) — opt into `padded: true` for free-form content like forms and prose.
 
+## View slots
+
+Add content to a region of a resource's Index, Show, Edit or New view, or wrap, replace or hide that region, from the resource class. The rest of the view stays Avo's and keeps receiving updates, so try this before [ejecting](#eject-views).
+
+| Method                               | Regions                                                                                  |
+| ------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `index_slot`                         | `cards`, `header`, `title`, `controls`, `toolbar`, `collection`, `records`, `pagination` |
+| `show_slot`                          | `cards`, `header`, `title`, `controls`, `body`                                           |
+| `edit_slot`, `new_slot`              | `cards`, `header`, `title`, `controls`, `body`, `form`                                   |
+| `form_slot` (shared by Edit and New) | `cards`, `header`, `title`, `controls`, `body`, `form`                                   |
+
+`view_slot(view, position, replace: false)` is the generic form, with `:index`, `:show`, `:edit`, `:new` or `:form` as the view. Don't confuse the `form_slot` method, which targets both form views, with the `:form` region, which is the content inside the form tag.
+
+- **Additions** use `before_<region>` / `after_<region>` and accumulate in registration order. Shared `form_slot` additions render before `edit_slot` / `new_slot` ones.
+- **Replacements** use `replace: true` with the bare region name. A second replacement of the same region on the same class raises `ArgumentError` at declaration; a child class may override an inherited one. A specific Edit/New replacement wins over a shared `form_slot` one. The region's `before_` / `after_` additions still render.
+
+```ruby
+# app/avo/resources/project.rb
+class Avo::Resources::Project < Avo::BaseResource
+  # Add. Partials get no automatic locals.
+  index_slot :after_header do
+    render partial: "avo/projects/summary", locals: {resource: resource}
+  end
+
+  # Wrap Avo's content.
+  index_slot :records, replace: true do
+    tag.section(default_content.call, class: "project-records")
+  end
+
+  # Hide. Returning nil removes the content, not its surrounding wrapper.
+  index_slot :toolbar, replace: true do
+    nil
+  end
+
+  # Add to both Edit and New, including validation-error rerenders.
+  form_slot :before_body do
+    tag.p("Choose an owner before saving.")
+  end
+end
+```
+
+**`default_content`** exists only in replacement blocks. `default_content.call` is lazy (skip it and Avo's content never renders), memoized for that render, and always returns Avo's built-in content, never a parent's or a `form_slot` replacement. Calling it doesn't insert it: it has to be in the block's return value. Pass it as a local if a partial needs it.
+
+**Block context:** `resource`, `record`, `view`, `form`, `resources`, `query`, `pagy`, `parent_record`, `parent_resource`, `view_type`, plus view helpers such as `tag`, `render` and `safe_join`, and `current_user` and `params`.
+
+- On Edit and New, `view` stays `edit` / `new` even after a failed save, so `view.new?` works.
+- `form` is the Rails form builder inside the form. It is `nil` on Index and Show, and in `cards`, `before_form` and `after_form` hooks, which sit outside the form tag. In a belongs-to creation modal, `before_form` and `after_form` move inside the dialog, and so inside the form, and receive the builder: don't render a nested form or `button_to` from them.
+- `resources` holds the current page's hydrated Avo resources, not model records. Use `resources.map(&:record)` for the models.
+
+The block's return value is the output. Plain strings are escaped, and `nil` renders nothing.
+
 ## Eject views
 
-Avo renders from partials, ViewComponents, and controllers inside the gem. When config isn't enough, **copy one into your app and edit it** — your copy takes precedence.
+Avo renders from partials, ViewComponents, and controllers inside the gem. When config isn't enough, **copy one into your app and edit it** — your copy takes precedence. To add to or wrap a whole region of a resource view, use [view slots](#view-slots) instead.
 
 ```bash
 # A gem partial → same path in your app
@@ -427,7 +482,7 @@ end
 `Avo.plugin_manager` API:
 
 - `register(name, priority: 10)` — add to the plugin list (lower priority runs earlier).
-- `register_view_type(name, component:, icon:, active_icon:)` — a new index view type. **Pass `component:` as a string** (`"MyPlugin::ViewTypes::TimelineViewTypeComponent"`) to dodge boot load-order issues; the component inherits `Avo::ViewTypes::BaseViewTypeComponent` and must render `paginator_component`. Enabling it on a resource is **avo-index-views** (`self.view_types` / `self.default_view_type`).
+- `register_view_type(name, component:, icon:, active_icon:)` — a new index view type. **Pass `component:` as a string** (`"MyPlugin::ViewTypes::TimelineViewTypeComponent"`) to dodge boot load-order issues; the component inherits `Avo::ViewTypes::BaseViewTypeComponent` and must render `paginator_component`. It only gets `collection`, `records` and `pagination` slots where its template calls `render_index_slot`, passing the default markup as the block for replacements. Enabling it on a resource is **avo-index-views** (`self.view_types` / `self.default_view_type`).
 - `register_field(method_name, klass)` — ship a field *type* from a gem (the plugin-author side of **avo-custom-fields**).
 - `register_menu_item(name, &block)` — a custom menu DSL method for `config.main_menu`. Delegates to `avo-menu`; **no-op when avo-menu isn't installed**, so register unconditionally.
 - `register_configuration(name, klass)` — add a `config.<name>` namespace to `Avo::Configuration` backed by an instance of `klass`, so host apps configure the plugin from the same `config/initializers/avo.rb` they already use. **The one call that must not go in `avo_boot`** — see below.
@@ -463,7 +518,16 @@ Assets from library code go through `Avo.asset_manager` (not the app pipeline); 
 ## Gotchas
 
 - **Custom tool vs. resource tool vs. new field.** Standalone page → custom tool. Widget on a record's Show/Edit → resource tool. A new *input type* used across resources → **avo-custom-fields** (not this).
-- **Ejected files are frozen copies — you own them forever.** They stop receiving upstream updates; Avo bug/security fixes won't reach your copy. Prefer CSS-variable / Tailwind-layer overrides and `--scope` (so you don't replace a component everywhere) before ejecting whole components.
+- **Ejected files are frozen copies — you own them forever.** They stop receiving upstream updates; Avo bug/security fixes won't reach your copy. Prefer [view slots](#view-slots), CSS-variable / Tailwind-layer overrides and `--scope` (so you don't replace a component everywhere) before ejecting whole components.
+- **A slot replacement that skips its default skips the nested hooks too.** Replacing `:header` without `default_content.call` also drops the title and controls and their hooks. Replacing `:collection` the same way drops `records` and `pagination`.
+- **Index slots of a resource also fire on its has-many panels** on a parent's page. Return `nil` when `parent_record` is present if the content only belongs on the main index.
+- **`controls` hooks run twice when `buttons_on_form_footers` is on**, once in the header and once in the footer, so a fixed HTML id can be duplicated.
+- **The toolbar doesn't refresh on live search.** Put a summary that follows the search in a `collection`, `records` or `pagination` hook.
+- **On a lazy index (`self.index_view_loading = :lazy`), `cards` and `header` hooks run before `resources`, `query` and `pagy` are loaded.** Put data-dependent content in `toolbar`, `collection`, `records` or `pagination` hooks.
+- **In the belongs-to create modal, header hooks don't run.** Title, body and controls hooks do.
+- **A `TableComponent` subclass with its own template must call `prepare_table_rows` if its resource replaces `:records` or `:collection`.** Avo skips row preparation for those resources, so `@table_row_components` and `@header_fields` are `nil` until that call.
+- **Slots only fire where the template calls them.** An ejected or custom component has to keep its `render_index_slot` / `render_resource_slot` calls, and custom view types have to adopt `render_index_slot`.
+- **The `form` builder in a slot doesn't permit anything.** An input for a non-field attribute still needs `self.extra_params`.
 - **The no-`mount_avo` fallback route is NOT behind auth.** A custom-tool route inside `mount_avo` inherits Avo's authentication. But if `config/routes.rb` has no `mount_avo` at all, the generator appends a standalone `Avo::Engine.routes.draw` block that is **unprotected** — secure it yourself.
 - **Resource-tool custom inputs need all three steps.** Missing `self.extra_params` (params not permitted) or a model that doesn't respond to the attribute → the value silently never persists. Nested keys not listed in `extra_params` are dropped too.
 - **`form` is only present on New/Edit.** Guard resource-tool partials with `if form.present?` or they blow up on Show.
@@ -478,7 +542,7 @@ Assets from library code go through `Avo.asset_manager` (not the app pipeline); 
 
 When done, tell the user:
 
-- Which surface you built (custom tool / resource tool / ejected view / plugin) and the exact files created or edited (absolute paths), including the resource(s) you registered a tool on.
+- Which surface you built (custom tool / resource tool / view slot / ejected view / plugin) and the exact files created or edited (absolute paths), including the resource(s) you registered a tool on.
 - Which components/patterns it uses (`ui.panel`/`ui.card`, `a_button`/`a_link`, pre-made toggle/disable, dependent-select controller, ejected + `--scope`).
 - For form inputs: that you added `self.extra_params` and whether the model already responds to those attributes (or the setters the user still needs to add).
 - Asset/Tailwind wiring done vs. left to the user: the `avo:js:install` entrypoint, `tailwindcss-ruby` (and `tailwindcss-rails >= 4.0`), the watcher process.

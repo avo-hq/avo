@@ -8,10 +8,15 @@
     **@resource.stimulus_data_attributes
   } do %>
   <%= content_tag :div, class: "panel-spacer" do %>
-    <%= render_cards_component %>
+    <%= render_resource_slot :before_cards %>
+    <%= render_resource_slot(:cards) { render_cards_component } %>
+    <%= render_resource_slot :after_cards %>
 
-    <% @resource.get_items.each_with_index do |item, index| %>
-      <%= render Avo::Items::SwitcherComponent.new(
+    <%= render_resource_slot :before_body %>
+
+    <%= render_resource_slot :body do %>
+      <% @resource.get_items.each_with_index do |item, index| %>
+        <%= render Avo::Items::SwitcherComponent.new(
         resource: @resource,
         reflection: @reflection,
         item: item,
@@ -22,7 +27,10 @@
         parent_component: self,
         actions: @actions
       ) %>
+      <% end %>
     <% end %>
+
+    <%= render_resource_slot :after_body %>
   <% end %>
 
   <% if should_display_invalid_fields_errors? %>

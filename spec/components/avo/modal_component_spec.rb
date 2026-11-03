@@ -36,6 +36,14 @@ RSpec.describe Avo::ModalComponent, type: :component do
     expect(page).to have_css("##{dialog["aria-labelledby"]}", text: "Release fish", visible: :all)
   end
 
+  # A parser that follows the HTML spec closes a <p> before a <div>, which is what browsers do.
+  it "keeps block content from the heading slot inside the title the dialog is named by" do
+    render_inline(described_class.new) { |c| c.with_heading { c.tag.div("Release fish", id: "block-heading") } }
+
+    html = Nokogiri::HTML5.fragment(rendered_content)
+    expect(html.at_css(".modal__title #block-heading")).to be_present
+  end
+
   it "leaves off aria-labelledby and aria-describedby when there is nothing to point at" do
     render_inline(described_class.new) { "Body" }
 

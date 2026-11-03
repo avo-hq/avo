@@ -178,6 +178,27 @@ RSpec.describe "SelectAll", type: :system do
         expect(page).to have_text "Matching the filters: #{spec_salmon_number}"
       end
 
+      [[:table, :collection], [:grid, :collection], [:grid, :records]].each do |view_type, region|
+        context "with a replaced #{region} on the #{view_type} view" do
+          let!(:url) { "/admin/resources/fish?per_page=#{per_page}&view_type=#{view_type}" }
+
+          around do |example|
+            replacements = Avo::Resources::Fish.index_slot_replacements
+            Avo::Resources::Fish.index_slot(region, replace: true) { tag.p("Custom fish summary") }
+            example.run
+          ensure
+            Avo::Resources::Fish.index_slot_replacements = replacements
+          end
+
+          it "keeps the filtered query available to standalone actions" do
+            expect(page).to have_text "Custom fish summary"
+            open_panel_action(action_name: "Dummy action")
+
+            expect(page).to have_text "Matching the filters: #{spec_salmon_number}"
+          end
+        end
+      end
+
       context "on the grid view" do
         let!(:url) { "/admin/resources/fish?per_page=#{per_page}&view_type=grid" }
 

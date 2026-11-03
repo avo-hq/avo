@@ -20,6 +20,7 @@ Avo ships three built-in index view types: **table** (default), **grid**, and **
 - Grid cards: `https://docs.avohq.io/4.0/grid-view.md`
 - Map markers: `https://docs.avohq.io/4.0/map-view.md`
 - Select-all across pages: `https://docs.avohq.io/4.0/select-all.md`
+- Slots around and inside the listing: `https://docs.avohq.io/4.0/slots.md`
 - Custom view types (plugin authoring, out of scope here): `https://docs.avohq.io/4.0/custom-view-types.md`
 
 Published under `https://docs.avohq.io/4.0/<page>.html`. Fetch with WebFetch if the local checkout isn't present.
@@ -34,6 +35,7 @@ Use this skill when the request is about the **appearance or behavior of the ind
 - "Move the action buttons", "controls are hidden behind columns", "reveal buttons on hover" → **row controls placement**.
 - "Let users switch between list and grid", "make grid/map the default", "only allow the table view" → **view types**.
 - "Run an action on every matching record, not just this page" → **select-all** (cross-links to `avo-actions`).
+- "Add a summary or notice above the table", "a badge next to the title", "wrap or hide the toolbar/pagination": use **index slots**, don't eject.
 
 **Not this skill:** inventing a brand-new view type (timeline, calendar, kanban) is plugin authoring — a ViewComponent inheriting `Avo::ViewTypes::BaseViewTypeComponent` registered from an engine. Mention it briefly and point to the **avo-custom-ui** skill and `https://docs.avohq.io/4.0/custom-view-types.md`. This skill only *enables and configures* built-in (or already-registered) view types.
 
@@ -42,7 +44,7 @@ Use this skill when the request is about the **appearance or behavior of the ind
 ## Workflow
 
 1. **Find the resource file.** Glob `app/avo/resources/*.rb` (and `**/*.rb` for namespaced ones). The class is `Avo::Resources::<Model>`. If the user named a model, match it; otherwise ask or infer from context.
-2. **Identify which knob.** Map the request to one of the sections below (table / grid / map / view types / select-all).
+2. **Identify which knob.** Map the request to one of the sections below (table / grid / map / view types / select-all / index slots).
 3. **Read the resource** before editing so you preserve `def fields`, existing class attributes, and `self.includes`.
 4. **Read the relevant doc page** (see Docs above) to confirm option names and defaults before writing DSL — the surface is small but exact.
 5. **Apply the change** as a class attribute near the top of the class body (after `self.title` / `self.includes` if present, before `def fields`).
@@ -235,6 +237,27 @@ It works out of the box on the table view; nothing to enable on the resource. Th
 
 **Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. With `config.persistence = { driver: :session }` (4.3.11+) the selection is kept per page rather than per URL and comes back however you reach the index; turn it off with `selection: false`. System specs that expect nothing selected after **Go back** will now find rows checked.
 
+## Index slots
+
+Add content around a region of the Index, or wrap, replace or hide it, without ejecting. The regions are `cards`, `header`, `title`, `controls`, `toolbar`, `collection`, `records` and `pagination`. Additions use `before_<region>` / `after_<region>`; `replace: true` takes the bare region name, and `default_content.call` returns Avo's built-in content inside that block.
+
+```ruby
+# app/avo/resources/project.rb
+class Avo::Resources::Project < Avo::BaseResource
+  index_slot :before_records do
+    tag.p("Projects on this page: #{resources.size}", class: "p-4")
+  end
+
+  index_slot :pagination, replace: true do
+    tag.div(default_content.call, class: "project-pagination")
+  end
+end
+```
+
+`cards` means the resource's dashboard cards, not grid items. Blocks run once per region, not per row: use `row_options` to change rows.
+
+The **avo-custom-ui** skill's **View slots** section has the full reference, Show/Edit/New, block context and gotchas.
+
 ## Gotchas
 
 - **`view_types` / `default_view_type` must stay in sync with what's registered.** Requesting a view type not in the available list raises an error; rendering one that was never configured raises `Avo::ViewTypeComponentNotFoundError`. If you set `default_view_type = :grid`, make sure grid is actually configured (or in `view_types`).
@@ -251,7 +274,7 @@ It works out of the box on the table view; nothing to enable on the resource. Th
 ## Report
 
 Tell the user:
-- Which resource file(s) and attribute(s) you changed (`self.table_view`, `self.grid_view`, `self.map_view`, `self.view_types`, `self.default_view_type`, `self.row_controls_config`, or the initializer).
+- Which resource file(s) and attribute(s) you changed (`self.table_view`, `self.grid_view`, `self.map_view`, `self.view_types`, `self.default_view_type`, `self.row_controls_config`, `index_slot`, or the initializer).
 - Any external requirements: the `mapkick-rb` gem for maps (`MAPBOX_ACCESS_TOKEN` only if they want Mapbox styles rather than Avo's keyless OpenFreeMap default); the Tailwind integration and/or `@source inline(...)` for custom/dynamic classes; `self.includes` additions to avoid N+1.
 - If you set a `default_view_type`, confirm the matching view is configured/available so the switcher stays consistent.
 - For select-all or custom-view-type requests, note the cross-linked skill (**avo-actions**, **avo-custom-ui**) that carries the rest of the work.
