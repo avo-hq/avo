@@ -12,7 +12,8 @@
   <%= render_resource_slot(:cards) { render_cards_component } %>
   <%= render_resource_slot :after_cards %>
 
-  <%= render_resource_slot :before_form %>
+  <%# In a modal the form hooks move into the dialog, because here they would render behind it. %>
+  <%= render_resource_slot :before_form unless embedded_in_modal? %>
 
   <%= build_form do |form| %>
     <% @form = form %>
@@ -39,6 +40,7 @@
           <%= render_resource_slot :after_controls %>
         <% end %>
 
+        <%= render_resource_slot :before_form %>
         <%= render_resource_slot :form do %>
           <%= content_tag :div, class: "panel-spacer" do %>
             <%= render_resource_slot :before_body %>
@@ -46,6 +48,7 @@
             <%= render_resource_slot :after_body %>
           <% end %>
         <% end %>
+        <%= render_resource_slot :after_form %>
       <% end %>
     <% else %>
       <%= render_resource_slot :form do %>
@@ -80,5 +83,5 @@
     <% @form = nil %>
   <% end %>
 
-  <%= render_resource_slot :after_form %>
+  <%= render_resource_slot :after_form unless embedded_in_modal? %>
 <% end %>

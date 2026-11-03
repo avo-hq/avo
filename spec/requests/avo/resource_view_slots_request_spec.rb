@@ -186,6 +186,8 @@ RSpec.describe "Resource show and form slots", type: :request do
     Avo::Resources::Project.form_slot(:header, replace: true) { raise "Modal chrome is protected" }
     Avo::Resources::Project.form_slot(:after_body) { tag.p("Form: #{form.object.new_record?}", id: "modal-body") }
     Avo::Resources::Project.form_slot(:controls, replace: true) { tag.div(default_content.call, id: "modal-controls") }
+    Avo::Resources::Project.form_slot(:before_form) { tag.p("Before: #{form.object.new_record?}", id: "modal-before-form") }
+    Avo::Resources::Project.form_slot(:after_form) { tag.p("After: #{form.object.new_record?}", id: "modal-after-form") }
 
     get "/admin/resources/projects/new",
       params: {modal_layout: true, via_belongs_to_resource_class: "Avo::Resources::Comment", via_relation: "commentable"},
@@ -194,6 +196,7 @@ RSpec.describe "Resource show and form slots", type: :request do
     expect(response).to have_http_status(:ok)
     document = Nokogiri::HTML(response.body)
     dialog = document.at_css("form [role='dialog']")
+    expect(dialog.at_css(".modal__body-content").text).to match(/Before: true.*Form: true.*After: true/m)
     heading = document.at_css("##{dialog["aria-labelledby"]}")
     expect(heading.css("span").map(&:text)).to eq(["Before modal", "Create new project", "After modal"])
     expect(dialog.at_css("button[data-action='click->modal#closeModal']")).to be_present
