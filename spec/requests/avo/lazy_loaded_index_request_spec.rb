@@ -44,6 +44,33 @@ RSpec.describe "Lazy-loaded resource indexes", type: :request do
     expect(response.body).not_to include("Loading projects")
   end
 
+  # The header sits outside the frame, so a description that reads the request (a scope, a filter)
+  # would keep describing the previous one after a frame navigation.
+  it "refreshes the header description from inside the frame" do
+    original_description = Avo::Resources::Project.description
+    Avo::Resources::Project.description = -> { "Projects for page #{params[:page] || 1}" }
+
+    get "/admin/resources/projects"
+    expect(response.body).to match(/<div id="projects_index_description" class="header__description">Projects for page 1</)
+
+    get "/admin/resources/projects", params: {page: 2}, headers: {"Turbo-Frame" => "projects_index"}
+    frame = response.body[/<turbo-frame[^>]+id="projects_index".*<\/turbo-frame>/m]
+    expect(frame).to match(/<turbo-stream action="update" target="projects_index_description"><template>Projects for page 2<\/template>/)
+  ensure
+    Avo::Resources::Project.description = original_description
+  end
+
+  it "keeps the description element targetable when there is no description" do
+    original_description = Avo::Resources::Project.description
+    Avo::Resources::Project.description = nil
+
+    get "/admin/resources/projects"
+
+    expect(response.body).to include('<div id="projects_index_description" class="header__description"></div>')
+  ensure
+    Avo::Resources::Project.description = original_description
+  end
+
   it "keeps eager loading as the default" do
     Avo::Resources::Project.index_view_loading = :eager
     project = create :project, name: "Eager project"
