@@ -37,12 +37,6 @@ en:
         relaxed: Relaxed
         tight: Tight
       density: Density
-      roundness: Roundness
-      roundnesses:
-        square: Square
-        tight: Tight
-        normal: Normal
-        relaxed: Relaxed
       hide: Hide
       light: Light
       light_and_dark: Light & dark
@@ -60,6 +54,12 @@ en:
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Select neutral color
+      roundness: Roundness
+      roundnesses:
+        normal: Normal
+        relaxed: Relaxed
+        square: Square
+        tight: Tight
       schemes: Appearance
       shortcut_badges: Shortcut badges
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges

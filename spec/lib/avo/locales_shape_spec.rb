@@ -73,7 +73,9 @@ module AvoLocaleShape
     avo
     avo.appearance
     avo.appearance.accents_list
+    avo.appearance.densities
     avo.appearance.neutrals_list
+    avo.appearance.roundnesses
     avo.checkbox_list
     avo.checkbox_list.hidden_selections
     avo.file
