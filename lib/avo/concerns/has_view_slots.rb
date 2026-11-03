@@ -4,7 +4,7 @@ module Avo
       extend ActiveSupport::Concern
 
       REGIONS = {
-        index: %i[cards header title toolbar collection records pagination].freeze,
+        index: %i[cards header title controls toolbar collection records pagination].freeze,
         show: %i[cards header title controls body].freeze,
         edit: %i[cards header title controls body form].freeze,
         new: %i[cards header title controls body form].freeze,

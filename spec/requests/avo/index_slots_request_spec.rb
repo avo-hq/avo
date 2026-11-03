@@ -25,7 +25,7 @@ RSpec.describe "Resource index slots", type: :request do
   it "places additions around the default table without replacing its title, controls or pagination" do
     create :project, name: "Launch project"
     %i[before_cards after_cards before_header after_header before_title after_title
-      before_toolbar after_toolbar before_collection after_collection
+      before_controls after_controls before_toolbar after_toolbar before_collection after_collection
       before_records after_records before_pagination after_pagination].each do |position|
       Avo::Resources::Project.index_slot(position) { tag.span(position, data: {test_slot: position}) }
     end
@@ -35,7 +35,7 @@ RSpec.describe "Resource index slots", type: :request do
     expect(response).to have_http_status(:ok)
     document = Nokogiri::HTML(response.body)
     expect(document.css("[data-test-slot]").map { |node| node["data-test-slot"] }).to eq(%w[
-      before_cards after_cards before_header before_title after_title after_header
+      before_cards after_cards before_header before_title after_title before_controls after_controls after_header
       before_toolbar after_toolbar before_collection before_records after_records
       before_pagination after_pagination after_collection
     ])
@@ -109,7 +109,7 @@ RSpec.describe "Resource index slots", type: :request do
 
   it "wraps all default regions while preserving their nested controls and records" do
     create :project, name: "Launch project"
-    %i[cards header title toolbar collection records pagination].each do |region|
+    %i[cards header title controls toolbar collection records pagination].each do |region|
       Avo::Resources::Project.index_slot(region, replace: true) do
         content_tag((region == :title) ? :span : :div, data: {region: region}) do
           default_content.call
@@ -122,9 +122,9 @@ RSpec.describe "Resource index slots", type: :request do
     expect(response).to have_http_status(:ok)
     document = Nokogiri::HTML(response.body)
     expect(document.css("[data-region]").map { |node| node["data-region"] })
-      .to eq(%w[cards header title toolbar collection records pagination])
+      .to eq(%w[cards header title controls toolbar collection records pagination])
     expect(document.at_css('[data-region="header"] [data-region="title"]').text.strip).to eq("Projects")
-    expect(document.at_css('[data-region="header"] .header__controls').text).to include("Create")
+    expect(document.at_css('[data-region="header"] .header__controls [data-region="controls"]').text).to include("Create")
     expect(document.at_css('[data-region="toolbar"] input[name="q"]')).to be_present
     expect(document.at_css('[data-region="collection"] [data-region="records"] table').text).to include("Launch project")
     expect(document.at_css('[data-region="collection"] [data-region="pagination"]').text).to include("1 record")

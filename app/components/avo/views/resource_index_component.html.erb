@@ -69,9 +69,13 @@
             <% end %>
           <% end %>
           <% header.with_controls do %>
-            <% @resource.render_index_controls(item: singular_resource_name).each do |control| %>
-              <%= render_control control %>
+            <%= render_index_slot :before_controls %>
+            <%= render_index_slot :controls do %>
+              <% @resource.render_index_controls(item: singular_resource_name).each do |control| %>
+                <%= render_control control %>
+              <% end %>
             <% end %>
+            <%= render_index_slot :after_controls %>
           <% end %>
         <% end %>
       <% end %>
