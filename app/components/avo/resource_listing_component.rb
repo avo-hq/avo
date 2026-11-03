@@ -1,4 +1,6 @@
 class Avo::ResourceListingComponent < Avo::BaseComponent
+  include Avo::RendersViewSlots
+
   prop :resources
   prop :resource
   prop :reflection

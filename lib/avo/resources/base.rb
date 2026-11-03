@@ -11,6 +11,7 @@ module Avo
       include Avo::Concerns::HasItems
       include Avo::Concerns::CanReplaceItems
       include Avo::Concerns::HasControls
+      include Avo::Concerns::HasViewSlots
       include Avo::Concerns::HasResourceStimulusControllers
       include Avo::Concerns::ModelClassConstantized
       include Avo::Concerns::HasDescription
