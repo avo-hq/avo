@@ -169,6 +169,12 @@ builds, running the server) is NOT done by the update script — do it yourself.
 sudo pg_ctlcluster 16 main start
 ```
 
+### The license key
+The commands below pass `AVO_LICENSE_KEY=license_123`. That is not a valid key. It only works here because
+nothing in avo core needs a paid feature. The paid gems (dynamic filters, dashboards, kanban, and the rest) do,
+so for them use a real key from the environment and never override it with `license_123`: their specs fail with
+no mention of the license.
+
 ### First-time / after-schema-change database setup
 The dev DB and test DB are part of the snapshot, but if missing or stale:
 ```
@@ -235,7 +241,8 @@ installing `eslint@6.8.0` (plus matching plugins) at job time before linting
 (see `.github/workflows/lint.yml`). Do not "fix" this by changing the pinned version.
 
 ### Tests
-Tests run against `RAILS_ENV=test` with `AVO_LICENSE_KEY=license_123`.
+Tests run against `RAILS_ENV=test` with `AVO_LICENSE_KEY=license_123` (see "The license key" above for
+why that value is enough for avo core and nothing else).
 ```
 bin/test            # everything (slow)
 bin/test unit       # feature + controller + component (fast)

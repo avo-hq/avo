@@ -26,12 +26,10 @@ class Avo::Debug::StatusComponent < Avo::BaseComponent
   end
 
   def cache_operational
-    icon, color = if Avo::Services::TelemetryService.cache_operational?
-      ["tabler/outline/circle-check", "text-green-500"]
+    if Avo::Services::TelemetryService.cache_operational?
+      render ui.badge(label: "Operational", color: :success, icon: "tabler/outline/circle-check")
     else
-      ["tabler/outline/circle-x", "text-red-500"]
+      render ui.badge(label: "Not working", color: :danger, icon: "tabler/outline/circle-x")
     end
-
-    helpers.svg(icon, class: "h-5 inline -mt-1 relative #{color}")
   end
 end

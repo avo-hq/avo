@@ -1,53 +1,44 @@
-<div class="flex flex-col">
-  <%= render ui.panel(title: 'Avo Status', description: 'Use this page to debug your Avo instance.') do |panel| %>
-    <% panel.with_card do %>
-      <div class="grid gap-4 grid-cols-2">
-        <div class="relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4 h-full">
-          <div class="flex justify-between w-full">
-            <div class="font-semibold">License info</div>
-          </div>
-          <div class="flex flex-col flex-1">
-            <div>
-              <div class="text-xl font-semibold">
-                <span class="text-success-content text-xl">
-                  <%= helpers.svg "tabler/outline/rosette-discount-check", class: "h-5 inline -mt-1 relative" %> <span>Community</span>
-                </span> license
-              </div>
-              <div class="mt-4">
-                <dl>
-                  <% information_items.each do |key, value| %>
-                    <dt class="text-content-secondary"><%= key.humanize %></dt>
-                    <dd><%= value %></dd>
-                  <% end %>
-                </dl>
-              </div>
-              <div class="mt-6 p-4 bg-tertiary border border-info rounded-sm">
-                <div class="font-semibold text-info-content mb-2">Ready to level up?</div>
-                <p class="text-sm text-info-content mb-4">
-                  Visit the link below, select your license, and head to the <strong>Upgrade</strong> section to get started.
-                </p>
-                <%= a_link 'https://avohq.io/licenses',
-                  style: :primary,
-                  color: :blue,
-                  target: '_blank',
-                  icon: 'tabler/outline/external-link' do %>
-                  Get started!
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <%= render Avo::Debug::PluginsComponent.new %>
-        <% if Avo::IN_DEVELOPMENT %>
-          <div class="col-span-2 relative flex flex-col bg-primary text-content border border-tertiary rounded-sm shadow-panel p-4 space-y-4">
-            <div class="flex justify-between w-full">
-              <div class="font-semibold">Telemetry</div>
-              <div class="text-sm text-content-secondary">The payload sent to HQ. Shown only when AVO_IN_DEVELOPMENT=1.</div>
-            </div>
-            <pre class="text-xs overflow-x-auto"><%= telemetry_json %></pre>
+<%= render ui.panel(title: "Avo Status", description: "Use this page to debug your Avo instance.") do |panel| %>
+  <% panel.with_body do %>
+    <div class="status-page">
+      <%= render ui.card(title: "License", padded: true) do |card| %>
+        <% card.with_body do %>
+          <div class="status-page__license">
+            <%= render ui.badge(label: "Community", color: :success, icon: "tabler/outline/rosette-discount-check") %>
+            <dl class="status-page__details">
+              <% information_items.each do |key, value| %>
+                <div class="status-page__detail">
+                  <dt class="status-page__detail-label"><%= key.humanize %></dt>
+                  <dd class="status-page__detail-value"><%= value.presence || tag.span("Not set", class: "status-page__detail-empty") %></dd>
+                </div>
+              <% end %>
+            </dl>
           </div>
         <% end %>
-      </div>
-    <% end %>
+        <% card.with_footer do %>
+          <div class="status-page__upgrade">
+            <p class="status-page__upgrade-text">
+              Need more? Pick your license, then open its <strong>Upgrade</strong> section.
+            </p>
+            <%= a_link "https://avohq.io/licenses", style: :primary, color: :blue, size: :sm, target: "_blank", icon: "tabler/outline/external-link" do %>
+              View licenses
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <%= render Avo::Debug::PluginsComponent.new %>
+
+      <% if Avo::IN_DEVELOPMENT %>
+        <%= render ui.card(title: "Telemetry", description: "The payload sent to HQ. Shown only when AVO_IN_DEVELOPMENT=1.", class: "status-page__wide") do |card| %>
+          <% card.with_body do %>
+            <details class="status-page__telemetry">
+              <summary class="status-page__telemetry-summary">Show payload</summary>
+              <pre class="status-page__telemetry-payload"><%= telemetry_json %></pre>
+            </details>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-</div>
+<% end %>

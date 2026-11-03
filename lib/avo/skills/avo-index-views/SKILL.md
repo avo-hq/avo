@@ -233,7 +233,7 @@ Not a view type — a table affordance. Checking the header "Select all" checkbo
 
 It works out of the box on the table view; nothing to enable on the resource. The action itself is where the selection is consumed — cross-link the **avo-actions** skill for writing/handling the action. If serialization fails, Avo silently disables select-all rather than crashing (see the `normalizes` gotcha below).
 
-**Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. System specs that expect nothing selected after **Go back** will now find rows checked.
+**Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. With `config.persistence = { driver: :session }` (4.3.11+) the selection is kept per page rather than per URL and comes back however you reach the index; turn it off with `selection: false`. System specs that expect nothing selected after **Go back** will now find rows checked.
 
 ## Gotchas
 

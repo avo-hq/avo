@@ -91,6 +91,29 @@ RSpec.describe "Index row cache and the current user", type: :system do
       expect(page).to have_css(".grid-card__description", text: "classified")
       expect(page).not_to have_text("public")
     end
+
+    # avo-hq/avo#1870: the cache block used to ask Rails to digest the component's template, which
+    # can't be found, so every render logged an error and the key never changed across upgrades.
+    it "re-renders cached cards after an Avo upgrade without logging digest errors" do
+      log = StringIO.new
+      logger = ActionView::Base.logger
+      ActionView::Base.logger = Logger.new(log)
+
+      visit avo.resources_spouses_path(view_type: :grid)
+      expect(page).to have_css(".grid-card__description", text: "public")
+
+      Avo::Resources::Spouse.grid_view = {card: -> { {title: record.name, body: "after upgrade"} }}
+      visit avo.resources_spouses_path(view_type: :grid)
+      expect(page).to have_css(".grid-card__description", text: "public")
+
+      stub_const("Avo::VERSION", "#{Avo::VERSION}.next")
+      visit avo.resources_spouses_path(view_type: :grid)
+      expect(page).to have_css(".grid-card__description", text: "after upgrade")
+
+      expect(log.string).not_to include("Couldn't find template for digesting")
+    ensure
+      ActionView::Base.logger = logger
+    end
   end
 
   # On current code this passes for the wrong reason: the `return` inside the

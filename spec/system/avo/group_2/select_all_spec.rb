@@ -76,6 +76,50 @@ RSpec.describe "SelectAll", type: :system do
     end
   end
 
+  describe "on the grid view" do
+    let!(:url) { "/admin/resources/fish?per_page=#{per_page}&view_type=grid" }
+
+    it "releases the fish from the selected page" do
+      visit url
+
+      check_select_all
+      expect_all_message
+
+      release_fish
+
+      expect(page).to have_text "#{per_page} fish released with message '' by ."
+    end
+
+    it "checks the select all box once every card is checked" do
+      visit url
+
+      # A card shows its checkbox only on hover.
+      cards = all("[data-component-name='avo/index/grid_item_component']")
+      cards.each do |card|
+        card.hover
+        card.find(:css, record_selector_checkbox_selector).set(true)
+      end
+      expect(page).to have_checked_field("Select all")
+
+      cards.first.hover
+      cards.first.find(:css, record_selector_checkbox_selector).set(false)
+      expect(page).to have_unchecked_field("Select all")
+      expect(page.evaluate_script("document.querySelector(\"input[name='Select all']\").indeterminate")).to be true
+    end
+
+    it "releases all fishes" do
+      visit url
+
+      check_select_all
+      click_on "Select all matching"
+      expect_all_matching_message
+
+      release_fish
+
+      expect(page).to have_text "#{total_fish} fish released with message '' by ."
+    end
+  end
+
   describe "with applied filters" do
     context "select all" do
       it "releases all fish from applied filter" do
