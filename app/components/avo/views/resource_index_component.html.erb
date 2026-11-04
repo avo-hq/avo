@@ -28,7 +28,8 @@
       <%= render_index_slot :before_header %>
       <%= render_index_slot :header do %>
         <%= render ui.panel_header(
-          description:
+          description:,
+          description_id: header_description_id
         ) do |header| %>
           <% header.with_before_title do %>
             <%= render_index_slot :before_title %>
@@ -154,6 +155,9 @@
       <% if lazy_load_index_view? %>
         <%= turbo_frame_tag @resource.index_view_frame, **index_view_frame_args do %>
           <% if index_view_loaded? %>
+            <%# Scopes, filters and pagination reload only this frame, and the header sits outside it.
+                Turbo runs a stream as soon as the frame inserts it, so the description follows the request. %>
+            <%= helpers.turbo_stream.update header_description_id, description.to_s %>
             <%= index_view_content %>
           <% else %>
             <%= render Avo::LoadingComponent.new(title:) %>
