@@ -140,10 +140,10 @@ module Avo
       Avo::PagyCompat.with_locale(@pagy_locale) { pagy.info_tag }
     end
 
-    def avo_pagy_nav(pagy, **)
-      return pagy_nav(pagy, **) unless Avo::PagyCompat.pagy_43?
+    def avo_pagy_nav(pagy, anchor_string: nil)
+      return pagy_nav(pagy, anchor_string:) unless Avo::PagyCompat.pagy_43?
 
-      Avo::PagyCompat.with_locale(@pagy_locale) { pagy.series_nav(**) }
+      Avo::PagyCompat.with_locale(@pagy_locale) { pagy.series_nav(anchor_string:) }
     end
 
     def pagy_major_version
