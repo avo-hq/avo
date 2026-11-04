@@ -4,11 +4,11 @@ module Avo
   module MediaLibrary
     class ListComponent < Avo::BaseComponent
       include Avo::ApplicationHelper
-      include Pagy::Backend
+      include Avo::PagyCompat.backend
 
       def initialize(attaching: false, turbo_frame: nil)
         @attaching = attaching
-        @pagy, @blobs = pagy(query, limit:)
+        @pagy, @blobs = Avo::PagyCompat.pagy_43? ? pagy(:offset, query, limit:) : pagy(query, limit:)
         turbo_frame ||= params[:turbo_frame]
         @turbo_frame = turbo_frame.present? ? CGI.escapeHTML(turbo_frame.to_s) : :_top
       end

@@ -1,6 +1,6 @@
 module Avo
   module ApplicationHelper
-    include ::Pagy::Frontend
+    include ::Pagy::Frontend unless Avo::PagyCompat.pagy_43?
     include Avo::ResourcesHelper
 
     def render_license_warning(title: "", message: "", icon: "exclamation")
@@ -132,6 +132,18 @@ module Avo
 
     def possibly_rails_authentication?
       defined?(Authentication) && Authentication.private_instance_methods.include?(:require_authentication) && Authentication.private_instance_methods.include?(:authenticated?)
+    end
+
+    def avo_pagy_info(pagy)
+      return pagy_info(pagy) unless Avo::PagyCompat.pagy_43?
+
+      Avo::PagyCompat.with_locale(@pagy_locale) { pagy.info_tag }
+    end
+
+    def avo_pagy_nav(pagy, anchor_string: nil)
+      return pagy_nav(pagy, anchor_string:) unless Avo::PagyCompat.pagy_43?
+
+      Avo::PagyCompat.with_locale(@pagy_locale) { pagy.series_nav(anchor_string:) }
     end
 
     def pagy_major_version

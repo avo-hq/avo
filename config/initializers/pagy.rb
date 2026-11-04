@@ -1,3 +1,6 @@
+# Pagy 43 has no extras to require, and it loads its own dictionaries (nn and ro included) on first use.
+return if Avo::PagyCompat.pagy_43?
+
 require "pagy/extras/trim"
 require "pagy/extras/countless"
 require "pagy/extras/array"

@@ -33,6 +33,10 @@ jobs:
         # ruby/setup-ruby with bundler-cache runs Bundler in a frozen/deployment-like mode.
         # This step intentionally changes the Gemfile.lock, so we must unfreeze Bundler here.
         bundle config set frozen false
+        # The test app runs Rails 7.1, whose JSON encoder passes `quirks_mode`, which json 3
+        # removed. Pagy 43 declares `json >= 0`, so adding Avo would resolve json to 3.x.
+        # Pin it below 3, as on main (#4793).
+        bundle add "json" --version "< 3" --skip-install
         bundle add "avo" --git='https://github.com/avo-hq/avo.git' --ref="${{ github.sha }}"
         bundle install
         bin/rails generate avo:install
