@@ -1,0 +1,58 @@
+name: PR dependency changes
+
+# Keeps a "Dependency changes" section in the PR description in step with the avo.gemspec diff, so a reviewer sees
+# what a host app would install. `ws pr-dependencies` lives in the private avo-hq/workspace, which writes the same
+# section on its own PRs, so this job checks it out with the workflow bot App instead of keeping a second copy.
+#
+# pull_request_target, so a fork PR gets a token that can edit its description. That is safe only because the job
+# never checks out or runs the PR's code: ws reads the diff and the PR body as data, through the API.
+#
+# The write uses GITHUB_TOKEN, whose events start no workflow, and ws skips the write when the description already
+# matches, so the `edited` trigger cannot loop.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, edited]
+
+concurrency:
+  group: pr-dependency-changes-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  description:
+    name: Dependency changes in the description
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.WORKFLOW_BOT_APP_ID }}
+          private-key: ${{ secrets.WORKFLOW_BOT_APP_PRIVATE_KEY }}
+          owner: avo-hq
+          repositories: workspace
+          permission-contents: read
+
+      - name: Check out ws
+        uses: actions/checkout@v4
+        with:
+          repository: avo-hq/workspace
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+          sparse-checkout: |
+            lib
+            vendor
+
+      # Reads the workspace's .ruby-version, at the checkout root.
+      - uses: ruby/setup-ruby@v1
+
+      - name: Update the description
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: ./ws pr-dependencies --pr "$PR" --repo "$REPO"
