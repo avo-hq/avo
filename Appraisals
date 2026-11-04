@@ -23,3 +23,14 @@
     end
   end
 end
+
+# Pagy 43 changed its whole API. Avo 3 supports it next to Pagy 7 to 9, so one job runs on it.
+appraise "rails-8.0-ruby-3.4-pagy-43" do
+  gem "psych", "< 4"
+  gem "rails", "~> 8.0"
+  gem "activestorage", "~> 8.0"
+  gem "activestorage"
+  gem "acts-as-taggable-on"
+  gem "view_component", "3.23.2"
+  gem "pagy", "~> 43.5", ">= 43.5.6"
+end

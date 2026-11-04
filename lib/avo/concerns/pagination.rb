@@ -4,7 +4,7 @@ module Avo
       extend ActiveSupport::Concern
 
       included do
-        include Pagy::Backend
+        include Avo::PagyCompat.backend
 
         class_attribute :pagination, default: {}
 
@@ -38,10 +38,10 @@ module Avo
 
         data_turbo_frame = "data-turbo-frame=\"#{CGI.escapeHTML(params[:turbo_frame]) if params[:turbo_frame]}\""
 
-        # Perform pagination and fallback to first page on Pagy::OverflowError
+        # Perform pagination and fallback to first page when the page is out of range
         begin
           perform_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
-        rescue Pagy::OverflowError
+        rescue Avo::PagyCompat.page_out_of_range_error
           index_params[:page] = 1
           perform_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
         end
@@ -50,6 +50,10 @@ module Avo
       private
 
       def perform_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
+        if Avo::PagyCompat.pagy_43?
+          return perform_pagy_43_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
+        end
+
         send PAGINATION_METHOD[pagination_type.to_sym],
           query,
           **args,
@@ -60,6 +64,19 @@ module Avo
           anchor_string: data_turbo_frame, # Add extra arguments in pagy 8.
           params: extra_pagy_params,
           size: pagination_hash[:size]
+      end
+
+      # Pagy 43 paginates arrays with :offset, and has no trim extra: it always links page 1 with page=1.
+      def perform_pagy_43_pagination(index_params:, query:, data_turbo_frame:, extra_pagy_params:, **args)
+        pagy pagination_type.countless? ? :countless : :offset,
+          query,
+          **args.except(:trim_extra),
+          page: index_params[:page],
+          limit: index_params[:per_page],
+          anchor_string: data_turbo_frame,
+          querify: ->(query_params) { query_params.merge!(extra_pagy_params.stringify_keys) },
+          slots: Avo::PagyCompat.slots(pagination_hash[:size]),
+          raise_range_error: true
       end
 
       def pagination_hash
