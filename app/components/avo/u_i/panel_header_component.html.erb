@@ -25,8 +25,8 @@
           <%= title_slot %>
         </div>
 
-        <% if @description.present? %>
-          <div class="header__description"><%= @description %></div>
+        <% if @description.present? || @description_id.present? %>
+          <%= tag.div @description, id: @description_id, class: "header__description" %>
         <% end %>
 
       <% if discreet_information? %>

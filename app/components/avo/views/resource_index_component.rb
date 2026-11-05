@@ -181,6 +181,10 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
     request.headers["Turbo-Frame"] == @resource.index_view_frame
   end
 
+  def header_description_id
+    "#{@resource.index_view_frame}_description" if lazy_load_index_view?
+  end
+
   def index_view_frame_args
     args = {
       target: :_top,

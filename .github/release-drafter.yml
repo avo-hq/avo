@@ -32,7 +32,7 @@ categories:
   - title: '🤖 Maintenance'
     labels:
       - 'Chore'
-      - 'Dependencies'
+      - 'dependencies'
       - 'depfu'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
