@@ -85,6 +85,7 @@ grep -rn "explicit_authorization" "$(bundle show avo)/lib"
 | `undefined method 'xxx_path'` inside an Avo block | Avo is a Rails engine — needs `main_app.` prefix | [↓](#url-helpers-blow-up-inside-avo-blocks) |
 | Index search box does nothing — the unfiltered rows stay | `self.search[:query]` returns an Array; the index needs a relation | [↓](#the-index-search-box-silently-does-nothing) |
 | License won't validate / status page errors | Key not set on the server; check the status page | [↓](#license-wont-validate) |
+| Every admin page shows "Temporarily unavailable" | The license could not be validated for longer than the grace period, or never | [↓](#license-wont-validate) |
 | Tests fail after adding/upgrading Avo (`WebMock::NetConnectNotAllowedError`) | v4's outbound license check to `clerk-*.avohq.io` is blocked | [↓](#tests-fail-after-adding-or-upgrading-avo) |
 | `bundle install` can't fetch `avo-*` / 401 / 403 | packager.dev token not seen by Bundler, or a blocked host in sandboxes | [↓](#bundle-install-cant-fetch-avo--gems) |
 | `unknown keyword: quirks_mode` after adding Avo (often in `assets:precompile`) | Adding Avo pulled json 3.x into the lock; ActiveSupport below 8.1 can't use it | [↓](#unknown-keyword-quirks_mode-after-adding-avo) |
@@ -211,12 +212,21 @@ self.search = {
 2. **Check the status page.** Every Avo app exposes `https://yourapp.com/<mount>/status` — e.g. `/admin/status` if you mounted Avo at `admin`. It shows whether the license authenticated and the raw response from the check server. The viewing user must be an Avo admin.
 3. **Key hidden on the status page.** The key is redacted by default; set `exclude_from_status = []` in the initializer if you need to see it while debugging.
 4. **The key was rotated.** A license key replaced from https://avohq.io/licenses stops working at once; apps keep running on their last check for a while, then report the license invalid until the new `config.license_key` is deployed to every environment.
-5. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention, and the status page shows an **Action needed before <date>** tag below the license name, the date being when access stops. Access continues until the date the status page reports. Each case is fixed on https://avohq.io/licenses:
+5. **Every admin page says "Temporarily unavailable"** (with "Access has been paused. The team that maintains this app can restore it for you."). Avo could not validate the license for longer than the grace period, or never could: first boot with the server unreachable, a deploy that lost the cached answer, or an invalid key. Non-HTML requests get a 503. Admins and developers see a link to the status page, which says why and that the app retries every 5 minutes. In development and test the page prints the reason and four hints. Fix it in this order:
+   - Open the status page and read the reason.
+   - Check `config.license_key` and that the key is set in this environment.
+   - Check the server can reach `clerk-1.avohq.io` and `clerk-2.avohq.io`.
+   - Press **Refresh license**, or **Clear cached response** and then refresh.
+
+   The first successful check unblocks the app at once. A reference code on the page (from `ERR-LIC-LOCK`, `ERR-TRIAL-ENDED`, `ERR-SUBSCRIPTION-LAPSED` or `ERR-URL-BLOCKED`) means the license itself is locked, ended, lapsed or tied to another URL, and it blocks at once with no grace period. Resolve it on https://avohq.io/licenses. A valid license that lacks an add-on does not block the app. That add-on is simply off.
+
+   To keep the open source admin running while the license is unconfirmed, set `config.run_community_admin_without_valid_license = true` (default `false`). Paid add-ons are then off, authorization policies are not applied, and the status page says "Running without a valid license: paid add-ons are off and authorization policies are not applied" with an orange dot. Choose it deliberately, since with a client set it lifts authorization for everyone.
+6. **The sidebar indicator is amber, not orange.** That is not a license failure — it is a running trial that needs attention, or a license check that failed while the app runs on its last valid answer. The status page shows an **Action needed before <date>** tag below the license name, the date being when access stops. Access continues until the date the status page reports. For a failed check the status page also shows "Failing since", the last successful check and the next attempt, and Avo retries hourly. Fix the cause (key, network, hosts) or set the new key before that date, then press **Refresh license**. For a trial, each case is fixed on https://avohq.io/licenses:
    - No payment method is on file: add one.
    - The subscription behind the trial was cancelled: resume it. A payment method won't help.
    - An Avo 4 trial runs beside an Avo 3 subscription: press **Migrate to Avo 4** before the trial's end date, or Avo 4 stops working in the app when the trial ends (the Avo 3 license stays active, so the app can move back to Avo 3). A payment method won't help. An older `avo-licensing` shows add-a-payment-method steps for this case; migrating is still the fix.
 
-   Then press **Refresh license** on the status page, since Avo caches the license response between checks.
+   For a trial, press **Refresh license** on the status page afterwards, since Avo caches the license response between checks.
 
 → `license-troubleshooting.html`
 
@@ -230,7 +240,7 @@ WebMock::NetConnectNotAllowedError:
   POST https://clerk-1.avohq.io/api/v4/licenses/check with body '...'
 ```
 
-**Cause:** Avo 4 verifies the license via an outbound request to `clerk-1.avohq.io` (falling back to `clerk-2.avohq.io`), and it runs in **every** environment, including `test`. Avo 3 didn't make this request, so a suite that passed on v3 can start failing the moment you upgrade. WebMock/VCR `disable_net_connect!` blocks it.
+**Cause:** Avo 4 verifies the license via an outbound request to `clerk-1.avohq.io` (falling back to `clerk-2.avohq.io`), and it runs in **every** environment, including `test`. Avo 3 didn't make this request, so a suite that passed on v3 can start failing the moment you upgrade. WebMock/VCR `disable_net_connect!` blocks it. From `avo-licensing` 4.4.0 a blocked check renders the "Temporarily unavailable" page on every Avo page, so request and system specs fail on that page instead of running on a silently invalid license.
 
 **Fix:** add the two hosts to your **existing** allow list — don't replace the call and lose your other options:
 
