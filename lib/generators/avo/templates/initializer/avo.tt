@@ -184,6 +184,9 @@ Avo.configure do |config|
   # config.search_debounce = 300
   # config.view_component_path = "app/components"
   # config.display_license_request_timeout_error = true
+  # Set to true to keep the admin running when the license cannot be validated.
+  # Paid add-ons stay off and authorization policies are not applied.
+  # config.run_community_admin_without_valid_license = false
   # config.buttons_on_form_footers = true
   # Set to false to stop asking for confirmation before leaving a form with unsaved changes.
   # config.warn_on_unsaved_changes = true
