@@ -134,5 +134,6 @@ RSpec.describe "Status page updates", type: :request do
 
     expect(response.body).to include("Update failed")
     expect(response.body).not_to include("poll-frame")
+    expect(response.body).to include('status-page__telemetry" open')
   end
 end

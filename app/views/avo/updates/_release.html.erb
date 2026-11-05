@@ -1,4 +1,4 @@
-<details class="updates-page__release" <%= "open" if open %>>
+<details class="updates-page__release" <%= tag.attributes(open: open) %>>
   <summary class="updates-page__summary">
     <h3 class="updates-page__title">
       <%= release["gem"] %>

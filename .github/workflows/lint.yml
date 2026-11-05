@@ -47,6 +47,37 @@ jobs:
           github_token: ${{ secrets.github_token }}
           use_bundler: true
 
+  # Rails 8.2 compiles templates through Herb, and one it rejects answers 500 where Erubi passed in the suite.
+  # Workspace CI's audit-herb can't see this repo, and fork PRs have no token to check out the private workspace.
+  herb:
+    name: runner / herb
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+
+      - name: Compile templates through Herb
+        run: |
+          gem install herb --no-document
+          ruby -e '
+            require "herb"
+            require "herb/engine"
+            require "herb/engine/validators"
+            failed = Dir.glob("app/**/*.html*.erb").filter do |path|
+              Herb::Engine.new(File.read(path), filename: path, bufvar: "@output_buffer", escape: false, trim: true,
+                validate_ruby: true, visitors: Herb::Engine::Validators.all)
+              false
+            rescue Herb::Engine::CompilationError, Herb::Engine::SecurityError => error
+              warn "#{path}\n  #{error.message.strip}"
+              true
+            end
+            exit(1) if failed.any?
+          '
+
   check-eslint-config:
     runs-on: ubuntu-latest
     outputs:
