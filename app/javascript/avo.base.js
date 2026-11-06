@@ -59,7 +59,8 @@ document.addEventListener('keyup', (event) => {
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'light',
-    allowHTML: true,
+    // Text by default. Only `avo_tooltip_attributes` opts in, per element, for safe strings.
+    allowHTML: false,
     content(reference) {
       const title = reference.getAttribute('title')
       reference.removeAttribute('title')

@@ -5,9 +5,9 @@
       style: current_one?(tab) ? :outline : :text,
       size: :sm,
       class: current_one?(tab) ? "z-20 bg-primary-100" : "",
-      title: tab.description,
+      title: helpers.avo_tooltip_attributes(tab.description)[:title],
       data: {
-        tippy: tab.description.present? ? 'tooltip' : '',
+        **helpers.avo_tooltip_attributes(tab.description)[:data],
         selected: current_one?(tab),
         action: 'click->tabs#changeTab',
         tabs_tab_name_param: tab.name,

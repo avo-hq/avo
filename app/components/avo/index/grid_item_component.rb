@@ -70,11 +70,13 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def render_badge
     return if @card[:badge_label].blank?
 
+    tooltip = helpers.avo_tooltip_attributes(@card[:badge_title])
+
     content_tag :div,
       class: class_names("absolute block inset-auto top-0 right-0 mt-2 mr-2 text-sm font-semibold bg-#{badge_color}-50 border border-#{badge_color}-300 text-#{badge_color}-700 rounded shadow-lg px-2 py-px z-10", html(:badge, :classes)),
-      title: @card[:badge_title],
+      title: tooltip[:title],
       style: html(:badge, :style),
-      data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do
+      data: {target: :badge, **tooltip[:data], **(html(:badge, :data).presence || {})} do
       @card[:badge_label]
     end
   end

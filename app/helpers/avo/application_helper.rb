@@ -3,6 +3,15 @@ module Avo
     include ::Pagy::Frontend unless Avo::PagyCompat.pagy_43?
     include Avo::ResourcesHelper
 
+    # Tooltips are text unless the value is a safe string. The browser decodes `title` once before Tippy
+    # reads it, so a safe string needs `to_str` to get its own layer of escaping, or its escaped text goes live.
+    def avo_tooltip_attributes(value)
+      return {title: nil, data: {}} if value.blank?
+      return {title: value, data: {tippy: :tooltip}} unless value.is_a?(ActiveSupport::SafeBuffer)
+
+      {title: value.to_str, data: {tippy: :tooltip, "tippy-allowHTML": true}}
+    end
+
     def render_license_warning(title: "", message: "", icon: "exclamation")
       render partial: "avo/sidebar/license_warning", locals: {
         title: title,

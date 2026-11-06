@@ -49,7 +49,7 @@ class Avo::DiscreetInformation
     end
 
     DiscreetInformationItem.new(
-      tooltip: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
+      tooltip: tag.div(safe_join([created_at_tag, updated_at_tag].compact, tag.br), style: "text-align: right;"),
       icon: "heroicons/outline/clock",
       as:
     )

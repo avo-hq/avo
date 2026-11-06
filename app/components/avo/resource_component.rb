@@ -118,11 +118,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     via_belongs_to = params[:via_belongs_to_resource_class].present?
 
+    tooltip = helpers.avo_tooltip_attributes(control.title)
+
+
     a_link via_belongs_to ? "javascript:void(0);" : back_path,
       style: :text,
-      title: control.title,
+      title: tooltip[:title],
       data: {
-        tippy: control.title ? :tooltip : nil,
+        **tooltip[:data],
         action: via_belongs_to ? "click->modal#close" : nil
       }.compact,
       icon: "heroicons/outline/arrow-left" do
@@ -158,19 +161,22 @@ class Avo::ResourceComponent < Avo::BaseComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
+    tooltip = helpers.avo_tooltip_attributes(control.title)
+
+
     a_link destroy_path,
       style: :text,
       color: :red,
       icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
-      title: control.title,
+      title: tooltip[:title],
       aria_label: control.title,
       data: {
         turbo_confirm: t("avo.are_you_sure", item: @resource.record.model_name.name.downcase),
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
-        tippy: control.title ? :tooltip : nil,
+        **tooltip[:data],
         "resource-id": @resource.record_param,
       } do
       control.label
@@ -199,11 +205,14 @@ class Avo::ResourceComponent < Avo::BaseComponent
   def render_edit_button(control)
     return unless can_see_the_edit_button?
 
+    tooltip = helpers.avo_tooltip_attributes(control.title)
+
+
     a_link edit_path,
       color: :primary,
       style: :primary,
-      title: control.title,
-      data: {tippy: control.title ? :tooltip : nil},
+      title: tooltip[:title],
+      data: tooltip[:data],
       icon: "avo/edit" do
       control.label
     end
@@ -254,17 +263,19 @@ class Avo::ResourceComponent < Avo::BaseComponent
   end
 
   def render_link_to(link)
+    tooltip = helpers.avo_tooltip_attributes(link.title)
+
     a_link link.path,
       color: link.color,
       style: link.style,
       icon: link.icon,
       icon_class: link.icon_class,
-      title: link.title, target: link.target,
+      title: tooltip[:title], target: link.target,
       class: link.classes,
       size: link.size,
       data: {
         **link.data,
-        tippy: link.title ? :tooltip : nil,
+        **tooltip[:data],
       } do
       link.label
     end
@@ -274,18 +285,21 @@ class Avo::ResourceComponent < Avo::BaseComponent
     return if !can_see_the_actions_button?
     return if !action.action.visible_in_view(parent_resource: @parent_resource)
 
+    tooltip = helpers.avo_tooltip_attributes(action.title)
+
+
     a_link action.path,
       color: action.color,
       style: action.style,
       icon: action.icon,
       icon_class: action.icon_class,
-      title: action.title,
+      title: tooltip[:title],
       size: action.size,
       data: {
         controller: "actions-picker",
         turbo_frame: Avo::MODAL_FRAME_ID,
         action_name: action.action.action_name,
-        tippy: action.title ? :tooltip : nil,
+        **tooltip[:data],
         action: "click->actions-picker#visitAction",
         turbo_prefetch: false,
         # When action has record present behave as standalone and keep always active.

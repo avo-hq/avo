@@ -74,31 +74,37 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_edit_button(control)
     return unless can_edit?
 
+    tooltip = helpers.avo_tooltip_attributes(control.title)
+
+
     link_to helpers.svg("avo/edit", class: svg_classes),
       edit_path,
       class: "flex items-center",
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       data: {
         target: "control:edit",
         control: :edit,
         "resource-id": @resource.record_param,
-        tippy: "tooltip",
+        **tooltip[:data],
       }
   end
 
   def render_show_button(control)
     return unless can_view?
 
+    tooltip = helpers.avo_tooltip_attributes(control.title)
+
+
     link_to helpers.svg("avo/eye", class: svg_classes),
       show_path,
       class: "flex items-center",
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       data: {
         target: "control:view",
         control: :show,
-        tippy: "tooltip",
+        **tooltip[:data],
       }
   end
 
@@ -110,12 +116,15 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
+    tooltip = helpers.avo_tooltip_attributes(control.title)
+
+
     a_button url: helpers.resource_path(record: @resource.record, resource: @resource),
       style: :icon,
       color: :gray,
       icon: "avo/trash",
       form_class: "flex flex-col sm:flex-row sm:inline-flex",
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       method: :delete,
       params: hidden_params,
@@ -125,7 +134,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
-        tippy: control.title ? :tooltip : nil,
+        **tooltip[:data],
         "resource-id": @resource.record_param,
       }
   end
@@ -133,12 +142,15 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_detach_button(control)
     return unless can_detach?
 
+    tooltip = helpers.avo_tooltip_attributes(control.title)
+
+
     a_button url: helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param),
       style: :icon,
       color: :gray,
       icon: "avo/detach",
       form_class: "flex items-center",
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       method: :delete,
       params: hidden_params,
@@ -148,7 +160,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         target: "control:detach",
         control: :detach,
         "resource-id": @resource.record_param,
-        tippy: :tooltip,
+        **tooltip[:data],
       }
   end
 

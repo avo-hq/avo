@@ -1,3 +1,6 @@
+// Tagify parses these templates as HTML. It has already escaped a tag's value, but not the suggestion's other keys.
+const escapeHTML = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`)
+
 export function tagTemplate(tagData) {
   const suggestions = this.settings.whitelist || []
 
@@ -6,7 +9,7 @@ export function tagTemplate(tagData) {
     (item) => item.value == tagData.value,
   )
   const possibleLabel = possibleSuggestion && 'label' in possibleSuggestion
-    ? possibleSuggestion.label
+    ? escapeHTML(possibleSuggestion.label)
     : tagData.value
 
   return `
@@ -14,7 +17,7 @@ export function tagTemplate(tagData) {
   contenteditable='false'
   spellcheck='false'
   tabIndex="-1"
-  class="tagify__tag ${tagData.class ? tagData.class : ''}"
+  class="tagify__tag ${escapeHTML(tagData.class)}"
   ${this.getAttributes(tagData)}
 >
   <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
@@ -28,20 +31,18 @@ export function tagTemplate(tagData) {
 export function suggestionItemTemplate(tagData) {
   return `
 <div ${this.getAttributes(tagData)}
-  class='tagify__dropdown__item flex items-center ${
-  tagData.class ? tagData.class : ''
-}'
+  class='tagify__dropdown__item flex items-center ${escapeHTML(tagData.class)}'
   tabindex="0"
   role="option">
   ${
   tagData.avatar
     ? `
   <div class='rounded w-8 h-8 block mr-2'>
-      <img onerror="this.style.visibility='hidden'" class="w-full" src="${tagData.avatar}">
+      <img onerror="this.style.visibility='hidden'" class="w-full" src="${escapeHTML(tagData.avatar)}">
   </div>`
     : ''
 }
-  <span>${tagData.label}</span>
+  <span>${escapeHTML(tagData.label)}</span>
 </div>
 `
 }

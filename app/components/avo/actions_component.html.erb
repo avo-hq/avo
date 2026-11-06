@@ -1,3 +1,4 @@
+<% tooltip = helpers.avo_tooltip_attributes(@title) %>
 <div class="relative flex flex-col w-full sm:w-auto js-actions-dropdown"
   data-component-name="<%= self.class.to_s.underscore %>"
   data-controller="toggle actions-picker"
@@ -16,8 +17,8 @@
     data: {
       action: "click->toggle#togglePanel",
       actions_dropdown_button: @resource.model_key,
-      tippy: "tooltip",
-      tippy_content: @title
+      **tooltip[:data],
+      tippy_content: tooltip[:title]
     } do %>
     <%= @label %>
   <% end %>

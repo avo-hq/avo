@@ -178,7 +178,7 @@ export default class extends Controller {
             )
           }
 
-          const label = DOMPurify.sanitize(item._label)
+          const label = DOMPurify.sanitize(item._label, { ALLOW_DATA_ATTR: false })
 
           const labelChildren = [
             createElement(
@@ -191,7 +191,7 @@ export default class extends Controller {
           ]
 
           if (item._description) {
-            const description = DOMPurify.sanitize(item._description)
+            const description = DOMPurify.sanitize(item._description, { ALLOW_DATA_ATTR: false })
 
             labelChildren.push(
               createElement(
