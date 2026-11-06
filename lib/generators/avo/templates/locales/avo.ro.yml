@@ -32,10 +32,16 @@ ro:
       auto_tooltip: Automat (preferința sistemului)
       dark: Întunecat
       dark_tooltip: Mod întunecat
+      densities:
+        normal: Normal
+        relaxed: Relaxat
+        tight: Strâns
+      density: Densitate
       hide: Ascunde
       light: Deschis
+      light_and_dark: Deschis și întunecat
       light_tooltip: Mod deschis
-      neutrals: Temă
+      neutrals: Neutru
       neutrals_list:
         brand: Brand
         gray: Gri
@@ -48,6 +54,12 @@ ro:
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Temă neutre
+      roundness: Rotunjime
+      roundnesses:
+        normal: Normal
+        relaxed: Relaxat
+        square: Pătrat
+        tight: Strâns
       schemes: Aspect
       shortcut_badges: Insignele scurtăturilor
       shortcut_badges_hide_tooltip: Ascunde insignele scurtăturilor de tastatură
@@ -58,6 +70,8 @@ ro:
       sound_off_tooltip: Dezactivează sunetele
       sound_on: Activat
       sound_on_tooltip: Redă sunete când se schimbă setările
+      theme_picker: Alege tema
+      themes: Teme
       title: Aspect
     applied:
       few: aplicate

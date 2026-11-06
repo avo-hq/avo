@@ -73,6 +73,9 @@ Avo.configure do |config|
 
   ## == Appearance ==
   config.appearance = {
+    themes_enabled: true, # opt in to beta themes in the demo app
+    density_picker: true,
+    roundness_picker: true,
     picker_layout: :inline, # :inline (default, with mobile auto-collapse) or :dropdown (always compact)
     sound: true, # play a sound on picks by default; Shift+S toggles it per browser
     sound_button: false, # show the mute toggle in the switcher (default: false)

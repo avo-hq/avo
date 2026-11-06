@@ -1,0 +1,12 @@
+<%# A miniature window drawn in the theme's own tokens: navbar strip, sidebar
+    column, content area, accent dot. The element carries the theme class, so
+    the class-scoped variables in the theme's stylesheet resolve here as they
+    do on <html>. Derived tokens are re-declared on .theme-tile (see
+    color_scheme_switcher.css) so a theme that only sets primitives still
+    previews correctly. %>
+<span class="theme-tile <%= theme.css_class %>" aria-hidden="true">
+  <span class="theme-tile__navbar"></span>
+  <span class="theme-tile__sidebar"></span>
+  <span class="theme-tile__content"></span>
+  <span class="theme-tile__accent"></span>
+</span>

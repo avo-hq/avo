@@ -32,10 +32,16 @@ en:
       auto_tooltip: Auto (system preference)
       dark: Dark
       dark_tooltip: Dark mode
+      densities:
+        normal: Normal
+        relaxed: Relaxed
+        tight: Tight
+      density: Density
       hide: Hide
       light: Light
+      light_and_dark: Light & dark
       light_tooltip: Light mode
-      neutrals: Theme
+      neutrals: Neutral
       neutrals_list:
         brand: Brand
         gray: Gray
@@ -48,6 +54,12 @@ en:
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Select neutral color
+      roundness: Roundness
+      roundnesses:
+        normal: Normal
+        relaxed: Relaxed
+        square: Square
+        tight: Tight
       schemes: Appearance
       shortcut_badges: Shortcut badges
       shortcut_badges_hide_tooltip: Hide keyboard shortcut badges
@@ -58,6 +70,8 @@ en:
       sound_off_tooltip: Mute appearance sounds
       sound_on: 'On'
       sound_on_tooltip: Play a sound when appearance changes
+      theme_picker: Select theme
+      themes: Themes
       title: Appearance
     applied: applied
     are_you_sure: Are you sure?

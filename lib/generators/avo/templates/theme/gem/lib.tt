@@ -1,0 +1,9 @@
+require "avo"
+require "avo/<%= theme_id %>_theme/version"
+require "avo/<%= theme_id %>_theme/engine"
+require "avo/<%= theme_id %>_theme/theme"
+
+module Avo
+  module <%= gem_module_name %>
+  end
+end

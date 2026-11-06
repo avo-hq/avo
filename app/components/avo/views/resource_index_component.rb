@@ -188,7 +188,7 @@ class Avo::Views::ResourceIndexComponent < Avo::ResourceComponent
   def index_view_frame_args
     args = {
       target: :_top,
-      class: "relative flex flex-col gap-y-4",
+      class: "relative flex flex-col gap-y-(--panel-gap)",
       data: {
         controller: "resource-index",
         action: "turbo:frame-load->resource-index#loaded"

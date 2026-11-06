@@ -32,10 +32,16 @@ tr:
       auto_tooltip: Otomatik (sistem tercihi)
       dark: Koyu
       dark_tooltip: Koyu mod
+      densities:
+        normal: Normal
+        relaxed: Rahat
+        tight: Sıkı
+      density: Yoğunluk
       hide: Gizle
       light: Açık
+      light_and_dark: Açık ve koyu
       light_tooltip: Açık mod
-      neutrals: Tema
+      neutrals: Nötr
       neutrals_list:
         brand: Marka
         gray: Gri
@@ -48,6 +54,12 @@ tr:
         taupe: Taupe
         zinc: Çinko
       neutrals_picker: Nötr tema
+      roundness: Yuvarlaklık
+      roundnesses:
+        normal: Normal
+        relaxed: Rahat
+        square: Kare
+        tight: Sıkı
       schemes: Görünüm
       shortcut_badges: Kısayol rozetleri
       shortcut_badges_hide_tooltip: Klavye kısayolu rozetlerini gizle
@@ -58,6 +70,8 @@ tr:
       sound_off_tooltip: Görünüm seslerini kıs
       sound_on: Açık
       sound_on_tooltip: Görünüm değiştiğinde ses çal
+      theme_picker: Tema seç
+      themes: Temalar
       title: Görünüm
     applied:
       one: uygulandı

@@ -32,10 +32,16 @@ ja:
       auto_tooltip: 自動（システム設定）
       dark: ダーク
       dark_tooltip: ダークモード
+      densities:
+        normal: ノーマル
+        relaxed: リラックス
+        tight: タイト
+      density: 密度
       hide: 非表示
       light: ライト
+      light_and_dark: ライトとダーク
       light_tooltip: ライトモード
-      neutrals: テーマ
+      neutrals: ニュートラル
       neutrals_list:
         brand: ブランド
         gray: グレー
@@ -48,6 +54,12 @@ ja:
         taupe: トープ
         zinc: ジンク
       neutrals_picker: ニュートラルテーマ
+      roundness: 丸み
+      roundnesses:
+        normal: ノーマル
+        relaxed: リラックス
+        square: 四角
+        tight: タイト
       schemes: 外観
       shortcut_badges: ショートカットバッジ
       shortcut_badges_hide_tooltip: キーボードショートカットバッジを非表示
@@ -58,6 +70,8 @@ ja:
       sound_off_tooltip: 外観音をミュート
       sound_on: オン
       sound_on_tooltip: 外観が変わるときに音を再生
+      theme_picker: テーマを選択
+      themes: テーマ
       title: 外観
     applied:
       one: applied
