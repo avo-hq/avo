@@ -254,7 +254,7 @@ class Avo::Resources::Project < Avo::BaseResource
 end
 ```
 
-`cards` means the resource's dashboard cards, not grid items. Blocks run once per region, not per row: use `row_options` to change rows.
+`cards` means the resource's dashboard cards, not grid items. Collection, records and pagination slots refresh with live search; toolbar, cards and header ones don't. Blocks run once per region, not per row: use `row_options` to change rows.
 
 The **avo-custom-ui** skill's **View slots** section has the full reference, Show/Edit/New, block context and gotchas.
 
