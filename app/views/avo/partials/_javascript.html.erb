@@ -1,6 +1,9 @@
 <% appearance = Avo.configuration.appearance %>
 <%= javascript_tag nonce: true do %>
   window.Avo = window.Avo || { configuration: {} }
+  // A host page's Turbo rendered this error page without running the bundles (data-turbo-eval), and they
+  // never ran on that page. Only a full load can boot them.
+  if (window.Turbo && !window.Avo.localStorage) location.reload()
   Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
   Avo.configuration.root_path = '<%= root_path_without_url %>'
   Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
