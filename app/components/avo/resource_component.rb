@@ -106,14 +106,16 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
     via_belongs_to = params[:via_belongs_to_resource_class].present?
 
+    tooltip = avo_tooltip_attributes(control.title)
+
     a_link via_belongs_to ? "javascript:void(0);" : back_path,
       style: :text,
-      title: control.title,
+      title: tooltip[:title],
       data: {
         hotkey: Avo::Hotkeys.key_for("navigation.go_back"),
         go_back: true,
         action: ("click->modal#close" if via_belongs_to),
-        tippy: control.title ? :tooltip : nil
+        **tooltip[:data]
       }.compact,
       icon: "tabler/outline/arrow-left" do
       control.label
@@ -178,11 +180,13 @@ class Avo::ResourceComponent < Avo::BaseComponent
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
     data_attrs = {hotkey_attr => Avo::Hotkeys.key_for("record.delete")}
 
+    tooltip = avo_tooltip_attributes(control.title)
+
     a_link destroy_path,
       style: :text,
       color: :red,
       icon: "tabler/outline/trash",
-      title: control.title,
+      title: tooltip[:title],
       aria_label: control.title,
       data: {
         **data_attrs,
@@ -191,7 +195,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
-        tippy: control.title ? :tooltip : nil,
+        **tooltip[:data],
         "resource-id": @resource.record_param
       } do
       control.label
@@ -230,13 +234,15 @@ class Avo::ResourceComponent < Avo::BaseComponent
     hotkey_attr = is_row_control ? :hotkey_original : :hotkey
     data_attrs = {hotkey_attr => Avo::Hotkeys.key_for("record.edit")}
 
+    tooltip = avo_tooltip_attributes(control.title)
+
     a_link edit_path,
       color: :accent,
       style: :primary,
-      title: control.title,
+      title: tooltip[:title],
       data: {
         **data_attrs,
-        tippy: control.title ? :tooltip : nil
+        **tooltip[:data]
       }.compact,
       icon: "tabler/outline/edit" do
       control.label

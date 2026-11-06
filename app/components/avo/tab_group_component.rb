@@ -123,8 +123,7 @@ class Avo::TabGroupComponent < Avo::BaseComponent
       tabs_resource_name_param: resource.underscore_name,
       selected: tab_active?(tab, current_tab)
     }
-    data[:tippy] = "tooltip" if tab.description.present?
-    data
+    data.merge(avo_tooltip_attributes(tab.description)[:data])
   end
 
   def tab_active?(tab, current_tab)

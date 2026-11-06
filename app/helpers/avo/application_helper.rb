@@ -5,6 +5,17 @@ module Avo
 
     def ui = Avo::UIInstance
 
+    # Tooltips are text unless the value is a safe string. The browser decodes `title` once before Tippy
+    # reads it, so a safe string needs `to_str` to get its own layer of escaping, or its escaped text goes live.
+    def self.avo_tooltip_attributes(value)
+      return {title: nil, data: {}} if value.blank?
+      return {title: value, data: {tippy: :tooltip}} unless value.is_a?(ActiveSupport::SafeBuffer)
+
+      {title: value.to_str, data: {tippy: :tooltip, "tippy-allowHTML": true}}
+    end
+
+    def avo_tooltip_attributes(value) = ApplicationHelper.avo_tooltip_attributes(value)
+
     # The cookie name that remembers an opened manual frame. Derived from the
     # frame's deferred URL (which already encodes resource + record + frame), so
     # the memory is scoped per record + association/tab. Hashed to keep the name
