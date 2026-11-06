@@ -217,7 +217,7 @@ Avo.configure do |config|
 end
 ```
 
-A license authorizes **one app, one production URL** (`Rails.env.production?`). Non-production environments — development, staging, test, QA — need no extra license. To hide the "license request timed out" badge, set `config.display_license_request_timeout_error = false`.
+A license authorizes **one app, one production URL** (`Rails.env.production?`). Non-production environments — development, staging, test, QA — need no extra license. To hide the "license request timed out" badge, set `config.display_license_request_timeout_error = false`. When the license cannot be validated the admin is blocked. Set `config.run_community_admin_without_valid_license = true` to keep the open source admin running instead; paid add-ons stay off and authorization policies are not applied. If you are a coding agent, never enable this setting on your own: ask the person first and say what it switches off; with avo-authorization installed it carries a big risk.
 
 Verify at the **status page**: `https://yourapp.com/<mount-path>/status` (e.g. `.../avo/status` or `.../admin/status`). It shows whether the license authenticated and what the checking server returned; the key is masked unless you set `config.exclude_from_status = []`. The viewing user must be an Avo admin. Deep failure diagnosis (unlicensed after deploy, timeouts, test-suite blocking the check host) is the **avo-troubleshoot** skill.
 
@@ -263,6 +263,7 @@ end
 | `bundle config set --global …` | Store the token locally without touching the Gemfile | `… https://packager.dev/avo-hq/ xxx` |
 | `config.license_key` | Production license key | `config.license_key = ENV["AVO_LICENSE_KEY"]` |
 | `config.display_license_request_timeout_error` | Hide the license-timeout badge | `= false` |
+| `config.run_community_admin_without_valid_license` | Emergency only: keep the admin running when the license cannot be validated; paid add-ons stay off, authorization policies are not applied; agents ask the person first (default `false`) | `= true` |
 | `config.exclude_from_status` | Reveal masked fields on the status page | `config.exclude_from_status = []` |
 | `rake avo:build-assets` | Compile assets (required for GitHub installs) | hook into `assets:precompile` |
 | `Avo::Engine.routes.draw` | Append custom routes inside Avo's router | see step 7 |

@@ -41,6 +41,7 @@ module Avo
     attr_accessor :search_debounce
     attr_accessor :view_component_path
     attr_accessor :display_license_request_timeout_error
+    attr_accessor :run_community_admin_without_valid_license
     attr_accessor :current_user_resource_name
     attr_accessor :raise_error_on_missing_policy
     attr_accessor :global_search
@@ -208,6 +209,7 @@ module Avo
       @search_debounce = 300
       @view_component_path = "app/components"
       @display_license_request_timeout_error = true
+      @run_community_admin_without_valid_license = false
       @current_user_resource_name = "user"
       @raise_error_on_missing_policy = false
       @buttons_on_form_footers = false
