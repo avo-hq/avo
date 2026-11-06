@@ -246,11 +246,11 @@ module Avo
     end
 
     # With nowhere to go back to, the refusal renders here: redirecting to the root loops when the
-    # home page is the one refused.
+    # home page is the one refused. See other because a fetch keeps DELETE across a 302 and would replay it.
     def render_unauthorized(exception)
       if request.referrer.present? && request.referrer != request.url
         flash[:notice] = t "avo.not_authorized"
-        return redirect_to(request.referrer)
+        return redirect_to(request.referrer, status: :see_other)
       end
 
       respond_to do |format|
