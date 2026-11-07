@@ -56,19 +56,25 @@ module Avo
     end
 
     def compute_summary_data
+      # Different values can share a label (NULL and "", two records with one title). Their counts add up,
+      # which can move the label away from where the query's order put it.
       @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
-        .transform_keys do |key|
-        key = if key.is_a?(ActiveRecord::Base)
-          res = Avo.resource_manager.get_resource_by_model_class(key.class)
-          res ? res.new(record: key).record_title : (key.try(:name) || key.to_param)
-        else
-          key
-        end
-
-        (key.nil? || key == "") ? "—" : key
-      end
+        .each_with_object(Hash.new(0)) { |(value, count), summary| summary[summary_label(value)] += count }
+        .sort_by { |_label, count| -count }
+        .to_h
 
       @field_id = params[:field_id]
+    end
+
+    def summary_label(value)
+      label = if value.is_a?(ActiveRecord::Base)
+        res = Avo.resource_manager.get_resource_by_model_class(value.class)
+        res ? res.new(record: value).record_title : (value.try(:name) || value.to_param)
+      else
+        value
+      end
+
+      (label.nil? || label == "") ? "—" : label
     end
 
     # The distribution chart runs the SAME pipeline as the regular index view:
