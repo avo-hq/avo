@@ -39,9 +39,19 @@ module Avo
 
     def destroy
       @blob = ActiveStorage::Blob.find(params[:id])
-      @blob.destroy!
 
-      redirect_to avo.media_library_index_path
+      # Active Storage refuses to remove a blob that's still in use, so say so
+      # instead of answering with an InvalidForeignKey error page.
+      if @blob.attachments.exists?
+        flash[:error] = "This file can't be deleted because it's still attached to a record."
+        return redirect_to avo.edit_media_library_path(@blob), status: :see_other
+      end
+
+      # `purge`, not `destroy`, which removes the row and leaves the file in storage with nothing pointing at it.
+      @blob.purge
+
+      # A `fetch` keeps DELETE across a 302, so send the browser on with a GET.
+      redirect_to avo.media_library_index_path, status: :see_other
     end
 
     def update
