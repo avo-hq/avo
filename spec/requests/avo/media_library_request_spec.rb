@@ -201,6 +201,36 @@ RSpec.describe "Media library edit", type: :request do
     expect(blob.metadata["title"]).to eq("Hello")
   end
 
+  describe "deleting a blob" do
+    it "removes the file from storage along with the row" do
+      blob = create_blob
+
+      delete "/admin/media-library/#{blob.id}"
+
+      expect(response).to redirect_to("/admin/media-library")
+      expect(response).to have_http_status(:see_other)
+      expect(ActiveStorage::Blob.exists?(blob.id)).to be false
+      expect(blob.service.exist?(blob.key)).to be false
+    end
+
+    it "refuses a blob that is still attached and keeps its file" do
+      post = create :post
+      post.cover.attach(create_blob(filename: "cover.txt"))
+      blob = post.cover.blob
+
+      delete "/admin/media-library/#{blob.id}"
+
+      expect(response).to redirect_to("/admin/media-library/#{blob.id}/edit")
+      expect(response).to have_http_status(:see_other)
+      expect(post.reload.cover).to be_attached
+      expect(blob.service.exist?(blob.key)).to be true
+
+      follow_redirect!
+
+      expect(response.body).to include("still attached to a record")
+    end
+  end
+
   describe "attached to" do
     it "links to the record the blob is attached to" do
       post = create :post
