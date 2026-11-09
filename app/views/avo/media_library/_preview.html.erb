@@ -79,9 +79,10 @@
       <% end %>
     <% end %>
 
-    <%# The controller refuses to delete an attached file. The tooltip sits on a wrapper because a disabled button gets no hover. %>
+    <%# The controller refuses to delete an attached file. A disabled button gets no hover, so a wrapper holds the tooltip. %>
     <% if blob.attachments.exists? %>
-      <%= tag.span title: "This file is attached to a record. Detach it before deleting it.", data: {tippy: :tooltip} do %>
+      <%= tag.span title: "This file is attached to a record. Detach it before deleting it.",
+                   data: {tippy: :tooltip} do %>
         <%= a_button style: :text, color: :red, type: :button, disabled: true do %>
           Delete
         <% end %>
