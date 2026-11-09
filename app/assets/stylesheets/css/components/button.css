@@ -327,6 +327,47 @@
     }
   }
 
+  /* Flat style: no gradient or inset shadow, for dense controls like segmented toggles. */
+  .button--style-flat {
+    @apply text-(--btn-color-accent-foreground);
+    background: var(--btn-color-accent);
+    border-color: var(--btn-color-accent-content);
+
+    /* Uncolored, every state is a see-through tint of the text color, so it reads against whatever sits behind:
+       the page, a card or an applied filter's tint, in either mode. Opaque fills matched one of them somewhere. */
+    &:not([class*="button--color-"]) {
+      --btn-color-accent: color-mix(in oklab, var(--color-content) 4%, transparent);
+      --btn-color-accent-content: color-mix(in oklab, var(--color-content) 18%, transparent);
+      --btn-color-accent-foreground: var(--color-content);
+      @apply text-content-secondary;
+      background-clip: padding-box;
+
+      &:hover,
+      &.button--hover,
+      &.button--active {
+        @apply text-content;
+      }
+
+      /* Well under the selected tint, so a hovered option never reads as chosen. */
+      &:is(:hover, .button--hover):not(.button--active) {
+        background: color-mix(in oklab, var(--color-content) 7%, transparent);
+      }
+    }
+
+    &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
+      &.button--hover,
+      &:hover {
+        background: color-mix(in oklab, var(--btn-color-accent), var(--btn-color-accent-content));
+      }
+    }
+
+    &.button--active,
+    &:active {
+      @apply font-semibold;
+      background: var(--btn-color-accent-content);
+    }
+  }
+
   /* Fully rounded (pill) shape — opt-in via `rounded: :full`. Overrides the
      base `rounded-lg`/squircle radius. Wins on source order (single class, same
      specificity as `.button`). Switches corner-shape back to `round` so the
