@@ -60,7 +60,8 @@ module Avo
       # which can move the label away from where the query's order put it.
       @values_summary = summary_query.group(params[:field_id].to_sym).reorder("count_all desc").count
         .each_with_object(Hash.new(0)) { |(value, count), summary| summary[summary_label(value)] += count }
-        .sort_by { |_label, count| -count }
+        # The index breaks ties in the query's order, because `sort_by` alone isn't stable.
+        .sort_by.with_index { |(_label, count), index| [-count, index] }
         .to_h
 
       @field_id = params[:field_id]
