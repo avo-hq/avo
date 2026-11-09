@@ -27,9 +27,9 @@
     <%= render Avo::ButtonComponent.new(style: :flat, color: :blue, icon: "tabler/outline/arrow-up") { "Label" } %>
   </div>
   <div class="button-group">
-    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm) { "Any" } %>
-    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm, class: "button--active") { "Yes" } %>
-    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm) { "No" } %>
+    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm) do %>Any<% end %>
+    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm, class: "button--active") do %>Yes<% end %>
+    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm) do %>No<% end %>
   </div>
 
   <h2 class="text-xl font-semibold">Rounded (<code>rounded: :full</code>)</h2>
