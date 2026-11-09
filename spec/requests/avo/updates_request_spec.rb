@@ -13,6 +13,44 @@ RSpec.describe "Status page updates", type: :request do
 
   after { FileUtils.rm_rf(update_dir) }
 
+  it "keeps an Update resource's listing separate from release notes" do
+    post = create(:post, name: "Customer update")
+
+    get "/admin/resources/updates"
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include(post.name)
+    expect(response.body).not_to include("No release notes to show")
+  end
+
+  {
+    "times out" => ->(_) { raise Net::ReadTimeout },
+    "returns an error" => {status: 503},
+    "returns invalid JSON" => {body: "Service unavailable"},
+    "returns nil releases" => {body: {releases: nil}.to_json}
+  }.each do |failure, failed_response|
+    it "shows the empty state when HQ #{failure} and recovers on the next request" do
+      allow(Rails.env).to receive(:test?).and_return(false)
+      allow(Avo).to receive(:cache_store).and_return(ActiveSupport::Cache::MemoryStore.new)
+      request = stub_request(:get, %r{\Ahttps://avohq\.io/releases\.json}).to_return(
+        failed_response,
+        {body: {releases: [{gem: "avo", version: "999.0.0", body: "Recovered notes"}]}.to_json}
+      )
+
+      get "/admin/updates"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("No release notes to show")
+
+      get "/admin/updates"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("999.0.0", "Recovered notes")
+      expect(response.body).not_to include("No release notes to show")
+      expect(request).to have_been_requested.twice
+    end
+  end
+
   it "flags Avo as behind when HQ has a newer release" do
     allow(Avo::Services::GemVersions).to receive(:latest).and_return("avo" => "999.0.0")
 
