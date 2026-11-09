@@ -10,11 +10,14 @@
       </li>
       <% plugins.each do |plugin| %>
         <li class="status-page__plugin">
-          <% if plugin.gem_name.present? %>
-            <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "status-page__plugin-link" %>
-          <% else %>
-            <span><%= plugin.name %></span>
-          <% end %>
+          <span class="status-page__plugin-name">
+            <% if plugin.gem_name.present? %>
+              <%= link_to plugin.name, "https://avohq.io/gems/#{plugin.gem_name}", target: "_blank", rel: "noopener", class: "status-page__plugin-link" %>
+            <% else %>
+              <span><%= plugin.name %></span>
+            <% end %>
+            <%= @row_extra.call(plugin) if @row_extra %>
+          </span>
           <span class="status-page__plugin-version">
             <%= plugin.version %>
             <%= version_badge(plugin.gem_name, plugin.version) %>
