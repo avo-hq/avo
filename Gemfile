@@ -183,6 +183,8 @@ group :development, :test do
 
   # CI automation & code review
   gem "danger", require: false
+  # git 6 removed Git::Base, which danger 9.6.1 still loads: https://github.com/danger/danger/issues/1560
+  gem "git", "< 6", require: false
 
   # Test data & factories
   gem "faker", require: false

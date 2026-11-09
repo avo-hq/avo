@@ -95,6 +95,8 @@ group :development, :test do
   gem "amazing_print"
   gem "dotenv-rails"
   gem "danger", require: false
+  # git 6 removed Git::Base, which danger 9.6.1 still loads: https://github.com/danger/danger/issues/1560
+  gem "git", "< 6", require: false
   gem "faker", require: false
   gem "factory_bot_rails"
   gem "i18n-tasks", ">= 1.0.12"
