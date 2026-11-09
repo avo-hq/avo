@@ -79,14 +79,23 @@
       <% end %>
     <% end %>
 
-    <%= a_button style: :text,
-                 color: :red,
-                 url: avo.media_library_path(blob),
-                 method: :delete,
-                 data: {
-                   turbo_confirm: "Are you sure you want to destroy this attachment?"
-                 } do %>
-      Delete
+    <%# The controller refuses to delete an attached file. The tooltip sits on a wrapper because a disabled button gets no hover. %>
+    <% if blob.attachments.exists? %>
+      <%= tag.span title: "This file is attached to a record. Detach it before deleting it.", data: {tippy: :tooltip} do %>
+        <%= a_button style: :text, color: :red, type: :button, disabled: true do %>
+          Delete
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= a_button style: :text,
+                   color: :red,
+                   url: avo.media_library_path(blob),
+                   method: :delete,
+                   data: {
+                     turbo_confirm: "Are you sure you want to delete this file?"
+                   } do %>
+        Delete
+      <% end %>
     <% end %>
   </div>
 </div>

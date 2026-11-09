@@ -238,6 +238,21 @@ RSpec.describe "Media library edit", type: :request do
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("ActionText::RichText ##{event.body.id}")
     end
+
+    it "offers Delete only for a file nothing is attached to" do
+      post = create :post
+      post.cover.attach(create_blob(filename: "cover.txt"))
+      unattached = create_blob(filename: "loose.txt")
+      delete_form = ->(blob) { "form[action='/admin/media-library/#{blob.id}'] input[name='_method'][value='delete']" }
+
+      get "/admin/media-library/#{post.cover.blob.id}/edit"
+      page = Capybara.string(response.body)
+      expect(page).not_to have_css(delete_form.call(post.cover.blob), visible: :all)
+      expect(page).to have_button("Delete", disabled: true)
+
+      get "/admin/media-library/#{unattached.id}/edit"
+      expect(Capybara.string(response.body)).to have_css(delete_form.call(unattached), visible: :all)
+    end
   end
 
   it "renders the index grid even when a listed blob has a blank filename" do
