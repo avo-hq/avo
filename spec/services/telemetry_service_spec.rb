@@ -13,7 +13,7 @@ RSpec.describe Avo::Services::TelemetryService do
       expect(metadata).to include(resources_count: 7, fields_count: 42)
       # Runtime-only values are filled in here.
       expect(metadata).to include(
-        :main_menu_present, :profile_menu_present, :cache_store, :cache_operational, :plugins, :config
+        :main_menu_present, :profile_menu_present, :cache_store, :cache_operational, :plugins, :addons, :config
       )
       expect(metadata[:config]).to eq(root_path: Avo.configuration.root_path)
     end
@@ -118,6 +118,31 @@ RSpec.describe Avo::Services::TelemetryService do
       allow(cache).to receive(:delete).and_raise(RuntimeError, connection_error)
 
       expect(described_class.cache_operational?).to be(true)
+    end
+  end
+
+  describe ".addons_metadata" do
+    def plugin(gem_name, &telemetry)
+      Avo::Plugin.new(name: gem_name, priority: 10).tap do |plugin|
+        allow(plugin).to receive(:gem_name).and_return(gem_name)
+        plugin.collect_telemetry(&telemetry) if telemetry
+      end
+    end
+
+    it "reports what each add-on collects, read when the report is built, under its gem name" do
+      setting = false
+      plugins = [plugin("avo-dynamic_filters") { {simple_filters: setting} }, plugin("avo-kanban")]
+      allow(Avo.plugin_manager).to receive(:all).and_return(plugins)
+      setting = true
+
+      expect(described_class.avo_metadata[:addons]).to eq("avo-dynamic_filters" => {simple_filters: true})
+    end
+
+    it "leaves out an add-on whose block raises, and keeps the others" do
+      plugins = [plugin("avo-broken") { raise "boom" }, plugin("avo-scopes") { {used: true} }]
+      allow(Avo.plugin_manager).to receive(:all).and_return(plugins)
+
+      expect(described_class.addons_metadata).to eq("avo-scopes" => {used: true})
     end
   end
 

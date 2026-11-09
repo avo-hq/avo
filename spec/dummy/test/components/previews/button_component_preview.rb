@@ -4,7 +4,7 @@ class ButtonComponentPreview < Lookbook::Preview
 
   # @param label text "Text to display in the button"
   # @param size select { choices: [xs, sm, md, lg, xl] }
-  # @param style select { choices: [primary, outline, tertiary, text, icon] }
+  # @param style select { choices: [primary, outline, tertiary, text, flat, icon] }
   # @param color select { choices: [gray, red, green, blue] }
   # @param rounded select { choices: [nil, full] }
   # @param icon text "Icon to display in the button"

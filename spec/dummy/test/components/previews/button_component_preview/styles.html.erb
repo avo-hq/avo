@@ -20,6 +20,18 @@
     <%= render Avo::ButtonComponent.new(style: :text, size: :lg, icon: "tabler/outline/arrow-up") { "Label" } %>
   </div>
 
+  <h2 class="text-xl font-semibold">Flat Style</h2>
+  <div class="flex gap-3 flex-wrap">
+    <%= render Avo::ButtonComponent.new(style: :flat, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm, icon: "tabler/outline/arrow-up") { "Label" } %>
+    <%= render Avo::ButtonComponent.new(style: :flat, color: :blue, icon: "tabler/outline/arrow-up") { "Label" } %>
+  </div>
+  <div class="button-group">
+    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm) do %>Any<% end %>
+    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm, class: "button--active") do %>Yes<% end %>
+    <%= render Avo::ButtonComponent.new(style: :flat, size: :sm) do %>No<% end %>
+  </div>
+
   <h2 class="text-xl font-semibold">Rounded (<code>rounded: :full</code>)</h2>
   <p class="text-sm text-content-secondary">An orthogonal shape modifier — combine it with any style.</p>
   <div class="flex gap-3 flex-wrap items-center">

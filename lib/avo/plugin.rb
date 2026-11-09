@@ -32,6 +32,17 @@ module Avo
       self
     end
 
+    # The block runs when telemetry is reported, after the app's initializers, so it sees the app's config.
+    # Return only counts, booleans and values from a fixed set: what may leave the app is in TelemetryService.
+    def collect_telemetry(&block)
+      @telemetry = block
+      self
+    end
+
+    def telemetry
+      @telemetry&.call
+    end
+
     # The real gem name this plugin ships in (e.g. `avo-rhino_field`), as opposed
     # to the nickname it registered under (e.g. `:rhino`). Resolved by matching
     # the file that called `register` against the gems in the bundle, so it works

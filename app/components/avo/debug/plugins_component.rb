@@ -2,6 +2,9 @@
 
 # Shared with avo-licensing's status page, so the plugin list doesn't drift between the two.
 class Avo::Debug::PluginsComponent < Avo::BaseComponent
+  # Lets a host page add markup after each plugin's name. Receives the plugin, returns HTML-safe content or nil.
+  prop :row_extra
+
   def plugins
     Avo.plugin_manager.plugins
   end

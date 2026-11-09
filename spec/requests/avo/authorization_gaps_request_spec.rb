@@ -104,6 +104,16 @@ RSpec.describe "Authorization gaps", type: :request do
       expect(response).to redirect_to "http://www.example.com/admin/resources/users"
     end
 
+    # A fetch keeps DELETE across a 302, so going back would replay it on the page it came from.
+    it "sends a refused DELETE back with a GET" do
+      post_record = create :post, user: other_user
+      deny_when { |action| action == :destroy }
+
+      delete "/admin/resources/posts/#{post_record.to_param}", headers: {"Referer" => "http://www.example.com/admin/resources/users"}
+
+      expect(response).to have_http_status :see_other
+    end
+
     it "renders 403 when the page they came from is the one refused" do
       get "/admin/resources/projects", headers: {"Referer" => "http://www.example.com/admin/resources/projects"}
 

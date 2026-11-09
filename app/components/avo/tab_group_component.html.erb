@@ -21,7 +21,7 @@
               label: tab_item.title,
               active: tab_active?(tab_item, tab),
               href: tab_path(tab_item),
-              title: tab_item.description,
+              title: avo_tooltip_attributes(tab_item.description)[:title],
               badge: rendered_badge(tab_item),
               data: tab_data(tab_item, tab)
             ) %>

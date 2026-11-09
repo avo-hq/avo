@@ -44,7 +44,7 @@
     </div>
   <% end %>
   <% if state.in?([:running, :succeeded, :failed]) && !restarting %>
-    <details class="status-page__telemetry" <%= "open" if state.in?([:running, :failed]) %>>
+    <details class="status-page__telemetry" <%= tag.attributes(open: state.in?([:running, :failed])) %>>
       <summary class="status-page__telemetry-summary">Output</summary>
       <pre class="status-page__telemetry-payload"><%= Avo::Services::Updater.log.presence || "Waiting for output..." %></pre>
     </details>

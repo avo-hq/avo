@@ -37,7 +37,8 @@ installGlobalHotkeys()
 function initTippy() {
   tippy('[data-tippy="tooltip"]', {
     theme: 'basic',
-    allowHTML: true,
+    // Text by default. Only `avo_tooltip_attributes` opts in, per element, for safe strings.
+    allowHTML: false,
     // Default is <body>; a tooltip whose trigger lives in a top-layer modal
     // would then paint under it, so append into the modal (see helpers/top_layer).
     appendTo: (reference) => nearestTopLayer(reference) ?? document.body,
