@@ -361,7 +361,7 @@ These are the ones that break a "working" app without any error:
 - **`explicit_authorization` now defaults to `true`** — missing policy methods now **deny**. → [Authorization suddenly denies everything](#authorization-suddenly-denies-everything).
 - **Action `no_confirmation` → `confirmation`, default flipped.** v3 skipped the modal by default; v4 **shows** it by default. `self.no_confirmation = true` becomes `self.confirmation = false`.
 - **`params[:via_association]` removed.** The v4 searchable-association picker no longer sets it, so any `if params[:via_association] == 'has_many'` branch silently falls through to `else` (wrong scope, no error). Migrate to the injected `search_type` local (`:global` / `:resource` / `:association` / `:kanban`). `params[:for_kanban_board]` is likewise gone → `search_type == :kanban`.
-- **Dynamic filters `always_expanded` now defaults to `true`** — the filter bar shows expanded and the toggle button is hidden. Set `Avo::DynamicFilters.configure { |c| c.always_expanded = false }` to restore.
+- **Dynamic filters `always_expanded` now defaults to `true`** — the filter bar shows expanded and the toggle button is hidden. Set `config.dynamic_filters.always_expanded = false` inside `Avo.configure` to restore.
 
 ### Renamed / removed at a glance
 
