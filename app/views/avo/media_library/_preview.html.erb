@@ -84,7 +84,7 @@
                  url: avo.media_library_path(blob),
                  method: :delete,
                  data: {
-                   turbo_confirm: "Are you sure you want to destroy this attachment?"
+                   turbo_confirm: media_library_delete_confirmation(blob)
                  } do %>
       Delete
     <% end %>
