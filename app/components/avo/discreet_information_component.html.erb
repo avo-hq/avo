@@ -1,3 +1,4 @@
+<% tooltip = avo_tooltip_attributes(@title) %>
 <%= wrapper_element class: class_names(
   @classes,
   "discreet-information",
@@ -5,7 +6,7 @@
   "discreet-information--as-text": as_text?,
   "discreet-information--as-badge": as_badge?,
   "discreet-information--as-key-value": as_key_value?
-), title: @title, data: { **(@data || {}), tippy: (@title.present? ? :tooltip : nil) } do %>
+), title: tooltip[:title], data: { **(@data || {}), **tooltip[:data] } do %>
   <% if as_icon? %>
     <%= helpers.svg @icon, class: "discreet-information__icon" %>
   <% elsif as_text? %>

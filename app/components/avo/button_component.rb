@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # A button/link can have the following settings:
-# style: primary/outline/text
+# style: primary/outline/text/flat
 # size: :sm, :md, :lg
 # padding: nil (default), :sm or :xs for tighter, equal padding
 # rounded: nil (default, uses the standard radius), :full for a pill shape

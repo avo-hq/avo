@@ -74,12 +74,14 @@ class Avo::Index::GridItemComponent < Avo::BaseComponent
   def render_badge
     return if @card[:badge].blank? || (@card[:badge][:label].blank? && @card[:badge][:icon].blank?)
 
+    tooltip = avo_tooltip_attributes(@card[:badge][:title])
+
     # Wrap BadgeComponent in positioned container to maintain absolute positioning
     content_tag :div,
       class: class_names("grid-card__badge", html(:badge, :classes)),
-      title: @card[:badge][:title],
+      title: tooltip[:title],
       style: html(:badge, :style),
-      data: {target: :badge, tippy: :tooltip, **(html(:badge, :data).presence || {})} do
+      data: {target: :badge, **tooltip[:data], **(html(:badge, :data).presence || {})} do
       render Avo::UI::BadgeComponent.new(
         label: @card[:badge][:label],
         color: @card[:badge][:color],

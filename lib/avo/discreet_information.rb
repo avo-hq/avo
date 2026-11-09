@@ -52,7 +52,7 @@ class Avo::DiscreetInformation
       I18n.t("avo.updated_at_timestamp", updated_at:)
     end
     {
-      title: tag.div([created_at_tag, updated_at_tag].compact.join(tag.br), style: "text-align: right;"),
+      title: tag.div(safe_join([created_at_tag, updated_at_tag].compact, tag.br), style: "text-align: right;"),
       icon: "tabler/outline/calendar-time",
       as:
     }

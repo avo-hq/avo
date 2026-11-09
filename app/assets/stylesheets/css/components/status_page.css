@@ -80,6 +80,24 @@
   }
 }
 
+.status-page__plugin-name {
+  @apply inline-flex items-center gap-2 min-w-0;
+}
+
+.status-page__plugin-state {
+  @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium cursor-help;
+}
+
+.status-page__plugin-state--off {
+  color: var(--color-warning-content);
+  background-color: color-mix(in srgb, var(--color-warning) 12%, transparent);
+
+  &:focus-visible {
+    @apply outline-2 outline-offset-2;
+    outline-color: var(--color-warning-content);
+  }
+}
+
 .status-page__plugin-version {
   @apply inline-flex items-center gap-1.5 text-content-secondary tabular-nums;
 }

@@ -39,9 +39,28 @@ module Avo
 
     def destroy
       @blob = ActiveStorage::Blob.find(params[:id])
-      @blob.destroy!
+      refusal = nil
 
-      redirect_to avo.media_library_index_path
+      # One refusal keeps the file on every record, so a delete never half-happens.
+      ActiveRecord::Base.transaction do
+        @blob.attachments.each do |attachment|
+          refusal = detach(attachment)
+          raise ActiveRecord::Rollback if refusal
+        end
+
+        @blob.destroy!
+      end
+
+      if refusal
+        flash[:error] = refusal
+        return redirect_to avo.edit_media_library_path(@blob), status: :see_other
+      end
+
+      # Only once the rows are gone for good: a rolled-back delete must still find its file.
+      @blob.delete
+
+      # A `fetch` keeps DELETE across a 302, so send the browser on with a GET.
+      redirect_to avo.media_library_index_path, status: :see_other
     end
 
     def update
@@ -73,6 +92,30 @@ module Avo
     end
 
     private
+
+    # Removes the file from one record, under the same policy method and validations as the trash icon on that
+    # record's file field. Returns why it can't, or nil.
+    def detach(attachment)
+      record = attachment.record
+      resource_class = record && Avo.resource_manager.get_resource_by_model_class(record.class)
+
+      # No resource means no policy or form to apply: the record is gone, or Avo doesn't manage it (a rich text
+      # body, which would re-attach its embeds on save). A gone record's row skips the callbacks that read it.
+      if resource_class.nil?
+        record.nil? ? attachment.delete : attachment.destroy!
+        return
+      end
+
+      label = helpers.media_library_record_label(attachment)
+      authorized = resource_class.new(record: record).authorization
+        .authorize_action("delete_#{attachment.name}?", record: record, raise_exception: false)
+      return "You aren't allowed to remove this file from #{label}." unless authorized
+
+      attachment.destroy!
+      return if record.reload.save
+
+      "This file can't be removed from #{label}: #{record.errors.full_messages.to_sentence}"
+    end
 
     def blob_params
       params.require(:blob).permit(:filename, metadata: [:title, :alt, :description])

@@ -296,7 +296,7 @@ Search (`self.search`), grid/map view types, record reordering, and i18n live on
 ## Gotchas
 
 - **Every resource needs a controller.** A missing controller → `ActionDispatch::MissingController` on open. Generate it with `bin/rails g avo:controller <name>`. The resource generator does this automatically; hand-written resources don't.
-- **`self.description` is raw HTML.** Never interpolate user-editable content into it — stored XSS. Same care with `title:` in discreet-information tooltips (sanitize HTML there).
+- **`self.description` is raw HTML.** Never interpolate user-editable content into it — stored XSS. Tooltips such as `title:` in discreet information are text unless the value is a safe string, so build HTML with `tag` or `sanitize`, never `.html_safe` on record text.
 - **Cover/avatar renamed in Avo 4.** It's `self.cover` / `self.avatar` now, not `cover_photo` / `profile_photo`. A Symbol `source:` shows nothing for unpersisted records — use a block for a placeholder.
 - **Two resources, one model → wrong one wins.** Avo resolves the default alphabetically. Set `config.model_resource_mapping` and/or `use_resource:` on associations.
 - **Secondary / namespaced / oddly-named resources need `self.model_class`** (or the matching namespace) or Avo can't infer the model. Namespaced resources whose namespace matches the model's namespace infer automatically.

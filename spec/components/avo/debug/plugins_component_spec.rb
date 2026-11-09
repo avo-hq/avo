@@ -15,4 +15,24 @@ RSpec.describe Avo::Debug::PluginsComponent, type: :component do
     expect(result).to have_css("li", text: /homegrown\s+1\.0\.0/)
     expect(result).not_to have_link("homegrown")
   end
+
+  describe "row_extra" do
+    let(:plugins) { [double(name: "avo-kanban", gem_name: "avo-kanban", version: "4.3.1")] }
+
+    before { allow(Avo.plugin_manager).to receive(:plugins).and_return(plugins) }
+
+    it "renders what the callable returns for each plugin, after its name" do
+      row_extra = ->(plugin) { "<em class='extra'>#{plugin.name} extra</em>".html_safe }
+
+      result = with_controller_class(Avo::BaseController) { render_inline(described_class.new(row_extra:)) }
+
+      expect(result).to have_css(".status-page__plugin-name .extra", text: "avo-kanban extra")
+    end
+
+    it "renders nothing extra without a callable" do
+      result = with_controller_class(Avo::BaseController) { render_inline(described_class.new) }
+
+      expect(result).not_to have_css(".extra")
+    end
+  end
 end

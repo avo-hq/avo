@@ -77,16 +77,18 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_edit_button(control)
     return unless can_edit?
 
+    tooltip = avo_tooltip_attributes(control.title)
+
     link_to helpers.svg("tabler/outline/edit", class: svg_classes),
       edit_path,
       class: "flex items-center",
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       data: {
         target: "control:edit",
         control: :edit,
         "resource-id": @resource.record_param,
-        tippy: "tooltip",
+        **tooltip[:data],
         hotkey_original: Avo::Hotkeys.key_for("record.edit")
       }
   end
@@ -94,15 +96,17 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_show_button(control)
     return unless can_view?
 
+    tooltip = avo_tooltip_attributes(control.title)
+
     link_to helpers.svg("tabler/outline/eye", class: svg_classes),
       show_path,
       class: "flex items-center",
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       data: {
         target: "control:view",
         control: :show,
-        tippy: "tooltip",
+        **tooltip[:data],
       }
   end
 
@@ -114,9 +118,11 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
     policy_method = is_a_related_resource? ? :can_delete? : :can_see_the_destroy_button?
     return unless send policy_method
 
+    tooltip = avo_tooltip_attributes(control.title)
+
     link_to svg("tabler/outline/trash", class: svg_classes), helpers.resource_path(record: @resource.record, resource: @resource, **hidden_params),
       class: "flex flex-col sm:flex-row sm:inline-flex",
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       data: {
         turbo_frame: params[:turbo_frame],
@@ -125,7 +131,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         turbo_method: :delete,
         target: "control:destroy",
         control: :destroy,
-        tippy: control.title ? :tooltip : nil,
+        **tooltip[:data],
         "resource-id": @resource.record_param,
         hotkey_original: Avo::Hotkeys.key_for("record.delete")
       }
@@ -134,8 +140,10 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
   def render_detach_button(control)
     return unless can_detach?
 
+    tooltip = avo_tooltip_attributes(control.title)
+
     link_to svg("tabler/outline/unlink", class: svg_classes), helpers.resource_detach_path(params[:resource_name], params[:id], params[:related_name], @resource.record_param, **hidden_params),
-      title: control.title,
+      title: tooltip[:title],
       aria: {label: control.title},
       data: {
         turbo_method: :delete,
@@ -144,7 +152,7 @@ class Avo::Index::ResourceControlsComponent < Avo::ResourceComponent
         target: "control:detach",
         control: :detach,
         "resource-id": @resource.record_param,
-        tippy: :tooltip,
+        **tooltip[:data],
       }
   end
 
