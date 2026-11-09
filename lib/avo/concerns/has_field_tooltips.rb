@@ -15,9 +15,7 @@ module Avo
       end
 
       def tooltip_attributes(text)
-        return {} if text.blank?
-
-        {title: text, data: {tippy: :tooltip}}
+        avo_tooltip_attributes(text)
       end
 
       # Wraps the rendered value in the tooltip anchor. Inline hugs the value so
