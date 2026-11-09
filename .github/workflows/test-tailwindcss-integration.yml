@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   tailwindcss_integration_test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v4
