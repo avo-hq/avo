@@ -357,6 +357,7 @@
     &:where(:not(:disabled, [disabled], [data-disabled='true'], .button--disabled)) {
       &.button--hover,
       &:hover {
+        @apply text-(--btn-color-accent-foreground);
         background: color-mix(in oklab, var(--btn-color-accent), var(--btn-color-accent-content));
       }
     }
