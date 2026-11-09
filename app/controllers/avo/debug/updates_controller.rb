@@ -1,4 +1,4 @@
-module Avo
+module Avo::Debug
   class UpdatesController < Avo::ApplicationController
     before_action :authenticate_developer_or_admin!
     # Running bundler and restarting the server from a web request is only safe on a developer's machine.
@@ -15,19 +15,19 @@ module Avo
     end
 
     def progress
-      render partial: "avo/updates/progress"
+      render partial: "avo/debug/updates/progress"
     end
 
     def run
       Avo::Services::Updater.start
 
-      render partial: "avo/updates/progress"
+      render partial: "avo/debug/updates/progress"
     end
 
     def restart
       Avo::Services::Updater.restart
 
-      render partial: "avo/updates/progress", locals: {restarting: true}
+      render partial: "avo/debug/updates/progress", locals: {restarting: true}
     end
 
     private

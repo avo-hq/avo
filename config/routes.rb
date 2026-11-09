@@ -32,10 +32,10 @@ Avo::Engine.routes.draw do
   end
 
   get "status", to: "debug#status", as: "status"
-  get "updates", to: "updates#index", as: "updates"
-  get "updates/progress", to: "updates#progress", as: "updates_progress"
-  post "updates/run", to: "updates#run", as: "run_updates"
-  post "updates/restart", to: "updates#restart", as: "restart_after_updates"
+  get "updates", to: "debug/updates#index", as: "updates"
+  get "updates/progress", to: "debug/updates#progress", as: "updates_progress"
+  post "updates/run", to: "debug/updates#run", as: "run_updates"
+  post "updates/restart", to: "debug/updates#restart", as: "restart_after_updates"
   # The old address is bookmarked and linked from released gems (avo-licensing), so it keeps its helper and redirects.
   get "avo_private/status", to: redirect("status", status: 301), as: "avo_private_status"
 
