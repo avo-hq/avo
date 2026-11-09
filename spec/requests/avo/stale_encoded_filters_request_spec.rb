@@ -58,4 +58,44 @@ RSpec.describe "Stale encoded filters", type: :request do
     expect(response.body).to include("Alpha Team")
     expect(response.body).not_to include("Beta Team")
   end
+
+  describe "a value that doesn't decode to filters" do
+    [
+      ["isn't JSON", "not-base64"],
+      ["is truncated JSON", Base64.encode64('{"Avo::Filters::NameFilter"')],
+      ["is JSON but not an object", Base64.encode64("[1]")],
+      ["isn't valid UTF-8", Base64.encode64("\xFF\xFE")]
+    ].each do |description, value|
+      it "ignores one that #{description}" do
+        get "/admin/resources/teams", params: {encoded_filters: value}
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Alpha Team", "Beta Team")
+      end
+    end
+
+    it "ignores one that arrives as a list" do
+      get "/admin/resources/teams", params: {encoded_filters: ["not-base64"]}
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Alpha Team", "Beta Team")
+    end
+
+    context "with session persistence" do
+      around do |example|
+        Avo.configuration.persistence = {driver: :session}
+        example.run
+        Avo.configuration.persistence = {driver: nil}
+      end
+
+      it "doesn't break later visits once it's remembered" do
+        get "/admin/resources/teams", params: {encoded_filters: "not-base64"}
+        expect(response).to have_http_status(:ok)
+
+        get "/admin/resources/teams"
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Alpha Team", "Beta Team")
+      end
+    end
+  end
 end

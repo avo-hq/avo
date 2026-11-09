@@ -22,8 +22,16 @@ module Avo
       end
 
       class << self
+        # The param is user input and can reach us truncated or hand-edited. With session persistence it's also
+        # remembered, so raising here would break every later visit to the page, not just this one.
         def decode_filters(filter_params)
-          JSON.parse(Base64.decode64(filter_params))
+          return {} unless filter_params.is_a?(String)
+
+          filters = JSON.parse(Base64.decode64(filter_params))
+
+          filters.is_a?(Hash) ? filters : {}
+        rescue JSON::ParserError
+          {}
         end
 
         def encode_filters(filter_params)
