@@ -16,7 +16,7 @@
             <% else %>
               <span><%= plugin.name %></span>
             <% end %>
-            <%= add_on_state(plugin) %>
+            <%= @row_extra.call(plugin) if @row_extra %>
           </span>
           <span class="status-page__plugin-version">
             <%= plugin.version %>
