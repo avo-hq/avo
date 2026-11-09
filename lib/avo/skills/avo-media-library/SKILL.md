@@ -111,7 +111,7 @@ end
 - **A customized menu drops the item.** If `config.main_menu` is defined, the Media Library sidebar item won't appear on its own — re-add it manually with `link_to "Media Library", avo.media_library_index_path`.
 - **`media_library: false` is markdown-only.** `trix` and `rhino` don't support per-field toggling; the killswitch is the only way to remove their buttons. `lexxy` follows its own `attachments_disabled` option.
 - **It's `Avo::MediaLibrary.configure`, not `Avo.configure`.** The enable/visible settings live on their own configuration object. Only the menu `link_to` goes inside the main `Avo.configure` block.
-- **Delete only works on unattached files.** It purges the blob and its file from storage. A file still attached to a record (including one whose record was removed with `delete`, leaving the attachment row behind) shows a disabled Delete; detach or purge the attachment first.
+- **Delete removes the file from every record it's attached to.** The confirmation names those records. Each one is checked like its own file field's delete: the `delete_<attachment>?` policy method and the record's validations. If any record refuses, nothing is deleted and the user sees why. Attachments whose record is gone, or has no resource (rich text embeds), are removed without a check. Then the blob and its file are purged from storage.
 
 ## Report
 

@@ -69,6 +69,26 @@ module Avo
       nil
     end
 
+    # `Post "Hello world"`, or `Post #12` like the Attached to list when the record is gone or has no resource.
+    def media_library_record_label(attachment)
+      record = attachment.record
+      resource_class = record && Avo.resource_manager.get_resource_by_model_class(record.class)
+      return "#{attachment.record_type} ##{attachment.record_id}" if resource_class.nil?
+
+      title = resource_class.new(record: record).record_title.presence
+      title ? %(#{record.model_name.human} "#{title}") : "#{record.model_name.human} ##{record.to_param}"
+    end
+
+    def media_library_delete_confirmation(blob)
+      labels = blob.attachments.map { |attachment| media_library_record_label(attachment) }
+      return "Are you sure you want to delete this file?" if labels.empty?
+
+      shown = labels.first(3)
+      shown << "#{labels.size - 3} more" if labels.size > 3
+      # The labels go last, unpunctuated, because a title can end in its own period inside the quotes.
+      "Are you sure? Deleting this file also removes it from #{shown.to_sentence}"
+    end
+
     # How much of a text blob the Media Library preview reads from storage at once.
     MEDIA_LIBRARY_TEXT_PREVIEW_BYTES = 1.megabyte
 
