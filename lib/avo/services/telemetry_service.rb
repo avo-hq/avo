@@ -48,6 +48,7 @@ class Avo::Services::TelemetryService
         cache_store: Avo.cache_store&.class&.to_s,
         cache_operational: cache_operational?,
         plugins: plugins_metadata,
+        addons: addons_metadata,
         **config_metadata
       }
     end
@@ -64,6 +65,19 @@ class Avo::Services::TelemetryService
       end
     rescue
       []
+    end
+
+    # How the app configured each add-on, from the plugin's own `collect_telemetry`, so core names no add-on.
+    # A plugin whose block raises is left out rather than taking the others with it.
+    def addons_metadata
+      Avo.plugin_manager.all.each_with_object({}) do |plugin, addons|
+        values = plugin.telemetry
+        addons[plugin.gem_name || plugin.name.to_s] = values if values.present?
+      rescue
+        next
+      end
+    rescue
+      {}
     end
 
     # Only the exception class leaves the app: cache client messages carry hosts,
