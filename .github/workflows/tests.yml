@@ -41,7 +41,7 @@ jobs:
   # ----------------------------------------------------------------------------
   build_assets:
     name: Build assets
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -95,7 +95,7 @@ jobs:
             rails: '8.0'
           - ruby: '3.4'
             rails: '7.1'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     env:
       RAILS_VERSION: ${{ matrix.rails }}
@@ -185,6 +185,8 @@ jobs:
           - ruby: '3.4'
             rails: '7.1'
     runs-on: blacksmith-8vcpu-ubuntu-2404
+    # A group takes about 3 minutes; one hung run billed 72 minutes on this runner.
+    timeout-minutes: 20
 
     env:
       RAILS_VERSION: ${{ matrix.rails }}
@@ -262,7 +264,7 @@ jobs:
             rails: '8.0'
           - ruby: '3.4'
             rails: '7.1'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     env:
       RAILS_VERSION: ${{matrix.rails}}
@@ -325,7 +327,7 @@ jobs:
       matrix:
         ruby: ['3.4']
         rails: ['8.0']
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     env:
       RAILS_VERSION: ${{matrix.rails}}
@@ -376,7 +378,7 @@ jobs:
           - '3.3'
         rails:
           - '8.0'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     env:
       RAILS_VERSION: ${{matrix.rails}}
