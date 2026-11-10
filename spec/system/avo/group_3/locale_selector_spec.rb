@@ -4,7 +4,7 @@ RSpec.feature "Locale selector", type: :system do
   after { Avo.configuration.locale = nil }
 
   def open_profile_menu
-    find(".sidebar-profile__actions button[popovertarget]").click
+    find(".sidebar-profile__trigger").click
   end
 
   def open_locale_menu

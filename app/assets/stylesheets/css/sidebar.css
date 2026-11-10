@@ -381,13 +381,31 @@
 /* BEM: .sidebar-profile (block)                    */
 /* ================================================ */
 
+/* px-2 + the trigger's px-2 keep the row's old inset while the trigger's hover background fills it. */
 .sidebar-profile {
-  @apply flex items-center rtl:flex-row-reverse px-4 py-2 gap-4;
+  @apply relative px-2 py-1;
   color: var(--sidebar-content);
 }
 
-.sidebar-profile__body {
-  @apply flex flex-1 items-center gap-2 w-full min-w-0;
+.sidebar-profile .popover-menu {
+  @apply flex w-full;
+}
+
+.sidebar-profile__trigger {
+  @apply flex items-center gap-2 w-full min-w-0 px-2 py-1 rounded-lg text-start cursor-pointer;
+}
+
+.sidebar-profile__trigger:hover,
+.sidebar-profile__trigger:has(+ :popover-open) {
+  background-color: var(--sidebar-link-hover-background);
+}
+
+.sidebar-profile__trigger:focus-visible {
+  background-color: var(--sidebar-focus-background);
+}
+
+.sidebar-profile__chevron {
+  @apply size-4 shrink-0 opacity-60;
 }
 
 .sidebar-profile__avatar-wrapper {
@@ -410,7 +428,12 @@
 }
 
 .sidebar-profile__info {
-  @apply flex flex-col min-w-0 rtl:text-end;
+  @apply flex flex-col flex-1 min-w-0;
+}
+
+/* Keeps the name clear of the status dot that floats over the trigger. */
+.sidebar-profile:has(.sidebar-status) .sidebar-profile__info {
+  @apply pe-8;
 }
 
 .sidebar-profile__title {
@@ -423,17 +446,15 @@
   color: var(--sidebar-content-secondary);
 }
 
-.sidebar-profile__actions {
-  @apply flex items-center justify-center gap-1 shrink-0;
-}
-
 .sidebar-profile__form {
   @apply flex w-full;
 }
 
 .sidebar-profile__dropdown {
   @apply sm:max-w-sm mb-0.5;
-  position-area: top span-right;
+  /* Starts at the row's start edge and is at least as wide as the row (the trigger is the anchor). */
+  position-area: block-start span-inline-end;
+  min-width: anchor-size(width);
 
   /* The profile menu opens upward, so it should rise from below and drop back
      down — the inverse of the shared `.popover-menu__panel` slide, which starts
@@ -484,9 +505,9 @@
 /* BEM: .sidebar-status (block)                     */
 /* ================================================ */
 
-/* Just the dot, between the user's name and the profile menu. */
+/* Just the dot, floating over the profile row next to the chevron. */
 .sidebar-status {
-  @apply inline-flex items-center justify-center shrink-0 size-6 rounded-full;
+  @apply absolute top-1/2 -translate-y-1/2 end-10 inline-flex items-center justify-center size-6 rounded-full;
 }
 
 .sidebar-status:focus-visible {
