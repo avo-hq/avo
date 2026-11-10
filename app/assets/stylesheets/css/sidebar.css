@@ -393,19 +393,25 @@
 
 .sidebar-profile__trigger {
   @apply flex items-center gap-2 w-full min-w-0 px-2 py-1 rounded-lg text-start cursor-pointer;
+  background-color: var(--sidebar-profile-trigger-background, transparent);
 }
 
 .sidebar-profile__trigger:hover,
 .sidebar-profile__trigger:has(+ :popover-open) {
-  background-color: var(--sidebar-link-hover-background);
+  --sidebar-profile-trigger-background: var(--sidebar-link-hover-background);
 }
 
 .sidebar-profile__trigger:focus-visible {
-  background-color: var(--sidebar-focus-background);
+  --sidebar-profile-trigger-background: var(--sidebar-focus-background);
 }
 
 .sidebar-profile__chevron {
-  @apply size-4 shrink-0 opacity-60;
+  @apply relative inline-flex shrink-0 size-4;
+}
+
+/* Dims the icon only, so the status badge keeps its full color. */
+.sidebar-profile__chevron svg {
+  @apply size-4 opacity-60;
 }
 
 .sidebar-profile__avatar-wrapper {
@@ -431,18 +437,13 @@
   @apply flex flex-col flex-1 min-w-0;
 }
 
-/* Keeps the name clear of the status dot that floats over the trigger. */
-.sidebar-profile:has(.sidebar-status) .sidebar-profile__info {
-  @apply pe-8;
-}
-
 .sidebar-profile__title {
-  @apply font-medium text-ellipsis overflow-hidden text-sm leading-5;
+  @apply font-medium truncate text-sm leading-5;
   color: var(--sidebar-content);
 }
 
 .sidebar-profile__subtitle {
-  @apply text-xs text-ellipsis overflow-hidden leading-4;
+  @apply text-xs truncate leading-4;
   color: var(--sidebar-content-secondary);
 }
 
@@ -505,38 +506,22 @@
 /* BEM: .sidebar-status (block)                     */
 /* ================================================ */
 
-/* Just the dot, floating over the profile row next to the chevron. */
+/* A badge on the profile menu's chevron. The ring takes the row's current background to cut it out of the icon. */
 .sidebar-status {
-  @apply absolute top-1/2 -translate-y-1/2 end-10 inline-flex items-center justify-center size-6 rounded-full;
+  @apply absolute top-0 end-0 size-1.5 rounded-full;
+  box-shadow: 0 0 0 1.5px var(--sidebar-profile-trigger-background, var(--sidebar-background));
 }
 
-.sidebar-status:focus-visible {
-  outline: 2px solid var(--color-accent-content);
-}
-
-.sidebar-status__indicator {
-  @apply rounded-full size-2.5;
-}
-
-.sidebar-status__indicator--ok {
+.sidebar-status--ok {
   @apply bg-green-400;
 }
 
-.sidebar-status__indicator--error {
+.sidebar-status--error {
   @apply bg-orange-400;
 }
 
-.sidebar-status__indicator--warning {
+.sidebar-status--warning {
   @apply bg-amber-400;
-}
-
-.sidebar-status__hint {
-  @apply absolute text-xs hidden text-center w-full -ms-4;
-  color: var(--sidebar-content-secondary);
-}
-
-.sidebar-status:hover .sidebar-status__hint {
-  @apply block;
 }
 
 /* ================================================ */

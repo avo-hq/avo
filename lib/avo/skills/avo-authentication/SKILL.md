@@ -106,7 +106,7 @@ If the user mentions the Rails 8 scaffold (or you see `Current.user` + an `Authe
 
 Avo ships two deliberately minimal roles, resolved by calling a method on the `current_user`:
 
-- `is_admin?` → the user can reach the private **Avo Status** page (`/status`, under your mount path) and sees its sidebar link in production.
+- `is_admin?` → the user can reach the private **Avo Status** page (`/status`, under your mount path) and sees its item in the sidebar profile menu in production.
 - `is_developer?` → same Status-page access, **plus** full backtraces on non-validation errors (e.g. an API call that blows up during save) instead of a generic "Something went wrong".
 
 Check them yourself anywhere with `Avo::Current.user_is_admin?` / `Avo::Current.user_is_developer?`. Point Avo at differently-named predicate methods via the initializer:

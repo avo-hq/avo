@@ -24,6 +24,33 @@ RSpec.describe "sidebar", type: :system do
       expect(page).to have_selector "div.sidebar-open"
     end
 
+    it "opens Avo Status from the profile menu" do
+      find(".sidebar-profile__trigger").click
+      within(".sidebar-profile__dropdown") { click_link "Avo Status" }
+
+      expect(page).to have_current_path "/admin/status"
+    end
+
+    it "truncates a long name beside the status badge in the narrowest sidebar" do
+      admin.update!(first_name: "Bartholomew Maximilian", last_name: "Featherstonehaugh-Worthington")
+      visit "/admin/resources/users"
+      page.execute_script("document.documentElement.style.setProperty('--sidebar-width-stored', '200px')")
+
+      title, trigger, badge = page.evaluate_script(<<~JS)
+        [".sidebar-profile__title", ".sidebar-profile__trigger", ".sidebar-profile__trigger .sidebar-status"].map((selector) => {
+          const el = document.querySelector(selector)
+          const rect = el.getBoundingClientRect()
+          return {scroll: el.scrollWidth, client: el.clientWidth, right: Math.round(rect.right), height: Math.round(rect.height)}
+        })
+      JS
+
+      # One line, cut with an ellipsis, not wrapped onto a second line.
+      expect(title["height"]).to eq 20
+      expect(title["scroll"]).to be > title["client"]
+      expect(title["right"]).to be < badge["right"]
+      expect(badge["right"]).to be <= trigger["right"]
+    end
+
     it "remembers user choice" do
       sidebar_button = page.find(sidebar_toggle_selector)
       sidebar_button.click

@@ -18,7 +18,13 @@
             <span class="sidebar-profile__subtitle"><%= title %></span>
           <% end %>
         </span>
-        <%= helpers.svg "tabler/outline/selector", class: "sidebar-profile__chevron" %>
+        <span class="sidebar-profile__chevron">
+          <%= helpers.svg "tabler/outline/selector" %>
+          <% if @show_status %>
+            <span class="sidebar-status sidebar-status--<%= Avo.app_status %>"></span>
+            <span class="sr-only">Avo Status: <%= Avo.app_status %></span>
+          <% end %>
+        </span>
       </button>
     <% end %>
     <% component.with_items do %>
@@ -26,6 +32,9 @@
         <%= render custom_profile_component %>
       <% end %>
       <%= render "avo/partials/profile_menu_extra" %>
+      <% if @show_status %>
+        <%= render Avo::ProfileItemComponent.new label: "Avo Status", path: helpers.avo.status_path, icon: "tabler/outline/activity-heartbeat" %>
+      <% end %>
       <% if can_sign_out_user? %>
         <%= form_with url: helpers.main_app.send(sign_out_path),
           method: sign_out_method,
@@ -40,16 +49,6 @@
           <% end %>
         <% end %>
       <% end %>
-    <% end %>
-  <% end %>
-  <%# A sibling of the trigger, because a link can't sit inside a button. %>
-  <% if @show_status %>
-    <%= link_to helpers.avo.status_path,
-      class: "sidebar-status",
-      title: "Avo Status",
-      aria: {label: "Avo Status: #{Avo.app_status}"},
-      data: {tippy: "tooltip"} do %>
-      <span class="sidebar-status__indicator sidebar-status__indicator--<%= Avo.app_status %>"></span>
     <% end %>
   <% end %>
 </div>
