@@ -66,7 +66,7 @@ grep -n "avo" Gemfile
 bin/rails avo:update      # or: bundle exec rails avo:update
 ```
 
-The task resolves Avo core plus every registered Avo plugin to its real gem name and runs `bundle update --conservative <those gems>` — `--conservative` so it doesn't drag unrelated shared dependencies along. Read its output: it echoes the exact `bundle update` command it ran.
+The task resolves Avo core plus every registered Avo plugin to its real gem name and runs `bundle update --conservative <those gems>` — `--conservative` so it doesn't drag unrelated shared dependencies along. Read its output: it echoes the exact `bundle update` command it ran. From `avo` 4.3.10, `AVO_UPDATE_PUSH=1 bin/rails avo:update` also commits `Gemfile.lock` (message `Update Avo gems`) and pushes to the branch's upstream, for scheduled jobs and agents. It refuses to start outside a Git repo, with uncommitted changes to tracked files, or on a branch with no upstream; run it on a branch you're happy to push to, not the deploy branch.
 
 If the task isn't available (older Avo, or the app won't boot), fall back to naming the gems yourself:
 
@@ -147,7 +147,7 @@ Check the project's own instructions for how — in this order: `AGENTS.md`, `CL
 | Command | Does |
 | --- | --- |
 | `grep -E "^ {4}avo(-[a-z_]+)? \(" Gemfile.lock` | Current version of every Avo gem — run **before** updating |
-| `bin/rails avo:update` | `bundle update --conservative` across Avo core + every registered plugin |
+| `bin/rails avo:update` | `bundle update --conservative` across Avo core + every registered plugin (`AVO_UPDATE_PUSH=1` also commits and pushes the lockfile) |
 | `git diff Gemfile.lock \| grep -E "^[-+] {4}avo"` | The actual before → after jump per gem |
 | `bundle update --conservative avo …` | Manual fallback when the rake task isn't available |
 | `bundle outdated \| grep avo` | What's available above the current Gemfile constraints |

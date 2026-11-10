@@ -171,7 +171,7 @@ def handle(query:, fields:, **args)
 end
 ```
 
-**Picking an associated record.** A `belongs_to` field needs *one* current record to resolve its association, so it only renders when the action was hydrated with a single record — from **Show**, or with exactly one row checked on **Index**. On a multi-record or standalone action there is no current record and the field can't render. Use a plain input instead:
+**Picking an associated record.** A `belongs_to` field renders in the action modal wherever the action starts: **Show**, one or several rows on **Index**, or a standalone action with no record. On a single record it opens with that record's association preselected. Before `avo` 4.2.9 it rendered only with exactly one record, so older apps guard it with `visible: -> { resource.record.present? }` (drop the guard on 4.2.9+). For a value that isn't an association, use a plain input:
 
 ```ruby
 # Short list — a select with the options loaded when the form renders.
@@ -270,7 +270,8 @@ When an index spans multiple pages, checking "Select all" offers to select **eve
     URI.parse(request.referer).query.to_s.include?("hey=ya") ? :yes : :no
   }
   ```
-- **`belongs_to` doesn't render in a bulk or standalone action.** It needs a single current record to resolve the association, which a multi-record or standalone action doesn't have. Reach for `as: :select` (short list) or `as: :tags, mode: :select, fetch_values_from: "..."` (long, searchable) and assign the ID yourself in `handle`.
+- **A `belongs_to` field arrives in `handle` under its foreign key.** `field :user, as: :belongs_to` is `fields[:user_id]`; a polymorphic one arrives as `fields[:reviewable_type]` and `fields[:reviewable_id]` (4.2.7+). Both are the submitted strings, and an action does not check the type against the field's `types`, so validate it before constantizing. On `avo` older than 4.2.9 the field doesn't render in a bulk or standalone action: use `as: :select` or `as: :tags, mode: :select, fetch_values_from: "..."` and assign the ID yourself.
+- **Actions also run from association panels (4.3.3+).** A `has_many` or `has_and_belongs_to_many` panel offers the actions declared on the *associated* resource, on the rows checked in the panel. `record` is `nil` while the dropdown renders (as on Index), so `name` and `arguments` blocks must handle that; the panel's parent record reaches `visible` as `parent_resource.record` (`parent_resource` is `nil` outside a panel).
 - **`reload_records` is Index-only.** It doesn't work on association tables — use `reload` there.
 - **Notification bodies truncate at ~320 characters.** Keep `succeed`/`error` messages short; put long output in a `download` or a redirect.
 - **File downloads need `self.turbo = false`.** Otherwise Turbo intercepts the response and the download won't fire.
