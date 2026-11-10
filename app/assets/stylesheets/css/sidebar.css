@@ -381,13 +381,36 @@
 /* BEM: .sidebar-profile (block)                    */
 /* ================================================ */
 
+/* px-2 + the trigger's px-2 keep the row's old inset while the trigger's hover background fills it. */
 .sidebar-profile {
-  @apply flex items-center rtl:flex-row-reverse px-4 py-2 gap-4;
+  @apply relative px-2 py-1;
   color: var(--sidebar-content);
 }
 
-.sidebar-profile__body {
-  @apply flex flex-1 items-center gap-2 w-full min-w-0;
+.sidebar-profile .popover-menu {
+  @apply flex w-full;
+}
+
+.sidebar-profile__trigger {
+  @apply flex items-center gap-2 w-full min-w-0 px-2 py-1 rounded-lg text-start cursor-pointer;
+}
+
+.sidebar-profile__trigger:hover,
+.sidebar-profile__trigger:has(+ :popover-open) {
+  background-color: var(--sidebar-link-hover-background);
+}
+
+.sidebar-profile__trigger:focus-visible {
+  background-color: var(--sidebar-focus-background);
+}
+
+.sidebar-profile__chevron {
+  @apply relative inline-flex shrink-0 size-4;
+}
+
+/* Dims the icon only, so the status badge keeps its full color. */
+.sidebar-profile__chevron svg {
+  @apply size-4 opacity-60;
 }
 
 .sidebar-profile__avatar-wrapper {
@@ -410,21 +433,17 @@
 }
 
 .sidebar-profile__info {
-  @apply flex flex-col min-w-0 rtl:text-end;
+  @apply flex flex-col flex-1 min-w-0;
 }
 
 .sidebar-profile__title {
-  @apply font-medium text-ellipsis overflow-hidden text-sm leading-5;
+  @apply font-medium truncate text-sm leading-5;
   color: var(--sidebar-content);
 }
 
 .sidebar-profile__subtitle {
-  @apply text-xs text-ellipsis overflow-hidden leading-4;
+  @apply text-xs truncate leading-4;
   color: var(--sidebar-content-secondary);
-}
-
-.sidebar-profile__actions {
-  @apply flex items-center justify-center gap-1 shrink-0;
 }
 
 .sidebar-profile__form {
@@ -433,7 +452,9 @@
 
 .sidebar-profile__dropdown {
   @apply sm:max-w-sm mb-0.5;
-  position-area: top span-right;
+  /* Starts at the row's start edge and is at least as wide as the row (the trigger is the anchor). */
+  position-area: block-start span-inline-end;
+  min-width: anchor-size(width);
 
   /* The profile menu opens upward, so it should rise from below and drop back
      down — the inverse of the shared `.popover-menu__panel` slide, which starts
@@ -484,38 +505,21 @@
 /* BEM: .sidebar-status (block)                     */
 /* ================================================ */
 
-/* Just the dot, between the user's name and the profile menu. */
+/* Hangs past the chevron's end edge, beside the upper arrow rather than on it, so the icon stays whole. */
 .sidebar-status {
-  @apply inline-flex items-center justify-center shrink-0 size-6 rounded-full;
+  @apply absolute top-0.5 -end-0.5 size-1.5 rounded-full;
 }
 
-.sidebar-status:focus-visible {
-  outline: 2px solid var(--color-accent-content);
-}
-
-.sidebar-status__indicator {
-  @apply rounded-full size-2.5;
-}
-
-.sidebar-status__indicator--ok {
+.sidebar-status--ok {
   @apply bg-green-400;
 }
 
-.sidebar-status__indicator--error {
+.sidebar-status--error {
   @apply bg-orange-400;
 }
 
-.sidebar-status__indicator--warning {
+.sidebar-status--warning {
   @apply bg-amber-400;
-}
-
-.sidebar-status__hint {
-  @apply absolute text-xs hidden text-center w-full -ms-4;
-  color: var(--sidebar-content-secondary);
-}
-
-.sidebar-status:hover .sidebar-status__hint {
-  @apply block;
 }
 
 /* ================================================ */

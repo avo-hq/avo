@@ -1,66 +1,54 @@
 <div class="sidebar-profile">
-  <div class="sidebar-profile__body">
-    <div class="sidebar-profile__avatar-wrapper">
-    <div class="sidebar-profile__avatar">
-        <% if avatar.present? %>
-          <%= image_tag helpers.main_app.url_for(avatar), class: "sidebar-profile__avatar-img" %>
-        <% else %>
-          <span class="sidebar-profile__avatar-initials">
-            <%= initials %>
-          </span>
-        <% end %>
-    </div>
-    </div>
-    <div class="sidebar-profile__info">
-      <div class="sidebar-profile__title">
-        <%= name %>
-      </div>
-      <% if title.present? %>
-        <div class="sidebar-profile__subtitle">
-            <%= title %>
-        </div>
-      <% end %>
-    </div>
-  </div>
-  <% if @show_status %>
-    <%= link_to helpers.avo.status_path,
-      class: "sidebar-status",
-      title: "Avo Status",
-      aria: {label: "Avo Status: #{Avo.app_status}"},
-      data: {tippy: "tooltip"} do %>
-      <span class="sidebar-status__indicator sidebar-status__indicator--<%= Avo.app_status %>"></span>
-    <% end %>
-  <% end %>
-  <div class="sidebar-profile__actions">
-    <%= render Avo::UI::DropdownComponent.new(popover_mode: true, classes: "sidebar-profile__dropdown") do |component| %>
-      <% component.with_trigger do %>
-        <%= render Avo::ButtonComponent.new(
-          icon: "tabler/outline/dots",
-          size: :md,
-          style: :text,
-          popovertarget: component.popover_id
-        ) %>
-      <% end %>
-      <% component.with_items do %>
-        <% if render_custom_profile_menu? %>
-          <%= render custom_profile_component %>
-        <% end %>
-        <%= render "avo/partials/profile_menu_extra" %>
-        <% if can_sign_out_user? %>
-          <%= form_with url: helpers.main_app.send(sign_out_path),
-            method: sign_out_method,
-            data: {
-              controller: :"sign-out",
-              sign_out_confirm_value: t('avo.are_you_sure'),
-              action: "submit->sign-out#handle",
-            },
-            class: 'sidebar-profile__form' do |form| %>
-            <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "sidebar-profile__sign-out" do %>
-              <%= helpers.svg "tabler/outline/logout", class: 'sidebar-icon' %> <span class="truncate min-w-0"><%= t('avo.sign_out') %></span>
+  <%= render Avo::UI::DropdownComponent.new(popover_mode: true, classes: "sidebar-profile__dropdown") do |component| %>
+    <% component.with_trigger do %>
+      <%# The whole row opens the menu, so the menu anchors to the row and takes its width. %>
+      <button type="button" class="sidebar-profile__trigger" popovertarget="<%= component.popover_id %>">
+        <span class="sidebar-profile__avatar-wrapper">
+          <span class="sidebar-profile__avatar">
+            <% if avatar.present? %>
+              <%= image_tag helpers.main_app.url_for(avatar), class: "sidebar-profile__avatar-img", alt: "" %>
+            <% else %>
+              <span class="sidebar-profile__avatar-initials"><%= initials %></span>
             <% end %>
+          </span>
+        </span>
+        <span class="sidebar-profile__info">
+          <span class="sidebar-profile__title"><%= name %></span>
+          <% if title.present? %>
+            <span class="sidebar-profile__subtitle"><%= title %></span>
+          <% end %>
+        </span>
+        <span class="sidebar-profile__chevron">
+          <%= helpers.svg "tabler/outline/selector" %>
+          <% if @show_status %>
+            <span class="sidebar-status sidebar-status--<%= Avo.app_status %>"></span>
+            <span class="sr-only">Avo Status: <%= Avo.app_status %></span>
+          <% end %>
+        </span>
+      </button>
+    <% end %>
+    <% component.with_items do %>
+      <% if render_custom_profile_menu? %>
+        <%= render custom_profile_component %>
+      <% end %>
+      <%= render "avo/partials/profile_menu_extra" %>
+      <% if @show_status %>
+        <%= render Avo::ProfileItemComponent.new label: "Avo Status", path: helpers.avo.status_path, icon: "tabler/outline/activity-heartbeat" %>
+      <% end %>
+      <% if can_sign_out_user? %>
+        <%= form_with url: helpers.main_app.send(sign_out_path),
+                      method: sign_out_method,
+                      data: {
+                        controller: :"sign-out",
+                        sign_out_confirm_value: t("avo.are_you_sure"),
+                        action: "submit->sign-out#handle"
+                      },
+                      class: "sidebar-profile__form" do |form| %>
+          <%= form.button turbo_confirm: t("avo.are_you_sure"), class: "sidebar-profile__sign-out" do %>
+            <%= helpers.svg "tabler/outline/logout", class: "sidebar-icon" %> <span class="truncate min-w-0"><%= t("avo.sign_out") %></span>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
-  </div>
+  <% end %>
 </div>
