@@ -12,7 +12,7 @@ module Avo
 
         add_string_prop args, :first_day_of_week, 1
         add_string_prop args, :picker_format, "Y-m-d"
-        add_string_prop args, :format, "yyyy-LL-dd"
+        add_string_prop args, :format, Avo.configuration.date_format
         add_boolean_prop args, :disable_mobile
         add_object_prop args, :picker_options
       end

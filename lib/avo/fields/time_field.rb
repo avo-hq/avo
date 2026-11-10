@@ -8,7 +8,7 @@ module Avo
         super
 
         add_string_prop args, :picker_format, "H:i:S"
-        add_string_prop args, :format, "TT"
+        add_string_prop args, :format, Avo.configuration.time_format
       end
     end
   end

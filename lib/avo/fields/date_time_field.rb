@@ -11,7 +11,7 @@ module Avo
 
         add_boolean_prop args, :time_24hr
         add_string_prop args, :picker_format, "Y-m-d H:i:S"
-        add_string_prop args, :format, "yyyy-LL-dd TT"
+        add_string_prop args, :format, Avo.configuration.date_time_format
         add_string_prop args, :timezone
         add_boolean_prop args, :relative, true
       end

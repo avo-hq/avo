@@ -37,6 +37,10 @@ module Avo
     # Field labels fall back to the model's attribute translations (activerecord.attributes / attributes).
     attr_accessor :model_attribute_translations
     attr_accessor :currency
+    # Default Luxon display formats for date, date_time, and time fields. A field's own `format:` wins.
+    attr_accessor :date_format
+    attr_accessor :date_time_format
+    attr_accessor :time_format
     attr_accessor :default_view_type
     attr_accessor :license_key
     attr_accessor :authorization_methods
@@ -180,6 +184,9 @@ module Avo
       @locale_selector = true
       @model_attribute_translations = true
       @currency = "USD"
+      @date_format = "yyyy-LL-dd"
+      @date_time_format = "yyyy-LL-dd TT"
+      @time_format = "TT"
       @default_view_type = :table
       @map_view = {}
       @license_key = nil
