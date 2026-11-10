@@ -201,6 +201,68 @@ RSpec.describe "Media library edit", type: :request do
     expect(blob.metadata["title"]).to eq("Hello")
   end
 
+  describe "deleting a blob" do
+    it "removes the file from storage along with the row" do
+      blob = create_blob
+
+      delete "/admin/media-library/#{blob.id}"
+
+      expect(response).to redirect_to("/admin/media-library")
+      expect(response).to have_http_status(:see_other)
+      expect(ActiveStorage::Blob.exists?(blob.id)).to be false
+      expect(blob.service.exist?(blob.key)).to be false
+    end
+
+    it "removes an attached file from every record, including one that is gone or has no resource" do
+      blob = create_blob(filename: "cover.txt")
+      kept, gone = create_list(:post, 2)
+      kept.cover.attach(blob)
+      gone.cover.attach(blob)
+      gone.delete
+      create :event, body: %(<action-text-attachment sgid="#{blob.attachable_sgid}"></action-text-attachment>)
+
+      delete "/admin/media-library/#{blob.id}"
+
+      expect(response).to redirect_to("/admin/media-library")
+      expect(kept.reload.cover).not_to be_attached
+      expect(ActiveStorage::Attachment.where(blob_id: blob.id)).to be_empty
+      expect(ActiveStorage::Blob.exists?(blob.id)).to be false
+      expect(blob.service.exist?(blob.key)).to be false
+    end
+
+    it "keeps the file on every record when one record's policy refuses removing it" do
+      blob = create_blob(filename: "cover.txt")
+      allowed, refused = create_list(:post, 2)
+      allowed.cover.attach(blob)
+      refused.cover.attach(blob)
+      allow_any_instance_of(Avo::Services::AuthorizationService).to receive(:authorize_action).and_call_original
+      allow_any_instance_of(Avo::Services::AuthorizationService)
+        .to receive(:authorize_action)
+        .with("delete_cover?", record: refused, raise_exception: false)
+        .and_return(false)
+
+      delete "/admin/media-library/#{blob.id}"
+
+      expect(response).to redirect_to("/admin/media-library/#{blob.id}/edit")
+      expect([allowed.reload.cover, refused.reload.cover]).to all(be_attached)
+      expect(blob.service.exist?(blob.key)).to be true
+      follow_redirect!
+      expect(response.body).to include(%(You aren't allowed to remove this file from Post "#{refused.name}".))
+    end
+
+    it "keeps the file when removing it would leave a record invalid" do
+      post = create :post
+      post.cover.attach(create_blob(filename: "cover.txt"))
+      post.update_column(:name, nil)
+
+      delete "/admin/media-library/#{post.cover.blob.id}"
+
+      expect(post.reload.cover).to be_attached
+      follow_redirect!
+      expect(response.body).to include("This file can't be removed from Post ##{post.to_param}: Name can't be blank")
+    end
+  end
+
   describe "attached to" do
     it "links to the record the blob is attached to" do
       post = create :post
@@ -237,6 +299,16 @@ RSpec.describe "Media library edit", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("ActionText::RichText ##{event.body.id}")
+    end
+
+    it "warns before deleting that the file goes from the records it is attached to" do
+      post = create :post
+      post.cover.attach(create_blob(filename: "cover.txt"))
+
+      get "/admin/media-library/#{post.cover.blob.id}/edit"
+
+      confirm = Capybara.string(response.body).find_button("Delete")["data-turbo-confirm"]
+      expect(confirm).to eq(%(Are you sure? Deleting this file also removes it from Post "#{post.name}"))
     end
   end
 

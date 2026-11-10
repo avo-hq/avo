@@ -1,5 +1,16 @@
 module Avo
   class Configuration
+    # Add-on gems register these with Avo.plugin_manager.register_configuration. Without the gem, a bare
+    # NoMethodError on `config.audit_logging` reads like an Avo bug, so name the gem to install instead.
+    ADD_ON_CONFIGURATIONS = {
+      ai: "avo-ai",
+      audit_logging: "avo-audit_logging",
+      dynamic_filters: "avo-dynamic_filters",
+      mcp_server: "avo-mcp_server",
+      meta: "avo-meta",
+      notifications: "avo-notifications"
+    }.freeze
+
     attr_writer :app_name
     attr_writer :root_path
     attr_writer :cache_store
@@ -601,6 +612,19 @@ module Avo
       Avo::Menu::Builder.parse_menu(&@header_menu).items.select do |item|
         item.is_a?(Avo::Menu::Link)
       end
+    end
+
+    # No respond_to_missing?: respond_to?(:audit_logging) must stay false so apps can check whether the gem is there.
+    def method_missing(name, *args, &block) # standard:disable Style/MissingRespondToMissing
+      namespace = name.to_s.delete_suffix("=")
+      gem_name = ADD_ON_CONFIGURATIONS[namespace.to_sym]
+      return super if gem_name.nil?
+
+      raise NoMethodError.new(
+        "`config.#{namespace}` is provided by the #{gem_name} gem, which is not installed. " \
+        "Add `gem \"#{gem_name}\"` to your Gemfile, or remove these settings from config/initializers/avo.rb.",
+        name
+      )
     end
   end
 

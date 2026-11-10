@@ -1,3 +1,4 @@
+<% tooltip = avo_tooltip_attributes(@title) %>
 <div
   class="actions-dropdown relative flex flex-col sm:w-auto"
   data-component-name="<%= self.class.to_s.underscore %>"
@@ -21,8 +22,8 @@
         popovertarget: component.popover_id,
         data: {
           actions_dropdown_button: @resource&.model_key,
-          tippy: "tooltip",
-          tippy_content: @title,
+          **tooltip[:data],
+          tippy_content: tooltip[:title],
           **(@hotkey.present? ? (@as_index_row_control ? {hotkey_original: @hotkey} : {hotkey: @hotkey}) : {})
         } do %>
         <%= @label %>
