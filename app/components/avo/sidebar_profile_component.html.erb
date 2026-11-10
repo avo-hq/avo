@@ -37,15 +37,15 @@
       <% end %>
       <% if can_sign_out_user? %>
         <%= form_with url: helpers.main_app.send(sign_out_path),
-          method: sign_out_method,
-          data: {
-            controller: :"sign-out",
-            sign_out_confirm_value: t('avo.are_you_sure'),
-            action: "submit->sign-out#handle",
-          },
-          class: 'sidebar-profile__form' do |form| %>
-          <%= form.button turbo_confirm: t('avo.are_you_sure'), class: "sidebar-profile__sign-out" do %>
-            <%= helpers.svg "tabler/outline/logout", class: 'sidebar-icon' %> <span class="truncate min-w-0"><%= t('avo.sign_out') %></span>
+                      method: sign_out_method,
+                      data: {
+                        controller: :"sign-out",
+                        sign_out_confirm_value: t("avo.are_you_sure"),
+                        action: "submit->sign-out#handle"
+                      },
+                      class: "sidebar-profile__form" do |form| %>
+          <%= form.button turbo_confirm: t("avo.are_you_sure"), class: "sidebar-profile__sign-out" do %>
+            <%= helpers.svg "tabler/outline/logout", class: "sidebar-icon" %> <span class="truncate min-w-0"><%= t("avo.sign_out") %></span>
           <% end %>
         <% end %>
       <% end %>
