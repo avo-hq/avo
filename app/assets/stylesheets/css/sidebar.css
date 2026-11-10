@@ -393,16 +393,15 @@
 
 .sidebar-profile__trigger {
   @apply flex items-center gap-2 w-full min-w-0 px-2 py-1 rounded-lg text-start cursor-pointer;
-  background-color: var(--sidebar-profile-trigger-background, transparent);
 }
 
 .sidebar-profile__trigger:hover,
 .sidebar-profile__trigger:has(+ :popover-open) {
-  --sidebar-profile-trigger-background: var(--sidebar-link-hover-background);
+  background-color: var(--sidebar-link-hover-background);
 }
 
 .sidebar-profile__trigger:focus-visible {
-  --sidebar-profile-trigger-background: var(--sidebar-focus-background);
+  background-color: var(--sidebar-focus-background);
 }
 
 .sidebar-profile__chevron {
@@ -506,10 +505,9 @@
 /* BEM: .sidebar-status (block)                     */
 /* ================================================ */
 
-/* A badge on the profile menu's chevron. The ring takes the row's current background to cut it out of the icon. */
+/* Hangs past the chevron's end edge, beside the upper arrow rather than on it, so the icon stays whole. */
 .sidebar-status {
-  @apply absolute top-0 end-0 size-1.5 rounded-full;
-  box-shadow: 0 0 0 1.5px var(--sidebar-profile-trigger-background, var(--sidebar-background));
+  @apply absolute top-0.5 -end-0.5 size-1.5 rounded-full;
 }
 
 .sidebar-status--ok {
