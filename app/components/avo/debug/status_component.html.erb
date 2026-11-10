@@ -1,33 +1,37 @@
 <%= render ui.panel(title: "Avo Status", description: "Use this page to debug your Avo instance.") do |panel| %>
   <% panel.with_body do %>
     <div class="status-page">
-      <%= render ui.card(title: "License", padded: true) do |card| %>
-        <% card.with_body do %>
-          <div class="status-page__license">
-            <%= render ui.badge(label: "Community", color: :success, icon: "tabler/outline/rosette-discount-check") %>
-            <dl class="status-page__details">
-              <% information_items.each do |key, value| %>
-                <div class="status-page__detail">
-                  <dt class="status-page__detail-label"><%= key.humanize %></dt>
-                  <dd class="status-page__detail-value"><%= value.presence || tag.span("Not set", class: "status-page__detail-empty") %></dd>
-                </div>
+      <% if license_card? %>
+        <%= license_card %>
+      <% else %>
+        <%= render ui.card(title: "License", padded: true) do |card| %>
+          <% card.with_body do %>
+            <div class="status-page__license">
+              <%= render ui.badge(label: "Community", color: :success, icon: "tabler/outline/rosette-discount-check") %>
+              <dl class="status-page__details">
+                <% information_items.each do |key, value| %>
+                  <div class="status-page__detail">
+                    <dt class="status-page__detail-label"><%= key.humanize %></dt>
+                    <dd class="status-page__detail-value"><%= value.presence || tag.span("Not set", class: "status-page__detail-empty") %></dd>
+                  </div>
+                <% end %>
+              </dl>
+            </div>
+          <% end %>
+          <% card.with_footer do %>
+            <div class="status-page__upgrade">
+              <p class="status-page__upgrade-text">
+                Need more? Pick your license, then open its <strong>Upgrade</strong> section.
+              </p>
+              <%= a_link "https://avohq.io/licenses", style: :primary, color: :blue, size: :sm, target: "_blank", icon: "tabler/outline/external-link" do %>
+                View licenses
               <% end %>
-            </dl>
-          </div>
-        <% end %>
-        <% card.with_footer do %>
-          <div class="status-page__upgrade">
-            <p class="status-page__upgrade-text">
-              Need more? Pick your license, then open its <strong>Upgrade</strong> section.
-            </p>
-            <%= a_link "https://avohq.io/licenses", style: :primary, color: :blue, size: :sm, target: "_blank", icon: "tabler/outline/external-link" do %>
-              View licenses
-            <% end %>
-          </div>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
 
-      <%= render Avo::Debug::PluginsComponent.new %>
+      <%= render Avo::Debug::PluginsComponent.new(row_extra: @plugin_row_extra) %>
 
       <% if Avo::IN_DEVELOPMENT %>
         <%= render ui.card(title: "Telemetry", description: "The payload sent to HQ. Shown only when AVO_IN_DEVELOPMENT=1.", class: "status-page__wide") do |card| %>
