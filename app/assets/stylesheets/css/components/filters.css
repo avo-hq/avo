@@ -65,7 +65,12 @@ select.filters-multi-select {
 }
 
 select.filters-multi-select option {
-  @apply rounded-md px-2 py-1 text-sm text-foreground;
+  @apply rounded-md px-2 py-1 text-sm font-normal text-foreground;
+}
+
+/* A group's label reads as a quiet heading above its options. Browsers draw it bold and tight to the edge. */
+select.filters-multi-select optgroup {
+  @apply pt-1 text-sm font-medium text-content-secondary;
 }
 
 .filters-section .button {
