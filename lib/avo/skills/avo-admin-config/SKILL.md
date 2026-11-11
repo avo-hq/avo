@@ -1,6 +1,6 @@
 ---
 name: avo-admin-config
-description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, remove or retune the floating "Back to top" button, persist filters/pagination across requests, choose which map tiles the admin renders, or opt out of usage metadata.
+description: Configure Avo's app-wide admin settings in config/initializers/avo.rb via Avo.configure — app name, timezone/currency, date and time display formats, per-page and index behavior, layout width, home redirect, open-in-editor links, and the other global knobs that don't belong to a single feature. Use when the user wants to change how many records per page, rename the admin / change the app name, set the timezone or currency for the admin, show every date as dd.mm.yyyy, default the index to grid view, make the admin full-width, keep clicking a row from opening the record, skip the show view / go straight to edit, open Avo files in Cursor or VS Code from the UI, keep the sidebar always open, redirect the admin home to a dashboard, add a class to the body tag, make rows denser, widen the sidebar or turn off sidebar resizing, remove or retune the floating "Back to top" button, persist filters/pagination across requests, choose which map tiles the admin renders, or opt out of usage metadata.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch
 metadata:
   requires-gem: none — Community
@@ -59,6 +59,9 @@ config.app_name = -> { I18n.t "app_name" }      # block form for dynamic/i18n na
 config.timezone = "UTC"                          # for date/datetime fields
 config.use_browser_timezone = false              # render everyone in the app's configured zone instead; default true renders each visitor's own zone (cookie-detected, one soft reload + alert). Defaults to false in the test environment — the soft reload races browser specs
 config.currency = "USD"                          # stored for your own code; no built-in field reads it (the Money field takes `currencies:`)
+config.date_format = "dd.LL.yyyy"               # Luxon display format for every `date` field on Index/Show (default "yyyy-LL-dd"); a field's own `format:` wins
+config.date_time_format = "dd.LL.yyyy HH:mm"    # same for `date_time` fields (default "yyyy-LL-dd TT")
+config.time_format = "HH:mm"                    # same for `time` fields (default "TT"); `time` never reads date_time_format. Forms keep each field's flatpickr `picker_format`
 config.locale   = "en-US"                        # force Avo's UI locale (default: I18n.default_locale)
 config.locale_selector = [:en, :ro]             # profile-menu language picker, stored per user (default: true; false hides it)
 config.model_attribute_translations = false     # field labels stop falling back to the model's activerecord.attributes / attributes keys (default: true)

@@ -176,6 +176,10 @@ Avo.configure do |config|
   # config.timezone = 'UTC'
   # config.use_browser_timezone = true # set false to render dates/times in the app's configured zone for everyone; off automatically in the test environment
   # config.currency = 'USD'
+  # Default display formats (Luxon tokens) for date, date_time, and time fields. A field's own `format:` wins.
+  # config.date_format = 'yyyy-LL-dd'
+  # config.date_time_format = 'yyyy-LL-dd TT'
+  # config.time_format = 'TT'
   # config.hide_layout_when_printing = false
   # config.container_width = :lg # :full, :lg, :md, or :sm. Hash for per-view: { index: :full, single: :md }
   # config.use_stacked_fields = false
