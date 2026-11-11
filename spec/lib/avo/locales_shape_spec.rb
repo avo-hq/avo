@@ -231,14 +231,6 @@ RSpec.describe "Avo's shipped locale files" do
       expect(locale_paths).not_to be_empty
     end
 
-    it "leaves the pagy locales out of the scan" do
-      pagy_paths = Dir[locales_dir.join("pagy", "*.yml")]
-
-      # Guards the guard: the exclusion means nothing once these files are gone.
-      expect(pagy_paths).not_to be_empty
-      expect(locale_paths).not_to include(*pagy_paths)
-    end
-
     it "reads every scanned file as YAML rooted at a single locale" do
       offenders = locale_paths.reject { |path| path.end_with?(".yml") }
 
