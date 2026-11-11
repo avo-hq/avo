@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class FilesField < BaseField
+      include Avo::Fields::Concerns::HasStorageKey
+
       attr_accessor :direct_upload
       attr_accessor :accept
       attr_reader :display_filename
@@ -17,6 +19,7 @@ module Avo
         @lightbox = args[:lightbox].nil? || args[:lightbox]
         @view_type = args[:view_type] || :grid
         @hide_view_type_switcher = args[:hide_view_type_switcher]
+        @key = args[:key]
       end
 
       # Images open in an in-page lightbox on the Show view unless the field opts
@@ -47,7 +50,7 @@ module Avo
 
         # `attach` without its immediate save on a persisted record, so the files are saved with the record and a form
         # that fails saves none. One assignment avoids an index_active_storage_attachments_uniqueness violation.
-        record.public_send(:"#{key}=", record.public_send(key).blobs + value.compact_blank)
+        record.public_send(:"#{key}=", record.public_send(key).blobs + value.compact_blank.map { |file| with_storage_key(file, record:) })
 
         record
       end
