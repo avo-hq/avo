@@ -41,11 +41,13 @@ module Avo::Concerns::RendersControls
 
   def render_action(action)
     return if !can_see_the_actions_button?
+    # Inside an association panel the action's blocks see the panel's parent, and its link carries it.
+    action.action.hydrate(parent_record: @parent_record, parent_resource: @parent_resource) if @parent_record.present?
     return if !action.action.visible_in_view(parent_resource: @parent_resource)
 
     tooltip = avo_tooltip_attributes(action.title)
 
-    a_link Avo::Services::URIService.parse(action.path).append_query(via_related_name_query).to_s,
+    a_link Avo::Services::URIService.parse(action.path).append_query(via_related_name_query.merge(action.action.parent_query)).to_s,
       color: action.color,
       style: action.style,
       icon: action.icon,

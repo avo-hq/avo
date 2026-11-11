@@ -161,7 +161,7 @@ class Avo::ResourceComponent < Avo::BaseComponent
 
   def row_actions
     @resource.get_actions
-      .map { |action_bag| action_bag[:class].new(record: @resource.record, resource: @resource, view: @view, **action_bag.except(:class)) }
+      .map { |action_bag| action_bag[:class].new(record: @resource.record, resource: @resource, view: @view, parent_record: @parent_record, parent_resource: @parent_resource, **action_bag.except(:class)) }
       .select { |action| action.is_a?(Avo::Divider) || action.visible_in_view(parent_resource: @parent_resource) }
   end
 

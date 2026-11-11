@@ -36,6 +36,10 @@ module Avo
     attr_accessor :record
     attr_accessor :resource
     attr_accessor :user
+    # The record and resource of the association panel the action was started from, like the
+    # team whose members panel lists the selected users. Both are nil anywhere else.
+    attr_accessor :parent_record
+    attr_accessor :parent_resource
     attr_reader :arguments
     attr_reader :icon
     attr_reader :appended_turbo_streams
@@ -53,7 +57,6 @@ module Avo
     delegate :avo, to: :view_context
     delegate :main_app, to: :view_context
     delegate :to_param, to: :class
-    delegate :link_arguments, to: :class
     delegate :translation_key, to: :class
 
     class << self
@@ -129,6 +132,8 @@ module Avo
           target: name,
           resource: @resource,
           record: @record,
+          parent_record: @parent_record,
+          parent_resource: @parent_resource,
           view: @view,
           arguments: @arguments,
           query: @query,
@@ -139,9 +144,11 @@ module Avo
       self.class.to_s.demodulize.underscore.humanize(keep_id_suffix: true)
     end
 
-    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: "tabler/outline/player-play", query: nil, index_query: nil)
+    def initialize(record: nil, resource: nil, user: nil, view: nil, arguments: {}, icon: "tabler/outline/player-play", query: nil, index_query: nil, parent_record: nil, parent_resource: nil)
       @record = record
       @resource = resource
+      @parent_record = parent_record
+      @parent_resource = parent_resource
       @user = user
       @view = Avo::ViewInquirer.new(view)
       @icon = icon
@@ -157,6 +164,18 @@ module Avo
 
       @response ||= {}
       @response[:messages] = []
+    end
+
+    # The action's link carries the panel's parent, so the actions controller can find it again.
+    def link_arguments(resource:, arguments: {}, **args)
+      self.class.link_arguments(resource:, arguments:, **parent_query, **args)
+    end
+
+    # The `via_*` params that name the parent, or an empty hash when there is none.
+    def parent_query
+      return {} if @parent_record.blank? || @parent_resource.blank?
+
+      {via_resource_class: @parent_resource.class.to_s, via_record_id: @parent_record.to_param}
     end
 
     # Blank method
@@ -237,7 +256,8 @@ module Avo
       Avo::ExecutionContext.new(
         target: visible,
         params: params,
-        parent_resource: parent_resource,
+        parent_record: @parent_record,
+        parent_resource: parent_resource || @parent_resource,
         resource: @resource,
         view: @view,
         arguments: arguments
@@ -349,6 +369,8 @@ module Avo
         target: authorize,
         action: self,
         resource: @resource,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource,
         view: @view,
         arguments: arguments
       ).handle
@@ -372,6 +394,8 @@ module Avo
         target: confirmation,
         action: self,
         resource: @resource,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource,
         view: @view,
         arguments:
       ).handle
@@ -393,6 +417,8 @@ module Avo
         action: self,
         resource: @resource,
         record: @record,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource,
         view: @view,
         arguments:,
         query: @query,
@@ -412,6 +438,8 @@ module Avo
         target: self.class.public_send(option),
         resource: @resource,
         record: @record,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource,
         view: @view,
         arguments: @arguments,
         query: @query,
