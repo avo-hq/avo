@@ -110,6 +110,7 @@ module Avo
     def set_related_resource
       # Find the field from the parent resource
       association_field = find_association_field(resource: @resource, association: params[:related_name])
+      raise ActiveRecord::RecordNotFound if association_field.nil?
 
       # Find the resource from the related field
       related_resource = association_field.hydrate(record: @record).resource_class(params)

@@ -34,4 +34,8 @@ RSpec.describe "Associations index", type: :request do
     expect(response.body).to include "First comment"
     expect(response.body).not_to include "Hidden comment"
   end
+
+  it "answers not found for an association the resource does not declare" do
+    expect { get "/admin/resources/posts/#{post_record.to_param}/missing_association" }.to raise_error ActiveRecord::RecordNotFound
+  end
 end
