@@ -11,7 +11,7 @@
     class="hidden text-content"
   >
     <%= form_with scope: 'fields',
-      url: @action.link_arguments(resource: @resource, resource_view: params[:resource_view]).first,
+      url: @action.link_arguments(resource: @resource, resource_view: params[:resource_view], via_related_name: params[:via_related_name]).first,
       local: true,
       html: {
         novalidate: true,

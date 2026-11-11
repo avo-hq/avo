@@ -29,15 +29,7 @@ module Avo
       end
 
       def build_association_scope_from_params(resource:, authorization:)
-        parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
-        @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
-        @parent_resource = parent_resource_class.new(
-          record: @parent_record,
-          view: Avo::ViewInquirer.new("show")
-        )
-        @parent_resource.detect_fields
-        field = find_association_field(resource: @parent_resource, association: params[:association_name] || params[:related_name])
-        authorize_via_association field, resource.class
+        field = set_parent_from_via_params(association: params[:association_name] || params[:related_name], resource_class: resource.class)
 
         association_query_scope(
           parent_resource: @parent_resource,
@@ -47,6 +39,26 @@ module Avo
           authorization: authorization,
           resource: resource
         )
+      end
+
+      # Returns the parent's association field once it is known to list `resource_class` and the user may view it.
+      def set_parent_from_via_params(association:, resource_class:)
+        parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
+        raise ActiveRecord::RecordNotFound if parent_resource_class.nil?
+
+        @parent_record = parent_resource_class.find_record(params[:via_record_id], params: params)
+        @parent_resource = parent_resource_class.new(
+          record: @parent_record,
+          view: Avo::ViewInquirer.new("show")
+        )
+        @parent_resource.detect_fields
+        field = find_association_field(resource: @parent_resource, association: association)
+        # Only the panel fields (has_one, has_many, has_and_belongs_to_many, array) list records through the parent.
+        raise ActiveRecord::RecordNotFound unless field.is_a?(Avo::Fields::FrameBaseField)
+
+        authorize_via_association field, resource_class
+
+        field
       end
     end
   end

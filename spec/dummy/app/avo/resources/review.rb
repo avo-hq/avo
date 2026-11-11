@@ -57,5 +57,6 @@ class Avo::Resources::Review < Avo::BaseResource
   def actions
     action Avo::Actions::Test::ShowPolymorphicFields
     action Avo::Actions::Test::ShowView
+    action Avo::Actions::Test::ShowParent
   end
 end
