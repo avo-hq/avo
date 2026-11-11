@@ -264,9 +264,8 @@ module Avo
       Avo::Filters::BaseFilter.encode_filters(filter_params)
     end
 
-    # Builds the option tags of the select and multiple select filters from their `options`,
-    # which map each option id to its label. A Hash in place of a label is a group: its key
-    # labels an <optgroup> and the Hash holds the group's own id => label options.
+    # Filter `options` map each id to its label. A Hash in place of a label is a group: its key labels an <optgroup>
+    # and the Hash holds that group's own id => label options.
     def filter_options_for_select(options, selected)
       return options_for_select(options.invert, selected) if options.values.none?(Hash)
 
