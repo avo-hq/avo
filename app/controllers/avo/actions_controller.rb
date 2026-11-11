@@ -119,10 +119,8 @@ module Avo
       @action.fields
     end
 
-    # An action started from an association panel, like the members panel on a team's page, carries the
-    # panel's parent as `via_resource_class`, `via_record_id` and `via_related_name`. Those are request
-    # params, so the parent is looked up the way the panel loaded it, and the run asks what the panel's
-    # Actions button asked: that the user may view the association and act on it.
+    # The panel's parent arrives as request params, so it is looked up the way the panel loaded it, and the run
+    # asks what the panel's Actions button asked: that the user may view the association and act on it.
     def set_parent
       return if params[:via_resource_class].blank? || params[:via_record_id].blank? || params[:via_related_name].blank?
 

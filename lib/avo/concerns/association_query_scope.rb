@@ -41,9 +41,7 @@ module Avo
         )
       end
 
-      # Finds the parent record and resource the `via_resource_class` and `via_record_id` params name, and
-      # returns the parent's field for the association once it's known to list `resource_class` and the user
-      # may view it.
+      # Returns the parent's association field once it is known to list `resource_class` and the user may view it.
       def set_parent_from_via_params(association:, resource_class:)
         parent_resource_class = Avo.resource_manager.get_resource(params[:via_resource_class])
         raise ActiveRecord::RecordNotFound if parent_resource_class.nil?
