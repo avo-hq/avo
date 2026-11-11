@@ -217,6 +217,33 @@ RSpec.describe "File fields", type: :request do
       expect(post_record.reload.cover.blob.key).to match(/\A[a-z0-9]{28}\z/)
     end
 
+    it "shows a taken key on the field and keeps the file that holds it" do
+      Avo::Resources::Post.with_temporary_items do
+        field :cover, as: :file, key: -> { "posts/#{record.to_param}/#{file.original_filename}" }
+      end
+      put "/admin/resources/posts/#{post_record.to_param}", params: {post: {cover: upload("dummy-image.jpg")}}
+      first_blob = post_record.reload.cover.blob
+
+      put "/admin/resources/posts/#{post_record.to_param}", params: {post: {cover: upload("dummy-image.jpg")}}
+
+      expect(response).to have_http_status 422
+      expect(response.body).to include "has already been taken"
+      expect(post_record.reload.cover.blob).to eq first_blob
+    end
+
+    it "refuses two files of one upload that would share a key" do
+      Avo::Resources::Project.with_temporary_items do
+        field :files, as: :files, key: -> { "projects/#{record.to_param}/same.jpg" }
+      end
+
+      put "/admin/resources/projects/#{project.to_param}",
+        params: {project: {files: [upload("dummy-image.jpg"), upload("iphone.jpg")]}}
+
+      expect(response).to have_http_status 422
+      expect(response.body).to include "has already been taken"
+      expect(project.reload.files).to be_empty
+    end
+
     it "keeps the key of a blob that's already stored, like a direct upload" do
       blob = ActiveStorage::Blob.create_and_upload!(
         io: File.open(Rails.root.join("db/seed_files/dummy-image.jpg")),
