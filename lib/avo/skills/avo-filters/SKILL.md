@@ -159,6 +159,7 @@ The same filter class can be registered on many resources. To vary behavior per 
 
 - **Default state:** define `default` returning the same shape `apply` expects (`:published`, `{is_featured: true}`, `["a", "b"]`).
 - **Dynamic options:** `options` is plain Ruby — query the DB or an API.
+- **Grouped options:** on select and multiple select filters, a Hash in place of a label is a group — `{"Europe" => {fr: "France", de: "Germany"}}` lists France and Germany under an `<optgroup>` labeled "Europe". `apply` still receives the option ids (`"fr"`).
 - **Conditional visibility:** `self.visible = -> { current_user.admin? }`.
 - **Filters that depend on each other:** read `applied_filters` in `options`, or override `react` to change a filter's own value when another changes.
 - **Link to a pre-filtered view:** `Avo::Filters::BaseFilter.encode_filters({"Avo::Filters::Name" => "Apple"})` → pass as `encoded_filters:`.

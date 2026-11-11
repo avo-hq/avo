@@ -6,9 +6,9 @@ RSpec.describe Avo::Views::ResourceIndexComponent, type: :component do
 
   describe "#show_toolbar_row?" do
     it "skips the row when it would hold no search box, filters or view buttons" do
-      volunteers = described_class.new(resource: Avo::Resources::Volunteer.new(view: Avo::ViewInquirer.new("index")), resources: [])
+      stores = described_class.new(resource: Avo::Resources::Store.new(view: Avo::ViewInquirer.new("index")), resources: [])
 
-      expect(volunteers.send(:show_toolbar_row?)).to be(false)
+      expect(stores.send(:show_toolbar_row?)).to be(false)
     end
 
     it "keeps the row for a resource with search" do

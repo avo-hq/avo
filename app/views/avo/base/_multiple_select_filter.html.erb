@@ -3,10 +3,11 @@
   data-controller="multiple-select-filter"
   data-filter-name="<%= filter.name %>"
   data-multiple-select-filter-keep-filters-panel-open-value="<%= @resource.keep_filters_panel_open %>">
-  <%= select_tag filter.id, options_for_select(filter.options.invert, filter.selected_value(@applied_filters)),
+  <% options = filter.options %>
+  <%= select_tag filter.id, filter_options_for_select(options, filter.selected_value(@applied_filters)),
     class: input_classes("filters-multi-select w-full"),
     multiple: true,
-    size: filter.options.size.clamp(2, 4),
+    size: filter_options_rows(options).clamp(2, 4),
     id: "avo_filters_#{filter.id.parameterize.underscore}",
     "data-filter-class": filter.class.to_s,
     "data-multiple-select-filter-target": "selector" %>
