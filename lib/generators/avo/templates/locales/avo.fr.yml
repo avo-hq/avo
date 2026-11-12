@@ -76,7 +76,7 @@ fr:
     cancel: Annuler
     checkbox_list:
       hidden_selections:
-        one: 1 option sélectionnée cachée par la recherche
+        one: "%{count} option sélectionnée cachée par la recherche"
         other: "%{count} options sélectionnées cachées par la recherche"
     checking_dependents: Vérification des enregistrements liés...
     choose_a_country: Sélectionnez un pays

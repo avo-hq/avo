@@ -13,9 +13,9 @@ RSpec.describe "Persist sorting", type: :system do
   end
 
   def sort_name_ascending
-    first('svg[data-tippy-content="Sort descending"]').click
+    find('svg[data-tippy-content="Sort descending"]', match: :first).click
     expect(page).to have_current_path(/sort_direction=desc/)
-    first('svg[data-tippy-content="Sort ascending"]').click
+    find('svg[data-tippy-content="Sort ascending"]', match: :first).click
     expect(page).to have_current_path(/sort_direction=asc/)
   end
 
@@ -38,7 +38,7 @@ RSpec.describe "Persist sorting", type: :system do
       expect(first_row_name).to eq "Alpha"
       expect(page).to have_css 'svg[data-tippy-content="Reset sorting"]'
 
-      first('svg[data-tippy-content="Reset sorting"]').click
+      find('svg[data-tippy-content="Reset sorting"]', match: :first).click
       expect(page).to have_current_path(/reset_sorting/)
       expect(first_row_name).to eq "Zed"
 
@@ -51,7 +51,7 @@ RSpec.describe "Persist sorting", type: :system do
     it "remembers a sort picked right after a reset" do
       visit url
       sort_name_ascending
-      first('svg[data-tippy-content="Reset sorting"]').click
+      find('svg[data-tippy-content="Reset sorting"]', match: :first).click
       expect(page).to have_current_path(/reset_sorting/)
 
       sort_name_ascending
