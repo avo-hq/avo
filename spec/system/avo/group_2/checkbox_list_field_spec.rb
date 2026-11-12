@@ -156,6 +156,17 @@ RSpec.describe "CheckboxListField", type: :system do
     expect(page).not_to have_css(".checkbox-list__hidden-selections", visible: true)
   end
 
+  it "puts the count into a translated singular hidden-selections label" do
+    alpha = create :user, first_name: "Alpha", last_name: "One"
+    team = create :team, team_members: [alpha]
+
+    visit "/admin/resources/teams/#{team.id}/edit?force_locale=fr"
+
+    fill_in "team_team_member_ids_inline_search", with: "nomatch"
+
+    expect(page).to have_css(".checkbox-list__hidden-selections", text: "1 option sélectionnée cachée par la recherche", visible: true)
+  end
+
   it "filters options inline and moves through visible rows with arrow keys" do
     alpha = create :user, first_name: "Alpha", last_name: "One"
     beta = create :user, first_name: "Beta", last_name: "Two"

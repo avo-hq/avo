@@ -76,7 +76,7 @@ ru:
       hidden_selections:
         few: "%{count} выбранных варианта скрыты по запросу"
         many: "%{count} выбранных вариантов скрыто по запросу"
-        one: 1 выбранный вариант скрыт по запросу
+        one: "%{count} выбранный вариант скрыт по запросу"
         other: "%{count} выбранных вариантов скрыто по запросу"
     checking_dependents: Проверка связанных записей...
     choose_a_country: Выберите страну
@@ -174,7 +174,7 @@ ru:
     no_related_item_found: Связанная запись не найдена
     not_authorized: У вас нет прав для выполнения этого действия.
     number_of_items:
-      one: один %{item}
+      one: "%{count} %{item}"
       other: "%{count} %{item}"
       zero: нет %{item}
     oops_nothing_found: Ой! Ничего не найдено...
@@ -244,7 +244,7 @@ ru:
     was_successfully_created: успешно создана
     was_successfully_updated: успешно обновлена
     x_items_more:
-      one: ещё один элемент
+      one: ещё %{count} элемент
       other: "%{count} других элементов"
       zero: нет других элементов
     x_records_selected_from_a_total_of_x_html: Выбрано <span class="font-bold">%{selected}</span> записей на этой странице из общего количества <span class="font-bold">%{count}</span>
