@@ -1,7 +1,6 @@
 import { application } from './application'
 
 import ActionController from './controllers/action_controller'
-import ActionsOverflowController from './controllers/actions_overflow_controller'
 import ActionsPickerController from './controllers/actions_picker_controller'
 import AttachmentsController from './controllers/attachments_controller'
 import BackToTopController from './controllers/back_to_top_controller'
@@ -80,7 +79,6 @@ import UnsavedChangesController from './controllers/unsaved_changes_controller'
 
 application.register('action', ActionController)
 application.register('confirm-dialog', ConfirmDialogController)
-application.register('actions-overflow', ActionsOverflowController)
 application.register('actions-picker', ActionsPickerController)
 application.register('attachments', AttachmentsController)
 application.register('back-to-top', BackToTopController)
