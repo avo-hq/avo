@@ -403,7 +403,7 @@ module Avo
       @actions = @resource
         .get_actions
         .map do |action_bag|
-          action_bag[:class].new(record:, resource: @resource, view: @view, **action_bag.except(:class))
+          action_bag[:class].new(record:, resource: @resource, view: @view, parent_record: @parent_record, parent_resource: @parent_resource, **action_bag.except(:class))
         end
         .select do |action|
           action.is_a?(DividerComponent) || action.visible_in_view(parent_resource: @parent_resource)

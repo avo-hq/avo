@@ -18,16 +18,16 @@
         <%= render ui.card(title: "Available", description: "Newer than what this app runs.") do |card| %>
           <% card.with_body do %>
             <div class="updates-page__actions">
-              <%= render partial: "avo/updates/progress" %>
+              <%= render partial: "avo/status/updates/progress" %>
             </div>
-            <%= render partial: "avo/updates/release", collection: @available_releases, as: :release, locals: {open: true} %>
+            <%= render partial: "avo/status/updates/release", collection: @available_releases, as: :release, locals: {open: true} %>
           <% end %>
         <% end %>
       <% end %>
       <% if @installed_releases.any? %>
         <%= render ui.card(title: "Installed") do |card| %>
           <% card.with_body do %>
-            <%= render partial: "avo/updates/release", collection: @installed_releases, as: :release, locals: {open: false} %>
+            <%= render partial: "avo/status/updates/release", collection: @installed_releases, as: :release, locals: {open: false} %>
           <% end %>
         <% end %>
       <% end %>

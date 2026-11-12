@@ -3,6 +3,10 @@
 class Avo::Debug::StatusComponent < Avo::BaseComponent
   include Avo::ApplicationHelper
 
+  # A host page that knows more about the license fills these, so it reuses this layout instead of drawing its own.
+  renders_one :license_card
+  prop :plugin_row_extra
+
   def information_items
     @information_items ||= {
       license_key: Avo.configuration.license_key,

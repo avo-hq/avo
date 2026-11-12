@@ -24,6 +24,80 @@ RSpec.describe Avo::ApplicationHelper do
     end
   end
 
+  describe "#filter_options_for_select" do
+    def parse(html)
+      Nokogiri::HTML.fragment(html)
+    end
+
+    it "renders flat options as option tags" do
+      html = parse(helper.filter_options_for_select({published: "Published", draft: "Draft"}, "draft"))
+
+      expect(html.css("optgroup")).to be_empty
+      expect(html.css("option").map { |option| [option.text, option["value"]] }).to eq([["Published", "published"], ["Draft", "draft"]])
+      expect(html.css("option[selected]").map(&:text)).to eq(["Draft"])
+    end
+
+    it "renders each Hash of options as an optgroup labeled with its key" do
+      options = {
+        "Europe" => {fr: "France", de: "Germany"},
+        "Asia" => {jp: "Japan"}
+      }
+
+      html = parse(helper.filter_options_for_select(options, "de"))
+
+      expect(html.css("optgroup").map { |group| group["label"] }).to eq(["Europe", "Asia"])
+      expect(html.css("optgroup[label='Europe'] option").map { |option| [option.text, option["value"]] }).to eq([["France", "fr"], ["Germany", "de"]])
+      expect(html.css("optgroup[label='Asia'] option").map { |option| [option.text, option["value"]] }).to eq([["Japan", "jp"]])
+      expect(html.css("option[selected]").map(&:text)).to eq(["Germany"])
+    end
+
+    it "selects options across groups for multiple values" do
+      options = {
+        "Europe" => {fr: "France", de: "Germany"},
+        "Asia" => {jp: "Japan"}
+      }
+
+      html = parse(helper.filter_options_for_select(options, ["fr", "jp"]))
+
+      expect(html.css("option[selected]").map(&:text)).to eq(["France", "Japan"])
+    end
+
+    it "keeps ungrouped options in place next to the groups" do
+      options = {
+        :any => "Anywhere",
+        "Europe" => {fr: "France"},
+        :other => "Other"
+      }
+
+      html = parse(helper.filter_options_for_select(options, "other"))
+
+      expect(html.children.map { |node| [node.name, node["label"] || node["value"]] }).to eq([["option", "any"], ["optgroup", "Europe"], ["option", "other"]])
+      expect(html.css("option[selected]").map(&:text)).to eq(["Other"])
+    end
+
+    it "escapes the group labels" do
+      html = helper.filter_options_for_select({"<b>Europe</b>" => {fr: "France"}}, nil)
+
+      expect(html).to include('label="&lt;b&gt;Europe&lt;/b&gt;"')
+    end
+  end
+
+  describe "#filter_options_rows" do
+    it "counts one row for each option" do
+      expect(helper.filter_options_rows({yes: "Yes", no: "No"})).to eq(2)
+    end
+
+    it "counts a row for each group label and one for each of its options" do
+      options = {
+        :any => "Anywhere",
+        "Europe" => {fr: "France", de: "Germany"},
+        "Asia" => {jp: "Japan"}
+      }
+
+      expect(helper.filter_options_rows(options)).to eq(6)
+    end
+  end
+
   describe "#safe_blob_path and #safe_blob_url" do
     def create_image_blob(filename: "keep.jpg")
       ActiveStorage::Blob.create_and_upload!(

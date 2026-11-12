@@ -264,6 +264,27 @@ module Avo
       Avo::Filters::BaseFilter.encode_filters(filter_params)
     end
 
+    # Filter `options` map each id to its label. A Hash in place of a label is a group: its key labels an <optgroup>
+    # and the Hash holds that group's own id => label options.
+    def filter_options_for_select(options, selected)
+      return options_for_select(options.invert, selected) if options.values.none?(Hash)
+
+      safe_join(
+        options.map do |key, value|
+          if value.is_a?(Hash)
+            content_tag :optgroup, options_for_select(value.invert, selected), label: key
+          else
+            options_for_select([[value, key]], selected)
+          end
+        end
+      )
+    end
+
+    # The rows a select box needs to list the filter's `options`, counting each group's label as a row.
+    def filter_options_rows(options)
+      options.values.sum { |value| value.is_a?(Hash) ? value.size + 1 : 1 }
+    end
+
     def number_to_social(number, start_at: 10_000)
       return number_with_delimiter(number) if number < start_at
 

@@ -1,6 +1,8 @@
 module Avo
   module Fields
     class FileField < BaseField
+      include Avo::Fields::Concerns::HasStorageKey
+
       attr_accessor :link_to_record
       attr_accessor :is_avatar
       attr_accessor :direct_upload
@@ -17,6 +19,7 @@ module Avo
         @accept = args[:accept].present? ? args[:accept] : nil
         @display_filename = args[:display_filename].nil? || args[:display_filename]
         @lightbox = args[:lightbox].nil? || args[:lightbox]
+        @key = args[:key]
       end
 
       # Images open in an in-page lightbox on the Show view unless the field opts
@@ -36,6 +39,11 @@ module Avo
 
       def path
         rails_blob_url value
+      end
+
+      # The storage key goes on last, so `update_using` still gets the uploaded file.
+      def apply_update_using(record, key, value, resource)
+        with_storage_key(super, record:)
       end
 
       def value

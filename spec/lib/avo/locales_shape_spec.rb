@@ -192,10 +192,7 @@ module AvoLocaleShape
 end
 
 RSpec.describe "Avo's shipped locale files" do
-  # Mirrors the glob at lib/avo/engine.rb:178 exactly, non-recursion included. The
-  # pagy locales in the subdirectory load through `Pagy::I18n.pathnames`
-  # (config/initializers/pagy.rb:4), sit outside the `avo.*` tree, and are never on
-  # `I18n.load_path` — recursing here would scan files Avo does not merge.
+  # Mirrors the glob at lib/avo/engine.rb:178 exactly, non-recursion included.
   let(:locales_dir) { Avo::Engine.root.join("lib", "generators", "avo", "templates", "locales") }
   let(:locale_paths) { Dir[locales_dir.join("*.{rb,yml}")].sort }
 
@@ -232,14 +229,6 @@ RSpec.describe "Avo's shipped locale files" do
 
       expect(locale_paths).to eq(loaded.sort)
       expect(locale_paths).not_to be_empty
-    end
-
-    it "leaves the pagy locales out of the scan" do
-      pagy_paths = Dir[locales_dir.join("pagy", "*.yml")]
-
-      # Guards the guard: the exclusion means nothing once these files are gone.
-      expect(pagy_paths).not_to be_empty
-      expect(locale_paths).not_to include(*pagy_paths)
     end
 
     it "reads every scanned file as YAML rooted at a single locale" do

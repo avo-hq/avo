@@ -8,17 +8,24 @@ RSpec.feature "SignOutDropdown", type: :system do
       expect(page.body).to have_text admin.name
       expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
 
-      dots_link = find(".sidebar-profile__actions button[popovertarget]")
+      profile_trigger = find(".sidebar-profile__trigger")
 
-      dots_link.click
+      profile_trigger.click
 
       expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: true)
+
+      # The menu spans the whole profile row, not just the button that opened it.
+      widths = page.evaluate_script(<<~JS)
+        [".sidebar-profile__trigger", ".sidebar-profile__dropdown:popover-open"]
+          .map((selector) => Math.round(document.querySelector(selector).getBoundingClientRect().width))
+      JS
+      expect(widths.last).to be >= widths.first
 
       # Test click away
       all("div", text: "No record found").first.click
       expect(page.body).to have_css("form[data-controller='sign-out'][data-action='submit->sign-out#handle']", visible: false)
 
-      dots_link.click
+      profile_trigger.click
 
       accept_alert do
         within "form[data-controller='sign-out'][data-action='submit->sign-out#handle']" do

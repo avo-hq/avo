@@ -233,7 +233,7 @@ Make it the default with `self.default_view_type = :map`.
 
 Not a view type — a table affordance. Checking the header "Select all" checkbox and confirming "select all matching" lets an action run on **every record the current query matches**, across all pages, not just the visible page. Avo serializes (and encrypts) the whole query — filters, sorting, scopes — and reconstructs it inside the action.
 
-It works out of the box on the table view; nothing to enable on the resource. The action itself is where the selection is consumed — cross-link the **avo-actions** skill for writing/handling the action. If serialization fails, Avo silently disables select-all rather than crashing (see the `normalizes` gotcha below).
+It works out of the box on the table view and, from `avo` 4.3.10, on the grid view (a bar above the cards with the page checkbox, "Select all matching" and Undo); nothing to enable on the resource. A resource that sets `self.record_selector` to hide checkboxes renders no bar. The action itself is where the selection is consumed — cross-link the **avo-actions** skill for writing/handling the action. If serialization fails, Avo silently disables select-all rather than crashing (see the `normalizes` gotcha below).
 
 **Coming back to the index (4.3.1+):** going Back (browser Back or the record page's **Go back** link) re-checks the rows that were selected and restores scroll. The selection is kept per browser tab and per URL (filters, sort, page), is forgotten after running an action or on reload, and a "Select all matching" choice is not kept. With `config.persistence = { driver: :session }` (4.3.11+) the selection is kept per page rather than per URL and comes back however you reach the index; turn it off with `selection: false`. System specs that expect nothing selected after **Go back** will now find rows checked.
 
@@ -254,7 +254,7 @@ class Avo::Resources::Project < Avo::BaseResource
 end
 ```
 
-`cards` means the resource's dashboard cards, not grid items. Blocks run once per region, not per row: use `row_options` to change rows.
+`cards` means the resource's dashboard cards, not grid items. Collection, records and pagination slots refresh with live search; toolbar, cards and header ones don't. Blocks run once per region, not per row: use `row_options` to change rows.
 
 The **avo-custom-ui** skill's **View slots** section has the full reference, Show/Edit/New, block context and gotchas.
 

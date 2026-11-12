@@ -1,7 +1,9 @@
 module Avo
   class ActionsController < Avo::ApplicationController
+    include Avo::Concerns::AssociationQueryScope
+
     before_action :set_resource_name, :set_resource
-    before_action :set_query, :set_record, :set_action, :verify_authorization, only: [:show, :handle]
+    before_action :set_query, :set_record, :set_parent, :set_action, :verify_authorization, only: [:show, :handle]
     before_action :set_fields, only: :handle
 
     # Sets @record based on context:
@@ -93,7 +95,7 @@ module Avo
 
     def action_params
       @action_params ||= params.permit(
-        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, :resource_view, :via_related_name, fields: {}
+        :id, :authenticity_token, :resource_name, :action_id, :button, :arguments, :view_type, :resource_view, :via_related_name, :via_resource_class, :via_record_id, fields: {}
       )
     end
 
@@ -108,11 +110,40 @@ module Avo
         view: origin_view,
         arguments: BaseAction.decode_arguments(params[:arguments] || params.dig(:fields, :arguments)) || {},
         query: @query,
-        index_query: decrypted_index_query
+        index_query: decrypted_index_query,
+        parent_record: @parent_record,
+        parent_resource: @parent_resource
       )
 
       # Fetch action's fields
       @action.fields
+    end
+
+    # The panel's parent arrives as request params, so it is looked up the way the panel loaded it, and the run
+    # asks what the panel's Actions button asked: that the user may view the association and act on it.
+    def set_parent
+      return if params[:via_resource_class].blank? || params[:via_record_id].blank? || params[:via_related_name].blank?
+
+      field = set_parent_from_via_params(association: params[:via_related_name], resource_class: @resource.class)
+
+      raise Avo::NotAuthorizedError.new unless act_on_association_authorized?(field)
+    end
+
+    # Mirrors the `act_on_{association}?` check that shows the Actions button in the panel.
+    def act_on_association_authorized?(field)
+      return true unless Avo.configuration.authorization_enabled?
+
+      association_name = BaseResource.valid_association_name(@parent_record, field.association_name)
+      return true if association_name.blank?
+
+      service = @parent_resource.authorization(user: _current_user)
+      method_name = :"act_on_#{association_name}?"
+
+      if service.has_method?(method_name, raise_exception: false)
+        service.authorize_action(method_name, record: @parent_record, raise_exception: false)
+      else
+        !Avo.configuration.explicit_authorization
+      end
     end
 
     # The view the action was started from: index, show, or edit. The action
@@ -172,7 +203,13 @@ module Avo
               turbo_stream.avo_flash_alerts
             ]
           when :navigate_to_action
-            src, _ = @response[:action].link_arguments(resource: @action.resource, **@response[:navigate_to_action_args])
+            # The next action runs from the same panel, so it gets the same parent.
+            src, _ = @response[:action].link_arguments(
+              resource: @action.resource,
+              **@action.parent_query,
+              via_related_name: params[:via_related_name],
+              **@response[:navigate_to_action_args]
+            )
 
             turbo_stream.turbo_frame_set_src(Avo::MODAL_FRAME_ID, src)
           when :redirect

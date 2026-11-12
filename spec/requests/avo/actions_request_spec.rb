@@ -372,4 +372,146 @@ RSpec.describe "Actions", type: :request do
       expect(response.body.scan(/<input[^>]*autofocus[^>]*>/)).to contain_exactly(a_string_including('name="fields[probe_focus]"'))
     end
   end
+
+  # avo-hq/avo#3165
+  describe "the parent of an association panel" do
+    let(:action_id) { "Avo::Actions::Test::ShowParent" }
+    let(:team) { create :team }
+    let!(:review) { create :review, reviewable: team }
+    let(:via_team) { {via_resource_class: "Avo::Resources::Team", via_record_id: team.to_param, via_related_name: "reviews"} }
+
+    def run_action(**params)
+      post "/admin/resources/reviews/actions",
+        params: {action_id: action_id, resource_view: "index", fields: {avo_resource_ids: review.to_param}, **params},
+        headers: {"Accept" => "text/vnd.turbo-stream.html"}
+    end
+
+    def query_of(url)
+      Rack::Utils.parse_nested_query(URI.parse(url).query)
+    end
+
+    it "links the panel's actions with the parent" do
+      get "/admin/resources/teams/#{team.to_param}/reviews?turbo_frame=has_many_field_show_reviews"
+
+      links = Nokogiri::HTML(response.body).css("a[data-action-name='Show parent']")
+
+      expect(links).to be_present
+      links.each do |link|
+        expect(query_of(link["href"])).to include("via_resource_class" => "Avo::Resources::Team", "via_record_id" => team.to_param, "via_related_name" => "reviews")
+      end
+    end
+
+    it "links the actions without a parent outside a panel" do
+      get "/admin/resources/reviews"
+
+      link = Nokogiri::HTML(response.body).at_css("a[data-action-name='Show parent']")
+
+      expect(query_of(link["href"]).keys).not_to include("via_resource_class", "via_record_id")
+    end
+
+    it "hands the parent to the modal's blocks and fields" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index", **via_team}
+
+      expect(response.body).to include "parent=Avo::Resources::Team #{team.to_param}"
+      expect(Nokogiri::HTML(response.body).at_css("input[name='fields[parent_name]']")["value"]).to eq team.name
+    end
+
+    it "keeps the parent on the modal's form" do
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index", **via_team}
+
+      form = Nokogiri::HTML(response.body).at_css("form[action*='/actions']")
+
+      expect(query_of(form["action"])).to include(via_team.transform_keys(&:to_s))
+    end
+
+    it "hands the parent to handle" do
+      run_action(**via_team)
+
+      expect(flash[:success][:body]).to eq "parent=Avo::Resources::Team #{team.to_param}"
+    end
+
+    it "hands the parent on to the action it navigates to" do
+      allow_any_instance_of(Avo::Actions::Test::ShowParent).to receive(:handle) do |action|
+        action.navigate_to_action(Avo::Actions::Test::ShowView)
+      end
+
+      run_action(**via_team)
+
+      stream = Nokogiri::HTML(response.body).at_css("turbo-stream[action='turbo_frame_set_src']")
+
+      expect(query_of(stream["src"])).to include("action_id" => "Avo::Actions::Test::ShowView", **via_team.transform_keys(&:to_s))
+    end
+
+    it "hands the parent to an action started from an array panel" do
+      course = create :course
+      allow_any_instance_of(Avo::Resources::Attendee).to receive(:actions) do |resource|
+        resource.action Avo::Actions::Test::ShowParent
+      end
+
+      get "/admin/resources/attendees/actions",
+        params: {action_id: action_id, resource_view: "index", via_resource_class: "Avo::Resources::Course", via_record_id: course.to_param, via_related_name: "attendees"}
+
+      expect(response.body).to include "parent=Avo::Resources::Course #{course.to_param}"
+    end
+
+    it "runs without a parent when none is named" do
+      run_action
+
+      expect(flash[:success][:body]).to eq "no parent"
+    end
+
+    it "refuses a parent association that lists another resource" do
+      expect { run_action(**via_team.merge(via_related_name: "team_members")) }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it "refuses a parent field that is not an association panel" do
+      expect { run_action(**via_team.merge(via_related_name: "name")) }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it "refuses a parent resource that does not exist" do
+      expect { run_action(**via_team.merge(via_resource_class: "Avo::Resources::Missing")) }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    describe "with authorization" do
+      before do
+        allow(Avo.configuration).to receive(:authorization_enabled?).and_return(true)
+        allow_any_instance_of(Avo::Services::AuthorizationService).to receive(:has_method?).and_return(true)
+      end
+
+      # Stands in for a policy client that denies `method` on the team only.
+      def deny_on_team(method)
+        allow_any_instance_of(Avo::Services::AuthorizationService).to receive(:authorize_action).and_wrap_original do |original, action, *args, **kwargs|
+          if action.to_sym == method && (kwargs[:record] || original.receiver.record) == team
+            next false if kwargs[:raise_exception] == false
+
+            raise Avo::NotAuthorizedError
+          end
+
+          original.call(action, *args, **kwargs)
+        end
+      end
+
+      it "runs when the policy allows the panel" do
+        run_action(**via_team)
+
+        expect(flash[:success][:body]).to eq "parent=Avo::Resources::Team #{team.to_param}"
+      end
+
+      it "refuses when the parent's view_<association>? denies it" do
+        deny_on_team(:view_reviews?)
+
+        run_action(**via_team)
+
+        expect(response).to have_http_status :forbidden
+      end
+
+      it "refuses when the parent's act_on_<association>? denies it" do
+        deny_on_team(:act_on_reviews?)
+
+        run_action(**via_team)
+
+        expect(response).to have_http_status :forbidden
+      end
+    end
+  end
 end
