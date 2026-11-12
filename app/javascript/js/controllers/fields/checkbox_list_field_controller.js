@@ -106,7 +106,7 @@ export default class extends Controller {
 
   hiddenSelectionsLabel(count) {
     if (count === 1 && this.hasHiddenSelectionsOneValue) {
-      return this.hiddenSelectionsOneValue
+      return this.hiddenSelectionsOneValue.replace('%{count}', count)
     }
 
     if (this.hasHiddenSelectionsOtherValue) {
