@@ -167,6 +167,18 @@ end
 
 FriendlyId is detected automatically (no `find_record_method` needed); prefixed_ids and hashid-rails work out of the box. On huge tables, skip the count with `self.pagination = { type: :countless }`.
 
+Keep an Index fresh without reloading the page (orders coming in, jobs changing status):
+
+```ruby
+class Avo::Resources::Order < Avo::BaseResource
+  self.index_refresh_every = 30.seconds   # seconds or a Duration; nil/false/0 = off (default)
+  # Block form gets `parent_record`/`parent_resource` (nil on the resource's own Index):
+  # self.index_refresh_every = -> { 30.seconds if parent_record.nil? }
+end
+```
+
+Only the records reload (table/grid and pagination), keeping the search, filters, sort and page; association panels listing the resource refresh too. A reload waits while the list isn't visible (background browser tab, inactive page tab), rows are selected, a row menu is open, the keyboard is in the list, or the user is typing.
+
 ### 5. Control the save flow and error display
 
 ```ruby
@@ -283,6 +295,7 @@ For STI, send index clicks to the child record with `self.link_to_child_resource
 | `self.index_query` | Base Index query (drop default_scope) | `self.index_query = -> { query.unscoped }` |
 | `self.find_record_method` | Lookup by slug/custom id | `-> { query.find_by!(slug: id) }` |
 | `self.pagination` | Skip count on big tables | `self.pagination = { type: :countless }` |
+| `self.index_refresh_every` | Reload the Index records on a timer | `self.index_refresh_every = 30.seconds` |
 | `self.confirm_on_save` | Confirm dialog before save | `self.confirm_on_save = true` |
 | `self.after_create_path` / `_update_path` | Post-save redirect | `self.after_create_path = :index` |
 | `self.visible_on_sidebar` / `self.hotkey` | Menu presence / shortcut | `self.visible_on_sidebar = false` |

@@ -71,6 +71,7 @@ module Avo
       # Avo.configuration.default_view_type in #view_type.
       class_attribute :default_view_type
       class_attribute :index_view_loading, default: :eager
+      class_attribute :index_refresh_every
       class_attribute :devise_password_optional, default: false
       class_attribute :scopes_loader
       class_attribute :filters_loader
@@ -382,6 +383,16 @@ module Avo
 
       def index_view_frame
         "#{model_key}_index"
+      end
+
+      # How often, in milliseconds, the Index view and the association panels listing this resource
+      # reload their records. nil when they don't.
+      def index_refresh_interval(parent_record: nil, parent_resource: nil)
+        every = Avo::ExecutionContext.new(target: index_refresh_every, resource: self, parent_record:, parent_resource:).handle
+        return if every.blank?
+
+        milliseconds = (every.to_f * 1000).round
+        milliseconds if milliseconds.positive?
       end
 
       def resource_name_for(association: nil)
