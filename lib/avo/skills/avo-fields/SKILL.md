@@ -137,7 +137,7 @@ Which one to reach for: `rhino` for HTML rich text (or `lexxy` on Rails >= 8.0.2
 
 ## Key options
 
-Every field accepts these common options (full list + types at the field-options-api page). Pass a literal value or, unless noted, a lambda.
+Every field accepts these common options (full list + types at the field-options-api page). Pass a literal value or, unless noted, a lambda. To give every field of a type the same options instead of repeating them, set `config.field_defaults` in the initializer (`{textarea: {rows: 3}}`, see the avo-admin-config skill); a field's own option wins.
 
 - **`name`** — override the label (default is the model's attribute translation — `activerecord.attributes.<model>.<attr>`, then `attributes.<attr>` — else the humanized id). `field :is_available, as: :boolean, name: "Availability"`. For localized apps, translate via i18n instead of hardcoding.
 - **Visibility** — `hide_on:`, `show_on:`, `only_on:`, `except_on:` take `:index`, `:show`, `:new`, `:edit`, `:preview` plus shorthands `:forms` (new+edit), `:display` (index+show), and `:all` (only for `hide_on`/`show_on`). Example: `field :notes, as: :textarea, hide_on: [:index, :show]`. The same field can be declared more than once, each for its own views; saving the form goes through the declaration the form shows, so its `attach_scope`, `update_using` and other save rules apply: `field :user, as: :belongs_to, only_on: :forms, attach_scope: -> { query.where(active: true) }` plus `field :user, as: :belongs_to, only_on: :display`.

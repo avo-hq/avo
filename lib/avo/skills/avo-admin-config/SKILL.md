@@ -45,7 +45,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 
 **Explicit (Avo named):** "set `config.app_name`", "change `per_page` in the Avo initializer", "set `default_view_type` to `:grid`", "use `container_width = :full`", "set `resource_default_view = :edit`", "configure `default_editor_url`", "enable `persistence`", "set `body_classes`", "set `config.map_view` styles".
 
-**Implicit (Rails-shaped, no mention of Avo):** "change how many records show per page in the admin", "rename the admin / change the app name in the top bar", "set the timezone/currency the admin displays", "default the admin list to grid/card view", "make the admin full-width", "clicking a row shouldn't open the record", "skip the show page and go straight to edit", "open the admin's source files in Cursor/VS Code from the UI", "keep the sidebar always open / hide the collapse button", "make the sidebar wider by default", "stop people resizing the sidebar", "send people to a dashboard when they open the admin", "add a CSS class to the `<body>` tag", "make the admin rows denser / tighter", "keep my filters and pagination when I navigate away", "use different map tiles / stop the admin's maps needing a Mapbox key", "stop the admin from phoning home usage stats".
+**Implicit (Rails-shaped, no mention of Avo):** "change how many records show per page in the admin", "rename the admin / change the app name in the top bar", "set the timezone/currency the admin displays", "give every belongs_to or textarea the same option without repeating it on each field", "default the admin list to grid/card view", "make the admin full-width", "clicking a row shouldn't open the record", "skip the show page and go straight to edit", "open the admin's source files in Cursor/VS Code from the UI", "keep the sidebar always open / hide the collapse button", "make the sidebar wider by default", "stop people resizing the sidebar", "send people to a dashboard when they open the admin", "add a CSS class to the `<body>` tag", "make the admin rows denser / tighter", "keep my filters and pagination when I navigate away", "use different map tiles / stop the admin's maps needing a Mapbox key", "stop the admin from phoning home usage stats".
 
 ## Common settings
 
@@ -133,6 +133,18 @@ config.model_generator_hook = false                       # stop `rails g model`
 ```
 
 In `development`, Avo renders a small `</>` icon next to resources, actions, filters, dashboards, cards, and forms; clicking it opens that class's source file via `default_editor_url`, where `%{path}` is the absolute file path. It **defaults to Cursor** (`cursor://file/%{path}`) — switch the scheme for VS Code (`vscode://file/%{path}`), Sublime (`subl://open?url=file://%{path}`), etc.
+
+### Field defaults
+
+```ruby
+config.field_defaults = {                                 # options every field of a type starts with, keyed by the `as:` name
+  belongs_to: { can_create: false },
+  textarea: { rows: 3 },
+  text: { copyable: true }
+}
+```
+
+Each key is the name passed to `as:` (`belongs_to`, `textarea`, or a custom field's name); a field declared without `as:` is a `text` field, and one declared with a class (`as: Avo::Fields::TextField`) uses that class's field name. The options are the field's usual ones, lambdas included, and apply wherever the `field` DSL runs: resources, actions and `avo_field` in custom views. A field's own option always wins, `false` and `nil` included, so `field :notes, as: :textarea, rows: 10` keeps 10 and `can_create: true` brings the create button back on one `belongs_to`. The merge is shallow: a field's own `html:` replaces the default `html:` hash instead of merging into it. The setter raises `ArgumentError` unless the value is a hash of hashes.
 
 ### Other global knobs
 

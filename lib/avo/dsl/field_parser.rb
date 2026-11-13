@@ -64,11 +64,21 @@ module Avo
       end
 
       def instantiate_field(id, klass:, **args, &block)
+        args = field_defaults_for(klass).merge(args)
+
         if block
           klass.new(id, **args || {}, &block)
         else
           klass.new(id, **args || {})
         end
+      end
+
+      # The app-wide defaults from `config.field_defaults` for this field's type.
+      # They're keyed by the name passed to `as:`, or the field's own name when `as:` is a class.
+      def field_defaults_for(klass)
+        type = as.is_a?(Symbol) ? as : klass.get_field_name
+
+        Avo.configuration.field_defaults.fetch(type.to_sym, {})
       end
 
       def field_class_from_symbol(symbol)
