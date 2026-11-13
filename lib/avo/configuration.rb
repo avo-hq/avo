@@ -41,6 +41,7 @@ module Avo
     attr_accessor :date_format
     attr_accessor :date_time_format
     attr_accessor :time_format
+    attr_reader :field_defaults
     attr_accessor :default_view_type
     attr_accessor :license_key
     attr_accessor :authorization_methods
@@ -165,6 +166,18 @@ module Avo
       @container_width || CONTAINER_WIDTH_DEFAULTS
     end
 
+    # Options every field of a type starts with, keyed by the field type you pass to `as:`.
+    # A field's own options win over these: `{textarea: {rows: 3}}`.
+    def field_defaults=(value)
+      value = {} if value.nil?
+      raise ArgumentError, "Invalid field defaults: #{value.inspect}. Must be a hash keyed by field type, like `{textarea: {rows: 3}}`" unless value.is_a?(Hash)
+
+      invalid_types = value.reject { |_type, options| options.is_a?(Hash) }.keys
+      raise ArgumentError, "Invalid field defaults for #{invalid_types}. Each field type takes a hash of options, like `{textarea: {rows: 3}}`" if invalid_types.any?
+
+      @field_defaults = value.to_h { |type, options| [type.to_sym, options.symbolize_keys] }
+    end
+
     def tailwindcss_content_sources
       if @tailwindcss_content_sources.nil?
         [Rails.root.join("app")]
@@ -187,6 +200,7 @@ module Avo
       @date_format = "yyyy-LL-dd"
       @date_time_format = "yyyy-LL-dd TT"
       @time_format = "TT"
+      @field_defaults = {}
       @default_view_type = :table
       @map_view = {}
       @license_key = nil
