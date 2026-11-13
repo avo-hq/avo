@@ -25,7 +25,10 @@ def row_checkbox(index)
   find(%(#{record_selector_checkbox_selector}[data-index="#{index}"]))
 end
 
+# Turbo first shows its cached copy of a page it visits again, then swaps in the server's. Turbo marks <html>
+# aria-busy until the visit is done, so wait for that, or the rows read can be the copy's and vanish mid-read.
 def checked_row_indexes
+  expect(page).to have_css("html:not([aria-busy]) #{record_selector_checkbox_selector}")
   all(record_selector_checkbox_selector).select(&:checked?).map { |checkbox| checkbox[:"data-index"].to_i }.sort
 end
 
