@@ -55,6 +55,7 @@ import ReloadBelongsToFieldController from './controllers/fields/reload_belongs_
 import ResizableEditorController from './controllers/fields/resizable_editor_controller'
 import ResourceEditController from './controllers/resource_edit_controller'
 import ResourceIndexController from './controllers/resource_index_controller'
+import ResourceRefreshController from './controllers/resource_refresh_controller'
 import ResourceSearchController from './controllers/resource_search_controller'
 import ResourceShowController from './controllers/resource_show_controller'
 import SelectController from './controllers/select_controller'
@@ -120,6 +121,7 @@ application.register('preview', PreviewController)
 application.register('record-selector', RecordSelectorController)
 application.register('resource-edit', ResourceEditController)
 application.register('resource-index', ResourceIndexController)
+application.register('resource-refresh', ResourceRefreshController)
 application.register('resource-search', ResourceSearchController)
 application.register('resource-show', ResourceShowController)
 application.register('select-filter', SelectFilterController)
