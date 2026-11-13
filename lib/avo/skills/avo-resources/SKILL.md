@@ -21,6 +21,7 @@ Authoritative docs — fetch on demand rather than guessing, and verify every op
 - Cover & avatar: https://docs.avohq.io/4.0/cover-and-avatar.md
 - Discreet information: https://docs.avohq.io/4.0/discreet-information.md
 - Array resource: https://docs.avohq.io/4.0/array-resource.md
+- Single Table Inheritance (guide): https://docs.avohq.io/4.0/guides/single-table-inheritance.md
 - Custom errors / validation display: https://docs.avohq.io/4.0/custom-errors.md
 
 ## When this applies

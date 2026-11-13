@@ -122,11 +122,19 @@ Then `bundle install`.
 bin/rails generate avo:install
 ```
 
-This generates `config/initializers/avo.rb`, adds `mount_avo` to `config/routes.rb` (mounting under `/avo` by default), and — if a `User` (or `Account`) model exists — generates a first resource. Fastest path for a brand-new setup is the one-command app template, which runs every install step:
+This generates `config/initializers/avo.rb`, adds `mount_avo` to `config/routes.rb` (mounting under `/avo` by default), and — if a `User` (or `Account`) model exists — generates a first resource. Fastest path for a brand-new setup of Avo core is the one-command app template, which runs every install step:
 
 ```bash
 bin/rails app:template LOCATION='https://avohq.io/app-template'
 ```
+
+To install the **full stack** (Avo plus the add-ons the license includes, starter dashboard, Settings form/page, Avo AI, the MCP server and agent skills), run the agent installer instead:
+
+```bash
+bin/rails app:template LOCATION=https://avohq.io/install/agent.rb
+```
+
+It prints an activation URL and code: hand both to the user and wait while they sign in on Avo HQ and approve the install, then let it finish and verify the migrations and routes. No license key or gem-server token goes through the chat. It starts a 14-day trial of the all-add-ons bundle (no card required; it converts to paid at the end only if the account has a card on file).
 
 **Installing from GitHub** (not rubygems) means precompiled assets aren't shipped — you must compile them yourself and hook that into deploys:
 

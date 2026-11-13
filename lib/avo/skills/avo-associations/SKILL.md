@@ -32,6 +32,7 @@ These fields live in `app/avo/resources/<model>.rb`, the same place as every oth
 **Docs** (fetch on demand with WebFetch — verify option names and edge cases against the live pages, don't guess):
 - Docs map: https://docs.avohq.io/4.0/docs-map.md
 - Overview & STI: https://docs.avohq.io/4.0/associations.md
+- Single Table Inheritance (guide): https://docs.avohq.io/4.0/guides/single-table-inheritance.md
 - Belongs to: https://docs.avohq.io/4.0/associations/belongs_to.md
 - Has one (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_one.md
 - Has many (+ `:through`, `attach_fields`): https://docs.avohq.io/4.0/associations/has_many.md
@@ -170,7 +171,7 @@ Turning a long `belongs_to` / `has_many` picker into a type-to-search field is t
 - **`polymorphic_as` and `types` are a pair** — using one without the other raises. `types` is an array of model classes (`[::Post, ::Project]`), matching a `polymorphic: true` `belongs_to`.
 - **`attach_scope` does not filter listed rows**, only the attach picker. The listed resource's policy scope already filters `has_many`/HABTM panel rows (a `has_one` panel isn't filtered); use `scope` only to narrow further, and don't re-apply the policy scope through it.
 - **Build `attach_scope` on `query` to keep the policy scope.** `query` arrives already narrowed by the target's policy scope. A fresh relation (`-> { ::User.all }`) widens past it on purpose. On every association the save accepts exactly the records the picker offers, so a record outside the `attach_scope` is refused like a missing one.
-- **STI child resources must set `self.model_class`.** When a parent class and STI children share a table, give each child resource `self.model_class = "SuperUser"` so Avo maps it correctly. To route association rows / index clicks to the child resource instead of the parent, use `self.link_to_child_resource = true` on the parent resource or `link_to_child_resource:` on the field.
+- **STI child resources must set `self.model_class`.** When a parent class and STI children share a table, give each child resource `self.model_class = "SuperUser"` so Avo maps it correctly. To route association rows / index clicks to the child resource instead of the parent, use `self.link_to_child_resource = true` on the parent resource or `link_to_child_resource:` on the field. On `has_many`/HABTM the field option overrides the resource setting either way; on `belongs_to` it can only turn the child link on, so `link_to_child_resource: false` does not undo the declaring resource's `self.link_to_child_resource = true` (pin it with `use_resource:` instead). Forms on every resource in the hierarchy submit under the base class's param key (`person`, `person_name` input ids), whichever child resource renders them.
 - **Searchable can look "broken" but be misconfigured** — no query source means an empty picker, not an error. And it's a paid add-on.
 
 ## Report
