@@ -12,7 +12,9 @@
         progress_bar_field_target: "valueInput"
       }
     %>
-    <%= tag.input type: "range",
+    <%= tag.input(
+      **@field.get_html(:attributes, view: view, element: :input),
+      type: "range",
       value: @field.value,
       class: "w-full #{@field.get_html(:classes, view: view, element: :input)}",
       data: {
@@ -28,6 +30,6 @@
       autofocus: @autofocus,
       style: @field.get_html(:style, view: view, element: :input),
       name: nil
-    %>
+    ) %>
   <% end %>
 <% end %>
