@@ -32,10 +32,16 @@ fr:
       auto_tooltip: Automatique (préférence système)
       dark: Sombre
       dark_tooltip: Mode sombre
+      densities:
+        normal: Normal
+        relaxed: Détendu
+        tight: Serré
+      density: Densité
       hide: Cacher
       light: Clair
+      light_and_dark: Clair et sombre
       light_tooltip: Mode clair
-      neutrals: Thème
+      neutrals: Neutre
       neutrals_list:
         brand: Marque
         gray: Gris
@@ -48,6 +54,12 @@ fr:
         taupe: Taupe
         zinc: Zinc
       neutrals_picker: Thème neutre
+      roundness: Rondeur
+      roundnesses:
+        normal: Normal
+        relaxed: Détendu
+        square: Carré
+        tight: Serré
       schemes: Apparence
       shortcut_badges: Badges de raccourci
       shortcut_badges_hide_tooltip: Cacher les badges de raccourci clavier
@@ -58,6 +70,8 @@ fr:
       sound_off_tooltip: Silencieux les sons d'apparence
       sound_on: Activé
       sound_on_tooltip: Jouer un son lors des changements d'apparence
+      theme_picker: Choisir un thème
+      themes: Thèmes
       title: Apparence
     applied:
       one: appliqué

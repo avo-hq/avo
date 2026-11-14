@@ -32,10 +32,16 @@ ru:
       auto_tooltip: Авто (системные предпочтения)
       dark: Темный
       dark_tooltip: Темный режим
+      densities:
+        normal: Нормальный
+        relaxed: Расслабленный
+        tight: Плотный
+      density: Плотность
       hide: Скрыть
       light: Светлый
+      light_and_dark: Светлый и темный
       light_tooltip: Светлый режим
-      neutrals: Тема
+      neutrals: Нейтральный
       neutrals_list:
         brand: Бренд
         gray: Серый
@@ -48,6 +54,12 @@ ru:
         taupe: Тауп
         zinc: Цинк
       neutrals_picker: Нейтральная тема
+      roundness: Круглость
+      roundnesses:
+        normal: Нормальный
+        relaxed: Расслабленный
+        square: Квадрат
+        tight: Плотный
       schemes: Внешний вид
       shortcut_badges: Значки ярлыков
       shortcut_badges_hide_tooltip: Скрыть значки клавиатурных ярлыков
@@ -58,6 +70,8 @@ ru:
       sound_off_tooltip: Отключить звуки появления
       sound_on: Вкл.
       sound_on_tooltip: Воспроизводить звук при изменении внешнего вида
+      theme_picker: Выбрать тему
+      themes: Темы
       title: Внешний вид
     applied: применено
     are_you_sure: Вы уверены?

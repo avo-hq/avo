@@ -1,5 +1,5 @@
 .breadcrumbs {
-  @apply sticky z-40 w-full bg-(--color-main-content-background) mb-4 top-(--top-navbar-height);
+  @apply sticky z-40 w-full bg-(--color-main-content-background) mb-(--panel-gap) top-(--top-navbar-height);
   /* Vertical optical adjustment */
   @apply  -mt-1;
 }
@@ -23,7 +23,8 @@
 }
 
 .breadcrumbs__container {
-  @apply flex flex-wrap gap-y-0 gap-x-px sm:gap-2 items-center pt-0 mt-0 mb-2;
+  @apply flex flex-wrap gap-y-0 gap-x-px sm:gap-[calc(var(--panel-gap)/2)] items-center pt-0 mt-0;
+  margin-bottom: calc(var(--panel-gap) / 2);
 }
 
 .breadcrumbs__separator {

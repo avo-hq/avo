@@ -32,10 +32,16 @@ nb:
       auto_tooltip: Auto (systempreferanse)
       dark: Mørk
       dark_tooltip: Mørk modus
+      densities:
+        normal: Normal
+        relaxed: Avslappet
+        tight: Tett
+      density: Tetthet
       hide: Skjul
       light: Lys
+      light_and_dark: Lys og mørk
       light_tooltip: Lys modus
-      neutrals: Tema
+      neutrals: Nøytral
       neutrals_list:
         brand: Merke
         gray: Grå
@@ -48,6 +54,12 @@ nb:
         taupe: Taupe
         zinc: Sink
       neutrals_picker: Nøytralt tema
+      roundness: Rundhet
+      roundnesses:
+        normal: Normal
+        relaxed: Avslappet
+        square: Firkantet
+        tight: Tett
       schemes: Utseende
       shortcut_badges: Snarveisknapper
       shortcut_badges_hide_tooltip: Skjul snarveisknapper
@@ -58,6 +70,8 @@ nb:
       sound_off_tooltip: Demp utseendelyder
       sound_on: På
       sound_on_tooltip: Spill av en lyd når utseendet endres
+      theme_picker: Velg tema
+      themes: Temaer
       title: Utseende
     applied:
       one: applied

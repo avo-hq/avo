@@ -1,0 +1,18 @@
+require_relative "lib/avo/<%= theme_id %>_theme/version"
+
+Gem::Specification.new do |spec|
+  spec.name = "<%= gem_name %>"
+  spec.version = Avo::<%= gem_module_name %>::VERSION
+  spec.summary = "<%= theme_title %> theme for Avo."
+  spec.description = "<%= theme_title %> theme for Avo: describe the look in one line."
+  spec.authors = ["Your Name"]
+  spec.email = ["you@example.com"]
+  spec.homepage = "https://github.com/your-org/<%= gem_name %>"
+  # spec.license = "MIT" # Ship the matching text as LICENSE before publishing.
+
+  spec.required_ruby_version = ">= 3.2.0"
+
+  spec.files = Dir["{app,lib}/**/*", "README.md", "NOTICE", "LICENSE*", "<%= gem_name %>.gemspec"]
+
+  spec.add_dependency "avo", ">= <%= avo_version_floor %>"
+end

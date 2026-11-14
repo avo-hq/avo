@@ -32,10 +32,16 @@ de:
       auto_tooltip: Automatisch (Systemeinstellung)
       dark: Dunkel
       dark_tooltip: Dunkler Modus
+      densities:
+        normal: Normal
+        relaxed: Entspannt
+        tight: Eng
+      density: Dichte
       hide: Ausblenden
       light: Hell
+      light_and_dark: Hell & Dunkel
       light_tooltip: Heller Modus
-      neutrals: Thema
+      neutrals: Neutral
       neutrals_list:
         brand: Marke
         gray: Grau
@@ -48,6 +54,12 @@ de:
         taupe: Taupe
         zinc: Zink
       neutrals_picker: Neutrale Themen
+      roundness: Rundheit
+      roundnesses:
+        normal: Normal
+        relaxed: Entspannt
+        square: Quadrat
+        tight: Eng
       schemes: Erscheinungsbild
       shortcut_badges: Verknüpfungssymbole
       shortcut_badges_hide_tooltip: Tastenkombinationssymbole ausblenden
@@ -58,6 +70,8 @@ de:
       sound_off_tooltip: Geräusche beim Erscheinen stummschalten
       sound_on: Ein
       sound_on_tooltip: Einen Ton abspielen, wenn sich das Erscheinungsbild ändert
+      theme_picker: Thema auswählen
+      themes: Themen
       title: Erscheinungsbild
     applied: angewendet
     are_you_sure: Sind Sie sicher?

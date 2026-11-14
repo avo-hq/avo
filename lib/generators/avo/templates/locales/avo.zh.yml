@@ -32,10 +32,16 @@ zh:
       auto_tooltip: 自动（系统偏好）
       dark: 深色
       dark_tooltip: 深色模式
+      densities:
+        normal: 正常
+        relaxed: 放松
+        tight: 紧绷
+      density: 密度
       hide: 隐藏
       light: 浅色
+      light_and_dark: 浅色和深色
       light_tooltip: 浅色模式
-      neutrals: 主题
+      neutrals: 中性色
       neutrals_list:
         brand: 品牌
         gray: 灰色
@@ -48,6 +54,12 @@ zh:
         taupe: 灰褐
         zinc: 锌色
       neutrals_picker: 中性色主题
+      roundness: 圆形
+      roundnesses:
+        normal: 正常
+        relaxed: 放松
+        square: 方形
+        tight: 紧身
       schemes: 外观
       shortcut_badges: 快捷键徽章
       shortcut_badges_hide_tooltip: 隐藏键盘快捷键徽章
@@ -58,6 +70,8 @@ zh:
       sound_off_tooltip: 静音外观声音
       sound_on: 开启
       sound_on_tooltip: 外观变化时播放声音
+      theme_picker: 选择主题
+      themes: 主题
       title: 外观
     applied: 已应用
     are_you_sure: 您确定吗？
