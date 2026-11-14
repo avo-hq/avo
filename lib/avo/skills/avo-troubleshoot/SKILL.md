@@ -194,7 +194,7 @@ Only **global search** and **searchable associations** render an Array. Branch o
 ```ruby
 self.search = {
   query: -> do
-    case search_type
+    case (search_type if defined?(search_type))
     when :global, :association
       [{_id: 1, _label: "Record One", _url: "https://example.com/1"}]
     else # the resource index and the kanban card picker — these require a relation
