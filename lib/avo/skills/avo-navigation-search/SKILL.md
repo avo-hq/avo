@@ -134,7 +134,7 @@ self.search = {
 }
 ```
 
-`search_type` is `:resource`, `:global`, `:association`, or `:kanban`. It is **injected only by paid add-ons**: `avo-advanced_search` for the index, global and association surfaces, and `avo-kanban` (`:kanban`, along with `q`) for the kanban card picker. On a Community-only install the local is undefined and referencing it raises, so guard with `defined?(search_type)` when the app might not have `avo-advanced_search`.
+`search_type` is `:resource`, `:global`, `:association`, or `:kanban`. It is **injected only by paid add-ons**: `avo-advanced_search` for the index, global and association surfaces, and `avo-kanban` (`:kanban`) for the kanban card picker. On a Community-only install the local is undefined and referencing it raises, so guard with `defined?(search_type)` when the app might not have `avo-advanced_search`.
 
 ### Authorize search
 
