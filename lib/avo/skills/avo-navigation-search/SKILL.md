@@ -122,12 +122,12 @@ One proc can branch on `search_type` to run a wider search in the global palette
 ```ruby
 self.search = {
   query: -> {
-    case search_type
+    case (search_type if defined?(search_type))
     when :global       # navbar Cmd+K — widest, includes email
       query.ransack(first_name_cont: q, last_name_cont: q, email_cont: q, m: "or").result(distinct: false)
     when :association  # picker — tightest
       query.ransack(first_name_cont: q).result(distinct: false)
-    else               # :resource — the Index search bar
+    else               # :resource, :kanban, or no search_type
       query.ransack(first_name_cont: q, last_name_cont: q, m: "or").result(distinct: false)
     end
   }
@@ -171,7 +171,7 @@ So branch on `search_type` and return the Array only where it's rendered, keepin
 
 ```ruby
 query: -> {
-  case search_type
+  case (search_type if defined?(search_type))
   when :global, :association
     [
       { _id: 1, _label: "Record One", _url: "https://example.com/1", _description: "…", _avatar: "https://…", _avatar_type: :rounded }
