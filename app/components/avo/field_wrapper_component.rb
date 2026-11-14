@@ -45,6 +45,11 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     "#{@style} #{@field.get_html(:style, view: @view, element: :wrapper)}"
   end
 
+  # The template passes these first, so the attributes the wrapper sets itself win.
+  def wrapper_attributes
+    @field.get_html(:attributes, view: @view, element: :wrapper)
+  end
+
   def label_classes
     class_names("field-wrapper__label", @field.get_html(:classes, view: @view, element: :label))
   end
@@ -61,6 +66,10 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
     {slot: "label"}.merge(@field.get_html(:data, view: @view, element: :label))
   end
 
+  def label_attributes
+    @field.get_html(:attributes, view: @view, element: :label)
+  end
+
   def content_classes
     class_names("field-wrapper__content", @field.get_html(:classes, view: @view, element: :content))
   end
@@ -71,6 +80,10 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
   def content_data
     {slot: "value"}.merge(@field.get_html(:data, view: @view, element: :content))
+  end
+
+  def content_attributes
+    @field.get_html(:attributes, view: @view, element: :content)
   end
 
   def label

@@ -1,9 +1,11 @@
 <%= content_tag :div,
+  **wrapper_attributes,
   id: dom_id(@field),
   class: classes,
   style: style,
   data: data do %>
   <%= content_tag :div,
+    **label_attributes,
     class: label_classes,
     style: label_style,
     data: label_data do %>
@@ -23,6 +25,7 @@
     <% end %>
   <% end %>
   <%= content_tag :div,
+    **content_attributes,
     class: content_classes,
     style: content_style,
     data: content_data do %>

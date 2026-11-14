@@ -10,6 +10,7 @@
         disabled: disabled?,
       ) do %>
         <%= @form.file_field @field.id,
+          **@field.get_html(:attributes, view: view, element: :input),
           id: upload_input_id,
           accept: @field.accept,
           data: @field.get_html(:data, view: view, element: :input)
