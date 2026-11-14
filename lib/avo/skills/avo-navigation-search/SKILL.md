@@ -134,7 +134,7 @@ self.search = {
 }
 ```
 
-`search_type` is `:resource`, `:global`, or `:association`. It is **injected only by the paid search layer** (`avo-advanced_search`) — on a Community-only install the local is undefined and referencing it raises. The kanban card picker doesn't inject it (or a `q` local) either. Guard with `defined?(search_type)` when a Community install or the kanban picker might hit the proc; the kanban picker reads the term from `params[:q]`.
+`search_type` is `:resource`, `:global`, `:association`, or `:kanban`. It is **injected only by paid add-ons**: `avo-advanced_search` for the index, global and association surfaces, and `avo-kanban` (`:kanban`, along with `q`) for the kanban card picker. On a Community-only install the local is undefined and referencing it raises, so guard with `defined?(search_type)` when the app might not have `avo-advanced_search`.
 
 ### Authorize search
 
@@ -262,7 +262,7 @@ Jump-to-menu-item shortcuts go through the menu `hotkey:` option, or `self.hotke
 - **`profile_menu` and `header_menu` render only `link_to`.** `resource`, `dashboard`, `action`, etc. are silently ignored there. The profile menu adds sign-out for you.
 - **`icon:` isn't universal.** It works on `section` and individual items, **not** on `group` or on sub-items nested inside a `resource` or `link_to` block. (`link_to` takes a block for sub-items too, not just `resource` — the parent link stays clickable and Avo forces it active while a child is.)
 - **Ransack v4+ needs an allowlist.** Add `ransackable_attributes` (and often `ransackable_associations`) to any model you search, or the query raises.
-- **`search_type` is undefined on Community-only installs and in the kanban picker.** It's injected by the paid search layer for the index/global/association surfaces only. Guard with `defined?(search_type)`; the kanban picker reads `params[:q]` and detects the board via `params[:for_kanban_board]`.
+- **`search_type` is undefined on Community-only installs.** `avo-advanced_search` injects it for the index/global/association surfaces and `avo-kanban` injects `:kanban` for the card picker. Guard with `defined?(search_type)`; detect the kanban picker with `search_type == :kanban`, since `params[:for_kanban_board]` is no longer set.
 - **Custom array-result providers aren't auto-capped.** `config.search_results_count` only applies to relations without their own `.limit()` — cap arrays yourself with `.first(N)`.
 - **`.limit()` in your `query:` proc always wins** over `config.search_results_count`.
 - **`search_on_type` can't be a lambda.** Any Proc is truthy, so it behaves as `true`; use a plain boolean. (`enabled` and `navigation_section` do accept lambdas.)
