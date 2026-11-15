@@ -136,6 +136,24 @@ class Avo::Resources::Post < Avo::BaseResource
 end
 ```
 
+Show a notice above the records (a migration in progress, a record that needs attention, a link to billing) with `self.callouts`. Each Hash takes `type` (`:info` default, `:success`, `:warning`, `:error`), `title`, `body`, `icon` (`false` drops it), `url`, `target`, `visible` and `component`; every value except `component` can be a block that gets `record`, `resource` and `view`:
+
+```ruby
+class Avo::Resources::Project < Avo::BaseResource
+  self.callouts = [
+    {
+      type: :warning,
+      title: "This project has no owner",
+      body: -> { tag.span("Assign one before #{record.started_at.to_date}.") },
+      visible: -> { view.show? && record.user.blank? },
+      url: -> { avo.edit_resources_project_path(record) }
+    }
+  ]
+end
+```
+
+They render on Index, Show, New and Edit, never in association panels or in a form opened in a modal. `record` is `nil` on Index, so guard blocks with `view` or `record&.`. Strings are escaped unless they're `html_safe`. `component:` swaps the built-in `Avo::CalloutComponent` for your own (class or name); it gets the resolved options plus `resource:`. An unknown `type` raises.
+
 ### 4. Tune index performance and behavior
 
 Eager-load associations and attachments to kill N+1 on the index:
@@ -277,6 +295,7 @@ For STI, send index clicks to the child record with `self.link_to_child_resource
 | `self.color` | Tint for that icon (palette name) | `self.color = :purple` |
 | `self.avatar` / `self.cover` | Small photo / banner | `self.cover = { source: :cover_photo, size: :md }` |
 | `self.discreet_information` | Metadata by the title | `self.discreet_information = :timestamps` |
+| `self.callouts` | Notices above the records | `self.callouts = [{ type: :info, title: "Synced nightly" }]` |
 | `self.model_class` | Model when not inferable / secondary resource | `self.model_class = "Delayed::Job"` |
 | `self.includes` / `self.attachments` | Eager-load on Index (N+1) | `self.includes = [:user, :tags]` |
 | `self.default_sort_column` / `_direction` | Index sort | `self.default_sort_column = :position` |

@@ -11,6 +11,7 @@
     <%= render_resource_slot :before_cards %>
     <%= render_resource_slot(:cards) { render_cards_component } %>
     <%= render_resource_slot :after_cards %>
+    <%= render_callouts %>
 
     <%= render_resource_slot :before_body %>
 

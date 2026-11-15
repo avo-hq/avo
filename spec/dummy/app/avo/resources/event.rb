@@ -19,6 +19,20 @@ class Avo::Resources::Event < Avo::BaseResource
     source: :avatar
   }
   self.discreet_information = :timestamps
+  self.callouts = [
+    {
+      title: "Events are listed on the public calendar",
+      body: -> { "Event times are shown in #{Time.zone.name}." },
+      visible: -> { view.index? }
+    },
+    {
+      type: :warning,
+      title: "This event has no location",
+      body: "Add one so people know where to go.",
+      visible: -> { view.show? && record.location.blank? },
+      url: -> { avo.edit_resources_event_path(record) }
+    }
+  ]
 
   self.row_controls_config = {
     float: true,
