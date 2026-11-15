@@ -81,7 +81,7 @@ grep -rn "explicit_authorization" "$(bundle show avo)/lib"
 | Authorization suddenly denies everything (after upgrade) | `explicit_authorization` default flipped `false → true` in v4 | [↓](#authorization-suddenly-denies-everything) |
 | 500 on save / create / update / destroy | A **model** validation or exception surfaced by Avo — usually not an Avo bug | [↓](#500-on-save--create--update--destroy) |
 | 404 in the admin | `ActiveRecord::RecordNotFound`; Avo defers to Rails' 404 unless you rescue it | [↓](#404-in-the-admin) |
-| `No valid predicate for combinator` when filtering | `config.ignore_unknown_conditions` is `false` | [↓](#no-valid-predicate-for-combinator-when-filtering) |
+| `No valid predicate for combinator` when filtering | Ransack's `ignore_unknown_conditions` is `false` | [↓](#no-valid-predicate-for-combinator-when-filtering) |
 | `undefined method 'xxx_path'` inside an Avo block | Avo is a Rails engine — needs `main_app.` prefix | [↓](#url-helpers-blow-up-inside-avo-blocks) |
 | Index search box does nothing — the unfiltered rows stay | `self.search[:query]` returns an Array; the index needs a relation | [↓](#the-index-search-box-silently-does-nothing) |
 | License won't validate / status page errors | Key not set on the server; check the status page | [↓](#license-wont-validate) |
@@ -164,11 +164,13 @@ end
 
 ### `No valid predicate for combinator` when filtering
 
-The app has `config.ignore_unknown_conditions = false`. Set it to `true`:
+Ransack raises this error when its `ignore_unknown_conditions` option is `false`. Set it to `true`, Ransack's default:
 
 ```ruby
-# config/initializers/avo.rb
-config.ignore_unknown_conditions = true
+# config/initializers/ransack.rb
+Ransack.configure do |config|
+  config.ignore_unknown_conditions = true
+end
 ```
 
 → `faq.html`
