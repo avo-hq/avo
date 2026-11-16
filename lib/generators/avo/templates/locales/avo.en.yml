@@ -130,6 +130,7 @@ en:
         navigate: Navigate
         press: Press
         select: Select
+      press_enter_to_search: Press Enter to search
       results:
         count_of_total: "%{count} of %{total}"
       search_results: Search Results

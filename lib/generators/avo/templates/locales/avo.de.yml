@@ -130,6 +130,7 @@ de:
         navigate: Navigieren
         press: Drücken Sie
         select: Auswählen
+      press_enter_to_search: Drücken Sie die Eingabetaste, um zu suchen
       results:
         count_of_total: "%{count} von %{total}"
       search_results: Suchergebnisse

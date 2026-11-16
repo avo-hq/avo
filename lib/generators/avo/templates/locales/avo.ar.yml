@@ -144,6 +144,7 @@ ar:
         navigate: تنقل
         press: اضغط
         select: اختيار
+      press_enter_to_search: اضغط Enter للبحث
       results:
         count_of_total: "%{count} من %{total}"
       search_results: نتائج البحث

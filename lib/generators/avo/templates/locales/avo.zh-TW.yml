@@ -130,6 +130,7 @@ zh-TW:
         navigate: 導航
         press: 按下
         select: 選擇
+      press_enter_to_search: 按 Enter 鍵搜尋
       results:
         count_of_total: "%{count} / %{total}"
       search_results: 搜尋結果

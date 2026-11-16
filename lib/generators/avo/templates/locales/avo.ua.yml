@@ -132,6 +132,7 @@ ua:
         navigate: Навігація
         press: Press
         select: Вибрати
+      press_enter_to_search: Натисніть Enter для пошуку
       results:
         count_of_total: "%{count} of %{total}"
       search_results: Результати пошуку

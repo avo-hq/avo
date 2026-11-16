@@ -132,6 +132,7 @@ fr:
         navigate: Naviguer
         press: Appuyez sur
         select: Sélectionner
+      press_enter_to_search: Appuyez sur Entrée pour rechercher
       results:
         count_of_total: "%{count} sur %{total}"
       search_results: Résultats de recherche
