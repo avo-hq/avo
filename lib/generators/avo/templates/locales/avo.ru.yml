@@ -134,6 +134,7 @@ ru:
         navigate: Навигация
         press: Нажмите
         select: Выбрать
+      press_enter_to_search: Нажмите Enter для поиска
       results:
         count_of_total: "%{count} из %{total}"
       search_results: Результаты поиска

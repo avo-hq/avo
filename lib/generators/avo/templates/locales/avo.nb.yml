@@ -132,6 +132,7 @@ nb:
         navigate: Naviger
         press: Trykk
         select: Velg
+      press_enter_to_search: Trykk Enter for å søke
       results:
         count_of_total: "%{count} av %{total}"
       search_results: Søkeresultater

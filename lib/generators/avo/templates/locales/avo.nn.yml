@@ -132,6 +132,7 @@ nn:
         navigate: Naviger
         press: Trykk
         select: Vel
+      press_enter_to_search: Trykk Enter for å søkja
       results:
         count_of_total: "%{count} av %{total}"
       search_results: Søkeresultat
