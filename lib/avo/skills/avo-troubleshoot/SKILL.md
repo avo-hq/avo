@@ -344,7 +344,7 @@ Apply, per chapter
 ⚠️ Silent behavior changes — these pass tests but change runtime behavior, flag each explicitly:
 - `explicit_authorization` now defaults to true → actions/fields/records with a missing policy method are now DENIED. Audit policies.
 - Action `no_confirmation` → `confirmation`, default flipped (modal now shows by default).
-- `params[:via_association]` is gone → any `== 'has_many'` branch silently falls through to else. Migrate to `search_type`.
+- `params[:via_association]` is gone → any `== 'has_many'` branch silently falls through to else. Migrate to `search_type`, guarded with `defined?(search_type)`: only avo-advanced_search and avo-kanban inject it.
 - Dynamic filters `always_expanded` now defaults to true.
 
 Output
@@ -360,7 +360,7 @@ These are the ones that break a "working" app without any error:
 
 - **`explicit_authorization` now defaults to `true`** — missing policy methods now **deny**. → [Authorization suddenly denies everything](#authorization-suddenly-denies-everything).
 - **Action `no_confirmation` → `confirmation`, default flipped.** v3 skipped the modal by default; v4 **shows** it by default. `self.no_confirmation = true` becomes `self.confirmation = false`.
-- **`params[:via_association]` removed.** The v4 searchable-association picker no longer sets it, so any `if params[:via_association] == 'has_many'` branch silently falls through to `else` (wrong scope, no error). Migrate to the injected `search_type` local (`:global` / `:resource` / `:association` / `:kanban`). `params[:for_kanban_board]` is likewise gone → `search_type == :kanban`.
+- **`params[:via_association]` removed.** The v4 searchable-association picker no longer sets it, so any `if params[:via_association] == 'has_many'` branch silently falls through to `else` (wrong scope, no error). Migrate to the `search_type` local (`:global` / `:resource` / `:association` / `:kanban`). Only avo-advanced_search and avo-kanban inject it; core search without avo-advanced_search, avo-ai and avo-mcp_server run the proc without it, and a bare reference raises there, so guard it: `defined?(search_type) && search_type == :association`. `params[:for_kanban_board]` is likewise gone → the same guarded check against `:kanban`.
 - **Dynamic filters `always_expanded` now defaults to `true`** — the filter bar shows expanded and the toggle button is hidden. Set `config.dynamic_filters.always_expanded = false` inside `Avo.configure` to restore.
 
 ### Renamed / removed at a glance
