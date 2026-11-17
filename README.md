@@ -53,14 +53,14 @@ Avo is a very custom Admin Panel Framework, Content Management System, and Inter
   - **Active Storage support** - Amazingly easy, **one-line**, single or multi-file integration with **ActiveStorage**. [docs](https://docs.avohq.io/4.0/fields/file.html)
   - **Records Ordering** - Sorting records is a breeze. [docs](https://docs.avohq.io/4.0/records-reordering.html)
   - **Grid view** - Beautiful card layout to showcase your content. [docs](https://docs.avohq.io/4.0/grid-view.html)
-  - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪 &nbsp; [docs](https://docs.avohq.io/4.0/actions/overview.html)
+  - **Actions** - Run custom actions to one or more of your resources with as little as pressing a button 💪 &nbsp; [docs](https://docs.avohq.io/4.0/actions.html)
   - **Filters** - Write your own custom filters to quickly segment your data. [docs](https://docs.avohq.io/4.0/filters.html)
   - **Keeps your app clean** - You don't need to change your app to use Avo. Drop it in your existing app or add it to a new one and you're done 🙌 [docs](https://docs.avohq.io/4.0/installation.html)
   - **Custom fields**- No worries if we missed a field you need. Generate a custom field in a jiffy. [docs](https://docs.avohq.io/4.0/custom-fields.html)
   - **Custom tools** - Break out of the CRUD. Do you need to add a page with something completely new? You've got it! [docs](https://docs.avohq.io/4.0/custom-tools.html)
   - **Authorization** - Leverage Pundit policies to build a robust and scalable authorization system. [docs](https://docs.avohq.io/4.0/authorization.html)
   - **Localization** - Have it available in any language you need. [docs](https://docs.avohq.io/4.0/i18n.html)
-  - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/4.0/custom-asset-pipeline.html)
+  - **No asset pipeline pollution** - Bring your own asset pipeline. [docs](https://docs.avohq.io/4.0/asset-handling.html)
   - **Mobile interface** - Check your data on the go from any mobile device.
   - **Tabbed interface** - Conditionally show the data you need
   - **Menu builder** - Group and surface information as you need to
