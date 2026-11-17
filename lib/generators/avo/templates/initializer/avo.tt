@@ -24,7 +24,8 @@ Avo.configure do |config|
   # config.authenticate_with do
   # end
   # config.current_user_resource_name = 'user'
-  # Route helper of the sign-out link. Defaults to destroy_<current_user_resource_name>_session_path.
+  # Route helper of the sign-out link. Defaults to :session_path with Rails' authentication generator,
+  # otherwise destroy_<current_user_resource_name>_session_path.
   # config.sign_out_path_name = :destroy_user_session_path
 
   ## == Authorization ==
@@ -103,13 +104,18 @@ Avo.configure do |config|
   # config.search_results_count = 8
   # config.global_search = {
   #   enabled: true,
-  #   navigation_section: true
+  #   navigation_section: true,
+  #   search_on_type: true
   # }
 
   ## == Persistence ==
   ## Keep pagination, filters, sorting and selection across requests. Off until a driver is set.
   # config.persistence = {
-  #   driver: :session
+  #   driver: :session,
+  #   pagination: true,
+  #   filters: true,
+  #   sorting: true,
+  #   selection: true
   # }
 
   ## == Field discovery ==
