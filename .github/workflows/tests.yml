@@ -31,6 +31,41 @@ env:
 
 jobs:
   # ----------------------------------------------------------------------------
+  # Which tests this change needs
+  #
+  # .github/scripts/test-scope maps the changed paths to `none` (docs and
+  # metadata), `skills` (shipped agent skills) or `full`. Any path it does not
+  # list, a diff it cannot read, and a new branch all mean `full`.
+  # ----------------------------------------------------------------------------
+  scope:
+    name: Test scope
+    runs-on: ubuntu-latest
+    outputs:
+      scope: ${{ steps.scope.outputs.scope }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+
+      - name: Classify the changed paths
+        id: scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          scope=full
+          # The compare API lists at most 300 files, so a list that long may be cut short.
+          if [[ "$BASE" != 0000000000000000000000000000000000000000 ]] &&
+            gh api "repos/$GITHUB_REPOSITORY/compare/$BASE...$HEAD" > "$RUNNER_TEMP/compare.json" &&
+            [[ "$(jq '.files | length' "$RUNNER_TEMP/compare.json")" -lt 300 ]]; then
+            scope=$(jq -r '.files[] | .filename, (.previous_filename // empty)' "$RUNNER_TEMP/compare.json" | .github/scripts/test-scope)
+          fi
+          echo "scope=$scope" >> "$GITHUB_OUTPUT"
+          echo "Test scope: \`$scope\`" >> "$GITHUB_STEP_SUMMARY"
+
+  # ----------------------------------------------------------------------------
   # Build assets once
   #
   # The esbuild/Tailwind output in app/assets/builds/avo is identical across the
@@ -77,7 +112,8 @@ jobs:
   # ----------------------------------------------------------------------------
   feature:
     name: feature (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
-    needs: build_assets
+    needs: [scope, build_assets]
+    if: needs.scope.outputs.scope == 'full'
     strategy:
       matrix:
         ruby:
@@ -150,7 +186,8 @@ jobs:
   # ----------------------------------------------------------------------------
   system:
     name: system (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }}, ${{ matrix.spec_group.display }})
-    needs: build_assets
+    needs: [scope, build_assets]
+    if: needs.scope.outputs.scope == 'full'
     strategy:
       matrix:
         ruby:
@@ -236,7 +273,8 @@ jobs:
   # ----------------------------------------------------------------------------
   components:
     name: components (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
-    needs: build_assets
+    needs: [scope, build_assets]
+    if: needs.scope.outputs.scope == 'full'
     strategy:
       matrix:
         ruby:
@@ -306,6 +344,8 @@ jobs:
   # ----------------------------------------------------------------------------
   i18n:
     name: i18n (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
     strategy:
       matrix:
         ruby: ['3.4']
@@ -349,7 +389,8 @@ jobs:
   # ----------------------------------------------------------------------------
   accessibility:
     name: accessibility (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
-    needs: build_assets
+    needs: [scope, build_assets]
+    if: needs.scope.outputs.scope == 'full'
     strategy:
       matrix:
         ruby:
@@ -399,3 +440,67 @@ jobs:
         with:
           name: rspec_failed_screenshots_a11y_${{ matrix.rails }}_ruby_${{ matrix.ruby }}
           path: ./spec/dummy/tmp/screenshots
+
+  # ----------------------------------------------------------------------------
+  # Skills-only changes
+  #
+  # A change limited to lib/avo/skills runs the specs that read those files
+  # instead of the whole matrix. `full` runs them too, inside `components`.
+  # ----------------------------------------------------------------------------
+  skills:
+    name: skills (Ruby ${{ matrix.ruby }}, Rails ${{ matrix.rails }})
+    needs: scope
+    if: needs.scope.outputs.scope == 'skills'
+    strategy:
+      matrix:
+        ruby: ['3.4']
+        rails: ['8.0']
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_VERSION: ${{ matrix.rails }}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}_ruby_${{ matrix.ruby }}.gemfile
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundler: default
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Prepare database
+        run: bin/rails db:create db:migrate
+
+      - name: Run tests
+        run: bundle exec rspec spec/lib/avo/skills spec/features/avo/generators/skills_generator_spec.rb
+
+  # ----------------------------------------------------------------------------
+  # One check that holds the result of every job above
+  #
+  # Jobs the scope skips report as skipped, and a skipped matrix job reports
+  # under its unexpanded name, so make this the check branch protection requires.
+  # ----------------------------------------------------------------------------
+  result:
+    name: Tests result
+    needs: [scope, build_assets, feature, system, components, i18n, accessibility, skills]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fail when any job failed or was cancelled
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Job results: $RESULTS"
+          [[ " $RESULTS " != *" failure "* && " $RESULTS " != *" cancelled "* ]]
