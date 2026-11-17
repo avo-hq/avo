@@ -132,6 +132,7 @@ tr:
         navigate: Gezin
         press: Bas
         select: Seç
+      press_enter_to_search: Aramak için Enter tuşuna basın
       results:
         count_of_total: "%{count} / %{total}"
       search_results: Arama sonuçları

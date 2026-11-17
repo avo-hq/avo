@@ -130,6 +130,7 @@ zh:
         navigate: 导航
         press: 按
         select: 选择
+      press_enter_to_search: 按 Enter 键搜索
       results:
         count_of_total: "%{count} / %{total}"
       search_results: 搜索结果

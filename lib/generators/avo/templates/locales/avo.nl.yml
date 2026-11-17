@@ -130,6 +130,7 @@ nl:
         navigate: Navigeren
         press: Druk
         select: Selecteren
+      press_enter_to_search: Druk op Enter om te zoeken
       results:
         count_of_total: "%{count} van %{total}"
       search_results: Zoekresultaten

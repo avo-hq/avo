@@ -132,6 +132,7 @@ ja:
         navigate: ナビゲート
         press: 押す
         select: 選択
+      press_enter_to_search: Enterキーを押して検索
       results:
         count_of_total: "%{count} / %{total}"
       search_results: 検索結果

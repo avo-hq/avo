@@ -135,6 +135,7 @@ ro:
         navigate: Navighează
         press: Apasă
         select: Selectează
+      press_enter_to_search: Apăsați Enter pentru a căuta
       results:
         count_of_total: "%{count} din %{total}"
       search_results: Rezultatele căutării

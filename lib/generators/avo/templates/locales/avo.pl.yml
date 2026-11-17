@@ -134,6 +134,7 @@ pl:
         navigate: Nawiguj
         press: Naciśnij
         select: Wybierz
+      press_enter_to_search: Naciśnij Enter, aby wyszukać
       results:
         count_of_total: "%{count} z %{total}"
       search_results: Wyniki wyszukiwania
