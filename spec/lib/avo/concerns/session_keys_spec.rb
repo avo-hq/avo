@@ -20,7 +20,7 @@ RSpec.describe "Session keys for remembered filters and sorting" do
     Warning[:deprecated] = deprecated
   end
 
-  it "builds them without appending to a string literal" do
+  it "keeps the same keys without a frozen-literal deprecation warning" do
     expect {
       expect(controller.filters_session_key).to eq "/encoded_filters/avo/resources/users/index"
       expect(controller.sorting_session_key).to eq "/sorting/avo/resources/users/index"
