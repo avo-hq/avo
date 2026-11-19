@@ -12,6 +12,7 @@ module Avo
         # get_html :data, view: :edit, element: :input
         # get_html :classes, view: :show, element: :wrapper
         # get_html :styles, view: :index, element: :wrapper
+        # get_html :attributes, view: :edit, element: :input
         def get_html(name = nil, element:, view:)
           view = view.to_sym if view.present?
 
@@ -32,6 +33,8 @@ module Avo
 
           add_action_data_attributes(attributes, name, element)
           add_resource_data_attributes(attributes, name, element, view)
+
+          attributes = normalize_html_attributes(attributes) if name == :attributes
 
           value_or_default name, attributes
         end
@@ -56,7 +59,20 @@ module Avo
         end
 
         def default_attribute_value(name)
-          (name == :data) ? {} : nil
+          hash_attribute?(name) ? {} : nil
+        end
+
+        # `data` and `attributes` take a Hash, `style` and `classes` take a String.
+        def hash_attribute?(name)
+          name.in? [:data, :attributes]
+        end
+
+        # `class`, `style`, and `data` come from their own keys, so they're dropped here.
+        # Symbol keys let an attribute the element already sets win over these instead of rendering twice.
+        def normalize_html_attributes(attributes)
+          return {} unless attributes.is_a?(Hash)
+
+          attributes.symbolize_keys.except(:class, :style, :data)
         end
 
         def add_action_data_attributes(attributes, name, element)
@@ -87,7 +103,7 @@ module Avo
           # get direct ancestor
           values << html_builder.dig_stack(name)
 
-          values_type = if name == :data
+          values_type = if hash_attribute?(name)
             :hash
           else
             :string
@@ -114,7 +130,9 @@ module Avo
               value.is_a? String
             end.join " "
           elsif as == :hash
-            values.reduce({}, :merge)
+            values.select do |value|
+              value.is_a? Hash
+            end.reduce({}, :merge)
           end
 
           result if result.present?
