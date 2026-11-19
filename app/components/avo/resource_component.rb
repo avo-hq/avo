@@ -91,6 +91,19 @@ class Avo::ResourceComponent < Avo::BaseComponent
     end
   end
 
+  # Callouts belong to the resource's own pages, so a has_one or has_many panel
+  # on another record's page doesn't repeat them.
+  def render_callouts
+    return if @reflection.present?
+
+    callouts = @resource.callouts.items.map do |callout|
+      render callout[:component].new(**callout.except(:component), resource: @resource)
+    end.compact_blank
+    return if callouts.empty?
+
+    tag.div safe_join(callouts), class: "callouts"
+  end
+
   private
 
   def via_resource?

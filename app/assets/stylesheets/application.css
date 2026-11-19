@@ -163,6 +163,7 @@
   @import "./css/components/field-wrapper.css";
   @import "./css/components/avatar.css";
   @import "./css/components/alert.css";
+  @import "./css/components/callout.css";
   @import "./css/components/back_to_top.css";
   @import "./css/components/breadcrumbs.css";
   @import "./css/components/button.css";
@@ -255,7 +256,8 @@
     @apply relative flex flex-col gap-y-12;
 
     &>[data-component="avo/ui/panel_header_component"],
-    &>[data-component="avo/cover_component"] {
+    &>[data-component="avo/cover_component"],
+    &>.callouts {
       @apply -mb-8; /* Offset from the regular panel spacing */
     }
   }

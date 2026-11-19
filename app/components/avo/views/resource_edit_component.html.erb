@@ -11,6 +11,7 @@
   <%= render_resource_slot :before_cards %>
   <%= render_resource_slot(:cards) { render_cards_component } %>
   <%= render_resource_slot :after_cards %>
+  <%= render_callouts unless embedded_in_modal? %>
 
   <%# In a modal the form hooks move into the dialog, because here they would render behind it. %>
   <%= render_resource_slot :before_form unless embedded_in_modal? %>
