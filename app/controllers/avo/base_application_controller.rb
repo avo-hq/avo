@@ -231,7 +231,7 @@ module Avo
     # Records listed through a parent's association field are that field's panel, so they are listed
     # with the panel's resource and policy, or another resource's policy scope would filter them.
     def authorize_via_association(field, resource_class)
-      raise ActiveRecord::RecordNotFound unless field && resource_class == (field.use_resource || field.target_resource)
+      raise ActiveRecord::RecordNotFound if !field || resource_class != (field.use_resource || field.target_resource)
       raise Avo::NotAuthorizedError unless field.authorized?
     end
 

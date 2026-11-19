@@ -1,7 +1,7 @@
 :root {
-  --input-py: --spacing(1);
-  --input-font-size: --spacing(3.5);
-  --input-leading: --spacing(5.5);
+  --input-py: var(--control-padding-block);
+  --input-font-size: var(--control-font-size);
+  --input-leading: var(--control-line-height);
   --input-border-w: 1px;
 
   --input-icon-offset: --spacing(2);
@@ -54,9 +54,9 @@
   }
 
   .input--size-md {
-    --input-py: --spacing(1);
-    --input-font-size: --spacing(3.5);
-    --input-leading: --spacing(5.5);
+    --input-py: var(--control-padding-block);
+    --input-font-size: var(--control-font-size);
+    --input-leading: var(--control-line-height);
 
     --input-icon-size: --spacing(4.5);
   }

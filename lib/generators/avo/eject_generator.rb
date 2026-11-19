@@ -33,9 +33,16 @@ module Generators
         type: :string,
         required: false
 
+      class_option :theme,
+        desc: "Eject the partial into a theme's views directory (app/views/avo/themes/<theme>/...) instead of app/views. Partials only. Example: 'coastal'",
+        type: :string,
+        required: false
+
       source_root ::Avo::Engine.root
 
       namespace "avo:eject"
+
+      VIEWS_ROOT = "app/views/"
 
       TEMPLATES = {
         logo: "app/views/avo/partials/_logo.html.erb",
@@ -56,17 +63,21 @@ module Generators
 
       def handle
         if options[:controller].present?
+          return theme_overrides_partials_only if theme.present?
           eject_controller
         elsif options[:partial].present?
           eject_partial
         elsif options[:component].present?
+          return theme_overrides_partials_only if theme.present?
           eject_component
         elsif options["field-components"].present?
+          return theme_overrides_partials_only if theme.present?
           eject_field_components
         else
           say "Please specify a partial or a component to eject.\n" \
               "Examples: rails g avo:eject --partial :logo\n" \
               "          rails g avo:eject --partial app/views/layouts/avo/application.html.erb\n" \
+              "          rails g avo:eject --partial :logo --theme coastal   # app/views/avo/themes/coastal/avo/partials/_logo.html.erb\n" \
               "          rails g avo:eject --partial :avo_overrides_css   # app/assets/stylesheets/avo-overrides.css\n" \
               "          rails g avo:eject --partial :avo_overrides_js    # app/assets/javascripts/avo-overrides.js\n" \
               "          rails g avo:eject --partial :asset_overrides     # both of the above\n" \
@@ -108,17 +119,44 @@ module Generators
             template_paths = Array(TEMPLATES[template_id])
 
             if template_paths.any? && template_paths.all? { |path| path_exists? path }
-              return unless confirm_ejection_on template_paths.join("' and '")
-              template_paths.each { |template_path| eject template_path }
+              return theme_overrides_partials_only unless themeable?(template_paths)
+              return unless confirm_ejection_on template_paths.map { |path| partial_destination(path) }.join("' and '")
+              template_paths.each { |template_path| eject template_path, partial_destination(template_path) }
             else
               say("Failed to find the `#{template_id.to_sym}` template.", :yellow)
             end
           elsif path_exists? options[:partial]
-            return unless confirm_ejection_on options[:partial]
-            eject options[:partial]
+            return theme_overrides_partials_only unless themeable?([options[:partial]])
+            return unless confirm_ejection_on partial_destination(options[:partial])
+            eject options[:partial], partial_destination(options[:partial])
           else
             say("Failed to find the `#{options[:partial]}` template.", :yellow)
           end
+        end
+
+        def theme
+          options[:theme].to_s.underscore.presence
+        end
+
+        # A theme's views directory mirrors Avo's app/views tree, so the
+        # ejected file keeps its path below that root:
+        #   app/views/avo/partials/_logo.html.erb
+        #   -> app/views/avo/themes/coastal/avo/partials/_logo.html.erb
+        def partial_destination(path)
+          return path if theme.blank?
+
+          "#{VIEWS_ROOT}avo/themes/#{theme}/#{path.delete_prefix(VIEWS_ROOT)}"
+        end
+
+        # Only views can go into a theme. Stylesheets and scripts (the
+        # :avo_overrides_* templates) are loaded by the app, not by the theme.
+        def themeable?(paths)
+          theme.blank? || paths.all? { |path| path.start_with?(VIEWS_ROOT) }
+        end
+
+        def theme_overrides_partials_only
+          say("Themes override partials only. Drop --theme to eject this into your app, " \
+              "or eject a view: rails g avo:eject --partial :logo --theme #{theme}", :yellow)
         end
 
         def eject_component(component_to_eject = options[:component], confirmation: true)

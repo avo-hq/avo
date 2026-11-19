@@ -1,0 +1,13 @@
+<div class="color-scheme-switcher__scheme-row" role="group" aria-label="<%= avo_appearance_t("density") %>" data-action="mouseleave->appearance#revertDensity">
+  <% Avo::Configuration::Appearance::DENSITIES.each do |density| %>
+    <button type="button"
+            class="color-scheme-switcher__scheme-button"
+            data-action="mouseenter->appearance#previewDensity click->appearance#setDensity<%= " click->dropdown-menu#close" if local_assigns[:close_on_pick] %>"
+            data-density="<%= density %>"
+            data-appearance-target="densityOption"
+            aria-pressed="<%= current_density == density.to_s %>">
+      <%= svg "tabler/outline/#{{tight: "viewport-short", normal: "layout-rows", relaxed: "viewport-tall"}.fetch(density)}", class: "color-scheme-switcher__icon", aria: {hidden: true} %>
+      <span class="color-scheme-switcher__scheme-label"><%= avo_appearance_t("densities.#{density}") %></span>
+    </button>
+  <% end %>
+</div>

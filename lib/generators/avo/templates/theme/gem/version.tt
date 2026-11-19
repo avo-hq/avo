@@ -1,0 +1,5 @@
+module Avo
+  module <%= gem_module_name %>
+    VERSION = "0.1.0" unless const_defined?(:VERSION)
+  end
+end

@@ -10,9 +10,9 @@
    */
   --grid-max-cols: 12;
   --grid-min-col: 13rem; /* 52 * 0.25rem, matches .grid-card min-w-52 */
-  --grid-gap: 1rem; /* gap-4 */
+  --grid-gap: var(--grid-card-gap);
 
-  @apply w-full gap-4;
+  @apply w-full gap-(--grid-gap);
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
@@ -42,7 +42,7 @@
 }
 
 .grid-card {
-  @apply flex flex-col flex-1 shrink-0 basis-0 items-start border rounded-xl p-2 gap-2 min-w-52 bg-primary border-tertiary;
+  @apply flex flex-col flex-1 shrink-0 basis-0 items-start border rounded-xl p-(--grid-card-padding) gap-(--grid-card-padding) min-w-52 bg-primary border-tertiary;
 
   box-shadow: var(--box-shadow-grid-card);
 }
