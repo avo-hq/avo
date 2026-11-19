@@ -180,6 +180,11 @@ Avo.configure do |config|
   # config.date_format = 'yyyy-LL-dd'
   # config.date_time_format = 'yyyy-LL-dd TT'
   # config.time_format = 'TT'
+  # Options every field of a type starts with, keyed by the field type you pass to `as:`. A field's own options win.
+  # config.field_defaults = {
+  #   belongs_to: {can_create: false},
+  #   textarea: {rows: 3}
+  # }
   # config.hide_layout_when_printing = false
   # config.container_width = :lg # :full, :lg, :md, or :sm. Hash for per-view: { index: :full, single: :md }
   # config.use_stacked_fields = false
