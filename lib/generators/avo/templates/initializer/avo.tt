@@ -8,6 +8,8 @@ Avo.configure do |config|
 
   # Where should the user be redirected when visiting the `/<%= options[:path] %>` url
   # config.home_path = nil
+  # Params added to every path Avo generates, e.g. [:account_id] when Avo is mounted under scope "/account/:account_id"
+  # config.default_url_options = []
 
   ## == Licensing ==
   <%= "# " if !app_id.present? %>config.license_key = ENV['AVO_LICENSE_KEY']
@@ -21,6 +23,10 @@ Avo.configure do |config|
   # config.current_user_method = :current_user
   # config.authenticate_with do
   # end
+  # config.current_user_resource_name = 'user'
+  # Route helper of the sign-out link. Defaults to :session_path with Rails' authentication generator,
+  # otherwise destroy_<current_user_resource_name>_session_path.
+  # config.sign_out_path_name = :destroy_user_session_path
 
   ## == Authorization ==
   # config.is_admin_method = :is_admin
@@ -68,6 +74,11 @@ Avo.configure do |config|
   # }.freeze
   # config.model_resource_mapping = {}
   # config.default_view_type = :table
+  # config.resource_default_view = :show # :show or :edit, the page a record's links open
+  # Load only these resources instead of every class in app/avo/resources
+  # config.resources = [
+  #   'Avo::Resources::User'
+  # ]
   # Map tiles for the map view and the `location`/`area` fields. Defaults to
   # OpenFreeMap (no account needed), or Mapbox when MAPBOX_ACCESS_TOKEN is set.
   # `styles` accepts :open_free_map, :mapbox, or your own {light:, dark:} pair.
@@ -89,8 +100,28 @@ Avo.configure do |config|
   # config.alert_dismiss_time = 5000
 
 
-  ## == Number of search results to display ==
+  ## == Search ==
   # config.search_results_count = 8
+  # config.global_search = {
+  #   enabled: true,
+  #   navigation_section: true,
+  #   search_on_type: true
+  # }
+
+  ## == Persistence ==
+  ## Keep pagination, filters, sorting and selection across requests. Off until a driver is set.
+  # config.persistence = {
+  #   driver: :session,
+  #   pagination: true,
+  #   filters: true,
+  #   sorting: true,
+  #   selection: true
+  # }
+
+  ## == Field discovery ==
+  ## The field types `discover_columns` picks for matching column names and column types
+  # config.column_names_mapping = {}
+  # config.column_types_mapping = {}
 
   ## == Cache options ==
   ## Provide a lambda to customize the cache store used by Avo.
@@ -185,6 +216,8 @@ Avo.configure do |config|
   # config.use_stacked_fields = false
   # Set to false to disable Avo's Tailwind integration even when `tailwindcss-ruby` is installed.
   # config.tailwindcss_integration_enabled = true
+  # config.tailwindcss_content_sources = ['app'] # paths Tailwind scans for classes, relative to Rails.root
+  # config.body_classes = [] # classes added to Avo's <body>: a string, an array, or a lambda
   # config.search_debounce = 300
   # config.view_component_path = "app/components"
   # config.display_license_request_timeout_error = true
@@ -201,6 +234,10 @@ Avo.configure do |config|
   # config.first_sorting_option = :desc # :desc or :asc
   # config.exclude_from_status = ["license_key"]
   # config.model_generator_hook = true
+  # URL behind the </> icons that open a class's source file in development
+  # config.default_editor_url = 'cursor://file/%{path}'
+  # Set to false to stop sending usage metadata (counts of resources, fields and actions) to Avo HQ. Community only.
+  # config.send_metadata = true
 
   ## == Appearance ==
   # config.appearance = {
@@ -246,5 +283,8 @@ Avo.configure do |config|
   # }
   # config.profile_menu = -> {
   #   link "Profile", path: "/<%= options[:path] %>/profile", icon: "tabler/outline/user-circle"
+  # }
+  # config.header_menu = -> {
+  #   link "Docs", path: "https://docs.avohq.io"
   # }
 end
