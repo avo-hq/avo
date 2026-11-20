@@ -826,4 +826,62 @@ RSpec.describe "Actions", type: :system do
 
     expect(page).to have_css("input[name='fields[probe_focus]']:focus")
   end
+
+  # avo-hq/avo#2670
+  describe "required fields" do
+    before do
+      create :review
+      allow_any_instance_of(Avo::Actions::Test::ShowView).to receive(:fields) do |action|
+        action.field :probe_text, as: :text, required: true
+        action.field :probe_choice, as: :select, options: {"First" => "first", "Second" => "second"}, include_blank: true, required: true
+        action.field :probe_agree, as: :boolean, required: true
+        action.field :probe_optional, as: :text
+      end
+    end
+
+    it "keeps the modal open, and the action from running, until they're filled in" do
+      visit "/admin/resources/reviews"
+      open_panel_action(action_name: "Show view")
+
+      within("[role='dialog']") { find("[data-target='submit_action']").click }
+
+      expect(page).to have_selector "[role='dialog']"
+      expect(page).to have_text "Probe text can't be blank"
+      expect(page).to have_text "Probe choice can't be blank"
+      expect(page).to have_text "Probe agree can't be blank"
+      expect(page).not_to have_text "Probe optional can't be blank"
+      expect(page).to have_css("input[name='fields[probe_text]'][aria-invalid='true']:focus")
+      expect(page).not_to have_text "probe_hidden="
+
+      # Each error goes away as soon as its field is filled in.
+      fill_in "fields_probe_text", with: "Something"
+      expect(page).not_to have_text "Probe text can't be blank"
+      expect(page).to have_no_css("input[name='fields[probe_text]'][aria-invalid]")
+      select "Second", from: "fields_probe_choice"
+      expect(page).not_to have_text "Probe choice can't be blank"
+      expect(page).to have_text "Probe agree can't be blank"
+
+      check "fields_probe_agree"
+      run_action
+
+      expect(page).to have_text "view=index resource.view=index probe_hidden="
+    end
+
+    context "without the confirmation modal" do
+      around do |example|
+        original = Avo::Actions::Test::ShowView.confirmation
+        Avo::Actions::Test::ShowView.confirmation = false
+        example.run
+        Avo::Actions::Test::ShowView.confirmation = original
+      end
+
+      it "runs the action, as there's no form to fill in" do
+        visit "/admin/resources/reviews"
+        within(first(".header__controls")) { click_on "Actions" }
+        click_on "Show view"
+
+        expect(page).to have_text "view=index resource.view=index probe_hidden="
+      end
+    end
+  end
 end

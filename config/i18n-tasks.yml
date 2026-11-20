@@ -113,6 +113,8 @@ search:
 
 ## Do not consider these keys missing:
 ignore_missing:
+  - 'errors.format'
+  - 'errors.messages.blank'
   - 'avo.field_translations.file'
   - 'avo.field_translations.people'
   - 'avo.field_translations.title'
