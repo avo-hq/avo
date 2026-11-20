@@ -129,7 +129,22 @@ class Avo::FieldWrapperComponent < Avo::BaseComponent
 
     add_resizable_editor_attributes(attributes) if @view.form? && @field.resizable_editor?
 
+    # The action form checks these fields before it submits.
+    attributes[:action_target] = "requiredField" if required_on_action_form?
+
     attributes
+  end
+
+  # An action runs straight from its modal, with no record validations to stop it,
+  # so the form itself holds back the submit until its required fields are filled.
+  def required_on_action_form?
+    return @required_on_action_form if defined?(@required_on_action_form)
+
+    @required_on_action_form = @action.present? && on_edit? && @field.is_required?
+  end
+
+  def blank_error_message
+    I18n.t("errors.format", attribute: label, message: I18n.t("errors.messages.blank"))
   end
 
   def stacked?
