@@ -52,11 +52,6 @@ jobs:
           node-version: 22
           cache: yarn
 
-      - name: Yarn install the dummy app
-        run: |
-          cd spec/dummy
-          yarn
-
       - name: Yarn install
         run: yarn
 

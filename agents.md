@@ -160,9 +160,9 @@ commands below are run from the repo root unless noted.
   `127.0.0.1`/`::1`, so the app connects as user `postgres` with an empty password
   (matching `spec/dummy/config/database.yml` defaults).
 
-The update script only refreshes dependencies (`bundle install`, `yarn install`,
-`spec/dummy` yarn). Everything below (starting Postgres, DB schema/seed, asset
-builds, running the server) is NOT done by the update script — do it yourself.
+The update script only refreshes dependencies (`bundle install`, `yarn install`).
+Everything below (starting Postgres, DB schema/seed, asset builds, running the
+server) is NOT done by the update script — do it yourself.
 
 ### Start Postgres (needed every fresh VM boot; it does not auto-start)
 ```
