@@ -95,8 +95,16 @@ export default class extends Controller {
     // again to the real content would bounce the page twice. The hold is
     // released with a single animated resize when the frame finishes
     // loading.
-    const pendingFrame = newPanel?.querySelector('turbo-frame[src]:not([complete])')
-    if (pendingFrame) this.holdHeight(pendingFrame)
+    // Manual and popover frames load only on a click, and a lazy frame below the held height is clipped out of
+    // view, so waiting on any of them would hold forever: skip the first two, load the third now.
+    const pendingFrame = newPanel?.querySelector(
+      'turbo-frame[src]:not([complete]):not([data-manual-frame]):not([popover], [popover] *)',
+    )
+    if (pendingFrame) {
+      this.holdHeight(pendingFrame)
+      // Re-setting `loading` restarts a request that is already in flight.
+      if (pendingFrame.loading === 'lazy' && !pendingFrame.hasAttribute('busy')) pendingFrame.loading = 'eager'
+    }
 
     const oldItem = this.element.querySelector('[data-tabs-target="tabPanel"]:not(.hidden) .tabs__indicator')
     const newItem = newPanel?.querySelector('.tabs__indicator')
