@@ -79,7 +79,6 @@ export default class extends Controller {
       // Avoiding to enable unrelated actions when selecting items on a has many table
       if (link.dataset.resourceName === this.resourceName) {
         link.classList.remove(link.dataset.disabledClasses)
-        link.setAttribute('data-href', link.getAttribute('href'))
         link.dataset.disabled = false
         // Re-enabled actions rejoin the keyboard tab order.
         link.removeAttribute('tabindex')
@@ -94,7 +93,6 @@ export default class extends Controller {
       // Avoiding to disable unrelated actions when selecting items on a has many table
       if (link.dataset.resourceName === this.resourceName) {
         link.classList.add(link.dataset.disabledClasses)
-        link.setAttribute('href', link.getAttribute('data-href'))
         link.dataset.disabled = true
         // Keep disabled actions out of the tab order and announce their state.
         link.setAttribute('tabindex', '-1')
