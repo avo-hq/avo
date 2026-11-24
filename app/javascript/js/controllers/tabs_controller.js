@@ -99,7 +99,11 @@ export default class extends Controller {
     // clipped at the previous tab's height, until the next tab switch.
     const pendingFrame = Array.from(newPanel?.querySelectorAll('turbo-frame[src]:not([complete])') ?? [])
       .find((frame) => !frame.closest('[popover]'))
-    if (pendingFrame) this.holdHeight(pendingFrame)
+    if (pendingFrame) {
+      this.holdHeight(pendingFrame)
+      // A lazy frame that starts below the held height is clipped, so it never appears and never loads.
+      pendingFrame.loading = 'eager'
+    }
 
     const oldItem = this.element.querySelector('[data-tabs-target="tabPanel"]:not(.hidden) .tabs__indicator')
     const newItem = newPanel?.querySelector('.tabs__indicator')

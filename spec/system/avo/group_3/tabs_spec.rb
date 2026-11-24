@@ -69,6 +69,23 @@ RSpec.describe "Tabs", type: :system do
         expect(first_tab_group).to match_css ".tab-group:not([style*='height'])"
       end
 
+      it "loads a lazy tab frame that starts below the previous tab's height" do
+        visit avo.resources_user_path user
+        scroll_to second_tab_group
+
+        # Stands in for fields rendered above a lazy has-many in the same tab.
+        page.execute_script(<<~JS)
+          const spacer = document.createElement("div")
+          spacer.style.height = "2000px"
+          document.getElementById("has_many_field_show_comments").before(spacer)
+        JS
+
+        click_tab "Comments", within_target: second_tab_group
+
+        expect(page).to have_css "turbo-frame#has_many_field_show_comments[complete]", visible: :all
+        expect(second_tab_group).to match_css ".tab-group:not([style*='height'])"
+      end
+
       it "hides the birthday tab" do
         visit avo.resources_user_path user
 
