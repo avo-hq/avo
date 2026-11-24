@@ -7,20 +7,29 @@ export default class extends Controller {
     confirm: String,
   }
 
-  /**
-  We are intercepting the sign-out submission to clear the cache first.
-  By clearing the Turbo cache we are ensuring that when someone presses the back button
-  after a sign-out attempt, the cache is not there in the browser and they can't
-  navigate back to see sensitive information from the previous page.
-  */
-  handle(e) {
+  // Turbo and the browser both keep pages to show again on Back, and a signed-out user must not get them.
+  async handle(e) {
     e.preventDefault()
 
     // eslint-disable-next-line no-alert
-    if (window.confirm(this.confirmValue)) {
-      window.Turbo.cache.clear()
+    if (!window.confirm(this.confirmValue)) return
 
-      this.element.submit()
-    }
+    window.Turbo.cache.clear()
+
+    // The browser keeps this page as it is when we leave, so it is left empty and loads again if it comes back.
+    document.body.replaceChildren(this.element)
+    this.element.hidden = true
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) window.location.reload()
+    })
+
+    // Drops the pages opened before this one. Chrome answers only after clearing, so the wait has a limit.
+    await fetch(`${window.Avo.configuration.root_path}/site_data`, {
+      method: 'DELETE',
+      headers: { 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content },
+      signal: AbortSignal.timeout(2000),
+    }).catch(() => {})
+
+    this.element.submit()
   }
 }
