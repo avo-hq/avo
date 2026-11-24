@@ -157,6 +157,9 @@ group :test do
   # Performance testing
   gem "test-prof"
   gem "database_cleaner-active_record"
+
+  # Rails 8.2 compiles HTML templates through Herb
+  gem "herb", require: false
 end
 
 # =============================================================================

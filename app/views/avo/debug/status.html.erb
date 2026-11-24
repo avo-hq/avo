@@ -60,8 +60,9 @@
                   <dt class="font-semibold text-sm">Last fetched at</dt>
                   <dd><%= license.response['fetched_at'] %> <br>
                     <% if license.response['fetched_at'].present? %>
-                      (<%= time_ago_in_words license.response['fetched_at'] %> ago)</dd>
-                  <% end %>
+                      (<%= time_ago_in_words license.response['fetched_at'] %> ago)
+                    <% end %>
+                  </dd>
                   <dt class="font-semibold text-sm">Cache store</dt>
                   <dd>
                     <%= Avo.cache_store.class %>

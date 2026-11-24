@@ -78,6 +78,7 @@ group :test do
   gem "simplecov-lcov"
   gem "test-prof"
   gem "database_cleaner-active_record"
+  gem "herb", require: false
 end
 
 group :development, :test do
