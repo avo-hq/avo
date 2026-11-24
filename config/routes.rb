@@ -8,6 +8,7 @@ Avo::Engine.routes.draw do
   get "attach-media", to: "media_library#attach"
 
   post "/rails/active_storage/direct_uploads", to: "/active_storage/direct_uploads#create"
+  delete "site_data", to: "site_data#destroy"
 
   scope "avo_api", as: "avo_api" do
     get "/search", to: "search#index"
