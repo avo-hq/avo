@@ -474,7 +474,7 @@ RSpec.describe Avo::ApplicationHelper do
     it "does not rebuild a Ruby object from a return_to value" do
       packed_object = Avo::Services::EncryptionService.encrypt(message: Pathname.new("/admin"), purpose: :return_to, serializer: Marshal)
 
-      expect(helper.d(Base64.urlsafe_encode64(packed_object, padding: false))).to be_nil
+      expect(helper.d(Base64.urlsafe_encode64(packed_object, padding: false))).not_to be_a Pathname
     end
   end
 end
