@@ -86,6 +86,21 @@ RSpec.describe "Tabs", type: :system do
         expect(second_tab_group).to match_css ".tab-group:not([style*='height'])"
       end
 
+      it "releases the group height when the app cancels the tab frame's response" do
+        visit avo.resources_user_path user
+        scroll_to second_tab_group
+
+        page.execute_script(<<~JS)
+          document.addEventListener("turbo:before-fetch-response", (event) => {
+            if (event.target.id === "has_many_field_show_comments") event.preventDefault()
+          })
+        JS
+
+        click_tab "Comments", within_target: second_tab_group
+
+        expect(second_tab_group).to match_css ".tab-group:not([style*='height'])"
+      end
+
       it "hides the birthday tab" do
         visit avo.resources_user_path user
 
