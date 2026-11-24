@@ -102,7 +102,6 @@ class Avo::ActionsComponent < Avo::BaseComponent
       title: action.action_name,
       class: action_css_class(action),
       # Keep disabled actions out of the tab order and announce their state.
-      # The href stays put: item_selector_controller reads it to toggle actions.
       tabindex: (-1 if action.disabled?),
       aria: {disabled: action.disabled?} do
         raw("#{icon(icon || action.icon)} #{action.action_name}")

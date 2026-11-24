@@ -15,8 +15,6 @@ Avo::Engine.routes.draw do
   patch "locale", to: "locales#update", as: :locale
 
   scope "avo_api", as: "avo_api" do
-    # Only used for searchable fields
-    get "/:resource_name/search", to: "search#show"
     post "/resources/:resource_name(/:id)/attachments/", to: "attachments#create"
   end
 

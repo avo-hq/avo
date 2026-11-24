@@ -39,7 +39,6 @@ RSpec.describe "Avo autoloading" do
       "Avo::DebugController" => "Avo::ApplicationController",
       "Avo::HomeController" => "Avo::ApplicationController",
       "Avo::PrivateController" => "Avo::ApplicationController",
-      "Avo::SearchController" => "Avo::ApplicationController",
       "Avo::AssociationsController" => "Avo::BaseController",
       "Avo::ChartsController" => "Avo::BaseController",
       "Avo::ResourcesController" => "Avo::BaseController"
