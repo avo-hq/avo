@@ -197,8 +197,8 @@ module Avo
     def mount_engines
       -> {
         raise "'mount_engines' method is now obsolete. \n" \
-          "Please refer to the upgrade guide for details on the new mounting point: \n" \
-          "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
+          "Please refer to the routing docs for the new mounting point: \n" \
+          "https://docs.avohq.io/4.0/routing.html"
       }
     end
 
@@ -215,7 +215,7 @@ module Avo
 
       if Rails.version.start_with?("7.1")
         Avo.error_manager.add({
-          url: "https://docs.avohq.io/3.0/upgrade.html#upgrade-from-3-7-4-to-3-9-1",
+          url: "https://github.com/rails/rails/issues/51910",
           target: "_blank",
           message: "Due to a Rails 7.1 bug the following features won't work:\n\r
                     - Dashboards\n\r

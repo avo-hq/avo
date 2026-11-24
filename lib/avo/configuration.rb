@@ -606,8 +606,8 @@ module Avo
 
     def mount_avo_engines=(...)
       raise "'mount_avo_engines' option is now obsolete. \n" \
-        "Please refer to the upgrade guide for details on the new mounting point: \n" \
-        "https://docs.avohq.io/3.0/upgrade.html#Avo's%20mounting%20point%20update"
+        "Please refer to the routing docs for the new mounting point: \n" \
+        "https://docs.avohq.io/4.0/routing.html"
     end
 
     # Returns the Link items produced by evaluating the `header_menu` lambda.
