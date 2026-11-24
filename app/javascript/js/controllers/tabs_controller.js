@@ -140,8 +140,8 @@ export default class extends Controller {
 
     const release = (event) => {
       // A listener that cancels the response stops Turbo from firing the other three, so check once all have run.
-      if (event.type === 'turbo:before-fetch-response') {
-        queueMicrotask(() => event.defaultPrevented && release({}))
+      if (event?.type === 'turbo:before-fetch-response') {
+        queueMicrotask(() => event.defaultPrevented && release())
 
         return
       }
