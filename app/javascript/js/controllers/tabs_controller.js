@@ -95,7 +95,10 @@ export default class extends Controller {
     // again to the real content would bounce the page twice. The hold is
     // released with a single animated resize when the frame finishes
     // loading.
-    const pendingFrame = newPanel?.querySelector('turbo-frame[src]:not([complete])')
+    // Popover frames (a column's summary chart) only load when opened, so waiting on one froze the group,
+    // clipped at the previous tab's height, until the next tab switch.
+    const pendingFrame = Array.from(newPanel?.querySelectorAll('turbo-frame[src]:not([complete])') ?? [])
+      .find((frame) => !frame.closest('[popover]'))
     if (pendingFrame) this.holdHeight(pendingFrame)
 
     const oldItem = this.element.querySelector('[data-tabs-target="tabPanel"]:not(.hidden) .tabs__indicator')
