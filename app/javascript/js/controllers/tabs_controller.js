@@ -123,18 +123,30 @@ export default class extends Controller {
     this.element.style.overflow = 'clip'
 
     // turbo:frame-load covers success and Avo's /failed_to_load fallback for
-    // 500s (which loads into the frame like regular content). The other two
+    // 500s (which loads into the frame like regular content). The next two
     // cover responses missing the frame and network errors — without them a
     // failed load would leave the group frozen at the held height.
-    const events = ['turbo:frame-load', 'turbo:frame-missing', 'turbo:fetch-request-error']
+    const events = [
+      'turbo:frame-load',
+      'turbo:frame-missing',
+      'turbo:fetch-request-error',
+      'turbo:before-fetch-response',
+    ]
 
     const clear = () => {
       this.element.style.height = ''
       this.element.style.overflow = ''
     }
 
-    const release = () => {
-      events.forEach((event) => frame.removeEventListener(event, release))
+    const release = (event) => {
+      // A listener that cancels the response stops Turbo from firing the other three, so check once all have run.
+      if (event.type === 'turbo:before-fetch-response') {
+        queueMicrotask(() => event.defaultPrevented && release({}))
+
+        return
+      }
+
+      events.forEach((name) => frame.removeEventListener(name, release))
       this.releaseHold = null
       this.animate(clear)
     }
@@ -145,7 +157,7 @@ export default class extends Controller {
       clear()
     }
 
-    events.forEach((event) => frame.addEventListener(event, release))
+    events.forEach((name) => frame.addEventListener(name, release))
   }
 
   // Run a DOM mutation inside a view transition. The group container is
