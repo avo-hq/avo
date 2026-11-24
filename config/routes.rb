@@ -13,6 +13,7 @@ Avo::Engine.routes.draw do
 
   patch "appearance_settings", to: "appearance_settings#update"
   patch "locale", to: "locales#update", as: :locale
+  delete "site_data", to: "site_data#destroy"
 
   scope "avo_api", as: "avo_api" do
     post "/resources/:resource_name(/:id)/attachments/", to: "attachments#create"
