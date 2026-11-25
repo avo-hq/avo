@@ -101,12 +101,10 @@ module Avo
       # and initialize the parent record with the grandparent attached so the user has the required information
       # to scope the query.
       # Example usage: Got to a project, create a new review, and search for a user.
-      if parent.blank? && params[:via_parent_resource_id].present? && params[:via_parent_resource_class].present? && params[:via_relation].present?
-        parent_resource_class = BaseResource.get_model_by_name params[:via_parent_resource_class]
+      if parent.blank? && params[:via_parent_resource_id].present? && params[:via_relation].present? && grandparent_resource.present?
+        reflection_class = parent_resource.model_class
 
-        reflection_class = BaseResource.get_model_by_name params[:via_reflection_class]
-
-        grandparent = parent_resource_class.find params[:via_parent_resource_id]
+        grandparent = grandparent_resource.find_record params[:via_parent_resource_id], params: params
         parent = reflection_class.new
 
         via_relation = params[:via_relation].to_s
@@ -219,6 +217,11 @@ module Avo
 
     def parent_resource
       @parent_resource ||= Avo.resource_manager.get_resource_by_model_class(params[:via_reflection_class])
+    end
+
+    # Looked up among Avo's resources, never among all models, so params cannot reach a model that has no resource.
+    def grandparent_resource
+      @grandparent_resource ||= Avo.resource_manager.get_resource_by_model_class(params[:via_parent_resource_class])
     end
 
     def render_error(error, ...)

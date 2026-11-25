@@ -114,4 +114,31 @@ RSpec.describe "Authorization gaps", type: :request do
       expect(response).to have_http_status :redirect
     end
   end
+
+  describe "search through a belongs_to field" do
+    # Brother is a model with no resource of its own.
+    let!(:brother) { Brother.create!(name: "Not in Avo") }
+
+    def search_users_for_a_new_review(parent_class:, parent_id:)
+      get "/admin/avo_api/users/search", params: {
+        q: "a", via_association: "belongs_to", via_association_id: "user", via_reflection_class: "Review",
+        via_reflection_view: "new", via_relation: "reviewable", via_parent_resource_class: parent_class, via_parent_resource_id: parent_id
+      }
+    end
+
+    it "does not look up a record of a model that has no resource" do
+      [brother.id, brother.id + 1].each do |id|
+        search_users_for_a_new_review parent_class: "Brother", parent_id: id
+
+        expect(response).to have_http_status :ok
+      end
+    end
+
+    it "still searches when the parent's model has a resource" do
+      search_users_for_a_new_review parent_class: "Project", parent_id: create(:project).id
+
+      expect(response).to have_http_status :ok
+      expect(response.parsed_body).to have_key "users"
+    end
+  end
 end
