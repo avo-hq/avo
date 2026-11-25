@@ -404,6 +404,24 @@ module Avo
       if params[:return_to].present?
         params[:return_to] = d(params[:return_to])
       end
+
+      # Updates, destroys, detaches and actions redirect to the referrer.
+      params.delete(:referrer) unless stays_inside_app?(params[:referrer])
+    end
+
+    # An absolute URL on this host is allowed because Avo.root_path builds one for the association row controls.
+    def stays_inside_app?(url)
+      return false unless url.is_a?(String)
+
+      uri = URI(url)
+
+      if uri.scheme
+        uri.scheme.in?(%w[http https]) && uri.host == request.host
+      else
+        url.start_with?("/") && !url.start_with?("//")
+      end
+    rescue URI::InvalidURIError
+      false
     end
   end
 end

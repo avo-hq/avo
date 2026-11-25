@@ -91,6 +91,7 @@ Defaults you may be dropping:
 - **`after_create_path`** — when the record was created **through an association**, redirects back to the parent record's page; otherwise honors the resource's `self.after_create_path`, falling back to the new record's <Show /> (or <Edit /> when `config.resource_default_view` is `:edit`). Return `super` when `params[:via_relation_class]` and `params[:via_record_id]` are present to keep the parent redirect.
 - **`after_update_path`** — returns `params[:return_to]`, then `params[:referrer]`, before honoring `self.after_update_path` and the <Show />/<Edit /> fallback. Return `super` when `params[:return_to]` is present so "send the user back where they came from" keeps working.
 - **`after_destroy_path`** — returns `params[:referrer]` when present, otherwise the resource's <Index />.
+- **`params[:referrer]`** is cleared before any action runs when it points outside the app (another host, a `//` URL, a scheme other than http or https). The defaults above then use their next rule, and an override can redirect to it as it is.
 
 ```ruby
 def after_update_path
