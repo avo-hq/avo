@@ -5,7 +5,8 @@
   // never ran on that page. Only a full load can boot them.
   if (window.Turbo && !window.Avo.localStorage && document.readyState !== "loading") location.reload()
   Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
-  Avo.configuration.root_path = '<%= root_path_without_url %>'
+  <%# The JS appends "/site_data" and the like, and at a / mount "//site_data" would name a host called site_data. %>
+  Avo.configuration.root_path = '<%= root_path_without_url.chomp("/") %>'
   Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
   Avo.configuration.cookies_key = '<%= Avo::COOKIES_KEY %>'
   Avo.configuration.sidebar = {
