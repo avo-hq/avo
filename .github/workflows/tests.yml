@@ -57,9 +57,10 @@ jobs:
         run: |
           scope=full
           # The compare API lists at most 300 files, so a list that long may be cut short.
+          # A response without a files list also leaves the scope at full.
           if [[ "$BASE" != 0000000000000000000000000000000000000000 ]] &&
             gh api "repos/$GITHUB_REPOSITORY/compare/$BASE...$HEAD" > "$RUNNER_TEMP/compare.json" &&
-            [[ "$(jq '.files | length' "$RUNNER_TEMP/compare.json")" -lt 300 ]]; then
+            jq -e '(.files | type) == "array" and (.files | length) < 300' "$RUNNER_TEMP/compare.json" > /dev/null; then
             scope=$(jq -r '.files[] | .filename, (.previous_filename // empty)' "$RUNNER_TEMP/compare.json" | .github/scripts/test-scope)
           fi
           echo "scope=$scope" >> "$GITHUB_OUTPUT"
@@ -74,6 +75,8 @@ jobs:
   # ----------------------------------------------------------------------------
   build_assets:
     name: Build assets
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
     runs-on: ubuntu-latest
 
     steps:
@@ -483,7 +486,8 @@ jobs:
         run: bin/rails db:create db:migrate
 
       - name: Run tests
-        run: bundle exec rspec spec/lib/avo/skills spec/features/avo/generators/skills_generator_spec.rb
+        # autoloading_spec scans every .rb under lib/, including the skills' scripts.
+        run: bundle exec rspec spec/lib/avo/skills spec/features/avo/generators/skills_generator_spec.rb spec/lib/avo/autoloading_spec.rb
 
   # ----------------------------------------------------------------------------
   # One check that holds the result of every job above

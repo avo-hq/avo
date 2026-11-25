@@ -10,7 +10,8 @@
 set -euo pipefail
 
 scope=""
-while IFS= read -r path; do
+# `|| [ -n ... ]` keeps a last line that has no trailing newline.
+while IFS= read -r path || [ -n "$path" ]; do
   [ -z "$path" ] && continue
   # Top-level Markdown only: a case `*` also matches `/`, so it cannot say this.
   if [[ "$path" != */* && "$path" == *.[mM][dD] ]]; then
@@ -18,7 +19,8 @@ while IFS= read -r path; do
     continue
   fi
   case "$path" in
-    # Read by no spec. README.md ships in the gem but nothing tests its text.
+    # No spec result depends on these. Tailwind's content scan may read the Markdown
+    # and pick up unused class names, but no spec checks the CSS for them.
     docs/* | spec/skills_eval/* | \
     .github/ISSUE_TEMPLATE/* | .github/PULL_REQUEST_TEMPLATE.md | .github/FUNDING.yml | \
     .github/pr-labeler.yml | .github/release-drafter.yml)
