@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import DOMPurify from 'dompurify'
 import EasyMDE from 'easymde'
 
 export default class extends Controller {
@@ -21,6 +22,8 @@ export default class extends Controller {
       element: this.elementTarget,
       spellChecker: this.componentOptions.spell_checker,
       autoRefresh: { delay: 500},
+      // EasyMDE keeps raw HTML in the preview, and the markdown can come from end users.
+      renderingConfig: { sanitizerFunction: (html) => DOMPurify.sanitize(html) },
     }
 
     if (this.view === 'show') {
