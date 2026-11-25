@@ -157,6 +157,8 @@ end
 
 So "add a logout button to the admin" = pick whichever of these matches an existing route helper in `bin/rails routes`. The link fires a `DELETE`, so the target route must accept it.
 
+The built-in item also keeps signed-in pages away from the browser's Back button: before signing out it empties the page and has the browser drop the earlier ones (`Clear-Site-Data: "cache"`). A sign-out link you add yourself does not do that, so point the built-in item at the app's route instead of adding a second link.
+
 ## Key options
 
 | Option | Where | Does | Tiny example |

@@ -348,16 +348,19 @@ module Avo
       "container-#{Avo.configuration.container_width.fetch(@view&.to_sym, :lg)}"
     end
 
+    # A return path is already a string, so nothing packs it and nothing is rebuilt from a link that comes back.
+    RETURN_TO_SERIALIZER = ActiveSupport::MessageEncryptor::NullSerializer
+
     # encode & encrypt params
     def e(value)
-      encrypted = Avo::Services::EncryptionService.encrypt(message: value, purpose: :return_to, serializer: Marshal)
+      encrypted = Avo::Services::EncryptionService.encrypt(message: value, purpose: :return_to, serializer: RETURN_TO_SERIALIZER)
       Base64.urlsafe_encode64(encrypted, padding: false)
     end
 
     # decrypt & decode params
     def d(value)
       decoded = Base64.urlsafe_decode64(value.to_s)
-      Avo::Services::EncryptionService.decrypt(message: decoded, purpose: :return_to, serializer: Marshal)
+      Avo::Services::EncryptionService.decrypt(message: decoded, purpose: :return_to, serializer: RETURN_TO_SERIALIZER)
     rescue
       nil
     end

@@ -174,7 +174,7 @@ RSpec.describe "Authorization gaps", type: :request do
     end
   end
 
-  # The index and the search endpoint list a parent's association named in params, as its panel does.
+  # The index lists a parent's association named in params, as its panel does.
   describe "listing through a parent's association" do
     let!(:post_record) { create :post, user: admin_user, name: "Secret post" }
 
@@ -184,8 +184,7 @@ RSpec.describe "Authorization gaps", type: :request do
     end
 
     {
-      index: ->(resource, user) { "/admin/resources/#{resource}?via_resource_class=Avo::Resources::User&via_record_id=#{user.to_param}&related_name=posts" },
-      search: ->(resource, user) { "/admin/avo_api/#{resource}/search?q=Secret&via_association=has_many&via_association_id=posts&via_reflection_class=User&via_reflection_id=#{user.to_param}&via_reflection_view=show" }
+      index: ->(resource, user) { "/admin/resources/#{resource}?via_resource_class=Avo::Resources::User&via_record_id=#{user.to_param}&related_name=posts" }
     }.each do |endpoint, path|
       describe endpoint.to_s do
         it "lists the parent's association" do

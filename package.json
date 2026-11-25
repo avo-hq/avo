@@ -11,8 +11,8 @@
     "prod:build": "yarn build",
     "build:js": "esbuild app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
     "build:custom-js": "esbuild spec/dummy/app/javascript/*.js --bundle --sourcemap --minify --outdir=app/assets/builds/avo",
-    "build:dependencies-css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/dependencies.css -o ./app/assets/builds/avo/dependencies.css --postcss",
-    "build:css": "yarn build:dependencies-css && npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/avo/application.css --postcss",
+    "build:dependencies-css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/dependencies.css -o ./app/assets/builds/avo/dependencies.css",
+    "build:css": "yarn build:dependencies-css && npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/avo/application.css",
     "export": "yarn export:heroicons && yarn export:tailwind-safelist",
     "export:tailwind-safelist": "node scripts/export-tailwind-safelist.js"
   },
@@ -45,12 +45,10 @@
     "@tiptap/pm": "^2.27.2",
     "@yaireo/tagify": "^4.39.0",
     "add": "^2.0.9",
-    "autoprefixer": "^10.6.2",
     "chart.js": "^3.9.1",
     "chartkick": "^4.2.0",
     "codemirror": "5.65.20",
     "core-js": "^3.51.0",
-    "css-loader": "^6.11.0",
     "dompurify": "^3.4.18",
     "easymde": "^2.21.0",
     "esbuild": "^0.28.2",
@@ -64,13 +62,6 @@
     "luxon": "^3.7.2",
     "mapbox-gl": "1.13.3",
     "mapkick": "^0.2.6",
-    "postcss": "^8.5.33",
-    "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-import": "^15.1.0",
-    "postcss-loader": "^7.3.4",
-    "postcss-nested": "^6.2.0",
-    "postcss-nested-ancestors": "^3.0.0",
-    "postcss-preset-env": "^8.5.1",
     "regenerator-runtime": "^0.13.11",
     "sortablejs": "^1.15.7",
     "stimulus-rails-nested-form": "^4.1.0",
@@ -96,13 +87,7 @@
     "prettier-plugin-erb": "^0.4.0"
   },
   "resolutions": {
-    "prosemirror-model": "1.22.2"
-  },
-  "browserslist": [
-    "last 3 and_chr versions",
-    "last 3 chrome versions",
-    "last 3 opera versions",
-    "last 3 ios_saf versions",
-    "last 3 safari versions"
-  ]
+    "prosemirror-model": "1.22.2",
+    "@tailwindcss/typography/postcss-selector-parser": "^6.1.6"
+  }
 }

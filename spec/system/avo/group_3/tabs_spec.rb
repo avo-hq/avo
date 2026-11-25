@@ -52,6 +52,55 @@ RSpec.describe "Tabs", type: :system do
         expect(teams_frame).to have_link "Create new team", href: "/admin/resources/teams/new?via_record_id=#{user.slug}&via_relation=admin&via_relation_class=User&via_resource_class=Avo%3A%3AResources%3A%3AUser"
       end
 
+      it "releases the group height when returning to a loaded tab with summarizable columns" do
+        visit avo.resources_user_path user
+        scroll_to first_tab_group
+
+        click_tab "Projects", within_target: first_tab_group
+        expect(page).to have_css "turbo-frame#has_and_belongs_to_many_field_show_projects[complete] [popover][src]",
+          visible: :all
+
+        click_tab "Teams", within_target: first_tab_group
+        expect(page).to have_css "turbo-frame#has_and_belongs_to_many_field_show_teams[complete]"
+
+        click_tab "Projects", within_target: first_tab_group
+
+        expect(page).to have_css "turbo-frame#has_and_belongs_to_many_field_show_projects tbody tr"
+        expect(first_tab_group).to match_css ".tab-group:not([style*='height'])"
+      end
+
+      it "loads a lazy tab frame that starts below the previous tab's height" do
+        visit avo.resources_user_path user
+        scroll_to second_tab_group
+
+        # Stands in for fields rendered above a lazy has-many in the same tab.
+        page.execute_script(<<~JS)
+          const spacer = document.createElement("div")
+          spacer.style.height = "2000px"
+          document.getElementById("has_many_field_show_comments").before(spacer)
+        JS
+
+        click_tab "Comments", within_target: second_tab_group
+
+        expect(page).to have_css "turbo-frame#has_many_field_show_comments[complete]", visible: :all
+        expect(second_tab_group).to match_css ".tab-group:not([style*='height'])"
+      end
+
+      it "releases the group height when the app cancels the tab frame's response" do
+        visit avo.resources_user_path user
+        scroll_to second_tab_group
+
+        page.execute_script(<<~JS)
+          document.addEventListener("turbo:before-fetch-response", (event) => {
+            if (event.target.id === "has_many_field_show_comments") event.preventDefault()
+          })
+        JS
+
+        click_tab "Comments", within_target: second_tab_group
+
+        expect(second_tab_group).to match_css ".tab-group:not([style*='height'])"
+      end
+
       it "hides the birthday tab" do
         visit avo.resources_user_path user
 
