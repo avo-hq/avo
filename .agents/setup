@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Prepares a fresh Amp orb for Avo development: installs the orb-only
-# prerequisites (system packages, Postgres, Ruby via mise), then hands off to
-# bin/setup --fast for gems, Yarn packages, databases, and assets.
+# Prepares a fresh Amp orb for Avo development: installs system packages,
+# Postgres, Ruby via mise, gems, and Yarn packages (the last three in parallel
+# with the system packages), then hands off to bin/setup --fast for databases
+# and assets.
 # Idempotent: a warm run (stale snapshot) only re-checks and refreshes.
 set -euo pipefail
 
@@ -20,17 +21,30 @@ step() {
 export DEBIAN_FRONTEND=noninteractive
 export AVO_LICENSE_KEY="${AVO_LICENSE_KEY:-license_123}"
 
-install_system_packages() {
+apt_updated=false
+install_packages() {
   local missing=()
-  for pkg in postgresql libpq-dev libvips42 build-essential libyaml-dev lsof; do
+  for pkg in "$@"; do
     dpkg -s "$pkg" >/dev/null 2>&1 || missing+=("$pkg")
   done
   if ((${#missing[@]})); then
-    sudo apt-get update -qq
-    sudo apt-get install -y -qq "${missing[@]}"
+    $apt_updated || sudo apt-get update -qq
+    apt_updated=true
+    sudo apt-get install -y -qq --no-install-recommends "${missing[@]}"
   else
-    echo "    all system packages present"
+    echo "    all packages present: $*"
   fi
+}
+
+# Needed to compile native gem extensions. The base image already has them, so
+# this is usually a no-op; it runs before gems install so they never race.
+install_build_packages() {
+  install_packages build-essential libyaml-dev libpq-dev
+}
+
+# Needed only at runtime, so these install while gems and Yarn packages do.
+install_runtime_packages() {
+  install_packages postgresql libvips42 lsof
 }
 
 start_postgres() {
@@ -70,7 +84,55 @@ install_ruby() {
     curl -fsSL https://mise.run | MISE_QUIET=1 sh
   fi
   mise trust --quiet "$repo_root/mise.toml"
-  mise install --yes
+  # mise.toml pins only `ruby = "4"`. Without this, a Ruby release that has no
+  # prebuilt binary yet makes mise compile it from source, which takes minutes;
+  # with it, mise picks the newest 4.x that has a prebuilt binary.
+  MISE_RUBY_COMPILE=false mise install --yes
+}
+
+# Most of a cold setup: about 20 gems compile native extensions.
+install_ruby_and_gems() {
+  install_ruby
+  bundle config set --local jobs "$(nproc)" >/dev/null
+  bundle install --quiet
+}
+
+install_yarn_packages() {
+  yarn install --silent
+}
+
+# Runs a step in the background and keeps its output out of the foreground
+# log until wait_background prints it. Each step gets its own process group
+# (set -m), so if setup exits early, the EXIT trap stops the step and every
+# process it started, such as bundle install's compilers.
+bg_pids=()
+bg_logs=()
+stop_background() {
+  local pid
+  for pid in "${bg_pids[@]}"; do
+    kill -- "-$pid" 2>/dev/null || true
+  done
+}
+background() {
+  local log
+  log="$(mktemp)"
+  set -m
+  step "$@" >"$log" 2>&1 &
+  set +m
+  bg_pids+=("$!")
+  bg_logs+=("$log")
+  trap stop_background EXIT
+}
+
+wait_background() {
+  local failed=0 i
+  for i in "${!bg_pids[@]}"; do
+    wait "${bg_pids[$i]}" || failed=1
+    cat "${bg_logs[$i]}"
+    rm -f "${bg_logs[$i]}"
+  done
+  bg_pids=()
+  return "$failed"
 }
 
 persist_shell_env() {
@@ -88,9 +150,9 @@ EOF
   fi
 }
 
-# Gems, Yarn packages, .env.test, fast-seeded dev DB, test schema, and assets.
+# .env.test, fast-seeded dev DB, test schema, and assets. Its bundle install
+# and yarn steps only re-check what the background steps installed.
 run_bin_setup() {
-  bundle config set --local jobs "$(nproc)" >/dev/null
   bin/setup --fast
 }
 
@@ -113,10 +175,15 @@ EOF
 
 export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
 
-step "System packages" install_system_packages
+step "Build packages" install_build_packages
+# Ruby, gems, and Yarn packages don't need the runtime packages or Postgres,
+# so they install at the same time.
+background "Ruby and gems" install_ruby_and_gems
+background "Yarn packages" install_yarn_packages
+step "Runtime packages" install_runtime_packages
 step "Postgres" start_postgres
-step "Ruby toolchain" install_ruby
 step "Shell environment" persist_shell_env
+wait_background
 step "bin/setup --fast" run_bin_setup
 step "Agent guidance" write_agent_guidance
 
