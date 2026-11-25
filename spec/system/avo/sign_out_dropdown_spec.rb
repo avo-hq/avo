@@ -52,5 +52,19 @@ RSpec.feature "SignOutDropdown", type: :system do
       end
       expect(page.evaluate_script("sessionStorage.restored").to_s).not_to include "Quarterly numbers"
     end
+
+    it "asks the app's own host to clear the browser cache when Avo is mounted at /" do
+      allow_any_instance_of(Avo::ApplicationHelper).to receive(:root_path_without_url).and_return("/")
+      # The dummy mounts Avo at /admin, so nothing would answer the request at /site_data.
+      page.driver.browser.network.blacklist = %r{/site_data}
+
+      visit "/admin/resources/posts"
+      find("[data-control='profile-dots']").click
+      accept_alert { click_button "Sign out" }
+      expect(page).to have_current_path "/users/sign_in"
+
+      cache_clears = page.driver.browser.network.traffic.map(&:request).select { |request| request.method == "DELETE" }
+      expect(cache_clears.map(&:url)).to eq ["#{Capybara.current_session.server.base_url}/site_data"]
+    end
   end
 end
