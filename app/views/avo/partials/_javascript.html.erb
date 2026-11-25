@@ -1,7 +1,8 @@
 <%= javascript_tag nonce: true do %>
   window.Avo = window.Avo || { configuration: {} }
   Avo.configuration.timezone = '<%= Avo.configuration.timezone %>'
-  Avo.configuration.root_path = '<%= root_path_without_url %>'
+  <%# The JS appends "/site_data" and the like, and at a / mount "//site_data" would name a host called site_data. %>
+  Avo.configuration.root_path = '<%= root_path_without_url.chomp("/") %>'
   Avo.configuration.search_debounce = '<%= Avo.configuration.search_debounce %>'
   Avo.configuration.cookies_key = '<%= Avo::COOKIES_KEY %>'
   Avo.configuration.preserve_sidebar_scroll = '<%= ::Avo.configuration.feature_enabled?(:preserve_sidebar_scroll) %>'
