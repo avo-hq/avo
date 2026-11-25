@@ -102,15 +102,26 @@ install_yarn_packages() {
 }
 
 # Runs a step in the background and keeps its output out of the foreground
-# log until wait_background prints it.
+# log until wait_background prints it. Each step gets its own process group
+# (set -m), so if setup exits early, the EXIT trap stops the step and every
+# process it started, such as bundle install's compilers.
 bg_pids=()
 bg_logs=()
+stop_background() {
+  local pid
+  for pid in "${bg_pids[@]}"; do
+    kill -- "-$pid" 2>/dev/null || true
+  done
+}
 background() {
   local log
   log="$(mktemp)"
+  set -m
   step "$@" >"$log" 2>&1 &
+  set +m
   bg_pids+=("$!")
   bg_logs+=("$log")
+  trap stop_background EXIT
 }
 
 wait_background() {
@@ -120,6 +131,7 @@ wait_background() {
     cat "${bg_logs[$i]}"
     rm -f "${bg_logs[$i]}"
   done
+  bg_pids=()
   return "$failed"
 }
 
