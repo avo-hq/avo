@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
+import DOMPurify from 'dompurify'
 import EasyMDE from 'easymde'
 
 export default class extends Controller {
@@ -32,6 +33,8 @@ export default class extends Controller {
       theme: this.resolvedTheme,
       // Keeps the textarea current while typing, not only on submit, so the unsaved changes check sees edits.
       forceSync: true,
+      // EasyMDE keeps raw HTML in the preview, and the markdown can come from end users.
+      renderingConfig: { sanitizerFunction: (html) => DOMPurify.sanitize(html) },
     }
 
     if (this.view === 'show') {
