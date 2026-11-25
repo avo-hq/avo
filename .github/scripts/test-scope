@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Reads changed paths, one per line, on stdin and prints which tests they need:
+#
+#   none    only docs and repository metadata changed; no spec reads them
+#   skills  only shipped agent skills (and docs) changed; their own specs cover them
+#   full    anything else, including any path not listed here
+#
+# An empty list prints `full`: no diff is no evidence that nothing changed.
+# Add a path to a narrow scope only after checking which specs read it.
+set -euo pipefail
+
+scope=""
+# `|| [ -n ... ]` keeps a last line that has no trailing newline.
+while IFS= read -r path || [ -n "$path" ]; do
+  [ -z "$path" ] && continue
+  # Top-level Markdown only: a case `*` also matches `/`, so it cannot say this.
+  if [[ "$path" != */* && "$path" == *.[mM][dD] ]]; then
+    : "${scope:=none}"
+    continue
+  fi
+  case "$path" in
+    # No spec result depends on these. Tailwind's content scan may read the Markdown
+    # and pick up unused class names, but no spec checks the CSS for them.
+    docs/* | spec/skills_eval/* | \
+    .github/ISSUE_TEMPLATE/* | .github/PULL_REQUEST_TEMPLATE.md | .github/FUNDING.yml | \
+    .github/pr-labeler.yml | .github/release-drafter.yml)
+      : "${scope:=none}"
+      ;;
+    # Workflows other than this one, and this script, cannot change a spec's result.
+    .github/workflows/tests.yml | .github/scripts/test-scope)
+      scope=full
+      ;;
+    .github/workflows/*)
+      : "${scope:=none}"
+      ;;
+    # Covered by spec/lib/avo/skills and the skills generator spec; no app code loads them.
+    lib/avo/skills/*)
+      [ "$scope" = full ] || scope=skills
+      ;;
+    *)
+      scope=full
+      ;;
+  esac
+done
+
+echo "${scope:-full}"
