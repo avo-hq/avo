@@ -134,7 +134,7 @@ self.search = {
 }
 ```
 
-`search_type` is `:resource`, `:global`, or `:association`. It is **injected only by the paid search layer** (`avo-advanced_search`) — on a Community-only install the local is undefined and referencing it raises. The kanban card picker doesn't inject it (or a `q` local) either. Guard with `defined?(search_type)` when a Community install or the kanban picker might hit the proc; the kanban picker reads the term from `params[:q]`.
+`search_type` is `:resource`, `:global`, or `:association` from the paid search layer (`avo-advanced_search`), and `:kanban` from the kanban board's card picker (`avo-kanban`, which also injects `q`). Nothing else injects it: Avo's own search on a Community-only install, the AI assistant (avo-ai) and the MCP server run the proc without it, and referencing it there raises. Guard with `defined?(search_type)` whenever one of those might hit the proc.
 
 ### Authorize search
 
@@ -262,7 +262,7 @@ Jump-to-menu-item shortcuts go through the menu `hotkey:` option, or `self.hotke
 - **`profile_menu` and `header_menu` render only `link_to`.** `resource`, `dashboard`, `action`, etc. are silently ignored there. The profile menu adds sign-out for you.
 - **`icon:` isn't universal.** It works on `section` and individual items, **not** on `group` or on sub-items nested inside a `resource` or `link_to` block. (`link_to` takes a block for sub-items too, not just `resource` — the parent link stays clickable and Avo forces it active while a child is.)
 - **Ransack v4+ needs an allowlist.** Add `ransackable_attributes` (and often `ransackable_associations`) to any model you search, or the query raises.
-- **`search_type` is undefined on Community-only installs and in the kanban picker.** It's injected by the paid search layer for the index/global/association surfaces only. Guard with `defined?(search_type)`; the kanban picker reads `params[:q]` and detects the board via `params[:for_kanban_board]`.
+- **`search_type` is undefined on Community-only installs and for avo-ai and the MCP server.** Only avo-advanced_search (index/global/association) and avo-kanban (`:kanban`) inject it. Guard with `defined?(search_type) && search_type == :global`.
 - **Custom array-result providers aren't auto-capped.** `config.search_results_count` only applies to relations without their own `.limit()` — cap arrays yourself with `.first(N)`.
 - **`.limit()` in your `query:` proc always wins** over `config.search_results_count`.
 - **`search_on_type` can't be a lambda.** Any Proc is truthy, so it behaves as `true`; use a plain boolean. (`enabled` and `navigation_section` do accept lambdas.)

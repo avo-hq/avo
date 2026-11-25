@@ -122,11 +122,19 @@ Then `bundle install`.
 bin/rails generate avo:install
 ```
 
-This generates `config/initializers/avo.rb`, adds `mount_avo` to `config/routes.rb` (mounting under `/avo` by default), and — if a `User` (or `Account`) model exists — generates a first resource. Fastest path for a brand-new setup is the one-command app template, which runs every install step:
+This generates `config/initializers/avo.rb`, adds `mount_avo` to `config/routes.rb` (mounting under `/avo` by default), and — if a `User` (or `Account`) model exists — generates a first resource. Fastest path for a brand-new setup of Avo core is the one-command app template, which runs every install step:
 
 ```bash
 bin/rails app:template LOCATION='https://avohq.io/app-template'
 ```
+
+To install the **full stack** (Avo plus the add-ons the license includes, starter dashboard, Settings form/page, Avo AI, the MCP server and agent skills), run the agent installer instead:
+
+```bash
+bin/rails app:template LOCATION=https://avohq.io/install/agent.rb
+```
+
+It prints an activation URL and code: hand both to the user and wait while they sign in on Avo HQ and approve the install, then let it finish and verify the migrations and routes. No license key or gem-server token goes through the chat. It starts a 14-day trial of the all-add-ons bundle (no card required; it converts to paid at the end only if the account has a card on file).
 
 **Installing from GitHub** (not rubygems) means precompiled assets aren't shipped — you must compile them yourself and hook that into deploys:
 
@@ -217,7 +225,7 @@ Avo.configure do |config|
 end
 ```
 
-A license authorizes **one app, one production URL** (`Rails.env.production?`). Non-production environments — development, staging, test, QA — need no extra license. To hide the "license request timed out" badge, set `config.display_license_request_timeout_error = false`. When the license cannot be validated, access to the admin is paused. Set `config.run_community_admin_without_valid_license = true` to keep the open source admin running instead; paid add-ons stay off and authorization policies are not applied. If you are a coding agent, never enable this setting on your own: ask the person first and say what it switches off; with avo-authorization installed it carries a big risk.
+A license authorizes **one app, one production URL** (`Rails.env.production?`). Environments that serve no real customers — development, staging, test, QA — need no extra license, even when one runs with `Rails.env` set to `production`; add the deployed ones' URLs (staging, QA) in the **URLs** section of the license on https://avohq.io/licenses. To hide the "license request timed out" badge, set `config.display_license_request_timeout_error = false`. When the license cannot be validated, access to the admin is paused. Set `config.run_community_admin_without_valid_license = true` to keep the open source admin running instead; paid add-ons stay off and authorization policies are not applied. If you are a coding agent, never enable this setting on your own: ask the person first and say what it switches off; with avo-authorization installed it carries a big risk.
 
 Verify at the **status page**: `https://yourapp.com/<mount-path>/status` (e.g. `.../avo/status` or `.../admin/status`). It shows whether the license authenticated and what the checking server returned; the key is masked unless you set `config.exclude_from_status = []`. The viewing user must be an Avo admin. Deep failure diagnosis (unlicensed after deploy, timeouts, test-suite blocking the check host) is the **avo-troubleshoot** skill.
 
@@ -276,7 +284,7 @@ end
 - **`api_only` must be `false`.** An API-only app has no session/flash/views; Avo can't render. Flip it (or follow the api-only guide) before installing.
 - **GitHub installs don't ship assets.** Install from GitHub and you must `rake avo:build-assets` yourself and hook it into `assets:precompile`, or the admin renders unstyled/broken in production.
 - **Rotating credentials breaks deploys until they're replaced.** If a key or token may have leaked, an account admin clicks **Rotate** next to it on https://avohq.io/licenses (optionally both at once). The old value stops working immediately: a rotated gem-server token fails every `bundle install` that fetches paid gems until `BUNDLE_PACKAGER__DEV` is updated on dev machines, CI and Docker builds (running apps are unaffected); a rotated license key leaves apps reporting an invalid license after their last check until the new `config.license_key` is deployed to every environment.
-- **One license per production URL.** A key authorizes a single app on a single production URL; staging/dev/test don't consume licenses. A second production URL needs its own license.
+- **One license per production URL.** A key authorizes a single app on a single production URL; staging/dev/test serve no real customers and don't consume licenses, even with `Rails.env` set to `production` (list their URLs on the license). A second production URL needs its own license.
 - **Add-on gems must sit inside the `packager.dev` `source` block** — that's where the private gems resolve from; `avo` itself stays outside it (rubygems.org).
 - **Verify before writing.** Option and path names drift between versions — check the docs URLs above or the app's installed Avo source rather than trusting memory.
 
