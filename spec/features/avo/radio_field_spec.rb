@@ -63,6 +63,19 @@ RSpec.describe "RadioField", type: :feature do
     end
   end
 
+  describe "when the stored value holds markup" do
+    let!(:fish) { create :fish, size: %(<img src=x onerror="alert(1)">) }
+
+    it "shows it as text on the index and on the record page" do
+      ["/admin/resources/fish", "/admin/resources/fish/#{fish.id}"].each do |path|
+        visit path
+
+        expect(page).to have_text fish.size
+        expect(page).not_to have_css "img[onerror]"
+      end
+    end
+  end
+
   describe "on actions" do
     it "display options" do
       visit avo.resources_users_path
