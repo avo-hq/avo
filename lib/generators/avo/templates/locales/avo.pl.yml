@@ -32,10 +32,16 @@ pl:
       auto_tooltip: Automatycznie (preferencje systemowe)
       dark: Ciemny
       dark_tooltip: Tryb ciemny
+      densities:
+        normal: Normalny
+        relaxed: Zrelaksowany
+        tight: Skręcony
+      density: Gęstość
       hide: Ukryj
       light: Jasny
+      light_and_dark: Jasny i ciemny
       light_tooltip: Tryb jasny
-      neutrals: Motyw
+      neutrals: Neutralny
       neutrals_list:
         brand: Marka
         gray: Szary
@@ -48,6 +54,12 @@ pl:
         taupe: Taupe
         zinc: Cynk
       neutrals_picker: Motyw neutralny
+      roundness: Okrągłość
+      roundnesses:
+        normal: Normalny
+        relaxed: Zrelaksowany
+        square: Kwadrat
+        tight: Ścisły
       schemes: Wygląd
       shortcut_badges: Ikony skrótów
       shortcut_badges_hide_tooltip: Ukryj ikony skrótów klawiaturowych
@@ -58,6 +70,8 @@ pl:
       sound_off_tooltip: Wyłącz dźwięki zmiany wyglądu
       sound_on: Włącz
       sound_on_tooltip: Odtwarzaj dźwięk, gdy zmienia się wygląd
+      theme_picker: Wybierz motyw
+      themes: Motywy
       title: Wygląd
     applied: zastosowane
     are_you_sure: Czy na pewno?

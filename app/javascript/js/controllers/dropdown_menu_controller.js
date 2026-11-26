@@ -8,8 +8,8 @@ export default class extends Controller {
     // One may want to have elements that are exempt from triggering the click outside event
     exemptionContainers: Array,
     logger: Boolean,
-    // Opt-in: re-align a left-aligned panel to the right when it would overflow the
-    // viewport, so it opens leftward instead of being clipped at the right edge.
+    // Opt-in: open the panel start-aligned when it fits, end-aligned when it
+    // would run past the viewport's end edge, so it is never clipped.
     flip: Boolean,
   }
 
@@ -77,20 +77,25 @@ export default class extends Controller {
     document.body.classList.remove('dropdown-open')
   }
 
-  // Re-align the panel when `flip` is enabled. We always re-measure from the
-  // default left-aligned position (start-0), then switch to right-aligned (end-0)
-  // only if the panel would spill past the right edge of the viewport — so it
-  // opens leftward instead of being clipped. Dropdowns that don't opt in are
-  // untouched. Assumes the opted-in panel is left-aligned by default.
+  // Re-align the panel when `flip` is enabled. Measure from the start-aligned
+  // position first, then switch to end-aligned only if the panel would spill
+  // past the viewport edge on the end side (right in LTR, left in RTL), so it
+  // opens toward the free space instead of being clipped. The two modifiers are
+  // defined in components/ui/dropdown.css. Dropdowns that don't opt in are
+  // untouched.
   maybeFlip() {
     if (!this.flipValue || !this.hasMenuTarget) return
 
-    this.menuTarget.classList.remove('start-auto', 'end-0')
-    this.menuTarget.classList.add('start-0', 'end-auto')
+    const panel = this.menuTarget
+    panel.classList.remove('dropdown-popover--end')
+    panel.classList.add('dropdown-popover--start')
 
-    if (this.menuTarget.getBoundingClientRect().right > document.documentElement.clientWidth) {
-      this.menuTarget.classList.remove('start-0', 'end-auto')
-      this.menuTarget.classList.add('start-auto', 'end-0')
+    const rect = panel.getBoundingClientRect()
+    const rtl = getComputedStyle(panel).direction === 'rtl'
+    const overflows = rtl ? rect.left < 0 : rect.right > document.documentElement.clientWidth
+    if (overflows) {
+      panel.classList.remove('dropdown-popover--start')
+      panel.classList.add('dropdown-popover--end')
     }
   }
 

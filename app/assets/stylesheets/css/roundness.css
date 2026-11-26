@@ -1,0 +1,45 @@
+/* Normal deliberately declares nothing: existing theme radii, squircle shapes,
+   and application overrides retain their exact appearance. Non-normal user
+   choices live above theme defaults (theme/base), but below unlayered app CSS.
+   Only finite radii are scaled; rounded-full and percentage circles stay intact. */
+@layer components {
+  :root.roundness-square {
+    --roundness-factor: 0;
+  }
+
+  :root.roundness-tight {
+    --roundness-factor: 0.5;
+  }
+
+  :root.roundness-relaxed {
+    --roundness-factor: 1.5;
+  }
+
+  :root:is(.roundness-square, .roundness-tight, .roundness-relaxed) {
+    /* Tailwind's finite radius scale, including the 3xl radius used by button
+       squircles. Focus outlines follow the element's radius automatically. */
+    --radius: calc(0.25rem * var(--roundness-factor));
+    --radius-xs: calc(0.125rem * var(--roundness-factor));
+    --radius-sm: calc(0.25rem * var(--roundness-factor));
+    --radius-md: calc(0.375rem * var(--roundness-factor));
+    --radius-lg: calc(0.5rem * var(--roundness-factor));
+    --radius-xl: calc(0.75rem * var(--roundness-factor));
+    --radius-2xl: calc(1rem * var(--roundness-factor));
+    --radius-3xl: calc(1.5rem * var(--roundness-factor));
+    --radius-4xl: calc(2rem * var(--roundness-factor));
+
+    /* Redeclare aliases here: inherited custom properties otherwise resolve
+       against the radius values on the element that originally defined them.
+       These also make a user choice apply to themes with custom card radii. */
+    --radius-card: var(--radius-xl);
+    --radius-card-wrapper: var(--radius-lg);
+    --rounded-md: var(--radius-md);
+    --navbar-notch-radius: var(--radius-2xl);
+    --main-content-radius: var(--navbar-notch-radius);
+  }
+
+  :root.roundness-relaxed {
+    /* Keep the inner curve concentric with the outer card's 4px inset. */
+    --radius-card-wrapper: calc(var(--radius-card) - var(--spacing));
+  }
+}

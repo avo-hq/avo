@@ -1,5 +1,5 @@
 .field-wrapper {
-  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-1 w-full grow-0 text-ellipsis;
+  @apply relative flex flex-col grow leading-tight size-auto w-full md:flex-row md:items-center py-(--field-padding-block) w-full grow-0 text-ellipsis;
 }
 
 .field-wrapper__label {
@@ -93,7 +93,7 @@
 /* Stacked modifier */
 .field-wrapper {
   @variant field-stacked {
-    @apply flex-col items-start gap-y-2 py-3;
+    @apply flex-col items-start gap-y-2 py-(--field-stacked-padding-block);
 
     .field-wrapper__label {
       @apply w-full min-h-0 pt-0;

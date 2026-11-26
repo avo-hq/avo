@@ -1,0 +1,12 @@
+/* Gem theme fixture: a dark theme, one block. */
+@layer base {
+  .avo-theme-harbor {
+    --color-background: var(--color-avo-neutral-900);
+    --color-primary: var(--color-avo-neutral-950);
+    --color-accent: rgb(251, 191, 36);
+    --color-accent-content: rgb(252, 211, 77);
+    --color-accent-foreground: rgb(69, 26, 3);
+    --color-brand-accent: rgb(251, 191, 36);
+    --color-navbar-background: rgb(28, 25, 23);
+  }
+}

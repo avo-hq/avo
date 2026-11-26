@@ -49,6 +49,30 @@ RSpec.describe "AppearanceSettings", type: :request do
         expect(response).to have_http_status(:ok)
         expect(saved_settings).to eq({color_scheme: "dark"})
       end
+
+      it "saves a valid density and ignores invalid or locked picks" do
+        patch "/admin/appearance_settings", params: {density: "tight"}, as: :json
+        expect(saved_settings).to eq(density: "tight")
+
+        patch "/admin/appearance_settings", params: {density: "invalid"}, as: :json
+        expect(saved_settings).to eq(density: "tight")
+
+        allow(Avo.configuration.appearance).to receive(:density_picker?).and_return(false)
+        patch "/admin/appearance_settings", params: {density: "relaxed"}, as: :json
+        expect(saved_settings).to eq(density: "tight")
+      end
+
+      it "saves valid roundness without overwriting density and ignores invalid or disabled picks" do
+        patch "/admin/appearance_settings", params: {density: "relaxed", roundness: "square"}, as: :json
+        expect(saved_settings).to eq(density: "relaxed", roundness: "square")
+
+        patch "/admin/appearance_settings", params: {roundness: "invalid"}, as: :json
+        expect(saved_settings).to eq(density: "relaxed", roundness: "square")
+
+        allow(Avo.configuration.appearance).to receive(:roundness_picker?).and_return(false)
+        patch "/admin/appearance_settings", params: {roundness: "tight"}, as: :json
+        expect(saved_settings).to eq(density: "relaxed", roundness: "square")
+      end
     end
   end
 end

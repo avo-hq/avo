@@ -32,10 +32,16 @@ nl:
       auto_tooltip: Automatisch (systeemvoorkeur)
       dark: Donker
       dark_tooltip: Donkermodus
+      densities:
+        normal: Normaal
+        relaxed: Ontspannen
+        tight: Strak
+      density: Dichtheid
       hide: Verbergen
       light: Licht
+      light_and_dark: Licht en donker
       light_tooltip: Lichtmodus
-      neutrals: Thema
+      neutrals: Neutraal
       neutrals_list:
         brand: Merk
         gray: Grijs
@@ -48,6 +54,12 @@ nl:
         taupe: Taupe
         zinc: Zink
       neutrals_picker: Neutrale thema
+      roundness: Rondheid
+      roundnesses:
+        normal: Normaal
+        relaxed: Ontspannen
+        square: Vierkant
+        tight: Strak
       schemes: Uiterlijk
       shortcut_badges: Sneltoets badges
       shortcut_badges_hide_tooltip: Verberg sneltoets badges
@@ -58,6 +70,8 @@ nl:
       sound_off_tooltip: Geluiden bij uiterlijk dempen
       sound_on: Aan
       sound_on_tooltip: Speel een geluid af wanneer het uiterlijk verandert
+      theme_picker: Thema kiezen
+      themes: Thema's
       title: Uiterlijk
     applied: toegepast
     are_you_sure: Weet u het zeker?

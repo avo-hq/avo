@@ -1,3 +1,28 @@
 .description-list {
   @apply w-full flex flex-wrap overflow-visible flex-1 divide-y divide-tertiary;
 }
+
+/* Explicit compact previews keep their own spacing. */
+.description-list .field-wrapper:where(:not(.field-wrapper--density-compact)) {
+  @variant density-tight {
+    .field-wrapper__label {
+      @apply min-h-8;
+    }
+
+    .field-wrapper__content {
+      @apply py-0.75;
+    }
+
+    @variant field-stacked {
+      @apply gap-y-1.5;
+
+      .field-wrapper__label {
+        @apply min-h-0;
+      }
+
+      .field-wrapper__content {
+        @apply pt-0;
+      }
+    }
+  }
+}

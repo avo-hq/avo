@@ -395,19 +395,19 @@
 
   /* Size variants */
   .button--size-xs {
-    @apply text-xs px-2 py-1 gap-1 min-w-6;
+    @apply text-xs px-2 py-1 gap-1 min-w-6 density-tight:px-1.5 density-tight:py-0.5 density-relaxed:px-2.5 density-relaxed:py-1.5;
   }
 
   .button--size-sm {
-    @apply text-xs px-2 py-1 gap-1 min-w-6;
+    @apply text-xs px-2 py-1 gap-1 min-w-6 density-tight:px-1.5 density-tight:py-0.5 density-relaxed:px-2.5 density-relaxed:py-1.5;
   }
 
   .button--size-md {
-    @apply text-sm px-3 py-2 gap-[5px] min-w-8;
+    @apply text-sm px-3 py-2 gap-[5px] min-w-8 density-tight:px-2.5 density-tight:py-1.5 density-relaxed:px-3.5 density-relaxed:py-2.5;
   }
 
   .button--size-lg {
-    @apply text-sm p-3 gap-1.5 min-w-10;
+    @apply text-sm p-3 gap-1.5 min-w-10 density-tight:p-2.5 density-relaxed:p-3.5;
   }
 
   /* Icon-only buttons (an icon, no `.button__label`) get the same tight padding
@@ -422,15 +422,15 @@
   :where(.button:has(.button__icon):not(:has(.button__label))) {
     &.button--size-xs,
     &.button--size-sm {
-      @apply px-1 py-1 min-w-0;
+      @apply px-1 py-1 min-w-0 density-tight:p-0.5 density-relaxed:p-1.5;
     }
 
     &.button--size-md {
-      @apply px-2 py-2 min-w-0;
+      @apply px-2 py-2 min-w-0 density-tight:p-1.5 density-relaxed:p-2.5;
     }
 
     &.button--size-lg {
-      @apply px-2.5 py-2.5 min-w-0;
+      @apply px-2.5 py-2.5 min-w-0 density-tight:p-2 density-relaxed:p-3;
     }
   }
 

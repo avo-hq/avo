@@ -53,6 +53,13 @@
 /* Add dark mode variant */
 @custom-variant light (&:where(.light, .light *));
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant density-tight (&:where(.density-tight, .density-tight *));
+@custom-variant density-normal (&:where(.density-normal, .density-normal *));
+@custom-variant density-relaxed (&:where(.density-relaxed, .density-relaxed *));
+@custom-variant roundness-square (&:where(.roundness-square, .roundness-square *));
+@custom-variant roundness-tight (&:where(.roundness-tight, .roundness-tight *));
+@custom-variant roundness-normal (&:where(.roundness-normal, .roundness-normal *));
+@custom-variant roundness-relaxed (&:where(.roundness-relaxed, .roundness-relaxed *));
 @custom-variant neutral-theme-brand (&:where(.neutral-theme-brand, .neutral-theme-brand *));
 @custom-variant neutral-theme-slate (&:where(.neutral-theme-slate, .neutral-theme-slate *));
 @custom-variant neutral-theme-stone (&:where(.neutral-theme-stone, .neutral-theme-stone *));
@@ -115,6 +122,8 @@
    nest them into sublayers like `components.theme` and break the cascade
    between brand override (base) and the defaults / user picks. */
 @import "./css/variables.css";
+@import "./css/density.css";
+@import "./css/roundness.css";
 @import "./css/focus.css";
 
 @layer components {
@@ -252,11 +261,11 @@
   }
 
   .panel-spacer {
-    @apply relative flex flex-col gap-y-12;
+    @apply relative flex flex-col gap-y-(--panel-stack-gap);
 
     &>[data-component="avo/ui/panel_header_component"],
     &>[data-component="avo/cover_component"] {
-      @apply -mb-8; /* Offset from the regular panel spacing */
+      margin-bottom: calc(var(--panel-gap) - var(--panel-stack-gap));
     }
   }
 }
