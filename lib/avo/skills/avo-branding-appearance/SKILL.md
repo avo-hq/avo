@@ -28,6 +28,7 @@ Authoritative docs — fetch on demand, verify option names against them (and th
 - Docs map (discover pages): https://docs.avohq.io/4.0/docs-map.md
 - Theming overview (the ladder): https://docs.avohq.io/4.0/theming.md — changing the font: https://docs.avohq.io/4.0/theming.md#change-the-font
 - Appearance guide: https://docs.avohq.io/4.0/appearance.md — API reference (every option, defaults, CSS variables): https://docs.avohq.io/4.0/appearance-api.md
+- Per-resource card colors (guide: `data-resource-name` selectors, resource-scoped CSS variables, dark mode): https://docs.avohq.io/4.0/guides/style-resource-cards.md
 - Icons (Tabler / Heroicons / your own SVGs): https://docs.avohq.io/4.0/icons.md
 - Branding → Appearance (Avo 3 `config.branding` was renamed to `config.appearance` in Avo 4): https://docs.avohq.io/4.0/branding.md
 
@@ -258,6 +259,8 @@ bin/rails generate avo:eject --partial :head
 ```
 
 The full variable list (navbar, sidebar, table, focus ring, motion) with defaults lives in the CSS variables section of `appearance-api.md` — fetch it before writing component-level overrides. For named-theme requests ("coastal", "rose", "80s sunset"), work in `avo-overrides.css` with matching `:root` and `.dark` values.
+
+To color **one resource's** cards without touching the rest of the admin, scope the overrides to the resource wrapper's `data-resource-name` attribute (the resource class name, e.g. `[data-resource-name="Avo::Resources::Project"] .card`, with a `.dark` variant) — the per-resource card colors guide above has the full pattern, including sidebar cards and the inner `.card__wrapper` border.
 
 ### 9. Icons (menu items, actions)
 
