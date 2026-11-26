@@ -22,7 +22,7 @@ RSpec.describe "The avo:install initializer template" do
   it "stays valid Ruby when a host uncomments its examples" do
     rendered = ERB.new(template).result_with_hash(options: {path: "avo"}, app_id: nil)
     # Prose comments start with a word; code lines start with config., indentation or a closing token.
-    uncommented = rendered.gsub(/^(\s*)# (?=config\.|\s|[}\])]|end\b)/, '\1')
+    uncommented = rendered.gsub(/^(\s*)# (?=config\.|\s|[}\]]|end\b)/, '\1')
 
     expect { RubyVM::InstructionSequence.compile(uncommented) }.not_to raise_error
   end
