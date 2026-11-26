@@ -1,5 +1,5 @@
 # For more information regarding these settings check out our docs https://docs.avohq.io
-# The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
+# The values displayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
   config.root_path = '/<%= options[:path] %>'
@@ -46,7 +46,7 @@ Avo.configure do |config|
   # config.explicit_authorization = true
 
   ## == Localization ==
-  # config.locale = 'en-US'
+  # config.locale = nil # nil follows I18n.default_locale; set a locale the app enables, e.g. :en
 
   ## == Locale selector ==
   ## A language picker in the top navbar lets each user pick their own language.
@@ -212,7 +212,7 @@ Avo.configure do |config|
   # config.date_time_format = 'yyyy-LL-dd TT'
   # config.time_format = 'TT'
   # config.hide_layout_when_printing = false
-  # config.container_width = :lg # :full, :lg, :md, or :sm. Hash for per-view: { index: :full, single: :md }
+  # config.container_width = { index: :lg, single: :md } # :full, :lg, :md, or :sm; a symbol sets every view
   # config.use_stacked_fields = false
   # Set to false to disable Avo's Tailwind integration even when `tailwindcss-ruby` is installed.
   # config.tailwindcss_integration_enabled = true
