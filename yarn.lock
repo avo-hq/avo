@@ -1724,10 +1724,10 @@
   dependencies:
     postcss-selector-parser "6.0.10"
 
-"@tiptap/core@^3.34.0":
-  version "3.34.0"
-  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-3.34.0.tgz#4f38b49425ca10a8476d4cddf38089279a34086e"
-  integrity sha512-PwpE5MAXt586AxIO5bW2RyJ3OUXdPfG5M1M5v/LIMCkDwIgRKegx8uERlABoI6575mWqaH/P6Xm+tequJ5UUnw==
+"@tiptap/core@^3.35.0":
+  version "3.35.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-3.35.0.tgz#8aeaffd3e3de14548a71b09059a0ea5d4de80bf8"
+  integrity sha512-jrtRrAfgL7bXd2ecy0T7G4b6ozwzW9h67B3iQsDmgu7PWytkqbrUPFrki6LjyysrxZEK4jqgRMNCvfe2Yx2fKg==
 
 "@tiptap/extension-bold@^2.27.2":
   version "2.27.2"
@@ -2302,10 +2302,17 @@ doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
-dompurify@^3.2.5, dompurify@^3.4.18:
+dompurify@^3.2.5:
   version "3.4.18"
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.4.18.tgz#82161003672c8780ad1db0335787e6aa6587e5d2"
   integrity sha512-ofe3wI/uNm68HInABYFJYqQxRw1EaKAjNdrFVKqjUY+UZurvNd2L/HuQe097s/4RivWiZyP6tT7aoT8atjfhwg==
+  optionalDependencies:
+    "@types/trusted-types" "^2.0.7"
+
+dompurify@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.5.0.tgz#4df6b4440b60c8ce3de64d743a11aef9fd4a2891"
+  integrity sha512-LYC0ZkE8P1V42JsRYTwMdme/2ET8SpOc5AA2eOFjP/IadvRd2fwiT4TVz5vkfy0XUx12aS2UaRkTnfVPNOv9vw==
   optionalDependencies:
     "@types/trusted-types" "^2.0.7"
 
