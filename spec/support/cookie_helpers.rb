@@ -9,16 +9,21 @@
 #      their `before`, so set the cookie AFTER any reset_sessions! and then
 #      re-visit for the server to read it on the next request.
 #
-# page.driver.set_cookie(name, value, options) delegates to Ferrum's
-# cookies.set; passing an explicit options Hash keeps it unambiguous across
-# Ruby versions (the method takes a positional options Hash, not kwargs).
+# Cuprite 0.21 dropped page.driver.set_cookie and remove_cookie, so this calls
+# Ferrum's cookies directly, with the domain those methods used to fill in.
 module CookieHelpers
   def set_browser_cookie(name, value, path: "/")
-    page.driver.set_cookie(name, value.to_s, {path: path})
+    page.driver.browser.cookies.set(name: name, value: value.to_s, path: path, domain: cookie_domain)
   end
 
   def remove_browser_cookie(name, path: "/")
-    page.driver.remove_cookie(name, path: path)
+    page.driver.browser.cookies.remove(name: name, path: path, domain: cookie_domain)
+  end
+
+  private
+
+  def cookie_domain
+    URI.parse(page.current_url).host
   end
 end
 

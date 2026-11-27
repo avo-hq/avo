@@ -30,7 +30,11 @@ RSpec.describe "KeepIndexState", type: :system do
     open_record_and_go_back(20)
 
     expect(page).to have_selector record_selector_checkbox_selector, count: fishes.size
-    expect(page.evaluate_script("window.scrollY")).to eq scroll_position
+    # The page scrolls back a frame after turbo:load, so keep reading until it gets there.
+    page.document.synchronize do
+      scroll_y = page.evaluate_script("window.scrollY")
+      raise Capybara::ExpectationNotMet, "expected scrollY #{scroll_position}, got #{scroll_y}" if scroll_y != scroll_position
+    end
   end
 
   it "forgets the selection once an action runs on it" do

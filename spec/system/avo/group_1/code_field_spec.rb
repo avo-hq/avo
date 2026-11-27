@@ -124,7 +124,8 @@ RSpec.describe "CodeField", type: :system do
   def fill_in_editor_field(text)
     within ".CodeMirror" do
       current_scope.click
-      type text
+      # Ferrum 0.21 gives the whole text one page timeout (10s here), and slow CI runners need more for ~400 keys.
+      type text, timeout: 30
     end
   end
 

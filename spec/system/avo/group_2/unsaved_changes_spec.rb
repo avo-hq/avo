@@ -220,7 +220,7 @@ RSpec.describe "Unsaved changes warning", type: :system do
 
     page.driver.browser.mouse.click(x: 5, y: 5)
     expect(page).not_to have_css("#turbo-confirm[open]")
-    page.driver.wait_for_network_idle
+    page.driver.browser.network.wait_idle
 
     expect(page).to have_current_path(edit_post_path)
     expect(page).to have_field("post_name", with: "Changed name")
