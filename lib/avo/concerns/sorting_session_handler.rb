@@ -25,7 +25,7 @@ module Avo
 
       # One sort per table, so a has_many table remembers its own, apart from the related resource's index.
       def sorting_session_key
-        @sorting_session_key ||= "/sorting/" << %w[
+        @sorting_session_key ||= "/sorting/" + %w[
           controller resource_name related_name action
         ].map { |key| params[key] }.compact.join("/")
       end
