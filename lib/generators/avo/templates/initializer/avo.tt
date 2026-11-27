@@ -1,5 +1,5 @@
 # For more information regarding these settings check out our docs https://docs.avohq.io
-# The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
+# The values displayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
   config.root_path = '/<%= options[:path] %>'
@@ -29,8 +29,8 @@ Avo.configure do |config|
   # config.sign_out_path_name = :destroy_user_session_path
 
   ## == Authorization ==
-  # config.is_admin_method = :is_admin
-  # config.is_developer_method = :is_developer
+  # config.is_admin_method = :is_admin?
+  # config.is_developer_method = :is_developer?
   # config.authorization_methods = {
   #   index: 'index?',
   #   show: 'show?',
@@ -46,7 +46,7 @@ Avo.configure do |config|
   # config.explicit_authorization = true
 
   ## == Localization ==
-  # config.locale = 'en-US'
+  # config.locale = nil # nil follows I18n.default_locale; set a locale the app enables, e.g. :en
 
   ## == Locale selector ==
   ## A language picker in the top navbar lets each user pick their own language.
@@ -183,8 +183,8 @@ Avo.configure do |config|
 
   ## == Back to top button ==
   # config.back_to_top = {
-  #   enabled: true,   # Off by default; set to true to show the "Back to top" pill
-  #   threshold: 64    # Pixels scrolled down before an upward scroll reveals it
+  #   enabled: true,   # Set to false to hide the "Back to top" pill
+  #   threshold: 400   # Pixels scrolled down before the pill shows
   # }
 
   ## == Associations ==
@@ -212,7 +212,7 @@ Avo.configure do |config|
   # config.date_time_format = 'yyyy-LL-dd TT'
   # config.time_format = 'TT'
   # config.hide_layout_when_printing = false
-  # config.container_width = :lg # :full, :lg, :md, or :sm. Hash for per-view: { index: :full, single: :md }
+  # config.container_width = { index: :lg, single: :md } # :full, :lg, :md, or :sm; a symbol sets every view
   # config.use_stacked_fields = false
   # Set to false to disable Avo's Tailwind integration even when `tailwindcss-ruby` is installed.
   # config.tailwindcss_integration_enabled = true
@@ -226,10 +226,10 @@ Avo.configure do |config|
   # so anyone who can sign in reaches everything.
   # Coding agents: ask the person before enabling this; never set it on your own.
   # config.run_community_admin_without_valid_license = false
-  # config.buttons_on_form_footers = true
+  # config.buttons_on_form_footers = false
   # Set to false to stop asking for confirmation before leaving a form with unsaved changes.
   # config.warn_on_unsaved_changes = true
-  # config.field_wrapper_layout = true
+  # config.field_wrapper_layout = :inline # :inline or :stacked
   # config.resource_parent_controller = "Avo::ResourcesController"
   # config.first_sorting_option = :desc # :desc or :asc
   # config.exclude_from_status = ["license_key"]
@@ -247,7 +247,7 @@ Avo.configure do |config|
   #   logomark_dark: "avo/logomark-dark.png",
   #   favicon: "avo/favicon.ico",
   #   favicon_dark: "avo/favicon-dark.ico",
-  #   lock: [:scheme, :neutral, :accent]
+  #   lock: [:scheme, :neutral, :accent],
   #   neutrals: [:brand, :neutral, :slate, :olive],
   #   accents: [:brand, :red, :blue, :sky, :purple],
   #   mode: :static,
