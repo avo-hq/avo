@@ -373,6 +373,46 @@ RSpec.describe "Actions", type: :request do
     end
   end
 
+  # avo-hq/avo#2670
+  describe "required fields" do
+    let(:action_id) { "Avo::Actions::Test::ShowView" }
+
+    def field_wrapper(id)
+      Nokogiri::HTML(response.body).at_css("[data-field-id='#{id}']")
+    end
+
+    it "marks the required fields for the form to check, with the error to show when they're left empty" do
+      allow_any_instance_of(Avo::Actions::Test::ShowView).to receive(:fields) do |action|
+        action.field :probe_text, as: :text, required: true
+        action.field :probe_optional, as: :text
+        action.field :probe_dynamic, as: :text, required: -> { view.new? }
+      end
+
+      get "/admin/resources/reviews/actions", params: {action_id: action_id, resource_view: "index"}
+
+      expect(field_wrapper("probe_text")["data-action-target"]).to eq "requiredField"
+      error = field_wrapper("probe_text").at_css("[data-action-target='requiredFieldError']")
+      expect(error["hidden"]).not_to be_nil
+      expect(error.text).to eq "Probe text can't be blank"
+
+      expect(field_wrapper("probe_dynamic")["data-action-target"]).to eq "requiredField"
+
+      expect(field_wrapper("probe_optional")["data-action-target"]).to be_nil
+      expect(field_wrapper("probe_optional").at_css("[data-action-target='requiredFieldError']")).to be_nil
+    end
+
+    it "leaves a resource's edit form to its record validations" do
+      review = create(:review)
+
+      get "/admin/resources/reviews/#{review.id}/edit"
+
+      # Review validates the presence of its body, so the field shows as required.
+      expect(field_wrapper("body").at_css("[data-slot='label']").text).to include "*"
+      expect(field_wrapper("body")["data-action-target"]).to be_nil
+      expect(response.body).not_to include "requiredFieldError"
+    end
+  end
+
   # avo-hq/avo#3165
   describe "the parent of an association panel" do
     let(:action_id) { "Avo::Actions::Test::ShowParent" }

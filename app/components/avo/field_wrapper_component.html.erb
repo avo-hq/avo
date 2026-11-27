@@ -51,6 +51,9 @@
         <% if @field.record_errors.include?(@field.id) %>
           <div class="field-wrapper__error"><%= @field.record_errors.full_messages_for(@field.id).to_sentence %></div>
         <% end %>
+        <% if required_on_action_form? %>
+          <div class="field-wrapper__error" data-action-target="requiredFieldError" hidden><%= blank_error_message %></div>
+        <% end %>
         <% if help.present? %>
           <div class="field-wrapper__help"><%== help %></div>
         <% end %>
