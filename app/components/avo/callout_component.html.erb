@@ -1,0 +1,15 @@
+<%= wrapper_element class: class_names("callout", "callout--#{@type}", "callout--link": @url.present?) do %>
+  <% if icon.present? %>
+    <%= helpers.svg icon, class: "callout__icon" %>
+  <% end %>
+
+  <div class="callout__content">
+    <% if @title.present? %>
+      <div class="callout__title"><%= @title %></div>
+    <% end %>
+
+    <% if @body.present? %>
+      <div class="callout__body"><%= @body %></div>
+    <% end %>
+  </div>
+<% end %>

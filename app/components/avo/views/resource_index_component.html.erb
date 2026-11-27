@@ -9,6 +9,7 @@
   <%= render_index_slot :before_cards %>
   <%= render_index_slot(:cards) { render_cards_component } %>
   <%= render_index_slot :after_cards %>
+  <%= render_callouts %>
   <%= render ui.panel(
       cover: resource.cover,
       class: "w-full",

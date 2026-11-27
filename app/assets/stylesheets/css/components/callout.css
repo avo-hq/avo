@@ -1,0 +1,84 @@
+.callouts {
+  @apply flex flex-col gap-2 mb-4;
+}
+
+.callout {
+  @apply flex w-full min-w-0 items-start gap-2 rounded-lg border p-3;
+
+  background: var(--callout-background);
+  border-color: var(--callout-border);
+
+  --callout-color: var(--color-foreground);
+  --callout-title-color: color-mix(in oklab, var(--color-content) 20%, var(--callout-color));
+  --callout-body-color: var(--callout-title-color);
+  --callout-background: var(--color-background);
+  --callout-border: var(--color-tertiary);
+}
+
+.callout__icon {
+  @apply mt-0.5 size-4 shrink-0;
+
+  color: var(--callout-title-color);
+}
+
+.callout__content {
+  @apply flex min-w-0 flex-1 flex-col gap-0.5;
+}
+
+.callout__title {
+  @apply text-sm leading-5 font-medium;
+
+  color: var(--callout-title-color);
+}
+
+.callout__body {
+  @apply text-sm leading-5 font-normal;
+
+  color: var(--callout-body-color);
+}
+
+.callout__body a {
+  @apply underline underline-offset-2;
+
+  color: var(--callout-color);
+}
+
+.callout__title code,
+.callout__body code {
+  @apply rounded px-1 py-px font-mono text-xs;
+
+  background: color-mix(in oklab, var(--callout-color) 15%, transparent);
+  color: var(--callout-color);
+}
+
+.callout--link {
+  @apply transition-colors;
+
+  &:hover {
+    background: color-mix(in oklab, var(--callout-border) 15%, var(--callout-background));
+  }
+}
+
+.callout--success {
+  --callout-color: var(--color-success-content);
+  --callout-background: color-mix(in oklab, var(--color-success) 15%, var(--color-primary));
+  --callout-border: var(--color-success-foreground);
+}
+
+.callout--info {
+  --callout-color: var(--color-info-content);
+  --callout-background: color-mix(in oklab, var(--color-info) 15%, var(--color-primary));
+  --callout-border: var(--color-info-foreground);
+}
+
+.callout--warning {
+  --callout-color: var(--color-warning-content);
+  --callout-background: color-mix(in oklab, var(--color-warning) 15%, var(--color-primary));
+  --callout-border: var(--color-warning-foreground);
+}
+
+.callout--error {
+  --callout-color: var(--color-danger-content);
+  --callout-background: color-mix(in oklab, var(--color-danger) 15%, var(--color-primary));
+  --callout-border: var(--color-danger-foreground);
+}

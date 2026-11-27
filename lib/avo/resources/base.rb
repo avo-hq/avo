@@ -21,6 +21,7 @@ module Avo
       include Avo::Concerns::Hydration
       include Avo::Concerns::Pagination
       include Avo::Concerns::HasDiscreetInformation
+      include Avo::Concerns::HasCallouts
       include Avo::Concerns::RowControlsConfiguration
       include Avo::Concerns::SafeCall
       include Avo::Concerns::AbstractResource
