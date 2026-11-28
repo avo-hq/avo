@@ -8,6 +8,7 @@
         "cursor-pointer": !disabled?
       ) do %>
       <%= @form.check_box @field.id,
+        **@field.get_html(:attributes, view: view, element: :input),
         value: @field.value,
         checked: @field.value,
         disabled: disabled?,

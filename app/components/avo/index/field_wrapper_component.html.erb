@@ -1,4 +1,5 @@
 <%= content_tag @html_tag,
+  **@field.get_html(:attributes, view: @view, element: :wrapper),
   class: class_names(
     "group/clipboard px-2 leading-none whitespace-nowrap h-full text-content text-sm",
     @classes,

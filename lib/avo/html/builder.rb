@@ -9,6 +9,7 @@ class Avo::HTML::Builder
   attr_accessor :data_stack
   attr_accessor :style_stack
   attr_accessor :classes_stack
+  attr_accessor :attributes_stack
   attr_accessor :show_stack
   attr_accessor :edit_stack
   attr_accessor :index_stack
@@ -32,6 +33,7 @@ class Avo::HTML::Builder
     @data_stack = {}
     @style_stack = ""
     @classes_stack = ""
+    @attributes_stack = {}
     @show_stack = {}
     @edit_stack = {}
     @index_stack = {}
@@ -73,6 +75,11 @@ class Avo::HTML::Builder
   # payload or block
   def classes(payload = nil, &block)
     assign_property :classes, payload, &block
+  end
+
+  # payload or block
+  def attributes(payload = nil, &block)
+    assign_property :attributes, payload, &block
   end
 
   # Takes a block

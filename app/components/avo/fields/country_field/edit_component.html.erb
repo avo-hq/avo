@@ -4,6 +4,7 @@
       selected: @field.stored_value,
       include_blank: @field.include_blank
     },
+    **@field.get_html(:attributes, view: view, element: :input),
     aria: {
       placeholder: @field.placeholder
     },

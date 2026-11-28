@@ -13,6 +13,7 @@
           include_blank: @field.placeholder,
         },
         {
+          **@field.get_html(:attributes, view: view, element: :input),
           class: classes("w-full"),
           data: {
             **@field.get_html(:data, view: view, element: :input),
@@ -51,6 +52,7 @@
                   include_blank: @field.placeholder,
                 },
                 {
+                  **@field.get_html(:attributes, view: view, element: :input),
                   class: classes("w-full"),
                   data: @field.get_html(:data, view: view, element: :input),
                   disabled: disabled
@@ -98,6 +100,7 @@
           include_blank: @field.placeholder,
         },
         {
+          **@field.get_html(:attributes, view: view, element: :input),
           class: classes("w-full"),
           data: @field.get_html(:data, view: view, element: :input),
           disabled: disabled,

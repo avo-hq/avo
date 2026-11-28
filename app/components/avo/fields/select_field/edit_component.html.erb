@@ -2,6 +2,7 @@
   <%= @form.select @field.id, options, {
       include_blank: @field.include_blank
     },
+    **@field.get_html(:attributes, view: view, element: :input),
     multiple: @field.multiple,
     aria: {
       placeholder: @field.placeholder
